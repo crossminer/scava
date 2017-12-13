@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Cvs
+Bundle-SymbolicName: org.eclipse.crossmeter.repository.model.vcs.cvs;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.repository.model
+Export-Package: org.eclipse.crossmeter.repository.model.vcs.cvs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,0 +1,20 @@
+package org.eclipse.crossmeter.metricprovider.historic.newsgroups.threads.model;
+
+class NewsgroupsThreadsHistoricMetric {
+	val DailyNewsgroupData[*] newsgroups;
+	attr int numberOfThreads;
+	
+	attr float averageArticlesPerThread;
+	attr float averageRequestsPerThread;
+	attr float averageRepliesPerThread;
+	
+	attr float averageArticlesPerUser;
+	attr float averageRequestsPerUser;
+	attr float averageRepliesPerUser;
+}
+
+class DailyNewsgroupData {
+	attr String newsgroupName;
+	attr int numberOfThreads;
+}
+

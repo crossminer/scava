@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Osgi
+Bundle-SymbolicName: org.eclipse.crossmeter.platform.osgi;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.crossmeter.platform.osgi.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime.osgi,
+ org.eclipse.crossmeter.platform,
+ org.eclipse.crossmeter.repository.model,
+ org.apache.log4j.1.2.17
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.crossmeter.platform.osgi,
+ org.eclipse.crossmeter.platform.osgi.executors,
+ org.eclipse.crossmeter.platform.osgi.services

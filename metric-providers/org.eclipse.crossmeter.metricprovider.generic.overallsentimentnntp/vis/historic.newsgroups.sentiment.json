@@ -1,0 +1,58 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.newsgroups.sentiment",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.sentiment",
+			"name" : "Average Sentiment: Overall, at Thread Beginning and at Thread End.",
+			"description" : "The average sentiment per newsgroup up to and including the processing date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Average Sentiment", "field" : "$overallAverageSentiment" },
+					{ "name" : "Average Sentiment at Thread Beginning", "field" : "$overallSentimentAtThreadBeggining" },
+					{ "name" : "Average Sentiment at Thread End", "field" : "$overallSentimentAtThreadEnd" } ]
+			},
+			"x" : "Date",
+			"y" : ["Average Sentiment", "Average Sentiment at Thread Beginning", "Average Sentiment at Thread End"],
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.averageSentiment",
+			"name" : "Average Sentiment",
+			"description" : "The average sentiment per newsgroup up to and including the processing date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Average Sentiment", "field" : "$overallAverageSentiment" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment",
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.sentimentAtThreadBeggining",
+			"name" : "Average Sentiment At the Beginning of Threads",
+			"description" : "The average sentiment at the beginning of threads per newsgroup up to and including the processing date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Average Sentiment", "field" : "$overallSentimentAtThreadBeggining" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment",
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.sentimentAtThreadEnd",
+			"name" : "Average Sentiment At the End of Threads",
+			"description" : "The average sentiment at the end of threads per newsgroup up to and including the processing date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Average Sentiment", "field" : "$overallSentimentAtThreadEnd" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment",
+			"timeSeries" : true
+		}
+	]
+
+}
+	

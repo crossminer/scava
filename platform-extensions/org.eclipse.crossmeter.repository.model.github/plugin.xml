@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+   
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubRepository"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.Language"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubContent"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubDownload"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubBugTracker"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubIssue"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubMilestone"/>
+    <class name="org.eclipse.crossmeter.repository.model.github.GitHubUser"/>
+  </extension>
+</plugin>

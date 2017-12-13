@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Forum
+Bundle-SymbolicName: org.eclipse.crossmeter.repository.model.cc.forum;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.crossmeter.repository.model.cc.forum
+Require-Bundle: com.googlecode.pongo.runtime.dependencies,
+ org.eclipse.crossmeter.repository.model,
+ com.googlecode.pongo.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

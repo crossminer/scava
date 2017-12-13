@@ -1,0 +1,55 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jetty :: Asynchronous HTTP Client
+Bundle-SymbolicName: org.eclipse.jetty.client
+Bundle-Version: 9.2.6.v20141205
+Bundle-Vendor: Eclipse Jetty Project
+Export-Package: org.eclipse.jetty.client;version="9.2.6";
+  uses:="org.eclipse.jetty.io,
+   org.eclipse.jetty.util.thread,
+   org.eclipse.jetty.util.component,
+   org.eclipse.jetty.util.log,
+   org.eclipse.jetty.util,
+   org.eclipse.jetty.client.api,
+   org.eclipse.jetty.http,
+   org.eclipse.jetty.client.util,
+   org.eclipse.jetty.client.http,
+   org.eclipse.jetty.util.ssl,
+   org.eclipse.jetty.io.ssl",
+ org.eclipse.jetty.client.api;version="9.2.6";uses:="org.eclipse.jetty.http,org.eclipse.jetty.util",
+ org.eclipse.jetty.client.http;version="9.2.6";
+  uses:="org.eclipse.jetty.client,
+   org.eclipse.jetty.http,
+   org.eclipse.jetty.client.api,
+   org.eclipse.jetty.io,
+   org.eclipse.jetty.util,
+   org.eclipse.jetty.util.log",
+ org.eclipse.jetty.client.util;version="9.2.6";
+  uses:="org.eclipse.jetty.client.api,
+   org.eclipse.jetty.http,
+   org.eclipse.jetty.util,
+   org.eclipse.jetty.client,
+   org.eclipse.jetty.util.log"
+Bundle-DocURL: http://www.eclipse.org/jetty
+Implementation-Vendor: Eclipse.org - Jetty
+Created-By: Apache Maven Bundle Plugin
+Implementation-Version: 9.2.6.v20141205
+Built-By: janb
+url: http://www.eclipse.org/jetty
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Description: Administrative parent pom for Jetty modules
+Import-Package: org.eclipse.jetty.http;version="[9.2,10)",
+ org.eclipse.jetty.io;version="[9.2,10)",
+ org.eclipse.jetty.io.ssl;version="[9.2,10)",
+ org.eclipse.jetty.util;version="[9.2,10)",
+ org.eclipse.jetty.util.component;version="[9.2,10)",
+ org.eclipse.jetty.util.log;version="[9.2,10)",
+ org.eclipse.jetty.util.ssl;version="[9.2,10)",
+ org.eclipse.jetty.util.thread;version="[9.2,10)"
+Bundle-Copyright: Copyright (c) 2008-2014 Mort Bay Consulting Pty. Ltd.
+Archiver-Version: Plexus Archiver
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0, http://www.eclipse.org/org/documents/epl-v10.php
+Bnd-LastModified: 1417796285420
+Build-Jdk: 1.7.0_71
+Tool: Bnd-1.15.0
+Bundle-Classpath: org.eclipse.jetty.client_9.2.6.v20141205.jar

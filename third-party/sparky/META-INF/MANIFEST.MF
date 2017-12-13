@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sparkle
+Bundle-SymbolicName: sparky
+Bundle-Version: 1.0.0.qualifier
+Export-Package: sparkle,
+ sparkle.dimensions,
+ sparkle.scales
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

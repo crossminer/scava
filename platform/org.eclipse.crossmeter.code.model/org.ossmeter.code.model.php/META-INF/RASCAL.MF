@@ -1,0 +1,3 @@
+Source: src
+Main-Module: PHP
+Require-Libraries: lib/php-analysis.jar

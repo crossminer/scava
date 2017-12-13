@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dailycommits
+Bundle-SymbolicName: org.eclipse.crossmeter.metricprovider.trans.dailycommits;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.crossmeter.metricprovider.trans.dailycommits.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.platform,
+ org.eclipse.crossmeter.repository.model,
+ org.eclipse.crossmeter.metricprovider.trans.commits,
+ org.eclipse.crossmeter.platform.client.api
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

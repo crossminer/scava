@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.rascal.generic.churn.churnPerCommitInTwoWeeks.historic",
+	"vis" : [ 
+		{
+			"id" : "churnPerCommitInTwoWeeksTimeLine",
+			"name" : "Churn per commit (2 weeks)",
+			"description" : "This metric shows the average churn per commit in two weeks over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" },
+							{ "name" : "Churn", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Churn",
+			"x-label" : "Date",
+			"y-label" : "Churn (LOC)",
+			"timeSeries" : true
+		}
+	]
+}

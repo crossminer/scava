@@ -1,0 +1,20 @@
+package org.eclipse.crossmeter.metricprovider.historic.newsgroups.severity.model;
+
+class NewsgroupsSeveritiesHistoricMetric {
+	val NewsgroupData[*] newsgroupData;
+	val SeverityLevel[*] severityLevels;
+}
+
+class NewsgroupData {
+	attr String newsgroupName;
+	attr int numberOfThreads;
+}
+
+
+class SeverityLevel {
+	attr String newsgroupName;
+	attr String severityLevel;
+	attr int numberOfThreads;
+	attr float percentage;
+}
+

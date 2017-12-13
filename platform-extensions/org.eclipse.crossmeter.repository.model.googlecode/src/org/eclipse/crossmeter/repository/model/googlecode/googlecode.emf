@@ -1,0 +1,99 @@
+@namespace(uri="org.eclipse.crossmeter.repository.model.googlecode", prefix="org.eclipse.crossmeter.repository.model.googlecode")
+package org.eclipse.crossmeter.repository.model.googlecode;
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.Project")
+class Project {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.NamedElement")
+class NamedElement {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.CommunicationChannel")
+class CommunicationChannel {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.Person")
+class Person {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.BugTrackingSystem")
+class BugTrackingSystem {
+}
+
+class GoogleCodeProject extends Project {
+  val GoogleWiki wiki;
+  val GoogleForum forum;
+  val GoogleDownload[*] downloads;
+  val GoogleIssueTracker issueTracker;
+  attr Integer stars = "0";
+}
+
+class GoogleWiki extends CommunicationChannel {
+}
+
+class GoogleForum extends CommunicationChannel {
+}
+
+@customize
+class GoogleIssueTracker extends BugTrackingSystem {
+  attr String url;
+  val GoogleIssue[*] issues;
+}
+
+class GoogleIssue {
+  val GoogleUser[1] owner;
+  attr String created_at;
+  attr String updated_at;
+  attr String priority;
+  attr String type;
+  attr String component;
+  attr String status;
+  val GoogleIssueComment[*] comments;
+  val GoogleLabel[*] labels;
+  attr Integer stars;
+  attr String summary;
+}
+
+//enum GoogleIssuePriority {
+//  Low = 1;
+//  Medium = 2;
+//  High = 2;
+//}
+
+//enum GoogleIssueType {
+//  Defect = 1;
+//  Enhancement = 2;
+//  Bug = 3;
+//}
+
+//enum GoogleIssueStatus {
+// New = 1;
+//  Started = 2;
+//  Accepted = 3;
+//  Reviewed = 4;
+//  Acknowledged = 5;
+//}
+
+class GoogleIssueComment {
+  attr String text;
+  attr String date;
+}
+
+class GoogleLabel extends NamedElement {
+}
+
+class GoogleDownload {
+  attr Boolean starred;
+  attr String fileName;
+  val GoogleLabel[*] labels;
+  attr String uploaded_at;
+  attr String updated_at;
+  attr String size;
+  attr Integer downloadCounts;
+}
+
+class GoogleUser extends Person {
+  attr String email;
+}
+

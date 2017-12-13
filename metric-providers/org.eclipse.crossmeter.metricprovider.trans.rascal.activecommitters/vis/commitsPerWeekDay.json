@@ -1,0 +1,19 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.activecommitters.commitsPerWeekDay",
+	"vis" : [ 
+		{
+			"id" : "commitsPerWeekDayBar",
+			"name" : "Number of commits (per week)",
+			"description" : "This metric shows the accumulated number of commits per day of the week.",
+			"type" : "BarChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Day", 		"field" : "$value[0].value" }, 
+							{ "name" : "Commits", 	"field" : "$value[1].value" } ]
+			},
+			"x" : "Day",
+			"y" : "Commits",
+			"x-label" : "Day",
+			"y-label" : "Commits"
+		}
+	]
+}

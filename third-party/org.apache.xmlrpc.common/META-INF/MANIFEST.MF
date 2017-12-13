@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common
+Bundle-SymbolicName: org.apache.xmlrpc.common
+Bundle-Version: 1.0.0
+Bundle-ClassPath: xmlrpc-common-3.1.3.jar
+Export-Package: org.apache.xmlrpc,
+ org.apache.xmlrpc.common,
+ org.apache.xmlrpc.jaxb,
+ org.apache.xmlrpc.parser,
+ org.apache.xmlrpc.serializer,
+ org.apache.xmlrpc.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.apache.ws.commons

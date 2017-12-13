@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="MapDB">
+
+    <custom>
+        <fluidoSkin>
+            <topBarEnabled>true</topBarEnabled>
+            <topBarIcon>
+                <name>MapDB</name>
+                <alt>MapDB</alt>
+                <src>images/logo.png</src>
+                <href>/index.html</href>
+            </topBarIcon>
+            <sideBarEnabled>false</sideBarEnabled>
+            <googleSearch/>
+            <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+            <navBarStyle>navbar-inverse</navBarStyle>
+            <gitHub>
+                <projectId>JanKotek/MapDB</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>black</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
+
+
+    <body>
+        <head>
+            <script src='js/jquery.min.js'></script>
+            <script src='js/donate.js'></script>
+            <!--graphs -->
+            <script src='js/excanvas.js'></script>
+            <script src='js/js-class.js'></script>
+            <script src='js/bluff.js'></script>
+        </head>
+
+        <menu name="MapDB">
+            <item name="Introduction" href="index.html"/>
+            <item name="Features" href="features.html" />
+            <item name="Frequently Asked Questions" href="faq.html"/>
+            <item name="Credits" href="credits.html" />
+        </menu>
+
+        <menu ref="reports" name="Reports"/>
+    </body>
+
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.3.0</version>
+    </skin>
+
+</project>

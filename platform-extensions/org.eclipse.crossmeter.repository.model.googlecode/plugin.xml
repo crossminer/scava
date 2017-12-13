@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleCodeProject"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleWiki"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleForum"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleIssueTracker"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleIssue"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleIssueComment"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleLabel"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleDownload"/>
+    <class name="org.eclipse.crossmeter.repository.model.googlecode.GoogleUser"/>
+  </extension>
+</plugin>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineProject"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineWiki"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineQueryManager"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineQuery"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineProjectVersion"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineUser"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineBugIssueTracker"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineIssue"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineCategory"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineIssueRelation"/>
+    <class name="org.eclipse.crossmeter.repository.model.redmine.RedmineFeature"/>
+  </extension>
+</plugin>

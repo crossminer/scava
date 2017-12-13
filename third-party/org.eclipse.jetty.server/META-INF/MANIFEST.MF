@@ -1,0 +1,47 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jetty :: Server Core
+Bundle-SymbolicName: org.eclipse.jetty.server
+Bundle-Version: 9.2.6.v20141205
+Bundle-Vendor: Eclipse Jetty Project
+Export-Package: org.eclipse.jetty.server;version="9.2.6",
+ org.eclipse.jetty.server.handler;version="9.2.6",
+ org.eclipse.jetty.server.handler.jmx;version="9.2.6",
+ org.eclipse.jetty.server.jmx;version="9.2.6",
+ org.eclipse.jetty.server.nio;version="9.2.6",
+ org.eclipse.jetty.server.session;version="9.2.6",
+ org.eclipse.jetty.server.session.jmx;version="9.2.6"
+Bundle-DocURL: http://www.eclipse.org/jetty
+Implementation-Vendor: Eclipse.org - Jetty
+Created-By: Apache Maven Bundle Plugin
+Implementation-Version: 9.2.6.v20141205
+Built-By: janb
+url: http://www.eclipse.org/jetty
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Description: The core jetty server artifact.
+Import-Package: javax.naming,
+ javax.net.ssl,
+ javax.security.auth,
+ javax.servlet;version="[2.6.0,3.2)",
+ javax.servlet.descriptor;version="[2.6.0,3.2)",
+ javax.servlet.http;version="[2.6.0,3.2)",
+ javax.sql,
+ org.eclipse.jetty.http;version="[9.2,10)",
+ org.eclipse.jetty.io;version="[9.2,10)",
+ org.eclipse.jetty.io.ssl;version="[9.2,10)",
+ org.eclipse.jetty.jmx;version="9.1";resolution:=optional,
+ org.eclipse.jetty.util;version="[9.2,10)",
+ org.eclipse.jetty.util.annotation;version="[9.2,10)",
+ org.eclipse.jetty.util.component;version="[9.2,10)",
+ org.eclipse.jetty.util.log;version="[9.2,10)",
+ org.eclipse.jetty.util.resource;version="[9.2,10)",
+ org.eclipse.jetty.util.ssl;version="[9.2,10)",
+ org.eclipse.jetty.util.statistic;version="[9.2,10)",
+ org.eclipse.jetty.util.thread;version="[9.2,10)"
+Bundle-Copyright: Copyright (c) 2008-2014 Mort Bay Consulting Pty. Ltd.
+Archiver-Version: Plexus Archiver
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0, http://www.eclipse.org/org/documents/epl-v10.php
+Bnd-LastModified: 1417795570516
+Build-Jdk: 1.7.0_71
+Tool: Bnd-1.15.0
+Bundle-Classpath: org.eclipse.jetty.server_9.2.6.v20141205.jar

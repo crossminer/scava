@@ -1,0 +1,69 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.emotions",
+	"vis" : [ 
+		{
+			"id" : "bugs.emotions.comments",
+			"name" : "Comment Emotions",
+			"description" : "The number of comments containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$dimensions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Comments", "field" : "$numberOfComments" } ]
+			},
+			"x" : "Date",
+			"y" : "Comments", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "bugs.emotions.cumulativeComments",
+			"name" : "Comment Emotions (Cumulative)",
+			"description" : "The cumulative number of comments containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$dimensions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Comments", "field" : "$cumulativeNumberOfComments" } ]
+			},
+			"x" : "Date",
+			"y" : "Comments", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "bugs.emotions.commentPercentages",
+			"name" : "Comment Emotion Percentages",
+			"description" : "The percentages of comments containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$dimensions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Comments", "field" : "$percentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Comments", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "bugs.emotions.cumulativeCommentPercentages",
+			"name" : "Comment Emotion Percentages (Cumulative)",
+			"description" : "The cumulative percentages of comments containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$dimensions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Comments", "field" : "$cumulativePercentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Comments", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		}
+	]
+}

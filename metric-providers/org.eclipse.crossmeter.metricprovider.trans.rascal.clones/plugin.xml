@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="crossmeter.rascal.metricprovider">
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/cloneLOCPerLanguage.json">
+      </visualisation>
+   </extension>
+
+</plugin>

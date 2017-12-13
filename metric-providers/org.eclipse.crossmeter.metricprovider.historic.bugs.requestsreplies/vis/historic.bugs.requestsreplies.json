@@ -1,0 +1,81 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.requestsreplies",
+	"vis" : [ 
+		{
+			"id" : "bugs.requestsreplies",
+			"name" : "Requests and Replies",
+			"description" : "The number of requests and replies submitted every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Requests", "field" : "$numberOfRequests" },
+					{ "name" : "Replies", "field" : "$numberOfReplies" } ]
+			},
+			"x" : "Date",
+			"y" : ["Requests", "Replies"],
+			"timeSeries" : true
+		},{
+			"id" : "bugs.requests",
+			"name" : "Requests",
+			"description" : "The number of requests submitted every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Requests", "field" : "$numberOfRequests" } ]
+			},
+			"x" : "Date",
+			"y" : "Requests",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.replies",
+			"name" : "Replies",
+			"description" : "The number of replies submitted every day." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Replies", "field" : "$numberOfReplies" } ]
+			},
+			"x" : "Date",
+			"y" : "Replies",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.cumulativerequestsreplies",
+			"name" : "Requests and Replies (Cumulative)",
+			"description" : "The number of requests and replies submitted up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Requests", "field" : "$cumulativeNumberOfRequests" },
+					{ "name" : "Replies", "field" : "$cumulativeNumberOfReplies" } ]
+			},
+			"x" : "Date",
+			"y" : ["Requests", "Replies"],
+			"timeSeries" : true
+		},{
+			"id" : "bugs.cumulativerequests",
+			"name" : "Requests (Cumulative)",
+			"description" : "The number of requests submitted up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Requests", "field" : "$cumulativeNumberOfRequests" } ]
+			},
+			"x" : "Date",
+			"y" : "Requests",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.cumulativereplies",
+			"name" : "Replies (Cumulative)",
+			"description" : "The number of replies submitted up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Replies", "field" : "$cumulativeNumberOfReplies" } ]
+			},
+			"x" : "Date",
+			"y" : "Replies",
+			"timeSeries" : true
+		}
+	]
+
+}

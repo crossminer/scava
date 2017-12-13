@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+<extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+   <visualisation json="vis/historic.newsgroups.severity.json">
+   </visualisation>
+</extension>
+<extension point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider provider="org.eclipse.crossmeter.metricprovider.historic.newsgroups.severity.SeverityHistoricMetricProvider">
+   </metricProvider>
+</extension>
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.severity.model.NewsgroupsSeveritiesHistoricMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.severity.model.NewsgroupData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.severity.model.SeverityLevel"/>
+  </extension>
+</plugin>

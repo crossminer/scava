@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Libsvm
+Bundle-SymbolicName: org.eclipse.crossmeter.requestreplyclassifier.opennlptartarus.libsvm
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.crossmeter.requestreplyclassifier.opennlptartarus.libsvm.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.opennlp,
+ org.eclipse.crossmeter.libsvm,
+ org.eclipse.crossmeter.tartarus.parser.posstemmer,
+ org.eclipse.crossmeter.libsvm.dependencies
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.crossmeter.requestreplyclassifier.opennlptartarus.libsvm

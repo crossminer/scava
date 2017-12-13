@@ -1,0 +1,3 @@
+Source: src
+Main-Module: PHPMetrics
+Require-Bundles: org.eclipse.crossmeter.code.model.php

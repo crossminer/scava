@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="org.eclipse.crossmeter.platform.vanilla" uid="org.eclipse.crossmeter.platform.vanilla" id="org.eclipse.crossmeter.platform.osgi.org_ossmeter_platform_vanilla" application="crossmeter.workerservice" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-apiServer</programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.crossmeter.platform.feature.vanilla"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.crossmeter.platform.admin" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.crossmeter.platform.client.api" autoStart="true" startLevel="0" />
+      <plugin id="org.restlet" autoStart="true" startLevel="0" />
+      <plugin id="org.restlet.ext.jetty" autoStart="true" startLevel="0" />
+   </configurations>
+
+</product>

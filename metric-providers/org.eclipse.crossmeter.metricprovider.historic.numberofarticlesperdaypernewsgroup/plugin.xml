@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+   
+   <extension point="org.eclipse.crossmeter.platform.metricprovider">
+      <metricProvider provider="org.eclipse.crossmeter.metricprovider.historic.newsgroups.articles.ArticlesHistoricMetricProvider">
+      </metricProvider>
+   </extension>
+
+
+
+
+<extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+   <visualisation json="vis/historic.newsgroups.articles.json">
+   </visualisation>
+</extension>
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.articles.model.NewsgroupsArticlesHistoricMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.articles.model.DailyNewsgroupData"/>
+  </extension>
+</plugin>

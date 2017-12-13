@@ -1,0 +1,31 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.newbugs",
+	"vis" : [ 
+		{
+			"id" : "bugs.newbugs",
+			"name" : "Bugs",
+			"description" : "The number of bugs submitted every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.cumulativeNewBugs",
+			"name" : "Bugs (Cumulative)",
+			"description" : "The number of bugs submitted up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$cumulativeNumberOfBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		}
+	]
+
+}

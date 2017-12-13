@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: Crossminer Commons
+Bundle-Name: Crossminer Commons
+Bundle-Version: 0.1
+

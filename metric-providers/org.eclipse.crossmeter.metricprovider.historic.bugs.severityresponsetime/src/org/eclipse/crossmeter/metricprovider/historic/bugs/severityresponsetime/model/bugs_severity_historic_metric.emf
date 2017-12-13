@@ -1,0 +1,13 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.severityresponsetime.model;
+
+class BugsSeverityResponseTimeHistoricMetric {
+	val SeverityLevel[*] severityLevels;
+}
+
+class SeverityLevel {
+	attr String severityLevel;
+	attr int numberOfBugs;
+   	attr long avgResponseTime;
+   	attr String avgResponseTimeFormatted;
+}
+

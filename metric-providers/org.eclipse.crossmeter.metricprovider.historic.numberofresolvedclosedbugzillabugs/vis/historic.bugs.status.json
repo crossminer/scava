@@ -1,0 +1,91 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.status",
+	"vis" : [ 
+		{
+			"id" : "bugs.resolvedClosedBugs",
+			"name" : "Resolved or Closed Bugs",
+			"description" : "The number of resolved or closed bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfResolvedClosedBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.wontFixBugs",
+			"name" : "Won't-Fix Bugs",
+			"description" : "The number of won't-fix bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfWontFixBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.worksForMeBugs",
+			"name" : "Works-For-Me Bugs",
+			"description" : "The number of works-for-me bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfWorksForMeBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.nonResolvedClosedBugs",
+			"name" : "Non-Resolved or Closed Bugs",
+			"description" : "The number of non-resolved or open bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfNonResolvedClosedBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.invalidBugs",
+			"name" : "Invalid Bugs",
+			"description" : "The number of invalid bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfInvalidBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.fixedBugs",
+			"name" : "Fixed Bugs",
+			"description" : "The number of fixed bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfFixedBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.duplicateBugs",
+			"name" : "Duplicate Bugs",
+			"description" : "The number of duplicate bugs up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfDuplicateBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		}
+	]
+
+}

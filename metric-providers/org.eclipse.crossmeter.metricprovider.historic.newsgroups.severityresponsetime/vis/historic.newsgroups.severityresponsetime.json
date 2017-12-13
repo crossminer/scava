@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.newsgroups.severityresponsetime",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.severity.averageResponseTime",
+			"name" : "Newsgroup Thread Average Response Time (ms) per Severity Level",
+			"description" : "The number of newsgroup threads average response time per severity level",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Severity", "field" : "$severityLevel" },
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time", 
+			"series" : "Severity",
+			"timeSeries" : true
+		}
+	]
+}

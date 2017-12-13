@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+   
+   <extension point="org.eclipse.crossmeter.platform.metricprovider">
+      <metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider">
+      </metricProvider>
+   </extension>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.model.ThreadData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.model.CurrentDate"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.model.ArticleData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.threads.model.NewsgroupData"/>
+  </extension>
+</plugin>

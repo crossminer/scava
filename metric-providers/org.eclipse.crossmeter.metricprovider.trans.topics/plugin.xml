@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+  <extension point="org.eclipse.crossmeter.platform.metricprovider">
+     <metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.topics.TopicsTransMetricProvider">
+     </metricProvider>
+  </extension>
+  <extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+     <visualisation json="vis/trans.topics.json">
+     </visualisation>
+  </extension>
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.topics.model.TopicsTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.topics.model.BugTrackerCommentsData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.topics.model.NewsgroupArticlesData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.topics.model.BugTrackerTopic"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.topics.model.NewsgroupTopic"/>
+  </extension>
+</plugin>

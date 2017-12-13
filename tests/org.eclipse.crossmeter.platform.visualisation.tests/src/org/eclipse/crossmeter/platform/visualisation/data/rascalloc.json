@@ -1,0 +1,22 @@
+{
+	"metricid" : "...",
+	"vis" : [ 
+		{
+			"id" : "locperlanguage",
+			"name" : "Lines of Code",
+			"description" : "This metric shows a the lines of code per language.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Language", 		"field" : "$value[0].value" },
+							{ "name" : "Lines", 	"field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Lines", 
+			"series" : "Language",
+			"x-label" : "Date",		
+			"y-label" : "Lines of Code"	
+		}
+	]
+}

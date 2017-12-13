@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CROSSMETER Admin
+Bundle-SymbolicName: org.eclipse.crossmeter.platform.admin;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.crossmeter.platform.admin.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.crossmeter.platform,
+ org.eclipse.crossmeter.repository.model,
+ org.jackson.all,
+ com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.platform.osgi,
+ org.restlet;bundle-version="2.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.crossmeter.platform.admin

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.bugs.users.model.BugsUsersHistoricMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.bugs.users.model.DailyBugTrackingData"/>
+  </extension>
+<extension
+      point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider
+         provider="org.eclipse.crossmeter.metricprovider.historic.bugs.users.UsersHistoricMetricProvider">
+   </metricProvider>
+</extension>
+<extension
+      point="org.eclipse.crossmeter.platform.visualisation.metric">
+   <visualisation
+         json="vis/historic.bugs.users.json"></visualisation>
+</extension>
+</plugin>

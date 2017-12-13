@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+  <extension point="org.eclipse.crossmeter.platform.metricprovider">
+     <metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider">
+     </metricProvider>
+  </extension>
+
+
+
+
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.severityclassification.model.SeverityClassificationTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.severityclassification.model.BugTrackerBugsData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.severityclassification.model.NewsgroupArticleData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.severityclassification.model.NewsgroupThreadData"/>
+  </extension>
+</plugin>

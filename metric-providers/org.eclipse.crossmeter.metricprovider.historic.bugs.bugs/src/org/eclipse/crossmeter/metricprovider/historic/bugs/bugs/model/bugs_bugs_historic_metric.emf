@@ -1,0 +1,20 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.bugs.model;
+
+class BugsBugsHistoricMetric {
+	val DailyBugTrackerData[*] bugTrackers;
+	attr int numberOfBugs;
+	
+	attr float averageCommentsPerBug;
+	attr float averageRequestsPerBug;
+	attr float averageRepliesPerBug;
+	
+	attr float averageCommentsPerUser;
+	attr float averageRequestsPerUser;
+	attr float averageRepliesPerUser;
+}
+
+class DailyBugTrackerData {
+	attr String bugTrackerId;
+	attr int numberOfBugs;
+}
+

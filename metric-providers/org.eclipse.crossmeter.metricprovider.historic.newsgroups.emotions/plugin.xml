@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+<extension point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider provider="org.eclipse.crossmeter.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider">
+   </metricProvider>
+</extension>
+<extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+   <visualisation json="vis/historic.newsgroups.emotions.json"/>
+</extension>
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.emotions.model.NewsgroupsEmotionsHistoricMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.emotions.model.Newsgroups"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.emotions.model.Emotion"/>
+  </extension>
+</plugin>

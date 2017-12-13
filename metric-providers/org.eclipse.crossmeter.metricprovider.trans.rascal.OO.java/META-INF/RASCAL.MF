@@ -1,0 +1,3 @@
+Source: src
+Main-Module: OOJava
+Require-Bundles: org.eclipse.crossmeter.metricprovider.trans.rascal.OO, org.eclipse.crossmeter.code.model.java

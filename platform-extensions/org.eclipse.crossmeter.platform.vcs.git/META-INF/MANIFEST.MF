@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Git VCS Manager for CROSSMETER
+Bundle-SymbolicName: org.eclipse.crossmeter.platform.vcs.git;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.eclipse.crossmeter.platform.vcs.git.Activator
+Bundle-Vendor: CROSSMETER
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.crossmeter.platform,
+ org.eclipse.crossmeter.repository.model,
+ com.googlecode.pongo.runtime,
+ org.eclipse.jgit,
+ org.eclipse.crossmeter.repository.model.vcs.git,
+ com.jcraft.jsch
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.crossmeter.platform.vcs.git

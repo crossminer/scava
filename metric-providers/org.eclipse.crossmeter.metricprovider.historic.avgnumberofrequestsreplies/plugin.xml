@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+<extension point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider provider="org.eclipse.crossmeter.metricprovider.historic.newsgroups.requestsreplies.average.RequestsRepliesAverageHistoricMetricProvider">
+   </metricProvider>
+</extension>
+
+
+<extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+   <visualisation json="vis/historic.newsgroups.requestsreplies.average.json">
+   </visualisation>
+</extension>
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.newsgroups.requestsreplies.average.model.NewsgroupsRequestsRepliesAverageHistoricMetric"/>
+  </extension>
+</plugin>

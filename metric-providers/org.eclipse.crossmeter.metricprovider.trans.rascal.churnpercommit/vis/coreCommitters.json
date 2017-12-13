@@ -1,0 +1,19 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.rascal.generic.churn.coreCommittersChurn",
+	"vis" : [ 
+		{
+			"id" : "coreCommittersChurnBar",
+			"name" : "Core committers",
+			"description" : "This metric shows the total accumulated churn per committer.",
+			"type" : "BarChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Committer", "field" : "$value[0].value" }, 
+							{ "name" : "Churn", 	"field" : "$value[1].value" } ]
+			},
+			"x" : "Committer",
+			"y" : "Churn",
+			"x-label" : "Committer",
+			"y-label" : "Churn (LOC)"
+		}
+	]
+}

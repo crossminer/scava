@@ -1,0 +1,69 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.newsgroups.severitysentiment",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.severity.sentiment",
+			"name" : "Average Sentiment: Overall, at Thread Beginning and at Thread End.",
+			"description" : "Sentiment per newsgroup per severity level." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Average Sentiment", "field" : "$averageSentiment" },
+					{ "name" : "Average Sentiment at Thread Beginning", "field" : "$sentimentAtThreadBeggining" },
+					{ "name" : "Average Sentiment at Thread End", "field" : "$sentimentAtThreadEnd" } ]
+			},
+			"x" : "Date",
+			"y" : ["Average Sentiment", "Average Sentiment at Thread Beginning", "Average Sentiment at Thread End"],
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.severity.averageSentiment",
+			"name" : "Average Sentiment per Newsgroup Severity",
+			"description" : "The average sentiment per bug newsgroup per severity level",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Severity", "field" : "$severityLevel" },
+					{ "name" : "Average Sentiment", "field" : "$averageSentiment" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment", 
+			"series" : "Severity",
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.severity.sentimentAtThreadBeggining",
+			"name" : "Thread Beginning Sentiment per Newsgroup Severity",
+			"description" : "The average sentiment at the beginning of threads per bug newsgroup per severity level",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Severity", "field" : "$severityLevel" },
+					{ "name" : "Average Sentiment", "field" : "$sentimentAtThreadBeggining" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment", 
+			"series" : "Severity",
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.severity.sentimentAtThreadEnd",
+			"name" : "Thread End per Newsgroup Severity",
+			"description" : "The average sentiment at the end of threads per newsgroup per severity level",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Severity", "field" : "$severityLevel" },
+					{ "name" : "Average Sentiment", "field" : "$sentimentAtThreadEnd" } ]
+			},
+			"x" : "Date",
+			"y" : "Average Sentiment", 
+			"series" : "Severity",
+			"timeSeries" : true
+		}
+	]
+}

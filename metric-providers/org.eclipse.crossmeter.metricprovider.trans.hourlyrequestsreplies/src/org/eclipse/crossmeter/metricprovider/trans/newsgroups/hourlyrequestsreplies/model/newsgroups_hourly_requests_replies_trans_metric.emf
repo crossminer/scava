@@ -1,0 +1,17 @@
+package org.eclipse.crossmeter.metricprovider.trans.newsgroups.hourlyrequestsreplies.model;
+
+@db(qualifiedCollectionNames="true")
+class NewsgroupsHourlyRequestsRepliesTransMetric {
+	val HourArticles[*] hourArticles;
+}
+
+class HourArticles {
+	@searchable
+	attr String hour;
+	attr int numberOfArticles;
+	attr int numberOfRequests;
+	attr int numberOfReplies;
+	attr float percentageOfArticles;
+	attr float percentageOfRequests;
+	attr float percentageOfReplies;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.repository.model.ProjectRepository"/>
+    <class name="org.eclipse.crossmeter.repository.model.ProjectError"/>
+    <class name="org.eclipse.crossmeter.repository.model.ManagerAnalysis"/>
+    <class name="org.eclipse.crossmeter.repository.model.MetricAnalysis"/>
+    <class name="org.eclipse.crossmeter.repository.model.SchedulingInformation"/>
+    <class name="org.eclipse.crossmeter.repository.model.ImportData"/>
+    <class name="org.eclipse.crossmeter.repository.model.Project"/>
+    <class name="org.eclipse.crossmeter.repository.model.MetricProviderExecution"/>
+    <class name="org.eclipse.crossmeter.repository.model.ProjectExecutionInformation"/>
+    <class name="org.eclipse.crossmeter.repository.model.MetricProvider"/>
+    <class name="org.eclipse.crossmeter.repository.model.LocalStorage"/>
+    <class name="org.eclipse.crossmeter.repository.model.Person"/>
+    <class name="org.eclipse.crossmeter.repository.model.Role"/>
+    <class name="org.eclipse.crossmeter.repository.model.License"/>
+    <class name="org.eclipse.crossmeter.repository.model.Company"/>
+  </extension>
+</plugin>

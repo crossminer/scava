@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bug Tracking System
+Bundle-SymbolicName: org.eclipse.crossmeter.platform.bugtrackingsystem
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.crossmeter.platform.bugtrackingsystem.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.crossmeter.repository.model,
+ org.joda.time
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.commons.lang.time,
+ org.joda.time
+Export-Package: org.eclipse.crossmeter.platform.bugtrackingsystem,
+ org.eclipse.crossmeter.platform.bugtrackingsystem.cache,
+ org.eclipse.crossmeter.platform.bugtrackingsystem.cache.provider

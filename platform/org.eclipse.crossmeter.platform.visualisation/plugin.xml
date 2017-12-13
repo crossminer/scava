@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.crossmeter.platform.visualisation.type" name="CROSSMETER Visualisation Type" schema="schema/org.eclipse.crossmeter.platform.visualisation.type.exsd"/>
+   <extension-point id="org.eclipse.crossmeter.platform.visualisation.metric" name="Metric visualisation" schema="schema/org.eclipse.crossmeter.platform.visualisation.metric.exsd"/>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.type">
+      <visualisationKind
+            json="chartdefs/linechart.json">
+      </visualisationKind>
+      <visualisationKind
+            json="chartdefs/barchart.json">
+      </visualisationKind>
+      <visualisationKind
+            json="chartdefs/scatterchart.json">
+      </visualisationKind>
+   </extension>
+
+</plugin>

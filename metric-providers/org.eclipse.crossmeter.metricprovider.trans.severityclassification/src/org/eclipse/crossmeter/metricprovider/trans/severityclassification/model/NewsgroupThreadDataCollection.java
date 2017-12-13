@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) 2014 CROSSMETER Partners.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Yannis Korkontzelos - Implementation.
+ *******************************************************************************/
+package org.eclipse.crossmeter.metricprovider.trans.severityclassification.model;
+
+import com.googlecode.pongo.runtime.*;
+import java.util.*;
+import com.mongodb.*;
+
+public class NewsgroupThreadDataCollection extends PongoCollection<NewsgroupThreadData> {
+	
+	public NewsgroupThreadDataCollection(DBCollection dbCollection) {
+		super(dbCollection);
+		createIndex("newsgroupName");
+	}
+	
+	public Iterable<NewsgroupThreadData> findById(String id) {
+		return new IteratorIterable<NewsgroupThreadData>(new PongoCursorIterator<NewsgroupThreadData>(this, dbCollection.find(new BasicDBObject("_id", id))));
+	}
+	
+	public Iterable<NewsgroupThreadData> findByNewsgroupName(String q) {
+		return new IteratorIterable<NewsgroupThreadData>(new PongoCursorIterator<NewsgroupThreadData>(this, dbCollection.find(new BasicDBObject("newsgroupName", q + ""))));
+	}
+	
+	public NewsgroupThreadData findOneByNewsgroupName(String q) {
+		NewsgroupThreadData newsgroupThreadData = (NewsgroupThreadData) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("newsgroupName", q + "")));
+		if (newsgroupThreadData != null) {
+			newsgroupThreadData.setPongoCollection(this);
+		}
+		return newsgroupThreadData;
+	}
+	
+
+	public long countByNewsgroupName(String q) {
+		return dbCollection.count(new BasicDBObject("newsgroupName", q + ""));
+	}
+	
+	@Override
+	public Iterator<NewsgroupThreadData> iterator() {
+		return new PongoCursorIterator<NewsgroupThreadData>(this, dbCollection.find());
+	}
+	
+	public void add(NewsgroupThreadData newsgroupThreadData) {
+		super.add(newsgroupThreadData);
+	}
+	
+	public void remove(NewsgroupThreadData newsgroupThreadData) {
+		super.remove(newsgroupThreadData);
+	}
+	
+}

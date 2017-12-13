@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.committers.model.ProjectCommitters"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.committers.model.Committer"/>
+  </extension>
+<extension
+      point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider
+         provider="org.eclipse.crossmeter.metricprovider.trans.committers.CommittersMetricProvider">
+   </metricProvider>
+</extension>
+</plugin>

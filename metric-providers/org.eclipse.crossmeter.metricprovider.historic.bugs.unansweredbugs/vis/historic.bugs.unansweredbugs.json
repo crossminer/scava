@@ -1,0 +1,20 @@
+
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.unansweredbugs",
+	"vis" : [ 
+		{
+			"id" : "bugs.unansweredBugs",
+			"name" : "Unanswered Bugs",
+			"description" : "The number of unanswered bugs per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bugs", "field" : "$numberOfUnansweredBugs" } ]
+			},
+			"x" : "Date",
+			"y" : "Bugs",
+			"timeSeries" : true
+		}
+	]
+
+}

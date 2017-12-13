@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.commits.model.Commits"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.commits.model.RepositoryData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.commits.model.CommitData"/>
+  </extension>
+  <extension
+        id="org.eclipse.crossmeter.metricprovider.trans.commits.CommitsTransientMetricProvider"
+        point="org.eclipse.crossmeter.platform.metricprovider">
+     <metricProvider
+           provider="org.eclipse.crossmeter.metricprovider.trans.commits.CommitsTransientMetricProvider">
+     </metricProvider>
+  </extension>
+</plugin>

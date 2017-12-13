@@ -1,0 +1,21 @@
+{
+	"metricid" : "Stars.stargazers",
+	"vis" : [ 
+		{
+			"id" : "stars",
+			"name" : "Stars",
+			"description" : "The list of stargazers.",
+			"type" : "LineChart",
+			"datatable" : {
+				"row" : "stargazers",
+				"cols" : [  { "name" : "login", "field" : "$login" }, 
+					{ "name" : "datestamp", "field" : "$datestamp" } ]
+			},
+			"x" : "login",
+			"y" : "datestamp",
+			"series" :"Stars",
+			"timeSeries" : true
+		}
+	]
+
+}

@@ -1,0 +1,19 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.activecommitters.committersAge",
+	"vis" : [ 
+		{
+			"id" : "committersAgeBar",
+			"name" : "Age of a committer over the life of the project",
+			"description" : "This metric shows the time each committer has been active on the project.",
+			"type" : "BarChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Committer", "field" : "$value[0].value" }, 
+							{ "name" : "Age", 	"field" : "$value[1].value" } ]
+			},
+			"x" : "Committer",
+			"y" : "Age",
+			"x-label" : "Committer",
+			"y-label" : "Days active"
+		}
+	]
+}

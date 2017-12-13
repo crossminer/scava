@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commons
+Bundle-SymbolicName: org.apache.ws.commons
+Bundle-Version: 1.0.0
+Bundle-ClassPath: ws-commons-util-1.0.2.jar
+Export-Package: org.apache.ws.commons.serialize,
+ org.apache.ws.commons.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

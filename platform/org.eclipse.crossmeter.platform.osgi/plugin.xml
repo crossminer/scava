@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+   <extension id="crossmeter.workerservice" point="org.eclipse.core.runtime.applications">
+      <application cardinality="singleton-global" thread="main" visible="true">
+         <run class="org.eclipse.crossmeter.platform.osgi.OssmeterApplication">
+         </run>
+      </application>
+   </extension>
+   <extension id="crossmeter" point="org.eclipse.core.runtime.products">
+      <product application="crossmeter.workerservice" name="org.eclipse.crossmeter.product.fromfeature">
+         <property name="appName" value="org.eclipse.crossmeter.product.fromfeature">
+         </property>
+      </product>
+   </extension>
+   <extension id="testproduct" point="org.eclipse.core.runtime.products">
+      <product application="crossmeter.workerservice" name="Test">
+         <property name="appName" value="Test">
+         </property>
+      </product>
+   </extension>
+   <extension id="product" point="org.eclipse.core.runtime.products">
+      <product application="crossmeter.workerservice" name="org.eclipse.crossmeter.product.fromfeature">
+         <property name="appName" value="org.eclipse.crossmeter.product.fromfeature">
+         </property>
+      </product>
+   </extension>
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.platform.osgi.errors.ProjectErrors"/>
+    <class name="org.eclipse.crossmeter.platform.osgi.errors.ProjectError"/>
+  </extension>
+<extension
+      id="org_ossmeter_platform_vanilla"
+      point="org.eclipse.core.runtime.products">
+   <product
+         application="crossmeter.workerservice"
+         name="org.eclipse.crossmeter.platform.vanilla">
+      <property
+            name="appName"
+            value="org.eclipse.crossmeter.platform.vanilla">
+      </property>
+   </product>
+</extension>
+</plugin>

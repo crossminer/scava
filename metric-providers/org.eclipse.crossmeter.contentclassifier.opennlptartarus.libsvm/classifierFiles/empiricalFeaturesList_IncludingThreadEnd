@@ -1,0 +1,8 @@
+1	PositionFromThreadBeginning
+2	PositionFromThreadEnd
+3	RE
+4	CleanQuestionMark
+5	CleanQuestionMarkOrWords
+6	CleanQuestionWords
+7	CleanREQuestionMark
+8	CleanREQuestionMarkOrWords

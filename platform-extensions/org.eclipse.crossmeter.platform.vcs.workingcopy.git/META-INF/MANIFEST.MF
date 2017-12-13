@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.crossmeter.platform.vcs.workingcopy.git
+Bundle-SymbolicName: org.eclipse.crossmeter.platform.vcs.workingcopy.git;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.crossmeter.platform.vcs.workingcopy.manager,
+ org.eclipse.jgit,
+ org.eclipse.crossmeter.platform.vcs.git,
+ org.eclipse.crossmeter.repository.model.vcs.git
+Import-Package: org.eclipse.crossmeter.repository.model

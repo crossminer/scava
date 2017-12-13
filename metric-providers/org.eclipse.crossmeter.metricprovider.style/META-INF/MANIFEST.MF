@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.crossmeter.metricprovider.style
+Bundle-SymbolicName: org.eclipse.crossmeter.metricprovider.style;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.crossmeter.metricprovider.rascal,
+ org.eclipse.crossmeter.platform.visualisation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.OO.java.SR-Java.historic",
+	"vis" : [ 
+		{
+			"id" : "SRJavaHistoric",
+			"name" : "Specialization Ratio (Java)",
+			"description" : "This metric shows the Specialization Ratio for Java over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Val",  "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val", 
+			"x-label" : "Date",		
+			"y-label" : "Specialization Ratio",
+			"timeSeries" : true
+		}
+	]
+}

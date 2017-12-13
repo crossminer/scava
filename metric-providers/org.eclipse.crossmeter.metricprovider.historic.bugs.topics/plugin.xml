@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+  <extension point="org.eclipse.crossmeter.platform.metricprovider">
+     <metricProvider provider="org.eclipse.crossmeter.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider">
+     </metricProvider>
+  </extension>
+  <extension point="org.eclipse.crossmeter.platform.visualisation.metric">
+     <visualisation json="vis/historic.bugs.topics.json"/>
+  </extension>
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.historic.bugs.topics.model.BugsTopicsHistoricMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.historic.bugs.topics.model.BugTopic"/>
+  </extension>
+</plugin>

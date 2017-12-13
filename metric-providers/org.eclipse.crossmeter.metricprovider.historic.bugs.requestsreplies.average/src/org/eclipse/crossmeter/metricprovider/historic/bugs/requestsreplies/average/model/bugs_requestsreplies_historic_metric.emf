@@ -1,0 +1,7 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.requestsreplies.average.model;
+
+class BugsRequestsRepliesHistoricMetric {
+	attr float averageCommentsPerDay;
+	attr float averageRequestsPerDay;
+	attr float averageRepliesPerDay;
+}

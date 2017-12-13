@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jetty :: IO Utility
+Bundle-SymbolicName: org.eclipse.jetty.io
+Bundle-Version: 9.2.6.v20141205
+Bundle-Vendor: Eclipse Jetty Project
+Export-Package: org.eclipse.jetty.io;version="9.2.6";
+  uses:="org.eclipse.jetty.util,
+   org.eclipse.jetty.util.thread,
+   org.eclipse.jetty.util.log,
+   org.eclipse.jetty.util.component,
+   javax.net.ssl,
+   org.eclipse.jetty.util.annotation",
+ org.eclipse.jetty.io.ssl;version="9.2.6";
+  uses:="org.eclipse.jetty.io,
+   javax.net.ssl,
+   org.eclipse.jetty.util.ssl,
+   org.eclipse.jetty.util,
+   org.eclipse.jetty.util.log,
+   org.eclipse.jetty.util.thread"
+Bundle-DocURL: http://www.eclipse.org/jetty
+Implementation-Vendor: Eclipse.org - Jetty
+Created-By: Apache Maven Bundle Plugin
+Implementation-Version: 9.2.6.v20141205
+Built-By: janb
+url: http://www.eclipse.org/jetty
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Description: Administrative parent pom for Jetty modules
+Import-Package: javax.net.ssl,
+ org.eclipse.jetty.util;version="[9.2,10)",
+ org.eclipse.jetty.util.annotation;version="[9.2,10)",
+ org.eclipse.jetty.util.component;version="[9.2,10)",
+ org.eclipse.jetty.util.log;version="[9.2,10)",
+ org.eclipse.jetty.util.ssl;version="[9.2,10)",
+ org.eclipse.jetty.util.thread;version="[9.2,10)"
+Bundle-Copyright: Copyright (c) 2008-2014 Mort Bay Consulting Pty. Ltd.
+Archiver-Version: Plexus Archiver
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0, http://www.eclipse.org/org/documents/epl-v10.php
+Bnd-LastModified: 1417795440057
+Build-Jdk: 1.7.0_71
+Tool: Bnd-1.15.0
+Bundle-Classpath: org.eclipse.jetty.io_9.2.6.v20141205.jar

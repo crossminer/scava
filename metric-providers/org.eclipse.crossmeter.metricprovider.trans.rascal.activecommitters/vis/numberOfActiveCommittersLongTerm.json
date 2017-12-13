@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.activecommitters.numberOfActiveCommittersLongTerm.historic",
+	"vis" : [ 
+		{
+			"id" : "numberOfActiveCommittersLongTermTimeLine",
+			"name" : "Number of active committers (1 year)",
+			"description" : "This metric shows the number of committers active in the last year, over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" },
+							{ "name" : "Committers", "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Committers",
+			"x-label" : "Date",
+			"y-label" : "Committers active",
+			"timeSeries" : true
+		}
+	]
+}

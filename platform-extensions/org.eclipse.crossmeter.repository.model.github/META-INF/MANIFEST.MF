@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.crossmeter.repository.model.github
+Bundle-SymbolicName: org.eclipse.crossmeter.repository.model.github;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.googlecode.pongo.runtime.dependencies,
+ com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.repository.model
+Export-Package: org.eclipse.crossmeter.repository.model.github

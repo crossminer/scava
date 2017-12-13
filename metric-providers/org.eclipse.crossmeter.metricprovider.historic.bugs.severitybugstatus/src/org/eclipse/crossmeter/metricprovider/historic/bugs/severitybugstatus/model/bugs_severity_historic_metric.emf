@@ -1,0 +1,32 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.severitybugstatus.model;
+
+class BugsSeverityBugStatusHistoricMetric {
+	val SeverityLevel[*] severityLevels;
+}
+
+class SeverityLevel {
+	attr String severityLevel;
+	attr int numberOfBugs;
+
+	attr int numberOfResolvedClosedBugs;
+	attr float percentageOfResolvedClosedBugs;
+
+	attr int numberOfWontFixBugs;
+	attr float percentageOfWontFixBugs;
+
+	attr int numberOfWorksForMeBugs;
+	attr float percentageOfWorksForMeBugs;
+
+	attr int numberOfNonResolvedClosedBugs;
+	attr float percentageOfNonResolvedClosedBugs;
+
+	attr int numberOfInvalidBugs;
+	attr float percentageOfInvalidBugs;
+
+	attr int numberOfFixedBugs;
+	attr float percentageOfFixedBugs;
+
+	attr int numberOfDuplicateBugs;
+	attr float percentageOfDuplicateBugs;
+}
+

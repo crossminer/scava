@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="crossmeter.rascal.metricprovider">
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/committerChurn.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/coreCommitters.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/churnPerCommitInTwoWeeks.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/churnPerDay.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/commitsPerDay.json">
+      </visualisation>
+   </extension>
+
+</plugin>

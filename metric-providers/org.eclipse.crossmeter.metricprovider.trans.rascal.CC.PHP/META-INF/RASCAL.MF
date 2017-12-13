@@ -1,0 +1,3 @@
+Source: src
+Main-Module: php::WMC
+Require-Bundles: org.eclipse.crossmeter.code.model.php, org.eclipse.crossmeter.metricprovider.trans.rascal.CC

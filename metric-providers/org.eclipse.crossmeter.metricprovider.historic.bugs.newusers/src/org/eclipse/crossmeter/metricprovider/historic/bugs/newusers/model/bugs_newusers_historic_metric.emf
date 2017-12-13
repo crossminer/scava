@@ -1,0 +1,13 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.newusers.model;
+
+class BugsNewUsersHistoricMetric {
+	val DailyBugTrackerData[*] bugTrackers;
+	attr int numberOfNewUsers;
+	attr int cumulativeNumberOfNewUsers;
+}
+
+class DailyBugTrackerData {
+	attr String bugTrackerId;
+	attr int numberOfNewUsers;
+	attr int cumulativeNumberOfNewUsers;
+}

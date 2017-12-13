@@ -1,0 +1,136 @@
+@namespace(uri="org.eclipse.crossmeter.repository.model.redmine", prefix="redmine")
+package org.eclipse.crossmeter.repository.model.redmine;
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.Project")
+class Project {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.Person")
+class Person {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.BugTrackingSystem")
+class BugTrackingSystem {
+}
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.CommunicationChannel")
+class CommunicationChannel {
+}
+
+class RedmineProject extends Project {
+  attr String identifier;
+  attr String description;
+  attr String created_on;
+  attr String updated_on;
+  attr String username;
+  attr String password;
+  attr String token;
+  attr String baseRepo;
+  val RedmineWiki wiki;
+  val RedmineQueryManager queryManager;
+  val RedmineBugIssueTracker[*] issueTracker;
+  val RedmineUser[*] members;
+  val RedmineProjectVersion[*] versions;
+}
+
+class RedmineWiki extends CommunicationChannel {
+
+}
+
+class RedmineQueryManager extends CommunicationChannel {
+  val RedmineQuery[*] queries;
+}
+
+class RedmineQuery {
+  attr String name;
+}
+
+class RedmineProjectVersion {
+  attr String name;
+  attr String description;
+  attr String created_on;
+  attr String updated_on;
+  attr String status;
+}
+
+//enum RedmineProjectVersionStatus {
+//  open = 0;
+//  locked = 1;
+//  closed = 2;
+//}
+
+class RedmineUser extends Person {
+  attr String login;
+  @serchable
+  attr String ID;
+ // val RedmineUserRole[*] roles;
+}
+
+//class RedmineUserRole {
+ // attr String name;
+//}
+
+@customize
+class RedmineBugIssueTracker extends BugTrackingSystem {
+  attr String name;
+  attr String project;
+  attr String login;
+  attr String password;
+  val RedmineIssue[*] issues;
+}
+
+class RedmineIssue {
+  val RedmineCategory category;
+  attr String description;
+  attr String status;
+  val RedmineFeature feature;
+  attr String priority;
+  ref RedmineUser[1] author;
+  attr String template;
+  val RedmineIssueRelation[*] relations;
+  attr String start_date;
+  attr String update_date;
+  attr String due_date;
+
+  ref RedmineUser[1] assignedTo;
+}
+
+class RedmineCategory {
+  attr String name;
+}
+
+class RedmineIssueRelation {
+  ref RedmineIssue relatedIssue;
+  attr String type;
+}
+
+//enum RedmineIssueTemplate {
+//  defectReportFromUser = 0;
+//  defectReportFromDeveloper = 1;
+//  reviewRequest = 2;
+//}
+
+class RedmineFeature {
+  attr String name;
+}
+
+
+//enum RedmineIssueRelationType {
+//  related = 0;
+//  duplicates = 1;
+//  duplicated = 2;
+//  block = 3;
+//  blocked = 4;
+//  precedes = 5;
+//  follows = 6;
+//}
+
+//enum RedmineIssueStatus {
+//  _new = 0;
+//  closed = 1;
+//}
+
+//enum RedmineIssuePriority {
+//  normal = 0;
+//}
+

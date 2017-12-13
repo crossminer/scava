@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.clones.cloneLOCPerLanguage.historic",
+	"vis" : [ 
+		{
+			"id" : "cloneLOCPerLanguageTimeLine",
+			"name" : "Lines of code in Type I clones (per language)",
+			"description" : "This metric shows the number of lines in Type I clones larger than 6 lines, per language, over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Language", 		"field" : "$value[0].value" }, 
+							{ "name" : "LOC", 		"field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "LOC", 
+			"series" : "Language",
+			"x-label" : "Date",		
+			"y-label" : "Clone LOC",
+			"timeSeries" : true
+		}
+	]
+}

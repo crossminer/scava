@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: org.eclipse.egit.github.core
+Bundle-Version: 2.1.5
+Bundle-ClassPath: org.eclipse.egit.github.core-2.1.5.jar
+Bundle-Vendor: Eclipse
+Export-Package: org.eclipse.egit.github.core,
+ org.eclipse.egit.github.core.client,
+ org.eclipse.egit.github.core.event,
+ org.eclipse.egit.github.core.service,
+ org.eclipse.egit.github.core.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.google.code.gson

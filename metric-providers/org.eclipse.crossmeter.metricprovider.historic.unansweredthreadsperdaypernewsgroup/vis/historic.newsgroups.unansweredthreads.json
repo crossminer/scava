@@ -1,0 +1,20 @@
+
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.newsgroups.unansweredthreads",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.unansweredThreads",
+			"name" : "Unanswered Threads",
+			"description" : "The number of unanswered threads per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : { 
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Threads", "field" : "$numberOfUnansweredThreads" } ]
+			},
+			"x" : "Date",
+			"y" : "Threads",
+			"timeSeries" : true
+		}
+	]
+
+}

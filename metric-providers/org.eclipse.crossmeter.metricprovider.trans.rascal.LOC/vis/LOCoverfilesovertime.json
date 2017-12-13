@@ -1,0 +1,22 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.LOC.genericLOCoverFiles.historic",
+	"vis" : [ 
+		{
+			"id" : "LOCoverfilesovertime",
+			"name" : "LOC over files over time",
+			"description" : "This metric shows the distribution of physical lines of code over files over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" }, 
+							{ "name" : "Gini", 		"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Gini",
+			"series" : "Language",
+			"x-label" : "Date",
+			"y-label" : "Gini coefficient",
+			"timeSeries" : true
+		}
+	]
+}

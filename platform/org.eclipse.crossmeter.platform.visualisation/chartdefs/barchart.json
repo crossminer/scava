@@ -1,0 +1,8 @@
+{
+	"name" : "BarChart",
+	"inherit" : ["x-label", "y-label"], 
+	"fields" : [
+				{ "name" : "x", "type" : "Orderable", "required" : true}, 
+				{ "name" : "y", "type" : "Number", "required" : true }
+			   ]
+}

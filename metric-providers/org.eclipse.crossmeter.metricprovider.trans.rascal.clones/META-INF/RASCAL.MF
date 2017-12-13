@@ -1,0 +1,3 @@
+Source: src
+Main-Module: Clones
+Require-Bundles: org.eclipse.crossmeter.metricprovider.trans.rascal.LOC, org.eclipse.crossmeter.code.model.generic

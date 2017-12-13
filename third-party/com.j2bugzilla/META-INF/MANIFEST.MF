@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: J2bugzilla
+Bundle-SymbolicName: com.j2bugzilla
+Bundle-Version: 1.0.0
+Bundle-ClassPath: j2bugzilla-2.1.1.jar
+Export-Package: com.j2bugzilla.base,
+ com.j2bugzilla.rpc
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.apache.xmlrpc,
+ org.apache.xmlrpc.common

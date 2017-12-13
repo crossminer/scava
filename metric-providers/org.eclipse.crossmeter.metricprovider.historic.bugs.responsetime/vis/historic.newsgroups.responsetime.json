@@ -1,0 +1,55 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.bugs.responsetime",
+	"vis" : [ 
+		{
+			"id" : "bugs.averageResponseTime",
+			"name" : "Average Response Time (ms)",
+			"description" : "The average response time of bugs addressed every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.averageResponseTime-bugs",
+			"name" : "Average Response Time per Thread (ms)",
+			"description" : "The average response time of bugs addressed every day, in relation to the number of bugs considered." ,
+			"type" : "ScatterChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Threads", "field" : "$bugsConsidered" }, 
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Threads",
+			"y" : "Response Time",
+			"timeSeries" : false
+		},{
+			"id" : "bugs.cumulativeAverageResponseTime",
+			"name" : "Average Response Time (Cumulative) (ms)",
+			"description" : "The average response time of bugs addressed up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Response Time", "field" : "$cumulativeAvgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.cumulativeAverageResponseTime-bugs",
+			"name" : " Average Response Time per Thread (Cumulative) (ms)",
+			"description" : "The average response time of bugs addressed up to and including the current date, in relation to the number of bugs considered." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Threads", "field" : "$cumulativeBugsConsidered" }, 
+					{ "name" : "Response Time", "field" : "$cumulativeAvgResponseTime" } ]
+			},
+			"x" : "Threads",
+			"y" : "Response Time",
+			"timeSeries" : false
+		}
+	]
+
+}

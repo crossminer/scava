@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Importer
+Bundle-SymbolicName: org.eclipse.crossmeter.repository.model.sourceforge.importer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.crossmeter.repository.model.bts.bugzilla,
+ org.eclipse.crossmeter.repository.model.cc.forum,
+ com.googlecode.pongo.runtime,
+ org.eclipse.crossmeter.repository.model.cc.wiki,
+ org.eclipse.crossmeter.repository.model.vcs.svn,
+ org.eclipse.crossmeter.repository.model.vcs.git,
+ org.eclipse.crossmeter.repository.model.vcs.cvs,
+ org.eclipse.crossmeter.repository.model.sourceforge,
+ org.eclipse.crossmeter.platform,
+ org.eclipse.crossmeter.repository.model.importerdependencies,
+ org.eclipse.crossmeter.repository.model.importer.exception,
+ org.eclipse.crossmeter.repository.model,
+ org.apache.log4j.1.2.17,
+ org.eclipse.crossmeter.repository.model.importer
+Export-Package: org.eclipse.crossmeter.repository.model.sourceforge.importer
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

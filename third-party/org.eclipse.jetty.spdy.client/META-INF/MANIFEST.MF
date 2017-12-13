@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jetty :: SPDY :: Client Binding
+Bundle-SymbolicName: org.eclipse.jetty.spdy.client
+Bundle-Version: 9.2.6.v20141205
+Bundle-Vendor: Eclipse Jetty Project
+Export-Package: org.eclipse.jetty.spdy.client;version="9.1"
+Bundle-Copyright: Copyright (c) 2008-2014 Mort Bay Consulting Pty. Ltd.
+Ignore-Package: org.eclipse.jetty.npn
+Archiver-Version: Plexus Archiver
+Bnd-LastModified: 1417796145411
+Bundle-Classpath: org.eclipse.jetty.spdy.client_9.2.6.v20141205.jar
+Bundle-Description: Administrative parent pom for Jetty modules
+Import-Package: javax.net.ssl,
+ org.eclipse.jetty.io;version="[9.0,10.0)",
+ org.eclipse.jetty.io.ssl;version="[9.0,10.0)",
+ org.eclipse.jetty.spdy;version="[9.0,10.0)",
+ org.eclipse.jetty.spdy.api;version="[9.0,10.0)",
+ org.eclipse.jetty.spdy.generator;version="[9.0,10.0)",
+ org.eclipse.jetty.spdy.parser;version="[9.0,10.0)",
+ org.eclipse.jetty.util;version="[9.0,10.0)",
+ org.eclipse.jetty.util.component;version="[9.0,10.0)",
+ org.eclipse.jetty.util.log;version="[9.0,10.0)",
+ org.eclipse.jetty.util.ssl;version="[9.0,10.0)",
+ org.eclipse.jetty.util.thread;version="[9.0,10.0)"
+Created-By: Apache Maven Bundle Plugin
+Tool: Bnd-1.15.0
+Built-By: janb
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0, http://www.eclipse.org/org/documents/epl-v10.php
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Build-Jdk: 1.7.0_71
+Bundle-DocURL: http://www.eclipse.org/jetty
+url: http://www.eclipse.org/jetty
+Implementation-Version: 9.2.6.v20141205
+Implementation-Vendor: Eclipse.org - Jetty

@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.rascal.generic.churn.churnPerCommitter.historic",
+	"vis" : [ 
+		{
+			"id" : "churnPerCommitterTimeLine",
+			"name" : "Churn (per committer)",
+			"description" : "This metric shows the churn per committer over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" },
+							{ "name" : "Committer", "field" : "$value[0].value" }, 
+							{ "name" : "Churn", 	"field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Churn",
+			"series" : "Committer",
+			"x-label" : "Date",
+			"y-label" : "Churn (LOC)",
+			"timeSeries" : true
+		}
+	]
+}

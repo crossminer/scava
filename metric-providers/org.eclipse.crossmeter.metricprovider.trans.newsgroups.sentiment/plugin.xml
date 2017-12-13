@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+  <extension point="org.eclipse.crossmeter.platform.metricprovider">
+     <metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.newsgroups.sentiment.SentimentTransMetricProvider">
+     </metricProvider>
+  </extension>
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.sentiment.model.NewsgroupsSentimentTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.sentiment.model.ThreadStatistics"/>
+  </extension>
+</plugin>

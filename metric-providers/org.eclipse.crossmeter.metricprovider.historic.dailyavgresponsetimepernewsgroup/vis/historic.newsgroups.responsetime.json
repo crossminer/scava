@@ -1,0 +1,55 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.historic.newsgroups.responsetime",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.averageResponseTime",
+			"name" : "Average Response Time (ms)",
+			"description" : "The average response time of threads addressed every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time",
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.averageResponseTime-threads",
+			"name" : "Average Response Time per Thread (ms)",
+			"description" : "The average response time of threads addressed every day, in relation to the number of threads considered." ,
+			"type" : "ScatterChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Threads", "field" : "$threadsConsidered" }, 
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Threads",
+			"y" : "Response Time",
+			"timeSeries" : false
+		},{
+			"id" : "newsgroups.cumulativeAverageResponseTime",
+			"name" : "Average Response Time (Cumulative) (ms)",
+			"description" : "The average response time of threads addressed up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Response Time", "field" : "$cumulativeAvgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time",
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.cumulativeAverageResponseTime-threads",
+			"name" : " Average Response Time per Thread (Cumulative) (ms)",
+			"description" : "The average response time of threads addressed up to and including the current date, in relation to the number of threads considered." ,
+			"type" : "ScatterChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Threads", "field" : "$threadsConsidered" }, 
+					{ "name" : "Response Time", "field" : "$cumulativeAvgResponseTime" } ]
+			},
+			"x" : "Threads",
+			"y" : "Response Time",
+			"timeSeries" : false
+		}
+	]
+
+}

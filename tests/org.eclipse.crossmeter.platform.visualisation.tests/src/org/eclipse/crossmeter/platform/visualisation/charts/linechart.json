@@ -1,0 +1,9 @@
+{
+	"name" : "LineChart",
+	"inherit" : ["x-label", "y-label", "y2-label"], 
+	"fields" : [
+				{ "name" : "x", "type" : "Orderable", "required" : true}, 
+				{ "name" : "y", "type" : "Number", "required" : true }, 
+				{ "name" : "y2", "type" : "Number", "required" : false }
+			   ]
+}

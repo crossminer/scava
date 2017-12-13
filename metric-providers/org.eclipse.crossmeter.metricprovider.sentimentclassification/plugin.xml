@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+	<extension point="org.eclipse.crossmeter.platform.metricprovider">
+   		<metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider">
+   		</metricProvider>
+	</extension>
+	
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.sentimentclassification.model.SentimentClassificationTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.sentimentclassification.model.BugTrackerCommentsData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesData"/>
+  </extension>
+</plugin>

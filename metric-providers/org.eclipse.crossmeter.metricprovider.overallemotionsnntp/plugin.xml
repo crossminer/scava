@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+
+
+
+<extension point="org.eclipse.crossmeter.platform.metricprovider">
+   <metricProvider provider="org.eclipse.crossmeter.metricprovider.trans.newsgroups.emotions.EmotionsTransMetricProvider">
+   </metricProvider>
+</extension>
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.emotions.model.NewsgroupsEmotionsTransMetric"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.emotions.model.NewsgroupData"/>
+    <class name="org.eclipse.crossmeter.metricprovider.trans.newsgroups.emotions.model.EmotionDimension"/>
+  </extension>
+</plugin>

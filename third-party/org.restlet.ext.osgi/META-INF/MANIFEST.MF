@@ -1,0 +1,41 @@
+Manifest-Version: 1
+Bundle-ManifestVersion: 2
+Bundle-Name: org.restlet.ext.osgi
+Bundle-SymbolicName: org.restlet.ext.osgi
+Bundle-Version: 2.3.0.v20141217-1730
+Bundle-ClassPath: org.restlet.ext.osgi_2.3.0.v20141217-1730.jar
+Bundle-Activator: org.restlet.ext.osgi.internal.Activator
+Bundle-Vendor: Restlet
+Export-Package: org.restlet.ext.osgi;
+  uses:="org.restlet,
+   org.osgi.service.http,
+   org.osgi.service.component,
+   org.restlet.resource,
+   org.restlet.routing,
+   org.osgi.service.log,
+   org.osgi.framework,
+   org.restlet.service,
+   org.restlet.data,
+   org.restlet.representation,
+   org.restlet.engine.local",
+ org.restlet.ext.osgi.internal;uses:="org.restlet.ext.osgi,org.osgi.framework"
+TSTAMP: 1734
+Import-Package: org.osgi.framework;resolution:=optional,
+ org.osgi.service.component;resolution:=optional,
+ org.osgi.service.http;resolution:=optional,
+ org.osgi.service.log;resolution:=optional,
+ org.restlet;resolution:=optional,
+ org.restlet.data;resolution:=optional,
+ org.restlet.engine.local;resolution:=optional,
+ org.restlet.representation;resolution:=optional,
+ org.restlet.resource;resolution:=optional,
+ org.restlet.routing;resolution:=optional,
+ org.restlet.service;resolution:=optional
+Bnd-LastModified: 1418837687276
+Created-By: 1.7.0_51 (Oracle Corporation)
+Ant-Version: Apache Ant 1.9.2
+TODAY: December 17 2014
+Tool: Bnd-${Bundle-Version}
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Originally-Created-By: 1.7.0_51-b13 (Oracle Corporation)
+DSTAMP: 20141217

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="crossmeter.rascal.metricprovider">
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/filesWithStyleViolations.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/spreadOfStyleViolations.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/filesWithErrorProneness.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/spreadOfErrorProneness.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/filesWithInefficiencies.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/spreadOfInefficiencies.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/filesWithUnderstandabilityIssues.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.crossmeter.platform.visualisation.metric">
+      <visualisation
+            json="vis/spreadOfUnderstandabilityIssues.json">
+      </visualisation>
+   </extension>
+
+</plugin>

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jsch
+Bundle-SymbolicName: com.jcraft.jsch
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: jsch-0.1.50.jar
+Export-Package: com.jcraft.jsch,
+ com.jcraft.jsch.jce,
+ com.jcraft.jsch.jcraft,
+ com.jcraft.jsch.jgss
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

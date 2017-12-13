@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.crossmeter.metricprovider.trans.rascal.OO.PHP.RR-PHP.historic",
+	"vis" : [ 
+		{
+			"id" : "RRPHPHistoric",
+			"name" : "Reuse Ratio (PHP)",
+			"description" : "This metric shows the Reuse Ratio for PHP over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Val",  "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val", 
+			"x-label" : "Date",		
+			"y-label" : "Reuse Ratio",
+			"timeSeries" : true
+		}
+	]
+}
