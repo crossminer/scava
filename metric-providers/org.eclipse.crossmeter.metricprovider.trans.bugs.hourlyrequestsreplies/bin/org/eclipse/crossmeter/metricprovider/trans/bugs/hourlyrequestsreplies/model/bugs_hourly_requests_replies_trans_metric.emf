@@ -1,0 +1,18 @@
+package org.eclipse.crossmeter.metricprovider.trans.bugs.hourlyrequestsreplies.model;
+
+@db(qualifiedCollectionNames="true")
+class BugsHourlyRequestsRepliesTransMetric {
+	val HourComments[*] hourComments;
+}
+
+class HourComments {
+	attr String bugTrackerId;
+	@searchable
+	attr String hour;
+	attr int numberOfComments;
+	attr int numberOfRequests;
+	attr int numberOfReplies;
+	attr float percentageOfComments;
+	attr float percentageOfRequests;
+	attr float percentageOfReplies;
+}

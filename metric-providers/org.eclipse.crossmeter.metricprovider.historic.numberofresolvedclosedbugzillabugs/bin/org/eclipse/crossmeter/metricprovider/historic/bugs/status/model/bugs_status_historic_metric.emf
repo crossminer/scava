@@ -1,0 +1,12 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.status.model;
+
+class BugsStatusHistoricMetric {
+	attr long numberOfBugs;
+	attr int numberOfResolvedClosedBugs;
+	attr int numberOfWontFixBugs;
+	attr int numberOfWorksForMeBugs;
+	attr int numberOfNonResolvedClosedBugs;
+	attr int numberOfInvalidBugs;
+	attr int numberOfFixedBugs;
+	attr int numberOfDuplicateBugs;
+}

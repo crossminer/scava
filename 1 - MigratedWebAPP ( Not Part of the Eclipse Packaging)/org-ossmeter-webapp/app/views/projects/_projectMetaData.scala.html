@@ -1,0 +1,112 @@
+@(project: org.eclipse.crossmeter.repository.model.Project, iProject: model.Project)
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+@import org.eclipse.crossmeter.repository.model._
+@import org.eclipse.crossmeter.repository.model.bts.bugzilla._
+@import org.eclipse.crossmeter.repository.model.cc.forum._
+@import org.eclipse.crossmeter.repository.model.cc.nntp._
+@import org.eclipse.crossmeter.repository.model.cc.wiki._
+@import org.eclipse.crossmeter.repository.model.vcs.svn._
+@import org.eclipse.crossmeter.repository.model.vcs.git._
+@import org.eclipse.crossmeter.repository.model.eclipse._
+
+<section>
+    <div class="container box">
+    	<div class="project-detail" data-project="@project.getName()">
+
+    		<div class="row">
+    			<div class="col-md-12">
+    		        <h1 class="name">@project.getName()</h1>
+    	        </div>
+    		</div>
+    		<div class="row section-heading">
+    	        <div class="col-md-6">
+    		        <ol class="breadcrumb projectbreadcrumb">
+    		            <!-- <li>@if(project.getActive()) {Active}else{Inactive} (2007-present)</li> -->
+                        @if(project.getLicenses() ne null) {
+                            @project.getLicenses().foreach(lic =>{
+    		            <li><a href="#">lic.getName()</a></li>
+                            })
+                        }
+    		            <li><a href="@project.getHomePage()">Project Website</a></li>
+    		            <!-- <li><a href="javascript:addProjectToComparison('@project.getShortName()','@project.getName()')">Add to comparison</a></li> -->
+    		        </ol>
+    	        </div>
+    	        <div class="col-md-6" style="text-align:right">
+                    <ol class="breadcrumb projectbreadcrumb pull-right">
+                        @subjectPresentOr() {
+                            @defining(Application.getLocalUser(session())) { user =>
+                            <button id="btn_star" class="btn btn-default btn-xs" type="button" data-selected="@if(user.getWatching().exists(_.getId() == iProject.getId())){true}else{false}">
+                                <span id="star_span" class="glyphicon glyphicon-star@if(user.getWatching().exists(_.getId() == iProject.getId())){}else{-empty}"></span> Star <span id="stars" class="badge">@iProject.getStars()</span>
+                            </button>
+                        }}{
+                            <button class="btn btn-primary btn-xs" type="button">
+                              <span id="star_span" class="glyphicon glyphicon-star-empty"></span> Star <span id="stars" class="badge">4</span>
+                            </button>
+                        }
+                    </ol>
+    	        </div>
+    	    </div>	
+    		<div class="row">
+    	        <div class="col-md-6">
+                    <div class="more-less">
+                        <div class="more-block">
+    	                   @Html(project.getDescription())
+                        </div>
+                    </div>
+    	        </div>
+    	        <div class="col-md-6">
+    	        @project match {
+    	        	case proj : EclipseProject => {
+                        <p>Forge: Eclipse</p>
+    	        		<!--@if(proj.getPlatforms().length > 0) {
+                        <p>Platforms: @proj.getPlatforms()</p>
+                        }-->
+                        @if(proj.getReleases().length > 0) {
+                        <p>Releases: @proj.getReleases()</p>
+                        }
+                        <p>State: @proj.getState()</p>
+    	        	}
+    	        	case proj : Project => {
+    	        		<p><!-- I am a project --></p>
+    	        	}
+    	        }
+    	        </div>        
+    	    </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(function() {
+        $("#btn_star").click(function() {
+            if ($("#btn_star").data("selected")) {
+                jsRoutes.controllers.Account.unstarProject("@iProject.getId()").ajax().success(function(result) {
+                    // Update the number and button
+                    $("#stars").text(+($("#stars").text()) - 1);
+                    $("#star_span").removeClass("glyphicon-star");
+                    $("#star_span").addClass("glyphicon-star-empty");
+                    $("#btn_star").data("selected", false);
+                }).error(function(result) {
+                    console.log("Error, unable to unstar project.");
+                });
+            } else {
+                jsRoutes.controllers.Account.starProject("@iProject.getId()").ajax().success(function(result) {
+                    // Update the number and button
+                    $("#stars").text(+($("#stars").text()) + 1);
+                    $("#star_span").removeClass("glyphicon-star-empty");
+                    $("#star_span").addClass("glyphicon-star");
+                    $("#btn_star").data("selected", true);
+                }).error(function(result) {
+                    console.log("Error, unable to star project.");
+                });
+            }
+            
+        });
+    })
+    
+    
+</script>

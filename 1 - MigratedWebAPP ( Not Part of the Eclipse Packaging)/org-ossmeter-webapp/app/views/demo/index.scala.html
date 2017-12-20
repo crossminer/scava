@@ -1,0 +1,127 @@
+@(form : Form[model.MailingListItem])
+
+@demomain("OSSMETER Demo") {
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+	                <h1>Welcome</h1>
+	                <p>Thanks for your interest in OSSMETER! Unfortunately, we're still ironing out some bugs and letting our industrial partners stress test the system. You can leave us your email below to be notified when we open up to the public. In the meantime, please browse the small selection of projects below to get a taste of what OSSMETER has to offer. </p>
+
+	                <p>Want to be notified of OSSMETER news? <br/><small>This will be minimal, no spam, and we won't share your email address with anyone.</small></p>
+
+                    @helper.form(routes.DemoApplication.addToMailingList) {
+                    <div class="input-group submit">
+	                   <input type="email" id="email" name="email" class="form-control" placeholder="Your email address"/>
+                       <div class="input-group-btn">
+	                       <button class="btn btn-default search_btn">Submit</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+	            <div class="col-md-4 center">
+	                <img src="@routes.Assets.at("img/demo/smiley.png")" style="max-width:100%"/>
+	            </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+	                <h1>Projects</h1>
+	                <p>OSSMETER monitors the source code, issue trackers, and communication channels of open-source software (OSS). It's goal is to help you make decisions. If you're looking to adopt a particular OSS project, you can take a look at the metrics for the project to check whether your requirements will be met. E.g. if you care about having questions answered quickly, OSSMETER will tell you the average response time on the communication channels. If you're a member of an OSS project you can find out which aspects of your project are doing well and which could maybe do with a bit of improvement. </p>
+
+	                <p>Take a look at the three projects below to get an idea of what kinds of insights you can gain.</p>
+                </div>
+                <div class="col-md-4">
+	                <img src="@routes.Assets.at("img/demo/atl.png")"  style="width:100%; max-width:350px" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+        	                <h2>ATL</h2>
+        	                <p>ATL is a model transformation language and toolkit. In the field of Model-Driven Engineering, ATL provides ways to produce a set of target models from a set of source models.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="@routes.DemoApplication.viewProject("modeling-mmt-atl", true)" class="btn btn-default form-control">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+        	                <h2>EMF</h2>
+        	                <p>The EMF project is a modeling framework and code generation facility for building tools and other applications based on a structured data model.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="@routes.DemoApplication.viewProject("modeling-emf", true)" class="btn btn-default form-control">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+        	                <h2>Graphiti</h2>
+        	                <p>Graphiti is a graphics framework that enables rapid development of state-of-the-art diagram editors for domain models. Graphiti can use EMF-based domain models very easily but can deal with any Java-based objects on the domain side as well.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="@routes.DemoApplication.viewProject("modeling-graphiti", true)" class="btn btn-default form-control">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+	                <h1>Compare Projects</h1>
+	                <p>When adopting OSS, there can be many projects that do similar jobs, and understanding which would be the best fit for you is a big challenge. To help with this selection process, we allow users to compare selected projects on the metrics that matter to them.</p>
+                </div>
+	            <div class="col-md-4">
+	                <img src="@routes.Assets.at("img/demo/compare.png")"  style="width:100%; max-width:350px" />
+	            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+	                <a href="@routes.DemoApplication.compare()" class="btn btn-default form-control">View Comparison Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-12">
+	                <h1>User Account</h1>
+	                <p>OSSMETER will allow you to create a user account, providing you with new features on the website.</p>
+               </div>
+           </div>	
+           <div class="row">
+                <div class="col-md-8">
+                	<h2>Personal Dashboard</h2>	
+                	<p>Your dashboard is a place for you to keep track of the projects and metrics that matter the most to you. </p>
+                </div>
+            </div>
+           <div class="row">
+                <div class="col-md-8">
+                	<h2>Event Groups</h2>	
+                	<p>Your dashboard allows you to create <em>event groups</em>. An event is simply a label and a date, and you group related events together. Event groups can then be overlaid on any plots on the OSSMETER website. This allows you to see whether a project reacted in some way to an event. For example, you can see whether the release of a new standard affected a project's development activity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+}

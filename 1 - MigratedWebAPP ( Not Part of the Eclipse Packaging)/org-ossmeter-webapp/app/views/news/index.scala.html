@@ -1,0 +1,24 @@
+@(news: List[model.NewsItem])
+
+@main("News", "news") {
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h1>News</h1>
+        </div>
+    </div>
+</section>
+@for(n <- news){
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h4>@n.getTitle</h4>
+        	@Html(n.getBody())
+        	<p>@n.getDate()</p>
+        </div>
+    </div>
+</section>
+}
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+}

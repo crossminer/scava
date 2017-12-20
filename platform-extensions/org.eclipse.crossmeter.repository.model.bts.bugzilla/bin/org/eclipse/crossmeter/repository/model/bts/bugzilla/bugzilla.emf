@@ -1,0 +1,15 @@
+package org.eclipse.crossmeter.repository.model.bts.bugzilla;
+
+@stub(javaClass="org.eclipse.crossmeter.repository.model.BugTrackingSystem")
+abstract class BugTrackingSystem {
+   
+}
+
+@customize
+class Bugzilla extends BugTrackingSystem {
+  	attr String username;
+	attr String password;
+ 	attr String product;
+ 	attr String component;
+ 	attr String cgiQueryProgram;
+}

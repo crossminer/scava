@@ -1,0 +1,26 @@
+@(form : Form[model.Notification])
+
+@import scala._
+
+@helper.form(routes.Account.createNotification, 'class->"form-project", 'id->"notiform") {
+    <h2>Create/edit notification</h2>
+    <fieldset>
+            <div class="form-group">
+              <label class="form-label">Project: </label><label class="form-control" id="notiform-project-name"></label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Metric: </label><label class="form-control" id="notiform-metric-name"></label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Threshold: </label><input class="form-control" type="number" name="threshold" placeholder="Enter a numerical value" value="@form("threshold").value">
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="aboveThreshold" value="@form("aboveThreshold").value"> Notification should occur when metric is <em>above</em> threshold (leave unchecked for <em>below</em> threshold)</label>
+            </div>
+     </fieldset>
+        
+     <div class="actions">
+         <button type="button" class="btn btn-success" onclick="javascript:submitUpdateNotification()">Create</button> or
+         <a href="javascript:clearNotificationWindow()" class="btn btn-danger">Cancel</a>
+     </div>
+ }

@@ -1,0 +1,150 @@
+# Override default Play's validation messages
+
+# --- Constraints
+constraint.required=必須
+constraint.min=最小値: {0}
+constraint.max=最大値: {0}
+constraint.minLength=最短文字数: {0}
+constraint.maxLength=最長文字数: {0}
+constraint.email=電子メール
+
+# --- Formats
+format.date=日付 (''{0}'')
+format.numeric=整数
+format.real=実数
+
+# --- Errors
+error.invalid=不正な値です
+error.required=このフィールドは必須です
+error.number=整数値を入力してください
+error.real=実数を入力してください
+error.min=値は {0} 以上でなければなりません
+error.max=値は {0} 以下でなければなりません
+error.minLength=文字列は最短 {0} 文字です
+error.maxLength=文字列は最長 {0} 文字です
+error.email=正しい電子メールアドレスにしてください
+error.pattern={0} を満たす必要があります。
+
+### --- ossmeter START
+
+# ossmeter: Initial translations
+
+ossmeter.accounts.link.success=アカウントは正しく紐付けられました
+ossmeter.accounts.merge.success=アカウントは正しくマージされました
+
+ossmeter.verify_email.error.already_validated=電子メールアドレスはすでに確認済です。
+ossmeter.verify_email.error.set_email_first=最初に電子メールアドレスを登録する必要があります。
+ossmeter.verify_email.message.instructions_sent=電子メールアドレスの確認方法は {0} に送信されました。
+ossmeter.verify_email.success=電子メールアドレス ({0}) は正しく確認されました。
+
+ossmeter.reset_password.message.instructions_sent=パスワードのリセット方法は {0} に送信されました。
+ossmeter.reset_password.message.email_not_verified=アカウントが確認されていません。確認方法が記載されたメールは送信済です。確認後パスワードのリセットを行ってください。
+ossmeter.reset_password.message.no_password_account=あなたのユーザーアカウントはパスワードを使用するように設定されていません。
+ossmeter.reset_password.message.success.auto_login=パスワードはリセットされました。
+ossmeter.reset_password.message.success.manual_login=パスハードはリセットされました。新しいパスワードでログインしてください。
+
+ossmeter.change_password.error.passwords_not_same=パスワードが一致しません。
+ossmeter.change_password.success=パスハードは正常に変更されました。
+
+ossmeter.password.signup.error.passwords_not_same=パスワードが一致しません。
+ossmeter.password.login.unknown_user_or_pw=不明なユーザー名かパスワードです。
+
+ossmeter.password.verify_signup.subject=OSSMETER: サインアップ完了
+ossmeter.password.verify_email.subject=OSSMETER: 電子メールアドレス確認
+ossmeter.password.reset_email.subject=OSSMETER: パスワードリセットの方法
+
+# ossmeter: Additional translations
+
+ossmeter.login.email.placeholder=お使いの電子メールアドレス
+ossmeter.login.password.placeholder=パスワードを入力
+ossmeter.login.password.repeat=再度パスワードを入力
+ossmeter.login.title=ログイン
+ossmeter.login.password.placeholder=パスワード
+ossmeter.login.now=ログイン完了
+ossmeter.login.forgot.password=パスワードをお忘れですか？
+ossmeter.login.oauth=または以下のプロバイダーからログイン：
+ossmeter.login.basic=
+
+ossmeter.signup.title=サインアップ
+ossmeter.signup.name=お名前
+ossmeter.signup.now=今すぐサインアップ
+ossmeter.signup.oauth=または以下のプロバイダーからサインアップ：
+
+ossmeter.verify.account.title=電子メールによる確認が必要
+ossmeter.verify.account.before=パスワードを設定する前に、
+ossmeter.verify.account.first=電子メールアドレスの確認が必要です
+
+ossmeter.change.password.title=ここでパスワードの変更
+ossmeter.change.password.cta=パスワードを変更
+
+ossmeter.merge.accounts.title=アカウントのマージ
+ossmeter.merge.accounts.question=今のアカウント ({0}) をアカウント {1} とマージしますか？
+ossmeter.merge.accounts.true=はい、二つのアカウントをマージします
+ossmeter.merge.accounts.false=いいえ、今のセッションを抜けて新たにログインします
+ossmeter.merge.accounts.ok=OK
+
+ossmeter.link.account.title=アカウントの紐付け
+ossmeter.link.account.question=({0}) を自分のアカウントと紐付けますか？
+ossmeter.link.account.true=はい、アカウントを紐付けします
+ossmeter.link.account.false=いいえ、ログアウトしてこのアカウントに対応する別のユーザーを作ります
+ossmeter.link.account.ok=OK
+
+# ossmeter: Signup folder translations
+
+ossmeter.verify.email.title=電子メールアドレスの確認
+ossmeter.verify.email.requirement=PlayAuthentificateを利用する前に、まずは電子メールアドレスを確認する必要があります。
+ossmeter.verify.email.cta=登録されたアドレスにメールが送られます。アカウントを有効にするためにメール内のリンクをクリックしてください。
+
+ossmeter.password.reset.title=パスワードのリセット
+ossmeter.password.reset.cta=パスワードをリセットする
+
+ossmeter.password.forgot.title=パスワードを忘れた
+ossmeter.password.forgot.cta=パスワードリセットの手順を送付する
+
+ossmeter.oauth.access.denied.title=OAuthアクセスが未許可
+ossmeter.oauth.access.denied.explanation=OSSMETERをOAuthで使いたい場合は、接続を許可する必要があります。
+ossmeter.oauth.access.denied.alternative=そのようにしたくない場合は、代わりに
+ossmeter.oauth.access.denied.alternative.cta=ユーザー名とパスワードで登録することもできます。
+
+ossmeter.token.error.title=トークンエラー
+ossmeter.token.error.message=与えられたトークンは失効しているか存在しません。
+
+ossmeter.user.exists.title=重複したユーザー
+ossmeter.user.exists.message=このユーザーはすでに存在します。
+
+# ossmeter: Navigation
+ossmeter.navigation.profile=プロフィール
+ossmeter.navigation.link_more=ほかのプロバイダーと紐付ける
+ossmeter.navigation.logout=サインアウト
+ossmeter.navigation.login=ログイン
+ossmeter.navigation.home=ホーム
+ossmeter.navigation.admin=制限されたページ
+ossmeter.navigation.signup=サインアップ
+
+# ossmeter: Handler
+ossmeter.handler.loginfirst=''{0}'' を見るにはまずログインが必要です。
+
+# ossmeter: Profile
+ossmeter.profile.title=ユーザープロフィール
+ossmeter.profile.mail=あなたのお名前は {0} でメールアドレスは {1} です！
+ossmeter.profile.unverified=未確認 - 確認を押してください
+ossmeter.profile.verified=確認済
+ossmeter.profile.providers_many={0} 個のプロバイダーがアカウントに紐付いています：
+ossmeter.profile.providers_one = 1 個のプロバイダーがアカウントに紐付いています：
+ossmeter.profile.logged=現在次の手段でログインしています：
+ossmeter.profile.session=あなたのユーザーIDは {0} でセッションは {1} に失効します
+ossmeter.profile.session_endless=あなたのユーザーIDは {0} でセッションは永遠に失効しません
+ossmeter.profile.password_change=パスワードの変更／設定
+
+# ossmeter - sample: Index page
+ossmeter.index.title=OSSMETER へようこそ！
+ossmeter.index.intro=OSSMETER
+ossmeter.index.intro_2=これは認証機能を持つシンプルなアプリケーションです。
+ossmeter.index.intro_3=上にあるメインナビゲーションでサポートされた認証機能をお試しください。
+ossmeter.index.heading=タイトル
+ossmeter.index.details=詳細を見る
+
+# ossmeter - sample: Restricted page
+ossmeter.restricted.secrets=ふふ、秘密はどこにでもあるのですよ！
+
+### --- ossmeter END

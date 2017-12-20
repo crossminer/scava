@@ -1,14 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2014 CWI
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *   * Jurgen J. Vinju - Jurgen.Vinju@cwi.nl - CWI
- *   * Arnold Lankamp - Arnold.Lankamp@cwi.nl
-*******************************************************************************/
+ * Copyright (c) 2017 Centrum Wiskunde & Informatica
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.crossmeter.metricprovider.rascal;
 
 import java.io.IOException;

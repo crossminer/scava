@@ -1,0 +1,27 @@
+package org.eclipse.crossmeter.metricprovider.trans.newsgroups.activeusers.model;
+
+@db(qualifiedCollectionNames="true")
+class NewsgroupsActiveUsersTransMetric {
+	val NewsgroupData[*] newsgroups;
+    val User[*] users;
+}
+
+class NewsgroupData {
+	@searchable
+   	attr String newsgroupName;
+   	attr int activeUsers;
+   	attr int inactiveUsers;
+    attr int previousUsers; 
+   	attr int users;
+   	attr int days;
+}
+
+class User {
+	@searchable
+	attr String newsgroupName;
+	attr String userId;
+	attr String lastActivityDate;
+   	attr int articles;
+   	attr int requests;
+   	attr int replies;
+}

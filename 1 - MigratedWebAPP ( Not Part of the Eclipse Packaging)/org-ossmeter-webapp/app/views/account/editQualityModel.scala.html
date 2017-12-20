@@ -1,0 +1,312 @@
+@(qm : model.QualityModel)
+
+@main("Custom Quality Model", "") {
+
+
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h1>Edit Quality Model</h1>
+        	<p>This is intended for hardcore users only. The UI for creating the quality model is not the best, but hopefully it acts as a starting point for customisation.</p>
+        </div>
+
+        <div data-bind="template: { name: 'attribute-template', foreach: attributes}"></div>
+        <a href='#' data-bind='click: addAttribute '>Add top level attribute</a>
+
+        <div class="row" data-bind="template: { name: 'aspect-template', foreach: aspects}"></div> 
+
+		<a href='#' data-bind='click: addAspect '>Add aspect</a>
+
+		<div class="row col-md-12">
+        	<button type="button" class="btn btn-primary form-control" id="btn_save">Save</button>
+        </div>
+    </div>
+</section>
+
+<script type="text/html" id="aspect-template">
+<div class="row">
+    <div class="col-md-12" style="border:1px solid">
+    	<div class="row">
+    		<h3>Aspect <a data-bind="click: $parent.removeAspect" class="glyphicon glyphicon-remove" style="cursor:pointer" title="Delete aspect"></a></h3>
+    		<input type="text" class="form-control" data-bind="value: name" placeholder="Aspect Name" required/>
+    		<p>
+    			Attributes: 
+    			<ul class="list-inline" data-bind="foreach: attributes">
+    				<li><span class="label label-primary"> 
+    					<span data-bind="text: name"> </span>
+    					<a data-bind="click: $parent.removeAttribute" class="glyphicon glyphicon-remove" style="cursor:pointer; color:white" title="Delete attribute"></a>
+    				</span></li>
+    			</ul>
+    			<br/>
+    			Aspects: 
+    			<ul class="list-inline" data-bind="foreach: aspects">
+    				<li><span class="label label-primary"> 
+    					<span data-bind="text: name"> </span>
+    					<a data-bind="click: $parent.removeAspect" class="glyphicon glyphicon-remove" style="cursor:pointer; color:white" title="Delete aspect"></a>
+    				</span></li>
+    			</ul>
+    		</p>
+    	</div>
+    	<div data-bind="template: { name: 'attribute-template', foreach: attributes}"></div>
+    	<div class="row col-md-12">
+    		<a href='#' data-bind='click: addAttribute '>Add attribute</a>
+    	</div>
+    	<div class="row" data-bind="template: { name: 'aspect-template', foreach: aspects}"></div>
+    	<div class="row col-md-12">
+    		<a href='#' data-bind='click: addAspect '>Add sub-aspect to "<span data-bind="text: name"></span>"</a>
+    	</div>
+    </div>
+</div> 
+</script>
+
+<script type="text/html" id="attribute-template">
+<div class="row">
+	<div class="col-md-12" style="border: 1px dashed">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Attribute <a data-bind="click: $parent.removeAttribute" class="glyphicon glyphicon-remove" style="cursor:pointer" title="Delete attribute"></a></h4>
+        		<input type="text" class="form-control" placeholder="Attribute Name" data-bind="value: name" required/>
+        		<input type="text" class="form-control" placeholder="Attribute Description" data-bind="value: description"/>
+        		<p>
+    			Metrics: 
+    			<ul class="list-inline" data-bind="foreach: metrics">
+    				<li><span class="label label-primary"> 
+    					<span data-bind="text: name"> </span>
+    					<a data-bind="click: $parent.removeMetric" class="glyphicon glyphicon-remove" style="cursor:pointer; color:white" title="Delete aspect"></a>
+    				</li>
+    			</ul>
+    			<br/>
+    			Factoids: 
+    			<ul class="list-inline" data-bind="foreach: factoids">
+    				<li><span class="label label-primary"> 
+    					<span data-bind="text: name"> </span>
+    					<a data-bind="click: $parent.removeFactoid" class="glyphicon glyphicon-remove" style="cursor:pointer; color:white" title="Delete aspect"></a>
+    				</li>
+    			</ul>
+    		</p>
+        	</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h5>Select Metrics</h5>
+				<ul data-bind="foreach: $root.metricList" style="max-height: 200px; overflow-y:scroll; border: 1px solid #ddd" class="">
+					<li class="checkbox">
+						<label><input type="checkbox" data-bind="checkedValue: $data, checked: $parent.metrics" /><span data-bind="text:name, attr{title:metoidDescription}"></span></label></li>
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<h5 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Select Factoids</h5>
+				<ul data-bind="foreach: $root.factoidList, attr: {id: ''}" style="max-height: 200px; overflow-y:scroll; border: 1px solid #ddd" class="">
+					<li class="checkbox">
+						<label><input type="checkbox" data-bind="checkedValue: $data, checked: $parent.factoids" /><span data-bind="text: name"></span></label></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/javascript" src="@routes.Assets.at("js/knockout-3.2.0.js")"></script>
+<script type="text/javascript">
+	
+
+$(function() {	
+	"use strict";
+
+	$.getJSON("@routes.Application.api("metrics")", function(metrics) {
+		metrics.sort(function(a,b) {
+			return a.name.localeCompare(b.name);
+		})
+		for (var m in metrics) {
+			vm.metricList.push(new Metoid(metrics[m].name, metrics[m].id, metrics[m].description));	
+		}
+
+		$.getJSON("@routes.Application.api("factoids")", function(factoids) {
+			factoids.sort(function(a,b) {
+				return a.name.localeCompare(b.name);
+			})
+			for (var m in factoids) {
+				vm.factoidList.push(new Metoid(factoids[m].name, factoids[m].id, factoids[m].description));	
+			}
+			parseModel(json, vm);
+		});
+	});
+
+	$("#btn_save").click(function() {
+		var json = vm.toJson();
+		jsRoutes.controllers.Account.saveQualityModel().
+			ajax({
+				data: {json : json},
+				success : function(data) {
+					alert("Quality model updated!")
+					window.location= "@routes.Application.profile()"
+				},
+				error : function (err) {
+					alert("There has been an error :( Check the browser console to see what happened.")
+					console.log(err);
+				}
+			});
+
+	});
+});
+
+
+	var Metoid = function(name, id, desc) {
+		var self = this;
+		self.name = name;
+		self.identifier = id; 
+		self.metoidDescription = desc;
+	}
+
+	var QualityAttribute = function() {
+		"use strict";
+		var self = this;
+		self.name = ko.observable("");
+		self.description = ko.observable("");
+		self.factoids = ko.observableArray();
+		self.metrics = ko.observableArray();
+
+		self.removeMetric = function(metric) {
+			self.metrics.remove(metric);
+		}.bind(self);
+
+		self.removeFactoid = function(factoid) {
+			self.factoids.remove(factoid);
+		}.bind(self);
+	}
+
+	var QualityAspect = function() {
+		"use strict";
+		var self = this;
+		self.name = ko.observable("");
+		self.aspects = ko.observableArray();
+		self.attributes = ko.observableArray();
+
+		self.addAttribute = function() {
+	        self.attributes.push(new QualityAttribute());
+	    }.bind(self);
+
+	    self.addAspect = function() {
+	        self.aspects.push(new QualityAspect());
+	    }.bind(self);
+
+	    self.removeAspect = function(aspect) {
+	    	self.aspects.remove(aspect);
+	    }.bind(self);
+
+	    self.removeAttribute = function(attribute) {
+	    	self.attributes.remove(attribute);
+	    }.bind(self);
+	}
+
+	var QualityModel = function () {
+		"use strict";
+		var self = this;
+		self.aspects = ko.observableArray();
+		self.attributes = ko.observableArray();
+
+		self.metricList = [];
+		self.factoidList = [];
+
+		self.lookupMetric = function (id) {
+			for (var f in self.metricList) {
+				if (self.metricList[f].identifier === id) 
+					return self.metricList[f];
+			}
+		}
+
+		self.lookupFactoid = function (id) {
+
+			for (var f in self.factoidList) {
+				if (self.factoidList[f].identifier === id) return self.factoidList[f];
+			}
+		}
+
+	    self.addAspect = function() {
+	        self.aspects.push(new QualityAspect());
+	    }.bind(self);
+
+	    self.removeAspect = function(aspect) {
+	    	self.aspects.remove(aspect);
+	    }.bind(self);
+
+	    self.addAttribute = function() {
+	        self.attributes.push(new QualityAttribute());
+	    }.bind(self);
+
+	    self.removeAttribute = function(attribute) {
+	    	self.attributes.remove(attribute);
+	    }.bind(self);
+
+	    self.toJson = function() {
+	    	return ko.toJSON(self, function (key, value) {
+	    		if (key === "metricList") return;
+	    		if (key === "factoidList") return;
+	    		if (key === "metoidDescription") return;
+	    		return value;
+	    	});
+	    }
+	}
+
+	var vm = new QualityModel();
+	ko.applyBindings(vm);	
+
+	@if(qm == null) {
+	var json = {
+		"id" : "custom",
+		"name" : "Custom Quality Model",
+		"attributes" : [],
+		"aspects" : []
+	}
+	}else{
+	var json = @Html(qm.getJson())
+	}
+
+function parseModel(model, vm) {
+	"use strict";
+	// vm.name(model.name);
+	for (var asp in model.aspects) {
+		vm.aspects.push(parseAspect(model.aspects[asp]));
+	}
+	for (var att in model.attributes) {
+		vm.attributes.push(parseAttribute(model.attributes[att]));
+	}
+}
+
+function parseAspect(aspect) {
+	"use strict";
+	var m = new QualityAspect();
+	m.name(aspect.name);
+
+	for (var asp in aspect.aspects) {
+		m.aspects.push(parseAspect(aspect.aspects[asp]));
+	}
+
+	// console.log(aspect.attributes);
+	for (var att in aspect.attributes) {
+		m.attributes.push(parseAttribute(aspect.attributes[att]));
+	}
+	return m;
+}
+
+function parseAttribute(attr) {
+	"use strict";
+	var m = new QualityAttribute();
+	m.name(attr.name);
+	m.description(attr.description);
+
+	for (var f in attr.factoids) {
+		var metoid = attr.factoids[f];
+		m.factoids.push(vm.lookupFactoid(metoid.identifier));
+	}
+
+	for (var f in attr.metrics) {
+		var metoid = attr.metrics[f];
+		m.metrics.push(vm.lookupMetric(metoid.identifier));
+	}
+	return m;
+}
+
+</script>
+
+}

@@ -1,0 +1,241 @@
+package model;
+
+@db
+class Users {
+	val InvitationRequest[*] invites;
+	val User[*] users;
+	val Token[*] tokens;
+	val Project[*] projects;
+	val Statistics[*] statistics;
+	val Tag[*] tags;
+	val Log[*] logs;
+	val MailingListItem[*] mailingList;
+	val NewsItem[*] news;
+	val Error[*] errors;
+	val QualityModel[*] qualityModels
+}
+
+enum NewsItemType {
+	ANNOUNCEMENT; ALERT;
+}
+enum NewsItemStatus {
+	DRAFT; PENDING;
+}
+
+abstract class QualityElement {
+	@searchable
+	attr String identifier;
+	attr String name;
+}
+
+class QualityModel extends QualityAspect {
+	attr String json;
+}
+
+class QualityAspect extends QualityElement {
+	val QualityAttribute[*] attributes;
+	val QualityAspect[*] aspects;
+}
+
+class QualityAttribute extends QualityElement {
+	attr String description;
+	attr String detail;
+	val QualityMetric[*] factoids;
+	val QualityMetric[*] metrics;
+}
+
+class QualityMetric extends QualityElement {
+
+}
+
+class Error {
+	@searchable
+	attr Date date;
+	attr String uri;
+	attr String remoteAddress;
+	attr String method;
+	attr String message;
+}
+
+class NewsItem {
+	attr String title;
+	attr String body;
+	@searchable
+	attr Date date;
+	@searchable
+	attr NewsItemType newsType;
+	@searchable
+	attr NewsItemStatus status;
+}
+
+class MailingListItem {
+	@searchable
+	attr String email;
+	attr Date date;
+}
+
+class Log {
+	@searchable
+	attr String user;
+	attr Date date;
+	attr String uri;
+}
+
+class InvitationRequest {
+	@searchable
+	attr String email;
+	@searchable
+	attr String token;
+	attr String status;
+	attr Date requestedAt;
+	attr Date offeredAt;
+	attr Date acceptedAt;
+}
+
+class Project {
+	@searchable
+	attr String ~id;
+	@searchable
+	attr String name;
+	val Tag[*] tags;
+	@searchable
+	attr boolean analysed;
+	attr String description;
+	attr String createdBy;
+	attr int stars;
+}
+
+class Tag {
+	attr String name;
+	val Project[*] projects;
+}
+
+class Statistics {
+	attr Date date;
+	attr int numberOfProjects;
+	attr int numberOfUsers;
+	attr int numberOfVcsRepositories;
+	attr int numberOfBugTrackers;
+	attr int numberOfCommunicationChannels;
+	attr int numberOfBugs;
+	attr int numberOfMessages;
+	attr int numberOfCodeLines;
+	val Demographic[*] demographics;
+}
+
+class Demographic {
+	attr String name;
+	val DemographicEntry[*] entries;
+}
+
+class DemographicEntry {
+	attr String name;
+	attr double value;
+}
+
+@customize
+class Token {
+	ref User user;
+	@searchable
+	attr String token;
+	attr TokenType type;
+	attr Date created;
+	attr Date expires;
+}
+
+enum TokenType {
+	EMAIL_VERIFICATION; PASSWORD_RESET;
+}
+
+@customize
+class User {
+	@searchable
+	attr String email;
+	
+	attr String name;
+	attr String company;
+	attr String country;
+
+	attr boolean emailValidated;
+	attr Date lastLogin;
+	attr Date joinDate;	
+
+	// Deadbolt classes
+	val Role[*] roles;
+	val Permission[*] permissions;
+	
+	val LinkedAccount[*] linkedAccounts;
+
+	val Project[*] watching;
+	val Project[*] owns;
+
+	//val Notification[*] notifications;
+	//val Event[*] events;
+	val GridEntry[*] grid;
+
+	attr String selectedQualityModel;
+	val QualityModel qualityModel;
+}
+
+@customize
+class Role {
+	attr String name;
+}
+
+@customize
+class Permission {
+	attr String value;
+}
+
+class Metric {
+	attr String ~id;
+	attr String name;
+}
+
+class LinkedAccount {
+	attr String providerUserId;
+	attr String providerKey;
+}
+
+abstract class GridEntry {
+	attr int col;
+	attr int row;
+	attr int sizeX;
+	attr int sizeY;
+}
+
+class EventGroup extends GridEntry {
+	attr String name;
+	val Event[*] events;
+}
+
+@customize
+class Event {
+	attr String name;
+	attr Date date;
+}
+
+
+class Message extends GridEntry {
+	attr String title;
+	attr String body;
+}
+
+abstract class MetricGridEntry extends GridEntry {
+	val Project project;
+	val Metric metric;
+	//TODO: sohuld have a query here? e.g. for date. Just store querystring
+	//attr String queryString;
+}
+
+class Notification extends MetricGridEntry {
+	attr double threshold;
+	attr boolean aboveThreshold;
+}
+
+class PlotGridEntry extends MetricGridEntry { }
+
+class SparkGridEntry extends MetricGridEntry {
+	attr double lastValue;
+}
+

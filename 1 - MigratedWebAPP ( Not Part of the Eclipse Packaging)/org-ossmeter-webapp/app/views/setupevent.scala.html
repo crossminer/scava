@@ -1,0 +1,29 @@
+@(localUser: model.User = null, eForm: Form[model.Event])
+
+@import com.feth.play.module.pa.views.html._
+@import helper._
+
+@main(Messages("ossmeter.profile.title"),"profile") {
+
+    <h1>@Messages("ossmeter.profile.title")</h1>
+
+    @helper.form(routes.Account.createNotification, 'class->"form-project") {
+    <h2>Create new event</h2>
+    <p>This is really just for testing purposes only. </p>
+    <fieldset>
+            <div class="form-group">
+              <label class="form-label">Name: </label><input class="form-control" type="text" name="name" placeholder="Name" value="@eForm("name").value">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date: </label><input class="form-control" type="date" name="name" placeholder="I WILL BE A DATE PICKER" value="@eForm("date").value">
+
+            </div>
+     </fieldset>
+        
+     <div class="actions">
+         <input type="submit" value="Create event" class="btn btn-success"> or
+         <a href="@routes.Application.profile" class="btn btn-danger">Cancel</a>
+     </div>
+ }
+    
+}

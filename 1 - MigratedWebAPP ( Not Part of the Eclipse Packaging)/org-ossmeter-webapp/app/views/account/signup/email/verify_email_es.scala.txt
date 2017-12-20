@@ -1,0 +1,10 @@
+@(verificationUrl: String, token: String, name: String, email: String)Hola @name,
+
+
+Se acaba de apuntar a OSSMETER.
+
+Siga el siguiente enlace para activar su cuenta:
+@verificationUrl
+
+Saludos,
+El equipo de OSSMETER.

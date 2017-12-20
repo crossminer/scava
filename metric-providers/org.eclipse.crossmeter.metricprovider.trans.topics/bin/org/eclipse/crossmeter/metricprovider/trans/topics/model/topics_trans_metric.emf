@@ -1,0 +1,46 @@
+package org.eclipse.crossmeter.metricprovider.trans.topics.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class TopicsTransMetric {
+
+	val BugTrackerCommentsData[*] bugTrackerComments;
+	val BugTrackerTopic[*] bugTrackerTopics;
+	
+	val NewsgroupArticlesData[*] newsgroupArticles;
+	val NewsgroupTopic[*] newsgroupTopics;
+
+}
+
+class BugTrackerCommentsData {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String commentId;
+   	attr String subject;
+   	attr String text;
+   	attr String date;
+}
+
+class NewsgroupArticlesData {
+	@searchable
+   	attr String newsgroupName;
+   	attr int articleNumber;
+   	attr String subject;
+   	attr String text;
+   	attr String date;
+}
+
+class BugTrackerTopic {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String label;
+   	attr int numberOfDocuments;
+}
+
+class NewsgroupTopic {
+	@searchable
+   	attr String newsgroupName;
+   	attr String label;
+   	attr int numberOfDocuments;
+}

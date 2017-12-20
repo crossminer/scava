@@ -1,0 +1,150 @@
+# Override default Play's validation messages
+
+# --- Constraints
+constraint.required=Obligatorisch
+constraint.min=Minimaler Wert: {0}
+constraint.max=Maximaler Wert: {0}
+constraint.minLength=Minimale Länge: {0}
+constraint.maxLength=Maximale Länge: {0}
+constraint.email=E-Mail
+
+# --- Formats
+format.date=Datum (''{0}'')
+format.numeric=Numerisch
+format.real=Reelle Zahl
+
+# --- Errors
+error.invalid=Wert is unzulässig
+error.required=Dieses Feld ist obligatorisch
+error.number=Numerischer Wert erwartet
+error.real=Reelle Zahl erwartet
+error.min=Muss größer oder gleich {0} sein
+error.max=Muss kleiner oder gleich {0} sein
+error.minLength=Die minimale Länge beträgt {0}
+error.maxLength=Die maximale Länge beträgt {0}
+error.email=Valide E-Mail-Adresse erforderlich
+error.pattern=Muss dem Muster {0} genügen
+
+### --- ossmeter START
+
+ossmeter.accounts.link.success=Das Konto wurde erfolgreich verknüpft.
+ossmeter.accounts.merge.success=Die Konten wurden erfolgreich zusammengeführt.
+
+ossmeter.verify_email.error.already_validated=Deine E-Mail-Adresse wurde bereits verifiziert.
+ossmeter.verify_email.error.set_email_first=Du musst zuerst eine E-Mail-Adresse definieren.
+ossmeter.verify_email.message.instructions_sent=Instruktionen zur Bestätigung deiner E-Mail-Adresse wurden an {0} gesendet.
+ossmeter.verify_email.success=E-Mail-Adresse ({0}) wurde erfolgreich verifiziert.
+
+ossmeter.reset_password.message.instructions_sent=Instruktionen zum Zurücksetzen deines Passwortes wurden an {0} versandt.
+ossmeter.reset_password.message.email_not_verified=Deine E-Mail-Adresse wurde noch nicht verifiziert. Instruktionen um deine E-Mail-Adresse zu verifizieren wurden versendet. Versuche danach nochmals dein Passwort zurückzusetzen.
+ossmeter.reset_password.message.no_password_account=Dein Benutzer wurde für die Verwendung eines Passwort-basierten Zugangs noch nicht aktiviert.
+ossmeter.reset_password.message.success.auto_login=Dein Passwort wurde erfolgreich zurückgesetzt.
+ossmeter.reset_password.message.success.manual_login=Dein Passwort wurde erfolgreich zurückgesetzt. Bitte melde dich jetzt mit deinem neuen Passwort an.
+
+ossmeter.change_password.error.passwords_not_same=Die Passwörter stimmen nicht überein.
+ossmeter.change_password.success=Das Passwort wurde erfolgreich geändert.
+
+ossmeter.password.signup.error.passwords_not_same=Die Passwörter stimmen nicht überein.
+ossmeter.password.login.unknown_user_or_pw=Der Benutzer wurde nicht gefunden oder das Passwort stimmt nicht überein.
+
+ossmeter.password.verify_signup.subject=OSSMETER: Vervollständige deine Anmeldung
+ossmeter.password.verify_email.subject=OSSMETER: E-Mail-Adresse bestätigen
+ossmeter.password.reset_email.subject=OSSMETER: Anleitung zum Passwortzurücksetzen
+
+#  ossmeter: Additional translations
+
+ossmeter.login.email.placeholder=Deine E-Mail-Adresse
+ossmeter.login.password.placeholder=Wähle ein Passwort
+ossmeter.login.password.repeat=Wiederhole das gewählte Passwort
+ossmeter.login.title=Anmeldung
+ossmeter.login.password.placeholder=Passwort
+ossmeter.login.now=Jetzt anmelden
+ossmeter.login.forgot.password=Passwort vergessen?
+ossmeter.login.oauth=oder melde dich mit einem der folgenden Dienste an:
+ossmeter.login.basic=oder versuch es  mit HTTP basic auth (als example/secret)
+
+ossmeter.signup.title=Registrierung
+ossmeter.signup.name=Dein Name
+ossmeter.signup.now=Jetzt registrieren
+ossmeter.signup.oauth=oder registriere dich mit einem der folgenden Dienste:
+
+ossmeter.verify.account.title=Verifikation der E-Mail-Adresse erforderlich
+ossmeter.verify.account.before=Bevor du ein Passwort vergeben kannst,
+ossmeter.verify.account.first=musst du zuerst deine E-Mail-Adresse verifizieren
+
+ossmeter.change.password.title=Ändere dein Passwort hier
+ossmeter.change.password.cta=Mein Passwort ändern
+
+ossmeter.merge.accounts.title=Konten zusammenführen
+ossmeter.merge.accounts.question=Möchtest du dein aktuelles Konto ({0}) mit diesem zusammenführen: {1}?
+ossmeter.merge.accounts.true=Ja, diese Konten zusammenführen
+ossmeter.merge.accounts.false=Nein, meine aktuelle Sizung beenden und mit dem neuen Benutzer anmelden
+ossmeter.merge.accounts.ok=OK
+
+ossmeter.link.account.title=Konto verknüpfen
+ossmeter.link.account.question=Konto ({0}) mit deinem Benutzer verknüpfen?
+ossmeter.link.account.true=Ja, dieses Konto mit meinem Benutzer verknüpfen
+ossmeter.link.account.false=Nein, abmelden und einen neuen Benutzer mit diesem Konto erstellen
+ossmeter.link.account.ok=OK
+
+#  ossmeter: Signup folder translations
+
+ossmeter.verify.email.title=E-Mail-Adresse bestätigen
+ossmeter.verify.email.requirement=Du musst deine E-Mail-Adresse bestätigen, bevor du OSSMETER nutzen kannst.
+ossmeter.verify.email.cta=Eine E-Mail wurde zur registrierten E-Mail-Adresse versandt. Bitte öffne sie und klicke auf den enthaltenen Link, um deinen Account zu aktivieren.
+
+ossmeter.password.reset.title=Passwort zurücksetzen
+ossmeter.password.reset.cta=Passwort zurücksetzen
+
+ossmeter.password.forgot.title=Passwort vergessen
+ossmeter.password.forgot.cta=Informationen zum Zurücksetzen versenden
+
+ossmeter.oauth.access.denied.title=OAuth-Zugriff abgelehnt
+ossmeter.oauth.access.denied.explanation=Wenn du OSSMETER mit OAuth nutzen möchtest, musst du die Verbindung akzeptieren.
+ossmeter.oauth.access.denied.alternative=Falls du dies lieber nicht tun möchtest, kannst du dich auch
+ossmeter.oauth.access.denied.alternative.cta=mit Benutzername und Passwort registrieren
+
+ossmeter.token.error.title=Token-Fehler
+ossmeter.token.error.message=Der Token ist entweder abgelaufen oder existiert nicht.
+
+ossmeter.user.exists.title=Benutzer vorhanden
+ossmeter.user.exists.message=Dieser Benutzer existiert bereits.
+
+#  ossmeter: Navigation
+ossmeter.navigation.profile=Profil
+ossmeter.navigation.link_more=Mehr Zugänge verknüpfen
+ossmeter.navigation.logout=Abmelden
+ossmeter.navigation.login=Anmelden
+ossmeter.navigation.home=Startseite
+ossmeter.navigation.admin=Geschützte Seite
+ossmeter.navigation.signup=Registrieren
+
+# ossmeter: Handler
+ossmeter.handler.loginfirst=Du musst dich zuerst anmelden um ''{0}'' anzuzeigen
+
+
+# ossmeter: Profile
+ossmeter.profile.title=Benutzerprofil
+ossmeter.profile.mail=Dein Name lautet {0} und deine E-Mail-Adresse ist {1}!
+ossmeter.profile.unverified=unverifiziert - Klicke um zu bestätigen
+ossmeter.profile.verified=verifiziert
+ossmeter.profile.providers_many=Es sind {0} Konten mit deinem Benutzer verknüpft:
+ossmeter.profile.providers_one=Es ist ein Konto mit deinem Benutzer verknüpft:
+ossmeter.profile.logged=Du bist momentan eingeloggt mit:
+ossmeter.profile.session=Deine Benutzer-Identifikation ist {0} und deine Sitzung läuft {1} ab
+ossmeter.profile.session_endless=Deine Benutzer-Identifikation ist {0} und deine Sitzung läuft nie ab
+ossmeter.profile.password_change=Ändere/setze ein Passwort für deinen Benutzer
+
+# ossmeter - sample: Index page
+ossmeter.index.title=Willkommen bei OSSMETER
+ossmeter.index.intro=OSSMETER Beispiel-Applikation
+ossmeter.index.intro_2=Dies ist eine Blaupause für eine einfache Applikation mit Authentifikation.
+ossmeter.index.intro_3=Schau dir die Navigation oben an, um einfache Beispielseiten inklusive der unterstützten Authentifikationsmethoden zu sehen.
+ossmeter.index.heading=Überschrift
+ossmeter.index.details=Details anzeigen
+
+# ossmeter - sample: Restricted page
+ossmeter.restricted.secrets=Überall Geheimnisse!
+
+
+### --- ossmeter END

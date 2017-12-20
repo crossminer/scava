@@ -1,0 +1,84 @@
+
+@main(Messages("ossmeter.navigation.admin"), "admin") {
+@_nav()
+<section>
+	<div class="container box">
+	    <div class="row col-md-12">
+		    <h2>Projects In Error</h2>
+		</div>
+		<div class="row col-md-12">
+		    <table class="table" id="tblprojectserror">
+		    	<thead>
+		    		<tr>
+		    			<th>ID</th>
+		    			<th>Name</th>
+		    			<th>Last Executed</th>
+		    			<th>In Error State</th>
+		    			<th>Analysed</th>
+		    			<th>Monitor</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody >
+		    		
+		    	</tbody>
+		    </table>
+		</div>
+   </div>
+</section>
+<section>
+	<div class="container box">
+	    <div class="row col-md-12">
+		    <h2>Web App Error Messages</h2>
+		    <div id="web_err_tbl"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container box">
+	    <div class="row col-md-12">
+		    <h2>Platform Error Messages</h2>
+		    <div id="platform_err_tbl"></div>
+		</div>
+	</div>
+</section>
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+<script type="text/javascript">
+	$(function() {
+		adminJSRoutes.controllers.Admin.getWebAppErrors().ajax().success(function(data) {
+                    var vis = {};
+					vis.type="Table";
+					vis.datatable = data;
+					var tbl = metvis.Table("#web_err_tbl", vis);
+					tbl.draw();
+					$("#web_err_tbl > table").addClass("table");
+                }).error(function(result) {
+                    console.log("Error:" + result);
+                });
+
+		$.getJSON("@routes.Admin.adminApi("status/error")", function(data) {
+			var vis = {};
+			vis.type="Table";
+			vis.datatable = data;
+			var tbl = metvis.Table("#platform_err_tbl", vis);
+			tbl.draw();
+			$("#platform_err_tbl > table").addClass("table");
+		});
+		$.getJSON("@routes.Admin.adminApi("projects/error")", function(data) {
+			console.log(data);
+			$.each(data, function(project) {
+				project = data[project];
+
+				var tr = $('<tr>');
+				tr.append($('<td>').text(project.id));
+				tr.append($('<td>').text(project.name));
+				tr.append($('<td>').text(project.lastExecuted));
+				tr.append($('<td>').text(project.inErrorState));
+				tr.append($('<td>').text(project.analysed));
+				tr.append($('<td>').text(project.monitor));
+				$("#tblprojectserror").find('tbody').append(tr);
+			});
+		});
+	})
+</script>
+}

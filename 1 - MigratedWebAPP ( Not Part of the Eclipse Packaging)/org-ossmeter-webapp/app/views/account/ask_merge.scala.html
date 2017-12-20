@@ -1,0 +1,35 @@
+@(acceptForm: Form[Account.Accept], aUser: com.feth.play.module.pa.user.AuthUser, bUser: com.feth.play.module.pa.user.AuthUser)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@label = {
+	@Messages("ossmeter.merge.accounts.question",aUser,bUser)
+}
+
+@main(Messages("ossmeter.merge.accounts.title")) {
+
+	<h1>@Messages("ossmeter.merge.accounts.title")</h1>
+	<p>
+	@form(routes.Account.doMerge) {
+
+            @if(acceptForm.hasGlobalErrors) { 
+                <p class="error">
+		            <span class="label label-important">@acceptForm.globalError.message</span>
+		        </p>
+            }
+	   
+	   @inputRadioGroup(
+            acceptForm("accept"),
+            options = Seq(
+            	"true"-> Messages("ossmeter.merge.accounts.true"),
+            	"false"->Messages("ossmeter.merge.accounts.false")
+            ),
+            '_label -> label,
+            '_showConstraints -> false
+        )
+           
+		<input type="submit" value="@Messages("ossmeter.merge.accounts.ok")" class="btn btn-primary">
+	}
+	</p>
+}

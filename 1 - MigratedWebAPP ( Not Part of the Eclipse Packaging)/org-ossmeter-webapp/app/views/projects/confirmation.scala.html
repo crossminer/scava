@@ -1,0 +1,13 @@
+@(id: Long)
+
+@main(Messages("ossmeter.index.title")) {
+<div class="container">
+	<h1>Confirmation</h1>
+	<div>Are you sure that you want to delete this project?</div>
+	<div>Warnning this can not be undone</div>
+	@*
+	@helper.form(routes.Projects.delete(id)){<div><button class="btn btn-warning" type="submit">Delete</button> or
+	<a href="@routes.Projects.projects()" class="btn btn-danger">Cancel</a></div>}
+	*@
+</div>
+}

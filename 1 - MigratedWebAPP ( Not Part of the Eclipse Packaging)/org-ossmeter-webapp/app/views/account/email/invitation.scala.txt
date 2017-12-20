@@ -1,0 +1,9 @@
+@(domain : String, route: String)
+Your OSSMETER.com invitation is here!
+
+Thanks for your interest in OSSMETER. Please click the link below to accept your invitation into the OSSMETER beta phase and start playing :)
+
+@domain@route
+
+Thanks!
+The OSSMETER Team

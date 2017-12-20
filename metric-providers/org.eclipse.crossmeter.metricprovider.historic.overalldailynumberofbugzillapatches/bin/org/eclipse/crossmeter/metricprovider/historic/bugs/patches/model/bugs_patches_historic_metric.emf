@@ -1,0 +1,14 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.patches.model;
+
+class BugsPatchesHistoricMetric {
+	attr int numberOfPatches;
+	attr int cumulativeNumberOfPatches;
+   	val DailyBugData[*] bugs;
+}
+
+class  DailyBugData {
+   	attr String bugTrackerId;
+	attr int numberOfPatches;
+	attr int cumulativeNumberOfPatches;
+}
+

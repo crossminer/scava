@@ -1,0 +1,68 @@
+@(form : Form[model.EventGroup])
+
+@import scala._
+
+@helper.form(routes.Account.createEventGroup, 'class->"form-horizontal",  'role->"form", 'id->"eventgroupform") {
+    <h2>Create/edit event group</h2>
+    <fieldset>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input class="form-control" type="text" name="name" placeholder="Group Name" value="@form("name").value">
+                </div>
+            </div>
+            <!-- <div class="form-group">
+              <input class="form-control" type="text" name="name" placeholder="Event name" value="@form("events[0].name").value">
+            </div> -->
+            <div 
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label class="control-label">Name </label>
+                    @helper.inputText(form("events[0].name"), '_placeholder->"Event name", '_label->null)
+                </div>
+                <div class="col-sm-6">
+                    <label class="control-label">Date </label>
+                    @helper.inputDate(form("events[0].date"), '_label->null)
+                </div>
+            </div>
+     </fieldset>
+
+     <button id="btn_addNewEvent" type="button" class="btn btn-info">+</button>
+        
+     <div class="actions">
+         <button type="submit" class="btn btn-success">Create</button> or
+         <button id="btn_hideEventGroupDialog" type="button" class="btn btn-danger">Cancel</button>
+     </div>
+
+     <script type="text/javascript">
+     // $("#btn_createEventGroup").click(function(){
+     //    jsRoutes.controllers.Account.createEventGroup().ajax()
+     //        .success(function(result) {
+     //            $('#eventGroupModal .modal-body').html(result);
+     //            $('#eventGroupModal').modal('show');
+     //        }).error(function(error){
+     //            console.log(error);
+     //        });
+     // });
+
+    $(function() {
+        // Restyle the form due to silly Play
+        $("#eventgroupform input").addClass("form-control");        
+    })
+
+    $("#btn_addNewEvent").click(function() {
+        var newId = $("#eventgroupform input[type=date]").length;
+
+        var newGp = '<div class="form-group">';
+        newGp = newGp + '<div class="col-sm-6"><input class="form-control" type="text" id="events_'+newId+'_name" name="events['+newId+'].name"></div>';
+        newGp = newGp + '<div class="col-sm-6"><input class="form-control" type="date" id="events_'+newId+'_date" name="events['+newId+'].date"></div>';
+
+        newGp = newGp + '</div>';
+
+        $("#eventgroupform fieldset").append(newGp);
+    });
+    $("#btn_hideEventGroupDialog").click(function(){
+        $('#eventGroupModal .modal-body').html("");
+        $('#eventGroupModal').modal('hide');
+    });
+    </script>
+ }

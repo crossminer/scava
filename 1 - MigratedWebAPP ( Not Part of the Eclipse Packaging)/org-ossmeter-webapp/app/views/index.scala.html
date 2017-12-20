@@ -1,0 +1,126 @@
+@(news : List[model.NewsItem], featuredProjects : List[model.Project])
+
+@main(Messages("ossmeter.index.title")) {
+      <!-- Main hero unit for a primary marketing message or call to action -->
+<section>
+      <div class="container box">
+        <div class="row">
+            <div class="col-md-12 center">
+                <img src="@routes.Assets.at("img/osslogo_large.png")" alt="OSSMETER logo" class="logo"/>  
+                <p class="lead">@Messages("ossmeter.index.intro") <!-- <br/>
+                <a href="#" data-toggle="tooltip" title="Project website"><i class="icon-globe"></i></a>&nbsp;&nbsp;
+                <a href="#" data-toggle="tooltip" title="Twitter: @@ossmeter"><i class="icon-retweet"></i></a>&nbsp;&nbsp;
+                  <a href="#" data-toggle="tooltip" title="Mailing list"><i class="icon-envelope"></i></a> -->
+                </p>
+            </div>
+        </div>
+      </div> <!-- container -->
+</section>
+      <div class="banner">
+        <div class="container blank">
+            <div class="row">
+              <div class="col-md-3">
+                <img src="@routes.Assets.at("img/search.png")" alt="search"/>
+                <h2>Discover</h2>
+                <p>Search through thousands of open-source software projects to discover those that suit your needs</p>
+              </div>
+              <div class="col-md-3">
+                <img src="@routes.Assets.at("img/compare.png")" alt="compare"/>
+                <h2>Compare</h2>
+                <p>Explore the differences between similar projects, comparing projects on the metrics that are important to you</p>
+             </div>
+              <div class="col-md-3">
+                <img src="@routes.Assets.at("img/adopt.png")" alt="adopt"/>
+                <h2>Adopt</h2>
+                <p>Select the project that best fits your requirements and start using it</p>
+              </div>
+              <div class="col-md-3">
+                <img src="@routes.Assets.at("img/monitor.png")" alt="monitor"/>
+                <h2>Monitor</h2>
+                <p>Monitor adopted open-source software to ensure that it remains active and healthy</p>
+              </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-md-6 col-md-offset-3 search">
+                    <input type="text" class="form-control txt_search" placeholder="Search for Open-Source Software">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default search_btn" id="search_btn"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+<script type="text/javascript">
+$(function () {
+    $(".txt_search").autocomplete({
+        source: function(request, response) {
+            console.log("making request")
+            jsRoutes.controllers.Application.autocomplete(request.term, false).ajax()
+                .success(function(result) {
+                    console.log("success: " + result);
+                    response($.map(result, function(item) {
+                        return {
+                            label: item.name,
+                            value: item.id
+                        }
+                    }));
+                }).error(function(result) {
+                    console.log("fail: " + result);
+                });
+        },
+        minLength: 2,
+        focus: function( event, ui ) {
+            $( "#project0" ).val( ui.item.label );
+            return false;
+        },
+        select : function(event, ui) {
+            //FIXME: Should use Play's routing
+            window.location.href = "projects/" + ui.item.value; 
+        },
+        open: function() {
+            $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+            $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    })
+    var submit = function() {
+       window.location.href = "search?q=" + $(".txt_search").val(); 
+    }
+    $(".txt_search").keyup(function(e){
+        if (e.keyCode == 13) submit();
+    });
+    $("#search_btn").click(submit);
+});
+</script>
+
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>What is OSSMETER?</h2>
+                    <!-- <p>OSSMETER aims to extend the state-of-the-art in the field of automated analysis and measurement of open-source software (OSS) by developing a platform that will support decision makers in the process of discovering, comparing, assessing and monitoring the health, quality, impact and activity of open-source software.</p> -->
+                    <p>OSSMETER computes trustworthy quality indicators of open-source software by performing advanced analysis and integration of information from diverse sources including the project metadata, source code repositories, communication channels and bug tracking systems of OSS projects.</p>
+                    <p>OSSMETER is not another OSS forge but instead it provides a meta-platform for analysing existing OSS projects that are developed in existing OSS forges and foundations such as SourceForge, Google Code, GitHub, Eclipse, Mozilla and Apache.</p>
+                    <p><a href="#">Click here to find out more about OSSMETER</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Featured Projects</h2>
+                    <p></p>
+                    <ul>
+                        @for(p <- featuredProjects) {
+                        <li><a href="@routes.Projects.view(p.getId())">@p.getName()</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h2>Latest News</h2>
+                    @for(n <- news){
+                    <p><a href="@routes.News.index()">@n.getTitle()</a><br/>@n.getDate()</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    }

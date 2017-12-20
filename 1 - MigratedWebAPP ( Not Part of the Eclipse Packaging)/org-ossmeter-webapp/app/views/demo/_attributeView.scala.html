@@ -1,0 +1,22 @@
+
+@(project: org.eclipse.crossmeter.repository.model.Project, qualityModel : model.QualityModel, attribute : model.QualityAttribute, parents : List[model.QualityAspect], summary : Boolean)
+
+@import scala._
+
+<section>
+    <div class="container box">
+        <div class="row">    
+            <ol class="breadcrumb projectbreadcrumb">
+            @for(p <- parents) {
+                <li>@p.getName()</li>
+            }
+            </ol>
+        </div>
+        @if(summary) {
+            @_attributeSummaryView(project, qualityModel, attribute)
+        } else {
+            @projects._attributeDetailView(project, qualityModel, attribute)
+        }
+    </div>
+</section>
+   

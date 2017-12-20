@@ -1,0 +1,22 @@
+package org.eclipse.crossmeter.metricprovider.trans.commits.model;
+
+@db(qualifiedCollectionNames="true")
+class Commits {
+	val RepositoryData[*] repositories;
+	val CommitData[*] commits;
+}
+
+class RepositoryData {
+	@searchable
+	attr String url;
+	attr String repoType;
+	attr String revision;
+	attr int totalCommits;
+	ref CommitData[*] commits;
+}
+
+class CommitData {
+	@searchable
+	attr String date;
+	attr String time;
+}

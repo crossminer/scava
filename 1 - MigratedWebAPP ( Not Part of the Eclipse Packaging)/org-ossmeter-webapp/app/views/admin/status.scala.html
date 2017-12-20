@@ -1,0 +1,98 @@
+
+@main(Messages("ossmeter.navigation.admin"), "admin") {
+@_nav()
+<section>
+	<div class="container box">
+	    <div class="row col-md-12">
+		    <h2>Platform Status</h2>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+			<h4>Database Summary</h4>
+			    <table class="table" id="tblstatusprojects">
+			    	<tbody >
+			    		
+			    	</tbody>
+			    </table>
+			</div>
+			<div class="col-md-6">
+			<h4>Database Status</h4>
+			    <table class="table" id="tblstatusdatabase">
+			    	<tbody >
+			    		<thead>
+				    		<tr>
+				    			<th>Host</th>
+				    			<th>Port</th>
+				    			<th>Primary</th>
+				    		</tr>
+				    	</thead>
+			    	</tbody>
+			    </table>
+			</div>
+		</div>
+		<div class="row col-md-12">
+			<h4>Cluster Summary</h4>
+		    <table class="table" id="tblstatus">
+		    	<thead>
+		    		<tr>
+		    			<th>Worker</th>
+		    			<th>Load</th>
+		    			<th>Heartbeat</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody >
+		    		
+		    	</tbody>
+		    </table>
+		</div>
+   </div>
+</section>
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+<script type="text/javascript">
+	$(function() {
+		$.getJSON("@routes.Admin.adminApi("status/server")", function(data) {
+			$.each(data, function(worker) {
+				worker = data[worker]
+				
+				var tr = $('<tr>');
+				tr.append($('<td>').append(""+worker.worker));
+
+				var ul = $("<ul>");
+				$.each(worker.load, function(load) {
+					ul.append($("<li>").text(worker.load[load]));
+				});	
+
+
+				tr.append($('<td>').append(ul));
+				tr.append($('<td>').text(new Date(worker.heartbeat)));
+
+				$("#tblstatus").find('tbody').append(tr);
+			})
+		});
+
+		$.getJSON("@routes.Admin.adminApi("status/projects")", function(data) {
+			var keys = Object.keys(data);
+			for (key in keys) {
+				var tr = $('<tr>');
+				tr.append($('<td>').text(keys[key]));
+				tr.append($('<td>').text(data[keys[key]]));				
+				$("#tblstatusprojects").find('tbody').append(tr);
+			}
+		});
+
+		$.getJSON("@routes.Admin.adminApi("status/database")", function(data) {
+			console.log(data);
+			$.each(data, function(db) {
+				db = data[db];
+
+				var tr = $('<tr>');
+				tr.append($('<td>').text(db.host));
+				tr.append($('<td>').text(db.port));
+				tr.append($('<td>').text(db.isMaster));
+				$("#tblstatusdatabase").find('tbody').append(tr);
+			});
+		});
+	})
+</script>
+}

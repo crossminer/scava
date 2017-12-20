@@ -1,0 +1,150 @@
+# Override default Play's validation messages
+
+# --- Constraints
+constraint.required=Obligatoire
+constraint.min=Valeur minimale: {0}
+constraint.max=Valeur maximale: {0}
+constraint.minLength=Longueur minimale: {0}
+constraint.maxLength=Longueur maximale: {0}
+constraint.email=Email
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numérique
+format.real=Réel
+
+# --- Errors
+error.invalid=Valeur non autorisée
+error.required=Champ obligatoire
+error.number=Seul les valeurs numériques sont autorisées
+error.real=Seul les valeurs réelles sont autorisées
+error.min=Doit être plus grand ou égal à {0}
+error.max=Doit être plus petit ou égal à 0}
+error.minLength=Longueur minimale: {0}
+error.maxLength=Longueur maximale: {0}
+error.email=Un email valide est obligatoire
+error.pattern=Doit satisfaire: {0}
+
+### --- ossmeter START
+
+# ossmeter: Initial translations
+
+ossmeter.accounts.link.success=Comptes liés avec succès
+ossmeter.accounts.merge.success=Comptes unifiés avec succès
+
+ossmeter.verify_email.error.already_validated=Votre email a déjà été validé.
+ossmeter.verify_email.error.set_email_first=Vous devez d'abord fournir un email.
+ossmeter.verify_email.message.instructions_sent=Les instructions pour valider votre email ont été envoyé à l'adresse {0}.
+ossmeter.verify_email.success=L'adresse E-mail  ({0}) a été validée avec succès.
+
+ossmeter.reset_password.message.instructions_sent=Les instructions pour changer votre mot de passe ont été envoyées à l'adresse: {0}.
+ossmeter.reset_password.message.email_not_verified=Votre email doit d'abord être vérifié, des instructions ont été envoyées. Réessayez ensuite.
+ossmeter.reset_password.message.no_password_account=Votre utilisateur n'est pas configuré pour utiliser un mot de passe.
+ossmeter.reset_password.message.success.auto_login=Votre mot de passe a été changé.
+ossmeter.reset_password.message.success.manual_login=Votre mot de passe a été changé. Veillez vous connecter avec votre nouveau mot de passe.
+
+ossmeter.change_password.error.passwords_not_same=Les mots de passe ne correspondent pas.
+ossmeter.change_password.success=Mot de passe changé avec succès.
+
+ossmeter.password.signup.error.passwords_not_same=Les mots de passe ne correspondent pas.
+ossmeter.password.login.unknown_user_or_pw=Utilisateur et mot de passe inconnus.
+
+ossmeter.password.verify_signup.subject=OSSMETER: Finaliser votre enregistrement
+ossmeter.password.verify_email.subject=OSSMETER: Confirmer votre email
+ossmeter.password.reset_email.subject=OSSMETER: Comment changer votre mot de passe.
+
+# ossmeter: Additional translations
+
+ossmeter.login.email.placeholder=Votre adresse email
+ossmeter.login.password.placeholder=Choisir un mot de passe
+ossmeter.login.password.repeat=Réitérer votre mot de passe
+ossmeter.login.title=Login
+ossmeter.login.password.placeholder=Mot de passe
+ossmeter.login.now=Se connecter maintenant
+ossmeter.login.forgot.password=Mot de passe oublié?
+ossmeter.login.oauth=ou connectez-vous avec un de ces fournisseurs:
+ossmeter.login.basic=
+
+ossmeter.signup.title=Enregistrement
+ossmeter.signup.name=Votre nom
+ossmeter.signup.now=S'enregistrer maintenant
+ossmeter.signup.oauth=ou enregistrez-vous avec un de ces fournisseurs:
+
+ossmeter.verify.account.title=Vérification par email obligatoire
+ossmeter.verify.account.before=Avant de spécifier un mot de passe, vous devez
+ossmeter.verify.account.first=d'abord vérifier votre email
+
+ossmeter.change.password.title=Changer votre mot de passe ici
+ossmeter.change.password.cta=Changer votre mot de passe
+
+ossmeter.merge.accounts.title=Unifier des comptes
+ossmeter.merge.accounts.question=Voulez-vous unifier le compte ({0}) avec le compte: {1}?
+ossmeter.merge.accounts.true=Oui, unifier les deux comptes
+ossmeter.merge.accounts.false=Non, quitter la session et se connecter avec un autre compte
+ossmeter.merge.accounts.ok=OK
+
+ossmeter.link.account.title=Lier les comptes
+ossmeter.link.account.question=Lier ({0}) avec votre utilisateur?
+ossmeter.link.account.true=Oui, lier ce compte
+ossmeter.link.account.false=Non, quitter la session et créer un nouveau compte
+ossmeter.link.account.ok=OK
+
+# ossmeter: Signup folder translations
+
+ossmeter.verify.email.title=Verifier votre e-mail
+ossmeter.verify.email.requirement=Avant d'utiliser OSSMETER, vous devez d'abord vérifier votre email.
+ossmeter.verify.email.cta=Un email a été envoyé à votre adresse avec des instructions pour vous connecter.
+
+ossmeter.password.reset.title=Changer votre mot de passe
+ossmeter.password.reset.cta=Changer votre mot de passe
+
+ossmeter.password.forgot.title=Mot de passe oublié
+ossmeter.password.forgot.cta=Envoyer les instructions pour changer le mot de passe
+
+ossmeter.oauth.access.denied.title=Accès OAuth refusé
+ossmeter.oauth.access.denied.explanation=Si vous voulez utiliser OSSMETER avec OAuth, vous devez accepter la connexion.
+ossmeter.oauth.access.denied.alternative=Si vous ne préférez pas accepter la connexion, vous pouvez toujours
+ossmeter.oauth.access.denied.alternative.cta=vous enregistrer avec un nouveau compte.
+
+ossmeter.token.error.title=Erreur de token
+ossmeter.token.error.message=Le token reçu est soit trop vieux, soit il n'existe pas.
+
+ossmeter.user.exists.title=L'utilisateur existe déjà
+ossmeter.user.exists.message=Cet utilisateur existe déjà.
+
+# ossmeter: Navigation
+ossmeter.navigation.profile=Profile
+ossmeter.navigation.link_more=Lier d'autres fournisseurs
+ossmeter.navigation.logout=Se Déconnecter
+ossmeter.navigation.login=Se Connecter
+ossmeter.navigation.home=Page Principale
+ossmeter.navigation.admin=Page Protégée
+ossmeter.navigation.signup=S'enregister
+
+# ossmeter: Handler
+ossmeter.handler.loginfirst=Vous devez vous connecter pour accéder à: ''{0}''
+
+# ossmeter: Profile
+ossmeter.profile.title=Profile d'utilisateur
+ossmeter.profile.mail=Votre nom est {0} et votre adresse email {1}!
+ossmeter.profile.unverified=non vérifiée - cliquer pour vérifier
+ossmeter.profile.verified=vérifiée
+ossmeter.profile.providers_many=Il y a {0} fournisseurs liés à ce compte:
+ossmeter.profile.providers_one =Il y a un fournisseur lié à ce compte:
+ossmeter.profile.logged=Vous êtes connecté avec:
+ossmeter.profile.session=Votre ID d'utilisateur est {0} et votre session se termine le {1}
+ossmeter.profile.session_endless=Votre ID d'utilisateur est {0} et votre session ne se terminera jamais
+ossmeter.profile.password_change=Changer le mot de passe de votre compte
+
+# ossmeter - sample: Index page
+ossmeter.index.title=Bienvenu sur OSSMETER
+ossmeter.index.intro=OSSMETER
+ossmeter.index.intro_2=Ceci est un modèle d'application avec authentification.
+ossmeter.index.intro_3=Essayez la barre de navigation pour voir les fonctions d'authentification.
+ossmeter.index.heading=Entête
+ossmeter.index.details=Voir les détails
+
+# ossmeter - sample: Restricted page
+ossmeter.restricted.secrets=Ils nous cachent la vérité!
+
+### --- ossmeter END

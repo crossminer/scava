@@ -1,0 +1,15 @@
+@(id: String)
+
+@main(Messages("ossmeter.index.title")) {
+<section>
+<div class="container box">
+<div class="container">
+	<h1>Confirmation</h1>
+	<div>Are you sure that you want to delete this user?</div>
+	<div>Warnning this can not be undone</div>
+	@helper.form(routes.Users.delete(id)){<div><button class="btn btn-warning" type="submit">Delete</button> or
+	<a href="@routes.Users.users()" class="btn btn-danger">Cancel</a></div>}
+</div>
+</div>
+</section>
+}

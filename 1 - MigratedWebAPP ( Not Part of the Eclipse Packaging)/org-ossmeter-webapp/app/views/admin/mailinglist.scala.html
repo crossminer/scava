@@ -1,0 +1,20 @@
+@(members: List[model.MailingListItem])
+
+@main(Messages("ossmeter.navigation.admin"), "admin") {
+@admin._nav()
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h1>Mailing List</h1>
+        </div>
+        <div class="row col-md-12">
+        	<h2>Members</h2>
+        	<ul class="list-unstyled row">
+                @for(m <-members) {
+                <li class="col-xs-4">@m.getEmail()<br/><small>Joined: @m.getDate()</small></li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+}

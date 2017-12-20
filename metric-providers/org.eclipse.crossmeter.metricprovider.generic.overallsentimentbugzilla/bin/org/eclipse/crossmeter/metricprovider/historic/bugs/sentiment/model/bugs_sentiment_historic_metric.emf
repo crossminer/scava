@@ -1,0 +1,8 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.sentiment.model;
+
+class BugsSentimentHistoricMetric {
+	attr float overallAverageSentiment;
+	attr float overallSentimentAtThreadBeggining;
+	attr float overallSentimentAtThreadEnd;
+}
+

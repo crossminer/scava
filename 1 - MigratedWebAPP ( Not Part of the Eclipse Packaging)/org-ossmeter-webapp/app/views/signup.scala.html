@@ -1,0 +1,43 @@
+@(signupForm: Form[_])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("ossmeter.signup.title"),"signup") {
+<section>
+<div class="container box">
+  <div class="row">
+    <div class="span6">
+      <h1>@Messages("ossmeter.signup.title")</h1>
+    </div>
+  </div>
+
+  <div id="signup" class="row">
+
+    <div class="span3">
+      @* Display proprietary login form *@
+    	@helper.form(routes.Application.doSignup) {
+    	
+            @if(signupForm.hasGlobalErrors) { 
+                <p class="error">
+		            <span class="label label-important">@signupForm.globalError.message</span>
+		        </p>
+            }
+                       
+             @_emailPartial(signupForm)
+             
+             @_passwordPartial(signupForm)
+
+            <input type="submit" value="@Messages("ossmeter.signup.now")" class="btn btn-primary">
+    	}
+    </div>
+
+    @*<div class="span3">
+        @Messages("ossmeter.signup.oauth")
+        @_providerPartial(skipCurrent=false)
+    </div>*@
+
+  </div>
+</div>
+</section>
+}

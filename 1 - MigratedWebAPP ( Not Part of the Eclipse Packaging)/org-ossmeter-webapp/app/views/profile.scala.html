@@ -1,0 +1,477 @@
+@(user: model.User = null)
+
+@import model._
+@import com.feth.play.module.pa.views.html._
+
+@main(Messages("ossmeter.profile.title"),"profile") {
+
+<section>
+<div class="container box">
+    <div class="row">
+        <div class="col-md-3">
+            <h1>Account</h1>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                    <div class="col-md-12 center">
+                    <h2 style="margin:5px">Discover, Compare</span>, Adopt, <span style="color:#ff9400">Monitor</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <p>
+            @user.getEmail()
+                <i>
+                @if(!user.getEmailValidated() && user.getEmail()) {
+                  (<a href="@routes.Account.verifyEmail">unverified - click to verify</a>)
+                } else {
+                  (verified)
+                }</i>
+            <br/><a href="@routes.Account.changePassword">Change password</a>
+            <br />
+            @* @defining(user.getProviders()) { providers =>
+                @if(providers.size() > 0) {
+                    @if(providers.size() ==1) {
+                        @Messages("ossmeter.profile.providers_one")
+                    } else {
+                        @Messages("ossmeter.profile.providers_many",providers.size().toString())
+                    }
+                    @for(p <- providers) {
+                        @_providerIcon(p)
+                    }
+                <br/>
+                }
+            }
+        </div>
+    </div>
+    *@
+    @*@currentAuth() { auth =>
+        @Messages("ossmeter.profile.logged") @_providerIcon(auth.getProvider())<br/>
+        @if(auth.expires() != -1){
+            @Messages("ossmeter.profile.session", auth.getId(), Application.formatTimestamp(auth.expires()))
+        } else {
+            @Messages("ossmeter.profile.session_endless", auth.getId())
+        }
+    }*@
+    </p>
+</div>
+</section>
+
+<section>
+    <div class="container box">
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <h2>Summary</h2>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-md-4">
+                <h3>About You</h3>
+                Email: @user.getEmail() <br />
+                <a href="@routes.Account.changePassword">Change password</a> <br/>
+                Joined: @user.getJoinDate() <br/>
+                <span class="label label-primary"><span class="glyphicon glyphicon-flash"> @user.getGrid().count(_.isInstanceOf[model.SparkGridEntry])</span></span> 
+                <span class="label label-primary"><span class="glyphicon glyphicon-stats"> @user.getGrid().count(_.isInstanceOf[model.PlotGridEntry])</span></span> 
+                <span class="label label-primary"><span class="glyphicon glyphicon-bell"> @user.getGrid().count(_.isInstanceOf[model.Notification])</span></span> 
+                <span class="label label-primary"><span class="glyphicon glyphicon-calendar"> @user.getGrid().count(_.isInstanceOf[model.EventGroup])</span></span> 
+                <span class="label label-primary"><span class="glyphicon glyphicon-cloud-upload"> @user.getOwns().size()</span></span> 
+                <span class="label label-primary"><span class="glyphicon glyphicon-star"> @user.getWatching().size()</span></span> 
+            
+                <p>Quality Model:</p>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="qmRadio" id="optionsRadios1" value="info" @if("info".equals(user.getSelectedQualityModel())){checked}>
+                    Information Sources
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="qmRadio" id="optionsRadios2" value="quality" @if("quality".equals(user.getSelectedQualityModel())){checked}>
+                    Quality Attributes
+                  </label>
+                </div>
+                <div class="radio @if(user.getQualityModel() == null){disabled}">
+                  <label>
+                    <input type="radio" name="qmRadio" id="optionsRadios3" value="custom" @if(user.getQualityModel() == null){disabled} @if("custom".equals(user.getSelectedQualityModel())){checked}>
+                    Custom
+                  </label>
+                  <a class="btn btn-default" href="@routes.Account.editQualityModel">@if(user.getQualityModel() == null){Create}else{Edit}</a>
+                </div>
+            </div>  
+            <div class="col-md-4">
+                <h3>Projects You Own</h3>
+                @if(user.getOwns().size() > 0){
+                <ul>
+                    @for(p <- user.getOwns()) {
+                    <li><a href="@routes.Projects.view(p.getId())">@p.getName()</a></li>
+                    }
+                </ul>
+                }else{
+                <p>You haven't registered any projects with the system.</p>
+                }
+            </div>
+            <div class="col-md-4">
+                <h3>Starred Projects</h3>
+                @if(user.getWatching().size() > 0){
+                <ul>
+                    @for(p <- user.getWatching()) {
+                    <li><a href="@routes.Projects.view(p.getId())">@p.getName()</a></li>
+                    }
+                </ul>
+                }else{
+                <p>You haven't starred any projects yet.</p>
+                }
+            </div>          
+        </div>
+    </div>
+</section>
+
+<section>
+<div class="container box">
+    <div class="row">
+        <div class="col-md-6">
+        <h2>Dashboard</h2>
+        
+        <button id="btn_create_event_group" class="btn btn-primary">Create Event Group</button>
+
+        <script type="text/javascript">
+        $(function() {
+            $("#btn_create_event_group").click(function() {
+                jsRoutes.controllers.Account.loadEventGroupForm().ajax()
+                    .success(function(result) {
+                        $('#eventGroupModal .modal-body').html(result);
+                        $('#eventGroupModal').modal('show');
+                    }).error(function(error){
+                        console.log(error);
+                    });
+            });
+        })
+        </script>
+
+       @* @if(user.getNotifications().size() > 0) {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Metric</th>
+                        <th>Threshold</th>
+                        <th>Trigger</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            @for(n <- user.getNotifications()) {
+                <tr> <!-- TODO: Will want to present the project and metric name, not ID. -->
+                    <td>@n.getProject().getId()</td>
+                    <td>@n.getMetric().getId</td>
+                    <td>@n.getThreshold()</td>
+                    <td>
+                    @if(n.getAboveThreshold()) {
+                        ABOVE
+                    } else {
+                        BELOW
+                    }
+                    </td>
+                    <td>
+                        Edit &nbsp; Delete
+                    </td>
+                </tr>
+            }
+                </tbody>
+            </table>
+        } else {
+            @Messages("ossmeter.profile.notifications.empty") <a href="@routes.Application.profileNotification">Click here to add one</a>
+        }*@
+        </div>
+        <div class="col-md-6">
+
+@*        <h2>Configure EventGroups</h2>
+        @if(user.eventGroups.size() > 0) {
+            <a href="@routes.Application.profileEventGroup">Create</a>
+            <ul>
+            @for(gr <- user.eventGroups) {
+                <li><p>
+                <label class="form-label" name="eventGroup" value=@gr>@gr.name</label> 
+                @if(gr.events.size() > 0) {
+                    @for(ev <- gr.events) {
+                        <span>Events: @ev.name, @ev.date</span>
+                    }
+                } else {
+                    <span>No events yet</span>
+                }
+
+                @helper.form(routes.Account.createEvent, 'class->"form-project") {
+                    <span><input type="submit">Add Event</input> &nbsp; Edit &nbsp; Delete</span>
+                }
+                    </p>
+                </li> 
+            }
+            </ul>
+        } else {
+            @Messages("ossmeter.profile.eventgroup.empty") <a href="@routes.Application.profileEventGroup">Click here to add one</a>
+        }
+        </div>*@
+    </div>
+
+</div>
+
+<div class="gridster">
+    <ul>
+    @for(g <- user.getGrid()) {
+        <li class="box gridentry" data-row="@g.getRow()" data-col="@g.getCol()" data-sizex="@g.getSizeX()" data-sizey="@g.getSizeY()" id="@g.getId()">
+            @g match {
+                case n : Message => {
+                    <div class="row nopadding">
+                        <span class="glyphicon glyphicon-envelope dash"></span>
+                        <a href="@routes.Account.deleteGridObject(n.getUid())"><span class="glyphicon glyphicon-remove dash edit pull-right"></span></a>
+                    </div>
+                    <div class="row nopadding">
+                        <h4>@n.getTitle()</h4>
+                        @Html(n.getBody())
+                    </div>
+                    
+                }
+                case n : Notification => {
+                    <div class="row nopadding">
+                        <span class="glyphicon glyphicon-bell dash"></span>
+                        <a href="@routes.Account.deleteGridObject(n.getUid())"><span class="glyphicon glyphicon-remove dash edit pull-right"></span></a>
+                        <a href="#"><span class="glyphicon glyphicon-pencil dash edit pull-right"></span></a>
+                    </div>
+                    <div class="row nopadding">
+                        <div class="col-md-9 nopadding" style="line-height:1em">
+                            <span style="font-size:0.6em">Project:</span><br/>
+                            <span class="no-overflow" style="font-size:0.8em"><a href="@routes.Projects.view(n.getProject().getId())">@n.getProject().getName().take(10)</a></span><br/>
+                            <span style="font-size:0.6em">Metric:</span><br/>
+                            <span class="nowrap" style="font-size:0.8em">@n.getMetric().getName()</span>
+                        </div>
+                        <div class="col-md-3 nopadding" style="line-height:1em">
+                            
+                            <!-- <div class="pull-right"><img src="@routes.Assets.at("icons/notification.png")" alt="Edit Notifications"/></div> -->
+                        </div>
+                    </div>
+                    <div class="row nopadding center" style="margin-top:10px">
+                        <div class="col-md-6 nopadding">@if(n.getAboveThreshold()){<span class="glyphicon glyphicon-arrow-up"></span>}else{<span class="glyphicon glyphicon-arrow-down"></span>}</div>
+                        <div class="col-md-6 nopadding" id="not-@n.getProject().getId()-@n.getMetric().getId()-threshold"></div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function(){ 
+                            $(jq("not-@n.getProject().getId()-@n.getMetric().getId()-threshold")).text(abbreviateNumber(@n.getThreshold()));
+
+                            // Check the value
+                            var d = new Date();
+                            d.setDate(d.getDate()-14);
+                            var dStr = d.getFullYear() + "" + d.getMonth() + "" + d.getDate();
+                            $.getJSON(getApi() + "/projects/p/@n.getProject().getId()/m/@n.getMetric().getId()?startDate="+dStr, function(result) {
+
+                                for (var dat in result.datatable) {
+                                    if (@n.getAboveThreshold()) {
+                                        if (result.datatable[dat][result.y] >= @n.getThreshold()) {
+                                            $(jq("not-@n.getProject().getId()-@n.getMetric().getId()-threshold")).addClass("bg-warning");
+                                            break;
+                                        }
+                                    } else {
+                                        if (result.datatable[dat][result.y] <= @n.getThreshold()) {
+                                            $(jq("not-@n.getProject().getId()-@n.getMetric().getId()-threshold")).addClass("bg-danger");
+                                            break;   
+                                        }
+                                    }
+                                    
+                                }
+                            }).error(function(error) {
+                                console.log(error);
+                            });
+
+                        });
+                    </script>
+
+                }
+                case n : PlotGridEntry => {
+                    <div class="row nopadding">
+                        <span class="glyphicon glyphicon-stats dash"></span>
+                        <a href="@routes.Account.deleteGridObject(n.getUid())"><span class="glyphicon glyphicon-remove dash edit pull-right"></span></a>
+                    </div>
+                    <div class="row nopadding">
+                        <div class="clearfix">
+                            <div class="row nopadding">
+                                <div class="col-md-6 nopadding" style="line-height:1em">
+                                    <span style="font-size:0.6em">Project:</span><br/>
+                                    <span style="font-size:0.8em">@n.getProject().getName()</span><br/>
+                                </div>
+                                <div class="col-md-5 nopadding" style="line-height:1em">
+                                    <span style="font-size:0.6em">Metric:</span><br/>
+                                    <span style="font-size:0.8em">@n.getMetric().getName()</span>
+                                </div>
+                                <!-- <div class="col-md-1 nopadding" style="line-height:1em">
+                                    <span class="glyphicon glyphicon-stats dash pull-right"></span>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div id="plot-@n.getProject().getId()-@n.getMetric().getId()"></div>
+                    </div>
+                    <script type="text/javascript">
+                    $(function(){ 
+                        $.getJSON(getApi() + "/projects/p/@n.getProject().getId()/m/@n.getMetric().getId()", function(vis) {
+                            var chart = new ossplots.Chart(jq("plot-@n.getProject().getId()-@n.getMetric().getId()"), vis);
+                            chart.height = 100;
+                            chart.margin.left = 30;
+                            chart.margin.top = 10;
+                            chart.draw();
+                        });
+                    });
+                    </script>
+                }
+                case n : SparkGridEntry => {
+                    <div class="row nopadding">
+                        <span class="glyphicon glyphicon-flash dash"></span>
+                        <a href="@routes.Account.deleteGridObject(n.getUid())"><span class="glyphicon glyphicon-remove dash edit pull-right"></span></a>
+                    </div>
+                    <div class="row nopadding">
+                        <div class="clearfix">
+                            <div class="row pull-left nopadding">
+                                <div class="col-md-12 nopadding" style="line-height:1em">
+                                    <span style="font-size:0.6em">Project:</span><br/>
+                                    <span style="font-size:0.8em">@n.getProject().getName()</span><br/>
+                                    <span style="font-size:0.6em">Metric:</span><br/>
+                                    <span style="font-size:0.8em">@n.getMetric().getName()</span>
+                                </div>
+                            </div>
+                            <table class="table spark-table" id="spark-@n.getProject().getId()-@n.getMetric().getId()-table">
+                                <thead>
+                                    <th>low</th>
+                                    <th>high</th>
+                                    <th>curr</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <div id="spark-@n.getProject().getId()-@n.getMetric().getId()"></div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                    $(function() {
+                        $.get(getApi() + "/projects/p/@n.getProject().getId()/s/@n.getMetric().getId()", function (data) {
+                            $(jq("spark-@n.getProject().getId()-@n.getMetric().getId()")).html("<img class=\"spark\" src=\"" + getApi() + data.spark + "\" />");
+                            
+                            $(jq("spark-@n.getProject().getId()-@n.getMetric().getId()")+"-table > tbody:last").append("<tr><td>" + abbreviateNumber(data.low) + 
+                                "</td><td>" + abbreviateNumber(data.high) + 
+                                "</td><td>" + abbreviateNumber(data.last) + "</td></tr>");
+
+                        });
+                    });
+                    </script>
+                }
+                case n : EventGroup => {
+                    <div class="row nopadding">
+                        <span class="glyphicon glyphicon-calendar dash"></span>
+                        <a href="@routes.Account.deleteGridObject(n.getUid())"><span class="glyphicon glyphicon-remove dash edit pull-right"></span></a><a href="#"><span class="glyphicon glyphicon-pencil dash edit pull-right"></span></a>
+                    </div>
+                    <div class="row nopadding">
+                        <h4>@n.getName()</h4>
+                        <div class="clearfix"></div>
+                        @if(n.getEvents().size() >0){
+                            <div class="">
+                                <table class="table spark-table">
+                                    <tbody>
+                                        @for(e <- n.getEvents()) {
+                                        <tr><td>@e.getName()</td><td>@e.getDate().format("dd/MM/yyyy")</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        } else {
+                        <div style="overflow-y:scroll">
+                            <span style="font-size:0.8em; line-height:1em">Use the button above to add some events to this group. For example:</span>
+                            <table class="table spark-table">
+                                <tbody>
+                                    <tr><td>My birthday</td><td>12/08/1986</td></tr>
+                                    <tr><td>My mum's birthday</td><td>23/08/1986</td></tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </li>
+    }
+
+       <!--  <li class="box" data-row="1" data-col="1" data-sizex="1" data-sizey="1">A</li>
+        <li class="box" data-row="2" data-col="1" data-sizex="1" data-sizey="1">B</li>
+        <li class="box" data-row="3" data-col="1" data-sizex="1" data-sizey="1">C</li>
+ 
+        <li class="box" data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
+        <li class="box" data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
+ 
+        <li class="box" data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+        <li class="box" data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+        <li class="box" data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+ 
+        <li class="box" data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+        <li class="box" data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
+ 
+        <li class="box" data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
+        <li class="box" data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li> -->
+    </ul>
+</div>
+
+<script type="text/javascript">
+    var grid;
+    $(function(){ 
+        $("input[name='qmRadio']").change(function() {
+            var choice = $("input[name='qmRadio']:checked").val();
+
+            jsRoutes.controllers.Account.updateQualityModelSelection(choice).ajax()
+                .success(function(result){
+                    console.log("Updated QM selection.")
+                })
+                .error(function(error){
+                    console.log("Error updating QM selection:") 
+                    console.log(error);
+                });
+        })
+
+        grid = $(".gridster ul").gridster({
+            widget_margins: [10, 10],
+            widget_base_dimensions: [140, 180],
+            serialize_params: function($w, wgd) {
+                return {
+                    id: $($w).attr("id"),
+                    col: wgd.col,
+                    row:wgd.row
+                }
+            },
+            draggable: {
+                stop: function(e, ui, $widget) {
+                    console.log('STOP position: ' + ui.position.top +' '+ ui.position.left)
+                    console.log(grid.serialize());
+                    jsRoutes.controllers.Account.updateGridLocations(JSON.stringify(grid.serialize())).ajax()
+                        .success(function(result) {
+                            console.log("success!");
+                            console.log(result);
+                        }).error(function(result) {
+                            console.log("Error");
+                            console.log(result);
+                        });
+                }
+            }
+
+        }).data("gridster");
+    });
+</script>
+
+    </div>
+</section>
+
+<div class="modal fade" id="eventGroupModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript" src="@routes.Assets.at("js/ossplots2.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("js/d3.v3.min.js")"></script>
+}

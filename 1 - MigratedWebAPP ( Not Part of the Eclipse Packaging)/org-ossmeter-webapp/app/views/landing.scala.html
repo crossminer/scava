@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="@lang().code()">
+  <head>
+    <title>OSSMETER</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OSSMETER: Automated Measurement and Analysis of Open-Source Software">
+    <meta name="author" content="The OSSMETER Team: github.com/ossmeter">
+    
+    <link rel="icon" type="image/png" href="@routes.Assets.at("icons/favicon.png")">
+
+    <!-- Styles -->    
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css">
+    <link href="@routes.Assets.at("css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("css/main.css")" rel="stylesheet">
+  </head>
+
+  <body>
+    @if(flash.contains(Application.FLASH_ERROR_KEY)) {
+      <div class="alert alert-danger">
+        @flash().get(Application.FLASH_ERROR_KEY)
+      </div>
+    }
+    @if(flash.contains(Application.FLASH_MESSAGE_KEY)) {
+      <div class="alert alert-success">
+        @flash().get(Application.FLASH_MESSAGE_KEY)
+      </div>
+    }
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <section>
+      <div class="container box" style="padding-top:150px;padding-bottom:150px;">
+        <div class="row">
+            <div class="col-md-12 center">
+                <img src="@routes.Assets.at("img/osslogo_large.png")" alt="OSSMETER logo" style="max-width: 100%" />  
+                <p class="lead">@Messages("ossmeter.index.intro")</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 center">
+                <a href="@routes.Application.login()" class="btn btn-lg btn-primary" type="button">Sign In*</a>
+                @*<a href="@routes.DemoApplication.index()" class="btn btn-lg btn-primary" type="button">Demo</a>*@
+                <p><small>*We are currently in a closed beta phase.</p> 
+                <p>We'll very shortly be releasing a demo for you to play with. If you'd like to be notified about when this demo will be available, just add your email below. Any communication from us will be minimal, no spam, and we won't share your email address with anyone.</small></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                @helper.form(routes.DemoApplication.addToMailingList) {
+                <div class="input-group submit">
+                   <input type="email" id="email" name="email" class="form-control" placeholder="Your email address"/>
+                   <div class="input-group-btn">
+                       <button class="btn btn-default search_btn">Submit</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 center">
+                <a href="https://github.com/ossmeter/ossmeter"><img src="@routes.Assets.at("img/GitHub-Mark-64px.png")" class="social-logo"></a>
+                <a href="https://www.twitter.com/ossmeter"><img src="@routes.Assets.at("img/Twitter_logo_blue.png")" class="social-logo"></a>
+            </div>
+        </div>
+      </div> <!-- container -->
+</section>
+    <div class="banner">
+        <div class="container blank">
+            <div class="row">
+              <div class="col-sm-3">
+                <img src="@routes.Assets.at("img/search.png")" alt="search"/>
+                <h2>Discover</h2>
+                <p>Search through thousands of open-source software projects to discover those that suit your needs</p>
+              </div>
+              <div class="col-sm-3">
+                <img src="@routes.Assets.at("img/compare.png")" alt="compare"/>
+                <h2>Compare</h2>
+                <p>Explore the differences between similar projects, comparing projects on the metrics that are important to you</p>
+             </div>
+              <div class="col-sm-3">
+                <img src="@routes.Assets.at("img/adopt.png")" alt="adopt"/>
+                <h2>Adopt</h2>
+                <p>Select the project that best fits your requirements and start using it</p>
+              </div>
+              <div class="col-sm-3">
+                <img src="@routes.Assets.at("img/monitor.png")" alt="monitor"/>
+                <h2>Monitor</h2>
+                <p>Monitor adopted open-source software to ensure that it remains active and healthy</p>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>Discover</h1>
+                    <p>OSSMETER monitors the source code, issue trackers, and communication channels of open-source software (OSS). It's goal is to help you make decisions. If you're looking to adopt a particular OSS project, you can take a look at the metrics for the project to check whether your requirements will be met. E.g. if you care about having questions answered quickly, OSSMETER will tell you the average response time on the communication channels. If you're a member of an OSS project you can find out which aspects of your project are doing well and which could maybe do with a bit of improvement. </p>
+                </div>
+                <div class="col-md-4">
+                    <img src="@routes.Assets.at("img/demo/atl.png")"  style="width:100%; max-width:350px" />
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>Compare</h1>
+                    <p>When adopting OSS, there can be many projects that do similar jobs, and understanding which would be the best fit for you is a big challenge. To help with this selection process, we allow users to compare selected projects on the metrics that matter to them.</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="@routes.Assets.at("img/demo/compare.png")"  style="width:100%; max-width:350px" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>Adopt</h1>
+                    <p>After discovering and comparing the options, you are in a better position to adopt the project that best suits your personal or business needs. </p>
+                </div>
+                <div class="col-md-4">
+                    <img src="@routes.Assets.at("img/star.png")"  style="width:100%; max-width:350px" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>Monitor</h1>
+                    <p>Users have a personal dashboard - a place for you to keep track of the projects and metrics that matter the most to you. You can set up alerts for specific metrics in order to be notified when that metric exceeds or falls below a given threshold. This can help you migrate away from a project if its quality begins to decline, or if you're a developer, help you find areas for improvement.</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="@routes.Assets.at("img/grids.png")"  style="width:100%; max-width:350px" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @*<section>
+        <div class="container box">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>What is OSSMETER?</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- <p>OSSMETER aims to extend the state-of-the-art in the field of automated analysis and measurement of open-source software (OSS) by developing a platform that will support decision makers in the process of discovering, comparing, assessing and monitoring the health, quality, impact and activity of open-source software.</p> -->
+                    <p>OSSMETER computes trustworthy quality indicators of open-source software by performing advanced analysis and integration of information from diverse sources including the project metadata, source code repositories, communication channels and bug tracking systems of OSS projects.</p>
+                    <p>OSSMETER is not another OSS forge but instead it provides a meta-platform for analysing existing OSS projects that are developed in existing OSS forges and foundations such as SourceForge, Google Code, GitHub, Eclipse, Mozilla and Apache.</p>
+                    <p><a href="#">Click here to find out more about OSSMETER</a></p>
+                </div>
+                <!-- <div class="col-md-4">
+                    <h2>Featured Projects</h2>
+                    <p>Search through thousands of open-source software projects to discover those that suit your needs</p>
+                    <ul>
+                        <li><a href="@routes.Projects.view("modeling-mmt-atl")">ATL</a></li>
+                        <li><a href="@routes.Projects.view("modeling-incquery")">EMF-IncQuery</a></li>
+                        <li><a href="@routes.Projects.view("modeling-Graphiti")">Graphiti</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h2>Create an Account</h2>
+                    <p>Having an account with OSSMETER enables you to add your own projects to be monitored, and gives you ability to set up triggers that notify you when a particular metric of interest reaches a certain threshold. </p> 
+                    <p>We are currently accepting users on an invite-only basis. If you have received an invite, click the button below. If not, you are still able to browse and compare the projects, but won't be able to add new projects or set up notifications.</p>
+                    <button type="button" class="btn btn-default form-control">Accept Invite</button>
+                </div> -->
+            </div>
+        </div>
+    </section> *@
+  
+  </body>
+</html>

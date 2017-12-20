@@ -1,0 +1,13 @@
+package org.eclipse.crossmeter.metricprovider.historic.newsgroups.newusers.model;
+
+class NewsgroupsNewUsersHistoricMetric {
+	val DailyNewsgroupData[*] newsgroups;
+	attr int numberOfNewUsers;
+	attr int cumulativeNumberOfNewUsers;
+}
+
+class DailyNewsgroupData {
+	attr String newsgroupName;
+	attr int numberOfNewUsers;
+	attr int cumulativeNumberOfNewUsers;
+}

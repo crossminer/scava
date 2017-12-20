@@ -1,0 +1,307 @@
+@(qualityModel : model.QualityModel)
+
+
+@printAttributes(aspect : model.QualityAspect) = {
+	@for(attr <- qualityModel.getAttributes()) {
+	qa = new model.QualityAttribute("@attr.getName().replaceAll(" ", "")", "@attr.getName()", [
+		@for(m <- attr.getMetrics()) {
+		new Metric("@m.getIdentifier()", "@m.getName()", false),
+		}
+	]);
+	vm.qualityAttributes.push(qa);
+	}
+
+	@for(asp <- aspect.getAspects()) {
+		@printAttributes(asp)
+	}
+}
+
+@demomain("OSSMETER") {
+<section>
+  	<div class="container box"> 
+     	<div class="row">
+     		<div class="col-md-3">
+     			<h1>Compare</h1>
+     		</div>
+     		<div class="col-md-6">
+     			<div class="row">
+			    	<div class="col-md-12 center">
+			    		<h2 style="margin:5px">Discover, <span style="color:#ff9400">Compare</span>, Adopt, Monitor</h2>
+			    	</div>
+		    	</div>
+          	</div>
+      	</div>
+	</div>
+</section>
+<section>
+    <div class="container box">
+    	<div class="row">
+        	<div class="col-md-4">
+				    <input type="text" class="form-control txt_search" id="project0" placeholder="Graphiti" disabled>
+		    </div>
+		    <div class="col-md-4">
+				    <input type="text" class="form-control txt_search" id="project1" placeholder="ATL" disabled>
+		    </div>
+		    <div class="col-md-4">
+				    <input type="text" class="form-control txt_search" id="project2" placeholder="Acceleo" disabled>
+		    </div>
+	    </div>
+	    <div class="row">
+		    <div class="col-md-12">
+		    	<button id="btn_compare" class="btn btn-primary form-control">Compare</button>
+		    </div>
+	    </div>
+    </div>
+</section>
+
+<section data-bind="visible: validProjects().length > 0" >
+	<div class="container box">
+		<div class="row">
+			<div class="col-md-6" data-bind="visible: selectedMetrics().length > 0">
+				<strong>Legend</strong> <span data-bind="html: drawMainLegend()"></span>
+			</div>
+			<div class="col-md-6" data-bind="visible: selectedMetrics().length > 0">
+			</div>
+		</div>
+		<div class="row">
+			<!-- ko foreach: selectedMetrics --> 
+		    <div class="col-md-6">
+		    	<span data-bind="text:name"></span><span data-bind="attr:{id: 'legend-'+id}"></span>
+				<div class="box" data-bind="compPlot: { metric: $data, projects: $parent.projects}, attr : {id: 'plot-' + id}">
+				No data
+				</div>
+			</div>
+			<!--  /ko -->
+	    </div>
+    </div>
+</section>
+
+<!-- ko foreach: qualityAttributes --> 
+<section data-bind="visible: $parent.validProjects().length > 0" style="min-width:970px !important">
+    <div class="container box">
+	    <div class="row" data-toggle="collapse" aria-expanded="true" data-bind="attr : { 'aria-controls' : 'div-attr-' + id, 'data-target' : '#div-attr-' + id }">
+	        <h2 class="marginless" data-bind="text:name"></h2>
+	    </div>
+	    <div class="row collapse" data-bind="attr :{id : 'div-attr-' + id }">
+	        <table class="table">
+	        	<thead>
+	        		<th>toolkit</th>
+	        		<th>metric</th>
+	        		<!-- ko foreach: $parent.validProjects() --> 
+	        		<th data-bind="text: name"></th>
+	        		<!-- /ko -->
+	        	</thead>
+	        	<tbody data-bind="foreach: metrics">
+	        		<tr>
+	        			<td>
+	        				<div class="checkbox">
+                                <input type="checkbox" value="id" data-bind="checked: selected">
+							</div>
+						</td>
+						<td data-bind="text: name"></td>
+						<!-- ko foreach: $root.validProjects() --> 
+		        		<td>
+		        			<span data-bind="sparkplot: { project: $data, metric: $parent }"></span>
+		        		</td>
+		        		<!-- /ko -->
+	        		</tr>
+	        		
+	        	</tbody>
+	        </table>
+        </div>
+    </div>
+</section>
+<!-- /ko -->
+
+<script type="text/javascript" src="@routes.Assets.at("js/metvis.0.1.0.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("js/d3.v3.min.js")"></script>
+
+
+<script type="text/javascript">
+function addVisToChart(vis, chart) {
+	chart.draw();
+	chart.addVis(vis);
+}
+
+function drawMainLegend() {
+        var lgd = '<ul class="list-inline">'; 
+
+        var chart = new metvis.Chart("","");
+
+        for (var s in vm.validProjects()) {
+            lgd = lgd + '<li><div class="legend-box" style="background-color:' + chart.colors(s) + '"></div>' + vm.validProjects()[s].name() + '</li>';
+        }
+        lgd = lgd + "</ul>";
+
+        return lgd;
+        l.append(lgd);
+}
+
+$(function(){
+	$("#btn_compare").click(function() {
+		var p  = new Project("modeling-graphiti", "Graphiti", true);
+		var p2 = new Project("modeling-mmt-atl", "ATL", true);
+		var p3 = new Project("modeling-acceleo", "Acceleo", true);
+		vm.projects.push(p);
+		vm.projects.push(p2);
+		vm.projects.push(p3);	
+	});
+
+	chartmap = {};
+
+	ko.bindingHandlers.compPlot = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+
+			// destroy any references to the chart when disposed
+			ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+				var metricid = valueAccessor().metric.id;
+				if (chartmap[metricid]) {
+					delete chartmap[metricid];
+				}
+			});
+
+		},
+		update: function(element, valueAccessor, allBindingsAccessor) {
+			var vacc = valueAccessor();
+			var metric = vacc.metric;
+			var projects = vacc.projects();
+
+
+			// This is really bad coding, but I'm tired. Can easily be generalised.
+			$.getJSON(getApi() + "/projects/p/" + projects[0].id() + "/m/" + metric.id, function(vis) {
+				vis.projectName = projects[0].name();
+				projects[0].metricmap[metric.id] = vis;
+
+				var chart = new metvis.Chart(jq("plot-" + metric.id), vis);
+				chart.height = 200;
+				chart.draw();
+				chartmap[metric.id] = chart;
+
+				if (projects[1]) {
+					if (projects[1].metricmap[metric.id]) {
+						chartmap[metric.id].addVis(projects[1].metricmap[metric.id]);
+						return;
+					}
+					(function(proj) {
+						$.getJSON(getApi() + "/projects/p/" + proj.id() + "/m/" + metric.id, function(vis) {
+
+							vis.projectName = proj.name();
+
+							chartmap[metric.id].addVis(vis);
+							proj.metricmap[metric.id] = vis;
+							// drawLegend(chartmap[metric.id], "#legend-"+metric.id)
+
+							if (projects[2]) {
+								if (projects[2].metricmap[metric.id]) {
+									chartmap[metric.id].addVis(projects[2].metricmap[metric.id]);
+									return;
+								}
+								(function(proj2) {
+									$.getJSON(getApi() + "/projects/p/" + proj2.id() + "/m/" + metric.id, function(vis) {
+
+										vis.projectName = proj2.name();
+
+										chartmap[metric.id].addVis(vis);
+										proj2.metricmap[metric.id] = vis;
+										// drawLegend(chartmap[metric.id], "#legend-"+metric.id)
+									});
+								})(projects[2]);
+							}
+
+
+						});
+					})(projects[1]);
+				}
+			});
+		}
+	};
+
+	ko.bindingHandlers.sparkplot = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+			$(element).html("No data");	
+		},
+		update: function(element, valueAccessor, allBindingsAccessor) {
+	        // Extract info
+	        var vacc = valueAccessor();
+	        var project = vacc.project;
+	        var metric = vacc.metric;
+
+	        // TODO keep the sparks in memory (in the view model)
+	        // then check the VM before invoking the API
+	        // Grab all sparks in single query on "Compare" push
+	        $.getJSON(getApi() + "/projects/p/" + project.id() +"/s/" + metric.id, function (data) {
+	        	$(element).html('<img src="' + getApi() + data.spark+'" class="spark" /> ' + abbreviateNumber(data.last));
+	        });
+		}
+	};
+
+	var Project = function(id, name, valid) {
+		this.id = ko.observable(id);
+		this.name = ko.observable(name);
+		this.valid = ko.observable(valid);
+		this.metricmap = ko.observable();
+
+		this.css = function() {
+			return this.valid() ? "has-success" : "";
+		}
+	};
+
+	var QualityAttribute = function(id, name, metrics) {
+		this.id = id;
+		this.name = name;
+		this.metrics = metrics;
+	};
+
+	var Metric = function(id, name, selected) {
+		this.id = id;
+		this.name = name;
+		this.selected = ko.observable(selected);
+	};
+
+	var ComparisonModel = function() {
+		"use strict";
+		var self = this;
+		self.qualityAttributes = ko.observableArray();
+		self.projects = ko.observableArray();
+
+		self.validProjects = ko.computed(function() {
+			var val = [];
+			ko.utils.arrayForEach(self.projects(), function(p) {
+				if (p.valid()) {
+					val.push(p);
+				}
+			});
+			return val;
+		});
+
+		self.selectedMetrics = ko.computed(function() {
+           	var sel = [];
+           	ko.utils.arrayForEach(self.qualityAttributes(), function(attr){
+           		ko.utils.arrayForEach(attr.metrics, function(m){
+                   	if (m.selected()) {
+                           sel.push(m);
+                    }
+                });
+            });
+            return sel;
+       	});
+
+		self.removeProject = function(project) {
+			self.projects.remove(project);
+		}.bind(self);
+
+		self.addProject = function() {
+			self.projects.push(new Project("", "", false));
+		}.bind(self);
+	};
+
+	vm = new ComparisonModel();
+
+	@printAttributes(qualityModel)
+
+	ko.applyBindings(vm);
+});
+
+</script>
+<script type="text/javascript" src="@routes.Assets.at("js/knockout-2.3.0.js")"></script>
+}

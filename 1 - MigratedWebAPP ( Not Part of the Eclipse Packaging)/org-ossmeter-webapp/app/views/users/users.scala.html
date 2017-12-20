@@ -1,0 +1,231 @@
+@(users: List[model.User])
+
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
+
+@main(Messages("ossmeter.index.title")) {
+@admin._nav()
+
+<section>
+    <div class="container box">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Activity</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div id="activityTbl" class="col-md-3">
+
+            </div>
+            <div id="activity" class="col-md-9"></div>
+        </div>
+    </div>
+</section>
+
+<section>
+  <div class="container box">
+      <div class="row col-md-12">
+        <h2>Users</h2>
+        @if(!users.isEmpty()){
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Activity (last 30 days)</th>
+                    <th>Behaviour</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(user <- users) {
+                <tr>
+                    <td>
+                        <a href="@routes.Users.view(user.getEmail())">@user.getEmail()</a> <br />
+                        Joined: @user.getJoinDate() <br/>
+                        <span class="label label-primary"><span class="glyphicon glyphicon-flash"> @user.getGrid().count(_.isInstanceOf[model.SparkGridEntry])</span></span> 
+                        <span class="label label-primary"><span class="glyphicon glyphicon-stats"> @user.getGrid().count(_.isInstanceOf[model.PlotGridEntry])</span></span> 
+                        <span class="label label-primary"><span class="glyphicon glyphicon-bell"> @user.getGrid().count(_.isInstanceOf[model.Notification])</span></span> 
+                        <span class="label label-primary"><span class="glyphicon glyphicon-calendar"> @user.getGrid().count(_.isInstanceOf[model.EventGroup])</span></span> 
+                        <br/>
+                        <span class="label label-primary"><span class="glyphicon glyphicon-cloud-upload"> @user.getOwns().size()</span></span> 
+                        <span class="label label-primary"><span class="glyphicon glyphicon-star"> @user.getWatching().size()</span></span> 
+                        <br/>
+                        @if(user.getRoles().count(_.getName()=="admin") > 0){
+                        <span class="label label-info"> Admin</span><br/> <a href="@routes.Admin.revokeAdmin(user.getEmail())">Revoke Administrator</a>
+                        }else{
+                        <a href="@routes.Admin.makeAdmin(user.getEmail())">Make Administrator</a>
+                        }
+                    </td>
+                    <td>
+                        <div id="activityplot@users.indexOf(user)" class="activityplot"></div>
+                    </td>
+                    <td>
+                        <div id="behaviour@users.indexOf(user)" class="activityplot"></div>
+                    </td>
+                </tr>
+              }
+            </tbody>
+        </table>
+        }else{
+        <div class="">No users found</div>
+        }
+    </div>
+  </div>
+</section>
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+<script type="text/javascript">
+
+function drawUser(email, container) {
+
+    var url = "@routes.Admin.getUsagePlot("placeholder")".replace("placeholder", email);
+
+    $.getJSON(url, function(vis) {
+
+        // Create page view histogram
+        var pageHistogram = d3.nest() 
+            .key(function(d){ return d["URI"]; })
+            .rollup(function(d) { return d.length; })
+            .entries(vis.datatable)
+            .filter(function(d) { return d.values > 2 });
+        
+        pageHistogram.sort(function(a,b) {
+            return b.values - a.values;
+        });
+        
+        var hist = {
+            type : "BarChart",
+            datatable : pageHistogram,
+            timeSeries : false,
+            categorical : true,
+            x : "key",
+            y : "values"
+        }
+        var histChart = new metvis.Chart(container.replace("activityplot", "behaviour"), hist);
+        histChart.height = 140;
+        histChart.width = 400;
+        histChart.margin.top=10;
+        histChart.margin.left=10;
+        // histChart.margin.bottom=10;
+        histChart.interactive = true;
+        histChart.axis.x.tickLabels = false;
+        histChart.axis.y.tickLabels = false;
+        histChart.draw();
+
+        // Create page views by day
+        var aggregated = d3.nest() 
+            .key(function(d){ return d[vis.x]; })
+            .rollup(function(d) { return d.length; })
+            .entries(vis.datatable);
+
+        aggregated.forEach(function (d) {
+            d[vis.x] = d.key;
+            d[vis.y] = d.values;
+        })
+
+        vis.datatable = aggregated;
+
+        // Pad dataset if required
+        var today = new Date();
+        var thirtyAgo = new Date(new Date().setDate(today.getDate()-30));
+        var format = d3.time.format("%Y-%m-%d");
+
+        if (vis.datatable.length === 0 || format.parse(vis.datatable[0].Date).getTime() > thirtyAgo.getTime()){
+            vis.datatable.unshift({"Date" : format(thirtyAgo), "Quantity":0});
+        }
+        if (vis.datatable.length === 0 || format.parse(vis.datatable[vis.datatable.length-1].Date).getTime() < today.getTime()){
+           vis.datatable.push({"Date" : format(today), "Quantity":0});
+        }
+
+        chart = new metvis.Chart(container, vis);
+        chart.height = 120;
+        chart.width = 400;
+        chart.margin.top=10;
+        chart.margin.left=10;
+        chart.margin.bottom=10;
+        chart.dateFormat = "%Y-%m-%d";
+        chart.draw();
+    });
+}
+
+function drawActivityPlot() {
+    adminJSRoutes.controllers.Admin.getPageViewPlot("ALL").ajax().success(function(vis) {
+            // Create page views by day
+            var aggregated = d3.nest() 
+                .key(function(d){ return d[vis.x]; })
+                // .key(function(d){ if (d.user == "anonymous") return "anonymous" else return "registered"; })
+                .rollup(function(d) { return d.length; })
+                .entries(vis.datatable);
+
+            aggregated.forEach(function (d) {
+                d[vis.x] = d.key;
+                d[vis.y] = d.values;
+            })
+
+            vis.datatable = aggregated;
+
+            var chart = new metvis.Chart("#activity", vis);
+            chart.height = 250;
+            chart.width = $("#activity").width();
+            chart.axis.y.ticks = 3;
+            chart.margin.top=10;
+            // chart.margin.left=10;
+            // chart.margin.bottom=10;
+            chart.dateFormat = "%Y-%m-%d";
+            chart.draw();
+
+            an = new metvis.Annotation("X", "2015-02-02", "Beta Phase Begins")
+            chart.addAnnotation(an);
+
+            adminJSRoutes.controllers.Admin.getPageViewPlot("ANON").ajax().success(function(vis2) {
+                // Create page views by day
+                var aggregated = d3.nest() 
+                    .key(function(d){ return d[vis2.x]; })
+                    // .key(function(d){ if (d.user == "anonymous") return "anonymous" else return "registered"; })
+                    .rollup(function(d) { return d.length; })
+                    .entries(vis2.datatable);
+
+                aggregated.forEach(function (d) {
+                    d[vis2.x] = d.key;
+                    d[vis2.y] = d.values;
+                })
+
+                vis2.type = "LineChart";
+                vis2.datatable = aggregated;
+
+                chart.addVis(vis2);
+                console.log("added vis2:")
+                console.log(vis2);
+            }).error(function(result) {
+                console.log("Error." + result);
+            });
+        }).error(function(result) {
+            console.log("Error." + result);
+        });
+}
+
+function drawActivityTable() {
+    adminJSRoutes.controllers.Admin.getPageViewStats().ajax()
+        .success(function(vis) {
+        var table = new metvis.Table("#activityTbl", vis);
+        table.draw();
+
+        $("#activityTbl > table").addClass("table");
+
+    }).error(function(error) {
+        console.log("Error." + error);
+    });
+}
+
+$(function() {
+    drawActivityPlot();
+    drawActivityTable();
+
+    @for(user <- users) {
+        drawUser("@user.getEmail()", "#activityplot@users.indexOf(user)");
+    }
+})
+    
+</script>
+<script type="text/javascript" src="@routes.Assets.at("js/d3.v3.min.js")"></script>
+}

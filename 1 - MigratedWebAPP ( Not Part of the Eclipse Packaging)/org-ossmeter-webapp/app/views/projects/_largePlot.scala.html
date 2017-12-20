@@ -1,0 +1,156 @@
+@()
+
+@import scala._
+
+<section>
+    <div class="container box">
+        <div class="row">    
+            <div class="col-md-9" id="plot"></div>
+            <div class="col-md-3">
+                <h4>Toolbox</h4>
+                <!-- <a href="#"><span class="glyphicon glyphicon-eye-open tip btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Add plot to dashboard"></span></a>
+                <a href="#"><span class="glyphicon glyphicon-time tip btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Create notification"></span></a> -->
+                <a href="javascript:removeAllFromPlot()"><span class="glyphicon glyphicon-refresh tip btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Clear plot"></span></a>
+               <!--  <a href="#"><span class="glyphicon glyphicon-calendar tip btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Show events"></span></a> -->
+                <h4>Event Groups</h4>
+                <div id="eventgroups" class="collapse"></div>
+                <h4>Legend</h4>
+                <div id="legend"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(function() {
+        if (app.grid.eventGroups.length == 0) {
+            $("#eventgroups").append("None");
+        }
+        for (var gp in app.grid.eventGroups) {
+
+            app.grid.eventGroups[gp]._annotations = [];
+
+            for (var e in app.grid.eventGroups[gp].events) {
+                app.grid.eventGroups[gp]._annotations.push(
+                    new metvis.Annotation("X", 
+                        app.grid.eventGroups[gp].events[e].date, 
+                        app.grid.eventGroups[gp].events[e].name)
+                    );
+            }
+
+
+            $("#eventgroups").append('<li class="checkbox"><label><input type="checkbox" class="cb_eventGroup" value="'+gp+'"> ' + app.grid.eventGroups[gp].name + '</label></li>');
+        }
+
+        $(".cb_eventGroup").click(function() {
+            var id = $(this).val();
+            var annos = app.grid.eventGroups[id]._annotations;
+            if (chart) {
+                $.each(annos, function(index, value) {
+                    toggleAnnotation(chart, value);
+                });
+            }
+        })
+    })
+
+    function toggleAnnotation(chart, annotation) {
+        if (chart.annotations.indexOf(annotation) == -1) {
+            chart.addAnnotation(annotation);
+        } else {
+            chart.removeAnnotation(annotation);
+        }
+    }
+
+// THIS SCRIPT SHOULD MOVE TO DETAILVIEW as it will differ from compare. This template
+// is literally that. A template.
+// Turns out we decided against a large plot in the compare view. This still needs refactoring
+    var vislist = []; 
+    var metricmap = {};
+    var chart;
+
+    function grabMetricData(projectid, metricid) {
+        // Check cache
+        if (metricid in metricmap) {
+            // Only add and redraw if it isn't already on the chart
+            if (!$.inArray(metricmap[metricid]), vislist) {
+                vislist.push(metricmap[metricid]);
+                addVisToChart(metricmap[metricid]);
+            }
+            return;
+        }
+
+        // Grab via API
+        $.getJSON(getApi() + "/projects/p/" + projectid + "/m/" + metricid, function(vis) {
+            metricmap[metricid] = vis;
+            vislist.push(vis);
+            
+            addVisToChart(vis); 
+        });
+    }
+
+    function showJustOneMetric(projectid, metricid) {
+        if (chart) {
+            removeAllFromPlot();
+        }
+        grabMetricData(projectid, metricid);
+    }
+
+    function addVisToChart(vis) {
+        if (chart) {
+            chart.addVis(vis);
+        } else {
+            chart = new metvis.Chart("#plot", vis)
+            chart.height = 300;
+            chart.draw();
+        }
+
+        drawLegend();
+    }
+
+    function drawLegend() {
+        var l = $("#legend");
+        l.empty();
+        l.append("<ul>");
+        for (var s in chart.series) {
+            l.append('<li><div class="legend-box" style="background-color:' + chart.colors(s) + '"></div>' + chart.series[s].name + ' <small>('+chart.series[s].vis.name+')</small></li>');
+        }
+        l.append("</ul>");
+    }
+
+    function removeAllFromPlot() {
+        for (var v in vislist) {
+            chart.removeVis(vislist[v]);
+        }
+        vislist = [];
+        drawLegend();
+    }
+
+    function removeFromPlot(visId) {
+        if (visId in metricmap) {
+            chart.removeVis(metricmap[visId]);
+            drawLegend();
+        }
+    }
+
+    $(function() {
+        $(window).scroll(function() {
+            if ($("#plot").offset().top + $("#plot").height() > $(window).scrollTop() &&
+                $("#plot").offset().top + $("#plot").height() < $(window).scrollTop() + $(window).height()) {
+                $("#returnToTop").hide();
+            } else {
+                $("#returnToTop").css("top", $(window).height()/2);
+                $("#returnToTop").show();
+            }
+        });
+
+        $("#returnToTop").click(function() {
+            $("html, body").animate({ scrollTop: ($("#plot").offset().top - 20) }, "slow");
+        });
+    });
+</script>
+
+<div id="returnToTop">
+    <span class="glyphicon glyphicon-arrow-up"></span>
+    <p><small>Scroll to plot</small></p>
+</div>

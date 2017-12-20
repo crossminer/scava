@@ -1,0 +1,54 @@
+@(projectForm: Form[org.eclipse.crossmeter.repository.model.Project], importForm: Form[ProjectImport])
+
+@main(Messages("ossmeter.index.title")) {
+<section>
+<div class="container box">
+    <div class="col-md-12">
+ @helper.form(routes.Projects.importProject, 'class->"form-project") {
+  <h1>Import project</h1>
+  <p>If your project is hosted on Eclipse, SourceForge, or GitHub, you can simply paste the URL below and we'll add it.</p>
+  <p>E.g. <code>https://projects.eclipse.org/projects/modeling.epsilon</code> or <code>https://github.com/jrwilliams/gif-hook</code></p>
+    <fieldset>
+            <div class="form-group">
+              <label class="form-label">URL: </label><input class="form-control" type="text" name="url" placeholder="URL" value="@importForm("url").value">
+            </div>
+     </fieldset>
+        
+     <div class="actions">
+         <input type="submit" value="Import project" class="btn btn-success"> or
+         <a href="@routes.Projects.projects()" class="btn btn-danger">Cancel</a>
+     </div>
+ }
+ </div>
+</div>
+</section>
+<section>
+<div class="container box">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Create new project</h1>
+      <p>Project not hosted on one of the forges above? Click below to manually enter the project's details.</p>
+      <a href="@routes.Projects.createProject()" class="btn btn-success">Manually create project</a> or
+         <a href="@routes.Projects.projects()" class="btn btn-danger">Cancel</a>
+    </div>
+  </div>
+</div>
+
+</section>
+ @*helper.form(routes.Projects.save, 'class->"form-project") {
+	<h1>Create new project</h1>
+  	<fieldset>
+            <div class="form-group">
+              <label class="form-label">Name: </label><input class="form-control" type="text" name="name" placeholder="Name" value="@projectForm("name").value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description: </label><input class="form-control" type="text" name="description" placeholder="Description" value="@projectForm("description").value">
+            </div>
+     </fieldset>
+        
+     <div class="actions">
+         <input type="submit" value="Create project" class="btn btn-success"> or
+         <a href="@routes.Projects.projects()" class="btn btn-danger">Cancel</a>
+     </div>
+ }*@
+}

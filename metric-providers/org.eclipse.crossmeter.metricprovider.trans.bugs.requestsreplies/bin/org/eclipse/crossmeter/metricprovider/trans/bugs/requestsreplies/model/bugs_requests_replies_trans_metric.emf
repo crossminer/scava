@@ -1,0 +1,16 @@
+package org.eclipse.crossmeter.metricprovider.trans.bugs.requestsreplies.model;
+
+@db(qualifiedCollectionNames="true")
+class BugsRequestsRepliesTransMetric {
+	val BugStatistics[*] bugs;
+}    
+
+class BugStatistics {
+   attr String bugTrackerId;
+   attr String bugId;
+   attr boolean firstRequest;
+   attr boolean answered;
+   attr long responseDurationSec;
+   attr String responseDate;
+
+}

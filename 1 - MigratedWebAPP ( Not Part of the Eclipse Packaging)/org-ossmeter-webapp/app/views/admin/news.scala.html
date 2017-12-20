@@ -1,0 +1,70 @@
+@(news: List[model.NewsItem], form : Form[model.NewsItem])
+
+@main(Messages("ossmeter.navigation.admin"), "admin") {
+@admin._nav()
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h1>News</h1>
+        </div>
+
+        <div class="row col-md-12">
+        	<h2>Create New Item</h2>
+        	@helper.form(routes.News.createItem) {
+            <input type="text" id="title" name="title" class="form-control" placeholder="Title"/>
+            <textarea id="body" name="body" class="form-control" placeholder="Body"></textarea>
+            
+			<select name="newsType">
+			    @for(ty <- model.NewsItemType.values()){
+			        <option value="@ty">@ty</option>
+			    }
+			</select>
+            <select name="status">
+			    @for(st <- model.NewsItemStatus.values()){
+			        <option value="@st">@st</option>
+			    }
+			</select>
+
+
+            <button class="btn btn-default">Submit</button>
+            }
+        </div>
+
+        <div class="row col-md-12">
+        	<h2>Items</h2>
+        	<table class="table">
+        		<thead>
+        			<tr>
+        				<th>Date</th>
+        				<th>Item</th>
+        				<th>Status</th>
+        				<th></th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			@for(n <- news){
+        			<tr>
+        				<td>@n.getDate()</td>
+        				<td>
+        					<strong>@n.getTitle()</strong> 
+        					<p>@n.getBody()</p>
+        				</td>
+        				<td>@n.getStatus()</td>
+        				<td>
+        					<a href="@routes.News.deleteItem(n.getId())">Delete</a> 
+        					@if(n.getStatus() == model.NewsItemStatus.PUBLISHED) {
+        					<a href="@routes.News.changeStatus(n.getId(), model.NewsItemStatus.DRAFT.toString())">Unpublish</a> 
+        					}else{
+        					<a href="@routes.News.changeStatus(n.getId(), model.NewsItemStatus.PUBLISHED.toString())">Publish</a>
+        					}
+        				</td>
+        			</tr>
+        			}
+        		</tbody>
+        	</table>
+        </div>
+    </div>
+</section>
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+}

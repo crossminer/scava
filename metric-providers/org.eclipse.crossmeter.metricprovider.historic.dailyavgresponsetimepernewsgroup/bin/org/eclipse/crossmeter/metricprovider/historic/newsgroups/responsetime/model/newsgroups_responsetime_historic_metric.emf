@@ -1,0 +1,12 @@
+package org.eclipse.crossmeter.metricprovider.historic.newsgroups.responsetime.model;
+
+class NewsgroupsResponseTimeHistoricMetric {
+	attr String newsgroupName;
+   	attr long avgResponseTime;
+   	attr String avgResponseTimeFormatted;
+	attr int threadsConsidered;
+   	attr long cumulativeAvgResponseTime;
+   	attr String cumulativeAvgResponseTimeFormatted;
+	attr int cumulativeThreadsConsidered;
+}
+

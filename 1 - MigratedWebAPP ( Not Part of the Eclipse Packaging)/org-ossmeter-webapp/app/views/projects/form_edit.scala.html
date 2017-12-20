@@ -1,0 +1,24 @@
+@(form: Form[model.Project])
+
+@main(Messages("ossmeter.index.title")) {
+@*
+<div class="container">
+ @helper.form(routes.Projects.update(Long.parseLong(form("id").value)), 'class->"form-project") {
+	<h1>Edit project: @form("name").value</h1>
+  	<fieldset>
+            <div class="form-group">
+              <label class="form-label">Name: </label><input class="form-control" type="text" name="name" placeholder="Name" value="@form("name").value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description: </label><input class="form-control" type="text" name="description" placeholder="Description" value="@form("description").value">
+            </div>
+     </fieldset>
+     <div class="actions">
+         <input type="submit" value="Edit project" class="btn btn-success"> or
+         <a href="@routes.Projects.projects()" class="btn btn-danger">Cancel</a>
+     </div>
+ }
+
+</div>
+*@
+}

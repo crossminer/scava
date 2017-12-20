@@ -1,0 +1,21 @@
+
+@main(Messages("ossmeter.navigation.admin"), "admin") {
+@admin._nav()
+
+<section>
+  	<div class="container box">
+      	<div class="row col-md-12">
+        	<h1>Quality Models</h1>
+        </div>
+        <div class="row col-md-12">
+        	<ul>
+        		<li><a href="@routes.Admin.editQualityModel("info")">
+        		Information Source</a></li>
+        		<li><a href="@routes.Admin.editQualityModel("quality")">Quality</a></li>
+        	</ul>
+        </div>
+     </div>
+</section>
+
+<script src="@routes.Admin.jsRoutes" defer="defer"></script>
+}
