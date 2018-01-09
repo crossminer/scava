@@ -1,0 +1,12 @@
+package org.eclipse.crossmeter.metricprovider.historic.bugs.topics.model;
+
+class BugsTopicsHistoricMetric {
+	val BugTopic[*] bugTopics;
+}
+
+class BugTopic {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String label;
+   	attr int numberOfDocuments;
+}
