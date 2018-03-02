@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.scava.commons.context.sourcecode.SourceCodeContext;
-import org.scava.commons.context.sourcecode.lineinfo.LineInfo;
-import org.scava.commons.context.sourcecode.lineinfo.detail.ASTDetailKind;
-import org.scava.commons.context.sourcecode.lineinfo.detail.ASTDetailTypeName;
+import org.eclipse.scava.commons.context.sourcecode.SourceCodeContext;
+import org.eclipse.scava.commons.context.sourcecode.lineinfo.LineInfo;
+import org.eclipse.scava.commons.context.sourcecode.lineinfo.detail.ASTDetailKind;
+import org.eclipse.scava.commons.context.sourcecode.lineinfo.detail.ASTDetailTypeName;
 import org.junit.jupiter.api.Test;
 
 class SourceCodeContextTest {
