@@ -1,0 +1,3 @@
+Source: src
+Main-Module: LOCJava
+Require-Bundles: org.eclipse.scava.metricprovider.trans.rascal.LOC

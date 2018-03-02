@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CC.java
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.rascal.CC.java;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.scava.metricprovider.rascal,
+ org.apache.commons.math,
+ org.eclipse.scava.metricprovider.trans.rascal.CC,
+ org.eclipse.scava.platform.visualisation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

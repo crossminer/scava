@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Wiki
+Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.wiki;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.googlecode.pongo.runtime.osgi,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime
+Export-Package: org.eclipse.scava.repository.model.cc.wiki
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rascal Metric Provider Definition
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.rascal;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.eclipse.scava.metricprovider.rascal.Rasctivator
+Bundle-Vendor: SCAVA
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform.vcs.svn,
+ org.eclipse.osgi,
+ org.eclipse.scava.platform.vcs.workingcopy.manager,
+ rascal4ossmeter,
+ org.apache.log4j.1.2.17
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.scava.metricprovider.rascal,
+ org.eclipse.scava.metricprovider.rascal.trans.model
+Import-Package: org.mapdb

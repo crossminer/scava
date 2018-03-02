@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJavaQuartiles.historic",
+	"vis" : [ 
+		{
+			"id" : "AdvancedLanguageFeaturesJavaQuartilesHistoric",
+			"name" : "Advanced usage of Java features",
+			"description" : "This metric shows the quartiles of counts of advanced Java features over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Q",  "field" : "$value[0].value" },
+							 { "name" : "Val",  "field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val",
+			"series" : "Q",
+			"x-label" : "Date",		
+			"y-label" : "Quartiles of counts of advanced Java features",
+			"timeSeries" : true
+		}
+	]
+}

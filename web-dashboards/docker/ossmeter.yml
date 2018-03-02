@@ -1,0 +1,67 @@
+# Docker Composer File to launch the OSSMETER-Platform as a distributed application
+#
+# The application is composed by 4 services:
+#   - oss-web: corresponds to the service of OSSMETER platform website
+#   - oss-app: service running api server and the orchestrator of OSSMETER slave instances
+#   - oss-slave: service corresponding to the OSSMETER slaves responsible for the analysis
+#    of software projects
+#   - oss-db: service responsible for the the storage of OSSMETER data
+#
+#
+version: "2"
+services:
+    oss-web: #deploys the OSSMETER Web App
+        image: crossminer/ossmeter-web  # directory to the corresponding Dockerfile
+        depends_on:
+            - oss-app
+            - oss-db #only requests for oss-db service to be launched before this service. DB may still not be ready when this service starts
+        networks:
+            - default
+
+        # maps the port 9000 in the localhost to port 9000 of container  "HOST:CONTAINER"
+        ports:
+            - "9000:9000"
+
+    oss-app: #Deploys a container with the OSSMETER platform configured to act as master
+             # and to run the api server used by oss-web service
+        image: crossminer/ossmeter-platform
+        entrypoint: ./eclipse -apiServer -master -ossmeterConfig prop.properties
+#        entrypoint: ./eclipse -apiServer -master -slave -ossmeterConfig prop.properties
+        depends_on:
+            - oss-db
+        networks:
+            - default
+        expose: #exposes OSSMETER API client port to oss-web application
+            - 8182
+            - 8183 #Admin API?
+
+    oss-slave: # Service containing OSSMETER slaves instances
+        image: crossminer/ossmeter-platform
+        entrypoint: ./eclipse -slave -ossmeterConfig prop.properties
+        depends_on:
+            - oss-db
+            - oss-app
+        networks:
+            - default
+ # NOTE: To scale up the number of slaves in OSSMETER application using docker composer use:
+ #                  docker-compose scale oss-slave=X
+ #       where 'X' corresponds to the total number of slaves wanted in the application
+ #
+ # Each slave instance consumes a great amount of processing and memory resources.
+ # Deployment of multiple instances may harm the system performance
+
+    oss-db: # data storage service
+        image: mongo:3.4 #current setup uses mongodb
+        networks:
+            - default
+        expose:  #exposes database port to oss-web and oss-app
+            - 27017
+        volumes: #creates volume on container
+            - ~/oss-data:/data/db
+ # Uncomment the port map below to give access to external mongo database visualizers
+        ports:
+            - "27017:27017"
+ #   Current database setup consists in a single db instance. May be changed to a
+ # replication deployment to increase fault tolerance and to better handle  the number of
+ # read and write operations
+ #

@@ -1,0 +1,11 @@
+@(project: org.eclipse.scava.repository.model.Project, qualityModel : model.QualityModel, aspect : model.QualityAspect, summary : Boolean, parents : List[model.QualityAspect])
+
+@import scala._
+
+@for(attribute <- aspect.getAttributes()) {
+    @_attributeView(project, qualityModel, attribute, List.concat(parents, List(aspect)), summary)
+}
+
+@for(a <- aspect.getAspects()) {
+    @_aspectView(project, qualityModel, a, summary, List.concat(parents, List(aspect)))
+}

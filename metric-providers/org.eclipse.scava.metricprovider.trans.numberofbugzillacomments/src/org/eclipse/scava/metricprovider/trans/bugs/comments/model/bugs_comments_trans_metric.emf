@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.bugs.comments.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class BugsCommentsTransMetric {
+	val BugTrackerData[*] bugTrackerData;
+}
+
+class BugTrackerData {
+	@searchable
+	attr String bugTrackerId;
+	attr int numberOfComments;
+	attr int cumulativeNumberOfComments;
+}
+

@@ -1,0 +1,14 @@
+package org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.model;
+
+class BugsSeveritySentimentHistoricMetric {
+	val SeverityLevel[*] severityLevels;
+}
+
+class SeverityLevel {
+	attr String severityLevel;
+	attr int numberOfBugs;
+	attr float averageSentiment;
+	attr float sentimentAtThreadBeggining;
+	attr float sentimentAtThreadEnd;
+}
+

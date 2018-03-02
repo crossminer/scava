@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Git VCS Manager Tests
+Bundle-SymbolicName: org.eclipse.scava.platform.vcs.git.tests
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.eclipse.scava.platform.vcs.git.tests.Activator
+Bundle-Vendor: SCAVA
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.platform.vcs.git,
+ org.junit,
+ org.eclipse.scava.repository.model,
+ org.mockito,
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.vcs.svn
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

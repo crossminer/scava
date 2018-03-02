@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.rascal.testability.java;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.scava.metricprovider.rascal,
+ com.googlecode.pongo.runtime,
+ rascal4ossmeter,
+ org.eclipse.scava.platform.visualisation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

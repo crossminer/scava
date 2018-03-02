@@ -1,3 +1,0 @@
-Source: src
-Main-Module: LOCJava
-Require-Bundles: org.eclipse.crossmeter.metricprovider.trans.rascal.LOC

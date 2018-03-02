@@ -1,0 +1,23 @@
+package org.eclipse.scava.metricprovider.historic.bugs.emotions.model;
+
+class BugsEmotionsHistoricMetric {
+	val BugData[*] bugData;
+	val Dimension[*] dimensions;
+}
+
+class BugData {
+	attr String bugTrackerId;
+	attr int numberOfComments;
+	attr int cumulativeNumberOfComments;
+}
+
+
+class Dimension {
+	attr String bugTrackerId;
+	attr String emotionLabel;
+	attr int numberOfComments;
+	attr int cumulativeNumberOfComments;
+	attr float percentage;
+	attr float cumulativePercentage;
+}
+

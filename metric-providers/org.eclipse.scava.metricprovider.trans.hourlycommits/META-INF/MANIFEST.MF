@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hourlycommits
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.hourlycommits;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.metricprovider.trans.hourlycommits.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.trans.commits,
+ org.eclipse.scava.platform.client.api
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

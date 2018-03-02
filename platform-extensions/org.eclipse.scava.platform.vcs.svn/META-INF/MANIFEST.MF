@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Svn
+Bundle-SymbolicName: org.eclipse.scava.platform.vcs.svn;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.platform.vcs.svn.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.vcs.svn,
+ org.svnkit
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.platform.vcs.svn

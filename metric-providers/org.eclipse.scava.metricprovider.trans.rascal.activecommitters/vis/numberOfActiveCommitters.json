@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.numberOfActiveCommitters.historic",
+	"vis" : [ 
+		{
+			"id" : "numberOfActiveCommittersTimeLine",
+			"name" : "Number of active committers (2 weeks)",
+			"description" : "This metric shows the number of committers active in the last two weeks, over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" },
+							{ "name" : "Committers", "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Committers",
+			"x-label" : "Date",
+			"y-label" : "Committers active",
+			"timeSeries" : true
+		}
+	]
+}

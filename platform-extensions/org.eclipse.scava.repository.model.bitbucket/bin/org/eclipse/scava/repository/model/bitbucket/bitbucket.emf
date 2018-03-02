@@ -1,0 +1,13 @@
+package org.eclipse.scava.repository.model.bitbucket;
+
+@stub(javaClass="org.eclipse.scava.repository.model.BugTrackingSystem")
+abstract class BugTrackingSystem {
+}
+
+@customize
+class BitbucketBugTrackingSystem extends BugTrackingSystem {
+  attr String user;
+  attr String repository;
+  attr String login;
+  attr String password;
+}

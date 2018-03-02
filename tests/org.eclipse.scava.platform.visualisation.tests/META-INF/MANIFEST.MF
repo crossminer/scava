@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.eclipse.scava.platform.visualisation.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.scava.platform.visualisation,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.junit,
+ org.jackson.all,
+ org.eclipse.scava.metricprovider.historic.commitsovertime,
+ org.eclipse.scava.metricprovider.rascal,
+ org.apache.log4j.1.2.17,
+ com.googlecode.pongo.runtime

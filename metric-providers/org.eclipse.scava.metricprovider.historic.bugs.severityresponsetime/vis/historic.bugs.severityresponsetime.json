@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime",
+	"vis" : [ 
+		{
+			"id" : "bugs.severity.averageResponseTime",
+			"name" : "Bug Average Response Time (ms) per Severity Level",
+			"description" : "The number of bug average response time per severity level",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$severityLevels",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Severity", "field" : "$severityLevel" },
+					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
+			},
+			"x" : "Date",
+			"y" : "Response Time", 
+			"series" : "Severity",
+			"timeSeries" : true
+		}
+	]
+}

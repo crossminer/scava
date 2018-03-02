@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Copyright (c) 2017 University of Manchester
+  
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+-->
+<plugin>
+  
+  <extension point="org.eclipse.scava.platform.metricprovider">
+     <metricProvider provider="org.eclipse.scava.metricprovider.trans.newsgroups.hourlyrequestsreplies.HourlyRequestsRepliesTransMetricProvider">
+     </metricProvider>
+  </extension>
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.trans.newsgroups.hourlyrequestsreplies.model.NewsgroupsHourlyRequestsRepliesTransMetric"/>
+    <class name="org.eclipse.scava.metricprovider.trans.newsgroups.hourlyrequestsreplies.model.HourArticles"/>
+  </extension>
+</plugin>

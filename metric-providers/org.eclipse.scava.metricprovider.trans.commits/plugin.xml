@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.trans.commits.model.Commits"/>
+    <class name="org.eclipse.scava.metricprovider.trans.commits.model.RepositoryData"/>
+    <class name="org.eclipse.scava.metricprovider.trans.commits.model.CommitData"/>
+  </extension>
+  <extension
+        id="org.eclipse.scava.metricprovider.trans.commits.CommitsTransientMetricProvider"
+        point="org.eclipse.scava.platform.metricprovider">
+     <metricProvider
+           provider="org.eclipse.scava.metricprovider.trans.commits.CommitsTransientMetricProvider">
+     </metricProvider>
+  </extension>
+</plugin>

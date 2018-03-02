@@ -1,0 +1,69 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.emotions",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.emotions.articles",
+			"name" : "Article Emotions",
+			"description" : "The number of articles containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Articles", "field" : "$numberOfArticles" } ]
+			},
+			"x" : "Date",
+			"y" : "Articles", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.emotions.cumulativeArticles",
+			"name" : "Article Emotions (Cumulative)",
+			"description" : "The cumulative number of articles containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Articles", "field" : "$cumulativeNumberOfArticles" } ]
+			},
+			"x" : "Date",
+			"y" : "Articles", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.emotions.articlePercentages",
+			"name" : "Article Emotion Percentages",
+			"description" : "The percentages of articles containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Articles", "field" : "$percentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Articles", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "newsgroups.emotions.cumulativeArticlePercentages",
+			"name" : "Article Emotion Percentages (Cumulative)",
+			"description" : "The cumulative percentages of articles containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Articles", "field" : "$cumulativePercentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Articles", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		}
+	]
+}

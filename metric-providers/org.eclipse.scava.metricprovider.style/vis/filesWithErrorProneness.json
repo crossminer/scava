@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.style.filesWithErrorProneness.historic",
+	"vis" : [ 
+		{
+			"id" : "filesWithErrorPronenessTimeLine",
+			"name" : "Percentage of file that are error prone",
+			"description" : "This metric shows the percentage of files with style violations which make the code error prone, over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Percentage", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Percentage", 
+			"x-label" : "Date",		
+			"y-label" : "Files with violations (%)",
+			"timeSeries" : true
+		}
+	]
+}

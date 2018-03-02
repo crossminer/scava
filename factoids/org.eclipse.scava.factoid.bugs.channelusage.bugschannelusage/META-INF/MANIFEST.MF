@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BugsChannelUsageFactoid
+Bundle-SymbolicName: org.eclipse.scava.factoid.bugs.channelusage;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.scava.metricprovider.historic.bugs.newbugs,
+ org.eclipse.scava.metricprovider.historic.bugs.comments,
+ org.eclipse.scava.metricprovider.historic.bugs.patches,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model

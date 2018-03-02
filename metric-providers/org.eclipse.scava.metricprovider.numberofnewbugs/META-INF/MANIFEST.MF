@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NumberOfNewBugs
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.bugs.newbugs;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.metricprovider.trans.bugs.newbugs.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime.osgi,
+ org.eclipse.scava.platform.visualisation
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.metricprovider.trans.bugs.newbugs,
+ org.eclipse.scava.metricprovider.trans.bugs.newbugs.model

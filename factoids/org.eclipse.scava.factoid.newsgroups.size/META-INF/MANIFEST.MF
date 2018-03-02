@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Size
+Bundle-SymbolicName: org.eclipse.scava.factoid.newsgroups.size;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.cc.nntp,
+ org.eclipse.scava.metricprovider.historic.newsgroups.newthreads,
+ org.eclipse.scava.metricprovider.historic.newsgroups.articles
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

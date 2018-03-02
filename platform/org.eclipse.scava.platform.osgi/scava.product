@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="org.eclipse.scava.product.fromfeature" id="org.eclipse.scava.platform.osgi.product" application="scava.workerservice" useFeatures="true" includeLaunchers="true">
+
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-master -slave -apiServer
+      </programArgs>
+      <vmArgsLin>-Xmx8g
+      </vmArgsLin>
+      <vmArgsMac>-Xmx4g -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.scava.platform.feature"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.scava.platform.admin" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.scava.platform.client.api" autoStart="true" startLevel="0" />
+      <plugin id="org.restlet" autoStart="true" startLevel="0" />
+      <plugin id="org.restlet.ext.jetty" autoStart="true" startLevel="0" />
+   </configurations>
+
+</product>

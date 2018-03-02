@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Size
+Bundle-SymbolicName: org.eclipse.scava.factoid.bugs.size;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.historic.bugs.newbugs,
+ org.eclipse.scava.metricprovider.historic.bugs.comments,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.metricprovider.historic.bugs.patches
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

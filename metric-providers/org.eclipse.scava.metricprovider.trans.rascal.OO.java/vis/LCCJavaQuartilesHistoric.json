@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.java.LCC-Java-Quartiles.historic",
+	"vis" : [ 
+		{
+			"id" : "LCCJavaQuartilesHistoric",
+			"name" : "Loose Class Cohesion (Java)",
+			"description" : "This metric shows the quartiles of Loose class cohesion for Java over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Q",  "field" : "$value[0].value" },
+							 { "name" : "Val",  "field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val",
+			"series" : "Q",
+			"x-label" : "Date",		
+			"y-label" : "quartiles of Loose class cohesion",
+			"timeSeries" : true
+		}
+	]
+}

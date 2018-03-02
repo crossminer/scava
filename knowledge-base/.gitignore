@@ -1,0 +1,6 @@
+.classpath
+.project
+.settings/
+evaluation/
+target/
+build.properties

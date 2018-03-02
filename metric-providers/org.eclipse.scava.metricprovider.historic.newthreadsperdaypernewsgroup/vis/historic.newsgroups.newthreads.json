@@ -1,0 +1,31 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.newthreads",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.newThreads",
+			"name" : "New Threads",
+			"description" : "The number of new threads submitted every day." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Threads", "field" : "$numberOfNewThreads" } ]
+			},
+			"x" : "Date",
+			"y" : "Threads",
+			"timeSeries" : true
+		},{
+			"id" : "newsgroups.cumulativeNewThreads",
+			"name" : "New Threads (Cumulative)",
+			"description" : "The number of new threads submitted up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Threads", "field" : "$cumulativeNumberOfNewThreads" } ]
+			},
+			"x" : "Date",
+			"y" : "Threads",
+			"timeSeries" : true
+		}
+	]
+
+}

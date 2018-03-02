@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.PHP.MIF-PHP-Quartiles.historic",
+	"vis" : [ 
+		{
+			"id" : "MIFPHPQuartilesHistoric",
+			"name" : "Method Inheritance Factor (PHP)",
+			"description" : "This metric shows the quartiles of Method inheritance factor for PHP over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Q",  "field" : "$value[0].value" },
+							 { "name" : "Val",  "field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val",
+			"series" : "Q",
+			"x-label" : "Date",		
+			"y-label" : "quartiles of Method inheritance factor",
+			"timeSeries" : true
+		}
+	]
+}

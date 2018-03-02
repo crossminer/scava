@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.style.spreadOfStyleViolations.historic",
+	"vis" : [ 
+		{
+			"id" : "spreadOfStyleViolationsTimeLine",
+			"name" : "Spread of files violating the coding standards over the system",
+			"description" : "This metric shows the spread of style violations over the project's files, over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Spread", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Spread", 
+			"x-label" : "Date",		
+			"y-label" : "Spread (0-1)",
+			"timeSeries" : true
+		}
+	]
+}

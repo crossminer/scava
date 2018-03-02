@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Activecommitters
-Bundle-SymbolicName: org.eclipse.crossmeter.metricprovider.trans.rascal.activecommitters;singleton:=true
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.crossmeter.metricprovider.rascal,
- com.googlecode.pongo.runtime,
- org.eclipse.crossmeter.platform.visualisation

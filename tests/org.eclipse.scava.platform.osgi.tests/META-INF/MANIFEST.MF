@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.eclipse.scava.platform.osgi.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.scava.platform.osgi,
+ org.eclipse.scava.platform,
+ org.junit,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime.osgi,
+ org.apache.log4j.1.2.17

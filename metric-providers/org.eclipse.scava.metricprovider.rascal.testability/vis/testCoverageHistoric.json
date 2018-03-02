@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.rascal.testability.java.TestCoverage.historic",
+	"vis" : [ 
+		{
+			"id" : "testCoverageHistoric",
+			"name" : "Unit test coverage (all methods)",
+			"description" : "This metric shows the history of the Java unit test coverage, estimated statically.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" }, 
+						{ "name" : "Coverage", 		"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Coverage", 
+			"x-label" : "Date",		
+			"y-label" : "Coverage (%)",
+			"timeSeries" : true
+		}
+	]
+}

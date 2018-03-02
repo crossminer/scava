@@ -1,0 +1,24 @@
+
+@(project: org.eclipse.scava.repository.model.Project, qualityModel : model.QualityModel, attribute : model.QualityAttribute, parents : List[model.QualityAspect], summary : Boolean)
+
+@import scala._
+
+<section class='@attribute.getName().replaceAll(" ", "")'>
+    <div class="container box">
+        <div class="row">    
+            <div class="col-md-12">
+                <ol class="breadcrumb projectbreadcrumb">
+                @for(p <- parents) {
+                    <li>@p.getName()</li>
+                }
+                </ol>
+            </div>
+        </div>
+        @if(summary) {
+            @_attributeSummaryView(project, qualityModel, attribute)
+        } else {
+            @_attributeDetailView(project, qualityModel, attribute)
+        }
+    </div>
+</section>
+   

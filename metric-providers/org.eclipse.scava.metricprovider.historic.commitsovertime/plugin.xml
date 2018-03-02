@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+  <extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.historic.commitsovertime.model.CommitsOverTime"/>
+    <class name="org.eclipse.scava.metricprovider.historic.commitsovertime.model.RepositoryData"/>
+  </extension>
+  <extension
+        id="org.eclipse.scava.metricprovider.historic.commitsovertime.CommitsOverTimeHistoricMetricProvider"
+        point="org.eclipse.scava.platform.metricprovider">
+     <metricProvider
+           provider="org.eclipse.scava.metricprovider.historic.commitsovertime.CommitsOverTimeHistoricMetricProvider">
+     </metricProvider>
+  </extension>
+  <extension
+        point="org.eclipse.scava.platform.visualisation.metric">
+     <visualisation
+           json="vis/commitsovertime.json">
+     </visualisation>
+  </extension>
+</plugin>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+   <extension id="scava.workerservice" point="org.eclipse.core.runtime.applications">
+      <application cardinality="singleton-global" thread="main" visible="true">
+         <run class="org.eclipse.scava.platform.osgi.OssmeterApplication">
+         </run>
+      </application>
+   </extension>
+   <extension id="scava" point="org.eclipse.core.runtime.products">
+      <product application="scava.workerservice" name="org.eclipse.scava.product.fromfeature">
+         <property name="appName" value="org.eclipse.scava.product.fromfeature">
+         </property>
+      </product>
+   </extension>
+   <extension id="testproduct" point="org.eclipse.core.runtime.products">
+      <product application="scava.workerservice" name="Test">
+         <property name="appName" value="Test">
+         </property>
+      </product>
+   </extension>
+   <extension id="product" point="org.eclipse.core.runtime.products">
+      <product application="scava.workerservice" name="org.eclipse.scava.product.fromfeature">
+         <property name="appName" value="org.eclipse.scava.product.fromfeature">
+         </property>
+      </product>
+   </extension>
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.platform.osgi.errors.ProjectErrors"/>
+    <class name="org.eclipse.scava.platform.osgi.errors.ProjectError"/>
+  </extension>
+<extension
+      id="org_ossmeter_platform_vanilla"
+      point="org.eclipse.core.runtime.products">
+   <product
+         application="scava.workerservice"
+         name="org.eclipse.scava.platform.vanilla">
+      <property
+            name="appName"
+            value="org.eclipse.scava.platform.vanilla">
+      </property>
+   </product>
+</extension>
+</plugin>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Copyright (c) 2017 University of L'Aquila
+  
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+-->
+<?eclipse version="3.4"?><plugin>
+   
+
+
+
+
+
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.repository.model.sourceforge.SourceForgeProject"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.MailingList"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Discussion"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.OS"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Topic"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.ProgrammingLanguage"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Audience"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Environment"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Category"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Donation"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.BugTS"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.FeatureRequest"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.SupportRequest"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Patch"/>
+    <class name="org.eclipse.scava.repository.model.sourceforge.Bug"/>
+  </extension>
+</plugin>

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commitsovertime
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.historic.commitsovertime;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.metricprovider.historic.commitsovertime.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.trans.commits,
+ org.eclipse.scava.platform.client.api,
+ org.eclipse.scava.platform.visualisation
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.metricprovider.historic.commitsovertime.model

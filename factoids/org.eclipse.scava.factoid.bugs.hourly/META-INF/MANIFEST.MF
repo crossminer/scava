@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hourly
+Bundle-SymbolicName: org.eclipse.scava.factoid.bugs.hourly;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.trans.bugs.hourlyrequestsreplies
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

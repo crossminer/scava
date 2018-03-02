@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.historic.bugs.users.model;
+
+class BugsUsersHistoricMetric {
+	attr int numberOfUsers;
+	attr int numberOfActiveUsers;
+	attr int numberOfInactiveUsers;
+	val DailyBugTrackingData[*] bugTrackers;
+}
+
+class DailyBugTrackingData {
+   	attr String bugTrackerId;
+	attr int numberOfUsers;
+	attr int numberOfActiveUsers;
+	attr int numberOfInactiveUsers;
+}

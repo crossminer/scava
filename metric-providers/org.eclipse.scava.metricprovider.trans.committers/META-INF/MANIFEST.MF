@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Committers
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.committers;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime,
+ com.googlecode.pongo.runtime.dependencies,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model
+Export-Package: org.eclipse.scava.metricprovider.trans.committers,
+ org.eclipse.scava.metricprovider.trans.committers.model

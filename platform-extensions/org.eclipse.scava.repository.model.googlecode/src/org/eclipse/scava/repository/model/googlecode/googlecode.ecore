@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="org.eclipse.scava.repository.model.googlecode" nsURI="org.eclipse.scava.repository.model.googlecode" nsPrefix="org.eclipse.scava.repository.model.googlecode">
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.Project"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.NamedElement"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CommunicationChannel">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.CommunicationChannel"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.Person"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BugTrackingSystem">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.BugTrackingSystem"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleCodeProject" eSuperTypes="//Project">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wiki" eType="//GoogleWiki" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forum" eType="//GoogleForum" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="downloads" upperBound="-1" eType="//GoogleDownload" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="issueTracker" eType="//GoogleIssueTracker" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stars" defaultValueLiteral="0">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleWiki" eSuperTypes="//CommunicationChannel"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleForum" eSuperTypes="//CommunicationChannel"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleIssueTracker" eSuperTypes="//BugTrackingSystem">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="issues" upperBound="-1" eType="//GoogleIssue" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleIssue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1" eType="//GoogleUser" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="created_at">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updated_at">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="component">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="comments" upperBound="-1" eType="//GoogleIssueComment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" upperBound="-1" eType="//GoogleLabel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stars">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="summary">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleIssueComment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="date">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleLabel" eSuperTypes="//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleDownload">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="starred">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" upperBound="-1" eType="//GoogleLabel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uploaded_at">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updated_at">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="downloadCounts">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GoogleUser" eSuperTypes="//Person">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="email">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

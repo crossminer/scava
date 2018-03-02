@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SCAVA Rascal Examples
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.rascal.LOC.java;singleton:=true
+Bundle-Version: 0.0.0.qualifier
+Bundle-Vendor: SCAVA
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.scava.metricprovider.rascal,
+ org.apache.commons.math
+Import-Package: org.eclipse.scava.platform

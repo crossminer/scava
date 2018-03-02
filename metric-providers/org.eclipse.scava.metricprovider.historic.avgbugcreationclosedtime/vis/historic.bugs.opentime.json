@@ -1,0 +1,31 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.opentime",
+	"vis" : [ 
+		{
+			"id" : "bugs.bugOpenTime",
+			"name" : "Bug Open Time",
+			"description" : "The average time between creating and closing bugs." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Bug Open Time", "field" : "$avgBugOpenTimeInDays" } ]
+			},
+			"x" : "Date",
+			"y" : "Bug Open Time",
+			"timeSeries" : true
+		},{
+			"id" : "bugs.bugOpenTime-bugs",
+			"name" : "Bug Open Time in relation to the Number of Bugs",
+			"description" : "The average time between creating and closing bugs in relation to the number of bugs considered." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Bugs", "field" : "$bugsConsidered" }, 
+					{ "name" : "Bug Open Time", "field" : "$avgBugOpenTimeInDays" } ]
+			},
+			"x" : "Bugs",
+			"y" : "Bug Open Time",
+			"timeSeries" : false
+		}
+	]
+
+}

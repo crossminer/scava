@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Severity
+Bundle-SymbolicName: org.eclipse.scava.factoid.bugs.severity;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.historic.bugs.severity,
+ org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus,
+ org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime,
+ org.eclipse.scava.metricprovider.historic.bugs.severitysentiment
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

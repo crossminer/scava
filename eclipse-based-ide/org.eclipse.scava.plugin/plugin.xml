@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="org.scava.plugin.commands.category">
+      </category>
+      <command
+            name="Sample Command"
+            categoryId="org.scava.plugin.commands.category"
+            id="org.scava.plugin.commands.sampleCommand">
+      </command>
+      <command
+            categoryId="org.scava.plugin.commands.category"
+            id="org.scava.plugin.commands.demoCommand"
+            name="Demo">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="org.scava.plugin.commands.sampleCommand"
+            class="org.scava.plugin.ui.toolbar.ASTParseHandler">
+      </handler>
+      <handler
+            class="org.scava.plugin.ui.toolbar.LibraryUpdateHandler"
+            commandId="org.scava.plugin.commands.demoCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="AST"
+               id="org.scava.plugin.menus.sampleMenu">
+            <command
+                  commandId="org.scava.plugin.commands.sampleCommand"
+                  id="org.scava.plugin.menus.sampleCommand"
+                  label="Parse">
+            </command>
+         </menu>
+         <menu
+               id="org.scava.plugin.menus.demoMenu"
+               label="SCAVA">
+            <command
+                  commandId="org.scava.plugin.commands.demoCommand"
+                  id="org.scava.plugin.menus.demoCommand"
+                  label="Update libraries">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         id="org.scava.plugin.markers.sourcecodehighlight"
+         name="Scava Source Code Highlight"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.scava.plugin.annotations.sourcecodehighlight"
+            colorPreferenceKey="org.scava.plugin.annotations.sourcecodehighlight.color"
+            colorPreferenceValue="255,108,211"
+            contributesToHeader="false"
+            highlightPreferenceKey="org.scava.plugin.annotations.sourcecodehighlight.highlight"
+            highlightPreferenceValue="true"
+            icon="icons/cm.gif"
+            includeOnPreferencePage="true"
+            label="SCAVA Source Code Highlight"
+            overviewRulerPreferenceKey="org.scava.plugin.annotations.sourcecodehighlight.overview"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="10000"
+            quickFixIcon="icons/cm.gif"
+            textPreferenceKey="org.scava.plugin.annotations.sourcecodehighlight.text"
+            textPreferenceValue="true"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="org.scava.plugin.annotations.sourcecodehighlight.ruler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerSeverity="2"
+            markerType="org.scava.plugin.markers.sourcecodehighlight"
+            name="org.scava.plugin.annotations.sourcecodehighlight"
+            super="org.eclipse.ui.workbench.texteditor.error">
+      </type>
+      </extension>
+  <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="org.scava.plugin.packageExplorerPopUpControbution"
+            objectClass="org.eclipse.jdt.internal.core.JarPackageFragmentRoot">
+         <menu
+               id="org.scava.plugin.menu1"
+               label="Library update request"
+               path="additions">
+            <separator
+                  name="org.scava.plugin.separator1">
+            </separator>
+         </menu>
+         <action
+               class="org.scava.plugin.ui.projectexplorer.ProjectExplorerPopUpHandler"
+               id="org.scava.plugin.action1"
+               label="Library update request"
+               menubarPath="org.scava.plugin.separator1">
+         </action>
+      </objectContribution>
+      <objectContribution
+            id="org.scava.plugin.textPopUpControbution"
+            nameFilter="*.*"
+            objectClass="org.eclipse.ui.IEditorInput">
+         <action
+               class="org.scava.plugin.ui.texteditor.TextEditorPopUp"
+               id="org.scava.plugin.action2"
+               label="Recommandation request for selected text"
+               menubarPath="org.scava.plugin.separator1">
+         </action>
+      </objectContribution>
+   </extension>
+
+  <extension
+        point="org.eclipse.ui.decorators">
+     <decorator
+           adaptable="true"
+           class="org.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
+           icon="icons/cm.gif"
+           id="org.scava.plugin.decorators.sourcecodehighlight.namedmember"
+           label="Scava Source Code Highlight Decorator"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <objectClass
+                 name="org.eclipse.jdt.internal.core.NamedMember">
+           </objectClass>
+        </enablement>
+     </decorator>
+     <decorator
+           adaptable="true"
+           class="org.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
+           icon="icons/cm.gif"
+           id="org.scava.plugin.decorators.sourcecodehighlight.iresource"
+           label="Scava Source Code Highlight Decorator"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <objectClass
+                 name="org.eclipse.core.resources.IResource">
+           </objectClass>
+        </enablement>
+     </decorator>
+  </extension>
+</plugin>

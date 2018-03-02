@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Importer
+Bundle-SymbolicName: org.eclipse.scava.repository.model.github.importer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.repository.model.github.importer
+Require-Bundle: org.eclipse.scava.repository.model.github,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model.importerdependencies,
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.vcs.svn,
+ org.eclipse.scava.repository.model,
+ org.apache.log4j.1.2.17,
+ org.eclipse.scava.repository.model.importer,
+ org.eclipse.scava.repository.model.importer.exception
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

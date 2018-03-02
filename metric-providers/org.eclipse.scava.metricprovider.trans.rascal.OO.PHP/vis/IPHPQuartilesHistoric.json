@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.PHP.I-PHP-Quartiles.historic",
+	"vis" : [ 
+		{
+			"id" : "IPHPQuartilesHistoric",
+			"name" : "Instability (PHP)",
+			"description" : "This metric shows the quartiles of Instability for PHP over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Q",  "field" : "$value[0].value" },
+							 { "name" : "Val",  "field" : "$value[1].value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val",
+			"series" : "Q",
+			"x-label" : "Date",		
+			"y-label" : "quartiles of Instability",
+			"timeSeries" : true
+		}
+	]
+}

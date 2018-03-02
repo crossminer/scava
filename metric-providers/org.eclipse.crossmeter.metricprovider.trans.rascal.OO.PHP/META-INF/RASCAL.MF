@@ -1,3 +1,0 @@
-Source: src
-Main-Module: OOPHP
-Require-Bundles: org.eclipse.crossmeter.metricprovider.trans.rascal.OO, org.eclipse.crossmeter.code.model.php

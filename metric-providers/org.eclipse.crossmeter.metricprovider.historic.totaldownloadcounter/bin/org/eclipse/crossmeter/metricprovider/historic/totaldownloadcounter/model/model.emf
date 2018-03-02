@@ -1,5 +1,0 @@
-package org.eclipse.crossmeter.metricprovider.totaldownloadcounter.model;
-
-class TotalDownloadCounter {
-	attr int downloads;	
-}

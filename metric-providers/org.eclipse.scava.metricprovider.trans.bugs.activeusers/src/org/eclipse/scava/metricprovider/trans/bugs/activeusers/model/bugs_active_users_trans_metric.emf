@@ -1,0 +1,28 @@
+package org.eclipse.scava.metricprovider.trans.bugs.activeusers.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class BugsActiveUsersTransMetric {
+	val BugData[*] bugs;
+    val User[*] users;
+}
+
+class BugData {
+	@searchable
+   	attr String bugTrackerId;
+   	attr int activeUsers;
+   	attr int inactiveUsers;
+    attr int previousUsers; 
+   	attr int users;
+   	attr int days;
+}
+
+class User {
+	@searchable
+	attr String bugTrackerId;
+	attr String userId;
+	attr String lastActivityDate;
+   	attr int comments;
+   	attr int requests;
+   	attr int replies;
+}

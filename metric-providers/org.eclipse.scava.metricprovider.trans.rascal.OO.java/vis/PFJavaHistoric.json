@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.java.PF-Java.historic",
+	"vis" : [ 
+		{
+			"id" : "PFJavaHistoric",
+			"name" : "Polymorphism Factor (Java)",
+			"description" : "This metric shows the Polymorphism Factor for Java over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Val",  "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val", 
+			"x-label" : "Date",		
+			"y-label" : "Polymorphism Factor",
+			"timeSeries" : true
+		}
+	]
+}

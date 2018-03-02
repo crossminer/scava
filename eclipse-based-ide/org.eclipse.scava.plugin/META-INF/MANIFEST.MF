@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scava Eclipse Base IDE
+Bundle-SymbolicName: org.scava.plugin;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.scava.plugin.Activator
+Bundle-Vendor: Frontendart
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core;bundle-version="3.12.3",
+ org.eclipse.jface.text;bundle-version="3.11.2",
+ org.eclipse.jdt.ui;bundle-version="3.12.2",
+ org.eclipse.core.resources;bundle-version="3.11.1",
+ org.eclipse.ui.ide;bundle-version="3.12.3",
+ org.junit;bundle-version="4.12.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.jdt.core.dom,
+ org.eclipse.jdt.internal.ui.javaeditor,
+ org.eclipse.ui.editors.text,
+ org.eclipse.ui.texteditor
+Bundle-ClassPath: .,
+ lib/gson-2.8.1.jar

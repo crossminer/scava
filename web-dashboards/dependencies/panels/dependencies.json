@@ -1,0 +1,70 @@
+{
+    "dashboard": {
+        "id": "AV7m5g5kfuk55ZFAddq4",
+        "value": {
+            "description": "",
+            "hits": 0,
+            "kibanaSavedObjectMeta": {
+                "searchSourceJSON": "{\"filter\":[{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
+            },
+            "optionsJSON": "{\"darkTheme\":false}",
+            "panelsJSON": "[{\"col\":1,\"id\":\"AV7m4-zffuk55ZFAddq3\",\"panelIndex\":1,\"row\":1,\"size_x\":5,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"id\":\"AV7m41w9fuk55ZFAddq2\",\"panelIndex\":2,\"row\":5,\"size_x\":5,\"size_y\":4,\"type\":\"visualization\"},{\"col\":6,\"id\":\"AV7iIuIYfuk55ZFAddqg\",\"panelIndex\":3,\"row\":1,\"size_x\":7,\"size_y\":8,\"type\":\"visualization\"}]",
+            "timeRestore": false,
+            "title": "DependenciesDashboard",
+            "uiStateJSON": "{\"P-1\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}},\"P-2\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}}",
+            "version": 1
+        }
+    },
+    "index_patterns": [
+        {
+            "id": "AV7iEVO_fuk55ZFAddqZ",
+            "value": {
+                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"dependency\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"dependency.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"dependency_ver\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"dependency_ver.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"origin\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"origin.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"uuid.keyword\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
+                "notExpandable": true,
+                "title": "dependencies"
+            }
+        }
+    ],
+    "searches": [],
+    "visualizations": [
+        {
+            "id": "AV7m4-zffuk55ZFAddq3",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"AV7iEVO_fuk55ZFAddqZ\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+                },
+                "title": "dependencies_deps_ver",
+                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
+                "version": 1,
+                "visState": "{\"title\":\"dependencies_deps_ver\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"dependency_ver.keyword\",\"size\":500000,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}"
+            }
+        },
+        {
+            "id": "AV7m41w9fuk55ZFAddq2",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"AV7iEVO_fuk55ZFAddqZ\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+                },
+                "title": "dependencies_origins",
+                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
+                "version": 1,
+                "visState": "{\"title\":\"dependencies_origins\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"origin.keyword\",\"size\":5000000,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}"
+            }
+        },
+        {
+            "id": "AV7iIuIYfuk55ZFAddqg",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"AV7iEVO_fuk55ZFAddqZ\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+                },
+                "title": "dependencies_origin-dependencies graph",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"dependencies_origin-dependencies graph\",\"type\":\"network\",\"params\":{\"canvasBackgroundColor\":\"#FFFFFF\",\"displayArrow\":false,\"firstNodeColor\":\"#FD7BC4\",\"gravitationalConstant\":-350000,\"labelColor\":\"#000000\",\"maxCutMetricSizeEdge\":5000,\"maxCutMetricSizeNode\":5000,\"maxEdgeSize\":20,\"maxNodeSize\":80,\"minCutMetricSizeNode\":0,\"minEdgeSize\":0.1,\"minNodeSize\":8,\"nodePhysics\":true,\"posArrow\":\"to\",\"scaleArrow\":1,\"secondNodeColor\":\"#00d1ff\",\"shapeArrow\":\"arrow\",\"shapeFirstNode\":\"dot\",\"shapeSecondNode\":\"box\",\"showColorLegend\":true,\"showLabels\":true,\"showPopup\":false,\"smoothType\":\"continuous\",\"springConstant\":0.008},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"first\",\"params\":{\"field\":\"origin.keyword\",\"size\":20,\"orderAgg\":{\"id\":\"1-orderAgg\",\"enabled\":true,\"type\":\"count\",\"schema\":\"orderAgg\",\"params\":{}},\"order\":\"desc\",\"orderBy\":\"custom\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"first\",\"params\":{\"field\":\"dependency_ver.keyword\",\"size\":1000,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}"
+            }
+        }
+    ]
+}

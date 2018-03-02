@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Churnpercommit
-Bundle-SymbolicName: org.eclipse.crossmeter.metricprovider.rascal.generic.churn;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.crossmeter.metricprovider.rascal,
- com.googlecode.pongo.runtime.osgi,
- org.eclipse.crossmeter.platform.visualisation
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

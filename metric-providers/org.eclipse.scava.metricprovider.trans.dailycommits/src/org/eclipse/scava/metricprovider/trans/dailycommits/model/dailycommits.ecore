@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="org.eclipse.scava.metricprovider.trans.dailycommits.model">
+  <eClassifiers xsi:type="ecore:EClass" name="DailyCommits">
+    <eAnnotations source="viz">
+      <details key="target" value="gcharts"/>
+      <details key="chart" value="bar"/>
+    </eAnnotations>
+    <eAnnotations source="db">
+      <details key="qualifiedCollectionNames" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="days" upperBound="-1" eType="//Day" containment="true">
+      <eAnnotations source="series">
+        <details key="label" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Day">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfCommits">
+      <eAnnotations source="yaxis">
+        <details key="title" value="Number of commits"/>
+      </eAnnotations>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

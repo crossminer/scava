@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.rascal.testability.java.NumberOfTestMethods.historic",
+	"vis" : [ 
+		{
+			"id" : "numTestsHistoric",
+			"name" : "Number of test methods",
+			"description" : "This metric shows the number of JUnit test methods over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" }, 
+						{ "name" : "Count", 		"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Count", 
+			"x-label" : "Date",		
+			"y-label" : "Method count",
+			"timeSeries" : true
+		}
+	]
+}

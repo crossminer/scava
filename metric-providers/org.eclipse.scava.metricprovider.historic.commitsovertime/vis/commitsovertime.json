@@ -1,0 +1,23 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.commitsovertime.CommitsOverTimeHistoricMetricProvider",
+	"vis" : [ 
+		{
+			"id" : "commitsovertimeline",
+			"name" : "commits",
+			"description" : "This metric shows a cumulative count of the commits.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$repositories",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Commits", 		"field" : "$numberOfCommits" },
+							{ "name" : "Repository", 	"field" : "$url" } ]
+			},
+			"x" : "Date",
+			"y" : "Commits", 
+			"series" : "Repository",
+			"x-label" : "Date",		
+			"y-label" : "Commits",
+			"timeSeries" : true
+		}
+	]
+}

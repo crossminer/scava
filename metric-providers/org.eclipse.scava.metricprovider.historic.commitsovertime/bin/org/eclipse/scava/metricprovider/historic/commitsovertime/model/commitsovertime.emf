@@ -1,0 +1,16 @@
+package org.eclipse.scava.metricprovider.historic.commitsovertime.model;
+
+@viz(target="gcharts", chart="line")
+class CommitsOverTime {
+	@series(label="url")
+	val RepositoryData[*] repositories;
+}
+
+class RepositoryData {
+	attr String url;
+	attr String repoType;
+	attr String revision;
+
+	@yaxis(title="Number of commits")
+	attr int numberOfCommits;
+}

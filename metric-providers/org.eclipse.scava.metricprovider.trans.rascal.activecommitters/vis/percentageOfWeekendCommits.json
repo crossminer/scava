@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.percentageOfWeekendCommits.historic",
+	"vis" : [ 
+		{
+			"id" : "percentageOfWeekendCommitsTimeLine",
+			"name" : "Percentage of commits have happened during weekends",
+			"description" : "This metric shows the percentage of weekend commits over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" },
+							{ "name" : "Percentage", "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Percentage",
+			"x-label" : "Date",
+			"y-label" : "Weekend commits (%)",
+			"timeSeries" : true
+		}
+	]
+}

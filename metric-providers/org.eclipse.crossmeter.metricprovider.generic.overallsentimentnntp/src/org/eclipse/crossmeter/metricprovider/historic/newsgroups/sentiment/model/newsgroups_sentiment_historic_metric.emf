@@ -1,8 +1,0 @@
-package org.eclipse.crossmeter.metricprovider.historic.newsgroups.sentiment.model;
-
-class NewsgroupsSentimentHistoricMetric {
-	attr float overallAverageSentiment;
-	attr float overallSentimentAtThreadBeggining;
-	attr float overallSentimentAtThreadEnd;
-}
-

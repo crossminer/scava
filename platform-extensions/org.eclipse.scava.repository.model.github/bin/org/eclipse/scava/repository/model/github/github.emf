@@ -1,0 +1,153 @@
+package org.eclipse.scava.repository.model.github;
+
+@stub(javaClass="org.eclipse.scava.repository.model.Project")
+class Project {  
+}
+
+@stub(javaClass="org.eclipse.scava.repository.model.Person")
+class Person {
+   
+}
+
+@stub(javaClass="org.eclipse.scava.repository.model.BugTrackingSystem")
+class BugTrackingSystem {
+   
+}
+
+//class GitHubProject extends Project {
+//}
+
+class GitHubRepository extends Project {
+
+ @key
+ // ref GitHubUser owner;
+ // attr String name;
+  @searchable
+  attr String full_name;
+  attr Boolean private;
+  attr Boolean fork;
+  attr String html_url;
+  attr String clone_url;
+  attr String git_url;
+  attr String ssh_url;
+  attr String svn_url;
+  attr String mirror_url;
+  val Language[*] languages;
+  attr Integer size;
+  attr String master_branch;
+ // val GitHubUser[*] stargazers;
+ // val GitHubUser[*] collaborators;
+ // val GitHubCommit[*] commits;
+  val GitHubContent[*] contents;
+  val GitHubDownload[*] downloads;
+  ref GitHubRepository[*] forks;
+ // val GitHubUser[*] watchers;
+  val GitHubMilestone[*] milestones;
+}
+
+class Language  {
+	attr String name;
+}
+
+class GitHubContent {
+  attr String type;
+  attr String envoding;
+  attr Integer size;
+  attr String name;
+  attr String path;
+  attr String sha;
+}
+
+//enum GitHubContentType {
+//   file = 0;
+//   dir = 1;
+//}
+
+class GitHubDownload {
+  attr Integer _id;
+  attr String url;
+  attr String html_url;
+  attr String name;
+  attr String description;
+  attr Integer size;
+  attr Integer download_count;
+  attr String content_type;
+}
+
+//class GitHubCommit {
+//  attr String url;
+//  attr String sha;
+//  val GitHubUser author;
+//  val GitHubUser committer;
+//  val GitHubComment[*] comments;
+//  attr String message;
+//  val GitHubCommit[*] parents;
+//}
+
+@customize
+class GitHubBugTracker extends BugTrackingSystem {
+  attr String user;
+  attr String repository;
+  attr String login;
+  attr String password;
+  val GitHubIssue[*] issues;
+}
+
+class GitHubIssue {
+  attr Integer number;
+  attr String state;
+  attr String title;
+  attr String body;
+  val GitHubUser creator;
+  val GitHubUser assignee;
+  val GitHubUser[*] subscribed_users;
+  val GitHubUser[*] mentioned_users;
+//  val GitHubComment[*] comments;
+  attr String created_at;
+  attr String updated_at;
+  attr String closed_at;
+}
+
+//enum GitHubIssueState {
+//   open = 0;
+//   closed = 1;
+//}
+
+//class GitHubComment {
+//  attr String url;
+//  attr String body;
+//  attr String path;
+//  attr Integer position;
+//  attr Integer line;
+//  val GitHubUser user;
+//  attr String created_at;
+//  attr String updated_at;
+//}
+
+
+class GitHubMilestone {
+  attr String url;
+  attr Integer number;
+  attr String state;
+  attr String title;
+  attr String description;
+  val GitHubUser[1] creator;
+  val GitHubIssue[*] open_issues;
+  val GitHubIssue[*] closed_issues;
+  attr String created_at;
+  attr String due_on;
+}
+
+//enum GitHubMilestoneState {
+//   open = 0;
+//   closed = 1;
+//}
+
+class GitHubUser extends Person {
+
+  @key
+  attr String login;
+  attr String html_url;
+  attr String url;
+  attr String followers_url;
+}

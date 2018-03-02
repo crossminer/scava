@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.java.A-Java.historic",
+	"vis" : [ 
+		{
+			"id" : "AJavaHistoric",
+			"name" : "Abstractness (Java)",
+			"description" : "This metric shows the Abstractness for Java over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [ { "name" : "Date", "field" : "$__date" }, 
+							 { "name" : "Val",  "field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Val", 
+			"x-label" : "Date",		
+			"y-label" : "Abstractness",
+			"timeSeries" : true
+		}
+	]
+}

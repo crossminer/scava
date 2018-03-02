@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: CROSSMETER Logging
+Bundle-Name: SCAVA Logging
 Bundle-SymbolicName: org.apache.log4j.1.2.17
 Bundle-Version: 1.0.0
 Bundle-ClassPath: log4mongo-java-0.7.4.jar,

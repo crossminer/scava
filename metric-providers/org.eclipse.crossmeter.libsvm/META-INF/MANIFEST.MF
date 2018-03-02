@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Libsvm
-Bundle-SymbolicName: org.eclipse.crossmeter.libsvm
-Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.crossmeter.libsvm.dependencies
-Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.eclipse.crossmeter.libsvm

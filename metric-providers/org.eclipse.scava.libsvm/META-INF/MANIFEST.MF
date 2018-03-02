@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Libsvm
+Bundle-SymbolicName: org.eclipse.scava.libsvm
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.scava.libsvm.dependencies
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.libsvm

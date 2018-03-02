@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="org.eclipse.scava.repository.model.sourceforge">
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.Project"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BugTrackingSystem">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.BugTrackingSystem"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.Person"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.NamedElement"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CommunicationChannel">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.CommunicationChannel"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceForgeProject" eSuperTypes="#//Project">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="created" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="projectId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="private" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortDesc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ranking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="downloadPage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="supportPage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="summary" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mailingList" eType="#//MailingList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="os" upperBound="-1" eType="#//OS"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topics" upperBound="-1"
+        eType="#//Topic" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="programminLanguages" upperBound="-1"
+        eType="#//ProgrammingLanguage" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="audiences" upperBound="-1"
+        eType="#//Audience" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="environments" upperBound="-1"
+        eType="#//Environment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="categories" upperBound="-1"
+        eType="#//Category" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureRequests" upperBound="-1"
+        eType="#//FeatureRequest" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportRequests" upperBound="-1"
+        eType="#//SupportRequest" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patches" upperBound="-1"
+        eType="#//Patch" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bts" upperBound="-1" eType="#//SourceForgeBugTrackingSystem"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="donation" eType="#//Donation"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="discussion" upperBound="-1"
+        eType="#//Discussion" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bugs" upperBound="-1" eType="#//Bug"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="downloadCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MailingList" eSuperTypes="#//CommunicationChannel"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Discussion" eSuperTypes="#//CommunicationChannel"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OS" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Topic" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ProgrammingLanguage" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Audience" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Environment" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Category" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Donation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="charities" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tracker" abstract="true" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceForgeBugTrackingSystem" eSuperTypes="#//BugTrackingSystem">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bugsTS" upperBound="-1"
+        eType="#//BugTS" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BugTS" eSuperTypes="#//Tracker">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="key"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assignee" eType="#//Person"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="submitted" eType="#//Person"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resolutionStatus" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugVisibility" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Request" abstract="true" eSuperTypes="#//Tracker">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="summary" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="created_at" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updated_at" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="creator" eType="#//Person"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureRequest" eSuperTypes="#//Request"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SupportRequest" eSuperTypes="#//Request"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Patch" eSuperTypes="#//Tracker"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Bug" eSuperTypes="#//Tracker"/>
+</ecore:EPackage>

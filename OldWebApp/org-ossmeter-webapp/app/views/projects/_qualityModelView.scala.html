@@ -1,0 +1,42 @@
+@(project: org.eclipse.scava.repository.model.Project, qualityModel : model.QualityModel, selected : model.QualityElement, summary : Boolean)
+
+@drawAspect(aspect: model.QualityAspect) = {
+	<li>
+	@if(selected == aspect) { 
+		<strong>@aspect.getName()</strong> 
+	} else {
+		@*<a href="@routes.Projects.viewAspect(project.getShortName(), qualityModel.getIdentifier(), aspect.getIdentifier(), summary)">@aspect.getName()</a>*@	
+	}
+		<ul>
+	@for(a <- aspect.getAspects()) {
+		@drawAspect(a)
+	}
+	@for(a <- aspect.getAttributes()) {
+		@drawAttribute(a)
+	}
+		</ul>
+	</li>
+}
+
+@drawAttribute(attribute : model.QualityAttribute) = {
+	<li>@attribute.getName() <span class="label label-info">@attribute.getFactoids().size() factoids</span> <span class="label label-info">@attribute.getMetrics().size() metrics</span> 
+		<ul>
+@*	@for(f <- attribute.getFactoids()) {
+		<li><span class="label label-info">@attribute.getFactoids().size() factoids</span> @f</li>
+	}
+	@for(m <- attribute.getMetrics()) {
+		<li><span class="label label-info">Metric</span> @m</li>
+	}
+*@
+		</ul>
+	</li>
+}
+
+<section>
+    <div class="container box">
+  		<div class="row">
+  		<h2 class="marginless">Quality Model</h2>
+  		@drawAspect(qualityModel)
+  		</div>
+    </div>    
+</section>

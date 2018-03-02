@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bitbucket
+Bundle-SymbolicName: org.eclipse.scava.repository.model.bitbucket;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime
+Export-Package: org.eclipse.scava.repository.model.bitbucket

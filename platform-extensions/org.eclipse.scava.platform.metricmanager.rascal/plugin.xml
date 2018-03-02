@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Copyright (c) 2017 Centrum Wiskunde & Informatica
+  
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+-->
+<?eclipse version="3.4"?><plugin>
+   <extension-point id="scava.rascal.metricprovider" name="SCAVA Rascal metric provider" schema="schema/scava.rascal.metricprovider.exsd"/>
+   <extension-point id="scava.rascal.extractor" name="Scava Rascal Extractor extension point" schema="schema/scava.rascal.extractor.exsd"/>
+   <extension point="org.eclipse.scava.platform.managers.metricprovider">
+      <metricProviderManager manager="org.eclipse.scava.metricprovider.rascal.RascalMetricProviderManager">
+      </metricProviderManager>
+   </extension>
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.RascalMetrics"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.IntegerMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.DatetimeMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.RealMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.BooleanMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.StringMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.ListMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.TupleMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.SetMeasurement"/>
+    <class name="org.eclipse.scava.metricprovider.rascal.trans.model.URIMeasurement"/>
+  </extension>
+</plugin>

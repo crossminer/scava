@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: CC
-Bundle-SymbolicName: org.eclipse.crossmeter.metricprovider.trans.rascal.CC;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.crossmeter.metricprovider.rascal,
- org.apache.commons.math

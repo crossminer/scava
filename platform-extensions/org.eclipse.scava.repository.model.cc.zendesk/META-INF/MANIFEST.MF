@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Zendesk
+Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.zendesk;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.googlecode.pongo.runtime.dependencies,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime.osgi
+Export-Package: org.eclipse.scava.repository.model.cc.zendesk

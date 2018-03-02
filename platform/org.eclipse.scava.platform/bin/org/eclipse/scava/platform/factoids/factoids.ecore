@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="org.eclipse.scava.platform.factoids">
+  <eClassifiers xsi:type="ecore:EClass" name="Factoids">
+    <eAnnotations source="db"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="factoids" upperBound="-1" eType="//Factoid" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Factoid">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metricId">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="factoid">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stars" eType="//StarRating"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metricDependencies" upperBound="-1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="category" eType="//FactoidCategory">
+      <eAnnotations source="searchable"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FactoidCategory">
+    <eLiterals name="GENERAL"/>
+    <eLiterals name="CODE" value="1"/>
+    <eLiterals name="COMMS" value="2"/>
+    <eLiterals name="BUGS" value="3"/>
+    <eLiterals name="OTHER" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StarRating">
+    <eLiterals name="ONE"/>
+    <eLiterals name="TWO" value="1"/>
+    <eLiterals name="THREE" value="2"/>
+    <eLiterals name="FOUR" value="3"/>
+  </eClassifiers>
+</ecore:EPackage>

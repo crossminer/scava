@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.scava.metricprovider.style
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.style;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.scava.metricprovider.rascal,
+ org.eclipse.scava.platform.visualisation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

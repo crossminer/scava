@@ -1,0 +1,13 @@
+package org.eclipse.scava.metricprovider.trans.committers.model;
+
+@db
+class ProjectCommitters {
+	val Committer[*] committers;
+}
+
+class Committer {
+	@searchable
+	attr String name;
+	attr int numberOfCommits;
+	attr long lastCommitTime;
+}

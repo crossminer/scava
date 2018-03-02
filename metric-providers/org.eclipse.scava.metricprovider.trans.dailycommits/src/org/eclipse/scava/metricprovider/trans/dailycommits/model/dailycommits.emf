@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.dailycommits.model;
+
+@viz(target="gcharts", chart="bar")
+@db(qualifiedCollectionNames="true")
+class DailyCommits {
+	@series(label="name")
+	val Day[*] days;
+}
+
+class Day {
+	@searchable
+	attr String name;
+	@yaxis(title="Number of commits")
+	attr int numberOfCommits;
+}

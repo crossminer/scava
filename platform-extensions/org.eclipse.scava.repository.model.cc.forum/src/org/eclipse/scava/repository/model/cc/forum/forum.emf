@@ -1,0 +1,12 @@
+package org.eclipse.scava.repository.model.cc.forum;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+   
+}
+
+class Forum extends  CommunicationChannel {
+	@searchable
+	attr String name;
+	attr String description;
+}

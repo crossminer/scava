@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.newsgroups.articles.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class NewsgroupsArticlesTransMetric {
+	val NewsgroupData[*] newsgroups;
+}
+
+class NewsgroupData {
+   @searchable
+   attr String newsgroupName;
+   attr int numberOfArticles;
+   attr int cumulativeNumberOfArticles;
+}
+

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.scava.repository.model.googlecode
+Bundle-SymbolicName: org.eclipse.scava.repository.model.googlecode;singleton:=true
+Bundle-Version: 0.1.0
+Require-Bundle: org.eclipse.emf.ecore,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model
+Export-Package: org.eclipse.scava.repository.model.googlecode
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
