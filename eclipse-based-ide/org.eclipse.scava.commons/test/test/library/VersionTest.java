@@ -16,7 +16,7 @@ package test.library;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.scava.commons.library.Version;
+import org.eclipse.scava.commons.library.Version;
 import org.junit.jupiter.api.Test;
 
 class VersionTest {
