@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Scava Eclipse Base IDE
 Bundle-SymbolicName: org.scava.plugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.eclipse.scava.plugin.Activator
+Bundle-Activator: org.scava.plugin.Activator
 Bundle-Vendor: Frontendart
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

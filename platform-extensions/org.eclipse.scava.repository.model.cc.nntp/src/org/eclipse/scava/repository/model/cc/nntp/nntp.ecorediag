@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_7XoSUBSgEeOUc5I9QFWRyA" type="EcoreTools" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_7Xr8sBSgEeOUc5I9QFWRyA" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_7XsjwBSgEeOUc5I9QFWRyA" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_7XsjwRSgEeOUc5I9QFWRyA" type="5001">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_7XsjwhSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_7XsjwxSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_7XsjxBSgEeOUc5I9QFWRyA"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_7XsjxRSgEeOUc5I9QFWRyA" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_7XtK0BSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_7XtK0RSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_7XtK0hSgEeOUc5I9QFWRyA"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_7Xr8sRSgEeOUc5I9QFWRyA" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="nntp.ecore#//CommunicationChannel"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7Xr8shSgEeOUc5I9QFWRyA" x="225" y="65"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_7XtK0xSgEeOUc5I9QFWRyA" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_7XtK1hSgEeOUc5I9QFWRyA" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_7XtK1xSgEeOUc5I9QFWRyA" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_7Xtx5BSgEeOUc5I9QFWRyA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/authenticationRequired"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7Xtx5RSgEeOUc5I9QFWRyA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_7Xtx5hSgEeOUc5I9QFWRyA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/username"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7Xtx5xSgEeOUc5I9QFWRyA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_7Xtx6BSgEeOUc5I9QFWRyA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/password"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7Xtx6RSgEeOUc5I9QFWRyA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_7XuY8hSgEeOUc5I9QFWRyA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/port"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7XuY8xSgEeOUc5I9QFWRyA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_7XuY9BSgEeOUc5I9QFWRyA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/description"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_7XuY9RSgEeOUc5I9QFWRyA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_hMda8DTWEeO2RtgldF9FJw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="nntp.ecore#//NntpNewsGroup/name"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_hMda8TTWEeO2RtgldF9FJw"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_7XtK2BSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_7XtK2RSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_7XtK2hSgEeOUc5I9QFWRyA"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_7Xtx4BSgEeOUc5I9QFWRyA" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_7Xtx4RSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_7Xtx4hSgEeOUc5I9QFWRyA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_7Xtx4xSgEeOUc5I9QFWRyA"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_7XtK1BSgEeOUc5I9QFWRyA" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="nntp.ecore#//NntpNewsGroup"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7XtK1RSgEeOUc5I9QFWRyA" x="170" y="168"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_7XoSURSgEeOUc5I9QFWRyA"/>
+  <element xmi:type="ecore:EPackage" href="nntp.ecore#/"/>
+  <edges xmi:type="notation:Edge" xmi:id="_7XuY9hSgEeOUc5I9QFWRyA" type="3003" source="_7XtK0xSgEeOUc5I9QFWRyA" target="_7Xr8sBSgEeOUc5I9QFWRyA">
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_7XuY9xSgEeOUc5I9QFWRyA" routing="Rectilinear" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_7XuY-BSgEeOUc5I9QFWRyA" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7XuY-RSgEeOUc5I9QFWRyA" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7YAFwBSgEeOUc5I9QFWRyA" id="(0.49814126394052044,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7YAFwRSgEeOUc5I9QFWRyA" id="(0.5,1.0)"/>
+  </edges>
+</notation:Diagram>

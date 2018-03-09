@@ -1,0 +1,25 @@
+package org.eclipse.scava.platform.factoids;
+
+@db
+class Factoids {
+	val Factoid[*] factoids;
+} 
+
+class Factoid {
+	@searchable
+	attr String metricId;
+	attr String name;
+	attr String factoid;
+	attr StarRating stars;
+	attr String[*] metricDependencies;
+	@searchable
+	attr FactoidCategory category;
+}
+
+enum FactoidCategory {
+	GENERAL; CODE; COMMS; BUGS; OTHER;
+}
+
+enum StarRating {
+	ONE; TWO; THREE; FOUR;
+}

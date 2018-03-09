@@ -23,10 +23,10 @@
          point="org.eclipse.ui.handlers">
       <handler
             commandId="org.scava.plugin.commands.sampleCommand"
-            class="org.eclipse.scava.plugin.ui.toolbar.ASTParseHandler">
+            class="org.scava.plugin.ui.toolbar.ASTParseHandler">
       </handler>
       <handler
-            class="org.eclipse.scava.plugin.ui.toolbar.LibraryUpdateHandler"
+            class="org.scava.plugin.ui.toolbar.LibraryUpdateHandler"
             commandId="org.scava.plugin.commands.demoCommand">
       </handler>
    </extension>
@@ -109,7 +109,7 @@
             </separator>
          </menu>
          <action
-               class="org.eclipse.scava.plugin.ui.projectexplorer.ProjectExplorerPopUpHandler"
+               class="org.scava.plugin.ui.projectexplorer.ProjectExplorerPopUpHandler"
                id="org.scava.plugin.action1"
                label="Library update request"
                menubarPath="org.scava.plugin.separator1">
@@ -120,7 +120,7 @@
             nameFilter="*.*"
             objectClass="org.eclipse.ui.IEditorInput">
          <action
-               class="org.eclipse.scava.plugin.ui.texteditor.TextEditorPopUp"
+               class="org.scava.plugin.ui.texteditor.TextEditorPopUp"
                id="org.scava.plugin.action2"
                label="Recommandation request for selected text"
                menubarPath="org.scava.plugin.separator1">
@@ -132,7 +132,7 @@
         point="org.eclipse.ui.decorators">
      <decorator
            adaptable="true"
-           class="org.eclipse.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
+           class="org.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
            icon="icons/cm.gif"
            id="org.scava.plugin.decorators.sourcecodehighlight.namedmember"
            label="Scava Source Code Highlight Decorator"
@@ -147,7 +147,7 @@
      </decorator>
      <decorator
            adaptable="true"
-           class="org.eclipse.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
+           class="org.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
            icon="icons/cm.gif"
            id="org.scava.plugin.decorators.sourcecodehighlight.iresource"
            label="Scava Source Code Highlight Decorator"

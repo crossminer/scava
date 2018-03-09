@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-SymbolicName: org.scava.commons
+Bundle-SymbolicName: Scava Commons
 Bundle-Name: Scava Commons
 Bundle-Version: 0.1
 

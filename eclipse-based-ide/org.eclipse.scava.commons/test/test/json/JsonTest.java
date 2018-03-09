@@ -16,10 +16,10 @@ package test.json;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.eclipse.scava.commons.json.Json;
-import org.eclipse.scava.commons.library.Library;
-import org.eclipse.scava.commons.library.ReleaseType;
-import org.eclipse.scava.commons.library.Version;
+import org.scava.commons.json.Json;
+import org.scava.commons.library.Library;
+import org.scava.commons.library.ReleaseType;
+import org.scava.commons.library.Version;
 import org.junit.jupiter.api.Test;
 
 class JsonTest {
