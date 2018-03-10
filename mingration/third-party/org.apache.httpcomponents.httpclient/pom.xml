@@ -9,7 +9,7 @@
     <relativePath>../../../metric-platform/</relativePath>
   </parent>
   <groupId>org.eclipse.scava</groupId>
-  <artifactId>org.carrot2.api</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <artifactId>org.apache.httpcomponents.httpclient</artifactId>
+  <version>4.3.4</version>
   <packaging>eclipse-plugin</packaging>
 </project>

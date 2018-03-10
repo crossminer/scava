@@ -6,10 +6,10 @@
     <groupId>org.eclipse.scava</groupId>
     <artifactId>metric-platform</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../../metric-platform/</relativePath>
+    <relativePath>../../</relativePath>
   </parent>
   <groupId>org.eclipse.scava</groupId>
-  <artifactId>org.carrot2.api</artifactId>
+  <artifactId>org.eclipse.scava.factoid.bugs.size</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>

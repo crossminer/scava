@@ -9,7 +9,7 @@
     <relativePath>../../../metric-platform/</relativePath>
   </parent>
   <groupId>org.eclipse.scava</groupId>
-  <artifactId>org.carrot2.api</artifactId>
+  <artifactId>sparky</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
