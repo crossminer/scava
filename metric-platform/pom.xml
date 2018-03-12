@@ -13,33 +13,33 @@
       <relativePath>./releng/org.eclipse.scava.configuration</relativePath>
   </parent>
   <modules>
-    <module>../mingration/third-party/com.fasterxml.jackson</module>
+    <!--module>../mingration/third-party/com.fasterxml.jackson</module>
     <module>../mingration/third-party/com.google.code.gson</module>
-    <module>../mingration/third-party/com.google.guava</module>
+    <module>../mingration/third-party/com.google.guava</module-->
     <module>../mingration/third-party/com.googlecode.pongo.runtime</module>
     <module>../mingration/third-party/com.googlecode.pongo.runtime.dependencies</module>
     <module>../mingration/third-party/com.googlecode.pongo.runtime.osgi</module>
     <module>../mingration/third-party/com.j2bugzilla</module>
-    <module>../mingration/third-party/com.jcraft.jsch</module>
+    <!--module>../mingration/third-party/com.jcraft.jsch</module-->
     <module>../mingration/third-party/com.mashape.unirest</module>
-    <module>../mingration/third-party/javax.mail</module>
-    <module>../mingration/third-party/org.apache.commons.codec</module>
+    <!--module>../mingration/third-party/javax.mail</module-->
+    <!--module>../mingration/third-party/org.apache.commons.codec</module>
     <module>../mingration/third-party/org.apache.commons.lang</module>
     <module>../mingration/third-party/org.apache.commons.logging</module>
     <module>../mingration/third-party/org.apache.commons.math</module>
     <module>../mingration/third-party/org.apache.commons.net</module>
     <module>../mingration/third-party/org.apache.httpcomponents.httpasyncclient</module>
     <module>../mingration/third-party/org.apache.httpcomponents.httpclient</module>
-    <module>../mingration/third-party/org.apache.httpcomponents.httpcore</module>
+    <module>../mingration/third-party/org.apache.httpcomponents.httpcore</module-->
     <module>../mingration/third-party/org.apache.httpcomponents.httpcorenio</module>
-    <module>../mingration/third-party/org.apache.httpcomponents.httpmime</module>
+    <!--module>../mingration/third-party/org.apache.httpcomponents.httpmime</module>
     <module>../mingration/third-party/org.apache.log4j.1.2.17</module>
     <module>../mingration/third-party/org.apache.ws.commons</module>
     <module>../mingration/third-party/org.apache.xmlrpc</module>
-    <module>../mingration/third-party/org.apache.xmlrpc.common</module>
+    <module>../mingration/third-party/org.apache.xmlrpc.common</module-->
     <module>../mingration/third-party/org.carrot2.api</module>
     <module>../mingration/third-party/org.carrot2.dependencies</module>
-    <module>../mingration/third-party/org.eclipse.egit.github.core</module>
+    <!--module>../mingration/third-party/org.eclipse.egit.github.core</module>
     <module>../mingration/third-party/org.eclipse.jetty.client</module>
     <module>../mingration/third-party/org.eclipse.jetty.http</module>
     <module>../mingration/third-party/org.eclipse.jetty.io</module>
@@ -50,17 +50,17 @@
     <module>../mingration/third-party/org.eclipse.jetty.spdy.http.server</module>
     <module>../mingration/third-party/org.eclipse.jetty.spdy.server</module>
     <module>../mingration/third-party/org.eclipse.jetty.util</module>
-    <module>../mingration/third-party/org.eclipse.jgit</module>
+    <module>../mingration/third-party/org.eclipse.jgit</module-->
     <module>../mingration/third-party/org.eclipse.scava.jackson</module>
     <module>../mingration/third-party/org.jackson.all</module>
     <module>../mingration/third-party/org.joda.time</module>
-    <module>../mingration/third-party/org.json</module>
+    <!--module>../mingration/third-party/org.json</module-->
     <module>../mingration/third-party/org.mapdb</module>
-    <module>../mingration/third-party/org.mockito</module>
+    <!--module>../mingration/third-party/org.mockito</module>
     <module>../mingration/third-party/org.restlet</module>
     <module>../mingration/third-party/org.restlet.ext.jetty</module>
     <module>../mingration/third-party/org.restlet.ext.osgi</module>
-    <module>../mingration/third-party/org.restlet.ext.servlet</module>
+    <module>../mingration/third-party/org.restlet.ext.servlet</module-->
     <module>../mingration/third-party/org.svnkit</module>
     <module>../mingration/third-party/rascal4ossmeter</module>
     <module>../mingration/third-party/sparky</module>

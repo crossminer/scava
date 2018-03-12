@@ -12,9 +12,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.joda.time,
  com.google.guava,
  org.eclipse.scava.platform.bugtrackingsystem,
- org.apache.log4j.1.2.17,
+ org.apache.log4j,
  org.apache.commons.lang3,
- com.google.code.gson
+ com.google.gson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.github

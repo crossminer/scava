@@ -22,5 +22,5 @@ Require-Bundle: org.eclipse.scava.repository.model.eclipse,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.repository.model.importer.exception,
  org.eclipse.scava.repository.model,
- org.apache.log4j.1.2.17
+ org.apache.log4j
 Export-Package: org.eclipse.scava.metricprovider.trans.importer.eclipse

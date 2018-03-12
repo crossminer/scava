@@ -19,6 +19,11 @@
             <url>http://download.eclipse.org/releases/mars</url>
             <layout>p2</layout>
         </repository>
+        <repository>
+            <id>Mars.2+</id>
+            <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160221192158/repository/</url>
+            <layout>p2</layout>
+        </repository>
     </repositories>
 
 	<build>

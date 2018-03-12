@@ -14,7 +14,8 @@ Export-Package: com.mashape.unirest.http,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.json,
  org.apache.httpcomponents.httpclient,
- org.apache.httpcomponents.httpmime,
+ org.apache.httpcomponents.httpcore.nio
+Comment: org.apache.httpcomponents.httpmime,
  org.apache.httpcomponents.httpasyncclient
 Import-Package: org.apache.http,
  org.apache.http.annotation,
