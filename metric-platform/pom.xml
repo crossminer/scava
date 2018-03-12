@@ -56,11 +56,11 @@
     <module>../mingration/third-party/org.joda.time</module>
     <!--module>../mingration/third-party/org.json</module-->
     <module>../mingration/third-party/org.mapdb</module>
-    <!--module>../mingration/third-party/org.mockito</module>
+    <!--module>../mingration/third-party/org.mockito</module-->
     <module>../mingration/third-party/org.restlet</module>
     <module>../mingration/third-party/org.restlet.ext.jetty</module>
     <module>../mingration/third-party/org.restlet.ext.osgi</module>
-    <module>../mingration/third-party/org.restlet.ext.servlet</module-->
+    <module>../mingration/third-party/org.restlet.ext.servlet</module>
     <module>../mingration/third-party/org.svnkit</module>
     <module>../mingration/third-party/rascal4ossmeter</module>
     <module>../mingration/third-party/sparky</module>
