@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  com.j2bugzilla,
  org.apache.ws.commons.util,
- org.apache.xmlrpc,
+ org.apache.xmlrpc.client,
+ org.apache.xmlrpc.common,
  org.eclipse.scava.repository.model.bts.bugzilla,
  org.eclipse.scava.repository.model
 Bundle-ActivationPolicy: lazy
