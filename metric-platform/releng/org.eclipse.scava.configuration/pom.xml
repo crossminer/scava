@@ -19,11 +19,11 @@
             <url>http://download.eclipse.org/releases/mars</url>
             <layout>p2</layout>
         </repository>
-        <repository>
+        <!--repository>
             <id>Oxygen.3</id>
             <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20180206163158/repository/</url>
             <layout>p2</layout>
-        </repository>
+        </repository-->
     </repositories>
 
 	<build>
