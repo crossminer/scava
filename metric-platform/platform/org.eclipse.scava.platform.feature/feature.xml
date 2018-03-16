@@ -208,11 +208,11 @@
          install-size="0"
          version="0.0.0"/>
 
-   <!--plugin
+   <plugin
          id="org.apache.httpcomponents.httpasyncclient"
          download-size="0"
          install-size="0"
-         version="0.0.0"/-->
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.platform.osgi"
@@ -340,11 +340,11 @@
          install-size="0"
          version="0.0.0"/>
 
-   <!--plugin
+   <plugin
          id="org.apache.httpcomponents.httpmime"
          download-size="0"
          install-size="0"
-         version="0.0.0"/-->
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm"
@@ -448,11 +448,11 @@
          install-size="0"
          version="0.0.0"/>
 
-   <!--plugin
+   <plugin
          id="org.apache.xmlrpc.common"
          download-size="0"
          install-size="0"
-         version="0.0.0"/-->
+         version="0.0.0"/>
 
    <plugin
          id="org.apache.commons.codec"
@@ -466,11 +466,11 @@
          install-size="0"
          version="0.0.0"/>
 
-   <!--plugin
+   <plugin
          id="com.fasterxml.jackson"
          download-size="0"
          install-size="0"
-         version="0.0.0"/-->
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.repository.model.vcs.cvs"
@@ -1012,11 +1012,11 @@
          install-size="0"
          version="0.0.0"/>
 
-   <!--plugin
+   <plugin
          id="org.apache.ws.commons"
          download-size="0"
          install-size="0"
-         version="0.0.0"/-->
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.sentimentclassification"
@@ -1543,7 +1543,7 @@
          version="0.0.0"
          unpack="false"/>
 
-   <!--plugin
+   <plugin
          id="org.eclipse.jetty.client"
          download-size="0"
          install-size="0"
@@ -1611,7 +1611,7 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/-->
+         unpack="false"/>
 
    <plugin
          id="org.restlet"
