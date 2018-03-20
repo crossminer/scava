@@ -64,9 +64,10 @@ import org.rascalmpl.values.ValueFactoryFactory;
 public class RascalManager {
 	private static final String EXTRACTOR_TAG_AST = "ASTExtractor";
 	private static final String EXTRACTOR_TAG_M3 = "M3Extractor";
+	private static final String EXTRACTOR_TAG_OSGI = "OSGiExtractor";	
 	private final static IValueFactory VF = ValueFactoryFactory.getValueFactory();
+	
 	private final Evaluator eval = createEvaluator();
-
 	private final Set<Bundle> registeredBundles = new HashSet<>();
 
 	
@@ -124,6 +125,7 @@ public class RascalManager {
 	
 	private final Set<Extractor> m3Extractors = new HashSet<>();
 	private final Set<Extractor> astExtractors = new HashSet<>();
+	private final Set<Extractor> osgiExtractors = new HashSet<>();
 	
 	public static final String MODULE = "org::eclipse::scava::metricprovider::Manager";
 	private List<IMetricProvider> metricProviders;
@@ -403,6 +405,10 @@ public class RascalManager {
 		return astExtractors;
 	}
 	
+	public Set<Extractor> getOSGiExtractors() {
+		return osgiExtractors;
+	}
+	
 	public TypeStore getExtractedTypes() {
 		TypeStore store = new TypeStore();
 		
@@ -410,6 +416,9 @@ public class RascalManager {
 			store.extendStore(e.function.getEnv().getStore());
 		}
 		for (Extractor e : astExtractors) {
+			store.extendStore(e.function.getEnv().getStore());
+		}
+		for (Extractor e : osgiExtractors) {
 			store.extendStore(e.function.getEnv().getStore());
 		}
 		
@@ -443,6 +452,9 @@ public class RascalManager {
 			extractedLanguages.add(e.language);
 		}
 		for (Extractor e : astExtractors) {
+			extractedLanguages.add(e.language);
+		}
+		for (Extractor e : osgiExtractors) {
 			extractedLanguages.add(e.language);
 		}
 
@@ -486,10 +498,15 @@ public class RascalManager {
 				try {
 					if (f.hasTag(EXTRACTOR_TAG_M3)) {
 						m3Extractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_M3)));
-					} else if (f.hasTag(EXTRACTOR_TAG_AST)) {
+					} 
+					else if (f.hasTag(EXTRACTOR_TAG_AST)) {
 						astExtractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_AST)));								
+					} 
+					else if(f.hasTag(EXTRACTOR_TAG_OSGI)) {
+						osgiExtractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_OSGI)));
 					}
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					eval.getStdErr().println("Error while loading extractor " + f.toString());
 					e.printStackTrace(eval.getStdErr());
 				}
