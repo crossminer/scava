@@ -11,7 +11,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="scava.rascal.extractor">
+         point="scava.rascal.metricprovider">
    </extension>
 
 </plugin>

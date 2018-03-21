@@ -1,5 +1,12 @@
 module org::eclipse::scava::dependency::model::OSGi::DependencyOSGi
 
-public OSGiModel createOSGiModel(loc manifest) {
+import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
 
-}
+import Java;
+
+@metric{OSGiDependencyModelforJava}
+@doc{The OSGI dependency model stores all OSGi-related dependencies of a given project. This information can be used by other metric providers.}
+@friendlyName{OSGi dependency model for Java projects}
+@appliesTo{java()}
+public OSGiModel createOSGiModel(loc manifest, rel[Language, loc, M3] m3s = {})
+	= createOSGiModelFromFile(manifest, systemM3(m3s));

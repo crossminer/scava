@@ -133,6 +133,7 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
     jars = findJars(checkouts.folders);
     
     for (repo <- checkouts) {
+      checkout = checkouts[repo];
       sources = getSourceRoots({checkout});
       setEnvironmentOptions(jars, sources);
     
@@ -142,6 +143,57 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
   
   return result; 
  
+}
+
+@OSGiExtractor{java()}
+@memo
+rel[Language, loc, OSGiModel] javaOSGi(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {  
+	rel[Language, loc, OSGiModel] result = {};
+	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
+	assert all(repo <- checkouts, checkouts[repo].parent == parent);
+	
+	// TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
+	try {
+		map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+		for (repo <- checkouts) {
+			checkout = checkouts[repo];
+			sources = getSourceRoots({checkout});
+			setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+			
+			f = findFileInFolder(checkout, "MANIFEST.MF");
+			if(f != |file:///|) {
+				result += {<java(), f, createOSGiModel(f)>};
+			}
+		}
+	}
+	catch "not-maven": {
+		jars = findJars(checkouts.folders);
+		
+		for (repo <- checkouts) {
+			checkout = checkouts[repo];
+			sources = getSourceRoots({checkout});
+			setEnvironmentOptions(jars, sources);
+			
+			f = findFileInFolder(checkout, "MANIFEST.MF");
+			if(f != |file:///|) {
+				result += {<java(), f, createOSGiModel(f)>};
+			}
+		}
+	}
+	return result;
+}
+
+public loc findFileInFolder(loc folder, str fileName) {
+	try {
+		return find(fileName, [folder]);
+	}	
+	catch "not-in-folder": {
+		files = folder.ls;
+		for(f <- files, isDirectory(f)) {
+			return findFileInFolder(f,fileName);
+		}
+		return |file:///|;
+	}
 }
 
 // this will become more interesting if we try to recover build information from meta-data

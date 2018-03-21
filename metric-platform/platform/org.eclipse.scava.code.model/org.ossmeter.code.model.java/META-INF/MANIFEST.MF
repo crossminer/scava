@@ -6,4 +6,5 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.scava.metricprovider.rascal,
  rascal4ossmeter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.eclipse.imp.pdb.facts
+Import-Package: org.eclipse.imp.pdb.facts,
+ org.eclipse.scava.dependency.model.OSGi

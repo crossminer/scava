@@ -13,54 +13,29 @@ import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
 import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
 import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 
-
-//--------------------------------------------------------------------------------
-// Functions
-//--------------------------------------------------------------------------------
-
-/*
- * Returns a relation where each element is a duple whose first value refers to the symbolic 
- * name of the bundle and the second value refers to the physical location of the analyzed bundle.
- * If no version is specified it is set to 0.0.0 as defined in the OSGi specification R.6.
- */
-public tuple[loc,loc,map[str,str]] getBundleLocation(loc jar, start[Manifest] manifest) {
+// If no version is specified it is set to 0.0.0 as defined in the OSGi specification R.6.
+public tuple[loc,map[str,str]] getBundleLocation(start[Manifest] manifest) {
 	symbolicName = (/HeaderBundleSymbolicName h := manifest) ? "<h.name>" : "";
 	vers = (/HeaderBundleVersion h := manifest) ? "<h.version>" : "0.0.0";	
-	return <createBundleLogicalLoc(symbolicName, version=vers), jar, ("version" : vers, "symbolic-name" : symbolicName)>;
+	return <createBundleLogicalLoc(symbolicName, version=vers), ("version" : vers, "symbolic-name" : symbolicName)>;
 }
 
-/*
- * Returns a relacion mapping the logical location of the given bundle to the logical 
- * location of each one of its required bundles, plus some additional parameters.
- */
-public rel[loc,loc,map[str,str]] getRequiredBundles(loc logical, OSGiModel model) {
-	rel[loc,loc,map[str,str]] requiredBundles = {};
-	
-	for(/RequireBundle reqBundle := model.manifests[logical]) {
+public rel[loc,map[str,str]] getRequiredBundles(OSGiModel model) {
+	requiredBundles = {};
+	for(/RequireBundle reqBundle := model.headers) {
 		params = setRequiredBundlesParams(reqBundle, model);
-		bundleLoc = suggestReqBundle("<reqBundle.symbolicName>", params["lower-version"], params["upper-version"], model);
-		
-		params = (bundleLoc != |bundle://eclipse|) 
-			? modifyReqBundleResolvedParam(true, params) : params;
-		bundleLoc = (bundleLoc == |bundle://eclipse|) 
-			? createBundleLogicalLoc("<reqBundle.symbolicName>") : bundleLoc;
-		
-		requiredBundles += <logical, bundleLoc, params>;
+		bundleLoc = createBundleLogicalLoc("<reqBundle.symbolicName>", 
+			version="<params["lower-version"]>-<params["upper-version"]>");
+		requiredBundles += <bundleLoc, params>;
 	}
 	
 	return requiredBundles;
 }
 
-/*
- * Returns a map with a Require-Bundle header related parameters. The considered parameters
- * correspond to resolved, lower-version, upper-version, visibility and resolution. The resolved 
- * boolean specifies if the required bundle is part of the Eclipse projects corpus.
- * A version == -1 represents infinity. All versions start either with '[' (inclusive) or '('
- * (exclusive).
- */
+// A version == -1 represents infinity. 
+// All versions start either with '[' (inclusive) or '('(exclusive).
 private map[str,str] setRequiredBundlesParams(RequireBundle reqBundle, OSGiModel model) {
-	map[str,str] params = (
-		"resolved" : "false", 
+	params = (
 		"lower-version" : "[0.0.0", 
 		"upper-version" : "(-1", 
 		"visibility" : "private", 
@@ -80,21 +55,9 @@ private map[str,str] setRequiredBundlesParams(RequireBundle reqBundle, OSGiModel
 	return params;
 }
 
-/*
- * Modifies the value of an imported package "resolved" parameter.
- */
-private map[str,str] modifyReqBundleResolvedParam(bool resolved, map[str,str] params) {
-	params += ("resolved" : "<resolved>");
-	return params;	
-}
-
-/*
- * Returns an updated version of the params map received as parameter. Lower and 
- * upper version values, as well as version specification are updated. 
- */ 
 private map[str,str] getReqBundleVersionRange(QuotedHybridVersion ver, map[str,str] params) {
-	tuple[str,str] vRange;
-	str vSpec;
+	vRange;
+	vSpec;
 	
 	if((QuotedHybridVersion)`"<Version version>"` := ver) {
 		vRange = <"[<version>", "(-1">;
@@ -117,18 +80,4 @@ private map[str,str] getReqBundleVersionRange(QuotedHybridVersion ver, map[str,s
 	params += ("upper-version" : vRange[1]);
 	params += ("version-spec" : vSpec);
 	return params;
-}
-
-/*
- * Returns the location of the suggested required bundle (a bundle that respects the 
- * version range and that has the highest version). This method only considers major 
- * and minor version values as suggested by the OSGi specification R.6. Each version 
- * follows the grammar: ("("|"[") major(.minor(.micro(.qualifier)?)?)?
- */
-public loc suggestReqBundle(str symbolicName, str lowerVersion, str upperVersion, OSGiModel model) {
-	symbolicName = (symbolicName == SYSTEM_BUNDLE_ALIAS) ? SYSTEM_BUNDLE_NAME : symbolicName;
-	vers = {params["version"] | <logical, physicial, params> <- model.locations, getBundleSymbolicName(logical) == symbolicName};
-	highestVers = highestVersionWithBounds(vers,lowerVersion,upperVersion);
-	
-	return (highestVers in vers) ? createBundleLogicalLoc(symbolicName,version=highestVers) : |bundle://eclipse|;
 }
