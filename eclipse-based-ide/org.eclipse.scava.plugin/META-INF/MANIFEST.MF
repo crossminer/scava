@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Scava Eclipse Base IDE
-Bundle-SymbolicName: org.scava.plugin;singleton:=true
+Bundle-Name: SCAVA Eclipse Base IDE
+Bundle-SymbolicName: org.eclipse.scava.plugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.scava.plugin.Activator
 Bundle-Vendor: Frontendart

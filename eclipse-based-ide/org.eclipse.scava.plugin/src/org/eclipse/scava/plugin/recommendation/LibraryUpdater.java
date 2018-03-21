@@ -20,10 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.scava.plugin.context.librarystatus.LibraryParser;
-import org.scava.plugin.context.librarystatus.LibraryStatusException;
-import org.scava.plugin.context.librarystatus.ProjectClasspathParser;
-import org.scava.plugin.utils.Utils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -31,6 +27,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.scava.commons.library.Library;
+import org.eclipse.scava.plugin.context.librarystatus.LibraryParser;
+import org.eclipse.scava.plugin.context.librarystatus.LibraryStatusException;
+import org.eclipse.scava.plugin.context.librarystatus.ProjectClasspathParser;
+import org.eclipse.scava.plugin.utils.Utils;
 
 public class LibraryUpdater {
 

@@ -6,16 +6,11 @@
 * which is available at https://www.eclipse.org/legal/epl-2.0/
 *
 * SPDX-License-Identifier: EPL-2.0
-*
-* Contributors:
-*    Zsolt János Szamosvölgyi
-*    Endre Tamás Váradi
-*    Gergő Balogh
 **********************************************************************/
-package org.eclipse.scava.commons.context.useractivity;
 
-import org.eclipse.scava.commons.context.DevelopmentContext;
+package org.eclipse.scava.plugin.preferences;
 
-public class UserActivityMetric extends DevelopmentContext{
-	
+public class Preferences {
+	public static final String SERVER_ADDRESS = "SERVER_ADDRESS";
+	public static final String SERVER_PORT = "SERVER_PORT";
 }
