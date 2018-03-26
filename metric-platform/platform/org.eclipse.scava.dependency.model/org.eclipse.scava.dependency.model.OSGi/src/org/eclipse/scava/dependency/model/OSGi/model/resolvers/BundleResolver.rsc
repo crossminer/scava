@@ -14,10 +14,10 @@ import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
 import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 
 // If no version is specified it is set to 0.0.0 as defined in the OSGi specification R.6.
-public tuple[loc,map[str,str]] getBundleLocation(start[Manifest] manifest) {
-	symbolicName = (/HeaderBundleSymbolicName h := manifest) ? "<h.name>" : "";
-	vers = (/HeaderBundleVersion h := manifest) ? "<h.version>" : "0.0.0";	
-	return <createBundleLogicalLoc(symbolicName, version=vers), ("version" : vers, "symbolic-name" : symbolicName)>;
+public rel[loc,map[str,str]] getBundleLocation(OSGiModel model) {
+	symbolicName = (/HeaderBundleSymbolicName h := model.headers) ? "<h.name>" : "";
+	vers = (/HeaderBundleVersion h := model.headers) ? "<h.version>" : "0.0.0";	
+	return {<createBundleLogicalLoc(symbolicName, version=vers), ("version" : vers, "symbolic-name" : symbolicName)>};
 }
 
 public rel[loc,map[str,str]] getRequiredBundles(OSGiModel model) {

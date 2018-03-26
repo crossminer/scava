@@ -1,26 +1,16 @@
-module org::analyzer::util::FileHandler
+module org::eclipse::scava::dependency::model::OSGi::util::FileHandler
 
 import IO;
 import String;
 
-import org::analyzer::util::ExtensionOptions;
+import org::eclipse::scava::dependency::model::OSGi::util::ExtensionOptions;
 
 
-//--------------------------------------------------------------------------------
-// Functions
-//--------------------------------------------------------------------------------
-
-/*
- * Returns the list of Jar files located in the given location.
- */
 public list[loc] getJarsLoc(loc directory) {
 	content = listEntries(directory);
 	return [directory + "/<l>" | str l <- content, isFile(directory + l), l[-3..] == JAR_EXTENSION];
 }
 
-/*
- * Returns the list of Jar files located in the given location.
- */
 public list[loc] getJarsLocRecursively(loc directory) {
 	content = listEntries(directory);
 	jars = [];
@@ -40,9 +30,6 @@ public list[loc] getJarsLocRecursively(loc directory) {
 	return jars;
 }
 
-/*
- * Returns the loc pointing to a given file in a JAR.
- */
 public loc getFileFromJar(loc jar, str fileName) {
 	if(!startsWith(jar.scheme,"jar")) {
 		jar.scheme = "jar+<jar.scheme>";

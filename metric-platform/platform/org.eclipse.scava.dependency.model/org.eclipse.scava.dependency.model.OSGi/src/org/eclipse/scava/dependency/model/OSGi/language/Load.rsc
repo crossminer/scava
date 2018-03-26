@@ -7,24 +7,8 @@ import IO;
 import ParseTree;
 
 
-//--------------------------------------------------------------------------------
-// Functions
-//--------------------------------------------------------------------------------
-
-/*
- * Parse manifest file.
- */
-public start[Manifest] parseManifest(str manifestFile) {
-	manifestMap = loadManifest(manifestFile);
+public start[Manifest] parseManifest(loc file) {
+	manifestMap = loadManifest(file);
 	manifest = "<for (k <- manifestMap) {><k>: <manifestMap[k]><}>";
-	return parse(#start[Manifest], manifest, allowAmbiguity=false);
-}
-
-/*
- * Parse manifest file.
- */
-public start[Manifest] parseManifest(loc manifestFile) {
-	manifestMap = loadManifest(manifestFile);
-	manifest = "<for (k <- manifestMap) {><k>: <manifestMap[k]><}>";
-	return parse(#start[Manifest], manifest, allowAmbiguity=false);
+	return parse(#start[Manifest], manifest);
 }

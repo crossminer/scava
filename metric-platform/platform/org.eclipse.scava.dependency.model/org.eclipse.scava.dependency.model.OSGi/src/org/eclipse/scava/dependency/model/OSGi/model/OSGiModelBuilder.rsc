@@ -15,10 +15,6 @@ import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
 import org::eclipse::scava::dependency::model::OSGi::util::FileHandler;
 
 
-//--------------------------------------------------------------------------------
-// Model
-//--------------------------------------------------------------------------------
-
 /*
  * - id: identifier. Points to the physical location of the bundle.
  * - requiredBundles: gathers all the bundle's required bundles. Header related 
@@ -47,17 +43,13 @@ data OSGiModel = osgiModel (
 );
 
 
-//--------------------------------------------------------------------------------
-// Functions
-//--------------------------------------------------------------------------------
-
-public OSGiModel createOSGiModelFromFile (loc file, M3 m3) {
-	OSGiModel model = osgiModel(file);
+public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
+	OSGiModel model = osgiModel(|file:///| + file);
 	
 	// Set location and manifest headers
 	manifest = parseManifest(model.id);
 	model.headers = {h | /Header h := manifest};
-	model.location = {getBundleLocation(manifest)};
+	model.location += getBundleLocation(model);
 	
 	// Set dependencies
 	model.requiredBundles += getRequiredBundles(model);

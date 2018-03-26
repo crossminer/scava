@@ -1,14 +1,21 @@
 package org.eclipse.scava.dependency.model.OSGi.language.internal;
 
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.imp.pdb.facts.IMap;
 import org.eclipse.imp.pdb.facts.IMapWriter;
 import org.eclipse.imp.pdb.facts.ISourceLocation;
@@ -17,14 +24,9 @@ import org.eclipse.imp.pdb.facts.IValueFactory;
 import org.rascalmpl.interpreter.IEvaluatorContext;
 import org.rascalmpl.interpreter.utils.RuntimeExceptionFactory;
 import org.rascalmpl.uri.URIResolverRegistry;
+import org.rascalmpl.uri.URIUtil;
 
 
-/**
- * Notes to self:
- *   - Where to retrieve .jar/.MF identified by
- *     Bundle-SymbolicName "remotely"?
- *     (e.g. Tycho / p2 / Maven / whatever)
- */
 public class ManifestIO {
 	
 	private final static String MANIFEST_RELATIVE_PATH = "META-INF/MANIFEST.MF";
@@ -36,30 +38,10 @@ public class ManifestIO {
 		this.registry = new URIResolverRegistry();
 	}
 
-	public IMap loadManifest(ISourceLocation loc, IEvaluatorContext ctx) {
-		try {
-			InputStream is = registry.getInputStream(loc.getURI());
-	        ZipInputStream jarStream = new ZipInputStream(is);
-	        ZipEntry entry = jarStream.getNextEntry();
-	        boolean found = false;
 
-	        while (entry != null && !found) {
-	        	    //ctx.getStdErr().println(entry.getName());
-	        		if(entry.getName().equalsIgnoreCase(MANIFEST_RELATIVE_PATH)) {
-	        			return getManifestAttributes(jarStream);
-	        		}
-	            entry = jarStream.getNextEntry();
-	        }
-		} 
-		catch (IOException e) {
-			throw RuntimeExceptionFactory.io(factory.string(e.getMessage()), null, null);
-		}
-		return null;
-	}
-	
-	public IMap loadManifest(IString content, IEvaluatorContext ctx) {
-		InputStream is = new ByteArrayInputStream(content.getValue().getBytes(StandardCharsets.UTF_8));
+	public IMap loadManifest(ISourceLocation manifest, IEvaluatorContext ctx) {
 		try {
+			InputStream is = new FileInputStream(new File(manifest.getURI()));
 			return getManifestAttributes(is);
 		} 
 		catch (IOException e) {
