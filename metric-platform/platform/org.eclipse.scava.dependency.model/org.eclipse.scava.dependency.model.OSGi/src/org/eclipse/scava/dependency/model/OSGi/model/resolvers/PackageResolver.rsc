@@ -9,7 +9,7 @@ import Type;
 import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
 import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
 import org::eclipse::scava::dependency::model::OSGi::model::resolvers::BundleResolver;
-import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
+import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
 import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 
 

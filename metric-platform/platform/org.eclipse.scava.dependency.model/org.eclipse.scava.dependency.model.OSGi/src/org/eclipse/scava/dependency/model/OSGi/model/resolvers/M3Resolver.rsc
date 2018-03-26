@@ -8,7 +8,7 @@ import ValueIO;
 
 import lang::java::m3::Core;
 import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
+import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
 
 
 public rel[loc,loc] getImportedPackagesBC(M3 m3) 

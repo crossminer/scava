@@ -10,7 +10,7 @@ import ValueIO;
 import org::eclipse::scava::dependency::model::OSGi::language::Load;
 import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
 import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
+import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
 import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 
 // If no version is specified it is set to 0.0.0 as defined in the OSGi specification R.6.

@@ -11,8 +11,6 @@ import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
 import org::eclipse::scava::dependency::model::OSGi::model::resolvers::BundleResolver;
 import org::eclipse::scava::dependency::model::OSGi::model::resolvers::M3Resolver;
 import org::eclipse::scava::dependency::model::OSGi::model::resolvers::PackageResolver;
-import org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil;
-import org::eclipse::scava::dependency::model::OSGi::util::FileHandler;
 
 
 /*
@@ -58,8 +56,9 @@ public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
 	model.exportedPackages += getExportPackages(model);
 	
 	// Set M3 relations
-	model.importedPackagesBC += getImportedPackagesBC(m3);
-	model.bundlePackagesBC += getBundlePackagesBC(m3);
+	//TODO: uncomment once we solve M3 error.
+	//model.importedPackagesBC += getImportedPackagesBC(m3);
+	//model.bundlePackagesBC += getBundlePackagesBC(m3);
 	
 	return model;
 }

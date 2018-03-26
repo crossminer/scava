@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::util::OSGiUtil
+module org::eclipse::scava::dependency::model::OSGi::util::LocationHandler
 
 import Boolean;
 import IO;
