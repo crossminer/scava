@@ -30,7 +30,7 @@ import org::eclipse::scava::dependency::model::OSGi::model::resolvers::PackageRe
  */
 data OSGiModel = osgiModel (
 	loc id,			
-	rel[loc logical, map[str,str] params] location = {},	
+	rel[loc logical, map[str,str] params] locations = {},	
 	rel[loc reqBundle, map[str,str] params] requiredBundles = {},	
 	rel[loc impPackage, map[str,str] params] importedPackages = {},
 	rel[loc expPackage, map[str,str] params] exportedPackages = {},
@@ -47,7 +47,7 @@ public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
 	// Set location and manifest headers
 	manifest = parseManifest(model.id);
 	model.headers = {h | /Header h := manifest};
-	model.location += getBundleLocation(model);
+	model.locations += getBundleLocation(model);
 	
 	// Set dependencies
 	model.requiredBundles += getRequiredBundles(model);
