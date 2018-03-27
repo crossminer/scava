@@ -15,6 +15,8 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 import IO;
 import util::SystemAPI;
 import DateTime;
+import org::eclipse::scava::dependency::model::OSGi::DependencyOSGi;
+import org::eclipse::scava::dependency::model::maven::DependencyMaven;
   
 private str MAVEN = getSystemProperty("MAVEN_EXECUTABLE");
    
@@ -183,6 +185,44 @@ rel[Language, loc, OSGiModel] javaOSGi(loc project, ProjectDelta delta, map[loc 
 	return result;
 }
 
+@MavenExtractor{java()}
+@memo
+rel[Language, loc, MavenModel] javaMaven(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {  
+	rel[Language, loc, MavenModel] result = {};
+	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
+	assert all(repo <- checkouts, checkouts[repo].parent == parent);
+	
+	// TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
+	try {
+		map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+		for (repo <- checkouts) {
+			checkout = checkouts[repo];
+			sources = getSourceRoots({checkout});
+			setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+			
+			f = findFileInFolder(checkout, "pom.xml");
+			if(f != |file:///|) {
+				result += {<java(), f, createMavenModel(f)>};
+			}
+		}
+	}
+	catch "not-maven": {
+		jars = findJars(checkouts.folders);
+		
+		for (repo <- checkouts) {
+			checkout = checkouts[repo];
+			sources = getSourceRoots({checkout});
+			setEnvironmentOptions(jars, sources);
+			
+			f = findFileInFolder(checkout, "pom.xml");
+			if(f != |file:///|) {
+				result += {<java(), f, createMavenModel(f)>};
+			}
+		}
+	}
+	return result;
+}
+
 public loc findFileInFolder(loc folder, str fileName) {
 	try {
 		return find(fileName, [folder]);
@@ -194,6 +234,20 @@ public loc findFileInFolder(loc folder, str fileName) {
 		}
 		return |file:///|;
 	}
+}
+
+//TODO: check
+public set[loc] findFileInFolderRecursively(loc folder, str fileName) {
+	set[loc] findFiles(loc target, set[loc] prev) {
+		try {
+			mod_prev = find(fileName, [folder]) + prev;
+			return {*findFiles(f,mod_prev) | f <- target.ls, isDirectory(f)}; 
+		}	
+		catch "not-in-folder": {
+			return {*findFiles(f,prev) | f <- target.ls, isDirectory(f)};
+		}
+	}
+	return findFiles(folder,{});
 }
 
 // this will become more interesting if we try to recover build information from meta-data

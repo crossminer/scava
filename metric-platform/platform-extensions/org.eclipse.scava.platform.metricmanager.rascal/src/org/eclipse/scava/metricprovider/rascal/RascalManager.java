@@ -64,7 +64,8 @@ import org.rascalmpl.values.ValueFactoryFactory;
 public class RascalManager {
 	private static final String EXTRACTOR_TAG_AST = "ASTExtractor";
 	private static final String EXTRACTOR_TAG_M3 = "M3Extractor";
-	private static final String EXTRACTOR_TAG_OSGI = "OSGiExtractor";	
+	private static final String EXTRACTOR_TAG_OSGI = "OSGiExtractor";
+	private static final String EXTRACTOR_TAG_MAVEN = "MavenExtractor";
 	private final static IValueFactory VF = ValueFactoryFactory.getValueFactory();
 	
 	private final Evaluator eval = createEvaluator();
@@ -126,6 +127,7 @@ public class RascalManager {
 	private final Set<Extractor> m3Extractors = new HashSet<>();
 	private final Set<Extractor> astExtractors = new HashSet<>();
 	private final Set<Extractor> osgiExtractors = new HashSet<>();
+	private final Set<Extractor> mavenExtractors = new HashSet<>();
 	
 	public static final String MODULE = "org::eclipse::scava::metricprovider::Manager";
 	private List<IMetricProvider> metricProviders;
@@ -409,6 +411,10 @@ public class RascalManager {
 		return osgiExtractors;
 	}
 	
+	public Set<Extractor> getMavenExtractors() {
+		return mavenExtractors;
+	}
+	
 	public TypeStore getExtractedTypes() {
 		TypeStore store = new TypeStore();
 		
@@ -419,6 +425,9 @@ public class RascalManager {
 			store.extendStore(e.function.getEnv().getStore());
 		}
 		for (Extractor e : osgiExtractors) {
+			store.extendStore(e.function.getEnv().getStore());
+		}
+		for (Extractor e : mavenExtractors) {
 			store.extendStore(e.function.getEnv().getStore());
 		}
 		
@@ -455,6 +464,9 @@ public class RascalManager {
 			extractedLanguages.add(e.language);
 		}
 		for (Extractor e : osgiExtractors) {
+			extractedLanguages.add(e.language);
+		}
+		for (Extractor e : mavenExtractors) {
 			extractedLanguages.add(e.language);
 		}
 
@@ -504,6 +516,9 @@ public class RascalManager {
 					} 
 					else if(f.hasTag(EXTRACTOR_TAG_OSGI)) {
 						osgiExtractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_OSGI)));
+					}
+					else if(f.hasTag(EXTRACTOR_TAG_MAVEN)) {
+						mavenExtractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_MAVEN)));
 					}
 				} 
 				catch (Exception e) {
