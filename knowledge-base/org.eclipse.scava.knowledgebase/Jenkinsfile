@@ -4,14 +4,11 @@ pipeline {
     stage('Build') {
         stage('Build Knowledge Base') {
           steps {
-#			configFileProvider([configFile(fileId: "", variable: 'PACKER_OPTIONS')]) {
-#			  echo " =========== ^^^^^^^^^^^^ Reading config from pipeline script "
               dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
                 sh 'mvn validate'
                 sh 'mvn compile'
                 sh 'mvn test'
               }
-#            }
 
             junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
           }
