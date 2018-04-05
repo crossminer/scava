@@ -5,19 +5,19 @@ pipeline {
       parallel {
         stage('Build API Gateway') {
           steps {
-            build job: 'scava-apigateway', propagate: false
+            build 'scava-apigateway'
           }
         }
         stage('Build Knowledge Base') {
           steps {
-            build job: 'scava-knowledgebase', propagate: false
+            build 'scava-knowledgebase'
           }
         }
       }
     }
     stage('Publish') {
       steps {
-        slackSend(message: 'Build run on ci5', channel: '#ci', baseUrl: 'http://ci5.castalia.camp:8080/', token: 'GiuSQlJWxlFkrbp3IBElJQOq', tokenCredentialId: 'jenkins', teamDomain: 'https://crossminer.slack.com/services/hooks/jenkins-ci/')
+        slackSend(message: 'Build run on ci5', channel: '#ci', baseUrl: 'https://crossminer.slack.com/services/hooks/jenkins-ci/', token: 'GiuSQlJWxlFkrbp3IBElJQOq', tokenCredentialId: 'jenkins')
       }
     }
   }
