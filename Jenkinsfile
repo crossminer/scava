@@ -27,5 +27,10 @@ pipeline {
         }
       }
     }
+    stage('Publish') {
+      steps {
+        slackSend(message: 'Build run on ci5', channel: '#ci', baseUrl: 'http://ci5.castalia.camp:8080/', token: 'GiuSQlJWxlFkrbp3IBElJQOq', tokenCredentialId: 'jenkins', teamDomain: 'https://crossminer.slack.com/services/hooks/jenkins-ci/')
+      }
+    }
   }
 }
