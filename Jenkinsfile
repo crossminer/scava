@@ -4,10 +4,14 @@ pipeline {
     stage('Build') {
       parallel {
         stage('Build API Gateway') {
-          build job: 'scava-apigateway', propagate: false
+          steps {
+            build job: 'scava-apigateway', propagate: false
+          }
         }
         stage('Build Knowledge Base') {
-          build job: 'scava-knowledgebase', propagate: false
+          steps {
+            build job: 'scava-knowledgebase', propagate: false
+          }
         }
       }
     }
