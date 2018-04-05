@@ -3,10 +3,13 @@ pipeline {
   stages {
     stage('Build Knowledge Base') {
       steps {
-        dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
-          sh 'mvn validate'
-          sh 'mvn compile'
-          sh 'mvn test'
+        configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
+          dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
+            cp $MY_KB_APP_PROP src/test/resources/application.properties
+            sh 'mvn validate'
+            sh 'mvn compile'
+            sh 'mvn test'
+          }
         }
 	   
 	      junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
