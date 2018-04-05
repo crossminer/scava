@@ -17,7 +17,7 @@ pipeline {
     }
     stage('Publish') {
       steps {
-        slackSend(message: 'Build run on ci5', channel: '#ci', baseUrl: 'https://crossminer.slack.com/services/hooks/jenkins-ci/', token: 'GiuSQlJWxlFkrbp3IBElJQOq', tokenCredentialId: 'jenkins')
+        slackSend(message: 'Full build completed on http://ci5.castalia.camp:8080', channel: '#ci', baseUrl: 'https://crossminer.slack.com/services/hooks/jenkins-ci/', token: 'GiuSQlJWxlFkrbp3IBElJQOq', tokenCredentialId: 'jenkins')
       }
     }
   }
