@@ -4,9 +4,7 @@ Bundle-Name: scava-jackson
 Bundle-SymbolicName: org.eclipse.scava.jackson;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- com.fasterxml.jackson.core.jackson-annotations,
- com.fasterxml.jackson.core.jackson-core, 
- com.fasterxml.jackson.core.jackson-databind,
+ com.fasterxml.jackson,
  org.joda.time
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

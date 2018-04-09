@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.scava.platform.admin.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
- org.jackson.all,
+ com.fasterxml.jackson,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform.osgi,
  org.restlet
