@@ -13,3 +13,8 @@ public OSGiModel createOSGiModel(str manifest)
 	= createOSGiModelFromFile(manifest, emptyM3(|file:///|));
 //public OSGiModel createOSGiModel(loc manifest, rel[Language, loc, M3] m3s = {})
 //	= createOSGiModelFromFile(manifest, systemM3(m3s));
+
+public OSGiModel composeJavaOSGiModels(loc id, set[OSGiModel] models) 
+	= composeOSGiModels(id,models);
+
+

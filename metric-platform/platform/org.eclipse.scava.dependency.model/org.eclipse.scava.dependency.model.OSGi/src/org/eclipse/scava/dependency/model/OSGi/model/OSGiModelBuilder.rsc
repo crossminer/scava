@@ -63,3 +63,16 @@ public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
 	
 	return model;
 }
+
+public OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
+	OSGiModel model = osgiModel(id);
+	model.locations = {*m.locations | m <- models};
+	model.headers = {*m.headers | m <- models};
+	model.requiredBundles = {*m.requiredBundles | m <- models};
+	model.importedPackages = {*m.importedPackages | m <- models};
+	model.exportedPackages = {*m.exportedPackages | m <- models};
+	model.dynamicImportedPackages = {*m.dynamicImportedPackages | m <- models};
+	model.importedPackagesBC = {*m.importedPackagesBC | m <- models};
+	model.bundlePackagesBC = {*m.bundlePackagesBC | m <- models};
+	return model;
+}
