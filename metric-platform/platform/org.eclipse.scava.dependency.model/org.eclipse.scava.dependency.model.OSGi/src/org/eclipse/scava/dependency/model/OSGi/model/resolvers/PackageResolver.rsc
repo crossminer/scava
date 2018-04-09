@@ -14,11 +14,11 @@ import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getExportPackages(OSGiModel model) {
+public rel[loc,map[str,str]] getExportPackages(loc logical, OSGiModel model) {
 	exportPackages = {};
 	for(/ExportPackage expPackage := model.headers) {
 		params = setExportPackagesParams(expPackage);
-		exportPackages += {<createPackageLogicalLoc("<name>"), params> | name <- expPackage.packageNames};
+		exportPackages += {<logical, createPackageLogicalLoc("<name>"), params> | name <- expPackage.packageNames};
 	}
 	return exportPackages;
 }
@@ -51,11 +51,11 @@ private map[str,str] setExportPackagesParams(ExportPackage expPackage) {
 }
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getImportPackages(OSGiModel model) {
+public rel[loc,map[str,str]] getImportPackages(loc logical, OSGiModel model) {
 	importPackages = {};
 	for(/ImportPackage impPackage := model.headers) {
 		params = setImportPackagesParams(impPackage);
-		importPackages += {<createPackageLogicalLoc("<name>"), params> | name <- impPackage.packageNames};
+		importPackages += {<logical, createPackageLogicalLoc("<name>"), params> | name <- impPackage.packageNames};
 	}
 	return importPackages;
 }
@@ -118,13 +118,13 @@ private map[str,str] getImpPackageVersionRange(UnrestrictedHybridVersion ver, ma
 }
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getDynamicImportPackages(OSGiModel model) {
+public rel[loc,map[str,str]] getDynamicImportPackages(loc logical, OSGiModel model) {
 	dynamicImportPackages = {};
 	for(/DynamicImportDescription dynImpDescription := model.headers) {
 		params = setDynamicImportPackagesParams(dynImpDescription);
 		names = {"<packages>" | /QualifiedName packages := dynImpDescription};
 		if(names != {}) {
-			dynamicImportPackages += {<createPackageLogicalLoc(name), params> | name <- names};
+			dynamicImportPackages += {<logical, createPackageLogicalLoc(name), params> | name <- names};
 		}
 	}
 	return dynamicImportPackages;

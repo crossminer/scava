@@ -30,14 +30,14 @@ import org::eclipse::scava::dependency::model::OSGi::model::resolvers::PackageRe
  */
 data OSGiModel = osgiModel (
 	loc id,			
-	rel[loc logical, map[str,str] params] locations = {},	
-	rel[loc reqBundle, map[str,str] params] requiredBundles = {},	
-	rel[loc impPackage, map[str,str] params] importedPackages = {},
-	rel[loc expPackage, map[str,str] params] exportedPackages = {},
-	rel[loc dynImpPackage, map[str,str] params] dynamicImportedPackages = {},
-	set[loc] importedPackagesBC = {},
-	set[loc] bundlePackagesBC = {},
-	set[Header] headers = {}
+	rel[loc logical, loc physical, map[str,str] params] locations = {},	
+	rel[loc bundle, loc reqBundle, map[str,str] params] requiredBundles = {},	
+	rel[loc bundle, loc impPackage, map[str,str] params] importedPackages = {},
+	rel[loc bundle, loc expPackage, map[str,str] params] exportedPackages = {},
+	rel[loc bundle, loc dynImpPackage, map[str,str] params] dynamicImportedPackages = {},
+	rel[loc bundle, loc impPackageBC] importedPackagesBC = {},
+	rel[loc bundle, loc bundlePackageBC] bundlePackagesBC = {},
+	rel[loc bundle, set[Header] header] headers = {}
 );
 
 
@@ -46,14 +46,15 @@ public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
 	
 	// Set location and manifest headers
 	manifest = parseManifest(model.id);
-	model.headers = {h | /Header h := manifest};
 	model.locations += getBundleLocation(model);
+	logical = getOneFrom(model.locations).logical;
+	model.headers = <logical, {h | /Header h := manifest}>;
 	
 	// Set dependencies
-	model.requiredBundles += getRequiredBundles(model);
-	model.importedPackages += getImportPackages(model);
-	model.dynamicImportedPackages += getDynamicImportPackages(model);
-	model.exportedPackages += getExportPackages(model);
+	model.requiredBundles += getRequiredBundles(logical, model);
+	model.importedPackages += getImportPackages(logical, model);
+	model.dynamicImportedPackages += getDynamicImportPackages(logical, model);
+	model.exportedPackages += getExportPackages(logical, model);
 	
 	// Set M3 relations
 	//TODO: uncomment once we solve M3 error.

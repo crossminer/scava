@@ -17,16 +17,16 @@ import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
 public rel[loc,map[str,str]] getBundleLocation(OSGiModel model) {
 	symbolicName = (/HeaderBundleSymbolicName h := model.headers) ? "<h.name>" : "";
 	vers = (/HeaderBundleVersion h := model.headers) ? "<h.version>" : "0.0.0";	
-	return {<createBundleLogicalLoc(symbolicName, version=vers), ("version" : vers, "symbolic-name" : symbolicName)>};
+	return {<createBundleLogicalLoc(symbolicName, version=vers), model.id, ("version" : vers, "symbolic-name" : symbolicName)>};
 }
 
-public rel[loc,map[str,str]] getRequiredBundles(OSGiModel model) {
+public rel[loc,map[str,str]] getRequiredBundles(loc logical, OSGiModel model) {
 	requiredBundles = {};
 	for(/RequireBundle reqBundle := model.headers) {
 		params = setRequiredBundlesParams(reqBundle, model);
 		bundleLoc = createBundleLogicalLoc("<reqBundle.symbolicName>", 
 			version="<params["lower-version"]>-<params["upper-version"]>");
-		requiredBundles += <bundleLoc, params>;
+		requiredBundles += <logical, bundleLoc, params>;
 	}
 	
 	return requiredBundles;
