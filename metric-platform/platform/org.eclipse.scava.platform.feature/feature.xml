@@ -107,7 +107,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="com.google.code.gson"
+         id="com.google.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1496,7 +1496,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.log4j.1.2.17"
+         id="org.apache.log4j"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

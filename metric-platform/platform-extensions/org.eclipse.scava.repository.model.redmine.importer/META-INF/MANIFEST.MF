@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.scava.repository.model.redmine,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
- org.apache.log4j.1.2.17,
+ org.apache.log4j,
  org.eclipse.scava.repository.model.importer
 Export-Package: org.eclipse.scava.repository.model.redmine.importer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
