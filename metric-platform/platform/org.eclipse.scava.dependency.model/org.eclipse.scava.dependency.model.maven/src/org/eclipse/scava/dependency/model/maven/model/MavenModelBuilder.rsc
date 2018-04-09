@@ -2,6 +2,7 @@ module org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder
 
 import IO;
 import lang::xml::DOM;
+import Set;
 
 import org::eclipse::scava::dependency::model::maven::model::resolvers::ProjectResolver;
 import org::eclipse::scava::dependency::model::maven::util::FileHandler;
@@ -14,8 +15,8 @@ import org::eclipse::scava::dependency::model::maven::util::FileHandler;
  */
 data MavenModel = mavenModel (
 	loc id,
-	rel[loc logical, map[str,str] params] locations = {},
-	rel[loc dependency, map[str,str] params] dependencies = {}
+	rel[loc logical, loc physical, map[str,str] params] locations = {},
+	rel[loc project, loc dependency, map[str,str] params] dependencies = {}
 );
 
 public MavenModel createMavenModelFromProject (loc project) {
@@ -23,7 +24,8 @@ public MavenModel createMavenModelFromProject (loc project) {
 	pom = getFileFromProject(project, "pom.xml");
 	dom = parseXMLDOM(readFile(pom));
 	
-	model.locations += getProjectLocation(dom);
-	model.dependencies += getProjectDependencies(dom);
+	model.locations += getProjectLocation(model.id, dom);
+	logical = getOneFrom(model.locations).logical;
+	model.dependencies += getProjectDependencies(logical, dom);
 	return model;
 }
