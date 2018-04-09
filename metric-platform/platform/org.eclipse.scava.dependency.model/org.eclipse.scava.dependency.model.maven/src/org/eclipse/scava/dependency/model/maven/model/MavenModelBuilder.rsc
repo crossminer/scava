@@ -29,3 +29,10 @@ public MavenModel createMavenModelFromProject (loc project) {
 	model.dependencies += getProjectDependencies(logical, dom);
 	return model;
 }
+
+public MavenModel composeMavenModels(loc id, set[MavenModel] models) {
+	MavenModel model = mavenModel(id);
+	model.locations = {*m.locations | m <- models};
+	model.dependencies = {*m.dependencies | m <- models};
+	return model;
+}

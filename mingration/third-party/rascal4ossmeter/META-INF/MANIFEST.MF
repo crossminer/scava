@@ -6,7 +6,8 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/rascal.jar,
  lib/rascal-java-build-manager.jar
-Export-Package: org.eclipse.imp.pdb.facts,
+Export-Package: org.apache.maven.artifact.versioning,
+ org.eclipse.imp.pdb.facts,
  org.eclipse.imp.pdb.facts.exceptions,
  org.eclipse.imp.pdb.facts.impl,
  org.eclipse.imp.pdb.facts.impl.fast,

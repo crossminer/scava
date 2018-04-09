@@ -13,3 +13,6 @@ public MavenModel createMavenModel(str pom)
 	= createMavenModelFromProject(pom);
 //public MavenModel createMavenModel(loc pom)
 //	= createMavenModelFromProject(pom);
+
+public MavenModel composeJavaMavenModels(loc id, set[MavenModel] models) 
+	= composeMavenModels(id, models);
