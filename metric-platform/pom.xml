@@ -51,7 +51,6 @@
     <module>../migration/third-party/org.eclipse.jetty.spdy.server</module>
     <module>../migration/third-party/org.eclipse.jetty.util</module>
     <module>../migration/third-party/org.eclipse.jgit</module>
-    <module>../migration/third-party/org.eclipse.scava.jackson</module>
     <module>../migration/third-party/org.jackson.all</module>
     <module>../migration/third-party/org.joda.time</module>
     <module>../migration/third-party/org.json</module>
