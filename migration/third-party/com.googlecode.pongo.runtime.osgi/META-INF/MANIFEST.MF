@@ -5,7 +5,8 @@ Bundle-SymbolicName: com.googlecode.pongo.runtime.osgi;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: GOOGLECODE
 Require-Bundle: com.googlecode.pongo.runtime,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.googlecode.pongo.runtime.osgi
