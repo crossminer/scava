@@ -9,11 +9,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.jira,
  com.googlecode.pongo.runtime,
- com.fasterxml.jackson,
  org.joda.time,
  com.mashape.unirest,
  org.eclipse.scava.jackson,
  org.eclipse.scava.platform.bugtrackingsystem,
- org.apache.commons.lang
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.commons.lang.time

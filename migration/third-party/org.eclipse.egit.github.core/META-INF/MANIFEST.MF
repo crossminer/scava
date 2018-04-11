@@ -11,4 +11,4 @@ Export-Package: org.eclipse.egit.github.core,
  org.eclipse.egit.github.core.service,
  org.eclipse.egit.github.core.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: com.google.code.gson
+Require-Bundle: com.google.gson;bundle-version="2.2.4"

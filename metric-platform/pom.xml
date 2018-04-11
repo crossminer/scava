@@ -40,16 +40,6 @@
     <module>../migration/third-party/org.carrot2.api</module>
     <module>../migration/third-party/org.carrot2.dependencies</module>
     <module>../migration/third-party/org.eclipse.egit.github.core</module>
-    <module>../migration/third-party/org.eclipse.jetty.client</module>
-    <module>../migration/third-party/org.eclipse.jetty.http</module>
-    <module>../migration/third-party/org.eclipse.jetty.io</module>
-    <module>../migration/third-party/org.eclipse.jetty.server</module>
-    <module>../migration/third-party/org.eclipse.jetty.spdy.client</module>
-    <module>../migration/third-party/org.eclipse.jetty.spdy.core</module>
-    <module>../migration/third-party/org.eclipse.jetty.spdy.http.common</module>
-    <module>../migration/third-party/org.eclipse.jetty.spdy.http.server</module>
-    <module>../migration/third-party/org.eclipse.jetty.spdy.server</module>
-    <module>../migration/third-party/org.eclipse.jetty.util</module>
     <module>../migration/third-party/org.eclipse.jgit</module>
     <module>../migration/third-party/org.joda.time</module>
     <module>../migration/third-party/org.json</module>

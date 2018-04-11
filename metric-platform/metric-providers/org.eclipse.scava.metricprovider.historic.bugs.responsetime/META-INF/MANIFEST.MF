@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform.client.api,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.platform.visualisation,
- org.apache.commons.lang,
  org.eclipse.scava.repository.model.bts.bugzilla,
  org.eclipse.scava.metricprovider.trans.bugs.requestsreplies,
  org.eclipse.scava.platform.communicationchannel.nntp,
@@ -19,3 +18,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.historic.bugs.responsetime,
  org.eclipse.scava.metricprovider.historic.bugs.responsetime.model
+Import-Package: org.apache.commons.lang.time

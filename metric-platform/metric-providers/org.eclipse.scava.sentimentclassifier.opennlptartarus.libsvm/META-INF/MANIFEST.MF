@@ -9,7 +9,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.libsvm.dependencies,
  org.eclipse.scava.opennlp,
  org.eclipse.scava.tartarus.parser.posstemmer,
- org.apache.commons.lang,
  com.google.guava
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

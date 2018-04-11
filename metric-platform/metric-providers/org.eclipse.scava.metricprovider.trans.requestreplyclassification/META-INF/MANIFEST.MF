@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.bts.bugzilla,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm,
- org.apache.commons.lang,
  org.eclipse.scava.platform.visualisation,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
@@ -19,3 +18,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.trans.requestreplyclassification,
  org.eclipse.scava.metricprovider.trans.requestreplyclassification.model
+Import-Package: org.apache.commons.lang.time

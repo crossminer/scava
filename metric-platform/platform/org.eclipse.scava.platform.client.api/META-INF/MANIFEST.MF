@@ -5,10 +5,8 @@ Bundle-SymbolicName: org.eclipse.scava.platform.client.api;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.platform.client.api.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.apache.commons.lang,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
- com.fasterxml.jackson,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model.eclipse,
  org.eclipse.scava.platform.visualisation,
@@ -26,7 +24,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.vcs.svn,
  org.eclipse.scava.repository.model.sourceforge.importer,
  org.eclipse.scava.platform.osgi,
- org.restlet
+ org.restlet,
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.6.2",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.client.api
