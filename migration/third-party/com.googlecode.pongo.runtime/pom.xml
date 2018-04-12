@@ -6,15 +6,10 @@
     <groupId>org.eclipse.scava</groupId>
     <artifactId>metric-platform</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../</relativePath>
+    <relativePath>../../../metric-platform/</relativePath>
   </parent>
   <groupId>org.eclipse.scava</groupId>
-  <artifactId>releng</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-
-  <modules>
-      <module>org.eclipse.scava.product</module>
-	  <module>org.eclipse.scava.target</module>
-  </modules>
+  <artifactId>com.googlecode.pongo.runtime</artifactId>
+  <version>0.5.0-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
 </project>
