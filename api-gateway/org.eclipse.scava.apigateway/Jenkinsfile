@@ -1,0 +1,16 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build API Gateway') {
+      steps {
+        dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
+          sh 'mvn validate'
+          sh 'mvn compile'
+          sh 'mvn test'
+        }
+            
+        junit(testResults: 'api-gateway/org.eclipse.scava.apigateway/target/surefire-reports/*.xml', allowEmptyResults: true)
+      }
+    }
+  }
+}
