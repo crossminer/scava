@@ -6,6 +6,12 @@ pipeline {
         dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
           sh 'mvn validate'
           sh 'mvn compile'
+        }
+      }
+    }
+    stage('Test API Gateway') {
+      steps {
+        dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
           sh 'mvn test'
         }
             

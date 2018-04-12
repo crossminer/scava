@@ -8,11 +8,20 @@ pipeline {
             sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn validate'
             sh 'mvn compile'
+            sh 'mvn package'
+          }
+        }
+      }
+    }
+    stage('Test Knowledge Base') {
+      steps {
+          dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
+            sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn test'
           }
         }
 	   
-	      junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
+        junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
       }
     }
   }

@@ -13,6 +13,11 @@ pipeline {
             build 'scava-knowledgebase'
           }
         }
+        stage('Build Metric Platform') {
+          steps {
+            build 'scava-metricplatform'
+          }
+        }
       }
     }
     stage('Publish') {
