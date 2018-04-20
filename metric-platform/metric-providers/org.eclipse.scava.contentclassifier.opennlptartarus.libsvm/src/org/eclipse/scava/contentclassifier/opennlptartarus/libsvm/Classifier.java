@@ -13,6 +13,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,9 @@ import libsvm.svm_model;
 import libsvm.svm_node;
 
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 public class Classifier {
 
@@ -84,9 +88,9 @@ public class Classifier {
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 		if (path.endsWith("bin/"))
 			path = path.substring(0, path.lastIndexOf("bin/"));
-		String argumentString = "-b 1 " + path + "classifierFiles/Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m";
+		String argumentString = "-b 1 classifierFiles/Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m";
 //		String argumentString = "-b 1 " + path + "classifierFiles/Test-TfIdfFeatures-Clean-AllPoS.m";
-		svm_model model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "));
+		svm_model model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "), getClass().getClassLoader());
 		
 		List<List<Double>> output_list = null;
 		try {
@@ -128,24 +132,22 @@ public class Classifier {
 //	}
 
 	private Map<Double, String> loadFromFile(String filename) {
-        String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        if (path.endsWith("bin/"))
-        	path = path.substring(0, path.lastIndexOf("bin/"));
-		File file = new File(path, filename);
+		Map<Double, String> classMap = new HashMap<Double, String>();
 		String content = null;
 		try {
-			content = readFileAsString(file);
+			URL resource = getClass().getResource("/" + filename);
+			content = Resources.toString(resource, Charsets.UTF_8);
 		} catch (IOException e) {
-			System.err.println("Unable to read file: " + filename);
 			e.printStackTrace();
 		}
-		Map<Double, String> classMap = new HashMap<Double, String>();
-		for (String line: content.split("\\n")) {
-			String[] elements = line.split("\\t");
-			double classNumber = Double.parseDouble(elements[0].trim());
-			String classLabel = elements[1].trim();
-			if (classLabel.length()>0)
-				classMap .put(classNumber, classLabel);
+		if (content != null) {
+			for (String line: content.split("\\n")) {
+				String[] elements = line.split("\\t");
+				double classNumber = Double.parseDouble(elements[0].trim());
+				String classLabel = elements[1].trim();
+				if (classLabel.length()>0)
+					classMap .put(classNumber, classLabel);
+			}
 		}
 		return classMap;
 	}

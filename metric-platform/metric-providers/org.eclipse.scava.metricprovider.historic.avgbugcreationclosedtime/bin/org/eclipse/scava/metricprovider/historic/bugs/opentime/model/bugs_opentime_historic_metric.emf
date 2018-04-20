@@ -1,8 +1,0 @@
-package org.eclipse.scava.metricprovider.historic.bugs.opentime.model;
-
-class BugsOpenTimeHistoricMetric {
-	attr String avgBugOpenTime;
-	attr double avgBugOpenTimeInDays;
-	attr int bugsConsidered;
-}
-
