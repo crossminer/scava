@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="org.eclipse.scava.product.fromfeature" uid="SCAVA product" id="org.eclipse.scava.platform.osgi.product" application="scava.workerservice" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
-
+<product name="org.eclipse.scava.product.fromfeature" uid="scava-product" id="org.eclipse.scava.platform.osgi.product" application="scava.workerservice" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -18,18 +17,14 @@
 
    <windowImages/>
 
-
    <launcher>
-      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>

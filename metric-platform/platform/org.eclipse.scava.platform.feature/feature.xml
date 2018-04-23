@@ -107,7 +107,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="com.google.gson"
+         id="com.google.code.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -599,12 +599,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jackson.all"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.repository.model.github.importer"
          download-size="0"
          install-size="0"
@@ -804,12 +798,6 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.commits"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="com.google.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
