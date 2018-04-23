@@ -266,7 +266,7 @@ public class ProjectExecutor implements Runnable {
 		return null;
 	}
 		
-	protected Date getLastExecutedDate() {
+	public Date getLastExecutedDate() {
 		Date lastExec;
 		String lastExecuted = project.getExecutionInformation().getLastExecuted();
 		if(lastExecuted.equals("null") || lastExecuted.equals("")) {
