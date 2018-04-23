@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.factoids"},{"v":2,"key":{"metricId":1},"name":"metricId_1","ns":"pongotest.factoids","background":true},{"v":2,"key":{"category":1},"name":"category_1","ns":"pongotest.factoids","background":true}],"uuid":"5afe0035c0b34464980d9abd8e873008"}

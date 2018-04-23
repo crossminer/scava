@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.Commits.commits"},{"v":2,"key":{"date":1},"name":"date_1","ns":"pongotest.Commits.commits","background":true}],"uuid":"12b4175c33b24a56b043c38c84b455ec"}
