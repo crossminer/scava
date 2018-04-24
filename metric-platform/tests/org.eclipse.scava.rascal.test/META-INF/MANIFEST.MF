@@ -18,8 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.cc.nntp,
  com.googlecode.pongo.runtime,
  com.googlecode.pongo.runtime.osgi,
- rascal4ossmeter,
- org.apache.log4j
+ org.apache.log4j,
+ rascal_eclipse
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.json,
