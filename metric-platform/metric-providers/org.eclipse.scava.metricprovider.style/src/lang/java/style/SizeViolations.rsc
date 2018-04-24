@@ -43,7 +43,7 @@ MethodCount					DONE
 //	msgs = [];
 //	void checkSize(Statement ast){
 //		if(size([s | /Statement s := ast]) > 30){
-//			msgs += sizeViolation("ExecutableStatementCount", ast@src);
+//			msgs += sizeViolation("ExecutableStatementCount", ast.src);
 //		}
 //	}
 //	top-down-break visit(ast){
@@ -57,23 +57,23 @@ MethodCount					DONE
 /* --- fileLength -----------------------------------------------------------*/
 
 list[Message] fileLength(Declaration m,  list[Declaration] parents, M3 model) =
-	(m@src.end.line > 2000) ?  [sizeViolation("FileLength", m@src)] : [];
+	(m.src.end.line > 2000) ?  [sizeViolation("FileLength", m.src)] : [];
 
 /* --- methodLength ---------------------------------------------------------*/
 
-int getSize(Declaration d) = d@src.end.line - d@src.begin.line;
+int getSize(Declaration d) = d.src.end.line - d.src.begin.line;
 
 list[Message] methodLength(Declaration m: \method(_,_,_,_,_),  list[Declaration] parents, M3 model) =
-	(getSize(m) > 150) ? [sizeViolation("MethodLength", m@src)] : [];
+	(getSize(m) > 150) ? [sizeViolation("MethodLength", m.src)] : [];
 
     
 /* --- parameterNumber ------------------------------------------------------*/
 
 list[Message] parameterNumber(Declaration m: \method(_,_,parameters,_,_),  list[Declaration] parents, M3 model) =
-	size(parameters) > 7 ? [sizeViolation("ParameterNumber", m@src)] : [];
+	size(parameters) > 7 ? [sizeViolation("ParameterNumber", m.src)] : [];
 
 list[Message] parameterNumber(Declaration m: \method(_,_,parameters,_),  list[Declaration] parents, M3 model) =
-	size(parameters) > 7 ? [sizeViolation("ParameterNumber", m@src)] : [];
+	size(parameters) > 7 ? [sizeViolation("ParameterNumber", m.src)] : [];
 
 default list[Message] parameterNumber(Declaration m,  list[Declaration] parents, M3 model) = [];
 	
@@ -98,7 +98,7 @@ default list[Message] methodCount(Declaration d, list[Declaration] parents, M3 m
 value updateMethodCount(value current, value delta) { if(int n := current && int d := delta) return n + d; }
 
 list[Message] finalizeMethodCount(Declaration d, value current) =
-	(int n := current && n > 100) ? [sizeViolation("MethodCount", d@src) ] : [];
+	(int n := current && n > 100) ? [sizeViolation("MethodCount", d.src) ] : [];
 	
 /* --- fieldCount ----------------------------------------------------------*/
 
@@ -113,12 +113,12 @@ default list[Message] fieldCount(Declaration d, list[Declaration] parents, M3 mo
 value updateFieldCount(value current, value delta) { if(int n := current && int d := delta) return n + d; }
 
 list[Message] finalizeFieldCount(Declaration d, value current) =
-	(int n := current && n > 15) ? [sizeViolation("FieldCount", d@src) ] : [];
+	(int n := current && n > 15) ? [sizeViolation("FieldCount", d.src) ] : [];
 	
 /* --- publicCount ----------------------------------------------------------*/
 
 list[Message] publicCount(Declaration d, list[Declaration] parents, M3 model) {
-	if(\public() in (d@modifiers ? {})){
+	if(\public() in (d.modifiers ? {})){
 		updateCheckState("publicCount", 1);
 	}
 	return [];
@@ -129,4 +129,4 @@ list[Message] publicCount(Declaration d, list[Declaration] parents, M3 model) {
 value updatePublicCount(value current, value delta) { if(int n := current && int d := delta) return n + d; }
 
 list[Message] finalizePublicCount(Declaration d, value current) =
-	(int n := current && n > 45) ? [sizeViolation("PublicCount", d@src) ] : [];
+	(int n := current && n > 45) ? [sizeViolation("PublicCount", d.src) ] : [];

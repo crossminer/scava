@@ -37,22 +37,22 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 import Prelude;
 
 @memo
-map[loc, set[loc]] containmentMap(M3 m) = toMap(m@containment);
+map[loc, set[loc]] containmentMap(M3 m) = toMap(m.containment);
 
 @memo
-set[loc] enums(M3 m) = { e | e <- m@declarations<name>, e.scheme == "java+enum" };
+set[loc] enums(M3 m) = { e | e <- m.declarations<name>, e.scheme == "java+enum" };
 
 @memo
-set[loc] anonymousClasses(M3 m) = { e | e <- m@declarations<name>, e.scheme == "java+anonymousClass" };
+set[loc] anonymousClasses(M3 m) = { e | e <- m.declarations<name>, e.scheme == "java+anonymousClass" };
 
 @memo
 set[loc] allTypes(M3 m) = classes(m) + interfaces(m) + enums(m) + anonymousClasses(m);
 
 @memo
-rel[loc, loc] superTypes(M3 m) = m@extends + m@implements;
+rel[loc, loc] superTypes(M3 m) = m.extends + m.implements;
 
 @memo
-rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3@methodInvocation, m3@fieldAccess, typeSymbolsToTypeDependencies(m3@types), domainR(m3@containment+, allTypes(m3)), allTypes(m3));
+rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
 
 @memo
 rel[loc, loc] allMethods(M3 m3) = { <t, m> | t <- allTypes(m3), m <- (containmentMap(m3))[t] ? {}, isMethod(m) };
@@ -70,13 +70,13 @@ map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : { f | f <- (containmentMap(m3))[t
 map[loc, set[loc]] emptyMethodsMap(M3 m) = (me:{} | me <- methods(m));
 
 @memo
-map[loc, set[loc]] methodFieldAccesses(M3 m) = toMap(m@fieldAccess) - emptyMethodsMap(m);
+map[loc, set[loc]] methodFieldAccesses(M3 m) = toMap(m.fieldAccess) - emptyMethodsMap(m);
 
 @memo
-map[loc, set[loc]] methodMethodCalls(M3 m) = toMap(m@methodInvocation) - emptyMethodsMap(m);
+map[loc, set[loc]] methodMethodCalls(M3 m) = toMap(m.methodInvocation) - emptyMethodsMap(m);
 
 @memo
-rel[loc, loc] transitiveContainment(M3 m) = m@containment+;
+rel[loc, loc] transitiveContainment(M3 m) = m.containment+;
 
 bool isType(loc l) = isClass(l) || isInterface(l) || l.scheme == "java+enum" || l.scheme == "java+anonymousClass";
 
@@ -84,7 +84,7 @@ bool isType(loc l) = isClass(l) || isInterface(l) || l.scheme == "java+enum" || 
 rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- transitiveContainment(m3), isPackage(p), isType(t) };
 
 @memo
-map[loc, set[Modifier]] modifiersMap(M3 m) = toMap(m@modifiers);
+map[loc, set[Modifier]] modifiersMap(M3 m) = toMap(m.modifiers);
 
 @memo
 rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), ({\private(), \final(), \static()} & (modifiersMap(m3))[m]? {}) == {} };
@@ -165,16 +165,16 @@ private tuple[map[loc, int], map[loc, int]] dac_mpc(rel[Language, loc, AST] asts
 	map[loc, int] mpc = ();
 
 	for (/Declaration c <- asts[\java()], \class(_,_,_,_) := c || \class(_) := c) {
-		dac[c@decl] = 0;
-		mpc[c@decl] = 0;
+		dac[c.decl] = 0;
+		mpc[c.decl] = 0;
 	
 		top-down-break visit (c) {
-			case newObject(_, _): dac[c@decl] += 1;
-			case newObject(_, _, _): dac[c@decl] += 1;
-			case methodCall(_, _, _): mpc[c@decl] += 1;
-			case methodCall(_, _, _, _): mpc[c@decl] += 1;
-			case constructorCall(_, _): mpc[c@decl] += 1;
-			case constructorCall(_, _, _): mpc[c@decl] += 1;
+			case newObject(_, _): dac[c.decl] += 1;
+			case newObject(_, _, _): dac[c.decl] += 1;
+			case methodCall(_, _, _): mpc[c.decl] += 1;
+			case methodCall(_, _, _, _): mpc[c.decl] += 1;
+			case constructorCall(_, _): mpc[c.decl] += 1;
+			case constructorCall(_, _, _): mpc[c.decl] += 1;
 		}	
 	}
 
@@ -206,7 +206,7 @@ map[loc, int] MPC_Java(rel[Language, loc, AST] asts = {}) {
 @historic
 real CF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  typeDependenciesNoInherits = typeDependencies({}, m3@methodInvocation, m3@fieldAccess, typeSymbolsToTypeDependencies(m3@types), domainR(m3@containment+, allTypes(m3)), allTypes(m3));
+  typeDependenciesNoInherits = typeDependencies({}, m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
   return CF(typeDependenciesNoInherits, allTypes(m3));
 }
 
@@ -245,7 +245,7 @@ map[loc, real] I_Java(map[loc, int] ce = (), map[loc, int] ca = ()) {
 @appliesTo{java()}
 map[loc, int] RFC_Java(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = ProjectDelta::\empty()) {
   M3 m3 = systemM3(m3s,delta=delta);
-  return RFC(m3@methodInvocation, allMethodsMap(m3), allTypes(m3));
+  return RFC(m3.methodInvocation, allMethodsMap(m3), allTypes(m3));
 }
 
 @metric{MIF-Java}
@@ -258,7 +258,7 @@ map[loc, real] MIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	// TODO package visibility?	
 	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), ({\private(), \abstract()} & (modifiersMap(m3))[m]?{}) == {} };
 	
-	return MIF(allMethodsMap(m3), inheritableMethods, m3@extends, classes(m3));
+	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
 
 @metric{AIF-Java}
@@ -297,7 +297,7 @@ private real hidingFactor(M3 m3, rel[loc, loc] members) {
 	
 	subTypes = invert(superTypes(m3))+;
 
-	packageType = rangeR(domainR(m3@containment, packages(m3)), allTypes(m3));
+	packageType = rangeR(domainR(m3.containment, packages(m3)), allTypes(m3));
 	packageFriends = invert(packageType) o packageType;
 	
 	visible = allTypes(m3) * publicMembers
@@ -335,7 +335,7 @@ real AHF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3
 real PF_Java(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = ProjectDelta::\empty()) {
 	M3 m3 = systemM3(m3s,delta=delta);
 
-	return PF(superTypes(m3), m3@methodOverrides, overridableMethods(m3), allTypes(m3));
+	return PF(superTypes(m3), m3.methodOverrides, overridableMethods(m3), allTypes(m3));
 }
 
 @metric{LCOM-Java}
