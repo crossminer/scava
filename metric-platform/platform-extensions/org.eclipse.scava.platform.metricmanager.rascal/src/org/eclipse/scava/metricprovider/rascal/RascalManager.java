@@ -33,7 +33,6 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 import org.rascalmpl.interpreter.Evaluator;
@@ -47,10 +46,7 @@ import org.rascalmpl.interpreter.result.AbstractFunction;
 import org.rascalmpl.interpreter.result.Result;
 import org.rascalmpl.interpreter.staticErrors.StaticError;
 import org.rascalmpl.interpreter.utils.RascalManifest;
-import org.rascalmpl.uri.ILogicalSourceLocationResolver;
 import org.rascalmpl.uri.URIResolverRegistry;
-import org.rascalmpl.uri.URIUtil;
-import org.rascalmpl.uri.jar.JarFileResolver;
 import org.rascalmpl.uri.jar.JarURIResolver;
 import org.rascalmpl.values.ValueFactoryFactory;
 
@@ -154,7 +150,7 @@ public class RascalManager {
 
 		eval.setMonitor(new RascalMonitor(log));
 		//TODO: [MIG] Check if this works
-		registry.registerLogical((ILogicalSourceLocationResolver) new BundleURIResolver(registry));
+		registry.registerLogical(new BundleURIResolver(registry));
 		//eval.getResolverRegistry().registerInput(new BundleURIResolver(eval.getResolverRegistry()));
 		eval.addRascalSearchPathContributor(StandardLibraryContributor.getInstance());
 		Bundle currentBundle = Rasctivator.getContext().getBundle();
@@ -187,17 +183,17 @@ public class RascalManager {
 		try {
 			RascalBundleManifest mf = new RascalBundleManifest();
 
-			List<String> dependencies = mf.getRequiredBundles(bundle);
-			if (dependencies != null) {
-				for (String bundleName : dependencies) {
-					Bundle dep = Platform.getBundle(bundleName);
-					if (dep != null) {
-						configureRascalPath(evaluator, dep);
-					} else {
-						throw new BundleException("Bundle " + bundleName + " not found.");
-					}
-				}
-			}
+//			List<String> dependencies = mf.getRequiredBundles(bundle);
+//			if (dependencies != null) {
+//				for (String bundleName : dependencies) {
+//					Bundle dep = Platform.getBundle(bundleName);
+//					if (dep != null) {
+//						configureRascalPath(evaluator, dep);
+//					} else {
+//						throw new BundleException("Bundle " + bundleName + " not found.");
+//					}
+//				}
+//			}
 
 			for (String root : mf.getSourceRoots(bundle)) {
 				//TODO: [MIG] Check if this works
@@ -209,10 +205,10 @@ public class RascalManager {
 			if (requiredLibs != null) {
 				for (String lib : requiredLibs) {
 					//TODO: [MIG] Check if this works
-					ISourceLocation libURL = VF.sourceLocation(bundle.getResource(lib).toURI());
 					URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
+					ISourceLocation libURL = registry.logicalToPhysical(VF.sourceLocation(bundle.getResource(lib).toURI()));
 					JarURIResolver resolver = new JarURIResolver(registry);
-					registry.registerLogical((ILogicalSourceLocationResolver) resolver);
+					//registry.registerLogical((ILogicalSourceLocationResolver) resolver);
 					//evaluator.getResolverRegistry().registerInput(resolver);
 
 					try {
@@ -233,7 +229,8 @@ public class RascalManager {
 
 	public static void addJarToSearchPath(ISourceLocation lib, JarURIResolver resolver, Evaluator eval) throws URISyntaxException, IOException {
 		//TODO: [MIG] Check if this works
-		try (JarInputStream jarStream = new JarInputStream(resolver.getInputStream(lib))) {
+		URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
+		try (JarInputStream jarStream = new JarInputStream(registry.getInputStream(lib))) {
 			List<String> roots = new RascalManifest().getSourceRoots(jarStream);
 
 			if (roots != null) {
@@ -308,6 +305,7 @@ public class RascalManager {
 	}
 
 	public void importModule(String module) {
+		System.out.println("LOOK: " + module);
 		eval.doImport(new NullRascalMonitor(), module);
 	}
 
@@ -327,7 +325,7 @@ public class RascalManager {
 	private void addMetricProviders(Bundle bundle, List<IMetricProvider> providers, Set<IValue> extractedLanguages) {
 		RascalBundleManifest mf = new RascalBundleManifest();
 		String moduleName = mf.getMainModule(bundle);
-
+		
 		if (!eval.getHeap().existsModule(moduleName)) {
 			importModule(moduleName);
 		}
