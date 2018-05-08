@@ -123,7 +123,7 @@ public class ProjectExecutor implements Runnable {
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
-			
+
 			try {
 				delta.create();
 			} 

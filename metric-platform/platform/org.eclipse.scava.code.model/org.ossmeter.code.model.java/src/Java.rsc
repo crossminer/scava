@@ -89,7 +89,7 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
     //map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      //sources = getSourceRoots({checkout});
+      sources = getSourceRoots({checkout});
       //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
     
       result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
