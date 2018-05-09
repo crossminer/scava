@@ -109,11 +109,14 @@ public class RascalMetricsTest {
 				if(col.contains("rascal")) {
 					JSONArray a1 = getJSONArrayFromDump(f);
 					JSONArray a2 = getJSONArrayFromDB(db, col);
-					result &= compareJSONArrays(a1, a2);
+					boolean current = compareJSONArrays(a1, a2);
 
-					if(!result) {
-						assertTrue("There are different values in the " + db 
-								+ " database and the " + col + " collection.", result);
+					if(!current) {
+						System.out.println("There are different values in the " + db 
+								+ " database and the " + col + " collection.");
+						result = false;
+						//assertTrue("There are different values in the " + db 
+						//		+ " database and the " + col + " collection.", result);
 					}
 				}
 			}
