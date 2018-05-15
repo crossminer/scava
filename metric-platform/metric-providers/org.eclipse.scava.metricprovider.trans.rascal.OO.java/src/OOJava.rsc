@@ -37,13 +37,14 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 import Prelude;
 
 @memo
+// Deprecated
 map[loc, set[loc]] containmentMap(M3 m) = toMap(m.containment);
 
 @memo
-set[loc] enums(M3 m) = { e | e <- m.declarations<name>, e.scheme == "java+enum" };
+set[loc] enums(M3 m) = { e | e <- m.declarations.name, e.scheme == "java+enum" };
 
 @memo
-set[loc] anonymousClasses(M3 m) = { e | e <- m.declarations<name>, e.scheme == "java+anonymousClass" };
+set[loc] anonymousClasses(M3 m) = { e | e <- m.declarations.name, e.scheme == "java+anonymousClass" };
 
 @memo
 set[loc] allTypes(M3 m) = classes(m) + interfaces(m) + enums(m) + anonymousClasses(m);
@@ -55,16 +56,16 @@ rel[loc, loc] superTypes(M3 m) = m.extends + m.implements;
 rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
 
 @memo
-rel[loc, loc] allMethods(M3 m3) = { <t, m> | t <- allTypes(m3), m <- (containmentMap(m3))[t] ? {}, isMethod(m) };
+rel[loc, loc] allMethods(M3 m3) = { <t, m> | t <- allTypes(m3), m <- m3.containment[t], isMethod(m) };
 
 @memo
-map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : { m | m <- (containmentMap(m3))[t]? {}, isMethod(m) } | t <- allTypes(m3) );
+map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : { m | m <- m3.containment[t], isMethod(m) } | t <- allTypes(m3) );
 
 @memo
-rel[loc, loc] allFields(M3 m3) = { <t, f> | t <- allTypes(m3), f <- (containmentMap(m3))[t]? {}, isField(f) };
+rel[loc, loc] allFields(M3 m3) = { <t, f> | t <- allTypes(m3), f <- m3.containment[t], isField(f) };
 
 @memo
-map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : { f | f <- (containmentMap(m3))[t]? {}, isField(f) } | t <- allTypes(m3) );
+map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : { f | f <- m3.containment[t], isField(f) } | t <- allTypes(m3) );
 
 @memo
 map[loc, set[loc]] emptyMethodsMap(M3 m) = (me:{} | me <- methods(m));
@@ -84,10 +85,11 @@ bool isType(loc l) = isClass(l) || isInterface(l) || l.scheme == "java+enum" || 
 rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- transitiveContainment(m3), isPackage(p), isType(t) };
 
 @memo
+// Deprecated
 map[loc, set[Modifier]] modifiersMap(M3 m) = toMap(m.modifiers);
 
 @memo
-rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), ({\private(), \final(), \static()} & (modifiersMap(m3))[m]? {}) == {} };
+rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), ({\private(), \final(), \static()} & m3.modifiers[m]) == {} };
 
 @metric{A-Java}
 @doc{Abstractness (Java)}
@@ -99,7 +101,7 @@ real A_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] 
   
   types = allTypes(m3);
   
-  abstractTypes = { t | t <- types, \abstract() in ((modifiersMap(m3))[t]?{}) };
+  abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t]};
   
   return A(abstractTypes, types);
 }
@@ -256,7 +258,7 @@ map[loc, real] MIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), ({\private(), \abstract()} & (modifiersMap(m3))[m]?{}) == {} };
+	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), ({\private(), \abstract()} & m3.modifiers[m]) == {} };
 	
 	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
@@ -269,7 +271,7 @@ map[loc, real] AIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin ((modifiersMap(m3))[f]?{}) };
+	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin m3.modifiers[f]};
 	
 	return MIF(allFieldsMap(m3), publicAndProtectedFields, superTypes(m3), allTypes(m3));
 }
@@ -283,7 +285,7 @@ private real hidingFactor(M3 m3, rel[loc, loc] members) {
 	rel[loc, loc] packageVisibleMembers = {};
 	
 	for (<t, m> <- members) {
-		mods = (modifiersMap(m3))[m]?{};
+		mods = m3.modifiers[m];
 		if (\private() in mods) {
 			; // ignored
 		} else if (\protected() in mods) {
