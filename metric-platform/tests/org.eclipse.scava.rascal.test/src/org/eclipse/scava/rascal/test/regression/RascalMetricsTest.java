@@ -95,32 +95,49 @@ public class RascalMetricsTest {
 	@Test
 	public void collectionsRemainTheSame() {
 		boolean result = true;
+		
 		for(String db : dbs) {
 			File dump = new java.io.File("./dump/" + db);
 			File[] files = dump.listFiles((d,n) -> {
 				return n.toLowerCase().endsWith(".bson");
 			});
-
+			
+			int cols = 0;
+			int colsDiff = 0;
+			int colPHP = 0;
+			
 			for(File f : files) {
 				String name = f.getName();
 				String col = name.substring(0, name.lastIndexOf("."));
 				
 				//Only check Rascal collections.
 				if(col.contains("rascal")) {
+					cols++;
 					JSONArray a1 = getJSONArrayFromDump(f);
 					JSONArray a2 = getJSONArrayFromDB(db, col);
 					boolean current = compareJSONArrays(a1, a2);
-
+					
 					if(!current) {
-						System.out.println("There are different values in the " + db 
-								+ " database and the " + col + " collection.");
+						colsDiff++;
+						
 						result = false;
+						
+						if(col.contains("PHP") || col.contains("php")) {
+							colPHP++;
+						}
+						else {
+							System.err.println("[ERROR] There are different values in the " + db 
+									+ " database and the " + col + " collection.");
+						}
 						//assertTrue("There are different values in the " + db 
 						//		+ " database and the " + col + " collection.", result);
 					}
 				}
 			}
+			
+			System.out.println("Total: " + cols + " - Different: " + colsDiff + " - PHP: " + colPHP);
 		}
+		
 		assertTrue(result);
 	}
 
