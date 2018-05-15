@@ -61,7 +61,7 @@ real estimateTestCoverage(ProjectDelta delta = ProjectDelta::\empty(), rel[Langu
   interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
   declarations = { meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - allTestMethods;
   set[loc] reachableMethods = { meth | meth <- reach(fullCallGraph, allTestMethods), meth in declarations };
-  return round((100.0 * size(reachableMethods)) / size(declarations), 0.01);
+  return (declarations == {}) ? 0.0 : round((100.0 * size(reachableMethods)) / size(declarations), 0.01);
 }
 
 /*  
@@ -125,12 +125,11 @@ real percentageOfTestedPublicMethods(ProjectDelta delta = ProjectDelta::\empty()
   supportTestMethods = getJUnit4SetupMethods(m);
   interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
   declarations = {meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - onlyTestMethods - supportTestMethods;
-  mMap = toMap(m.modifiers);
-  allPublicMethods = { meth | meth <- declarations, \public() in (mMap[meth]?{}) };
+  allPublicMethods = { meth | meth <- declarations, \public() in m.modifiers};
   directlyCalledFromTestMethods = domainR(m.methodInvocation, onlyTestMethods);
   pbSet = directlyCalledFromTestMethods + (directlyCalledFromTestMethods o m.methodOverrides<1,0>);
   testedPublicMethods = rangeR(pbSet, allPublicMethods);
-  return round((100.0 * size(range(testedPublicMethods)))/size(allPublicMethods), 0.01);
+  return (allPublicMethods == {}) ? 0.0 : round((100.0 * size(range(testedPublicMethods)))/size(allPublicMethods), 0.01);
 }
 
 @metric{NumberOfTestMethods}
