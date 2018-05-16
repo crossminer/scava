@@ -29,6 +29,7 @@ import org.eclipse.scava.business.impl.RecommenderManager;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.config.SwaggerConfig;
+import org.eclipse.scava.presentation.rest.ArtifactsRestController;
 import org.eclipse.scava.presentation.rest.RecommenderRestController;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +63,8 @@ public class RecommenderRestTest {
 
 	private MockMvc mockMvc;
 
+	private MockMvc artifactMockMvc;
+
     @Mock
     private ArtifactRepository artifactRepository;
     
@@ -71,6 +74,10 @@ public class RecommenderRestTest {
     @InjectMocks
     private RecommenderRestController recommenderController;
     
+    @InjectMocks
+    private ArtifactsRestController artifactController;
+    
+    
     @Autowired
     @Qualifier("Dependency")
     private ISimilarityCalculator simCalc;
@@ -79,6 +86,16 @@ public class RecommenderRestTest {
     public void init(){
         mockMvc = MockMvcBuilders
                 .standaloneSetup(recommenderController)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setViewResolvers(new ViewResolver() {
+                    @Override
+                    public View resolveViewName(String viewName, Locale locale) throws Exception {
+                        return new MappingJackson2JsonView();
+                    }
+                })
+                .build();
+        artifactMockMvc = MockMvcBuilders
+                .standaloneSetup(artifactController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setViewResolvers(new ViewResolver() {
                     @Override
@@ -99,9 +116,9 @@ public class RecommenderRestTest {
         Page<Artifact> foundPage = new PageImpl<>(artifacts);
         when(artifactRepository.findAll(any(Pageable.class)))
         	.thenReturn(foundPage);
-        ResultActions v = mockMvc.perform(get("/api/recommendation/artifacts"));
+        ResultActions v = artifactMockMvc.perform(get("/api/artifacts/artifacts"));
         MvcResult r = v.andReturn();
-        mockMvc.perform(get("/api/recommendation/artifacts"))
+        artifactMockMvc.perform(get("/api/artifacts/artifacts"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.content", hasSize(2)));
@@ -133,7 +150,7 @@ public class RecommenderRestTest {
         		new Artifact(),
         		new Artifact());
     	when(recommenderManager.getArtifactsByQuery(anyString())).thenReturn(artifacts);
-    	mockMvc.perform(get("/api/artifacts/search/{text}","tetx"))
+    	artifactMockMvc.perform(get("/api/artifacts/search/{text}","tetx"))
     			.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(5)));
