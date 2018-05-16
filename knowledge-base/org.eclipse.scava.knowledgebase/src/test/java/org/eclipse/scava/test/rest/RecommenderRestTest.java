@@ -133,7 +133,7 @@ public class RecommenderRestTest {
         		new Artifact(),
         		new Artifact());
     	when(recommenderManager.getArtifactsByQuery(anyString())).thenReturn(artifacts);
-    	mockMvc.perform(get("/api/recommendation/search/{text}","tetx"))
+    	mockMvc.perform(get("/api/artifacts/search/{text}","tetx"))
     			.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(5)));
