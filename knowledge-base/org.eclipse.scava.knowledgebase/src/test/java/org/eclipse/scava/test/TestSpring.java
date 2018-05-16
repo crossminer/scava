@@ -29,6 +29,7 @@ import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
+import org.eclipse.scava.config.SwaggerConfig;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Ignore;
@@ -39,9 +40,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class })
+@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
+@WebAppConfiguration
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestSpring {
 

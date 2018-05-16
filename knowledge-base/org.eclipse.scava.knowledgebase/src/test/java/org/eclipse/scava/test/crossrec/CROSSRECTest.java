@@ -28,6 +28,7 @@ import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.CROSSRecGraph;
+import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +39,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class })
+@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
+@WebAppConfiguration
 @TestPropertySource(locations = "classpath:application.properties")
 public class CROSSRECTest {
 

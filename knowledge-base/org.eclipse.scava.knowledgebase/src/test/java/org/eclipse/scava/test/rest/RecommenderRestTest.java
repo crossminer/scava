@@ -28,6 +28,7 @@ import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.impl.RecommenderManager;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
+import org.eclipse.scava.config.SwaggerConfig;
 import org.eclipse.scava.presentation.rest.RecommenderRestController;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -53,7 +55,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
+@WebAppConfiguration
 @TestPropertySource(locations="classpath:application.properties")
 public class RecommenderRestTest {
 
