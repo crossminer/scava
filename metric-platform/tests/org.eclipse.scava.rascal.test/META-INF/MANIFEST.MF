@@ -24,3 +24,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.json,
  org.junit;version="4.12.0"
+Bundle-ClassPath: lib/jsonassert-1.5.0.jar,
+ .

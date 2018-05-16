@@ -1,6 +1,6 @@
 package org.eclipse.scava.rascal.test.regression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,15 +23,17 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONCompare;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.JSONCompareResult;
 
 import com.googlecode.pongo.runtime.PongoFactory;
 import com.googlecode.pongo.runtime.osgi.OsgiPongoFactoryContributor;
-import com.mongodb.Mongo;
-import com.mongodb.util.JSON;
-
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.mongodb.util.JSON;
 
 public class RascalMetricsTest {
 
@@ -115,7 +117,13 @@ public class RascalMetricsTest {
 					cols++;
 					JSONArray a1 = getJSONArrayFromDump(f);
 					JSONArray a2 = getJSONArrayFromDB(db, col);
-					boolean current = compareJSONArrays(a1, a2);
+
+					String expected = a1.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
+					String actual = a2.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
+
+					JSONCompareResult res = JSONCompare.compareJSON(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+
+					boolean current = res.passed();
 					
 					if(!current) {
 						colsDiff++;
@@ -126,8 +134,9 @@ public class RascalMetricsTest {
 							colPHP++;
 						}
 						else {
-							System.err.println("[ERROR] There are different values in the " + db 
-									+ " database and the " + col + " collection.");
+//							System.err.println("[ERROR] There are different values in the " + db 
+//									+ " database and the " + col + " collection.");
+							System.err.println(res);
 						}
 						//assertTrue("There are different values in the " + db 
 						//		+ " database and the " + col + " collection.", result);
