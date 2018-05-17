@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,6 +49,7 @@ import com.google.common.collect.Table;
 @TestPropertySource(locations="classpath:application.properties")
 public class CROSSSimSimilarityCalculatorTest {
 	@Autowired
+	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator crossSim;
 
 	private static final Logger logger = Logger.getLogger(CROSSSimSimilarityCalculatorTest.class);

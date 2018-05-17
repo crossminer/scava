@@ -57,6 +57,7 @@ public class SimilarityManagerTest {
 	@Autowired
 	private RelationRepository relationRepository;
 	@Autowired
+	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator aggregateSimilarityCalculator;
 	
 	@Autowired

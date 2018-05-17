@@ -60,6 +60,7 @@ public class ClusterManagerTest {
 	@Autowired
 	private RelationRepository relationRepository;
 	@Autowired
+	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator aggregateSimilarityCalculator;
 	
 	@Autowired
