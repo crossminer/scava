@@ -1,0 +1,275 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 Bitergia
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA.
+#
+# Authors:
+#     Alvaro del Castillo <acs@bitergia.com>
+#
+
+import json
+import logging
+import urllib.parse
+
+from grimoirelab.toolkit.datetime import str_to_datetime
+from grimoirelab.toolkit.uris import urijoin
+
+from ...backend import (Backend,
+                        BackendCommand,
+                        BackendCommandArgumentParser)
+from ...client import HttpClient
+
+
+CATEGORY_METRIC = 'metrics'
+CATEGORY_PROJECT = 'projects'
+
+logger = logging.getLogger(__name__)
+
+
+class Crossminer(Backend):
+    """Crossminer backend for Perceval.
+
+    This class retrieves the projects and metrics from a Crossminer URL. To initialize
+    this class an URL must be provided with the Crossminer sever.
+    The origin of the data will be set to this URL.
+
+    It uses v1 API to get projects and metrics.
+
+    :param url: Crossminer URL
+
+    :param tag: label used to mark the data
+    :param archive: archive to store/retrieve items
+    """
+    version = '0.7.3'
+
+    CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT]
+
+    def __init__(self, url, project=None, tag=None, archive=None):
+        origin = url
+
+        super().__init__(origin, tag=tag, archive=archive)
+        self.project = project
+        self.url = url
+        self.client = None
+
+    def fetch(self, category=CATEGORY_METRIC):
+        """Fetch items from the Crossminer url.
+
+        The method retrieves, from a Crossminer URL, the set of items
+        of the given `category`.
+
+        :param category: the category of items to fetch
+        :returns: a generator of items
+        """
+
+        kwargs = {"project": self.project}  # backend args
+        items = super().fetch(category, **kwargs)
+
+        return items
+
+    def fetch_items(self, category, **kwargs):
+        """Fetch items
+
+        :param category: the category of items to fetch
+        :param kwargs: backend arguments
+
+        :returns: a generator of items
+        """
+        project = kwargs['project']
+
+        logger.info("Looking for metrics at url '%s' of %s category and %s project",
+                    self.url, category, project)
+
+        nitems = 0  # number of items processed
+        titems = 0  # number of items from API data
+
+        # Always get complete pages so the first item is always
+        # the first one in the page
+        page = 0
+        page_offset = page * CrossminerClient.ITEMS_PER_PAGE
+
+        for raw_items in self.client.get_items(category, project):
+            items = json.loads(raw_items)
+            # titems = items_data['count']
+            # logger.info("Pending items to retrieve: %i, %i current offset",
+            #            titems - current_offset, current_offset)
+            # items = items_data['results']
+            for item in items:
+                yield item
+                nitems += 1
+
+        logger.info("Total number of events: %i (%i total, %i offset)", nitems, titems, offset)
+
+    def metadata(self, item):
+        """Crossminer metadata.
+
+        This method takes items overrides `metadata` method to add extra
+        information related to Crossminer (project of the item).
+
+        :param item: an item fetched by a backend
+        """
+        item = super().metadata(item)
+        item['project'] = item['data'].pop('project')
+
+        return item
+
+    @classmethod
+    def has_archiving(cls):
+        """Returns whether it supports archiving items on the fetch process.
+
+        :returns: this backend supports items archive
+        """
+        return True
+
+    @classmethod
+    def has_resuming(cls):
+        """Returns whether it supports to resume the fetch process.
+
+        :returns: this backend supports items resuming
+        """
+        return True
+
+    @staticmethod
+    def metadata_id(item):
+        """Extracts the identifier from a Crossminer item."""
+        return str(item['_id'])
+
+    @staticmethod
+    def metadata_updated_on(item):
+        """Extracts the update time from a Crossminer item.
+
+        The timestamp is extracted from 'end' field.
+        This date is converted to a perceval format using a float value.
+
+        :param item: item generated by the backend
+
+        :returns: a UNIX timestamp
+        """
+
+        updated = item['lastExecuted']
+
+        return float(str_to_datetime(updated).timestamp())
+
+    @staticmethod
+    def metadata_category(item):
+        """Extracts the category from a Crossminer item.
+
+        This backend generates items types 'project', 'metric'.
+        To guess the type of item, the code will look
+        for unique fields.
+        """
+        if 'datatable' in item:
+            category = CATEGORY_METRIC
+        elif 'parent' in item:
+            category = CATEGORY_PROJECT
+        else:
+            raise TypeError("Could not define the category of item " + str(item))
+
+        return category
+
+    def _init_client(self, from_archive=False):
+        """Init client"""
+
+        return CrossminerClient(self.url, self.archive, from_archive)
+
+
+class CrossminerClient(HttpClient):
+    """Crossminer API client.
+
+    This class implements a simple client to retrieve metrics from
+    projects in a Crossminer site.
+
+    :param url: URL of Crossminer
+    :param archive: an archive to store/read fetched data
+    :param from_archive: it tells whether to write/read the archive
+
+    :raises HTTPError: when an error occurs doing the request
+    """
+
+    FIRST_PAGE = 1  # Initial page in Crossminer API
+    ITEMS_PER_PAGE = 20  # Items per page in Crossminer API
+    API_PATH = '/'
+
+    def __init__(self, url, archive=None, from_archive=False):
+        super().__init__(url, archive=archive, from_archive=from_archive)
+        self.api_metrics_url = urijoin(self.base_url + ":" + self.API_REST_PORT, "metrics")
+        self.api_projects_url = urijoin(self.base_url + ":" + self.API_REST_PORT, "projects")
+
+    def get_items(self, category=CATEGORY_METRIC, project=None):
+        """Retrieve all items for category using pagination """
+
+        more = True  # There are more items to be processed
+        page = CrossminerClient.FIRST_PAGE
+        page = 0
+
+        if category == CATEGORY_PROJECT:
+            api = self.api_projects_url
+        elif category == CATEGORY_METRIC:
+            api = self.api_metrics_url
+        else:
+            raise ValueError(category + ' not supported in Crossminer')
+
+        while more:
+            params = {
+                "page": page,
+                "orderby": "ASC"
+            }
+
+            params = {}
+
+            logger.debug("Crossminer client calls APIv1: %s params: %s",
+                         api, str(params))
+
+            raw_items = self.fetch(api, payload=params)
+            yield raw_items
+
+            items_data = json.loads(raw_items)
+            next_uri = items_data['next']
+
+            if not next_uri:
+                more = False
+            else:
+                # https://reps.mozilla.org/remo/api/remo/v1/events/?orderby=ASC&page=269
+                parsed_uri = urllib.parse.urlparse(next_uri)
+                parsed_params = urllib.parse.parse_qs(parsed_uri.query)
+                page = parsed_params['page'][0]
+
+    def fetch(self, url, payload=None):
+        """Return the textual content associated to the Response object"""
+
+        response = super().fetch(url, payload)
+
+        return response.text
+
+
+class CrossminerCommand(BackendCommand):
+    """Class to run Crossminer backend from the command line."""
+
+    BACKEND = Crossminer
+
+    @staticmethod
+    def setup_cmd_parser():
+        """Returns the Crossminer argument parser."""
+
+        parser = BackendCommandArgumentParser(archive=True)
+        # Required arguments
+        parser.parser.add_argument('url', nargs='?',
+                                   default="http://localhost:8192",
+                                   help="Crossminer URL (default: http://localhost:8192")
+        parser.parser.add_argument('project',
+                                   help="Name of the Crossminer project")
+
+        return parser
