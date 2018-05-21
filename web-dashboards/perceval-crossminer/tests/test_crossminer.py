@@ -22,18 +22,21 @@
 #
 
 import re
+import sys
 import unittest
+from datetime import datetime
 
 import httpretty
 
+# Make sure we use our code and not any other could we have installed
+sys.path.insert(0, '..')
 from perceval.backend import BackendError, BackendCommandArgumentParser
 from perceval.backends.crossminer.crossminer import (Crossminer, CrossminerClient, CrossminerCommand)
 from base import TestCaseBackendArchive
 
-CROSSMINER_API_REST_URL = 'http://localhost:8192'
-MOZILLA_REPS_API = CROSSMINER_API_REST_URL + '/api/remo/v1'
+CROSSMINER_API_REST_URL = 'http://localhost'
 
-MOZILLA_REPS_CATEGORIES = ['projects', 'metrics']
+CROSSMINER_CATEGORIES = ['project', 'metric']
 
 
 def read_file(filename, mode='r'):
@@ -50,41 +53,35 @@ class HTTPServer():
     def routes(cls, empty=False):
         """Configure in http the routes to be served"""
 
-        mozilla_bodies = {}  # dict with all the bodies to be returned by category
-        for category in MOZILLA_REPS_CATEGORIES:
-            mozilla_bodies[category] = {}
-            # First two pages for each category to test pagination
-            mozilla_bodies[category]['1'] = read_file('data/remo/remo_' + category + '_page_1_2.json')
-            mozilla_bodies[category]['2'] = read_file('data/remo/remo_' + category + '_page_2_2.json')
-            # A sample item per each category
-            mozilla_bodies[category]['item'] = read_file('data/remo/remo_' + category + '.json')
+        crossminer_bodies = {}  # dict with all the bodies to be returned by category
 
+        for category in CROSSMINER_CATEGORIES:
+            crossminer_bodies[category] = {}
+            # First page for each category
+            crossminer_bodies[category] = read_file('data/crossminer/crossminer_' + category + 's.json')
         if empty:
-            for category in MOZILLA_REPS_CATEGORIES:
-                mozilla_bodies[category]['1'] = read_file('data/remo/remo_' + category + '_page_empty.json')
+            for category in CROSSMINER_CATEGORIES:
+                crossminer_bodies[category] = read_file('data/crossminer/crossminer_' + category + 's_empty.json')
+
+        metric_body = read_file('data/crossminer/crossminer_metric.json')  # single metric
 
         def request_callback(method, uri, headers):
             body = ''
-            if 'page' in uri:
-                # Page with item list query
-                page = uri.split("page=")[1].split("&")[0]
-                for category in MOZILLA_REPS_CATEGORIES:
-                    if category in uri:
-                        body = mozilla_bodies[category][page]
-                        break
-            else:
-                # Specific item. Always return the same for each category.
-                for category in MOZILLA_REPS_CATEGORIES:
-                    if category in uri:
-                        body = mozilla_bodies[category]['item']
-                        break
+            # Specific item. Always return the same for each category.
+            for category in CROSSMINER_CATEGORIES:
+                if '/m/' in uri:
+                    # Getting a metric for a project
+                    body = metric_body
+                elif category in uri:
+                    body = crossminer_bodies[category]
+                    break
 
             HTTPServer.requests_http.append(httpretty.last_request())
 
             return (200, headers, body)
 
         httpretty.register_uri(httpretty.GET,
-                               re.compile(MOZILLA_REPS_API + ".*"),
+                               re.compile(CROSSMINER_API_REST_URL + ".*"),
                                responses=[
                                    httpretty.Response(body=request_callback)
                                ])
@@ -96,24 +93,24 @@ class TestCrossminerBackend(unittest.TestCase):
     def test_initialization(self):
         """Test whether attributes are initializated"""
 
-        remo = Crossminer(CROSSMINER_API_REST_URL, tag='test')
+        crossminer = Crossminer(CROSSMINER_API_REST_URL, tag='test')
 
-        self.assertEqual(remo.url, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.origin, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.tag, 'test')
-        self.assertIsNone(remo.client)
+        self.assertEqual(crossminer.url, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.origin, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.tag, 'test')
+        self.assertIsNone(crossminer.client)
 
         # When tag is empty or None it will be set to
         # the value in url
-        remo = Crossminer(CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.url, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.origin, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.tag, CROSSMINER_API_REST_URL)
+        crossminer = Crossminer(CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.url, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.origin, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.tag, CROSSMINER_API_REST_URL)
 
-        remo = Crossminer(CROSSMINER_API_REST_URL, tag='')
-        self.assertEqual(remo.url, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.origin, CROSSMINER_API_REST_URL)
-        self.assertEqual(remo.tag, CROSSMINER_API_REST_URL)
+        crossminer = Crossminer(CROSSMINER_API_REST_URL, tag='')
+        self.assertEqual(crossminer.url, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.origin, CROSSMINER_API_REST_URL)
+        self.assertEqual(crossminer.tag, CROSSMINER_API_REST_URL)
 
     def test_has_archiving(self):
         """Test if it returns True when has_archiving is called"""
@@ -125,84 +122,68 @@ class TestCrossminerBackend(unittest.TestCase):
 
         self.assertEqual(Crossminer.has_resuming(), True)
 
-    def __check_events_contents(self, items):
-        self.assertEqual(items[0]['data']['city'], 'Makassar')
-        self.assertEqual(items[0]['data']['end'], '2012-06-10T11:00:00Z')
+    def __check_metric_contents(self, items):
+        self.assertEqual(items[0]['data']['id'], 'coreCommittersChurnBar')
         self.assertEqual(items[0]['origin'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['uuid'], 'e701d4ed3b954361383d678d2168a44307d7ff60')
-        self.assertEqual(items[0]['updated_on'], 1339326000.0)
-        self.assertEqual(items[0]['category'], 'event')
+        self.assertEqual(items[0]['uuid'], 'c03ab0aaaac9ba96a6e498f97136706ab1a49e65')
+        self.assertEqual(items[0]['updated_on'], 1526601600.0)
+        self.assertEqual(items[0]['category'], 'metric')
         self.assertEqual(items[0]['tag'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['offset'], 0)
-        self.assertEqual(items[3]['offset'], 3)
+        self.assertEqual(items[0]['backend_name'], 'Crossminer')
+        self.assertEqual(items[1]['data']['id'], 'coreCommittersChurnBar')
 
-    def __check_activities_contents(self, items):
-        self.assertEqual(items[0]['data']['location'], 'Bhopal, Madhya Pradesh, India')
-        self.assertEqual(items[0]['data']['report_date'], '2016-11-05')
+    def __check_project_contents(self, items):
+        self.assertEqual(items[0]['data']['name'], 'perceval')
         self.assertEqual(items[0]['origin'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['uuid'], '9e2b0c2c8ec8094d2c53a2621bd09f9d6f65e67f')
-        self.assertEqual(items[0]['updated_on'], 1478304000.0)
-        self.assertEqual(items[0]['category'], 'activity')
+        self.assertEqual(items[0]['uuid'], 'c4fdca17a5ba60e869bb56415cef2a3b211b98c6')
+        self.assertEqual(items[0]['updated_on'], 1526601600.0)
+        self.assertEqual(items[0]['category'], 'project')
         self.assertEqual(items[0]['tag'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['offset'], 0)
-        self.assertEqual(items[3]['offset'], 3)
-
-    def __check_users_contents(self, items):
-        self.assertEqual(items[0]['data']['city'], 'Makati City')
-        self.assertEqual(items[0]['data']['date_joined_program'], '2011-06-01')
-        self.assertEqual(items[0]['origin'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['uuid'], '90b0f5bc90ed8a694261df418a2b85beed94535a')
-        self.assertEqual(items[0]['updated_on'], 1306886400.0)
-        self.assertEqual(items[0]['category'], 'user')
-        self.assertEqual(items[0]['tag'], CROSSMINER_API_REST_URL)
-        self.assertEqual(items[0]['offset'], 0)
-        self.assertEqual(items[3]['offset'], 3)
+        self.assertEqual(items[1]['data']['name'], 'GrimoireELK')
 
     @httpretty.activate
-    def __test_fetch(self, category='event'):
-        """Test whether the events are returned"""
+    def __test_fetch(self, category='project'):
+        """Test whether the metrics are returned"""
 
-        items_page = CrossminerClient.ITEMS_PER_PAGE
-        pages = 2  # two pages of testing data
+        project_items = 2
+        metrics_items = 2
 
         HTTPServer.routes()
         prev_requests_http = len(HTTPServer.requests_http)
 
+        project = None
+
+        if category == 'metric':
+            project = 'perceval'
+
         # Test fetch events with their reviews
-        remo = Crossminer(CROSSMINER_API_REST_URL)
+        crossminer = Crossminer(CROSSMINER_API_REST_URL, project=project)
 
-        items = [page for page in remo.fetch(offset=None, category=category)]
+        items = [item for item in crossminer.fetch(category=category)]
 
-        self.assertEqual(len(items), items_page * pages)
+        if category == 'metric':
+            self.assertEqual(len(items), metrics_items)
+            self.__check_metric_contents(items)
+        elif category == 'project':
+            self.assertEqual(len(items), project_items)
+            self.__check_project_contents(items)
 
-        if category == 'event':
-            self.__check_events_contents(items)
-        elif category == 'user':
-            self.__check_users_contents(items)
-        elif category == 'activity':
-            self.__check_activities_contents(items)
-
-        # Check requests: page list, items, page list, items
-        expected = [{'page': ['1'], 'orderby': ['ASC']}]
-        for i in range(0, items_page):
-            expected += [{}]
-        expected += [{'page': ['2'], 'orderby': ['ASC']}]
-        for i in range(0, items_page):
-            expected += [{}]
+        # Check requests
+        if category == 'metric':
+            expected = [{}, {}, {}, {}]  # for getting a metric we need 4 calls
+        else:
+            expected = [{}]  # for getting the projects we need 1 call
 
         self.assertEqual(len(HTTPServer.requests_http) - prev_requests_http, len(expected))
 
         for i in range(len(expected)):
             self.assertDictEqual(HTTPServer.requests_http[i].querystring, expected[i])
 
-    def test_fetch_events(self):
-        self.__test_fetch(category='event')
+    def test_fetch_metrics(self):
+        self.__test_fetch(category='metric')
 
-    def test_fetch_activities(self):
-        self.__test_fetch(category='activity')
-
-    def test_fetch_users(self):
-        self.__test_fetch(category='user')
+    def test_fetch_projects(self):
+        self.__test_fetch(category='project')
 
     @httpretty.activate
     def tests_wrong_metadata_updated_on(self):
@@ -211,15 +192,15 @@ class TestCrossminerBackend(unittest.TestCase):
         prev_requests_http = len(HTTPServer.requests_http)
 
         # Test fetch events with their reviews
-        remo = Crossminer(CROSSMINER_API_REST_URL)
+        crossminer = Crossminer(CROSSMINER_API_REST_URL)
 
-        items = [page for page in remo.fetch(offset=None, category="event")]
+        items = [page for page in crossminer.fetch(category="project")]
         item = items[0]
 
-        item.pop('end', None)
+        item.pop('executionInformation', None)
 
-        with self.assertRaises(ValueError):
-            remo.metadata_updated_on(item)
+        with self.assertRaises(TypeError):
+            crossminer.metadata_updated_on(item)
 
     @httpretty.activate
     def tests_wrong_metadata_category(self):
@@ -228,42 +209,17 @@ class TestCrossminerBackend(unittest.TestCase):
         prev_requests_http = len(HTTPServer.requests_http)
 
         # Test fetch events with their reviews
-        remo = Crossminer(CROSSMINER_API_REST_URL)
+        crossminer = Crossminer(CROSSMINER_API_REST_URL, project='perceval')
 
-        items = [page for page in remo.fetch(offset=None, category="event")]
-        item = items[0]
+        items = [page for page in crossminer.fetch(category="metric")]
+        item = items[0]['data']
 
-        item.pop('estimated_attendance', None)
+        item.pop('datatable', None)
 
         with self.assertRaises(TypeError):
-            remo.metadata_category(item)
+            crossminer.metadata_category(item)
 
-    @httpretty.activate
-    def test_fetch_offset(self):
-        items_page = CrossminerClient.ITEMS_PER_PAGE
-        pages = 2  # two pages of testing data
-        offset = 15
-
-        HTTPServer.routes()
-        prev_requests_http = len(HTTPServer.requests_http)
-
-        # Test fetch events with their reviews
-        remo = Crossminer(CROSSMINER_API_REST_URL)
-
-        # Test we get the correct number of items from an offset
-        items = [page for page in remo.fetch(offset=15)]
-        self.assertEqual(len(items), (items_page * pages) - offset)
-
-        # Test that the same offset (17) is the same item
-        items = [page for page in remo.fetch(offset=5)]
-        uuid_17_1 = items[12]['uuid']
-        self.assertEqual(items[12]['offset'], 17)
-        items = [page for page in remo.fetch(offset=12)]
-        uuid_17_2 = items[5]['uuid']
-        self.assertEqual(items[5]['offset'], 17)
-        self.assertEqual(uuid_17_1, uuid_17_2)
-
-    def test_fetch_wrong_category(self):
+    def off_test_fetch_wrong_category(self):
         with self.assertRaises(BackendError):
             self.__test_fetch(category='wrong')
 
@@ -273,14 +229,14 @@ class TestCrossminerBackend(unittest.TestCase):
 
         HTTPServer.routes(empty=True)
 
-        remo = Crossminer(CROSSMINER_API_REST_URL)
-        events = [event for event in remo.fetch()]
+        crossminer = Crossminer(CROSSMINER_API_REST_URL)
+        events = [event for event in crossminer.fetch()]
 
         self.assertEqual(len(events), 0)
 
 
-class TestRemoBackendArchive(TestCaseBackendArchive):
-    """Remo backend tests using an archive"""
+class TestCrossminerBackendArchive(TestCaseBackendArchive):
+    """Crossminer backend tests using an archive"""
 
     def setUp(self):
         super().setUp()
@@ -297,25 +253,11 @@ class TestRemoBackendArchive(TestCaseBackendArchive):
     def test_fetch_events(self):
         self.__test_fetch_from_archive(category='event')
 
-    def test_fetch_activities(self):
-        self.__test_fetch_from_archive(category='activity')
+    def test_fetch_metrics(self):
+        self.__test_fetch_from_archive(category='metric')
 
-    def test_fetch_users(self):
-        self.__test_fetch_from_archive(category='user')
-
-    @httpretty.activate
-    def test_fetch_offset_from_archive_15(self):
-        """Test whether the events with offset are returned from archive"""
-
-        HTTPServer.routes()
-        self._test_fetch_from_archive(offset=15)
-
-    @httpretty.activate
-    def test_fetch_offset_from_archive_5(self):
-        """Test whether the events with offset are returned from archive"""
-
-        HTTPServer.routes()
-        self._test_fetch_from_archive(offset=5)
+    def test_fetch_projects(self):
+        self.__test_fetch_from_archive(category='project')
 
     @httpretty.activate
     def test_fetch_empty_from_archive(self):
@@ -340,17 +282,17 @@ class TestCrossminerCommand(unittest.TestCase):
         self.assertIsInstance(parser, BackendCommandArgumentParser)
 
         args = [CROSSMINER_API_REST_URL,
-                '--category', 'user',
+                '--category', 'metric',
                 '--tag', 'test',
                 '--no-archive',
-                '--offset', '88']
+                '--project', 'perceval']
 
         parsed_args = parser.parse(*args)
         self.assertEqual(parsed_args.url, CROSSMINER_API_REST_URL)
-        self.assertEqual(parsed_args.category, 'user')
+        self.assertEqual(parsed_args.category, 'metric')
         self.assertEqual(parsed_args.tag, 'test')
         self.assertEqual(parsed_args.no_archive, True)
-        self.assertEqual(parsed_args.offset, 88)
+        self.assertEqual(parsed_args.project, "perceval")
 
 
 class TestCrossminerClient(unittest.TestCase):
@@ -373,14 +315,14 @@ class TestCrossminerClient(unittest.TestCase):
         HTTPServer.routes()
 
         # Set up a mock HTTP server
-        body = read_file('data/remo/remo_events_page_1_2.json')
+        body = read_file('data/crossminer/crossminer_metric.json')
         client = CrossminerClient(CROSSMINER_API_REST_URL)
         response = next(client.get_items())
         req = HTTPServer.requests_http[-1]
         self.assertEqual(response, body)
         self.assertEqual(req.method, 'GET')
-        self.assertRegex(req.path, '/api/remo/v1/events/')
-        self.assertDictEqual(req.querystring, {'page': ['1'], 'orderby': ['ASC']})
+        self.assertRegex(req.path, '/projects/p/None/m/bugs.cumulativeNewUsers')
+        self.assertDictEqual(req.querystring, {})
 
     @httpretty.activate
     def test_get_wrong_items(self):
@@ -389,7 +331,7 @@ class TestCrossminerClient(unittest.TestCase):
         HTTPServer.routes()
 
         # Set up a mock HTTP server
-        body = read_file('data/remo/remo_events_page_1_2.json')
+        body = read_file('data/crossminer/crossminer_metric.json')
         client = CrossminerClient(CROSSMINER_API_REST_URL)
 
         with self.assertRaises(ValueError):
@@ -397,23 +339,20 @@ class TestCrossminerClient(unittest.TestCase):
 
     @httpretty.activate
     def test_call(self):
-        """Test get_all_users API call"""
+        """Test get projects API call"""
 
         HTTPServer.routes()
 
         # Set up a mock HTTP server
-        body = read_file('data/remo/remo_events_page_1_2.json')
+        body = read_file('data/crossminer/crossminer_metric.json')
         client = CrossminerClient(CROSSMINER_API_REST_URL)
-        response = client.fetch(MOZILLA_REPS_API + '/events/?page=1')
+        response = client.fetch(CROSSMINER_API_REST_URL + '/projects/p/perceval/m/bugs.cumulativeNewUsers')
         req = HTTPServer.requests_http[-1]
         self.assertEqual(response, body)
         self.assertEqual(req.method, 'GET')
-        self.assertEqual(req.path, '/api/remo/v1/events/?page=1')
+        self.assertEqual(req.path, '/projects/p/perceval/m/bugs.cumulativeNewUsers')
         # Check request params
-        expected = {
-            'page': ['1']
-        }
-        self.assertDictEqual(req.querystring, expected)
+        self.assertDictEqual(req.querystring, {})
 
 
 if __name__ == "__main__":
