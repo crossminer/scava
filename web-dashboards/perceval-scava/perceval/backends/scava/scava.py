@@ -39,6 +39,7 @@ CATEGORY_PROJECT = 'project'
 logger = logging.getLogger(__name__)
 
 
+
 class Scava(Backend):
     """Scava backend for Perceval.
 
@@ -105,6 +106,7 @@ class Scava(Backend):
             for item in items:
                 if category == CATEGORY_METRIC:
                     item['updated'] = self.project_updated
+                    item['project'] = self.project
                 yield item
                 nitems += 1
 
@@ -149,11 +151,10 @@ class Scava(Backend):
         """Extracts the identifier from a Scava item."""
 
         # name for a project
-
-        if 'name' in item:
+        if 'id' in item:
+            mid = item['id'] + item['updated'] + item['project']
+        elif 'name' in item:
             mid = item['name']
-        elif '_id' in item:
-            mid = item['_id']
         else:
             raise TypeError("Can not extract metadata_id from", item)
 
