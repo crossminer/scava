@@ -28,6 +28,7 @@ import argparse
 import hashlib
 import logging
 
+from dateutil import parser
 from perceval.backends.scava.scava import Scava
 
 from grimoire_elk.elastic import ElasticSearch
@@ -80,7 +81,6 @@ def uuid(*args):
     return uuid_sha1
 
 
-
 def extract_metrics(scava_metric):
     """
     Extract metric names and values from an scava_metric. It can be
@@ -91,54 +91,76 @@ def extract_metrics(scava_metric):
     :return: the list of metrics values from a scava_metric
     """
 
-    def create_item_metric(field, value):
+    def create_item_metric(metric_name, value, updated=None):
+        """
+        The main goal of this method is to find the value and datetime for a metric
+        :param metric_name: name of the scava metric
+        :param value: value for the scava metric
+        :param updated: the datetime string when the metric was updated
+        :return: a dict with a metric ready to be consumed from ES
+        """
+
         # The metrics could be computed as cumulative, average or single sample
         item_metric = {}
-        item_metric['metric_es_name'] = field
-        item_metric['metric_es_value'] = value
-        item_metric['metric_es_compute'] = 'sample'
-        if 'cumulative' in field.lower():
+        item_metric['metric_es_name'] = metric_name
+
+        no_value_fields = ['Committer', 'Date', 'Language']
+
+        if isinstance(value, dict):
+            value_fields = list(set(value.keys()) - set(no_value_fields))
+            if len(value_fields) > 1:
+                # Multivalue metric: we need to generate different items
+                # raise RuntimeError("More than of value detected %s: %s" % (metric_name, value))
+                logging.debug("Metric not supported %s" % value)
+
+
+            item_metric.update(value)
+            item_metric['metric_es_value'] = value[value_fields[0]]
+
+            if 'Date' in value.keys():
+                # {'Users': 0, 'Date': '20150818'}
+                # {'Language': 'Python', 'Date': '20150818', 'LOC': 31}
+                # Always add the full details of the metric
+                item_metric['datetime'] = parser.parse(value['Date']).isoformat()
+                item_metric['metric_es_compute'] = 'sample'
+            else:
+                logging.debug("No ts metric %s: %s" % (metric_name, value))
+                # {'Churn': 28, 'Committer': 'Prabhat'}
+                # {'Replies': 0.0, 'Date': '20150818', 'Requests': 0.0, 'Comments': 0.0}
+                item_metric['metric_es_compute'] = 'cumulative'
+                item_metric['datetime'] = parser.parse(updated).isoformat()
+        else:
+            item_metric['metric_es_value'] = value
             item_metric['metric_es_compute'] = 'cumulative'
-        if 'avg' in field.lower() or 'average' in field.lower():
-            item_metric['metric_es_compute'] = 'average'
+            item_metric['datetime'] = updated.isoformat()
+        # if 'cumulative' in field.lower():
+        #     item_metric['metric_es_compute'] = 'cumulative'
+        # if 'avg' in field.lower() or 'average' in field.lower():
+        #     item_metric['metric_es_compute'] = 'average'
         # For the topic metrics we get the topic label and add it as a field
-        topic = find_topic()
-        if topic:
-            item_metric['topic'] = find_topic()
+        # topic = find_topic()
+        # if topic:
+        #     item_metric['topic'] = find_topic()
 
         return item_metric
-
-    # def find_metric_prefix(item, value_fields):
-    #     metric_prefix = None
-    #
-    #     for field in value_fields:
-    #         if value_formatted_pattern in field:
-    #             # It is a formatted value, not a string with the metric name
-    #             continue
-    #         if find_topic():
-    #             # Topics are a special case and will be added as an extra field
-    #             continue
-    #         if isinstance(item[field], str):
-    #             # If the string is url it is just the origin
-    #             if field == 'url':
-    #                 continue
-    #             # This is the name of the metric prefix: 'severityLevel': 'normal'}
-    #             metric_prefix = item[field]
-    #
-    #     return metric_prefix
 
     item_metrics = []
 
     field = 'datatable'
 
+    mupdated = scava_metric['data']['updated']
+
     if isinstance(scava_metric['data'][field], list):
         # In the list items we can have metrics
-        for subitem in scava_metric['data'][field]:
-            subitem_metrics = extract_metrics(subitem)
-            item_metrics += subitem_metrics
+        for sample in scava_metric['data'][field]:
+            value = sample
+            item_metric = create_item_metric(scava_metric['data']['name'], value, mupdated)
+            item_metrics.append(item_metric)
+            if len(item_metrics) % 100 == 0:
+                logging.debug("Processed %i" % len(item_metrics))
     elif isinstance(scava_metric[field], (int, float)):
         value = scava_metric[field]
-        item_metric = create_item_metric(field, value)
+        item_metric = create_item_metric(scava_metric['data']['name'], value, mupdated)
         item_metrics.append(item_metric)
 
     logging.debug("Metrics found: %s", item_metrics)
@@ -159,23 +181,9 @@ def enrich_scava_metric(scava_metric):
     eitems = []
 
     for metric in extract_metrics(scava_metric):
-        eitem = {}
-        eitem.update(metric)
+        eitem = metric
         # It is useful to have all item fields for debugging
-        eitem.update(scava_metric)
-
-        # if '__datetime' in scava_metric:
-        #     eitem['datetime'] = eitem['__datetime'].isoformat()
-        #     eitem['__datetime'] = eitem['__datetime'].isoformat()
-        # if '__date' in scava_metric:
-        #     eitem['date'] = scava_metric['__date']
-        # eitem['mongo_id'] = eitem.pop('_id')
-        # eitem['mongo_type'] = eitem.pop('_type')
-        # eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'])
-        # if 'topic' in eitem:
-        #     eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'],
-        #                        eitem['topic'])
-
+        # eitem['scava_metric'] = scava_metric
         eitems.append(eitem)
 
     return eitems
@@ -208,6 +216,9 @@ def enrich_metrics(scava_metrics):
         enriched_items = enrich_scava_metric(scava_metric)
         for eitem in enriched_items:
             eitem.update(metric_meta)
+            if 'datetime' not in eitem:
+                print(eitem)
+            eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
             yield eitem
 
 
@@ -237,7 +248,7 @@ def fetch_scava(url_api_rest, project=None):
 if __name__ == '__main__':
 
     ARGS = get_params()
-
+    {'Churn': 28, 'Committer': 'Prabhat'}
     if ARGS.debug:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
         logging.debug("Debug mode activated")
