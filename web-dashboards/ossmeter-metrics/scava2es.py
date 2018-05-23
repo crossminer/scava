@@ -80,89 +80,16 @@ def uuid(*args):
     return uuid_sha1
 
 
-def connect_to_mongo(host=None, port=None):
-    """ Return a connection to the mongo server in host and port """
-    if host and port:
-        client = MongoClient(host, port)
-    elif host:
-        client = MongoClient(host)
-    else:
-        client = MongoClient()
 
-    return client
+def extract_metrics(scava_metric):
+    """
+    Extract metric names and values from an scava_metric. It can be
+    a cumulative value or a time series value metric. The time series will
+    generate one metric per each sample.
 
-
-def is_ossmeter_historic_collection(collection):
-    # Check if a collection is an OSSMeter historic one
-    # Sample: modeling-graphiti.historic.newsgroups.articles
-
-    is_historic = False
-
-    if len(collection.split(".")) == 4:
-        if collection.split(".")[1] == 'historic':
-            is_historic = True
-
-    return is_historic
-
-
-def is_ossmeter_project_collection(project, collection):
-    # Check if a collection is an OSSMeter one from project
-    # Sample: perceval.historic.bugs.bugs
-
-    is_project = False
-
-    if is_ossmeter_historic_collection(collection):
-        if project == collection.split(".")[0]:
-            is_project = True
-
-    return is_project
-
-
-def fetch_mongodb_all(host=None, port=None):
-    logging.info("Searching for all OSSMeter metrics collections")
-    client = connect_to_mongo(host, port)
-
-    # Find all OSSMeter collections in mongo
-    for db in client.database_names():
-        logging.info('Loading items from database %s', db)
-        for collection in client[db].collection_names():
-            collection_name = db + '.' + collection
-            if is_ossmeter_historic_collection(collection_name):
-                logging.info('Loading items from %s', collection_name)
-                for item in fetch_mongodb_collection(collection_name, client=client):
-                    yield item
-
-
-def fetch_mongodb_project(project, host=None, port=None):
-    logging.info("Searching OSSMeter metrics collections for project %s", project)
-    client = connect_to_mongo(host, port)
-
-    # Find all OSSMeter collections in mongo
-    for db in client.database_names():
-        logging.info('Checking items from database %s', db)
-        for collection in client[db].collection_names():
-            collection_name = db + '.' + collection
-            if not is_ossmeter_historic_collection(collection_name):
-                continue
-            if not is_ossmeter_project_collection(project, collection_name):
-                continue
-            logging.info('Loading items from %s', collection_name)
-            for item in fetch_mongodb_collection(collection_name, client=client):
-                yield item
-
-
-def extract_metrics(item, item_meta):
-    # Extract metric names and values from an item
-
-    value_formatted_pattern = 'Formatted'
-
-    def find_topic():
-        """ Find the topic label for an item """
-        topic = None
-        if item_meta['metric_name'] == "topics" and 'label' in item:
-            topic = item['label']
-
-        return topic
+    :param scava_metric: metric collected using Scava API REST
+    :return: the list of metrics values from a scava_metric
+    """
 
     def create_item_metric(field, value):
         # The metrics could be computed as cumulative, average or single sample
@@ -181,83 +108,107 @@ def extract_metrics(item, item_meta):
 
         return item_metric
 
-    def find_metric_prefix(item, value_fields):
-        metric_prefix = None
-
-        for field in value_fields:
-            if value_formatted_pattern in field:
-                # It is a formatted value, not a string with the metric name
-                continue
-            if find_topic():
-                # Topics are a special case and will be added as an extra field
-                continue
-            if isinstance(item[field], str):
-                # If the string is url it is just the origin
-                if field == 'url':
-                    continue
-                # This is the name of the metric prefix: 'severityLevel': 'normal'}
-                metric_prefix = item[field]
-
-        return metric_prefix
+    # def find_metric_prefix(item, value_fields):
+    #     metric_prefix = None
+    #
+    #     for field in value_fields:
+    #         if value_formatted_pattern in field:
+    #             # It is a formatted value, not a string with the metric name
+    #             continue
+    #         if find_topic():
+    #             # Topics are a special case and will be added as an extra field
+    #             continue
+    #         if isinstance(item[field], str):
+    #             # If the string is url it is just the origin
+    #             if field == 'url':
+    #                 continue
+    #             # This is the name of the metric prefix: 'severityLevel': 'normal'}
+    #             metric_prefix = item[field]
+    #
+    #     return metric_prefix
 
     item_metrics = []
 
-    no_value_fields = ['__date', '_type', '_id', '__datetime', 'bugs',
-                       'bugData', 'bugTrackers', 'newsgroups', 'newsgroupName',
-                       'bugTrackerId', 'percentage']
-    value_fields = list(set(item.keys()) - set(no_value_fields))
+    field = 'datatable'
 
-    metric_prefix = find_metric_prefix(item, value_fields)
+    if isinstance(scava_metric['data'][field], list):
+        # In the list items we can have metrics
+        for subitem in scava_metric['data'][field]:
+            subitem_metrics = extract_metrics(subitem)
+            item_metrics += subitem_metrics
+    elif isinstance(scava_metric[field], (int, float)):
+        value = scava_metric[field]
+        item_metric = create_item_metric(field, value)
+        item_metrics.append(item_metric)
 
-    for field in value_fields:
-        if value_formatted_pattern in field:
-            # We don't want string formatted values
-            continue
-        if isinstance(item[field], list):
-            # In the list items we can have metrics
-            for subitem in item[field]:
-                subitem_metrics = extract_metrics(subitem, item_meta)
-                item_metrics += subitem_metrics
-        elif isinstance(item[field], (int, float)):
-            value = item[field]
-            item_metric = create_item_metric(field, value)
-            if metric_prefix:
-                item_metric['metric_es_name'] = metric_prefix + "_" + item_metric['metric_es_name']
-            item_metrics.append(item_metric)
-
-    # logging.debug("Metrics found: %s", item_metrics)
+    logging.debug("Metrics found: %s", item_metrics)
 
     return item_metrics
 
 
-def enrich_ossmeter_item(item, item_meta):
-    # Given a ossmeter item enrich it to be used in Kibana
+def enrich_scava_metric(scava_metric):
+    """
+    Given a ossmeter item enrich it to be used in Kibana
 
-    # A raw item from OSSMeter could generate several enriched items, one for
-    # each metric
+    :param scava_metric: Scava metric to enrich
+    :return:
+    """
+
+    # A Scava metric could generate several enriched items, one for
+    # each metric value
     eitems = []
 
-    for metric in extract_metrics(item, item_meta):
+    for metric in extract_metrics(scava_metric):
         eitem = {}
         eitem.update(metric)
         # It is useful to have all item fields for debugging
-        eitem.update(item)
+        eitem.update(scava_metric)
 
-        if '__datetime' in item:
-            eitem['datetime'] = eitem['__datetime'].isoformat()
-            eitem['__datetime'] = eitem['__datetime'].isoformat()
-        if '__date' in item:
-            eitem['date'] = item['__date']
-        eitem['mongo_id'] = eitem.pop('_id')
-        eitem['mongo_type'] = eitem.pop('_type')
-        eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'])
-        if 'topic' in eitem:
-            eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'],
-                               eitem['topic'])
+        # if '__datetime' in scava_metric:
+        #     eitem['datetime'] = eitem['__datetime'].isoformat()
+        #     eitem['__datetime'] = eitem['__datetime'].isoformat()
+        # if '__date' in scava_metric:
+        #     eitem['date'] = scava_metric['__date']
+        # eitem['mongo_id'] = eitem.pop('_id')
+        # eitem['mongo_type'] = eitem.pop('_type')
+        # eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'])
+        # if 'topic' in eitem:
+        #     eitem['id'] = uuid(eitem['mongo_id'], eitem['metric_es_name'],
+        #                        eitem['topic'])
 
         eitems.append(eitem)
 
     return eitems
+
+def enrich_metrics(scava_metrics):
+    """
+    Enrich metrics coming from Scava to use them in Kibana
+
+    :param scava_metrics: metrics generator
+    :return:
+    """
+
+    for scava_metric in scava_metrics:
+
+        # id : 'bugs.cumulativeNewUsers'
+        metric_meta = {
+            'project': scava_metric['data']['project'],
+            'metric_class': scava_metric['data']['id'].split(".")[0],
+            'metric_id': scava_metric['data']['id'],
+            'metric_desc': scava_metric['data']['description'],
+            'metric_name': scava_metric['data']['name']
+        }
+
+        if isinstance(scava_metric['data']['datatable'], list):
+            metric_meta['metric_type'] = "sample"
+        else:
+            metric_meta['metric_type'] = "cumulative"
+
+
+        enriched_items = enrich_scava_metric(scava_metric)
+        for eitem in enriched_items:
+            eitem.update(metric_meta)
+            yield eitem
 
 
 def fetch_scava(url_api_rest, project=None):
@@ -269,34 +220,18 @@ def fetch_scava(url_api_rest, project=None):
     :return: a metrics generator
     """
 
-
-    item_meta = {
-        'project': None,
-        'metric_type': None,
-        'metric_class': None,
-        'metric_name': None
-    }
-
     scava = Scava(url=url_api_rest, project=project)
 
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
             scavaProject = Scava(url=url_api_rest, project=project_scava['data']['name'])
-            for metric in scavaProject.fetch():
-                # TODO: enrich the metric
-                yield metric
+            for enriched_metric in enrich_metrics(scavaProject.fetch()):
+                yield enriched_metric
     else:
         # Get the metrics directly
-        for metric in scava.fetch():
-            # TODO: enrich the metric
-            yield metric
-
-    # for item in collection.find():
-    #     enrich_items = enrich_ossmeter_item(item, item_meta)
-    #     for eitem in enrich_items:
-    #         eitem.update(item_meta)
-    #         yield eitem
+        for enriched_metric in enrich_metrics(scava.fetch()):
+            yield enriched_metric
 
 
 if __name__ == '__main__':
