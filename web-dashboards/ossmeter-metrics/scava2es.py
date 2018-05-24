@@ -91,7 +91,7 @@ def extract_metrics(scava_metric):
     :return: the list of metrics values from a scava_metric
     """
 
-    def create_item_metric(metric_name, value, updated=None):
+    def create_item_metrics(metric_name, value, updated=None):
         """
         The main goal of this method is to find the value and datetime for a metric
         :param metric_name: name of the scava metric
@@ -110,9 +110,24 @@ def extract_metrics(scava_metric):
             value_fields = list(set(value.keys()) - set(no_value_fields))
             if len(value_fields) > 1:
                 # Multivalue metric: we need to generate different items
+                # {'Requests': 0.0, 'Comments': 0.0, 'Date': '20150818', 'Replies': 0.0}
                 # raise RuntimeError("More than of value detected %s: %s" % (metric_name, value))
-                logging.debug("Metric not supported %s" % value)
+                if 'Date' in value.keys():
+                    # {'Requests': 0.0, 'Comments': 0.0, 'Date': '20150818', 'Replies': 0.0}
+                    for field in value_fields:
+                        submetric_name = metric_name + "_" + field
+                        subvalue = {'Date': value['Date'], submetric_name: value[field]}
+                        for submetric in create_item_metrics(submetric_name, subvalue, updated=None):
+                            yield submetric
+                else:
+                    # 'Average Response Time per Thread (ms)' {'Threads': 0, 'Response Time': 0}
+                    for field in value_fields:
+                        submetric_name = metric_name + "_" + field
+                        subvalue = {submetric_name: value[field]}
+                        for submetric in create_item_metrics(submetric_name, subvalue, updated=updated):
+                            yield submetric
 
+                    # logging.debug("Metric not supported %s" % value)
 
             item_metric.update(value)
             item_metric['metric_es_value'] = value[value_fields[0]]
@@ -133,6 +148,7 @@ def extract_metrics(scava_metric):
             item_metric['metric_es_value'] = value
             item_metric['metric_es_compute'] = 'cumulative'
             item_metric['datetime'] = updated.isoformat()
+
         # if 'cumulative' in field.lower():
         #     item_metric['metric_es_compute'] = 'cumulative'
         # if 'avg' in field.lower() or 'average' in field.lower():
@@ -142,7 +158,7 @@ def extract_metrics(scava_metric):
         # if topic:
         #     item_metric['topic'] = find_topic()
 
-        return item_metric
+        yield item_metric
 
     item_metrics = []
 
@@ -151,16 +167,18 @@ def extract_metrics(scava_metric):
     mupdated = scava_metric['data']['updated']
 
     if isinstance(scava_metric['data'][field], list):
-        # In the list items we can have metrics
+        # time series metric
         for sample in scava_metric['data'][field]:
             value = sample
-            item_metric = create_item_metric(scava_metric['data']['name'], value, mupdated)
-            item_metrics.append(item_metric)
+            for item_metric in create_item_metrics(scava_metric['data']['name'], value, mupdated):
+                item_metrics.append(item_metric)
             if len(item_metrics) % 100 == 0:
                 logging.debug("Processed %i" % len(item_metrics))
     elif isinstance(scava_metric[field], (int, float)):
+        # global metric
         value = scava_metric[field]
-        item_metric = create_item_metric(scava_metric['data']['name'], value, mupdated)
+        for item_metric in create_item_metrics(scava_metric['data']['name'], value, mupdated):
+            item_metrics.append(item_metric)
         item_metrics.append(item_metric)
 
     logging.debug("Metrics found: %s", item_metrics)
@@ -248,7 +266,6 @@ def fetch_scava(url_api_rest, project=None):
 if __name__ == '__main__':
 
     ARGS = get_params()
-    {'Churn': 28, 'Committer': 'Prabhat'}
     if ARGS.debug:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
         logging.debug("Debug mode activated")
