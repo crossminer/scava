@@ -35,14 +35,6 @@ public class RascalBundleManifest extends RascalManifest {
 	public String getMainFunction(Bundle project) {
 		return getManifestMainFunction(manifest(project));
 	}
-//
-//	public List<String> getRequiredBundles(Bundle project) {
-//		try {
-//		return getRequiredBundles(manifest(new File(project.getLocation())));}
-//		catch(IOException e) {
-//			
-//		}
-//	}
 
 	public List<String> getRequiredLibraries(Bundle project) {
 		return getManifestRequiredLibraries(manifest(project));
@@ -59,14 +51,19 @@ public class RascalBundleManifest extends RascalManifest {
 		catch (IOException e) {
 			// do nothing, it's expected that some bundles do not have RASCAL.MF files
 		}
-
 		return null;
 	}
-
-
 
 	public boolean hasManifest(Bundle bundle) {
 		return hasManifest(manifest(bundle));
 	}
+
+	//	public List<String> getRequiredBundles(Bundle project) {
+	//	try {
+	//	return getRequiredBundles(manifest(new File(project.getLocation())));}
+	//	catch(IOException e) {
+	//		
+	//	}
+	//}
 }
 

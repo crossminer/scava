@@ -17,9 +17,8 @@ import Relation;
 	Coupling between objects
 }
 public map[loc, int] CBO(rel[loc type1, loc type2] typeDependencies, set[loc] allTypes) {
-  coupledTypes = typeDependencies + invert(typeDependencies);
-  
-  return ( t : size(coupledTypes[t]) | t <- allTypes );
+  	coupledTypes = typeDependencies + invert(typeDependencies);
+  	return ( t : size(coupledTypes[t]) | t <- allTypes );
 }
   
 

@@ -71,7 +71,6 @@ private rel[loc, loc] getImplicitCalls(M3 m, rel[loc, loc] implicitContainment) 
   fullContainment = toMap(m.containment + implicitContainment);  
   
   rel[loc, loc] implicitCalls = {};
-  
   impCont = implicitContainment<0>;
   
   for (<ch, par> <- m.extends) {
@@ -120,12 +119,12 @@ compute how far from the ideal situation the project is.}
 @appliesTo{java()}
 @historic{}
 real percentageOfTestedPublicMethods(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
-  m = systemM3(m3s, delta = delta);
+  m = systemM3(m3s, delta = delta);  
   onlyTestMethods = getJUnit4TestMethods(m);
   supportTestMethods = getJUnit4SetupMethods(m);
   interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
   declarations = {meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - onlyTestMethods - supportTestMethods;
-  allPublicMethods = { meth | meth <- declarations, \public() in m.modifiers};
+  allPublicMethods = { meth | meth <- declarations, \public() in m.modifiers[meth]};
   directlyCalledFromTestMethods = domainR(m.methodInvocation, onlyTestMethods);
   pbSet = directlyCalledFromTestMethods + (directlyCalledFromTestMethods o m.methodOverrides<1,0>);
   testedPublicMethods = rangeR(pbSet, allPublicMethods);

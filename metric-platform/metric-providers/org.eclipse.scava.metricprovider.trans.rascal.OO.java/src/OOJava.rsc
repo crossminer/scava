@@ -98,12 +98,9 @@ rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), (
 @historic
 real A_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  
-  types = allTypes(m3);
-  
-  abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t]};
-  
-  return A(abstractTypes, types);
+  	types = allTypes(m3);
+  	abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t]};
+  	return A(abstractTypes, types);
 }
 
 @metric{RR-Java}
@@ -113,8 +110,7 @@ real A_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] 
 @historic
 real RR_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-
-  return RR(superTypes(m3), allTypes(m3));
+  	return RR(superTypes(m3), allTypes(m3));
 }
 
 @metric{SR-Java}
@@ -132,8 +128,7 @@ real SR_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3]
 @appliesTo{java()}
 map[loc, int] DIT_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  
-  return DIT(superTypes(m3), allTypes(m3));
+  	return DIT(superTypes(m3), allTypes(m3));
 }
 
 @metric{NOC-Java}
@@ -142,12 +137,11 @@ map[loc, int] DIT_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language
 @appliesTo{java()}
 map[loc, int] NOC_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  
-  return NOC(superTypes(m3), allTypes(m3));
+  	return NOC(superTypes(m3), allTypes(m3));
 }
 
 private rel[loc, loc] typeSymbolsToTypeDependencies(rel[loc, TypeSymbol] typs) {
-  return { *({l} * { t2.decl | /TypeSymbol t2 := t, t2 has decl, isType(t2.decl) }) |  <l, t> <- typs };
+  	return { *({l} * { t2.decl | /TypeSymbol t2 := t, t2 has decl, isType(t2.decl) }) |  <l, t> <- typs };
 }
 
 @metric{CBO-Java}
@@ -156,13 +150,11 @@ private rel[loc, loc] typeSymbolsToTypeDependencies(rel[loc, TypeSymbol] typs) {
 @appliesTo{java()}
 map[loc, int] CBO_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-	
 	return CBO(typeDependencies(m3), allTypes(m3));
 }
 
 @memo
 private tuple[map[loc, int], map[loc, int]] dac_mpc(rel[Language, loc, AST] asts) {
-
 	map[loc, int] dac = ();
 	map[loc, int] mpc = ();
 
@@ -190,7 +182,7 @@ private tuple[map[loc, int], map[loc, int]] dac_mpc(rel[Language, loc, AST] asts
 @appliesTo{java()}
 // DAC for java is also measured in lang::java::style::Metrics
 map[loc, int] DAC_Java(rel[Language, loc, AST] asts = {}) {
-  return dac_mpc(asts)[0];
+  	return dac_mpc(asts)[0];
 }
 
 @metric{MPC-Java}
@@ -198,7 +190,7 @@ map[loc, int] DAC_Java(rel[Language, loc, AST] asts = {}) {
 @friendlyName{Message passing coupling (Java)}
 @appliesTo{java()}
 map[loc, int] MPC_Java(rel[Language, loc, AST] asts = {}) {
-  return dac_mpc(asts)[1];
+  	return dac_mpc(asts)[1];
 }
 
 @metric{CF-Java}
@@ -208,8 +200,8 @@ map[loc, int] MPC_Java(rel[Language, loc, AST] asts = {}) {
 @historic
 real CF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  typeDependenciesNoInherits = typeDependencies({}, m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
-  return CF(typeDependenciesNoInherits, allTypes(m3));
+  	typeDependenciesNoInherits = typeDependencies({}, m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
+  	return CF(typeDependenciesNoInherits, allTypes(m3));
 }
 
 @metric{Ca-Java}
@@ -218,7 +210,7 @@ real CF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3]
 @appliesTo{java()}
 map[loc, int] Ca_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  return Ca(packageTypes(m3), typeDependencies(m3));
+  	return Ca(packageTypes(m3), typeDependencies(m3));
 }
 
 @metric{Ce-Java}
@@ -227,7 +219,7 @@ map[loc, int] Ca_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language,
 @appliesTo{java()}
 map[loc, int] Ce_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  return Ce(packageTypes(m3), typeDependencies(m3));
+  	return Ce(packageTypes(m3), typeDependencies(m3));
 }
 
 @metric{I-Java}
@@ -236,9 +228,8 @@ map[loc, int] Ce_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language,
 @appliesTo{java()}
 @uses = ("Ce-Java" : "ce", "Ca-Java" : "ca")
 map[loc, real] I_Java(map[loc, int] ce = (), map[loc, int] ca = ()) {
-  set[loc] packages = domain(ca) + domain(ce);
-
-  return ( p : I(ca[p]?0, ce[p]?0) | p <- packages );
+  	set[loc] packages = domain(ca) + domain(ce);
+  	return ( p : I(ca[p]?0, ce[p]?0) | p <- packages );
 }
 
 @metric{RFC-Java}
@@ -246,8 +237,8 @@ map[loc, real] I_Java(map[loc, int] ce = (), map[loc, int] ca = ()) {
 @friendlyName{Response for class (Java)}
 @appliesTo{java()}
 map[loc, int] RFC_Java(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = ProjectDelta::\empty()) {
-  M3 m3 = systemM3(m3s,delta=delta);
-  return RFC(m3.methodInvocation, allMethodsMap(m3), allTypes(m3));
+  	M3 m3 = systemM3(m3s,delta=delta);
+  	return RFC(m3.methodInvocation, allMethodsMap(m3), allTypes(m3));
 }
 
 @metric{MIF-Java}
@@ -336,7 +327,6 @@ real AHF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3
 @historic
 real PF_Java(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = ProjectDelta::\empty()) {
 	M3 m3 = systemM3(m3s,delta=delta);
-
 	return PF(superTypes(m3), m3.methodOverrides, overridableMethods(m3), allTypes(m3));
 }
 

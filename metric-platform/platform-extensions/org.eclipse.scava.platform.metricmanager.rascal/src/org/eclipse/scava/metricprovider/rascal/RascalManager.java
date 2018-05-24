@@ -67,7 +67,6 @@ public class RascalManager {
 	private static final String EXTRACTOR_TAG_M3 = "M3Extractor";
 	private final static IValueFactory VF = ValueFactoryFactory.getValueFactory();
 	private final Evaluator eval = createEvaluator();
-
 	private final Set<Bundle> registeredBundles = new HashSet<>();
 
 
@@ -149,20 +148,17 @@ public class RascalManager {
 		URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
 
 		eval.setMonitor(new RascalMonitor(log));
-		//TODO: [MIG] Check if this works
 		registry.registerLogical(new BundleURIResolver(registry));
-		//eval.getResolverRegistry().registerInput(new BundleURIResolver(eval.getResolverRegistry()));
 		eval.addRascalSearchPathContributor(StandardLibraryContributor.getInstance());
 		Bundle currentBundle = Rasctivator.getContext().getBundle();
 		List<String> roots = new RascalBundleManifest()
 				.getSourceRoots(currentBundle);
 
 		for (String root : roots) {
-			//TODO: [MIG] Check if this works
 			try {
 				eval.addRascalSearchPath(VF.sourceLocation(currentBundle.getResource(root).toURI()));
-				//eval.addRascalSearchPath(currentBundle.getResource(root));
-			} catch (URISyntaxException e) {
+			} 
+			catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
 		}
@@ -183,37 +179,33 @@ public class RascalManager {
 		try {
 			RascalBundleManifest mf = new RascalBundleManifest();
 
-//			List<String> dependencies = mf.getRequiredBundles(bundle);
-//			if (dependencies != null) {
-//				for (String bundleName : dependencies) {
-//					Bundle dep = Platform.getBundle(bundleName);
-//					if (dep != null) {
-//						configureRascalPath(evaluator, dep);
-//					} else {
-//						throw new BundleException("Bundle " + bundleName + " not found.");
-//					}
-//				}
-//			}
+			//			List<String> dependencies = mf.getRequiredBundles(bundle);
+			//			if (dependencies != null) {
+			//				for (String bundleName : dependencies) {
+			//					Bundle dep = Platform.getBundle(bundleName);
+			//					if (dep != null) {
+			//						configureRascalPath(evaluator, dep);
+			//					} else {
+			//						throw new BundleException("Bundle " + bundleName + " not found.");
+			//					}
+			//				}
+			//			}
 
 			for (String root : mf.getSourceRoots(bundle)) {
-				//TODO: [MIG] Check if this works
 				evaluator.addRascalSearchPath(VF.sourceLocation(bundle.getResource(root).toURI()));
-				//evaluator.addRascalSearchPath(bundle.getResource(root).toURI());
 			}
 
 			List<String> requiredLibs = mf.getRequiredLibraries(bundle);
 			if (requiredLibs != null) {
 				for (String lib : requiredLibs) {
-					//TODO: [MIG] Check if this works
 					URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
 					ISourceLocation libURL = registry.logicalToPhysical(VF.sourceLocation(bundle.getResource(lib).toURI()));
 					JarURIResolver resolver = new JarURIResolver(registry);
-					//registry.registerLogical((ILogicalSourceLocationResolver) resolver);
-					//evaluator.getResolverRegistry().registerInput(resolver);
 
 					try {
 						addJarToSearchPath(libURL, resolver, evaluator);
-					} catch (IOException e) {
+					} 
+					catch (IOException e) {
 						Rasctivator.logException("ignoring lib " + lib, e);
 					}
 				}
@@ -221,21 +213,20 @@ public class RascalManager {
 
 			evaluator.addClassLoader(new BundleClassLoader(bundle));
 			configureClassPath(bundle, evaluator);
-		} catch (Throwable e) {
+		} 
+		catch (Throwable e) {
 			Rasctivator.logException("failed to configure metrics bundle "
 					+ bundle, e);
 		}
 	}
 
 	public static void addJarToSearchPath(ISourceLocation lib, JarURIResolver resolver, Evaluator eval) throws URISyntaxException, IOException {
-		//TODO: [MIG] Check if this works
 		URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
 		try (JarInputStream jarStream = new JarInputStream(registry.getInputStream(lib))) {
 			List<String> roots = new RascalManifest().getSourceRoots(jarStream);
 
 			if (roots != null) {
 				for (String root : roots) {
-					//TODO: [MIG] Check if this works
 					eval.addRascalSearchPath(VF.sourceLocation(resolver.scheme(), "", "/" + root));
 				}
 			}
@@ -282,7 +273,6 @@ public class RascalManager {
 			compilerClassPath.add(0, file.getAbsolutePath());
 
 			BundleWiring wiring = bundle.adapt(BundleWiring.class);
-
 			for (BundleWire dep : wiring.getRequiredWires(null)) {
 				collectClassPathForBundle(dep.getProviderWiring().getBundle(),
 						classPath, compilerClassPath);
@@ -295,7 +285,8 @@ public class RascalManager {
 				}
 			}
 
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			Rasctivator.logException("error while tracing dependencies", e);
 		}
 	}
@@ -305,7 +296,6 @@ public class RascalManager {
 	}
 
 	public void importModule(String module) {
-		System.out.println("LOOK: " + module);
 		eval.doImport(new NullRascalMonitor(), module);
 	}
 
@@ -325,7 +315,7 @@ public class RascalManager {
 	private void addMetricProviders(Bundle bundle, List<IMetricProvider> providers, Set<IValue> extractedLanguages) {
 		RascalBundleManifest mf = new RascalBundleManifest();
 		String moduleName = mf.getMainModule(bundle);
-		
+
 		if (!eval.getHeap().existsModule(moduleName)) {
 			importModule(moduleName);
 		}
@@ -480,7 +470,6 @@ public class RascalManager {
 	}
 
 	public void initialize(IValue... parameters) {
-		// eval.call("initialize", parameters);
 		eval.call("initialize", MODULE, null, parameters);
 	}
 
@@ -500,10 +489,12 @@ public class RascalManager {
 				try {
 					if (f.hasTag(EXTRACTOR_TAG_M3)) {
 						m3Extractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_M3)));
-					} else if (f.hasTag(EXTRACTOR_TAG_AST)) {
+					} 
+					else if (f.hasTag(EXTRACTOR_TAG_AST)) {
 						astExtractors.add(new Extractor(f, module, f.getTag(EXTRACTOR_TAG_AST)));								
 					}
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					eval.getStdErr().println("Error while loading extractor " + f.toString());
 					e.printStackTrace(eval.getStdErr());
 				}
