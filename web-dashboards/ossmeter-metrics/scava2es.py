@@ -34,6 +34,8 @@ from perceval.backends.scava.scava import Scava
 from grimoire_elk.elastic import ElasticSearch
 
 
+UUIDS = {}
+
 def get_params():
     parser = argparse.ArgumentParser(usage="usage: scava2es [options]",
                                      description="Import Scava metrics in ElasticSearch")
@@ -77,6 +79,11 @@ def uuid(*args):
 
     sha1 = hashlib.sha1(s.encode('utf-8', errors='surrogateescape'))
     uuid_sha1 = sha1.hexdigest()
+
+    if uuid_sha1 not in UUIDS:
+        UUIDS[uuid_sha1] = args
+    else:
+        logging.error("Detected duplicated scava metric value %s" % str(args))
 
     return uuid_sha1
 
@@ -236,7 +243,9 @@ def enrich_metrics(scava_metrics):
             eitem.update(metric_meta)
             if 'datetime' not in eitem:
                 print(eitem)
-            eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+            # eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+            # Use all value fields to generate the unique id for the metric value
+            eitem['uuid'] = uuid(* [str(val) for val in eitem.values()])
             yield eitem
 
 
