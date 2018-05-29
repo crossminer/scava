@@ -64,7 +64,7 @@ public class CROSSRecServiceImpl {
 	@Autowired
 	private CROSSRecSimilarityCalculator crossRecSimilarityCalculator;
 	
-	private static final Logger logger = Logger.getLogger(ApiRecommendationProvider.class);
+	private static final Logger logger = Logger.getLogger(CROSSRecServiceImpl.class);
 	
 
 	public Recommendation run(List<Dependency> dependencies) throws Exception {
