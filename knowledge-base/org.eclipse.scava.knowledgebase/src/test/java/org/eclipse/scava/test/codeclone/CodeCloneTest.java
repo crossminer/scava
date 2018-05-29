@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import org.apache.log4j.Logger;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.ICodeCloneDetector;
-import org.eclipse.scava.business.dto.CodeCloneResult;
+import org.eclipse.scava.business.dto.ApiCallResult;
 import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,11 +58,9 @@ public class CodeCloneTest {
 		options.setOption(Option.IGNORE_IDENTIFIER_CASE, true);
 		options.setOption(Option.IGNORE_MODIFIERS, true);
 		options.setOption(Option.IGNORE_LITERALS, true);
-		//TODO check java option
 		options.setOption(Option.LANGUAGE, Language.JAVA);
-		
 		options.setOption(Option.IGNORE_SUBTYPE_NAMES, true);
-		CodeCloneResult result = cloneDetector.checkClone(left, right, options);
+		ApiCallResult result = cloneDetector.checkClone(left, right, options);
 		assertEquals(result.getDuplicatedLines(), 4);
 		
 	}

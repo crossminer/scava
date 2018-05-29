@@ -64,8 +64,7 @@ public class RecommenderRestController {
 	@RequestMapping(value="recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public @ResponseBody Recommendation getApiCallRecommendation(
     		@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
-		//TODO It has to be integrate from Claudio and Phuong
-		return null;
+		return recommenderManager.getRecommendation(query, RecommendationType.API_CALL);
     }
 	
 	@RequestMapping(value="recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

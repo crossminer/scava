@@ -30,7 +30,7 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>public</id>
+			<id>Univaq</id>
 			<name>Archiva Managed Public Repository</name>
 			<url>http://archiva.disim.univaq.it/repository/public/</url>
 			<releases>
@@ -255,6 +255,11 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 	<build>

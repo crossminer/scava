@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.scava.business.ICodeCloneDetector;
-import org.eclipse.scava.business.dto.CodeCloneResult;
+import org.eclipse.scava.business.dto.ApiCallResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class SimianCodeCloneDetector implements ICodeCloneDetector {
 	CodeListenerImpl aulist;
 
 	@Override
-	public CodeCloneResult checkClone(String left, String right, Options options) {
+	public ApiCallResult checkClone(String left, String right, Options options) {
 		List<String> results = new ArrayList<String>();
 		Checker checker = new Checker(aulist, options);
 		StreamLoader streamLoader = new StreamLoader(checker);
@@ -40,7 +40,7 @@ public class SimianCodeCloneDetector implements ICodeCloneDetector {
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
-		CodeCloneResult pattern = new CodeCloneResult();
+		ApiCallResult pattern = new ApiCallResult();
 
 		pattern.setTime(aulist.getTotalTime());
 		pattern.setDuplicatedLines(aulist.getDuplicatedLines());

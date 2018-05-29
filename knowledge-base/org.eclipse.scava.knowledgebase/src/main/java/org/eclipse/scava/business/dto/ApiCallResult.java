@@ -2,7 +2,7 @@ package org.eclipse.scava.business.dto;
 
 import java.util.List;
 
-public class CodeCloneResult {
+public class ApiCallResult {
 	
 	
 	private List<String> codeLines;

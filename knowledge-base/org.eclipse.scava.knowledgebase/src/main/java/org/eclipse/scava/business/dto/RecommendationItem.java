@@ -17,6 +17,7 @@ import org.eclipse.scava.business.model.Artifact;
  */
 public class RecommendationItem {
 
+	private ApiCallResult apiCallRecommendation;
 	private Artifact artifact;
 	private double significance;
 	private Object relatedTo;
@@ -44,6 +45,12 @@ public class RecommendationItem {
 	}
 	public void setRelatedTo(Object relatedTo) {
 		this.relatedTo = relatedTo;
+	}
+	public ApiCallResult getApiCallRecommendation() {
+		return apiCallRecommendation;
+	}
+	public void setApiCallRecommendation(ApiCallResult apiCallRecommendation) {
+		this.apiCallRecommendation = apiCallRecommendation;
 	}
 	
 }
