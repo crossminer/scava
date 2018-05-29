@@ -48,7 +48,12 @@ public class RecommenderManager implements IRecommenderManager {
 	private IRecommendationProvider apiRecommendationProvider;
 	@Autowired
 	@Qualifier("AlternativeLibraries")
-	private IRecommendationProvider alternativeLibrariesrecommendationProvider;
+	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
+	
+	@Autowired
+	@Qualifier("ApiCallRecommendation")
+	private IRecommendationProvider apiCallRecommendationProvider;
+	
 	@Autowired
 	private ArtifactRepository artifactRepository;
 
@@ -64,9 +69,11 @@ public class RecommenderManager implements IRecommenderManager {
 	@Override
 	public Recommendation getRecommendation(Query query, RecommendationType rt) throws Exception {
 		if(rt.equals(RecommendationType.ALTERNATIVE_LIBRARY))
-			return alternativeLibrariesrecommendationProvider.getRecommendation(query);
+			return alternativeLibrariesRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.RECOMMENDED_LIBRARY))
 			return apiRecommendationProvider.getRecommendation(query);
+		if(rt.equals(RecommendationType.API_CALL))
+			return apiCallRecommendationProvider.getRecommendation(query);
 		else return null;
 	}
 

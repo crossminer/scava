@@ -29,6 +29,17 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>public</id>
+			<name>Archiva Managed Public Repository</name>
+			<url>http://archiva.disim.univaq.it/repository/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<properties>
@@ -40,6 +51,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- Simian -->
+		<dependency>
+			<groupId>redhill</groupId>
+			<artifactId>simian</artifactId>
+			<version>2.5.10</version>
+		</dependency>
 		<!-- Parse gradle -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
