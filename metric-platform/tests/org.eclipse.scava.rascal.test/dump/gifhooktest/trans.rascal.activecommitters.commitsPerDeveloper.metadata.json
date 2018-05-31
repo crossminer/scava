@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.trans.rascal.activecommitters.commitsPerDeveloper"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.trans.rascal.activecommitters.commitsPerDeveloper","background":true}],"uuid":"02e2649180f0429b8e7afb7140f224c3"}

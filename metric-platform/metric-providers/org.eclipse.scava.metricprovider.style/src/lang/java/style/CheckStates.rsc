@@ -64,8 +64,8 @@ void enterDeclaration(Declaration decl){
 	for(checkName <- checkStateDescriptors){
 		descr = checkStateDescriptors[checkName];
 		if(cons in descr.triggers){
-			//println("enterDeclaration, <cons>, <checkName>, <decl@src>");
-			checkStates[checkName] = push(checkState(decl@src, descr.initial), checkStates[checkName]);
+			//println("enterDeclaration, <cons>, <checkName>, <decl.src>");
+			checkStates[checkName] = push(checkState(decl.src, descr.initial), checkStates[checkName]);
 		}
 	}
 }
@@ -87,9 +87,9 @@ list[Message] leaveDeclaration(Declaration decl){
 	for(checkName <- checkStateDescriptors){
 		descr = checkStateDescriptors[checkName];
 		if(cons in descr.triggers){
-			//println("leaveDeclaration, <cons>, <checkName>, <decl@src>");
-			if(checkStates[checkName][0].src != decl@src){
-				throw "leaveDeclaration: entered <decl@src>, but leaving <checkStates[checkName][0].src>";
+			//println("leaveDeclaration, <cons>, <checkName>, <decl.src>");
+			if(checkStates[checkName][0].src != decl.src){
+				throw "leaveDeclaration: entered <decl.src>, but leaving <checkStates[checkName][0].src>";
 			}
 			msgs += checkStateDescriptors[checkName].finalize(decl, checkStates[checkName][0].current);
 			checkStates[checkName] = tail(checkStates[checkName]);
@@ -114,7 +114,7 @@ tuple[void(value), list[Message]()] throwsCountProvider(Declaration d){
 	void update(value delta) { if(int d := delta) current += d; }
 
 	list[Message] finalize() =
-		(current > 1) ? [classDesign("ThrowsCount", d@src)] : [];
+		(current > 1) ? [classDesign("ThrowsCount", d.src)] : [];
 
 	return <update, finalize>;
 }
@@ -125,7 +125,7 @@ tuple[void(value), list[Message]()] classDataAbstractionCouplingProvider(Declara
 	void update(value delta) { if(str d := delta) current += delta; }
 
 	list[Message] finalize() =
-	(size(current - excludedClasses) > 7) ? [metric("ClassDataAbstractionCoupling", d@src)] : [];	
+	(size(current - excludedClasses) > 7) ? [metric("ClassDataAbstractionCoupling", d.src)] : [];	
 
 	return <update, finalize>;
 }

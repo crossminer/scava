@@ -4,6 +4,5 @@ Bundle-Name: Java
 Bundle-SymbolicName: org.eclipse.scava.code.model.java;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.scava.metricprovider.rascal,
- rascal4ossmeter
+ rascal_eclipse;bundle-version="0.10.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.eclipse.imp.pdb.facts
