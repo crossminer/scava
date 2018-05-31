@@ -16,7 +16,6 @@ import Set;
 }
 public map[loc, int] RFC(rel[loc, loc] calls, map[loc, set[loc]] typeMethods, set[loc] allTypes) {
 	callsTrans = toMap(calls+);
-
 	return ( t : size({ *(callsTrans[m]?{}) | m <- typeMethods[t]?{} } - typeMethods[t]?{}) | t <- allTypes );
 }
 
@@ -25,11 +24,11 @@ public map[loc, int] RFC(rel[loc, loc] calls, map[loc, set[loc]] typeMethods, se
 public map[loc, int] RFC(M3 m) {
   map[loc, int] RFC = ();
   
-  set[loc] declaredClasses = classes(m@containment);
+  set[loc] declaredClasses = classes(m.containment);
   
   for (class <- declaredClasses) {
-    set[loc] classChildren = reach(m@containment, {class});
-    RFC[class] = size({ accessedMethod | loc accessedMethod <- range(domainR(m@methodInvocation, classChildren)) + classChildren, isMethod(accessedMethod) });
+    set[loc] classChildren = reach(m.containment, {class});
+    RFC[class] = size({ accessedMethod | loc accessedMethod <- range(domainR(m.methodInvocation, classChildren)) + classChildren, isMethod(accessedMethod) });
   }
   
   return RFC;

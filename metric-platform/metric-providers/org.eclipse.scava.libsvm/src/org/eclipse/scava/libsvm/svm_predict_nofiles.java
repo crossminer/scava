@@ -9,14 +9,20 @@
  ******************************************************************************/
 package org.eclipse.scava.libsvm;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_print_interface;
-
-import java.io.*;
-import java.util.*;
 
 public class svm_predict_nofiles {
 	
@@ -142,7 +148,7 @@ public class svm_predict_nofiles {
 		System.exit(1);
 	}
 
-	public static svm_model parse_args_and_load_model(String argv[]) {
+	public static svm_model parse_args_and_load_model(String argv[], ClassLoader cl) {
 		int i;
 		predict_probability=0;
 		svm_print_string = svm_print_stdout;
@@ -172,7 +178,9 @@ public class svm_predict_nofiles {
 		
 		svm_model model = null;
 		try {
-			model = svm.svm_load_model(model_filename);
+			URL resource = cl.getResource("/" + model_filename);
+			BufferedReader in = new BufferedReader(new InputStreamReader(resource.openStream()));
+			model = svm.svm_load_model(in);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,46 +208,4 @@ public class svm_predict_nofiles {
 		}
 		return model;
 	}
-	
-	public static void main(String argv[]) throws IOException
-	{
-		// Load testing file externally:
-		String input_filename = "libsvmFiles/sets/a1a.t";
-		List<Double> target_list = new ArrayList<Double>();
-		List<svm_node[]> svm_node_list = new ArrayList<svm_node[]>();
-		BufferedReader input = new BufferedReader(new FileReader(input_filename ));
-		while(true)
-		{
-			String line = input.readLine();
-			if(line == null) break;
-
-			StringTokenizer st = new StringTokenizer(line," \t\n\r\f:");
-
-			double target = atof(st.nextToken());
-			target_list.add(target);
-			
-			int m = st.countTokens()/2;
-			svm_node[] x = new svm_node[m];
-			for(int j=0;j<m;j++)
-			{
-				x[j] = new svm_node();
-				x[j].index = atoi(st.nextToken());
-				x[j].value = atof(st.nextToken());
-			}
-			svm_node_list.add(x);
-		}
-		input.close();
-		
-		// Load model and predict: 
-		svm_model model = parse_args_and_load_model(argv);
-		List<List<Double>> output_list = predict(model, target_list, svm_node_list);
-		
-		// Print output
-		for (List<Double> output_line: output_list) {
-			for (double element: output_line)
-				System.out.print(element + "\t");
-			System.out.println();
-		}
-	}
-	
 }

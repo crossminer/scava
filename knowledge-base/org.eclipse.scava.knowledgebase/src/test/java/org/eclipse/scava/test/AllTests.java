@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.test;
 
+import org.eclipse.scava.test.codeclone.CodeCloneTest;
 import org.eclipse.scava.test.crossrec.CROSSRECTest;
 import org.eclipse.scava.test.importer.GithubImporterTest;
 import org.eclipse.scava.test.manager.ClusterManagerTest;
@@ -32,7 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		RepoPalCompoundSimilarityCalculatorTest.class, RepoPalStarSimilarityCalculatorTest.class,
 		RepoPalTimeSimilarityCalculatorTest.class, SimilarityManagerTest.class, GithubImporterTest.class,
 		ClusterManagerTest.class, DependencyServiceTest.class, RecommenderRestTest.class, CROSSRECTest.class,
-		AlternativeLibrariesRecommendationProviderTest.class, AlternativeLibrariesRecommendationProviderTest.class})
+		AlternativeLibrariesRecommendationProviderTest.class, AlternativeLibrariesRecommendationProviderTest.class,
+		CodeCloneTest.class})
 public class AllTests {
 
 }

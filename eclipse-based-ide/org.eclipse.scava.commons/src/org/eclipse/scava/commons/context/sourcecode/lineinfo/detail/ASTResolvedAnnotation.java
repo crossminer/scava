@@ -8,9 +8,9 @@
 * SPDX-License-Identifier: EPL-2.0
 *
 * Contributors:
-*    Zsolt J�nos Szamosv�lgyi
-*    Endre Tam�s V�radi
-*    Gerg� Balogh
+*    Zsolt János Szamosvölgyi
+*    Endre Tamás Váradi
+*    Gergő Balogh
 **********************************************************************/
 package org.eclipse.scava.commons.context.sourcecode.lineinfo.detail;
 
@@ -39,7 +39,7 @@ public class ASTResolvedAnnotation {
 	
 	/**
 	 * Provides a representation of a parameter of an annotation from the source code.
-	 * @author Endre Tam�s V�radi
+	 * @author Endre Tamás Váradi
 	 *
 	 */
 	public static class Parameter {

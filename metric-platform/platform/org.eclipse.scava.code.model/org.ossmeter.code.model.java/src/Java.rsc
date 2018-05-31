@@ -20,29 +20,29 @@ import org::eclipse::scava::dependency::model::maven::DependencyMaven;
   
 private str MAVEN = getSystemProperty("MAVEN_EXECUTABLE");
    
-@javaClass{org.rascalmpl.library.lang.java.m3.internal.ClassPaths}
-java map[loc,list[loc]] getClassPath(
-  loc workspace,
-  map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["juno","kepler","luna"]),
-  loc mavenExecutable = MAVEN == "" ? |file:///usr/local/bin/mvn| : |file:///<MAVEN>|);
- 
- 
-@memo
-map[loc,list[loc]] inferClassPaths(loc workspace, ProjectDelta delta) {
-  if (daysDiff(delta.date, now()) < 14) { 
-    try {
-      return getClassPath(workspace);
-    }
-    catch Java("BuildException", msg, cause): {
-      println("Could not infer classpath using Maven: <msg>, due to <cause>.");
-    }
-    catch Java("BuildException", msg): {
-      println("Could not infer classpath using Maven: <msg>.");
-    }
-  }
-  
-  return (d : [*findJars({d})] | d <- workspace.ls, isDirectory(d));
-}
+//@javaClass{org.rascalmpl.library.lang.java.m3.internal.ClassPaths}
+//java map[loc,list[loc]] getClassPath(
+//  loc workspace,
+//  map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["juno","kepler","luna"]),
+//  loc mavenExecutable = MAVEN == "" ? |file:///usr/local/bin/mvn| : |file:///<MAVEN>|);
+// 
+// 
+//@memo
+//map[loc,list[loc]] inferClassPaths(loc workspace, ProjectDelta delta) {
+//  if (daysDiff(delta.date, now()) < 14) { 
+//    try {
+//      return getClassPath(workspace);
+//    }
+//    catch Java("BuildException", msg, cause): {
+//      println("Could not infer classpath using Maven: <msg>, due to <cause>.");
+//    }
+//    catch Java("BuildException", msg): {
+//      println("Could not infer classpath using Maven: <msg>.");
+//    }
+//  }
+//  
+//  return (d : [*findJars({d})] | d <- workspace.ls, isDirectory(d));
+//}
 
 private set[loc] getSourceRoots(set[loc] folders) {
 	set[loc] result = {};
@@ -88,11 +88,11 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
   
   // TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
   try {
-    map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+    //map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
     for (repo <- checkouts) {
       checkout = checkouts[repo];
       sources = getSourceRoots({checkout});
-      setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+      //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
     
       result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
     }
@@ -102,8 +102,8 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
     
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      sources = getSourceRoots({checkout});
-      setEnvironmentOptions(jars, sources);
+      //sources = getSourceRoots({checkout});
+      //setEnvironmentOptions(jars, sources);
     
       result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
     }
@@ -121,13 +121,13 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
   
   // TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
   try {
-    map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+    //map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      sources = getSourceRoots({checkout});
+      //sources = getSourceRoots({checkout});
 
       // TODO: turn classpath into a list
-      setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+      //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
       result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
     }
   }
@@ -136,8 +136,8 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
     
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      sources = getSourceRoots({checkout});
-      setEnvironmentOptions(jars, sources);
+      //sources = getSourceRoots({checkout});
+      //setEnvironmentOptions(jars, sources);
     
       result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
     }

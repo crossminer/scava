@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.scava.commons.recommendation.Recommendation;
+import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.event.notifier.INotifierEventSubscriber;
 import org.eclipse.scava.plugin.event.notifier.NotifierEvent;
 import org.eclipse.swt.SWT;
@@ -72,7 +73,7 @@ public class RecommendationAcceptDisplay extends TitleAreaDialog implements IDis
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		setMessage("Accept recommendations to apply them");
-		setTitleImage(ResourceManager.getPluginImage("org.scava.plugin", "icons/SCAVA-logo-small.png"));
+		setTitleImage(null);
 		setTitle("List of suggested recommendations");
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);

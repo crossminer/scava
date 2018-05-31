@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.style.spreadOfStyleViolations"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.style.spreadOfStyleViolations","background":true}],"uuid":"d300afe1ee064b888bc4a4b04524be74"}

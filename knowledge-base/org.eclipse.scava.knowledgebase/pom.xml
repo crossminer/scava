@@ -29,6 +29,17 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>Univaq</id>
+			<name>Archiva Managed Public Repository</name>
+			<url>http://archiva.disim.univaq.it/repository/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<properties>
@@ -40,6 +51,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- Simian -->
+		<dependency>
+			<groupId>redhill</groupId>
+			<artifactId>simian</artifactId>
+			<version>2.5.10</version>
+		</dependency>
 		<!-- Parse gradle -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
@@ -228,7 +245,22 @@
 			<artifactId>antlr4-runtime</artifactId>
 			<version>4.3</version>
 		</dependency>
-
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>scava.knoledgebase</finalName>

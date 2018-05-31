@@ -265,7 +265,7 @@ def enrich_ossmeter_item(item, item_meta):
 
 
 def fetch_mongodb_collection(collection_str, host=None, port=None, client=None):
-    """ conn could be a already created connection to Mongo """
+    """ client could be a already created connection to Mongo """
     if not client:
         client = connect_to_mongo(host, port)
 

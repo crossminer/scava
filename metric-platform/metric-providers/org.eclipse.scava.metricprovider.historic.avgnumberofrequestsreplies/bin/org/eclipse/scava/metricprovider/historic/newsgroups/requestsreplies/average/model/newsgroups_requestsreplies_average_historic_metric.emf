@@ -1,7 +1,0 @@
-package org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.average.model;
-
-class NewsgroupsRequestsRepliesAverageHistoricMetric {
-	attr float averageArticlesPerDay;
-	attr float averageRequestsPerDay;
-	attr float averageRepliesPerDay;
-}

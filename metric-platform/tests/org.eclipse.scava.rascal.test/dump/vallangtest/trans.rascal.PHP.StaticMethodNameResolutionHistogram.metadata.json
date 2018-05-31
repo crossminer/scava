@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.PHP.StaticMethodNameResolutionHistogram"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.PHP.StaticMethodNameResolutionHistogram","background":true}],"uuid":"ef19ae4bef75476e85dcae9134876c41"}

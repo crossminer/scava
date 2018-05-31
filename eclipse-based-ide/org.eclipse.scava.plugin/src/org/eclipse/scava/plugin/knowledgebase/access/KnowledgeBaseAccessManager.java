@@ -34,7 +34,7 @@ public class KnowledgeBaseAccessManager implements ILibraryDescriptionProvider {
 	public KnowledgeBaseAccessManager()
 	{
 		requestSender = new RemoteRequestSender();
-		//requestSender = new LocalRequestSender();
+		requestSender = new LocalRequestSender();
 	}
 	
 	private String sendRequest(String address, String content)
@@ -58,7 +58,7 @@ public class KnowledgeBaseAccessManager implements ILibraryDescriptionProvider {
 	
 	// /api/get/library/<id>/<version>/description
 	/* (non-Javadoc)
-	 * @see org.scava.plugin.knowledgebase.access.ILibraryDescriptionProvider#requestDescriptionOfLibrary(org.scava.commons.library.Library)
+	 * @see org.eclipse.scava.plugin.knowledgebase.access.ILibraryDescriptionProvider#requestDescriptionOfLibrary(org.eclipse.scava.commons.library.Library)
 	 */
 	@Override
 	public String requestDescriptionOfLibrary(Library library)

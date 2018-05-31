@@ -26,12 +26,14 @@ import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.imp.pdb.facts.IValue;
+
 import org.rascalmpl.interpreter.Evaluator;
 
 import com.googlecode.pongo.runtime.PongoFactory;
 import com.googlecode.pongo.runtime.osgi.OsgiPongoFactoryContributor;
 import com.mongodb.Mongo;
+
+import io.usethesource.vallang.IValue;
 
 public class MWEApplication implements IApplication {
 	@Override

@@ -599,12 +599,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jackson.all"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.repository.model.github.importer"
          download-size="0"
          install-size="0"
@@ -804,12 +798,6 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.commits"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="com.google.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1062,12 +1050,6 @@
 
    <plugin
          id="org.eclipse.scava.repository.model.cc.wiki"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="rascal4ossmeter"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1496,7 +1478,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.log4j.1.2.17"
+         id="org.apache.log4j"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

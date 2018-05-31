@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.activecommitters.committersEmailsToday"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.activecommitters.committersEmailsToday","background":true}],"uuid":"fbd8df5d15f24b129e83a25f3aac83f9"}

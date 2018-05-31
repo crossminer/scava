@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Scava Eclipse Base IDE
-Bundle-SymbolicName: org.scava.plugin;singleton:=true
+Bundle-Name: SCAVA Eclipse Base IDE
+Bundle-SymbolicName: org.eclipse.scava.plugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.scava.plugin.Activator
 Bundle-Vendor: Frontendart
@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui;bundle-version="3.12.2",
  org.eclipse.core.resources;bundle-version="3.11.1",
  org.eclipse.ui.ide;bundle-version="3.12.3",
- org.junit;bundle-version="4.12.0"
+ org.junit;bundle-version="4.12.0",
+ com.google.code.gson;bundle-version="2.2.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jdt.core.dom,

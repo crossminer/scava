@@ -53,7 +53,7 @@ bool isValid(M3 fileM3) {
 }
 
 loc getCompilationUnit(M3 fileM3) {
-  set[loc] compilationUnit = {src | <name, src> <- fileM3@declarations, isCompilationUnit(name)};
+  set[loc] compilationUnit = {src | <name, src> <- fileM3.declarations, isCompilationUnit(name)};
   assert size(compilationUnit) == 1 : "More than one compilation unit in a file???";
   loc compilationUnitSrc = getOneFrom(compilationUnit);
   
@@ -67,7 +67,7 @@ int countTotalLoc(M3 fileM3) {
 
 int countCommentedLoc(M3 fileM3, str fileContents) {
   int result = 0;
-  set[loc] comments = { src | <name, src> <- fileM3@documentation, isCompilationUnit(name) };
+  set[loc] comments = { src | <name, src> <- fileM3.documentation, isCompilationUnit(name) };
   for (source <- comments) {
     result += source.end.line - source.begin.line + 1 - checkForSourceLines(source, fileContents);
   }
@@ -86,7 +86,7 @@ tuple[str language, int count] locPerLanguage(loc file) {
 }
 
 int countCommentedLoc(M3 projectModel, loc cu) 
-  = (0 | it + (doc.end.line - doc.begin.line + 1 - checkForSourceLines(doc)) | doc <- projectModel@documentation[cu]); 
+  = (0 | it + (doc.end.line - doc.begin.line + 1 - checkForSourceLines(doc)) | doc <- projectModel.documentation[cu]); 
 
 private int checkForSourceLines(loc commentLoc, str fileContents) {
   str comment = substring(fileContents, commentLoc.offset, commentLoc.offset + commentLoc.length);
@@ -107,12 +107,12 @@ private int checkForSourceLines(loc commentLoc, str fileContents) {
 }
 
 str removeComments(str contents, M3 fileM3) {
-  set[loc] compilationUnit = {src | <name, src> <- fileM3@declarations, isCompilationUnit(name)};
+  set[loc] compilationUnit = {src | <name, src> <- fileM3.declarations, isCompilationUnit(name)};
   assert size(compilationUnit) == 1 : "More than one compilation unit in a file???";
   loc cu = getOneFrom(compilationUnit);
   list[str] listContents = split("\n", contents);
   list[str] result = listContents;
-  for (loc commentLoc <- fileM3@documentation[cu]) {
+  for (loc commentLoc <- fileM3.documentation[cu]) {
     // remove comments
     result = result - slice(listContents, commentLoc.begin.line - 1, commentLoc.end.line - commentLoc.begin.line + 1);
   }

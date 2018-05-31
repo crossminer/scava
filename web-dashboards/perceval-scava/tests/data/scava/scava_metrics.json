@@ -1,0 +1,45 @@
+[
+    {
+        "id": "bugs.cumulativeNewUsers",
+        "name": "New Users (Cumulative)",
+        "description": "The number of new users up to and including the current date.",
+        "type": "LineChart",
+        "datatable": {
+            "cols": [
+                {
+                    "name": "Date",
+                    "field": "$__date"
+                },
+                {
+                    "name": "Users",
+                    "field": "$cumulativeNumberOfNewUsers"
+                }
+            ]
+        },
+        "x": "Date",
+        "y": "Users",
+        "timeSeries": true
+    },
+    {
+        "id": "coreCommittersChurnBar",
+        "name": "Core committers",
+        "description": "This metric shows the total accumulated churn per committer.",
+        "type": "BarChart",
+        "datatable": {
+            "cols": [
+                {
+                    "name": "Committer",
+                    "field": "$value[0].value"
+                },
+                {
+                    "name": "Churn",
+                    "field": "$value[1].value"
+                }
+            ]
+        },
+        "x": "Committer",
+        "y": "Churn",
+        "x-label": "Committer",
+        "y-label": "Churn (LOC)"
+    }
+]
