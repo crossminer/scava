@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::model::resolvers::BundleResolver
+module org::eclipse::scava::dependency::model::osgi::model::resolvers::BundleResolver
 
 import IO;
 import List;
@@ -7,20 +7,20 @@ import Set;
 import String;
 import ValueIO;
 
-import org::eclipse::scava::dependency::model::OSGi::language::Load;
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
-import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
-import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
+import org::eclipse::scava::dependency::model::osgi::language::Load;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
+import org::eclipse::scava::dependency::model::osgi::util::VersionsHelper;
 
 // If no version is specified it is set to 0.0.0 as defined in the OSGi specification R.6.
-public rel[loc,map[str,str]] getBundleLocation(OSGiModel model) {
+public rel[loc,loc,map[str,str]] getBundleLocation(OSGiModel model) {
 	symbolicName = (/HeaderBundleSymbolicName h := model.headers) ? "<h.name>" : "";
 	vers = (/HeaderBundleVersion h := model.headers) ? "<h.version>" : "0.0.0";	
 	return {<createBundleLogicalLoc(symbolicName, version=vers), model.id, ("version" : vers, "symbolic-name" : symbolicName)>};
 }
 
-public rel[loc,map[str,str]] getRequiredBundles(loc logical, OSGiModel model) {
+public rel[loc,loc,map[str,str]] getRequiredBundles(loc logical, OSGiModel model) {
 	requiredBundles = {};
 	for(/RequireBundle reqBundle := model.headers) {
 		params = setRequiredBundlesParams(reqBundle, model);

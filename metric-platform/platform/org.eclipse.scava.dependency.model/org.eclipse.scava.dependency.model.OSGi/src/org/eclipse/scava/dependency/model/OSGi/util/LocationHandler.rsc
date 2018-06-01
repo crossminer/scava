@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::util::LocationHandler
+module org::eclipse::scava::dependency::model::osgi::util::LocationHandler
 
 import Boolean;
 import IO;
@@ -7,7 +7,7 @@ import Relation;
 import Set;
 import String;
 
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
 
 
 //--------------------------------------------------------------------------------

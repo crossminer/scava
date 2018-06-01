@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper
+module org::eclipse::scava::dependency::model::osgi::util::VersionsHelper
 
 import List;
 import String;

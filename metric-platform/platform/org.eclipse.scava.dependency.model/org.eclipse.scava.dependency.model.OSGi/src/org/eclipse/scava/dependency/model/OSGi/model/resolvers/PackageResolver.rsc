@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::model::resolvers::PackageResolver
+module org::eclipse::scava::dependency::model::osgi::model::resolvers::PackageResolver
 
 import IO;
 import List;
@@ -6,15 +6,15 @@ import Relation;
 import Set;
 import Type;
 
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
-import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::OSGi::model::resolvers::BundleResolver;
-import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
-import org::eclipse::scava::dependency::model::OSGi::util::VersionsHelper;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::model::resolvers::BundleResolver;
+import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
+import org::eclipse::scava::dependency::model::osgi::util::VersionsHelper;
 
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getExportPackages(loc logical, OSGiModel model) {
+public rel[loc,loc,map[str,str]] getExportPackages(loc logical, OSGiModel model) {
 	exportPackages = {};
 	for(/ExportPackage expPackage := model.headers) {
 		params = setExportPackagesParams(expPackage);
@@ -51,7 +51,7 @@ private map[str,str] setExportPackagesParams(ExportPackage expPackage) {
 }
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getImportPackages(loc logical, OSGiModel model) {
+public rel[loc,loc,map[str,str]] getImportPackages(loc logical, OSGiModel model) {
 	importPackages = {};
 	for(/ImportPackage impPackage := model.headers) {
 		params = setImportPackagesParams(impPackage);
@@ -118,7 +118,7 @@ private map[str,str] getImpPackageVersionRange(UnrestrictedHybridVersion ver, ma
 }
 
 // It returns one tuple per imported package name.
-public rel[loc,map[str,str]] getDynamicImportPackages(loc logical, OSGiModel model) {
+public rel[loc,loc,map[str,str]] getDynamicImportPackages(loc logical, OSGiModel model) {
 	dynamicImportPackages = {};
 	for(/DynamicImportDescription dynImpDescription := model.headers) {
 		params = setDynamicImportPackagesParams(dynImpDescription);

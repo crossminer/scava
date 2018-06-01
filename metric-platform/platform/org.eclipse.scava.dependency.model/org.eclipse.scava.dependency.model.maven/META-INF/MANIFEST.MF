@@ -4,7 +4,9 @@ Bundle-Name: org.eclipse.scava.dependency.model.maven
 Bundle-SymbolicName: org.eclipse.scava.dependency.model.maven;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1"
-Import-Package: org.apache.maven.artifact.versioning,
- org.eclipse.imp.pdb.facts
+Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1",
+ rascal_eclipse
+Import-Package: org.apache.maven.artifact.versioning
 Export-Package: org.eclipse.scava.dependency.model.maven
+Bundle-ClassPath: libs/,
+ .

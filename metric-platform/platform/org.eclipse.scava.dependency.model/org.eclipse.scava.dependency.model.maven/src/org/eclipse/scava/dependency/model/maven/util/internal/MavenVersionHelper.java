@@ -1,7 +1,8 @@
 package org.eclipse.scava.dependency.model.maven.util.internal;
 
 import org.apache.maven.artifact.versioning.ComparableVersion;
-import org.eclipse.imp.pdb.facts.IString;
+
+import io.usethesource.vallang.IString;
 
 // TODO: Add maven-artifact dependency
 public class MavenVersionHelper {

@@ -1,17 +1,19 @@
-module org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder
+module org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder
 
 import IO;
 import Set;
+import String;
 import Relation;
-import ValueIO;
 import lang::java::m3::Core;
 
-import org::eclipse::scava::dependency::model::OSGi::language::Load;
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
-import org::eclipse::scava::dependency::model::OSGi::model::resolvers::BundleResolver;
-import org::eclipse::scava::dependency::model::OSGi::model::resolvers::M3Resolver;
-import org::eclipse::scava::dependency::model::OSGi::model::resolvers::PackageResolver;
+import org::eclipse::scava::dependency::model::osgi::language::Load;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::model::resolvers::BundleResolver;
+import org::eclipse::scava::dependency::model::osgi::model::resolvers::M3Resolver;
+import org::eclipse::scava::dependency::model::osgi::model::resolvers::PackageResolver;
 
+
+public str MANIFEST_FILE = "MANIFEST.MF";
 
 /*
  * - id: identifier. Points to the physical location of the bundle.
@@ -41,11 +43,17 @@ data OSGiModel = osgiModel (
 );
 
 
-public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
-	OSGiModel model = osgiModel(|file:///| + file);
+OSGiModel createOSGiModelFromWorkingCopy (loc workingCopy, M3 m3) {
+	manifestFiles = manifestLocations(workingCopy,{});
+	models += {createOSGimodel(workingCopy, f, m3) | f <- manifestFiles};
+	return composeOSGiModels(workingCopy, models);
+}
+
+OSGiModel createOSGimodel(loc id, loc manifest, M3 m3) {
+	OSGiModel model = osgiModel(id);
 	
 	// Set location and manifest headers
-	manifest = parseManifest(model.id);
+	manifest = parseManifest(manifest);
 	model.locations += getBundleLocation(model);
 	logical = getOneFrom(model.locations).logical;
 	model.headers = <logical, {h | /Header h := manifest}>;
@@ -64,7 +72,7 @@ public OSGiModel createOSGiModelFromFile (str file, M3 m3) {
 	return model;
 }
 
-public OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
+OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
 	OSGiModel model = osgiModel(id);
 	model.locations = {*m.locations | m <- models};
 	model.headers = {*m.headers | m <- models};
@@ -75,4 +83,21 @@ public OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
 	model.importedPackagesBC = {*m.importedPackagesBC | m <- models};
 	model.bundlePackagesBC = {*m.bundlePackagesBC | m <- models};
 	return model;
+}
+
+private set[loc] manifestLocations(loc workingCopy, set[loc] manifestFiles) {
+	list[loc] files = workingCopy.ls;
+	if(files == []) {
+		return manifestFiles;
+	}
+	for(f <- files) {
+		if(isFile(f) && endsWith(f.path, "/<MANIFEST_FILE>")) {
+			manifestFiles += f;
+		}
+		if(isDirectory(f)){
+			manifestFiles += manifestLocations(f, manifestFiles);
+		}
+	}
+	return manifestFiles;
+	
 }

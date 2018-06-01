@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::util::ExtensionOptions
+module org::eclipse::scava::dependency::model::osgi::util::ExtensionOptions
 
 
 //--------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::model::resolvers::M3Resolver
+module org::eclipse::scava::dependency::model::osgi::model::resolvers::M3Resolver
 
 import IO;
 import List;
@@ -7,8 +7,8 @@ import String;
 import ValueIO;
 
 import lang::java::m3::Core;
-import org::eclipse::scava::dependency::model::OSGi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::OSGi::util::LocationHandler;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
 
 
 public rel[loc,loc] getImportedPackagesBC(M3 m3) 

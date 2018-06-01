@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::OSGi::language::Syntax
+module org::eclipse::scava::dependency::model::osgi::language::Syntax
 
 
 //--------------------------------------------------------------------------------

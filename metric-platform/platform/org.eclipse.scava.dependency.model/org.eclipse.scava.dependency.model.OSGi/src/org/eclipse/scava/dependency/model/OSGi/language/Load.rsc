@@ -1,7 +1,7 @@
-module org::eclipse::scava::dependency::model::OSGi::language::Load
+module org::eclipse::scava::dependency::model::osgi::language::Load
 
-import org::eclipse::scava::dependency::model::OSGi::language::internal::IO;
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::language::internal::IO;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
 
 import IO;
 import ParseTree;

@@ -1,3 +1,2 @@
 Source: src
-Main-Module: DependencyOSGi
-Require-Bundles: org.eclipse.scava.code.model.java
+Main-Module: org::eclipse::scava::dependency::model::osgi::OSGi

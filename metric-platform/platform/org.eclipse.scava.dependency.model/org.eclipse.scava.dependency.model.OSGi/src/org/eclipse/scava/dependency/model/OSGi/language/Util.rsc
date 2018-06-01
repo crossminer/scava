@@ -1,6 +1,6 @@
-module org::eclipse::scava::dependency::model::OSGi::language::Util
+module org::eclipse::scava::dependency::model::osgi::language::Util
 
-import org::eclipse::scava::dependency::model::OSGi::language::Syntax;
+import org::eclipse::scava::dependency::model::osgi::language::Syntax;
 
 
 public str getExportedPackageQualifiedName(ExportPackage package) {

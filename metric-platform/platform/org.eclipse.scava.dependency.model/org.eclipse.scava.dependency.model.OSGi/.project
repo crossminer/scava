@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.scava.dependency.model.OSGi</name>
+	<name>org.eclipse.scava.dependency.model.osgi</name>
 	<comment></comment>
 	<projects>
 	</projects>
