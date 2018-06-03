@@ -16,7 +16,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.Dependency;
@@ -63,7 +64,7 @@ public class AlternativeLibrariesProviderTest {
 	@Qualifier("ApiRecommendation")
 	private IRecommendationProvider apiRecomendationProvider;
 	
-	private static final Logger logger = Logger.getLogger(AlternativeLibrariesProviderTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlternativeLibrariesProviderTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {

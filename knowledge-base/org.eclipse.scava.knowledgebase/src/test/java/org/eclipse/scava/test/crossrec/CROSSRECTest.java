@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.test.crossrec;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -19,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Recommendation;
@@ -63,7 +62,7 @@ public class CROSSRECTest {
 	@Autowired
 	private CROSSRecSimilarityCalculator crossRecSimilarity;
 
-	private static final Logger logger = Logger.getLogger(CROSSRECTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CROSSRECTest.class);
 	private List<Artifact> artifacts;
 
 	@Before

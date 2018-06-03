@@ -17,7 +17,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.ISimilarityCalculator;
@@ -73,7 +74,7 @@ public class AlternativeLibrariesRecommendationProviderTest {
 	@Qualifier ("Dependency")
 	private ISimilarityCalculator simDependencyCalculator;
 	
-	private static final Logger logger = Logger.getLogger(AlternativeLibrariesRecommendationProviderTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlternativeLibrariesRecommendationProviderTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {

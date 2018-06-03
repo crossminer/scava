@@ -9,28 +9,21 @@
  ******************************************************************************/
 package org.eclipse.scava.test.importer;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
-import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.config.SwaggerConfig;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +43,7 @@ public class GithubImporterTest {
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	
-	private static final Logger logger = Logger.getLogger(GithubImporterTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(GithubImporterTest.class);
 
 	@Before
 	public void init(){

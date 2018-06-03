@@ -13,12 +13,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
@@ -52,7 +52,7 @@ public class CROSSSimSimilarityCalculatorTest {
 	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator crossSim;
 
-	private static final Logger logger = Logger.getLogger(CROSSSimSimilarityCalculatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CROSSSimSimilarityCalculatorTest.class);
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;

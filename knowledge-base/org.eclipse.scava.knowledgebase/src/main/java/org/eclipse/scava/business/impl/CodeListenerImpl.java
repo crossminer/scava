@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (C) 2017 University of L'Aquila
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.business.impl;
 
 import java.io.File;
@@ -10,8 +19,8 @@ import com.harukizaemon.simian.Block;
 import com.harukizaemon.simian.CheckSummary;
 import com.harukizaemon.simian.Options;
 import com.harukizaemon.simian.SourceFile;
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 public class CodeListenerImpl implements AuditListener{
 	ArrayList<String> files=new ArrayList<String>();
@@ -21,7 +30,7 @@ public class CodeListenerImpl implements AuditListener{
 	long cumulatedTime=0;
 	int duplicatedLine=0;
 	
-	private static final Logger logger=Logger.getLogger(CodeListenerImpl.class);
+	private static final Logger logger=LoggerFactory.getLogger(CodeListenerImpl.class);
 	
 	public void block(Block code) {
 		// TODO Auto-generated method stub

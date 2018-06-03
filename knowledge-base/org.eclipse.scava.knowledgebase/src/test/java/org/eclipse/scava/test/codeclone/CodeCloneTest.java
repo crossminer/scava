@@ -11,7 +11,8 @@ package org.eclipse.scava.test.codeclone;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.dto.ApiCallResult;
@@ -34,7 +35,7 @@ import com.harukizaemon.simian.Options;
 @TestPropertySource(locations="classpath:application.properties")
 public class CodeCloneTest {
 	
-	private static final Logger logger = Logger.getLogger(CodeCloneTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CodeCloneTest.class);
 
 	@Autowired
 	private ICodeCloneDetector cloneDetector;

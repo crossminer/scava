@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
@@ -90,7 +91,7 @@ public class ClusterManagerTest {
 	@Autowired
 	private GithubUserRepository githubUserRepository;
 	
-	private static final Logger logger = Logger.getLogger(SimilarityManagerTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SimilarityManagerTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {

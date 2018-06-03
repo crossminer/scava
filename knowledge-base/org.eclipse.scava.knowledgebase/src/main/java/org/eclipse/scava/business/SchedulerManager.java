@@ -9,22 +9,14 @@
  ******************************************************************************/
 package org.eclipse.scava.business;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.eclipse.scava.business.impl.CROSSRecServiceImpl;
-import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
-import org.eclipse.scava.business.impl.CROSSSimSimilarityCalculator;
-import org.eclipse.scava.business.impl.ClusterManager;
-import org.eclipse.scava.business.impl.SimilarityManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SchedulerManager {
 
-	private static final Logger logger = Logger.getLogger(SchedulerManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(SchedulerManager.class);
 //	@Autowired
 //	private List<ISimilarityCalculator> simCalcs;
 //

@@ -19,7 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
@@ -56,7 +57,7 @@ public class CROSSRecSimilarityCalculatorTest {
 	@Qualifier("CrossRec")
 	private CROSSRecSimilarityCalculator crossRec;
 
-	private static final Logger logger = Logger.getLogger(CROSSRecSimilarityCalculatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CROSSRecSimilarityCalculatorTest.class);
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;

@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
@@ -50,7 +51,7 @@ public class RepoPalStarSimilarityCalculatorTest {
 	@Autowired
 	@Qualifier("RepoPalStar")
 	private ISingleSimilarityCalculator repoPalStarSim;
-	private static final Logger logger = Logger.getLogger(RepoPalStarSimilarityCalculatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(RepoPalStarSimilarityCalculatorTest.class);
 	private Artifact artifact1;
 	private Artifact artifact2;
 	

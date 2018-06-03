@@ -17,7 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.ApiCallResult;
@@ -41,7 +42,7 @@ import com.harukizaemon.simian.Options;
 @Qualifier("ApiCallRecommendation")
 public class ApiCallRecommendationProvider implements IRecommendationProvider {
 
-	private static final Logger logger = Logger.getLogger(ApiCallRecommendationProvider.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApiCallRecommendationProvider.class);
 
 	@Value("${api.call.recommendation.path}")
 	private String pattern;

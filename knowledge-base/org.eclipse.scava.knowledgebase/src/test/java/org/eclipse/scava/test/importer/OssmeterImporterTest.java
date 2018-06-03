@@ -15,7 +15,8 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -42,7 +43,7 @@ public class OssmeterImporterTest {
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	
-	private static final Logger logger = Logger.getLogger(OssmeterImporterTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(OssmeterImporterTest.class);
 	@Ignore
 	@Test
 	public void importProjectTest() {

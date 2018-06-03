@@ -12,12 +12,12 @@ package org.eclipse.scava.business.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.model.Artifact;
@@ -34,7 +34,7 @@ import com.google.common.collect.Sets;
 @Qualifier("RepoPalTime")
 public class RepoPalTimeSimilarityCalculator implements ISingleSimilarityCalculator {
 
-	private static final Logger logger = Logger.getLogger(RepoPalTimeSimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(RepoPalTimeSimilarityCalculator.class);
 	@Autowired
 	@Qualifier("Readme")
 	private ISimilarityCalculator simReadmeCalculator;
