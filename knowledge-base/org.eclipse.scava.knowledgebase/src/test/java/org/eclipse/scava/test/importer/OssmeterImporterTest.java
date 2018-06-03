@@ -15,26 +15,22 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class OssmeterImporterTest {
 	@Autowired

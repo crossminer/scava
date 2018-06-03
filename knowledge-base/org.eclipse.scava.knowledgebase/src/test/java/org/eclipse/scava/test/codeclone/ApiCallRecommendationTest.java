@@ -11,25 +11,21 @@ package org.eclipse.scava.test.codeclone;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class ApiCallRecommendationTest {
 	

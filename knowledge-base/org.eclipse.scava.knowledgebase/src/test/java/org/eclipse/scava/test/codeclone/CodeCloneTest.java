@@ -11,27 +11,23 @@ package org.eclipse.scava.test.codeclone;
 
 import static org.junit.Assert.assertEquals;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.dto.ApiCallResult;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.harukizaemon.simian.Language;
 import com.harukizaemon.simian.Option;
 import com.harukizaemon.simian.Options;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class CodeCloneTest {
 	
@@ -49,6 +45,7 @@ public class CodeCloneTest {
 	
 	@Test
 	public void crossSimCommutativeTest() {
+		logger.error("JURI");
 		Options options = new Options();
 		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);

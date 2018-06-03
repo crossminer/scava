@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,8 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class DependencySimilarityCalculatorTest {
 	@Autowired

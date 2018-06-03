@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.impl.CROSSRecServiceImpl;
@@ -28,25 +25,24 @@ import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.CROSSRecGraph;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
 public class CROSSRECTest {
 

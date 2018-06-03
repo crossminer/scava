@@ -19,7 +19,6 @@ import java.util.List;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IImporter;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
@@ -28,7 +27,6 @@ import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +34,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestSpring {
 
