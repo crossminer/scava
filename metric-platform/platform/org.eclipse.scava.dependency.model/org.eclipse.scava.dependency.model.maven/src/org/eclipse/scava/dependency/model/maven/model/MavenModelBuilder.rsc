@@ -8,6 +8,8 @@ import org::eclipse::scava::dependency::model::maven::model::resolvers::ProjectR
 import org::eclipse::scava::dependency::model::maven::util::FileHandler;
 
 
+public str POM_FILE = "pom.xml";
+
 /*
  * - locations: maps from the logical location of a project to its physical location.
  * - dependencies: gathers all the project's dependencies. Dependency related 
@@ -19,9 +21,14 @@ data MavenModel = mavenModel (
 	rel[loc project, loc dependency, map[str,str] params] dependencies = {}
 );
 
-public MavenModel createMavenModelFromProject (loc project) {
-	MavenModel model = mavenModel(directory);
-	pom = getFileFromProject(project, "pom.xml");
+public MavenModel createMavenModelFromWorkingCopy(loc workingCopy, M3 m3) {
+	pomFiles = getFileFromProject(workingCopy, POM_FILE);
+	models = {createOSGimodel(workingCopy, f, m3) | f <- pomFiles};
+	return composeMavenModels(workingCopy, models);
+}
+
+public MavenModel createMavenModel(loc id, loc pom) {
+	MavenModel model = mavenModel(id);
 	dom = parseXMLDOM(readFile(pom));
 	
 	model.locations += getProjectLocation(model.id, dom);
