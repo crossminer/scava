@@ -19,16 +19,16 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
+import org.eclipse.scava.business.dto.RecommendedLibrary;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.ArtifactTypeRepository;
 import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.model.Artifact;
-import org.eclipse.scava.business.model.ArtifactType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,13 +60,8 @@ public class CROSSRecServiceImpl {
 	private int numberOfRecommendedLibs;
 	
 	@Autowired
-	private ArtifactTypeRepository artifactTypeRepository;
-	
-	@Autowired
 	private ArtifactRepository artifactRepository;
 	
-	@Autowired
-	private CROSSRecGraphRepository crossRecGraphRepository;
 	
 	@Autowired
 	private CROSSRecSimilarityCalculator crossRecSimilarityCalculator;
@@ -88,16 +83,11 @@ public class CROSSRecServiceImpl {
 				Double value = entry.getValue();
 				String lib = entry.getKey();
 				RecommendationItem ri = new RecommendationItem();
-				Artifact art = new Artifact();
 				
-				ArtifactType artType = artifactTypeRepository.findOneByName("Library");
-				if(artType == null) {
-					artType = new ArtifactType();
-					artType.setName("Library");
-				}
-				art.setType(artType);
-				art.setName(lib);
-				ri.setArtifact(art);
+				RecommendedLibrary rl = new RecommendedLibrary();
+				rl.setLibraryName(lib);
+				rl.setUrl("https://mvnrepository.com/artifact/"+ lib.replaceAll(":", "/"));
+				ri.setRecommendedLibrary(rl);
 				ri.setSignificance(value);
 				ri.setRecommendationType("RecommendedLibrary");
 				result.getRecommendationItems().add(ri);

@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.harukizaemon.simian.Block;
 import com.harukizaemon.simian.Language;
 import com.harukizaemon.simian.Option;
 import com.harukizaemon.simian.Options;
@@ -60,7 +61,7 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 
 		HashMap<String, String> patterns = scan();
 		Options options = new Options();
-		options.setThreshold(3);
+		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);
 		options.setOption(Option.IGNORE_STRINGS, true);
 		options.setOption(Option.IGNORE_STRING_CASE, true);
