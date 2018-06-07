@@ -9,9 +9,9 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 
 import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
 
-
+//TODO: Consider changing this plugin to a Java extractor
 @memo
-private OSGiModel getOSGiModelFromWorkingCopy(loc workingCopy, M3 m3) =
+OSGiModel getOSGiModelFromWorkingCopy(loc workingCopy, M3 m3) =
 	createOSGiModelFromWorkingCopy(workingCopy, m3);
 	
 @metric{allOSGiPackageDependencies}

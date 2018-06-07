@@ -9,8 +9,9 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 
 import org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder;
 
+//TODO: Consider changing this plugin to a Java extractor
 @memo
-private MavenModel getMavenModelFromWorkingCopy(loc workingCopy, M3 m3) =
+MavenModel getMavenModelFromWorkingCopy(loc workingCopy, M3 m3) =
 	createMavenModelFromWorkingCopy(workingCopy, m3);
 
 @metric{allMavenDependencies}
