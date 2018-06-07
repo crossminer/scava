@@ -24,7 +24,6 @@ import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationType;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
-import org.eclipse.scava.test.TestSpring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
