@@ -1,0 +1,3 @@
+{
+    this.onFailure(createListenerNotSetError());
+}

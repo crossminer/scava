@@ -1,0 +1,4 @@
+{
+    log("a string");
+    carryOn();
+}
