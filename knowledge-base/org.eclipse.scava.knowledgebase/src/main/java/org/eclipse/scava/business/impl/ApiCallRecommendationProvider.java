@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -56,7 +58,7 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		List<ApiCallResult> result = new ArrayList<>();
 		long start = System.currentTimeMillis();
 
-		ArrayList<String> patterns = scan();
+		HashMap<String, String> patterns = scan();
 		Options options = new Options();
 		options.setThreshold(3);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);
@@ -70,8 +72,9 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		options.setOption(Option.LANGUAGE, Language.JAVA);
 		options.setOption(Option.IGNORE_SUBTYPE_NAMES, true);
 
-		for (String pattern : patterns) {
-			ApiCallResult k = codeCloneDetector.checkClone(query.getMethodInvocation(), pattern, options);
+		for (Entry<String, String> pattern : patterns.entrySet()) {
+			ApiCallResult k = codeCloneDetector.checkClone(query.getCurrentMethodCode(), pattern.getValue(), options);
+			k.setPattern(pattern.getKey());
 			if (k.getCodeLines() != null && k.getCodeLines().size() > 0)
 				result.add(k);
 		}
@@ -87,8 +90,8 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		return rec;
 	}
 
-	private ArrayList<String> scan() {
-		ArrayList<String> result = new ArrayList<>();
+	private HashMap<String,String> scan() {
+		HashMap<String,String> result = new HashMap<String,String>();
 		ClassLoader classLoader = getClass().getClassLoader();
 		File rank = new File(classLoader.getResource(pattern).getFile());
 		File[] list = rank.listFiles();
@@ -97,7 +100,7 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 				String s;
 				try {
 					s = FileUtils.readFileToString(f);
-					result.add(s);
+					result.put(f.getName(), s);
 				} catch (IOException e) {
 					logger.error(e.getMessage());
 				}

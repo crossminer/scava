@@ -59,7 +59,7 @@ public class ApiCallRecommendationTest {
 	@Test
 	public void crossSimCommutativeTest() throws Exception {
 		Query query = new Query();
-		query.setMethodInvocation(method);
+		query.setCurrentMethodCode(method);
 		Recommendation v = apiCallRecommendation.getRecommendation(query);
 		assertEquals(2, v.getRecommendationItems().size());
 	}

@@ -128,7 +128,7 @@ public class AlternativeLibrariesRecommendationProviderTest {
 		q.getProjectDependencies().add(d3);
 		q.setClassDependencies(new ArrayList<Dependency>());
 		q.getClassDependencies().add(d2);
-		q.setMethodInvocation("addDocument");
+		q.setCurrentMethodCode("addDocument");
 		q.setRefClassInvocation("IndexWriter");
 		q.setProjectName("MDEForge");
 		q.setTextOffset(1000);

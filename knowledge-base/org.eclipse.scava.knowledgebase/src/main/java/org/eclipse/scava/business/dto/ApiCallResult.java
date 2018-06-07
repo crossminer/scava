@@ -8,6 +8,7 @@ public class ApiCallResult {
 	private List<String> codeLines;
 	private int duplicatedLines;
 	private long time;
+	private String pattern;
 	
 	public int getDuplicatedLines() {
 		return duplicatedLines;
@@ -31,6 +32,12 @@ public class ApiCallResult {
 
 	public void setTime(long time) {
 		this.time = time;
+	}
+	public String getPattern() {
+		return pattern;
+	}
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
 	}
 	
 	

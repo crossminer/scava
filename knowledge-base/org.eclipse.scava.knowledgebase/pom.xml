@@ -76,10 +76,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -114,11 +111,7 @@
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Thymeleaf templating -->
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
-		</dependency>
+
 		<!-- Github API client -->
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.github/org.eclipse.egit.github.core -->

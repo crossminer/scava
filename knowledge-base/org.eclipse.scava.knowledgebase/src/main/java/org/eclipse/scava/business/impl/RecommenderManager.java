@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
@@ -111,6 +112,18 @@ public class RecommenderManager implements IRecommenderManager {
 
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(new PageRequest(0, 5));
+
+		List<Artifact> recipes = template.find(query, Artifact.class);
+		
+		return recipes;
+	}
+	@Override
+	public List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page) {
+		
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
+
+		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
+				.with(page);
 
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		

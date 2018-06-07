@@ -61,7 +61,7 @@ public class Artifact {
 	private String readmeText;
 	//@JsonIgnore
 	private List<String> dependencies = new ArrayList<>(); 
-	
+//	@JsonIgnore
 	private List<Stargazers> starred = new ArrayList<>();
 	public String getFullName() {
 		return fullName;

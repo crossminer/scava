@@ -10,6 +10,7 @@
 package org.eclipse.scava.test.importer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -56,7 +58,8 @@ public class GithubImporterTest {
 	}
 	@Test
 	public void importer() throws IOException, XmlPullParserException{
-		Artifact art = importer.importProject("pylerSM/Xinstaller");
+		Artifact art = importer.importProject("fasterxml/jackson-databind");
 		assertNotNull(art);
+		assertNotEquals(0, art.getDependencies());
 	}
 }

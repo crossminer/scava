@@ -62,7 +62,7 @@ public class Graph {
 			Set<Integer> list = inLinks.get(key);
 			logger.debug(key + ": ");
 			if(list!=null){
-				for(int j:list)System.out.print(j + " ");
+				for(int j:list) logger.info(j + " ");
 			}
 			logger.debug("");
 		}
