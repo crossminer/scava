@@ -54,13 +54,13 @@ public class ApiCallRecommendationTest {
 				    " KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();\r\n" + 
 				    " kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());\r\n" + 
 				    " return kbase;\r\n" + 
-				    "}";;
+				    "}";
 	
 	@Test
 	public void crossSimCommutativeTest() throws Exception {
 		Query query = new Query();
 		query.setCurrentMethodCode(method);
 		Recommendation v = apiCallRecommendation.getRecommendation(query);
-		assertEquals(2, v.getRecommendationItems().size());
+		assertEquals(31, v.getRecommendationItems().size());
 	}
 }
