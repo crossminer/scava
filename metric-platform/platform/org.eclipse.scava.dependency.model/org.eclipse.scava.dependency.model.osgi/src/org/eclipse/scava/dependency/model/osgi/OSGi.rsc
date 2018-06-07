@@ -10,9 +10,13 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
 
 
-@metric{OSGiAllPackageDependencies}
+@memo
+private OSGiModel getOSGiModelFromWorkingCopy(loc workingCopy, M3 m3) =
+	createOSGiModelFromWorkingCopy(workingCopy, m3);
+	
+@metric{allOSGiPackageDependencies}
 @doc{Retrieves all the OSGi package dependencies (i.e. Import-Package and DynamicImport-Package dependencies).}
-@friendlyName{OSGi all package dependencies}
+@friendlyName{All OSGi package dependencies}
 @appliesTo{java()}
 set[loc] allOSGiDependencies(
 	ProjectDelta delta = ProjectDelta::\empty(),
@@ -20,10 +24,11 @@ set[loc] allOSGiDependencies(
 	rel[Language, loc, M3] m3s = {}) {
 	
 	M3 m3 = systemM3(m3s, delta = delta);
-	
+
 	if(repo <- workingCopies) {
-		m = createOSGiModelFromWorkingCopy(workingCopies[repo], m3);
-		return m.importedPackages.impPackage + m.dynamicImportedPackages.dynImpPackage;
+		m = getOSGiModelFromWorkingCopy(workingCopies[repo], m3);
+		return (m.importedPackages=={}?{}:m.importedPackages.impPackage) + 
+			(m.dynamicImportedPackages=={}?{}:m.dynamicImportedPackages.dynImpPackage);
 	}
 	else {
 		return {};

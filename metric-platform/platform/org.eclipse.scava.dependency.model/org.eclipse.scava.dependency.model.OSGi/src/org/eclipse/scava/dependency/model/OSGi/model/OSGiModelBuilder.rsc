@@ -43,9 +43,9 @@ data OSGiModel = osgiModel (
 );
 
 
-OSGiModel createOSGiModelFromWorkingCopy (loc workingCopy, M3 m3) {
+OSGiModel createOSGiModelFromWorkingCopy(loc workingCopy, M3 m3) {
 	manifestFiles = manifestLocations(workingCopy,{});
-	models += {createOSGimodel(workingCopy, f, m3) | f <- manifestFiles};
+	models = {createOSGimodel(workingCopy, f, m3) | f <- manifestFiles};
 	return composeOSGiModels(workingCopy, models);
 }
 
@@ -85,6 +85,7 @@ OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
 	return model;
 }
 
+// TODO: repeated code (check Maven plugin)
 private set[loc] manifestLocations(loc workingCopy, set[loc] manifestFiles) {
 	list[loc] files = workingCopy.ls;
 	if(files == []) {
@@ -99,5 +100,4 @@ private set[loc] manifestLocations(loc workingCopy, set[loc] manifestFiles) {
 		}
 	}
 	return manifestFiles;
-	
 }

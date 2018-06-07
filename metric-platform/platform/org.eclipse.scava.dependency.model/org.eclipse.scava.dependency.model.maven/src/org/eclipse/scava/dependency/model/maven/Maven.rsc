@@ -9,6 +9,9 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 
 import org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder;
 
+@memo
+private MavenModel getMavenModelFromWorkingCopy(loc workingCopy, M3 m3) =
+	createMavenModelFromWorkingCopy(workingCopy, m3);
 
 @metric{allMavenDependencies}
 @doc{Retrieves all the Maven dependencies.}
@@ -21,7 +24,7 @@ set[loc] allMavenDependencies(
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	if(repo <- workingCopies) {
-		m = createMavenModelFromWorkingCopy(workingCopies[repo], m3);
+		m = getMavenModelFromWorkingCopy(workingCopies[repo], m3);
 		return (m.dependencies=={}?{}:m.dependencies.dependency);
 	}
 	else {

@@ -200,7 +200,7 @@ public class RascalManager {
 			List<String> requiredLibs = mf.getRequiredLibraries(bundle);
 			if (requiredLibs != null) {
 				for (String lib : requiredLibs) {
-					URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
+					URIResolverRegistry registry = evaluator.getRascalResolver().getRegistry();
 					ISourceLocation libURL = registry.logicalToPhysical(VF.sourceLocation(bundle.getResource(lib).toURI()));
 					JarURIResolver resolver = new JarURIResolver(registry);
 
