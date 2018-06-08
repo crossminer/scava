@@ -1,8 +1,11 @@
 module Maven
 
 import IO;
+import lang::java::m3::Core;
 import Set;
 
+import Dependency;
+import Java;
 import org::eclipse::scava::dependency::model::maven::Maven;
 import org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder;
 import org::eclipse::scava::metricprovider::ProjectDelta;

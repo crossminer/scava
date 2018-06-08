@@ -1,4 +1,4 @@
-module OSGiSourcecode
+module Dependency
 
 import IO;
 import List;

@@ -4,13 +4,12 @@ import IO;
 import lang::java::m3::Core;
 import Set;
 
+import Dependency;
 import Java;
 import org::eclipse::scava::dependency::model::osgi::OSGi;
 import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
 import org::eclipse::scava::metricprovider::ProjectDelta;
 import org::eclipse::scava::metricprovider::MetricProvider;
-
-import OSGiBytecode;
 
 
 @metric{allOSGiBundleDependencies}
@@ -64,7 +63,7 @@ int numberOSGiPackageDependencies(
 @doc{Retrieves the number of OSGi bunlde dependencies (i.e. Require-Bundle dependencies).}
 @friendlyName{Number all OSGi bundle dependencies}
 @appliesTo{java()}
-set[loc] allOSGiBundleDependencies(
+int numberOSGiBundleDependencies(
 	ProjectDelta delta = ProjectDelta::\empty(),
 	map[loc, loc] workingCopies = ()) {
 	
@@ -81,7 +80,7 @@ set[loc] allOSGiBundleDependencies(
 @doc{Retrieves the number of required packages found in the project source code.}
 @friendlyName{Number required packages in source code}
 @appliesTo{java()}
-set[loc] numberRequiredPackagesInSourceCode(
+int numberRequiredPackagesInSourceCode(
 	ProjectDelta delta = ProjectDelta::\empty(),
 	map[loc, loc] workingCopies = (),
 	rel[Language, loc, M3] m3s = {}) {
@@ -95,11 +94,11 @@ set[loc] numberRequiredPackagesInSourceCode(
 	return 0;
 }
 
-@metric{numberUsedOSGiImportedPackagesInBytecode}
+@metric{numberUsedOSGiImportedPackagesInSourceCode}
 @doc{Retrieves the number of OSGi imported packages USED in the project source code.}
-@friendlyName{Number OSGi imported packages in bytecode}
+@friendlyName{Number OSGi imported packages in source code}
 @appliesTo{java()}
-set[loc] numberUsedOSGiImportedPackagesInBytecode(
+int numberUsedOSGiImportedPackagesInSourceCode(
 	ProjectDelta delta = ProjectDelta::\empty(),
 	map[loc, loc] workingCopies = (),
 	rel[Language, loc, M3] m3s = {}) {
