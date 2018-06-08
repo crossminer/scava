@@ -11,7 +11,7 @@ import org::eclipse::scava::dependency::model::maven::util::FileHandler;
 import org::eclipse::scava::dependency::model::maven::util::MavenVersionHandler;
 
 
-public rel[loc,map[str,str]] getProjectLocation(loc physical, Node dom) {
+public rel[loc,loc,map[str,str]] getProjectLocation(loc physical, Node dom) {
 	if(/Node p:element(_,"project",_) := dom) {
 		groupId = getElementFromDOM("groupId",p);
 		artifactId = getElementFromDOM("artifactId",p);
@@ -41,15 +41,15 @@ private map[str,str] getProjectParams(Node project) {
 		"classifier" : classifier);
 }
 
-public rel[loc,map[str,str]] getProjectDependencies(loc logical, Node dom) {
-	dependencies = {};
+public rel[loc,loc,map[str,str]] getProjectDependencies(loc logical, Node dom) {
+	rel[loc,loc,map[str,str]] dependencies = {};
 	if(/Node ds:element(_,"dependencies",_) := dom) {
 		for(/Node d:element(_,"dependency",_) := ds) {
 			groupId = getElementFromDOM("groupId",ds);
 			artifactId = getElementFromDOM("artifactId",ds);
 			version = getElementFromDOM("version",ds);
 			
-			dependencies += {<createProjectLogicalLoc(groupId,artifactId,version),getDependencyParams(d)>};
+			dependencies += {<logical, createProjectLogicalLoc(groupId,artifactId,version), getDependencyParams(d)>};
 		}
 	}
 	return dependencies;

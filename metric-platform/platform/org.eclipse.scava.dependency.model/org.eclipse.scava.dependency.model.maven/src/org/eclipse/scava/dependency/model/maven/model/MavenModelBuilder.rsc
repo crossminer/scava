@@ -1,7 +1,6 @@
 module org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder
 
 import IO;
-import lang::java::m3::Core;
 import lang::xml::DOM;
 import Set;
 import String;
@@ -22,9 +21,9 @@ data MavenModel = mavenModel (
 	rel[loc project, loc dependency, map[str,str] params] dependencies = {}
 );
 
-MavenModel createMavenModelFromWorkingCopy(loc workingCopy, M3 m3) {
+MavenModel createMavenModelFromWorkingCopy(loc workingCopy) {
 	pomFiles = pomLocations(workingCopy,{});
-	models = {createOSGimodel(workingCopy, f, m3) | f <- pomFiles};
+	models = {createMavenModel(workingCopy, f) | f <- pomFiles};
 	return composeMavenModels(workingCopy, models);
 }
 
