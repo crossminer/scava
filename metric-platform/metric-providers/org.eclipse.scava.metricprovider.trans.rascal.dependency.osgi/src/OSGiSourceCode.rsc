@@ -1,4 +1,4 @@
-module org::eclipse::scava::dependency::model::osgi::model::resolvers::M3Resolver
+module OSGiSourcecode
 
 import IO;
 import List;
@@ -8,12 +8,13 @@ import ValueIO;
 
 import lang::java::m3::Core;
 import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
-import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
 
-
+//TODO: move to an independent plugin (shared between OSGi and Maven plugins).
+@memo
 public rel[loc,loc] getImportedPackagesBC(M3 m3) 
-	= {*getClassPackages(depend) | <loc element, loc depend> <- m3@typeDependency, isClass(depend)};
+	= {*getClassPackages(depend) | <loc element, loc depend> <- m3.typeDependency, isClass(depend)};
 
+@memo
 public rel[loc,loc] getBundlePackagesBC(M3 m3) {
 	packages = packages(m3);
 	return {pkg | pkg <- packages, pkg != |java+package:///|};
@@ -27,3 +28,10 @@ private set[loc] getClassPackages(loc class) {
 	}
 	return pkgLoc;
 }
+
+/*
+ * Transforms a ternary relation into a binary relation.
+ * The last slot of the original relation has a map.
+ */
+public rel[loc,loc] toBinaryRelation(rel[loc,loc,map[str,str]] relation) 
+	= {<x,y> | <x,y,z> <- relation};

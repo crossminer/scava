@@ -43,13 +43,6 @@ public loc createPackageLogicalLoc(str name)
 	= |java+package:///| + "<replaceAll(name, ".", "/")>";
 
 /*
- * Transformas a ternary relation into a binary relation.
- * The last slot of the original relation has a map.
- */
-public rel[loc,loc] toBinaryRelation(rel[loc,loc,map[str,str]] relation) 
-	= {<x,y> | <x,y,z> <- relation};
-
-/*
  * Transforms a binary relation into a set. The last slot 
  * of the original relation has a map.
  */

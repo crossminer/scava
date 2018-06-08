@@ -4,12 +4,10 @@ import IO;
 import Set;
 import String;
 import Relation;
-import lang::java::m3::Core;
 
 import org::eclipse::scava::dependency::model::osgi::language::Load;
 import org::eclipse::scava::dependency::model::osgi::language::Syntax;
 import org::eclipse::scava::dependency::model::osgi::model::resolvers::BundleResolver;
-import org::eclipse::scava::dependency::model::osgi::model::resolvers::M3Resolver;
 import org::eclipse::scava::dependency::model::osgi::model::resolvers::PackageResolver;
 
 
@@ -25,9 +23,6 @@ public str MANIFEST_FILE = "MANIFEST.MF";
  * parameters are included.
  * - dynamicImportedPackages: gathers all the bundle's dynamically imported packages. 
  * Header related parameters are included.
- * - importedPackagesBC: gathers all the logical location of packages used in the 
- * bundle bytecode (cf. M3). 
- * - bundlePackagesBC: gathers all the logical location of packages of the bundle (cf. M3). 
  * - headers: set with the parsed headers of the bundle's manifest.
  */
 data OSGiModel = osgiModel (
@@ -37,21 +32,17 @@ data OSGiModel = osgiModel (
 	rel[loc bundle, loc impPackage, map[str,str] params] importedPackages = {},
 	rel[loc bundle, loc expPackage, map[str,str] params] exportedPackages = {},
 	rel[loc bundle, loc dynImpPackage, map[str,str] params] dynamicImportedPackages = {},
-	rel[loc bundle, loc impPackageBC] importedPackagesBC = {},
-	rel[loc bundle, loc bundlePackageBC] bundlePackagesBC = {},
 	rel[loc bundle, set[Header] header] headers = {}
 );
 
 
-OSGiModel createOSGiModelFromWorkingCopy(loc workingCopy, M3 m3) {
+OSGiModel createOSGiModelFromWorkingCopy(loc workingCopy) {
 	manifestFiles = manifestLocations(workingCopy,{});
-	models = {createOSGimodel(workingCopy, f, m3) | f <- manifestFiles};
+	models = {createOSGimodel(workingCopy, f) | f <- manifestFiles};
 	return composeOSGiModels(workingCopy, models);
 }
 
-// TODO: keep only OSGi info. Recompute importedPackagesBC and bundlePackagesBC 
-// in a metric provider?
-OSGiModel createOSGimodel(loc id, loc manifest, M3 m3) {
+OSGiModel createOSGimodel(loc id, loc manifest) {
 	OSGiModel model = osgiModel(id);
 	
 	// Set location and manifest headers
@@ -66,11 +57,6 @@ OSGiModel createOSGimodel(loc id, loc manifest, M3 m3) {
 	model.dynamicImportedPackages += getDynamicImportPackages(logical, model);
 	model.exportedPackages += getExportPackages(logical, model);
 	
-	// Set M3 relations
-	//TODO: uncomment once we solve M3 error.
-	//model.importedPackagesBC += getImportedPackagesBC(m3);
-	//model.bundlePackagesBC += getBundlePackagesBC(m3);
-	
 	return model;
 }
 
@@ -82,8 +68,6 @@ OSGiModel composeOSGiModels(loc id, set[OSGiModel] models) {
 	model.importedPackages = {*m.importedPackages | m <- models};
 	model.exportedPackages = {*m.exportedPackages | m <- models};
 	model.dynamicImportedPackages = {*m.dynamicImportedPackages | m <- models};
-	model.importedPackagesBC = {*m.importedPackagesBC | m <- models};
-	model.bundlePackagesBC = {*m.bundlePackagesBC | m <- models};
 	return model;
 }
 
