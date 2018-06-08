@@ -3,21 +3,36 @@ module Dependency
 import IO;
 import List;
 import Relation;
+import Set;
 import String;
-import ValueIO;
 
+import Java;
 import lang::java::m3::Core;
-import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::metricprovider::ProjectDelta;
+import org::eclipse::scava::metricprovider::MetricProvider;
 
-//TODO: move to an independent plugin (shared between OSGi and Maven plugins).
-@memo
-public rel[loc,loc] getImportedPackagesBC(M3 m3) 
-	= {*getClassPackages(depend) | <loc element, loc depend> <- m3.typeDependency, isClass(depend)};
 
 @memo
-public rel[loc,loc] getBundlePackagesBC(M3 m3) {
+set[loc] getImportedPackagesBC(M3 m3) 
+	= {*getClassPackages(d) | <e,d> <- m3.typeDependency, isClass(d)};
+
+@memo
+set[loc] getBundlePackagesBC(M3 m3) {
 	packages = packages(m3);
-	return {pkg | pkg <- packages, pkg != |java+package:///|};
+	return {p | p <- packages, p != |java+package:///|};
+}
+
+@metric{numberRequiredPackagesInSourceCode}
+@doc{Retrieves the number of required packages found in the project source code.}
+@friendlyName{Number required packages in source code}
+@appliesTo{java()}
+int numberRequiredPackagesInSourceCode(
+	ProjectDelta delta = ProjectDelta::\empty(),
+	map[loc, loc] workingCopies = (),
+	rel[Language, loc, M3] m3s = {}) {
+	
+	M3 m3 = systemM3(m3s, delta = delta);
+	return size(getImportedPackagesBC(m3));
 }
 
 // Packages from the java.* namespace are not considered according to the OSGi spec R.6.
@@ -29,9 +44,10 @@ private set[loc] getClassPackages(loc class) {
 	return pkgLoc;
 }
 
-/*
- * Transforms a ternary relation into a binary relation.
- * The last slot of the original relation has a map.
- */
-public rel[loc,loc] toBinaryRelation(rel[loc,loc,map[str,str]] relation) 
+// Transforms a ternary relation into a binary relation (last slot is a map).
+rel[loc,loc] ternaryReltoBinaryRel(rel[loc,loc,map[str,str]] relation) 
 	= {<x,y> | <x,y,z> <- relation};
+
+// Transforms a ternary relation into a set (last slot is a map).
+rel[loc,loc] ternaryReltoSet(rel[loc,loc,map[str,str]] relation) 
+	= {y | <x,y,z> <- relation};

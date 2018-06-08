@@ -74,26 +74,6 @@ int numberOSGiBundleDependencies(
 	return 0;
 }
 
-//TODO: move to an independent plugin
-
-@metric{numberRequiredPackagesInSourceCode}
-@doc{Retrieves the number of required packages found in the project source code.}
-@friendlyName{Number required packages in source code}
-@appliesTo{java()}
-int numberRequiredPackagesInSourceCode(
-	ProjectDelta delta = ProjectDelta::\empty(),
-	map[loc, loc] workingCopies = (),
-	rel[Language, loc, M3] m3s = {}) {
-	
-	M3 m3 = systemM3(m3s, delta = delta);
-	
-	if(repo <- workingCopies) {
-		m = getOSGiModelFromWorkingCopy(workingCopies[repo]);
-		return size(getImportedPackagesBC(m3));
-	}
-	return 0;
-}
-
 @metric{numberUsedOSGiImportedPackagesInSourceCode}
 @doc{Retrieves the number of OSGi imported packages USED in the project source code.}
 @friendlyName{Number OSGi imported packages in source code}
@@ -108,9 +88,9 @@ int numberUsedOSGiImportedPackagesInSourceCode(
 	if(repo <- workingCopies) {
 		m = getOSGiModelFromWorkingCopy(workingCopies[repo]);
 		return size(
-			(toBinaryRelation(m3.importedPackages) 
-			+ toBinaryRelation(m3.dynamicImportedPackages)) 
-			- getImportedPackagesBC(m3));
+			(ternaryReltoSet(m3.importedPackages) 
+			+ ternaryReltoSet(m3.dynamicImportedPackages)) 
+			- (getImportedPackagesBC(m3)));
 	}
 	return 0;
 }
