@@ -13,5 +13,4 @@
    <extension
          point="scava.rascal.metricprovider">
    </extension>
-
 </plugin>
