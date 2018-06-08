@@ -18,6 +18,11 @@
             id="org.eclipse.scava.plugin.commands.demoCommand"
             name="Demo">
       </command>
+      <command
+            categoryId="org.eclipse.scava.plugin.commands.category"
+            id="org.eclipse.scava.plugin.commands.metric"
+            name="Metric">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -28,6 +33,14 @@
       <handler
             class="org.eclipse.scava.plugin.ui.toolbar.LibraryUpdateHandler"
             commandId="org.eclipse.scava.plugin.commands.demoCommand">
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.ui.toolbar.MetricHandler"
+            commandId="org.eclipse.scava.plugin.commands.metric">
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.newcommunicationdemo.SearchArtifactMenuActionHandler"
+            commandId="org.eclipse.scava.plugin.commands.searchArtifact">
       </handler>
    </extension>
    <extension
@@ -50,6 +63,16 @@
                   commandId="org.eclipse.scava.plugin.commands.demoCommand"
                   id="org.eclipse.scava.plugin.menus.demoCommand"
                   label="Update libraries">
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.metric"
+                  id="org.eclipse.scava.plugin.menus.metricCommand"
+                  label="Metric Interface">
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.searchArtifact"
+                  id="org.eclipse.scava.plugin.menus.searchArtifact"
+                  label="Search artifact">
             </command>
          </menu>
       </menuContribution>
@@ -133,7 +156,7 @@
      <decorator
            adaptable="true"
            class="org.eclipse.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
-           icon="icons/cm.gif"
+           icon="icons/SCAVA-icon-16.png"
            id="org.eclipse.scava.plugin.decorators.sourcecodehighlight.namedmember"
            label="SCAVA Source Code Highlight Decorator"
            lightweight="true"
@@ -148,7 +171,7 @@
      <decorator
            adaptable="true"
            class="org.eclipse.scava.plugin.recommendation.highlight.decorator.SourceCodeHighlightDecorator"
-           icon="icons/cm.gif"
+           icon="icons/SCAVA-icon-16.png"
            id="org.eclipse.scava.plugin.decorators.sourcecodehighlight.iresource"
            label="SCAVA Source Code Highlight Decorator"
            lightweight="true"

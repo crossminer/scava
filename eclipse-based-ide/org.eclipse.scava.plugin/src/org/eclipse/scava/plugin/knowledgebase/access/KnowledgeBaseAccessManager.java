@@ -34,7 +34,7 @@ public class KnowledgeBaseAccessManager implements ILibraryDescriptionProvider {
 	public KnowledgeBaseAccessManager()
 	{
 		requestSender = new RemoteRequestSender();
-		requestSender = new LocalRequestSender();
+		//requestSender = new LocalRequestSender();
 	}
 	
 	private String sendRequest(String address, String content)

@@ -58,7 +58,6 @@ public class RecommendationAcceptDisplay extends TitleAreaDialog implements IDis
 		
 		newShell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event e) {
-				System.out.println("RecAccClose event");
 				e.doit = false;
 				recommendationsCancelled.invoke();
 			}
