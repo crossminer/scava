@@ -116,7 +116,7 @@ public class SourceCodeHighlightDecorator extends LabelProvider implements ILigh
 	}
 	
 	public void setIcon(IDecoration decoration) {
-		decoration.addOverlay(ImageDescriptor.createFromFile(getClass(), "/icons/cm.gif"));
+		decoration.addOverlay(ImageDescriptor.createFromFile(getClass(), "/icons/SCAVA-icon-16.png"));
 	}
 	
 	public String pluralSign(int number) {
