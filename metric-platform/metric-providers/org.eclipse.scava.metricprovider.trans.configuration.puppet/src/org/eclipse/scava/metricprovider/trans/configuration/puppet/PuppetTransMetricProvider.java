@@ -1,6 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.configuration.puppet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,10 @@ import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutExc
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyManagerUnavailable;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.VcsRepository;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 import com.mongodb.DB;
 
@@ -67,39 +74,38 @@ public class PuppetTransMetricProvider implements ITransientMetricProvider<Puppe
     }
     
     public void measure(Project project, ProjectDelta projectDelta, PuppetSmells db) {
-    	System.out.println("yeahhhhhhhhhhhh");
     	
-    	//try {
+    	try {
 			List<VcsRepositoryDelta> repoDeltas = projectDelta.getVcsDelta().getRepoDeltas();
 			
 			// don't continue if there isn't anything to do
 			if (repoDeltas.isEmpty()) {
-			    //logger.error("Didn't find any delta. Skipping metric calculations for " + metricId);
-				System.out.println("emptyyyyyyyyyyy");
 				return;
 			}
-			
-				if (lastRevision == null) {
-					// the very first time, this will still be null, so we need to check for null below as well
-					lastRevision = repoDeltas.get(repoDeltas.size()-1).getLatestRevision();
-					System.out.println(lastRevision);
-				}
 
-						/*computeFolders(project, projectDelta, workingCopyFolders, scratchFolders);
-						
-						System.out.println("ououououou " + workingCopyFolders);
-						
-						System.out.println("pepepepepepepe " + scratchFolders);*/
+			computeFolders(project, projectDelta, workingCopyFolders, scratchFolders);
+			
+			Bundle b = FrameworkUtil.getBundle(PuppetTransMetricProvider.class);
+			
+			for (VcsRepository repo : project.getVcsRepositories()) {
 				
+				String repoUrl = repo.getUrl();
 				
-				lastRevision = getLastRevision(projectDelta);
-				
-				System.out.println(lastRevision);
-    		/*}
+				//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle
+				Process p = Runtime.getRuntime().exec("/usr/local/bin/python3 " + getClass().getClassLoader().getResource("/Puppeteer/Puppeteer.py").getPath() + " " + workingCopyFolders.get(repoUrl) + "/ " + scratchFolders.get(repoUrl) + "/");
+				p.waitFor();
+	    		}
+	    	}
 	    	catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 	    		logger.error("unexpected exception while measuring", e);
 				throw new RuntimeException("Metric failed due to missing working copy", e);
-			}*/
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				throw new RuntimeException(e);
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage());
+				throw new RuntimeException(e);
+			}
     }
     
     @Override
