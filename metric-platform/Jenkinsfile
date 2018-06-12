@@ -5,8 +5,7 @@ pipeline {
       steps {
         dir(path: 'metric-platform/') {
           sh 'mvn validate'
-          sh 'mvn compile'
-          sh 'mvn package'
+          sh 'mvn install'
         }
       }
     }
