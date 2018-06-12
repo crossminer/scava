@@ -42,24 +42,17 @@ public class CodeListenerImpl implements AuditListener{
 	
 
 	public void endCheck(CheckSummary sum) {
-		// TODO Auto-generated method stub		
 		numFiles=sum.getDuplicateFileCount();
 		numBlock=sum.getDuplicateBlockCount();
 		cumulatedTime+=sum.getProcessingTime();
 		duplicatedLine=sum.getDuplicateLineCount();
-		
-		
-		
 	}
 
 	public void endSet(String end) {
-		// TODO Auto-generated method stub
-		
 		clonedCode.add(end);
 	}
 
 	public void error(File f, Throwable e) {
-		// TODO Auto-generated method stub	
 		if(!f.exists()) {
 			e.getMessage();
 		}
@@ -67,53 +60,44 @@ public class CodeListenerImpl implements AuditListener{
 	}
 	
 	public void fileProcessed(SourceFile source) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void startCheck(Options opt) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void startSet(int start, String finger) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	public ArrayList<String> getListFiles() {
-		// TODO Auto-generated method stub	
 		return files;
 	}
 
 
 	public ArrayList<String> getClonedCode() {
-		// TODO Auto-generated method stub
 		return clonedCode;
 	}
 
 
 	public int getNumClonedFiles() {
-		// TODO Auto-generated method stub
 		return numFiles;
 	}
 
 
 	public int getNumClonedBlock() {
-		// TODO Auto-generated method stub
 		return numBlock;
 	}
 
 
 	public long getTotalTime() {
-		// TODO Auto-generated method stub
 		return cumulatedTime;
 	}
 
 
 	public int getDuplicatedLines() {
-		// TODO Auto-generated method stub
 		return duplicatedLine;
 	}
 

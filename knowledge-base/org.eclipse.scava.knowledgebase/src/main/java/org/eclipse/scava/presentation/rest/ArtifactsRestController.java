@@ -70,7 +70,7 @@ public class ArtifactsRestController {
     }
 	
 	@ApiOperation(value = "Get artifact by id", response = Iterable.class)
-	@RequestMapping(value="artifacts/{artifact_id}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value="/{artifact_id}", produces = "application/json", method = RequestMethod.GET)
     public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
     }
