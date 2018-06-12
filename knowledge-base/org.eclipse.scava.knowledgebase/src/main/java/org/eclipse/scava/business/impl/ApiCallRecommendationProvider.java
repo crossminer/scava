@@ -94,6 +94,8 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 	private HashMap<String,String> scan() {
 		HashMap<String,String> result = new HashMap<String,String>();
 		ClassLoader classLoader = getClass().getClassLoader();
+		logger.error("juri");
+		logger.error(pattern);
 		File rank = new File(classLoader.getResource(pattern).getFile());
 		File[] list = rank.listFiles();
 		for (File f : list)
