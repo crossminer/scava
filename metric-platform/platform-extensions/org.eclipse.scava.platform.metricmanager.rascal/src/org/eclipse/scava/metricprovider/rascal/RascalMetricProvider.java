@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2017 Centrum Wiskunde & Informatica
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.rascal;
@@ -27,6 +27,7 @@ import java.util.Set;
 import org.eclipse.scava.metricprovider.rascal.trans.model.Measurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.MeasurementCollection;
 import org.eclipse.scava.metricprovider.rascal.trans.model.RascalMetrics;
+import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -57,6 +58,7 @@ import org.rascalmpl.interpreter.staticErrors.StaticError;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter.IOLimitReachedException;
 
+
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 
@@ -73,7 +75,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	private final boolean needsDelta;
 	private final boolean needsWc;
 	private final boolean needsScratch;
-	
+
 	private final Map<String,String> uses;
 	private final Map<String, IMetricProvider> providers;
 
@@ -86,16 +88,16 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	private final OssmeterLogger logger;
 	private MetricProviderContext context;
 	private boolean needsPrev;
-	
+
 	private static final RascalManager manager = RascalManager.getInstance();
 
 	private static String lastRevision = null;
-	
+
 	private static Map<String, File> workingCopyFolders = new HashMap<>();
 	private static Map<String, File> scratchFolders = new HashMap<>();
 	private static IConstructor rascalDelta;
-	
-	
+
+
 	public RascalMetricProvider(String bundleId, String metricName, String shortMetricId, String friendlyName, String description, AbstractFunction function, Map<String,String> uses) {
 		this.bundleId = trimIdForMongo(bundleId);
 		this.metricId = this.bundleId + "." + metricName;
@@ -105,36 +107,36 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		this.function = function;
 		this.uses = qualifyNames(this.bundleId, uses);
 		this.providers = new HashMap<String,IMetricProvider>();
-		
+
 		this.needsM3 = hasParameter(M3S_PARAM);
 		this.needsAsts = hasParameter(ASTS_PARAM);
 		this.needsDelta = hasParameter(DELTA_PARAM);
 		this.needsWc = hasParameter(WORKING_COPIES_PARAM);
 		this.needsScratch = hasParameter(SCRATCH_FOLDERS_PARAM);
 		this.needsPrev = hasParameter(PREVIOUS_PARAM);
-		
+
 		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("RascalMetricProvider (" + friendlyName + ")");
-		
+
 		assert function instanceof RascalFunction;
 	}
 
 	private Map<String, String> qualifyNames(String qualifier, Map<String, String> uses) {
 		Map<String,String> output = new HashMap<>();
-		
+
 		for (String use : uses.keySet()) {
 			String qualifiedUse = trimIdForMongo(use.trim());
 
 			if (!use.replaceAll("\\.historic","").contains(".")) {
 				qualifiedUse = bundleId + "." + use;
 			}
-			
+
 			output.put(qualifiedUse, uses.get(use));
 		}
-		
+
 		return output;
 	}
-	
-	// Removes org.eclipse.scava.metricprovider. qualifier from an id to accomodate mongo db collection name limit of 120 bytes. 
+
+	// Removes org.eclipse.scava.metricprovider. qualifier from an id to accomodate mongo db collection name limit of 120 bytes.
 	private String trimIdForMongo(String fullId) {
 		return fullId.replace("org.eclipse.scava.metricprovider.", "");
 	}
@@ -143,10 +145,10 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		if (function.getFunctionType().hasKeywordParameter(param)) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 
 	@Override
 	public String toString() {
@@ -193,7 +195,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	}
 
 	@Override
-	public void setMetricProviderContext(MetricProviderContext context) {	
+	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context = context;
 	}
 
@@ -205,24 +207,24 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	@Override
 	public void measure(Project project, ProjectDelta delta, RascalMetrics db) {
 		IValue result = compute(project, delta);
-		
+
 		if (result != null) {
 			//logger.info("storing metric result");
 			storeResult(delta, db, result);
 		}
 	}
-	
+
 	public IValue compute(Project project, ProjectDelta delta) {
 		try {
 			List<VcsRepositoryDelta> repoDeltas = delta.getVcsDelta().getRepoDeltas();
 			Map<String, IValue> params = new HashMap<>();
-			
+
 			// don't continue if there isn't anything to do
 			if (repoDeltas.isEmpty()) {
 			    //logger.error("Didn't find any delta. Skipping metric calculations for " + metricId);
 				return null;
 			}
-			
+
 			synchronized (RascalMetricProvider.class) {
 				if (lastRevision == null) {
 					// the very first time, this will still be null, so we need to check for null below as well
@@ -265,7 +267,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 					//logger.info("retrieving current result");
 					params.put(PREVIOUS_PARAM, getMetricResult(project, this, manager));
 				}
-				
+
 				if (needsM3) {
 					//logger.info("extracting M3 models");
 					params.put(M3S_PARAM, computeM3(project, delta, manager, logger));
@@ -273,7 +275,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 
 				for (String use : uses.keySet()) {
 					IMetricProvider provider = providers.get(use);
-					
+
 					if (provider != null) {
 						String label = uses.get(use);
 						IValue val = getMetricResult(project, provider, manager);
@@ -292,21 +294,21 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 						}
 						return null;
 					}
-					
+
 				}
-				
+
 				filterNullParameters(params);
-				
+
 				// measurement is included in the sync block to avoid sharing evaluators between metrics
-				
+
 				logger.info("Calling " + metricId);
 				//logger.info("calling measurement function");
 				//logger.info("with parameters: " + params);
-				
+
 				Result<IValue> result = function.call(new Type[] { }, new IValue[] { }, params);
 
 				logResult(result);
-				
+
 				lastRevision = getLastRevision(delta);
 				return result.getValue();
 			}
@@ -338,7 +340,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		Set<Entry<String, IValue>> entrySet = params.entrySet();
 		Iterator<Entry<String, IValue>> it = entrySet.iterator();
 		while (it.hasNext()) {
-			Entry<String,IValue> entry = it.next(); 
+			Entry<String,IValue> entry = it.next();
 			if (entry.getValue() == null) {
 				it.remove();
 			}
@@ -370,7 +372,8 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		//DB db = context.getProjectDB(project);
 		Mongo mongo;
 		try {
-			mongo = new Mongo();
+	//		mongo = new Mongo();
+			mongo = Configuration.getInstance().getMongoConnection();
 			DB db = mongo.getDB(project.getName());
 			RascalMetrics rascalMetrics = new RascalMetrics(db, provider.getIdentifier());
 			return PongoToRascal.toValue(rascalMetrics, type, provider instanceof RascalMetricHistoryWrapper);
@@ -417,14 +420,14 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		toPongo(ms, result);
 		db.sync();
 	}
-	
+
 	public static IConstructor computeDelta(Project project, ProjectDelta delta,
 			RascalManager _instance, OssmeterLogger logger) {
 		//logger.info("\tretrieving from VcsProvider");
 		RascalProjectDeltas rpd = new RascalProjectDeltas(_instance.getEvaluator());
 		List<VcsRepositoryDelta> repoDeltas = delta.getVcsDelta().getRepoDeltas();
 
-		if (repoDeltas.isEmpty() || workingCopyFolders.isEmpty() /* this may happen for the first version */) { 
+		if (repoDeltas.isEmpty() || workingCopyFolders.isEmpty() /* this may happen for the first version */) {
 			return rpd.emptyDelta(delta);
 		}
 
@@ -462,12 +465,12 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		List<VcsRepositoryDelta> repoDeltas = delta.getVcsDelta().getRepoDeltas();
 		if (repoDeltas.size() > 0) {
 			List<VcsCommit> deltaCommits = repoDeltas.get(repoDeltas.size()-1).getCommits();
-			
+
 			if (deltaCommits.size() > 0) {
 				return !deltaCommits.get(deltaCommits.size()-1).getRevision().equals(RascalMetricProvider.lastRevision);
 			}
 		}
-		
+
 		// no delta?
 		return false;
 	}
@@ -479,19 +482,19 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		}
 		return callExtractors(project, delta, man, man.getM3Extractors(), logger);
 	}
-	
+
 	public static IValue callExtractors(Project project, ProjectDelta delta, RascalManager man, Set<RascalManager.Extractor> extractors, OssmeterLogger logger) {
 		ISetWriter allResults = man.getEvaluator().getValueFactory().setWriter();
-		
+
 		ISourceLocation projectLoc = makeProjectLoc(project);
 		IMap wcf = makeMap(workingCopyFolders);
 		IMap scratch = makeMap(scratchFolders);
 		IConstructor rascalDelta = computeDelta(project, delta, man, logger);
-		
+
 		for (RascalManager.Extractor e : extractors) {
 			// generally extractors are assumed to use @memo
 			ISet result = (ISet) e.call(projectLoc, rascalDelta, wcf, scratch);
-			
+
 			if (result != null) {
 				allResults.insertAll(result);
 			}
@@ -499,9 +502,9 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 				logger.error("ignoring all models for extractor " + e);
 			}
 		}
-		
+
 		return allResults.done(); // TODO what if null?
 	}
-	
-	
+
+
 }
