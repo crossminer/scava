@@ -8,7 +8,7 @@ pipeline {
             sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn validate'
             sh 'mvn compile'
-            sh 'mvn package'
+            sh 'mvn package -Dmaven.test.skip=true'
           }
         }
       }
