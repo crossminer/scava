@@ -9,30 +9,25 @@
  ******************************************************************************/
 package org.eclipse.scava.business.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.ApiCallResult;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
+import org.eclipse.scava.business.integration.PatternRepository;
+import org.eclipse.scava.business.model.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.harukizaemon.simian.Block;
 import com.harukizaemon.simian.Language;
 import com.harukizaemon.simian.Option;
 import com.harukizaemon.simian.Options;
@@ -47,9 +42,10 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(ApiCallRecommendationProvider.class);
 
-	@Value("${api.call.recommendation.path}")
-	private String pattern;
-
+	
+	@Autowired
+	private PatternRepository patternRepository;
+	
 	@Autowired
 	private ICodeCloneDetector codeCloneDetector;
 
@@ -59,7 +55,7 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		List<ApiCallResult> result = new ArrayList<>();
 		long start = System.currentTimeMillis();
 
-		HashMap<String, String> patterns = scan();
+		
 		Options options = new Options();
 		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);
@@ -72,10 +68,10 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		options.setOption(Option.IGNORE_LITERALS, true);
 		options.setOption(Option.LANGUAGE, Language.JAVA);
 		options.setOption(Option.IGNORE_SUBTYPE_NAMES, true);
-
-		for (Entry<String, String> pattern : patterns.entrySet()) {
-			ApiCallResult k = codeCloneDetector.checkClone(query.getCurrentMethodCode(), pattern.getValue(), options);
-			k.setPattern(pattern.getKey());
+		List<Pattern> patterns = patternRepository.findAll();
+		for (Pattern pattern : patterns) {
+			ApiCallResult k = codeCloneDetector.checkClone(query.getCurrentMethodCode(), pattern.getPatternCode(), options);
+			k.setPattern(pattern.getPatternFileName());
 			if (k.getCodeLines() != null && k.getCodeLines().size() > 0)
 				result.add(k);
 		}
@@ -90,27 +86,6 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		}
 		return rec;
 	}
-
-	private HashMap<String,String> scan() {
-		HashMap<String,String> result = new HashMap<String,String>();
-		ClassLoader classLoader = getClass().getClassLoader();
-		logger.error("juri");
-		logger.error(pattern);
-		File rank = new File(classLoader.getResource(pattern).getFile());
-		File[] list = rank.listFiles();
-		for (File f : list)
-			if (f.isFile()) {
-				String s;
-				try {
-					s = FileUtils.readFileToString(f);
-					result.put(f.getName(), s);
-				} catch (IOException e) {
-					logger.error(e.getMessage());
-				}
-			}
-		return result;
-	}
-
 }
 
 class PatternComparator implements Comparator<ApiCallResult> {

@@ -1,3 +1,0 @@
-{
-    return VersionUtil.versionFor(getClass());
-}

@@ -1,3 +1,0 @@
-{
-    ClassUtil.checkAndFixAccess(getMember());
-}
