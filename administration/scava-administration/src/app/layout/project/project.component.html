@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+<div class="pricing-table">
+  <div *ngFor="let project of projectList" class="pricing-option">
+    <i class="material-icons">layers</i>
+    <h1> {{project.name}}</h1>
+    <hr />
+    <div class="price-description">
+      <p>{{project.description}}</p>
+    </div>
+    <hr />
+    <div class="price">
+      <div class="front">
+        <h4>
+          <span class="badge badge-dark">100%</span>
+        </h4>
+      </div>
+      <div class="back">7
+        <a [routerLink]="['/project/configure/', project.shortName]"  class="button">Configure</a>
+      </div>
+    </div>
+  </div>
+</div>
