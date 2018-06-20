@@ -10,12 +10,17 @@
 
 package org.eclipse.scava.plugin.ui.abstractmvc;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.scava.plugin.usermonitoring.event.scava.IScavaEventListener;
 
 public abstract class AbstractController<ModelType extends IModel, ViewType extends IView> extends EventHandler implements IController {
 	private ModelType model;
 	private ViewType view;
+	protected final List<IScavaEventListener> scavaListeners = new ArrayList<IScavaEventListener>();
+	
 	
 	private List<IController> subControllers;
 	
@@ -53,4 +58,9 @@ public abstract class AbstractController<ModelType extends IModel, ViewType exte
 	protected void dispose() {
 		
 	}
+	
+	public void addScavaListener(IScavaEventListener listener) {
+		scavaListeners.add(listener);
+	}
+	
 }

@@ -10,13 +10,16 @@
 
 package org.eclipse.scava.plugin.event.notifier;
 
+import java.util.ArrayList;
+
 import org.eclipse.scava.plugin.event.Event;
 
 public class NotifierEvent extends Event<INotifierEventListener> implements INotifierEvent {
 	
 	@Override
 	public void invoke() {
-		getListeners().forEach(listener -> listener.handle());
+		ArrayList<INotifierEventListener> copyOfListeners = new ArrayList<>(getListeners());
+		copyOfListeners.forEach(listener -> listener.handle());
 	}
 	
 }

@@ -36,8 +36,7 @@ public class SimRank {
 	}
 
 	public void computeSimRank() {
-		this.iter = 4;		
-		System.out.println("Iteration: " + this.iter);
+		this.iter = 4;
 		computeSimRank(this.iter);
 	}
 

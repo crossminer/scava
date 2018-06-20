@@ -10,11 +10,9 @@
 package org.eclipse.scava.business.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
 import org.eclipse.scava.business.IClusterManager;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.IRecommenderManager;
@@ -26,11 +24,13 @@ import org.eclipse.scava.business.dto.RecommendationType;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.TextIndexDefinition;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
@@ -42,13 +42,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecommenderManager implements IRecommenderManager {
 
-	private static final Logger logger = Logger.getLogger(RecommenderManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(RecommenderManager.class);
 	@Autowired
 	@Qualifier("ApiRecommendation")
 	private IRecommendationProvider apiRecommendationProvider;
 	@Autowired
 	@Qualifier("AlternativeLibraries")
-	private IRecommendationProvider alternativeLibrariesrecommendationProvider;
+	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
+	
+	@Autowired
+	@Qualifier("ApiCallRecommendation")
+	private IRecommendationProvider apiCallRecommendationProvider;
+	
 	@Autowired
 	private ArtifactRepository artifactRepository;
 
@@ -64,9 +69,11 @@ public class RecommenderManager implements IRecommenderManager {
 	@Override
 	public Recommendation getRecommendation(Query query, RecommendationType rt) throws Exception {
 		if(rt.equals(RecommendationType.ALTERNATIVE_LIBRARY))
-			return alternativeLibrariesrecommendationProvider.getRecommendation(query);
+			return alternativeLibrariesRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.RECOMMENDED_LIBRARY))
 			return apiRecommendationProvider.getRecommendation(query);
+		if(rt.equals(RecommendationType.API_CALL))
+			return apiCallRecommendationProvider.getRecommendation(query);
 		else return null;
 	}
 
@@ -105,6 +112,18 @@ public class RecommenderManager implements IRecommenderManager {
 
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(new PageRequest(0, 5));
+
+		List<Artifact> recipes = template.find(query, Artifact.class);
+		
+		return recipes;
+	}
+	@Override
+	public List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page) {
+		
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
+
+		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
+				.with(page);
 
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		

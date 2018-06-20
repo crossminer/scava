@@ -11,14 +11,21 @@ package org.eclipse.scava.business.dto;
 
 import org.eclipse.scava.business.model.Artifact;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * @author Juri Di Rocco
  *
  */
 public class RecommendationItem {
 
+	private ApiCallResult apiCallRecommendation;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private RecommendedLibrary recommendedLibrary;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Artifact artifact;
 	private double significance;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Object relatedTo;
 	private String recommendationType;
 	public String getRecommendationType() {
@@ -44,6 +51,18 @@ public class RecommendationItem {
 	}
 	public void setRelatedTo(Object relatedTo) {
 		this.relatedTo = relatedTo;
+	}
+	public ApiCallResult getApiCallRecommendation() {
+		return apiCallRecommendation;
+	}
+	public void setApiCallRecommendation(ApiCallResult apiCallRecommendation) {
+		this.apiCallRecommendation = apiCallRecommendation;
+	}
+	public RecommendedLibrary getRecommendedLibrary() {
+		return recommendedLibrary;
+	}
+	public void setRecommendedLibrary(RecommendedLibrary recommendedApi) {
+		this.recommendedLibrary = recommendedApi;
 	}
 	
 }

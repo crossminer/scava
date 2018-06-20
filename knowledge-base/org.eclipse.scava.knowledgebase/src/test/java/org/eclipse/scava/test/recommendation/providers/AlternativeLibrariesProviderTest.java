@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Query;
@@ -30,11 +28,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 
 public class AlternativeLibrariesProviderTest {
@@ -60,7 +60,7 @@ public class AlternativeLibrariesProviderTest {
 	@Qualifier("ApiRecommendation")
 	private IRecommendationProvider apiRecomendationProvider;
 	
-	private static final Logger logger = Logger.getLogger(AlternativeLibrariesProviderTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlternativeLibrariesProviderTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {
@@ -114,7 +114,7 @@ public class AlternativeLibrariesProviderTest {
 		q.getProjectDependencies().add(d3);
 		q.setClassDependencies(new ArrayList<Dependency>());
 		q.getClassDependencies().add(d2);
-		q.setMethodInvocation("addDocument");
+		q.setCurrentMethodCode("addDocument");
 		q.setRefClassInvocation("IndexWriter");
 		q.setProjectName("MDEForge");
 		q.setTextOffset(1000);

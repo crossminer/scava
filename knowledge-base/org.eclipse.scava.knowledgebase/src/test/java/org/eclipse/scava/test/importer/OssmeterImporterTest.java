@@ -15,22 +15,22 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class OssmeterImporterTest {
 	@Autowired
@@ -39,7 +39,7 @@ public class OssmeterImporterTest {
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	
-	private static final Logger logger = Logger.getLogger(OssmeterImporterTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(OssmeterImporterTest.class);
 	@Ignore
 	@Test
 	public void importProjectTest() {
