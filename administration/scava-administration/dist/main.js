@@ -12,6 +12,10 @@ var map = {
 		"./src/app/access-denied/access-denied.module.ts",
 		"access-denied-access-denied-module"
 	],
+	"./account/activate/activate.module": [
+		"./src/app/account/activate/activate.module.ts",
+		"account-activate-activate-module"
+	],
 	"./home/home.module": [
 		"./src/app/layout/home/home.module.ts",
 		"common",
@@ -95,6 +99,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 var routes = [
     { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [_shared__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]] },
+    { path: 'activate', loadChildren: './account/activate/activate.module#ActivateModule' },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
     { path: 'signup', loadChildren: './signup/signup.module#SignupModule' },
     { path: 'error', loadChildren: './server-error/server-error.module#ServerErrorModule' },

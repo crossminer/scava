@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.authservice.test.configuration;
+package org.eclipse.scava.authservice.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 

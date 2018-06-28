@@ -80,7 +80,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _router_animations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../router.animations */ "./src/app/router.animations.ts");
 /* harmony import */ var _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/services/authentication/authentication.service */ "./src/app/shared/services/authentication/authentication.service.ts");
-/* harmony import */ var _shared_services_shared_shared_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/services/shared/shared-data.service */ "./src/app/shared/services/shared/shared-data.service.ts");
+/* harmony import */ var _shared_services_authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/services/authentication/jwt-authentication.service */ "./src/app/shared/services/authentication/jwt-authentication.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -96,9 +96,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(router, sharedData, authenticationService) {
+    function LoginComponent(router, jwtAuthenticationService, authenticationService) {
         this.router = router;
-        this.sharedData = sharedData;
+        this.jwtAuthenticationService = jwtAuthenticationService;
         this.authenticationService = authenticationService;
         this.mode = 0;
     }
@@ -110,7 +110,7 @@ var LoginComponent = /** @class */ (function () {
             var jwtToken = resp.headers.get('Authorization');
             // console.log(jwtToken);
             localStorage.clear();
-            _this.sharedData.saveToken(jwtToken);
+            _this.jwtAuthenticationService.saveToken(jwtToken);
             localStorage.setItem('isLoggedin', 'true');
             _this.router.navigateByUrl('/home');
         }, function (error) {
@@ -125,7 +125,7 @@ var LoginComponent = /** @class */ (function () {
             animations: [Object(_router_animations__WEBPACK_IMPORTED_MODULE_2__["routerTransition"])()]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
-            _shared_services_shared_shared_data_service__WEBPACK_IMPORTED_MODULE_4__["SharedDataService"],
+            _shared_services_authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_4__["JwtAuthenticationService"],
             _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"]])
     ], LoginComponent);
     return LoginComponent;
@@ -189,8 +189,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthenticationService", function() { return AuthenticationService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _shared_shared_data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/shared-data.service */ "./src/app/shared/services/shared/shared-data.service.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -203,13 +202,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var AuthenticationService = /** @class */ (function () {
-    function AuthenticationService(httpClient, sharedDataService) {
+    function AuthenticationService(httpClient) {
         this.httpClient = httpClient;
-        this.sharedDataService = sharedDataService;
-        this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].SERVER_API_URL;
-        this.authentication = 'api/authentication';
+        this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].SERVER_API_URL + '/api';
+        this.authentication = '/authentication';
         this.jwtToken = null;
     }
     AuthenticationService.prototype.login = function (data) {
@@ -219,8 +216,7 @@ var AuthenticationService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
-            _shared_shared_data_service__WEBPACK_IMPORTED_MODULE_2__["SharedDataService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
     ], AuthenticationService);
     return AuthenticationService;
 }());

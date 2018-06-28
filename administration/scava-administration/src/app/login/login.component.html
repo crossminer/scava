@@ -18,10 +18,10 @@
                 <form #f="ngForm" (ngSubmit)="onLoggedin(f.value)">
                     <div class="form-content">
                         <div class="form-group">
-                            <input type="text" name="username" ngModel="" class="form-control input-underline input-lg" placeholder="Username" />
+                            <input type="text" name="username" [(ngModel)]="username" class="form-control input-underline input-lg" placeholder="Username" />
                         </div>
                         <div class="form-group">
-                            <input type="password" name="password" ngModel="" class="form-control input-underline input-lg" placeholder="Password" />
+                            <input type="password" name="password" [(ngModel)]="password" class="form-control input-underline input-lg" placeholder="Password" />
                         </div>
                     </div>
                     <button type="submit" class="btn rounded-btn" [disabled]="!f.valid"> Log in </button>

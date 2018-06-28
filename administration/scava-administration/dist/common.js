@@ -79,16 +79,16 @@ function slideToTop() {
 
 /***/ }),
 
-/***/ "./src/app/shared/services/shared/shared-data.service.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/shared/services/shared/shared-data.service.ts ***!
-  \***************************************************************/
-/*! exports provided: SharedDataService */
+/***/ "./src/app/shared/services/authentication/jwt-authentication.service.ts":
+/*!******************************************************************************!*\
+  !*** ./src/app/shared/services/authentication/jwt-authentication.service.ts ***!
+  \******************************************************************************/
+/*! exports provided: JwtAuthenticationService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedDataService", function() { return SharedDataService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JwtAuthenticationService", function() { return JwtAuthenticationService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -100,22 +100,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var SharedDataService = /** @class */ (function () {
-    function SharedDataService() {
+var JwtAuthenticationService = /** @class */ (function () {
+    function JwtAuthenticationService() {
     }
-    SharedDataService.prototype.saveToken = function (token) {
+    JwtAuthenticationService.prototype.saveToken = function (token) {
         localStorage.setItem('jwtToken', token);
     };
-    SharedDataService.prototype.loadToken = function () {
+    JwtAuthenticationService.prototype.loadToken = function () {
         return localStorage.getItem('jwtToken');
     };
-    SharedDataService = __decorate([
+    JwtAuthenticationService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [])
-    ], SharedDataService);
-    return SharedDataService;
+    ], JwtAuthenticationService);
+    return JwtAuthenticationService;
 }());
 
 

@@ -57,12 +57,12 @@
 /******/ 		"runtime": 0
 /******/ 	};
 /******/
-/******/ 	var deferredModules = [];
-/******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"access-denied-access-denied-module":"access-denied-access-denied-module","common":"common","home-home-module":"home-home-module","signup-signup-module":"signup-signup-module","layout-layout-module~login-login-module~project-project-module":"layout-layout-module~login-login-module~project-project-module","layout-layout-module":"layout-layout-module","login-login-module":"login-login-module","project-project-module":"project-project-module","not-found-not-found-module":"not-found-not-found-module","server-error-server-error-module":"server-error-server-error-module"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"access-denied-access-denied-module":"access-denied-access-denied-module","account-activate-activate-module":"account-activate-activate-module","common":"common","home-home-module":"home-home-module","signup-signup-module":"signup-signup-module","layout-layout-module~login-login-module~project-project-module":"layout-layout-module~login-login-module~project-project-module","layout-layout-module":"layout-layout-module","login-login-module":"login-login-module","project-project-module":"project-project-module","not-found-not-found-module":"not-found-not-found-module","server-error-server-error-module":"server-error-server-error-module"}[chunkId]||chunkId) + ".js"
 /******/ 	}
+/******/
+/******/ 	var deferredModules = [];
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {

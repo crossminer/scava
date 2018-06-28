@@ -179,8 +179,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PingService", function() { return PingService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _shared_shared_data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/shared-data.service */ "./src/app/shared/services/shared/shared-data.service.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/jwt-authentication.service */ "./src/app/shared/services/authentication/jwt-authentication.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -195,16 +195,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var PingService = /** @class */ (function () {
-    function PingService(httpClient, sharedDataService) {
+    function PingService(httpClient, jwtAuthenticationService) {
         this.httpClient = httpClient;
-        this.sharedDataService = sharedDataService;
-        this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].SERVER_API_URL + 'administration';
+        this.jwtAuthenticationService = jwtAuthenticationService;
+        this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].SERVER_API_URL + 'administration';
         this.ping = 'ping';
         this.jwtToken = null;
     }
     PingService.prototype.testPing = function () {
         if (this.jwtToken == null) {
-            this.jwtToken = this.sharedDataService.loadToken();
+            this.jwtToken = this.jwtAuthenticationService.loadToken();
         }
         console.log(this.resourceUrl + "/" + this.ping);
         return this.httpClient.get(this.resourceUrl + "/" + this.ping, { headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ 'Authorization': this.jwtToken }) });
@@ -214,7 +214,7 @@ var PingService = /** @class */ (function () {
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
-            _shared_shared_data_service__WEBPACK_IMPORTED_MODULE_2__["SharedDataService"]])
+            _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__["JwtAuthenticationService"]])
     ], PingService);
     return PingService;
 }());

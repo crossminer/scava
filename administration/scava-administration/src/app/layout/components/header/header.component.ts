@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
 
 @Component({
     selector: 'app-header',
@@ -7,9 +8,14 @@ import { Router, NavigationEnd } from '@angular/router';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-    pushRightClass: string = 'push-right';
+    
+    private username: string = null;
+    private pushRightClass: string = 'push-right';
 
-    constructor(public router: Router) {
+    constructor(
+        public router: Router,
+        public localStorageService: LocalStorageService
+    ) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -21,7 +27,11 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        if(this.username == null) {
+            this.username = this.localStorageService.loadUsername();
+        }
+    }
 
     isToggled(): boolean {
         const dom: Element = document.querySelector('body');
@@ -39,6 +49,6 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
+        localStorage.clear();
     }
 }

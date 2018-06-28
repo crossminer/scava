@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { JwtAuthenticationService } from '../authentication/jwt-authentication.service';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -8,13 +7,11 @@ import { environment } from '../../../../environments/environment';
 })
 export class AuthenticationService {
 
-  private resourceUrl = environment.SERVER_API_URL;
-  private authentication = 'api/authentication';
-  private jwtToken: string = null;
+  private resourceUrl = environment.SERVER_API_URL + '/api';
+  private authentication = '/authentication';
 
   constructor(
-      private httpClient: HttpClient,
-      private jwtAuthenticationService: JwtAuthenticationService
+      private httpClient: HttpClient
   ) { }
 
   login(data) {

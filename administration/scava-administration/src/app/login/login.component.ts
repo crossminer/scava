@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
-import { JwtAuthenticationService } from '../shared/services/authentication/jwt-authentication.service';
+import { LocalStorageService } from '../shared/services/authentication/local-storage.service';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private jwtAuthenticationService: JwtAuthenticationService,
+        private localStorageService: LocalStorageService,
         private authenticationService: AuthenticationService
     ) {}
 
@@ -24,14 +24,18 @@ export class LoginComponent implements OnInit {
     }
 
     onLoggedin(data) {
-        this.authenticationService.login(data).subscribe(resp => {
+        this.authenticationService.login(data).subscribe(
+            (resp) => {
                 const jwtToken = resp.headers.get('Authorization');
                 // console.log(jwtToken);
-                localStorage.clear();
-                this.jwtAuthenticationService.saveToken(jwtToken);
-                localStorage.setItem('isLoggedin', 'true');
+                // localStorage.clear();
+                this.localStorageService.saveToken(jwtToken);
+                //localStorage.setItem('isLoggedin', 'true');
+                this.localStorageService.saveLoginStatus('true');
+                //sessionStorage.setItem('username', data.username);
+                this.localStorageService.saveUsername(data.username);
                 this.router.navigateByUrl('/home');
-            }, error => {
+            }, (error) => {
                 this.mode = 1;
             }
         );

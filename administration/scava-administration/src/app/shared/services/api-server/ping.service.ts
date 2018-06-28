@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { JwtAuthenticationService } from '../authentication/jwt-authentication.service';
+import { LocalStorageService } from '../authentication/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +14,12 @@ export class PingService {
 
     constructor(
         private httpClient: HttpClient,
-        private jwtAuthenticationService: JwtAuthenticationService
+        private localStorageService: LocalStorageService
     ) { }
 
     testPing() {
         if (this.jwtToken == null) {
-            this.jwtToken = this.jwtAuthenticationService.loadToken();
+            this.jwtToken = this.localStorageService.loadToken();
         }
         console.log(`${this.resourceUrl}/${this.ping}`);
         return this.httpClient.get(`${this.resourceUrl}/${this.ping}`,

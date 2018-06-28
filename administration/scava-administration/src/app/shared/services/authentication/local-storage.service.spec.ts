@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { JwtAuthenticationService } from './jwt-authentication.service';
+import { LocalStorageService } from './local-storage.service';
 
 describe('JwtAuthenticationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [JwtAuthenticationService]
+      providers: [LocalStorageService]
     });
   });
 
-  it('should be created', inject([JwtAuthenticationService], (service: JwtAuthenticationService) => {
+  it('should be created', inject([LocalStorageService], (service: LocalStorageService) => {
     expect(service).toBeTruthy();
   }));
 });

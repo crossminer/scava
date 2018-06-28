@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../layout/project/project.model';
-import { JwtAuthenticationService } from '../authentication/jwt-authentication.service';
+import { LocalStorageService } from '../authentication/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +16,14 @@ export class CreateProjectService {
     
   constructor(
     private httpClient: HttpClient,
-    private jwtAuthenticationService: JwtAuthenticationService,
+    private localStorageService: LocalStorageService,
   ) { }
 
   createProject(project: Project) {
     if (this.jwtToken == null) {
-      this.jwtToken = this.jwtAuthenticationService.loadToken();
+      this.jwtToken = this.localStorageService.loadToken();
     }
-    console.log(project);
+    // console.log(project);
     return this.httpClient.post(`${this.resourceUrl}/${this.projects}/${this.create}`, project,
     { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }

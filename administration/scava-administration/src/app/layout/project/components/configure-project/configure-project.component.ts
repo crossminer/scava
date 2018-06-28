@@ -13,7 +13,6 @@ export class ConfigureProjectComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private router: Router,
         private listProjectService: ListProjectService
     ) { }
 
