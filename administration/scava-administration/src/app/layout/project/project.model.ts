@@ -8,7 +8,24 @@ import { VersionControlSystems } from "./components/create-project/version-contr
 import { IssueTrackingSystems } from "./components/create-project/issue-tracking-systems.model";
 import { CommunicationChannels } from "./components/create-project/communication-channels.model";
 
-export class Project {
+export interface IProject {
+    id?: number,
+    url?: string,
+    name?: string,
+    description?: string,
+    homepage?: string,
+    vcs?: VersionControlSystems[],
+    bts?: IssueTrackingSystems[],
+    communication_channels?: CommunicationChannels[],
+    git?: Git,
+    svn?: Svn,
+    bugzilla?: Bugzilla,
+    sourceforge?: SourceForge,
+    redmine?: Redmine,
+    nntp?: NNTP
+}
+
+export class Project implements IProject {
     constructor(
         public id?: number,
         public url?: string,

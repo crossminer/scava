@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from '../router.animations';
+import { routerTransition } from '../../router.animations';
 import { SignupService } from './signup.service';
 import { Router } from '@angular/router';
 

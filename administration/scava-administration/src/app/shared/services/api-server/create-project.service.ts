@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Project } from '../../../layout/project/project.model';
+import { IProject } from '../../../layout/project/project.model';
 import { LocalStorageService } from '../authentication/local-storage.service';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class CreateProjectService {
     private localStorageService: LocalStorageService,
   ) { }
 
-  createProject(project: Project) {
+  createProject(project: IProject) {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }

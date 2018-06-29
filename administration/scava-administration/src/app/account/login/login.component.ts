@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { routerTransition } from '../router.animations';
-import { AuthenticationService } from '../shared/services/authentication/authentication.service';
-import { LocalStorageService } from '../shared/services/authentication/local-storage.service';
+import { routerTransition } from '../../router.animations';
+import { LocalStorageService } from '../../shared/services/authentication/local-storage.service';
+import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 
 @Component({
     selector: 'app-login',

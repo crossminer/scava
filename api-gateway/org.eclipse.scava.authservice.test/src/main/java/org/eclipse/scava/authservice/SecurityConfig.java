@@ -34,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final UserDetailsService userDetailsService;
 	
-    @Autowired JwtAuthenticationConfig config;
+    @Autowired 
+    JwtAuthenticationConfig config;
     
     public SecurityConfig(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService) {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
@@ -79,8 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                     .antMatchers(config.getUrl()).permitAll()
-                    .antMatchers("/api/register").permitAll()
-                    .antMatchers("/api/activate*").permitAll()
+                    .antMatchers("/api/**").permitAll()
                     .anyRequest().authenticated();
     }
 }
