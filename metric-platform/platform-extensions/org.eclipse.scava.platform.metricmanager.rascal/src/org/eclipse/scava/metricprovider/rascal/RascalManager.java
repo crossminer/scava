@@ -47,6 +47,7 @@ import org.rascalmpl.interpreter.result.Result;
 import org.rascalmpl.interpreter.staticErrors.StaticError;
 import org.rascalmpl.interpreter.utils.RascalManifest;
 import org.rascalmpl.uri.URIResolverRegistry;
+import org.rascalmpl.uri.URIUtil;
 import org.rascalmpl.uri.jar.JarURIResolver;
 import org.rascalmpl.values.ValueFactoryFactory;
 
@@ -65,6 +66,7 @@ import io.usethesource.vallang.type.TypeStore;
 public class RascalManager {
 	private static final String EXTRACTOR_TAG_AST = "ASTExtractor";
 	private static final String EXTRACTOR_TAG_M3 = "M3Extractor";
+	private static final String RASCAL_ECLIPSE_NAME = "rascal_eclipse";
 	
 	private final static IValueFactory VF = ValueFactoryFactory.getValueFactory();
 	
@@ -172,10 +174,15 @@ public class RascalManager {
 	}
 
 	private void configureRascalPath(Evaluator evaluator, Bundle bundle) {
+		Bundle rascalBundle = Platform.getBundle(RASCAL_ECLIPSE_NAME);
+		if(!registeredBundles.contains(rascalBundle)) {
+			evaluator.addClassLoader(new BundleClassLoader(rascalBundle));
+			registeredBundles.add(rascalBundle);
+		}
+		
 		if (registeredBundles.contains(bundle)) {
 			return;
 		}
-
 		registeredBundles.add(bundle);
 
 		try {
@@ -242,23 +249,29 @@ public class RascalManager {
 		configureClassPath(evaluator, classPath, compilerClassPath);
 	}
 
-	private void configureClassPath(Evaluator parser, List<URL> classPath,
+	private void configureClassPath(Evaluator eval, List<URL> classPath,
 			List<String> compilerClassPath) {
-		// this registers the run-time path:
-		URL[] urls = new URL[classPath.size()];
-		classPath.toArray(urls);
-		URLClassLoader classPathLoader = new URLClassLoader(urls,
-				RascalManager.class.getClassLoader());
-		parser.addClassLoader(classPathLoader);
-
-		// this registers the compile-time path:
-		String ccp = "";
-		for (String elem : compilerClassPath) {
-			ccp += File.pathSeparatorChar + elem;
+		try {
+			// this registers the run-time path:
+			URL[] urls = new URL[classPath.size()];
+			classPath.toArray(urls);
+			URLClassLoader classPathLoader = new URLClassLoader(urls, RascalManager.class.getClassLoader());
+			eval.addClassLoader(classPathLoader);
+			
+			Bundle rascalBundle = Platform.getBundle(RASCAL_ECLIPSE_NAME);
+	    	URL entry = FileLocator.toFileURL(rascalBundle.getEntry("lib/rascal.jar"));
+	        String ccp = new File(URIUtil.fromURL(entry)).getAbsolutePath();
+			for (String elem : compilerClassPath) {
+				ccp += File.pathSeparatorChar + elem;
+			}
+			eval.getConfiguration().setRascalJavaClassPathProperty(ccp);
 		}
-
-		parser.getConfiguration().setRascalJavaClassPathProperty(
-				ccp.substring(1));
+		catch(IOException e) {
+			Rasctivator.logException("Error while locating Rascal lib: ", e);
+		} 
+		catch (URISyntaxException e) {
+			Rasctivator.logException("Error while parsing Rascal URL: ", e);
+		}
 	}
 
 	private void collectClassPathForBundle(Bundle bundle, List<URL> classPath,
@@ -270,10 +283,9 @@ public class RascalManager {
 			if (classPath.contains(url)) {
 				return; // kill infinite loop
 			}
-
 			classPath.add(0, url);
 			compilerClassPath.add(0, file.getAbsolutePath());
-
+			
 			BundleWiring wiring = bundle.adapt(BundleWiring.class);
 			for (BundleWire dep : wiring.getRequiredWires(null)) {
 				collectClassPathForBundle(dep.getProviderWiring().getBundle(),
@@ -290,7 +302,7 @@ public class RascalManager {
 		} 
 		catch (IOException e) {
 			Rasctivator.logException("error while tracing dependencies", e);
-		}
+		} 
 	}
 
 	public static RascalManager getInstance() {

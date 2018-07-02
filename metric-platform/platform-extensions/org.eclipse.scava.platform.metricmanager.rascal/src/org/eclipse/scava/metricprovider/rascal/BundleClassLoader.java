@@ -58,4 +58,8 @@ class BundleClassLoader extends ClassLoader {
 
 		return clazz;
 	}
+	 @Override
+	public String toString() {
+		 return "Class loader for: " + bundle;
+	}
 }
