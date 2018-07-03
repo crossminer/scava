@@ -42,6 +42,7 @@ import org.rascalmpl.interpreter.env.GlobalEnvironment;
 import org.rascalmpl.interpreter.env.ModuleEnvironment;
 import org.rascalmpl.interpreter.env.Pair;
 import org.rascalmpl.interpreter.load.StandardLibraryContributor;
+import org.rascalmpl.interpreter.load.URIContributor;
 import org.rascalmpl.interpreter.result.AbstractFunction;
 import org.rascalmpl.interpreter.result.Result;
 import org.rascalmpl.interpreter.staticErrors.StaticError;
@@ -70,7 +71,7 @@ public class RascalManager {
 	
 	private final static IValueFactory VF = ValueFactoryFactory.getValueFactory();
 	
-	private final Evaluator eval = createEvaluator();
+	private final Evaluator evaluator = createEvaluator();
 	private final Set<Bundle> registeredBundles = new HashSet<>();
 
 
@@ -133,10 +134,10 @@ public class RascalManager {
 	private List<IMetricProvider> metricProviders;
 
 	public void configureRascalMetricProviders(Set<Bundle> providers) {
-		assert eval != null;
+		assert evaluator != null;
 
 		for (Bundle provider : providers) {
-			configureRascalPath(eval, provider);
+			configureRascalPath(evaluator, provider);
 		}
 	}
 
@@ -155,8 +156,7 @@ public class RascalManager {
 		registry.registerLogical(new BundleURIResolver(registry));
 		eval.addRascalSearchPathContributor(StandardLibraryContributor.getInstance());
 		Bundle currentBundle = Rasctivator.getContext().getBundle();
-		List<String> roots = new RascalBundleManifest()
-				.getSourceRoots(currentBundle);
+		List<String> roots = new RascalBundleManifest().getSourceRoots(currentBundle);
 
 		for (String root : roots) {
 			try {
@@ -170,13 +170,13 @@ public class RascalManager {
 	}
 
 	public Evaluator getEvaluator() {
-		return eval;
+		return evaluator;
 	}
 
-	private void configureRascalPath(Evaluator evaluator, Bundle bundle) {
+	private void configureRascalPath(Evaluator eval, Bundle bundle) {
 		Bundle rascalBundle = Platform.getBundle(RASCAL_ECLIPSE_NAME);
 		if(!registeredBundles.contains(rascalBundle)) {
-			evaluator.addClassLoader(new BundleClassLoader(rascalBundle));
+			eval.addClassLoader(new BundleClassLoader(rascalBundle));
 			registeredBundles.add(rascalBundle);
 		}
 		
@@ -186,33 +186,22 @@ public class RascalManager {
 		registeredBundles.add(bundle);
 
 		try {
+			// Adding dependendencies from mf.getRequiredBundles(bundle) was removed after 
+			// using the most recent version of Rascal.
 			RascalBundleManifest mf = new RascalBundleManifest();
-
-			//			List<String> dependencies = mf.getRequiredBundles(bundle);
-			//			if (dependencies != null) {
-			//				for (String bundleName : dependencies) {
-			//					Bundle dep = Platform.getBundle(bundleName);
-			//					if (dep != null) {
-			//						configureRascalPath(evaluator, dep);
-			//					} else {
-			//						throw new BundleException("Bundle " + bundleName + " not found.");
-			//					}
-			//				}
-			//			}
-
 			for (String root : mf.getSourceRoots(bundle)) {
-				evaluator.addRascalSearchPath(VF.sourceLocation(bundle.getResource(root).toURI()));
+				eval.addRascalSearchPath(VF.sourceLocation(bundle.getResource(root).toURI()));
 			}
 
 			List<String> requiredLibs = mf.getRequiredLibraries(bundle);
 			if (requiredLibs != null) {
 				for (String lib : requiredLibs) {
-					URIResolverRegistry registry = evaluator.getRascalResolver().getRegistry();
+					URIResolverRegistry registry = eval.getRascalResolver().getRegistry();
 					ISourceLocation libURL = registry.logicalToPhysical(VF.sourceLocation(bundle.getResource(lib).toURI()));
 					JarURIResolver resolver = new JarURIResolver(registry);
 
 					try {
-						addJarToSearchPath(libURL, resolver, evaluator);
+						addJarToSearchPath(libURL, resolver, eval);
 					} 
 					catch (IOException e) {
 						Rasctivator.logException("ignoring lib " + lib, e);
@@ -220,8 +209,8 @@ public class RascalManager {
 				}
 			}
 
-			evaluator.addClassLoader(new BundleClassLoader(bundle));
-			configureClassPath(bundle, evaluator);
+			eval.addClassLoader(new BundleClassLoader(bundle));
+			configureClassPath(bundle, eval);
 		} 
 		catch (Throwable e) {
 			Rasctivator.logException("failed to configure metrics bundle "
@@ -242,11 +231,11 @@ public class RascalManager {
 		}
 	}
 
-	private void configureClassPath(Bundle bundle, Evaluator evaluator) {
+	private void configureClassPath(Bundle bundle, Evaluator eval) {
 		List<URL> classPath = new LinkedList<URL>();
 		List<String> compilerClassPath = new LinkedList<String>();
 		collectClassPathForBundle(bundle, classPath, compilerClassPath);
-		configureClassPath(evaluator, classPath, compilerClassPath);
+		configureClassPath(eval, classPath, compilerClassPath);
 	}
 
 	private void configureClassPath(Evaluator eval, List<URL> classPath,
@@ -310,7 +299,7 @@ public class RascalManager {
 	}
 
 	public void importModule(String module) {
-		eval.doImport(new NullRascalMonitor(), module);
+		evaluator.doImport(new NullRascalMonitor(), module);
 	}
 
 	public static String makeRelative(String base, String extension) {
@@ -329,13 +318,27 @@ public class RascalManager {
 	private void addMetricProviders(Bundle bundle, List<IMetricProvider> providers, Set<IValue> extractedLanguages) {
 		RascalBundleManifest mf = new RascalBundleManifest();
 		String moduleName = mf.getMainModule(bundle);
-
-		if (!eval.getHeap().existsModule(moduleName)) {
-			importModule(moduleName);
+		
+		try {
+			File bundleFile = FileLocator.getBundleFile(bundle).getCanonicalFile();
+			List<String> moduleRoots = mf.getSourceRoots(bundle);
+			for(String root : moduleRoots) {
+				ISourceLocation moduleRoot = VF.sourceLocation("file", "", bundleFile.getAbsolutePath() + File.separator + root + File.separator);
+				evaluator.addRascalSearchPathContributor(new URIContributor(moduleRoot));
+			}
+			
+			if (!evaluator.getHeap().existsModule(moduleName)) {
+				importModule(moduleName);
+			}	
 		}
-
-		ModuleEnvironment module = eval.getHeap().getModule(moduleName);
-
+		catch(IOException e) {
+			Rasctivator.logException("Error while finding bundle " + bundle, e);
+		}
+		catch(URISyntaxException e) {
+			Rasctivator.logException("Error creating source location of bundle source roots: " + bundle, e);
+		}
+		
+		ModuleEnvironment module = evaluator.getHeap().getModule(moduleName);
 		for (Pair<String, List<AbstractFunction>> func : module.getFunctions()) {
 			final String funcName = func.getFirst();
 
@@ -350,7 +353,7 @@ public class RascalManager {
 						Map<String,String> uses = getUses(f);
 
 						if (!extractedLanguages.contains(language)) {
-							eval.getStdOut().println("Warning: metric " + f + " not loaded, no extractors available for language " + language);
+							evaluator.getStdOut().println("Warning: metric " + f + " not loaded, no extractors available for language " + language);
 							continue;
 						}
 
@@ -359,9 +362,7 @@ public class RascalManager {
 						}
 						else { 
 							RascalMetricProvider m = new RascalMetricProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f, uses); 
-
 							providers.add(m);
-
 							if (f.hasTag("historic")) {
 								providers.add(new RascalMetricHistoryWrapper(m));
 							}
@@ -447,7 +448,7 @@ public class RascalManager {
 			for (IExtension element : extensionPoint.getExtensions()) {
 				String name = element.getContributor().getName();
 				Bundle bundle = Platform.getBundle(name);
-				configureRascalPath(eval, bundle);
+				configureRascalPath(evaluator, bundle);
 				extractorBundles.add(bundle);
 			}
 		}
@@ -471,7 +472,7 @@ public class RascalManager {
 			for (IExtension element : extensionPoint.getExtensions()) {
 				String name = element.getContributor().getName();
 				Bundle bundle = Platform.getBundle(name);
-				configureRascalPath(eval, bundle);
+				configureRascalPath(evaluator, bundle);
 				metricBundles.add(bundle);
 			}
 		}
@@ -484,19 +485,19 @@ public class RascalManager {
 	}
 
 	public void initialize(IValue... parameters) {
-		eval.call("initialize", MODULE, null, parameters);
+		evaluator.call("initialize", MODULE, null, parameters);
 	}
 
 	public void addExtractors(Bundle bundle) {
-		configureRascalPath(eval, bundle);
+		configureRascalPath(evaluator, bundle);
 		RascalBundleManifest mf = new RascalBundleManifest();
 		String moduleName = mf.getMainModule(bundle);
 
-		if (!eval.getHeap().existsModule(moduleName)) {
+		if (!evaluator.getHeap().existsModule(moduleName)) {
 			importModule(moduleName);
 		}
 
-		ModuleEnvironment module = eval.getHeap().getModule(moduleName);
+		ModuleEnvironment module = evaluator.getHeap().getModule(moduleName);
 
 		for (Pair<String, List<AbstractFunction>> func : module.getFunctions()) {
 			for (final AbstractFunction f : func.getSecond()) {
@@ -509,8 +510,8 @@ public class RascalManager {
 					} 
 				} 
 				catch (Exception e) {
-					eval.getStdErr().println("Error while loading extractor " + f.toString());
-					e.printStackTrace(eval.getStdErr());
+					evaluator.getStdErr().println("Error while loading extractor " + f.toString());
+					e.printStackTrace(evaluator.getStdErr());
 				}
 			}
 		}

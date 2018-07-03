@@ -97,8 +97,8 @@ int numberUsedOSGiImportedPackagesInSourceCode(
 	if(repo <- workingCopies) {
 		m = getOSGiModelFromWorkingCopy(workingCopies[repo]);
 		return size(
-			(ternaryReltoSet(m3.importedPackages) 
-			+ ternaryReltoSet(m3.dynamicImportedPackages)) 
+			(ternaryReltoSet(m.importedPackages) 
+			+ ternaryReltoSet(m.dynamicImportedPackages)) 
 			- (getImportedPackagesBC(m3)));
 	}
 	return 0;
