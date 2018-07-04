@@ -16,7 +16,7 @@ import Set;
 import Dependency;
 import Java;
 import org::eclipse::scava::dependency::model::maven::Maven;
-import org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder;
+import org::eclipse::scava::dependency::model::maven::model::MavenModel;
 import org::eclipse::scava::metricprovider::ProjectDelta;
 import org::eclipse::scava::metricprovider::MetricProvider;
 

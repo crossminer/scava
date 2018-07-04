@@ -14,7 +14,7 @@ import String;
 
 import lang::xml::DOM;
 
-import org::eclipse::scava::dependency::model::maven::model::MavenModelBuilder;
+import org::eclipse::scava::dependency::model::maven::model::MavenModel;
 import org::eclipse::scava::dependency::model::maven::util::MavenUtil;
 import org::eclipse::scava::dependency::model::maven::util::FileHandler;
 import org::eclipse::scava::dependency::model::maven::util::MavenVersionHandler;

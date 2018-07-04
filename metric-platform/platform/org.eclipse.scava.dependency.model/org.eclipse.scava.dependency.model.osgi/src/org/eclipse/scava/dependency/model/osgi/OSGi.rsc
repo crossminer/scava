@@ -14,6 +14,7 @@ import IO;
 import org::eclipse::scava::metricprovider::ProjectDelta;
 import org::eclipse::scava::metricprovider::MetricProvider;
 
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModel;
 import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
 
 

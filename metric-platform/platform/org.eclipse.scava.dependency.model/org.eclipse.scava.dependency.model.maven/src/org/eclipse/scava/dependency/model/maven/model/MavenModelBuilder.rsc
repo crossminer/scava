@@ -14,21 +14,11 @@ import lang::xml::DOM;
 import Set;
 import String;
 
+import org::eclipse::scava::dependency::model::maven::model::MavenModel;
 import org::eclipse::scava::dependency::model::maven::model::resolvers::ProjectResolver;
 
 
 public str POM_FILE = "pom.xml";
-
-/*
- * - locations: maps from the logical location of a project to its physical location.
- * - dependencies: gathers all the project's dependencies. Dependency related 
- *   parameters are included.
- */
-data MavenModel = mavenModel (
-	loc id,
-	rel[loc logical, loc physical, map[str,str] params] locations = {},
-	rel[loc project, loc dependency, map[str,str] params] dependencies = {}
-);
 
 MavenModel createMavenModelFromWorkingCopy(loc workingCopy) {
 	pomFiles = pomLocations(workingCopy,{});

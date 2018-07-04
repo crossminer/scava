@@ -16,7 +16,7 @@ import Set;
 import Dependency;
 import Java;
 import org::eclipse::scava::dependency::model::osgi::OSGi;
-import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModel;
 import org::eclipse::scava::metricprovider::ProjectDelta;
 import org::eclipse::scava::metricprovider::MetricProvider;
 

@@ -16,7 +16,7 @@ import Set;
 import Type;
 
 import org::eclipse::scava::dependency::model::osgi::language::Syntax;
-import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModel;
 import org::eclipse::scava::dependency::model::osgi::model::resolvers::BundleResolver;
 import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
 import org::eclipse::scava::dependency::model::osgi::util::VersionsHelper;

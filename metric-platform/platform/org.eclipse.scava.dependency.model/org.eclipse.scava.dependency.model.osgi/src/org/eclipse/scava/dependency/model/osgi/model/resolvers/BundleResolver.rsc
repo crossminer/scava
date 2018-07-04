@@ -14,11 +14,10 @@ import List;
 import Relation;
 import Set;
 import String;
-import ValueIO;
 
 import org::eclipse::scava::dependency::model::osgi::language::Load;
 import org::eclipse::scava::dependency::model::osgi::language::Syntax;
-import org::eclipse::scava::dependency::model::osgi::model::OSGiModelBuilder;
+import org::eclipse::scava::dependency::model::osgi::model::OSGiModel;
 import org::eclipse::scava::dependency::model::osgi::util::LocationHandler;
 import org::eclipse::scava::dependency::model::osgi::util::VersionsHelper;
 
