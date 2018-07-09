@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { Project } from '../../project.model';
-import { CreateProjectService } from '../../../../shared/services/api-server/create-project.service';
+import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
 
 @Component({
   selector: 'app-create-project',

@@ -23,12 +23,4 @@ export class LocalStorageService {
     return localStorage.getItem('jwtToken');
   }
 
-  saveUsername(username: string) {
-    localStorage.setItem('username', username);
-  }
-
-  loadUsername() {
-    return localStorage.getItem('username');
-  }
-
 }

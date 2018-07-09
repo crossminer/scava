@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg fixed-top\">\n    <a class=\"navbar-brand\" href=\"#\"><img src=\"assets/images/CROSSMINER logo small.png\" width=\"50px\"/> Administration</a>\n    <button class=\"navbar-toggler\" type=\"button\" (click)=\"toggleSidebar()\">\n        <!-- <span class=\"navbar-toggler-icon\"></span> -->\n        <i class=\"fa fa-bars text-muted\" aria-hidden=\"true\"></i>\n    </button>\n    <div class=\"collapse navbar-collapse\">\n        <ul class=\"navbar-nav ml-auto\">\n            <li class=\"nav-item dropdown\" ngbDropdown>\n                <a href=\"javascript:void(0)\" class=\"nav-link\" ngbDropdownToggle>\n                    <i class=\"fa fa-user\"></i> Hi, {{username}} <b class=\"caret\"></b>\n                </a>\n                <div class=\"dropdown-menu-right\" ngbDropdownMenu>\n                    <a class=\"dropdown-item\" href=\"javascript:void(0)\">\n                        <i class=\"fa fa-fw fa-user\"></i> {{ 'Profile'}}\n                    </a>\n                    <a class=\"dropdown-item\" href=\"javascript:void(0)\">\n                        <i class=\"fa fa-fw fa-envelope\"></i> {{ 'Inbox'}}\n                    </a>\n                    <a class=\"dropdown-item\" href=\"javascript:void(0)\">\n                        <i class=\"fa fa-fw fa-gear\"></i> {{ 'Settings'}}\n                    </a>\n                    <a class=\"dropdown-item\" [routerLink]=\"['/login']\" (click)=\"onLoggedout()\">\n                        <i class=\"fa fa-fw fa-power-off\"></i> {{ 'Log Out'}}\n                    </a>\n                </div>\n            </li>\n        </ul>\n    </div>\n</nav>\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg fixed-top\">\n    <a class=\"navbar-brand\" href=\"#\"><img src=\"assets/images/CROSSMINER_logo.png\" width=\"50px\"/> Administration</a>\n    <button class=\"navbar-toggler\" type=\"button\" (click)=\"toggleSidebar()\">\n        <!-- <span class=\"navbar-toggler-icon\"></span> -->\n        <i class=\"fa fa-bars text-muted\" aria-hidden=\"true\"></i>\n    </button>\n    <div class=\"collapse navbar-collapse\">\n        <ul class=\"navbar-nav ml-auto\">\n            <li class=\"nav-item dropdown\" ngbDropdown>\n                <a href=\"javascript:void(0)\" class=\"nav-link\" ngbDropdownToggle>\n                    <i class=\"fa fa-user\"></i> Hi, {{username}} <b class=\"caret\"></b>\n                </a>\n                <div class=\"dropdown-menu-right\" ngbDropdownMenu>\n                    <a class=\"dropdown-item\" href=\"javascript:void(0)\">\n                        <i class=\"fa fa-fw fa-user\"></i> {{ 'Profile'}}\n                    </a>\n                    <a class=\"dropdown-item\" [routerLink]=\"['/login']\" (click)=\"onLoggedout()\">\n                        <i class=\"fa fa-fw fa-power-off\"></i> {{ 'Log Out'}}\n                    </a>\n                </div>\n            </li>\n        </ul>\n    </div>\n</nav>\n"
 
 /***/ }),
 
@@ -34,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function() { return HeaderComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _shared_services_authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/services/authentication/local-storage.service */ "./src/app/shared/services/authentication/local-storage.service.ts");
+/* harmony import */ var _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/services/authentication/authentication.service */ "./src/app/shared/services/authentication/authentication.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -48,11 +48,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var HeaderComponent = /** @class */ (function () {
-    function HeaderComponent(router, localStorageService) {
+    function HeaderComponent(router, authenticationService) {
         var _this = this;
         this.router = router;
-        this.localStorageService = localStorageService;
-        this.username = null;
+        this.authenticationService = authenticationService;
         this.pushRightClass = 'push-right';
         this.router.events.subscribe(function (val) {
             if (val instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"] &&
@@ -64,7 +63,7 @@ var HeaderComponent = /** @class */ (function () {
     }
     HeaderComponent.prototype.ngOnInit = function () {
         if (this.username == null) {
-            this.username = this.localStorageService.loadUsername();
+            this.username = this.authenticationService.getUsername();
         }
     };
     HeaderComponent.prototype.isToggled = function () {
@@ -89,7 +88,7 @@ var HeaderComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./header.component.scss */ "./src/app/layout/components/header/header.component.scss")]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
-            _shared_services_authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_2__["LocalStorageService"]])
+            _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -105,7 +104,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"sidebar\" [ngClass]=\"{sidebarPushRight: isActive}\">\n    <div class=\"list-group\">\n        <a routerLink=\"/home\" [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\">\n            <i class=\"fa fa-lg fa-home\"></i>&nbsp;{{ 'Home' }}\n        </a>\n        <a routerLink=\"/user-management\" class=\"list-group-item\">\n            <i class=\"fa fa-lg fa-user-plus\"></i>&nbsp;{{ 'User management' }}\n        </a>\n        <a routerLink=\"/project\" class=\"list-group-item\">\n            <i class=\"fa fa-lg fa-cube\"></i>&nbsp;{{ 'Projects Catalogue' }}\n        </a>\n        <div class=\"nested-menu\">\n            <a class=\"list-group-item\" (click)=\"addExpandClass('pages')\">\n                <span><i class=\"fa fa-lg fa-folder-open\"></i>&nbsp; {{ 'New Project' }}</span>\n            </a>\n            <li class=\"nested\" [class.expand]=\"showMenu === 'pages'\">\n                <ul class=\"submenu\">\n                    <li>\n                        <a routerLink=\"/project/import\" href=\"javascript:void(0)\">\n                            <span>\n                                <i class=\"fa fa-lg fa-plus-circle \"></i>&nbsp; {{ 'Import Project' }}\n                            </span>\n                        </a>\n                    </li>\n                    <li>\n                        <a routerLink=\"/project/create\" href=\"javascript:void(0)\">\n                            <span>\n                                <i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp; {{ 'Create New Project' }}\n                            </span>\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </div>\n    </div>\n</nav>"
+module.exports = "<nav class=\"sidebar\" [ngClass]=\"{sidebarPushRight: isActive}\">\n    <div class=\"list-group\">\n        <a routerLink=\"/home\" [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\">\n            <i class=\"fa fa-lg fa-home\"></i>&nbsp;{{ 'Home' }}\n        </a>\n        <a routerLink=\"/user-management\" class=\"list-group-item\" *ngIf=\"authenticationService.hasAdminRole()\">\n            <i class=\"fa fa-lg fa-user-plus\"></i>&nbsp;{{ 'User management' }}\n        </a>\n        <a routerLink=\"/project\" class=\"list-group-item\">\n            <i class=\"fa fa-lg fa-cube\"></i>&nbsp;{{ 'Projects Catalogue' }}\n        </a>\n        <div class=\"nested-menu\">\n            <a class=\"list-group-item\" (click)=\"addExpandClass('pages')\">\n                <span><i class=\"fa fa-lg fa-folder-open\"></i>&nbsp; {{ 'New Project' }}</span>\n            </a>\n            <li class=\"nested\" [class.expand]=\"showMenu === 'pages'\">\n                <ul class=\"submenu\">\n                    <li>\n                        <a routerLink=\"/project/import\" href=\"javascript:void(0)\">\n                            <span>\n                                <i class=\"fa fa-lg fa-plus-circle \"></i>&nbsp; {{ 'Import Project' }}\n                            </span>\n                        </a>\n                    </li>\n                    <li>\n                        <a routerLink=\"/project/create\" href=\"javascript:void(0)\">\n                            <span>\n                                <i class=\"fa fa-lg fa-plus-circle\"></i>&nbsp; {{ 'Create New Project' }}\n                            </span>\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </div>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -132,6 +131,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SidebarComponent", function() { return SidebarComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/services/authentication/authentication.service */ "./src/app/shared/services/authentication/authentication.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -143,10 +143,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var SidebarComponent = /** @class */ (function () {
-    function SidebarComponent(router) {
+    function SidebarComponent(router, authenticationService) {
         var _this = this;
         this.router = router;
+        this.authenticationService = authenticationService;
         this.isActive = false;
         this.showMenu = '';
         this.pushRightClass = 'push-right';
@@ -190,7 +192,8 @@ var SidebarComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./sidebar.component.html */ "./src/app/layout/components/sidebar/sidebar.component.html"),
             styles: [__webpack_require__(/*! ./sidebar.component.scss */ "./src/app/layout/components/sidebar/sidebar.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
+            _shared_services_authentication_authentication_service__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"]])
     ], SidebarComponent);
     return SidebarComponent;
 }());

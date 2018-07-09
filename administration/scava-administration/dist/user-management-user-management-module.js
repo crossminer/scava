@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<form name=\"deleteForm\" (ngSubmit)=\"confirmDelete(user.login)\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">Confirm delete operation</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\"\n            (click)=\"clear()\">&times;</button>\n    </div>\n    <div class=\"modal-body\">\n        <p>Are you sure you want to delete this User?</p>\n    </div>\n    <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"clear()\">\n            <i class=\"fa fa-ban\"></i>&nbsp;<span>Cancel</span>\n        </button>&nbsp;\n        <button type=\"submit\" class=\"btn btn-danger\">\n            <i class=\"fa fa-times\"></i>&nbsp;<span>Delete</span>\n        </button>\n    </div>\n</form>\n"
+module.exports = "<form name=\"deleteForm\" (ngSubmit)=\"confirmDelete(user.login)\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">Confirm delete operation</h4>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" (click)=\"clear()\">&times;</button>\n    </div>\n    <div class=\"modal-body\">\n        <p>Are you sure you want to delete this User?</p>\n    </div>\n    <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"clear()\">\n            <i class=\"fa fa-ban\"></i>&nbsp;<span>Cancel</span>\n        </button>&nbsp;\n        <button type=\"submit\" class=\"btn btn-danger\">\n            <i class=\"fa fa-times\"></i>&nbsp;<span>Delete</span>\n        </button>\n    </div>\n</form>\n"
 
 /***/ }),
 
@@ -24,6 +24,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var _shared_services_user_management_user_management_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/services/user-management/user-management.service */ "./src/app/shared/services/user-management/user-management.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -36,8 +37,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var UserMgmtDeleteDialogComponent = /** @class */ (function () {
-    function UserMgmtDeleteDialogComponent(userManagementService, activeModal) {
+    function UserMgmtDeleteDialogComponent(router, userManagementService, activeModal) {
+        this.router = router;
         this.userManagementService = userManagementService;
         this.activeModal = activeModal;
     }
@@ -49,13 +52,15 @@ var UserMgmtDeleteDialogComponent = /** @class */ (function () {
         this.userManagementService.delete(login).subscribe(function (response) {
             _this.activeModal.dismiss(true);
         });
+        this.router.navigateByUrl('/user-management');
     };
     UserMgmtDeleteDialogComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'jhi-user-mgmt-delete-dialog',
             template: __webpack_require__(/*! ./user-management-delete-dialog.component.html */ "./src/app/layout/user-management/user-management-delete-dialog/user-management-delete-dialog.component.html")
         }),
-        __metadata("design:paramtypes", [_shared_services_user_management_user_management_service__WEBPACK_IMPORTED_MODULE_2__["UserManagementService"],
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _shared_services_user_management_user_management_service__WEBPACK_IMPORTED_MODULE_2__["UserManagementService"],
             _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbActiveModal"]])
     ], UserMgmtDeleteDialogComponent);
     return UserMgmtDeleteDialogComponent;
@@ -227,7 +232,7 @@ var UserManagementUpdateComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"table-responsive\">\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th>\n            <span>Login</span>\n          </th>\n          <th>\n            <span>Email</span>\n          </th>\n          <th>\n          </th>\n          <th>\n            <span>Profiles</span>\n          </th>\n          <th>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let user of users\">\n          <td>{{user.login}}</td>\n          <td>{{user.email}}</td>\n          <td>\n            <button class=\"btn btn-danger btn-sm\" *ngIf=\"!user.activated\" (click)=\"setActive(user, true)\">Deactivated</button>\n            <button class=\"btn btn-success btn-sm\" *ngIf=\"user.activated\" (click)=\"setActive(user, false)\">Activated</button>\n\n          </td>\n          <td>\n            <div *ngFor=\"let authorithy of user.authorities\">\n              <div *ngIf=\"authorithy !== 'ROLE_USER'\">\n                {{authorithy}}\n              </div>\n              <div *ngIf=\"authorithy == 'ROLE_USER' && user.authorities.length == 1\">\n                  NO ROLES ARE ASSINGED TO THIS USER\n              </div>\n            </div>\n          </td>\n          <td class=\"text-right\">\n            <div class=\"btn-group flex-btn-group-container\">\n              <button type=\"submit\" [routerLink]=\"['./', user.login, 'edit']\" queryParamsHandling=\"merge\" class=\"btn btn-primary btn-sm\">\n                <i class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp;\n                <span class=\"d-none d-md-inline\">Edit</span>\n              </button>\n              <button type=\"button\" (click)=\"deleteUser(user)\" class=\"btn btn-danger btn-sm\">\n                <i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;\n                <span class=\"d-none d-md-inline\">Delete</span>\n              </button>\n            </div>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <div class=\"table-responsive\">\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th>\n            <span>Login</span>\n          </th>\n          <th>\n            <span>Email</span>\n          </th>\n          <th>\n          </th>\n          <th>\n            <span>Profiles</span>\n          </th>\n          <th>\n          </th>\n        </tr>\n      </thead>\n      <tbody *ngIf =\"users\">\n        <tr *ngFor=\"let user of users\">\n          <td>{{user.login}}</td>\n          <td>{{user.email}}</td>\n          <td>\n            <button type=\"submit\" class=\"btn btn-danger btn-sm\" *ngIf=\"!user.activated\" (click)=\"setActive(user, true)\">Deactivated</button>\n            <button type=\"submit\" class=\"btn btn-success btn-sm\" *ngIf=\"user.activated\" (click)=\"setActive(user, false)\">Activated</button>\n          </td>\n          <td>\n            <div *ngFor=\"let authorithy of user.authorities\">\n              <div *ngIf=\"authorithy !== 'ROLE_USER'\">\n                <span class=\"badge badge-info\">{{authorithy}}</span>\n              </div>\n              <div *ngIf=\"authorithy == 'ROLE_USER' && user.authorities.length == '1'\">\n                <span class=\"badge badge-info\">NO ROLES ARE ASSINGED TO THIS USER</span>\n              </div>\n            </div>\n          </td>\n          <td class=\"text-right\">\n            <div class=\"btn-group flex-btn-group-container\">\n              <button type=\"submit\" [routerLink]=\"['./', user.login, 'edit']\" queryParamsHandling=\"merge\" class=\"btn btn-primary btn-sm\">\n                <i class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp;\n                <span class=\"d-none d-md-inline\">Edit</span>\n              </button>\n              <button type=\"button\" (click)=\"deleteUser(user)\" class=\"btn btn-danger btn-sm\">\n                <i class=\"fa fa-times\" aria-hidden=\"true\"></i>&nbsp;\n                <span class=\"d-none d-md-inline\">Delete</span>\n              </button>\n            </div>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -287,16 +292,20 @@ var UserManagementComponent = /** @class */ (function () {
         this.userManagementService.update(user).subscribe(function (success) { return _this.onSuccess(success); }, function (error) { return _this.onError(error); });
     };
     UserManagementComponent.prototype.deleteUser = function (user) {
+        var _this = this;
         var modalRef = this.modalService.open(_user_management_delete_dialog_user_management_delete_dialog_component__WEBPACK_IMPORTED_MODULE_3__["UserMgmtDeleteDialogComponent"], { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.user = user;
         modalRef.result.then(function (result) {
-            // Left blank intentionally, nothing to do here
+            console.log('delete success');
         }, function (reason) {
-            // Left blank intentionally, nothing to do here
+            console.log('delete faild');
+            _this.loadAll();
         });
     };
     UserManagementComponent.prototype.onSuccess = function (data) {
         this.users = data;
+        console.log(data);
+        console.log(this.users);
     };
     UserManagementComponent.prototype.onError = function (error) {
         console.log(error);

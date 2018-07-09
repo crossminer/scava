@@ -19,6 +19,7 @@ var map = {
 	"./account/login/login.module": [
 		"./src/app/account/login/login.module.ts",
 		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
+		"account-login-login-module~layout-layout-module",
 		"common",
 		"account-login-login-module"
 	],
@@ -37,6 +38,7 @@ var map = {
 		"./src/app/layout/layout.module.ts",
 		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
 		"layout-layout-module~user-management-user-management-module",
+		"account-login-login-module~layout-layout-module",
 		"common",
 		"layout-layout-module"
 	],

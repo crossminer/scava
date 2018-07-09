@@ -51,7 +51,7 @@ var LoginRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login-page\">\n        <div class=\"row justify-content-md-center\">\n            <div class=\"col-md-8\">\n                <nav class=\"login-logo\">\n                    <img src=\"assets/images/SCAVA_logo_tagline_side.jpg\" width=\"600px\" />\n                </nav>\n                <h2>SCAVA is an open-source platform for automatically analysing the source code, bug tracking systems, and communication\n                    channels of open source software projects.</h2>\n            </div>\n        </div>\n        <div class=\"row justify-content-md-center\">\n            <div class=\"alert alert-danger\" *ngIf=\"mode==1\">\n                <strong>Bad credentials!</strong> Invalid username or password.\n            </div>\n        </div>\n        <div class=\"row justify-content-md-center\">\n            <div class=\"col-md-4\">\n                <form #f=\"ngForm\" (ngSubmit)=\"onLoggedin(f.value)\">\n                    <div class=\"form-content\">\n                        <div class=\"form-group\">\n                            <input type=\"text\" name=\"username\" [(ngModel)]=\"username\" class=\"form-control input-underline input-lg\" placeholder=\"Username\" />\n                        </div>\n                        <div class=\"form-group\">\n                            <input type=\"password\" name=\"password\" [(ngModel)]=\"password\" class=\"form-control input-underline input-lg\" placeholder=\"Password\" />\n                        </div>\n                    </div>\n                    <button type=\"submit\" class=\"btn rounded-btn\" [disabled]=\"!f.valid\"> Log in </button>\n                    &nbsp;\n                    <a class=\"btn rounded-btn\" [routerLink]=\"['/signup']\"> Register </a>\n                </form>\n            </div>\n        </div>\n    </div>\n"
+module.exports = "<div class=\"login-page\">\n        <div class=\"row justify-content-md-center\">\n            <div class=\"col-md-8\">\n                <nav class=\"login-logo\">\n                    <img src=\"assets/images/CROSSMINER_logo_tagline_side.png\" width=\"600px\" />\n                </nav>\n                <h2>CROSSMINER is an open-source platform for automatically analysing the source code, bug tracking systems, and communication\n                    channels of open source software projects.</h2>\n            </div>\n        </div>\n        <div class=\"row justify-content-md-center\">\n            <div class=\"alert alert-danger\" *ngIf=\"mode==1\">\n                <strong>Bad credentials!</strong> Invalid username or password.\n            </div>\n        </div>\n        <div class=\"row justify-content-md-center\">\n            <div class=\"col-md-4\">\n                <form #f=\"ngForm\" (ngSubmit)=\"onLoggedin(f.value)\">\n                    <div class=\"form-content\">\n                        <div class=\"form-group\">\n                            <input type=\"text\" name=\"username\" [(ngModel)]=\"username\" class=\"form-control input-underline input-lg\" placeholder=\"Username\" />\n                        </div>\n                        <div class=\"form-group\">\n                            <input type=\"password\" name=\"password\" [(ngModel)]=\"password\" class=\"form-control input-underline input-lg\" placeholder=\"Password\" />\n                        </div>\n                    </div>\n                    <button type=\"submit\" class=\"btn rounded-btn\" [disabled]=\"!f.valid\"> Log in </button>\n                    &nbsp;\n                    <a class=\"btn rounded-btn\" [routerLink]=\"['/signup']\"> Register </a>\n                </form>\n            </div>\n        </div>\n    </div>\n"
 
 /***/ }),
 
@@ -108,12 +108,8 @@ var LoginComponent = /** @class */ (function () {
         var _this = this;
         this.authenticationService.login(data).subscribe(function (resp) {
             var jwtToken = resp.headers.get('Authorization');
-            // console.log(jwtToken);
-            // localStorage.clear();
             _this.localStorageService.saveToken(jwtToken);
-            //localStorage.setItem('isLoggedin', 'true');
             _this.localStorageService.saveLoginStatus('true');
-            //sessionStorage.setItem('username', data.username);
             _this.localStorageService.saveUsername(data.username);
             _this.router.navigateByUrl('/home');
         }, function (error) {
@@ -174,53 +170,6 @@ var LoginModule = /** @class */ (function () {
         })
     ], LoginModule);
     return LoginModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/shared/services/authentication/authentication.service.ts":
-/*!**************************************************************************!*\
-  !*** ./src/app/shared/services/authentication/authentication.service.ts ***!
-  \**************************************************************************/
-/*! exports provided: AuthenticationService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthenticationService", function() { return AuthenticationService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var AuthenticationService = /** @class */ (function () {
-    function AuthenticationService(httpClient) {
-        this.httpClient = httpClient;
-        this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].SERVER_API_URL + '/api';
-        this.authentication = '/authentication';
-    }
-    AuthenticationService.prototype.login = function (data) {
-        return this.httpClient.post(this.resourceUrl + "/" + this.authentication, data, { observe: 'response' });
-    };
-    AuthenticationService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
-    ], AuthenticationService);
-    return AuthenticationService;
 }());
 
 

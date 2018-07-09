@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
                 const jwtToken = resp.headers.get('Authorization');
                 this.localStorageService.saveToken(jwtToken);
                 this.localStorageService.saveLoginStatus('true');
-                this.localStorageService.saveUsername(data.username);
                 this.router.navigateByUrl('/home');
             }, (error) => {
                 this.mode = 1;

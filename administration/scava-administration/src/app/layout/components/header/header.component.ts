@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
+import { AuthenticationService } from '../../../shared/services/authentication/authentication.service';
 
 @Component({
     selector: 'app-header',
@@ -9,12 +9,12 @@ import { LocalStorageService } from '../../../shared/services/authentication/loc
 })
 export class HeaderComponent implements OnInit {
     
-    private username: string = null;
+    private username: any;
     private pushRightClass: string = 'push-right';
 
     constructor(
-        public router: Router,
-        public localStorageService: LocalStorageService
+        private router: Router,
+        private authenticationService: AuthenticationService
     ) {
         this.router.events.subscribe(val => {
             if (
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         if(this.username == null) {
-            this.username = this.localStorageService.loadUsername();
+            this.username = this.authenticationService.getUsername();
         }
     }
 
