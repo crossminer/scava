@@ -11,7 +11,7 @@ import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/u
 })
 export class UserManagementComponent implements OnInit {
 
-  private users: User[];
+  private users: any;
 
   constructor(
     private userManagementService: UserManagementService,
@@ -40,26 +40,25 @@ export class UserManagementComponent implements OnInit {
   deleteUser(user: User) {
     const modalRef = this.modalService.open(UserMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
-    console.log(modalRef.result)
     modalRef.result.then(
       result => {
-        // Left blank intentionally, nothing to do here
         console.log('delete success');
       },
       reason => {
-        // Left blank intentionally, nothing to do here
         console.log('delete faild');
+        this.loadAll();
       }
     );
   }
 
   private onSuccess(data) {
     this.users = data;
-    //console.log(this.users)
+    console.log(data);
+    console.log(this.users)
   }
 
   private onError(error) {
-    console.log('error' + error);
+    console.log(error);
   }
 
 }

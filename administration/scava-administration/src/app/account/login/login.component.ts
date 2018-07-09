@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { routerTransition } from '../../router.animations';
 import { LocalStorageService } from '../../shared/services/authentication/local-storage.service';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
-import { UserManagementService } from '../../shared/services/user-management/user-management.service';
 
 @Component({
     selector: 'app-login',
@@ -28,12 +27,8 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(data).subscribe(
             (resp) => {
                 const jwtToken = resp.headers.get('Authorization');
-                // console.log(jwtToken);
-                // localStorage.clear();
                 this.localStorageService.saveToken(jwtToken);
-                //localStorage.setItem('isLoggedin', 'true');
                 this.localStorageService.saveLoginStatus('true');
-                //sessionStorage.setItem('username', data.username);
                 this.localStorageService.saveUsername(data.username);
                 this.router.navigateByUrl('/home');
             }, (error) => {

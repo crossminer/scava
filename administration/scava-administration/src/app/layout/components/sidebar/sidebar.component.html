@@ -3,7 +3,7 @@
         <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-lg fa-home"></i>&nbsp;{{ 'Home' }}
         </a>
-        <a routerLink="/user-management" class="list-group-item">
+        <a routerLink="/user-management" class="list-group-item" *ngIf="authenticationService.hasAdminRole()">
             <i class="fa fa-lg fa-user-plus"></i>&nbsp;{{ 'User management' }}
         </a>
         <a routerLink="/project" class="list-group-item">

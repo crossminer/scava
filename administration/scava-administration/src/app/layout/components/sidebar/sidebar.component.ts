@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { UserManagementService } from '../../../shared/services/user-management/user-management.service';
-import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
+import { AuthenticationService } from '../../../shared/services/authentication/authentication.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,7 +14,8 @@ export class SidebarComponent {
     pushRightClass: string = 'push-right';
 
     constructor(
-        public router: Router
+        public router: Router,
+        public authenticationService: AuthenticationService
     ) {
         this.router.events.subscribe(val => {
             if (

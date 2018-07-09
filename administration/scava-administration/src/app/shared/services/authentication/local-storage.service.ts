@@ -30,4 +30,5 @@ export class LocalStorageService {
   loadUsername() {
     return localStorage.getItem('username');
   }
+
 }

@@ -18,7 +18,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf ="users">
         <tr *ngFor="let user of users">
           <td>{{user.login}}</td>
           <td>{{user.email}}</td>
@@ -29,10 +29,10 @@
           <td>
             <div *ngFor="let authorithy of user.authorities">
               <div *ngIf="authorithy !== 'ROLE_USER'">
-                {{authorithy}}
+                <span class="badge badge-info">{{authorithy}}</span>
               </div>
-              <div *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == 1">
-                  NO ROLES ARE ASSINGED TO THIS USER
+              <div *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == '1'">
+                <span class="badge badge-info">NO ROLES ARE ASSINGED TO THIS USER</span>
               </div>
             </div>
           </td>
