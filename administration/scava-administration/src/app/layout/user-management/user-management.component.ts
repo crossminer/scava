@@ -53,8 +53,6 @@ export class UserManagementComponent implements OnInit {
 
   private onSuccess(data) {
     this.users = data;
-    console.log(data);
-    console.log(this.users)
   }
 
   private onError(error) {

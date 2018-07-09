@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.scava.authservice.configuration.JwtAuthenticationConfig;
 import org.eclipse.scava.authservice.jwt.JwtUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,11 +32,22 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-	
 	private final UserDetailsService userDetailsService;
 	
     @Autowired 
-    JwtAuthenticationConfig config;
+    private JwtAuthenticationConfig config;
+    
+    @Value("${scava.administration.username}")
+    private String username;
+    
+    @Value("${scava.administration.password}")
+    private String password;
+    
+    @Value("${scava.administration.admin-role}")
+    private String adminRole;
+    
+    @Value("${scava.administration.user-role}")
+    private String userRole;
     
     public SecurityConfig(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService) {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
@@ -56,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	
         auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").roles("ADMIN", "USER");
+                .withUser(username).password(password).roles(adminRole, userRole);
         
         auth.userDetailsService(userDetailsService)
         	.passwordEncoder(passwordEncoder());
