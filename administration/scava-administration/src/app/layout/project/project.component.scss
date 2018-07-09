@@ -2,131 +2,80 @@
 body {
   font-family: "Josefin Sans", sans-serif;
   line-height: 1;
-
   height: 100%;
   background: #eee;
 }
 
 
-.pricing-table {
+.project-table {
   display: table;
-  width: 100%;
-  padding: 50px;
+  width: 95%;
+  padding: 10px;
 }
-.pricing-table .pricing-option {
-  width: 30%;
+.project-table .project-option {
+  width: 100%;
   background: white;
   float: left;
-  padding: 2%;
-  text-align: center;
+  padding: 1%;
+  //text-align: center;
+  vertical-align: middle;
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.3);
-  height: 350px;
   margin: 1%;
  
 }
 
-.pricing-table .pricing-option:hover {
+.project-table .project-option:hover {
   cursor: pointer;
   box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.3);
   -webkit-transform: scale(1.04);
           transform: scale(1.04);
 }
-.pricing-table .pricing-option:hover i, .pricing-table .pricing-option:hover h1, .pricing-table .pricing-option:hover span, .pricing-table .pricing-option:hover b {
+.project-table .project-option:hover i, .project-table .project-option:hover h1, .project-table .project-option:hover span, .project-table .project-option:hover b {
   color: #76a2ed;
 }
-.pricing-table .pricing-option:hover .front {
+.project-table .project-option:hover .front {
   opacity: 0;
   visibility: hidden;
 }
-.pricing-table .pricing-option:hover .back {
+.project-table .project-option:hover .back {
   opacity: 1 !important;
   visibility: visible !important;
 }
-.pricing-table .pricing-option:hover .back a.button {
+.project-table .project-option:hover .back a.button {
   -webkit-transform: translateY(0px) !important;
           transform: translateY(0px) !important;
 }
-.pricing-table .pricing-option hr {
+.project-table .project-option hr {
   border: none;
   border-bottom: 1px solid #F0F0F0;
 }
-.pricing-table .pricing-option i {
+.project-table .project-option i {
   font-size: 3rem;
   color: #D8D8D8;
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
+  margin: 15px;
 }
-.pricing-table .pricing-option h1 {
+.project-table .project-option h1 {
   margin: 10px 0;
   color: #212121;
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
 }
-.pricing-table .pricing-option p {
+.project-table .project-option p {
   color: #999;
   padding: 0 10px;
   line-height: 1.3;
 }
-.pricing-table .pricing-option .price {
-  position: relative;
-}
-
-
-.price-description{
-   min-height: 80px;
-}
-
-.pricing-table .pricing-option .price .front span.price {
-  font-size: 2rem;
-  text-transform: uppercase;
-  margin-top: 20px;
-  display: block;
-  font-weight: 700;
-  position: relative;
-}
-.pricing-table .pricing-option .price .front span.price b {
-  position: absolute;
-  font-size: 1rem;
-  margin-left: 2px;
-  font-weight: 600;
-}
-.pricing-table .pricing-option .price .back {
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
-}
-.pricing-table .pricing-option .price .back a.button {
-  background: #76a2ed;
-  padding: 15px 20px;
-  display: inline-block;
-  text-decoration: none;
-  color: white;
-  position: absolute;
-  font-size: 13px;
-  top: -5px;
-  left: 0;
-  right: 0;
-  width: 150px;
-  margin: auto;
-  text-transform: uppercase;
-  -webkit-transform: translateY(20px);
-          transform: translateY(20px);
-  -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
-}
-.pricing-table .pricing-option .price .back a.button:hover {
-  background: #76a2ed;
-}
 
 @media screen and (max-width: 600px) {
-  .pricing-table .pricing-option {
+  .project-table .project-option {
     padding: 5%;
     width: 90%;
   }
-  .pricing-table .pricing-option:nth-child(even) {
+  .project-table .project-option:nth-child(even) {
     margin: 30px 0 !important;
   }
 }
