@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from '../../shared/services/user-management/user-management.service';
 import { User } from './user-model';
-import { HttpResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/user-management-delete-dialog.component';
 
 @Component({
   selector: 'app-user-management',
@@ -13,7 +14,8 @@ export class UserManagementComponent implements OnInit {
   private users: User[];
 
   constructor(
-    private userManagementService: UserManagementService
+    private userManagementService: UserManagementService,
+    public modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -21,23 +23,43 @@ export class UserManagementComponent implements OnInit {
   }
 
   loadAll() {
-    this.userManagementService.get().subscribe(
-      (resp) => this.onSuccess(resp), 
-      (resp) => this.onError(resp)
+    this.userManagementService.query().subscribe(
+      (success) => this.onSuccess(success),
+      (error) => this.onError(error)
     );
   }
 
-  active() {
-    
+  setActive(user, isActivated) {
+    user.activated = isActivated;
+    this.userManagementService.update(user).subscribe(
+      (success) => this.onSuccess(success),
+      (error) => this.onError(error)
+    )
+  }
+
+  deleteUser(user: User) {
+    const modalRef = this.modalService.open(UserMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.user = user;
+    console.log(modalRef.result)
+    modalRef.result.then(
+      result => {
+        // Left blank intentionally, nothing to do here
+        console.log('delete success');
+      },
+      reason => {
+        // Left blank intentionally, nothing to do here
+        console.log('delete faild');
+      }
+    );
   }
 
   private onSuccess(data) {
     this.users = data;
-    console.log(data);
+    //console.log(this.users)
   }
 
   private onError(error) {
-    console.log(error);
+    console.log('error' + error);
   }
 
 }

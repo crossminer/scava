@@ -16,6 +16,18 @@ var map = {
 		"./src/app/account/activate/activate.module.ts",
 		"account-activate-activate-module"
 	],
+	"./account/login/login.module": [
+		"./src/app/account/login/login.module.ts",
+		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
+		"common",
+		"account-login-login-module"
+	],
+	"./account/signup/signup.module": [
+		"./src/app/account/signup/signup.module.ts",
+		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
+		"common",
+		"account-signup-signup-module"
+	],
 	"./home/home.module": [
 		"./src/app/layout/home/home.module.ts",
 		"common",
@@ -23,15 +35,10 @@ var map = {
 	],
 	"./layout/layout.module": [
 		"./src/app/layout/layout.module.ts",
-		"layout-layout-module~login-login-module~project-project-module",
+		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
+		"layout-layout-module~user-management-user-management-module",
 		"common",
 		"layout-layout-module"
-	],
-	"./login/login.module": [
-		"./src/app/login/login.module.ts",
-		"layout-layout-module~login-login-module~project-project-module",
-		"common",
-		"login-login-module"
 	],
 	"./not-found/not-found.module": [
 		"./src/app/not-found/not-found.module.ts",
@@ -39,7 +46,7 @@ var map = {
 	],
 	"./project/project.module": [
 		"./src/app/layout/project/project.module.ts",
-		"layout-layout-module~login-login-module~project-project-module",
+		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
 		"common",
 		"project-project-module"
 	],
@@ -47,10 +54,12 @@ var map = {
 		"./src/app/server-error/server-error.module.ts",
 		"server-error-server-error-module"
 	],
-	"./signup/signup.module": [
-		"./src/app/signup/signup.module.ts",
+	"./user-management/user-management.module": [
+		"./src/app/layout/user-management/user-management.module.ts",
+		"account-login-login-module~account-signup-signup-module~layout-layout-module~project-project-module~~66a151c7",
+		"layout-layout-module~user-management-user-management-module",
 		"common",
-		"signup-signup-module"
+		"user-management-user-management-module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -99,9 +108,9 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 var routes = [
     { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [_shared__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]] },
+    { path: 'login', loadChildren: './account/login/login.module#LoginModule' },
+    { path: 'signup', loadChildren: './account/signup/signup.module#SignupModule' },
     { path: 'activate', loadChildren: './account/activate/activate.module#ActivateModule' },
-    { path: 'login', loadChildren: './login/login.module#LoginModule' },
-    { path: 'signup', loadChildren: './signup/signup.module#SignupModule' },
     { path: 'error', loadChildren: './server-error/server-error.module#ServerErrorModule' },
     { path: 'access-denied', loadChildren: './access-denied/access-denied.module#AccessDeniedModule' },
     { path: 'not-found', loadChildren: './not-found/not-found.module#NotFoundModule' },
@@ -254,6 +263,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuard", function() { return AuthGuard; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/authentication/local-storage.service */ "./src/app/shared/services/authentication/local-storage.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -265,12 +275,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var AuthGuard = /** @class */ (function () {
-    function AuthGuard(router) {
+    function AuthGuard(router, localStrorageService) {
         this.router = router;
+        this.localStrorageService = localStrorageService;
     }
     AuthGuard.prototype.canActivate = function () {
-        if (localStorage.getItem('isLoggedin')) {
+        if (this.localStrorageService.loadLoginStatus()) {
             return true;
         }
         this.router.navigate(['/login']);
@@ -278,7 +290,8 @@ var AuthGuard = /** @class */ (function () {
     };
     AuthGuard = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
+            _services_authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_2__["LocalStorageService"]])
     ], AuthGuard);
     return AuthGuard;
 }());
@@ -621,6 +634,61 @@ var SharedPipesModule = /** @class */ (function () {
         })
     ], SharedPipesModule);
     return SharedPipesModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/services/authentication/local-storage.service.ts":
+/*!*************************************************************************!*\
+  !*** ./src/app/shared/services/authentication/local-storage.service.ts ***!
+  \*************************************************************************/
+/*! exports provided: LocalStorageService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalStorageService", function() { return LocalStorageService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var LocalStorageService = /** @class */ (function () {
+    function LocalStorageService() {
+    }
+    LocalStorageService.prototype.saveLoginStatus = function (status) {
+        localStorage.setItem('isLoggedin', status);
+    };
+    LocalStorageService.prototype.loadLoginStatus = function () {
+        return localStorage.getItem('isLoggedin');
+    };
+    LocalStorageService.prototype.saveToken = function (token) {
+        localStorage.setItem('jwtToken', token);
+    };
+    LocalStorageService.prototype.loadToken = function () {
+        return localStorage.getItem('jwtToken');
+    };
+    LocalStorageService.prototype.saveUsername = function (username) {
+        localStorage.setItem('username', username);
+    };
+    LocalStorageService.prototype.loadUsername = function () {
+        return localStorage.getItem('username');
+    };
+    LocalStorageService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], LocalStorageService);
+    return LocalStorageService;
 }());
 
 

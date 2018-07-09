@@ -40,6 +40,10 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 		rsp.addHeader("Access-Control-Allow-Origin", "*");
 		rsp.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
 		rsp.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Authorization");
+		rsp.addHeader("Access-Control-Allow-Methods", "GET");
+		rsp.addHeader("Access-Control-Allow-Methods", "POST");
+		rsp.addHeader("Access-Control-Allow-Methods", "PUT");
+		rsp.addHeader("Access-Control-Allow-Methods", "DELETE");
 		String token = req.getHeader(config.getHeader());
 		if(req.getMethod().equals("OPTIONS")) {
         	rsp.setStatus(HttpServletResponse.SC_OK);

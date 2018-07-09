@@ -18,7 +18,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/assets/images/SCAVA_logo.jpg"
+              "src/assets/images/CROSSMINER_logo.png"
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.css",

@@ -50,7 +50,7 @@ var ActivateRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div class=\"row justify-content-center\">\n        <div class=\"col-md-8\">\n            <h1>Activation</h1>\n            \n            <div class=\"alert alert-success\" *ngIf=\"success\">\n                <span><strong>Your user account has been activated.</strong> Please </span>\n                <a class=\"alert-link\" [routerLink]=\"['/login']\" (click)=\"login()\" >sign in</a>.\n            </div>\n\n            <div class=\"alert alert-danger\" *ngIf=\"error\">\n                <strong>Your user could not be activated.</strong> Please use the registration form to sign up.\n            </div>\n            \n        </div>\n    </div>\n</div>"
+module.exports = "<div>\n    <div class=\"row justify-content-center\">\n        <div class=\"col-sm-6 col-md-6 col-lg-6\">\n            <h1>Activation</h1>\n            \n            <div class=\"alert alert-success\" *ngIf=\"success\">\n                <span><strong>Your user account has been activated.</strong> Please </span>\n                <a class=\"alert-link\" [routerLink]=\"['/login']\" >sign in</a>.\n            </div>\n\n            <div class=\"alert alert-danger\" *ngIf=\"error\">\n                <strong>Your user could not be activated.</strong> Please use the registration form to \n                <a class=\"alert-link\" [routerLink]=\"['/signup']\" >sign up</a>.\n            </div>\n            \n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -108,8 +108,6 @@ var ActivateComponent = /** @class */ (function () {
                 _this.error = 'ERROR';
             });
         });
-    };
-    ActivateComponent.prototype.login = function () {
     };
     ActivateComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

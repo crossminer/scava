@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 
@@ -9,7 +9,7 @@ import { ListProjectService } from '../../../../shared/services/project-service/
 })
 export class ConfigureProjectComponent implements OnInit {
 
-    private project : any = null;
+    private project: any = null;
 
     constructor(
         private route: ActivatedRoute,
@@ -18,15 +18,15 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.subscribe(data => {
-              // console.log(data.get('id'));
-              this.listProjectService.getProject(data.get('id')).subscribe(data => {
-                    this.project = data;
-                    // console.log(this.project);
-                }, error => {
-                    console.log(error);
-                });     
-            }
-          );    
+            // console.log(data.get('id'));
+            this.listProjectService.getProject(data.get('id')).subscribe(data => {
+                this.project = data;
+                // console.log(this.project);
+            }, error => {
+                console.log(error);
+            });
         }
+        );
+    }
 
 }

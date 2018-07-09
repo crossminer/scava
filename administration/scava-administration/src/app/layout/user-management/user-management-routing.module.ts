@@ -10,7 +10,7 @@ const routes: Routes = [
     component: UserManagementComponent,
   },
   {
-    path: ':email/edit',
+    path: ':login/edit',
     component: UserManagementUpdateComponent
   }
 ];

@@ -518,7 +518,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/jwt-authentication.service */ "./src/app/shared/services/authentication/jwt-authentication.service.ts");
+/* harmony import */ var _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/local-storage.service */ "./src/app/shared/services/authentication/local-storage.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -533,9 +533,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var CreateProjectService = /** @class */ (function () {
-    function CreateProjectService(httpClient, jwtAuthenticationService) {
+    function CreateProjectService(httpClient, localStorageService) {
         this.httpClient = httpClient;
-        this.jwtAuthenticationService = jwtAuthenticationService;
+        this.localStorageService = localStorageService;
         this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].SERVER_API_URL + '/administration';
         this.projects = 'projects';
         this.create = 'create';
@@ -543,9 +543,9 @@ var CreateProjectService = /** @class */ (function () {
     }
     CreateProjectService.prototype.createProject = function (project) {
         if (this.jwtToken == null) {
-            this.jwtToken = this.jwtAuthenticationService.loadToken();
+            this.jwtToken = this.localStorageService.loadToken();
         }
-        console.log(project);
+        // console.log(project);
         return this.httpClient.post(this.resourceUrl + "/" + this.projects + "/" + this.create, project, { headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Authorization': this.jwtToken }) });
     };
     CreateProjectService = __decorate([
@@ -553,7 +553,7 @@ var CreateProjectService = /** @class */ (function () {
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"],
-            _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__["JwtAuthenticationService"]])
+            _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__["LocalStorageService"]])
     ], CreateProjectService);
     return CreateProjectService;
 }());
@@ -575,7 +575,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/jwt-authentication.service */ "./src/app/shared/services/authentication/jwt-authentication.service.ts");
+/* harmony import */ var _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/local-storage.service */ "./src/app/shared/services/authentication/local-storage.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -590,9 +590,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ImportProjectService = /** @class */ (function () {
-    function ImportProjectService(httpClient, jwtAuthenticationService) {
+    function ImportProjectService(httpClient, localStorageService) {
         this.httpClient = httpClient;
-        this.jwtAuthenticationService = jwtAuthenticationService;
+        this.localStorageService = localStorageService;
         this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].SERVER_API_URL + '/administration';
         this.projects = 'projects';
         this.import = 'import';
@@ -600,7 +600,7 @@ var ImportProjectService = /** @class */ (function () {
     }
     ImportProjectService.prototype.importProject = function (project) {
         if (this.jwtToken == null) {
-            this.jwtToken = this.jwtAuthenticationService.loadToken();
+            this.jwtToken = this.localStorageService.loadToken();
         }
         return this.httpClient.post(this.resourceUrl + "/" + this.projects + "/" + this.import, project, { headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ 'Authorization': this.jwtToken }) });
     };
@@ -609,7 +609,7 @@ var ImportProjectService = /** @class */ (function () {
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
-            _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__["JwtAuthenticationService"]])
+            _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__["LocalStorageService"]])
     ], ImportProjectService);
     return ImportProjectService;
 }());
@@ -631,7 +631,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/jwt-authentication.service */ "./src/app/shared/services/authentication/jwt-authentication.service.ts");
+/* harmony import */ var _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../authentication/local-storage.service */ "./src/app/shared/services/authentication/local-storage.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -646,9 +646,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ListProjectService = /** @class */ (function () {
-    function ListProjectService(httpClient, jwtAuthenticationService) {
+    function ListProjectService(httpClient, localStorageService) {
         this.httpClient = httpClient;
-        this.jwtAuthenticationService = jwtAuthenticationService;
+        this.localStorageService = localStorageService;
         this.resourceUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].SERVER_API_URL + '/administration';
         this.listServiceUrl = 'projects';
         this.projectServiceUrl = 'projects/p';
@@ -656,7 +656,7 @@ var ListProjectService = /** @class */ (function () {
     }
     ListProjectService.prototype.listProjects = function () {
         if (this.jwtToken == null) {
-            this.jwtToken = this.jwtAuthenticationService.loadToken();
+            this.jwtToken = this.localStorageService.loadToken();
         }
         // console.log(`${this.resourceUrl}/${this.listServiceUrl}`);
         // console.log(this.jwtToken);
@@ -664,7 +664,7 @@ var ListProjectService = /** @class */ (function () {
     };
     ListProjectService.prototype.getProject = function (projectid) {
         if (this.jwtToken == null) {
-            this.jwtToken = this.jwtAuthenticationService.loadToken();
+            this.jwtToken = this.localStorageService.loadToken();
         }
         // console.log(`${this.resourceUrl}/${this.projectServiceUrl}/${projectid}`);   
         return this.httpClient.get(this.resourceUrl + "/" + this.projectServiceUrl + "/" + projectid, { headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ 'Authorization': this.jwtToken }) });
@@ -674,7 +674,7 @@ var ListProjectService = /** @class */ (function () {
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
-            _authentication_jwt_authentication_service__WEBPACK_IMPORTED_MODULE_3__["JwtAuthenticationService"]])
+            _authentication_local_storage_service__WEBPACK_IMPORTED_MODULE_3__["LocalStorageService"]])
     ], ListProjectService);
     return ListProjectService;
 }());

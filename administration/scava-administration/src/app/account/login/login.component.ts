@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { routerTransition } from '../../router.animations';
 import { LocalStorageService } from '../../shared/services/authentication/local-storage.service';
 import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
+import { UserManagementService } from '../../shared/services/user-management/user-management.service';
 
 @Component({
     selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private localStorageService: LocalStorageService,
         private authenticationService: AuthenticationService
-    ) {}
+    ) { }
 
     ngOnInit() {
     }

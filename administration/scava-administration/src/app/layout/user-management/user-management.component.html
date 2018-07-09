@@ -23,41 +23,28 @@
           <td>{{user.login}}</td>
           <td>{{user.email}}</td>
           <td>
-            <button class="btn btn-danger btn-sm" *ngIf="!user.activated">Deactivated</button>
-            <button class="btn btn-success btn-sm" *ngIf="user.activated">Activated</button>
+            <button type="submit" class="btn btn-danger btn-sm" *ngIf="!user.activated" (click)="setActive(user, true)">Deactivated</button>
+            <button type="submit" class="btn btn-success btn-sm" *ngIf="user.activated" (click)="setActive(user, false)">Activated</button>
           </td>
           <td>
-            <div>
-              <div class="checkbox checbox-switch switch-primary">
-                <label class="switch">
-                  <input type="checkbox" name="" checked disabled>
-                  <span class="slider"></span>
-                </label>
-                ROLE_USER
+            <div *ngFor="let authorithy of user.authorities">
+              <div *ngIf="authorithy !== 'ROLE_USER'">
+                {{authorithy}}
               </div>
-              <div class="checkbox checbox-switch switch-primary">
-                <label class="switch">
-                  <input type="checkbox" name="">
-                  <span class="slider"></span>
-                </label>
-                ROLE_PROJECT_MANAGER
-              </div>
-              <div class="checkbox checbox-switch switch-primary">
-                <label class="switch">
-                  <input type="checkbox" name="">
-                  <span class="slider"></span>
-                </label>
-                ROLE_ADMIN
+              <div *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == 1">
+                  NO ROLES ARE ASSINGED TO THIS USER
               </div>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group flex-btn-group-container">
               <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;<span class="d-none d-md-inline">Edit</span>
+                <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+                <span class="d-none d-md-inline">Edit</span>
               </button>
               <button type="button" (click)="deleteUser(user)" class="btn btn-danger btn-sm">
-                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;<span class="d-none d-md-inline">Delete</span>
+                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>
