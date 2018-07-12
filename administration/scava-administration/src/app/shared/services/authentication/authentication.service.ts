@@ -17,7 +17,7 @@ export class AuthenticationService {
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService
-  ) { 
+  ) {
     this.jwtHelper = new JwtHelper();
   }
 
@@ -26,17 +26,24 @@ export class AuthenticationService {
   }
 
   hasAdminRole() {
-    this.roles = this.jwtHelper.decodeToken(this.localStorageService.loadToken());
-    // console.log(this.roles)
-    for (let role of this.roles.authorities) {
-      if (role == "ROLE_ADMIN")
-        return true;
+    let jwtToken: string = this.localStorageService.loadToken();
+    if (jwtToken !== null) {
+      this.roles = this.jwtHelper.decodeToken(jwtToken);
+      for (let role of this.roles.authorities) {
+        if (role == "ROLE_ADMIN")
+          return true;
+      }
+      return false;
     }
     return false;
   }
 
   getUsername() {
-    return this.jwtHelper.decodeToken(this.localStorageService.loadToken()).sub;
+    let jwtToken: string = this.localStorageService.loadToken();
+    if (jwtToken !== null) {
+      return this.jwtHelper.decodeToken(jwtToken).sub;
+    }
+    return;
   }
 
 }

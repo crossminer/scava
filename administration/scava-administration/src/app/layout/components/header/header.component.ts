@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthenticationService } from '../../../shared/services/authentication/authentication.service';
+import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
 
 @Component({
     selector: 'app-header',
@@ -14,7 +15,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        public authenticationService: AuthenticationService,
+        public locaStorageService: LocalStorageService
     ) {
         this.router.events.subscribe(val => {
             if (

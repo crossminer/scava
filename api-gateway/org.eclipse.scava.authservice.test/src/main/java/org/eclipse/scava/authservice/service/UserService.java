@@ -1,13 +1,14 @@
 package org.eclipse.scava.authservice.service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.scava.authservice.configuration.Constants;
+import org.eclipse.scava.authservice.domain.Authority;
+import org.eclipse.scava.authservice.domain.User;
 import org.eclipse.scava.authservice.repository.AuthorityRepository;
 import org.eclipse.scava.authservice.repository.UserRepository;
 import org.eclipse.scava.authservice.security.AuthoritiesConstants;
@@ -20,9 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.eclipse.scava.authservice.configuration.Constants;
-import org.eclipse.scava.authservice.domain.Authority;
-import org.eclipse.scava.authservice.domain.User;
 /**
  * Service class for managing users.
  */

@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 
 @EnableWebSecurity
@@ -78,21 +77,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
-                .logout().disable()
-                .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                    .anonymous()
-                .and()
-                    .exceptionHandling().authenticationEntryPoint(
-                            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                .and()
-                    .addFilterAfter(new JwtUsernamePasswordAuthenticationFilter(config, authenticationManager()),
-                            UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                    .antMatchers(config.getUrl()).permitAll()
-                    .antMatchers("/api/**").permitAll()
-                    .anyRequest().authenticated();
+        	.csrf()
+        		.disable()
+            .logout()
+            	.disable()
+            .formLogin()
+            	.disable()
+            .sessionManagement()
+            	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+          	.anonymous()
+        .and()
+            .exceptionHandling()
+             	.authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+        .and()
+            .addFilterAfter(new JwtUsernamePasswordAuthenticationFilter(config, authenticationManager()),
+            	UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+                .antMatchers(config.getUrl()).permitAll()
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated();
     }
 }

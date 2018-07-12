@@ -20,10 +20,6 @@ export class PasswordComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadAll();
-  }
-
-  loadAll() {
   }
 
   changePassword() {

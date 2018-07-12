@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit {
         this.userManagementService.find(data.get('login')).subscribe(
           (user) => {
             this.user = user;
-            console.log(this.user)
           })
       });
   }

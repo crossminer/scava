@@ -11,7 +11,7 @@ import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/u
 })
 export class UserManagementComponent implements OnInit {
 
-  private users: any;
+  users: Array<User> = [];
 
   constructor(
     private userManagementService: UserManagementService,
@@ -29,7 +29,7 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
-  setActive(user, isActivated) {
+  setActive(user: User, isActivated: boolean) {
     user.activated = isActivated;
     this.userManagementService.update(user).subscribe(
       (success) => this.onSuccess(success),
@@ -53,6 +53,8 @@ export class UserManagementComponent implements OnInit {
 
   private onSuccess(data) {
     this.users = data;
+    
+    
   }
 
   private onError(error) {
