@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthenticationService } from '../../../shared/services/authentication/authentication.service';
 import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private router: Router,
-        public authenticationService: AuthenticationService,
-        public locaStorageService: LocalStorageService
+        public localStorageService: LocalStorageService
     ) {
         this.router.events.subscribe(val => {
             if (
@@ -31,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         if(this.username == null) {
-            this.username = this.authenticationService.getUsername();
+            this.username = this.localStorageService.getUsername();
         }
     }
 

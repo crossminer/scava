@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AuthenticationService } from '../../../shared/services/authentication/authentication.service';
+import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,7 +15,7 @@ export class SidebarComponent {
 
     constructor(
         public router: Router,
-        public authenticationService: AuthenticationService
+        public localStorageService: LocalStorageService
     ) {
         this.router.events.subscribe(val => {
             if (

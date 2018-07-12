@@ -7,11 +7,11 @@ import { LocalStorageService } from '../services/authentication/local-storage.se
 export class AuthGuard implements CanActivate {
     constructor(
         private router: Router,
-        private localStrorageService: LocalStorageService
+        private localStorageService: LocalStorageService
     ) {}
 
     canActivate() {
-        if (this.localStrorageService.loadLoginStatus()) {
+        if (this.localStorageService.loadLoginStatus()) {
             return true;
         }
 

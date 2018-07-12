@@ -11,39 +11,14 @@ export class AuthenticationService {
 
   private resourceUrl = environment.SERVER_API_URL + '/api';
   private authentication = 'authentication';
-  private jwtHelper: JwtHelper;
-  private roles: any;
 
   constructor(
-    private httpClient: HttpClient,
-    private localStorageService: LocalStorageService
+    private httpClient: HttpClient
   ) {
-    this.jwtHelper = new JwtHelper();
   }
 
   login(data) {
     return this.httpClient.post(`${this.resourceUrl}/${this.authentication}`, data, { observe: 'response' });
-  }
-
-  hasAdminRole() {
-    let jwtToken: string = this.localStorageService.loadToken();
-    if (jwtToken !== null) {
-      this.roles = this.jwtHelper.decodeToken(jwtToken);
-      for (let role of this.roles.authorities) {
-        if (role == "ROLE_ADMIN")
-          return true;
-      }
-      return false;
-    }
-    return false;
-  }
-
-  getUsername() {
-    let jwtToken: string = this.localStorageService.loadToken();
-    if (jwtToken !== null) {
-      return this.jwtHelper.decodeToken(jwtToken).sub;
-    }
-    return;
   }
 
 }
