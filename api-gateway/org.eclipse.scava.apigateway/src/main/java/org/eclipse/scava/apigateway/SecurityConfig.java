@@ -54,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             UsernamePasswordAuthenticationFilter.class);
 	   	httpSecurity
 	   		.authorizeRequests()
-	   			//.antMatchers(scavaRoutesConfig.getAdminAccessApi().toArray(new String[scavaRoutesConfig.getAdminAccessApi().size()]))
 	   			.antMatchers(scavaRoutesConfig.getAdminAccessApi().stream().toArray(String[]::new))
 	   				.hasRole("ADMIN");
        
