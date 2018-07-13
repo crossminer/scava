@@ -24,8 +24,6 @@ export class ListProjectService {
         if (this.jwtToken == null) {
             this.jwtToken = this.localStorageService.loadToken();
         }
-        // console.log(`${this.resourceUrl}/${this.listServiceUrl}`);
-        // console.log(this.jwtToken);
         return this.httpClient.get(`${this.resourceUrl}/${this.listServiceUrl}`,
             { headers: new HttpHeaders({ 'Authorization': this.jwtToken })});
     }
@@ -33,8 +31,7 @@ export class ListProjectService {
     getProject(projectid:string){
         if (this.jwtToken == null) {
             this.jwtToken = this.localStorageService.loadToken();
-        }
-        // console.log(`${this.resourceUrl}/${this.projectServiceUrl}/${projectid}`);   
+        } 
         return this.httpClient.get(`${this.resourceUrl}/${this.projectServiceUrl}/${projectid}`, { headers: new HttpHeaders({ 'Authorization': this.jwtToken })});
     }
 

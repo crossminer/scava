@@ -10,7 +10,7 @@ import { RoleGuard } from '../../shared/guard/role.guard';
 const routes: Routes = [
     {
         path: '', 
-        component: ProjectComponent,
+        component: ProjectComponent
     },
     {
         path: 'create', 

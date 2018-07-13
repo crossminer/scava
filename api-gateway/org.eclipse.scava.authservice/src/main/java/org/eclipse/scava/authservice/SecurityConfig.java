@@ -45,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${scava.administration.admin-role}")
     private String adminRole;
     
+    @Value("${scava.administration.project-manager-role}")
+    private String projectManagerRole;
+    
     @Value("${scava.administration.user-role}")
     private String userRole;
     
@@ -67,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	
         auth.inMemoryAuthentication()
-                .withUser(username).password(password).roles(adminRole, userRole);
+                .withUser(username).password(password).roles(adminRole, projectManagerRole, userRole);
         
         auth.userDetailsService(userDetailsService)
         	.passwordEncoder(passwordEncoder());
@@ -94,8 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterAfter(new JwtUsernamePasswordAuthenticationFilter(config, authenticationManager()),
             	UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-                .antMatchers(config.getUrl()).permitAll()
-                .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated();
+        		.anyRequest().permitAll();
     }
 }
