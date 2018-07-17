@@ -11,8 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
 
-    private success: boolean = false;
-    private 
+    success: boolean = false;
 
     constructor(
         private router: Router,

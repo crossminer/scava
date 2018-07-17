@@ -10,8 +10,8 @@ import { UserManagementService } from '../../../shared/services/user-management/
 })
 export class UserManagementUpdateComponent implements OnInit {
 
-  private user: User;
-  private authorities = ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER'];
+  user: User;
+  authorities = ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER'];
   isSaving: boolean;
 
   constructor(

@@ -12,7 +12,7 @@ export class CreateProjectComponent implements OnInit {
 
   form: FormGroup;
   project: Project = {};
-  private isSaving: boolean;
+  isSaving: boolean;
 
   constructor(
     private formBuilder: FormBuilder,

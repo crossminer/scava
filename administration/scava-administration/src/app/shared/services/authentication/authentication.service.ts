@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { LocalStorageService } from './local-storage.service';
-import { JwtHelper } from 'angular2-jwt'
 
 @Injectable({
   providedIn: 'root'

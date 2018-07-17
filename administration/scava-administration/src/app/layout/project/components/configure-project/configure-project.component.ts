@@ -9,7 +9,7 @@ import { ListProjectService } from '../../../../shared/services/project-service/
 })
 export class ConfigureProjectComponent implements OnInit {
 
-    private project: any = null;
+    project: any = null;
 
     constructor(
         private route: ActivatedRoute,

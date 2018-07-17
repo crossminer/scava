@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  private jwtHelper: JwtHelper;
+  private jwtHelper: JwtHelperService;
   
   constructor() {
-    this.jwtHelper = new JwtHelper();
+    this.jwtHelper = new JwtHelperService();
    }
 
   saveLoginStatus(status: string) {

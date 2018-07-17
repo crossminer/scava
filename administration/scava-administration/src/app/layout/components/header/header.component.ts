@@ -9,7 +9,7 @@ import { LocalStorageService } from '../../../shared/services/authentication/loc
 })
 export class HeaderComponent implements OnInit {
     
-    private username: any;
+    username: any;
     private pushRightClass: string = 'push-right';
 
     constructor(

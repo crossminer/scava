@@ -7,12 +7,11 @@ import { UserManagementUpdateComponent } from './user-management-update/user-man
 import { FormsModule } from '@angular/forms';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/user-management-delete-dialog.component';
-import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
+    NgbModalModule,
     CommonModule,
     UserManagementRoutingModule,
     FormsModule
@@ -20,14 +19,10 @@ import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
   declarations: [
     UserManagementComponent, 
     UserManagementUpdateComponent, 
-    UserMgmtDeleteDialogComponent,
-    NgbModalBackdrop,
-    NgbModalWindow
+    UserMgmtDeleteDialogComponent
   ],
   entryComponents: [
     UserMgmtDeleteDialogComponent,
-    NgbModalBackdrop,
-    NgbModalWindow
   ],
   providers: [
     NgbModal,

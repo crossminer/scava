@@ -10,7 +10,7 @@ import { UserManagementService } from '../../shared/services/user-management/use
 })
 export class ProfileComponent implements OnInit {
 
-  private user: User;
+  user: User;
 
   constructor(
     private userManagementService: UserManagementService,

@@ -12,7 +12,9 @@ import { AuthenticationService } from '../../shared/services/authentication/auth
 })
 export class LoginComponent implements OnInit {
 
-    private mode: Number = 0;
+    mode: Number = 0;
+    username: string;
+    password: string;
 
     constructor(
         private router: Router,

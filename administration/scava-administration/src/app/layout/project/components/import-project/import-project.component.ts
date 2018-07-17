@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 })
 export class ImportProjectComponent implements OnInit {
 
-    private project: Project = {};
-    private isSaving: boolean;
+    project: Project = {};
+    isSaving: boolean;
 
     constructor(
         private router: Router,

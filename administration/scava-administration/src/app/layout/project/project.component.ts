@@ -11,7 +11,7 @@ import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
 
 export class ProjectComponent implements OnInit {
 
-  private projectList: any;
+  projectList: any;
   
   constructor(private listProjectService: ListProjectService) { }
 

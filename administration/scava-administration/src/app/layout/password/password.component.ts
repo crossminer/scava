@@ -11,9 +11,9 @@ export class PasswordComponent implements OnInit {
   doNotMatch: string;
   error: string;
   success: string;
-  private currentPassword: string;
-  private newPassword: string;
-  private confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 
   constructor(
     private passwordService: PasswordService

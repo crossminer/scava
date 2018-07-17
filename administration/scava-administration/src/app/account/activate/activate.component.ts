@@ -9,8 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ActivateComponent implements OnInit {
 
-  private success: string = null;
-  private error: string = null;
+  success: string = null;
+  error: string = null;
 
   constructor(
     private acivateservice: ActivateService,

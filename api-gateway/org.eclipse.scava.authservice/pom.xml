@@ -9,7 +9,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.scava</groupId>
-	<artifactId>scava-auth-service-test</artifactId>
+	<artifactId>scava-auth-service</artifactId>
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
@@ -91,6 +91,13 @@
             <artifactId>metrics-annotation</artifactId>
             <version>3.2.5</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.0</version>
+		</dependency>
+        
 	</dependencies>
 
     <build>
