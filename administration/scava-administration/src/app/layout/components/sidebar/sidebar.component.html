@@ -3,9 +3,6 @@
         <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-lg fa-home"></i>&nbsp;{{ 'Home' }}
         </a>
-        <a routerLink="/user-management" class="list-group-item" *ngIf="localStorageService.hasRole('ROLE_ADMIN')">
-            <i class="fa fa-lg fa-user-plus"></i>&nbsp;{{ 'User management' }}
-        </a>
         <a routerLink="/project" class="list-group-item">
             <i class="fa fa-lg fa-cube"></i>&nbsp;{{ 'Projects Catalogue' }}
         </a>
@@ -32,5 +29,8 @@
                 </ul>
             </li>
         </div>
+        <a routerLink="/user-management" class="list-group-item" *ngIf="localStorageService.hasRole('ROLE_ADMIN')">
+            <i class="fa fa-lg fa-user-plus"></i>&nbsp;{{ 'User management' }}
+        </a>
     </div>
 </nav>

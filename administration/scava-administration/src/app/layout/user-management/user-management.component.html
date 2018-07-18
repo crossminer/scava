@@ -23,8 +23,8 @@
           <td>{{user.login}}</td>
           <td>{{user.email}}</td>
           <td>
-            <button type="submit" class="btn btn-danger btn-sm" *ngIf="!user.activated" (click)="setActive(user, true)">Deactivated</button>
-            <button type="submit" class="btn btn-success btn-sm" *ngIf="user.activated" (click)="setActive(user, false)">Activated</button>
+            <button class="btn btn-danger btn-sm" *ngIf="!user.activated" (click)="setActive(user, true)">Deactivated</button>
+            <button class="btn btn-success btn-sm" *ngIf="user.activated" (click)="setActive(user, false)">Activated</button>
           </td>
           <td>
             <div *ngFor="let authorithy of user.authorities">

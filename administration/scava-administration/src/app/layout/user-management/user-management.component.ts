@@ -11,7 +11,9 @@ import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/u
 })
 export class UserManagementComponent implements OnInit {
 
-  users: Array<User> = [];
+  users: User[];
+  error: any;
+  success: any;
 
   constructor(
     private userManagementService: UserManagementService,
@@ -29,12 +31,19 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
-  setActive(user: User, isActivated: boolean) {
+  setActive(user, isActivated) {
     user.activated = isActivated;
     this.userManagementService.update(user).subscribe(
-      (success) => this.onSuccess(success),
-      (error) => this.onError(error)
-    )
+      (resp) => {
+        if (resp) {
+          this.error = null;
+          this.success = 'OK';
+          this.loadAll();
+        } else {
+          this.success = null;
+          this.error = 'ERROR';
+        }
+      });
   }
 
   deleteUser(user: User) {
@@ -43,6 +52,7 @@ export class UserManagementComponent implements OnInit {
     modalRef.result.then(
       result => {
         console.log('delete success');
+        this.loadAll();
       },
       reason => {
         console.log('delete faild');

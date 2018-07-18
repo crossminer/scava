@@ -18,7 +18,7 @@ export class PasswordService {
     private localStorageService: LocalStorageService
   ) { }
 
-  changePassword(currentPassword: string, newPassword: string) {
+  change(currentPassword: string, newPassword: string) {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }

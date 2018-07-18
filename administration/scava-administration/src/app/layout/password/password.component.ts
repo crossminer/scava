@@ -23,14 +23,13 @@ export class PasswordComponent implements OnInit {
   }
 
   changePassword() {
-    debugger
     if (this.newPassword !== this.confirmPassword) {
       this.error = null;
       this.success = null;
       this.doNotMatch = 'ERROR';
     } else {
       this.doNotMatch = null;
-      this.passwordService.changePassword(this.currentPassword, this.confirmPassword).subscribe(
+      this.passwordService.change(this.currentPassword, this.newPassword).subscribe(
         () => {
           this.error = null;
           this.success = 'OK';
