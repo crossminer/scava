@@ -15,7 +15,7 @@ public class PuppetSmells extends PongoDB {
 	
 	
 	
-	public SmellCollection getDays() {
+	public SmellCollection getSmells() {
 		return smells;
 	}
 	
@@ -26,4 +26,5 @@ public class PuppetSmells extends PongoDB {
 		smells = new SmellCollection(db.getCollection("PuppetSmells.smells"));
 		pongoCollections.add(smells);
 	}
+	
 }
