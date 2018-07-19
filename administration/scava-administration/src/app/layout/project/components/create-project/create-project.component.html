@@ -1,0 +1,174 @@
+<div class="container">
+    <h4>Register project</h4>
+    <hr/>
+
+    <form [formGroup]="form" #addProjectForm="ngForm" name="addProjectForm" novalidate (ngSubmit)="save()">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="projectName">Project Name</label>
+                    <input type="text" class="form-control" id="projectName" name="projectName" [(ngModel)]="project.name" [ngModelOptions]="{standalone: true}"
+                        aria-describedby="projectName" placeholder="E.g. CROSSMINER">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}"
+                        rows="4" placeholder="E.g."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="homePage">HomePage</label>
+                    <input type="text" class="form-control" id="homePage" name="homePage" [(ngModel)]="project.homepage" [ngModelOptions]="{standalone: true}"
+                        ngModel placeholder="E.g. www.crossminer.org">
+                </div>
+                <div class="form-group">
+                    <label for="informationSources">Information Sources</label>
+                    <br/>
+                    <small>Click the button below to add new information sources to the project.</small>
+                    <br/>
+                    <br/>
+                    <small>Version Control Systems</small>
+                    <ul class="pagination">
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'git')">
+                                <span>Git</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'svn')">
+                                <span>SVN</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <small>Issue Tracking Systems</small>
+                    <ul class="pagination">
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'bugzilla')">
+                                <span>Bugzilla</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'sourceforge')">
+                                <span>SourceForge</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'redmine')">
+                                <span>Redmine</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <small>Communication Channels</small>
+                    <ul class="pagination">
+                        <li>
+                            <button type="button" class="btn btn-light" (click)="addInformationSource('communication_channels', 'nntp')">
+                                <span>NNTP</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-offset-6 col-md-6 col-md-offset-6 col-lg-6 col-lg-offset-6">
+                <div formArrayName="vcs">
+                    <div *ngFor="let elem of form.get('vcs')['controls'];let i=index;">
+                        <div [formGroupName]="i">
+                            <div class="card">
+                                <div class="card-header">
+                                    <label>{{form.get('vcs').value[i].type | uppercase}} Repository</label>
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('vcs', i)">
+                                        <i class="fa fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group" [hidden]=true>
+                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="url">URL</label>
+                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+
+                <div formArrayName="bts">
+                    <div *ngFor="let elem of form.get('bts')['controls'];let i=index;">
+                        <div [formGroupName]="i">
+                            <div class="card">
+                                <div class="card-header">
+                                    <label>{{form.get('bts').value[i].type | uppercase}}</label>
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('bts', i)">
+                                        <i class="fa fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group" [hidden]=true>
+                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="url">URL</label>
+                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                    </div>
+                                    <div *ngIf="form.get('bts').value[i].type === 'bugzilla'">
+                                        <div class="form-group">
+                                            <label for="product">Product</label>
+                                            <input type="text" class="form-control" id="product" name="product" formControlName="product">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="component">Component</label>
+                                            <input type="text" class="form-control" id="component" name="component" formControlName="component">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.get('bts').value[i].type === 'redmine'">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="project">Project</label>
+                                            <input type="text" class="form-control" id="project" name="project" formControlName="project">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+
+                <div formArrayName="communication_channels">
+                    <div *ngFor="let elem of form.get('communication_channels')['controls'];let i=index;">
+                        <div [formGroupName]="i">
+                            <div class="card">
+                                <div class="card-header">
+                                    <label>Communication Channels</label>
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('communication_channels', i)">
+                                        <i class="fa fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group" [hidden]=true>
+                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                    </div>
+                                    <div class="form-group" [hidden]=true>
+                                        <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="url">URL</label>
+                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" [disabled]="!addProjectForm.form.valid || isSaving" class="btn btn-primary" class="block">Register project</button>
+        </div>
+    </form>
+</div>

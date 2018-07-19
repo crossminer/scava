@@ -1,0 +1,36 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <div class="list-group">
+        <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-lg fa-home"></i>&nbsp;{{ 'Home' }}
+        </a>
+        <a routerLink="/project" class="list-group-item">
+            <i class="fa fa-lg fa-cube"></i>&nbsp;{{ 'Projects Catalogue' }}
+        </a>
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('pages')" *ngIf="localStorageService.hasRole('ROLE_PROJECT_MANAGER')">
+                <span><i class="fa fa-lg fa-folder-open"></i>&nbsp; {{ 'New Project' }}</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/project/import" href="javascript:void(0)">
+                            <span>
+                                <i class="fa fa-lg fa-plus-circle "></i>&nbsp; {{ 'Import Project' }}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/project/create" href="javascript:void(0)">
+                            <span>
+                                <i class="fa fa-lg fa-plus-circle"></i>&nbsp; {{ 'Create New Project' }}
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <a routerLink="/user-management" class="list-group-item" *ngIf="localStorageService.hasRole('ROLE_ADMIN')">
+            <i class="fa fa-lg fa-user-plus"></i>&nbsp;{{ 'User management' }}
+        </a>
+    </div>
+</nav>

@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+<div class="page-header">
+    <h1>Projects Analysed by CROSSMINER</h1>
+    <hr/>
+  </div>
+<div class="project-table">
+  <div *ngFor="let project of projectList" class="project-option" [routerLink]="['/project/configure/', project.shortName]">
+    <div class="row">
+      <div class="col-md-4">
+        <i class="material-icons" style="float: left;">layers</i>
+        <h1> {{project.name}}</h1>
+      </div>
+      <div class="col-md-6">
+        {{project.description}}
+      </div>
+      <div class="col-md-2">
+        <h2>
+          <span class="badge badge-dark">100%</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
