@@ -12,6 +12,7 @@ export class UserManagementService {
   
   private resourceUrl: string = environment.SERVER_API_URL + '/api';
   private users: string = 'users';
+  private user: string = 'user';
   private jwtToken: string = null;
 
   constructor(
@@ -56,7 +57,7 @@ export class UserManagementService {
     if(this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.users}/${login}`, { 
+    return this.httpClient.delete(`${this.resourceUrl}/${this.user}/${login}`, { 
       headers: new HttpHeaders({ 
         'Authorization': this.jwtToken 
       })

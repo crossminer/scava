@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '../user-management/user-model';
 import { UserManagementService } from '../../shared/services/user-management/user-management.service';
+import { AccountService } from '../../shared/services/user-management/account.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,10 +10,11 @@ import { UserManagementService } from '../../shared/services/user-management/use
 })
 export class ProfileComponent implements OnInit {
 
-  user: User;
+  settingsAccount: any
 
   constructor(
     private userManagementService: UserManagementService,
+    private accountAccount: AccountService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -23,18 +24,17 @@ export class ProfileComponent implements OnInit {
   }
 
   loadAll() {
-    this.user = new User();
     this.route.paramMap.subscribe(
       (data) => {
         this.userManagementService.find(data.get('login')).subscribe(
-          (user) => {
-            this.user = user;
+          (settings) => {
+            this.settingsAccount = settings;
           })
       });
   }
 
   save() {
-    this.userManagementService.update(this.user).subscribe(
+    this.accountAccount.save(this.settingsAccount).subscribe(
       (success) => this.previousState(),
       (error) => console.log(error)
     )

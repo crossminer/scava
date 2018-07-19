@@ -18,16 +18,20 @@ export class PasswordService {
     private localStorageService: LocalStorageService
   ) { }
 
-  change(currentPassword: string, newPassword: string) {
+  change(currentLogin: string, currentPassword: string, newPassword: string) {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post('localhost:8086/api/account/change-password', { currentPassword, newPassword },
-      {
-        headers: new HttpHeaders({
-          'Authorization': this.jwtToken
-        })
-      }
-    );
+    return this.httpClient.post(`${this.resourceUrl}/${this.account}/${this.password}`,
+    {
+      "currentLogin": currentLogin,
+      "currentPassword": currentPassword,
+      "newPassword": newPassword
+    },
+    { 
+      headers: new HttpHeaders({ 
+        'Authorization': this.jwtToken
+      }) 
+    });
   }
 }

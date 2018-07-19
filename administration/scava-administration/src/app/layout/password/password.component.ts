@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PasswordService } from '../../shared/services/user-management/password.service';
+import { LocalStorageService } from '../../shared/services/authentication/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-password',
@@ -9,17 +11,22 @@ import { PasswordService } from '../../shared/services/user-management/password.
 export class PasswordComponent implements OnInit {
 
   doNotMatch: string;
+  isChanging: boolean;
   error: string;
   success: string;
+  currentLogin: string;
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 
   constructor(
-    private passwordService: PasswordService
+    private router: Router,
+    private passwordService: PasswordService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit() {
+    this.isChanging = false;
   }
 
   changePassword() {
@@ -29,10 +36,12 @@ export class PasswordComponent implements OnInit {
       this.doNotMatch = 'ERROR';
     } else {
       this.doNotMatch = null;
-      this.passwordService.change(this.currentPassword, this.newPassword).subscribe(
+      this.currentLogin = this.localStorageService.getUsername();
+      this.passwordService.change(this.currentLogin, this.currentPassword, this.newPassword).subscribe(
         () => {
           this.error = null;
           this.success = 'OK';
+          this.isChanging = true;
         },
         () => {
           this.success = null;
@@ -40,6 +49,10 @@ export class PasswordComponent implements OnInit {
         }
       )
     }
+  }
+
+  previousState() {
+    this.router.navigate(['/home']);
   }
 
 }

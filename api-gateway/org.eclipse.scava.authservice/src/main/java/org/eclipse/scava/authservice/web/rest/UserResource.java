@@ -1,7 +1,5 @@
 package org.eclipse.scava.authservice.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,11 +8,8 @@ import javax.validation.Valid;
 import org.eclipse.scava.authservice.configuration.Constants;
 import org.eclipse.scava.authservice.domain.User;
 import org.eclipse.scava.authservice.repository.UserRepository;
-import org.eclipse.scava.authservice.security.AuthoritiesConstants;
-import org.eclipse.scava.authservice.service.MailService;
 import org.eclipse.scava.authservice.service.UserService;
 import org.eclipse.scava.authservice.service.dto.UserDTO;
-import org.eclipse.scava.authservice.web.rest.errors.BadRequestAlertException;
 import org.eclipse.scava.authservice.web.rest.errors.EmailAlreadyUsedException;
 import org.eclipse.scava.authservice.web.rest.errors.LoginAlreadyUsedException;
 import org.eclipse.scava.authservice.web.rest.util.HeaderUtil;
@@ -26,11 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,48 +43,10 @@ public class UserResource {
 
     private final UserService userService;
     
-    private final MailService mailService;
-    
-    public UserResource(UserRepository userRepository, UserService userService, MailService mailService) {
-    	
+    public UserResource(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
-        this.mailService = mailService;
     }
-    
-    /**
-     * POST  /users  : Creates a new user.
-     * <p>
-     * Creates a new user if the login and email are not already used, and sends an
-     * mail with an activation link.
-     * The user needs to be activated on creation.
-     *
-     * @param userDTO the user to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
-     */
-//    @PostMapping("/users")
-//    @Timed
-//	  @Secured(AuthoritiesConstants.ADMIN)
-//    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
-//        log.debug("REST request to save User : {}", userDTO);
-//
-//        if (userDTO.getId() != null) {
-//            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
-//            // Lowercase the user login before comparing with database
-//        } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
-//            throw new LoginAlreadyUsedException();
-//        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
-//            throw new EmailAlreadyUsedException();
-//        } else {
-//            User newUser = userService.createUser(userDTO);
-//            mailService.sendCreationEmail(newUser);
-//            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-//                .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
-//                .body(newUser);
-//        }
-//    }
     
     /**
      * PUT /users : Updates an existing User.
@@ -103,7 +58,6 @@ public class UserResource {
      */
     @PutMapping("/users")
     @Timed
-    //@Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
@@ -156,9 +110,8 @@ public class UserResource {
      * @param login the login of the user to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
+    @DeleteMapping("/user/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
-    //@Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
