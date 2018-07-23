@@ -13,12 +13,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,15 +45,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Table;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class, SwaggerConfig.class })
-@WebAppConfiguration
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class CROSSSimSimilarityCalculatorTest {
 	@Autowired
 	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator crossSim;
 
-	private static final Logger logger = Logger.getLogger(CROSSSimSimilarityCalculatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CROSSSimSimilarityCalculatorTest.class);
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;

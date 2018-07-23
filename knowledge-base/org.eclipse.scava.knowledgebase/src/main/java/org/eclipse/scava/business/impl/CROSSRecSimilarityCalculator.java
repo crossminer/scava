@@ -17,7 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -35,7 +36,7 @@ import com.google.common.collect.Table;
 @Qualifier("CrossRec")
 public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalculator {
 
-	private static final Logger logger = Logger.getLogger(CROSSRecSimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(CROSSRecSimilarityCalculator.class);
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;

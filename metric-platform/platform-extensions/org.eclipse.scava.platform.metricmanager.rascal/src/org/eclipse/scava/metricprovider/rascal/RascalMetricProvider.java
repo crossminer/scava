@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2017 Centrum Wiskunde & Informatica
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.rascal;
@@ -27,6 +27,7 @@ import java.util.Set;
 import org.eclipse.scava.metricprovider.rascal.trans.model.Measurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.MeasurementCollection;
 import org.eclipse.scava.metricprovider.rascal.trans.model.RascalMetrics;
+import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -49,6 +50,7 @@ import org.rascalmpl.interpreter.result.Result;
 import org.rascalmpl.interpreter.staticErrors.StaticError;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter.IOLimitReachedException;
+
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -136,7 +138,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		return output;
 	}
 
-	// Removes org.eclipse.scava.metricprovider. qualifier from an id to accomodate mongo db collection name limit of 120 bytes. 
+	// Removes org.eclipse.scava.metricprovider. qualifier from an id to accomodate mongo db collection name limit of 120 bytes.
 	private String trimIdForMongo(String fullId) {
 		return fullId.replace("org.eclipse.scava.metricprovider.", "");
 	}
@@ -195,7 +197,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	}
 
 	@Override
-	public void setMetricProviderContext(MetricProviderContext context) {	
+	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context = context;
 	}
 
@@ -340,7 +342,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		Set<Entry<String, IValue>> entrySet = params.entrySet();
 		Iterator<Entry<String, IValue>> it = entrySet.iterator();
 		while (it.hasNext()) {
-			Entry<String,IValue> entry = it.next(); 
+			Entry<String,IValue> entry = it.next();
 			if (entry.getValue() == null) {
 				it.remove();
 			}
@@ -372,7 +374,8 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		//DB db = context.getProjectDB(project);
 		Mongo mongo;
 		try {
-			mongo = new Mongo();
+	//		mongo = new Mongo();
+			mongo = Configuration.getInstance().getMongoConnection();
 			DB db = mongo.getDB(project.getName());
 			RascalMetrics rascalMetrics = new RascalMetrics(db, provider.getIdentifier());
 			return PongoToRascal.toValue(rascalMetrics, type, provider instanceof RascalMetricHistoryWrapper);
@@ -426,7 +429,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		RascalProjectDeltas rpd = new RascalProjectDeltas(_instance.getEvaluator());
 		List<VcsRepositoryDelta> repoDeltas = delta.getVcsDelta().getRepoDeltas();
 
-		if (repoDeltas.isEmpty() || workingCopyFolders.isEmpty() /* this may happen for the first version */) { 
+		if (repoDeltas.isEmpty() || workingCopyFolders.isEmpty() /* this may happen for the first version */) {
 			return rpd.emptyDelta(delta);
 		}
 

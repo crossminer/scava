@@ -141,20 +141,20 @@ public class RecommenderRestTest {
                 .andExpect(jsonPath("$", hasSize(5)));
     }
     
-    @Test
-    public void getArtifactByQuery() throws Exception {
-    	List<Artifact> artifacts = Arrays.asList(
-                new Artifact(),
-                new Artifact(),
-        		new Artifact(),
-        		new Artifact(),
-        		new Artifact());
-    	when(recommenderManager.getArtifactsByQuery(anyString())).thenReturn(artifacts);
-    	artifactMockMvc.perform(get("/api/artifacts/search/{text}","tetx"))
-    			.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$", hasSize(5)));
-    }
+//    @Test
+//    public void getArtifactByQuery() throws Exception {
+//    	List<Artifact> artifacts = Arrays.asList(
+//                new Artifact(),
+//                new Artifact(),
+//        		new Artifact(),
+//        		new Artifact(),
+//        		new Artifact());
+//    	when(recommenderManager.getArtifactsByQuery(anyString())).thenReturn(artifacts);
+//    	artifactMockMvc.perform(get("/api/artifacts/search/{text}","tetx"))
+//    			.andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+//                .andExpect(jsonPath("$", hasSize(5)));
+//    }
 //    @Test
 //    public void getRecommendationTest() throws Exception {
 //		Query q = defineQuery();

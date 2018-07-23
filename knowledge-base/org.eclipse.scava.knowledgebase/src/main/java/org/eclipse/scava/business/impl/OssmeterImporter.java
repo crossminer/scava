@@ -20,7 +20,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
@@ -51,7 +52,7 @@ public class OssmeterImporter implements IImporter {
 	@Autowired
 	private ArtifactRepository projectRepository;
 
-	private static final Logger logger = Logger.getLogger(OssmeterImporter.class);
+	private static final Logger logger = LoggerFactory.getLogger(OssmeterImporter.class);
 
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();

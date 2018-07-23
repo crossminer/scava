@@ -12,6 +12,7 @@ package org.eclipse.scava.apigateway;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.scava.apigateway.config.JwtAuthenticationConfig;
+import org.eclipse.scava.apigateway.config.ScavaRoutesConfig;
 import org.eclipse.scava.apigateway.jwt.JwtTokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationConfig config;
     
-
+    @Autowired
+    private ScavaRoutesConfig scavaRoutesConfig;
+    
     @Bean
     public JwtAuthenticationConfig jwtConfig() {
         return new JwtAuthenticationConfig();
@@ -37,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
+				.csrf().disable()
                 .logout().disable()
                 .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -49,9 +52,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .addFilterAfter(new JwtTokenAuthenticationFilter(config),
                             UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.authorizeRequests().antMatchers(config.getUrl()).permitAll();
-        httpSecurity.authorizeRequests().anyRequest().authenticated();
-        
+	   	httpSecurity
+	   		.authorizeRequests()
+	   			.antMatchers(scavaRoutesConfig.getAdminAccessApi().stream().toArray(String[]::new))
+	   				.hasRole("ADMIN");
+       
+       httpSecurity
+				.authorizeRequests()
+					.antMatchers(scavaRoutesConfig.getProjectManagerAccessApi().stream().toArray(String[]::new))
+						.hasAnyRole("ADMIN", "PROJECT_MANAGER");
+       httpSecurity
+				.authorizeRequests()
+					.antMatchers(scavaRoutesConfig.getUserAccessApi().stream().toArray(String[]::new))
+						.hasAnyRole("ADMIN", "PROJECT_MANAGER", "USER");
     }
     
     

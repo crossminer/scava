@@ -1,15 +1,22 @@
 package org.eclipse.scava.business.impl;
-
+/*******************************************************************************
+ * Copyright (C) 2017 University of L'Aquila
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.dto.ApiCallResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +30,7 @@ import com.harukizaemon.simian.StreamLoader;
 @Service
 public class SimianCodeCloneDetector implements ICodeCloneDetector {
 
-	private static final Logger logger = Logger.getLogger(SimianCodeCloneDetector.class);
+	private static final Logger logger = LoggerFactory.getLogger(SimianCodeCloneDetector.class);
 	@Autowired
 	CodeListenerImpl aulist;
 

@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Graph {
@@ -23,7 +24,7 @@ public class Graph {
 	 *  containing for each inlink an associated "connection weight"
 	 */
 	
-	private static final Logger logger = Logger.getLogger(Graph.class);
+	private static final Logger logger = LoggerFactory.getLogger(Graph.class);
 	
 	private Map<Integer,Set<Integer>> inLinks;
 	
@@ -61,7 +62,7 @@ public class Graph {
 			Set<Integer> list = inLinks.get(key);
 			logger.debug(key + ": ");
 			if(list!=null){
-				for(int j:list)System.out.print(j + " ");
+				for(int j:list) logger.info(j + " ");
 			}
 			logger.debug("");
 		}

@@ -16,6 +16,7 @@ import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationType;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Juri Di Rocco
@@ -26,6 +27,7 @@ public interface IRecommenderManager {
 	List<Cluster> getClusters(String similarityName);
 	List<Artifact> getSimilarProjects(String projectId, String similarityFunction, int numOfResult);
 	List<Artifact> getArtifactsByQuery(String projectQuery);
+	List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page);
 	
 	
 }

@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.bson.types.ObjectId;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
@@ -45,7 +46,7 @@ import com.google.common.collect.Table;
 @Service
 public class SimilarityManager implements ISimilarityManager {
 
-	private static final Logger logger = Logger.getLogger(SimilarityManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(SimilarityManager.class);
 	@Autowired
 	private ArtifactRepository artifactRepository;
 

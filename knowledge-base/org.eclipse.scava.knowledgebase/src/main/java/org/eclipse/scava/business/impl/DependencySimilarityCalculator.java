@@ -23,10 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.eclipse.scava.business.IDependencyService;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.model.Artifact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort.Direction;
@@ -47,7 +48,7 @@ public class DependencySimilarityCalculator implements ISingleSimilarityCalculat
 	@Autowired 
 	MongoOperations mongoOperations;
 	
-	private static final Logger logger = Logger.getLogger(DependencySimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(DependencySimilarityCalculator.class);
 	
 	@Override
 	public double calculateSimilarity(Artifact prj1, Artifact prj2) {
