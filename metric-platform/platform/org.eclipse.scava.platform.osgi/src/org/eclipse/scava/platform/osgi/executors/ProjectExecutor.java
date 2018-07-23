@@ -73,12 +73,20 @@ public class ProjectExecutor implements Runnable {
 	
 	@Override
 	public void run() {
+		// Find the date to start from 
+		Date lastExecuted = getLastExecutedDate();
+		logger.info("Last executed: " + lastExecuted);
+		// Compute metrics up to current day
+		Date today = new Date();
+		executeProject(lastExecuted, today);
+	}
+
+	public void executeProject(Date dStart, Date dEnd) {
 		if (project == null) {
 			logger.error("No project scheduled. Exiting.");
 			return;
 		}
 		logger.info("Beginning execution.");
-		
 		initialiseProjectLocalStorage(project);
 		
 		// Clear any open flags
@@ -94,24 +102,18 @@ public class ProjectExecutor implements Runnable {
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(metricProviders);
 		logger.info("Created metric branches.");
 		
-		// Find the date to start from 
-		Date lastExecuted = getLastExecutedDate();
-		
-		logger.info("Last executed: " + lastExecuted);
-		
-		if (lastExecuted == null) {
+		if (dStart == null) {
 			// TODO: Perhaps flag the project as being in a fatal error state? This will potentially keep occurring.
 			logger.error("Parse error of project's lastExecuted date. Returned null.");
 			return;
 		}
-		Date today = new Date();
 		
-		if (lastExecuted.compareTo(today) >= 0) {
+		if (dStart.compareTo(dEnd) >= 0) {
 			logger.info("Project up to date. Skipping metric execution.");
 			return;
 		}
 		
-		Date[] dates = Date.range(lastExecuted.addDays(1), today.addDays(-1));
+		Date[] dates = Date.range(dStart.addDays(1), dEnd.addDays(-1));
 		logger.info("Dates: " + dates.length);
 		
 		for (Date date : dates) {
@@ -121,10 +123,11 @@ public class ProjectExecutor implements Runnable {
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
-			
+
 			try {
 				delta.create();
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				project.getExecutionInformation().setInErrorState(true);
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 				
@@ -140,14 +143,14 @@ public class ProjectExecutor implements Runnable {
 			for (List<IMetricProvider> branch : metricBranches) {
 				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(), delta, date);
 				mExe.setMetricList(branch);
-				
 				executorService.execute(mExe);
 			}
 			
 			try {
 				executorService.shutdown();
 				executorService.awaitTermination(24, TimeUnit.HOURS);
-			} catch (InterruptedException e) {
+			} 
+			catch (InterruptedException e) {
 				logger.error("Exception thrown when shutting down executor service.", e);
 			}
 			
@@ -173,7 +176,8 @@ public class ProjectExecutor implements Runnable {
 				// If it continues to loop, it simply tries tomorrow. We need to stop this happening.
 				logger.warn("Project in error state. Stopping execution.");
 				break;
-			} else {
+			} 
+			else {
 				logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
@@ -184,10 +188,9 @@ public class ProjectExecutor implements Runnable {
 		if (!project.getExecutionInformation().getInErrorState() && !project.getAnalysed()) {
 			project.setAnalysed(true);
 		}
-		
 		logger.info("Project execution complete. In error state: " + project.getExecutionInformation().getInErrorState());
 	}
-
+	
 	protected List<IMetricProvider> extractFactoidProviders(List<IMetricProvider> allProviders) {
 		List<IMetricProvider> factoids = new ArrayList<>();
 		
@@ -263,7 +266,7 @@ public class ProjectExecutor implements Runnable {
 		return null;
 	}
 		
-	protected Date getLastExecutedDate() {
+	public Date getLastExecutedDate() {
 		Date lastExec;
 		String lastExecuted = project.getExecutionInformation().getLastExecuted();
 		if(lastExecuted.equals("null") || lastExecuted.equals("")) {

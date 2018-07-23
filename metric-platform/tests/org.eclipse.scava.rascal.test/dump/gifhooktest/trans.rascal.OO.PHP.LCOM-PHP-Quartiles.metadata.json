@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.trans.rascal.OO.PHP.LCOM-PHP-Quartiles"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.trans.rascal.OO.PHP.LCOM-PHP-Quartiles","background":true}],"uuid":"76a4484e88e144a5913a25fb3a312e89"}

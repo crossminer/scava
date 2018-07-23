@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.OO.PHP.CF-PHP"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.OO.PHP.CF-PHP","background":true}],"uuid":"fa4dcf594bc04314a1ea161a722f5cbc"}

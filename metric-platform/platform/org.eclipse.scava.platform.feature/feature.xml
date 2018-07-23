@@ -1055,12 +1055,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="rascal4ossmeter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.metricprovider.rascal.generic.churn"
          download-size="0"
          install-size="0"
