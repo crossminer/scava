@@ -23,25 +23,7 @@ The data processing is done with [GrimoireLab python platform](/web-dashboards#i
 
 ### Importing the Scava metrics using the REST API
 
-A perceval backend has been developed to import the Scava metrics to Elasticsearch.
-
-First you need to install it inside the `python venv` created in [GrimoireLab python platform](/web-dashboards#install-grimoirelab-python-env).
-
-```
-git clone -b dev https://github.com/crossminer/scava.git
-cd scava/web-dashboards/perceval-scava
-pip install .
-```
-
-And now to load all metrics you need to execute in Elasticsearch:
-
-
-```
-cd scava/web-dashboards/ossmeter-metrics
-./scava2es.py -g -e https://admin:admin@localhost:9200 -i scava-metrics
-```
-
-The panel to be loaded is a WIP yet.
+Follow the steps described in [Scava Metrics](/web-dashboards/scava-metrics#importing-the-scava-metrics-using-the-rest-api).
 
 
 ### Importing from MongoDB
