@@ -86,11 +86,12 @@ To start both services:
 
 ### Kibiter 6
 
-Since the first review of the project, Kibiter 6 was used to build the web dashboards.
+Since the first review of the project, Kibiter 6 is used to build the web dashboards.
 
-This version includes the SearchGuard authentication plugin. By default Kibiter
-is used in read only mode and, if you want to modify the web dashbboards, you need
-to login the user `admin` with password `admin`. 
+This version includes the 6.3.1 version for Elasticsearch and Kibana and the SearchGuard authentication plugin. 
+
+By default Kibiter is used in read only mode and, if you want to modify the web dashboards, you need
+to login with the user `admin` with password `admin`. 
 
 This version also includes the CROSSMINER branding.
 
