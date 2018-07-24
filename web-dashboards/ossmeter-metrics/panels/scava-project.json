@@ -1,0 +1,20 @@
+{
+    "dashboard": {
+        "id": "ScavaProject",
+        "value": {
+            "description": "Project Dashboard for a Scava analyzed project",
+            "hits": 0,
+            "kibanaSavedObjectMeta": {
+                "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
+            },
+            "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
+            "panelsJSON": "[]",
+            "timeRestore": false,
+            "title": "ScavaProject",
+            "version": 1
+        }
+    },
+    "index_patterns": [],
+    "searches": [],
+    "visualizations": []
+}
