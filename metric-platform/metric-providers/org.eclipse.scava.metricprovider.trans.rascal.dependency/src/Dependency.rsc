@@ -28,8 +28,8 @@ set[loc] getImportedPackagesBC(M3 m3)
 
 @memo
 set[loc] getBundlePackagesBC(M3 m3) {
-	packages = packages(m3);
-	return {p | p <- packages, p != |java+package:///|};
+	pkgs = packages(m3);
+	return {p | p <- pkgs, p != |java+package:///|};
 }
 
 @metric{numberRequiredPackagesInSourceCode}
@@ -59,5 +59,5 @@ rel[loc,loc] ternaryReltoBinaryRel(rel[loc,loc,map[str,str]] relation)
 	= {<x,y> | <x,y,z> <- relation};
 
 // Transforms a ternary relation into a set (last slot is a map).
-rel[loc,loc] ternaryReltoSet(rel[loc,loc,map[str,str]] relation) 
+set[loc] ternaryReltoSet(rel[loc,loc,map[str,str]] relation) 
 	= {y | <x,y,z> <- relation};
