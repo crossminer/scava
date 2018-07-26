@@ -26,12 +26,22 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 @doc{Retrieves all the Maven dependencies.}
 @friendlyName{All Maven dependencies}
 @appliesTo{java()}
-set[loc] allMavenDependencies(
-	ProjectDelta delta = ProjectDelta::\empty(),
-	map[loc, loc] workingCopies = ()) {
+set[loc] allMavenDependencies (map[loc, loc] workingCopies = ()) {
 	if(repo <- workingCopies) {
 		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
 		return (m.dependencies=={}?{}:m.dependencies.dependency);
+	}
+	return {};
+}
+
+@metric{allOptionalMavenDependencies}
+@doc{Retrieves all the optional Maven dependencies.}
+@friendlyName{All optional Maven dependencies}
+@appliesTo{java()}
+set[loc] allOptionalMavenDependencies (map[loc, loc] workingCopies = ()) {
+	if(repo <- workingCopies) {
+		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
+		return {d | <p,d,params> <- m.dependencies, params["optional"]=="true"};
 	}
 	return {};
 }
@@ -64,16 +74,31 @@ int numberUniqueMavenDependencies(
 	return 0;
 }
 
-@metric{numberOptionalMavenDependencies}
-@doc{Retrieves the number of optional Maven dependencies.}
-@friendlyName{Number optional Maven dependencies}
+@metric{ratioOptionalMavenDependencies}
+@doc{Retrieves the ratio of optional Maven dependencies.}
+@friendlyName{Ratio optional Maven dependencies}
+@uses = ("allOptionalMavenDependencies" : "optionalDep")
 @appliesTo{java()}
-int numberOptionalMavenDependencies(
-	ProjectDelta delta = ProjectDelta::\empty(),
-	map[loc, loc] workingCopies = ()) {
+real ratioOptionalMavenDependencies (
+	map[loc, loc] workingCopies = (),
+	set[loc] optionalDep = {}) {
 	if(repo <- workingCopies) {
 		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
-		return (0 | it + 1 | <p,d,params> <- m.dependencies, params["optional"]=="true");
+		return (size(m.dependencies) > 0) ? 0.0 + (size(optionalDep) / size(m.dependencies)): 0.0;
 	}
-	return 0;
+	return 0.0;
+}
+
+@metric{isUsingTycho}
+@doc{Checks if the current project is a Tycho project.}
+@friendlyName{Is using Tycho}
+@appliesTo{java()}
+bool isUsingTycho (map[loc, loc] workingCopies = ()) {
+	if(repo <- workingCopies) {
+		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
+		if(<p,d,params> <- m.locations, params["packaging"]=="eclipse-plugin") {
+			return true;
+		}
+	}
+	return false;
 }
