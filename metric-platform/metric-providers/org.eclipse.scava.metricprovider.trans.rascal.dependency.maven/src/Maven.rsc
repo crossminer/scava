@@ -50,9 +50,7 @@ set[loc] allOptionalMavenDependencies (map[loc, loc] workingCopies = ()) {
 @doc{Retrieves the number of Maven dependencies.}
 @friendlyName{Number Maven dependencies}
 @appliesTo{java()}
-int numberMavenDependencies(
-	ProjectDelta delta = ProjectDelta::\empty(),
-	map[loc, loc] workingCopies = ()) {
+int numberMavenDependencies (map[loc, loc] workingCopies = ()) {
 	if(repo <- workingCopies) {
 		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
 		return size(m.dependencies);
@@ -64,9 +62,7 @@ int numberMavenDependencies(
 @doc{Retrieves the number of unique Maven dependencies.}
 @friendlyName{Number unique Maven dependencies}
 @appliesTo{java()}
-int numberUniqueMavenDependencies(
-	ProjectDelta delta = ProjectDelta::\empty(),
-	map[loc, loc] workingCopies = ()) {
+int numberUniqueMavenDependencies (map[loc, loc] workingCopies = ()) {
 	if(repo <- workingCopies) {
 		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
 		return size(m.dependencies=={}?{}:m.dependencies.dependency);
