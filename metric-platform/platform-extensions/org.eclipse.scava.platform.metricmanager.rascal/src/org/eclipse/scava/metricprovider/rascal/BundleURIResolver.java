@@ -105,7 +105,11 @@ ISourceLocationInput, ILogicalSourceLocationResolver {
 			ISourceLocation result;
 			URL resolved = FileLocator.resolve(uri.getURI().toURL());
 			try {
-				result = VF.sourceLocation(URIUtil.fixUnicode(resolved.toURI())); 
+				if (resolved.getProtocol().equals("jar") && resolved.getPath().startsWith("file:/")) {
+					result = VF.sourceLocation("jar", null, resolved.getPath().substring("file:".length()));
+				} else {
+					result = VF.sourceLocation(URIUtil.fixUnicode(resolved.toURI()));
+				}
 			}
 			catch (URISyntaxException e) {
 				// lets try to make a URI out of the URL.
