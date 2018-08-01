@@ -184,6 +184,8 @@
     <module>metric-providers/org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.maven</module>
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi</module>
     <module>platform-extensions/org.eclipse.scava.jackson</module>
     <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem</module>
     <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bitbucket</module>
@@ -229,6 +231,8 @@
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.generic</module>
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.php</module>
     <module>platform/org.eclipse.scava.code.model/org.ossmeter.code.model.java</module>
+	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.maven</module>
+	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.osgi</module>
     <module>platform/org.eclipse.scava.platform</module>
     <module>platform/org.eclipse.scava.platform.admin</module>
     <module>platform/org.eclipse.scava.platform.client.api</module>

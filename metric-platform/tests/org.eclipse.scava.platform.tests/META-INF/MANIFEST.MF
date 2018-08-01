@@ -149,4 +149,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.vcs.cvs;bundle-version="1.0.0",
  org.mockito;bundle-version="1.0.0",
  org.junit;bundle-version="4.12.0",
- org.mapdb;bundle-version="1.0.0"
+ org.mapdb;bundle-version="1.0.0",
+ org.eclipse.scava.dependency.model.maven;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.dependency.maven;bundle-version="1.0.0",
+ org.eclipse.scava.dependency.model.osgi;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;bundle-version="1.0.0"

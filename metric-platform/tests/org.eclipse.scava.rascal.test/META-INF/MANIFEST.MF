@@ -146,7 +146,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.redmine.importer;bundle-version="1.0.0",
  org.eclipse.scava.repository.model.sourceforge;bundle-version="0.1.0",
  org.eclipse.scava.repository.model.sourceforge.importer;bundle-version="1.0.0",
- org.eclipse.scava.repository.model.vcs.cvs;bundle-version="1.0.0"
+ org.eclipse.scava.repository.model.vcs.cvs;bundle-version="1.0.0",
+ org.eclipse.scava.dependency.model.maven;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.dependency.maven;bundle-version="1.0.0",
+ org.eclipse.scava.dependency.model.osgi;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.json,
