@@ -12,7 +12,7 @@ pipeline {
     stage('Test Metric Platform') {
       steps {
         dir(path: 'metric-platform/') {
-          sh 'mvn test'
+          sh 'mvn test integration-test'
         }
       }
     }
