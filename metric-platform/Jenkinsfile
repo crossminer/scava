@@ -14,6 +14,11 @@ pipeline {
           sh 'mvn test integration-test'
         }
       }
+      post {
+        success {
+          archiveArtifacts 'metric-platform/releng/org.eclipse.scava.product/target/products/*.zip'
+        }
+      }
     }
   }
   post {
