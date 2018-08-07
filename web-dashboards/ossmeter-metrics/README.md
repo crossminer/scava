@@ -21,6 +21,12 @@ can be used in Kibana.
 
 The data processing is done with [GrimoireLab python platform](/web-dashboards#install-grimoirelab-python-env). Inside the python env execute.
 
+### Importing the Scava metrics using the REST API
+
+Follow the steps described in [Scava Metrics](/web-dashboards/scava-metrics#importing-the-scava-metrics-using-the-rest-api).
+
+
+### Importing from MongoDB
 
 Now the tool can be executed with:
 

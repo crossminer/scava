@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.PHP.StaticTypeNameResolutionHistogram"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.PHP.StaticTypeNameResolutionHistogram","background":true}],"uuid":"f7c963e5804248908507d612ff5b8297"}

@@ -35,25 +35,25 @@ import org::eclipse::scava::metricprovider::MetricProvider;
 
 
 @memo
-private rel[loc, loc] superTypes(M3 m3) = m3@extends + m3@implements; // TODO traits?
+private rel[loc, loc] superTypes(M3 m3) = m3.extends + m3.implements; // TODO traits?
 
 @memo
 private set[loc] allTypes(M3 m3) = classes(m3) + interfaces(m3); // TODO traits?
 
 @memo
-private rel[loc, loc] allMethods(M3 m3) = { <p, m> | <p, m> <- m3@containment, isClass(p) || isInterface(p), isMethod(m) }; // TODO traits?
+private rel[loc, loc] allMethods(M3 m3) = { <p, m> | <p, m> <- m3.containment, isClass(p) || isInterface(p), isMethod(m) }; // TODO traits?
 
 @memo
-private map[loc, set[loc]] allMethodsMap(M3 m3) = ( p : { m | m <- m3@containment[p], isMethod(m) } | p <- allTypes(m3) );
+private map[loc, set[loc]] allMethodsMap(M3 m3) = ( p : { m | m <- m3.containment[p], isMethod(m) } | p <- allTypes(m3) );
 
 @memo
-private rel[loc, loc] allFields(M3 m3) = { <p, m> | <p, m> <- m3@containment, isClass(p) || isInterface(p), isField(m) }; // TODO traits?
+private rel[loc, loc] allFields(M3 m3) = { <p, m> | <p, m> <- m3.containment, isClass(p) || isInterface(p), isField(m) }; // TODO traits?
 
 @memo
-private map[loc, set[loc]] allFieldsMap(M3 m3) = ( p : { m | m <- m3@containment[p], isField(m) } | p <- allTypes(m3) );
+private map[loc, set[loc]] allFieldsMap(M3 m3) = ( p : { m | m <- m3.containment[p], isField(m) } | p <- allTypes(m3) );
 
 @memo
-private rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), \private() notin m3@modifiers[m] };
+private rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), \private() notin m3.modifiers[m] };
 
 @memo
 private rel[loc, loc] methodOverrides(M3 m3) {
@@ -63,16 +63,16 @@ private rel[loc, loc] methodOverrides(M3 m3) {
 }
 
 @memo
-private rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3@calls, m3@accesses, {}, domainR(m3@containment+, allTypes(m3)), allTypes(m3));
+private rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.calls, m3.accesses, {}, domainR(m3.containment+, allTypes(m3)), allTypes(m3));
 
 @memo
-private rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- m3@containment, isNamespace(p), isClass(t) || isInterface(t) };
+private rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- m3.containment, isNamespace(p), isClass(t) || isInterface(t) };
 
 @memo
-private map[loc, set[loc]] methodMethodCalls(M3 m) = toMap(m@calls);
+private map[loc, set[loc]] methodMethodCalls(M3 m) = toMap(m.calls);
 
 @memo
-private map[loc, set[loc]] methodFieldAccesses(M3 m) = toMap(m@accesses);
+private map[loc, set[loc]] methodFieldAccesses(M3 m) = toMap(m.accesses);
 
 
 
@@ -87,7 +87,7 @@ real A_PHP(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m
 	
 	types = allTypes(m3);
 	
-	abstractTypes = { t | t <- types, \abstract() in m3@modifiers[t] || \abstract() in m3@modifiers[m3@containment[t]] };
+	abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t] || \abstract() in m3.modifiers[m3.containment[t]] };
 	
 	return A(abstractTypes, types);
 }
@@ -150,9 +150,9 @@ private tuple[map[loc, int], map[loc, int]] dac_mpc(rel[Language, loc, AST] asts
 	
 	for ( <php(), _, phpAST(a)> <- asts, /c:class(_, _, _, _, _) <- a ) {
 		top-down-break visit (c) {
-			case new(_, _): dac[c@decl]?0 += 1;
-			case methodCall(_, _, _): mpc[c@decl]?0 += 1;
-			case staticCall(_, _, _): mpc[c@decl]?0 += 1;
+			case new(_, _): dac[c.decl]?0 += 1;
+			case methodCall(_, _, _): mpc[c.decl]?0 += 1;
+			case staticCall(_, _, _): mpc[c.decl]?0 += 1;
 		}
 	}
 	
@@ -183,7 +183,7 @@ map[loc, int] MPC_PHP(rel[Language, loc, AST] asts = {}) {
 @historic
 real CF_PHP(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  typeDependenciesNoInherits = typeDependencies({}, m3@calls, m3@accesses, {}, domainR(m3@containment+, allTypes(m3)), allTypes(m3));
+  typeDependenciesNoInherits = typeDependencies({}, m3.calls, m3.accesses, {}, domainR(m3.containment+, allTypes(m3)), allTypes(m3));
   return CF(typeDependenciesNoInherits, allTypes(m3));
 }
 
@@ -222,7 +222,7 @@ map[loc, real] I_PHP(map[loc, int] ce = (), map[loc, int] ca = ()) {
 @appliesTo{php()}
 map[loc, int] RFC_PHP(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = ProjectDelta::\empty()) {
 	M3 m3 = systemM3(m3s,delta=delta);
-	return RFC(m3@calls, allMethodsMap(m3), allTypes(m3));
+	return RFC(m3.calls, allMethodsMap(m3), allTypes(m3));
 }
 
 @metric{MIF-PHP}
@@ -232,9 +232,9 @@ map[loc, int] RFC_PHP(rel[Language, loc, M3] m3s = {}, ProjectDelta delta = Proj
 map[loc, real] MIF_PHP(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
 	
-	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), {\private(), \abstract()} & m3@modifiers[m] == {} };
+	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), {\private(), \abstract()} & m3.modifiers[m] == {} };
 	
-	return MIF(allMethodsMap(m3), inheritableMethods, m3@extends, classes(m3));
+	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
 
 @metric{AIF-PHP}
@@ -244,7 +244,7 @@ map[loc, real] MIF_PHP(ProjectDelta delta = ProjectDelta::\empty(), rel[Language
 map[loc, real] AIF_PHP(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
 	
-	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin m3@modifiers[f] };
+	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin m3.modifiers[f] };
 	
 	return MIF(allFieldsMap(m3), publicAndProtectedFields, superTypes(m3), allTypes(m3));
 }
@@ -257,7 +257,7 @@ private real hidingFactor(M3 m3, rel[loc, loc] members) {
 	rel[loc, loc] protectedMembers = {};
 	
 	for (<t, m> <- members) {
-		mods = m3@modifiers[m];
+		mods = m3.modifiers[m];
 		if (\private() in mods) {
 			; // ignored
 		} else if (\protected() in mods) {

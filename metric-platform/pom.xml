@@ -60,7 +60,6 @@
     <module>../migration/third-party/org.restlet.ext.osgi</module>
     <module>../migration/third-party/org.restlet.ext.servlet</module>
     <module>../migration/third-party/org.svnkit</module>
-    <module>../migration/third-party/rascal4ossmeter</module>
     <module>../migration/third-party/sparky</module>
     <module>factoids/org.eclipse.scava.factoid.bugs.channelusage.bugschannelusage</module>
     <module>factoids/org.eclipse.scava.factoid.bugs.emotion</module>
@@ -185,6 +184,8 @@
     <module>metric-providers/org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.maven</module>
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi</module>
     <module>platform-extensions/org.eclipse.scava.jackson</module>
     <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem</module>
     <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bitbucket</module>
@@ -230,6 +231,8 @@
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.generic</module>
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.php</module>
     <module>platform/org.eclipse.scava.code.model/org.ossmeter.code.model.java</module>
+	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.maven</module>
+	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.osgi</module>
     <module>platform/org.eclipse.scava.platform</module>
     <module>platform/org.eclipse.scava.platform.admin</module>
     <module>platform/org.eclipse.scava.platform.client.api</module>
@@ -238,10 +241,10 @@
     <module>platform/org.eclipse.scava.platform.visualisation</module>
     <module>platform/org.eclipse.scava.repository.model</module>
     <module>platform/org.eclipse.scava.repository.model.importer</module>
+	<module>tests/org.eclipse.scava.platform.tests</module>
     <!--<mmodule>tests/org.eclipse.scava.platform.client.api.tests</module>
     <module>tests/org.eclipse.scava.platform.importers.tests</module>
     <module>tests/org.eclipse.scava.platform.osgi.tests</module>
-    <module>tests/org.eclipse.scava.platform.tests</module>
     <module>tests/org.eclipse.scava.platform.vcs.git.tests</module>
     <module>tests/org.eclipse.scava.platform.vcs.svn.tests</module>
     <module>tests/org.eclipse.scava.platform.visualisation.tests</module>

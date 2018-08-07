@@ -1,0 +1,33 @@
+<div class="login-page">
+        <div class="row justify-content-md-center">
+            <div class="col-md-8">
+                <nav class="login-logo">
+                    <img src="assets/images/CROSSMINER_logo_tagline_side.png" width="600px" />
+                </nav>
+                <h2>CROSSMINER is an open-source platform for automatically analysing the source code, bug tracking systems, and communication
+                    channels of open source software projects.</h2>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="alert alert-danger" *ngIf="mode==1">
+                <strong>Bad credentials!</strong> Invalid username or password.
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-4">
+                <form #f="ngForm" (ngSubmit)="onLoggedin(f.value)">
+                    <div class="form-content">
+                        <div class="form-group">
+                            <input type="text" name="username" [(ngModel)]="username" class="form-control input-underline input-lg" placeholder="Username" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" [(ngModel)]="password" class="form-control input-underline input-lg" placeholder="Password" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn rounded-btn" [disabled]="!f.valid"> Log in </button>
+                    &nbsp;
+                    <a class="btn rounded-btn" [routerLink]="['/signup']"> Register </a>
+                </form>
+            </div>
+        </div>
+    </div>

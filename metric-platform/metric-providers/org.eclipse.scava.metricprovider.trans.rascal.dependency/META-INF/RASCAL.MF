@@ -1,0 +1,3 @@
+Source: src
+Main-Module: Dependency
+Require-Bundles: org.eclipse.scava.code.model.java

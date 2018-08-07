@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" [routerLink]="['/home']"><img src="assets/images/CROSSMINER_logo.png" width="8%"/> Administration</a>
+    <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+    </button>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown" ngbDropdown>
+                <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+                    <i class="fa fa-user"></i> Hello, {{username}} <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu-right" ngbDropdownMenu>
+                    <a class="dropdown-item" [routerLink]="['/profile', username, 'edit']" *ngIf="!localStorageService.hasRole('ROLE_ADMIN')">
+                        <i class="fa fa-fw fa-user"></i> {{ 'Profile'}}
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['/password', username, 'edit']" *ngIf="!localStorageService.hasRole('ROLE_ADMIN')">
+                        <i class="fa fa-fw fa-clock-o"></i> {{ 'Password'}}
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
+                        <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out'}}
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

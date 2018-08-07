@@ -39,8 +39,8 @@ bool isStringBufferOrBuilderType(TypeSymbol ts) = isStringBufferType(ts) || isSt
 /* --- stringInstantiation --------------------------------------------------*/
 
 list[Message] stringInstantiation(Expression exp: \newObject(Type \type, [Expression arg]),  list[Expression] parents, M3 model) =
-	isStringType(\type) && isStringType(arg@typ) 
-	? [string("StringInstantiation", exp@src) ] 
+	isStringType(\type) && isStringType(arg.typ) 
+	? [string("StringInstantiation", exp.src) ] 
 	: [];
 
 default list[Message] stringInstantiation(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -48,7 +48,7 @@ default list[Message] stringInstantiation(Expression exp,  list[Expression] pare
 /* --- stringToString -------------------------------------------------------*/
 
 list[Message] stringToString(Expression exp: \methodCall(_, Expression receiver, "toString", []),  list[Expression] parents, M3 model) =
-	isStringType(receiver@typ) ? [string("stringToString", exp@src) ] : [];
+	isStringType(receiver.typ) ? [string("stringToString", exp.src) ] : [];
 	
 default list[Message] stringToString(Expression exp,  list[Expression] parents, M3 model) = [];
 
@@ -56,12 +56,12 @@ default list[Message] stringToString(Expression exp,  list[Expression] parents, 
 
 list[Message] inefficientStringBuffering(Expression exp: \newObject(Type \type, [Expression arg]),  list[Expression] parents, M3 model) =
 	isStringBufferOrBuilderType(\type) && !isStringLiteral(arg) 
-	? [string("InefficientStringBuffering", exp@src) ] 
+	? [string("InefficientStringBuffering", exp.src) ] 
 	: [];
 	
 list[Message] inefficientStringBuffering(Expression exp: \methodCall(_, Expression receiver, "append", [Expression arg]),  list[Expression] parents, M3 model) =
-	isStringBufferOrBuilderType(receiver@typ) && !isStringLiteral(arg) 
-	? [string("InefficientStringBuffering", exp@src) ] 
+	isStringBufferOrBuilderType(receiver.typ) && !isStringLiteral(arg) 
+	? [string("InefficientStringBuffering", exp.src) ] 
 	: [];
 
 default list[Message] inefficientStringBuffering(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -69,8 +69,8 @@ default list[Message] inefficientStringBuffering(Expression exp,  list[Expressio
 /* --- unnnessaryCaseChange -------------------------------------------------*/
 
 list[Message] unnnessaryCaseChange(Expression exp: \methodCall(_, Expression receiver, "equals", [Expression arg]),  list[Expression] parents, M3 model) =
-	isStringType(receiver@typ) && \methodCall(_, _, "toUpperCase", []) := receiver 
-	? [string("UnnnessaryCaseChange", exp@src) ] 
+	isStringType(receiver.typ) && \methodCall(_, _, "toUpperCase", []) := receiver 
+	? [string("UnnnessaryCaseChange", exp.src) ] 
 	: [];
 	
 default list[Message] unnnessaryCaseChange(Expression exp,  list[Expression] parents, M3 model) = [];	
@@ -78,8 +78,8 @@ default list[Message] unnnessaryCaseChange(Expression exp,  list[Expression] par
 /* --- useStringBufferLength ------------------------------------------------*/
 
 list[Message] useStringBufferLength(Expression exp: \methodCall(_, Expression receiver1, "equals", [Expression arg]),  list[Expression] parents, M3 model) =	
-	isEmptyStringLiteral(arg) && isStringType(receiver1@typ) && \methodCall(_, receiver2, "toString", []) := receiver1 && isStringBufferType(receiver2@typ)
-	? [string("UseStringBufferLength", exp@src) ] 
+	isEmptyStringLiteral(arg) && isStringType(receiver1.typ) && \methodCall(_, receiver2, "toString", []) := receiver1 && isStringBufferType(receiver2.typ)
+	? [string("UseStringBufferLength", exp.src) ] 
 	: [];
 
 default list[Message] useStringBufferLength(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -87,8 +87,8 @@ default list[Message] useStringBufferLength(Expression exp,  list[Expression] pa
 /* --- appendCharacterWithChar ----------------------------------------------*/
 
 list[Message] appendCharacterWithChar(Expression exp: \methodCall(_, Expression receiver, "append", [Expression arg]),  list[Expression] parents, M3 model) =
-	isStringBufferOrBuilderType(receiver@typ) && isStringLiteral(arg) && size(getStringLiteralValue(arg)) == 1 
-	? [string("AppendCharacterWithChar", exp@src) ] 
+	isStringBufferOrBuilderType(receiver.typ) && isStringLiteral(arg) && size(getStringLiteralValue(arg)) == 1 
+	? [string("AppendCharacterWithChar", exp.src) ] 
 	: [];
 
 default list[Message] appendCharacterWithChar(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -96,8 +96,8 @@ default list[Message] appendCharacterWithChar(Expression exp,  list[Expression] 
 /* --- consecutiveLiteralAppends --------------------------------------------*/
 
 list[Message] consecutiveLiteralAppends(Expression exp: \methodCall(_, Expression receiver1, "append", [Expression arg1]),  list[Expression] parents, M3 model) =	
-	isStringLiteral(arg1) && isStringBufferOrBuilderType(receiver1@typ) && \methodCall(_, receiver2, "append", [arg2]) := receiver1 && isStringBufferOrBuilderType(receiver2@typ)
-	? [string("ConsecutiveLiteralAppends", exp@src) ] 
+	isStringLiteral(arg1) && isStringBufferOrBuilderType(receiver1.typ) && \methodCall(_, receiver2, "append", [arg2]) := receiver1 && isStringBufferOrBuilderType(receiver2.typ)
+	? [string("ConsecutiveLiteralAppends", exp.src) ] 
 	: [];
 	
 default list[Message] consecutiveLiteralAppends(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -105,8 +105,8 @@ default list[Message] consecutiveLiteralAppends(Expression exp,  list[Expression
 /* --- useIndexOfChar -------------------------------------------------------*/
 
 list[Message] useIndexOfChar(Expression exp: \methodCall(_, Expression receiver, "indexOf", [Expression arg]),  list[Expression] parents, M3 model) =
-	isStringType(receiver@typ) && isStringLiteral(arg) && size(getStringLiteralValue(arg)) == 1 
-	? [string("UseIndexOfChar", exp@src) ] 
+	isStringType(receiver.typ) && isStringLiteral(arg) && size(getStringLiteralValue(arg)) == 1 
+	? [string("UseIndexOfChar", exp.src) ] 
 	: [];
 
 list[Message] useIndexOfChar(Expression exp,  list[Expression] parents, M3 model) = [];
@@ -114,8 +114,8 @@ list[Message] useIndexOfChar(Expression exp,  list[Expression] parents, M3 model
 /* --- inefficientEmptyStringCheck ------------------------------------------*/
 
 list[Message] inefficientEmptyStringCheck(Expression exp: \methodCall(_, Expression receiver1, "length", []),  list[Expression] parents, M3 model) =	
-	isStringType(receiver1@typ) && \methodCall(_, receiver2, "trim", []) := receiver1 && isStringType(receiver2@typ)
-	? [string("InefficientEmptyStringCheck", exp@src) ] 
+	isStringType(receiver1.typ) && \methodCall(_, receiver2, "trim", []) := receiver1 && isStringType(receiver2.typ)
+	? [string("InefficientEmptyStringCheck", exp.src) ] 
 	: [];
 	
 default list[Message] inefficientEmptyStringCheck(Expression exp, list[Expression] parents, M3 model) = [];
@@ -123,6 +123,6 @@ default list[Message] inefficientEmptyStringCheck(Expression exp, list[Expressio
 /* --- avoidStringBufferField -----------------------------------------------*/
 
 list[Message] avoidStringBufferField(Declaration decl:  \field(Type \type, list[Expression] fragments), list[Declaration] parents, M3 model) =
-	isStringBufferOrBuilderType(\type) && (any(f <- fragments, \private() in model@modifiers[f@decl]))
-	? [string("AvoidStringBufferField", decl@src) ] 
+	isStringBufferOrBuilderType(\type) && (any(f <- fragments, \private() in model.modifiers[f.decl]))
+	? [string("AvoidStringBufferField", decl.src) ] 
 	: [];

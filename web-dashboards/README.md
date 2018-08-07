@@ -52,6 +52,11 @@ Elasticsearch needs this config:
 
 `sudo sh -c "echo 262144 > /proc/sys/vm/max_map_count"`
 
+### Kibiter 5
+
+During the first version of the **Task 7.4: Web-based dashboards** Kibiter 5 was used
+to build the web dashboards.
+
 The contents of the `docker-compose.yml` file to be used is:
 
 ```
@@ -78,6 +83,41 @@ kibiter:
 To start both services:
 
 `docker-compose -f docker-compose.yml up kibiter`
+
+### Kibiter 6
+
+Since the first review of the project, Kibiter 6 is used to build the web dashboards.
+
+This version includes the 6.3.1 version for Elasticsearch and Kibana and the SearchGuard authentication plugin. 
+
+By default Kibiter is used in read only mode and, if you want to modify the web dashboards, you need
+to login with the user `admin` with password `admin`. 
+
+This version also includes the CROSSMINER branding.
+
+The contents of the `docker-compose.yml` file to be used is:
+
+```
+elasticsearch:
+  image: acsdocker/elasticsearch:6.3.1-secured
+  command: /elasticsearch/bin/elasticsearch -E network.bind_host=0.0.0.0
+  ports:
+    - "9200:9200"
+  environment:
+    - ES_JAVA_OPTS=-Xms2g -Xmx2g
+    - ES_TMPDIR=/tmp
+
+kibiter:
+  image: acsdocker/grimoirelab-kibiter:crossminer-6.3.1
+  links:
+    - elasticsearch
+  ports:
+   - "5601:5601"
+  environment:
+  - ELASTICSEARCH_URL=https://elasticsearch:9200
+```
+
+
 
 ## Install OSSMeter services
 

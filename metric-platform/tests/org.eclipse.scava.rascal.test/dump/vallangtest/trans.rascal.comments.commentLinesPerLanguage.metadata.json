@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.comments.commentLinesPerLanguage"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.comments.commentLinesPerLanguage","background":true}],"uuid":"f866a0cd34f14d21aaed4ac322159fc0"}

@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+
+<div class="project-title">
+    <div class=" panel-profile">
+        <div class="panel-body text-center">
+            <i class="fa fa-4x fa-check-circle"></i>
+            <h3 class="panel-title">
+                <strong>up to date</strong>
+            </h3>
+        </div>
+    </div>
+    <h2 class="display-3">{{project?.name}}</h2>
+
+    <h4>
+        <p>{{project?.description}}</p>
+    </h4>
+</div>
+
+
+
+
+
+<table class="table table-condensed table-responsive table-project-information">
+    <tbody>
+        <tr>
+            <td>Project Type</td>
+            <td>{{project?._type}}</td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>
+                <a href="{{project?.html_url}}">{{project?.html_url}}</a>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td>Repository</td>
+            <td>
+                <a href="{{project?.svn_url}}">{{project?.svn_url}}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Size</td>
+            <td>{{project?.size}}</td>
+        </tr>
+    </tbody>
+</table>

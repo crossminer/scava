@@ -44,10 +44,10 @@ UniqueProperties	TBD
 /* --- unCommentedMain ------------------------------------------------------*/
 
 list[Message] unCommentedMain(Declaration m: \method(_,str name,_,_,_),  list[Declaration] parents, M3 model) =
-	name == "main" ? [miscellaneous("UnCommentedMain", m@src)] : [];
+	name == "main" ? [miscellaneous("UnCommentedMain", m.src)] : [];
 	
 list[Message] unCommentedMain(Declaration m: \method(_,str name,_,_),  list[Declaration] parents, M3 model) =
-	name == "main" ? [miscellaneous("UnCommentedMain", m@src)] : [];
+	name == "main" ? [miscellaneous("UnCommentedMain", m.src)] : [];
 
 default list[Message] unCommentedMain(Declaration d,  list[Declaration] parents, M3 model) =	[];
 
@@ -65,8 +65,8 @@ bool isOuterType(list[Declaration] parents) =
 size(parents) == 0 || compilationUnit(_,_) := head(parents) || compilationUnit(_,_,_) := head(parents);
 
 list[Message] outerTypeFilename(Declaration d,  list[Declaration] parents, M3 model) =
-	isOuterType(parents) && \public() in (model@modifiers[d@decl]) && !endsWith(getPath(parents[0]@decl), getPath(d@decl))
-	? [miscellaneous("OuterTypeFilename", d@decl) ] : [];
+	isOuterType(parents) && \public() in (model.modifiers[d.decl]) && !endsWith(getPath(parents[0].decl), getPath(d.decl))
+	? [miscellaneous("OuterTypeFilename", d.decl) ] : [];
 
-//// TODO: model@containment<1,0>)[ast@decl] is ambiguous!
+//// TODO: model.containment<1,0>)[ast.decl] is ambiguous!
 
