@@ -2,7 +2,7 @@
 <?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="34">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-<unit id="org.eclipse.jgit.feature.group" version="4.11.0.201803080745-r"/>
+<unit id="org.eclipse.jgit.feature.group" version="5.0.2.201807311906-r"/>
 <repository location="http://download.eclipse.org/egit/updates/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
