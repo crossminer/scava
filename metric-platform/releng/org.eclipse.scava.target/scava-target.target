@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="35">
+<?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="36">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.jgit.feature.group" version="5.0.2.201807311906-r"/>
@@ -32,6 +32,10 @@
 <unit id="org.restlet.feature.group" version="2.3.2.v20150501-1520"/>
 <repository location="http://p2.restlet.org/2.3"/>
 </location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
+<unit id="rascal-feature.feature.group" version="0.10.0.201807232201"/>
+<repository location="http://update.rascal-mpl.org/unstable/"/>
+</location>
 </locations>
 <includeBundles>
 <feature id="org.eclipse.e4.rcp"/>
@@ -43,6 +47,7 @@
 <feature id="org.eclipse.rcp"/>
 <feature id="org.restlet"/>
 <feature id="org.restlet.ext.jetty"/>
+<feature id="rascal-feature"/>
 <plugin id="com.fasterxml.jackson.core.jackson-annotations"/>
 <plugin id="com.fasterxml.jackson.core.jackson-core"/>
 <plugin id="com.fasterxml.jackson.core.jackson-databind"/>
