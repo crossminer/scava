@@ -3,7 +3,6 @@
 
 <product name="org.eclipse.scava.product.fromfeature" uid="scava-product" id="org.eclipse.scava.platform.osgi.product" application="scava.workerservice" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -18,7 +17,6 @@
 
    <windowImages/>
 
-
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -26,38 +24,14 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>
 
    <features>
       <feature id="org.eclipse.scava.platform.feature" version="1.0.0.qualifier"/>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
-      <feature id="org.eclipse.help"/>
-      <feature id="rascal-feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.jdt"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.rcp"/>
-      <feature id="org.eclipse.jgit"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.platform"/>
-      <feature id="org.eclipse.equinox.executable"/>
-      <feature id="org.restlet"/>
-      <feature id="org.restlet.ext.jetty"/>
-      <feature id="org.eclipse.e4.rcp"/>
    </features>
 
    <configurations>

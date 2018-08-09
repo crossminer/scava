@@ -17,19 +17,27 @@
    </license>
 
    <includes
-         id="org.eclipse.emf.common"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.emf.ecore"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.equinox.executable"
+         id="org.restlet"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.equinox.p2.core.feature"
+         id="org.restlet.ext.jetty"
+         version="0.0.0"/>
+
+   <includes
+         id="rascal-feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.ecf.core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.emf.common"
          version="0.0.0"/>
 
    <includes
@@ -45,19 +53,7 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
-   <includes
-         id="org.restlet"
-         version="0.0.0"/>
-
-   <includes
-         id="org.restlet.ext.jetty"
-         version="0.0.0"/>
-
-   <includes
-         id="rascal-feature"
+         id="org.eclipse.ecf.filetransfer.feature"
          version="0.0.0"/>
 
    <plugin
@@ -1516,20 +1512,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.hamcrest.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.objenesis"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.cdt.core.native"
          download-size="0"
          install-size="0"
@@ -1538,20 +1520,6 @@
 
    <plugin
          id="javax.activation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.scava.platform.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.mockito"
          download-size="0"
          install-size="0"
          version="0.0.0"
