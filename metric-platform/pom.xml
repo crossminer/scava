@@ -26,7 +26,6 @@
     <module>../migration/third-party/org.eclipse.egit.github.core</module>
     <module>../migration/third-party/org.joda.time</module>
     <module>../migration/third-party/org.mapdb</module>
-    <module>../migration/third-party/org.restlet</module>
     <module>../migration/third-party/org.svnkit</module>
     <module>../migration/third-party/rascal4ossmeter</module>
     <module>../migration/third-party/sparky</module>
