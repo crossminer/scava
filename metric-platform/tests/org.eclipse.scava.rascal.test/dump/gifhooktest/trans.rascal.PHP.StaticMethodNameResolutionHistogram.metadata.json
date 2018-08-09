@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.trans.rascal.PHP.StaticMethodNameResolutionHistogram"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.trans.rascal.PHP.StaticMethodNameResolutionHistogram","background":true}],"uuid":"72cd68909d04475db7d64a0b5d9a8bae"}

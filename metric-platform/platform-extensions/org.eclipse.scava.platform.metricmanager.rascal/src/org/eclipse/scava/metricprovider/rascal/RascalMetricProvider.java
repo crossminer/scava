@@ -41,14 +41,7 @@ import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyManagerUnavailable;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.imp.pdb.facts.IConstructor;
-import org.eclipse.imp.pdb.facts.IMap;
-import org.eclipse.imp.pdb.facts.ISet;
-import org.eclipse.imp.pdb.facts.ISetWriter;
-import org.eclipse.imp.pdb.facts.ISourceLocation;
-import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.io.StandardTextWriter;
-import org.eclipse.imp.pdb.facts.type.Type;
+
 import org.rascalmpl.interpreter.control_exceptions.MatchFailed;
 import org.rascalmpl.interpreter.control_exceptions.Throw;
 import org.rascalmpl.interpreter.result.AbstractFunction;
@@ -61,6 +54,15 @@ import org.rascalmpl.interpreter.utils.LimitedResultWriter.IOLimitReachedExcepti
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+
+import io.usethesource.vallang.IConstructor;
+import io.usethesource.vallang.IMap;
+import io.usethesource.vallang.ISet;
+import io.usethesource.vallang.ISetWriter;
+import io.usethesource.vallang.ISourceLocation;
+import io.usethesource.vallang.IValue;
+import io.usethesource.vallang.io.StandardTextWriter;
+import io.usethesource.vallang.type.Type;
 
 public class RascalMetricProvider implements ITransientMetricProvider<RascalMetrics> {
 	private static final String SCRATCH_FOLDERS_PARAM = "scratchFolders";
@@ -221,7 +223,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 
 			// don't continue if there isn't anything to do
 			if (repoDeltas.isEmpty()) {
-			    //logger.error("Didn't find any delta. Skipping metric calculations for " + metricId);
+				//logger.error("Didn't find any delta. Skipping metric calculations for " + metricId);
 				return null;
 			}
 
@@ -287,7 +289,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 						}
 					} else {
 						logger.error("Used metric provider " + use + " was not found! " + use);
-							// name mismatch!
+						// name mismatch!
 						logger.info("Select from:");
 						for (IMetricProvider imp : manager.getMetricProviders()) {
 							logger.info("\t" + imp.getIdentifier());
@@ -313,15 +315,15 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 				return result.getValue();
 			}
 		} catch (Throw e) {
-		    if (!(e.getException() instanceof IConstructor && ((IConstructor) e.getException()).getName().equals("undefined"))) {
-		    	logger.error("metric threw an exception: " + e.getMessage() + " at " + e.getLocation(), e);
-		    	logger.error(e.getTrace());
-		    	throw e;
-		    }
-		    else {
-		    	//logger.info("metric was undefined for the input of today, ignoring.");
-		    	return null;
-		    }
+			if (!(e.getException() instanceof IConstructor && ((IConstructor) e.getException()).getName().equals("undefined"))) {
+				logger.error("metric threw an exception: " + e.getMessage() + " at " + e.getLocation(), e);
+				logger.error(e.getTrace());
+				throw e;
+			}
+			else {
+				//logger.info("metric was undefined for the input of today, ignoring.");
+				return null;
+			}
 		} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException  e) {
 			logger.error("unexpected exception while measuring", e);
 			throw new RuntimeException("Metric failed due to missing working copy", e);

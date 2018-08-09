@@ -1,0 +1,3 @@
+Source: src
+Main-Module: OSGi
+Require-Bundles: org.eclipse.scava.dependency.model.osgi, org.eclipse.scava.code.model.java, org.eclipse.scava.metricprovider.trans.rascal.dependency

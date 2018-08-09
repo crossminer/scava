@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.trans.rascal.comments.headerCounts"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.trans.rascal.comments.headerCounts","background":true}],"uuid":"4113e88764374b0fbc64579812e46d7f"}

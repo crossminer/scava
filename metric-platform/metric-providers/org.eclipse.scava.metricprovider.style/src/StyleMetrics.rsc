@@ -53,7 +53,7 @@ private real spreadOverFiles(rel[Language, loc, M3] m3s = {}, Table violations =
 @appliesTo{java()}
 Table styleViolations(rel[Language, loc, AST] asts = {}, rel[Language, loc, M3] m3s = {}) {
   messages = [*checkAll(ast, m3) | <\java(), file, ast> <- asts, <\java(), file, m3> <- m3s];
-  return { <group, kind, file.top, file.begin.line?1> | str kind(str group, loc file) <- messages};
+  return { <group, kind, file.top, (file.begin?)?(file.begin.line?1):1> | str kind(str group, loc file) <- messages};
 }
 
 @metric{filesWithStyleViolations}

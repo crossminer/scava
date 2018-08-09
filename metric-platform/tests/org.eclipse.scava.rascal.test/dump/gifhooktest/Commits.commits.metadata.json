@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.Commits.commits"},{"v":2,"key":{"date":1},"name":"date_1","ns":"gifhooktest.Commits.commits","background":true}],"uuid":"3bad8712e20e49448024879e3b6c26b5"}

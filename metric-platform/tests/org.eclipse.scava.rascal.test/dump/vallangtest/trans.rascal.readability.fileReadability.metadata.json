@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.readability.fileReadability"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.readability.fileReadability","background":true}],"uuid":"82e0bedeb143421790dd399083e1c603"}

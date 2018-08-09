@@ -104,7 +104,7 @@ num historicalMedian(rel[datetime day, num amount] history, int monthsAgo) {
 }
 
 real spreadOverItems(map[value item, int amount] d) {
-  if (sum(d<amount>) == 0) {
+  if (isEmpty(d<amount>) || sum(d<amount>) == 0) {
     return 1.0; // completely honest distribution of nothing over everything.
   }
   

@@ -19,10 +19,11 @@ import org.eclipse.scava.platform.AbstractHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.imp.pdb.facts.type.Type;
 
 import com.googlecode.pongo.runtime.Pongo;
 import com.mongodb.DB;
+
+import io.usethesource.vallang.type.Type;
 
 /**
  * Wraps a transient metric provider to be an historic one
@@ -34,7 +35,7 @@ public class RascalMetricHistoryWrapper extends AbstractHistoricalMetricProvider
 	public RascalMetricHistoryWrapper(RascalMetricProvider transientProvider) {
 		this.transientId = transientProvider;
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return transientId.getIdentifier() + ".historic";
@@ -79,20 +80,20 @@ public class RascalMetricHistoryWrapper extends AbstractHistoricalMetricProvider
 	public Type getValueType() {
 		return transientId.getReturnType();
 	}
-	
+
 	@Override
 	public Pongo measure(Project project) {
 		DB db = context.getProjectDB(project);
 		RascalMetrics result = transientId.adapt(db);
-		
+
 		ListMeasurement list = new ListMeasurement();
 		List<Measurement> collection = list.getValue();
-		
+
 		for (Measurement m : result.getMeasurements()) {
 			collection.add(m);
 		}
-  
+
 		return list;
 	}
-	
+
 }
