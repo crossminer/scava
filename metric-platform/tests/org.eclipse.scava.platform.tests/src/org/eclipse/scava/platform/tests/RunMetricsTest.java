@@ -1,5 +1,8 @@
 package org.eclipse.scava.platform.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.net.UnknownHostException;
 import java.text.ParseException;
 
@@ -15,8 +18,6 @@ import org.junit.Test;
 import com.googlecode.pongo.runtime.PongoFactory;
 import com.googlecode.pongo.runtime.osgi.OsgiPongoFactoryContributor;
 import com.mongodb.Mongo;
-
-import static org.junit.Assert.*;
 
 public class RunMetricsTest {
 	Mongo mongo;
