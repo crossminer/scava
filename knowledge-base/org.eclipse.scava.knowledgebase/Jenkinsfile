@@ -21,6 +21,11 @@ pipeline {
             sh 'mvn test'
           }
         }
+        post {
+          success {
+              archiveArtifacts 'knowledge-base/org.eclipse.scava/knowledgebase/target/scava.knoledgebase.jar'
+          }
+        }
 
         junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
       }
