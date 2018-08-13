@@ -1,49 +1,144 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+<div class="container">
+    <div class="project-title">
+        <div class=" panel-profile">
+            <div class="panel-body text-center">
+                <i class="fa fa-4x fa-check-circle"></i>
+                <h3 class="panel-title">
+                    <strong>up to date</strong>
+                </h3>
+            </div>
+        </div>
+        <h2>{{project?.name}}</h2>
+        <h5>
+            <p>{{project?.description}}</p>
+        </h5>
+    </div>
 
+    <table class="table table-condensed table-responsive table-project-information">
+        <tbody>
+            <tr>
+                <td>Project Type</td>
+                <td>{{project?._type}}</td>
+            </tr>
+            <tr>
+                <td>URL</td>
+                <td>
+                    <a href="{{project?.html_url}}">{{project?.html_url}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Repository</td>
+                <td>
+                    <a href="{{project?.svn_url}}">{{project?.svn_url}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>{{project?.size}}</td>
+            </tr>
+        </tbody>
+    </table>
 
-<div class="project-title">
-    <div class=" panel-profile">
-        <div class="panel-body text-center">
-            <i class="fa fa-4x fa-check-circle"></i>
-            <h3 class="panel-title">
-                <strong>up to date</strong>
-            </h3>
+    <div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <span>Analysis Algorithm Name</span>
+                        </th>
+                        <th>
+                            <span>Start Date</span>
+                        </th>
+                        <th>
+                            <span>End Date</span>
+                        </th>
+                        <th>
+                            <span>Analysis Progress Rate</span>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            10 Metrics Providers
+                        </td>
+                        <td>
+                            <div>
+                                <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">95%</div>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Run</span>
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Remove</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                            <td>
+                                20 Metrics Providers
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="btn-group flex-btn-group-container">
+                                    <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
+                                        <span class="d-none d-md-inline">Run</span>
+                                    </button>&nbsp;
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                                        <span class="d-none d-md-inline">Remove</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-success btn-sm" (click)="addAnalysisAlgorithm()" >
+                                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Add</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
-    <h2 class="display-3">{{project?.name}}</h2>
-
-    <h4>
-        <p>{{project?.description}}</p>
-    </h4>
 </div>
-
-
-
-
-
-<table class="table table-condensed table-responsive table-project-information">
-    <tbody>
-        <tr>
-            <td>Project Type</td>
-            <td>{{project?._type}}</td>
-        </tr>
-        <tr>
-            <td>URL</td>
-            <td>
-                <a href="{{project?.html_url}}">{{project?.html_url}}</a>
-            </td>
-
-
-        </tr>
-        <tr>
-            <td>Repository</td>
-            <td>
-                <a href="{{project?.svn_url}}">{{project?.svn_url}}</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Size</td>
-            <td>{{project?.size}}</td>
-        </tr>
-    </tbody>
-</table>

@@ -28,6 +28,8 @@
         "core-js": "^2.5.5",
         "font-awesome": "^4.7.0",
         "ng2-charts": "^1.6.0",
+        "ngx-bootstrap": "^3.0.1",
+        "ngx-treeview": "^6.0.0",
         "rxjs": "^6.1.0",
         "rxjs-compat": "^6.2.1",
         "service": "^0.1.4",
