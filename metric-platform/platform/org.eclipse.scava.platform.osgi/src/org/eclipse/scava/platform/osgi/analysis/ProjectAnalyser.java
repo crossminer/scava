@@ -1,19 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2018 University of York
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
-package org.eclipse.scava.platform.osgi.executors;
+package org.eclipse.scava.platform.osgi.analysis;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,62 +12,49 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.delta.NoManagerFoundException;
+import org.eclipse.scava.platform.analysis.data.AnalysisTaskScheduling;
+import org.eclipse.scava.platform.analysis.data.IAnalysisSchedulingService;
+import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
+import org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider;
+import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.repository.model.BugTrackingSystem;
-import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.LocalStorage;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectError;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
-import org.eclipse.scava.repository.model.VcsRepository;
 
-public class ProjectExecutor implements Runnable {
+public class ProjectAnalyser {
 	
-	protected Project project;
-	protected int numberOfCores;
-	protected Platform platform;
-	protected OssmeterLogger logger;
+	private Platform platform;
+	private IAnalysisSchedulingService taskScheduling;
+	private int analysisThreadNumber;
+	private Logger logger;
+
 	
-	public ProjectExecutor(Platform platform, Project project) {
-		this.numberOfCores = Runtime.getRuntime().availableProcessors();
+	public ProjectAnalyser(Platform platform, IAnalysisSchedulingService taskScheduling) {
 		this.platform = platform;
-		this.project = project;
-		this.logger = (OssmeterLogger)OssmeterLogger.getLogger("ProjectExecutor (" + project.getName() +")");
-		
+		this.taskScheduling = taskScheduling;
+		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
 	}
-	
-	protected void initialiseProjectLocalStorage (Project project) {
-		if (project.getExecutionInformation() == null) {
-			project.setExecutionInformation(new ProjectExecutionInformation());
-		}
-		
-		try{	
-			Path projectLocalStoragePath = Paths.get(platform.getLocalStorageHomeDirectory().toString(), project.getShortName());		
-			if (Files.notExists(projectLocalStoragePath)) {
-				Files.createDirectory(projectLocalStoragePath);
-			}
-			LocalStorage projectLocalStorage = new LocalStorage();
-			projectLocalStorage.setPath(projectLocalStoragePath.toString());
-			project.getExecutionInformation().setStorage(projectLocalStorage);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void run() {
-		if (project == null) {
-			logger.error("No project scheduled. Exiting.");
-			return;
-		}
+
+	public void executeAnalyse(String analysisTaskId, String workerId) {
+		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
+
+		AnalysisTask task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
+		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(task.getProject().getProjectId());
+
 		logger.info("Beginning execution.");
+		
+		task.getScheduling().setStatus(AnalysisTaskStatus.EXECUTION.name());
+		task.getScheduling().setWorkerId(workerId);	
+		this.taskScheduling.getRepository().sync();
 		
 		initialiseProjectLocalStorage(project);
 		
@@ -86,38 +63,47 @@ public class ProjectExecutor implements Runnable {
 		platform.getProjectRepositoryManager().getProjectRepository().sync();
 		
 		// Split metrics into branches
-		List<IMetricProvider> metricProviders = platform.getMetricProviderManager().getMetricProviders();
-		List<IMetricProvider> factoids = extractFactoidProviders(metricProviders);
+		List<IMetricProvider> paltformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
+		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
+		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
 		
 		logger.info("Creating metric branches.");
 		// FIXME: Need to check that no metrics depend on factoids!
-		List<List<IMetricProvider>> metricBranches = splitIntoBranches(metricProviders);
+		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
 		logger.info("Created metric branches.");
 		
-		// Find the date to start from 
-		Date lastExecuted = getLastExecutedDate();
+
+		Date enecutionDate = new Date(task.getScheduling().getCurrentDate());
 		
-		logger.info("Last executed: " + lastExecuted);
-		
-		if (lastExecuted == null) {
-			// TODO: Perhaps flag the project as being in a fatal error state? This will potentially keep occurring.
-			logger.error("Parse error of project's lastExecuted date. Returned null.");
-			return;
-		}
-		Date today = new Date();
-		
-		if (lastExecuted.compareTo(today) >= 0) {
-			logger.info("Project up to date. Skipping metric execution.");
-			return;
-		}
-		
-		Date[] dates = Date.range(lastExecuted.addDays(1), today.addDays(-1));
+		Date[] dates = Date.range(enecutionDate, new Date().addDays(-1));
 		logger.info("Dates: " + dates.length);
 		
-		for (Date date : dates) {
-			// TODO: An alternative would be to have a single thread pool for the node. I briefly tried this
-			// and it didn't work. Reverted to this implement (temporarily at least).
-			ExecutorService executorService = Executors.newFixedThreadPool(numberOfCores);
+		for (Date date : dates) {		
+			
+			this.taskScheduling.newDailyTaskExecution(analysisTaskId,date.toJavaDate());
+
+			task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
+				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				return;
+			}
+			
+			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
+				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
+				task.getScheduling().setWorkerId(null);	
+				this.taskScheduling.getRepository().sync();
+				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				return;
+			}
+			
+//			List<List<IMetricProvider>> dailyBranches = filterMetricByExecutionDate(metricBranches,date,project.getShortName());
+//			if(dailyBranches.isEmpty()) {
+//				logger.info("All Metric Already Executed at this Date: " + date + ", project: " + project.getName());
+//				
+//				continue;
+//			}
+
+			ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
@@ -128,7 +114,6 @@ public class ProjectExecutor implements Runnable {
 				project.getExecutionInformation().setInErrorState(true);
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 				
-				// Log in DB
 				ProjectError error = ProjectError.create(date.toString(), "ProjectExecutor: Delta creation", project.getShortName(), project.getName(), e, Configuration.getInstance().getSlaveIdentifier());
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
@@ -138,9 +123,8 @@ public class ProjectExecutor implements Runnable {
 			}
 			
 			for (List<IMetricProvider> branch : metricBranches) {
-				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(), delta, date);
-				mExe.setMetricList(branch);
-				
+				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(),analysisTaskId, delta, date);
+				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
 			}
 			
@@ -157,7 +141,7 @@ public class ProjectExecutor implements Runnable {
 			// TODO: Should check if in error state before and after factoids
 			if (factoids.size() > 0) {
 				logger.info("Executing factoids.");
-				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(), delta, date);
+				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(factoids);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
 			}
@@ -177,15 +161,66 @@ public class ProjectExecutor implements Runnable {
 				logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
-			}
+			}	
 			
 		}
 		
-		if (!project.getExecutionInformation().getInErrorState() && !project.getAnalysed()) {
-			project.setAnalysed(true);
+		task.getScheduling().setStatus(AnalysisTaskStatus.COMPLETED.name());
+		task.getScheduling().setWorkerId(null);	
+		this.taskScheduling.getRepository().sync();
+		
+		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
+	}
+
+//	private List<List<IMetricProvider>> filterMetricByExecutionDate(List<List<IMetricProvider>> metricBranches,Date date,String projectId) {
+//		List<List<IMetricProvider>> filtredBranchs = new ArrayList<>();
+//		
+//		
+//		for(List<IMetricProvider> branch : metricBranches) {
+//			List<IMetricProvider> filtredBranch = new ArrayList<>();		
+//			for(IMetricProvider metric : branch) {
+//				if(!alreadyExecuted(metric,date,projectId)) {
+//					filtredBranch.add(metric);
+//				}
+//			}
+//			if(!filtredBranch.isEmpty()) {
+//				filtredBranchs.add(filtredBranch);
+//			}
+//			
+//		}		
+//		return filtredBranchs;
+//	}
+//
+//	private boolean alreadyExecuted(IMetricProvider metric, Date date,String projectId) {
+//		ProjectMetricProvider mpd = taskScheduling.findMetricProviderScheduling(projectId,metric.getIdentifier());
+//		try {
+//			Date lastExec = new Date(mpd.getLastExecutionDate());	
+//			// Check we haven't already executed the MP for this day.
+//			if (date.compareTo(lastExec) < 0) {
+//				return true;
+//			}
+//		}  catch (NumberFormatException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
+
+	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
+		List<IMetricProvider> filtredProviders = new ArrayList<>();
+		AnalysisTask task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
+		
+		Set<String> taskProviders = new HashSet<>();
+		for(ProjectMetricProvider provider : task.getMetrics()) {
+			taskProviders.add(provider.getMetricProviderId());
 		}
 		
-		logger.info("Project execution complete. In error state: " + project.getExecutionInformation().getInErrorState());
+		for(IMetricProvider platformProvider : metricProviders) {
+			if(taskProviders.contains(platformProvider.getIdentifier())) {
+				filtredProviders.add(platformProvider);
+			}
+		}
+		
+		return filtredProviders;
 	}
 
 	protected List<IMetricProvider> extractFactoidProviders(List<IMetricProvider> allProviders) {
@@ -263,65 +298,7 @@ public class ProjectExecutor implements Runnable {
 		return null;
 	}
 		
-	protected Date getLastExecutedDate() {
-		Date lastExec;
-		String lastExecuted = project.getExecutionInformation().getLastExecuted();
-		if(lastExecuted.equals("null") || lastExecuted.equals("")) {
-			lastExec = new Date();
-			
-			for (VcsRepository repo : project.getVcsRepositories()) {
-				// This needs to be the day BEFORE the first day! (Hence the addDays(-1)) 
-				try {
-					Date d = platform.getVcsManager().getDateForRevision(repo, platform.getVcsManager().getFirstRevision(repo)).addDays(-1);
-					if (d == null) continue;
-					if (lastExec.compareTo(d) > 0) {
-						lastExec = d;
-					} 
-				} catch (NoManagerFoundException e) {
-					System.err.println(e.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			for (CommunicationChannel communicationChannel : project.getCommunicationChannels()) {
-				try {
-					Date d = platform.getCommunicationChannelManager().getFirstDate(platform.getMetricsRepository(project).getDb(), communicationChannel);
-					if (d == null) continue;
-					d = d.addDays(-1);
-					if (lastExec.compareTo(d) > 0) {
-						lastExec = d;
-					}
-				} catch (NoManagerFoundException e) {
-					System.err.println(e.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			for (BugTrackingSystem bugTrackingSystem : project.getBugTrackingSystems()) {
-				try {
-					Date d = platform.getBugTrackingSystemManager().getFirstDate(platform.getMetricsRepository(project).getDb(), bugTrackingSystem).addDays(-1);
-					if (d == null) continue;
-					if (lastExec.compareTo(d) > 0) {
-						lastExec = d;
-					}
-				} 
-				catch (NoManagerFoundException e) {
-					System.err.println(e.getMessage());					
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			try {
-				lastExec = new Date(lastExecuted);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-		return lastExec;
-	}
+
 	
 	public List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
 		List<IMetricProvider> sorted = new ArrayList<IMetricProvider>();
@@ -359,4 +336,23 @@ public class ProjectExecutor implements Runnable {
 			sorted.add(mp);
 		}
 	}
+
+	private void initialiseProjectLocalStorage (Project project) {
+		if (project.getExecutionInformation() == null) {
+			project.setExecutionInformation(new ProjectExecutionInformation());
+		}
+		
+		try{	
+			Path projectLocalStoragePath = Paths.get(platform.getLocalStorageHomeDirectory().toString(), project.getShortName());		
+			if (Files.notExists(projectLocalStoragePath)) {
+				Files.createDirectory(projectLocalStoragePath);
+			}
+			LocalStorage projectLocalStorage = new LocalStorage();
+			projectLocalStorage.setPath(projectLocalStoragePath.toString());
+			project.getExecutionInformation().setStorage(projectLocalStorage);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

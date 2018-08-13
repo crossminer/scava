@@ -5,5 +5,5 @@
 	<classpathentry exported="true" kind="lib" path="log4mongo-java-0.7.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="mongo-java-driver-2.9.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="log4j-1.2.17.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

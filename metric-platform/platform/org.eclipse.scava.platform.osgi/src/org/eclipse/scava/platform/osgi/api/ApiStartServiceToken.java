@@ -7,24 +7,9 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.platform.osgi.services;
+package org.eclipse.scava.platform.osgi.api;
 
-import java.util.List;
 
-import org.eclipse.scava.platform.osgi.executors.SchedulerStatus;
-
-public interface IWorkerService {
-
-	public String getIdentifier();
-	
-	public void pause();
-	
-	public void resume();
-	
-	public void shutdown();
-	
-	public abstract boolean queueProjects(List<String> projects);
-
-	public abstract SchedulerStatus getStatus();
+public class ApiStartServiceToken {
 
 }
