@@ -32,7 +32,7 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 	}
 
 	@Override
-	public void createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders) {
+	public AnalysisTask createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders) {
 		ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(projectId);
 
 		task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
@@ -63,15 +63,51 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 		}
 		
 		this.repository.sync();
+		
+		return task;
 	}
 	
 	@Override
-	public void updateAnalysisTask(AnalysisTask task, List<String> metricsProviders) {
-		// TODO Auto-generated method stub	
+	public AnalysisTask updateAnalysisTask(AnalysisTask newTask, List<String> metricsProviders) {
+		resetAnalysisTask(newTask.getAnalysisTaskId());
+		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(newTask.getAnalysisTaskId());	
+		task.setLabel(newTask.getLabel());
+		task.setType(newTask.getType());
+		task.setStartDate(newTask.getStartDate());
+		task.setEndDate(newTask.getEndDate());
+			
+		// Add new ProjectMetricProvider
+		for(String metricProviderId : metricsProviders) {
+			Iterable<ProjectMetricProvider> providers = this.repository.getMetricProviders().find(ProjectMetricProvider.PROJECTID.eq(task.getProject().getProjectId()), ProjectMetricProvider.METRICPROVIDERID.eq(metricProviderId));		
+			ProjectMetricProvider provider = null;
+			if(providers.iterator().hasNext()) {		
+				provider = providers.iterator().next();				
+			}else {
+				 provider = new ProjectMetricProvider();
+				 provider.setProjectId(task.getProject().getProjectId());
+				 provider.setMetricProviderId(metricProviderId);
+				 provider.setLastExecutionDate(new Date(0));
+				 this.repository.getMetricProviders().add(provider);
+			}
+			task.getMetrics().add(provider);
+		}
+	
+
+		// Remove deleted ProjectMetricProvider
+		for(ProjectMetricProvider metricProv :  new ArrayList<>(task.getMetrics())) {
+			if(!metricsProviders.contains(metricProv.getMetricProviderId())) {
+				task.getMetrics().remove(metricsProviders);
+				this.repository.getMetricProviders().remove(metricProv);
+			}
+		}
+	   
+		this.repository.sync();
+		
+		return task;
 	}
 	
 	@Override
-	public void deleteAnalysisTask(String analysisTaskId) {
+	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
 		if(task != null) {		
 			for(ProjectMetricProvider metricProvider : task.getMetrics()) {
@@ -80,6 +116,7 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 			this.repository.getAnalysisTasks().remove(task);
 			this.repository.sync();
 		}
+		return task;
 	}
 	
 
@@ -121,7 +158,7 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 	}
 
 	@Override
-	public void startAnalysisTask(String analysisTaskId) {
+	public AnalysisTask startAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 
 		if (task != null) {
@@ -131,20 +168,22 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 			}
 			this.repository.sync();
 		}
+		return task;
 	}
 
 	@Override
-	public void stoptAnalysisTask(String analysisTaskId) {
+	public AnalysisTask stoptAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 
 		if (task != null &&  ! task.getScheduling().getStatus().equals((AnalysisTaskStatus.STOP.name()))) {
 			task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_STOP.name());
 			this.repository.sync();
 		}
+		return task;
 	}
 
 	@Override
-	public void resetAnalysisTask(String analysisTaskId) {
+	public AnalysisTask resetAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 
 		if (task != null) {
@@ -155,6 +194,7 @@ public class AnalysisTaskScheduling implements IAnalysisRepositoryService,IAnaly
 			task.getScheduling().setWorkerId(null);
 			this.repository.sync();
 		}
+		return task;
 	}
 
 

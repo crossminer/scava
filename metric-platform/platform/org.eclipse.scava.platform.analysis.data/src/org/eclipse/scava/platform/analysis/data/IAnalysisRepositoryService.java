@@ -6,17 +6,17 @@ import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 
 public interface IAnalysisRepositoryService {
 	
-	public void createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders);
+	public AnalysisTask createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders);
 	
-	public void updateAnalysisTask(AnalysisTask task, List<String> metricsProviders);
+	public AnalysisTask updateAnalysisTask(AnalysisTask task, List<String> metricsProviders);
 		
-	public void deleteAnalysisTask(String analysisTaskId);
+	public AnalysisTask deleteAnalysisTask(String analysisTaskId);
 	
-	public void startAnalysisTask(String analysisTaskId);
+	public AnalysisTask startAnalysisTask(String analysisTaskId);
 
-	public void stoptAnalysisTask(String analysisTaskId);
+	public AnalysisTask stoptAnalysisTask(String analysisTaskId);
 
-	public void resetAnalysisTask(String analysisTaskId);
+	public AnalysisTask resetAnalysisTask(String analysisTaskId);
 	
 	public List<AnalysisTask> getAnalysisTasksByProject(String projectId);
 
