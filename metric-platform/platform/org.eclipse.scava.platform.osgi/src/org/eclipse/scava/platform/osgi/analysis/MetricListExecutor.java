@@ -97,9 +97,6 @@ public class MetricListExecutor implements Runnable {
 			m.setMetricProviderContext(new MetricProviderContext(platform, OssmeterLoggerFactory.getInstance().makeNewLoggerInstance(m.getIdentifier())));
 			addDependenciesToMetricProvider(platform, m);
 			
-			
-
-			
 			// We need to check that it hasn't already been excuted for this date
 			// e.g. in cases where a different MP 
 			
@@ -127,8 +124,7 @@ public class MetricListExecutor implements Runnable {
 						MetricHistoryManager historyManager = new MetricHistoryManager(platform);
 						historyManager.store(project, date, (IHistoricalMetricProvider) m);
 					}
-					
-					
+
 					logger.info("Metric Executed ("+m.getShortIdentifier()+").");
 				}
 			} catch (Exception e) {
