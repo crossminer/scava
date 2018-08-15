@@ -1,4 +1,4 @@
-package org.eclipse.scava.metricprovider.trans.configuration.puppet;
+package org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.scava.metricprovider.trans.configuration.puppet.model.PuppetMetadata;
-import org.eclipse.scava.metricprovider.trans.configuration.puppet.model.Metadata;
-import org.eclipse.scava.metricprovider.trans.configuration.puppet.model.MetadataCollection;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.CustomSmell;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.ImplementationCustomSmellCollection;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.ImplementationSmellCollection;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.ImplementationSmells;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.Smell;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -29,7 +31,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 
 import com.mongodb.DB;
 
-public class PuppetTransMetricProvider implements ITransientMetricProvider<PuppetMetadata> {
+public class PuppetImplementationTransMetricProvider implements ITransientMetricProvider<ImplementationSmells> {
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -41,13 +43,13 @@ public class PuppetTransMetricProvider implements ITransientMetricProvider<Puppe
 	
 	private final OssmeterLogger logger;
 	
-	public PuppetTransMetricProvider() {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.trans.configuration.puppet.PuppetTransMetricProvider");
+	public PuppetImplementationTransMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.trans.configuration.puppet.PuppetImplementationTransMetricProvider");
 	}
     
     @Override
     public String getIdentifier() {
-    return PuppetTransMetricProvider.class.getCanonicalName();
+    return PuppetImplementationTransMetricProvider.class.getCanonicalName();
     }
     
     @Override
@@ -70,11 +72,11 @@ public class PuppetTransMetricProvider implements ITransientMetricProvider<Puppe
     }
     
     @Override
-    public PuppetMetadata adapt(DB db) {
-    	return new PuppetMetadata(db);
+    public ImplementationSmells adapt(DB db) {
+    	return new ImplementationSmells(db);
     }
     
-    public void measure(Project project, ProjectDelta projectDelta, PuppetMetadata db) {
+    public void measure(Project project, ProjectDelta projectDelta, ImplementationSmells db) {
     	
     	try {
     		
@@ -95,43 +97,71 @@ public class PuppetTransMetricProvider implements ITransientMetricProvider<Puppe
 					
 					String repoUrl = repo.getUrl();
 					
-					MetadataCollection sc = db.getSmells();
-					for (Metadata s : sc) {
+					ImplementationSmellCollection sc = db.getSmells();
+					for (Smell s : sc) {
 						sc.remove(s);
+					}
+					
+					ImplementationCustomSmellCollection csc = db.getCustomSmells();
+					for (CustomSmell s : csc) {
+						csc.remove(s);
 					}
 					db.sync();
 					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
-					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer") + " " + workingCopyFolders.get(repoUrl) + "/ 1");
+					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer1") + " " + workingCopyFolders.get(repoUrl) + "/");
 					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					String ins = in.readLine();
-		            while(ins != null){
-		                String line[] = ins.split(",");
-		                if(line.length == 3) {
-		                	Metadata metadata = new Metadata();
-		                	
-		                	switch (line[1]) {
-			                    case "PuppetFileCount":  metadata.setPuppetFileCount(Integer.parseInt(line[2]));
-			                    	break;
-			                    case "TotalClasses":  metadata.setClassCount(Integer.parseInt(line[2]));
-		                    		break;
-			                    case "TotalDefines":  metadata.setDefineCount(Integer.parseInt(line[2]));
-	                    			break;
-			                    case "TotalFiles":  metadata.setFileResourceCount(Integer.parseInt(line[2]));
-	                    			break;
-			                    case "TotalPackages":  metadata.setPackageCount(Integer.parseInt(line[2]));
-                    				break;
-			                    case "TotalServices":  metadata.setServiceCount(Integer.parseInt(line[2]));
-                					break;
-			                    case "TotalExecs":  metadata.setExecCount(Integer.parseInt(line[2]));
-            						break;
-			                    case "TotalLOC":  metadata.setLoc(Integer.parseInt(line[2]));
-        							break;
-					        }
-							db.getSmells().add(metadata);
+					while(ins != null){
+		                if(ins.contains("- WARNING:")) {
+		                	String filename[] = ins.split("- WARNING:");
+		                	String f = filename[0];
+		                	if(filename[1].contains("ensure found on line")) {
+		                		String rest[] = filename[1].split(" ");
+		                		Smell smell = new Smell();
+								smell.setLine(rest[rest.length - 1]);
+								smell.setReason("ensure found on line but it's not the first attribute");
+								smell.setFileName(f);
+								db.getSmells().add(smell);
+								db.sync();
+		                	}
+		                	else {
+			                	String rest[] = filename[1].split("on line");
+			                	Smell smell = new Smell();
+								smell.setLine(rest[1]);
+								smell.setReason(rest[0]);
+								smell.setFileName(f);
+								db.getSmells().add(smell);
+								db.sync();
+		                	}
+		                }
+		                if(ins.contains("- ERROR:")) {
+		                	String filename[] = ins.split("- ERROR:");
+		                	String f = filename[0];
+		                	String rest[] = filename[1].split("on line");
+		                	Smell smell = new Smell();
+							smell.setLine(rest[1]);
+							smell.setReason(rest[0]);
+							smell.setFileName(f);
+							db.getSmells().add(smell);
 							db.sync();
 		                }
 		                ins = in.readLine();
+		            }
+					
+					Process p2 = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer2") + " " + workingCopyFolders.get(repoUrl) + "/");
+					BufferedReader in2 = new BufferedReader(new InputStreamReader(p2.getInputStream()));
+					String ins2 = in2.readLine();
+					while(ins2 != null){
+		                if(ins2.split(",").length == 4) {
+		                	CustomSmell customSmell = new CustomSmell();
+		                	customSmell.setSmellName(ins2.split(",")[1]);
+		                	customSmell.setReason(ins2.split(",")[2]);
+		                	customSmell.setFileName(ins2.split(",")[3]);
+							db.getCustomSmells().add(customSmell);
+							db.sync();
+		                }
+		                ins2 = in2.readLine();
 		            }
 	    		}
 	    	}
@@ -173,5 +203,5 @@ public class PuppetTransMetricProvider implements ITransientMetricProvider<Puppe
 		String revision = commits.get(commits.size() - 1).getRevision();
 		return revision;
 	}
-    
+
 }
