@@ -14,18 +14,20 @@ public class SchedulingInformation extends Pongo {
 		super();
 		STATUS.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		CURRENTDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
-		HEARTBEAT.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		WORKERID.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		PROGRESS.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		CURRENTMETRIC.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
+		EXECUTIONREQUESTDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
+		LASTDAILYEXECUTIONDURATION.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 	}
 	
 	public static StringQueryProducer STATUS = new StringQueryProducer("status"); 
 	public static StringQueryProducer CURRENTDATE = new StringQueryProducer("currentDate"); 
-	public static StringQueryProducer HEARTBEAT = new StringQueryProducer("heartbeat"); 
 	public static StringQueryProducer WORKERID = new StringQueryProducer("workerId"); 
 	public static NumericalQueryProducer PROGRESS = new NumericalQueryProducer("progress");
 	public static StringQueryProducer CURRENTMETRIC = new StringQueryProducer("currentMetric"); 
+	public static StringQueryProducer EXECUTIONREQUESTDATE = new StringQueryProducer("executionRequestDate"); 
+	public static NumericalQueryProducer LASTDAILYEXECUTIONDURATION = new NumericalQueryProducer("lastDailyExecutionDuration");
 	
 	
 	public String getStatus() {
@@ -43,15 +45,6 @@ public class SchedulingInformation extends Pongo {
 	
 	public SchedulingInformation setCurrentDate(Date currentDate) {
 		dbObject.put("currentDate", currentDate);
-		notifyChanged();
-		return this;
-	}
-	public Date getHeartbeat() {
-		return parseDate(dbObject.get("heartbeat")+"", null);
-	}
-	
-	public SchedulingInformation setHeartbeat(Date heartbeat) {
-		dbObject.put("heartbeat", heartbeat);
 		notifyChanged();
 		return this;
 	}
@@ -79,6 +72,24 @@ public class SchedulingInformation extends Pongo {
 	
 	public SchedulingInformation setCurrentMetric(String currentMetric) {
 		dbObject.put("currentMetric", currentMetric);
+		notifyChanged();
+		return this;
+	}
+	public Date getExecutionRequestDate() {
+		return parseDate(dbObject.get("executionRequestDate")+"", null);
+	}
+	
+	public SchedulingInformation setExecutionRequestDate(Date executionRequestDate) {
+		dbObject.put("executionRequestDate", executionRequestDate);
+		notifyChanged();
+		return this;
+	}
+	public long getLastDailyExecutionDuration() {
+		return parseLong(dbObject.get("lastDailyExecutionDuration")+"", 0);
+	}
+	
+	public SchedulingInformation setLastDailyExecutionDuration(long lastDailyExecutionDuration) {
+		dbObject.put("lastDailyExecutionDuration", lastDailyExecutionDuration);
 		notifyChanged();
 		return this;
 	}

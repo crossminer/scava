@@ -4,7 +4,9 @@ package org.eclipse.scava.platform.analysis.data.model;
 class ProjectAnalysisResportory { 
 	val ProjectAnalysis[*] projects;
 	val AnalysisTask[*] analysisTasks;
-	val ProjectMetricProvider[*] metricProviders;
+	val MetricExecution[*] metricExecutions;
+	val MetricProvider[*] metricProviders;
+	val Worker[*] workers;
 }
 
 
@@ -22,16 +24,15 @@ class AnalysisTask {
     attr Date startDate;
     attr Date endDate;
     ref ProjectAnalysis project;
-    ref ProjectMetricProvider[*] metrics;
+    ref MetricExecution[*] metricExecutions;
     val SchedulingInformation scheduling;
 }
 
-class ProjectMetricProvider{
+class MetricExecution{
 	@searchable
 	attr String metricProviderId;
 	@searchable
-	attr String projectId;
-	
+	attr String projectId;	
 	attr Date lastExecutionDate; 
 }
 
@@ -39,11 +40,32 @@ class ProjectMetricProvider{
 class SchedulingInformation { 
     attr String status; 
     attr Date currentDate;
-    attr Date heartbeat;
     attr String workerId;
     attr int progress;  
-    attr String currentMetric; 
+    attr String currentMetric;  
+    attr Date executionRequestDate;
+    attr long lastDailyExecutionDuration;
 }
 
+class MetricProvider {	
+    @searchable
+	attr String metricProviderId;
+	attr String label;
+	attr String description;
+	attr String kind;
+	ref MetricProvider[*] dependOf;
+	val DataStorage[*] storages;
+}
+
+class DataStorage {
+	attr String storage;
+}
+
+class Worker {
+	@searchable
+	attr String workerId;
+	attr Date heartbeat;
+	ref AnalysisTask currentTask;
+}
 
 

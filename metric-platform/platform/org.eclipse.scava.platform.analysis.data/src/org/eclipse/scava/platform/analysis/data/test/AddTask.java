@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskScheduling;
-import org.eclipse.scava.platform.analysis.data.IAnalysisRepositoryService;
+import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 
@@ -21,7 +20,7 @@ public class AddTask {
 			
 			getMongoConnection().dropDatabase("ScavaAnalysisScheduling");
 			
-			IAnalysisRepositoryService service = new AnalysisTaskScheduling(getMongoConnection());
+			AnalysisTaskService service = new AnalysisTaskService(getMongoConnection());
 
 			AnalysisTask task1 = new AnalysisTask();
 			task1.setAnalysisTaskId("QualityGuardAnalysis:Analysis1");

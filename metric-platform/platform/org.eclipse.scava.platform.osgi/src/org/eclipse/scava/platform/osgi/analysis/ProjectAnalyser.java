@@ -18,10 +18,10 @@ import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskScheduling;
-import org.eclipse.scava.platform.analysis.data.IAnalysisSchedulingService;
+import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
+import org.eclipse.scava.platform.analysis.data.WorkerService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider;
+import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -33,29 +33,26 @@ import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 public class ProjectAnalyser {
 	
 	private Platform platform;
-	private IAnalysisSchedulingService taskScheduling;
+	private AnalysisSchedulingService schedulingService;;
+	private WorkerService workerService;
 	private int analysisThreadNumber;
 	private Logger logger;
 
 	
-	public ProjectAnalyser(Platform platform, IAnalysisSchedulingService taskScheduling) {
-		this.platform = platform;
-		this.taskScheduling = taskScheduling;
+	public ProjectAnalyser(Platform platform, AnalysisSchedulingService schedulingService,WorkerService workerService ) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
+		this.platform = platform;
+		this.schedulingService = schedulingService;
+		this.workerService = workerService;
 	}
 
 	public void executeAnalyse(String analysisTaskId, String workerId) {
 		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
 
-		AnalysisTask task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
+		AnalysisTask task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(task.getProject().getProjectId());
 
 		logger.info("Beginning execution.");
-		
-		task.getScheduling().setStatus(AnalysisTaskStatus.EXECUTION.name());
-		task.getScheduling().setWorkerId(workerId);	
-		this.taskScheduling.getRepository().sync();
-		
 		initialiseProjectLocalStorage(project);
 		
 		// Clear any open flags
@@ -68,7 +65,6 @@ public class ProjectAnalyser {
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
 		
 		logger.info("Creating metric branches.");
-		// FIXME: Need to check that no metrics depend on factoids!
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
 		logger.info("Created metric branches.");
 		
@@ -78,11 +74,13 @@ public class ProjectAnalyser {
 		Date[] dates = Date.range(enecutionDate, new Date().addDays(-1));
 		logger.info("Dates: " + dates.length);
 		
-		for (Date date : dates) {		
+		 
+		for (Date date : dates) {	
+			java.util.Date dailyExecution = new java.util.Date();
 			
-			this.taskScheduling.newDailyTaskExecution(analysisTaskId,date.toJavaDate());
+			this.schedulingService.newDailyTaskExecution(analysisTaskId,date.toJavaDate());
 
-			task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+			task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
 				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
 				return;
@@ -91,7 +89,7 @@ public class ProjectAnalyser {
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
 				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
 				task.getScheduling().setWorkerId(null);	
-				this.taskScheduling.getRepository().sync();
+				this.schedulingService.getRepository().sync();
 				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
 				return;
 			}
@@ -161,13 +159,11 @@ public class ProjectAnalyser {
 				logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
-			}	
+			}		
 			
+			task.getScheduling().setLastDailyExecutionDuration(new java.util.Date().getTime() - dailyExecution.getTime());
+			this.schedulingService.getRepository().sync();
 		}
-		
-		task.getScheduling().setStatus(AnalysisTaskStatus.COMPLETED.name());
-		task.getScheduling().setWorkerId(null);	
-		this.taskScheduling.getRepository().sync();
 		
 		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
 	}
@@ -192,7 +188,7 @@ public class ProjectAnalyser {
 //	}
 //
 //	private boolean alreadyExecuted(IMetricProvider metric, Date date,String projectId) {
-//		ProjectMetricProvider mpd = taskScheduling.findMetricProviderScheduling(projectId,metric.getIdentifier());
+//		ProjectMetricProvider mpd = schedulingService.findMetricProviderScheduling(projectId,metric.getIdentifier());
 //		try {
 //			Date lastExec = new Date(mpd.getLastExecutionDate());	
 //			// Check we haven't already executed the MP for this day.
@@ -207,10 +203,10 @@ public class ProjectAnalyser {
 
 	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
 		List<IMetricProvider> filtredProviders = new ArrayList<>();
-		AnalysisTask task = this.taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
+		AnalysisTask task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
 		
 		Set<String> taskProviders = new HashSet<>();
-		for(ProjectMetricProvider provider : task.getMetrics()) {
+		for(MetricExecution provider : task.getMetricExecutions()) {
 			taskProviders.add(provider.getMetricProviderId());
 		}
 		

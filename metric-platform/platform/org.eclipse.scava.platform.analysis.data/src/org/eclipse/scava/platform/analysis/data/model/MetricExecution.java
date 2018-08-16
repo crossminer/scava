@@ -6,15 +6,15 @@ import com.googlecode.pongo.runtime.*;
 import com.googlecode.pongo.runtime.querying.*;
 
 
-public class ProjectMetricProvider extends Pongo {
+public class MetricExecution extends Pongo {
 	
 	
 	
-	public ProjectMetricProvider() { 
+	public MetricExecution() { 
 		super();
-		METRICPROVIDERID.setOwningType("org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider");
-		PROJECTID.setOwningType("org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider");
-		LASTEXECUTIONDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider");
+		METRICPROVIDERID.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
+		PROJECTID.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
+		LASTEXECUTIONDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
 	}
 	
 	public static StringQueryProducer METRICPROVIDERID = new StringQueryProducer("metricProviderId"); 
@@ -26,7 +26,7 @@ public class ProjectMetricProvider extends Pongo {
 		return parseString(dbObject.get("metricProviderId")+"", "");
 	}
 	
-	public ProjectMetricProvider setMetricProviderId(String metricProviderId) {
+	public MetricExecution setMetricProviderId(String metricProviderId) {
 		dbObject.put("metricProviderId", metricProviderId);
 		notifyChanged();
 		return this;
@@ -35,7 +35,7 @@ public class ProjectMetricProvider extends Pongo {
 		return parseString(dbObject.get("projectId")+"", "");
 	}
 	
-	public ProjectMetricProvider setProjectId(String projectId) {
+	public MetricExecution setProjectId(String projectId) {
 		dbObject.put("projectId", projectId);
 		notifyChanged();
 		return this;
@@ -44,7 +44,7 @@ public class ProjectMetricProvider extends Pongo {
 		return parseDate(dbObject.get("lastExecutionDate")+"", null);
 	}
 	
-	public ProjectMetricProvider setLastExecutionDate(Date lastExecutionDate) {
+	public MetricExecution setLastExecutionDate(Date lastExecutionDate) {
 		dbObject.put("lastExecutionDate", lastExecutionDate);
 		notifyChanged();
 		return this;

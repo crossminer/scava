@@ -8,7 +8,7 @@ import com.googlecode.pongo.runtime.querying.*;
 
 public class AnalysisTask extends Pongo {
 	
-	protected List<ProjectMetricProvider> metrics = null;
+	protected List<MetricExecution> metricExecutions = null;
 	protected ProjectAnalysis project = null;
 	protected SchedulingInformation scheduling = null;
 	
@@ -17,7 +17,7 @@ public class AnalysisTask extends Pongo {
 		super();
 		dbObject.put("project", new BasicDBObject());
 		dbObject.put("scheduling", new SchedulingInformation().getDbObject());
-		dbObject.put("metrics", new BasicDBList());
+		dbObject.put("metricExecutions", new BasicDBList());
 		ANALYSISTASKID.setOwningType("org.eclipse.scava.platform.analysis.data.model.AnalysisTask");
 		LABEL.setOwningType("org.eclipse.scava.platform.analysis.data.model.AnalysisTask");
 		TYPE.setOwningType("org.eclipse.scava.platform.analysis.data.model.AnalysisTask");
@@ -79,11 +79,11 @@ public class AnalysisTask extends Pongo {
 	}
 	
 	
-	public List<ProjectMetricProvider> getMetrics() {
-		if (metrics == null) {
-			metrics = new PongoList<ProjectMetricProvider>(this, "metrics", false);
+	public List<MetricExecution> getMetricExecutions() {
+		if (metricExecutions == null) {
+			metricExecutions = new PongoList<MetricExecution>(this, "metricExecutions", false);
 		}
-		return metrics;
+		return metricExecutions;
 	}
 	
 	public AnalysisTask setProject(ProjectAnalysis project) {

@@ -13,7 +13,9 @@ public class ProjectAnalysisResportory extends PongoDB {
 	
 	protected ProjectAnalysisCollection projects = null;
 	protected AnalysisTaskCollection analysisTasks = null;
-	protected ProjectMetricProviderCollection metricProviders = null;
+	protected MetricExecutionCollection metricExecutions = null;
+	protected MetricProviderCollection metricProviders = null;
+	protected WorkerCollection workers = null;
 	
 	
 	
@@ -25,8 +27,16 @@ public class ProjectAnalysisResportory extends PongoDB {
 		return analysisTasks;
 	}
 	
-	public ProjectMetricProviderCollection getMetricProviders() {
+	public MetricExecutionCollection getMetricExecutions() {
+		return metricExecutions;
+	}
+	
+	public MetricProviderCollection getMetricProviders() {
 		return metricProviders;
+	}
+	
+	public WorkerCollection getWorkers() {
+		return workers;
 	}
 	
 	
@@ -37,7 +47,11 @@ public class ProjectAnalysisResportory extends PongoDB {
 		pongoCollections.add(projects);
 		analysisTasks = new AnalysisTaskCollection(db.getCollection("analysisTasks"));
 		pongoCollections.add(analysisTasks);
-		metricProviders = new ProjectMetricProviderCollection(db.getCollection("metricProviders"));
+		metricExecutions = new MetricExecutionCollection(db.getCollection("metricExecutions"));
+		pongoCollections.add(metricExecutions);
+		metricProviders = new MetricProviderCollection(db.getCollection("metricProviders"));
 		pongoCollections.add(metricProviders);
+		workers = new WorkerCollection(db.getCollection("workers"));
+		pongoCollections.add(workers);
 	}
 }

@@ -13,9 +13,7 @@ import java.io.FileWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.scava.platform.Configuration;
@@ -26,17 +24,13 @@ import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricHistoryManager;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskScheduling;
-import org.eclipse.scava.platform.analysis.data.IAnalysisSchedulingService;
+import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.ProjectMetricProvider;
+import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.logging.OssmeterLoggerFactory;
-import org.eclipse.scava.repository.model.MetricAnalysis;
-import org.eclipse.scava.repository.model.MetricProviderExecution;
-import org.eclipse.scava.repository.model.MetricProviderType;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectError;
 
@@ -83,7 +77,7 @@ public class MetricListExecutor implements Runnable {
 			return;
 		}
 		Platform platform = new Platform(mongo);
-		IAnalysisSchedulingService taskScheduling = new AnalysisTaskScheduling(mongo);
+		AnalysisSchedulingService taskScheduling = new AnalysisSchedulingService(mongo);
 
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(projectId);
 		AnalysisTask task = taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(this.taskId);
@@ -97,12 +91,12 @@ public class MetricListExecutor implements Runnable {
 			m.setMetricProviderContext(new MetricProviderContext(platform, OssmeterLoggerFactory.getInstance().makeNewLoggerInstance(m.getIdentifier())));
 			addDependenciesToMetricProvider(platform, m);
 			
-			// We need to check that it hasn't already been excuted for this date
-			// e.g. in cases where a different MP 
+		
 			
 			taskScheduling.startMetricExecution(this.taskId,  m.getIdentifier());
-
-			ProjectMetricProvider mpd = taskScheduling.findMetricProviderScheduling(this.projectId,m.getIdentifier());
+			
+			// We need to check that it hasn't already been excuted for this date
+			MetricExecution mpd = taskScheduling.findMetricExecution(this.projectId,m.getIdentifier());
 			try {
 				Date lastExec = new Date(mpd.getLastExecutionDate());	
 				// Check we haven't already executed the MP for this day.
@@ -140,13 +134,7 @@ public class MetricListExecutor implements Runnable {
 				break;
 			}finally {
 				taskScheduling.endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
-			}
-			
-//			mAnal.setMillisTaken(now() - start);
-//			platform.getProjectRepositoryManager().getProjectRepository().getMetricAnalysis().sync();
-			
-			
-			
+			}		
 		}
 		mongo.close();
 	}

@@ -17,6 +17,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
+import org.eclipse.scava.platform.osgi.services.MetricProviderInitialiser;
 import org.eclipse.scava.platform.osgi.services.TaskCheckExecutor;
 import org.eclipse.scava.platform.osgi.services.WorkerExecutor;
 
@@ -60,6 +61,10 @@ public class OssmeterApplication implements IApplication{
 		
 		// Ensure OSGi contributors are active
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
+		
+		// Update MetricProvidrList
+		MetricProviderInitialiser init = new MetricProviderInitialiser(mongo);
+		init.initialiseMetricProviderRepository();
 		
 		if (slave) {
 			WorkerExecutor workerExecutor = new WorkerExecutor(mongo);
