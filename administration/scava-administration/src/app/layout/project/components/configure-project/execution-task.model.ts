@@ -15,12 +15,13 @@ export class ExecutionTask implements IExecutionTask {
         public type?: string,
         public startDate?: Date,
         public endDate?: Date, 
+        public metricExecutions?: MetricExecutions,
         public scheduling?:SchedulingInformation
     ) {
     }
 }
 
-export interface ISchedulingInformation{
+export interface ISchedulingInformation {
     status?: string,
     currentDate?: Date,
     workerId?: string,
@@ -39,6 +40,21 @@ export class SchedulingInformation implements ISchedulingInformation {
        public acurrentMetric?: string,  
        public executionRequestDate?: Date,
        public lastDailyExecutionDuration?: number
+    ) {
+    }
+}
+
+export interface IMetricExecutions {
+    metricProviderId?: string,
+    projectId?: string,
+    lastExecutionDate?: string
+}
+
+export class MetricExecutions implements IMetricExecutions {
+    constructor(
+       public metricProviderId?: string,
+       public projectId?: string,
+       public lastExecutionDate?: string
     ) {
     }
 }

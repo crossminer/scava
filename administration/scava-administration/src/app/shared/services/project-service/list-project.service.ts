@@ -13,7 +13,6 @@ export class ListProjectService {
     private listServiceUrl = 'projects';
     private projectServiceUrl = 'projects/p';
     private jwtToken: string = null;
-    private project: Project;
 
     constructor(
         private httpClient: HttpClient,
@@ -28,10 +27,10 @@ export class ListProjectService {
             { headers: new HttpHeaders({ 'Authorization': this.jwtToken })});
     }
 
-    getProject(projectid:string){
+    getProject(projectid:string) {
         if (this.jwtToken == null) {
             this.jwtToken = this.localStorageService.loadToken();
-        } 
+        }
         return this.httpClient.get(`${this.resourceUrl}/${this.projectServiceUrl}/${projectid}`, { headers: new HttpHeaders({ 'Authorization': this.jwtToken })});
     }
 

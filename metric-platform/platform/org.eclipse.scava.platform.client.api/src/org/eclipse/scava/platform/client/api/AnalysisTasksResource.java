@@ -54,13 +54,11 @@ public class AnalysisTasksResource extends AbstractApiResource {
 					return rep;
 				}
 			}
-			
 			StringRepresentation rep = new StringRepresentation(listTasks.toString());
 			rep.setMediaType(MediaType.APPLICATION_JSON);
-			
 			getResponse().setStatus(Status.SUCCESS_OK);
-			
 			return rep;
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");

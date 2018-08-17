@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisAlgorithmMgmtAddDialogComponent } from './analysis-algorithm-add-dialog.component';
+import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
+import { ExecutionTask } from './execution-task.model';
 
 @Component({
     selector: 'app-configure-project',
@@ -12,10 +14,12 @@ import { AnalysisAlgorithmMgmtAddDialogComponent } from './analysis-algorithm-ad
 export class ConfigureProjectComponent implements OnInit {
 
     project: any = null;
+    executionTasks: ExecutionTask[];
 
     constructor(
         private route: ActivatedRoute,
         private listProjectService: ListProjectService,
+        private analysisTaskService: AnalysisTaskService,
         public modalService: NgbModal
     ) { }
 
@@ -25,15 +29,16 @@ export class ConfigureProjectComponent implements OnInit {
 
     loadAll() {
         this.route.paramMap.subscribe(data => {
-            // console.log(data.get('id'));
             this.listProjectService.getProject(data.get('id')).subscribe(data => {
                 this.project = data;
-                // console.log(this.project);
+                this.analysisTaskService.getTasksbyProject(this.project.name).subscribe((resp) => {
+                    this.executionTasks = resp as ExecutionTask[];
+                    console.log(this.executionTasks)
+                });
             }, error => {
-                //console.log(error);
+                console.log(error);
             });
-        }
-        );
+        });
     }
 
     addAnalysisAlgorithm() {
@@ -49,5 +54,7 @@ export class ConfigureProjectComponent implements OnInit {
             }
         );
     }
+
+
 
 }

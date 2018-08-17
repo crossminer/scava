@@ -1,6 +1,8 @@
-<div class="container">
-    <div class="project-title">
-        <div class=" panel-profile">
+<div class="jumbotron" style="padding-top:20px;">
+    <div class="page-header">
+        <h2>{{project?.name}}</h2>
+        <hr/>
+        <div class="panel-profile">
             <div class="panel-body text-center">
                 <i class="fa fa-4x fa-check-circle"></i>
                 <h3 class="panel-title">
@@ -8,10 +10,6 @@
                 </h3>
             </div>
         </div>
-        <h2>{{project?.name}}</h2>
-        <h5>
-            <p>{{project?.description}}</p>
-        </h5>
     </div>
 
     <table class="table table-condensed table-responsive table-project-information">
@@ -61,18 +59,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let executionTask of executionTasks">
                         <td>
-                            10 Metrics Providers
+                            {{executionTask.metricExecutions.length}} Metric Executions
                         </td>
                         <td>
                             <div>
-                                <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                                <span>{{executionTask.startDate.$date | date: 'dd/MM/yyyy'}}</span>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
+                                <span>{{executionTask.endDate}}</span>
                             </div>
                         </td>
                         <td>
@@ -84,55 +82,35 @@
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                                     <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Run</span>
+                                    <span class="d-none d-md-inline">Start</span>
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-danger btn-sm">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-warning btn-sm">
+                                    <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Stop</span>
+                                </button>&nbsp;
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-dark btn-sm">
+                                    <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Reset</span>
+                                </button>&nbsp;
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-info btn-sm">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Edit</span>
+                                </button>&nbsp;
+                                <button type="button" queryParamsHandling="merge" class="btn btn-danger btn-sm">
                                     <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Remove</span>
                                 </button>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                            <td>
-                                20 Metrics Providers
-                            </td>
-                            <td>
-                                <div>
-                                    <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <input type="text" value="07/03/2018" class="form-control" [readonly]="true">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                <div class="btn-group flex-btn-group-container">
-                                    <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
-                                        <span class="d-none d-md-inline">Run</span>
-                                    </button>&nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
-                                        <span class="d-none d-md-inline">Remove</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="5">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-success btn-sm" (click)="addAnalysisAlgorithm()" >
+                                <button type="button" class="btn btn-success btn-sm" (click)="addAnalysisAlgorithm()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Add</span>
+                                    <span class="d-none d-md-inline">Create</span>
                                 </button>
                             </div>
                         </td>
