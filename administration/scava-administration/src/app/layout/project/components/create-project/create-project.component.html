@@ -1,4 +1,4 @@
-<div class="container">
+<div class="jumbotron" style="padding-top:20px;">
     <h2>Register project</h2>
     <hr/>
 
@@ -29,12 +29,12 @@
                     <small>Version Control Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'git')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('vcs', 'git')">
                                 <span>Git</span>
                             </button>
                         </li>
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'svn')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('vcs', 'svn')">
                                 <span>SVN</span>
                             </button>
                         </li>
@@ -42,17 +42,17 @@
                     <small>Issue Tracking Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'bugzilla')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('bts', 'bugzilla')">
                                 <span>Bugzilla</span>
                             </button>
                         </li>
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'sourceforge')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('bts', 'sourceforge')">
                                 <span>SourceForge</span>
                             </button>
                         </li>
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'redmine')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('bts', 'redmine')">
                                 <span>Redmine</span>
                             </button>
                         </li>
@@ -60,7 +60,7 @@
                     <small>Communication Channels</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('communication_channels', 'nntp')">
+                            <button type="button" class="btn btn-outline-dark m-1" (click)="addInformationSource('communication_channels', 'nntp')">
                                 <span>NNTP</span>
                             </button>
                         </li>
@@ -168,7 +168,7 @@
             </div>
         </div>
         <div class="row">
-            <button type="submit" [disabled]="!addProjectForm.form.valid || isSaving" class="btn btn-primary" class="block">Register project</button>
+            <button type="submit" [disabled]="!addProjectForm.form.valid || isSaving" class="btn btn-outline-dark block">Register project</button>
         </div>
     </form>
 </div>

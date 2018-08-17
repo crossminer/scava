@@ -1,23 +1,45 @@
-<div class="container">
+<div>
   <div class="page-header">
-    <h2>Projects Analysed by CROSSMINER</h2>
+    <h2>Projects</h2>
+    <div class="btn-group" role="group" style="float: right;margin-top: -40px;" >
+        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
+        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
+    </div>
     <hr/>
   </div>
-  <div class="project-table">
-    <div *ngFor="let project of projectList" class="project-option" [routerLink]="['/project/configure/', project.shortName]">
-      <div class="row">
-        <div class="col-md-4">
-          <h1> {{project.name}}</h1>
-          <i class="fab fa-elementor"></i>
+  <div class="card-columns">
+    <div *ngFor="let project of projectList" class="card text-white bg-secondary mb-3">
+      <div class="card-header" style="padding: 0.5rem;">
+        <h4 style="margin: 0px;" class="card-title">{{project.name}}</h4>
+      </div>
+      <div class="card-body worker-card-body">
+        <div class="row">
+          <div class="col-4">
+            <b>Status :</b>
+          </div>
+          <div class="col-8">
+            Up To Date
+          </div>
         </div>
-        <div class="col-md-6">
-          {{project.description}}
+        <div class="row">
+          <div class="col-4">
+            <b>URL :</b>
+          </div>
+          <div class="col-8">
+            {{project.homepage}}
+          </div>
         </div>
-        <div class="col-md-2">
-          <h2>
-            <span class="badge badge-dark">100%</span>
-          </h2>
+        <div class="row">
+          <div class="col-4">
+            <b>Description :</b>
+          </div>
+          <div class="col-8">
+            {{project.description}}
+          </div>
         </div>
+      </div>
+      <div class="card-footer" style="padding: 0.5rem;">
+        <button type="button" class="btn btn-outline-light btn-sm" style="float: right;margin: 5px;" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
   </div>
