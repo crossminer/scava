@@ -19,7 +19,6 @@ public class ApiApplication extends Application {
 	public Restlet createInboundRoot() {
 		Router router = new Router(getContext());
 
-		
 		router.attach("/", PingResource.class); 	
 		router.attach("/search", SearchProjectResource.class);
 		router.attach("/search/", SearchProjectResource.class);
@@ -34,6 +33,10 @@ public class ApiApplication extends Application {
 		router.attach("/analysis/task/stop", AnalysisStopTaskResource.class);
 		router.attach("/analysis/task/reset", AnalysisResetTaskResource.class);
 		router.attach("/analysis/task/delete", AnalysisDeleteTaskResource.class);
+		router.attach("/analysis/tasks/project/{projectid}", AnalysisTasksByProjectResource.class);
+		router.attach("/analysis/tasks", AnalysisTasksResource.class);
+		router.attach("/analysis/metricproviders", AnalysisMetricProviders.class);
+		router.attach("/analysis/workers", AnalysisWorkerResource.class);
 		router.attach("/projects/import", ProjectImportResource.class);
 		router.attach("/projects/create", ProjectCreationResource.class);
 		router.attach("/projects/p/{projectid}", ProjectResource.class);
