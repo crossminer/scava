@@ -12,15 +12,36 @@ import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
 export class WorkerComponent implements OnInit {
 
   workerList: any;
-  
+  interval : any;
   constructor(private listWorkerService: ListWorkerService) { }
 
   ngOnInit() {
-    // this.listWorkerService.getWorkers().subscribe((resp) => {
-    //     this.workerList = resp;
-    //   }
- // );
-     this.workerList = this.listWorkerService.getWorkers();
-   
+    this.listWorkerService.getWorkers().subscribe((resp) => {
+        this.workerList = resp;
+    });
+
+    this.interval = setInterval(() => { 
+      this.refreshData(); 
+    }, 1000);
+
   }
+
+  refreshData(){
+    this.listWorkerService.getWorkers().subscribe((resp) => {
+      this.workerList = resp;
+    });
+  }
+
+  setProgressStyles(worker:any){
+    let styles = {
+      'width': worker.currentTask.scheduling[0].progress +'%',
+    };
+
+    return styles;
+   }
+
+   computeTime(task:any){
+    let estimatedTime : number = task.scheduling[0].lastDailyExecutionDuration;
+    return estimatedTime;
+   }
 }

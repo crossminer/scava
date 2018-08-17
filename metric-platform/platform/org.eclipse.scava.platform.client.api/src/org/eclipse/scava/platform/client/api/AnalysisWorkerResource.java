@@ -28,11 +28,12 @@ public class AnalysisWorkerResource extends AbstractApiResource {
 			List<Worker> workers = service.getWorkers();
 
 			ArrayNode listWorkers = mapper.createArrayNode();
-
+	
 			for (Worker worker : workers) {
 				try {
-					AnalysisTask task = worker.getCurrentTask();
+					AnalysisTask task = worker.getCurrentTask();				
 					if (task != null) {
+						task = service.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(task.getAnalysisTaskId());
 						Map<String, Object> currentTask = new HashMap<>();
 						currentTask.put("analysisTaskId", task.getDbObject().get("analysisTaskId").toString());
 						currentTask.put("label", task.getDbObject().get("label").toString());
@@ -50,12 +51,17 @@ public class AnalysisWorkerResource extends AbstractApiResource {
 						List<Object> schedulingInformation = new ArrayList<>();
 						SchedulingInformation scheduling = task.getScheduling();
 						Map<String, String> scheduleInfo = new HashMap<>();
-						scheduleInfo.put("_type", scheduling.getDbObject().get("_type").toString());
 						scheduleInfo.put("status", scheduling.getDbObject().get("status").toString());
 						scheduleInfo.put("currentDate", scheduling.getDbObject().get("currentDate").toString());
-						scheduleInfo.put("executionRequestDate", scheduling.getDbObject().get("executionRequestDate").toString());
-						scheduleInfo.put("progress", scheduling.getDbObject().get("progress").toString());
-						scheduleInfo.put("lastDailyExecutionDuration", scheduling.getDbObject().get("lastDailyExecutionDuration").toString());
+						if(scheduling.getDbObject().get("executionRequestDate") != null) {
+							scheduleInfo.put("executionRequestDate", scheduling.getDbObject().get("executionRequestDate").toString());
+						}
+						if(scheduling.getDbObject().get("progress") != null) {
+							scheduleInfo.put("progress", scheduling.getDbObject().get("progress").toString());
+						}
+						if(scheduling.getDbObject().get("lastDailyExecutionDuration") != null) {
+							scheduleInfo.put("lastDailyExecutionDuration", scheduling.getDbObject().get("lastDailyExecutionDuration").toString());
+						}
 						
 						schedulingInformation.add(scheduleInfo);
 						currentTask.put("scheduling", schedulingInformation);
@@ -63,6 +69,8 @@ public class AnalysisWorkerResource extends AbstractApiResource {
 						currentTask.put("startDate", task.getDbObject().get("startDate").toString());
 						currentTask.put("endDate", task.getDbObject().get("endDate").toString());
 						worker.getDbObject().put("currentTask", currentTask);
+					}else {
+						worker.getDbObject().put("currentTask", null);
 					}
 					
 					listWorkers.add(mapper.readTree(worker.getDbObject().toString()));

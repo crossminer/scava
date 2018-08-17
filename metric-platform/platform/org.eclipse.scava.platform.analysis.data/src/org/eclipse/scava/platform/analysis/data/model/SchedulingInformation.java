@@ -57,11 +57,11 @@ public class SchedulingInformation extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getProgress() {
-		return parseInteger(dbObject.get("progress")+"", 0);
+	public long getProgress() {
+		return parseLong(dbObject.get("progress")+"", 0);
 	}
 	
-	public SchedulingInformation setProgress(int progress) {
+	public SchedulingInformation setProgress(long progress) {
 		dbObject.put("progress", progress);
 		notifyChanged();
 		return this;

@@ -98,7 +98,7 @@ public class AnalysisSchedulingService {
 		double currentDay = totalDays
 				- (task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY;
 		Double progress = (dailyMetrics * currentDay) / (dailyMetrics * totalDays) * 100;
-		task.getScheduling().setProgress(progress.intValue());
+		task.getScheduling().setProgress(progress.longValue());
 
 		this.repository.sync();
 	}
