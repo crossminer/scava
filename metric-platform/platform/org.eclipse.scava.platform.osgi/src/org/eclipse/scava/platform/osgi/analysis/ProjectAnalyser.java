@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -74,8 +75,8 @@ public class ProjectAnalyser {
 		Date[] dates = Date.range(enecutionDate, new Date().addDays(-1));
 		logger.info("Dates: " + dates.length);
 		
-		 
-		for (Date date : dates) {	
+		long estimatedDuration = 0; 
+		for (Date date : dates) {
 			java.util.Date dailyExecution = new java.util.Date();
 			
 			this.schedulingService.newDailyTaskExecution(analysisTaskId,date.toJavaDate());
@@ -161,7 +162,16 @@ public class ProjectAnalyser {
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 			}		
 			
-			task.getScheduling().setLastDailyExecutionDuration(new java.util.Date().getTime() - dailyExecution.getTime());
+			
+			long duration = new java.util.Date().getTime() - dailyExecution.getTime();	
+			if(estimatedDuration == 0) {
+				estimatedDuration = duration;
+			}else {
+				estimatedDuration = (estimatedDuration + duration) / 2;
+			}
+			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));
+			System.out.println(estimatedDuration + ":" + String.valueOf(dates.length - Arrays.asList(dates).indexOf(date)));
+			
 			this.schedulingService.getRepository().sync();
 		}
 		

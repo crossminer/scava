@@ -11,7 +11,7 @@ import { ExecutionTask } from '../../../layout/project/components/configure-proj
 export class ListWorkerService {
 
     private resourceUrl = environment.SERVER_API_URL + '/administration';
-    private serviceUrl = '';
+    private serviceUrl = 'analysis/workers';
     private jwtToken: string = null;
     private worker: Worker;
 
@@ -21,15 +21,15 @@ export class ListWorkerService {
     ) { }
 
     getWorkers() {
- /**       if (this.jwtToken == null) {
+        if (this.jwtToken == null) {
             this.jwtToken = this.localStorageService.loadToken();
         }
         return this.httpClient.get(`${this.resourceUrl}/${this.serviceUrl}`,
-            { headers: new HttpHeaders({ 'Authorization': this.jwtToken })}); **/
-            let task = new ExecutionTask();
-            task.analysisTaskId = "Task1";
-            let worker1 = new Worker("work1",task);
-            let worker2 = new Worker("work2",task);
-            return [worker1,worker2];
+            { headers: new HttpHeaders({ 'Authorization': this.jwtToken })}); 
+            // let task = new ExecutionTask();
+            // task.analysisTaskId = "Task1";
+            // let worker1 = new Worker("work1",task);
+            // let worker2 = new Worker("work2",task);
+            // return [worker1,worker2];
     } 
 }

@@ -17,7 +17,7 @@
               <b>Executed Task :</b>
             </div>
             <div class="col-7">
-              Task1
+                {{worker.currentTask.label}}
             </div>
           </div>
           <div class="row">
@@ -25,7 +25,7 @@
                 <b>Project :</b>
               </div>
               <div class="col-7">
-                Project1
+                  {{worker.currentTask.analysisTaskId.split(":")[0]}}
               </div>
             </div>
           <div class="row">
@@ -33,7 +33,7 @@
               <b>Metric Provider :</b>
             </div>
             <div class="col-7">
-              21 Metrics
+                {{worker.currentTask.metricExecutions.length}} Metrics
             </div>
           </div>
 
@@ -43,7 +43,7 @@
             </div>
             <div class="col-7">
               <div class="progress">
-                <div class="progress-bar bg-dark" role="progressbar" style="width:  30%" aria-valuemin="0" aria-valuemax="100">10%</div>
+                <div class="progress-bar bg-dark" role="progressbar"  [ngStyle]="setProgressStyles(worker)"  aria-valuemin="0" aria-valuemax="100"> {{worker.currentTask.scheduling[0].progress}}%</div>
               </div>
             </div>
           </div>
@@ -52,14 +52,22 @@
               <b>Time Remained :</b>
             </div>
             <div class="col-7">
-              1h 22 min
+             {{computeTime(worker.currentTask)}}
+              
             </div>
           </div>
         </div>
-
+        <div *ngIf="worker.currentTask == null" style="min-height: 100px;">
+          No Tasks Assigned
+        </div>
       </div>
       <div class="card-footer" style="padding: 0.5rem;">
-        <button type="button" class="btn btn-outline-light btn-sm" style="margin-left: 65%;">Interupt Analysis</button>
+          <div *ngIf="worker.currentTask != null">
+              <button type="button" class="btn btn-outline-light btn-sm" style="margin-left: 65%;">Interupt Analysis</button>
+          </div>
+          <div *ngIf="worker.currentTask == null">
+              <button type="button" class="btn btn-outline-light btn-sm" disabled style="margin-left: 65%;">Interupt Analysis</button>
+          </div>
       </div>
     </div>
   </div>

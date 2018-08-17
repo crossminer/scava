@@ -9,7 +9,7 @@
   </div>
   <div class="card-columns">
     <div *ngFor="let project of projectList" class="card text-white bg-secondary mb-3">
-      <div class="card-header" style="padding: 0.5rem;">
+      <div class="card-header overflow-guard" style="padding: 0.5rem;">
         <h4 style="margin: 0px;" class="card-title">{{project.name}}</h4>
       </div>
       <div class="card-body worker-card-body">
@@ -26,20 +26,12 @@
             <b>URL :</b>
           </div>
           <div class="col-8">
-            {{project.homepage}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <b>Description :</b>
-          </div>
-          <div class="col-8">
-            {{project.description}}
+              <a href="{{project?.html_url}}">{{project?.html_url}}</a>
           </div>
         </div>
       </div>
-      <div class="card-footer" style="padding: 0.5rem;">
-        <button type="button" class="btn btn-outline-light btn-sm" style="float: right;margin: 5px;" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
+      <div class="card-footer">
+        <button type="button" class="btn btn-outline-light btn-sm" style="float: right;margin-bottom: 10px;" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
   </div>

@@ -15,6 +15,8 @@
 
 
 
+
+
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory"/>
     <class name="org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis"/>

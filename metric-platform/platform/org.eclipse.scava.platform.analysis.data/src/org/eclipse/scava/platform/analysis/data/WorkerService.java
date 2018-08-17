@@ -23,6 +23,7 @@ public class WorkerService {
 	}
 	
 	public ProjectAnalysisResportory getRepository() {
+		
 		return this.repository;
 	}
 	

@@ -41,7 +41,7 @@ class SchedulingInformation {
     attr String status; 
     attr Date currentDate;
     attr String workerId;
-    attr int progress;  
+    attr long progress;  
     attr String currentMetric;  
     attr Date executionRequestDate;
     attr long lastDailyExecutionDuration;
