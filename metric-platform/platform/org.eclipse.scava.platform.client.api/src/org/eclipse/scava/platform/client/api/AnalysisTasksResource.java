@@ -1,40 +1,72 @@
 package org.eclipse.scava.platform.client.api;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskScheduling;
-import org.eclipse.scava.platform.analysis.data.IAnalysisRepositoryService;
+import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
+import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 
-import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.mongodb.BasicDBList;
 
-public class AnalysisTasksResource extends ServerResource {
-
-	@Get
-	public Representation getAnalysisTasks(Representation entity) throws UnknownHostException {
-
-		IAnalysisRepositoryService service = new AnalysisTaskScheduling(getMongoConnection());
-		service.getAnalysisTasks();
-
-		StringRepresentation rep = new StringRepresentation(entity.toString());
-		rep.setMediaType(MediaType.APPLICATION_JSON);
-		getResponse().setStatus(Status.SUCCESS_CREATED);
-		return rep;
-
-	}
-
-	public static Mongo getMongoConnection() throws UnknownHostException {
-		List<ServerAddress> mongoHostAddresses = new ArrayList<>();
-		mongoHostAddresses.add(new ServerAddress("localhost", 27017));
-		return new Mongo(mongoHostAddresses);// ,options);
-
+public class AnalysisTasksResource extends AbstractApiResource {
+	
+	@Override
+	public Representation doRepresent() {
+		try {
+			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
+			
+			List<AnalysisTask> tasks = service.getAnalysisTasks();
+			ArrayNode listTasks = mapper.createArrayNode();
+			
+			for (AnalysisTask task : tasks) {
+				try {
+					task.getDbObject().removeField("_id");
+					task.getDbObject().removeField("_type");
+					task.getDbObject().removeField("project");
+					
+					List<Object> metricProviders = new ArrayList<>();
+					for (MetricExecution metric : task.getMetricExecutions()) {
+						Map<String, String> newMetric = new HashMap<>();
+						newMetric.put("projectId", metric.getDbObject().get("projectId").toString());
+						newMetric.put("metricProviderId", metric.getDbObject().get("metricProviderId").toString());
+						newMetric.put("lastExecutionDate", metric.getDbObject().get("lastExecutionDate").toString());
+						metricProviders.add(newMetric);
+					}
+					task.getDbObject().put("metricExecutions", metricProviders);
+					listTasks.add(mapper.readTree(task.getDbObject().toString()));
+				} catch (IOException e) {
+					e.printStackTrace();
+					StringRepresentation rep = new StringRepresentation("");
+					rep.setMediaType(MediaType.APPLICATION_JSON);
+					getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+					return rep;
+				}
+			}
+			
+			StringRepresentation rep = new StringRepresentation(listTasks.toString());
+			rep.setMediaType(MediaType.APPLICATION_JSON);
+			
+			getResponse().setStatus(Status.SUCCESS_OK);
+			
+			return rep;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			StringRepresentation rep = new StringRepresentation("");
+			rep.setMediaType(MediaType.APPLICATION_JSON);
+			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+			return rep;
+		}
 	}
 }
