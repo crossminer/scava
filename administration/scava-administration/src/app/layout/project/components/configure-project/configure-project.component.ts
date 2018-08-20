@@ -33,12 +33,18 @@ export class ConfigureProjectComponent implements OnInit {
                 this.project = data;
                 this.analysisTaskService.getTasksbyProject(this.project.name).subscribe((resp) => {
                     this.executionTasks = resp as ExecutionTask[];
-                    console.log(this.executionTasks)
                 });
             }, error => {
                 console.log(error);
             });
         });
+    }
+
+    setProgressStyles(executionTask: any) {
+        let styles = {
+            'width': executionTask.scheduling.progress + '%',
+        };
+        return styles;
     }
 
     addAnalysisAlgorithm() {
