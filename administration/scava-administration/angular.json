@@ -28,9 +28,8 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/bootstrap/js/dist/util.js",
-              "node_modules/chart.js/dist/Chart.js",
-              "node_modules/popper.js/dist/popper.min.js"
+              "node_modules/popper.js/dist/esm/popper.js",
+              "node_modules/chart.js/dist/Chart.js"
             ]
           },
           "configurations": {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -29,14 +29,18 @@ export class ConfigureProjectComponent implements OnInit {
 
     loadAll() {
         this.route.paramMap.subscribe(data => {
-            this.listProjectService.getProject(data.get('id')).subscribe(data => {
-                this.project = data;
-                this.analysisTaskService.getTasksbyProject(this.project.name).subscribe((resp) => {
-                    this.executionTasks = resp as ExecutionTask[];
+            this.listProjectService.getProject(data.get('id')).subscribe(
+                (data) => {
+                    this.project = data;
+                    this.analysisTaskService.getTasksbyProject(this.project.name).subscribe(
+                        (resp) => {
+                            this.executionTasks = resp as ExecutionTask[];
+                            console.log(this.executionTasks)
+                        });
+                },
+                (error) => {
+                    console.log(error);
                 });
-            }, error => {
-                console.log(error);
-            });
         });
     }
 
@@ -47,7 +51,7 @@ export class ConfigureProjectComponent implements OnInit {
         return styles;
     }
 
-    addAnalysisAlgorithm() {
+    createTask() {
         const modalRef = this.modalService.open(AnalysisAlgorithmMgmtAddDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.result.then(
             result => {
@@ -61,6 +65,48 @@ export class ConfigureProjectComponent implements OnInit {
         );
     }
 
+    updateTask() {
 
+    }
+
+    startTask(analysisTaskId: string) {
+        this.analysisTaskService.startTask(analysisTaskId).subscribe(
+            (resp) => {
+                console.log('start successed !');
+            }, 
+            (error) => {
+                console.log('start failed')
+            })
+    }
+
+    stopTask(analysisTaskId: string) {
+        this.analysisTaskService.stopTask(analysisTaskId).subscribe(
+            (resp) => {
+                console.log('stop successed !');
+            }, 
+            (error) => {
+                console.log('stop failed')
+            })
+    }
+
+    resetTask(analysisTaskId: string) {
+        this.analysisTaskService.resetTask(analysisTaskId).subscribe(
+            (resp) => {
+                console.log('reset successed !');
+            }, 
+            (error) => {
+                console.log('reset failed')
+            })
+    }
+
+    deleteTask(analysisTaskId: string) {
+        this.analysisTaskService.deleteTask(analysisTaskId).subscribe(
+            (resp) => {
+                console.log('delete successed !');
+            }, 
+            (error) => {
+                console.log('delete failed')
+            })
+    }
 
 }

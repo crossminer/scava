@@ -43,10 +43,10 @@
                 <thead>
                     <tr>
                         <th>
-                            <span>Analysis Algorithm Name</span>
+                            <span>Execution Task</span>
                         </th>
                         <th>
-                            <span>Start Date</span>
+                            <span>Status</span>
                         </th>
                         <th>
                             <span>Start Date</span>
@@ -55,7 +55,7 @@
                             <span>End Date</span>
                         </th>
                         <th>
-                            <span>Analysis Progress Rate</span>
+                            <span>Progress</span>
                         </th>
                         <th>
                         </th>
@@ -65,7 +65,7 @@
                     <tr *ngFor="let executionTask of executionTasks">
                         <td>
                             <div>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                                     {{executionTask.metricExecutions.length}} Metrics Executions
                                 </button>
                             </div>
@@ -87,31 +87,31 @@
                         </td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuenow="95" aria-valuemin="0"
-                                    aria-valuemax="100">
-                                    {{executionTask.scheduling.progress}}%
+                                <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuemin="0" aria-valuemax="100">
+                                    <span *ngIf="executionTask.scheduling.progress; else elseBlock">{{executionTask.scheduling.progress}}%</span>
+                                    <ng-template #elseBlock></ng-template>
                                 </div>
                             </div>
                         </td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm" (click)="startTask(project?.name + ':' + executionTask.label)">
                                     <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Start</span>
                                 </button>&nbsp;
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-warning btn-sm">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-warning btn-sm" (click)="stopTask(project?.name + ':' + executionTask.label)">
                                     <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Stop</span>
                                 </button>&nbsp;
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-dark btn-sm">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-dark btn-sm" (click)="resetTask(project?.name + ':' + executionTask.label)">
                                     <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Reset</span>
                                 </button>&nbsp;
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-info btn-sm">
+                                <button type="submit" queryParamsHandling="merge" class="btn btn-info btn-sm" (click)="updateTask(project?.name + ':' + executionTask.label)">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Edit</span>
                                 </button>&nbsp;
-                                <button type="button" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <button type="button" queryParamsHandling="merge" class="btn btn-danger btn-sm" (click)="deleteTask(project?.name + ':' + executionTask.label)">
                                     <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Remove</span>
                                 </button>
@@ -123,7 +123,7 @@
                     <tr>
                         <td colspan="6">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-success btn-sm" (click)="addAnalysisAlgorithm()">
+                                <button type="button" class="btn btn-success btn-sm" (click)="createTask()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Create</span>
                                 </button>
