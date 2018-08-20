@@ -10,21 +10,16 @@ import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
-public class StopTask {
-	
+public class DemoteTask {
 	public static void main(String[] params) {
 		try {
-
 			AnalysisTaskService service =new AnalysisTaskService(new ProjectAnalysisResportory(getMongoConnection().getDB("scava-analysis")),getMongoConnection());
-			service.stopAnalysisTask("QualityGuardAnalysis:Analysis1");
-
-			
+			service.demoteTask("QualityGuardAnalysis:Analysis1");
+	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 	public static Mongo getMongoConnection() throws UnknownHostException {
 		List<ServerAddress> mongoHostAddresses = new ArrayList<>();
@@ -32,5 +27,4 @@ public class StopTask {
 		return new Mongo(mongoHostAddresses);// ,options);
 
 	}
-
 }

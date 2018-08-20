@@ -16,15 +16,14 @@ export class WorkerComponent implements OnInit {
   workerList: any;
   interval : any;
   taskList:ExecutionTask[];
-
-
+ 
   constructor(private listWorkerService: ListWorkerService,private analysisTaskService : AnalysisTaskService) { }
 
   ngOnInit() {
     this.refreshData();
-    this.interval = setInterval(() => { 
-      this.refreshData(); 
-    }, 5000);
+    // this.interval = setInterval(() => { 
+    //   this.refreshData(); 
+    // }, 5000);
 
   }
 
@@ -54,5 +53,28 @@ export class WorkerComponent implements OnInit {
    computeTime(task:any){
     let estimatedTime : number = task.scheduling[0].lastDailyExecutionDuration;
     return Math.round(estimatedTime / 1000) + 's';
+   }
+
+   stopTask(analysisTaskId: string) {
+    this.analysisTaskService.stopTask(analysisTaskId).subscribe(
+        (resp) => {
+            console.log('stop successed !');
+            this.refreshData();
+        }, 
+        (error) => {
+            console.log('stop failed')
+        })
+   }
+
+   promoteTask(analysisTaskId: string) {
+   
+   }
+
+   demoteTask(analysisTaskId: string) {
+   
+   }
+
+   executeOnWorker(analysisTaskId: string,wotkerId : string) {
+   
    }
 }

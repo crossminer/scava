@@ -62,7 +62,7 @@
       </div>
       <div class="card-footer" style="padding: 0.5rem;">
           <div *ngIf="worker.currentTask != null">
-              <button type="button" class="btn btn-outline-light btn-sm" style="margin-left: 65%;">Interupt Analysis</button>
+              <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)" class="btn btn-outline-light btn-sm" style="margin-left: 65%;">Interupt Analysis</button>
           </div>
           <div *ngIf="worker.currentTask == null">
               <button type="button" class="btn btn-outline-light btn-sm" disabled style="margin-left: 65%;">Interupt Analysis</button>
@@ -82,9 +82,9 @@
             <div class="col-3">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="float: right">
                     <div class="btn-group mr-2" role="group" aria-label="First group">
-                      <button type="button" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
-                      <button type="button" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
-                      <button type="button" class="btn btn-sm btn-outline-light fa fa-pause"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-pause"></button>
                       
                       <div class="dropdown">
                           <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

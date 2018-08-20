@@ -1,6 +1,8 @@
 package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
 
@@ -108,6 +111,7 @@ public class AnalysisTaskService {
 			for (MetricExecution metricProvider : task.getMetricExecutions()) {
 				this.repository.getMetricExecutions().remove(metricProvider);
 			}
+			task.getProject().getAnalysisTasks().remove(task);
 			this.repository.getAnalysisTasks().remove(task);
 			this.repository.sync();
 		}
@@ -130,7 +134,65 @@ public class AnalysisTaskService {
 		for (AnalysisTask task : this.repository.getAnalysisTasks()) {
 			tasks.add(task);
 		}
+		
+		Collections.sort(tasks, new Comparator<AnalysisTask>() {
+		    @Override
+		    public int compare(AnalysisTask lhs, AnalysisTask rhs) {
+		    	Date data1 = lhs.getScheduling().getExecutionRequestDate();
+		    	Date data2 = rhs.getScheduling().getExecutionRequestDate();    	
+		    	return data1.compareTo(data2);
+		    }
+		});
 		return tasks;
+	}
+	
+	public void promoteTask(String analysisTaskId) {
+		AnalysisTask currentTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+		AnalysisTask predecessor = null;	
+		if( currentTask != null) {
+			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
+				if(task.getScheduling().getExecutionRequestDate().getTime() < currentTask.getScheduling().getExecutionRequestDate().getTime()) {
+					if(predecessor == null || predecessor.getScheduling().getExecutionRequestDate().getTime() > task.getScheduling().getExecutionRequestDate().getTime()) {
+						predecessor = task;
+					}
+				}
+			}
+		}
+		if(predecessor != null) {
+			System.out.println(predecessor.getAnalysisTaskId());
+			currentTask.getScheduling().setExecutionRequestDate(new Date( predecessor.getScheduling().getExecutionRequestDate().getTime() - 1000));
+			this.repository.sync();
+		}
+		
+	}
+	
+	public void demoteTask(String analysisTaskId) {
+		AnalysisTask currentTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+		AnalysisTask successor = null;	
+		if( currentTask != null) {
+			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
+				System.out.println(task.getAnalysisTaskId());
+				if(task.getScheduling().getExecutionRequestDate().getTime() > currentTask.getScheduling().getExecutionRequestDate().getTime()) {
+					if(successor == null || successor.getScheduling().getExecutionRequestDate().getTime()< task.getScheduling().getExecutionRequestDate().getTime()) {
+						successor = task;
+					}
+				}
+			}
+		}
+		if(successor != null) {
+			currentTask.getScheduling().setExecutionRequestDate(new Date( successor.getScheduling().getExecutionRequestDate().getTime() + 1000));
+			this.repository.sync();
+		}
+	}
+	
+	public void executeTaskOnWorker(String analysisTaskId,String workerId) {
+		Worker worker = this.repository.getWorkers().findOneByWorkerId(workerId);
+		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+		if(worker != null && task != null && worker.getCurrentTask() != null) {
+			worker.getCurrentTask().getScheduling().setStatus(AnalysisTaskStatus.PENDING_STOP.name());
+			task.getScheduling().setExecutionRequestDate(new Date(worker.getCurrentTask().getScheduling().getExecutionRequestDate().getTime() + 1));
+			this.repository.sync();
+		}	
 	}
 	
 	
@@ -148,7 +210,7 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	public AnalysisTask stoptAnalysisTask(String analysisTaskId) {
+	public AnalysisTask stopAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 
 		if (task != null && !task.getScheduling().getStatus().equals((AnalysisTaskStatus.STOP.name()))) {
