@@ -1,4 +1,4 @@
-package org.eclipse.scava.platform.analysis.data;
+package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,21 +17,13 @@ import com.mongodb.DB;
 import com.mongodb.Mongo;
 
 public class AnalysisTaskService {
-	private static final String ANALYSIS_TASK_DB = "scava-scheduling";
-
-	private Mongo mongo;
 	private ProjectAnalysisResportory repository;
-
-	public AnalysisTaskService(Mongo mongo) {
-		this.repository = new ProjectAnalysisResportory(mongo.getDB(ANALYSIS_TASK_DB));
+	private Mongo mongo;
+	
+	public AnalysisTaskService(ProjectAnalysisResportory repository,Mongo mongo) {
+		this.repository = repository;
 		this.mongo = mongo;
 	}
-	
-
-	public ProjectAnalysisResportory getRepository() {
-		return this.repository;
-	}
-
 	
 	public AnalysisTask createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders) {
 		ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(projectId);
@@ -145,6 +137,7 @@ public class AnalysisTaskService {
 
 		if (task != null) {
 			task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
+			task.getScheduling().setExecutionRequestDate(new Date());
 			if (task.getScheduling().getCurrentDate() == null) {
 				task.getScheduling().setCurrentDate(task.getStartDate());
 			}

@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
 import org.eclipse.scava.platform.osgi.services.MetricProviderInitialiser;
@@ -27,7 +28,8 @@ import com.mongodb.Mongo;
 
 public class OssmeterApplication implements IApplication{
 	
-	private boolean slave = false;
+	private boolean worker = false;
+	private String workerId = null;
 	private boolean apiServer = false;
 	
 	private OssmeterLogger logger;
@@ -37,6 +39,7 @@ public class OssmeterApplication implements IApplication{
 	private Mongo mongo;
 	private Properties prop;
 	
+
 	
 	private Thread analysis;
 	private Thread checker;
@@ -58,28 +61,29 @@ public class OssmeterApplication implements IApplication{
 
 		// Connect to Mongo - single instance per node
 		mongo = Configuration.getInstance().getMongoConnection();
+		Platform platform = new Platform(mongo);
 		
 		// Ensure OSGi contributors are active
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
 		
 		// Update MetricProvidrList
-		MetricProviderInitialiser init = new MetricProviderInitialiser(mongo);
+		MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
 		init.initialiseMetricProviderRepository();
 		
-		if (slave) {
-			WorkerExecutor workerExecutor = new WorkerExecutor(mongo);
+		if (worker) {
+			WorkerExecutor workerExecutor = new WorkerExecutor(platform,workerId);
 			Thread analysis = new Thread(workerExecutor);
-			analysis.start();
-				
-			TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(mongo);
-			Thread checker = new Thread(checkerExecutor);
-			checker.start();		
+			analysis.start();	
 		}
 		
 		// Start web servers
 		if (apiServer) {
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}
+		
+		TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(platform);
+		Thread checker = new Thread(checkerExecutor);
+		checker.start();
 
 		// Now, rest.
   		waitForDone();
@@ -108,8 +112,12 @@ public class OssmeterApplication implements IApplication{
 				}
 				
 				i++;
-			}else if ("-slave".equals(args[i])) { 
-				slave = true;
+			}else if ("-worker".equals(args[i])) { 
+				worker = true;
+				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-ossmeterConfig".equals(args[i]) ) {
+					this.workerId = args[i+1];
+				}
+				
 			} else if ("-apiServer".equals(args[i])) { 
 				apiServer = true;
 			}

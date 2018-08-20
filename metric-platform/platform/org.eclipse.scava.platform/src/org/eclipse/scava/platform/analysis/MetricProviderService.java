@@ -1,4 +1,4 @@
-package org.eclipse.scava.platform.analysis.data;
+package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,16 +7,12 @@ import org.eclipse.scava.platform.analysis.data.model.DataStorage;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 
-import com.mongodb.Mongo;
-
 public class MetricProviderService {
 	
-	private static final String ANALYSIS_TASK_DB = "scava-scheduling";
-
 	private ProjectAnalysisResportory repository;
 
-	public MetricProviderService(Mongo mongo) {
-		this.repository = new ProjectAnalysisResportory(mongo.getDB(ANALYSIS_TASK_DB));
+	public MetricProviderService(ProjectAnalysisResportory repository){
+		this.repository = repository;
 	}
 	
 	public ProjectAnalysisResportory getRepository() {

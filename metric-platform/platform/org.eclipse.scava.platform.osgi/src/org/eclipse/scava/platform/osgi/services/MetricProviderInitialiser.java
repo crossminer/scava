@@ -9,30 +9,25 @@ import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.MetricProviderService;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
 
-import com.mongodb.Mongo;
-
 public class MetricProviderInitialiser {
 
-	private MetricProviderService taskRepository;
 	private Platform platform;
 
-	public MetricProviderInitialiser(Mongo mongo) {
-		this.taskRepository = new MetricProviderService(mongo);
-		this.platform = new Platform(mongo);
+	public MetricProviderInitialiser(Platform platform) {
+		this.platform = platform;
 	}
 
 	public void initialiseMetricProviderRepository() {
 		Map<String, MetricProvider> metricsProviders = new HashMap<>();
 
 		// Clean Repository
-		for (MetricProvider oldMp : this.taskRepository.getRepository().getMetricProviders()) {
-			this.taskRepository.getRepository().getMetricProviders().remove(oldMp);
+		for (MetricProvider oldMp : this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders()) {
+			this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders().remove(oldMp);
 		}
-		this.taskRepository.getRepository().sync();
+		this.platform.getAnalysisRepositoryManager().getRepository().sync();
 
 		List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 
@@ -40,15 +35,15 @@ public class MetricProviderInitialiser {
 		for (IMetricProvider provider : platformProvider) {
 			MetricProvider providerData = null;
 			if (provider instanceof AbstractFactoidMetricProvider) {
-				providerData = this.taskRepository.registreMetricProvider(provider.getIdentifier(),
+				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.FACTOID.name() ,provider.getSummaryInformation(), new ArrayList<String>());
 			}else if (provider instanceof IHistoricalMetricProvider) {
 				List<String> collections = new ArrayList<>();
 				collections.add(((IHistoricalMetricProvider) provider).getCollectionName());
-				providerData = this.taskRepository.registreMetricProvider(provider.getIdentifier(),
+				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.HISTORIC.name(), provider.getSummaryInformation(), collections);
 			} else {
-				providerData = this.taskRepository.registreMetricProvider(provider.getIdentifier(),
+				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.TRANSIENT.name(), provider.getSummaryInformation(), new ArrayList<String>());
 			}
 
@@ -67,7 +62,7 @@ public class MetricProviderInitialiser {
 				}
 			}
 
-			taskRepository.addMetricProviderDependency(metricsProviders.get(provider.getIdentifier()), dependencys);
+			this.platform.getAnalysisRepositoryManager().getMetricProviderService().addMetricProviderDependency(metricsProviders.get(provider.getIdentifier()), dependencys);
 		}
 	}
 

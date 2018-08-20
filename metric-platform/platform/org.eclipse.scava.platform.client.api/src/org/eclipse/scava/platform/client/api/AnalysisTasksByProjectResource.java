@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.restlet.data.MediaType;
@@ -22,7 +24,8 @@ public class AnalysisTasksByProjectResource extends AbstractApiResource {
 	@Override
 	public Representation doRepresent() {
 		try {
-			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			String projectId = (String) getRequest().getAttributes().get("projectid");
 			
 			List<AnalysisTask> tasks = service.getAnalysisTasksByProject(projectId);

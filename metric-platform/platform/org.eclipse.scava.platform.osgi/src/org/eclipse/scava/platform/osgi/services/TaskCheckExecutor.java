@@ -3,27 +3,22 @@ package org.eclipse.scava.platform.osgi.services;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
-import org.eclipse.scava.platform.analysis.data.WorkerService;
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
-
-import com.mongodb.Mongo;
 
 public class TaskCheckExecutor implements Runnable {
 
     private static final Integer cycle = 10000;
     private static final Integer heartbet = 1800000;
 
-	private AnalysisSchedulingService schedulingService;
-	private WorkerService workerService;
 	private Boolean executeTasks;
+	private Platform platform;
 
-	public TaskCheckExecutor(Mongo mongo) {
-		this.schedulingService = new AnalysisSchedulingService(mongo);
-		this.workerService = new WorkerService(mongo);
+	public TaskCheckExecutor(Platform platform) {
 		this.executeTasks = true;
+		this.platform = platform;
 	}
 
 	@Override
@@ -32,20 +27,20 @@ public class TaskCheckExecutor implements Runnable {
 			Date day = dateToDay(new Date());
 						
 			// Detect Worker Failure / Replace Task in execution pending list		
-			for(Worker  worker : this.workerService.getRepository().getWorkers()) {
+			for(Worker  worker : this.platform.getAnalysisRepositoryManager().getWorkerService().getWorkers()) {
 				if(worker.getCurrentTask() != null && new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
 					worker.getCurrentTask().getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
 					worker.getCurrentTask().getScheduling().setWorkerId(null);				
-					this.workerService.getRepository().getWorkers().remove(worker);				
-					this.workerService.getRepository().sync();
+					this.platform.getAnalysisRepositoryManager().getRepository().getWorkers().remove(worker);				
+					this.platform.getAnalysisRepositoryManager().getRepository().sync();
 				}
 			}
 			
 			// Detect New Daily Execution
-			for(AnalysisTask task : this.schedulingService.getRepository().getAnalysisTasks()) {			
-				if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
+			for(AnalysisTask task : this.platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks()) {			
+				if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
 					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());	
-					this.schedulingService.getRepository().sync();
+					this.platform.getAnalysisRepositoryManager().getRepository().sync();
 				}
 			}
 	

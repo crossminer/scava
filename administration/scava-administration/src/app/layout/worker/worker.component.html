@@ -53,7 +53,6 @@
             </div>
             <div class="col-7">
              {{computeTime(worker.currentTask)}}
-              
             </div>
           </div>
         </div>
@@ -74,11 +73,11 @@
   <br/>
   <h2>Pending Tasks</h2>
   <hr/>
-  <ul *ngFor="let worker of workerList" class="list-group text-white mb-1">
+  <ul *ngFor="let task of taskList" class="list-group text-white mb-1">
     <li class="list-group-item bg-secondary">
         <div class="row">
             <div class="col-sm">
-              <h5>Task 1 - QualityGuardAnalysis </h5>
+              <h5>Project : {{task.analysisTaskId.split(":")[0]}} - Task : {{task.label}}</h5>
             </div>
             <div class="col-3">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="float: right">
@@ -102,16 +101,16 @@
           </div>
           <div class="row">
                         <div class="col-sm">
-               <b> Kind :</b> Periodical
-              </div>
+               <b> Kind :</b> {{task.type}}
+              </div> metricExecutions
               <div class="col-sm">
-                  <b>  Metrics :</b> 23 Metrics
+                  <b>  Metrics :</b> {{task.metricExecutions.length}} Metrics
               </div>  
               <div class="col-sm">
-                  <b> Start Date :</b> 20/01/2015
+                  <b> Start Date :</b> {{task.startDate.$date | date: 'dd/MM/yyyy'}} 
               </div>  
               <div class="col-sm">
-                  <b> End Date :</b> 20/01/2016
+                  <b> End Date :</b> {{task.endDate.$date | date: 'dd/MM/yyyy'}} 
               </div> 
               <div class="col-3">
                  

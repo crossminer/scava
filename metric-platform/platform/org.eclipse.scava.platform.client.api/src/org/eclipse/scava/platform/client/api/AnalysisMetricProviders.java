@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.platform.analysis.data.MetricProviderService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -21,7 +22,9 @@ public class AnalysisMetricProviders extends AbstractApiResource {
 	@Override
 	public Representation doRepresent() {
 		try {
-			MetricProviderService service = new MetricProviderService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			org.eclipse.scava.platform.analysis.MetricProviderService service = platform.getAnalysisRepositoryManager().getMetricProviderService();
+			
 			List<MetricProvider> metricProviders = service.getMetricProviders();
 
 			ArrayNode listMetricProviders = mapper.createArrayNode();

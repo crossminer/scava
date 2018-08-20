@@ -12,7 +12,6 @@ package org.eclipse.scava.platform.osgi.analysis;
 import java.io.FileWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,6 @@ import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricHistoryManager;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
@@ -33,8 +31,6 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.logging.OssmeterLoggerFactory;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectError;
-
-import com.mongodb.Mongo;
 
 public class MetricListExecutor implements Runnable {
 	
@@ -46,15 +42,17 @@ public class MetricListExecutor implements Runnable {
 	protected ProjectDelta delta;
 	protected Date date;
 	protected OssmeterLogger logger;
+	protected Platform platform;
 	
 	// FIXME: The delta object already references a Project object. Rascal metrics seem to
 	// use this for some reason. Is it an issue???????
-	public MetricListExecutor(String projectId,String taskId, ProjectDelta delta, Date date) {
+	public MetricListExecutor(Platform platform,String projectId,String taskId, ProjectDelta delta, Date date) {
 		this.projectId = projectId;
 		this.taskId = taskId;
 		this.delta = delta;
 		this.date = date;
 		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("MetricListExecutor (" + projectId + ", " + date.toString() + ")");
+		this.platform = platform;
 	}
 	
 	public void setMetricList(List<IMetricProvider> metrics) {
@@ -69,18 +67,9 @@ public class MetricListExecutor implements Runnable {
 	
 	@Override
 	public void run() {
-		Mongo mongo;
-		try {
-			mongo = Configuration.getInstance().getMongoConnection();
-		} catch (UnknownHostException e2) {
-			e2.printStackTrace();
-			return;
-		}
-		Platform platform = new Platform(mongo);
-		AnalysisSchedulingService taskScheduling = new AnalysisSchedulingService(mongo);
 
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(projectId);
-		AnalysisTask task = taskScheduling.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(this.taskId);
+		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(this.taskId);
 		
 
 		for (IMetricProvider m : metrics) {
@@ -93,16 +82,16 @@ public class MetricListExecutor implements Runnable {
 			
 		
 			
-			taskScheduling.startMetricExecution(this.taskId,  m.getIdentifier());
+			platform.getAnalysisRepositoryManager().getSchedulingService().startMetricExecution(this.taskId,  m.getIdentifier());
 			
 			// We need to check that it hasn't already been excuted for this date
-			MetricExecution mpd = taskScheduling.findMetricExecution(this.projectId,m.getIdentifier());
+			MetricExecution mpd = platform.getAnalysisRepositoryManager().getSchedulingService().findMetricExecution(this.projectId,m.getIdentifier());
 			try {
 				Date lastExec = new Date(mpd.getLastExecutionDate());	
 				// Check we haven't already executed the MP for this day.
 				if (date.compareTo(lastExec) < 0) {
 					logger.warn("Metric provider '" + m.getIdentifier() + "' has been executed for this date already. Ignoring.");
-					taskScheduling.endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
+					platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
 					continue;
 				}
 			}  catch (NumberFormatException e) {
@@ -133,10 +122,9 @@ public class MetricListExecutor implements Runnable {
 				
 				break;
 			}finally {
-				taskScheduling.endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
+				platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
 			}		
 		}
-		mongo.close();
 	}
 
 	/**

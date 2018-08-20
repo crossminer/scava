@@ -19,8 +19,6 @@ import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
-import org.eclipse.scava.platform.analysis.data.WorkerService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
@@ -34,23 +32,19 @@ import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 public class ProjectAnalyser {
 	
 	private Platform platform;
-	private AnalysisSchedulingService schedulingService;;
-	private WorkerService workerService;
 	private int analysisThreadNumber;
 	private Logger logger;
 
 	
-	public ProjectAnalyser(Platform platform, AnalysisSchedulingService schedulingService,WorkerService workerService ) {
+	public ProjectAnalyser(Platform platform) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
 		this.platform = platform;
-		this.schedulingService = schedulingService;
-		this.workerService = workerService;
 	}
 
 	public void executeAnalyse(String analysisTaskId, String workerId) {
 		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
 
-		AnalysisTask task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
+		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(task.getProject().getProjectId());
 
 		logger.info("Beginning execution.");
@@ -79,9 +73,9 @@ public class ProjectAnalyser {
 		for (Date date : dates) {
 			java.util.Date dailyExecution = new java.util.Date();
 			
-			this.schedulingService.newDailyTaskExecution(analysisTaskId,date.toJavaDate());
+			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
 
-			task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+			task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
 				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
 				return;
@@ -90,7 +84,7 @@ public class ProjectAnalyser {
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
 				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
 				task.getScheduling().setWorkerId(null);	
-				this.schedulingService.getRepository().sync();
+				platform.getAnalysisRepositoryManager().getRepository().sync();
 				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
 				return;
 			}
@@ -122,7 +116,7 @@ public class ProjectAnalyser {
 			}
 			
 			for (List<IMetricProvider> branch : metricBranches) {
-				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(),analysisTaskId, delta, date);
+				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
 			}
@@ -140,7 +134,7 @@ public class ProjectAnalyser {
 			// TODO: Should check if in error state before and after factoids
 			if (factoids.size() > 0) {
 				logger.info("Executing factoids.");
-				MetricListExecutor mExe = new MetricListExecutor(project.getShortName(),analysisTaskId, delta, date);
+				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(factoids);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
 			}
@@ -172,7 +166,7 @@ public class ProjectAnalyser {
 			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));
 			System.out.println(estimatedDuration + ":" + String.valueOf(dates.length - Arrays.asList(dates).indexOf(date)));
 			
-			this.schedulingService.getRepository().sync();
+			platform.getAnalysisRepositoryManager().getRepository().sync();
 		}
 		
 		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
@@ -213,7 +207,7 @@ public class ProjectAnalyser {
 
 	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
 		List<IMetricProvider> filtredProviders = new ArrayList<>();
-		AnalysisTask task = this.schedulingService.getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
+		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
 		
 		Set<String> taskProviders = new HashSet<>();
 		for(MetricExecution provider : task.getMetricExecutions()) {

@@ -3,7 +3,9 @@ package org.eclipse.scava.platform.client.api;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -21,7 +23,8 @@ public class AnalysisDeleteTaskResource extends ServerResource {
 	public Representation deleteAnalysisTask(Representation entity) {
 
 		try {
-			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				JsonNode jsonNode = mapper.readTree(entity.getText());

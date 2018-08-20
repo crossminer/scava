@@ -1,4 +1,4 @@
-package org.eclipse.scava.platform.analysis.data;
+package org.eclipse.scava.platform.analysis;
 
 import java.util.Date;
 
@@ -8,22 +8,15 @@ import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 
-import com.mongodb.Mongo;
-
 public class AnalysisSchedulingService {
 	
-	private static final String ANALYSIS_TASK_DB = "scava-scheduling";
+
 	private static final long MILISECOND_IN_DAY = 86400000;
 
 	private ProjectAnalysisResportory repository;
 
-	public AnalysisSchedulingService(Mongo mongo) {
-		this.repository = new ProjectAnalysisResportory(mongo.getDB(ANALYSIS_TASK_DB));
-	}
-	
-	
-	public ProjectAnalysisResportory getRepository() {
-		return this.repository;
+	public AnalysisSchedulingService(ProjectAnalysisResportory repository){
+		this.repository = repository;
 	}
 	
 	
@@ -52,7 +45,7 @@ public class AnalysisSchedulingService {
 		
 		
 		// Update Worker Heartbeat
-		Worker worker = this.getRepository().getWorkers().findOneByWorkerId(task.getScheduling().getWorkerId());
+		Worker worker = this.repository.getWorkers().findOneByWorkerId(task.getScheduling().getWorkerId());
 		if(worker != null) {
 			worker.setHeartbeat(new Date());
 			this.repository.sync();

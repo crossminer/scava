@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.platform.analysis.data.WorkerService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.WorkerService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.SchedulingInformation;
@@ -24,7 +26,8 @@ public class AnalysisWorkerResource extends AbstractApiResource {
 	@Override
 	public Representation doRepresent() {
 		try {
-			WorkerService service = new WorkerService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			WorkerService service = platform.getAnalysisRepositoryManager().getWorkerService();
 			List<Worker> workers = service.getWorkers();
 
 			ArrayNode listWorkers = mapper.createArrayNode();

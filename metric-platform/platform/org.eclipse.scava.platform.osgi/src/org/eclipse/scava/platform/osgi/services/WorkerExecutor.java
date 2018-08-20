@@ -1,51 +1,55 @@
 package org.eclipse.scava.platform.osgi.services;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.AnalysisSchedulingService;
-import org.eclipse.scava.platform.analysis.data.WorkerService;
+import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 
-import com.mongodb.Mongo;
-
 public class WorkerExecutor implements Runnable {
 
-	private static final String WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
+	private static String WORKER_ID;
 	private Logger logger = OssmeterLogger.getLogger("OssmeterApplication");
 
 	private static final Integer CYCLE = 10000;
 
 	private Platform platform;
-	private AnalysisSchedulingService schedulingService;
-	private WorkerService workerService;
 
 	private ProjectAnalyser analyser;
-	private Boolean executeTasks;
+	private Boolean executeTasks;;
 
-	public WorkerExecutor(Mongo mongo) {
-		this.platform = new Platform(mongo);
-		this.schedulingService = new AnalysisSchedulingService(mongo);
-		this.workerService = new WorkerService(mongo);
+	public WorkerExecutor(Platform platform,String workerId) {
+		this.platform = platform;
 		this.executeTasks = true;
+		
+		if( workerId == null) {
+			WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
+		}else {
+			WORKER_ID = workerId;
+		}
 	}
 
 	@Override
 	public void run() {
 		
 		// Register Worker
-		this.workerService.registerWorker(WORKER_ID);
+		platform.getAnalysisRepositoryManager().getWorkerService().registerWorker(WORKER_ID);
 		
 		while (executeTasks) {
-			String analysisTaskId = schedulingService.getOlderPendingAnalysiTask();
+			String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
 			if (analysisTaskId != null) {
 				logger.info("Worker '" + WORKER_ID + "' Executing " + analysisTaskId + " Task");
-				this.workerService.assignTask(analysisTaskId,WORKER_ID);
-				this.analyser = new ProjectAnalyser(this.platform, this.schedulingService,this.workerService);		
+				platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId,WORKER_ID);
+				this.analyser = new ProjectAnalyser(this.platform);		
 				this.analyser.executeAnalyse(analysisTaskId,WORKER_ID);	
-				this.workerService.completeTask(WORKER_ID);
-			} else {
+				platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+			} else {				
+				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
+				worker.setHeartbeat(new Date());
+				platform.getAnalysisRepositoryManager().getRepository().sync();	
 				logger.info("Worker '" + WORKER_ID + "' Waiting New Tasks");
 			}
 

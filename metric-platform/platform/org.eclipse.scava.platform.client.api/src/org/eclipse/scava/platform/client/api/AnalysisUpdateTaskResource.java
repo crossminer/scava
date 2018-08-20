@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.restlet.data.MediaType;
@@ -27,7 +29,8 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 	public Representation updateAnalysisTask(Representation entity) {
 		
 		try {
-			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode jsonNode = mapper.readTree(entity.getText());
 			

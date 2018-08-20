@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.restlet.data.MediaType;
@@ -28,10 +30,10 @@ public class AnalysisCreationTaskResource extends ServerResource {
 	public Representation createAnalysisTask(Representation entity) {
 
 		try {
-			SingletonMongoConnection.getInstance().dropDatabase("ScavaAnalysisScheduling");
-			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
-			ObjectMapper mapper = new ObjectMapper();
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			try {
+				ObjectMapper mapper = new ObjectMapper();
 				JsonNode jsonNode = mapper.readTree(entity.getText());
 				String analysisTaskId = jsonNode.get("analysisTaskId").toString().replace("\"", "");
 				String taskLabel = jsonNode.get("label").toString().replace("\"", "");

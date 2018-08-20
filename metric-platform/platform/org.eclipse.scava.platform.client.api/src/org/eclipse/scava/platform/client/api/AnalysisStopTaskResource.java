@@ -2,10 +2,10 @@ package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.scava.platform.analysis.data.AnalysisTaskService;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -14,18 +14,16 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
 
 public class AnalysisStopTaskResource extends ServerResource{
 
 	@Post
 	public Representation stopAnalysisTask (Representation entity) {
 		try {
-			AnalysisTaskService service = new AnalysisTaskService(SingletonMongoConnection.getInstance());
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				JsonNode jsonNode = mapper.readTree(entity.getText());
