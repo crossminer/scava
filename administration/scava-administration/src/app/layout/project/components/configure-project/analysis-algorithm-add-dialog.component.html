@@ -4,14 +4,35 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
-        
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+            <label class="form-control-label" for="label">Label Name</label>
+            <input type="text" class="form-control" id="label" name="label" placeholder="Label Name" [(ngModel)]="labelName" minlength=1
+                maxlength=50 #labelNameInput="ngModel" required>
+        </div>
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+            <label class="form-control-label" for="type">Task type</label>
+            <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="type">
+                <option value="SINGLE_EXECUTION">SINGLE_EXECUTION</option>
+                <option value="DAILY_EXECUTION">DAILY_EXECUTION</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+            <label class="form-control-label" for="type">Start Date</label>
+            <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+        </div>
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+            <label class="form-control-label" for="type">End Date</label>
+            <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <i class="fa fa-ban"></i>&nbsp;<span>Cancel</span>
+            <i class="fa fa-ban"></i>&nbsp;
+            <span>Cancel</span>
         </button>&nbsp;
         <button type="submit" class="btn btn-danger">
-            <i class="fa fa-times"></i>&nbsp;<span>Add</span>
+            <i class="fa fa-times"></i>&nbsp;
+            <span>Add</span>
         </button>
     </div>
 </form>

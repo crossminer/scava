@@ -29,10 +29,11 @@ public class ApiApplication extends Application {
 		router.attach("/projects", ProjectListResource.class);
 		router.attach("/projects/", ProjectListResource.class);
 		router.attach("/analysis/task/create", AnalysisCreationTaskResource.class);
+		router.attach("/analysis/task/update", AnalysisUpdateTaskResource.class);
 		router.attach("/analysis/task/start", AnalysisStartTaskResource.class);
 		router.attach("/analysis/task/stop", AnalysisStopTaskResource.class);
 		router.attach("/analysis/task/reset", AnalysisResetTaskResource.class);
-		router.attach("/analysis/task/delete", AnalysisDeleteTaskResource.class);
+		router.attach("/analysis/task/delete/{analysisTaskId}", AnalysisDeleteTaskResource.class);
 		router.attach("/analysis/tasks/project/{projectid}", AnalysisTasksByProjectResource.class);
 		router.attach("/analysis/tasks", AnalysisTasksResource.class);
 		router.attach("/analysis/metricproviders", AnalysisMetricProviders.class);

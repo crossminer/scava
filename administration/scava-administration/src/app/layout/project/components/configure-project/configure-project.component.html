@@ -49,6 +49,9 @@
                             <span>Start Date</span>
                         </th>
                         <th>
+                            <span>Start Date</span>
+                        </th>
+                        <th>
                             <span>End Date</span>
                         </th>
                         <th>
@@ -61,7 +64,16 @@
                 <tbody>
                     <tr *ngFor="let executionTask of executionTasks">
                         <td>
-                            {{executionTask.metricExecutions.length}} Metric Executions
+                            <div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                    {{executionTask.metricExecutions.length}} Metrics Executions
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>{{executionTask.scheduling.status}}</span>
+                            </div>
                         </td>
                         <td>
                             <div>
@@ -70,12 +82,15 @@
                         </td>
                         <td>
                             <div>
-                                <span>{{executionTask.endDate}}</span>
+                                <span>{{executionTask.endDate.$date | date: 'dd/MM/yyyy'}}</span>
                             </div>
                         </td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">95%</div>
+                                <div class="progress-bar" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuenow="95" aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    {{executionTask.scheduling.progress}}%
+                                </div>
                             </div>
                         </td>
                         <td class="text-right">
@@ -106,7 +121,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="pull-right">
                                 <button type="button" class="btn btn-success btn-sm" (click)="addAnalysisAlgorithm()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
@@ -117,6 +132,27 @@
                     </tr>
                 </tfoot>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
