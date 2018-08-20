@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnalysisAlgorithmMgmtAddDialogComponent } from './analysis-algorithm-add-dialog.component';
+import { AnalysisTaskMgmtAddDialogComponent } from './analysis-task-add-dialog.component';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
 import { ExecutionTask } from './execution-task.model';
+import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete-dialog.component';
 
 @Component({
     selector: 'app-configure-project',
@@ -14,7 +15,8 @@ import { ExecutionTask } from './execution-task.model';
 export class ConfigureProjectComponent implements OnInit {
 
     project: any = null;
-    executionTasks: ExecutionTask[];
+    executionTasks: ExecutionTask[] = null;
+    interval : any;
 
     constructor(
         private route: ActivatedRoute,
@@ -34,8 +36,12 @@ export class ConfigureProjectComponent implements OnInit {
                     this.project = data;
                     this.analysisTaskService.getTasksbyProject(this.project.name).subscribe(
                         (resp) => {
+                            debugger
                             this.executionTasks = resp as ExecutionTask[];
                             console.log(this.executionTasks)
+                        },
+                        (error) => {
+                            console.log(error)
                         });
                 },
                 (error) => {
@@ -52,7 +58,7 @@ export class ConfigureProjectComponent implements OnInit {
     }
 
     createTask() {
-        const modalRef = this.modalService.open(AnalysisAlgorithmMgmtAddDialogComponent, { size: 'lg', backdrop: 'static' });
+        const modalRef = this.modalService.open(AnalysisTaskMgmtAddDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.result.then(
             result => {
                 console.log('delete success');
@@ -73,6 +79,7 @@ export class ConfigureProjectComponent implements OnInit {
         this.analysisTaskService.startTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('start successed !');
+                this.loadAll();
             }, 
             (error) => {
                 console.log('start failed')
@@ -83,6 +90,7 @@ export class ConfigureProjectComponent implements OnInit {
         this.analysisTaskService.stopTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('stop successed !');
+                this.loadAll();
             }, 
             (error) => {
                 console.log('stop failed')
@@ -93,20 +101,26 @@ export class ConfigureProjectComponent implements OnInit {
         this.analysisTaskService.resetTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('reset successed !');
+                this.loadAll();
             }, 
             (error) => {
                 console.log('reset failed')
             })
     }
 
-    deleteTask(analysisTaskId: string) {
-        this.analysisTaskService.deleteTask(analysisTaskId).subscribe(
-            (resp) => {
-                console.log('delete successed !');
-            }, 
-            (error) => {
-                console.log('delete failed')
-            })
+    deleteTask(task: string) {
+        const modalRef = this.modalService.open(AnalysisTaskMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.task = task;
+        modalRef.result.then(
+        result => {
+            console.log('delete success');
+            this.loadAll();
+        },
+        reason => {
+            console.log('delete faild');
+            this.loadAll();
+        }
+        );
     }
 
 }

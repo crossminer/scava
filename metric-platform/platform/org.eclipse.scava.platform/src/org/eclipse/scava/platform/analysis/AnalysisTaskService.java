@@ -114,14 +114,16 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	
 	public List<AnalysisTask> getAnalysisTasksByProject(String projectId) {
+		List<AnalysisTask> tasks = new ArrayList<>();
 		for (ProjectAnalysis project : this.repository.getProjects().findByProjectId(projectId)) {
-			return project.getAnalysisTasks();
+			for(AnalysisTask taskRef : project.getAnalysisTasks()) {
+				tasks.add(this.repository.getAnalysisTasks().findOneByAnalysisTaskId(taskRef.getAnalysisTaskId()));
+			}		
+			return tasks;
 		}
 		return new ArrayList<>();
 	}
-
 	
 	public List<AnalysisTask> getAnalysisTasks() {
 		List<AnalysisTask> tasks = new ArrayList<>();

@@ -6,10 +6,11 @@ import { ImportProjectComponent } from './components/import-project/import-proje
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ConfigureProjectComponent } from './components/configure-project/configure-project.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AnalysisAlgorithmMgmtAddDialogComponent } from './components/configure-project/analysis-algorithm-add-dialog.component';
+import { AnalysisTaskMgmtAddDialogComponent } from './components/configure-project/analysis-task-add-dialog.component';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
+import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete-dialog.component';
 
 @NgModule({
   imports: [
@@ -25,10 +26,11 @@ import { TreeviewModule } from 'ngx-treeview';
     ImportProjectComponent, 
     CreateProjectComponent,
     ConfigureProjectComponent, 
-    AnalysisAlgorithmMgmtAddDialogComponent
+    AnalysisTaskMgmtAddDialogComponent, AnalysisTaskMgmtDeleteDialogComponent
   ],
   entryComponents: [
-    AnalysisAlgorithmMgmtAddDialogComponent
+    AnalysisTaskMgmtAddDialogComponent,
+    AnalysisTaskMgmtDeleteDialogComponent
   ],
   providers: [
     NgbModal,

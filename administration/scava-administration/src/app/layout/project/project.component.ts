@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ListProjectService } from '../../shared/services/project-service/list-project.service';
-import { Project } from './project.model';
-import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
 
 @Component({
   selector: 'app-project',

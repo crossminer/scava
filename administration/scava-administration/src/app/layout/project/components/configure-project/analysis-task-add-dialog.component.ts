@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-analysis-algorithm-add-dialog',
-  templateUrl: './analysis-algorithm-add-dialog.component.html'
+  selector: 'app-analysis-task-add-dialog',
+  templateUrl: './analysis-task-add-dialog.component.html'
 })
-export class AnalysisAlgorithmMgmtAddDialogComponent {
+export class AnalysisTaskMgmtAddDialogComponent {
 
   constructor(
     private router: Router,

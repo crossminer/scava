@@ -19,7 +19,6 @@ public class MetricProviderService {
 		return this.repository;
 	}
 	
-	
 	public MetricProvider registreMetricProvider(String metricProviderId, String label, String kind, String description,List<String> dataStograges) {
 		MetricProvider provider = new MetricProvider();
 		provider.setMetricProviderId(metricProviderId);

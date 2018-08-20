@@ -18,12 +18,6 @@ public class AddTask {
 	public static void main(String[] params) {
 		try {
 			
-			
-			
-			getMongoConnection().dropDatabase("scava-analysis");
-			
-
-			
 			AnalysisTaskService service = new AnalysisTaskService(new ProjectAnalysisResportory(getMongoConnection().getDB("scava-analysis")),getMongoConnection());
 
 			AnalysisTask task1 = new AnalysisTask();
