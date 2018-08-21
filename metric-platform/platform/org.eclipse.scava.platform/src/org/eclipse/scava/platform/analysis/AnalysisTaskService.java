@@ -138,7 +138,10 @@ public class AnalysisTaskService {
 			public int compare(AnalysisTask lhs, AnalysisTask rhs) {
 				Date data1 = lhs.getScheduling().getExecutionRequestDate();
 				Date data2 = rhs.getScheduling().getExecutionRequestDate();
-				return data1.compareTo(data2);
+				if(data1 != null && data2 != null) {
+					return data1.compareTo(data2);
+				}
+				return 0;
 			}
 		});
 		return tasks;
@@ -149,7 +152,7 @@ public class AnalysisTaskService {
 		AnalysisTask predecessor = null;
 		if (currentTask != null) {
 			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
-				if (task.getScheduling().getExecutionRequestDate().getTime() < currentTask.getScheduling()
+				if (task.getScheduling().getExecutionRequestDate().getTime() <= currentTask.getScheduling()
 						.getExecutionRequestDate().getTime()) {
 					if (predecessor == null || predecessor.getScheduling().getExecutionRequestDate().getTime() > task
 							.getScheduling().getExecutionRequestDate().getTime()) {
@@ -174,7 +177,7 @@ public class AnalysisTaskService {
 		if (currentTask != null) {
 			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
 				System.out.println(task.getAnalysisTaskId());
-				if (task.getScheduling().getExecutionRequestDate().getTime() > currentTask.getScheduling()
+				if (task.getScheduling().getExecutionRequestDate().getTime() >= currentTask.getScheduling()
 						.getExecutionRequestDate().getTime()) {
 					if (successor == null || successor.getScheduling().getExecutionRequestDate().getTime() < task
 							.getScheduling().getExecutionRequestDate().getTime()) {

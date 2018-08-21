@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
+import { MetricInfoComponent } from './metrics-infos/metric-info.component';
 
 @NgModule({
   imports: [
@@ -17,10 +18,11 @@ import { TreeviewModule } from 'ngx-treeview';
     TreeviewModule.forRoot()
   ],
   declarations: [
-    WorkerComponent
+    WorkerComponent,
+    MetricInfoComponent
   ],
   entryComponents: [
-
+    MetricInfoComponent
   ],
   providers: [
     NgbModal,

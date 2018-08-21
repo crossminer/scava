@@ -4,6 +4,9 @@ import { AnalysisTaskService } from '../../shared/services/analysis-task/analysi
 import { ExecutionTask } from '../project/components/configure-project/execution-task.model';
 import { Worker } from './worker.model';
 import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MetricInfoComponent } from './metrics-infos/metric-info.component';
+
 
 @Component({
   selector: 'app-worker',
@@ -13,23 +16,27 @@ import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
 
 export class WorkerComponent implements OnInit {
 
-  workerList: any;
+  workerList: Worker[];
   interval : any;
   taskList:ExecutionTask[];
  
-  constructor(private listWorkerService: ListWorkerService,private analysisTaskService : AnalysisTaskService) { }
+  constructor(
+    private listWorkerService: ListWorkerService,
+    private analysisTaskService : AnalysisTaskService,
+    public modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.refreshData();
-    // this.interval = setInterval(() => { 
-    //   this.refreshData(); 
-    // }, 5000);
+    this.interval = setInterval(() => { 
+      this.refreshData(); 
+    }, 2000);
 
   }
 
   refreshData(){
     this.listWorkerService.getWorkers().subscribe((resp) => {
-      this.workerList = resp;
+      this.workerList = resp as Worker[];
     });
     this.analysisTaskService.getTasks().subscribe((resp) => {
       let allTasks = resp as ExecutionTask[];
@@ -97,4 +104,10 @@ export class WorkerComponent implements OnInit {
           console.log('pushOnWorker failed')
       })
    }
+
+   showMetricProviderList(analysisTask: ExecutionTask) {
+    const modalRef = this.modalService.open(MetricInfoComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.analysisTask = analysisTask;
+  }
+
 }
