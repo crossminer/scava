@@ -58,7 +58,6 @@ export class WorkerComponent implements OnInit {
    stopTask(analysisTaskId: string) {
     this.analysisTaskService.stopTask(analysisTaskId).subscribe(
         (resp) => {
-            console.log('stop successed !');
             this.refreshData();
         }, 
         (error) => {
@@ -67,14 +66,35 @@ export class WorkerComponent implements OnInit {
    }
 
    promoteTask(analysisTaskId: string) {
-   
+    this.analysisTaskService.promoteTask(analysisTaskId).subscribe(
+      (resp) => {
+          console.log('promote successed !');
+          this.refreshData();
+      }, 
+      (error) => {
+          console.log('promote failed')
+      })
    }
 
    demoteTask(analysisTaskId: string) {
-   
+    this.analysisTaskService.demoteTask(analysisTaskId).subscribe(
+      (resp) => {
+          console.log('emote successed !');
+          this.refreshData();
+      }, 
+      (error) => {
+          console.log('emote failed')
+      })
    }
 
-   executeOnWorker(analysisTaskId: string,wotkerId : string) {
-   
+   pushOnWorker(analysisTaskId: string,wotkerId : string) {
+    this.analysisTaskService.pushOnWorker(analysisTaskId,wotkerId).subscribe(
+      (resp) => {
+          console.log('pushOnWorker successed !');
+          this.refreshData();
+      }, 
+      (error) => {
+          console.log('pushOnWorker failed')
+      })
    }
 }

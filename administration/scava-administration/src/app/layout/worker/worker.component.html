@@ -84,17 +84,14 @@
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                       <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
                       <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
+                    </div>
+
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                      <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge" (click)="pushOnWorker(task.analysisTaskId,worker.workerId)" class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
+                    </div>
+
+                    <div class="btn-group" role="group" aria-label="First group">
                       <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-pause"></button>
-                      
-                      <div class="dropdown">
-                          <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Execute On
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Worker1</a>
-                            <a class="dropdown-item" href="#">Worker2</a>
-                          </div>
-                        </div>
                     </div>
                   </div>
             </div>           

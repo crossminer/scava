@@ -21,6 +21,9 @@ export class AnalysisTaskService {
   private delete: string = 'delete';
   private tasks: string = 'tasks';
   private project: string = 'project'
+  private promote: string = 'promote';
+  private demote: string = 'demote';
+  private push: string = 'pushOnWorker';
   private metricproviders: string = 'metricproviders';
   private workers: string = 'workers';
   private jwtToken: string = null;
@@ -94,6 +97,30 @@ export class AnalysisTaskService {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.delete}/${analysisTaskId}`,
+      { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
+
+  promoteTask(analysisTaskId: string): Observable<ExecutionTask> {
+    if (this.jwtToken == null) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.promote}/${analysisTaskId}`,
+      { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
+
+  demoteTask(analysisTaskId: string): Observable<ExecutionTask> {
+    if (this.jwtToken == null) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.demote}/${analysisTaskId}`,
+      { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
+  
+  pushOnWorker(analysisTaskId: string,workerId: string): Observable<ExecutionTask> {
+    if (this.jwtToken == null) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.push}/${analysisTaskId}/w/${workerId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
