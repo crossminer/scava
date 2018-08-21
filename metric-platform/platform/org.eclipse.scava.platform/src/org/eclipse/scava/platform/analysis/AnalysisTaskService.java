@@ -103,7 +103,6 @@ public class AnalysisTaskService {
 
 		return task;
 	}
-
 	
 	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
@@ -111,7 +110,8 @@ public class AnalysisTaskService {
 			for (MetricExecution metricProvider : task.getMetricExecutions()) {
 				this.repository.getMetricExecutions().remove(metricProvider);
 			}
-			task.getProject().getAnalysisTasks().remove(task);
+			ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(task.getProject().getProjectId());
+			project.getAnalysisTasks().remove(task);
 			this.repository.getAnalysisTasks().remove(task);
 			this.repository.sync();
 		}

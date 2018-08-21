@@ -29,7 +29,7 @@ public class AnalysisStopTaskResource extends ServerResource{
 				JsonNode jsonNode = mapper.readTree(entity.getText());
 				String analysisTaskId = jsonNode.get("analysisTaskId").toString().replace("\"", "");
 
-				AnalysisTask task = service.stoptAnalysisTask(analysisTaskId);
+				AnalysisTask task = service.stopAnalysisTask(analysisTaskId);
 
 				StringRepresentation rep = new StringRepresentation(task.getDbObject().toString());
 				rep.setMediaType(MediaType.APPLICATION_JSON);

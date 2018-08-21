@@ -1,0 +1,102 @@
+<div class="jumbotron" style="padding-top:20px;">
+  <div class="page-header">
+    <h2>Add new Analysis Task</h2>
+    <hr/>
+  </div>
+
+  <div>
+    <form name="addTaskForm" role="form" novalidate (ngSubmit)="save()" #addTaskForm="ngForm">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-control-label">Label name</label>
+          <input type="text" class="form-control" name="label" [(ngModel)]="label" #labelInput="ngModel" required minlength="1" maxlength="50"
+            pattern="^[_.@A-Za-z0-9-]*$">
+          <div *ngIf="labelInput.dirty && labelInput.invalid">
+            <small class="form-text text-danger" *ngIf="labelInput.errors.required">
+              This field is required.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
+              This field cannot be longer than 50 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
+              This field can only contain letters, digits and e-mail addresses.
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="type">Task type</label>
+          <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="type">
+            <option value="SINGLE_EXECUTION">SINGLE_EXECUTION</option>
+            <option value="DAILY_EXECUTION">DAILY_EXECUTION</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="startDate">Start date</label>
+          <input type="text" class="form-control" id="startDate" name="startDate" placeholder="start Date" [(ngModel)]="startDate"
+            minlength=1 maxlength=50 #startDateInput="ngModel" required>
+          <div *ngIf="startDateInput.dirty && startDateInput.invalid">
+            <small class="form-text text-danger" *ngIf="startDateInput.errors.required">
+              Your last name is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="startDateInput.errors.minlength">
+              Your last name is required to be at least 1 character.
+            </small>
+            <small class="form-text text-danger" *ngIf="startDateInput.errors.maxlength">
+              Your last name cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="endDate">End date</label>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+        </div>
+
+        <div>
+          <h3>Checkbox Selection</h3>
+          <p-table [columns]="cols" [value]="cars" [(selection)]="selectedCars3" dataKey="brand">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th style="width: 3em">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                      </th>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                      <td>
+                          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                      </td>
+                      <td *ngFor="let col of columns">
+                          {{rowData[col.field]}}
+                      </td>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="summary">
+                  <ul>
+                      <li *ngFor="let car of selectedCars3" style="text-align: left">
+                          {{ car.brand + ' - ' + car.year + ' - ' + car.color}}
+                      </li>
+                  </ul>
+              </ng-template>
+          </p-table>
+        </div>
+
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" (click)="previousState()">
+          <i class="fa fa-ban"></i>&nbsp;
+          <span>Cancel</span>
+        </button>&nbsp;
+        <button type="submit" [disabled]="addTaskForm.form.invalid || isSaving" class="btn btn-primary">
+          <i class="fa fa-save"></i>&nbsp;
+          <span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
