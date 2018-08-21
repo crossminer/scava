@@ -22,12 +22,12 @@ import com.mongodb.Mongo;
 public class AnalysisTaskService {
 	private ProjectAnalysisResportory repository;
 	private Mongo mongo;
-	
-	public AnalysisTaskService(ProjectAnalysisResportory repository,Mongo mongo) {
+
+	public AnalysisTaskService(ProjectAnalysisResportory repository, Mongo mongo) {
 		this.repository = repository;
 		this.mongo = mongo;
 	}
-	
+
 	public AnalysisTask createAnalysisTask(String projectId, AnalysisTask task, List<String> metricsProviders) {
 		ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(projectId);
 
@@ -64,7 +64,6 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	
 	public AnalysisTask updateAnalysisTask(AnalysisTask newTask, List<String> metricsProviders) {
 		resetAnalysisTask(newTask.getAnalysisTaskId());
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(newTask.getAnalysisTaskId());
@@ -104,7 +103,6 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	
 	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		if (task != null) {
@@ -121,81 +119,92 @@ public class AnalysisTaskService {
 	public List<AnalysisTask> getAnalysisTasksByProject(String projectId) {
 		List<AnalysisTask> tasks = new ArrayList<>();
 		for (ProjectAnalysis project : this.repository.getProjects().findByProjectId(projectId)) {
-			for(AnalysisTask taskRef : project.getAnalysisTasks()) {
+			for (AnalysisTask taskRef : project.getAnalysisTasks()) {
 				tasks.add(this.repository.getAnalysisTasks().findOneByAnalysisTaskId(taskRef.getAnalysisTaskId()));
-			}		
+			}
 			return tasks;
 		}
 		return new ArrayList<>();
 	}
-	
+
 	public List<AnalysisTask> getAnalysisTasks() {
 		List<AnalysisTask> tasks = new ArrayList<>();
 		for (AnalysisTask task : this.repository.getAnalysisTasks()) {
 			tasks.add(task);
 		}
-		
+
 		Collections.sort(tasks, new Comparator<AnalysisTask>() {
-		    @Override
-		    public int compare(AnalysisTask lhs, AnalysisTask rhs) {
-		    	Date data1 = lhs.getScheduling().getExecutionRequestDate();
-		    	Date data2 = rhs.getScheduling().getExecutionRequestDate();    	
-		    	return data1.compareTo(data2);
-		    }
+			@Override
+			public int compare(AnalysisTask lhs, AnalysisTask rhs) {
+				Date data1 = lhs.getScheduling().getExecutionRequestDate();
+				Date data2 = rhs.getScheduling().getExecutionRequestDate();
+				return data1.compareTo(data2);
+			}
 		});
 		return tasks;
 	}
-	
-	public void promoteTask(String analysisTaskId) {
+
+	public AnalysisTask promoteTask(String analysisTaskId) {
 		AnalysisTask currentTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
-		AnalysisTask predecessor = null;	
-		if( currentTask != null) {
+		AnalysisTask predecessor = null;
+		if (currentTask != null) {
 			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
-				if(task.getScheduling().getExecutionRequestDate().getTime() < currentTask.getScheduling().getExecutionRequestDate().getTime()) {
-					if(predecessor == null || predecessor.getScheduling().getExecutionRequestDate().getTime() > task.getScheduling().getExecutionRequestDate().getTime()) {
+				if (task.getScheduling().getExecutionRequestDate().getTime() < currentTask.getScheduling()
+						.getExecutionRequestDate().getTime()) {
+					if (predecessor == null || predecessor.getScheduling().getExecutionRequestDate().getTime() > task
+							.getScheduling().getExecutionRequestDate().getTime()) {
 						predecessor = task;
 					}
 				}
 			}
 		}
-		if(predecessor != null) {
+		if (predecessor != null) {
 			System.out.println(predecessor.getAnalysisTaskId());
-			currentTask.getScheduling().setExecutionRequestDate(new Date( predecessor.getScheduling().getExecutionRequestDate().getTime() - 1000));
+			currentTask.getScheduling().setExecutionRequestDate(
+					new Date(predecessor.getScheduling().getExecutionRequestDate().getTime() - 1000));
 			this.repository.sync();
 		}
-		
+
+		return currentTask;
 	}
-	
-	public void demoteTask(String analysisTaskId) {
+
+	public AnalysisTask demoteTask(String analysisTaskId) {
 		AnalysisTask currentTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
-		AnalysisTask successor = null;	
-		if( currentTask != null) {
+		AnalysisTask successor = null;
+		if (currentTask != null) {
 			for (AnalysisTask task : this.repository.getAnalysisTasks()) {
 				System.out.println(task.getAnalysisTaskId());
-				if(task.getScheduling().getExecutionRequestDate().getTime() > currentTask.getScheduling().getExecutionRequestDate().getTime()) {
-					if(successor == null || successor.getScheduling().getExecutionRequestDate().getTime()< task.getScheduling().getExecutionRequestDate().getTime()) {
+				if (task.getScheduling().getExecutionRequestDate().getTime() > currentTask.getScheduling()
+						.getExecutionRequestDate().getTime()) {
+					if (successor == null || successor.getScheduling().getExecutionRequestDate().getTime() < task
+							.getScheduling().getExecutionRequestDate().getTime()) {
 						successor = task;
 					}
 				}
 			}
 		}
-		if(successor != null) {
-			currentTask.getScheduling().setExecutionRequestDate(new Date( successor.getScheduling().getExecutionRequestDate().getTime() + 1000));
+		if (successor != null) {
+			currentTask.getScheduling().setExecutionRequestDate(
+					new Date(successor.getScheduling().getExecutionRequestDate().getTime() + 1000));
 			this.repository.sync();
 		}
+		return currentTask;
 	}
-	
-	public void executeTaskOnWorker(String analysisTaskId,String workerId) {
+
+	public AnalysisTask executeTaskOnWorker(String analysisTaskId, String workerId) {
 		Worker worker = this.repository.getWorkers().findOneByWorkerId(workerId);
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
-		if(worker != null && task != null && worker.getCurrentTask() != null) {
+		if (worker != null && task != null && worker.getCurrentTask() != null) {
+
 			worker.getCurrentTask().getScheduling().setStatus(AnalysisTaskStatus.PENDING_STOP.name());
-			task.getScheduling().setExecutionRequestDate(new Date(worker.getCurrentTask().getScheduling().getExecutionRequestDate().getTime() + 1));
+			task.getScheduling().setExecutionRequestDate(
+					new Date(worker.getCurrentTask().getScheduling().getExecutionRequestDate().getTime() + 1));
+
 			this.repository.sync();
-		}	
+		}
+		return task;
 	}
-	
-	
+
 	public AnalysisTask startAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 
@@ -254,5 +263,4 @@ public class AnalysisTaskService {
 		}
 	}
 
-	
 }
