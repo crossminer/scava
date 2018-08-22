@@ -12,6 +12,7 @@ import { TreeviewModule } from 'ngx-treeview';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete-dialog.component';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
 import {TableModule} from 'primeng/table';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import {TableModule} from 'primeng/table';
     FormsModule,
     ReactiveFormsModule,
     TreeviewModule.forRoot(),
-    TableModule
+    TableModule,
+    CalendarModule
   ],
   declarations: [
     ProjectComponent, 

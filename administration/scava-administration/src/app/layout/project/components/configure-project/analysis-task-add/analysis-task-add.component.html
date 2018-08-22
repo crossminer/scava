@@ -1,13 +1,13 @@
 <div class="jumbotron" style="padding-top:20px;">
   <div class="page-header">
-    <h2>Add new Analysis Task</h2>
+    <h2>New Analysis Task</h2>
     <hr/>
   </div>
 
   <div>
     <form name="addTaskForm" role="form" novalidate (ngSubmit)="save()" #addTaskForm="ngForm">
-      <div class="col-md-6">
-        <div class="form-group">
+      <div>
+        <div class="col-md-4 form-group">
           <label class="form-control-label">Label name</label>
           <input type="text" class="form-control" name="label" [(ngModel)]="label" #labelInput="ngModel" required minlength="1" maxlength="50"
             pattern="^[_.@A-Za-z0-9-]*$">
@@ -25,37 +25,26 @@
             </small>
           </div>
         </div>
-        <div class="form-group">
+        <div class="col-md-4 form-group">
           <label class="form-control-label" for="type">Task type</label>
           <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="type">
             <option value="SINGLE_EXECUTION">SINGLE_EXECUTION</option>
             <option value="DAILY_EXECUTION">DAILY_EXECUTION</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-control-label" for="startDate">Start date</label>
-          <input type="text" class="form-control" id="startDate" name="startDate" placeholder="start Date" [(ngModel)]="startDate"
-            minlength=1 maxlength=50 #startDateInput="ngModel" required>
-          <div *ngIf="startDateInput.dirty && startDateInput.invalid">
-            <small class="form-text text-danger" *ngIf="startDateInput.errors.required">
-              Your last name is required.
-            </small>
-            <small class="form-text text-danger" *ngIf="startDateInput.errors.minlength">
-              Your last name is required to be at least 1 character.
-            </small>
-            <small class="form-text text-danger" *ngIf="startDateInput.errors.maxlength">
-              Your last name cannot be longer than 50 characters.
-            </small>
-          </div>
+        <div class="col-md-4 form-group">
+          <label class="form-control-label" for="startDate">Start date</label><br/>
+          <p-calendar id="startDate" name="startDate" [(ngModel)]="startDate" [minDate]="minStartDate" dateFormat="dd/mm/yy" ></p-calendar>
         </div>
-        <div class="form-group">
-          <label class="form-control-label" for="endDate">End date</label>
-          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+        <div class="col-md-4 form-group">
+          <label class="form-control-label" for="endDate" dateFormat="dd/mm/yy" >End date</label><br/>
+          <p-calendar name="endDate" [(ngModel)]="endDate" [minDate]="minEndDate" dateFormat="dd/mm/yy"></p-calendar>
         </div>
 
-        <div>
-          <h3>Checkbox Selection</h3>
-          <p-table [columns]="cols" [value]="cars" [(selection)]="selectedCars3" dataKey="brand">
+        <div class="col-md-12">
+  
+          <label>Metric Provider HISTORIC kind</label>
+          <p-table [columns]="cols" [value]="metricProviders" [(selection)]="selectedMetricProviders" dataKey="metricProviderId" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
               <ng-template pTemplate="header" let-columns>
                   <tr>
                       <th style="width: 3em">
@@ -72,21 +61,82 @@
                           <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                       </td>
                       <td *ngFor="let col of columns">
-                          {{rowData[col.field]}}
+                          <span *ngIf="!isStringArray(rowData[col.field]); else elseBlock">{{rowData[col.field]}}</span>
+                          <ng-template #elseBlock>
+                              <ol>
+                                <li *ngFor="let elem of rowData[col.field]">{{elem.label}} </li>
+                              </ol>
+                        </ng-template>
                       </td>
                   </tr>
               </ng-template>
-              <ng-template pTemplate="summary">
-                  <ul>
-                      <li *ngFor="let car of selectedCars3" style="text-align: left">
-                          {{ car.brand + ' - ' + car.year + ' - ' + car.color}}
-                      </li>
-                  </ul>
+              
+          </p-table>
+          <br/>
+          <!--
+          <label>Metric Provider FACTOID kind</label>
+          <p-table [columns]="cols" [value]="groupByKind[kinds[1]]" [(selection)]="selectedMetricProviders" dataKey="metricProviderId" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th style="width: 3em">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                      </th>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                      <td>
+                          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                      </td>
+                      <td *ngFor="let col of columns">
+                          <span *ngIf="!isStringArray(rowData[col.field]); else elseBlock">{{rowData[col.field]}}</span>
+                          <ng-template #elseBlock>
+                              <ol>
+                                <li *ngFor="let elem of rowData[col.field]">{{elem.label}} </li>
+                              </ol>
+                        </ng-template>
+                      </td>
+                  </tr>
               </ng-template>
           </p-table>
-        </div>
+          <br/>
+          
+          <label>Metric Provider TRANSIENT kind</label>
+          <p-table [columns]="cols" [value]="groupByKind[kinds[2]]" [(selection)]="selectedMetricProviders" dataKey="metricProviderId" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th style="width: 3em">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                      </th>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                      <td>
+                          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                      </td>
+                      <td *ngFor="let col of columns">
+                          <span *ngIf="!isStringArray(rowData[col.field]); else elseBlock">{{rowData[col.field]}}</span>
+                          <ng-template #elseBlock>
+                              <ol>
+                                <li *ngFor="let elem of rowData[col.field]">{{elem.label}} </li>
+                              </ol>
+                        </ng-template>
 
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+          -->
+        </div>
       </div>
+      <br/>
       <div>
         <button type="button" class="btn btn-secondary" (click)="previousState()">
           <i class="fa fa-ban"></i>&nbsp;

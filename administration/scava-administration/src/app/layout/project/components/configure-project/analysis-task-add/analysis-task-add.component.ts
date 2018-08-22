@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
-
-import {TableModule} from 'primeng/table';
+import { MetricProviders, IMetricProviders } from './metric-providers-model';
 
 @Component({
   selector: 'app-analysis-task-add',
@@ -11,28 +10,17 @@ import {TableModule} from 'primeng/table';
 })
 export class AnalysisTaskAddComponent implements OnInit {
 
-  metricProviders: any[];
-
-  msgs: Message[];
-
-  cars: Car[];
-
+  metricProviders: MetricProviders[];
+  groupByKind: {};
+  selectedMetricProviders: MetricProviders[];
+  kinds: string[];
   cols: any[];
 
-  selectedCar1: Car;
-
-  selectedCar2: Car;
-
-  selectedCar3: Car;
-
-  selectedCar4: Car;
-
-  selectedCars1: Car[];
-
-  selectedCars2: Car[];
-
-  selectedCars3: Car[];
-
+  startDate: Date;
+  endDate: Date;
+  minStartDate: Date;
+  minEndDate: Date;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -42,45 +30,87 @@ export class AnalysisTaskAddComponent implements OnInit {
   ngOnInit() {
     this.loadAll();
 
-    this.cars = [
-      { "brand": "VW", "year": 2012, "color": "Orange"},
-      { "brand": "Audi", "year": 2011, "color": "Black" },
-      { "brand": "Renault", "year": 2005, "color": "Gray"},
-      { "brand": "BMW", "year": 2003, "color": "Blue" },
-      { "brand": "Mercedes", "year": 1995, "color": "Orange" },
-      { "brand": "Volvo", "year": 2005, "color": "Black" },
-      { "brand": "Honda", "year": 2012, "color": "Yellow"},
-      { "brand": "Jaguar", "year": 2013, "color": "Orange" },
-      { "brand": "Ford", "year": 2000, "color": "Black" },
-      { "brand": "Fiat", "year": 2013, "color": "Red" }
+    this.minStartDate = new Date();
+    this.minEndDate = this.minStartDate;
+    
+    this.kinds = [
+      'HISTORIC', 'FACTOID', 'TRANSIENT'
     ];
 
     this.cols = [
-      { field: 'year', header: 'Year' },
-      { field: 'brand', header: 'Brand' },
-      { field: 'color', header: 'Color' }
+      { field: 'kind', header: 'Kind' },
+      { field: 'label', header: 'Label' },
+      { field: 'description', header: 'Description' },
+      { field: 'dependOf', header: 'Depend Of' }
     ];
-  }
-
-  onRowSelect(event) {
-    this.msgs = [];
-    this.msgs.push({ severity: 'info', summary: 'Car Selected', detail: event.data.brand });
-  }
-
-  onRowUnselect(event) {
-    this.msgs = [];
-    this.msgs.push({ severity: 'info', summary: 'Car Unselected', detail: event.data.brand });
   }
 
   loadAll() {
     this.analysisTaskService.getMetricProviders().subscribe(
       (resp) => {
         this.metricProviders = resp as any[];
+        //this.groupByKind = this.sortByGroup(this.metricProviders);
         console.log(this.metricProviders)
       },
       (error) => {
         this.onError(error);
       })
+  }
+
+  onRowSelect(event){
+    debugger
+    this.selectDependencies(event.data);
+    console.log(this.selectedMetricProviders)
+    this.selectedMetricProviders = this.selectedMetricProviders;
+
+  }
+
+  selectDependencies(ownerMP : MetricProviders){
+    for( let obj of ownerMP.dependOf){
+      let mp = this.metricProviders.find(mp=> mp.metricProviderId == obj.metricProviderId);
+      this.selectedMetricProviders.push(mp);  
+      this.selectDependencies(mp)
+    }
+  }
+
+  onRowUnselect(event) {
+    debugger;
+    let dependencies : MetricProviders []  = this.serchInversDependency(event.data);
+
+    let newselectedMetricProviders : MetricProviders [] = [];
+    for(let oldMP of this.selectedMetricProviders){
+     if(dependencies.find(mp =>mp.metricProviderId == oldMP.metricProviderId) == undefined){
+      newselectedMetricProviders.push(oldMP);
+     }
+    }
+    this.selectedMetricProviders = newselectedMetricProviders;
+
+    console.log(this.selectedMetricProviders)
+  }
+
+  serchInversDependency(ownerMP: MetricProviders) :MetricProviders []  {
+    let dependencies : MetricProviders []  = [];
+    for(let mp of this.metricProviders){
+      let findMp : MetricProviders    = mp.dependOf.find(fmp=> fmp.metricProviderId == ownerMP.metricProviderId);
+      
+      if(findMp != undefined){
+
+        dependencies.push(mp);
+         for(let submp of this.serchInversDependency(mp)){
+           dependencies.push(submp);
+         }   
+      }
+    }
+    return dependencies;
+  }
+
+  sortByGroup(metricProviders: MetricProviders[]){
+    let groupByKind = {};
+    metricProviders.forEach((a) => {
+      groupByKind[a.kind] = groupByKind[a.kind] || [];
+      groupByKind[a.kind].push({'metricProviderId': a.metricProviderId, 'label': a.label, 'description': a.description, 'kind': a.kind, 'dependOf': a.dependOf})      
+    })
+    return groupByKind;
   }
 
   save(login) {
@@ -93,28 +123,19 @@ export class AnalysisTaskAddComponent implements OnInit {
     });
   }
 
+  isStringArray(value: any): boolean {
+    if (Object.prototype.toString.call(value) === '[object Array]') {
+       if (value.length < 1) {
+         return false;
+       } else {
+         return true;
+       }
+    }
+    return false;
+  }
+
   onError(error) {
     console.log(error);
   }
 
-}
-
-export interface Message {
-  severity?: string;
-  summary?: string;
-  detail?: string;
-  id?: any;
-  key?: string;
-  life?: number;
-  sticky?: boolean;
-  closable?: boolean;
-  data?: any;
-}
-
-export interface Car {
-  year?;
-  brand?;
-  color?;
-  price?;
-  saleDate?;
 }
