@@ -7,6 +7,7 @@ import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
 import { MetricInfoComponent } from './metrics-infos/metric-info.component';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MetricInfoComponent } from './metrics-infos/metric-info.component';
     WorkerRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    TreeviewModule.forRoot()
+    TreeviewModule.forRoot(),
+    TableModule
   ],
   declarations: [
     WorkerComponent,

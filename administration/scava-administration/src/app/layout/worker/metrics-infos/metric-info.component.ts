@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ExecutionTask } from '../../../layout/project/components/configure-project/execution-task.model';
+import { ExecutionTask, MetricExecutions } from '../../../layout/project/components/configure-project/execution-task.model';
 
 
 @Component({
@@ -13,7 +13,9 @@ export class MetricInfoComponent {
   analysisTask : ExecutionTask;
   constructor(
     public activeModal: NgbActiveModal
-  ) { }
+  ) { 
+
+    }
 
 
   clear() {

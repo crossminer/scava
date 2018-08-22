@@ -38,6 +38,7 @@ public class AnalysisMetricProviders extends AbstractApiResource {
 					for (MetricProvider mp : metric.getDependOf()) {
 						Map<String, String> newMetric = new HashMap<>();
 						newMetric.put("metricProviderId", mp.getDbObject().get("metricProviderId").toString());
+						newMetric.put("label", mp.getDbObject().get("label").toString());
 						dependingMetrics.add(newMetric);
 					}
 					metric.getDbObject().put("dependOf", dependingMetrics);

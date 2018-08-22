@@ -4,22 +4,22 @@
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
   </div>
   <div class="modal-body">
-    <table class="table table-striped table-sm">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">Metric Provider</th>
-            <th scope="col">Last Execution</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let metric of analysisTask.metricExecutions">
-            <th scope="row">1</th>
-            <td>{{metric.metricProviderId.split(".")[metric.metricProviderId.split(".").length - 1]}}</td>
-            <td>{{metric.lastExecutionDate}}</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <p-table [value]="analysisTask.metricExecutions" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th scope="col">Metric Provider</th>
+                <th scope="col">Last Execution</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-metric>
+            <tr>
+                <td style="width:60%">{{metric.metricProviderId.split(".")[metric.metricProviderId.split(".").length - 1]}}</td>
+                <td>{{metric.lastExecutionDate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
