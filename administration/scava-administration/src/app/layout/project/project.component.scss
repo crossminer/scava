@@ -76,10 +76,18 @@ body {
   white-space: nowrap;
 }
 
+
+.overflow-multi{
+  height: 50px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
 @media screen and (max-width: 600px) {
   .project-table .project-option {
     padding: 5%;
-    width: 90%;
+    
   }
   .project-table .project-option:nth-child(even) {
     margin: 30px 0 !important;

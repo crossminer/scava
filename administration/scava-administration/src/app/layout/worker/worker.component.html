@@ -5,11 +5,11 @@
   </div>
 
   <div class="card-columns">
-    <div *ngFor="let worker of workerList" class="card text-white bg-secondary mb-3">
-      <div class="card-header" style="padding: 0.5rem;" >
+    <div *ngFor="let worker of workerList" class="card bg-light  mb-3">
+      <div class="card-header text-white bg-secondary" style="padding: 0.5rem;" >
         <h4 style="margin: 0px;" class="card-title">{{worker.workerId}}</h4>
       </div>
-      <div class="card-body worker-card-body">
+      <div class="card-body worker-card-body ">
         <div *ngIf="worker.currentTask != null">
            
           <div class="row">
@@ -60,12 +60,12 @@
           No Tasks Assigned
         </div>
       </div>
-      <div class="card-footer" style="padding: 0.5rem;">
+      <div class="card-footer text-right" style="padding: 0.5rem;">
           <div *ngIf="worker.currentTask != null">
-              <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)" class="btn btn-outline-light btn-sm" style="margin-left: 65%;">Interupt Analysis</button>
+              <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)" class="btn btn-outline-dark btn-sm">Interupt Analysis</button>
           </div>
           <div *ngIf="worker.currentTask == null">
-              <button type="button" class="btn btn-outline-light btn-sm" disabled style="margin-left: 65%;">Interupt Analysis</button>
+              <button type="button" class="btn btn-outline-dark btn-sm" disabled >Interupt Analysis</button>
           </div>
       </div>
     </div>

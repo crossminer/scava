@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListWorkerService } from '../../shared/services/worker-service/list-worker.service';
 import { AnalysisTaskService } from '../../shared/services/analysis-task/analysis-task.service';
 import { ExecutionTask } from '../project/components/configure-project/execution-task.model';
@@ -14,7 +14,7 @@ import { MetricInfoComponent } from './metrics-infos/metric-info.component';
   styleUrls: ['./worker.component.scss']
 })
 
-export class WorkerComponent implements OnInit {
+export class WorkerComponent implements OnInit,OnDestroy {
 
   workerList: Worker[];
   interval : any;
@@ -32,6 +32,12 @@ export class WorkerComponent implements OnInit {
       this.refreshData(); 
     }, 2000);
 
+  }
+
+  ngOnDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   refreshData(){

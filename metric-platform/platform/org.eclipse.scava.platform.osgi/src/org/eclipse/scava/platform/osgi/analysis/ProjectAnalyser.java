@@ -41,7 +41,7 @@ public class ProjectAnalyser {
 		this.platform = platform;
 	}
 
-	public void executeAnalyse(String analysisTaskId, String workerId) {
+	public boolean executeAnalyse(String analysisTaskId, String workerId) {
 		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
 
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
@@ -74,21 +74,7 @@ public class ProjectAnalyser {
 			java.util.Date dailyExecution = new java.util.Date();
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
-
-			task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
-			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
-				return;
-			}
-			
-			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
-				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
-				task.getScheduling().setWorkerId(null);	
-				platform.getAnalysisRepositoryManager().getRepository().sync();
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
-				return;
-			}
-			
+	
 //			List<List<IMetricProvider>> dailyBranches = filterMetricByExecutionDate(metricBranches,date,project.getShortName());
 //			if(dailyBranches.isEmpty()) {
 //				logger.info("All Metric Already Executed at this Date: " + date + ", project: " + project.getName());
@@ -112,7 +98,7 @@ public class ProjectAnalyser {
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
 				
 				logger.error("Project delta creation failed. Aborting.");
-				return;
+				return false;
 			}
 			
 			for (List<IMetricProvider> branch : metricBranches) {
@@ -163,13 +149,28 @@ public class ProjectAnalyser {
 			}else {
 				estimatedDuration = (estimatedDuration + duration) / 2;
 			}
-			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));
-			System.out.println(estimatedDuration + ":" + String.valueOf(dates.length - Arrays.asList(dates).indexOf(date)));
 			
+			task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));	
 			platform.getAnalysisRepositoryManager().getRepository().sync();
+			
+			
+			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
+				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				return false;
+			}
+			
+			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
+				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
+				task.getScheduling().setWorkerId(null);	
+				platform.getAnalysisRepositoryManager().getRepository().sync();
+				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				return false;
+			}
 		}
 		
 		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
+		return true;
 	}
 
 //	private List<List<IMetricProvider>> filterMetricByExecutionDate(List<List<IMetricProvider>> metricBranches,Date date,String projectId) {

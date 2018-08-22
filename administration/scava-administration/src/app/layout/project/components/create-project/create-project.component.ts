@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
-import { Project } from '../../project.model';
+import { Project,IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-project',
@@ -15,6 +16,7 @@ export class CreateProjectComponent implements OnInit {
   isSaving: boolean;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private createProjectService: CreateProjectService,
   ) {
@@ -113,7 +115,8 @@ export class CreateProjectComponent implements OnInit {
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
       console.log(resp)
-      debugger
+      var project : IProject = resp as IProject;
+      this.router.navigate(['/project'])
     }, error => {
       console.log(error)
     })

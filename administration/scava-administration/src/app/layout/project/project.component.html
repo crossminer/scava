@@ -7,31 +7,31 @@
     </div>
     <hr/>
   </div>
-  <div class="card-columns">
-    <div *ngFor="let project of projectList" class="card text-white bg-secondary mb-3">
-      <div class="card-header overflow-guard" style="padding: 0.5rem;">
+  <div style="display: grid;grid-template-columns: 50% 50%;">
+    <div *ngFor="let project of projectList" class="bg-light card  mb-3" style="margin :10px;" >
+      <div class="card-header overflow-guard text-white bg-secondary" style="padding: 0.5rem;">
         <h4 style="margin: 0px;" class="card-title">{{project.name}}</h4>
       </div>
-      <div class="card-body worker-card-body">
+      <div class="card-body worker-card-body ">
         <div class="row">
-          <div class="col-4">
+          <div class="col-3">
             <b>Status :</b>
           </div>
-          <div class="col-8">
+          <div class="col-9">
             Up To Date
           </div>
         </div>
         <div class="row">
-          <div class="col-4">
+          <div class="col-3">
             <b>URL :</b>
           </div>
-          <div class="col-8">
+          <div class="col-9 overflow-multi">
               <a href="{{project?.html_url}}">{{project?.html_url}}</a>
           </div>
         </div>
       </div>
-      <div class="card-footer">
-        <button type="button" class="btn btn-outline-light btn-sm" style="float: right;margin-bottom: 10px;" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
+      <div class="card-footer text-right" style="padding: 0.5em;">
+        <button type="button" class="btn btn-outline-dark btn-sm "  [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
   </div>

@@ -31,6 +31,8 @@ public class Configuration {
 	protected Properties properties = new Properties();
 	protected Configuration() {}
 	
+	private Mongo mongo;
+	
 	public static Configuration getInstance() {
 		if (instance == null) {
 			instance = new Configuration();
@@ -59,24 +61,25 @@ public class Configuration {
 	}
 	
 	public Mongo getMongoConnection() throws UnknownHostException {
-//		System.out.println("Mongo hosts: " + properties.getProperty(MONGO_HOSTS, "localhost:27017"));
-		String[] hosts = properties.getProperty(MONGO_HOSTS, "localhost:27017").split(",");
-		
-		if (hosts.length > 1) {
-			List<ServerAddress> mongoHostAddresses = new ArrayList<>();
-			for (String host : hosts) {
-				String[] s = host.split(":");
-				mongoHostAddresses.add(new ServerAddress(s[0], Integer.valueOf(s[1])));
+	
+		if(this.mongo == null) {
+			String[] hosts = properties.getProperty(MONGO_HOSTS, "localhost:27017").split(",");
+			
+			if (hosts.length > 1) {
+				List<ServerAddress> mongoHostAddresses = new ArrayList<>();
+				for (String host : hosts) {
+					String[] s = host.split(":");
+					mongoHostAddresses.add(new ServerAddress(s[0], Integer.valueOf(s[1])));
+				}
+				
+				return new Mongo(mongoHostAddresses);
+				
+			} else {
+				return new Mongo();//hosts[0]);
 			}
-			
-//			MongoOptions options = new MongoOptions();
-//			options.connectTimeout = 1000;
-			return new Mongo(mongoHostAddresses);//,options);
-			
-		} else {
-			return new Mongo();//hosts[0]);
+		}else {
+			return this.mongo;
 		}
-		
 		
 	}
 }

@@ -50,8 +50,10 @@ public class WorkerService {
 		if(worker != null) {
 			AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(worker.getCurrentTask().getAnalysisTaskId());
 			
-			task.getScheduling().setStatus(AnalysisTaskStatus.COMPLETED.name());
-			task.getScheduling().setWorkerId(null);	
+			if(!task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
+				task.getScheduling().setStatus(AnalysisTaskStatus.COMPLETED.name());
+				task.getScheduling().setWorkerId(null);	
+			}
 
 			this.getRepository().getWorkers().remove(worker);
 			worker = new Worker();

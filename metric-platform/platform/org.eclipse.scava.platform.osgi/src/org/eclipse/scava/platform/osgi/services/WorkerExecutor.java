@@ -46,6 +46,7 @@ public class WorkerExecutor implements Runnable {
 				this.analyser = new ProjectAnalyser(this.platform);		
 				this.analyser.executeAnalyse(analysisTaskId,WORKER_ID);	
 				platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+
 			} else {				
 				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
 				worker.setHeartbeat(new Date());
