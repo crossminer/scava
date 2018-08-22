@@ -46,7 +46,7 @@ public class AddTask {
 			metricsProviders2.add("org.eclipse.scava.metricprovider.trans.bugs.activeusers.ActiveUsersTransMetricProvider");
 			
 			
-	    	service.createAnalysisTask("QualityGuardAnalysis", task2,metricsProviders);
+	    	service.createAnalysisTask("QualityGuardAnalysis", task2,metricsProviders2);
 	    	
 	
 		} catch (UnknownHostException e) {
