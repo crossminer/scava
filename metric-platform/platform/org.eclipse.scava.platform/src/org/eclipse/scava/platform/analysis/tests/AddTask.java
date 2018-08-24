@@ -19,7 +19,7 @@ public class AddTask {
 		try {
 			
 			AnalysisTaskService service = new AnalysisTaskService(new ProjectAnalysisResportory(getMongoConnection().getDB("scava-analysis")),getMongoConnection());
-
+			
 			AnalysisTask task1 = new AnalysisTask();
 			task1.setAnalysisTaskId("QualityGuardAnalysis:Analysis1");
 			task1.setLabel("Analysis1");		

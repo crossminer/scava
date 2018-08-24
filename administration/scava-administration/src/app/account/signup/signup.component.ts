@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { routerTransition } from '../../router.animations';
 import { SignupService } from '../../shared/services/authentication/signup.service';
 import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.scss'],
-    animations: [routerTransition()]
+    styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
 

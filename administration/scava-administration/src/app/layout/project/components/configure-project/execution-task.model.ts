@@ -2,9 +2,11 @@ export interface IExecutionTask {
     analysisTaskId?: string,
     label?: string,
     type?: string,
-    startDate?: Date,
-    endDate?: Date, 
-    scheduling?:SchedulingInformation
+    startDate?: string,
+    endDate?: string,
+    projectId?: string,
+    metricProviders?: MetricProvider[],
+    scheduling?: SchedulingInformation
 }
 
 
@@ -13,10 +15,11 @@ export class ExecutionTask implements IExecutionTask {
         public analysisTaskId?: string,
         public label?: string,
         public type?: string,
-        public startDate?: Date,
-        public endDate?: Date, 
-        public metricExecutions?: MetricExecutions,
-        public scheduling?:SchedulingInformation
+        public startDate?: string,
+        public endDate?: string, 
+        public projectId?: string,
+        public metricProviders?: MetricProvider[],
+        public scheduling?: SchedulingInformation
     ) {
     }
 }
@@ -56,5 +59,24 @@ export class MetricExecutions implements IMetricExecutions {
        public projectId?: string,
        public lastExecutionDate?: string
     ) {
+    }
+}
+
+export interface IMetricProvider {
+    metricProviderId?: string,
+    label?: string,
+    kind?: string,
+    description?: string,
+    dependOf?: IMetricProvider[]
+}
+
+export class MetricProvider implements IMetricProvider {
+    constructor(
+        public metricProviderId?: string,
+        public label?: string,
+        public kind?: string,
+        public description?: string,
+        public dependOf?: IMetricProvider[]
+    ){
     }
 }

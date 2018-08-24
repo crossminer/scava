@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-analysis-task-delete-dialog',
@@ -22,8 +23,8 @@ export class AnalysisTaskMgmtDeleteDialogComponent {
     this.activeModal.dismiss('cancel');
   }
 
-  confirmDelete(analysisTaskId) {
-    this.analysisTaskService.deleteTask('QualityGuardAnalysis:Analysis1').subscribe((resp) => {
+  confirmDelete(analysisTaskId: string) {
+    this.analysisTaskService.deleteTask(analysisTaskId).subscribe((resp) => {
         this.activeModal.dismiss(true);
     });
   }

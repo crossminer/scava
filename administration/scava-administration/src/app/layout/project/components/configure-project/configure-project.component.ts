@@ -93,9 +93,9 @@ export class ConfigureProjectComponent implements OnInit {
             })
     }
 
-    deleteTask(task: string) {
+    deleteTask(analysisTaskId: string) {
         const modalRef = this.modalService.open(AnalysisTaskMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-        modalRef.componentInstance.task = task;
+        modalRef.componentInstance.analysisTaskId = analysisTaskId;
         modalRef.result.then(
             result => {
                 console.log('delete success');

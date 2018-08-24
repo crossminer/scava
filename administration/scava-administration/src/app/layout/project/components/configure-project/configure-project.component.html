@@ -43,6 +43,9 @@
                 <thead>
                     <tr>
                         <th>
+                            <span>Label</span>
+                        </th>
+                        <th>
                             <span>Execution Task</span>
                         </th>
                         <th>
@@ -63,6 +66,11 @@
                 </thead>
                 <tbody *ngIf="executionTasks">
                     <tr *ngFor="let executionTask of executionTasks">
+                        <td>
+                            <div>
+                                <span>{{executionTask?.label}}</span>
+                            </div>
+                        </td>
                         <td>
                             <div>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
@@ -88,10 +96,7 @@
                         <td>
                             <div class="progress">
                                 <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuemin="0" aria-valuemax="100">
-                                    <span *ngIf="executionTask.scheduling.progress != 0; else elseBlock">{{executionTask?.scheduling.progress}}%</span>
-                                    <ng-template #elseBlock>
-                                        <span>0%</span>
-                                    </ng-template>
+                                    <span *ngIf="executionTask.scheduling.progress != 0">{{executionTask?.scheduling.progress}}%</span>
                                 </div>
                             </div>
                         </td>
@@ -123,7 +128,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="pull-right">
                                 <button type="button" [routerLink]="['./', 'add-task']" class="btn btn-success btn-sm">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;

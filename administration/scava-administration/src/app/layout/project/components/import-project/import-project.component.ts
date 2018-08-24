@@ -24,7 +24,6 @@ export class ImportProjectComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        debugger;
         this.importProjectService.importProject(this.project).subscribe(resp => {
             var project : IProject = resp as IProject;
             console.log(resp);

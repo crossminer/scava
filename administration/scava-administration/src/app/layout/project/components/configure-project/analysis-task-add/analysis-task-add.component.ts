@@ -1,137 +1,192 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
-import { MetricProviders, IMetricProviders } from './metric-providers-model';
+import { MetricProvider, ExecutionTask } from '../execution-task.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from './custom-date-adapter';
+
 
 @Component({
   selector: 'app-analysis-task-add',
   templateUrl: './analysis-task-add.component.html',
-  styleUrls: ['./analysis-task-add.component.scss']
+  styleUrls: ['./analysis-task-add.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter, useClass: CustomDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS
+    }
+  ]
 })
 export class AnalysisTaskAddComponent implements OnInit {
 
-  metricProviders: MetricProviders[];
-  groupByKind: {};
-  selectedMetricProviders: MetricProviders[];
-  kinds: string[];
-  cols: any[];
+  executionTask: ExecutionTask;
+  projectId: string;
+
+  dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
+  selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
   startDate: Date;
   endDate: Date;
-  minStartDate: Date;
-  minEndDate: Date;
-  
+
+  displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private analysisTaskService: AnalysisTaskService,
-  ) { }
+  ) {
+    this.executionTask = new ExecutionTask();
+  }
+
 
   ngOnInit() {
     this.loadAll();
-
-    this.minStartDate = new Date();
-    this.minEndDate = this.minStartDate;
-    
-    this.kinds = [
-      'HISTORIC', 'FACTOID', 'TRANSIENT'
-    ];
-
-    this.cols = [
-      { field: 'kind', header: 'Kind' },
-      { field: 'label', header: 'Label' },
-      { field: 'description', header: 'Description' },
-      { field: 'dependOf', header: 'Depend Of' }
-    ];
+    this.route.paramMap.subscribe(
+      (data) => {
+        this.executionTask.projectId = data.get('id');
+      });
   }
 
   loadAll() {
     this.analysisTaskService.getMetricProviders().subscribe(
       (resp) => {
-        this.metricProviders = resp as any[];
+        //this.metricProviders = resp as any[];
         //this.groupByKind = this.sortByGroup(this.metricProviders);
-        console.log(this.metricProviders)
+        //console.log(this.metricProviders)
+
+        this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
+        //console.log(this.dataSource);
+        this.selection = new SelectionModel<MetricProvider>(true, []);
+
+        this.selection.onChange.subscribe(data => this.getSelectedData(data));
+        //this.selection.onChange.unsubscribe();
+
+
+        //  this.selection.onChange.subscribe(data => console.log(data));
+
       },
       (error) => {
         this.onError(error);
       })
   }
 
-  onRowSelect(event){
-    debugger
-    this.selectDependencies(event.data);
-    console.log(this.selectedMetricProviders)
-    this.selectedMetricProviders = this.selectedMetricProviders;
-
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 
-  selectDependencies(ownerMP : MetricProviders){
-    for( let obj of ownerMP.dependOf){
-      let mp = this.metricProviders.find(mp=> mp.metricProviderId == obj.metricProviderId);
-      this.selectedMetricProviders.push(mp);  
-      this.selectDependencies(mp)
+  getSelectedData(data: SelectionChange<MetricProvider>) {
+    //console.log("event !!!!!!")
+    if (data.added.length !== 0) {
+      //console.log('selected');
+      //console.log(data);
+      this.onRowSelect(data.added[0]);
+    }
+    if (data.removed.length !== 0) {
+      //console.log('unselected');
+      //console.log(data);
+      this.onRowUnselect(data.removed[0]);
     }
   }
 
-  onRowUnselect(event) {
-    debugger;
-    let dependencies : MetricProviders []  = this.serchInversDependency(event.data);
-
-    let newselectedMetricProviders : MetricProviders [] = [];
-    for(let oldMP of this.selectedMetricProviders){
-     if(dependencies.find(mp =>mp.metricProviderId == oldMP.metricProviderId) == undefined){
-      newselectedMetricProviders.push(oldMP);
-     }
-    }
-    this.selectedMetricProviders = newselectedMetricProviders;
-
-    console.log(this.selectedMetricProviders)
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
 
-  serchInversDependency(ownerMP: MetricProviders) :MetricProviders []  {
-    let dependencies : MetricProviders []  = [];
-    for(let mp of this.metricProviders){
-      let findMp : MetricProviders    = mp.dependOf.find(fmp=> fmp.metricProviderId == ownerMP.metricProviderId);
-      
-      if(findMp != undefined){
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  onRowSelect(row) {
+    //console.log(row)
+    this.selectDependencies(row);
+
+    //  this.selection = new SelectionModel<MetricProvider>(true,this.selection.selected);    
+    console.log(this.selection)
+
+  }
+
+  selectDependencies(ownerMP: MetricProvider) {
+    for (let obj of ownerMP.dependOf) {
+      //console.log(obj)
+      let mp = this.dataSource.data.find(mp => mp.metricProviderId == obj.metricProviderId);
+      //console.log(mp)
+      if (!this.selection.isSelected(mp)) {
+        this.selection.select(mp);
+      }
+    }
+  }
+
+  onRowUnselect(row: MetricProvider) {
+    let dependencies: MetricProvider[] = this.serchInversDependency(row);
+
+    for (let oldMP of dependencies) {
+      if (this.selection.isSelected(oldMP)) {
+        this.selection.deselect(oldMP);
+      }
+    }
+    // let newselectedMetricProviders : MetricProvider [] = [];
+
+    // if(this.selection.isSelected)
+    // for(let oldMP of this.selection.selected){
+    //  if(dependencies.find(mp =>mp.metricProviderId == oldMP.metricProviderId) == undefined){
+    //   newselectedMetricProviders.push(oldMP);
+    //  }
+    // }
+    // this.selection = new SelectionModel<MetricProvider>(true,newselectedMetricProviders);
+    // console.log(this.selection)
+  }
+
+  serchInversDependency(ownerMP: MetricProvider): MetricProvider[] {
+    let dependencies: MetricProvider[] = [];
+    for (let mp of this.dataSource.data) {
+      let findMp: MetricProvider = mp.dependOf.find(fmp => fmp.metricProviderId == ownerMP.metricProviderId);
+
+      if (findMp != undefined) {
 
         dependencies.push(mp);
-         for(let submp of this.serchInversDependency(mp)){
-           dependencies.push(submp);
-         }   
+        //  for(let submp of this.serchInversDependency(mp)){
+        //    dependencies.push(submp);
+        //  }   
       }
     }
     return dependencies;
   }
 
-  sortByGroup(metricProviders: MetricProviders[]){
-    let groupByKind = {};
-    metricProviders.forEach((a) => {
-      groupByKind[a.kind] = groupByKind[a.kind] || [];
-      groupByKind[a.kind].push({'metricProviderId': a.metricProviderId, 'label': a.label, 'description': a.description, 'kind': a.kind, 'dependOf': a.dependOf})      
-    })
-    return groupByKind;
+  save() {
+    this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
+    this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
+    this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
+    this.executionTask.metricProviders = this.selection.selected;
+    this.analysisTaskService.createTask(this.executionTask).subscribe(
+      (resp) => {
+        console.log('executiontask created successfuly !');
+        this.router.navigate(['project/configure/' + this.executionTask.projectId]);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
-  save(login) {
+  convertDate(inputFormat: string): string {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
   }
 
   previousState() {
-    this.route.paramMap.subscribe(data => {
-      console.log(data)
-      this.router.navigate(['project/configure/' + data.get('id')]);
-    });
-  }
-
-  isStringArray(value: any): boolean {
-    if (Object.prototype.toString.call(value) === '[object Array]') {
-       if (value.length < 1) {
-         return false;
-       } else {
-         return true;
-       }
-    }
-    return false;
+      this.router.navigate(['project/configure/' + this.executionTask.projectId]);
   }
 
   onError(error) {
@@ -139,3 +194,4 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
 }
+
