@@ -68,6 +68,7 @@ public class RecommenderRestController {
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
 	}
+	
 	@ApiOperation(value = "This resource is used to retrieve code patterns from code context.")
 	@RequestMapping(value = "recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getApiCallRecommendation(
@@ -78,8 +79,7 @@ public class RecommenderRestController {
 	@RequestMapping(value = "recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getApiDocumentationRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
-
-		return null;
+		return recommenderManager.getRecommendation(query, RecommendationType.API_DOCUMENTATION);
 	}
 
 	@ApiOperation(value = "This resource is used to retrieve projects that are similar to a given project.")
