@@ -24,8 +24,8 @@ import json
 import logging
 import urllib.parse
 
-from grimoirelab.toolkit.datetime import str_to_datetime
-from grimoirelab.toolkit.uris import urijoin
+from grimoirelab_toolkit.datetime import str_to_datetime
+from grimoirelab_toolkit.uris import urijoin
 
 from ...backend import (Backend,
                         BackendCommand,
