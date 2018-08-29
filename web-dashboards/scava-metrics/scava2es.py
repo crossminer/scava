@@ -263,7 +263,7 @@ def fetch_scava(url_api_rest, project=None):
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
-            scavaProject = Scava(url=url_api_rest, project=project_scava['data']['name'])
+            scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
             for enriched_metric in enrich_metrics(scavaProject.fetch()):
                 yield enriched_metric
     else:

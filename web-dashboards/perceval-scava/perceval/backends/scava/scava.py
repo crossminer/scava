@@ -144,16 +144,17 @@ class Scava(Backend):
 
         :returns: this backend supports items resuming
         """
-        return True
+        return False
 
     @staticmethod
     def metadata_id(item):
         """Extracts the identifier from a Scava item."""
 
-        # name for a project
         if 'id' in item:
+            # the item is a metric
             mid = item['id'] + item['updated'] + item['project']
         elif 'name' in item:
+            # the item is a project
             mid = item['name']
         else:
             raise TypeError("Can not extract metadata_id from", item)
@@ -241,7 +242,8 @@ class ScavaClient(HttpClient):
         api = self.api_projects_url
         projects = self.fetch(api)
         for project in json.loads(projects):
-            if project['name'] == project_name:
+            if project_name in [project['name'], project['shortName']]:
+                # project['shortName'] is used for building the API URLs so it is the one used in general
                 updated = project['executionInformation']['lastExecuted']
 
         return updated
