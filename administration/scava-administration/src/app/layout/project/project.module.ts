@@ -11,6 +11,7 @@ import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete-dialog.component';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
+import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
@@ -18,6 +19,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSortModule} from '@angular/material/sort';
 
 
 @NgModule({
@@ -34,8 +37,9 @@ import {MatListModule} from '@angular/material/list';
     MatDatepickerModule,
     MatTableModule,
     MatCheckboxModule,
-    MatListModule
-
+    MatListModule,
+    MatRadioModule,
+    MatSortModule
   ],
   declarations: [
     ProjectComponent, 
@@ -43,7 +47,8 @@ import {MatListModule} from '@angular/material/list';
     CreateProjectComponent,
     ConfigureProjectComponent,
     AnalysisTaskAddComponent,
-    AnalysisTaskMgmtDeleteDialogComponent, AnalysisTaskAddComponent
+    AnalysisTaskUpdateComponent,
+    AnalysisTaskMgmtDeleteDialogComponent,
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent

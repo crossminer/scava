@@ -3,7 +3,7 @@ import { environment } from '../../../../environments/environment.prod';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from '../authentication/local-storage.service';
 import { Observable } from 'rxjs';
-import { ExecutionTask } from '../../../layout/project/components/configure-project/execution-task.model';
+import { ExecutionTask, MetricProvider } from '../../../layout/project/components/configure-project/execution-task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +62,14 @@ export class AnalysisTaskService {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${this.project}/${projectId}`,
+      { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
+
+  getTaskByAnalysisTaskId(analysisTaskId: string): Observable<ExecutionTask> {
+    if (this.jwtToken == null) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 

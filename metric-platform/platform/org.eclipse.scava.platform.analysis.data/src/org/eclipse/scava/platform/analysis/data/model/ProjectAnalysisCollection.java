@@ -26,6 +26,16 @@ public class ProjectAnalysisCollection extends PongoCollection<ProjectAnalysis> 
 		}
 		return projectAnalysis;
 	}
+	/*
+	 * Find by AnalysisTaskId
+	 */
+	public AnalysisTask findOneByAnalysisTaskId(String q) {
+		AnalysisTask analysisTask = (AnalysisTask) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("analysisTaskId", q + "")));
+		if (analysisTask != null) {
+			analysisTask.setPongoCollection(this);
+		}
+		return analysisTask;
+	}
 	
 
 	public long countByProjectId(String q) {

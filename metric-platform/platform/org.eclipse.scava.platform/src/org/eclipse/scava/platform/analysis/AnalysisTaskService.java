@@ -126,6 +126,11 @@ public class AnalysisTaskService {
 		}
 		return new ArrayList<>();
 	}
+	
+	public AnalysisTask getTaskByAnalysisTaskId(String analysisTaskId) {
+		AnalysisTask analysisTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+		return analysisTask;
+	}
 
 	public List<AnalysisTask> getAnalysisTasks() {
 		List<AnalysisTask> tasks = new ArrayList<>();
