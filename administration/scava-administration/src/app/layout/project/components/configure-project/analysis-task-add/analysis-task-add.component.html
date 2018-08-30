@@ -43,7 +43,7 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">End date</label>
                     <mat-form-field>
-                        <input matInput name="endDate" [(ngModel)]="executionTask.endDate" [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
+                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate" [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
                         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
                         <mat-datepicker #endDate></mat-datepicker>
                     </mat-form-field>
