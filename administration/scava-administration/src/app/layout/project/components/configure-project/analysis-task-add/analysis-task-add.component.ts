@@ -27,6 +27,8 @@ export class AnalysisTaskAddComponent implements OnInit {
   isSaving: boolean;
   executionTask: ExecutionTask;
   projectId: string;
+  maxStartDate: Date;
+  maxEndDate: Date;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
@@ -55,6 +57,8 @@ export class AnalysisTaskAddComponent implements OnInit {
 
   loadAll() {
     this.isSaving = false;
+    this.maxStartDate = new Date();
+    this.maxEndDate = this.maxStartDate;
     this.analysisTaskService.getMetricProviders().subscribe(
       (resp) => {
         //this.metricProviders = resp as any[];
