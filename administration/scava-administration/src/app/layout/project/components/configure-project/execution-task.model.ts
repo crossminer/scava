@@ -5,8 +5,7 @@ export interface IExecutionTask {
     startDate?: string,
     endDate?: string,
     projectId?: string,
-    metricExecutions?: MetricExecutions[],
-    metricProviders?: MetricProvider[],
+    metricExecutions?: string[],
     scheduling?: SchedulingInformation
 }
 
@@ -19,8 +18,7 @@ export class ExecutionTask implements IExecutionTask {
         public startDate?: string,
         public endDate?: string, 
         public projectId?: string,
-        public metricExecutions?: MetricExecutions[],
-        public metricProviders?: MetricProvider[],
+        public metricExecutions?: string[],
         public scheduling?: SchedulingInformation
     ) {
     }

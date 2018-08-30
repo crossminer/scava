@@ -1,115 +1,133 @@
 <div class="jumbotron" style="padding-top:20px;">
-  <div class="page-header">
-      <h2>Update Analysis Task</h2>
-      <hr/>
-  </div>
+    <div class="page-header">
+        <h2>Update Analysis Task</h2>
+        <hr/>
+    </div>
 
-  <div>
-      <form name="updateTaskForm" role="form" novalidate (ngSubmit)="save()" #updateTaskForm="ngForm">
-          <div>
-              <div class="col-md-4 form-group">
-                  <label class="form-control-label">Label name</label>
-                  <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel" required minlength="1" maxlength="50"
-                      pattern="^[_.@A-Za-z0-9-]*$">
-                  <div *ngIf="labelInput.dirty && labelInput.invalid">
-                      <small class="form-text text-danger" *ngIf="labelInput.errors.required">
-                          This field is required.
-                      </small>
+    <div>
+        <form name="updateTaskForm" role="form" novalidate (ngSubmit)="save()" #updateTaskForm="ngForm">
+            <div>
+                <div class="col-md-4 form-group">
+                    <label class="form-control-label">Label name</label>
+                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel" required minlength="1"
+                        maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
+                    <div *ngIf="labelInput.dirty && labelInput.invalid">
+                        <small class="form-text text-danger" *ngIf="labelInput.errors.required">
+                            This field is required.
+                        </small>
 
-                      <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
-                          This field cannot be longer than 50 characters.
-                      </small>
+                        <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
+                            This field cannot be longer than 50 characters.
+                        </small>
 
-                      <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
-                          This field can only contain letters, digits and e-mail addresses.
-                      </small>
-                  </div>
-              </div>
-              <div class="col-md-4 form-group">
-                  <label class="form-control-label" for="type">Task type</label>
-                  <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="executionTask.type">
-                      <option value="SINGLE_EXECUTION">SINGLE_EXECUTION</option>
-                      <option value="DAILY_EXECUTION">DAILY_EXECUTION</option>
-                  </select>
-              </div>
-              <div class="col-md-4 form-group">
-                  <label class="form-control-label">Start date</label>
-                  <mat-form-field>
-                      <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [matDatepicker]="startDate">
-                      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                      <mat-datepicker #startDate></mat-datepicker>
-                  </mat-form-field>
-              </div>
-              <div class="col-md-4 form-group">
-                  <label class="form-control-label">End date</label>
-                  <mat-form-field>
-                      <input matInput name="endDate" [(ngModel)]="executionTask.endDate" [matDatepicker]="endDate">
-                      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-                      <mat-datepicker #endDate></mat-datepicker>
-                  </mat-form-field>
-              </div>
+                        <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
+                            This field can only contain letters, digits and e-mail addresses.
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="form-control-label" for="type">Task type</label>
+                    <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="executionTask.type">
+                        <option value="SINGLE_EXECUTION">SINGLE_EXECUTION</option>
+                        <option value="DAILY_EXECUTION">DAILY_EXECUTION</option>
+                    </select>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="form-control-label">Start date</label>
+                    <mat-form-field>
+                        <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [max]="maxStartDate" [matDatepicker]="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="form-control-label">End date</label>
+                    <mat-form-field>
+                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate" [min]="executionTask.startDate"
+                            [max]="maxEndDate" [matDatepicker]="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                        <mat-datepicker #endDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <!--
+                <div class="col-md-12 form-group">
+                    <label class="form-control-label">Metric Providers</label>
+                    <br/>
+                    <mat-radio-group class="example-radio-group" name="option" [(ngModel)]="option1">
+                        <mat-radio-button class="example-radio-button" (change)="$event ? masterToggle() : null" [value]="true">
+                            All metrics
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <br/>
+                    <mat-radio-group class="example-radio-group" name="option" [(ngModel)]="option2">
+                        <mat-radio-button class="example-radio-button" (change)="$event && isAllSelected() ? masterToggle() : null" [value]="true">
+                            Choose some metrics
+                        </mat-radio-button>
+                    </mat-radio-group>
 
-              <div class="col-md-12">
-                  <div class="example-header">
-                      <mat-form-field>
-                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-                      </mat-form-field>
-                  </div>
-                  <div class="example-container mat-elevation-z8">
-                      <table mat-table [dataSource]="dataSource">
+                    <div *ngIf="option2">
+                        <div class="example-header">
+                            <mat-form-field>
+                                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                            </mat-form-field>
+                        </div>
+                        <div class="example-container">
+                            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-                          <ng-container matColumnDef="select">
-                              <th mat-header-cell *matHeaderCellDef>
-                                  <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                  </mat-checkbox>
-                              </th>
-                              <td mat-cell *matCellDef="let row">
-                                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? this.selection.toggle(row) : null" [checked]="selection.isSelected(row)">
-                                  </mat-checkbox>
-                              </td>
-                          </ng-container>
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                        </mat-checkbox>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? this.selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
 
-                          <ng-container matColumnDef="kind">
-                              <th mat-header-cell *matHeaderCellDef> Kind </th>
-                              <td mat-cell *matCellDef="let element"> {{element.kind}} </td>
-                          </ng-container>
+                                <ng-container matColumnDef="kind">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Kind </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.kind}} </td>
+                                </ng-container>
 
-                          <ng-container matColumnDef="label">
-                              <th mat-header-cell *matHeaderCellDef> Label </th>
-                              <td mat-cell *matCellDef="let element"> {{element.label}} </td>
-                          </ng-container>
+                                <ng-container matColumnDef="label">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Label </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.label}} </td>
+                                </ng-container>
 
-                          <ng-container matColumnDef="description">
-                              <th mat-header-cell *matHeaderCellDef> Description </th>
-                              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                          </ng-container>
+                                <ng-container matColumnDef="description">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                                </ng-container>
 
-                          <ng-container matColumnDef="dependOf">
-                              <th mat-header-cell *matHeaderCellDef> Depend Of </th>
-                              <td mat-cell *matCellDef="let element">
-                                  <mat-list>
-                                      <mat-list-item *ngFor="let d of element.dependOf">{{d.label}}</mat-list-item>
-                                  </mat-list>
-                              </td>
-                          </ng-container>
+                                <ng-container matColumnDef="dependOf">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Depend Of </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-list>
+                                            <mat-list-item *ngFor="let d of element.dependOf">{{d.label}}</mat-list-item>
+                                        </mat-list>
+                                    </td>
+                                </ng-container>
 
-                          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                      </table>
-                  </div>
-              </div>
-          </div>
-          <br/>
-          <div>
-              <button type="button" class="btn btn-secondary" (click)="previousState()">
-                  <i class="fa fa-ban"></i>&nbsp;
-                  <span>Cancel</span>
-              </button>&nbsp;
-              <button type="submit" [disabled]="updateTaskForm.form.invalid || isSaving" class="btn btn-primary">
-                  <i class="fa fa-save"></i>&nbsp;
-                  <span>Save</span>
-              </button>
-          </div>
-      </form>
-  </div>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+            <br/>
+            <div>
+                <button type="button" class="btn btn-secondary" (click)="previousState()">
+                    <i class="fa fa-ban"></i>&nbsp;
+                    <span>Cancel</span>
+                </button>&nbsp;
+                <button type="submit" [disabled]="updateTaskForm.form.invalid || isSaving" class="btn btn-primary">
+                    <i class="fa fa-save"></i>&nbsp;
+                    <span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

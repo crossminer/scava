@@ -119,7 +119,7 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.selectDependencies(row);
 
     //  this.selection = new SelectionModel<MetricProvider>(true,this.selection.selected);    
-    console.log(this.selection)
+    //console.log(this.selection)
 
   }
 
@@ -175,7 +175,9 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
-    this.executionTask.metricProviders = this.selection.selected;
+    let metrics: string[] = [];
+    this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));
+    this.executionTask.metricExecutions = metrics;
     this.analysisTaskService.createTask(this.executionTask).subscribe(
       (resp) => {
         console.log('executiontask created successfuly !');

@@ -4,11 +4,20 @@ import { MatTableDataSource, DateAdapter, MAT_DATE_FORMATS } from '@angular/mate
 import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
+import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 
 @Component({
   selector: 'app-analysis-task-update',
   templateUrl: './analysis-task-update.component.html',
-  styleUrls: ['./analysis-task-update.component.scss']
+  styleUrls: ['./analysis-task-update.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter, useClass: CustomDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS
+    }
+  ]
 })
 export class AnalysisTaskUpdateComponent implements OnInit {
 
@@ -48,26 +57,29 @@ export class AnalysisTaskUpdateComponent implements OnInit {
       (params) => {
         this.analysisTaskService.getTaskByAnalysisTaskId(params.get('id') + ':' + params.get('label')).subscribe(
           (analysiTask) => {
-            debugger
+            //debugger
+            console.log(analysiTask)
             this.executionTask = analysiTask;
-            this.executionTask.startDate = this.convertDate(new Date(this.executionTask.startDate['$date']).toString());
-            this.executionTask.endDate = this.convertDate(new Date(this.executionTask.endDate['$date']).toString());
+            //this.executionTask.startDate = this.convertDate(new Date(this.executionTask.startDate['$date']).toString());
+            //this.executionTask.endDate = this.convertDate(new Date(this.executionTask.endDate['$date']).toString());
             console.log(this.executionTask)
-            console.log(this.executionTask.metricExecutions)
+            //console.log(this.executionTask.metricExecutions)
+            /**
             this.analysisTaskService.getMetricProviders().subscribe(
               (resp) => {
-                debugger
+                //debugger
                 this.metricProviders = resp as MetricProvider[];
                 this.dataSource = new MatTableDataSource<MetricProvider>(this.metricProviders);
                 this.selection = new SelectionModel<MetricProvider>(true, []);
                 // for(let metricExecution of this.executionTask.metricExecutions) {
                 //   this.selection.select(metricExecution);
                 // }
-                console.log(this.selection)
+                //console.log(this.selection)
               },
               (error) => {
                 this.onError(error);
               })
+             */
           },
           (error) => {
             this.onError(error);
@@ -165,7 +177,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
     this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
-    this.executionTask.metricProviders = this.selection.selected;
+    //this.executionTask.metricExecutions = this.selection.selected;
     this.analysisTaskService.createTask(this.executionTask).subscribe(
       (resp) => {
         console.log('executiontask created successfuly !');
