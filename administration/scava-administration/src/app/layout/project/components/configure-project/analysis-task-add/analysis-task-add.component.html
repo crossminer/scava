@@ -51,20 +51,6 @@
 
                 <div class="col-md-12 form-group">
                     <label class="form-control-label">Metric Providers</label>
-                    <!--
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="option" (change)="$event ? masterToggle() : null" [(ngModel)]="option1"
-                                [value]="true" />All Metric Providers
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="option" (change)="$event ? masterToggle() : null" [(ngModel)]="option2"
-                                [value]="false">Choose Metric Providers
-                        </label>
-                    </div>
-                    -->
                     <br/>
                     <mat-radio-group class="example-radio-group" name="option" [(ngModel)]="option1">
                         <mat-radio-button class="example-radio-button" (change)="$event ? masterToggle() : null" [value]="true">
@@ -78,14 +64,14 @@
                         </mat-radio-button>
                     </mat-radio-group>
                     
-                    <div *ngIf="option1 || option2">
+                    <div *ngIf="option2">
                         <div class="example-header">
                             <mat-form-field>
                                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                             </mat-form-field>
                         </div>
-                        <div class="example-container mat-elevation-z8">
-                            <table mat-table [dataSource]="dataSource">
+                        <div class="example-container">
+                            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
                                 <ng-container matColumnDef="select">
                                     <th mat-header-cell *matHeaderCellDef>
@@ -99,22 +85,22 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="kind">
-                                    <th mat-header-cell *matHeaderCellDef> Kind </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Kind </th>
                                     <td mat-cell *matCellDef="let element"> {{element.kind}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="label">
-                                    <th mat-header-cell *matHeaderCellDef> Label </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Label </th>
                                     <td mat-cell *matCellDef="let element"> {{element.label}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="description">
-                                    <th mat-header-cell *matHeaderCellDef> Description </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
                                     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="dependOf">
-                                    <th mat-header-cell *matHeaderCellDef> Depend Of </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Depend Of </th>
                                     <td mat-cell *matCellDef="let element">
                                         <mat-list>
                                             <mat-list-item *ngFor="let d of element.dependOf">{{d.label}}</mat-list-item>

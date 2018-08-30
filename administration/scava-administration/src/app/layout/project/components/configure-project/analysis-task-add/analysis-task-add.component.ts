@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
 import { MetricProvider, ExecutionTask } from '../execution-task.model';
@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
+import { MatSort } from '@angular/material';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class AnalysisTaskAddComponent implements OnInit {
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
+  @ViewChild(MatSort) sort: MatSort;
+
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
 
   constructor(
@@ -47,6 +50,7 @@ export class AnalysisTaskAddComponent implements OnInit {
       (data) => {
         this.executionTask.projectId = data.get('id');
       });
+    this.dataSource.sort = this.sort;
   }
 
   loadAll() {
