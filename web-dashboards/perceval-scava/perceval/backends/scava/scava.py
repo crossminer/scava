@@ -95,8 +95,10 @@ class Scava(Backend):
         """
         project = kwargs['project']
 
-        logger.info("Looking for metrics at url '%s' of %s category and %s project",
-                    self.url, category, project)
+        if category == CATEGORY_PROJECT:
+            logger.info("Looking for projects at url '%s'", self.url)
+        else:
+            logger.info("Looking for '%s' project metrics at url '%s'", project, self.url)
 
         nitems = 0  # number of items processed
 
@@ -110,7 +112,7 @@ class Scava(Backend):
                 yield item
                 nitems += 1
 
-        logger.info("Total number of items: %i", nitems)
+        logger.info("Total number of items: %i (%s)", nitems, category)
 
     @staticmethod
     def metadata_category(item):
@@ -271,8 +273,7 @@ class ScavaClient(HttpClient):
             for metric in metrics:
                 metric_id = metric['id']
                 api = urijoin(self.api_projects_url, "/p/%s/m/%s" % (project, metric_id))
-                logger.debug("Scava client calls APIv1: %s", api)
-                print(api)
+                logger.debug("Scava client calls API: %s", api)
                 project_metric = self.fetch(api)
                 yield project_metric
 
