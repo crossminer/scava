@@ -39,7 +39,7 @@ export class ConfigureProjectComponent implements OnInit {
                         },
                         (error) => {
                             this.onError(error);
-                        });
+                    });
                 },
                 (error) => {
                     this.onError(error);
@@ -109,6 +109,6 @@ export class ConfigureProjectComponent implements OnInit {
     private onError(error) {
         console.log(error)
     }
-    
+
 
 }

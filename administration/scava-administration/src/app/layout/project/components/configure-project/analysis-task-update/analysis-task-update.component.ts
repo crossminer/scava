@@ -27,8 +27,12 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   metricProviders: MetricProvider[];
   oldAnalysisTaskId: string;
 
+  startDate : Date;
+  endDate : Date;
   maxStartDate: Date;
   maxEndDate: Date;
+
+  mpoption : string;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
@@ -61,8 +65,8 @@ export class AnalysisTaskUpdateComponent implements OnInit {
           (analysiTask) => {
             this.oldAnalysisTaskId = params.get('id') + ':' + params.get('label');
             this.executionTask = analysiTask;
-            this.executionTask.startDate = this.convertDate(new Date(this.executionTask.startDate['$date']).toString());
-            this.executionTask.endDate = this.convertDate(new Date(this.executionTask.endDate['$date']).toString());
+            this.startDate = new Date(this.executionTask.startDate['$date']);
+            this.endDate = new Date(this.executionTask.endDate['$date']);
             this.analysisTaskService.getMetricProviders().subscribe(
               (resp) => {
                 this.metricProviders = resp as MetricProvider[];
@@ -70,10 +74,13 @@ export class AnalysisTaskUpdateComponent implements OnInit {
                 this.selection = new SelectionModel<MetricProvider>(true, []);
                 this.executionTask.metricExecutions.forEach((me) => this.selection.select(this.metricProviders.find((mp) => mp.metricProviderId == me.metricProviderId)));
                 //console.log(this.selection)
-                this.selection.onChange.subscribe(data => {
-                  this.getSelectedData(data)
-                  console.log(this.selection.selected);
-                });
+                this.selection.onChange.subscribe(data => this.getSelectedData(data));
+
+                if(this.isAllSelected()){
+                  this.mpoption = "mpoption-all";
+                }else{
+                  this.mpoption = "mpoption-selected";
+                }
               },
               (error) => {
                 this.onError(error);
@@ -179,8 +186,8 @@ export class AnalysisTaskUpdateComponent implements OnInit {
     this.isSaving = true;
     this.executionTask.oldAnalysisTaskId = this.oldAnalysisTaskId;
     this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
-    this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
-    this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
+    this.executionTask.startDate = this.convertDate(this.startDate.toString());
+    this.executionTask.endDate = this.convertDate(this.endDate.toString());
     let metrics: string[] = [];
     //console.log(this.selection.selected);
     this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));

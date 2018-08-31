@@ -30,6 +30,8 @@ export class AnalysisTaskAddComponent implements OnInit {
   maxStartDate: Date;
   maxEndDate: Date;
 
+  mpoption : string;
+
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
@@ -51,6 +53,7 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.route.paramMap.subscribe(
       (data) => {
         this.executionTask.projectId = data.get('id');
+        this.mpoption  = "mpoption-all";
       });
     this.dataSource.sort = this.sort;
   }

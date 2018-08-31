@@ -35,37 +35,35 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Start date</label>
                     <mat-form-field>
-                        <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [max]="maxStartDate" [matDatepicker]="startDate">
-                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                        <mat-datepicker #startDate></mat-datepicker>
+                        <input matInput name="startDate" [(ngModel)]="startDate" [max]="maxStartDate" [matDatepicker]="startDateInput">
+                        <mat-datepicker-toggle matSuffix [for]="startDateInput"></mat-datepicker-toggle>
+                        <mat-datepicker #startDateInput></mat-datepicker>
                     </mat-form-field>
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">End date</label>
                     <mat-form-field>
-                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate" 
-                            [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
-                        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-                        <mat-datepicker #endDate></mat-datepicker>
+                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="startDateInput" [(ngModel)]="endDate" 
+                            [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDateInput">
+                        <mat-datepicker-toggle matSuffix [for]="endDateInput"></mat-datepicker-toggle>
+                        <mat-datepicker #endDateInput></mat-datepicker>
                     </mat-form-field>
                 </div>
                 
                 <div class="col-md-12 form-group">
                     <label class="form-control-label">Metric Providers</label>
                     <br/>
-                    <mat-radio-group class="example-radio-group" name="option" [(ngModel)]="option1">
-                        <mat-radio-button class="example-radio-button" [checked]="isAllSelected()" (change)="$event ? masterToggle() : null" [value]="true">
-                            All metrics
-                        </mat-radio-button>
-                    </mat-radio-group>
-                    <br/>
-                    <mat-radio-group class="example-radio-group" name="option" [(ngModel)]="option2">
-                        <mat-radio-button class="example-radio-button" [checked]="!isAllSelected()" (change)="$event && isAllSelected() ? masterToggle() : null" [value]="true">
-                            Choose some metrics
-                        </mat-radio-button>
-                    </mat-radio-group>
+                    <mat-radio-group name="toto" class="example-radio-group" [(ngModel)]="mpoption">
+                            <mat-radio-button value="mpoption-all" class="example-radio-button" (change)="$event ? masterToggle() : null">
+                                All metrics
+                            </mat-radio-button>
+                            <br/>
+                            <mat-radio-button value="mpoption-selected" class="example-radio-button" (change)="$event && isAllSelected() ? masterToggle() : null">
+                                    Choose some metrics
+                             </mat-radio-button>
+                        </mat-radio-group>
 
-                    <div>
+                        <div *ngIf="mpoption == 'mpoption-selected'">
                         <div class="example-header">
                             <mat-form-field>
                                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
