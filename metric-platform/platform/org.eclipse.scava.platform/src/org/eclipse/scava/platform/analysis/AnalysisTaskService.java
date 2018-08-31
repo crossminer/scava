@@ -64,9 +64,10 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	public AnalysisTask updateAnalysisTask(AnalysisTask newTask, List<String> metricsProviders) {
+	public AnalysisTask updateAnalysisTask(String oldAnalysisTaskId, AnalysisTask newTask, List<String> metricsProviders) {
 		resetAnalysisTask(newTask.getAnalysisTaskId());
-		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(newTask.getAnalysisTaskId());
+		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(oldAnalysisTaskId);
+		task.setAnalysisTaskId(newTask.getAnalysisTaskId());
 		task.setLabel(newTask.getLabel());
 		task.setType(newTask.getType());
 		task.setStartDate(newTask.getStartDate());
@@ -90,14 +91,30 @@ public class AnalysisTaskService {
 			task.getMetricExecutions().add(provider);
 		}
 
-		// Remove deleted MetricExecution
-		for (MetricExecution metricProv : new ArrayList<>(task.getMetricExecutions())) {
-			if (!metricsProviders.contains(metricProv.getMetricProviderId())) {
-				task.getMetricExecutions().remove(metricsProviders);
-				this.repository.getMetricExecutions().remove(metricProv);
+		List<String> metricProviderToDelete = new ArrayList<>();
+		for (MetricExecution metricProv : task.getMetricExecutions()) {
+			if (metricProv != null && !metricsProviders.contains(metricProv.getMetricProviderId())) {	
+				metricProviderToDelete.add(metricProv.getMetricProviderId());			
 			}
 		}
-
+		
+		for(String metricProviderId : metricProviderToDelete) {
+			Iterable<MetricExecution> providers = this.repository.getMetricExecutions().find(
+					MetricExecution.PROJECTID.eq(task.getProject().getProjectId()),
+					MetricExecution.METRICPROVIDERID.eq(metricProviderId));
+			if(providers.iterator().hasNext()) {
+				MetricExecution toDelete = providers.iterator().next();
+				task.getMetricExecutions().remove(toDelete);
+				this.repository.getMetricExecutions().remove(toDelete);			
+			}
+		}
+		
+		// Update Project Reference
+		ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(task.getProject().getProjectId());
+		
+		//project.getAnalysisTasks().add(task);
+		//for(AnalysisTaskStatus taskRef :  ) {
+			
 		this.repository.sync();
 
 		return task;
@@ -120,7 +137,7 @@ public class AnalysisTaskService {
 		List<AnalysisTask> tasks = new ArrayList<>();
 		for (ProjectAnalysis project : this.repository.getProjects().findByProjectId(projectId)) {
 			for (AnalysisTask taskRef : project.getAnalysisTasks()) {
-				tasks.add(this.repository.getAnalysisTasks().findOneByAnalysisTaskId(taskRef.getAnalysisTaskId()));
+				tasks.add(this.repository.getAnalysisTasks().findById(taskRef.getId()).iterator().next());
 			}
 			return tasks;
 		}

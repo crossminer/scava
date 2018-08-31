@@ -27,13 +27,14 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 
 	@Put
 	public Representation updateAnalysisTask(Representation entity) {
-		
+
 		try {
-			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode jsonNode = mapper.readTree(entity.getText());
-			
+
+			String oldAnalysisTaskId = jsonNode.get("oldAnalysisTaskId").toString().replace("\"", "");
 			String analysisTaskId = jsonNode.get("analysisTaskId").toString().replace("\"", "");
 			String taskLabel = jsonNode.get("label").toString().replace("\"", "");
 			String taskType = jsonNode.get("type").toString().replace("\"", "");
@@ -41,8 +42,6 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 			Date taskStartDate = new SimpleDateFormat("dd/MM/yyyy")
 					.parse(jsonNode.get("startDate").toString().replace("\"", ""));
 
-			String projectId = jsonNode.get("projectId").toString().replace("\"", "");
-			
 			AnalysisTask newTask = new AnalysisTask();
 			newTask.setAnalysisTaskId(analysisTaskId);
 			newTask.setLabel(taskLabel);
@@ -61,14 +60,14 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 			for (JsonNode metricProvider : (ArrayNode) jsonNode.get("metricProviders")) {
 				metricsProviders.add(metricProvider.toString().replace("\"", ""));
 			}
-			
-			AnalysisTask updatedTask = service.updateAnalysisTask(newTask, metricsProviders);
-			
+
+			AnalysisTask updatedTask = service.updateAnalysisTask(oldAnalysisTaskId, newTask, metricsProviders);
+
 			StringRepresentation rep = new StringRepresentation(updatedTask.getDbObject().toString());
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_CREATED);
 			return rep;
-			
+
 		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");
@@ -76,7 +75,6 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
 		}
-		
-		
+
 	}
 }

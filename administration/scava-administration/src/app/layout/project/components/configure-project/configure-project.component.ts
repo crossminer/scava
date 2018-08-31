@@ -36,10 +36,8 @@ export class ConfigureProjectComponent implements OnInit {
                     this.analysisTaskService.getTasksbyProject(this.project.name).subscribe(
                         (resp) => {
                             this.executionTasks = resp as ExecutionTask[];
-                            //console.log(this.executionTasks)
                         },
                         (error) => {
-                            //debugger
                             this.onError(error);
                         });
                 },

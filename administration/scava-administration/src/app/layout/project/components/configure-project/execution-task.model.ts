@@ -1,24 +1,28 @@
 export interface IExecutionTask {
+    oldAnalysisTaskId?: string,
     analysisTaskId?: string,
     label?: string,
     type?: string,
     startDate?: string,
     endDate?: string,
     projectId?: string,
-    metricExecutions?: string[],
+    metricExecutions?: MetricExecutions[],
+    metricProviders?: string[],
     scheduling?: SchedulingInformation
 }
 
 
 export class ExecutionTask implements IExecutionTask {
     constructor(
+        public oldAnalysisTaskId?: string,
         public analysisTaskId?: string,
         public label?: string,
         public type?: string,
         public startDate?: string,
         public endDate?: string, 
         public projectId?: string,
-        public metricExecutions?: string[],
+        public metricExecutions?: MetricExecutions[],
+        public metricProviders?: string[],
         public scheduling?: SchedulingInformation
     ) {
     }

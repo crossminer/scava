@@ -1,6 +1,5 @@
 package org.eclipse.scava.platform.client.api;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +16,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
 public class AnalysisTaskByAnalysisTaskId extends AbstractApiResource {
 
 	@Override
@@ -27,35 +24,25 @@ public class AnalysisTaskByAnalysisTaskId extends AbstractApiResource {
 			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			String analysisTaskId = (String) getRequest().getAttributes().get("analysistaskid");
-			
-			AnalysisTask analysisTask = service.getTaskByAnalysisTaskId(analysisTaskId);
-			ArrayNode taskMetricExecutions = mapper.createArrayNode();
 
-			try {
-				List<Object> metricExecutions = new ArrayList<>();
-				for (MetricExecution metric : analysisTask.getMetricExecutions()) {
-					Map<String, String> newMetric = new HashMap<>();
-					newMetric.put("metricProviderId", metric.getDbObject().get("metricProviderId").toString());
-					newMetric.put("projectId", metric.getDbObject().get("projectId").toString());
-					newMetric.put("lastExecutionDate", metric.getDbObject().get("lastExecutionDate").toString());
-					metricExecutions.add(newMetric);
-				}
-				analysisTask.getDbObject().put("metricExecutions", metricExecutions);
-				taskMetricExecutions.add(mapper.readTree(analysisTask.getDbObject().toString()));
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				StringRepresentation rep = new StringRepresentation("");
-				rep.setMediaType(MediaType.APPLICATION_JSON);
-				getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-				return rep;
+			AnalysisTask analysisTask = service.getTaskByAnalysisTaskId(analysisTaskId);
+			analysisTask.getDbObject().put("projectId", analysisTask.getProject().getProjectId());
+
+			List<Object> metricExecutions = new ArrayList<>();
+			for (MetricExecution metric : analysisTask.getMetricExecutions()) {
+				Map<String, String> newMetric = new HashMap<>();
+				newMetric.put("metricProviderId", metric.getDbObject().get("metricProviderId").toString());
+				newMetric.put("projectId", metric.getDbObject().get("projectId").toString());
+				newMetric.put("lastExecutionDate", metric.getDbObject().get("lastExecutionDate").toString());
+				metricExecutions.add(newMetric);
 			}
-			
-			StringRepresentation rep = new StringRepresentation(taskMetricExecutions.toString());
+			analysisTask.getDbObject().put("metricExecutions", metricExecutions);
+
+			StringRepresentation rep = new StringRepresentation(analysisTask.getDbObject().toString());
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_OK);
 			return rep;
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");
@@ -63,7 +50,7 @@ public class AnalysisTaskByAnalysisTaskId extends AbstractApiResource {
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
 		}
-		
+
 	}
 
 }

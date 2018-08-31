@@ -26,7 +26,7 @@ export class AnalysisTaskAddComponent implements OnInit {
 
   isSaving: boolean;
   executionTask: ExecutionTask;
-  projectId: string;
+  //projectId: string;
   maxStartDate: Date;
   maxEndDate: Date;
 
@@ -135,7 +135,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
   onRowUnselect(row: MetricProvider) {
-    let dependencies: MetricProvider[] = this.serchInversDependency(row);
+    let dependencies: MetricProvider[] = this.searchInversDependency(row);
 
     for (let oldMP of dependencies) {
       if (this.selection.isSelected(oldMP)) {
@@ -154,7 +154,7 @@ export class AnalysisTaskAddComponent implements OnInit {
     // console.log(this.selection)
   }
 
-  serchInversDependency(ownerMP: MetricProvider): MetricProvider[] {
+  searchInversDependency(ownerMP: MetricProvider): MetricProvider[] {
     let dependencies: MetricProvider[] = [];
     for (let mp of this.dataSource.data) {
       let findMp: MetricProvider = mp.dependOf.find(fmp => fmp.metricProviderId == ownerMP.metricProviderId);
@@ -176,8 +176,9 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
     let metrics: string[] = [];
+    console.log(this.selection.selected);
     this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));
-    this.executionTask.metricExecutions = metrics;
+    this.executionTask.metricProviders = metrics;
     this.analysisTaskService.createTask(this.executionTask).subscribe(
       (resp) => {
         console.log('executiontask created successfuly !');

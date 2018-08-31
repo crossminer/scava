@@ -25,12 +25,13 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   executionTask: ExecutionTask;
   projectId: string;
   metricProviders: MetricProvider[];
+  oldAnalysisTaskId: string;
+
+  maxStartDate: Date;
+  maxEndDate: Date;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
-
-  startDate: Date;
-  endDate: Date;
 
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
 
@@ -48,38 +49,35 @@ export class AnalysisTaskUpdateComponent implements OnInit {
       (data) => {
         this.projectId = data.get('id');
       });
-     
   }
 
   loadAll() {
     this.isSaving = false;
+    this.maxStartDate = new Date();
+    this.maxEndDate = this.maxStartDate;
     this.route.paramMap.subscribe(
       (params) => {
         this.analysisTaskService.getTaskByAnalysisTaskId(params.get('id') + ':' + params.get('label')).subscribe(
           (analysiTask) => {
-            //debugger
-            console.log(analysiTask)
+            this.oldAnalysisTaskId = params.get('id') + ':' + params.get('label');
             this.executionTask = analysiTask;
-            //this.executionTask.startDate = this.convertDate(new Date(this.executionTask.startDate['$date']).toString());
-            //this.executionTask.endDate = this.convertDate(new Date(this.executionTask.endDate['$date']).toString());
-            console.log(this.executionTask)
-            //console.log(this.executionTask.metricExecutions)
-            /**
+            this.executionTask.startDate = this.convertDate(new Date(this.executionTask.startDate['$date']).toString());
+            this.executionTask.endDate = this.convertDate(new Date(this.executionTask.endDate['$date']).toString());
             this.analysisTaskService.getMetricProviders().subscribe(
               (resp) => {
-                //debugger
                 this.metricProviders = resp as MetricProvider[];
                 this.dataSource = new MatTableDataSource<MetricProvider>(this.metricProviders);
                 this.selection = new SelectionModel<MetricProvider>(true, []);
-                // for(let metricExecution of this.executionTask.metricExecutions) {
-                //   this.selection.select(metricExecution);
-                // }
+                this.executionTask.metricExecutions.forEach((me) => this.selection.select(this.metricProviders.find((mp) => mp.metricProviderId == me.metricProviderId)));
                 //console.log(this.selection)
+                this.selection.onChange.subscribe(data => {
+                  this.getSelectedData(data)
+                  console.log(this.selection.selected);
+                });
               },
               (error) => {
                 this.onError(error);
               })
-             */
           },
           (error) => {
             this.onError(error);
@@ -96,9 +94,13 @@ export class AnalysisTaskUpdateComponent implements OnInit {
 
   getSelectedData(data: SelectionChange<MetricProvider>) {
     if (data.added.length !== 0) {
+      console.log('selected');
+      //console.log(data);
       this.onRowSelect(data.added[0]);
     }
     if (data.removed.length !== 0) {
+      console.log('unselected');
+      //console.log(data);
       this.onRowUnselect(data.removed[0]);
     }
   }
@@ -122,7 +124,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
     this.selectDependencies(row);
 
     //  this.selection = new SelectionModel<MetricProvider>(true,this.selection.selected);    
-    console.log(this.selection)
+    //console.log(this.selection)
 
   }
 
@@ -138,7 +140,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   }
 
   onRowUnselect(row: MetricProvider) {
-    let dependencies: MetricProvider[] = this.serchInversDependency(row);
+    let dependencies: MetricProvider[] = this.searchInversDependency(row);
 
     for (let oldMP of dependencies) {
       if (this.selection.isSelected(oldMP)) {
@@ -157,7 +159,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
     // console.log(this.selection)
   }
 
-  serchInversDependency(ownerMP: MetricProvider): MetricProvider[] {
+  searchInversDependency(ownerMP: MetricProvider): MetricProvider[] {
     let dependencies: MetricProvider[] = [];
     for (let mp of this.dataSource.data) {
       let findMp: MetricProvider = mp.dependOf.find(fmp => fmp.metricProviderId == ownerMP.metricProviderId);
@@ -174,13 +176,18 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   }
 
   save() {
+    this.isSaving = true;
+    this.executionTask.oldAnalysisTaskId = this.oldAnalysisTaskId;
     this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
-    //this.executionTask.metricExecutions = this.selection.selected;
-    this.analysisTaskService.createTask(this.executionTask).subscribe(
+    let metrics: string[] = [];
+    //console.log(this.selection.selected);
+    this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));
+    this.executionTask.metricProviders = metrics;
+    this.analysisTaskService.updateTask(this.executionTask).subscribe(
       (resp) => {
-        console.log('executiontask created successfuly !');
+        console.log('executiontask updated successfuly !');
         this.router.navigate(['project/configure/' + this.projectId]);
       },
       (error) => {
@@ -196,7 +203,6 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   }
 
   previousState() {
-
     this.router.navigate(['project/configure/' + this.projectId]);
   }
 
