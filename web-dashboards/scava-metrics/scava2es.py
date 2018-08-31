@@ -42,6 +42,9 @@ DEBUG_METRIC = "bugs.newbugs"
 DEBUG_METRIC = "commitsovertimeline"
 DEBUG_METRIC = None
 
+DEBUG_PROJECT = "puppetrocketchat"
+DEBUG_PROJECT = None
+
 
 def get_params():
     parser = argparse.ArgumentParser(usage="usage: scava2es [options]",
@@ -237,26 +240,18 @@ def enrich_metrics(scava_metrics):
         metric_meta = {
             'project': scava_metric['data']['project'],
             'metric_class': scava_metric['data']['id'].split(".")[0],
+            'metric_type': scava_metric['data']['type'],
             'metric_id': scava_metric['data']['id'],
             'metric_desc': scava_metric['data']['description'],
             'metric_name': scava_metric['data']['name']
         }
 
-        if isinstance(scava_metric['data']['datatable'], list):
-            metric_meta['metric_type'] = "sample"
-        else:
-            metric_meta['metric_type'] = "cumulative"
-
-
         enriched_items = enrich_scava_metric(scava_metric)
         for eitem in enriched_items:
             eitem.update(metric_meta)
             if 'datetime' not in eitem:
-                print(eitem)
-            # eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+                logging.error("Can not find datetime field in %s" % eitem)
             eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
-            # Use all value fields to generate the unique id for the metric value
-            # eitem['uuid'] = uuid(* [str(val) for val in eitem.values()])
             yield eitem
 
 
@@ -274,6 +269,10 @@ def fetch_scava(url_api_rest, project=None):
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
+
+            if DEBUG_PROJECT and project_scava['data']['shortName'] != DEBUG_PROJECT:
+                continue
+
             scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
             logging.info("Getting metrics for %s" % project_scava['data']['shortName'])
             for enriched_metric in enrich_metrics(scavaProject.fetch()):
