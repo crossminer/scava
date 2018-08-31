@@ -63,6 +63,7 @@ public class AbstractHistoricalMetricProviderTest {
 		assertEquals(5, plist.size());
 		
 		// Clean up
+		col.drop();
 		mongo.dropDatabase(dbName);
 		mongo.close();
 	}
