@@ -53,7 +53,7 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.route.paramMap.subscribe(
       (data) => {
         this.executionTask.projectId = data.get('id');
-        this.mpoption  = "mpoption-all";
+        //this.mpoption  = "mpoption-all";
       });
     this.dataSource.sort = this.sort;
   }

@@ -91,12 +91,12 @@
                         </td>
                         <td>
                             <div>
-                                <span>{{executionTask?.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="executionTask.startDate.$date">{{executionTask?.startDate.$date | date: 'dd/MM/yyyy'}}</span>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <span>{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="executionTask.endDate.$date">{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
                             </div>
                         </td>
                         <td>
