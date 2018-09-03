@@ -108,9 +108,9 @@ public class PuppetDesignTransMetricProvider implements ITransientMetricProvider
 					while(ins != null){
 		                if(ins.split(",").length == 4) {
 		                	Smell smell = new Smell();
-							smell.setSmellName(ins.split(",")[1]);
-							smell.setReason(ins.split(",")[2]);
-							smell.setFileName(ins.split(",")[3]);
+							smell.setSmellName(ins.split(",")[1].trim());
+							smell.setReason(ins.split(",")[2].trim());
+							smell.setFileName(ins.split(",")[3].trim());
 							db.getSmells().add(smell);
 							db.sync();
 		                }
