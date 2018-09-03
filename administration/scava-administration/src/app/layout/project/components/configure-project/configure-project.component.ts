@@ -30,7 +30,7 @@ export class ConfigureProjectComponent implements OnInit {
         this.interval = setInterval(() => { 
             this.loadAll();
             this.getGlobalStatus();
-          }, 1000);
+          }, 1500);
     }
 
     loadAll() {
@@ -120,6 +120,12 @@ export class ConfigureProjectComponent implements OnInit {
 
     private onError(error) {
         console.log(error)
+    }
+
+    ngOnDestroy() {
+        if(this.interval) {
+            clearInterval(this.interval);
+        }
     }
 
 

@@ -30,14 +30,8 @@ export class WorkerComponent implements OnInit,OnDestroy {
     this.refreshData();
     this.interval = setInterval(() => { 
       this.refreshData(); 
-    }, 2000);
+    }, 1500);
 
-  }
-
-  ngOnDestroy() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
   }
 
   refreshData(){
@@ -114,6 +108,12 @@ export class WorkerComponent implements OnInit,OnDestroy {
    showMetricProviderList(analysisTask: ExecutionTask) {
     const modalRef = this.modalService.open(MetricInfoComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.analysisTask = analysisTask;
+  }
+
+  ngOnDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
 }
