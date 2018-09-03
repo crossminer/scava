@@ -16,6 +16,7 @@ export class ConfigureProjectComponent implements OnInit {
     project: any = null;
     executionTasks: ExecutionTask[] = null;
     interval: any;
+    globalStatus: any;
 
     constructor(
         private route: ActivatedRoute,
@@ -26,6 +27,10 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.loadAll();
+        this.interval = setInterval(() => { 
+            this.loadAll();
+            this.getGlobalStatus();
+          }, 1000);
     }
 
     loadAll() {
@@ -47,15 +52,22 @@ export class ConfigureProjectComponent implements OnInit {
         });
     }
 
+    getGlobalStatus() {
+        this.executionTasks.forEach(task => {
+            if(task.scheduling.status == 'COMPLETED' || task.scheduling.status == 'STOP' ){
+                this.globalStatus = 'up-to-date';
+                console.log('globalStatus' + this.globalStatus)
+            } else {
+                this.globalStatus = 'in-progress'
+            }
+        });
+    }
+
     setProgressStyles(executionTask: any) {
         let styles = {
             'width': executionTask.scheduling.progress + '%',
         };
         return styles;
-    }
-
-    updateTask() {
-
     }
 
     startTask(analysisTaskId: string) {
@@ -100,7 +112,7 @@ export class ConfigureProjectComponent implements OnInit {
                 this.loadAll();
             },
             reason => {
-                console.log('delete faild');
+                console.log('delete failed');
                 this.loadAll();
             }
         );

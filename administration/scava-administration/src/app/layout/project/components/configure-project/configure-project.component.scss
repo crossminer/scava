@@ -22,11 +22,18 @@
     widows: 150px;
 }
 
-.panel-profile{
+.panel-profile.up-to-date{
     border-radius: 25px;
     float: right;
     margin-right: 50px;
     color: green;
+}
+
+.panel-profile.in-progress{
+    border-radius: 25px;
+    float: right;
+    margin-right: 50px;
+    color: rgb(255, 0, 0);
 }
 
 .mb10{ margin-bottom:10px}
