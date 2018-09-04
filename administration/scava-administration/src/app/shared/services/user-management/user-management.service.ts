@@ -37,7 +37,7 @@ export class UserManagementService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.users}/${login}`, {
+    return this.httpClient.get(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.users}/${login}`, {
       headers: new HttpHeaders({
         'Authorization': this.jwtToken
       })
@@ -48,7 +48,7 @@ export class UserManagementService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.users}`, { 
+    return this.httpClient.get(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.users}`, { 
       headers: new HttpHeaders({ 
         'Authorization': this.jwtToken 
       }) 
@@ -59,7 +59,7 @@ export class UserManagementService {
     if(this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.user}/${login}`, { 
+    return this.httpClient.delete(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.user}/${login}`, { 
       headers: new HttpHeaders({ 
         'Authorization': this.jwtToken 
       })
