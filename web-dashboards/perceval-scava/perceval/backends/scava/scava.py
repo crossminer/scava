@@ -24,8 +24,8 @@ import json
 import logging
 import urllib.parse
 
-from grimoirelab.toolkit.datetime import str_to_datetime
-from grimoirelab.toolkit.uris import urijoin
+from grimoirelab_toolkit.datetime import str_to_datetime
+from grimoirelab_toolkit.uris import urijoin
 
 from ...backend import (Backend,
                         BackendCommand,
@@ -95,8 +95,10 @@ class Scava(Backend):
         """
         project = kwargs['project']
 
-        logger.info("Looking for metrics at url '%s' of %s category and %s project",
-                    self.url, category, project)
+        if category == CATEGORY_PROJECT:
+            logger.info("Looking for projects at url '%s'", self.url)
+        else:
+            logger.info("Looking for '%s' project metrics at url '%s'", project, self.url)
 
         nitems = 0  # number of items processed
 
@@ -110,7 +112,7 @@ class Scava(Backend):
                 yield item
                 nitems += 1
 
-        logger.info("Total number of items: %i", nitems)
+        logger.info("Total number of items: %i (%s)", nitems, category)
 
     @staticmethod
     def metadata_category(item):
@@ -144,16 +146,17 @@ class Scava(Backend):
 
         :returns: this backend supports items resuming
         """
-        return True
+        return False
 
     @staticmethod
     def metadata_id(item):
         """Extracts the identifier from a Scava item."""
 
-        # name for a project
         if 'id' in item:
+            # the item is a metric
             mid = item['id'] + item['updated'] + item['project']
         elif 'name' in item:
+            # the item is a project
             mid = item['name']
         else:
             raise TypeError("Can not extract metadata_id from", item)
@@ -241,7 +244,8 @@ class ScavaClient(HttpClient):
         api = self.api_projects_url
         projects = self.fetch(api)
         for project in json.loads(projects):
-            if project['name'] == project_name:
+            if project_name in [project['name'], project['shortName']]:
+                # project['shortName'] is used for building the API URLs so it is the one used in general
                 updated = project['executionInformation']['lastExecuted']
 
         return updated
@@ -269,8 +273,7 @@ class ScavaClient(HttpClient):
             for metric in metrics:
                 metric_id = metric['id']
                 api = urijoin(self.api_projects_url, "/p/%s/m/%s" % (project, metric_id))
-                logger.debug("Scava client calls APIv1: %s", api)
-                print(api)
+                logger.debug("Scava client calls API: %s", api)
                 project_metric = self.fetch(api)
                 yield project_metric
 

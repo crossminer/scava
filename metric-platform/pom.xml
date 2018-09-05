@@ -184,6 +184,7 @@
     <module>metric-providers/org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency</module>
 	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.maven</module>
 	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi</module>
     <module>platform-extensions/org.eclipse.scava.jackson</module>

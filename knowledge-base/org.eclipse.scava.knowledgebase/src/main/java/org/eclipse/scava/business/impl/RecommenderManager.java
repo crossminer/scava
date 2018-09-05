@@ -49,6 +49,10 @@ public class RecommenderManager implements IRecommenderManager {
 	@Autowired
 	@Qualifier("AlternativeLibraries")
 	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
+	@Autowired
+	@Qualifier("APIDocumentation")
+	private IRecommendationProvider apiDocumentationRecommendationProvider;
+	
 	
 	@Autowired
 	@Qualifier("ApiCallRecommendation")
@@ -74,7 +78,12 @@ public class RecommenderManager implements IRecommenderManager {
 			return apiRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_CALL))
 			return apiCallRecommendationProvider.getRecommendation(query);
-		else return null;
+		if(rt.equals(RecommendationType.API_DOCUMENTATION))
+			return apiDocumentationRecommendationProvider.getRecommendation(query);
+		else {
+			logger.error("Recommendation not supported");
+			return null;
+		}
 	}
 
 	@Override
@@ -82,6 +91,7 @@ public class RecommenderManager implements IRecommenderManager {
 		try {
 			return clusterManager.getClusters(similarityFunction.get(0));
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -92,6 +102,7 @@ public class RecommenderManager implements IRecommenderManager {
 		try {
 			return similarityManager.getSimilarProjects(p1, getSimilarityCalculator(similarityFunction), numOfResult);
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return new ArrayList<>();
 		}
 	}
@@ -101,32 +112,27 @@ public class RecommenderManager implements IRecommenderManager {
 				.filter(z -> z.getSimilarityName().equals(similarityMethod)).findFirst();
 		if (a.isPresent())
 			return a.get();
-		else
+		else {
+			logger.error("similarity method " + similarityMethod + " is unavailable");
 			throw new Exception("similarity method " + similarityMethod + " is unavailable");
+		}
+			
 	}
 
 	@Override
 	public List<Artifact> getArtifactsByQuery(String projectQuery) {
-		
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
-
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(new PageRequest(0, 5));
-
 		List<Artifact> recipes = template.find(query, Artifact.class);
-		
 		return recipes;
 	}
 	@Override
 	public List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page) {
-		
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
-
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(page);
-
 		List<Artifact> recipes = template.find(query, Artifact.class);
-		
 		return recipes;
 	}
 }
