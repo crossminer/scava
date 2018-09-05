@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from './shared/services/configuration/configuration-service';
-import { debug } from 'util';
 
 @Component({
     selector: 'app-root',
@@ -8,12 +7,17 @@ import { debug } from 'util';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+
     constructor(public configService:ConfigService) {
     }
 
     ngOnInit() {
-        this.configService.getJSON().subscribe(data => {
-            localStorage.setItem("SERVICE_URL", data["SERVICE_URL"]);
-        });
+        this.configService.getJSON().subscribe(
+            data => {
+                localStorage.setItem("SERVICE_URL", data["SERVICE_URL"]);
+            },
+            error => {
+                console.log(error)
+            });
     }
 }

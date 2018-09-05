@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { ConfigService } from '../configuration/configuration-service';
 
 @Injectable({
@@ -8,7 +7,7 @@ import { ConfigService } from '../configuration/configuration-service';
 })
 export class AuthenticationService {
 
-  private resourceUrl = '/api';
+  private api = 'api';
   private authentication = 'authentication';
 
   constructor(
@@ -18,7 +17,7 @@ export class AuthenticationService {
   }
 
   login(data) {
-    return this.httpClient.post(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.authentication}`, data, { observe: 'response' });
+    return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.api}/${this.authentication}`, data, { observe: 'response' });
   }
 
 }
