@@ -1,37 +1,53 @@
 <div>
   <div class="page-header">
     <h2>Projects</h2>
-    <div class="btn-group" role="group" style="float: right;margin-top: -40px;" >
-        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
-        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
+    <div class="btn-group" role="group" style="float: right;margin-top: -40px;">
+      <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
+      <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
     </div>
     <hr/>
   </div>
   <div style="display: grid;grid-template-columns: 50% 50%;">
-    <div *ngFor="let project of projectList" class="bg-light card  mb-3" style="margin :10px;" >
+    <div *ngFor="let project of projectList" class="bg-light card  mb-3" style="margin :10px;">
       <div class="card-header overflow-guard text-white bg-secondary" style="padding: 0.5rem;">
         <h4 style="margin: 0px;" class="card-title">{{project.name}}</h4>
       </div>
       <div class="card-body worker-card-body ">
         <div class="row">
-          <div class="col-3">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
             <b>Status :</b>
           </div>
-          <div class="col-9">
+          <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
             Up To Date
           </div>
         </div>
-        <div class="row">
-          <div class="col-3">
+        <div class="row" *ngIf="project.html_url">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
             <b>URL :</b>
           </div>
-          <div class="col-9 overflow-multi">
-              <a href="{{project?.html_url}}">{{project?.html_url}}</a>
+          <div class="col-sm-9 col-md-9 col-lg-9 overflow-multi">
+            <a href="{{project?.html_url}}">{{project?.html_url}}</a>
+          </div>
+        </div>
+        <div class="row" *ngIf="project.homePage">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+            <b>Home page :</b>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9 overflow-multi">
+            <a href="{{project?.homePage}}">{{project?.homePage}}</a>
+          </div>
+        </div>
+        <div class="row" *ngIf="project.downloadsUrl">
+          <div class="col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <b>Download :</b>
+          </div>
+          <div class="col-sm-8 col-md-8 col-lg-9 overflow-multi">
+            <a href="{{project?.downloadsUrl}}">{{project?.downloadsUrl}}</a>
           </div>
         </div>
       </div>
       <div class="card-footer text-right" style="padding: 0.5em;">
-        <button type="button" class="btn btn-outline-dark btn-sm "  [routerLink]="['/project/configure/', project.shortName]">Configure</button>
+        <button type="button" class="btn btn-outline-dark btn-sm " [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
   </div>

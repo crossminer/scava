@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
 import { ExecutionTask } from './execution-task.model';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete-dialog.component';
+import { Project } from '../../project.model';
 
 @Component({
     selector: 'app-configure-project',
@@ -13,10 +14,10 @@ import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete-di
 })
 export class ConfigureProjectComponent implements OnInit {
 
-    project: any = null;
+    project: Project = null;
     executionTasks: ExecutionTask[] = null;
     interval: any;
-    globalStatus: any;
+    globalStatus: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -56,7 +57,6 @@ export class ConfigureProjectComponent implements OnInit {
         this.executionTasks.forEach(task => {
             if(task.scheduling.status == 'COMPLETED' || task.scheduling.status == 'STOP' ){
                 this.globalStatus = 'up-to-date';
-                console.log('globalStatus' + this.globalStatus)
             } else {
                 this.globalStatus = 'in-progress'
             }
