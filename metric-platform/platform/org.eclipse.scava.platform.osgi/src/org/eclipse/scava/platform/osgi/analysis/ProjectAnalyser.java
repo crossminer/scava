@@ -21,6 +21,7 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
+import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -65,8 +66,14 @@ public class ProjectAnalyser {
 		
 
 		Date enecutionDate = new Date(task.getScheduling().getCurrentDate());
+		Date endDate = null;
+		if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())){
+			endDate = new Date().addDays(-1);
+		}else {
+			endDate = new Date(task.getEndDate());
+		}		
 		
-		Date[] dates = Date.range(enecutionDate, new Date().addDays(-1));
+		Date[] dates = Date.range(enecutionDate,endDate);
 		logger.info("Dates: " + dates.length);
 		
 		long estimatedDuration = 0; 

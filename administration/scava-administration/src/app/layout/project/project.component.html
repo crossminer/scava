@@ -21,28 +21,38 @@
             <span style="white-space: nowrap">Up To Date</span>
           </div>
         </div>
-        <div class="row" *ngIf="project.html_url">
-          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
-            <b style="white-space: nowrap">URL :</b>
-          </div>
-          <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.html_url}}">{{project?.html_url}}</a>
-          </div>
-        </div>
         <div class="row" *ngIf="project.homePage">
           <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
             <b style="white-space: nowrap">Home page :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.homePage}}">{{project?.homePage}}</a>
+            <a style="white-space: nowrap" href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
+          </div>
+        </div>
+        <div class="row" *ngIf="project.vcsRepositories.length !== 0">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+            <b style="white-space: nowrap">VCS Repository :</b>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
+            <span *ngFor="let vcs of project.vcsRepositories">
+              <a style="white-space: nowrap" href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
+            </span>
           </div>
         </div>
         <div class="row" *ngIf="project.downloadsUrl">
           <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
-            <b style="white-space: nowrap">Download :</b>
+            <b style="white-space: nowrap">Download URL :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.downloadsUrl}}">{{project?.downloadsUrl}}</a>
+            <a style="white-space: nowrap" href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a>
+          </div>
+        </div>
+        <div class="row" *ngIf="project.size">
+          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+            <b style="white-space: nowrap">Project size :</b>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
+              <span style="white-space: nowrap">{{project?.size}}</span>
           </div>
         </div>
       </div>

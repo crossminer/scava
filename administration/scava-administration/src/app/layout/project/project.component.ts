@@ -17,7 +17,6 @@ export class ProjectComponent implements OnInit {
     
     this.listProjectService.listProjects().subscribe((resp) => {
         this.projectList = resp;
-        console.log(this.projectList)
       }
     );
   }

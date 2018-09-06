@@ -66,7 +66,7 @@ public class AnalysisSchedulingService {
 		// Calculate Progress
 		double dailyMetrics = task.getMetricExecutions().size();
 		double totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
-		double currentDay = totalDays - (task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY;
+		double currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
 		float currentMetrics = 0;
 		for (MetricExecution provider : task.getMetricExecutions()) {
 			if (provider.getLastExecutionDate().getTime() == task.getScheduling().getCurrentDate().getTime()) {
@@ -88,8 +88,7 @@ public class AnalysisSchedulingService {
 		// Calculate Progress
 		double dailyMetrics = task.getMetricExecutions().size();
 		double totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
-		double currentDay = totalDays
-				- (task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY;
+		double currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
 		Double progress = (dailyMetrics * currentDay) / (dailyMetrics * totalDays) * 100;
 		task.getScheduling().setProgress(progress.longValue());
 

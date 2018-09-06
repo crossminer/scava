@@ -1,44 +1,56 @@
-<div class="jumbotron" style="padding-top:20px;">
+<div class="" style="padding-top:20px;">
     <div class="page-header">
         <h2>{{project?.name}}</h2>
         <hr/>
-        <div *ngIf="globalStatus == 'up-to-date'" class="panel-profile up-to-date">
-            <div class="panel-body text-center">
-                <i class="fa fa-4x fa-check-circle"></i>
-                <h3 class="panel-title">
-                    <strong>up to date</strong>
-                </h3>
-            </div>
-        </div>
-        <div *ngIf="globalStatus == 'in-progress'" class="panel-profile in-progress">
-            <div class="panel-body text-center">
-                <i class="fa fa-4x fa-spinner"></i>
-                <h3 class="panel-title">
-                    <strong>in progress</strong>
-                </h3>
-            </div>
-        </div>
     </div>
 
     <table class="table table-condensed table-responsive table-project-information">
         <tbody>
             <tr>
+                <td>Project Full Name</td>
+                <td>{{project?.full_name}}</td>
+                <td class="panel" rowspan="5">
+                    <div *ngIf="globalStatus == 'up-to-date'" class="panel-profile up-to-date">
+                        <div class="panel-body text-center">
+                            <i class="fa fa-4x fa-check-circle"></i>
+                            <h3 class="panel-title">
+                                <strong>Up To Date</strong>
+                            </h3>
+                        </div>
+                    </div>
+                    <div *ngIf="globalStatus == 'in-progress'" class="panel-profile in-progress">
+                        <div class="panel-body text-center">
+                            <i class="fa fa-4x fa-spinner"></i>
+                            <h3 class="panel-title">
+                                <strong>Analysis In Progress</strong>
+                            </h3>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="project?._type">
                 <td>Project Type</td>
                 <td>{{project?._type}}</td>
             </tr>
-            <tr>
-                <td>URL</td>
+            <tr *ngIf="project?.homePage">
+                <td>Home page</td>
                 <td>
-                    <a href="{{project?.html_url}}">{{project?.html_url}}</a>
+                    <a href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
                 </td>
             </tr>
-            <tr>
-                <td>Repository</td>
+            <tr *ngIf="project?.vcsRepositories.length !== 0">
+                <td>VCS Repositories</td>
                 <td>
-                    <a href="{{project?.svn_url}}">{{project?.svn_url}}</a>
+                    <span *ngFor="let vcs of project?.vcsRepositories">
+                        <a href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
+                    </span>
                 </td>
             </tr>
-            <tr>
+            <tr *ngIf="project?.downloadsUrl">
+                <td>Download URL :</td>
+                <td><a href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a></td>
+            </tr>
+            <tr *ngIf="project?.size">
                 <td>Size</td>
                 <td>{{project?.size}}</td>
             </tr>
@@ -81,7 +93,7 @@
                         </td>
                         <td>
                             <div>
-                                <a href="">{{executionTask?.metricExecutions.length}} Metrics</a>
+                                <a href="#">{{executionTask?.metricExecutions.length}} Metrics</a>
                             </div>
                         </td>
                         <td>
@@ -100,34 +112,29 @@
                             </div>
                         </td>
                         <td>
-                            <div class="progress">
+                            <div class="progress progress-div">
                                 <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuemin="0" aria-valuemax="100">
-                                    <span *ngIf="executionTask.scheduling.progress != 0">{{executionTask?.scheduling.progress}}%</span>
+                                    <span *ngIf="executionTask?.scheduling?.progress">{{executionTask?.scheduling.progress}}%</span>
                                 </div>
                             </div>
                         </td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-primary btn-sm" (click)="startTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="startTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Start</span>
                                 </button>&nbsp;
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-warning btn-sm" (click)="stopTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="stopTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Stop</span>
                                 </button>&nbsp;
-                                <button type="submit" queryParamsHandling="merge" class="btn btn-dark btn-sm" (click)="resetTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="resetTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Reset</span>
                                 </button>&nbsp;
-                                <button type="submit" [routerLink]="['./', 'update-task', executionTask.label ]" queryParamsHandling="merge" class="btn btn-info btn-sm">
+                                <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['./', 'update-task', executionTask.label ]">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Edit</span>
                                 </button>&nbsp;
-                                <button type="button" queryParamsHandling="merge" class="btn btn-danger btn-sm" (click)="deleteTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="deleteTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
-                                    <span class="d-none d-md-inline">Remove</span>
-                                </button>&nbsp;
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -135,8 +142,8 @@
                 <tfoot>
                     <tr>
                         <td colspan="7">
-                            <div class="pull-right">
-                                <button type="button" [routerLink]="['./', 'add-task']" class="btn btn-success btn-sm">
+                            <div class="pull-right" [routerLink]="['./', 'add-task']" style="padding: 0.5em;">
+                                <button type="button" class="btn btn-outline-dark btn-sm">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                     <span class="d-none d-md-inline">Create</span>
                                 </button>

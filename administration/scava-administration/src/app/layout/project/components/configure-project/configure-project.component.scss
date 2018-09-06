@@ -16,6 +16,10 @@
     border-top: 0;
 }
 
+.panel {
+    width: 20%;
+}
+
 .panel-profile .panel-heading {
     height: 150px;
     background-size: cover;
@@ -25,15 +29,19 @@
 .panel-profile.up-to-date{
     border-radius: 25px;
     float: right;
-    margin-right: 50px;
+    //margin-right: 50px;
     color: green;
 }
 
 .panel-profile.in-progress{
     border-radius: 25px;
     float: right;
-    margin-right: 50px;
-    color: rgb(255, 0, 0);
+    //margin-right: 50px;
+    color :dodgerblue;
 }
 
 .mb10{ margin-bottom:10px}
+
+.progress-div{
+    width: 250px;
+}
