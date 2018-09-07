@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
-import { ExecutionTask } from './execution-task.model';
-import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete-dialog.component';
+import { ExecutionTask, MetricExecutions } from './execution-task.model';
+import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete/analysis-task-delete-dialog.component';
 import { Project } from '../../project.model';
+import { MetricProvidersMgmtInfoDialogComponent } from './metrics-infos/metric-info.component';
 
 @Component({
     selector: 'app-configure-project',
@@ -28,10 +29,11 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.loadAll();
-        this.interval = setInterval(() => { 
-            this.loadAll();
-            this.getGlobalStatus();
-          }, 1500);
+        // this.interval = setInterval(() => { 
+        //     this.loadAll();
+        //     this.getGlobalStatus();
+        //   }, 1500);
+        this.loadAll();
     }
 
     loadAll() {
@@ -63,6 +65,12 @@ export class ConfigureProjectComponent implements OnInit {
             }
         });
     }
+
+    showMetricProviderList(metricExecutions: MetricExecutions[]) {
+        const modalRef = this.modalService.open(MetricProvidersMgmtInfoDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.metricExecutions = metricExecutions;
+      }
+    
 
     setProgressStyles(executionTask: any) {
         let styles = {

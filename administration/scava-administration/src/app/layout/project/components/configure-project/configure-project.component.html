@@ -33,7 +33,7 @@
                 <td>{{project?._type}}</td>
             </tr>
             <tr *ngIf="project?.homePage">
-                <td>Home page</td>
+                <td>Home Page</td>
                 <td>
                     <a href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
                 </td>
@@ -51,7 +51,7 @@
                 <td><a href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a></td>
             </tr>
             <tr *ngIf="project?.size">
-                <td>Size</td>
+                <td>Project Size</td>
                 <td>{{project?.size}}</td>
             </tr>
         </tbody>
@@ -93,7 +93,8 @@
                         </td>
                         <td>
                             <div>
-                                <a href="#">{{executionTask?.metricExecutions.length}} Metrics</a>
+                                <a [routerLink]="" (click)="showMetricProviderList(executionTask.metricExecutions)">{{executionTask?.metricExecutions.length}}
+                                    Metrics</a>
                             </div>
                         </td>
                         <td>
@@ -120,19 +121,19 @@
                         </td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="startTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Start Task" (click)="startTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="stopTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Stop Task" (click)="stopTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="resetTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Reset Task" (click)="resetTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['./', 'update-task', executionTask.label ]">
+                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Update Task" [routerLink]="['./', 'update-task', executionTask.label ]">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="deleteTask(project?.name + ':' + executionTask?.label)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Delete Task" (click)="deleteTask(project?.name + ':' + executionTask?.label)">
                                     <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
                                 </button>
                             </div>

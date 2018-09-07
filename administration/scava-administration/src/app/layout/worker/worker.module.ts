@@ -8,6 +8,7 @@ import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
 import { MetricInfoComponent } from './metrics-infos/metric-info.component';
 import {TableModule} from 'primeng/table';
+import { MatFormFieldModule, MatNativeDateModule, MatInputModule, MatDatepickerModule, MatTableModule, MatCheckboxModule, MatListModule, MatRadioModule, MatSortModule, MatPaginatorModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -17,7 +18,17 @@ import {TableModule} from 'primeng/table';
     FormsModule,
     ReactiveFormsModule,
     TreeviewModule.forRoot(),
-    TableModule
+    TableModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatRadioModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   declarations: [
     WorkerComponent,

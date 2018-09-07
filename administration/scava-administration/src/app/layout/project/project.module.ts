@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { TreeviewModule } from 'ngx-treeview';
-import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete-dialog.component';
+import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete/analysis-task-delete-dialog.component';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
 import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -21,7 +21,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSortModule} from '@angular/material/sort';
-
+import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -39,7 +41,9 @@ import {MatSortModule} from '@angular/material/sort';
     MatCheckboxModule,
     MatListModule,
     MatRadioModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule,
+    MatTooltipModule
   ],
   declarations: [
     ProjectComponent, 
@@ -49,9 +53,11 @@ import {MatSortModule} from '@angular/material/sort';
     AnalysisTaskAddComponent,
     AnalysisTaskUpdateComponent,
     AnalysisTaskMgmtDeleteDialogComponent,
+    MetricProvidersMgmtInfoDialogComponent
   ],
   entryComponents: [
-    AnalysisTaskMgmtDeleteDialogComponent
+    AnalysisTaskMgmtDeleteDialogComponent,
+    MetricProvidersMgmtInfoDialogComponent
   ],
   providers: [
     NgbModal,

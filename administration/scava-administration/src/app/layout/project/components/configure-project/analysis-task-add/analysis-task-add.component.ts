@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
-import { MatSort } from '@angular/material';
+import { MatSort, MatPaginator } from '@angular/material';
 
 
 @Component({
@@ -35,6 +35,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
@@ -55,7 +56,11 @@ export class AnalysisTaskAddComponent implements OnInit {
         this.executionTask.projectId = data.get('id');
         //this.mpoption  = "mpoption-all";
       });
-    this.dataSource.sort = this.sort;
+  }
+
+  ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
 
   loadAll() {
@@ -71,7 +76,8 @@ export class AnalysisTaskAddComponent implements OnInit {
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
         //console.log(this.dataSource);
         this.selection = new SelectionModel<MetricProvider>(true, []);
-
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.selection.onChange.subscribe(data => this.getSelectedData(data));
         //this.selection.onChange.unsubscribe();
 

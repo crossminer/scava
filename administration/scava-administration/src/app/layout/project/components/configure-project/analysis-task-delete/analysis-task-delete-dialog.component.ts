@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
-import { debug } from 'util';
+import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
 
 @Component({
   selector: 'app-analysis-task-delete-dialog',
@@ -11,7 +9,6 @@ import { debug } from 'util';
 export class AnalysisTaskMgmtDeleteDialogComponent {
 
   constructor(
-    private router: Router,
     public activeModal: NgbActiveModal,
     public analysisTaskService: AnalysisTaskService
   ) { }
