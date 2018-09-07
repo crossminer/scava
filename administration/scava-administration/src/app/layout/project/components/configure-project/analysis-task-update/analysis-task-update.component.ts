@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ExecutionTask, MetricProvider } from '../execution-task.model';
-import { MatTableDataSource, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MatTableDataSource, DateAdapter, MAT_DATE_FORMATS, MatPaginator, MatSort } from '@angular/material';
 import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
@@ -37,6 +37,8 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
+  @ViewChild(MatSort) sort: MatSort;
+
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
 
   constructor(
@@ -53,6 +55,10 @@ export class AnalysisTaskUpdateComponent implements OnInit {
       (data) => {
         this.projectId = data.get('id');
       });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
   }
 
   loadAll() {
@@ -73,6 +79,8 @@ export class AnalysisTaskUpdateComponent implements OnInit {
                 this.dataSource = new MatTableDataSource<MetricProvider>(this.metricProviders);
                 this.selection = new SelectionModel<MetricProvider>(true, []);
                 this.executionTask.metricExecutions.forEach((me) => this.selection.select(this.metricProviders.find((mp) => mp.metricProviderId == me.metricProviderId)));
+                this.dataSource.sort = this.sort;
+
                 //console.log(this.selection)
                 this.selection.onChange.subscribe(data => this.getSelectedData(data));
 

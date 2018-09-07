@@ -35,7 +35,6 @@ export class AnalysisTaskAddComponent implements OnInit {
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
@@ -59,7 +58,6 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
     // this.dataSource.sort = this.sort;
   }
 
@@ -76,8 +74,8 @@ export class AnalysisTaskAddComponent implements OnInit {
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
         //console.log(this.dataSource);
         this.selection = new SelectionModel<MetricProvider>(true, []);
-        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        
         this.selection.onChange.subscribe(data => this.getSelectedData(data));
         //this.selection.onChange.unsubscribe();
 
