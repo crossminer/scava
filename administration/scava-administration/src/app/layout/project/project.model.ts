@@ -11,6 +11,7 @@ import { CommunicationChannels } from "./components/create-project/communication
 export interface IProject {
     id?: number,
     url?: string,
+    shortName? : string,
     name?: string,
     description?: string,
     homepage?: string,
@@ -29,6 +30,7 @@ export class Project implements IProject {
     constructor(
         public id?: number,
         public url?: string,
+        public shortName? : string,
         public name?: string,
         public description?: string,
         public homepage?: string,

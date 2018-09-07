@@ -40,8 +40,9 @@ export class ConfigureProjectComponent implements OnInit {
         this.route.paramMap.subscribe(data => {
             this.listProjectService.getProject(data.get('id')).subscribe(
                 (data) => {
+                    debugger
                     this.project = data;
-                    this.analysisTaskService.getTasksbyProject(this.project.name).subscribe(
+                    this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                         (resp) => {
                             this.executionTasks = resp as ExecutionTask[];
                             console.log(this.executionTasks)
