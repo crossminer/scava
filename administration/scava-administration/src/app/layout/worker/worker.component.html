@@ -82,16 +82,16 @@
             <div class="col-3">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="float: right">
                     <div class="btn-group mr-2" role="group" aria-label="First group">
-                      <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
-                      <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" title="Promote Task" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" title="Demote Task" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
                     </div>
 
                     <div class="btn-group mr-2" role="group" aria-label="First group">
-                      <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge" (click)="pushOnWorker(task.analysisTaskId,worker.workerId)" class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
+                      <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge" (click)="pushOnWorker(task.analysisTaskId,worker.workerId)" title="Push On Worker" class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
                     </div>
 
                     <div class="btn-group" role="group" aria-label="First group">
-                      <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" class="btn btn-sm btn-outline-light fa fa-pause"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" title="Pause Task" class="btn btn-sm btn-outline-light fa fa-pause"></button>
                     </div>
                   </div>
             </div>           

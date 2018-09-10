@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ImportProjectComponent implements OnInit {
 
-    project: Project = {};
+    project: Project;
     isSaving: boolean;
 
     constructor(
@@ -20,6 +20,7 @@ export class ImportProjectComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.project = new Project();
     }
 
     save() {

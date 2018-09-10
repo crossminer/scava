@@ -115,8 +115,8 @@ export class CreateProjectComponent implements OnInit {
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
       console.log(resp)
-      var project : IProject = resp as IProject;
-      this.router.navigate(['/project'])
+      let project : IProject = resp as IProject;
+      this.router.navigate(['/project']);
     }, error => {
       console.log(error)
     })

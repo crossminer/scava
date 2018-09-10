@@ -70,7 +70,7 @@ export class ConfigureProjectComponent implements OnInit {
       }
     
 
-    setProgressStyles(executionTask: any) {
+    setProgressStyles(executionTask: ExecutionTask) {
         let styles = {
             'width': executionTask.scheduling.progress + '%',
         };
@@ -81,33 +81,33 @@ export class ConfigureProjectComponent implements OnInit {
         this.analysisTaskService.startTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('start successed !');
-                this.loadAll();
             },
             (error) => {
-                console.log('start failed')
-            })
+                this.onError('start failed')
+        });
+        this.loadAll();
     }
 
     stopTask(analysisTaskId: string) {
         this.analysisTaskService.stopTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('stop successed !');
-                this.loadAll();
             },
             (error) => {
-                console.log('stop failed')
-            })
+                this.onError('stop failed')
+        });
+        this.loadAll();
     }
 
     resetTask(analysisTaskId: string) {
         this.analysisTaskService.resetTask(analysisTaskId).subscribe(
             (resp) => {
                 console.log('reset successed !');
-                this.loadAll();
             },
             (error) => {
-                console.log('reset failed')
-            })
+                this.onError('reset failed')
+        })
+        this.loadAll();
     }
 
     deleteTask(analysisTaskId: string) {
@@ -116,13 +116,12 @@ export class ConfigureProjectComponent implements OnInit {
         modalRef.result.then(
             result => {
                 console.log('delete success');
-                this.loadAll();
             },
             reason => {
                 console.log('delete failed');
-                this.loadAll();
             }
         );
+        this.loadAll();
     }
 
     private onError(error) {
