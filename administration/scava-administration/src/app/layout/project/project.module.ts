@@ -23,7 +23,6 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSortModule} from '@angular/material/sort';
 import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -42,8 +41,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatListModule,
     MatRadioModule,
     MatSortModule,
-    MatPaginatorModule,
-    MatTooltipModule
+    MatPaginatorModule
   ],
   declarations: [
     ProjectComponent, 

@@ -121,19 +121,19 @@
                         </td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
-                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Start Task" (click)="startTask(executionTask?.analysisTaskId)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Start Task" (click)="startTask(executionTask?.analysisTaskId)">
                                     <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Stop Task" (click)="stopTask(executionTask?.analysisTaskId)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Stop Task" (click)="stopTask(executionTask?.analysisTaskId)">
                                     <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Reset Task" (click)="resetTask(executionTask?.analysisTaskId)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Reset Task" (click)="resetTask(executionTask?.analysisTaskId)">
                                     <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Update Task" [routerLink]="['./', 'update-task', executionTask.label ]">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Update Task" [routerLink]="['./', 'update-task', executionTask.label]">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Delete Task" (click)="deleteTask(executionTask?.analysisTaskId)">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Task" (click)="deleteTask(executionTask?.analysisTaskId)">
                                     <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
                                 </button>
                             </div>

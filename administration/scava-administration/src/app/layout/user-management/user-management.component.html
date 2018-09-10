@@ -35,10 +35,10 @@
           </td>
           <td class="text-right">
             <div class="btn-group flex-btn-group-container">
-              <button type="submit" [routerLink]="['./', user.login, 'edit']" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Edit User">
+              <button type="submit" [routerLink]="['./', user.login, 'edit']" class="btn btn-outline-dark btn-sm" title="Edit User" >
                 <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
               </button>&nbsp;
-              <button type="button" (click)="deleteUser(user)" class="btn btn-outline-dark btn-sm" mat-raised-button matTooltip="Delete User">
+              <button type="button" (click)="deleteUser(user)" class="btn btn-outline-dark btn-sm" title="Delete User">
                 <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
               </button>
             </div>

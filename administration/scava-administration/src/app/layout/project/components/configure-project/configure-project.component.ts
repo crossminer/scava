@@ -29,23 +29,20 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.loadAll();
-        // this.interval = setInterval(() => { 
-        //     this.loadAll();
-        //     this.getGlobalStatus();
-        //   }, 1500);
-        this.loadAll();
+        this.interval = setInterval(() => { 
+            this.loadAll();
+            this.getGlobalStatus();
+          }, 1500);
     }
 
     loadAll() {
         this.route.paramMap.subscribe(data => {
             this.listProjectService.getProject(data.get('id')).subscribe(
                 (data) => {
-                    debugger
                     this.project = data;
                     this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                         (resp) => {
                             this.executionTasks = resp as ExecutionTask[];
-                            console.log(this.executionTasks)
                         },
                         (error) => {
                             this.onError(error);

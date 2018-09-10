@@ -7,15 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog/user-management-delete-dialog.component';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
     NgbModalModule,
     CommonModule,
     UserManagementRoutingModule,
-    FormsModule,
-    MatTooltipModule
+    FormsModule
   ],
   declarations: [
     UserManagementComponent, 
