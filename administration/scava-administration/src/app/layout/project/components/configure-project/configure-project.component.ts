@@ -29,10 +29,11 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.loadAll();
-        this.interval = setInterval(() => { 
-            this.loadAll();
-            this.getGlobalStatus();
-          }, 1500);
+        // this.interval = setInterval(() => { 
+        //     this.loadAll();
+        //     this.getGlobalStatus();
+        //   }, 1500);
+        this.loadAll();
     }
 
     loadAll() {
@@ -43,25 +44,33 @@ export class ConfigureProjectComponent implements OnInit {
                     this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                         (resp) => {
                             this.executionTasks = resp as ExecutionTask[];
+                            this.getGlobalStatus();
                         },
                         (error) => {
-                            this.onError(error);
+                            this.onShowMessage(error);
                     });
                 },
                 (error) => {
-                    this.onError(error);
+                    this.onShowMessage(error);
                 });
         });
     }
 
     getGlobalStatus() {
-        this.executionTasks.forEach(task => {
-            if(task.scheduling.status == 'COMPLETED' || task.scheduling.status == 'STOP' ){
-                this.globalStatus = 'up-to-date';
+        let stat: boolean;
+        for (let task of this.executionTasks) {
+            if(task.scheduling.status == 'COMPLETED' || task.scheduling.status == 'STOP' ) {
+                stat = true;
             } else {
-                this.globalStatus = 'in-progress'
+                stat = false;
+                break;
             }
-        });
+        }
+        if (stat == true) {
+            this.globalStatus = 'up-to-date'
+        } else if(stat == false) {
+            this.globalStatus = 'in-progress'
+        }
     }
 
     showMetricProviderList(metricExecutions: MetricExecutions[]) {
@@ -80,10 +89,10 @@ export class ConfigureProjectComponent implements OnInit {
     startTask(analysisTaskId: string) {
         this.analysisTaskService.startTask(analysisTaskId).subscribe(
             (resp) => {
-                console.log('start successed !');
+                this.onShowMessage('start successed !');
             },
             (error) => {
-                this.onError('start failed')
+                this.onShowMessage('start failed')
         });
         this.loadAll();
     }
@@ -91,10 +100,10 @@ export class ConfigureProjectComponent implements OnInit {
     stopTask(analysisTaskId: string) {
         this.analysisTaskService.stopTask(analysisTaskId).subscribe(
             (resp) => {
-                console.log('stop successed !');
+                this.onShowMessage('stop successed !');
             },
             (error) => {
-                this.onError('stop failed')
+                this.onShowMessage('stop failed')
         });
         this.loadAll();
     }
@@ -102,10 +111,10 @@ export class ConfigureProjectComponent implements OnInit {
     resetTask(analysisTaskId: string) {
         this.analysisTaskService.resetTask(analysisTaskId).subscribe(
             (resp) => {
-                console.log('reset successed !');
+                this.onShowMessage('reset successed !');
             },
             (error) => {
-                this.onError('reset failed')
+                this.onShowMessage('reset failed')
         })
         this.loadAll();
     }
@@ -115,17 +124,17 @@ export class ConfigureProjectComponent implements OnInit {
         modalRef.componentInstance.analysisTaskId = analysisTaskId;
         modalRef.result.then(
             result => {
-                console.log('delete success');
+                this.onShowMessage('delete success');
             },
             reason => {
-                console.log('delete failed');
+                this.onShowMessage('delete failed');
             }
         );
         this.loadAll();
     }
 
-    private onError(error) {
-        console.log(error)
+    private onShowMessage(msg) {
+        console.log(msg)
     }
 
     ngOnDestroy() {
