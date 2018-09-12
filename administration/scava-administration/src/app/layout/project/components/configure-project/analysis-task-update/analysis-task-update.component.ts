@@ -72,7 +72,9 @@ export class AnalysisTaskUpdateComponent implements OnInit {
             this.oldAnalysisTaskId = params.get('id') + ':' + params.get('label');
             this.executionTask = analysiTask;
             this.startDate = new Date(this.executionTask.startDate['$date']);
-            this.endDate = new Date(this.executionTask.endDate['$date']);
+            if(this.executionTask.type == 'SINGLE_EXECUTION') {
+              this.endDate = new Date(this.executionTask.endDate['$date']);
+            }
             this.analysisTaskService.getMetricProviders().subscribe(
               (resp) => {
                 this.metricProviders = resp as MetricProvider[];
@@ -195,7 +197,9 @@ export class AnalysisTaskUpdateComponent implements OnInit {
     this.executionTask.oldAnalysisTaskId = this.oldAnalysisTaskId;
     this.executionTask.analysisTaskId = this.executionTask.projectId + ':' + this.executionTask.label;
     this.executionTask.startDate = this.convertDate(this.startDate.toString());
-    this.executionTask.endDate = this.convertDate(this.endDate.toString());
+    if(this.executionTask.type == 'SINGLE_EXECUTION') {
+      this.executionTask.endDate = this.convertDate(this.endDate.toString());
+    }
     let metrics: string[] = [];
     //console.log(this.selection.selected);
     this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));

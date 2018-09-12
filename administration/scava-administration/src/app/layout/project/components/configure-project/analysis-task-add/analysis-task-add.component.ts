@@ -96,13 +96,13 @@ export class AnalysisTaskAddComponent implements OnInit {
   getSelectedData(data: SelectionChange<MetricProvider>) {
     //console.log("event !!!!!!")
     if (data.added.length !== 0) {
-      //console.log('selected');
-      //console.log(data);
+      console.log('selected');
+      console.log(data);
       this.onRowSelect(data.added[0]);
     }
     if (data.removed.length !== 0) {
-      //console.log('unselected');
-      //console.log(data);
+      console.log('unselected');
+      console.log(data);
       this.onRowUnselect(data.removed[0]);
     }
   }
