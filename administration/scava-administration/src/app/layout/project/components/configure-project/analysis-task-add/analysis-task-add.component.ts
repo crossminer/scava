@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
-import { MatSort, MatPaginator } from '@angular/material';
+import { MatSort } from '@angular/material';
 
 
 @Component({
