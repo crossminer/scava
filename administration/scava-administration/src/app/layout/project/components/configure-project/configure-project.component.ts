@@ -29,17 +29,9 @@ export class ConfigureProjectComponent implements OnInit {
 
     ngOnInit() {
         this.loadAll();
-<<<<<<< HEAD
         this.interval = setInterval(() => { 
             this.loadAll();
           }, 1500);
-=======
-        // this.interval = setInterval(() => { 
-        //     this.loadAll();
-        //     this.getGlobalStatus();
-        //   }, 1500);
-        this.loadAll();
->>>>>>> cc261a13cb939c7a05fe0af8664444f6028bcb69
     }
 
     loadAll() {
