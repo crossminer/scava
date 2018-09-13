@@ -12,7 +12,7 @@ import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 public class TaskCheckExecutor implements Runnable {
 
     private static final Integer cycle = 10000;
-    private static final Integer heartbet = 1800000;
+    private static final Integer heartbet = 600000;
 
 	private Boolean executeTasks;
 	private Platform platform;
@@ -24,33 +24,37 @@ public class TaskCheckExecutor implements Runnable {
 
 	@Override
 	public void run() {
-//		while (executeTasks) {			
-//			Date day = dateToDay(new Date());
-//						
-//			// Detect Worker Failure / Replace Task in execution pending list		
-////			for(Worker  worker : this.platform.getAnalysisRepositoryManager().getWorkerService().getWorkers()) {
-////				if(worker.getCurrentTask() != null && new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
-////					worker.getCurrentTask().getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
-////					worker.getCurrentTask().getScheduling().setWorkerId(null);				
-////					this.platform.getAnalysisRepositoryManager().getRepository().getWorkers().remove(worker);				
-////					this.platform.getAnalysisRepositoryManager().getRepository().sync();
-////				}
-////			}
-//			
-////			// Detect New Daily Execution
-////			for(AnalysisTask task : this.platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks()) {			
-////				if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name()) && task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
-////					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());	
-////					this.platform.getAnalysisRepositoryManager().getRepository().sync();
-////				}
-////			}
-//	
-//			try {
-//				Thread.sleep(cycle);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}	
-//		}
+		while (executeTasks) {			
+			Date day = dateToDay(new Date());
+						
+			// Detect Worker Failure / Replace Task in execution pending list		
+			for(Worker  worker : this.platform.getAnalysisRepositoryManager().getWorkerService().getWorkers()) {
+				if(worker.getCurrentTask() != null && new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
+					
+					AnalysisTask task = this.platform.getAnalysisRepositoryManager().getTaskService().getTaskByAnalysisTaskId(worker.getCurrentTask().getAnalysisTaskId());
+					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
+					task.getScheduling().setWorkerId(null);
+
+					
+					this.platform.getAnalysisRepositoryManager().getRepository().getWorkers().remove(worker);				
+					this.platform.getAnalysisRepositoryManager().getRepository().sync();
+				}
+			}
+			
+			// Detect New Daily Execution
+			for(AnalysisTask task : this.platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks()) {			
+				if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name()) && task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
+					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());	
+					this.platform.getAnalysisRepositoryManager().getRepository().sync();
+				}
+			}
+	
+			try {
+				Thread.sleep(cycle);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}	
+		}
 	}
 	
 	public Date dateToDay(Date date) {

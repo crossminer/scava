@@ -70,7 +70,9 @@ public class AnalysisWorkerResource extends AbstractApiResource {
 						currentTask.put("scheduling", schedulingInformation);
 						
 						currentTask.put("startDate", task.getDbObject().get("startDate").toString());
-						currentTask.put("endDate", task.getDbObject().get("endDate").toString());
+						if(task.getDbObject().get("endDate") != null) {
+							currentTask.put("endDate", task.getDbObject().get("endDate").toString());
+						}			
 						worker.getDbObject().put("currentTask", currentTask);
 					}else {
 						worker.getDbObject().put("currentTask", null);
