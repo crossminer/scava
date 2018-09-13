@@ -11,7 +11,6 @@ package org.eclipse.scava.platform.osgi;
 
 import java.io.FileReader;
 import java.util.Properties;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

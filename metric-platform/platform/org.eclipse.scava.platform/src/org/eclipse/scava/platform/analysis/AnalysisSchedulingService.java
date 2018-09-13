@@ -6,6 +6,7 @@ import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
+import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 
 public class AnalysisSchedulingService {
@@ -65,8 +66,15 @@ public class AnalysisSchedulingService {
 
 		// Calculate Progress
 		double dailyMetrics = task.getMetricExecutions().size();
-		double totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
-		double currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		double totalDays = 0;
+		double currentDay = 0;
+		if (task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())) {
+			totalDays = (new Date().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
+			currentDay = totalDays - ((new Date().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		} else {
+			totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
+			currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		}
 		float currentMetrics = 0;
 		for (MetricExecution provider : task.getMetricExecutions()) {
 			if (provider.getLastExecutionDate().getTime() == task.getScheduling().getCurrentDate().getTime()) {
@@ -87,8 +95,15 @@ public class AnalysisSchedulingService {
 
 		// Calculate Progress
 		double dailyMetrics = task.getMetricExecutions().size();
-		double totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
-		double currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		double totalDays = 0;
+		double currentDay = 0;
+		if (task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())) {
+			totalDays = (new Date().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
+			currentDay = totalDays - ((new Date().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		} else {
+			totalDays = (task.getEndDate().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
+			currentDay = totalDays - ((task.getEndDate().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
+		}
 		Double progress = (dailyMetrics * currentDay) / (dailyMetrics * totalDays) * 100;
 		task.getScheduling().setProgress(progress.longValue());
 
