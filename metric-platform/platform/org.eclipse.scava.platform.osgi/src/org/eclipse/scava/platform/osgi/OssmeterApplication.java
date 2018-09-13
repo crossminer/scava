@@ -11,6 +11,9 @@ package org.eclipse.scava.platform.osgi;
 
 import java.io.FileReader;
 import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -39,13 +42,10 @@ public class OssmeterApplication implements IApplication{
 	private Mongo mongo;
 	private Properties prop;
 	
-
-	
-	private Thread analysis;
-	private Thread checker;
+	private int analysisThreadNumber;
 	
 	public OssmeterApplication() {
-
+		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();
 	}
 	
 	@Override
@@ -70,10 +70,11 @@ public class OssmeterApplication implements IApplication{
 		MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
 		init.initialiseMetricProviderRepository();
 		
+		ExecutorService executorService = Executors.newFixedThreadPool(this.analysisThreadNumber);
+		
 		if (worker) {
 			WorkerExecutor workerExecutor = new WorkerExecutor(platform,workerId);
-			Thread analysis = new Thread(workerExecutor);
-			analysis.start();	
+			executorService.execute(workerExecutor);
 		}
 		
 		// Start web servers
@@ -82,8 +83,7 @@ public class OssmeterApplication implements IApplication{
 		}
 		
 		TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(platform);
-		Thread checker = new Thread(checkerExecutor);
-		checker.start();
+		executorService.execute(checkerExecutor);
 
 		// Now, rest.
   		waitForDone();
