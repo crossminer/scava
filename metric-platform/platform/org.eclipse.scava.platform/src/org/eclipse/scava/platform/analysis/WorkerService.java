@@ -52,6 +52,7 @@ public class WorkerService {
 			
 			if(!task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
 				task.getScheduling().setStatus(AnalysisTaskStatus.COMPLETED.name());
+				task.getScheduling().setProgress(100);
 				task.getScheduling().setWorkerId(null);	
 			}
 

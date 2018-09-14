@@ -81,6 +81,7 @@ public class OssmeterApplication implements IApplication{
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}
 		
+		// Launch supervisor daily checking
 		TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(platform);
 		executorService.execute(checkerExecutor);
 
