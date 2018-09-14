@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class CreateProjectComponent implements OnInit {
 
   form: FormGroup;
-  project: Project = {};
+  project: Project;
   isSaving: boolean;
 
   constructor(
@@ -23,6 +23,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.project = new Project();
     this.buildForm();
     this.isSaving = false;
   }
@@ -126,6 +127,10 @@ export class CreateProjectComponent implements OnInit {
   saveInformationSources(sourceName: string) {
     const control = <FormArray>this.form.get(sourceName);
     return control.value;
+  }
+
+  previousState() {
+    this.router.navigate(['project']);
   }
 
 }

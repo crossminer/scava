@@ -1,7 +1,7 @@
 <div style="padding-top:20px;">
     <div class="page-header">
         <h2>New Analysis Task</h2>
-        <hr/>
+        <hr />
     </div>
 
     <div>
@@ -9,8 +9,8 @@
             <div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
-                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel" required minlength="1"
-                        maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
+                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel"
+                        required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
                     <div *ngIf="labelInput.dirty && labelInput.invalid">
                         <small class="form-text text-danger" *ngIf="labelInput.errors.required">
                             This field is required.
@@ -21,7 +21,7 @@
                         </small>
 
                         <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
-                            This field can only contain letters, digits and e-mail addresses.
+                            This field can only contain letters, digits.
                         </small>
                     </div>
                 </div>
@@ -35,7 +35,8 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Start date</label>
                     <mat-form-field>
-                        <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [max]="maxStartDate" [matDatepicker]="startDate">
+                        <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [max]="maxStartDate"
+                            [matDatepicker]="startDate">
                         <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
                         <mat-datepicker #startDate></mat-datepicker>
                     </mat-form-field>
@@ -43,7 +44,8 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">End date</label>
                     <mat-form-field>
-                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate" [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
+                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate"
+                            [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
                         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
                         <mat-datepicker #endDate></mat-datepicker>
                     </mat-form-field>
@@ -51,18 +53,18 @@
 
                 <div class="col-md-12 form-group">
                     <label class="form-control-label">Metric Providers</label>
-                    <br/>
+                    <br />
                     <mat-radio-group name="toto" class="example-radio-group" [(ngModel)]="mpoption">
                         <mat-radio-button value="mpoption-all" class="example-radio-button" (change)="$event ? masterToggle() : null">
                             All metrics
                         </mat-radio-button>
-                        <br/>
+                        <br />
                         <mat-radio-button value="mpoption-selected" class="example-radio-button" (change)="$event && isAllSelected() ? masterToggle() : null">
                             Choose some metrics
-                         </mat-radio-button>
+                        </mat-radio-button>
                     </mat-radio-group>
-       
-                    
+
+
                     <div *ngIf="mpoption == 'mpoption-selected'">
                         <div class="example-header">
                             <mat-form-field>
@@ -74,11 +76,13 @@
 
                                 <ng-container matColumnDef="select">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
                                         </mat-checkbox>
                                     </th>
                                     <td mat-cell *matCellDef="let row">
-                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? this.selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? this.selection.toggle(row) : null"
+                                            [checked]="selection.isSelected(row)">
                                         </mat-checkbox>
                                     </td>
                                 </ng-container>
@@ -115,7 +119,7 @@
 
                 </div>
             </div>
-            <br/>
+            <br />
             <div>
                 <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
                     <i class="fa fa-ban"></i>&nbsp;

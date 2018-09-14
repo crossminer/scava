@@ -8,28 +8,40 @@ import { Router } from '@angular/router';
     styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-
-    success: boolean = false;
+ 
+    success: boolean = null;
+    password: string = null;
+    confirmPassword : string = null;
 
     constructor(
         private router: Router,
         private signupService: SignupService
-    ) {}
+    ) { }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     register(data) {
-        this.signupService.onSignedup(data).subscribe(
-            (resp) => {
-                this.success = true;
-                console.log(this.success);
-            },
-            (error) => {
-                this.success = false;
-                console.log(this.success)
-            }
-        )
+        console.log(data);
+        debugger
+        if (data.password != data.confirmPassword) {
+            this.success = false;
+            this.onShowMessage(this.success);
+        } else {
+            this.signupService.onSignedup(data).subscribe(
+                (resp) => {
+                    this.success = true;
+                    this.onShowMessage(this.success);
+                },
+                (error) => {
+                    this.success = false;
+                    this.onShowMessage(this.success);
+                }
+            )
+        }
         this.router.navigateByUrl('/signup')
+    }
 
+    onShowMessage(msg: any){
+        console.log(msg);
     }
 }

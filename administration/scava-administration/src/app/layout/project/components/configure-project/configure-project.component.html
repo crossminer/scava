@@ -1,14 +1,19 @@
 <div style="padding-top:20px;">
     <div class="page-header">
         <h2>{{project?.name}}</h2>
-        <hr/>
+        <hr />
     </div>
 
     <table class="table table-condensed table-responsive table-project-information">
         <tbody>
             <tr>
-                <td>Project Full Name</td>
-                <td>{{project?.full_name}}</td>
+                <td>Project Name</td>
+                <td>
+                    <div>
+                        <span *ngIf="project?.full_name; else otherCase">{{project?.full_name}}</span>
+                        <ng-template #otherCase>{{project?.shortName}}</ng-template>
+                    </div>
+                </td>
                 <td class="panel" rowspan="5">
                     <div *ngIf="globalStatus == 'up-to-date' && executionTasks.length !== 0" class="panel-profile up-to-date">
                         <div class="panel-body text-center">
@@ -30,7 +35,19 @@
             </tr>
             <tr *ngIf="project?._type">
                 <td>Project Type</td>
-                <td>{{project?._type}}</td>
+                <td>
+                    <div *ngIf="project?._type.split('.')[project?._type.split('.').length - 1] as projectType">
+                        <span *ngIf="projectType == 'GitHubRepository';else secondCase">
+                            <img title="GitHub Repository" class="project-type-img" width="10%" src="assets/images/github.png" alt="GitHub Repository">
+                        </span>
+                        <ng-template #secondCase>
+                            <span *ngIf="projectType == 'EclipseProject';else thirdCase">
+                                <img title="Eclipse Project" class="project-type-img" width="17%" src="assets/images/eclipse-project.jpg" alt="Eclipse Project">
+                            </span>
+                        </ng-template>
+                        <ng-template #thirdCase>Normal Project</ng-template>
+                    </div>
+                </td>
             </tr>
             <tr *ngIf="project?.homePage">
                 <td>Home Page</td>
@@ -42,7 +59,7 @@
                 <td>VCS Repositories</td>
                 <td>
                     <span *ngFor="let vcs of project?.vcsRepositories">
-                        <a href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
+                        <a href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br />
                     </span>
                 </td>
             </tr>
@@ -66,7 +83,10 @@
                             <span>Label</span>
                         </th>
                         <th>
-                            <span>Execution Task</span>
+                            <span>Task Type</span>
+                        </th>
+                        <th>
+                            <span>Execution Metrics</span>
                         </th>
                         <th>
                             <span>Status</span>
@@ -92,6 +112,13 @@
                             </div>
                         </td>
                         <td>
+                            <div id="task-type-icon">
+                                <span *ngIf="executionTask.type == 'SINGLE_EXECUTION'; else daily"><i title="{{executionTask.type}}"
+                                        class="fa fa-arrow-right"></i></span>
+                                <ng-template #daily><i title="{{executionTask.type}}" class="fa fa-refresh" aria-hidden="true">&nbsp;</i></ng-template>
+                            </div>
+                        </td>
+                        <td>
                             <div>
                                 <a [routerLink]="" (click)="showMetricProviderList(executionTask.metricExecutions)">{{executionTask?.metricExecutions.length}} Metrics</a>
                             </div>
@@ -108,7 +135,10 @@
                         </td>
                         <td>
                             <div>
-                                <span *ngIf="executionTask.endDate">{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="executionTask.endDate;else none">{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <ng-template #none>
+                                    <span style="text-align: right">None</span>
+                                </ng-template>
                             </div>
                         </td>
                         <td>
@@ -141,7 +171,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             <div class="pull-right" [routerLink]="['./', 'add-task']" style="padding: 0.5em;">
                                 <button type="button" class="btn btn-outline-dark btn-sm">
                                     <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
