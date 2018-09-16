@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  options {
+    disableConcurrentBuilds()  //each branch has 1 job running at a time
+  }
   stages {
     stage('Build Knowledge Base') {
       steps {
@@ -8,7 +11,7 @@ pipeline {
             sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn validate'
             sh 'mvn compile'
-            sh 'mvn package -Dmaven.test.skip=true'
+            sh 'mvn package'
           }
         }
       }
@@ -21,12 +24,8 @@ pipeline {
             sh 'mvn test'
           }
         }
-    	junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
-  	  }
-      post {
-      	success {
-      	  archiveArtifacts 'knowledge-base/org.eclipse.scava.knowledgebase/target/scava.knoledgebase.jar'
-       	}
+
+        junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
       }
     }
   }
