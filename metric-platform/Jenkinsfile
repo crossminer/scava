@@ -20,6 +20,12 @@ pipeline {
         }
       }
     }
+    stage('Publish artefacts') {
+      steps {
+        zip zipFile: 'metric-platform-linux-gtk-x86_64.zip', archive: true, dir: 'metric-platform/releng/org.eclipse.scava.product/target/products/scava-product/linux/gtk/x86_64/'
+        }
+      }
+    }
   }
   post {
     always {
@@ -27,3 +33,4 @@ pipeline {
 	}
   }
 }
+
