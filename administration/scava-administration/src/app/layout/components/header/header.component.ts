@@ -51,6 +51,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.clear();
+        localStorage.removeItem("isLoggedin");
+        localStorage.removeItem("jwtToken")
     }
 }

@@ -13,9 +13,14 @@ import { RoleAuthorities } from '../../shared/guard/role-authorities';
 
 export class ProjectComponent implements OnInit {
 
+<<<<<<< HEAD
   projectList: Project[];
   globalStatus: string;
   hasAuthorities: boolean;
+=======
+  projectList: any;
+
+>>>>>>> refs/remotes/origin/dev
   
   constructor(
     private listProjectService: ListProjectService,

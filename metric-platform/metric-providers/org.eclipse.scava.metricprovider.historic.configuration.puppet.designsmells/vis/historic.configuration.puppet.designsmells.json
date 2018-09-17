@@ -1,0 +1,164 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells",
+	"vis" : [ 
+		{
+			"id" : "designsmells.smells",
+			"name" : "Sum of Design Smells",
+			"description" : "The number of design smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "DesignSmells", "field" : "$cumulativeNumberOfDesignSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DesignSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.multifacetedSmells",
+			"name" : "Multifaceted Abstraction Smells",
+			"description" : "The number of Multifaceted Abstraction smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Smells", "field" : "$numberOfMultifacetedSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MultifacetedAbstractionSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.unnecessarySmells",
+			"name" : "Unnecessary Abstraction Smells",
+			"description" : "The number of Unnecessary Abstraction smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfUnnecessarySmells" } ]
+			},
+			"x" : "Date",
+			"y" : "UnnecessaryAbstractionSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.imperativeSmells",
+			"name" : "Imperative Abstraction Smells",
+			"description" : "The number of Imperative Abstraction smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfImperativeSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImperativeAbstractionSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.missAbSmells",
+			"name" : "Missing Abstraction Smells",
+			"description" : "The number of Missing Abstraction smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfMissAbSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MissingAbstractionSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.insufficientSmells",
+			"name" : "Insufficient Modularization Smells",
+			"description" : "The number of Insufficient Modularization smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfInsufficientSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "InsufficientModularizationSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.unstructuredSmells",
+			"name" : "Unstructured Module Smells",
+			"description" : "The number of Unstructured Module smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfUnstructuredSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "UnstructuredModuleSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.tightSmells",
+			"name" : "Tightly-coupled Module Smells",
+			"description" : "The number of Tightly-coupled Module smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfTightSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "Tightly-coupledModuleSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.brokenSmells",
+			"name" : "Broken Hierarchy Smells",
+			"description" : "The number of Broken Hierarchy smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfBrokenSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "BrokenHierarchySmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.missingDepSmells",
+			"name" : "Missing Dependency Smells",
+			"description" : "The number of Missing Dependency smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfMissingDepSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MissingDependencySmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.hairballSmells",
+			"name" : "Hairball Structure Smells",
+			"description" : "The number of Hairball Structure smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfHairballSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "HairballStructureSmells",
+			"timeSeries" : true
+		},{
+			"id" : "designsmells.deficientSmells",
+			"name" : "Deficient Encapsulation Smells",
+			"description" : "The number of Deficient Encapsulation smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfDeficientSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DeficientEncapsulationSmells",
+			"timeSeries" : true
+		}
+		,{
+			"id" : "designsmells.weakenSmells",
+			"name" : "Weaken Modularity Smells",
+			"description" : "The number of Weaken Modularity smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfWeakenSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "WeakenModularitySmells",
+			"timeSeries" : true
+		}
+	]
+
+}

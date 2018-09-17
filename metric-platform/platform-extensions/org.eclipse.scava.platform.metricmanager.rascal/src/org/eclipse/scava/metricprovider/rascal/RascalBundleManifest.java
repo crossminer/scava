@@ -24,45 +24,46 @@ import org.rascalmpl.interpreter.utils.RascalManifest;
  */
 public class RascalBundleManifest extends RascalManifest {
 
-  public List<String> getSourceRoots(Bundle project) {
-    return getManifestSourceRoots(manifest(project));
-  }
-  
-  public String getMainModule(Bundle project) {
-    return getManifestMainModule(manifest(project));
-  }
-  
-  public String getMainFunction(Bundle project) {
-    return getManifestMainFunction(manifest(project));
-  }
+	public List<String> getSourceRoots(Bundle project) {
+		return getManifestSourceRoots(manifest(project));
+	}
 
-  public List<String> getRequiredBundles(Bundle project) {
-    return getManifestRequiredBundles(manifest(project));
-  }
-  
-  public List<String> getRequiredLibraries(Bundle project) {
-	  return getManifestRequiredLibraries(manifest(project));
-  }
-  
-  private InputStream manifest(Bundle bundle) {
-    URL rascalMF = bundle.getResource(META_INF_RASCAL_MF);
+	public String getMainModule(Bundle project) {
+		return getManifestMainModule(manifest(project));
+	}
 
-    try {
-      if (rascalMF != null) {
-        return FileLocator.openStream(bundle, new Path(META_INF_RASCAL_MF), false);
-      }
-    }
-    catch (IOException e) {
-      // do nothing, it's expected that some bundles do not have RASCAL.MF files
-    }
-    
-    return null;
-  }
-  
-  
-  
-  public boolean hasManifest(Bundle bundle) {
-    return hasManifest(manifest(bundle));
-  }
+	public String getMainFunction(Bundle project) {
+		return getManifestMainFunction(manifest(project));
+	}
+
+	public List<String> getRequiredLibraries(Bundle project) {
+		return getManifestRequiredLibraries(manifest(project));
+	}
+
+	private InputStream manifest(Bundle bundle) {
+		URL rascalMF = bundle.getResource(META_INF_RASCAL_MF);
+
+		try {
+			if (rascalMF != null) {
+				return FileLocator.openStream(bundle, new Path(META_INF_RASCAL_MF), false);
+			}
+		}
+		catch (IOException e) {
+			// do nothing, it's expected that some bundles do not have RASCAL.MF files
+		}
+		return null;
+	}
+
+	public boolean hasManifest(Bundle bundle) {
+		return hasManifest(manifest(bundle));
+	}
+
+	//	public List<String> getRequiredBundles(Bundle project) {
+	//	try {
+	//	return getRequiredBundles(manifest(new File(project.getLocation())));}
+	//	catch(IOException e) {
+	//		
+	//	}
+	//}
 }
 

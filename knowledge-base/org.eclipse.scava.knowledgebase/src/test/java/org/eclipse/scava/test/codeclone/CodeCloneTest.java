@@ -45,7 +45,6 @@ public class CodeCloneTest {
 	
 	@Test
 	public void crossSimCommutativeTest() {
-		logger.error("JURI");
 		Options options = new Options();
 		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);

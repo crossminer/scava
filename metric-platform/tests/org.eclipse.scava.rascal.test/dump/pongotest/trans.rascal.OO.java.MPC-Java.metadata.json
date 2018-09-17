@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.OO.java.MPC-Java"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.OO.java.MPC-Java","background":true}],"uuid":"d68c51942750402e9e810cda6d807f6b"}

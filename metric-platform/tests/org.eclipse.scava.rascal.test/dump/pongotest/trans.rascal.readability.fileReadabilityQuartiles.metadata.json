@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.readability.fileReadabilityQuartiles"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.readability.fileReadabilityQuartiles","background":true}],"uuid":"765f8ddcb98c406ea75a7c0de71e7bc9"}

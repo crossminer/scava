@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 public class RecommendationItem {
 
+	private String apiDocumentationLink;
 	private ApiCallResult apiCallRecommendation;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private RecommendedLibrary recommendedLibrary;
@@ -63,6 +64,12 @@ public class RecommendationItem {
 	}
 	public void setRecommendedLibrary(RecommendedLibrary recommendedApi) {
 		this.recommendedLibrary = recommendedApi;
+	}
+	public String getApiDocumentationLink() {
+		return apiDocumentationLink;
+	}
+	public void setApiDocumentationLink(String apiDocumentationRecommendation) {
+		this.apiDocumentationLink = apiDocumentationRecommendation;
 	}
 	
 }

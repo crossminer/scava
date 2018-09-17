@@ -35,11 +35,11 @@ real estimateTestCoverage(ProjectDelta delta = ProjectDelta::\empty(), rel[Langu
   m = systemM3(m3s, delta = delta);
   implicitContainment = getImplicitContainment(m);
   implicitCalls = getImplicitCalls(m, implicitContainment);
-  inverseContainment = m@containment<1,0>;
-  fullContainment = toMap(m@containment + implicitContainment);
+  inverseContainment = m.containment<1,0>;
+  fullContainment = toMap(m.containment + implicitContainment);
   
   liftedInvocations = {};
-  for (<caller, callee> <- m@methodInvocation) {
+  for (<caller, callee> <- m.methodInvocation) {
     if (isMethod(caller)) {
       liftedInvocations += { <caller, callee> };
       continue;
@@ -56,25 +56,24 @@ real estimateTestCoverage(ProjectDelta delta = ProjectDelta::\empty(), rel[Langu
     }
   }
   
-  fullCallGraph = liftedInvocations + implicitCalls + m@methodOverrides<1,0>;
+  fullCallGraph = liftedInvocations + implicitCalls + m.methodOverrides<1,0>;
   allTestMethods = getJUnit4TestMethods(m) + getJUnit4SetupMethods(m);
-  interfaceMethods = { meth | <entity, meth> <- m@containment, isMethod(meth), isInterface(entity) };
-  declarations = { meth | meth <- m@declarations<0>, isMethod(meth) } - interfaceMethods - allTestMethods;
+  interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
+  declarations = { meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - allTestMethods;
   set[loc] reachableMethods = { meth | meth <- reach(fullCallGraph, allTestMethods), meth in declarations };
-  return round((100.0 * size(reachableMethods)) / size(declarations), 0.01);
+  return (declarations == {}) ? 0.0 : round((100.0 * size(reachableMethods)) / size(declarations), 0.01);
 }
 
 /*  
  * Adding implicit calls between a constructor and its super
  */
 private rel[loc, loc] getImplicitCalls(M3 m, rel[loc, loc] implicitContainment) {
-  fullContainment = toMap(m@containment + implicitContainment);  
+  fullContainment = toMap(m.containment + implicitContainment);  
   
   rel[loc, loc] implicitCalls = {};
-  
   impCont = implicitContainment<0>;
   
-  for (<ch, par> <- m@extends) {
+  for (<ch, par> <- m.extends) {
     if (par in impCont) {
       for (con <- (fullContainment[ch]?{}), con.scheme == "java+constructor") {
         assert(size(implicitContainment[par]) == 1) : "Found more than one implicit constuctor";
@@ -91,10 +90,10 @@ private rel[loc, loc] getImplicitCalls(M3 m, rel[loc, loc] implicitContainment) 
  */
 private rel[loc, loc] getImplicitContainment(M3 m) {
   rel[loc, loc] implicitContainment = {};
-  decls = m@declarations<0>;
-  nameSet = toMap(m@names<1,0>);
-  cMap = toMap(m@containment);
-  for (cl <- decls, cl.scheme == "java+class" || cl.scheme == "java+anonymousClass" || cl.scheme == "java+enum", \abstract() notin m@modifiers[cl]) {
+  decls = m.declarations<0>;
+  nameSet = toMap(m.names<1,0>);
+  cMap = toMap(m.containment);
+  for (cl <- decls, cl.scheme == "java+class" || cl.scheme == "java+anonymousClass" || cl.scheme == "java+enum", \abstract() notin m.modifiers[cl]) {
     allMeths = { candidate | candidate <- cMap[cl]?{}, isMethod(candidate) };
     
     if (!any(meth <- allMeths, meth.scheme == "java+constructor")) {
@@ -120,17 +119,16 @@ compute how far from the ideal situation the project is.}
 @appliesTo{java()}
 @historic{}
 real percentageOfTestedPublicMethods(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
-  m = systemM3(m3s, delta = delta);
+  m = systemM3(m3s, delta = delta);  
   onlyTestMethods = getJUnit4TestMethods(m);
   supportTestMethods = getJUnit4SetupMethods(m);
-  interfaceMethods = { meth | <entity, meth> <- m@containment, isMethod(meth), isInterface(entity) };
-  declarations = {meth | meth <- m@declarations<0>, isMethod(meth) } - interfaceMethods - onlyTestMethods - supportTestMethods;
-  mMap = toMap(m@modifiers);
-  allPublicMethods = { meth | meth <- declarations, \public() in (mMap[meth]?{}) };
-  directlyCalledFromTestMethods = domainR(m@methodInvocation, onlyTestMethods);
-  pbSet = directlyCalledFromTestMethods + (directlyCalledFromTestMethods o m@methodOverrides<1,0>);
+  interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
+  declarations = {meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - onlyTestMethods - supportTestMethods;
+  allPublicMethods = { meth | meth <- declarations, \public() in m.modifiers[meth]};
+  directlyCalledFromTestMethods = domainR(m.methodInvocation, onlyTestMethods);
+  pbSet = directlyCalledFromTestMethods + (directlyCalledFromTestMethods o m.methodOverrides<1,0>);
   testedPublicMethods = rangeR(pbSet, allPublicMethods);
-  return round((100.0 * size(range(testedPublicMethods)))/size(allPublicMethods), 0.01);
+  return (allPublicMethods == {}) ? 0.0 : round((100.0 * size(range(testedPublicMethods)))/size(allPublicMethods), 0.01);
 }
 
 @metric{NumberOfTestMethods}

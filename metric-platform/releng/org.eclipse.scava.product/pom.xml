@@ -29,13 +29,6 @@
              <version>${tycho.version}</version>
              <executions>
                  <execution>
-                     <id>create-product-distributions</id>
-                     <goals>
-                         <goal>materialize-products</goal>
-                         <!--goal>archive-products</goal-->
-                     </goals>
-                 </execution>
-                 <!--execution>
                      <id>materialize-products</id>
                      <goals>
                          <goal>materialize-products</goal>
@@ -46,7 +39,7 @@
                      <goals>
                          <goal>archive-products</goal>
                      </goals>
-                 </execution-->
+                 </execution>
              </executions>
          </plugin>
      </plugins>

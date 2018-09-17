@@ -5674,8 +5674,13 @@ run-queue@^1.0.0, run-queue@^1.0.3:
     aproba "^1.1.1"
 
 rxjs-compat@^6.2.1:
+<<<<<<< HEAD
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.2.2.tgz#3c0fcdb46130cc70aa55412c2b1147905ab4680a"
+=======
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.3.1.tgz#9ad8a76110bb0f37fa7906be377909970135b909"
+>>>>>>> refs/remotes/origin/dev
 
 rxjs@^6.0.0, rxjs@^6.1.0:
   version "6.1.0"

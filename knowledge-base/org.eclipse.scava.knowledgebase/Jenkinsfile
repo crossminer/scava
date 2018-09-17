@@ -21,8 +21,12 @@ pipeline {
             sh 'mvn test'
           }
         }
-
-        junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
+    	junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
+  	  }
+      post {
+      	success {
+      	  archiveArtifacts 'knowledge-base/org.eclipse.scava.knowledgebase/target/scava.knoledgebase.jar'
+       	}
       }
     }
   }

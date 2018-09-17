@@ -5,6 +5,5 @@ Bundle-SymbolicName: org.eclipse.scava.metricprovider.rascal.testability.java;si
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.scava.metricprovider.rascal,
  com.googlecode.pongo.runtime,
- rascal4ossmeter,
  org.eclipse.scava.platform.visualisation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
