@@ -16,7 +16,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-public class AnalysisTaskByAnalysisTaskId extends AbstractApiResource {
+public class AnalysisTaskByAnalysisTaskResource extends AbstractApiResource {
 
 	@Override
 	public Representation doRepresent() {

@@ -15,7 +15,7 @@
                     </div>
                 </td>
                 <td class="panel" rowspan="5">
-                    <div *ngIf="globalStatus == 'up-to-date' && executionTasks.length !== 0" class="panel-profile up-to-date">
+                    <div *ngIf="globalStatus == 'up-to-date' && executionTasks?.length !== 0" class="panel-profile up-to-date">
                         <div class="panel-body text-center">
                             <i class="fa fa-4x fa-check-circle"></i>
                             <h3 class="panel-title">
@@ -23,7 +23,7 @@
                             </h3>
                         </div>
                     </div>
-                    <div *ngIf="globalStatus == 'in-progress' && executionTasks.length !== 0" class="panel-profile in-progress">
+                    <div *ngIf="globalStatus == 'in-progress' && executionTasks?.length !== 0" class="panel-profile in-progress">
                         <div class="panel-body text-center">
                             <i class="fa fa-4x fa-spinner"></i>
                             <h3 class="panel-title">
@@ -38,14 +38,16 @@
                 <td>
                     <div *ngIf="project?._type.split('.')[project?._type.split('.').length - 1] as projectType">
                         <span *ngIf="projectType == 'GitHubRepository';else secondCase">
-                            <img title="GitHub Repository" class="project-type-img" width="10%" src="assets/images/github.png" alt="GitHub Repository">
+                            <img title="GitHub Repository" class="project-type-img" width="10%" src="assets/images/github.png">
+                            GitHub Repository
                         </span>
                         <ng-template #secondCase>
                             <span *ngIf="projectType == 'EclipseProject';else thirdCase">
-                                <img title="Eclipse Project" class="project-type-img" width="17%" src="assets/images/eclipse-project.jpg" alt="Eclipse Project">
+                                <img title="Eclipse Project" class="project-type-img" width="17%" src="assets/images/eclipse-project.jpg">
+                                Eclipse Project
                             </span>
                         </ng-template>
-                        <ng-template #thirdCase>Normal Project</ng-template>
+                        <ng-template #thirdCase>Other Projects</ng-template>
                     </div>
                 </td>
             </tr>
@@ -80,10 +82,9 @@
                 <thead>
                     <tr>
                         <th>
-                            <span>Label</span>
                         </th>
                         <th>
-                            <span>Task Type</span>
+                            <span>Label</span>
                         </th>
                         <th>
                             <span>Execution Metrics</span>
@@ -107,11 +108,6 @@
                 <tbody *ngIf="executionTasks">
                     <tr *ngFor="let executionTask of executionTasks">
                         <td>
-                            <div>
-                                <span>{{executionTask?.label}}</span>
-                            </div>
-                        </td>
-                        <td>
                             <div id="task-type-icon">
                                 <span *ngIf="executionTask.type == 'SINGLE_EXECUTION'; else daily"><i title="{{executionTask.type}}"
                                         class="fa fa-arrow-right"></i></span>
@@ -120,7 +116,13 @@
                         </td>
                         <td>
                             <div>
-                                <a [routerLink]="" (click)="showMetricProviderList(executionTask.metricExecutions)">{{executionTask?.metricExecutions.length}} Metrics</a>
+                                <span>{{executionTask?.label}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <a [routerLink]="" (click)="showMetricProviderList(executionTask.metricExecutions)">{{executionTask?.metricExecutions.length}}
+                                    Metrics</a>
                             </div>
                         </td>
                         <td>
@@ -130,12 +132,14 @@
                         </td>
                         <td>
                             <div>
-                                <span *ngIf="executionTask.startDate">{{executionTask?.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="executionTask.startDate">{{executionTask?.startDate.$date | date:
+                                    'dd/MM/yyyy'}}</span>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <span *ngIf="executionTask.endDate;else none">{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="executionTask.endDate;else none">{{executionTask?.endDate.$date | date:
+                                    'dd/MM/yyyy'}}</span>
                                 <ng-template #none>
                                     <span style="text-align: right">None</span>
                                 </ng-template>
@@ -143,7 +147,8 @@
                         </td>
                         <td>
                             <div class="progress progress-div">
-                                <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)"
+                                    aria-valuemin="0" aria-valuemax="100">
                                     <span *ngIf="executionTask?.scheduling?.progress">{{executionTask?.scheduling.progress}}%</span>
                                 </div>
                             </div>
@@ -159,7 +164,8 @@
                                 <button type="button" class="btn btn-outline-dark btn-sm" title="Reset Task" (click)="resetTask(executionTask?.analysisTaskId)">
                                     <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
-                                <button type="button" class="btn btn-outline-dark btn-sm" title="Update Task" [routerLink]="['./', 'update-task', executionTask.label]">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Update Task"
+                                    [routerLink]="['./', 'update-task', executionTask.label]">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
                                 </button>&nbsp;
                                 <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Task" (click)="deleteTask(executionTask?.analysisTaskId)">

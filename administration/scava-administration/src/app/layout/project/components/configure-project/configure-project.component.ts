@@ -42,11 +42,11 @@ export class ConfigureProjectComponent implements OnInit {
                     this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                         (resp) => {
                             this.executionTasks = resp as ExecutionTask[];
-                            this.getGlobalStatus();
                         },
                         (error) => {
                             this.onShowMessage(error);
                     });
+                    this.getGlobalStatus(this.project.shortName);
                 },
                 (error) => {
                     this.onShowMessage(error);
@@ -54,21 +54,14 @@ export class ConfigureProjectComponent implements OnInit {
         });
     }
 
-    getGlobalStatus() {
-        let stat: boolean;
-        for (let task of this.executionTasks) {
-            if(task.scheduling.status == 'COMPLETED' || task.scheduling.status == 'STOP' ) {
-                stat = true;
-            } else {
-                stat = false;
-                break;
-            }
-        }
-        if (stat == true) {
-            this.globalStatus = 'up-to-date'
-        } else if(stat == false) {
-            this.globalStatus = 'in-progress'
-        }
+    getGlobalStatus(projectId: string) {
+        this.analysisTaskService.getAnalysisTasksStatusByProject(projectId).subscribe(
+            (status) => {
+                this.globalStatus = status['value'];
+            },
+            (error) => {
+                this.onShowMessage(error);
+            })
     }
 
     showMetricProviderList(metricExecutions: MetricExecutions[]) {

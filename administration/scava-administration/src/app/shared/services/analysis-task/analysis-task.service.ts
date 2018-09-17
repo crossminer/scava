@@ -20,6 +20,7 @@ export class AnalysisTaskService {
   private reset: string = 'reset';
   private delete: string = 'delete';
   private tasks: string = 'tasks';
+  private status: string = 'status';
   private project: string = 'project'
   private promote: string = 'promote';
   private demote: string = 'demote';
@@ -62,6 +63,14 @@ export class AnalysisTaskService {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${this.project}/${projectId}`,
+      { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
+
+  getAnalysisTasksStatusByProject(projectId: string){
+    if (this.jwtToken == null) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${this.status}/${this.project}/${projectId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 

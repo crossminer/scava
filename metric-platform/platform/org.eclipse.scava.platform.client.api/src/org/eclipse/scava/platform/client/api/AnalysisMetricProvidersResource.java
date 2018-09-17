@@ -17,7 +17,7 @@ import org.restlet.representation.StringRepresentation;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-public class AnalysisMetricProviders extends AbstractApiResource {
+public class AnalysisMetricProvidersResource extends AbstractApiResource {
 
 	@Override
 	public Representation doRepresent() {

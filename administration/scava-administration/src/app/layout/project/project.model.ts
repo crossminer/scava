@@ -23,7 +23,8 @@ export interface IProject {
     bugzilla?: Bugzilla,
     sourceforge?: SourceForge,
     redmine?: Redmine,
-    nntp?: NNTP
+    nntp?: NNTP,
+    globalStatus?: string
 }
 
 export class Project implements IProject {
@@ -42,7 +43,8 @@ export class Project implements IProject {
         public bugzilla?: Bugzilla,
         public sourceforge?: SourceForge,
         public redmine?: Redmine,
-        public nntp?: NNTP
+        public nntp?: NNTP,
+        public globalStatus?: string
     ) {
     }
 }
