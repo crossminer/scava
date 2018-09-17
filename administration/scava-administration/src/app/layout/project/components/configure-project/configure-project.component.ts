@@ -7,6 +7,7 @@ import { ExecutionTask, MetricExecutions } from './execution-task.model';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete/analysis-task-delete-dialog.component';
 import { Project } from '../../project.model';
 import { MetricProvidersMgmtInfoDialogComponent } from './metrics-infos/metric-info.component';
+import { RoleAuthorities } from '../../../../shared/guard/role-authorities';
 
 @Component({
     selector: 'app-configure-project',
@@ -19,19 +20,21 @@ export class ConfigureProjectComponent implements OnInit {
     executionTasks: ExecutionTask[] = null;
     interval: any;
     globalStatus: string;
+    hasAuthorities: boolean;
 
     constructor(
         private route: ActivatedRoute,
         private listProjectService: ListProjectService,
         private analysisTaskService: AnalysisTaskService,
-        public modalService: NgbModal
+        public modalService: NgbModal,
+        public roleAuthorities: RoleAuthorities
     ) { }
 
     ngOnInit() {
         this.loadAll();
-        this.interval = setInterval(() => { 
+        this.interval = setInterval(() => {
             this.loadAll();
-          }, 1500);
+        }, 2000);
     }
 
     loadAll() {
@@ -45,8 +48,9 @@ export class ConfigureProjectComponent implements OnInit {
                         },
                         (error) => {
                             this.onShowMessage(error);
-                    });
+                        });
                     this.getGlobalStatus(this.project.shortName);
+                    this.hasAuthorities = this.roleAuthorities.showCommands();
                 },
                 (error) => {
                     this.onShowMessage(error);
@@ -62,13 +66,14 @@ export class ConfigureProjectComponent implements OnInit {
             (error) => {
                 this.onShowMessage(error);
             })
+
     }
 
     showMetricProviderList(metricExecutions: MetricExecutions[]) {
         const modalRef = this.modalService.open(MetricProvidersMgmtInfoDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.metricExecutions = metricExecutions;
-      }
-    
+    }
+
 
     setProgressStyles(executionTask: ExecutionTask) {
         let styles = {
@@ -84,7 +89,7 @@ export class ConfigureProjectComponent implements OnInit {
             },
             (error) => {
                 this.onShowMessage('start failed')
-        });
+            });
         this.loadAll();
     }
 
@@ -95,7 +100,7 @@ export class ConfigureProjectComponent implements OnInit {
             },
             (error) => {
                 this.onShowMessage('stop failed')
-        });
+            });
         this.loadAll();
     }
 
@@ -106,7 +111,7 @@ export class ConfigureProjectComponent implements OnInit {
             },
             (error) => {
                 this.onShowMessage('reset failed')
-        })
+            })
         this.loadAll();
     }
 
@@ -114,25 +119,24 @@ export class ConfigureProjectComponent implements OnInit {
         const modalRef = this.modalService.open(AnalysisTaskMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.analysisTaskId = analysisTaskId;
         modalRef.result.then(
-            result => {
+            (result) => {
                 this.onShowMessage('delete success');
             },
-            reason => {
+            (reason) => {
                 this.onShowMessage('delete failed');
             }
         );
         this.loadAll();
     }
 
-    private onShowMessage(msg) {
-        console.log(msg)
-    }
-
     ngOnDestroy() {
-        if(this.interval) {
+        if (this.interval) {
             clearInterval(this.interval);
         }
     }
 
+    private onShowMessage(msg) {
+        console.log(msg)
+    }
 
 }

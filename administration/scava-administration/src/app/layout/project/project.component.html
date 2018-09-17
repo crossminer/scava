@@ -1,7 +1,7 @@
 <div>
   <div class="page-header">
     <h2>Projects</h2>
-    <div class="btn-group" role="group" style="float: right;margin-top: -40px;">
+    <div *ngIf="hasAuthorities" class="btn-group" role="group" style="float: right;margin-top: -40px;"> 
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
     </div>
@@ -18,7 +18,9 @@
             <b style="white-space: nowrap">Status :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
-            <span style="white-space: nowrap">{{project.globalStatus}}</span>
+            <span style="white-space: nowrap" *ngIf="!project?.hasTasks">Not Defined</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'up-to-date' && project?.hasTasks">Up To Date</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis In Progress</span>
           </div>
         </div>
         <div class="row" *ngIf="project.homePage">
@@ -26,7 +28,7 @@
             <b style="white-space: nowrap">Home Page :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
+            <a style="white-space: nowrap" href="{{project?.homePage}}" title="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
           </div>
         </div>
         <div class="row" *ngIf="project.vcsRepositories.length !== 0">
@@ -35,7 +37,7 @@
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
             <span *ngFor="let vcs of project.vcsRepositories">
-              <a style="white-space: nowrap" href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
+              <a style="white-space: nowrap" href="{{vcs.url}}" title="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
             </span>
           </div>
         </div>
@@ -44,7 +46,7 @@
             <b style="white-space: nowrap">Download URL :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a>
+            <a style="white-space: nowrap" href="{{project?.downloadsUrl}}" title="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a>
           </div>
         </div>
         <div class="row" *ngIf="project.size">

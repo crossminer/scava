@@ -24,7 +24,8 @@ export interface IProject {
     sourceforge?: SourceForge,
     redmine?: Redmine,
     nntp?: NNTP,
-    globalStatus?: string
+    globalStatus?: string,
+    hasTasks?: boolean
 }
 
 export class Project implements IProject {
@@ -44,7 +45,8 @@ export class Project implements IProject {
         public sourceforge?: SourceForge,
         public redmine?: Redmine,
         public nntp?: NNTP,
-        public globalStatus?: string
+        public globalStatus?: string,
+        public hasTasks?: boolean
     ) {
     }
 }

@@ -104,10 +104,10 @@
                   <b>  Metrics : </b>  <a [routerLink]=""  (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a> 
               </div>  
               <div class="col-sm">
-                  <b> Start Date :</b> {{task.startDate.$date | date: 'dd/MM/yyyy'}} 
+                  <b> Start Date :</b>  <span *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span> 
               </div>  
               <div class="col-sm">
-                  <b> End Date :</b> {{task.endDate.$date | date: 'dd/MM/yyyy'}} 
+                  <b> End Date :</b> <span *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
               </div> 
               <div class="col-3">
                  
