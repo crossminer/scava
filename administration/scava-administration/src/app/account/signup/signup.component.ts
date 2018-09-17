@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
  
     success: boolean = null;
+    match: boolean = true;
     password: string = null;
     confirmPassword : string = null;
 
@@ -22,14 +23,14 @@ export class SignupComponent implements OnInit {
 
     register(data) {
         console.log(data);
-        debugger
         if (data.password != data.confirmPassword) {
-            this.success = false;
-            this.onShowMessage(this.success);
+            this.match = false;
+            this.onShowMessage(this.match);
         } else {
             this.signupService.onSignedup(data).subscribe(
                 (resp) => {
                     this.success = true;
+                    this.match = true;
                     this.onShowMessage(this.success);
                 },
                 (error) => {

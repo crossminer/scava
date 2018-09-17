@@ -36,18 +36,6 @@ export class LocalStorageService {
     }
   }
 
-  hasRole(role: string) {
-    let jwtToken: string = this.loadToken();
-    if (jwtToken != null) {
-      let roles = this.jwtHelper.decodeToken(jwtToken);
-      for (let r of roles.authorities) {
-        if (r == role)
-          return true;
-      }
-    }
-    return false;
-  }
-
   getUsername() {
     let jwtToken: string = this.loadToken();
     if (jwtToken !== null) {
