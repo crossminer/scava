@@ -4,13 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from '../authentication/local-storage.service';
 import { Observable } from 'rxjs';
 import { ExecutionTask, MetricProvider } from '../../../layout/project/components/configure-project/execution-task.model';
+import { ConfigService } from '../configuration/configuration-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalysisTaskService {
 
-  private resourceUrl: string = environment.SERVER_API_URL + '/administration';
+  private administration: string = 'administration';
   private analysis: string = 'analysis';
   private task: string = 'task';
   private create: string = 'create';
@@ -31,14 +32,15 @@ export class AnalysisTaskService {
 
   constructor(
     private httpClient: HttpClient,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private configService: ConfigService
   ) { }
 
   createTask(executionTask: ExecutionTask): Observable<ExecutionTask> {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.create}`, executionTask,
+    return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.create}`, executionTask,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -46,7 +48,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.put(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.update}`, executionTask,
+    return this.httpClient.put(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.update}`, executionTask,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) })
   }
 
@@ -54,7 +56,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -62,7 +64,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${this.project}/${projectId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${this.project}/${projectId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -70,7 +72,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${this.status}/${this.project}/${projectId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${this.status}/${this.project}/${projectId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -78,7 +80,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.tasks}/${analysisTaskId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -86,7 +88,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.start}`,
+    return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.start}`,
       { "analysisTaskId": analysisTaskId },
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
@@ -95,7 +97,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.stop}`,
+    return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.stop}`,
       { "analysisTaskId": analysisTaskId },
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
@@ -104,7 +106,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.reset}`,
+    return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.reset}`,
       { "analysisTaskId": analysisTaskId },
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
@@ -113,7 +115,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.delete}/${analysisTaskId}`,
+    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.delete}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -121,7 +123,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.promote}/${analysisTaskId}`,
+    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.promote}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -129,7 +131,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.demote}/${analysisTaskId}`,
+    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.demote}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
   
@@ -137,7 +139,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.resourceUrl}/${this.analysis}/${this.task}/${this.push}/${analysisTaskId}/w/${workerId}`,
+    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.push}/${analysisTaskId}/w/${workerId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -145,7 +147,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.metricproviders}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.metricproviders}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -153,7 +155,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.resourceUrl}/${this.analysis}/${this.workers}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.workers}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
