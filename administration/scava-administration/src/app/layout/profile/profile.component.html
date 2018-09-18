@@ -55,6 +55,10 @@
                 </div>
             </div>
             <div>
+                <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
+                    <i class="fa fa-arrow-left"></i>&nbsp;
+                    <span>Go Back</span>
+                </button>&nbsp;
                 <button type="submit" [disabled]="profileForm.form.invalid" class="btn btn-outline-dark btn-sm">
                     <i class="fa fa-save"></i>&nbsp;
                     <span>Save</span>
