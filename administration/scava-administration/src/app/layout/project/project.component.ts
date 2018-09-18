@@ -27,8 +27,8 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.listProjectService.listProjects().subscribe(
       (resp) => {
+        this.hasAuthorities = this.roleAuthorities.showCommands();
         this.projectList = resp as Project[];
-        console.log(this.projectList)
         this.projectList.forEach(project => {
           this.analysisTaskService.getAnalysisTasksStatusByProject(project.shortName).subscribe(
             (status) => {
@@ -41,7 +41,6 @@ export class ProjectComponent implements OnInit {
                    } else {
                      project.hasTasks = false;
                    }
-                   this.hasAuthorities = this.roleAuthorities.showCommands();
                 },
                 (error) => {
                     this.onShowMessage(error);

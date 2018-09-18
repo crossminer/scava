@@ -22,7 +22,6 @@ export class SignupComponent implements OnInit {
     ngOnInit() { }
 
     register(data) {
-        console.log(data);
         if (data.password != data.confirmPassword) {
             this.match = false;
             this.onShowMessage(this.match);

@@ -111,15 +111,15 @@ export class CreateProjectComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    this.project.vcs = this.saveInformationSources('vcs');
+    this.project.vcsRepositories = this.saveInformationSources('vcs');
     this.project.bts = this.saveInformationSources('bts');
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
-      console.log(resp)
+      this.onShowMessage(resp)
       let project : IProject = resp as IProject;
       this.router.navigate(['/project']);
     }, error => {
-      console.log(error)
+      this.onShowMessage(error)
     })
 
   }
@@ -131,6 +131,10 @@ export class CreateProjectComponent implements OnInit {
 
   previousState() {
     this.router.navigate(['project']);
+  }
+
+  onShowMessage(msg: any){
+    console.log(msg);
   }
 
 }

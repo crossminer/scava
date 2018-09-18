@@ -16,7 +16,7 @@ export class SidebarComponent {
 
     constructor(
         public router: Router,
-        private roleAuthorities: RoleAuthorities
+        public roleAuthorities: RoleAuthorities
     ) {
         this.router.events.subscribe(val => {
             if (

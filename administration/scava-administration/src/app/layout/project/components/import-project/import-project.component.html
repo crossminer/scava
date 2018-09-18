@@ -18,13 +18,10 @@
                     <div class="form-group">
                         <label for="projectName">URL</label>
                         <input type="text" class="form-control" name="url" id="url" [(ngModel)]="project.url" aria-describedby="url" placeholder="URL"
-                        #urlInput="ngModel" required minlength="1" maxlength="50">
+                        #urlInput="ngModel" required minlength="1">
                         <div *ngIf="urlInput.dirty && urlInput.invalid">
                             <small class="form-text text-danger" *ngIf="urlInput.errors.required">
                                 This field is required.
-                            </small>
-                            <small class="form-text text-danger" *ngIf="urlInput.errors.maxlength">
-                                This field cannot be longer than 50 characters.
                             </small>
                         </div>
                     </div>

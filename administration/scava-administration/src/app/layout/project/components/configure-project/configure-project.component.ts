@@ -135,7 +135,7 @@ export class ConfigureProjectComponent implements OnInit {
         }
     }
 
-    private onShowMessage(msg) {
+    onShowMessage(msg) {
         console.log(msg)
     }
 

@@ -68,40 +68,40 @@ export class WorkerComponent implements OnInit,OnDestroy {
             this.refreshData();
         }, 
         (error) => {
-            console.log('stop failed')
+            this.onShowMessage('stop failed')
         })
    }
 
    promoteTask(analysisTaskId: string) {
     this.analysisTaskService.promoteTask(analysisTaskId).subscribe(
       (resp) => {
-          console.log('promote successed !');
+          this.onShowMessage('promote successed !');
           this.refreshData();
       }, 
       (error) => {
-          console.log('promote failed')
+          this.onShowMessage('promote failed')
       })
    }
 
    demoteTask(analysisTaskId: string) {
     this.analysisTaskService.demoteTask(analysisTaskId).subscribe(
       (resp) => {
-          console.log('emote successed !');
+          this.onShowMessage('emote successed !');
           this.refreshData();
       }, 
       (error) => {
-          console.log('emote failed')
+          this.onShowMessage('emote failed')
       })
    }
 
    pushOnWorker(analysisTaskId: string,wotkerId : string) {
     this.analysisTaskService.pushOnWorker(analysisTaskId,wotkerId).subscribe(
       (resp) => {
-          console.log('pushOnWorker successed !');
+          this.onShowMessage('pushOnWorker successed !');
           this.refreshData();
       }, 
       (error) => {
-          console.log('pushOnWorker failed')
+          this.onShowMessage('pushOnWorker failed')
       })
    }
 
@@ -114,6 +114,10 @@ export class WorkerComponent implements OnInit,OnDestroy {
     if (this.interval) {
       clearInterval(this.interval);
     }
+  }
+
+  onShowMessage(msg: any) {
+    console.log(msg);
   }
 
 }
