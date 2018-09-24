@@ -252,7 +252,7 @@ public class ProjectAnalyser {
 	 * @param metrics
 	 * @return
 	 */
-	protected List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
+	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
 		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
 		
 		for (IMetricProvider m : metrics) {

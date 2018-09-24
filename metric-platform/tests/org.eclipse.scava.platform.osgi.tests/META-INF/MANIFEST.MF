@@ -10,4 +10,5 @@ Require-Bundle: org.eclipse.scava.platform.osgi,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime.osgi,
- org.apache.log4j
+ org.apache.log4j,
+ org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0"

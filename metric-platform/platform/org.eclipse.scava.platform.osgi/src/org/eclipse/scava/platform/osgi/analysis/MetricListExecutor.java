@@ -84,7 +84,7 @@ public class MetricListExecutor implements Runnable {
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().startMetricExecution(this.taskId,  m.getIdentifier());
 			
-			// We need to check that it hasn't already been excuted for this date
+			// We need to check that it hasn't already been executed for this date
 			MetricExecution mpd = platform.getAnalysisRepositoryManager().getSchedulingService().findMetricExecution(this.projectId,m.getIdentifier());
 			try {
 				Date lastExec = new Date(mpd.getLastExecutionDate());	
