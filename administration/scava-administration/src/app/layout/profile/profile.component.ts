@@ -36,12 +36,16 @@ export class ProfileComponent implements OnInit {
   save() {
     this.accountAccount.save(this.settingsAccount).subscribe(
       (success) => this.previousState(),
-      (error) => console.log(error)
+      (error) => this.onShowMessage(error)
     )
   }
 
   previousState() {
     this.router.navigate(['/home']);
+  }
+
+  onShowMessage(msg: any) {
+    console.log(msg);
   }
 
 }

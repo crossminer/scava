@@ -25,7 +25,6 @@ export class CreateProjectService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    // console.log(project);
     return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.projects}/${this.create}`, project,
     { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }

@@ -1,15 +1,12 @@
 package org.eclipse.scava.authservice.web.rest;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.core.Context;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.scava.authservice.configuration.JwtAuthenticationConfig;
 import org.eclipse.scava.authservice.domain.User;
 import org.eclipse.scava.authservice.repository.UserRepository;
 import org.eclipse.scava.authservice.service.MailService;
@@ -26,9 +23,6 @@ import org.eclipse.scava.authservice.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,9 +32,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 
 /**
  * REST controller for managing the current user's account.

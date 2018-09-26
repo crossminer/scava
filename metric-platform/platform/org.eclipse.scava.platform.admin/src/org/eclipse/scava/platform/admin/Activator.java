@@ -10,7 +10,7 @@
 package org.eclipse.scava.platform.admin;
 
 import org.eclipse.scava.platform.Configuration;
-import org.eclipse.scava.platform.osgi.services.ApiStartServiceToken;
+import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;

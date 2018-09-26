@@ -21,9 +21,10 @@ import java.util.Properties;
 import org.bson.BSONDecoder;
 import org.bson.BSONObject;
 import org.bson.BasicBSONDecoder;
-import org.eclipse.scava.platform.Date;
+import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.osgi.executors.ProjectExecutor;
+import org.eclipse.scava.platform.analysis.data.model.Worker;
+import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 import org.eclipse.scava.rascal.test.ProjectCreationUtil;
 import org.eclipse.scava.repository.model.Project;
 import org.json.JSONArray;
@@ -55,12 +56,18 @@ public class RascalMetricsTest {
 	private static Platform platform;
 	private static Mongo mongo;
 	private static String[] dbs;
-
+	
+	private static String WORKER_ID;	
+	
 	@Before
 	public void setUp() throws Exception {
 		mongo = new Mongo();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
 		platform = new Platform(mongo);
+		
+		WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
+		// Register Worker
+		platform.getAnalysisRepositoryManager().getWorkerService().registerWorker(WORKER_ID);
 
 		//Reading test properties
 		Properties prop = new Properties();
@@ -87,11 +94,25 @@ public class RascalMetricsTest {
 		platform.getProjectRepositoryManager().getProjectRepository().getProjects().sync();	
 
 		System.out.println("Executing test project " + project.getName());
-		ProjectExecutor executor = new ProjectExecutor(platform, project);
-		//Compute metrics only for 9 dates
-		Date dStart = executor.getLastExecutedDate();
-		Date dEnd = (new Date(dStart.toString())).addDays(10);
-		executor.executeProject(dStart, dEnd);
+//		ProjectExecutor executor = new ProjectExecutor(platform, project);
+//		//Compute metrics only for 9 dates
+//		Date dStart = executor.getLastExecutedDate();
+//		Date dEnd = (new Date(dStart.toString())).addDays(10);
+//		executor.executeProject(dStart, dEnd);
+		
+		String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
+		if (analysisTaskId != null) {
+			platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId,WORKER_ID);
+			ProjectAnalyser projectAnalyser = new ProjectAnalyser(platform);
+			projectAnalyser.executeAnalyse(analysisTaskId,WORKER_ID);	
+			platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+
+		} else {				
+			Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
+			worker.setHeartbeat(new java.util.Date());
+			platform.getAnalysisRepositoryManager().getRepository().sync();	
+		}
+		
 	}
 
 	@After

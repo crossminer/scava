@@ -1,107 +1,107 @@
 <br>
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-8">
-      <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-        <h2>Edit a user</h2>
-        <div>
-          <div class="form-group">
-            <label class="form-control-label">Login</label>
-            <input type="text" class="form-control" name="login" [(ngModel)]="user.login" #loginInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
-            <div *ngIf="loginInput.dirty && loginInput.invalid">
-              <small class="form-text text-danger" *ngIf="loginInput.errors.required">
-                This field is required.
-              </small>
+<div class="row">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+      <h2>Edit a user</h2>
+      <div>
+        <div class="form-group">
+          <label class="form-control-label">Login</label>
+          <input type="text" class="form-control" name="login" [(ngModel)]="user.login" #loginInput="ngModel" required
+            minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
+          <div *ngIf="loginInput.dirty && loginInput.invalid">
+            <small class="form-text text-danger" *ngIf="loginInput.errors.required">
+              This field is required.
+            </small>
 
-              <small class="form-text text-danger" *ngIf="loginInput.errors.maxlength">
-                This field cannot be longer than 50 characters.
-              </small>
+            <small class="form-text text-danger" *ngIf="loginInput.errors.maxlength">
+              This field cannot be longer than 50 characters.
+            </small>
 
-              <small class="form-text text-danger" *ngIf="loginInput.errors.pattern">
-                This field can only contain letters, digits and e-mail addresses.
-              </small>
-            </div>
-          </div>
-          <div class="form-group">
-              <label class="form-control-label" for="firstName">First Name</label>
-              <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Your first name" [(ngModel)]="user.firstName"
-                  minlength=1 maxlength=50 #firstNameInput="ngModel" required>
-              <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
-                  <small class="form-text text-danger" *ngIf="firstNameInput.errors.required">
-                      Your first name is required.
-                  </small>
-                  <small class="form-text text-danger" *ngIf="firstNameInput.errors.minlength">
-                      Your first name is required to be at least 1 character.
-                  </small>
-                  <small class="form-text text-danger" *ngIf="firstNameInput.errors.maxlength">
-                      Your first name cannot be longer than 50 characters.
-                  </small>
-              </div>
-          </div>
-          <div class="form-group">
-              <label class="form-control-label" for="lastName">Last Name</label>
-              <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Your last name" [(ngModel)]="user.lastName"
-                  minlength=1 maxlength=50 #lastNameInput="ngModel" required>
-              <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
-                  <small class="form-text text-danger" *ngIf="lastNameInput.errors.required">
-                      Your last name is required.
-                  </small>
-                  <small class="form-text text-danger" *ngIf="lastNameInput.errors.minlength">
-                      Your last name is required to be at least 1 character.
-                  </small>
-                  <small class="form-text text-danger" *ngIf="lastNameInput.errors.maxlength">
-                      Your last name cannot be longer than 50 characters.
-                  </small>
-              </div>
-          </div>
-          <div class="form-group">
-            <label class="form-control-label">Email</label>
-            <input type="email" class="form-control" name="email" [(ngModel)]="user.email" #emailInput="ngModel" minlength="5" required maxlength="254" email>
-            <div *ngIf="emailInput.dirty && emailInput.invalid">
-              <small class="form-text text-danger" *ngIf="emailInput.errors.required">
-                This field is required.
-              </small>
-
-              <small class="form-text text-danger" *ngIf="emailInput.errors.maxlength">
-                This field cannot be longer than 100 characters.
-              </small>
-
-              <small class="form-text text-danger" *ngIf="emailInput.errors.minlength">
-                This field is required to be at least 5 characters.
-              </small>
-
-              <small class="form-text text-danger" *ngIf="emailInput.errors.email">
-                Your email is invalid.
-              </small>
-            </div>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label" for="activated">
-              <input class="form-check-input" type="checkbox" id="activated" name="activated" [(ngModel)]="user.activated">
-              <span>Activated</span>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>Profiles</label>
-            <select class="form-control" multiple name="authority" [(ngModel)]="user.authorities">
-              <option *ngFor="let authority of authorities" [value]="authority">{{authority}}</option>
-              <option value="">NO ROLE</option>
-            </select>
+            <small class="form-text text-danger" *ngIf="loginInput.errors.pattern">
+              This field can only contain letters, digits and e-mail addresses.
+            </small>
           </div>
         </div>
-        <div>
-          <button type="button" class="btn btn-secondary" (click)="previousState()">
-            <i class="fa fa-ban"></i>&nbsp;
-            <span>Cancel</span>
-          </button>&nbsp;
-          <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-            <i class="fa fa-save"></i>&nbsp;
-            <span>Save</span>
-          </button>
+        <div class="form-group">
+          <label class="form-control-label" for="firstName">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Your first name"
+            [(ngModel)]="user.firstName" minlength=1 maxlength=50 #firstNameInput="ngModel" required>
+          <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
+            <small class="form-text text-danger" *ngIf="firstNameInput.errors.required">
+              Your first name is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="firstNameInput.errors.minlength">
+              Your first name is required to be at least 1 character.
+            </small>
+            <small class="form-text text-danger" *ngIf="firstNameInput.errors.maxlength">
+              Your first name cannot be longer than 50 characters.
+            </small>
+          </div>
         </div>
-      </form>
+        <div class="form-group">
+          <label class="form-control-label" for="lastName">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Your last name"
+            [(ngModel)]="user.lastName" minlength=1 maxlength=50 #lastNameInput="ngModel" required>
+          <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
+            <small class="form-text text-danger" *ngIf="lastNameInput.errors.required">
+              Your last name is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="lastNameInput.errors.minlength">
+              Your last name is required to be at least 1 character.
+            </small>
+            <small class="form-text text-danger" *ngIf="lastNameInput.errors.maxlength">
+              Your last name cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">Email</label>
+          <input type="email" class="form-control" name="email" [(ngModel)]="user.email" #emailInput="ngModel"
+            minlength="5" required maxlength="254" email>
+          <div *ngIf="emailInput.dirty && emailInput.invalid">
+            <small class="form-text text-danger" *ngIf="emailInput.errors.required">
+              This field is required.
+            </small>
 
-    </div>
+            <small class="form-text text-danger" *ngIf="emailInput.errors.maxlength">
+              This field cannot be longer than 100 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="emailInput.errors.minlength">
+              This field is required to be at least 5 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="emailInput.errors.email">
+              Your email is invalid.
+            </small>
+          </div>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label" for="activated">
+            <input class="form-check-input" type="checkbox" id="activated" name="activated" [(ngModel)]="user.activated">
+            <span>Activated</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Profiles</label>
+          <select class="form-control" multiple name="authority" [(ngModel)]="user.authorities">
+            <option *ngFor="let authority of authorities" [value]="authority">{{authority}}</option>
+            <option value="">NO ROLE</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
+          <i class="fa fa-ban"></i>&nbsp;
+          <span>Cancel</span>
+        </button>&nbsp;
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-outline-dark btn-sm">
+          <i class="fa fa-save"></i>&nbsp;
+          <span>Save</span>
+        </button>
+      </div>
+    </form>
+
   </div>
 </div>

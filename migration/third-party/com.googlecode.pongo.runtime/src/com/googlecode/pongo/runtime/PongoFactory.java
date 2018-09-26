@@ -1,7 +1,7 @@
 package com.googlecode.pongo.runtime;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.collections.map.ReferenceMap;
 
@@ -14,7 +14,7 @@ public class PongoFactory {
 	
 	protected static PongoFactory instance = new PongoFactory();
 	protected ReferenceMap cache = null;
-	protected List<PongoFactoryContributor> contributors = new ArrayList<PongoFactoryContributor>();
+	protected List<PongoFactoryContributor> contributors = new CopyOnWriteArrayList<>();
 	
 	private PongoFactory(){
 		cache = new ReferenceMap(ReferenceMap.HARD, ReferenceMap.SOFT);
