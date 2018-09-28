@@ -17,7 +17,7 @@
 <repository location="http://download.eclipse.org/releases/neon/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-<unit id="org.eclipse.jgit.feature.group" version="5.0.2.201807311906-r"/>
+<unit id="org.eclipse.jgit.feature.group" version="5.1.1.201809181055-r"/>
 <repository location="http://download.eclipse.org/egit/updates/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
