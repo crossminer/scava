@@ -29,6 +29,7 @@ export class ProjectComponent implements OnInit {
       (resp) => {
         this.hasAuthorities = this.roleAuthorities.showCommands();
         this.projectList = resp as Project[];
+        console.log(this.projectList)
         this.projectList.forEach(project => {
           this.analysisTaskService.getAnalysisTasksStatusByProject(project.shortName).subscribe(
             (status) => {

@@ -40,8 +40,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="homepage">Home Page</label>
-                    <input type="text" class="form-control" id="homepage" name="homepage" [(ngModel)]="project.homepage"
+                    <label for="homePage">Home Page</label>
+                    <input type="text" class="form-control" id="homePage" name="homePage" [(ngModel)]="project.homePage"
                         [ngModelOptions]="{standalone: true}" ngModel placeholder="E.g. www.crossminer.org"
                         #homepageInput="ngModel" required minlength="1" maxlength="100">
                     <div *ngIf="homepageInput.dirty && homepageInput.invalid">

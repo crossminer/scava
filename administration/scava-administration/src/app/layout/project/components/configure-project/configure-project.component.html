@@ -51,10 +51,10 @@
                     </div>
                 </td>
             </tr>
-            <tr *ngIf="project?.homepage">
+            <tr *ngIf="project?.homePage">
                 <td>Home Page</td>
                 <td>
-                    <a href="{{project?.homepage}}" target="_blank">{{project?.homepage}}</a>
+                    <a href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
                 </td>
             </tr>
             <tr *ngIf="project?.vcsRepositories.length !== 0">
