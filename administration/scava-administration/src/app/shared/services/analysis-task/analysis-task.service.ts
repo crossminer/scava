@@ -80,7 +80,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${analysisTaskId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 

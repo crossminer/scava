@@ -9,7 +9,7 @@ import { ExecutionTask } from '../execution-task.model';
 })
 export class AnalysisTaskMgmtDeleteDialogComponent {
 
-  executionTask: ExecutionTask;
+  analysisTaskId: string;
 
   constructor(
     public activeModal: NgbActiveModal,

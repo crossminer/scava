@@ -23,12 +23,12 @@
             <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis In Progress</span>
           </div>
         </div>
-        <div class="row" *ngIf="project.homePage">
+        <div class="row" *ngIf="project.homepage">
           <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
             <b style="white-space: nowrap">Home Page :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-            <a style="white-space: nowrap" href="{{project?.homePage}}" title="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
+            <a style="white-space: nowrap" href="{{project?.homepage}}" title="{{project?.homepage}}" target="_blank">{{project?.homepage}}</a>
           </div>
         </div>
         <div class="row" *ngIf="project.vcsRepositories.length !== 0">
