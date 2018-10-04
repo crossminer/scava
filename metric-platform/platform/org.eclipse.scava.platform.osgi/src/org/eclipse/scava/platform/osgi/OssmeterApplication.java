@@ -65,10 +65,6 @@ public class OssmeterApplication implements IApplication{
 		// Ensure OSGi contributors are active
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
 		
-		// Update MetricProvidrList
-		MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
-		init.initialiseMetricProviderRepository();
-		
 		ExecutorService executorService = Executors.newFixedThreadPool(this.analysisThreadNumber);
 		
 		if (worker) {
@@ -78,6 +74,10 @@ public class OssmeterApplication implements IApplication{
 		
 		// Start web servers
 		if (apiServer) {
+			// Update MetricProvidrList
+			MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
+			init.initialiseMetricProviderRepository();
+		
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}
 		
