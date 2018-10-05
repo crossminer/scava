@@ -21,7 +21,7 @@ The use cases that will be covered are:
 * [GrimoireLab Dashboard with Sentiment Analysis included](sentiment)
 * Messages Dashboard with Top Threads and Top Topics
 * System Configuration Dashboard()
-* [Data Extraction from Knowledge Base](ossmeter-metrics)
+* [Data Extraction from Knowledge Base](scava-metrics) ([deprecated ossmeter version](ossmeter-metrics))
 * Cross-project relationship dashboard
 * Web Dashboard access from IDE plugin
 
