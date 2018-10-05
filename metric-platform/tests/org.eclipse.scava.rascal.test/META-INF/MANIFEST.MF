@@ -150,7 +150,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.dependency.model.maven;bundle-version="1.0.0",
  org.eclipse.scava.metricprovider.trans.rascal.dependency.maven;bundle-version="1.0.0",
  org.eclipse.scava.dependency.model.osgi;bundle-version="1.0.0",
- org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;bundle-version="1.0.0"
+ org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;bundle-version="1.0.0",
+ org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.json,

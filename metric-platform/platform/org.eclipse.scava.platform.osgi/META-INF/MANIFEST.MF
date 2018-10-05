@@ -9,9 +9,11 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
- org.apache.log4j
+ org.apache.log4j,
+ org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.osgi,
- org.eclipse.scava.platform.osgi.executors,
+ org.eclipse.scava.platform.osgi.analysis,
+ org.eclipse.scava.platform.osgi.api,
  org.eclipse.scava.platform.osgi.services

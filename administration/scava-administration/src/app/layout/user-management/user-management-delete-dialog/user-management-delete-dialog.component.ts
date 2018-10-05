@@ -5,7 +5,7 @@ import { User } from '../user-model';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'jhi-user-mgmt-delete-dialog',
+    selector: 'app-user-mgmt-delete-dialog',
     templateUrl: './user-management-delete-dialog.component.html'
 })
 export class UserMgmtDeleteDialogComponent {

@@ -1,40 +1,72 @@
-<div class="container">
-    <h4>Register project</h4>
-    <hr/>
+<div style="padding-top:20px;">
+    <h2>Register project</h2>
+    <hr />
 
-    <form [formGroup]="form" #addProjectForm="ngForm" name="addProjectForm" novalidate (ngSubmit)="save()">
+    <form [formGroup]="form" role="form" #addProjectForm="ngForm" name="addProjectForm" novalidate (ngSubmit)="save()">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="form-group">
                     <label for="projectName">Project Name</label>
-                    <input type="text" class="form-control" id="projectName" name="projectName" [(ngModel)]="project.name" [ngModelOptions]="{standalone: true}"
-                        aria-describedby="projectName" placeholder="E.g. CROSSMINER">
+                    <input type="text" class="form-control" id="projectName" name="projectName" [(ngModel)]="project.name"
+                        [ngModelOptions]="{standalone: true}" aria-describedby="projectName" placeholder="E.g. CROSSMINER"
+                        #nameInput="ngModel" required minlength="1" maxlength="50">
+                    <div *ngIf="nameInput.dirty && nameInput.invalid">
+                        <small class="form-text text-danger" *ngIf="nameInput.errors.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="nameInput.errors.maxlength">
+                            This field cannot be longer than 50 characters.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="nameInput.errors.pattern">
+                            This field can only contain letters, digits.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description" [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}"
-                        rows="4" placeholder="E.g."></textarea>
+                    <textarea class="form-control" id="description" name="description" [(ngModel)]="project.description"
+                        [ngModelOptions]="{standalone: true}" rows="4" placeholder="E.g." #descriptionInput="ngModel"
+                        required minlength="1" maxlength="100"></textarea>
+                    <div *ngIf="descriptionInput.dirty && descriptionInput.invalid">
+                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.maxlength">
+                            This field cannot be longer than 100 characters.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.pattern">
+                            This field can only contain letters, digits.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="homePage">HomePage</label>
-                    <input type="text" class="form-control" id="homePage" name="homePage" [(ngModel)]="project.homepage" [ngModelOptions]="{standalone: true}"
-                        ngModel placeholder="E.g. www.crossminer.org">
+                    <label for="homePage">Home Page</label>
+                    <input type="text" class="form-control" id="homePage" name="homePage" [(ngModel)]="project.homePage"
+                        [ngModelOptions]="{standalone: true}" ngModel placeholder="E.g. www.crossminer.org"
+                        #homepageInput="ngModel" required minlength="1" maxlength="100">
+                    <div *ngIf="homepageInput.dirty && homepageInput.invalid">
+                        <small class="form-text text-danger" *ngIf="homepageInput.errors.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="homepageInput.errors.maxlength">
+                            This field cannot be longer than 50 characters.
+                        </small>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="informationSources">Information Sources</label>
-                    <br/>
+                <div class="form-group"> <label for="informationSources">Information Sources</label>
+                    <br />
                     <small>Click the button below to add new information sources to the project.</small>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <small>Version Control Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'git')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('vcs', 'git')">
                                 <span>Git</span>
                             </button>
-                        </li>
+                        </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('vcs', 'svn')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('vcs', 'svn')">
                                 <span>SVN</span>
                             </button>
                         </li>
@@ -42,17 +74,17 @@
                     <small>Issue Tracking Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'bugzilla')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'bugzilla')">
                                 <span>Bugzilla</span>
                             </button>
-                        </li>
+                        </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'sourceforge')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'sourceforge')">
                                 <span>SourceForge</span>
                             </button>
-                        </li>
+                        </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('bts', 'redmine')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'redmine')">
                                 <span>Redmine</span>
                             </button>
                         </li>
@@ -60,7 +92,7 @@
                     <small>Communication Channels</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-light" (click)="addInformationSource('communication_channels', 'nntp')">
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('communication_channels', 'nntp')">
                                 <span>NNTP</span>
                             </button>
                         </li>
@@ -88,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -114,26 +146,30 @@
                                     <div *ngIf="form.get('bts').value[i].type === 'bugzilla'">
                                         <div class="form-group">
                                             <label for="product">Product</label>
-                                            <input type="text" class="form-control" id="product" name="product" formControlName="product">
+                                            <input type="text" class="form-control" id="product" name="product"
+                                                formControlName="product">
                                         </div>
                                         <div class="form-group">
                                             <label for="component">Component</label>
-                                            <input type="text" class="form-control" id="component" name="component" formControlName="component">
+                                            <input type="text" class="form-control" id="component" name="component"
+                                                formControlName="component">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('bts').value[i].type === 'redmine'">
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                formControlName="name">
                                         </div>
                                         <div class="form-group">
                                             <label for="project">Project</label>
-                                            <input type="text" class="form-control" id="project" name="project" formControlName="project">
+                                            <input type="text" class="form-control" id="project" name="project"
+                                                formControlName="project">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -161,14 +197,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <button type="submit" [disabled]="!addProjectForm.form.valid || isSaving" class="btn btn-primary" class="block">Register project</button>
+        <hr />
+        <div>
+            <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
+                <i class="fa fa-ban"></i>&nbsp;
+                <span>Cancel</span>
+            </button>&nbsp;
+            <button type="submit" [disabled]="addProjectForm.form.invalid || isSaving" class="btn btn-outline-dark btn-sm">
+                <i class="fa fa-save"></i>&nbsp;
+                <span>Save</span>
+            </button>
         </div>
     </form>
 </div>

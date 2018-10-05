@@ -27,7 +27,7 @@ export class UserManagementComponent implements OnInit {
   loadAll() {
     this.userManagementService.query().subscribe(
       (success) => this.onSuccess(success),
-      (error) => this.onError(error)
+      (error) => this.onShowMessage(error)
     );
   }
 
@@ -51,11 +51,11 @@ export class UserManagementComponent implements OnInit {
     modalRef.componentInstance.user = user;
     modalRef.result.then(
       result => {
-        console.log('delete success');
+        this.onShowMessage('delete success');
         this.loadAll();
       },
       reason => {
-        console.log('delete faild');
+        this.onShowMessage('delete faild');
         this.loadAll();
       }
     );
@@ -65,8 +65,8 @@ export class UserManagementComponent implements OnInit {
     this.users = data;
   }
 
-  private onError(error) {
-    console.log(error);
+  onShowMessage(msg: any) {
+    console.log(msg);
   }
 
 }

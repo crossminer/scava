@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from '../../project.model';
+import { Project, IProject } from '../../project.model';
 import { ImportProjectService } from '../../../../shared/services/project-service/import-project.service';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ImportProjectComponent implements OnInit {
 
-    project: Project = {};
+    project: Project;
     isSaving: boolean;
 
     constructor(
@@ -20,15 +20,25 @@ export class ImportProjectComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.project = new Project();
     }
 
     save() {
         this.isSaving = true;
         this.importProjectService.importProject(this.project).subscribe(resp => {
-            console.log(resp);
-        }, error => {
-            console.log(error);
+            var project: IProject = resp as IProject;
+            this.router.navigate(['/project']);
+        }, (error) => {
+            this.onShowMessage(error);
         });
+    }
+
+    previousState() {
+        this.router.navigate(['project']);
+    }
+
+    onShowMessage(msg: any) {
+        console.log(msg);
     }
 
 }
