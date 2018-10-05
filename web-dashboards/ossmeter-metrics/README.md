@@ -1,4 +1,13 @@
-# OSSMeter metrics Dashboard
+# Deprecated
+
+The document and tools in this directory were used in CROSSMINER project for the first
+version of the deliverable D7.3. All this work is now superseded by the [Scava Metrics](../scava-metrics).
+Please use this one understand how the CROSSMINER metrics are visualized in
+the Web Dashboards.
+
+---
+
+### OSSMeter metrics Dashboard:
 
 The OSSMeter metrics dashboard shows all metrics collected by OSSMeter platform of the type `history`. Metrics can be filtered with:
 
@@ -10,7 +19,7 @@ The OSSMeter metrics dashboard shows all metrics collected by OSSMeter platform 
 * Topic
 
 
-## Install
+#### Install
 
 The first step is to create a [OSSMETER mongodb database with data from projects](/web-dashboards#init-ossmeter-mongodb-with-grimoirelab-data).
 
@@ -21,12 +30,12 @@ can be used in Kibana.
 
 The data processing is done with [GrimoireLab python platform](/web-dashboards#install-grimoirelab-python-env). Inside the python env execute.
 
-### Importing the Scava metrics using the REST API
+##### Importing the Scava metrics using the REST API
 
 Follow the steps described in [Scava Metrics](/web-dashboards/scava-metrics#importing-the-scava-metrics-using-the-rest-api).
 
 
-### Importing from MongoDB
+##### Importing from MongoDB
 
 Now the tool can be executed with:
 

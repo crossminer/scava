@@ -15,6 +15,13 @@ You can access an already deployed Scava Metrics Project dashboard at:
 
 https://crossminer.biterg.io/app/kibana#/dashboard/ScavaProject
 
+## Using the Scava Deployment project
+
+Using the project [Scava Deployment Project](https://github.com/crossminer/scava-deployment) the
+Scava Project dashboard with all the metrics included in Scava is automatically created and deployed.
+
+In the next sections the use of the toolchain is described.
+
 ## Install
 
 The first step is to create a [OSSMETER mongodb database with data from projects](/web-dashboards#init-ossmeter-mongodb-with-grimoirelab-data).
