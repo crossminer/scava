@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
-import { Project } from '../../project.model';
+import { Project,IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-project',
@@ -11,16 +12,18 @@ import { CreateProjectService } from '../../../../shared/services/project-servic
 export class CreateProjectComponent implements OnInit {
 
   form: FormGroup;
-  project: Project = {};
+  project: Project;
   isSaving: boolean;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private createProjectService: CreateProjectService,
   ) {
   }
 
   ngOnInit() {
+    this.project = new Project();
     this.buildForm();
     this.isSaving = false;
   }
@@ -108,14 +111,15 @@ export class CreateProjectComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    this.project.vcs = this.saveInformationSources('vcs');
+    this.project.vcsRepositories = this.saveInformationSources('vcs');
     this.project.bts = this.saveInformationSources('bts');
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
-      console.log(resp)
-      debugger
+      this.onShowMessage(resp)
+      let project : IProject = resp as IProject;
+      this.router.navigate(['/project']);
     }, error => {
-      console.log(error)
+      this.onShowMessage(error)
     })
 
   }
@@ -123,6 +127,14 @@ export class CreateProjectComponent implements OnInit {
   saveInformationSources(sourceName: string) {
     const control = <FormArray>this.form.get(sourceName);
     return control.value;
+  }
+
+  previousState() {
+    this.router.navigate(['project']);
+  }
+
+  onShowMessage(msg: any){
+    console.log(msg);
   }
 
 }

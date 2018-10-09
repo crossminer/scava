@@ -10,48 +10,41 @@
 package org.eclipse.scava.platform.osgi;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import org.eclipse.scava.platform.Configuration;
-import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.platform.osgi.executors.SlaveScheduler;
-import org.eclipse.scava.platform.osgi.services.ApiStartServiceToken;
-import org.eclipse.scava.platform.osgi.services.IWorkerService;
-import org.eclipse.scava.platform.osgi.services.MasterService;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
+import org.eclipse.scava.platform.osgi.services.MetricProviderInitialiser;
+import org.eclipse.scava.platform.osgi.services.TaskCheckExecutor;
+import org.eclipse.scava.platform.osgi.services.WorkerExecutor;
 
 import com.googlecode.pongo.runtime.PongoFactory;
 import com.googlecode.pongo.runtime.osgi.OsgiPongoFactoryContributor;
 import com.mongodb.Mongo;
 
-public class OssmeterApplication implements IApplication, ServiceTrackerCustomizer<IWorkerService, IWorkerService> {
+public class OssmeterApplication implements IApplication{
 	
-	protected boolean slave = false;
-	protected boolean apiServer = false;
-	protected boolean master = false; 
+	private boolean worker = false;
+	private String workerId = null;
+	private boolean apiServer = false;
 	
-	protected OssmeterLogger logger;
-	protected boolean done = false;
-	protected Object appLock = new Object();
+	private OssmeterLogger logger;
+	private boolean done = false;
+	private Object appLock = new Object();
 	
-	protected Mongo mongo;
-	protected Properties prop;
+	private Mongo mongo;
+	private Properties prop;
 	
-	protected ServiceTracker<IWorkerService, IWorkerService> workerServiceTracker;
-	protected ServiceRegistration<IWorkerService> workerRegistration;
-	
-	protected List<IWorkerService> workers;
-	private MasterService masterService;
+	private int analysisThreadNumber;
 	
 	public OssmeterApplication() {
-		workers = new ArrayList<IWorkerService>();
+		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();
 	}
 	
 	@Override
@@ -67,25 +60,30 @@ public class OssmeterApplication implements IApplication, ServiceTrackerCustomiz
 
 		// Connect to Mongo - single instance per node
 		mongo = Configuration.getInstance().getMongoConnection();
+		Platform platform = new Platform(mongo);
 		
 		// Ensure OSGi contributors are active
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
 		
-		// If master, start
-		if (master) {
-			masterService = new MasterService(workers);
-			masterService.start();
-		}
-
-		if (slave) {
-			SlaveScheduler slave = new SlaveScheduler(mongo);
-			slave.run();
+		ExecutorService executorService = Executors.newFixedThreadPool(this.analysisThreadNumber);
+		
+		if (worker) {
+			WorkerExecutor workerExecutor = new WorkerExecutor(platform,workerId);
+			executorService.execute(workerExecutor);
 		}
 		
 		// Start web servers
 		if (apiServer) {
+			// Update MetricProvidrList
+			MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
+			init.initialiseMetricProviderRepository();
+		
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}
+		
+		// Launch supervisor daily checking
+		TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(platform);
+		executorService.execute(checkerExecutor);
 
 		// Now, rest.
   		waitForDone();
@@ -114,10 +112,12 @@ public class OssmeterApplication implements IApplication, ServiceTrackerCustomiz
 				}
 				
 				i++;
-			} else if ("-master".equals(args[i])) { 
-				master = true;
-			} else if ("-slave".equals(args[i])) { 
-				slave = true;
+			}else if ("-worker".equals(args[i])) { 
+				worker = true;
+				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-ossmeterConfig".equals(args[i]) ) {
+					this.workerId = args[i+1];
+				}
+				
 			} else if ("-apiServer".equals(args[i])) { 
 				apiServer = true;
 			}
@@ -128,13 +128,8 @@ public class OssmeterApplication implements IApplication, ServiceTrackerCustomiz
 	public void stop() {
 		synchronized (appLock) {
 			done = true;
-			appLock.notifyAll();
-			
-			// Clean up
-			if (master && masterService != null) masterService.shutdown();
+			appLock.notifyAll();		
 			mongo.close();
-			workerRegistration.unregister();
-			workerServiceTracker.close();
 		}	
 	}
 	
@@ -151,21 +146,5 @@ public class OssmeterApplication implements IApplication, ServiceTrackerCustomiz
 		}
 	}
 
-	@Override
-	public IWorkerService addingService(ServiceReference<IWorkerService> reference) {
-		IWorkerService worker = Activator.getContext().getService(reference);
-		workers.add(worker);
-		return worker;
-	}
 
-	@Override
-	public void modifiedService(ServiceReference<IWorkerService> reference, IWorkerService service) {
-		
-		
-	}
-
-	@Override
-	public void removedService(ServiceReference<IWorkerService> reference, IWorkerService service) {
-		workers.remove(service);
-	}
 }

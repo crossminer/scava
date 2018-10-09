@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.AnalysisTask"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.MetricExecution"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.SchedulingInformation"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.MetricProvider"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.DataStorage"/>
+    <class name="org.eclipse.scava.platform.analysis.data.model.Worker"/>
+  </extension>
+</plugin>

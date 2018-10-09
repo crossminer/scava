@@ -240,6 +240,7 @@
 	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.osgi</module>
     <module>platform/org.eclipse.scava.platform</module>
     <module>platform/org.eclipse.scava.platform.admin</module>
+    <module>platform/org.eclipse.scava.platform.analysis.data</module>
     <module>platform/org.eclipse.scava.platform.client.api</module>
     <module>platform/org.eclipse.scava.platform.feature</module>
     <module>platform/org.eclipse.scava.platform.osgi</module>

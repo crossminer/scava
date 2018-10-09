@@ -1,49 +1,191 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+<div style="padding-top:20px;">
+    <div class="page-header">
+        <h2>{{project?.name}}</h2>
+        <hr />
+    </div>
 
+    <table class="table table-condensed table-responsive table-project-information">
+        <tbody>
+            <tr>
+                <td>Project Name</td>
+                <td>
+                    <div>
+                        <span *ngIf="project?.full_name; else otherCase">{{project?.full_name}}</span>
+                        <ng-template #otherCase>{{project?.shortName}}</ng-template>
+                    </div>
+                </td>
+                <td class="panel" rowspan="5">
+                    <div *ngIf="globalStatus == 'up-to-date' && executionTasks?.length !== 0 && hasAuthorities" class="panel-profile up-to-date">
+                        <div class="panel-body text-center">
+                            <i class="fa fa-4x fa-check-circle"></i>
+                            <h3 class="panel-title">
+                                <strong>Up To Date</strong>
+                            </h3>
+                        </div>
+                    </div>
+                    <div *ngIf="globalStatus == 'in-progress' && executionTasks?.length !== 0 && hasAuthorities" class="panel-profile in-progress">
+                        <div class="panel-body text-center">
+                            <i class="fa fa-4x fa-spinner"></i>
+                            <h3 class="panel-title">
+                                <strong>Analysis In Progress</strong>
+                            </h3>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="project?._type">
+                <td>Project Type</td>
+                <td>
+                    <div *ngIf="project?._type.split('.')[project?._type.split('.').length - 1] as projectType">
+                        <span *ngIf="projectType == 'GitHubRepository';else secondCase">
+                            <img title="GitHub Repository" class="project-type-img" width="10%" src="assets/images/github.png">
+                            GitHub Repository
+                        </span>
+                        <ng-template #secondCase>
+                            <span *ngIf="projectType == 'EclipseProject';else thirdCase">
+                                <img title="Eclipse Project" class="project-type-img" width="17%" src="assets/images/eclipse-project.jpg">
+                                Eclipse Project
+                            </span>
+                        </ng-template>
+                        <ng-template #thirdCase>Other Projects</ng-template>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="project?.homePage">
+                <td>Home Page</td>
+                <td>
+                    <a href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
+                </td>
+            </tr>
+            <tr *ngIf="project?.vcsRepositories.length !== 0">
+                <td>VCS Repositories</td>
+                <td>
+                    <span *ngFor="let vcs of project?.vcsRepositories">
+                        <a href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br />
+                    </span>
+                </td>
+            </tr>
+            <tr *ngIf="project?.downloadsUrl">
+                <td>Download URL :</td>
+                <td><a href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a></td>
+            </tr>
+            <tr *ngIf="project?.size">
+                <td>Project Size</td>
+                <td>{{project?.size}}</td>
+            </tr>
+        </tbody>
+    </table>
 
-<div class="project-title">
-    <div class=" panel-profile">
-        <div class="panel-body text-center">
-            <i class="fa fa-4x fa-check-circle"></i>
-            <h3 class="panel-title">
-                <strong>up to date</strong>
-            </h3>
+    <div *ngIf="hasAuthorities">
+        <div class="table-responsive">
+            <table class="table text-white bg-secondary mb-3">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            <span>Label</span>
+                        </th>
+                        <th>
+                            <span>Execution Metrics</span>
+                        </th>
+                        <th>
+                            <span>Status</span>
+                        </th>
+                        <th>
+                            <span>Start Date</span>
+                        </th>
+                        <th>
+                            <span>End Date</span>
+                        </th>
+                        <th>
+                            <span>Progress</span>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="executionTasks">
+                    <tr *ngFor="let executionTask of executionTasks">
+                        <td>
+                            <div id="task-type-icon">
+                                <span *ngIf="executionTask.type == 'SINGLE_EXECUTION'; else daily"><i title="{{executionTask.type}}"
+                                        class="fa fa-arrow-right"></i></span>
+                                <ng-template #daily><i title="{{executionTask.type}}" class="fa fa-refresh" aria-hidden="true">&nbsp;</i></ng-template>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>{{executionTask?.label}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <a [routerLink]="" (click)="showMetricProviderList(executionTask.metricExecutions)">{{executionTask?.metricExecutions.length}}
+                                    Metrics</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>{{executionTask?.scheduling.status}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span *ngIf="executionTask.startDate">{{executionTask?.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span *ngIf="executionTask.endDate;else none">{{executionTask?.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+                                <ng-template #none>
+                                    <span style="text-align: right">None</span>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress progress-div">
+                                <div class="progress-bar bg-dark" role="progressbar" [ngStyle]="setProgressStyles(executionTask)"
+                                    aria-valuemin="0" aria-valuemax="100">
+                                    <span *ngIf="executionTask?.scheduling?.progress">{{executionTask?.scheduling.progress}}%</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Start Task" (click)="startTask(executionTask?.analysisTaskId)">
+                                    <i class="fa fa-play" aria-hidden="true"></i>&nbsp;
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Stop Task" (click)="stopTask(executionTask?.analysisTaskId)">
+                                    <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Reset Task" (click)="resetTask(executionTask?.analysisTaskId)">
+                                    <i class="fa fa-undo" aria-hidden="true"></i>&nbsp;
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Update Task"
+                                    [routerLink]="['./', 'update-task', executionTask.label]">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Task" (click)="deleteTask(executionTask?.analysisTaskId)">
+                                    <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <div class="pull-right" [routerLink]="['./', 'add-task']" style="padding: 0.5em;">
+                                <button type="button" class="btn btn-outline-dark btn-sm">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                                    <span class="d-none d-md-inline">Create</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
-    <h2 class="display-3">{{project?.name}}</h2>
-
-    <h4>
-        <p>{{project?.description}}</p>
-    </h4>
 </div>
-
-
-
-
-
-<table class="table table-condensed table-responsive table-project-information">
-    <tbody>
-        <tr>
-            <td>Project Type</td>
-            <td>{{project?._type}}</td>
-        </tr>
-        <tr>
-            <td>URL</td>
-            <td>
-                <a href="{{project?.html_url}}">{{project?.html_url}}</a>
-            </td>
-
-
-        </tr>
-        <tr>
-            <td>Repository</td>
-            <td>
-                <a href="{{project?.svn_url}}">{{project?.svn_url}}</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Size</td>
-            <td>{{project?.size}}</td>
-        </tr>
-    </tbody>
-</table>
