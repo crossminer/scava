@@ -7,8 +7,6 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-master -slave -apiServer
-      </programArgs>
       <vmArgsLin>-Xmx8g
       </vmArgsLin>
       <vmArgsMac>-Xmx4g -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts

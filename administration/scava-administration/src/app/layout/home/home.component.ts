@@ -9,11 +9,12 @@ import { routerTransition } from '../../router.animations';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(
-  ) {
+  constructor() {
    }
 
-  ngOnInit() {
+  ngOnInit() { 
+  
+
   }
 
 }

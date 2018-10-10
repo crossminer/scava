@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.ImplementationSmells"/>
+    <class name="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.Smell"/>
+    <class name="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model.CustomSmell"/>
+  </extension>
+<extension
+      point="org.eclipse.scava.platform.metricprovider">
+   <metricProvider
+         provider="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.PuppetImplementationTransMetricProvider">
+   </metricProvider>
+</extension>
+
+</plugin>

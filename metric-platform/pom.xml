@@ -111,6 +111,10 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.requestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.commits</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.committers</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>

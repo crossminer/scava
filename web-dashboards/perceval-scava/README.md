@@ -1,6 +1,6 @@
 # perceval-scava
 
-Bundle of Perceval backends for CROSSMINER ecosystem.
+Perceval backend for extracting the CROSSMINER metrics.
 
 ## Backends
 

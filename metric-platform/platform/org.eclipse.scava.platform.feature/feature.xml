@@ -1032,6 +1032,30 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+    <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.platform.communicationchannel.nntp"

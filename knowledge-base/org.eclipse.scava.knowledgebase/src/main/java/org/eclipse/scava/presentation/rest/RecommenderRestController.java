@@ -21,6 +21,7 @@ import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
@@ -66,8 +67,57 @@ public class RecommenderRestController {
 	@RequestMapping(value = "recommended_library", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getRecommendedLibraries(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
-		return recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
+		Recommendation r =recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
+		for (RecommendationItem ri : r.getRecommendationItems()) {
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.xerial.snappy:snappy-java")){
+				ri.getRecommendedLibrary().setLibraryName("org.xerial.snappy:snappy-java:1.1.7.2");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-api")){
+				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-api:1.8.0-beta2");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("joda-time:joda-time")){
+				ri.getRecommendedLibrary().setLibraryName("joda-time:joda-time:2.10");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("com.google.code.gson:gson")){
+				ri.getRecommendedLibrary().setLibraryName("com.google.code.gson:gson:2.8.5");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.zookeeper:zookeeper")){
+				ri.getRecommendedLibrary().setLibraryName("org.apache.zookeeper:zookeeper:3.4.13");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.httpcomponents:httpclient")){
+				ri.getRecommendedLibrary().setLibraryName("org.apache.httpcomponents:httpclient:4.5.6");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.elasticsearch:elasticsearch")){
+				ri.getRecommendedLibrary().setLibraryName("org.elasticsearch:elasticsearch:6.4.0");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.codehaus.jackson:jackson-mapper-asl")){
+				ri.getRecommendedLibrary().setLibraryName("org.codehaus.jackson:jackson-mapper-asl:1.9.13");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("log4j:log4j")){
+				ri.getRecommendedLibrary().setLibraryName("log4j:log4j:1.2.17");
+			}
+			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-log4j12")){
+				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-log4j12:1.7.25");
+			}
+			/*
+			 * 
+org.xerial.snappy:snappy-java:1.1.7.2
+org.slf4j:slf4j-api:1.8.0-beta2
+joda-time:joda-time:2.10
+com.google.code.gson:gson:2.8.5
+org.apache.zookeeper:zookeeper:3.4.13
+org.apache.httpcomponents:httpclient:4.5.6
+org.elasticsearch:elasticsearch:6.4.0
+org.codehaus.jackson:jackson-mapper-asl:1.9.13
+log4j:log4j:1.2.17
+org.slf4j:slf4j-log4j12:1.7.25
+			 */
+
+			
+		}
+		return r;
 	}
+	
 	@ApiOperation(value = "This resource is used to retrieve code patterns from code context.")
 	@RequestMapping(value = "recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getApiCallRecommendation(
@@ -78,8 +128,7 @@ public class RecommenderRestController {
 	@RequestMapping(value = "recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getApiDocumentationRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
-
-		return null;
+		return recommenderManager.getRecommendation(query, RecommendationType.API_DOCUMENTATION);
 	}
 
 	@ApiOperation(value = "This resource is used to retrieve projects that are similar to a given project.")
