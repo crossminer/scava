@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Softeam
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.osgi.analysis;
 
 import java.io.IOException;
@@ -82,13 +91,6 @@ public class ProjectAnalyser {
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
 	
-//			List<List<IMetricProvider>> dailyBranches = filterMetricByExecutionDate(metricBranches,date,project.getShortName());
-//			if(dailyBranches.isEmpty()) {
-//				logger.info("All Metric Already Executed at this Date: " + date + ", project: " + project.getName());
-//				
-//				continue;
-//			}
-
 			ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
@@ -123,7 +125,7 @@ public class ProjectAnalyser {
 			
 			// Now fun the factoids: 
 			// FIXME: Should factoids only run on the last date..? It depends on whether factoid results can 
-			// depend on other factoids...
+			// depend on other 0669...
 			// TODO: Should check if in error state before and after factoids
 			if (factoids.size() > 0) {
 				logger.info("Executing factoids.");
@@ -132,9 +134,6 @@ public class ProjectAnalyser {
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
 			}
 
-			// FIXME: We need to re-query the DB as we're holding onto an old instance of the project object
-			// Need to find a way around this - updating to the newer version of the Mongo Java client may help as it
-			// provides a new, threadsafe class called MongoClient
 			project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(project.getShortName());
 			
 			// Update meta-data
@@ -180,38 +179,6 @@ public class ProjectAnalyser {
 		return true;
 	}
 
-//	private List<List<IMetricProvider>> filterMetricByExecutionDate(List<List<IMetricProvider>> metricBranches,Date date,String projectId) {
-//		List<List<IMetricProvider>> filtredBranchs = new ArrayList<>();
-//		
-//		
-//		for(List<IMetricProvider> branch : metricBranches) {
-//			List<IMetricProvider> filtredBranch = new ArrayList<>();		
-//			for(IMetricProvider metric : branch) {
-//				if(!alreadyExecuted(metric,date,projectId)) {
-//					filtredBranch.add(metric);
-//				}
-//			}
-//			if(!filtredBranch.isEmpty()) {
-//				filtredBranchs.add(filtredBranch);
-//			}
-//			
-//		}		
-//		return filtredBranchs;
-//	}
-//
-//	private boolean alreadyExecuted(IMetricProvider metric, Date date,String projectId) {
-//		ProjectMetricProvider mpd = schedulingService.findMetricProviderScheduling(projectId,metric.getIdentifier());
-//		try {
-//			Date lastExec = new Date(mpd.getLastExecutionDate());	
-//			// Check we haven't already executed the MP for this day.
-//			if (date.compareTo(lastExec) < 0) {
-//				return true;
-//			}
-//		}  catch (NumberFormatException e) {
-//			e.printStackTrace();
-//		}
-//		return false;
-//	}
 
 	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
 		List<IMetricProvider> filtredProviders = new ArrayList<>();

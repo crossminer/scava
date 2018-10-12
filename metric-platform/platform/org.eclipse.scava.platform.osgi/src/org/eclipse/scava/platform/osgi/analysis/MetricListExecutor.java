@@ -45,7 +45,6 @@ public class MetricListExecutor implements Runnable {
 	protected Platform platform;
 	
 	// FIXME: The delta object already references a Project object. Rascal metrics seem to
-	// use this for some reason. Is it an issue???????
 	public MetricListExecutor(Platform platform,String projectId,String taskId, ProjectDelta delta, Date date) {
 		this.projectId = projectId;
 		this.taskId = taskId;
@@ -148,45 +147,5 @@ public class MetricListExecutor implements Runnable {
 		}
 		mp.setUses(uses);
 	}
-	
-//	/**
-//	 * Ensures that the project DB has the up-to-date information regarding
-//	 * the date of last execution.
-//	 * @param project
-//	 * @param provider
-//	 * @param date
-//	 * @param type
-//	 */
-//	protected void updateMetricProviderMetaData(Platform platform, Project project, IMetricProvider provider, Date date, MetricProviderType type) {
-//		// Update project MP meta-data
-//		MetricProviderExecution mp = getProjectModelMetricProvider(project, provider);
-//		if (mp == null) {
-//			mp = new MetricProviderExecution();
-//			project.getExecutionInformation().getMetricProviderData().add(mp);
-//			mp.setMetricProviderId(provider.getShortIdentifier());
-//			mp.setType(type);
-//		}	
-//		mp.setLastExecuted(date.toString()); 
-//		platform.getProjectRepositoryManager().getProjectRepository().sync();
-//	}
-	
-//	/**
-//	 * 
-//	 * @param project
-//	 * @param iProvider
-//	 * @return A MetricProvider (part of the Project DB) that matches the given IMetricProvider.
-//	 */
-//	protected MetricProviderExecution getProjectModelMetricProvider(Project project, IMetricProvider iProvider) {
-//		Iterator<MetricProviderExecution> it = project.getExecutionInformation().getMetricProviderData().iterator();
-//		MetricProviderExecution mp = null;
-//		while (it.hasNext()) {
-//			mp = it.next();
-//			if (mp == null) continue; //FIXME: intermittent bug adds nulls, but should have been fixed by synchonized block
-//			if (mp.getMetricProviderId().equals(iProvider.getIdentifier())) {
-//				return mp;
-//			}
-//		}
-//
-//		return null;
-//	}
+
 }
