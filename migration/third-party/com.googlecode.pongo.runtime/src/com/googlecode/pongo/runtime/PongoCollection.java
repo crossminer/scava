@@ -1,8 +1,8 @@
 package com.googlecode.pongo.runtime;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.googlecode.pongo.runtime.querying.QueryProducer;
 import com.mongodb.BasicDBList;
@@ -12,8 +12,8 @@ import com.mongodb.DBCollection;
 public abstract class PongoCollection<T extends Pongo> implements Iterable<T> {
 	
 	protected DBCollection dbCollection;
-	protected Set<Pongo> toSave = new HashSet<Pongo>();
-	protected Set<Pongo> toDelete = new HashSet<Pongo>();
+	protected Set<Pongo> toSave = new CopyOnWriteArraySet<Pongo>();
+	protected Set<Pongo> toDelete = new CopyOnWriteArraySet<Pongo>();
 	
 	public DBCollection getDbCollection() {
 		return dbCollection;

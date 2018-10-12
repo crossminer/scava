@@ -9,10 +9,11 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
             { path: '', redirectTo: 'login' },
+            { path: 'home', loadChildren: './home/home.module#HomeModule' },
             { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
             { path: 'password', loadChildren: './password/password.module#PasswordModule' },
-            { path: 'home', loadChildren: './home/home.module#HomeModule' },
             { path: 'project', loadChildren: './project/project.module#ProjectModule' },
+            { path: 'worker', loadChildren: './worker/worker.module#WorkerModule' },
             { path: 'user-management', loadChildren: './user-management/user-management.module#UserManagementModule' },
         ]
     }

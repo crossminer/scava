@@ -1,5 +1,4 @@
-<br>
-<div class="container">
+<div>
   <h2>Users</h2>
   <div class="table-responsive">
     <table class="table table-striped">
@@ -29,24 +28,18 @@
             <button class="btn btn-success btn-sm" *ngIf="user.activated" (click)="setActive(user, false)">Activated</button>
           </td>
           <td>
-            <div *ngFor="let authorithy of user.authorities">
-              <div *ngIf="authorithy !== 'ROLE_USER'">
-                <span class="badge badge-info">{{authorithy}}</span>
-              </div>
-              <div *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == '1'">
-                <span class="badge badge-info">NO ROLES ARE ASSINGED TO THIS USER</span>
-              </div>
+            <div *ngFor="let authorithy of user.authorities" style="display: inline">
+              <span *ngIf="authorithy !== 'ROLE_USER'" class="badge badge-info">{{authorithy}}</span>&nbsp;
+              <span *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == '1'" class="badge badge-info">NO ROLES ARE ASSINGED TO THIS USER</span>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group flex-btn-group-container">
-              <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+              <button type="submit" [routerLink]="['./', user.login, 'edit']" class="btn btn-outline-dark btn-sm" title="Edit User" >
                 <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
-                <span class="d-none d-md-inline">Edit</span>
-              </button>
-              <button type="button" (click)="deleteUser(user)" class="btn btn-danger btn-sm">
+              </button>&nbsp;
+              <button type="button" (click)="deleteUser(user)" class="btn btn-outline-dark btn-sm" title="Delete User">
                 <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
-                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>

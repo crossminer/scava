@@ -17,7 +17,11 @@ export class AppComponent implements OnInit {
                 localStorage.setItem("SERVICE_URL", data["SERVICE_URL"]);
             },
             error => {
-                console.log(error)
+                this.onShowMessage(error)
             });
+    }
+
+    onShowMessage(msg: any){
+        console.log(msg);
     }
 }

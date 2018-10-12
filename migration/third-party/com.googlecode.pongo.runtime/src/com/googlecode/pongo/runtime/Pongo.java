@@ -3,6 +3,7 @@ package com.googlecode.pongo.runtime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import com.mongodb.BasicDBObject;
@@ -148,7 +149,7 @@ public class Pongo {
 		if (date instanceof Date) {
 			return (Date)date;
 		} else if(date instanceof String) {
-			SimpleDateFormat f = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
+			SimpleDateFormat f = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy",Locale.UK);
 			
 			try {
 				return f.parse((String) date);

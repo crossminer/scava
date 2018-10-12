@@ -1,7 +1,7 @@
-<div class="container">
+<div style="padding-top:20px;">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <h4>Import project</h4>
+            <h2>Import project</h2>
             <hr>
             <div>
                 <span>If your project is hosted on Eclipse, SourceForge, or GitHub, you can simply paste the URL below and we'll
@@ -17,10 +17,24 @@
                 <form #importProjectForm="ngForm" novalidate name="importProjectForm" novalidate (ngSubmit)="save()">
                     <div class="form-group">
                         <label for="projectName">URL</label>
-                        <input type="text" class="form-control" name="url" id="url" [(ngModel)]="project.url" aria-describedby="url" placeholder="URL">
+                        <input type="text" class="form-control" name="url" id="url" [(ngModel)]="project.url" aria-describedby="url" placeholder="URL"
+                        #urlInput="ngModel" required minlength="1">
+                        <div *ngIf="urlInput.dirty && urlInput.invalid">
+                            <small class="form-text text-danger" *ngIf="urlInput.errors.required">
+                                This field is required.
+                            </small>
+                        </div>
                     </div>
+                    <hr/>
                     <div class="form-group">
-                        <button type="submit" [disabled]="!importProjectForm.form.valid || isSaving" class="btn btn-primary">Import project</button>
+                        <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
+                            <i class="fa fa-ban"></i>&nbsp;
+                            <span>Cancel</span>
+                        </button>&nbsp;
+                        <button type="submit" [disabled]="importProjectForm.form.invalid || isSaving" class="btn btn-outline-dark btn-sm">
+                            <i class="fa fa-save"></i>&nbsp;
+                            <span>Save</span>
+                        </button>
                     </div>
                 </form>
             </div>

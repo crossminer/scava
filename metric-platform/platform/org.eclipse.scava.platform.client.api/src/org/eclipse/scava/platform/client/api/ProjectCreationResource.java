@@ -41,17 +41,17 @@ import com.mongodb.Mongo;
 public class ProjectCreationResource extends ServerResource {
 	
 	public static void main(String[] args) throws Exception {
-		String j = "{\"name\":\"hi\",\"homepage\":\"hi\",\"description\":\"hi\",\"vcs\":[{\"name\":\"hi\",\"url\":\"hi\",\"type\":\"git\"}],\"bts\":[{\"product\":\"hi\",\"url\":\"hi\",\"component\":\"hi\"}],\"communication_channels\":[{\"name\":\"hi\",\"url\":\"hi\",\"newsgroup\":\"hi\"}]}";
+		String j = "{\"name\":\"hi\",\"homePage\":\"hi\",\"description\":\"hi\",\"vcsRepositories\":[{\"name\":\"hi\",\"url\":\"hi\",\"type\":\"git\"}],\"bts\":[{\"product\":\"hi\",\"url\":\"hi\",\"component\":\"hi\"}],\"communication_channels\":[{\"name\":\"hi\",\"url\":\"hi\",\"newsgroup\":\"hi\"}]}";
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode json = mapper.readTree(j);
 		
 		Project project = new Project();
 		project.setName(json.get("name").asText());
-		project.setHomePage(json.get("homepage").asText());
+		project.setHomePage(json.get("homePage").asText());
 		project.setDescription(json.get("description").asText());
 		
-		for (JsonNode vcs : (ArrayNode)json.get("vcs")) {
+		for (JsonNode vcs : (ArrayNode)json.get("vcsRepositories")) {
 			VcsRepository repo = null;
 			if (vcs.get("type").asText().equals("git")) {
 				repo = new SvnRepository();
@@ -91,10 +91,10 @@ public class ProjectCreationResource extends ServerResource {
 			// Translate into a Project object. FIXME
 			Project project = new Project();
 			project.setName(json.get("name").asText());
-			project.setHomePage(json.get("homepage").asText());
+			project.setHomePage(json.get("homePage").asText());
 			project.setDescription(json.get("description").asText());
 			
-			for (JsonNode vcs : (ArrayNode)json.get("vcs")) {
+			for (JsonNode vcs : (ArrayNode)json.get("vcsRepositories")) {
 				VcsRepository repo = null;
 				if (vcs.get("type").asText().equals("git")) {
 					repo = new GitRepository();

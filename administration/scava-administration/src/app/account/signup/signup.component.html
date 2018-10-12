@@ -1,4 +1,4 @@
-<div class="login-page" [@routerTransition]>
+<div class="login-page">
     <div class="row justify-content-md-center">
         <div class="col-sm-6 col-md-6 col-lg-6">
             <div>
@@ -11,33 +11,33 @@
             <div class="alert alert-success" *ngIf="success">
                 <strong>Registration saved!</strong> Please check your email for confirmation.
             </div>
+            <div class="alert alert-danger" *ngIf="!match">
+                The password and its confirmation do not match!
+            </div>
         </div>
     </div>
-
     <div class="row justify-content-md-center">
         <div class="col-md-4">
-            <form #f="ngForm" (ngSubmit)="register(f.value)" *ngIf="!success">
+            <form #f="ngForm" novalidate (ngSubmit)="register(f.value)" *ngIf="!success">
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" name="login" [(ngModel)]="login" #loginInput="ngModel" class="form-control input-underline input-lg" id="login"
-                            placeholder="User Name">
+                        <input type="text" name="login" [(ngModel)]="login" class="form-control input-underline input-lg" id="login"
+                            placeholder="User Name"  #loginInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
                         <div *ngIf="loginInput.dirty && loginInput.invalid">
                             <small class="form-text text-danger" *ngIf="loginInput.errors.required">
                                 This field is required.
                             </small>
-
                             <small class="form-text text-danger" *ngIf="loginInput.errors.maxlength">
                                 This field cannot be longer than 50 characters.
                             </small>
-
                             <small class="form-text text-danger" *ngIf="loginInput.errors.pattern">
                                 This field can only contain letters, digits and e-mail addresses.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="email" [(ngModel)]="email" #emailInput="ngModel" class="form-control input-underline input-lg" id="email"
-                            placeholder="Email">
+                        <input type="text" name="email" [(ngModel)]="email" class="form-control input-underline input-lg" id="email"
+                            placeholder="Email" #emailInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
                         <div *ngIf="emailInput.dirty && emailInput.invalid">
                             <small class="form-text text-danger" *ngIf="emailInput.errors.required">
                                 This field is required.
@@ -57,17 +57,23 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" [(ngModel)]="password" #passwordInput="ngModel" class="form-control input-underline input-lg"
-                            id="password" placeholder="Password" required>
+                        <input type="password" name="password" [(ngModel)]="password" class="form-control input-underline input-lg"
+                            id="password" placeholder="Password" #passwordInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
                         <div *ngIf="passwordInput.dirty && passwordInput.invalid">
-                            <small class="form-text text-danger" *ngIf="currentPasswordInput.errors.required">
+                            <small class="form-text text-danger" *ngIf="passwordInput.errors.required">
                                 Your password is required.
+                            </small>
+                            <small class="form-text text-danger" *ngIf="passwordInput.errors.minlength">
+                                Your confirmation password is required to be at least 4 characters.
+                            </small>
+                            <small class="form-text text-danger" *ngIf="passwordInput.errors.maxlength">
+                                Your confirmation password cannot be longer than 50 characters.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" #confirmPasswordInput="ngModel"  class="form-control input-underline input-lg"
-                            id="confirmPassword" placeholder="Confirm Password">
+                        <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" class="form-control input-underline input-lg"
+                            id="confirmPassword" placeholder="Confirm Password" #confirmPasswordInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
                         <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
                             <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required">
                                 Your confirmation password is required.
