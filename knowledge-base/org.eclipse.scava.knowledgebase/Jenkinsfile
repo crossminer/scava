@@ -14,6 +14,9 @@ pipeline {
       }
     }
     stage('Test Knowledge Base') {
+      lock('knowledge-base-test-lock') {
+        echo "Cannot run more than one knowledge base test at the same time. Locked."
+      }
       steps {
         configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
           dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
