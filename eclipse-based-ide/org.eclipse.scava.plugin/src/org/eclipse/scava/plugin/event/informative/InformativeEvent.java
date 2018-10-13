@@ -10,12 +10,17 @@
 
 package org.eclipse.scava.plugin.event.informative;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.scava.plugin.event.Event;
 import org.eclipse.scava.plugin.event.IEvent;
 
 public class InformativeEvent<ParameterType> extends Event<IInformativeEventListener<ParameterType>> implements
 		IInformativeEvent<ParameterType>{
 	public void invoke(ParameterType parameter) {
-		getListeners().forEach( listener -> listener.handle(parameter) );
+		List<IInformativeEventListener<ParameterType>> listeners = getListeners();
+		
+		getListeners().forEach( listener -> listener.handle(parameter));
 	}
 }

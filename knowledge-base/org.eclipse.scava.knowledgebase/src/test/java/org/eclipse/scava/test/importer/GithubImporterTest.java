@@ -9,36 +9,30 @@
  ******************************************************************************/
 package org.eclipse.scava.test.importer;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
-import org.eclipse.scava.business.model.GithubUser;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class GithubImporterTest {
 	@Autowired
@@ -47,7 +41,7 @@ public class GithubImporterTest {
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	
-	private static final Logger logger = Logger.getLogger(GithubImporterTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(GithubImporterTest.class);
 
 	@Before
 	public void init(){
@@ -64,7 +58,8 @@ public class GithubImporterTest {
 	}
 	@Test
 	public void importer() throws IOException, XmlPullParserException{
-		Artifact art = importer.importProject("pylerSM/Xinstaller");
+		Artifact art = importer.importProject("fasterxml/jackson-databind");
 		assertNotNull(art);
+		assertNotEquals(0, art.getDependencies());
 	}
 }

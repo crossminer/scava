@@ -42,7 +42,7 @@ public class TotalDownloadCounterMetricProvider extends AbstractHistoricalMetric
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
 		// TODO Auto-generated method stub
-		this.downloadCounterMetricProvider = (SourceForgeDownloadCounterMetricProvider)uses.get(0);
+		this.downloadCounterMetricProvider = (!uses.isEmpty()) ? (SourceForgeDownloadCounterMetricProvider)uses.get(0) : null;
 	}
 
 	@Override

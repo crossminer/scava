@@ -18,7 +18,7 @@ import org.rascalmpl.interpreter.StackTrace;
 public class Rasctivator implements BundleActivator {
 	private static final Logger LOGGER = OssmeterLoggerFactory.getInstance().makeNewLoggerInstance("rascalLogger");
 	private static BundleContext context;
-	
+
 	static BundleContext getContext() {
 		return context;
 	}
@@ -29,11 +29,11 @@ public class Rasctivator implements BundleActivator {
 	}
 
 	public static void logException(Object message, Throwable cause) {
-//		LOGGER.log(Priority.ERROR, message, cause);
+		//		LOGGER.log(Priority.ERROR, message, cause);
 		System.err.println(message);
 		cause.printStackTrace();
 	}
-	
+
 	public static void printRascalTrace(StackTrace trace) {
 		System.err.println("Rascal stack trace:\n" + trace);
 	}
@@ -43,5 +43,5 @@ public class Rasctivator implements BundleActivator {
 		Rasctivator.context = null;
 	}
 
-	
+
 }

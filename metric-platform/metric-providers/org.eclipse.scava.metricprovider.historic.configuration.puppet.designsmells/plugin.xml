@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.googlecode.pongo.runtime.osgi">
+      <class name="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.model.PuppetDesignHistoricMetricMetric"/>
+   </extension>
+   <extension point="org.eclipse.scava.platform.visualisation.metric">
+     <visualisation json="vis/historic.configuration.puppet.designsmells.json"/>
+  </extension>
+   <extension
+         point="org.eclipse.scava.platform.metricprovider">
+         <metricProvider
+         provider="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.PuppetDesignHistoricMetricProvider">
+   </metricProvider>
+   </extension>
+
+</plugin>

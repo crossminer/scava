@@ -1,5 +1,0 @@
-package org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs.model;
-
-class BugsUnansweredBugsHistoricMetric {
-   attr int numberOfUnansweredBugs;
-}

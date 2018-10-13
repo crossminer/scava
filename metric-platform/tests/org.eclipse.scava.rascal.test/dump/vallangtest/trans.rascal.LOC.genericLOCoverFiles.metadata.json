@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.LOC.genericLOCoverFiles"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.LOC.genericLOCoverFiles","background":true}],"uuid":"657ed2de2fd6462198f24322ee1786a0"}

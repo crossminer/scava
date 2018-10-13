@@ -33,7 +33,7 @@ public class LoggerWriter extends PrintWriter {
 		@Override
 		public void write(char[] cbuf, int off, int len) throws IOException {
 			String msg = new String(cbuf, off, len).trim();
-			
+
 			if (error) {
 				log.warn(msg);
 			}

@@ -69,6 +69,5 @@ public class JwtAuthenticationConfig {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-    
-    
+
 }

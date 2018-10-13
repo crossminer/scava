@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.Commits.repositories"},{"v":2,"key":{"url":1},"name":"url_1","ns":"gifhooktest.Commits.repositories","background":true}],"uuid":"9f49cba0001a46289b7524707a581d37"}

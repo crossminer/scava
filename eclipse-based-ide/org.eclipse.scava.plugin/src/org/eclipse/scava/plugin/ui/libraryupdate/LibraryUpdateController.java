@@ -25,6 +25,7 @@ import org.eclipse.scava.plugin.main.MainController;
 import org.eclipse.scava.plugin.recommendation.ILibraryUpdateRecommendationProvider;
 import org.eclipse.scava.plugin.ui.abstractmvc.AbstractController;
 import org.eclipse.scava.plugin.ui.recommendationaccept.RecommendationAcceptController;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.IScavaEventListener;
 
 public class LibraryUpdateController extends
 		AbstractController<LibraryUpdateModel, LibraryUpdateView> {
@@ -120,5 +121,8 @@ public class LibraryUpdateController extends
 	private void onLibrarySelected(Library library) {
 		String description = libraryDescriptionProvider.requestDescriptionOfLibrary(library);
 		getView().showDescription(description);
+		for (IScavaEventListener iScavaEventListener : scavaListeners) {
+			iScavaEventListener.libraryInformationRequest(library);
+		}
 	}
 }

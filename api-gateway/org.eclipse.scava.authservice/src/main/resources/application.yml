@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+apigate.security.jwt.secret: otherpeopledontknowit
+
+management:
+    health:
+        mail:
+            enabled: true # When using the MailService, configure an SMTP server and set this to true
+            
+spring:
+   messages:
+      basename: i18n/messages
+   thymeleaf:
+      mode: HTML

@@ -18,29 +18,29 @@ import DateTime;
   
 private str MAVEN = getSystemProperty("MAVEN_EXECUTABLE");
    
-@javaClass{org.rascalmpl.library.lang.java.m3.internal.ClassPaths}
-java map[loc,list[loc]] getClassPath(
-  loc workspace,
-  map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["juno","kepler","luna"]),
-  loc mavenExecutable = MAVEN == "" ? |file:///usr/local/bin/mvn| : |file:///<MAVEN>|);
- 
- 
-@memo
-map[loc,list[loc]] inferClassPaths(loc workspace, ProjectDelta delta) {
-  if (daysDiff(delta.date, now()) < 14) { 
-    try {
-      return getClassPath(workspace);
-    }
-    catch Java("BuildException", msg, cause): {
-      println("Could not infer classpath using Maven: <msg>, due to <cause>.");
-    }
-    catch Java("BuildException", msg): {
-      println("Could not infer classpath using Maven: <msg>.");
-    }
-  }
-  
-  return (d : [*findJars({d})] | d <- workspace.ls, isDirectory(d));
-}
+//@javaClass{org.rascalmpl.library.lang.java.m3.internal.ClassPaths}
+//java map[loc,list[loc]] getClassPath(
+//  loc workspace,
+//  map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["juno","kepler","luna"]),
+//  loc mavenExecutable = MAVEN == "" ? |file:///usr/local/bin/mvn| : |file:///<MAVEN>|);
+// 
+// 
+//@memo
+//map[loc,list[loc]] inferClassPaths(loc workspace, ProjectDelta delta) {
+//  if (daysDiff(delta.date, now()) < 14) { 
+//    try {
+//      return getClassPath(workspace);
+//    }
+//    catch Java("BuildException", msg, cause): {
+//      println("Could not infer classpath using Maven: <msg>, due to <cause>.");
+//    }
+//    catch Java("BuildException", msg): {
+//      println("Could not infer classpath using Maven: <msg>.");
+//    }
+//  }
+//  
+//  return (d : [*findJars({d})] | d <- workspace.ls, isDirectory(d));
+//}
 
 private set[loc] getSourceRoots(set[loc] folders) {
 	set[loc] result = {};
@@ -86,11 +86,11 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
   
   // TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
   try {
-    map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+    //map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
     for (repo <- checkouts) {
       checkout = checkouts[repo];
       sources = getSourceRoots({checkout});
-      setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+      //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
     
       result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
     }
@@ -100,8 +100,8 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
     
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      sources = getSourceRoots({checkout});
-      setEnvironmentOptions(jars, sources);
+      //sources = getSourceRoots({checkout});
+      //setEnvironmentOptions(jars, sources);
     
       result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
     }
@@ -119,13 +119,13 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
   
   // TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
   try {
-    map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+    //map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
     for (repo <- checkouts) {
       checkout = checkouts[repo];
-      sources = getSourceRoots({checkout});
+      //sources = getSourceRoots({checkout});
 
       // TODO: turn classpath into a list
-      setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+      //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
       result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
     }
   }
@@ -133,8 +133,9 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
     jars = findJars(checkouts.folders);
     
     for (repo <- checkouts) {
-      sources = getSourceRoots({checkout});
-      setEnvironmentOptions(jars, sources);
+      checkout = checkouts[repo];
+      //sources = getSourceRoots({checkout});
+      //setEnvironmentOptions(jars, sources);
     
       result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
     }
@@ -142,6 +143,109 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
   
   return result; 
  
+}
+
+//@OSGiExtractor{java()}
+//@memo
+//rel[Language, loc, OSGiModel] javaOSGi(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {  
+//	rel[Language, loc, OSGiModel] result = {};
+//	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
+//	assert all(repo <- checkouts, checkouts[repo].parent == parent);
+//	
+//	// TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
+//	try {
+//		map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+//		for (repo <- checkouts) {
+//			checkout = checkouts[repo];
+//			sources = getSourceRoots({checkout});
+//			setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+//			
+//			f = findFileInFolder(checkout, "MANIFEST.MF");
+//			if(f != |file:///|) {
+//				result += {<java(), f, createOSGiModel(f)>};
+//			}
+//		}
+//	}
+//	catch "not-maven": {
+//		jars = findJars(checkouts.folders);
+//		
+//		for (repo <- checkouts) {
+//			checkout = checkouts[repo];
+//			sources = getSourceRoots({checkout});
+//			setEnvironmentOptions(jars, sources);
+//			
+//			f = findFileInFolder(checkout, "MANIFEST.MF");
+//			if(f != |file:///|) {
+//				result += {<java(), f, createOSGiModel(f)>};
+//			}
+//		}
+//	}
+//	return result;
+//}
+//
+//@MavenExtractor{java()}
+//@memo
+//rel[Language, loc, MavenModel] javaMaven(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {  
+//	rel[Language, loc, MavenModel] result = {};
+//	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
+//	assert all(repo <- checkouts, checkouts[repo].parent == parent);
+//	
+//	// TODO: we will add caching on disk again and use the deltas to predict what to re-analyze and what not
+//	try {
+//		map[loc,list[loc]] classpaths = inferClassPaths(parent, delta);
+//		for (repo <- checkouts) {
+//			checkout = checkouts[repo];
+//			sources = getSourceRoots({checkout});
+//			setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
+//			
+//			f = findFileInFolder(checkout, "pom.xml");
+//			if(f != |file:///|) {
+//				result += {<java(), f, createMavenModel(f)>};
+//			}
+//		}
+//	}
+//	catch "not-maven": {
+//		jars = findJars(checkouts.folders);
+//		
+//		for (repo <- checkouts) {
+//			checkout = checkouts[repo];
+//			sources = getSourceRoots({checkout});
+//			setEnvironmentOptions(jars, sources);
+//			
+//			f = findFileInFolder(checkout, "pom.xml");
+//			if(f != |file:///|) {
+//				result += {<java(), f, createMavenModel(f)>};
+//			}
+//		}
+//	}
+//	return result;
+//}
+
+public loc findFileInFolder(loc folder, str fileName) {
+	try {
+		return find(fileName, [folder]);
+	}	
+	catch "not-in-folder": {
+		files = folder.ls;
+		for(f <- files, isDirectory(f)) {
+			return findFileInFolder(f,fileName);
+		}
+		return |file:///|;
+	}
+}
+
+//TODO: check
+public set[loc] findFileInFolderRecursively(loc folder, str fileName) {
+	set[loc] findFiles(loc target, set[loc] prev) {
+		try {
+			mod_prev = find(fileName, [folder]) + prev;
+			return {*findFiles(f,mod_prev) | f <- target.ls, isDirectory(f)}; 
+		}	
+		catch "not-in-folder": {
+			return {*findFiles(f,prev) | f <- target.ls, isDirectory(f)};
+		}
+	}
+	return findFiles(folder,{});
 }
 
 // this will become more interesting if we try to recover build information from meta-data

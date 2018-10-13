@@ -1,1 +1,0 @@
-Require-Libraries: lib/rascal-java-build-manager.jar

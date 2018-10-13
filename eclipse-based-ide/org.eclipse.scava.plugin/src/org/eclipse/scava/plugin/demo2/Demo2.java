@@ -13,7 +13,7 @@ package org.eclipse.scava.plugin.demo2;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-       
+
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.scava.commons.highlight.IHighlightable;
 import org.eclipse.scava.commons.library.Library;

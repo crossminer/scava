@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.scava.commons.library.Library;
+import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.event.informative.IInformativeEvent;
 import org.eclipse.scava.plugin.event.informative.IInformativeEventSubscriber;
 import org.eclipse.scava.plugin.event.informative.InformativeEvent;
@@ -102,7 +103,7 @@ public class LibraryUpdateDisplay extends TitleAreaDialog implements IDisposable
 	protected Control createDialogArea(Composite parent) {
 		
 		setMessage("Select library to update");
-		setTitleImage(ResourceManager.getPluginImage("org.scava.plugin", "icons/SCAVA-logo-small.png"));
+		setTitleImage(null);
 		setTitle("Available library updates");
 		Composite area = (Composite) super.createDialogArea(parent);
 		container = new Composite(area, SWT.NONE);
@@ -270,7 +271,7 @@ public class LibraryUpdateDisplay extends TitleAreaDialog implements IDisposable
 	}
 	
 	private ImageDescriptor createImageDescriptor() {
-		return ImageDescriptor.createFromImage(ResourceManager.getPluginImage("org.scava.plugin",
+		return ImageDescriptor.createFromImage(ResourceManager.getPluginImage(Activator.PLUGIN_ID,
 				"icons/bulb.png"));
 	}
 	

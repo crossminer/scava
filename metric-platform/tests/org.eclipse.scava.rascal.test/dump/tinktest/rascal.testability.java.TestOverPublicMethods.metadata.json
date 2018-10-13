@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.rascal.testability.java.TestOverPublicMethods"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.rascal.testability.java.TestOverPublicMethods","background":true}],"uuid":"e931bb7c653a406e96e9b9c44e663ae7"}

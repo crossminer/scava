@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.HourlyCommits.hours"},{"v":2,"key":{"hour":1},"name":"hour_1","ns":"gifhooktest.HourlyCommits.hours","background":true}],"uuid":"ff92c60cc9a44c2c9d8583d5365d12fb"}

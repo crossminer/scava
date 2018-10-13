@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.trans.rascal.OO.PHP.PF-PHP"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.trans.rascal.OO.PHP.PF-PHP","background":true}],"uuid":"2e3ae8c5bcb54680854b76a34a1e460e"}

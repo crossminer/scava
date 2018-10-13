@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.trans.rascal.OO.PHP.LCOM-PHP"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.trans.rascal.OO.PHP.LCOM-PHP","background":true}],"uuid":"fd513abadc0240a5b3b7f4e649672a31"}

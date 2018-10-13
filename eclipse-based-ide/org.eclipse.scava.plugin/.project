@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.scava.plugin</name>
+	<name>org.eclipse.scava.plugin</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -29,7 +29,13 @@
 		<link>
 			<name>commons</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/org.scava.commons/src</locationURI>
+			<locationURI>eclipse_based_ide/org.eclipse.scava.commons/src</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>eclipse_based_ide</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D</value>
+		</variable>
+	</variableList>
 </projectDescription>

@@ -77,7 +77,7 @@ private tuple[rel[loc,loc] resolved, set[loc] unresolved, set[str] unresolvedRel
 	rel[loc, loc] resolved = {};
 
 	Script scr = sys[toResolve];
-	includes = { < i@at, i > | /i:include(_,_) := scr };
+	includes = { < i.at, i > | /i:include(_,_) := scr };
 	if (size(includes) == 0) return <{}, {}, {}>;
 	
 	// Step 1: simplify the include expression using a variety of techniques,
@@ -95,13 +95,13 @@ private tuple[rel[loc,loc] resolved, set[loc] unresolved, set[str] unresolvedRel
 		if (size(s) > 0, s[0] in { "\\", "/"}) {
 			try {
 				iloc = calculateLoc(sys<0>,toResolve,baseLoc,s,checkFS=checkFS,pathMayBeChanged=false);				
-				resolved += {<i@at, iloc >};
+				resolved += {<i.at, iloc >};
 			} catch UnavailableLoc(_) : {
 				;
 			}
 		}
 		else {
-			relativePaths += {<i@at, s>};
+			relativePaths += {<i.at, s>};
 		}
 	}
 
@@ -111,7 +111,7 @@ private tuple[rel[loc,loc] resolved, set[loc] unresolved, set[str] unresolvedRel
 	// find files that will never actually be included in practice
 	for (iitem:< _, i > <- domainX(includes, domain(resolved))) {
 		possibleMatches = matchIncludes(sys, i, baseLoc, libs=libs);		
-		resolved = resolved + { < i@at, l > | l <- possibleMatches };
+		resolved = resolved + { < i.at, l > | l <- possibleMatches };
 	}
 
 	unresolved = domain(includes) - domain(resolved);

@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.scava.metricprovider.trans.githubstars.Activator
 Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  com.googlecode.pongo.runtime,
- org.apache.log4j.1.2.17,
+ org.apache.log4j,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.importerdependencies,

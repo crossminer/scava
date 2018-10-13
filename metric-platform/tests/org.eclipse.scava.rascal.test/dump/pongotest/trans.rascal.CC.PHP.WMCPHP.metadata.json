@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.CC.PHP.WMCPHP"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.CC.PHP.WMCPHP","background":true}],"uuid":"7ba151591a0c4106a009a6935a9fdf7a"}

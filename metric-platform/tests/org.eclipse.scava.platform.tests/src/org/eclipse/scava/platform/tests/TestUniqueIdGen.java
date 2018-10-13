@@ -16,6 +16,7 @@ import java.net.UnknownHostException;
 
 import org.eclipse.scava.platform.ProjectRepositoryManager;
 import org.eclipse.scava.repository.model.Project;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.Mongo;
@@ -23,6 +24,7 @@ import com.mongodb.Mongo;
 public class TestUniqueIdGen {
 
 	@Test
+	@Ignore
 	public void test() {
 		Mongo mongo = null;
 		try {

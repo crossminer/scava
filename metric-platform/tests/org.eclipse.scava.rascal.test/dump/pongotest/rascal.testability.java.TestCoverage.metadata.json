@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.rascal.testability.java.TestCoverage"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.rascal.testability.java.TestCoverage","background":true}],"uuid":"f9eb10cc1765467e9bff5aecd130ec41"}

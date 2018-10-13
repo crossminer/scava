@@ -1,0 +1,47 @@
+.container {
+    padding: 20px;
+}
+.box {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    /* box-shadow: 0px 1px 1px #888888; */
+}
+.center {
+    text-align: center;
+}
+
+// ******************************
+.banner {
+    background-color: #1074B2;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.banner img {
+    height: 100px;
+    margin: 5px;
+}
+.blank {
+    background-color: inherit;
+    border: 0;
+    box-shadow: none;
+}
+.row {
+    margin: 0;
+}
+.banner h2 {
+    color: #ff9400;
+}
+
+// ******************************
+h1, h2, h3, h4 {
+    font-family: 'Bree Serif', Georgia, serif;
+    color: #023E73;
+}
+h2 {
+    font-size: 28px;
+}

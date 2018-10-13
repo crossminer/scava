@@ -1,4 +1,0 @@
-server:
-  port: 8081
-
-apigate.security.jwt.secret: otherpeopledontknowit

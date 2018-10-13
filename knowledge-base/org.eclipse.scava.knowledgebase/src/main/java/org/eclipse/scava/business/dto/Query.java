@@ -24,7 +24,7 @@ public class Query {
 	private int textOffset;
 	private List<Dependency> classDependencies;
 	private String compilationUnit;
-	private String methodInvocation;
+	private String currentMethodCode;
 	private List<Parameter> parameter;
 	private String refClassInvocation;
 	private boolean live;
@@ -78,11 +78,11 @@ public class Query {
 	public void setTextOffset(int textOffset) {
 		this.textOffset = textOffset;
 	}
-	public String getMethodInvocation() {
-		return methodInvocation;
+	public String getCurrentMethodCode() {
+		return currentMethodCode;
 	}
-	public void setMethodInvocation(String methodInvocation) {
-		this.methodInvocation = methodInvocation;
+	public void setCurrentMethodCode(String methodInvocation) {
+		this.currentMethodCode = methodInvocation;
 	}
 	public String getRefClassInvocation() {
 		return refClassInvocation;

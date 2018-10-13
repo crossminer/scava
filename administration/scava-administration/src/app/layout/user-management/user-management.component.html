@@ -1,0 +1,50 @@
+<div>
+  <h2>Users</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            <span>Login</span>
+          </th>
+          <th>
+            <span>Email</span>
+          </th>
+          <th>
+          </th>
+          <th>
+            <span>Profiles</span>
+          </th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf ="users">
+        <tr *ngFor="let user of users">
+          <td>{{user.login}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" *ngIf="!user.activated" (click)="setActive(user, true)">Deactivated</button>
+            <button class="btn btn-success btn-sm" *ngIf="user.activated" (click)="setActive(user, false)">Activated</button>
+          </td>
+          <td>
+            <div *ngFor="let authorithy of user.authorities" style="display: inline">
+              <span *ngIf="authorithy !== 'ROLE_USER'" class="badge badge-info">{{authorithy}}</span>&nbsp;
+              <span *ngIf="authorithy == 'ROLE_USER' && user.authorities.length == '1'" class="badge badge-info">NO ROLES ARE ASSINGED TO THIS USER</span>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group flex-btn-group-container">
+              <button type="submit" [routerLink]="['./', user.login, 'edit']" class="btn btn-outline-dark btn-sm" title="Edit User" >
+                <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+              </button>&nbsp;
+              <button type="button" (click)="deleteUser(user)" class="btn btn-outline-dark btn-sm" title="Delete User">
+                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

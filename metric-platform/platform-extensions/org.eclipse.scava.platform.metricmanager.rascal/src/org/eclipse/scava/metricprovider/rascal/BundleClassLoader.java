@@ -51,11 +51,15 @@ class BundleClassLoader extends ClassLoader {
 	protected Class<?> loadClass(String name, boolean resolve)
 			throws ClassNotFoundException {
 		Class<?> clazz = (parent == null) ? findClass(name) : super.loadClass(name, false);
-		
+
 		if (resolve) {
 			super.resolveClass(clazz);
 		}
 
 		return clazz;
+	}
+	 @Override
+	public String toString() {
+		 return "Class loader for: " + bundle;
 	}
 }

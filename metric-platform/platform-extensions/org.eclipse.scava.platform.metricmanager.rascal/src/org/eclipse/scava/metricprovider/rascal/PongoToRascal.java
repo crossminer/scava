@@ -30,19 +30,21 @@ import org.eclipse.scava.metricprovider.rascal.trans.model.StringMeasurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.TupleMeasurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.URIMeasurement;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.imp.pdb.facts.IDateTime;
-import org.eclipse.imp.pdb.facts.IListWriter;
-import org.eclipse.imp.pdb.facts.IMap;
-import org.eclipse.imp.pdb.facts.IMapWriter;
-import org.eclipse.imp.pdb.facts.ISet;
-import org.eclipse.imp.pdb.facts.ISetWriter;
-import org.eclipse.imp.pdb.facts.ISourceLocation;
-import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueFactory;
-import org.eclipse.imp.pdb.facts.type.ITypeVisitor;
-import org.eclipse.imp.pdb.facts.type.Type;
+
 import org.rascalmpl.uri.URIUtil;
 import org.rascalmpl.values.ValueFactoryFactory;
+
+import io.usethesource.vallang.IDateTime;
+import io.usethesource.vallang.IListWriter;
+import io.usethesource.vallang.IMap;
+import io.usethesource.vallang.IMapWriter;
+import io.usethesource.vallang.ISet;
+import io.usethesource.vallang.ISetWriter;
+import io.usethesource.vallang.ISourceLocation;
+import io.usethesource.vallang.IValue;
+import io.usethesource.vallang.IValueFactory;
+import io.usethesource.vallang.type.ITypeVisitor;
+import io.usethesource.vallang.type.Type;
 
 public class PongoToRascal {
 	private static IValueFactory VF = ValueFactoryFactory.getValueFactory();
@@ -57,7 +59,7 @@ public class PongoToRascal {
 
 		return result.done();
 	}
-	
+
 	public static ISet makeLocSet(Map<String, File> foldersMap) {
 		ISetWriter result = VF.setWriter();
 
@@ -95,7 +97,7 @@ public class PongoToRascal {
 					java.util.Date parse = df.parse(date.toString());
 					IDateTime dt = VF.datetime(parse.getTime());
 					ListMeasurement l = (ListMeasurement) x;
-					
+
 					try {
 						IValue val = type.accept(new MeasurementsToValue(l.getValue()));
 
@@ -118,7 +120,7 @@ public class PongoToRascal {
 	}
 
 	private static final class MeasurementsToValue implements
-			ITypeVisitor<IValue, RuntimeException> {
+	ITypeVisitor<IValue, RuntimeException> {
 		private final Iterable<Measurement> m;
 
 		private MeasurementsToValue(Iterable<Measurement> m) {

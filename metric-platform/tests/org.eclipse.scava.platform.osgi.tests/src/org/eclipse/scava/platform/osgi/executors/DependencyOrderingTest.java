@@ -9,12 +9,20 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.osgi.executors;
 
+import static org.junit.Assert.assertEquals;
+
+import java.net.UnknownHostException;
 import java.util.List;
 
+import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.osgi.executors.ProjectExecutor;
+import org.eclipse.scava.platform.osgi.ErrorThrowingTransientMetricProvider;
+import org.eclipse.scava.platform.osgi.ManualRegistrationMetricProviderManager;
+import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 import org.eclipse.scava.repository.model.Project;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.googlecode.pongo.runtime.PongoFactory;
@@ -23,18 +31,41 @@ import com.mongodb.Mongo;
 
 public class DependencyOrderingTest {
 
-	@Test
-	public void test() throws Exception{
-
-		Mongo mongo = new Mongo();
-		Platform platform = new Platform(mongo);
+	private static Mongo mongo;
+	private static Platform platform;
+	private static String PROJECT_NAME = "Ponte";
+	private static ProjectAnalyser projectAnalyser;
+	
+	@BeforeClass
+	public static void setUp() throws UnknownHostException {
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
+
+		mongo = new Mongo();
+		platform = new Platform(mongo);
+
+		Project project = new Project();
+		project.setName(PROJECT_NAME);
+		String startDate = new Date().addDays(-2).toString();
+		project.getExecutionInformation().setLastExecuted(startDate);
+	
+		platform.getProjectRepositoryManager().getProjectRepository().getProjects().add(project);
+		platform.getProjectRepositoryManager().getProjectRepository().getProjects().sync();
 		
-		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects()
-				.findOneByName("Ponte");
+		project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByName(PROJECT_NAME);
+		projectAnalyser = new ProjectAnalyser(platform);
+	}
+	
+	@AfterClass
+	public static void tearDown() {
+		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByName(PROJECT_NAME);
+		platform.getProjectRepositoryManager().getProjectRepository().getProjects().remove(project);
+		platform.getProjectRepositoryManager().getProjectRepository().getProjects().sync();
 		
-		ProjectExecutor pe = new ProjectExecutor(platform, project);
-		
+		mongo.close();
+	}
+	
+	@Test
+	public void testMetricProvidersInAllBranches() throws Exception{
 		
 		long a = System.currentTimeMillis();
 //		List<IMetricProvider> tMetrics = pe.getOrderedTransientMetricProviders(platform.getMetricProviderManager().getMetricProviders());
@@ -100,8 +131,11 @@ public class DependencyOrderingTest {
 //		System.out.println("Time to order all: " + timeSortAll);
 //		System.out.println("Time to split all: " + timeAllBranch);
 		
+		ManualRegistrationMetricProviderManager metricProviderManager = new ManualRegistrationMetricProviderManager();
+		metricProviderManager.addMetricProvider(new ErrorThrowingTransientMetricProvider());
+		platform.setMetricProviderManager(metricProviderManager);
 		
-		List<List<IMetricProvider>> allbran = pe.splitIntoBranches(platform.getMetricProviderManager().getMetricProviders());
+		List<List<IMetricProvider>> allbran = projectAnalyser.splitIntoBranches(platform.getMetricProviderManager().getMetricProviders());
 		for (List<IMetricProvider> bran : allbran) {
 			for (IMetricProvider m : bran) {
 				System.out.print(m.getIdentifier() + " -> ");
@@ -113,9 +147,9 @@ public class DependencyOrderingTest {
 		for (List<IMetricProvider> bran : allbran) {
 			i += bran.size();
 		}
-		
-		System.out.println("numer of metrics in all branches: " + i);
-		
+
+		System.out.println("number of metrics in all branches: " + i);
+		assertEquals(i, allbran.size());
 		
 	}
 	

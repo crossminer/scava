@@ -37,24 +37,35 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse rsp, FilterChain filterChain)
 			throws ServletException, IOException {
+		rsp.addHeader("Access-Control-Allow-Origin", "*");
+		rsp.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+		rsp.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Authorization");
+		rsp.addHeader("Access-Control-Allow-Methods", "GET");
+		rsp.addHeader("Access-Control-Allow-Methods", "POST");
+		rsp.addHeader("Access-Control-Allow-Methods", "PUT");
+		rsp.addHeader("Access-Control-Allow-Methods", "DELETE");
 		String token = req.getHeader(config.getHeader());
-		if (token != null && token.startsWith(config.getPrefix() + " ")) {
-			token = token.replace(config.getPrefix() + " ", "");
-			try {
-				Claims claims = Jwts.parser().setSigningKey(config.getSecret().getBytes()).parseClaimsJws(token)
-						.getBody();
-				String username = claims.getSubject();
-				@SuppressWarnings("unchecked")
-				List<String> authorities = claims.get("authorities", List.class);
-				if (username != null) {
-					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null,
-							authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-					SecurityContextHolder.getContext().setAuthentication(auth);
-				}
-			} catch (Exception ignore) {
-				SecurityContextHolder.clearContext();
-			}
-		}
-		filterChain.doFilter(req, rsp);
+		if(req.getMethod().equals("OPTIONS")) {
+        	rsp.setStatus(HttpServletResponse.SC_OK);
+        } else {
+        	if (token != null && token.startsWith(config.getPrefix() + " ")) {
+    			token = token.replace(config.getPrefix() + " ", "");
+    			try {
+    				Claims claims = Jwts.parser().setSigningKey(config.getSecret().getBytes()).parseClaimsJws(token)
+    						.getBody();
+    				String username = claims.getSubject();
+    				@SuppressWarnings("unchecked")
+    				List<String> authorities = claims.get("authorities", List.class);
+    				if (username != null) {
+    					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null,
+    							authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+    					SecurityContextHolder.getContext().setAuthentication(auth);
+    				}
+    			} catch (Exception ignore) {
+    				SecurityContextHolder.clearContext();
+    			}
+    		}
+    		filterChain.doFilter(req, rsp);
+        }
 	}
 }

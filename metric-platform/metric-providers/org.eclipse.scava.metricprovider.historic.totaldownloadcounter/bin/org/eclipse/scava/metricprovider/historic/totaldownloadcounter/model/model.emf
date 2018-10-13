@@ -1,5 +1,0 @@
-package org.eclipse.scava.metricprovider.totaldownloadcounter.model;
-
-class TotalDownloadCounter {
-	attr int downloads;	
-}

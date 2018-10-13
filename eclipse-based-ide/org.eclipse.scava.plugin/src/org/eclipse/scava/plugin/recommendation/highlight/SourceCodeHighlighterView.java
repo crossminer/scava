@@ -31,7 +31,7 @@ public class SourceCodeHighlighterView extends AbstractView {
 	private final List<IMarker> markers;
 	private final IProject project;
 	
-	public static final String MARKER_ID = "org.scava.plugin.markers.sourcecodehighlight";
+	public static final String MARKER_ID = "org.eclipse.scava.plugin.markers.sourcecodehighlight";
 	
 	public SourceCodeHighlighterView(IProject project) {
 		this.project = project;

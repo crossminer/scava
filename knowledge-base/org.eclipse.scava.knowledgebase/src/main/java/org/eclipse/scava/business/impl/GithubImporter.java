@@ -29,7 +29,8 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -96,7 +97,7 @@ public class GithubImporter implements IImporter {
 	@Autowired
 	private ArtifactRepository projectRepository;
 
-	private static final Logger logger = Logger.getLogger(GithubImporter.class);
+	private static final Logger logger = LoggerFactory.getLogger(GithubImporter.class);
 
 	@Override
 	public Artifact importProject(String artId) throws IOException  {
@@ -351,7 +352,7 @@ public class GithubImporter implements IImporter {
 		while (sleep) {
 			
 			long remaining = getRemainingResource("core");
-			logger.debug(remaining);
+			logger.debug(remaining + "");
 			if (remaining > 0)
 				sleep = false;
 			else try {
@@ -368,7 +369,7 @@ public class GithubImporter implements IImporter {
 		while (sleep) {
 			
 			long remaining = getRemainingResource("search");
-			logger.debug(remaining);
+			logger.debug(remaining + "");
 			if (remaining > 0)
 				sleep = false;
 			else try {

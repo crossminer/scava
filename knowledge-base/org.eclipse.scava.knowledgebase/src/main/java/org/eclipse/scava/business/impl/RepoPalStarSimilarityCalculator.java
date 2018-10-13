@@ -14,7 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.integration.GithubUserRepository;
@@ -32,7 +33,7 @@ import com.google.common.collect.Sets;
 @Qualifier("RepoPalStar")
 public class RepoPalStarSimilarityCalculator implements ISingleSimilarityCalculator {
 
-	private static final Logger logger = Logger.getLogger(RepoPalStarSimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(RepoPalStarSimilarityCalculator.class);
 	
 	
 	private Map<String, Set<String>> userRepo = new HashMap<>();

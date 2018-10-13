@@ -13,13 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.eclipse.scava.Application;
-import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -29,20 +24,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Table;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class RepoPalTimeSimilarityCalculatorTest {
 	@Autowired
@@ -50,7 +46,7 @@ public class RepoPalTimeSimilarityCalculatorTest {
 	@Autowired
 	@Qualifier("RepoPalTime")
 	private ISingleSimilarityCalculator repoPalTimeSim;
-	private static final Logger logger = Logger.getLogger(RepoPalTimeSimilarityCalculatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(RepoPalTimeSimilarityCalculatorTest.class);
 	private Artifact artifact1;
 	private Artifact artifact2;
 	@Autowired

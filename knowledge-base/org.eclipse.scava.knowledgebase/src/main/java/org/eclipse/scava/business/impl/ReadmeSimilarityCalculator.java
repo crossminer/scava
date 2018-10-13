@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVectorFormat;
-import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -40,6 +39,8 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.BytesRef;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.model.Artifact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("Readme")
 public class ReadmeSimilarityCalculator implements ISingleSimilarityCalculator {
 
-	private static final Logger logger = Logger.getLogger(ReadmeSimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReadmeSimilarityCalculator.class);
 	public static final String FIELD_CONTENT = "contents";
 	@Value("${lucene.index.folder}")
 	private String luceneIndex;

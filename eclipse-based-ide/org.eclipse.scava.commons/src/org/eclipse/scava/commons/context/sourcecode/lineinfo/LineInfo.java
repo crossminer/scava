@@ -8,9 +8,9 @@
 * SPDX-License-Identifier: EPL-2.0
 *
 * Contributors:
-*    Zsolt J�nos Szamosv�lgyi
-*    Endre Tam�s V�radi
-*    Gerg� Balogh
+*    Zsolt János Szamosvölgyi
+*    Endre Tamás Váradi
+*    Gergő Balogh
 **********************************************************************/
 package org.eclipse.scava.commons.context.sourcecode.lineinfo;
 

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.OO.java.NOM-Java-Quartiles"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.OO.java.NOM-Java-Quartiles","background":true}],"uuid":"f7eb1b94aab14d8386c605635a1e5d22"}

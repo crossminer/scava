@@ -56,12 +56,14 @@ public class Artifact {
 	private String mirror_url;
 	private long size;
 	private String master_branch;
+	private String webDashboardId;
+    private String metricPlatformId;
 	@JsonIgnore
 	private List<GithubUser> committeers = new ArrayList<>();
 	private String readmeText;
 	//@JsonIgnore
 	private List<String> dependencies = new ArrayList<>(); 
-	
+//	@JsonIgnore
 	private List<Stargazers> starred = new ArrayList<>();
 	public String getFullName() {
 		return fullName;
@@ -274,6 +276,26 @@ public class Artifact {
 
 	public void setCommitteers(List<GithubUser> committeers) {
 		this.committeers = committeers;
+	}
+
+
+	public String getMetricPlatformId() {
+		return metricPlatformId;
+	}
+
+
+	public void setMetricPlatformId(String metricPlatformId) {
+		this.metricPlatformId = metricPlatformId;
+	}
+
+
+	public String getWebDashboardId() {
+		return webDashboardId;
+	}
+
+
+	public void setWebDashboardId(String webDashboardId) {
+		this.webDashboardId = webDashboardId;
 	}
 	
 	

@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.SchedulingInformation;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.Mongo;
@@ -20,6 +22,7 @@ import com.mongodb.Mongo;
 public class TestSchedulingInfo {
 
 	@Test
+	@Ignore
 	public void test() throws Exception {
 		
 		Mongo mongo = new Mongo();

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.Project;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -30,13 +33,24 @@ import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 public class AbstractHistoricalMetricProviderTest {
+	Mongo mongo;
+	public static final String dbName = "TestAbstractHistoricalMP";
+
+	@Before
+	public void setUp() throws UnknownHostException {
+		mongo = new Mongo();
+	}
+
+	@After
+	public void tearDown() {
+		mongo.dropDatabase(dbName);
+		mongo.close();
+	}
 
 	@Test
 	public void test() throws Exception {
 		MyHistoricalMP mp = new MyHistoricalMP();
 		
-		Mongo mongo = new Mongo();
-		String dbName = "TestAbstractHistoricalMP";
 		DB db = mongo.getDB(dbName);
 		DBCollection col = db.getCollection(mp.getIdentifier());
 		
@@ -61,10 +75,6 @@ public class AbstractHistoricalMetricProviderTest {
 		List<Pongo> plist = mp.getHistoricalMeasurements(context, p, start, end);
 
 		assertEquals(5, plist.size());
-		
-		// Clean up
-		mongo.dropDatabase(dbName);
-		mongo.close();
 	}
 
 	class MyHistoricalMP extends AbstractHistoricalMetricProvider {

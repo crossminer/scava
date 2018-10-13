@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.business.impl.simrank.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*************************************************************************
  *  Compilation:  javac SparseVector.java
  *  Execution:    java SparseVector
@@ -22,7 +25,8 @@ package org.eclipse.scava.business.impl.simrank.utils;
 public class SparseVector {
     private final int N;             // length
     private ST<Integer, Float> st;  // the vector, represented by index-value pairs
-
+    private static final Logger logger = LoggerFactory.getLogger(SparseVector.class);
+	
     // initialize the all 0s vector of length N
     public SparseVector(int N) {
         this.N  = N;
@@ -103,15 +107,12 @@ public class SparseVector {
         if (a.st.size() <= b.st.size()) {       	       	
         	for (int i : a.st) if (b.st.contains(i)) {
         		sum += a.get(i) * b.get(i);
-        		//count+=1;
         	}        	
         }  else  {
             for (int i : b.st) if (a.st.contains(i)) {
             	sum += a.get(i) * b.get(i);
-            	//count+=1;            
             }
         }
-        //System.out.println("The number of common elements: " + count);
         
         if(sum==0) return 0f;
         else return (float) (sum/Math.sqrt(val1 * val2));      
@@ -148,10 +149,10 @@ public class SparseVector {
         a.put(6, 0.00f);
         b.put(3, 0.60f);
         b.put(4, 0.90f);
-        System.out.println("a = " + a);
-        System.out.println("b = " + b);
-        System.out.println("a dot b = " + a.dot(b));
-        System.out.println("a + b   = " + a.plus(b));
+        logger.info("a = " + a);
+        logger.info("b = " + b);
+        logger.info("a dot b = " + a.dot(b));
+        logger.info("a + b   = " + a.plus(b));
     }
 
 }

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.style.filesWithInefficiencies"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.style.filesWithInefficiencies","background":true}],"uuid":"e9b136ff85ed4829bda7d4cd963c4260"}

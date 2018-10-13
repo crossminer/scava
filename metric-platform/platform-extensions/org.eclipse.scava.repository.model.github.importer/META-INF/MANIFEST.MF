@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.scava.repository.model.github,
  org.eclipse.scava.repository.model.vcs.git,
  org.eclipse.scava.repository.model.vcs.svn,
  org.eclipse.scava.repository.model,
- org.apache.log4j.1.2.17,
+ org.apache.log4j,
  org.eclipse.scava.repository.model.importer,
  org.eclipse.scava.repository.model.importer.exception
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

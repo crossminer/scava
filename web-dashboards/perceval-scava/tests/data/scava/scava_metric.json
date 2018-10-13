@@ -1,0 +1,88 @@
+{
+    "id": "coreCommittersChurnBar",
+    "name": "Core committers",
+    "description": "This metric shows the total accumulated churn per committer.",
+    "type": "BarChart",
+    "datatable": [
+        {
+            "Committer": "Prabhat",
+            "Churn": 28
+        },
+        {
+            "Committer": "Jesus M. Gonzalez-Barahona",
+            "Churn": 1118
+        },
+        {
+            "Committer": "Israel Herraiz",
+            "Churn": 68
+        },
+        {
+            "Committer": "Luis Ca\u00f1as D\u00edaz",
+            "Churn": 4
+        },
+        {
+            "Committer": "Stephan Barth",
+            "Churn": 108
+        },
+        {
+            "Committer": "Alvaro del Castillo",
+            "Churn": 15719
+        },
+        {
+            "Committer": "david",
+            "Churn": 4
+        },
+        {
+            "Committer": "camillem",
+            "Churn": 4
+        },
+        {
+            "Committer": "Santiago Due\u00f1as",
+            "Churn": 61842
+        },
+        {
+            "Committer": "quan",
+            "Churn": 3654
+        },
+        {
+            "Committer": "J. Manrique Lopez de la Fuente",
+            "Churn": 331
+        },
+        {
+            "Committer": "David Esler",
+            "Churn": 3
+        },
+        {
+            "Committer": "Valerio Cosentino",
+            "Churn": 69184
+        },
+        {
+            "Committer": "Miguel \u00c1ngel Fern\u00e1ndez",
+            "Churn": 190
+        },
+        {
+            "Committer": "David Pose Fern\u00e1ndez",
+            "Churn": 10
+        },
+        {
+            "Committer": "valerio cosentino",
+            "Churn": 1793
+        },
+        {
+            "Committer": "anveshc05",
+            "Churn": 169
+        },
+        {
+            "Committer": "valerio",
+            "Churn": 162
+        },
+        {
+            "Committer": "Alberto Mart\u00edn",
+            "Churn": 22854
+        }
+    ],
+    "timeSeries": false,
+    "ordinal": false,
+    "x": "Committer",
+    "y": "Churn"
+}

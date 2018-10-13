@@ -24,18 +24,20 @@ import org.eclipse.scava.metricprovider.rascal.trans.model.StringMeasurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.TupleMeasurement;
 import org.eclipse.scava.metricprovider.rascal.trans.model.URIMeasurement;
 import org.eclipse.scava.platform.factoids.StarRating;
-import org.eclipse.imp.pdb.facts.IConstructor;
-import org.eclipse.imp.pdb.facts.IDateTime;
-import org.eclipse.imp.pdb.facts.IInteger;
-import org.eclipse.imp.pdb.facts.IList;
-import org.eclipse.imp.pdb.facts.IMap;
-import org.eclipse.imp.pdb.facts.IReal;
-import org.eclipse.imp.pdb.facts.ISet;
-import org.eclipse.imp.pdb.facts.ISourceLocation;
-import org.eclipse.imp.pdb.facts.IString;
-import org.eclipse.imp.pdb.facts.ITuple;
-import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.visitors.NullVisitor;
+
+import io.usethesource.vallang.IConstructor;
+import io.usethesource.vallang.IDateTime;
+import io.usethesource.vallang.IInteger;
+import io.usethesource.vallang.IList;
+import io.usethesource.vallang.IMap;
+import io.usethesource.vallang.IReal;
+import io.usethesource.vallang.ISet;
+import io.usethesource.vallang.ISourceLocation;
+import io.usethesource.vallang.IString;
+import io.usethesource.vallang.ITuple;
+import io.usethesource.vallang.IValue;
+import io.usethesource.vallang.visitors.NullVisitor;
+
 
 public class RascalToPongo {
 
@@ -51,7 +53,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitString(IString o) throws RuntimeException {
 				StringMeasurement m = new StringMeasurement();
@@ -59,7 +61,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitDateTime(IDateTime o) throws RuntimeException {
 				DatetimeMeasurement m = new DatetimeMeasurement();
@@ -67,7 +69,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitReal(IReal o) throws RuntimeException {
 				RealMeasurement m = new RealMeasurement();
@@ -75,7 +77,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitSourceLocation(ISourceLocation o) {
 				URIMeasurement m = new URIMeasurement();
@@ -83,7 +85,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitMap(IMap o) throws RuntimeException {
 				for (Iterator<Entry<IValue, IValue>> it = o.entryIterator(); it.hasNext(); ) {
@@ -103,7 +105,7 @@ public class RascalToPongo {
 				}
 				return null;
 			}
-			
+
 			@Override
 			public Void visitList(IList o) throws RuntimeException {
 				for (IValue val : o) {
@@ -111,7 +113,7 @@ public class RascalToPongo {
 				}
 				return null;
 			}
-			
+
 			@Override
 			public Void visitSet(ISet o) throws RuntimeException {
 				for (IValue val : o) {
@@ -119,22 +121,22 @@ public class RascalToPongo {
 				}
 				return null;
 			}
-			
+
 			@Override
 			public Void visitTuple(ITuple o) throws RuntimeException {
 				TupleMeasurement m = new TupleMeasurement();
 				final List<Measurement> col = m.getValue();
-				
+
 				for (IValue val : o) {
 					toPongo(col, val);
 				}
-				
+
 				measurements.add(m);
 				return null;
 			}
 		});
 	}
-	
+
 	/**
 	 * This recursively constructs Pongo objects to be stored in the database (single documents) 
 	 * @param measurements
@@ -150,7 +152,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitDateTime(IDateTime o) throws RuntimeException {
 				DatetimeMeasurement m = new DatetimeMeasurement();
@@ -158,7 +160,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitString(IString o) throws RuntimeException {
 				StringMeasurement m = new StringMeasurement();
@@ -166,7 +168,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitReal(IReal o) throws RuntimeException {
 				RealMeasurement m = new RealMeasurement();
@@ -174,7 +176,7 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitSourceLocation(ISourceLocation o) {
 				URIMeasurement m = new URIMeasurement();
@@ -182,16 +184,16 @@ public class RascalToPongo {
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitMap(IMap o) throws RuntimeException {
 				// maps are stored as relations
 				SetMeasurement m = new SetMeasurement();
 				final List<Measurement> col = m.getValue();
-				
+
 				for (Iterator<Entry<IValue, IValue>> it = o.entryIterator(); it.hasNext(); ) {
 					Entry<IValue, IValue> currentEntry = (Entry<IValue, IValue>) it.next();
-					
+
 					TupleMeasurement t = new TupleMeasurement();
 					List<Measurement> elems = t.getValue();
 					toPongo(measurements, currentEntry.getKey());
@@ -199,7 +201,7 @@ public class RascalToPongo {
 
 					col.add(t);
 				}
-				
+
 				measurements.add(m);
 				return null;
 			}
@@ -208,37 +210,37 @@ public class RascalToPongo {
 			public Void visitList(IList o) throws RuntimeException {
 				ListMeasurement m = new ListMeasurement();
 				final List<Measurement> col = m.getValue();
-				
+
 				for (IValue val : o) {
 					toPongo(col, val);
 				}
-				
+
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitSet(ISet o) throws RuntimeException {
 				SetMeasurement m = new SetMeasurement();
 				final List<Measurement> col = m.getValue();
-				
+
 				for (IValue val : o) {
 					toPongo(col, val);
 				}
-				
+
 				measurements.add(m);
 				return null;
 			}
-			
+
 			@Override
 			public Void visitTuple(ITuple o) throws RuntimeException {
 				TupleMeasurement m = new TupleMeasurement();
 				final List<Measurement> col = m.getValue();
-				
+
 				for (IValue val : o) {
 					toPongo(col, val);
 				}
-				
+
 				measurements.add(m);
 				return null;
 			}

@@ -22,7 +22,7 @@ import Prelude;
 import LOC;
 
 real giniLOCOverClass(set[M3] m3s, bool(loc) isClass) {
-  classLines = (lc : sc.end.line - sc.begin.line + 1 | m3 <- m3s, <lc, sc> <- m3@declarations, isClass(lc));
+  classLines = (lc : sc.end.line - sc.begin.line + 1 | m3 <- m3s, <lc, sc> <- m3.declarations, isClass(lc));
   return giniLOC(classLines);
 }
 

@@ -30,7 +30,7 @@ import logging
 
 from pymongo import MongoClient
 
-from grimoire_elk.elk.elastic import ElasticSearch
+from grimoire_elk.elastic import ElasticSearch
 
 
 def get_params():
@@ -327,4 +327,4 @@ if __name__ == '__main__':
 
     if mongo_items:
         logging.info("Loading collections in Elasticsearch")
-        elastic.bulk_upload_sync(mongo_items, "id")
+        elastic.bulk_upload(mongo_items, "id")

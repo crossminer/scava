@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.style.errorProneness"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.style.errorProneness","background":true}],"uuid":"91d3944667074179a7c0395eaae81bd8"}

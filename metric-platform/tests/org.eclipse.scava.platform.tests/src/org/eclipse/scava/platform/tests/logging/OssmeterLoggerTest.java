@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class OssmeterLoggerTest {
@@ -37,6 +38,7 @@ public class OssmeterLoggerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testConsole() {
 		
 		Properties props = new Properties();
@@ -74,6 +76,7 @@ public class OssmeterLoggerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRolling() {
 		Properties props = new Properties();
 		props.setProperty("log.type", "rolling");

@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
@@ -34,11 +32,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -46,7 +46,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 
 public class SimilarityManagerTest {
@@ -54,6 +54,7 @@ public class SimilarityManagerTest {
 	@Autowired
 	private RelationRepository relationRepository;
 	@Autowired
+	@Qualifier("CrossSim")
 	private IAggregatedSimilarityCalculator aggregateSimilarityCalculator;
 	
 	@Autowired
@@ -93,7 +94,7 @@ public class SimilarityManagerTest {
 	@Autowired
 	private GithubUserRepository githubUserRepository;
 	
-	private static final Logger logger = Logger.getLogger(SimilarityManagerTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SimilarityManagerTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {

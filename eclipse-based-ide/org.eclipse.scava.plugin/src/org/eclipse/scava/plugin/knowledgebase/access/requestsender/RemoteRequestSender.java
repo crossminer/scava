@@ -22,8 +22,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.scava.plugin.Activator;
+import org.eclipse.scava.plugin.preferences.Preferences;
+
 public class RemoteRequestSender implements IRequestSender {
-	private static final String SERVER_ADDRESS = "http://localhost:8080";
 	
 	@Override
 	public String sendRequest(String address, String content) {
@@ -69,8 +72,12 @@ public class RemoteRequestSender implements IRequestSender {
 	}
 	
 	private URL buildRequestURL(String address) throws MalformedURLException, UnsupportedEncodingException {
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
 		
-		return new URL(SERVER_ADDRESS + encodeAddress(address));
+		String serverAddress = preferences.getString(Preferences.SERVER_ADDRESS);
+		int serverPort = preferences.getInt(Preferences.SERVER_PORT);
+		
+		return new URL(serverAddress + ":" + serverPort + encodeAddress(address));
 	}
 	
 	private String encodeAddress(String address) throws UnsupportedEncodingException {

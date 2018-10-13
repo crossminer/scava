@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.trans.rascal.LOC.java.LOCoverJavaClass"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.trans.rascal.LOC.java.LOCoverJavaClass","background":true}],"uuid":"512d18e1833e4f63a0779e1f349fc9d4"}

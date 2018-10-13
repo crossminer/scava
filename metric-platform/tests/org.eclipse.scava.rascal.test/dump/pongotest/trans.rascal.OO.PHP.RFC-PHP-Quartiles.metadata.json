@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"pongotest.trans.rascal.OO.PHP.RFC-PHP-Quartiles"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"pongotest.trans.rascal.OO.PHP.RFC-PHP-Quartiles","background":true}],"uuid":"9c0a6df4be4b40e88b6586dad0af4dd8"}

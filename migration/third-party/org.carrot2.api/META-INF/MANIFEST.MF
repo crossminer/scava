@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Api
+Bundle-SymbolicName: org.carrot2.api
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.carrot2.api.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.carrot2.dependencies
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

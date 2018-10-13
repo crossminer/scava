@@ -61,9 +61,7 @@ real A(set[loc] abstractTypes, set[loc] allTypes) {
 }
 map[loc, int] Ce(rel[loc package, loc \type] packageTypes, rel[loc depender, loc dependee] typeDependencies) {
 	packages = domain(packageTypes);
-	
 	otherPackageDependencies = typeDependencies o invert(packageTypes) - invert(packageTypes);
-	
 	return ( p : ( 0 | it + 1 | t <- packageTypes[p], otherPackageDependencies[t] != {} ) | p <- packages ); 
 }
 
@@ -72,9 +70,7 @@ map[loc, int] Ce(rel[loc package, loc \type] packageTypes, rel[loc depender, loc
 }
 map[loc, int] Ca(rel[loc package, loc \type] packageTypes, rel[loc depender, loc dependee] typeDependencies) {
 	otherPackageDependencies = typeDependencies o invert(packageTypes) - invert(packageTypes);
-
 	typesDependingOnPackage = packageTypes o invert(typeDependencies);	
-
 	return ( p : size(typesDependingOnPackage[p]) | p <- domain(packageTypes) );
 }
 
@@ -105,7 +101,6 @@ public rel[loc, loc] typeDependencies(
   dependencies += typeMembers o entityTypeDependencies;     // include types of variables, fields, parameters, etc
   dependencies += rangeR(typeMembers, allTypes); // include inner classes etc.
   dependencies += superTypes+; // include ancestor types
-
   dependencies = carrierR(dependencies, allTypes); // remove unknown types
   dependencies -= ident(allTypes); // remove self references
 
@@ -118,9 +113,7 @@ public rel[loc, loc] typeDependencies(
 }
 public real CF(rel[loc, loc] typeDependencies, set[loc] allTypes) {
 	numTypes = size(allTypes);
-	
 	numDependencies = size(typeDependencies + invert(typeDependencies));
-	
 	numPossibleDependencies = numTypes * (numTypes - 1);
 	
 	if (numPossibleDependencies > 0) {
@@ -155,7 +148,6 @@ map[loc, real] TCC(
 			// fieldConnections = carrierR(calls, methodsOfT)* o rangeR(fieldAccesses, typeFields[t]);
 			callsTC = { <a, b> | a <- methodsOfT, b <- calls[a]?{}, b in methodsOfT }*;
 			fieldConnections = { <a, c> | <a, b> <- callsTC, c <- fieldAccesses[b]?{}, c in fieldsOfT };
-			
 			methodConnections = fieldConnections o invert(fieldConnections);
 			
 			// directConnections = methodConnections - ident(methodsOfT);
@@ -195,7 +187,6 @@ map[loc, real] LCC(
 			// fieldConnections = carrierR(calls, methodsOfT)* o rangeR(fieldAccesses, typeFields[t]);
 			callsTC = { <a, b> | a <- methodsOfT, b <- calls[a]?{}, b in methodsOfT }*;
 			fieldConnections = { <a, c> | <a, b> <- callsTC, c <- fieldAccesses[b]?{}, c in fieldsOfT };
-			
 			methodConnections = fieldConnections o invert(fieldConnections);
 			
 			// indirectConnections = (methodConnections*) - ident(methodsOfT);		
@@ -230,10 +221,8 @@ map[loc, int] LCOM4(
 		ms = methods[t]?{};
 		
 		localAccesses = { <a, b> | a <- fieldAccesses, a in ms, b <- fieldAccesses[a], b in fs }; //rangeR(domainR(fieldAccesses, ms), fs);
-		
 		relatedMethods = { <a, b> | a <- methodCalls, a in ms, b <- methodCalls[a], b in ms }; //carrierR(methodCalls, ms);
 		relatedMethods += localAccesses o invert(localAccesses);
-		
 		lcom[t] = size(connectedComponents(relatedMethods));
 	}
 	

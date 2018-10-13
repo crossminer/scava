@@ -39,7 +39,7 @@ public class RecommendationManager implements ILibraryUpdateRecommendationProvid
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.scava.plugin.recommendation.ILibraryUpdateRecommendationProvider#requestRecommendationsToUpdateLibraryInProject(org.eclipse.jdt.core.IJavaProject, org.scava.commons.library.Library, org.scava.commons.library.Library)
+	 * @see org.eclipse.scava.plugin.recommendation.ILibraryUpdateRecommendationProvider#requestRecommendationsToUpdateLibraryInProject(org.eclipse.jdt.core.IJavaProject, org.eclipse.scava.commons.library.Library, org.eclipse.scava.commons.library.Library)
 	 */
 	@Override
 	public RecommendationSet requestRecommendationsToUpdateLibraryInProject(IJavaProject project, Library updateFrom,

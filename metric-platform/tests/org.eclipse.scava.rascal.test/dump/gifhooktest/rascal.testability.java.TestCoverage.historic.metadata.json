@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gifhooktest.rascal.testability.java.TestCoverage.historic"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"gifhooktest.rascal.testability.java.TestCoverage.historic","background":true}],"uuid":"65273820aa164e9ba912aee40ce75e19"}

@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.business.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Relation;
@@ -32,7 +33,7 @@ public class CompoundSimilarityCalculator implements ISingleSimilarityCalculator
 	ISingleSimilarityCalculator simDependencyCalculator;
 	@Autowired
 	SimilarityManager similarityManager;
-	private static final Logger logger = Logger.getLogger(CompoundSimilarityCalculator.class);
+	private static final Logger logger = LoggerFactory.getLogger(CompoundSimilarityCalculator.class);
 	
 	
 	@Override

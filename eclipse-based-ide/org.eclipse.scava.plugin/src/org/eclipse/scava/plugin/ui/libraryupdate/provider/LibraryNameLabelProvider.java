@@ -15,11 +15,11 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.scava.commons.library.Library;
 import org.eclipse.scava.plugin.ui.libraryupdate.AlternativeLibrary;
 import org.eclipse.scava.plugin.ui.libraryupdate.ProjectLibrary;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 
 public class LibraryNameLabelProvider extends LabelProvider implements IStyledLabelProvider{

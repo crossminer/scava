@@ -33,7 +33,7 @@ map[loc class, num wmcCount] getWMC(rel[Language, loc, M3] m3s = {}, map[loc, in
 	map[loc class, num wmcCount] result = ();
 	
 	for (<php(), _, m3> <- m3s) {
-		result += (cl : sum([methodCC[m]?0 | m <- m3@containment[cl], isMethod(m)]) | <cl, _> <- m3@containment, isClass(cl));
+		result += (cl : sum([methodCC[m]?0 | m <- m3.containment[cl], isMethod(m)]) | <cl, _> <- m3.containment, isClass(cl));
 	}
 	 
 	return result;
@@ -50,8 +50,8 @@ map[loc, int] getCC(rel[Language, loc, AST] asts = {})
   
   for (<php(), _, phpAST(a)> <- asts) {
     top-down-break visit (a) {
-      case m:method(_, _, _, _, body): result[m@decl] = countCC(body);
-      case f:function(_, _, _, body): result[f@decl] = countCC(body);
+      case m:method(_, _, _, _, body): result[m.decl] = countCC(body);
+      case f:function(_, _, _, body): result[f.decl] = countCC(body);
     }
   }
 

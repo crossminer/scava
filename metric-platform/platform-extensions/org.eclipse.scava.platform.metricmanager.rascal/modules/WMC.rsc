@@ -19,20 +19,20 @@ import Map;
 import Manager;
 
 map[str class, num wmcCount] getWMC(M3 fileM3) {
-  return (replaceAll(replaceFirst(cl.path, "/", ""), "/", ".") : sum([getCC(m, fileM3.ast) | m <- fileM3.model@containment[cl], isMethod(m)]) | <cl,_> <- fileM3.model@declarations, isClass(cl));
+  return (replaceAll(replaceFirst(cl.path, "/", ""), "/", ".") : sum([getCC(m, fileM3.ast) | m <- fileM3.model.containment[cl], isMethod(m)]) | <cl,_> <- fileM3.model.declarations, isClass(cl));
 }
 
 map[str class, num wmcCount] getWMC(unknownFileType(int lines)) = ("": -1);
 map[str class, int cc] getCC(unknownFileType(int lines)) = ("" : -1);
 
 map[str class, int cc] getCC(M3 fileM3) {
-  return (replaceAll(replaceFirst(m.path, "/", ""), "/", ".") : getCC(m, fileM3.ast) | <cl,_> <- fileM3.model@declarations, isClass(cl), m <- fileM3.model@containment[cl], isMethod(m));
+  return (replaceAll(replaceFirst(m.path, "/", ""), "/", ".") : getCC(m, fileM3.ast) | <cl,_> <- fileM3.model.declarations, isClass(cl), m <- fileM3.model.containment[cl], isMethod(m));
 }
 
 Declaration getASTOfMethod(loc methodLoc, Declaration fileAST) {
   visit(fileAST) {
     case Declaration d: {
-      if ("decl" in getAnnotations(d) && d@decl == methodLoc) {
+      if ("decl" in getAnnotations(d) && d.decl == methodLoc) {
         return d;
       }
     }

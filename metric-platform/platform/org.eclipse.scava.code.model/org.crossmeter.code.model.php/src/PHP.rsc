@@ -60,7 +60,7 @@ private M3 getSystemStructureM3(loc root) {
 	M3 m3 = createEmptyM3(|php+system:///| + root.path);
 	
 	for (file <- getSystem(root)) {
-		m3@containment[root] += file;
+		m3.containment[root] += file;
 	}
 	
 	return m3;
@@ -75,7 +75,7 @@ public rel[loc, System] getSystems(rel[Language, loc, M3] m3s, rel[Language, loc
 	map[loc, loc] roots = ();
 	
 	for (<php(), root, m3> <- m3s, m3.id.scheme == "php+system") {
-		for (file <- m3@containment[root]) {
+		for (file <- m3.containment[root]) {
 			roots[file] = root;
 		}
 		

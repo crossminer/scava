@@ -27,8 +27,8 @@ public class ClassifierModelSingleton {
 		if (path.endsWith("bin/"))
 			path = path.substring(0, path.lastIndexOf("bin/"));
 //		String argumentString = "-b 1 " + path + "classifierFiles/Test-ThreadClustering-5.m";
-		String argumentString = "-b 1 " + path + "classifierFiles/Test-ThreadClustering-20.m";
-		model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "));
+		String argumentString = "-b 1 classifierFiles/Test-ThreadClustering-20.m";
+		model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "), getClass().getClassLoader());
 		System.err.println("Severity classification model loaded");
     }
 	   

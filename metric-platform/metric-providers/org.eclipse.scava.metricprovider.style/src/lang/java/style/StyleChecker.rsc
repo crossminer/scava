@@ -465,7 +465,7 @@ list[Message] styleChecker(M3 model, set[node] asts){
 	nlines = 0;
 	msgs = [];
     for(Declaration ast <- asts){
-    	nlines += ast@src.end.line;
+    	nlines += ast.src.end.line;
 		msgs += checkAll(ast, model);
     }
     println("Checked <nlines> of Java code, found <size(msgs)> issues");

@@ -1,0 +1,29 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build Metric Platform') {
+      steps {
+        dir(path: 'metric-platform/') {
+          sh 'mvn clean install -DskipTests'
+        }
+      }
+    }
+    stage('Test Metric Platform') {
+      steps {
+        dir(path: 'metric-platform/') {
+          sh 'mvn test integration-test'
+        }
+      }
+      post {
+        success {
+          archiveArtifacts 'metric-platform/releng/org.eclipse.scava.product/target/products/*.zip'
+        }
+      }
+    }
+  }
+  post {
+    always {
+	  junit '**/target/surefire-reports/TEST-*.xml'
+	}
+  }
+}

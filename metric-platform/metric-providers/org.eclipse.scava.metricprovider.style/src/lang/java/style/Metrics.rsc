@@ -50,7 +50,7 @@ int countBooleanOperators(list[Expression] parents){
 }
 
 list[Message] booleanExpressionComplexity(Expression exp,  list[Expression] parents, M3 model) =
-	(exp has src && isBooleanExpression(exp) && countBooleanOperators(parents) > 2) ? [metric("BooleanExpressionComplexity", exp@src)] : [];
+	(exp has src && isBooleanExpression(exp) && countBooleanOperators(parents) > 2) ? [metric("BooleanExpressionComplexity", exp.src)] : [];
 
 /* --- classDataAbstractionCoupling -----------------------------------------*/
 
@@ -65,22 +65,22 @@ set[str] excludedClasses = {
 	"Map", "HashMap", "SortedMap", "TreeMap"};
 
 list[Message] classDataAbstractionCoupling(Expression exp: \newObject(_, _, _, _),  list[Expression] parents, M3 model) {
-	updateCheckState("classDataAbstractionCoupling", getTypeName(exp@typ));
+	updateCheckState("classDataAbstractionCoupling", getTypeName(exp.typ));
 	return [];
 }
 	
 list[Message] classDataAbstractionCoupling(Expression exp: \newObject(Expression expr, _, _),  list[Expression] parents, M3 model){
-	updateCheckState("classDataAbstractionCoupling", getTypeName(exp@typ));
+	updateCheckState("classDataAbstractionCoupling", getTypeName(exp.typ));
 	return [];
 }
 
 list[Message] classDataAbstractionCoupling(Expression exp: \newObject(Type \type, _, _),  list[Expression] parents, M3 model){
-	updateCheckState("classDataAbstractionCoupling", getTypeName(exp@typ));
+	updateCheckState("classDataAbstractionCoupling", getTypeName(exp.typ));
 	return [];
 }
 
 list[Message] classDataAbstractionCoupling(Expression exp: \newObject(_, _),  list[Expression] parents, M3 model){
-	updateCheckState("classDataAbstractionCoupling", getTypeName(exp@typ));
+	updateCheckState("classDataAbstractionCoupling", getTypeName(exp.typ));
 	return [];
 }
 	
@@ -91,7 +91,7 @@ value updateClassDataAbstractionCoupling(value current, value delta) {
 }
 
 list[Message] finalizeClassDataAbstractionCoupling(Declaration d, value current) =
-	(set[str] s := current && size(s- excludedClasses) > 7) ? [metric("ClassDataAbstractionCoupling", d@src)] : [];	
+	(set[str] s := current && size(s- excludedClasses) > 7) ? [metric("ClassDataAbstractionCoupling", d.src)] : [];	
 
 
 /* --- classFanOutComplexity ------------------------------------------------*/
@@ -99,5 +99,5 @@ list[Message] finalizeClassDataAbstractionCoupling(Declaration d, value current)
 set[str] getTypeNames(set[loc] locs) = { getTypeName(l) | l <- locs };
 
 list[Message] classFanOutComplexity(Declaration cls, list[Declaration] parents, M3 model) =
-	size(getTypeNames(model@typeDependency[model@containment[cls@decl]]) - excludedClasses) > 7 ? [ metric("ClassFanOutComplexity", cls@src) ] : [];
+	size(getTypeNames(model.typeDependency[model.containment[cls.decl]]) - excludedClasses) > 7 ? [ metric("ClassFanOutComplexity", cls.src) ] : [];
 

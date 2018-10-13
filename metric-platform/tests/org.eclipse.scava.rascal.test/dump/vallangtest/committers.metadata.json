@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.committers"},{"v":2,"key":{"name":1},"name":"name_1","ns":"vallangtest.committers","background":true}],"uuid":"66f16904cdbd45a5ac3eaeddcca2443f"}

@@ -41,10 +41,13 @@ import org.eclipse.scava.plugin.ui.libraryupdate.LibraryUpdateDisplay;
 import org.eclipse.scava.plugin.ui.libraryupdate.LibraryUpdateModel;
 import org.eclipse.scava.plugin.ui.libraryupdate.LibraryUpdateView;
 import org.eclipse.scava.plugin.ui.libraryupdate.ProjectLibrary;
+import org.eclipse.scava.plugin.ui.metric.MetricDisplay;
 import org.eclipse.scava.plugin.ui.recommendationaccept.RecommendationAcceptController;
 import org.eclipse.scava.plugin.ui.recommendationaccept.RecommendationAcceptDisplay;
 import org.eclipse.scava.plugin.ui.recommendationaccept.RecommendationAcceptModel;
 import org.eclipse.scava.plugin.ui.recommendationaccept.RecommendationAcceptView;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.IScavaEventListener;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.ScavaEventListener;
 import org.eclipse.scava.plugin.utils.Utils;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -84,6 +87,11 @@ public class MainController extends AbstractController<MainModel, MainView> impl
 			e.printStackTrace();
 		}
 	}
+	
+	public void showMetricDialog() {
+
+		MetricDisplay display = new MetricDisplay(shell);
+	}
 
 	private List<ProjectLibrary> buildProjectLibraries(IJavaProject project) throws LibraryStatusException {
 		List<Library> usedLibraries = LibraryStatusDetector.getLibrariesFromProject(project);
@@ -94,6 +102,11 @@ public class MainController extends AbstractController<MainModel, MainView> impl
 	}
 
 	private List<AlternativeLibrary> getAlternativesForUsedLibraries(Library originalLibrary) {
+		
+		for (IScavaEventListener iScavaEventListener : scavaListeners) {
+			iScavaEventListener.libraryAlternativeSearch(originalLibrary);
+		}
+				
 		List<AlternativeLibrary> alternativeLibraries = new ArrayList<>();
 		knowledgeBaseAccessManager.requestAlternativesOfLibrary(originalLibrary)
 				.forEach(lib -> alternativeLibraries.add(new AlternativeLibrary(lib)));
@@ -107,7 +120,7 @@ public class MainController extends AbstractController<MainModel, MainView> impl
 		LibraryUpdateView libraryUpdateDialogView = new LibraryUpdateView(libraryUpdateDialogDisplay);
 		libraryUpdateDialogController = new LibraryUpdateController(libraryUpdateDialogModel, libraryUpdateDialogView,
 				recommendationManager, project, this, knowledgeBaseAccessManager);
-
+		libraryUpdateDialogController.addScavaListener(new ScavaEventListener());
 		libraryUpdateDialogController.getFinished().subscribe(this::onLibraryUpdateDialogFinished);
 
 		addSubController(libraryUpdateDialogController);

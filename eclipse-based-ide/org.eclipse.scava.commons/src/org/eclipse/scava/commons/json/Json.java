@@ -8,9 +8,9 @@
 * SPDX-License-Identifier: EPL-2.0
 *
 * Contributors:
-*    Zsolt J�nos Szamosv�lgyi
-*    Endre Tam�s V�radi
-*    Gerg� Balogh
+*    Zsolt JĂĄnos SzamosvĂślgyi
+*    Endre TamĂĄs VĂĄradi
+*    GergĂľ Balogh
 **********************************************************************/
 package org.eclipse.scava.commons.json;
 

@@ -20,10 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.scava.plugin.context.librarystatus.LibraryParser;
-import org.scava.plugin.context.librarystatus.LibraryStatusException;
-import org.scava.plugin.context.librarystatus.ProjectClasspathParser;
-import org.scava.plugin.utils.Utils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -31,6 +27,13 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.scava.commons.library.Library;
+import org.eclipse.scava.plugin.context.librarystatus.LibraryParser;
+import org.eclipse.scava.plugin.context.librarystatus.LibraryStatusException;
+import org.eclipse.scava.plugin.context.librarystatus.ProjectClasspathParser;
+import org.eclipse.scava.plugin.usermonitoring.event.EventManager;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.ScavaEvent;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.ScavaEventType;
+import org.eclipse.scava.plugin.utils.Utils;
 
 public class LibraryUpdater {
 
@@ -70,6 +73,9 @@ public class LibraryUpdater {
 
 	public static void addLibraryPathToProject(IJavaProject project, Path librarypath) throws JavaModelException {
 		
+		
+		
+		EventManager.processEvent(new ScavaEvent(ScavaEventType.LIBRARY_ADDED));
 		List<IClasspathEntry> projectClassPathEntries = ProjectClasspathParser
 				.getAllClassPathEntriesFromProject(project);
 		IClasspathEntry newLibraryEntry = JavaCore.newLibraryEntry(librarypath, null, null);
@@ -78,6 +84,8 @@ public class LibraryUpdater {
 		
 		IClasspathEntry[] replaceEntries = projectClassPathEntries.toArray(new IClasspathEntry[0]);
 		project.setRawClasspath(replaceEntries, null);
+		
+		
 	}
 	
 
@@ -94,6 +102,7 @@ public class LibraryUpdater {
 				IClasspathEntry[] replaceEntries = projectClassPathEntries.toArray(new IClasspathEntry[0]);
 
 				project.setRawClasspath(replaceEntries, null);
+				EventManager.processEvent(new ScavaEvent(ScavaEventType.LIBRARY_REMOVED));
 			}else{				
 				throw new LibraryUpdaterException("Library path not found in classpath.");
 			}

@@ -21,7 +21,7 @@ import com.mongodb.DBObject;
 
 public class ProjectResource extends AbstractApiResource {
 
-	public Representation doRepresent() {	
+	public Representation doRepresent() {
 		String projectId = (String) getRequest().getAttributes().get("projectid");
 		
 		ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();

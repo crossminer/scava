@@ -10,14 +10,14 @@
 package org.eclipse.scava.business.impl;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.apache.log4j.Logger;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.integration.RelationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("ApiRecommendation")
 public class ApiRecommendationProvider implements IRecommendationProvider {
 
-	private static final Logger logger = Logger.getLogger(ApiRecommendationProvider.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApiRecommendationProvider.class);
 	@Autowired
 	RelationRepository relationRepository;
 

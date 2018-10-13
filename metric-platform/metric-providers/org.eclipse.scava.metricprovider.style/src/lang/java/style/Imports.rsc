@@ -38,21 +38,21 @@ ImportControl		TBD
 /* --- avoidStarImport ------------------------------------------------------*/
 
 list[Message] avoidStarImport(Declaration imp: \import(_),  list[Declaration] parents, M3 model) =
-	\onDemand() in (imp@modifiers?{}) ? [imports("AvoidStarImport", imp@src)] : [];
+	\onDemand() in (imp.modifiers?{}) ? [imports("AvoidStarImport", imp.src)] : [];
 
 default list[Message] avoidStarImport(Declaration imp,  list[Declaration] parents, M3 model) = [];
 
 // avoidStaticImport
 
 list[Message] avoidStaticImport(Declaration imp: \import(_),  list[Declaration] parents, M3 model) =
-	\static() in (imp@modifiers?{}) ? [ imports("AvoidStaticImport", imp@src)] : [];
+	\static() in (imp.modifiers?{}) ? [ imports("AvoidStaticImport", imp.src)] : [];
 	
 default list[Message] avoidStaticImport(Declaration imp,  list[Declaration] parents, M3 model) = [];	
 
 /* --- illegalImport --------------------------------------------------------*/
 
 list[Message] illegalImport(Declaration imp: \import(str name),  list[Declaration] parents, M3 model) =
-	startsWith(name, "sun") ? [imports("IllegalImport", imp@src)] : [];
+	startsWith(name, "sun") ? [imports("IllegalImport", imp.src)] : [];
 
 list[Message] illegalImport(Declaration imp,  list[Declaration] parents, M3 model) = [];
 
@@ -67,13 +67,13 @@ list[Message] illegalImport(Declaration imp,  list[Declaration] parents, M3 mode
 //	
 //	for(imp: \import(str name) <- imported){
 //		if(indexOf(imported, name) != lastIndexOf(imported, name)){
-//			msgs += imports("UnusedImports", imp@src);
+//			msgs += imports("UnusedImports", imp.src);
 //		} else
 //		if(startsWith(name, "java.lang")){
-//			msgs += imports("UnusedImports", imp@src);
+//			msgs += imports("UnusedImports", imp.src);
 //		} else
 //		if(startsWith(name, packageName)){
-//			msgs += imports("UnusedImports", imp@src);
+//			msgs += imports("UnusedImports", imp.src);
 //		}
 //	}
 //	

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.rascal.testability.java.TestCoverage.historic"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.rascal.testability.java.TestCoverage.historic","background":true}],"uuid":"047f318d136344b289550ccceea83825"}

@@ -599,12 +599,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jackson.all"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.repository.model.github.importer"
          download-size="0"
          install-size="0"
@@ -804,12 +798,6 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.commits"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="com.google.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1067,12 +1055,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="rascal4ossmeter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.metricprovider.rascal.generic.churn"
          download-size="0"
          install-size="0"
@@ -1232,6 +1214,30 @@
 
    <plugin
          id="org.eclipse.scava.factoid.bugs.threadlength"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+    <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1496,7 +1502,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.log4j.1.2.17"
+         id="org.apache.log4j"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1628,7 +1634,35 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.rascal.test"
+         id="org.eclipse.scava.dependency.model.maven"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.dependency.model.osgi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.rascal.dependency"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.rascal.dependency.maven"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi"
          download-size="0"
          install-size="0"
          version="0.0.0"

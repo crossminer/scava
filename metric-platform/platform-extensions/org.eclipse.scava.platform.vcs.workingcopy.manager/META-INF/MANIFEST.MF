@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime,
  org.eclipse.osgi,
- org.apache.log4j.1.2.17
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.vcs.workingcopy.manager

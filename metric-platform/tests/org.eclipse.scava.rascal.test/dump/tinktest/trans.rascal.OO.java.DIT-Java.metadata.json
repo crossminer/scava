@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.trans.rascal.OO.java.DIT-Java"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.trans.rascal.OO.java.DIT-Java","background":true}],"uuid":"c92abb387f89441c93b8f3f1e6a8936f"}

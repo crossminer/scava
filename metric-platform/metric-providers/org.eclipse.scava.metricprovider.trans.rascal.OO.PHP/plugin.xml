@@ -10,7 +10,7 @@
 -->
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
+   <!--<extension
          point="scava.rascal.metricprovider">
    </extension>
    <extension
@@ -156,5 +156,5 @@
       <visualisation
             json="vis/AIFPHPQuartilesHistoric.json">
       </visualisation>
-   </extension>
+   </extension>-->
 </plugin>

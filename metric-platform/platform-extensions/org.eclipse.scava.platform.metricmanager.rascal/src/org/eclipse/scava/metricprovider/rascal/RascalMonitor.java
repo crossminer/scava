@@ -10,8 +10,9 @@
 package org.eclipse.scava.metricprovider.rascal;
 
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.imp.pdb.facts.ISourceLocation;
-import org.rascalmpl.interpreter.IRascalMonitor;
+import org.rascalmpl.debug.IRascalMonitor;
+
+import io.usethesource.vallang.ISourceLocation;
 
 public class RascalMonitor implements IRascalMonitor {
 	private final OssmeterLogger log;
@@ -19,7 +20,7 @@ public class RascalMonitor implements IRascalMonitor {
 	public RascalMonitor(OssmeterLogger log) {
 		this.log = log;
 	}
-	
+
 	@Override
 	public void startJob(String name) {
 		log.info(name);

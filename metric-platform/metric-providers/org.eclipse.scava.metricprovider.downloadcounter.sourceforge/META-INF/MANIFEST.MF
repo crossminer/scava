@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.scava.metricprovider.downloadcounter.sourceforg
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.metricprovider.downloadcounter.sourceforge.Activator
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.metricprovider.downloadcounter.sourceforge.dependencies,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.metricprovider.downloadcounter,

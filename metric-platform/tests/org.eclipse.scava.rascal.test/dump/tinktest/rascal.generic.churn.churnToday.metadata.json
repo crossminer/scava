@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"tinktest.rascal.generic.churn.churnToday"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"tinktest.rascal.generic.churn.churnToday","background":true}],"uuid":"8cd4bfa7fd9c44c689835f76ec74307d"}
