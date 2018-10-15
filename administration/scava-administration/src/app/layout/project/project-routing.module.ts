@@ -5,6 +5,8 @@ import { ImportProjectComponent } from './components/import-project/import-proje
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ConfigureProjectComponent } from './components/configure-project/configure-project.component';
 import { RoleGuard } from '../../shared/guard/role.guard';
+import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
+import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
 
 
 const routes: Routes = [
@@ -31,6 +33,22 @@ const routes: Routes = [
     {
         path: 'configure/:id', 
         component: ConfigureProjectComponent,
+        canActivate: [RoleGuard],
+        data: {
+            authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']
+        }
+    },
+    {
+        path: 'configure/:id/add-task', 
+        component: AnalysisTaskAddComponent,
+        canActivate: [RoleGuard],
+        data: {
+            authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']
+        }
+    },
+    {
+        path: 'configure/:id/update-task/:label', 
+        component: AnalysisTaskUpdateComponent,
         canActivate: [RoleGuard],
         data: {
             authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']

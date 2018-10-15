@@ -11,10 +11,13 @@ import { CommunicationChannels } from "./components/create-project/communication
 export interface IProject {
     id?: number,
     url?: string,
+    shortName? : string,
     name?: string,
+    full_name?: string,
+    _type?: string,
     description?: string,
-    homepage?: string,
-    vcs?: VersionControlSystems[],
+    homePage?: string,
+    vcsRepositories?: VersionControlSystems[],
     bts?: IssueTrackingSystems[],
     communication_channels?: CommunicationChannels[],
     git?: Git,
@@ -22,17 +25,24 @@ export interface IProject {
     bugzilla?: Bugzilla,
     sourceforge?: SourceForge,
     redmine?: Redmine,
-    nntp?: NNTP
+    nntp?: NNTP,
+    size?: string,
+    downloadsUrl?: string,
+    globalStatus?: string,
+    hasTasks?: boolean
 }
 
 export class Project implements IProject {
     constructor(
         public id?: number,
         public url?: string,
+        public shortName? : string,
         public name?: string,
+        public full_name?: string,
+        public _type?: string,
         public description?: string,
-        public homepage?: string,
-        public vcs?: VersionControlSystems[],
+        public homePage?: string,
+        public vcsRepositories?: VersionControlSystems[],
         public bts?: IssueTrackingSystems[],
         public communication_channels?: CommunicationChannels[],
         public git?: Git,
@@ -40,7 +50,11 @@ export class Project implements IProject {
         public bugzilla?: Bugzilla,
         public sourceforge?: SourceForge,
         public redmine?: Redmine,
-        public nntp?: NNTP
+        public nntp?: NNTP,
+        public size?: string,
+        public downloadsUrl?: string,
+        public globalStatus?: string,
+        public hasTasks?: boolean
     ) {
     }
 }
