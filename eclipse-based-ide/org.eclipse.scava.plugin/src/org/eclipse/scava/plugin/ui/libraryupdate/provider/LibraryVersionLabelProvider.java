@@ -11,11 +11,11 @@
 package org.eclipse.scava.plugin.ui.libraryupdate.provider;
 
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.scava.commons.library.Library;
 import org.eclipse.scava.plugin.ui.libraryupdate.AlternativeLibrary;
 import org.eclipse.scava.plugin.ui.libraryupdate.ProjectLibrary;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 
 public class LibraryVersionLabelProvider extends LabelProvider implements IStyledLabelProvider{
 	

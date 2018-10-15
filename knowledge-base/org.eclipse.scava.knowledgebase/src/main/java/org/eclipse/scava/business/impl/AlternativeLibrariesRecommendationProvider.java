@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("AlternativeLibraries")
 public class AlternativeLibrariesRecommendationProvider implements IRecommendationProvider {
 
-	private static final Logger logger = Logger.getLogger(AlternativeLibrariesRecommendationProvider.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlternativeLibrariesRecommendationProvider.class);
 	private static final int NUMBER_OF_RESULT = 5;
 	@Autowired
 	RelationRepository relationRepository;

@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IClusterCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -37,7 +38,7 @@ import com.google.common.collect.Table;
 public class HierarchicalClulsterCalulator implements IClusterCalculator {
 
 	private static final double THRESHOLD = 0.15;
-	private static final Logger logger = Logger.getLogger(HierarchicalClulsterCalulator.class);
+	private static final Logger logger = LoggerFactory.getLogger(HierarchicalClulsterCalulator.class);
 	@Autowired
 	private ArtifactRepository arifactRepository;
 	@Autowired

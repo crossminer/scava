@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.CC.java.CCJava"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.CC.java.CCJava","background":true}],"uuid":"b6bf823c86ca4f4ab2dd5f6e0a055ae6"}

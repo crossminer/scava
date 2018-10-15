@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"vallangtest.trans.rascal.activecommitters.commitsPerWeekDay"},{"v":2,"key":{"uri":1},"name":"uri_1","ns":"vallangtest.trans.rascal.activecommitters.commitsPerWeekDay","background":true}],"uuid":"f1fcda6b08a4467eb8ae2e675d528b32"}

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dependency Maven
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.rascal.dependency.maven;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1",
+ org.eclipse.scava.dependency.model.maven;bundle-version="1.0.0"

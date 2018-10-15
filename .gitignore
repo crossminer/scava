@@ -1,0 +1,14 @@
+# Project-wide .gitignore
+
+# Individual components may configure their own ignore
+# policy in the respective subdirectories
+
+# Eclipse
+.metadata
+bin/
+local.properties
+.settings/
+
+# Maven
+target/
+

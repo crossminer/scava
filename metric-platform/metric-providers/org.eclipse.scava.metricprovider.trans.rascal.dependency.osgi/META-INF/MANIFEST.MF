@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dependency OSGi
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1",
+ org.eclipse.scava.dependency.model.osgi;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.dependency;bundle-version="1.0.0"

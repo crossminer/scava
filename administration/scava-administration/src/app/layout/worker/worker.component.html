@@ -1,0 +1,119 @@
+<div>
+  <div class="page-header">
+    <h2>Platform Workers</h2>
+    <hr/>
+  </div>
+
+  <div class="card-columns">
+    <div *ngFor="let worker of workerList" class="card bg-light  mb-3">
+      <div class="card-header text-white bg-secondary" style="padding: 0.5rem;" >
+        <h4 style="margin: 0px;" class="card-title">{{worker.workerId}}</h4>
+      </div>
+      <div class="card-body worker-card-body ">
+        <div *ngIf="worker.currentTask != null">
+           
+          <div class="row">
+            <div class="col-5">
+              <b>Executed Task :</b>
+            </div>
+            <div class="col-7">
+                {{worker.currentTask.label}}
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-5">
+                <b>Project :</b>
+              </div>
+              <div class="col-7">
+                  {{worker.currentTask.analysisTaskId.split(":")[0]}}
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-5">
+              <b>Metric Provider :</b>
+            </div>
+            <div class="col-7">
+                <a [routerLink]="" (click)="showMetricProviderList(worker.currentTask)">{{worker.currentTask.metricExecutions.length}} Metrics</a> 
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-5">
+              <b>Progress :</b>
+            </div>
+            <div class="col-7">
+              <div class="progress">
+                <div class="progress-bar bg-dark" role="progressbar"  [ngStyle]="setProgressStyles(worker)"  aria-valuemin="0" aria-valuemax="100"> {{worker.currentTask.scheduling[0].progress}}%</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-5">
+              <b>Time Remained :</b>
+            </div>
+            <div class="col-7">
+             {{computeTime(worker.currentTask)}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="worker.currentTask == null" style="min-height: 100px;">
+          No Tasks Assigned
+        </div>
+      </div>
+      <div class="card-footer text-right" style="padding: 0.5rem;">
+          <div *ngIf="worker.currentTask != null">
+              <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)" class="btn btn-outline-dark btn-sm">Interupt Analysis</button>
+          </div>
+          <div *ngIf="worker.currentTask == null">
+              <button type="button" class="btn btn-outline-dark btn-sm" disabled >Interupt Analysis</button>
+          </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <h2>Pending Tasks</h2>
+  <hr/>
+  <ul *ngFor="let task of taskList" class="list-group text-white mb-1">
+    <li class="list-group-item bg-secondary">
+        <div class="row">
+            <div class="col-sm">
+              <h5>Project : {{task.analysisTaskId.split(":")[0]}} - Task : {{task.label}}</h5>
+            </div>
+            <div class="col-3">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="float: right">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                      <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" title="Promote Task" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
+                      <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" title="Demote Task" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
+                    </div>
+
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                      <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge" (click)="pushOnWorker(task.analysisTaskId,worker.workerId)" title="Push On Worker" class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
+                    </div>
+
+                    <div class="btn-group" role="group" aria-label="First group">
+                      <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" title="Pause Task" class="btn btn-sm btn-outline-light fa fa-pause"></button>
+                    </div>
+                  </div>
+            </div>           
+          </div>
+          <div class="row">
+                        <div class="col-sm">
+               <b> Kind :</b> {{task.type}}
+              </div>
+              <div class="col-sm">
+                  <b>  Metrics : </b>  <a [routerLink]=""  (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a> 
+              </div>  
+              <div class="col-sm">
+                  <b> Start Date :</b>  <span *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span> 
+              </div>  
+              <div class="col-sm">
+                  <b> End Date :</b> <span *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+              </div> 
+              <div class="col-3">
+                 
+              </div>          
+            </div>
+    </li>
+  </ul>
+
+</div>

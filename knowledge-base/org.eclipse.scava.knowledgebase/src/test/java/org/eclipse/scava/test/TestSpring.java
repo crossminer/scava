@@ -14,13 +14,11 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.eclipse.scava.Application;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.scava.business.IImporter;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
@@ -29,23 +27,23 @@ import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Application.class })
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestSpring {
 
-	private static final Logger logger = Logger.getLogger(TestSpring.class);
+	private static final Logger logger = LoggerFactory.getLogger(TestSpring.class);
 	@Autowired
 	@Qualifier("Readme")
 	private ISingleSimilarityCalculator simReadmeCalculator;
@@ -79,7 +77,7 @@ public class TestSpring {
 		Artifact p2 = new Artifact();
 		p2.setReadmeText("Back to the system");
 		double d = simReadmeCalculator.calculateSimilarity(p1, p2);
-		logger.debug(d);
+		logger.debug(d + "");
 	}
 	
 	
@@ -145,7 +143,7 @@ public class TestSpring {
 	@Test
 	public void testSimilarity() {
 		List<Artifact> prjs = artifactRepository.findAll();
-		logger.debug(simDependencyCalculator.calculateSimilarity(prjs.get(0), prjs.get(1)));
+		logger.debug(simDependencyCalculator.calculateSimilarity(prjs.get(0), prjs.get(1)) + "");
 	}
 
 	@Ignore

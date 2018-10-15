@@ -1,0 +1,16 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <div class="list-group">
+        <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-lg fa-home"></i>&nbsp;{{ 'Home' }}
+        </a>
+        <a routerLink="/project" class="list-group-item">
+            <i class="fa fa-lg fa-cube"></i>&nbsp;{{ 'Projects' }}
+        </a>
+        <a routerLink="/user-management" class="list-group-item" *ngIf="roleAuthorities.hasRole('ROLE_ADMIN')">
+            <i class="fa fa-lg fa-user-plus"></i>&nbsp;{{ 'Users' }}
+        </a>
+        <a routerLink="/worker" class="list-group-item" *ngIf="roleAuthorities.hasRole('ROLE_ADMIN')">
+            <i class="fa fa-lg fa-cogs"></i>&nbsp;{{ 'Workers' }}
+        </a>
+    </div>
+</nav>

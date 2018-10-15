@@ -38,6 +38,7 @@ public class Platform {
 	}
 
 	protected ProjectRepositoryManager projectRepositoryManager = null;
+	protected AnalysisRepositoryManager analysisRepositoryManager = null;
 	protected IMetricProviderManager metricProviderManager = null;
 	protected PlatformVcsManager vcsManager = null;
 	protected PlatformCommunicationChannelManager communicationChannelManager = null;
@@ -51,6 +52,7 @@ public class Platform {
 		INSTANCE = this;
 		this.mongo = mongo;
 		projectRepositoryManager = new ProjectRepositoryManager(mongo);
+		analysisRepositoryManager = new AnalysisRepositoryManager(mongo);
 		metricProviderManager = new ExtensionPointMetricProviderManager();
 		vcsManager = new ExtensionPointVcsManager(this);
 		communicationChannelManager = new ExtensionPointCommunicationChannelManager(this);
@@ -67,7 +69,12 @@ public class Platform {
 	}
 	
 	public ProjectRepositoryManager getProjectRepositoryManager() {
-		return projectRepositoryManager;
+		return this.projectRepositoryManager;
+	}
+	
+	
+	public AnalysisRepositoryManager getAnalysisRepositoryManager() {
+		return this.analysisRepositoryManager;
 	}
 	
 	public IMetricProviderManager getMetricProviderManager() {

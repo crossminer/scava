@@ -41,8 +41,8 @@ InnerTypeLast				TBD
 
 list[Message] visibilityModifier(Declaration cls, list[Declaration] parents, M3 model) {
 	msgs = [];
-	modifiers = model@modifiers;
-	c = cls@decl;
+	modifiers = model.modifiers;
+	c = cls.decl;
 	for(f <- fields(model, c)){
 		mods = modifiers[f];
 		if(\public() in mods && !({\static(), \final()} < mods)){
@@ -57,7 +57,7 @@ list[Message] visibilityModifier(Declaration cls, list[Declaration] parents, M3 
 
 list[Message] finalClass(Declaration cls, list[Declaration] parents, M3 model) {
 	msgs = [];
-	modifiers = model@modifiers;
+	modifiers = model.modifiers;
 	bool isPrivate(loc m) = \private() in modifiers[m];
 	
 	bool hasOnlyPrivateConstructors(loc class){
@@ -73,8 +73,8 @@ list[Message] finalClass(Declaration cls, list[Declaration] parents, M3 model) {
 		return ncons > 0;
 	}
 	
-	c = cls@decl;
-	mods = model@modifiers;
+	c = cls.decl;
+	mods = model.modifiers;
 	if(hasOnlyPrivateConstructors(c) && \final() notin mods[c]){
 		msgs += classDesign("FinalClass", c);
 	}
@@ -86,14 +86,14 @@ list[Message] finalClass(Declaration cls, list[Declaration] parents, M3 model) {
 
 list[Message] mutableException(Declaration cls, list[Declaration] parents, M3 model) {
 	msgs = [];
-	modifiers = model@modifiers;
+	modifiers = model.modifiers;
 	bool hasOnlyFinalFields(loc c){
 		return all(f <- fields(model, c), \final() in modifiers[f]);
 	}
-	c = cls@decl;
+	c = cls.decl;
 	
-	if((/Exception$/ := cls.name || /Error$/ := cls.name) && !hasOnlyFinalFields(cls@decl)){ 
-			msgs += classDesign("MutableException", cls@src);
+	if((/Exception$/ := cls.name || /Error$/ := cls.name) && !hasOnlyFinalFields(cls.decl)){ 
+			msgs += classDesign("MutableException", cls.src);
 	}
 
     return msgs;
@@ -115,5 +115,5 @@ default list[Message] throwsCount(Statement s, list[Statement] parents, M3 model
 value updateThrowsCount(value current, value delta) { if(int n := current && int d := delta) return n + d; }
 
 list[Message] finalizeThrowsCount(Declaration d, value current) =
-	(int n := current && n > 1) ? [classDesign("ThrowsCount", d@src)] : [];
+	(int n := current && n > 1) ? [classDesign("ThrowsCount", d.src)] : [];
 

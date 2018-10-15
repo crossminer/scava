@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.scava.platform.analysis.data
+Bundle-SymbolicName: org.eclipse.scava.platform.analysis.data;singleton:=true
+Bundle-Version: 1.0.0
+Automatic-Module-Name: org.eclipse.scava.analysis.data
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.googlecode.pongo.runtime;bundle-version="0.5.0",
+ org.apache.commons.lang3;bundle-version="1.0.0"
+Export-Package: org.eclipse.scava.platform.analysis.data.model,
+ org.eclipse.scava.platform.analysis.data.types

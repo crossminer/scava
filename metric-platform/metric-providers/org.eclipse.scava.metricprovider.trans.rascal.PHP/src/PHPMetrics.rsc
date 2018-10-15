@@ -39,7 +39,7 @@ map[int, int] getTypeNameResolutionHistogram(rel[Language, loc, M3] m3s = {}, Pr
 {
 	M3 m3 = systemM3WithStdLib(m3s, delta = delta);
 
-	m3@uses = { <l, n> | <l, n> <- m3@uses, n.scheme in ["php+class", "php+interface", "php+trait"] };
+	m3.uses = { <l, n> | <l, n> <- m3.uses, n.scheme in ["php+class", "php+interface", "php+trait"] };
 
 	useDecl = resolveUsesToPossibleDeclarations(m3);
 	
@@ -85,8 +85,8 @@ map[loc, map[DynamicFeature, int]] getDynamicFeatureCountsPerFunction(rel[Langua
 	}
 
 	top-down-break visit (scripts) {
-		case m:method(_, _, _, _, _): result[m@decl] = getDynamicFeatureCounts(m);
-		case f:function(_, _, _, _): result[f@decl] = getDynamicFeatureCounts(f);
+		case m:method(_, _, _, _, _): result[m.decl] = getDynamicFeatureCounts(m);
+		case f:function(_, _, _, _): result[f.decl] = getDynamicFeatureCounts(f);
 	}
 	
 	return result;

@@ -34,6 +34,9 @@ services:
         expose: #exposes OSSMETER API client port to oss-web application
             - 8182
             - 8183 #Admin API?
+        # Expose also the REST API to the host so we can develop with it (a security hole because it is not authenticated)
+        ports:
+            - "8182:8182"
 
     oss-slave: # Service containing OSSMETER slaves instances
         image: crossminer/ossmeter-platform

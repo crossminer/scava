@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.scava.test.manager;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -27,17 +24,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@SpringBootTest
 @TestPropertySource(locations="classpath:application.properties")
 public class RecommenderManagerTest {
 	
@@ -54,7 +53,7 @@ public class RecommenderManagerTest {
 	@Autowired
 	private GithubUserRepository githubUserRepository;
 	
-	private static final Logger logger = Logger.getLogger(SimilarityManagerTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SimilarityManagerTest.class);
 	private List<Artifact> artifacts;
 	@Before
 	public void testCreateAndStoreDistanceMatrix() {

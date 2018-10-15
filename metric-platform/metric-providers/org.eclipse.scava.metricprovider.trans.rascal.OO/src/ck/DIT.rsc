@@ -35,7 +35,7 @@ private int getDepth(loc \type, rel[loc, loc] superTypes) {
 /*
 public map[loc, int] DIT(M3 m) {
   map[loc, int] classWiseDIT = ();
-  rel[loc, loc] inheritances = m@extends<1,0>;
+  rel[loc, loc] inheritances = m.extends<1,0>;
     
   return (class : getDepth(class, inheritances) | class <- carrier(inheritances));
 }*/
