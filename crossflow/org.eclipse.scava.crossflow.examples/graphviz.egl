@@ -1,0 +1,39 @@
+digraph G{
+	rankdir = LR;
+	[%for (w in Workflow.all){%]
+	subgraph [%=w.name%] {
+		rankdir = LR;
+		
+		[%for (t in w.tasks){%]
+		[%=t.name%] [shape=[%=t.getShape()%]]
+		[%}%]
+		
+		[%for (s in w.streams){%]
+		[%=s.name%] [shape=oval]
+		[%}%]
+		
+		[%for (t in w.tasks){%]
+		[%for (i in t.input){%]
+		[%=i.name%] -> [%=t.name%]
+		[%}%]
+		[%for (o in t.output){%]
+		[%=t.name%] -> [%=o.name%]
+		[%}%]
+		[%}%]
+	}
+	[%}%]
+}
+
+[%
+operation Task getShape() {  
+	if (self.isTypeOf(Source)) {
+		return "cds";
+	}
+	else if (self.isTypeOf(Sink)) {
+		return "invhouse";
+	}
+	else {
+		return "box";
+	}
+}
+%]

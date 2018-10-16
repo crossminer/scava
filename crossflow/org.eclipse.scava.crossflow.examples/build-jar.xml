@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project org.eclipse.scava.crossflow.examples">
+    
+	<property name="deps" value="../org.eclipse.scava.crossflow.runtime.dependencies"/>
+	
+    <target name="create_run_jar">
+        <jar destfile="org.eclipse.scava.crossflow.examples.jar" filesetmanifest="mergewithoutmain">
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/activemq-core-5.4.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/commons-logging-1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-jms_1.1_spec-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/jcommander-1.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/kahadb-5.4.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/xstream-1.4.7.jar"/>
+            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+            <fileset dir="bin"/>
+        </jar>
+    </target>
+</project>

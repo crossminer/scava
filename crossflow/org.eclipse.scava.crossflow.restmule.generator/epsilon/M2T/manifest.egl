@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: restmule.[%= name %]
+Bundle-SymbolicName: org.eclipse.crossmeter.workflow.restmule.client.[%= name %]
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.crossmeter.workflow.restmule.core;bundle-version="0.0.1"
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.crossmeter.workflow.restmule.client.[%= name %].cache,
+ org.eclipse.crossmeter.workflow.restmule.client.[%= name %].api,
+ org.eclipse.crossmeter.workflow.restmule.client.[%= name %].client,
+ org.eclipse.crossmeter.workflow.restmule.client.[%= name %].data,
+ org.eclipse.crossmeter.workflow.restmule.client.[%= name %].model,
+ org.eclipse.crossmeter.workflow.restmule.client.[%= name %].session
+ 

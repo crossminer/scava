@@ -1,0 +1,34 @@
+package [%=w.package%];
+
+import org.eclipse.scava.crossflow.runtime.Workflow;
+
+public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
+	
+	protected [%=w.name%] workflow;
+	
+	public void setWorkflow([%=w.name%] workflow) {
+		this.workflow = workflow;
+	}
+	
+	public Workflow getWorkflow() {
+		return workflow;
+	}
+	
+	[%for (s in t.output) { %]
+	protected [%=s.name%] [%=s.name.ftlc()%];
+	
+	public void set[%=s.name%]([%=s.name%] [%=s.name.ftlc()%]) {
+		this.[%=s.name.ftlc()%] = [%=s.name.ftlc()%];
+	}
+	
+	public [%=s.name%] get[%=s.name%]() {
+		return [%=s.name.ftlc()%];
+	}
+	
+	[%}%]
+	
+	[%if (t.isTypeOf(Source)){%]
+	public abstract void produce();
+	[%}%]
+	
+}

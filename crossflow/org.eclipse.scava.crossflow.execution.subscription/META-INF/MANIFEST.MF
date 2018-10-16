@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Workflow Execution Subscription
+Bundle-SymbolicName: org.eclipse.scava.crossflow.execution.subscription;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.equinox.registry,
+ org.eclipse.core.commands,
+ org.eclipse.emf.workspace,
+ org.eclipse.gmf.runtime.notation,
+ org.eclipse.ui.workbench,
+ org.eclipse.jface,
+ org.eclipse.ui.ide,
+ org.eclipse.gmf.runtime.diagram.ui.resources.editor,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.debug.ui,
+ org.eclipse.swt
+Export-Package: org.eclipse.scava.crossflow.execution.subscription

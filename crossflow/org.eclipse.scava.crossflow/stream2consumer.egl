@@ -1,0 +1,5 @@
+package [%=s.eContainer().package%];
+
+public interface [%=s.name%]Consumer {
+	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]);
+}

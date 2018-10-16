@@ -1,0 +1,29 @@
+//polishing transformation for centering the label 
+//of all graphical elements in the list that follows:
+var elementsToCenter = new List;
+elementsToCenter.add('TopicFigure');
+elementsToCenter.add('QueueFigure');
+elementsToCenter.add('TaskFigure');
+elementsToCenter.add('SourceFigure');
+elementsToCenter.add('SinkFigure');
+elementsToCenter.add('TypeFigure');
+elementsToCenter.add('FieldFigure');
+elementsToCenter.add('ConfigurationFigure');
+
+for(element in elementsToCenter)
+	center(findShape(element));
+
+operation center(shape : Any){
+shape.layout = new GmfGraph!GridLayout;
+
+var label = shape.children.first;
+if(label <> null){
+	label.layoutData = new GmfGraph!GridLayoutData;
+	label.layoutData.grabExcessVerticalSpace = true;
+	label.layoutData.grabExcessHorizontalSpace = true;
+	}
+}
+
+operation findShape(name : String) {
+  return GmfGraph!Shape.all.selectOne(s|s.name = name);
+}

@@ -1,0 +1,22 @@
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].cache;
+
+import org.eclipse.crossmeter.workflow.restmule.core.cache.AbstractCacheManager;
+import org.eclipse.crossmeter.workflow.restmule.core.cache.ICache;
+
+public class [%= R.name %]CacheManager extends AbstractCacheManager {
+
+	private static final String AGENT_NAME = "[%= name %]"; 
+
+	private static [%= R.name %]CacheManager agent;
+
+	public static ICache getInstance() {
+		if ([%= R.name %]CacheManager.agent == null){
+			[%= R.name %]CacheManager.agent = new [%= R.name %]CacheManager();
+		} 
+		return [%= R.name %]CacheManager.agent;
+	}
+
+	private [%= R.name %]CacheManager() { 
+		super(AGENT_NAME);
+	}
+}
