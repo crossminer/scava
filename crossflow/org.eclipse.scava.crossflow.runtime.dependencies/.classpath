@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="activemq-all-5.12.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="activemq-all-5.15.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-client-github/commons-codec-1.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-client-github/commons-logging-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-client-github/httpasyncclient-cache-4.1.4.jar"/>

@@ -26,7 +26,8 @@ public class MdeTechnologies {
 	
 	public MdeTechnologies(Workflow workflow) throws Exception {
 		this.workflow = workflow;
-		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
+		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
+		connectionFactory.setTrustAllPackages(true);
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

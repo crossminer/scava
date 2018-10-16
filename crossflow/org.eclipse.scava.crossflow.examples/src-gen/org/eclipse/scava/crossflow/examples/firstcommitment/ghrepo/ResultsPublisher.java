@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -14,7 +13,6 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ResultsPublisher {
 
@@ -26,7 +24,8 @@ public class ResultsPublisher {
 
 	public ResultsPublisher(Workflow workflow) throws Exception {
 		this.workflow = workflow;
-		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
+		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
+		connectionFactory.setTrustAllPackages(true);
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
