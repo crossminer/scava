@@ -1,0 +1,116 @@
+import "../util/restmule.eol";
+
+context RatePolicyScope{
+	
+	constraint RatePolicyScopesDefined {
+		check : RatePolicyScope.all.size() > 0
+		message : "No Rate Limit Scopes Defined"
+		fix {
+			title : "Creating default scope"
+			do {
+			var main = new RestMule!RatePolicyScope;
+			main.scope = "Main";
+				for (r in RESCLI!Request.all){
+					r.scope = main;
+					r.parameters.removeAll(r.parameters.select(p|p.instanceOf(RequestHeader)));
+					for (resp in r.responses.select(s|s.responseType <> null)){
+						resp.unwrap();
+					}
+					
+				}
+			}
+		}
+	}
+	
+}
+
+context API {
+
+	constraint API_Host {
+		check : self.apiHost.isValidURL()
+		message : "Host is not valid"
+		fix {
+			title : "Update host"
+			do {
+				self.apiHost = UserInput.prompt("HOST:", self.apiHost);
+			}
+		}
+	}
+	
+	constraint API_FormatHost {
+		guard : self.satisfies("API_Host")
+		check : not self.apiHost.endsWith("/")
+		message : "Host needs formating"
+		fix {
+			title : "Format Host"
+			do { 
+				self.apiHost = 
+					self.apiHost.substring(0,self.apiHost.length-1); 
+			}
+		}
+	}
+}
+
+context Endpoint {
+
+	constraint Endpoint_StartsWithBackSlash {
+		check : self.path.startsWith("/")
+		message : "Endpoint needs formating"
+		fix {
+			title : "Format Endpoint"
+			do { 
+				self.path = "/" + self.path; 
+			}
+		}
+	}
+
+	constraint Endpoint_NotEndsWithBackSlash {
+		check : not self.path.endsWith("/")
+		message : "Endpoint needs formating"
+		fix {
+			title : "Format Endpoint"
+			do { 
+				self.path = self.path.substring(0,self.path.length - 1); 
+			}
+		}
+	}
+
+}
+
+context Request {
+
+	constraint Request_HasQueryParametersDefined {
+		guard : self.parent.path.numberOfParameters() > 0
+		check : self.parent.path.numberOfParameters() 
+			== self.parameters.select(p|p.instanceOf(Path)).size()
+		message : "Inconsistent number of parameters." 
+			+ "Endpoint " + self.parent.path 
+			+ " has " + self.parent.path.numberOfParameters()
+			+ " parameters, but model has defined " 
+			+ self.parameters.select(p|p.instanceOf(Path)).size()
+	}
+		
+	
+	constraint Request_QueryParametersMatch {
+		guard : self.satisfies("Request_HasQueryParametersDefined")
+		check {
+			for (p in self.parameters.select(p|p.instanceOf(Path))){
+				if (self.parent.path.split("/\\{"+p.type.name+"\\}").length == 1) {
+					return false;
+				} 
+			} 
+			return true;
+		} 
+		message : "Inconsistent path parameter naming convention"
+		fix {
+			title : "Add new param"
+			do {
+				UserInput.prompt("undefined");
+			}
+		}
+	}
+	
+}
+
+
+

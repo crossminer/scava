@@ -1,0 +1,22 @@
+pipeline {
+  agent any
+  stages {
+
+    stage('Build Crossflow') {
+      steps {
+        dir(path: 'workflow/') {
+          sh 'mvn clean install -DskipTests=true'
+        }
+      }
+    }
+    stage('Test Crossflow') {
+      steps {
+        dir(path: 'workflow/') {
+          sh 'mvn test'
+        }
+
+        junit(testResults: 'workflow/target/surefire-reports/*.xml', allowEmptyResults: true)
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].util;
+
+import java.util.Properties;
+
+import org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil;
+
+public class [%= R.name %]PropertiesUtil {
+
+	private static final String PROPERTIES_FILE = "[%= name %].properties";
+
+	public static String get(String property){
+		Properties properties = PropertiesUtil.load([%= R.name %]PropertiesUtil.class, PROPERTIES_FILE);
+		return properties.getProperty(property);
+	}
+
+}

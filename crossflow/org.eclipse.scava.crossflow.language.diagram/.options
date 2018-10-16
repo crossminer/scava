@@ -1,0 +1,7 @@
+# Tracing options for the org.eclipse.scava.crossflow.language.diagram plug-in
+
+# Common issues
+org.eclipse.scava.crossflow.language.diagram/debug=false
+
+# Visual IDs
+org.eclipse.scava.crossflow.language.diagram/debug/visualID=false

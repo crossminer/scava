@@ -1,0 +1,8 @@
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].api;
+
+[% for (c in scopes) { %]import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].client.I[%= c.scope %]Api;
+[% } %]
+
+public interface I[%= R.name %]Api extends [% for (c in scopes) { %]I[%= c.scope %]Api[% if (c <> scopes.last()) { %], [% } %][% } %] {
+
+}

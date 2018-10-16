@@ -1,0 +1,21 @@
+package [%=t.eContainer().package%];
+
+import java.io.Serializable;
+import java.util.UUID;
+import org.eclipse.scava.crossflow.runtime.Job;
+
+public class [%=t.name%] extends Job {
+	
+	[%for (f in t.fields) { %]
+	protected [%=f.type%] [%=f.name%];
+	
+	public void set[%=f.name.ftuc()%]([%=f.type%] [%=f.name%]) {
+		this.[%=f.name%] = [%=f.name%];
+	}
+	
+	public [%=f.type%] get[%=f.name.ftuc()%]() {
+		return [%=f.name%];
+	}
+	
+	[%}%]
+}

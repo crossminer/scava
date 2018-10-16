@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RestMule Core
+Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.core;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.crossflow.runtime.dependencies;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.apache.commons.io
+Export-Package: org.eclipse.scava.crossflow.restmule.core.cache,
+ org.eclipse.scava.crossflow.restmule.core.callback,
+ org.eclipse.scava.crossflow.restmule.core.client,
+ org.eclipse.scava.crossflow.restmule.core.data,
+ org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers,
+ org.eclipse.scava.crossflow.restmule.core.interceptor,
+ org.eclipse.scava.crossflow.restmule.core.page,
+ org.eclipse.scava.crossflow.restmule.core.session,
+ org.eclipse.scava.crossflow.restmule.core.util

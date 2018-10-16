@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: crossflow.dt
+Bundle-SymbolicName: org.eclipse.scava.crossflow.dt;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.ui.workbench,
+ org.eclipse.core.runtime,
+ org.slf4j.api;bundle-version="1.7.2",
+ org.eclipse.ui.console,
+ org.eclipse.emf.common;bundle-version="2.11.0",
+ org.eclipse.epsilon.common;bundle-version="1.5.0",
+ org.eclipse.epsilon.egl.engine,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.core.resources,
+ org.eclipse.scava.crossflow.runtime,
+ org.eclipse.scava.crossflow.examples
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.scava.crossflow.dt.Activator
+Export-Package: org.eclipse.scava.crossflow.dt,
+ org.eclipse.scava.crossflow.dt.views
+ 
+

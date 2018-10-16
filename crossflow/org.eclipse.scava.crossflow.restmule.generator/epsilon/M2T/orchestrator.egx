@@ -1,0 +1,319 @@
+import "../util/restmule.eol";
+
+pre {
+	("Setting up transformation").println;
+	var output : String = "../output/";
+	var api : RestMule!API = API.all.first;
+	var baseSrcDir : String = "src/main/java/org/eclipse/crossmeter/workflow/restmule/generated/client/"+ api.name.toLowerCase() + "/"; 
+	var apiNameLowerCase : String = api.name.toLowerCase();
+	("Starting Transformation").println;
+}
+
+/**
+ * MAIN API
+ */
+
+rule Api
+	transform R : API {
+	guard : R.ratePolicy <> null
+	parameters {
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		params.put("scopes", R.ratePolicy.scopes);
+  		return params;
+	}
+	template : "src/api.egl"
+	target : output + baseSrcDir + "api/" + R.name + "Api.java"
+}
+
+rule ApiInterface
+	transform R : API {
+	guard : R.ratePolicy <> null
+	parameters {
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		params.put("scopes", R.ratePolicy.scopes);
+  		return params;
+	}
+	template : "src/apiInterface.egl"
+	target : output + baseSrcDir + "api/I" + R.name + "Api.java"
+}
+
+/**
+ * TYPES
+ */
+
+rule Types2Java transform R : Response { 
+  	guard {
+  		if (R.responseType <> null){
+  			return R.responseType.instanceOf(ObjectType) 
+  					or ( R.responseType.instanceOf(ListType) and 
+  						R.responseType.elements.first.instanceOf(ObjectType) );
+  		} else {
+  			return false;
+  		}
+  	}
+  	pre {
+  	  	var type = R.responseType;
+		if (type.instanceOf(ListType)){
+			type = type.elements.first;
+		}  	
+		var hasList : Boolean = type.listFields.size() > 0 
+			or type.allInners().select(e| e.listFields.size()>0).size()>0;
+  	}
+  	parameters {
+  		var params : new Map;
+  		params.put("package", apiNameLowerCase + ".model");
+  		params.put("json", api.produces == FormatEnum#JSON);
+  		params.put("type", type);
+  		params.put("hasList", hasList);
+  	  	return params;
+	}
+  	template : "src/bean.egl"
+	target : output + baseSrcDir + "model/" + type.getType() + ".java"
+}
+
+/* rule BodyTypes2Java transform B : Body { 
+  	guard {
+		if (B.type.instanceOf(ListType)){
+			return B.type.elements.first.instanceOf(ObjectType);
+		} else {
+			return B.type.instanceOf(ObjectType);
+		} 
+	}
+	pre{
+  		var type;
+  		if (B.type.instanceOf(ListType)){
+  			type = B.type.elements.first;
+  		} else if (B.type.instanceOf(ObjectType)){
+  			type = B.type;
+  		}
+		var hasList : Boolean = type.listFields.size()>0 
+			or type.allInners().select(e| e.listFields.size()>0).size()>0;
+  	}
+  	parameters {
+  		var params : new Map;
+  		params.put("package", apiNameLowerCase + ".model.body");
+  		params.put("type", type);
+  		params.put("json", api.consumes == FormatEnum#JSON);
+  		params.put("hasList", hasList);
+  	  	return params;
+	}
+  	template : "src/bean.egl"
+	target : output + baseSrcDir + "model/body/" + type.getType() + ".java"
+} */
+
+/**
+ * CLIENT
+ */
+
+rule RateLimitScopes2Api
+transform R : RatePolicyScope {
+	pre {
+		var responses = R.getResponses();
+		var importParams = new Set<String>();
+  		importParams.addAll(R.requests.collect(e|e.`parameters`).flatten.collect(e|e.paramType()));
+  		var importMethods = new Set<MethodEnum>();
+  		importParams.addAll(R.requests.collect(r|r.method));
+	}
+	parameters {
+  		var params : new Map;  	
+  		params.put("responses", responses);
+  		params.put("scope", R.scope);
+  		params.put("name", api.name);
+  		params.put("paged", api.pagination);
+		params.put("importMethods", importMethods);
+		params.put("importParams", importParams);
+  		return params;
+	}  	
+	template : "src/scopeApi.egl"
+	target : output + baseSrcDir + "client/" + R.scope + "Api.java"
+}
+
+rule RateLimitScopes2IApi
+transform R : RatePolicyScope {
+	pre {
+		var responses = R.getResponses();
+		var importParams = new Set<String>();
+  		importParams.addAll(R.requests.`parameters`.flatten.collect(e|e.paramType()));
+  		var importMethods = new Set<MethodEnum>();
+  		importParams.addAll(R.requests.collect(r|r.method));
+	}
+	parameters {
+  		var params : new Map;  	
+  		params.put("responses", responses);
+  		params.put("scope", R.scope);
+  		params.put("name", api.name);
+  		params.put("paged", api.pagination);
+		params.put("importMethods", importMethods);
+		params.put("importParams", importParams);
+  		return params;
+	}  	
+	template : "src/scopeWrapper.egl"
+	target : output + baseSrcDir + "client/I" + R.scope + "Api.java"
+}
+
+rule RateLimitScopes2Endpoints 
+transform R : RatePolicyScope {
+	pre {
+		var responses = R.getResponses();
+		var importParams = new Set<String>();
+		importParams.addAll(R.requests.`parameters`.flatten.collect(e|e.paramType()));
+		var importMethods = new Set<MethodEnum>();
+  		importParams.addAll(R.requests.collect(r|r.method));
+	}
+	parameters {
+  		var params : new Map;  	
+  		params.put("responses", responses);
+  		params.put("scope", R.scope);
+  		params.put("name", api.name);
+  		params.put("paged", api.pagination);
+  		params.put("importMethods", importMethods);
+		params.put("importParams", importParams);
+  		return params;
+	}  	
+	template : "src/scopeEndpoint.egl"
+	target : output + baseSrcDir + "client/I" + R.scope + "Endpoint.java"
+}
+
+// PAGGED 
+
+rule Pagination
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/pagination.egl"
+	target : output + baseSrcDir + "page/" + R.name + "Pagination.java"
+}
+
+rule Paged transform W : Wrapper { 
+  	parameters {
+  		var params : new Map;
+  		params.put("name", api.name);
+  	  	return params;
+	}
+  	template : "src/wrapper.egl"
+	target : output + baseSrcDir + "page/" + api.name + "Paged.java"
+}
+
+// PACKAGES
+
+rule Interceptor
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/interceptor.egl"
+	target : output + baseSrcDir + "interceptor/" + R.name + "Interceptor.java"
+}
+
+rule Cache
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/cache.egl"
+	target : output + baseSrcDir + "cache/" + R.name + "CacheManager.java"
+}
+
+rule Callback
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/callback.egl"
+	target : output + baseSrcDir + "callback/" + R.name + "Callback.java"
+}
+
+rule WrappedCallback
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/wrappedCallback.egl"
+	target : output + baseSrcDir + "callback/" + R.name + "WrappedCallback.java"
+}
+
+rule PropertiesUtil
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/propertiesUtil.egl"
+	target : output + baseSrcDir + "util/" + R.name + "PropertiesUtil.java"
+}
+
+rule Session
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/session.egl"
+	target : output + baseSrcDir + "session/" + R.name + "Session.java"
+}
+
+rule DataSet
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "src/dataset.egl"
+	target : output + baseSrcDir + "data/" + R.name + "DataSet.java"
+}
+
+// OTHER FILES
+
+rule Properties
+  	transform R : API { 	 	  	
+  	template : "properties.egl"
+	target : output + "resources/" + apiNameLowerCase + ".properties"
+}
+
+rule POM
+	transform R : API {
+	template : "pom.egl"
+	target : output + "pom.xml"
+}
+
+rule Manifest
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "manifest.egl"
+	target : output + "META-INF/MANIFEST.MF"
+}
+
+rule Project
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "project.egl"
+	target : output + ".project"
+}
+
+post { 
+	("Transformation finished").println(); 
+}

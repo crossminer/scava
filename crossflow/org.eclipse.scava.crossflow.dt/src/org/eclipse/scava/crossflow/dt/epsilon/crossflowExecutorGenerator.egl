@@ -1,0 +1,166 @@
+[%
+var config = wf.configuration;
+%]
+
+package [%=config.rootPackageName%].basegen;
+
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.java.tuple.*;
+import org.apache.flink.streaming.api.datastream.AsyncDataStream;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer09;
+
+[*TODO discover and import model-defined channel types outside the generated project scope*]
+import org.eclipse.scava.crossflow.restmule.client.github.model.*;
+
+import [%=config.rootPackageName%].*;
+
+public class [%=wf.name%] {
+
+	public static void main(String[] args) throws Exception {
+		new [%=wf.name%]().run();
+	}
+
+	public void run() throws Exception {
+
+		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+[%
+	//set of tasks already created in order to back-track without creating replicate tasks
+	var existingTasks = new Set;
+	var initialTasks = new Set;
+
+	//loop over all tasks without an input (aka the start of the workflow)
+	for(t in Task.all){
+		if(not t.incomingStream.isDefined()){
+%]			
+		DataStream<[%=t.outgoingStream.getTypeString()%]> [%=t.name%]Stream = [%=t.implementationEntryPoint%]
+			.setParallelism(1);
+		
+		[%
+		initialTasks.add(t);
+		existingTasks.add(t);
+		}
+	}
+	
+	//for each initial task, create a flink function chain until you reach a final task (depth first chaining)
+	for(it in initialTasks){
+		if(it.outgoingStream.isDefined()){
+			it.depthFirstChainResolution(existingTasks,config);
+			%]
+			
+			[%
+		}
+	}
+		
+	%]
+	
+	
+		env.execute("Crossflow execution of: [%=wf.name%]");
+	
+	}
+	
+}	
+
+[%
+@Cached
+operation Stream getTypeString() : String {
+	var t = self.type;
+	if(not t.isTypeOf(Struct) or t.fields.size==0)
+		return t.name;
+	else {
+		var ret = t.name + "<";
+		for(f in t.fields)
+			ret = ret + f.type.name + ", ";
+		ret = ret.substring(0, ret.length-2);
+		ret = ret + ">";
+		return ret;
+	}		
+}
+
+operation Task depthFirstChainResolution(existingTasks : Set, config : Configuration) : String {
+
+	//chain is not over
+	if(self.outgoingStream.isDefined()){
+		//TODO improve algorithm to resolve forks in chains (currently only makes a single chain per initial task), using the existingTasks variable
+		var nextTaskInChain = self.outgoingStream.outgoingTasks.first;
+	
+	
+		switch(nextTaskInChain.taskType){
+		
+			//source -- should not be found in the middle of a chain
+			case TaskTypes#source:  throw new Exception("error in depthFirstChainResolution(chain) -- source task found mid-chain!");
+                     break;
+            //sink         
+            case TaskTypes#sink: { 
+            		 %]
+        
+            		 
+		[%=self.name+"Stream"%].addSink(new [%=nextTaskInChain.name%]Task()).setParallelism(1);[%
+            		 
+            		 // kafka queue	for sinks
+					 if(config.enableKafka){
+					 %][%=self.name+"Stream"%]
+					 .map(new MapFunction<[%=self.outgoingStream.getTypeString()%], String>() {
+					 	private static final long serialVersionUID = 1L;
+					 	@Override
+					 	public String map([%=self.outgoingStream.getTypeString()%] data) throws Exception {
+					 		return data.toString();
+					 	}
+					 })
+				 	 .addSink(new FlinkKafkaProducer09<String>
+					 	("localhost:9092", "crossflow-data-results", new SimpleStringSchema())).setParallelism(1);[%	
+					 }
+					 existingTasks.add(nextTaskInChain);       		 
+                     break;
+                    } 
+            //map         
+            case TaskTypes#map:  
+            		{
+            		 if(not nextTaskInChain.isAsync){ 
+					 %]
+		DataStream<[%=nextTaskInChain.outgoingStream.getTypeString()%]> [%=nextTaskInChain.name%]Stream = 
+					 [%=self.name+"Stream"%]
+					 	.map(new [%=nextTaskInChain.name%]Task());[%
+                    }else{ //TODO support the various async options in model
+                     %]
+		DataStream<[%=nextTaskInChain.outgoingStream.getTypeString()%]> [%=nextTaskInChain.name%]Stream = 
+                     AsyncDataStream.unorderedWait([%=self.name+"Stream"%], new [%=nextTaskInChain.name%]TaskAsync(), 1, TimeUnit.HOURS, 100000);[%
+                    }
+                   	 existingTasks.add(nextTaskInChain);
+					 nextTaskInChain.depthFirstChainResolution(existingTasks,config);
+                     break;                    
+                    }
+            //flatmap
+            case TaskTypes#flatMap:  
+            		{
+            		 if(not nextTaskInChain.isAsync){ 
+					 %]
+		DataStream<[%=nextTaskInChain.outgoingStream.getTypeString()%]> [%=nextTaskInChain.name%]Stream = 
+					 [%=self.name+"Stream"%]
+					 	.flatMap(new [%=nextTaskInChain.name%]Task());[%
+                    }else{ //TODO support the various async options in model                    
+                     %]
+		DataStream<[%=nextTaskInChain.outgoingStream.getTypeString()%]> [%=nextTaskInChain.name%]Stream = 
+                     AsyncDataStream.unorderedWait([%=self.name+"Stream"%], new [%=nextTaskInChain.name%]TaskAsync(), 1, TimeUnit.HOURS, 100000);[%
+                    }
+                     existingTasks.add(nextTaskInChain);
+             		 nextTaskInChain.depthFirstChainResolution(existingTasks,config);
+                     break;  
+                    }                   
+            //filter
+            case TaskTypes#filter:  throw new Exception("error in depthFirstChainResolution(chain) -- filters NYI");
+                     break;
+		}	
+	}else{ //this is a final task so chain is over
+	//this should be called only for final tasks hence does nothing (as final taks have no return)
+		if(not self.taskType.equals(TaskTypes.sink))
+			throw new Exception("error in depthFirstChainResolution(chain) -- a final task is not a sink!");
+	}
+	
+}
+%]

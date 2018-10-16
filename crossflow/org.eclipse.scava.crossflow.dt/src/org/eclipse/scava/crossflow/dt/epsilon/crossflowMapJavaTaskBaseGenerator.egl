@@ -1,0 +1,37 @@
+[%
+var config = jt.eContainer.configuration;
+%]
+
+package [%=config.rootPackageName%].basegen;
+
+import org.apache.flink.api.common.functions.RichMapFunction;
+import org.apache.flink.api.java.tuple.*;
+
+public class [%=jt.name%]TaskBase extends RichMapFunction<[%=jt.incomingStream.getTypeString()%], [%=jt.outgoingStream.getTypeString()%]> {
+
+    public RepositoryContributorsFilterTaskBase() {
+
+    }
+
+    @Override
+    public [%=jt.outgoingStream.getTypeString()%] map([%=jt.incomingStream.getTypeString()%] value) throws Exception {
+        throw new UnsupportedOperationException("This method requires a custom implementation.");
+    }
+}
+
+[%
+@Cached
+operation Stream getTypeString() : String {
+	var t = self.type;
+	if(not t.isTypeOf(Struct) or t.fields.size==0)
+		return t.name;
+	else {
+		var ret = t.name + "<";
+		for(f in t.fields)
+			ret = ret + f.type.name + ", ";
+		ret = ret.substring(0, ret.length-2);
+		ret = ret + ">";
+		return ret;
+	}		
+}
+%]

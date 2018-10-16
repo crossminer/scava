@@ -1,0 +1,25 @@
+[% import "../../util/restmule.eol"; %]
+[% import "../templates/templates.egl"; %]
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].client;
+
+import java.util.List;
+
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].model.*;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].page.[%= name %]Paged;
+
+import io.reactivex.Observable;
+import retrofit2.Call; 
+[% for (method in importMethods) { %]
+import retrofit2.http.[%= method %];
+[% } %]
+[% for (param in importParams) { %]
+import retrofit2.http.[%= param %];
+[% } %]
+
+public interface I[%= scope %]Endpoint {
+
+	[% for (response in responses) { %]	
+	[%= response.endpointRequest(paged, name) %]
+	[% } %]
+	
+}

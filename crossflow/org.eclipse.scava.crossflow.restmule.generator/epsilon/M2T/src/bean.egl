@@ -1,0 +1,17 @@
+[% import "../../util/restmule.eol"; %]
+[% import "../templates/templates.egl"; %]
+package org.eclipse.crossmeter.workflow.restmule.client.[%= package %];
+
+[% if (hasList) { %]
+import java.util.ArrayList;
+import java.util.List;
+
+[% } %]
+[% if (json) { %]
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+[% } else { %] 
+// TODO implement XML libraries
+[% } %]
+[%= type.nestTemplate()%]	
