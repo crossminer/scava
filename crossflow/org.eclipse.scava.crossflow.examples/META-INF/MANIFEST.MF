@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.eclipse.scava.crossflow.examples.ghmde
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.scava.crossflow.runtime,
- org.eclipse.scava.crossflow.restmule.client.github,
  org.eclipse.scava.crossflow.restmule.core,
- org.eclipse.jgit
+ org.eclipse.scava.crossflow.restmule.client.github
 Export-Package: org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo

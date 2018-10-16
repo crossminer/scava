@@ -9,12 +9,12 @@ import org.eclipse.jgit.api.Git;
 public class GitRepoCloner {
 	
 	final static File CLONE_PARENT_DESTINATION = new File(
-					// level: same as this (crossflow) repo
-					".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
+					// level: same as this (scava) repo
+					".." + File.separator + ".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
 
 	public static void main(String[] args) throws IOException {
-		File file = new File(".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
-		System.out.println(file.getCanonicalPath().toString());
+		System.out.println(CLONE_PARENT_DESTINATION.getCanonicalPath().toString());
+		cloneRepo("https://github.com/epsilonlabs/epsilon-atom", true);
 	}
 	
 	public static String cloneRepo(String repoUrl, boolean replace) {
@@ -46,7 +46,9 @@ public class GitRepoCloner {
 					System.out.println("Successfully created local repository clone destination for specified repository: "
 							+ CLONE_REPO_DESTINATION.getCanonicalPath());
 				}
-				Git git = Git.cloneRepository().setURI(CLONE_SOURCE).setDirectory(CLONE_REPO_DESTINATION).call();
+							
+				
+				Git git = Git.cloneRepository().setURI(CLONE_SOURCE).setDirectory(CLONE_REPO_DESTINATION.getAbsoluteFile()).call();
 				git.close();
 				System.out.println("Successfully cloned specified repo to local clone destination: "
 						+ CLONE_REPO_DESTINATION.getAbsolutePath());
