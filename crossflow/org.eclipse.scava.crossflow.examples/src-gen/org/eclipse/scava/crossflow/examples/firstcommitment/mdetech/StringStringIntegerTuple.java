@@ -36,4 +36,14 @@ public class StringStringIntegerTuple extends Job {
 		return field2;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[3];
+	 	ret[0] = getField0();
+	 	ret[1] = getField1();
+	 	ret[2] = getField2();
+		return ret;
+	}
+
+
 }

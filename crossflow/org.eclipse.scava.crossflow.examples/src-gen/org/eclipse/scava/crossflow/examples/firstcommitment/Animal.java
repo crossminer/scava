@@ -16,4 +16,12 @@ public class Animal extends Job {
 		return name;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[1];
+	 	ret[0] = getName();
+		return ret;
+	}
+
+
 }

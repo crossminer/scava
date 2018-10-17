@@ -45,6 +45,30 @@ rule Steam2Consumer
 	target : s.getPath() + s.name + "Consumer.java"
 }
 
+//
+
+@greedy
+rule Sink2EclipseResultStream
+	transform s : Sink {
+	
+	parameters : Map{"w" = s.eContainer()}
+	
+	template : "sink2eclipseresultstream.egl"
+	
+	target : s.getPath() + "EclipseResultPublisher.java"
+}
+
+@greedy
+rule Sink2EclipseResultStreamConsumer 
+	transform s : Sink {
+	
+	template : "stream2eclipseresultstreamconsumer.egl"
+	
+	target : s.getPath() + "EclipseResultPublisherConsumer.java"
+}
+
+
+
 operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();

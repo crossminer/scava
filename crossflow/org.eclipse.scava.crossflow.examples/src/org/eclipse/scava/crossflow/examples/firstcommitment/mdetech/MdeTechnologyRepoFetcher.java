@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepo;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchRepositories;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;

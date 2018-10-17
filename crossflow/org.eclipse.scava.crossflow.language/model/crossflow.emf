@@ -20,6 +20,9 @@ abstract class Stream {
 	attr String name;
 	@gmf.link
 	ref Type type;
+	
+	ref Task[*]#input inputOf;
+	ref Task[*]#output outputOf;
 }
 
 class Topic extends Stream {}
@@ -30,9 +33,10 @@ class Queue extends Stream {}
 class Task {
 	attr String name;
 	@gmf.link
-	ref Stream[*] input;
+	ref Stream[*]#inputOf input;
 	@gmf.link
-	ref Stream[*] output;
+	ref Stream[*]#outputOf output;
+	attr Boolean masterOnly = false;
 	attr Boolean parallel; /*TODO*/
 	attr Boolean cached; /*TODO*/
 }

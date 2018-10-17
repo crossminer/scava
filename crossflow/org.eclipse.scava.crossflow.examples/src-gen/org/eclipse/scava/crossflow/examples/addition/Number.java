@@ -16,4 +16,12 @@ public class Number extends Job {
 		return n;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[1];
+	 	ret[0] = getN();
+		return ret;
+	}
+
+
 }

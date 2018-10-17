@@ -1,10 +1,14 @@
 package org.eclipse.scava.crossflow.examples.opinionated;
 
+import java.util.Collection;
+
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-import com.beust.jcommander.Parameter;
+
 
 public class OpinionatedExample extends Workflow {
 	
@@ -32,6 +36,12 @@ public class OpinionatedExample extends Workflow {
 	protected WordSource wordSource;
 	protected OccurencesMonitor occurencesMonitor;
 	
+	// excluded tasks from workers
+	protected Collection<String> tasksToExclude;
+	
+	public void excludeTasks(Collection<String> tasks){
+		tasksToExclude = tasks;
+	}
 	
 	public OpinionatedExample() {
 		this.name = "OpinionatedExample";
@@ -46,17 +56,25 @@ public class OpinionatedExample extends Workflow {
 			broker.addConnector(getBroker());
 			broker.start();
 		}
+
 		
 		words = new Words(this);
 		
+		if(isMaster() || !tasksToExclude.contains("WordSource")) {
 		wordSource = new WordSource();
 		wordSource.setWorkflow(this);
 		wordSource.setWords(words);
-		
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("OccurencesMonitor")) {
 		occurencesMonitor = new OccurencesMonitor();
 		occurencesMonitor.setWorkflow(this);
-		words.addConsumer(occurencesMonitor);
 		
+			words.addConsumer(occurencesMonitor);
+			
+	
+		}
+	
 		
 		if (isMaster()){
 			wordSource.produce();

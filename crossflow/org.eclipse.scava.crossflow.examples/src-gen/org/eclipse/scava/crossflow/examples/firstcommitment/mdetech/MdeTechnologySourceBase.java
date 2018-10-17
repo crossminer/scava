@@ -25,6 +25,7 @@ public abstract class MdeTechnologySourceBase {
 	}
 	
 	
+	
 	public abstract void produce();
 	
 }

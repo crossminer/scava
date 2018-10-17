@@ -1,27 +1,17 @@
-package org.eclipse.scava.crossflow.examples.addition;
+package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
-public abstract class AdderBase implements AdditionsConsumer{
+public abstract class EmptySinkBase implements ResultsPublisherConsumer{
 	
-	protected AdditionExample workflow;
+	protected GhRepoExample workflow;
 	
-	public void setWorkflow(AdditionExample workflow) {
+	public void setWorkflow(GhRepoExample workflow) {
 		this.workflow = workflow;
 	}
 	
 	public Workflow getWorkflow() {
 		return workflow;
-	}
-	
-	protected AdditionResults additionResults;
-	
-	public void setAdditionResults(AdditionResults additionResults) {
-		this.additionResults = additionResults;
-	}
-	
-	public AdditionResults getAdditionResults() {
-		return additionResults;
 	}
 	
 	

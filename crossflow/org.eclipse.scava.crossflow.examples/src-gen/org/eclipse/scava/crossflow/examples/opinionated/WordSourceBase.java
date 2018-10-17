@@ -25,6 +25,7 @@ public abstract class WordSourceBase {
 	}
 	
 	
+	
 	public abstract void produce();
 	
 }

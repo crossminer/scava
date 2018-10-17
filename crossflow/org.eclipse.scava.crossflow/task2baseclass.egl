@@ -27,6 +27,20 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 	
 	[%}%]
 	
+	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
+	
+	protected EclipseResultPublisher eclipseResultPublisher;
+	
+	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
+		this.eclipseResultPublisher = eclipseResultPublisher;
+	}
+	
+	public EclipseResultPublisher getEclipseResultPublisher() {
+		return eclipseResultPublisher;
+	}
+	
+	[%}%]
+	
 	[%if (t.isTypeOf(Source)){%]
 	public abstract void produce();
 	[%}%]

@@ -1,10 +1,14 @@
 package org.eclipse.scava.crossflow.examples.addition;
 
+import java.util.Collection;
+
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-import com.beust.jcommander.Parameter;
+
 
 public class AdditionExample extends Workflow {
 	
@@ -18,12 +22,19 @@ public class AdditionExample extends Workflow {
 	// streams
 	protected Additions additions;
 	protected AdditionResults additionResults;
+	protected EclipseResultPublisher eclipseResultPublisher;
 	
 	// tasks
 	protected NumberPairSource numberPairSource;
 	protected Adder adder;
 	protected Printer printer;
 	
+	// excluded tasks from workers
+	protected Collection<String> tasksToExclude;
+	
+	public void excludeTasks(Collection<String> tasks){
+		tasksToExclude = tasks;
+	}
 	
 	public AdditionExample() {
 		this.name = "AdditionExample";
@@ -38,23 +49,39 @@ public class AdditionExample extends Workflow {
 			broker.addConnector(getBroker());
 			broker.start();
 		}
+
+		eclipseResultPublisher = new EclipseResultPublisher(this);
 		
 		additions = new Additions(this);
 		additionResults = new AdditionResults(this);
 		
+		if(isMaster() || !tasksToExclude.contains("NumberPairSource")) {
 		numberPairSource = new NumberPairSource();
 		numberPairSource.setWorkflow(this);
 		numberPairSource.setAdditions(additions);
-		
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("Adder")) {
 		adder = new Adder();
 		adder.setWorkflow(this);
-		additions.addConsumer(adder);
-		adder.setAdditionResults(additionResults);
 		
+			additions.addConsumer(adder);
+			
+	
+		adder.setAdditionResults(additionResults);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("Printer")) {
 		printer = new Printer();
 		printer.setWorkflow(this);
-		if (isMaster()) 		additionResults.addConsumer(printer);
-		
+		if (isMaster()) 		
+			additionResults.addConsumer(printer);
+			
+		if(adder!=null)		
+			adder.setEclipseResultPublisher(eclipseResultPublisher);
+	
+		}
+	
 		
 		if (isMaster()){
 			numberPairSource.produce();

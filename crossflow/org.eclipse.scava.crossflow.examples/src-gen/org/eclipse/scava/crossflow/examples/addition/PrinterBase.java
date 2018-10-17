@@ -16,4 +16,16 @@ public abstract class PrinterBase implements AdditionResultsConsumer{
 	
 	
 	
+	protected EclipseResultPublisher eclipseResultPublisher;
+	
+	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
+		this.eclipseResultPublisher = eclipseResultPublisher;
+	}
+	
+	public EclipseResultPublisher getEclipseResultPublisher() {
+		return eclipseResultPublisher;
+	}
+	
+	
+	
 }

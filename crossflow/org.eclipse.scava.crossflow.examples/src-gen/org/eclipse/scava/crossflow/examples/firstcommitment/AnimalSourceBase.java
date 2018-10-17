@@ -25,6 +25,7 @@ public abstract class AnimalSourceBase {
 	}
 	
 	
+	
 	public abstract void produce();
 	
 }

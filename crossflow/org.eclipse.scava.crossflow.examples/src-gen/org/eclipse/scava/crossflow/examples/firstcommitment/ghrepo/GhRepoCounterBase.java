@@ -26,4 +26,16 @@ public abstract class GhRepoCounterBase implements GhReposConsumer{
 	
 	
 	
+	protected EclipseResultPublisher eclipseResultPublisher;
+	
+	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
+		this.eclipseResultPublisher = eclipseResultPublisher;
+	}
+	
+	public EclipseResultPublisher getEclipseResultPublisher() {
+		return eclipseResultPublisher;
+	}
+	
+	
+	
 }

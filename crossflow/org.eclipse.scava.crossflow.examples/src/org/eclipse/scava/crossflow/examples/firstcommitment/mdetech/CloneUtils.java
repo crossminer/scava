@@ -3,16 +3,12 @@
  */
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 
 /**
  * @author Patrick Neubauer

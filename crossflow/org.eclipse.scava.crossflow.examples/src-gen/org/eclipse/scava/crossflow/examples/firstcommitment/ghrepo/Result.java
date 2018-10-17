@@ -46,4 +46,15 @@ public class Result extends Job {
 		return authors;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[4];
+	 	ret[0] = getTechnology();
+	 	ret[1] = getRepos();
+	 	ret[2] = getFiles();
+	 	ret[3] = getAuthors();
+		return ret;
+	}
+
+
 }

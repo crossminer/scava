@@ -48,11 +48,11 @@
 		<source name="GhRepoSource" out="GhRepos"/>
 		<queue name="GhRepos" type="GhRepo"/>
 		
-		<task name="GhRepoCounter" in="GhRepos out=ResultsPublisher"/>
+		<task masterOnly="true" name="GhRepoCounter" in="GhRepos" out="ResultsPublisher"/>
 		
 		<queue name="ResultsPublisher" type="Result"/>
 
-		<sink name="stub" in="ResultsPublisher" />
+		<sink name="EmptySink" in="ResultsPublisher" />
 		
 		<type name="GhRepo">
 			<field name="repoUrl" type="String"/>
