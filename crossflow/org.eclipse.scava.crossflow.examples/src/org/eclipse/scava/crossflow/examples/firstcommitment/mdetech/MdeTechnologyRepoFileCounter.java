@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+
 public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBase {
 
 	protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
@@ -15,6 +17,11 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	
 	// < repository-url, number-of-repository-occurrence >
 	protected Map<String, Integer> committedRepoMap = new HashMap<String, Integer>(); 
+	
+
+	final static File CLONE_PARENT_DESTINATION = new File(
+					// level: same as this (scava) repo
+					".." + File.separator + ".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
 	
 	public MdeTechnologyRepoFileCounter() {
 		// do nothing

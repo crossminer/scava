@@ -1,14 +1,20 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import java.io.File;
+
 import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class MdeTechnologyExampleMasterWorkers {
 	
 	private static final int COMPLETION_WAITING_TIME = 10000;
+	
+	final static File CLONE_PARENT_DESTINATION = new File(
+			// level: same as this repo (scava)
+			".." + File.separator + ".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
 
 	public static void main(String[] args) throws Exception {
 		
-		GitRepoCloner.cleanLocalParentCloneDirectory(); 
+		CloneUtils.cleanLocalParentCloneDirectory(CLONE_PARENT_DESTINATION); 
 		
 		MdeTechnologyExample master = new MdeTechnologyExample();
 		master.setName("Master");
