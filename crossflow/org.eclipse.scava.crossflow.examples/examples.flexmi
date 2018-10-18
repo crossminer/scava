@@ -70,24 +70,39 @@
 	<!-- Example demonstrating how to implement non-static committment using RestMule -->
 	<workflow name="MdeTechnologyExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech">
 		
+		<!-- source of MDE technologies -->
 		<source name="MdeTechnologySource" out="MdeTechnologies"/> 
 		
+		<!-- queue of MDE technologies -->
 		<queue name="MdeTechnologies" type="StringStringTuple"/> 
 		
+		<!-- task for retrieving repository information from GitHub API -->
 		<task name="MdeTechnologyRepoFetcher" in="MdeTechnologies" out="MdeTechnologyRepoEntries"/> 
 		
+		<!-- queue of repositories retrieved from GitHub API -->
 		<queue name="MdeTechnologyRepoEntries" type="StringStringIntegerTuple"/> 
 				
+	 	<!-- task for cloning repositories retrieved from GitHub API -->
 		<task name="MdeTechnologyRepoCloner" in="MdeTechnologyRepoEntries" out="MdeTechnologyClonedRepoEntries"/> 
-
-		<topic name="MdeTechnologyClonedRepoEntries" type="StringStringIntegerTuple"/>
-
-		<task name="MdeTechnologyRepoAuthorCounter" in="MdeTechnologyRepoEntries"/>
-		<task name="MdeTechnologyRepoFileCounter" in="MdeTechnologyRepoEntries"/>
-		<task name="MdeTechnologyRepoOwnerFollowerCounter" in="MdeTechnologyRepoEntries"/>
 		
-		<!-- TODO: add sink(s) for printing if required -->
+		<!-- topic of repositories cloned from GitHub -->
+		<topic name="MdeTechnologyClonedRepoEntries" type="StringStringIntegerStringTuple"/>
+
+		<!-- tasks for counting unique authors, files, and owner followers of repositories cloned from GitHub -->
+		<task name="MdeTechnologyRepoAuthorCounter" in="MdeTechnologyClonedRepoEntries" out="MdeTechnologyRepoAuthorCountEntries"/>
+		<task name="MdeTechnologyRepoFileCounter" in="MdeTechnologyClonedRepoEntries" out="MdeTechnologyRepoFileCountEntries"/> <!-- not (!) all files but only those matching specific MDE technology -->
+		<task name="MdeTechnologyRepoOwnerPopularityCounter" in="MdeTechnologyClonedRepoEntries" out="MdeTechnologyRepoOwnerPopularityCountEntries"/>
 		
+		<!-- queues of unique author count, file count, and owner follower count of repositories cloned from GitHub  -->
+		<queue name="MdeTechnologyRepoAuthorCountEntries" type="StringStringIntegerStringIntegerTuple"/> 
+		<queue name="MdeTechnologyRepoFileCountEntries" type="StringStringIntegerStringIntegerTuple"/> 
+		<queue name="MdeTechnologyRepoOwnerPopularityCountEntries" type="StringStringIntegerStringIntegerTuple"/> 
+		
+		<!-- sinks for printing unique author count, file count, and owner follower count of repositories cloned from GitHub -->
+		<sink name="MdeTechnologyRepoAuthorCountPrinter" in="MdeTechnologyRepoAuthorCountEntries"/>
+		<sink name="MdeTechnologyRepoFileCountPrinter" in="MdeTechnologyRepoFileCountEntries"/>
+		<sink name="MdeTechnologyRepoOwnerPopularityCountPrinter" in="MdeTechnologyRepoOwnerPopularityCountEntries"/>
+				
 		<!-- MdeTechnologies: extension (= technology), keyword -->
 		<type name="StringStringTuple">
 			<field name="field0" type="String"/>
@@ -95,11 +110,27 @@
 		</type>
 		
 		<!-- MdeTechnologyRepoEntries: extension (= technology), repo remote URL, # of stars -->
-		<!-- MdeTechnologyClonedRepoEntries: repo remote URL, repo local path, # of stars -->
 		<type name="StringStringIntegerTuple">
 			<field name="field0" type="String"/>
 			<field name="field1" type="String"/>
 			<field name="field2" type="Integer"/>
+		</type>
+		
+		<!-- MdeTechnologyClonedRepoEntries: extension (= technology), repo remote URL, # of stars, repo local path -->
+		<type name="StringStringIntegerStringTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="Integer"/>
+			<field name="field3" type="String"/>
+		</type>
+		
+		<!-- extension (= technology), repo remote URL, # of stars, repo local path, count -->
+		<type name="StringStringIntegerStringIntegerTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="Integer"/>
+			<field name="field3" type="String"/>
+			<field name="field4" type="Integer"/> <!-- ( author | file | owner popularity ) count -->
 		</type>
 				
 	</workflow>

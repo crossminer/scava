@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 import org.eclipse.scava.crossflow.runtime.Job;
 
-public class StringStringIntegerTuple extends Job {
+public class StringStringIntegerStringTuple extends Job {
 	
 	protected String field0;
 	
@@ -36,12 +36,23 @@ public class StringStringIntegerTuple extends Job {
 		return field2;
 	}
 	
+	protected String field3;
+	
+	public void setField3(String field3) {
+		this.field3 = field3;
+	}
+	
+	public String getField3() {
+		return field3;
+	}
+	
 	
 	public Object[] toObjectArray(){
-		Object[] ret = new Object[3];
+		Object[] ret = new Object[4];
 	 	ret[0] = getField0();
 	 	ret[1] = getField1();
 	 	ret[2] = getField2();
+	 	ret[3] = getField3();
 		return ret;
 	}
 

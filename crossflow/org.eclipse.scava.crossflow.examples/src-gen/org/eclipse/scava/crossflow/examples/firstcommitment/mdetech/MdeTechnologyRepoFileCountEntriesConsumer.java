@@ -1,0 +1,5 @@
+package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
+
+public interface MdeTechnologyRepoFileCountEntriesConsumer {
+	public void consumeMdeTechnologyRepoFileCountEntries(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple);
+}

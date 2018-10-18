@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,27 +21,27 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	}
 
 	@Override
-	public void consumeMdeTechnologyRepoEntries(StringStringIntegerTuple stringStringIntegerTuple) {
+	public void consumeMdeTechnologyClonedRepoEntries(StringStringIntegerStringTuple stringStringIntegerStringTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+			workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
-			if ( alreadySeenJobs.contains( stringStringIntegerTuple.getId() ) ) { 
+			if ( alreadySeenJobs.contains( stringStringIntegerStringTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( stringStringIntegerTuple.getField1(), 0 );
+				committedRepoMap.put( stringStringIntegerStringTuple.getField1(), 0 );
 			
 			} else {
 				// We haven't seen this job before
 				// Record it and send it back
-				alreadySeenJobs.add( stringStringIntegerTuple.getId() );
-				workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+				alreadySeenJobs.add( stringStringIntegerStringTuple.getId() );
+				workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
 			}
 			
-			if ( committedRepoMap.containsKey( stringStringIntegerTuple.getField1() ) ) {
-				committedRepoMap.replace( stringStringIntegerTuple.getField1(), committedRepoMap.get( stringStringIntegerTuple.getField1()) + 1 );
-				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerTuple.getField1() ) + " occurrences of " + stringStringIntegerTuple.getField1() );
+			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
+				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
+				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerStringTuple.getField1() ) + " occurrences of " + stringStringIntegerStringTuple.getField1() );
 				
 				System.out.println("[" + workflow.getName() + "] " + "COUNT FILES FROM LOCALLY CLONED REPO HERE !\n");
 				// TODO: count files from locally cloned repo here !
@@ -48,6 +50,11 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 			
 		}
 		
+	}
+
+	private int count(String repoLocation) {	
+		// TODO: count files in cloned repo that match technology file extension specified in MDE.java
+		return 0;
 	}
 
 	/**
@@ -62,5 +69,13 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	 */
 	public Map<String, Integer> getCommittedRepoMap() {
 		return committedRepoMap;
+	}
+	
+	public static void main(String args[]) throws IOException {
+		MdeTechnologyRepoFileCounter counter = new MdeTechnologyRepoFileCounter();
+		String repoLocation = "../../.git";
+		System.out.println(new File(repoLocation).getCanonicalPath());
+		int count = counter.count(repoLocation);
+		System.out.println("COUNT: " + count);
 	}
 }

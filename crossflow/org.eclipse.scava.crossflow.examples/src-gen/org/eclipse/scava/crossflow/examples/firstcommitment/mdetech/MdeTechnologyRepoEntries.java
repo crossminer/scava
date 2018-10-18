@@ -53,7 +53,16 @@ public class MdeTechnologyRepoEntries {
 									((MdeTechnologyExample) workflow).getMdeTechnologyRepoEntries().send((StringStringIntegerTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyClonedRepoEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntries().send((StringStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntries().send((StringStringIntegerStringTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoAuthorCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoAuthorCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoFileCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoFileCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoOwnerPopularityCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoOwnerPopularityCountEntries().send((StringStringIntegerStringIntegerTuple) output);
 								}
 							}
 						}

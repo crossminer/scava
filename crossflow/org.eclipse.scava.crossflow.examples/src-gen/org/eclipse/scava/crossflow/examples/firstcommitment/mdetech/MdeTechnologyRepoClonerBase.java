@@ -26,5 +26,16 @@ public abstract class MdeTechnologyRepoClonerBase implements MdeTechnologyRepoEn
 	
 	
 	
+	protected EclipseResultPublisher eclipseResultPublisher;
+	
+	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
+		this.eclipseResultPublisher = eclipseResultPublisher;
+	}
+	
+	public EclipseResultPublisher getEclipseResultPublisher() {
+		return eclipseResultPublisher;
+	}
+	
+	
 	
 }

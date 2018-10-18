@@ -3,6 +3,8 @@
  */
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,28 +31,28 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 	 * @see org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyRepoEntriesConsumer#consumeMdeTechnologyRepoEntries(org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.StringStringStringTuple)
 	 */
 	@Override
-	public void consumeMdeTechnologyRepoEntries(StringStringIntegerTuple stringStringIntegerTuple) {
+	public void consumeMdeTechnologyClonedRepoEntries(StringStringIntegerStringTuple stringStringIntegerStringTuple) {
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+			workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
-			if ( alreadySeenJobs.contains( stringStringIntegerTuple.getId() ) ) { 
+			if ( alreadySeenJobs.contains( stringStringIntegerStringTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( stringStringIntegerTuple.getField1(), 0 );
+				committedRepoMap.put( stringStringIntegerStringTuple.getField1(), 0 );
 			
 			} else {
 				// We haven't seen this job before
 				// Record it and send it back
-				alreadySeenJobs.add( stringStringIntegerTuple.getId() );
-				workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+				alreadySeenJobs.add( stringStringIntegerStringTuple.getId() );
+				workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
 			}
 			
-			if ( committedRepoMap.containsKey( stringStringIntegerTuple.getField1() ) ) {
-				committedRepoMap.replace( stringStringIntegerTuple.getField1(), committedRepoMap.get( stringStringIntegerTuple.getField1()) + 1 );
-				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerTuple.getField1() ) + " occurrences of " + stringStringIntegerTuple.getField1() );
+			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
+				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
+				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerStringTuple.getField1() ) + " occurrences of " + stringStringIntegerStringTuple.getField1() );
 				
 				System.out.println("[" + workflow.getName() + "] " + "COUNT AUTHORS FROM LOCALLY CLONED REPO HERE !\n");
 				
@@ -60,6 +62,11 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 			
 		}
 		
+	}
+
+	private int count(String repoLocation) {	
+		// TODO: count unique authors by their e-mail address found in repository commits 
+		return 0;
 	}
 
 	/**
@@ -75,4 +82,13 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 	public Map<String, Integer> getCommittedRepoMap() {
 		return committedRepoMap;
 	}
+	
+	public static void main(String args[]) throws IOException {
+		MdeTechnologyRepoAuthorCounter counter = new MdeTechnologyRepoAuthorCounter();
+		String repoLocation = "../../.git";
+		System.out.println(new File(repoLocation).getCanonicalPath());
+		int count = counter.count(repoLocation);
+		System.out.println("COUNT: " + count);
+	}
+
 }

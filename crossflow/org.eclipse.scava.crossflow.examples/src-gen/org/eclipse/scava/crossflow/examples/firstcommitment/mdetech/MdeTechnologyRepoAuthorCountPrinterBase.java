@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
-public abstract class MdeTechnologySourceBase {
+public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTechnologyRepoAuthorCountEntriesConsumer{
 	
 	protected MdeTechnologyExample workflow;
 	
@@ -12,16 +12,6 @@ public abstract class MdeTechnologySourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
-	}
-	
-	protected MdeTechnologies mdeTechnologies;
-	
-	public void setMdeTechnologies(MdeTechnologies mdeTechnologies) {
-		this.mdeTechnologies = mdeTechnologies;
-	}
-	
-	public MdeTechnologies getMdeTechnologies() {
-		return mdeTechnologies;
 	}
 	
 	
@@ -37,6 +27,5 @@ public abstract class MdeTechnologySourceBase {
 	}
 	
 	
-	public abstract void produce();
 	
 }

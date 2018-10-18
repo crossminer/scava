@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
-public abstract class MdeTechnologySourceBase {
+public abstract class MdeTechnologyRepoOwnerPopularityCounterBase implements MdeTechnologyClonedRepoEntriesConsumer{
 	
 	protected MdeTechnologyExample workflow;
 	
@@ -14,14 +14,14 @@ public abstract class MdeTechnologySourceBase {
 		return workflow;
 	}
 	
-	protected MdeTechnologies mdeTechnologies;
+	protected MdeTechnologyRepoOwnerPopularityCountEntries mdeTechnologyRepoOwnerPopularityCountEntries;
 	
-	public void setMdeTechnologies(MdeTechnologies mdeTechnologies) {
-		this.mdeTechnologies = mdeTechnologies;
+	public void setMdeTechnologyRepoOwnerPopularityCountEntries(MdeTechnologyRepoOwnerPopularityCountEntries mdeTechnologyRepoOwnerPopularityCountEntries) {
+		this.mdeTechnologyRepoOwnerPopularityCountEntries = mdeTechnologyRepoOwnerPopularityCountEntries;
 	}
 	
-	public MdeTechnologies getMdeTechnologies() {
-		return mdeTechnologies;
+	public MdeTechnologyRepoOwnerPopularityCountEntries getMdeTechnologyRepoOwnerPopularityCountEntries() {
+		return mdeTechnologyRepoOwnerPopularityCountEntries;
 	}
 	
 	
@@ -37,6 +37,5 @@ public abstract class MdeTechnologySourceBase {
 	}
 	
 	
-	public abstract void produce();
 	
 }

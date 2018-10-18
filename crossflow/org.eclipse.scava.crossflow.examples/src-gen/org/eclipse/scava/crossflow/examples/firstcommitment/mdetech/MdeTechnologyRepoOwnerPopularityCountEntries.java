@@ -16,7 +16,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 
-public class MdeTechnologies {
+public class MdeTechnologyRepoOwnerPopularityCountEntries {
 	
 	protected Destination destination;
 	protected Destination pre;
@@ -24,16 +24,16 @@ public class MdeTechnologies {
 	protected Session session;
 	protected Workflow workflow;
 	
-	public MdeTechnologies(Workflow workflow) throws Exception {
+	public MdeTechnologyRepoOwnerPopularityCountEntries(Workflow workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
 		connectionFactory.setTrustAllPackages(true);
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = session.createQueue("MdeTechnologies");
-		pre = session.createQueue("MdeTechnologiesPre");
-		post = session.createQueue("MdeTechnologiesPost");
+		destination = session.createQueue("MdeTechnologyRepoOwnerPopularityCountEntries");
+		pre = session.createQueue("MdeTechnologyRepoOwnerPopularityCountEntriesPre");
+		post = session.createQueue("MdeTechnologyRepoOwnerPopularityCountEntriesPost");
 		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(pre);
@@ -104,13 +104,13 @@ public class MdeTechnologies {
 		}
 	}
 	
-	public void send(StringStringTuple stringStringTuple) {
+	public void send(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			stringStringTuple.setDestination("MdeTechnologies");
-			message.setObject(stringStringTuple);
+			stringStringIntegerStringIntegerTuple.setDestination("MdeTechnologyRepoOwnerPopularityCountEntries");
+			message.setObject(stringStringIntegerStringIntegerTuple);
 			producer.send(message);
 			
 		}
@@ -119,7 +119,7 @@ public class MdeTechnologies {
 		}
 	}
 	
-	public void addConsumer(MdeTechnologiesConsumer consumer) throws Exception {
+	public void addConsumer(MdeTechnologyRepoOwnerPopularityCountEntriesConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(post);
 		messageConsumer.setMessageListener(new MessageListener() {
 	
@@ -128,7 +128,7 @@ public class MdeTechnologies {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologies((StringStringTuple) job);
+					consumer.consumeMdeTechnologyRepoOwnerPopularityCountEntries((StringStringIntegerStringIntegerTuple) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

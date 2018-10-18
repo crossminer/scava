@@ -50,13 +50,13 @@ public class FirstCommitmentExample extends Workflow {
 		
 		animals = new Animals(this);
 		
-		if(isMaster() || !tasksToExclude.contains("AnimalSource")) {
+		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("AnimalSource") )) {
 		animalSource = new AnimalSource();
 		animalSource.setWorkflow(this);
 		animalSource.setAnimals(animals);
 		}
 	
-		if(isMaster() || !tasksToExclude.contains("AnimalCounter")) {
+		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("AnimalCounter") )) {
 		animalCounter = new AnimalCounter();
 		animalCounter.setWorkflow(this);
 		

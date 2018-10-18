@@ -53,7 +53,16 @@ public class MdeTechnologyClonedRepoEntries {
 									((MdeTechnologyExample) workflow).getMdeTechnologyRepoEntries().send((StringStringIntegerTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyClonedRepoEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntries().send((StringStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntries().send((StringStringIntegerStringTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoAuthorCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoAuthorCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoFileCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoFileCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyRepoOwnerPopularityCountEntries")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoOwnerPopularityCountEntries().send((StringStringIntegerStringIntegerTuple) output);
 								}
 							}
 						}
@@ -95,13 +104,13 @@ public class MdeTechnologyClonedRepoEntries {
 		}
 	}
 	
-	public void send(StringStringIntegerTuple stringStringIntegerTuple) {
+	public void send(StringStringIntegerStringTuple stringStringIntegerStringTuple) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			stringStringIntegerTuple.setDestination("MdeTechnologyClonedRepoEntries");
-			message.setObject(stringStringIntegerTuple);
+			stringStringIntegerStringTuple.setDestination("MdeTechnologyClonedRepoEntries");
+			message.setObject(stringStringIntegerStringTuple);
 			producer.send(message);
 			
 		}
@@ -119,7 +128,7 @@ public class MdeTechnologyClonedRepoEntries {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyClonedRepoEntries((StringStringIntegerTuple) job);
+					consumer.consumeMdeTechnologyClonedRepoEntries((StringStringIntegerStringTuple) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}
