@@ -77,7 +77,7 @@ public class [%=w.name%] extends Workflow {
 		[%if(t.masterOnly){%]
 		if (isMaster()) {
 		[%}%]
-		if(isMaster() || !tasksToExclude.contains("[%=t.name%]")) {
+		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("[%=t.name%]") )) {
 		[%=t.name.ftlc()%] = new [%=t.name%]();
 		[%=t.name.ftlc()%].setWorkflow(this);
 		[%for (i in t.input) { %]
