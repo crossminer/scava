@@ -127,8 +127,8 @@ public class MdeTechnologyClonedRepoEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyClonedRepoEntries((StringStringIntegerStringTuple) job);
+					StringStringIntegerStringTuple stringStringIntegerStringTuple = (StringStringIntegerStringTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyClonedRepoEntriesActual(stringStringIntegerStringTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

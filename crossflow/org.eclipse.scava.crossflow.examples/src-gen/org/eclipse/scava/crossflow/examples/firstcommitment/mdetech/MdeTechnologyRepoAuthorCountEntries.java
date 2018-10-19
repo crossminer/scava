@@ -127,8 +127,8 @@ public class MdeTechnologyRepoAuthorCountEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyRepoAuthorCountEntries((StringStringIntegerStringIntegerTuple) job);
+					StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple = (StringStringIntegerStringIntegerTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyRepoAuthorCountEntriesActual(stringStringIntegerStringIntegerTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

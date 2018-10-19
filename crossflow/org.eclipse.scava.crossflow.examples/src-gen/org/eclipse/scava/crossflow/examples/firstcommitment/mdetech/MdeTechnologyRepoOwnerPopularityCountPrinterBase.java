@@ -28,4 +28,37 @@ public abstract class MdeTechnologyRepoOwnerPopularityCountPrinterBase implement
 	
 	
 	
+	@Override
+	public void consumeMdeTechnologyRepoOwnerPopularityCountEntriesActual(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
+
+		workflow.setTaskInProgess(this);
+		
+		consumeMdeTechnologyRepoOwnerPopularityCountEntries(stringStringIntegerStringIntegerTuple);
+		
+		workflow.setTaskWaiting(this);
+		
+	}
+	
+	
+	/**
+	 * Call this within consumeXYZ() to denote task blocked due to some reason
+	 * @param reason
+	 */
+	protected void taskBlocked(String reason) {
+		
+		workflow.setTaskBlocked(this,reason);
+		
+	}
+	
+	/**
+	 * Call this within consumeXYZ() to denote task is now unblocked
+	 * @param reason
+	 */
+	protected void taskUnblocked() {
+		
+		workflow.setTaskUnblocked(this);
+		
+	}
+	
+	
 }

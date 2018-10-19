@@ -127,8 +127,8 @@ public class MdeTechnologyRepoOwnerPopularityCountEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyRepoOwnerPopularityCountEntries((StringStringIntegerStringIntegerTuple) job);
+					StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple = (StringStringIntegerStringIntegerTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyRepoOwnerPopularityCountEntriesActual(stringStringIntegerStringIntegerTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

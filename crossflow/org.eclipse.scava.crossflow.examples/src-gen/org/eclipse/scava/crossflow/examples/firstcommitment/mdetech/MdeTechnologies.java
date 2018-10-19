@@ -127,8 +127,8 @@ public class MdeTechnologies {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologies((StringStringTuple) job);
+					StringStringTuple stringStringTuple = (StringStringTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologiesActual(stringStringTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

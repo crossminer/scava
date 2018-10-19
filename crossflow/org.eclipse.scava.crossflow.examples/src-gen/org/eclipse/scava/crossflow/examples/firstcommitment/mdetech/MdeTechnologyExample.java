@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import java.util.LinkedList;
 import java.util.Collection;
 
 import com.beust.jcommander.JCommander;
@@ -8,7 +9,7 @@ import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 public class MdeTechnologyExample extends Workflow {
 	
@@ -27,6 +28,7 @@ public class MdeTechnologyExample extends Workflow {
 	protected MdeTechnologyRepoFileCountEntries mdeTechnologyRepoFileCountEntries;
 	protected MdeTechnologyRepoOwnerPopularityCountEntries mdeTechnologyRepoOwnerPopularityCountEntries;
 	protected EclipseResultPublisher eclipseResultPublisher;
+	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	// tasks
 	protected MdeTechnologySource mdeTechnologySource;
@@ -40,7 +42,7 @@ public class MdeTechnologyExample extends Workflow {
 	protected MdeTechnologyRepoOwnerPopularityCountPrinter mdeTechnologyRepoOwnerPopularityCountPrinter;
 	
 	// excluded tasks from workers
-	protected Collection<String> tasksToExclude;
+	protected Collection<String> tasksToExclude = new LinkedList<String>();
 	
 	public void excludeTasks(Collection<String> tasks){
 		tasksToExclude = tasks;
@@ -61,6 +63,7 @@ public class MdeTechnologyExample extends Workflow {
 		}
 
 		eclipseResultPublisher = new EclipseResultPublisher(this);
+		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
 		mdeTechnologies = new MdeTechnologies(this);
 		mdeTechnologyRepoEntries = new MdeTechnologyRepoEntries(this);
@@ -69,13 +72,13 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoFileCountEntries = new MdeTechnologyRepoFileCountEntries(this);
 		mdeTechnologyRepoOwnerPopularityCountEntries = new MdeTechnologyRepoOwnerPopularityCountEntries(this);
 		
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologySource") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologySource")) {
 		mdeTechnologySource = new MdeTechnologySource();
 		mdeTechnologySource.setWorkflow(this);
 		mdeTechnologySource.setMdeTechnologies(mdeTechnologies);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoFetcher") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFetcher")) {
 		mdeTechnologyRepoFetcher = new MdeTechnologyRepoFetcher();
 		mdeTechnologyRepoFetcher.setWorkflow(this);
 		
@@ -85,7 +88,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoFetcher.setMdeTechnologyRepoEntries(mdeTechnologyRepoEntries);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoCloner") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoCloner")) {
 		mdeTechnologyRepoCloner = new MdeTechnologyRepoCloner();
 		mdeTechnologyRepoCloner.setWorkflow(this);
 		
@@ -95,7 +98,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntries(mdeTechnologyClonedRepoEntries);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoAuthorCounter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoAuthorCounter")) {
 		mdeTechnologyRepoAuthorCounter = new MdeTechnologyRepoAuthorCounter();
 		mdeTechnologyRepoAuthorCounter.setWorkflow(this);
 		
@@ -105,7 +108,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoAuthorCounter.setMdeTechnologyRepoAuthorCountEntries(mdeTechnologyRepoAuthorCountEntries);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoFileCounter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFileCounter")) {
 		mdeTechnologyRepoFileCounter = new MdeTechnologyRepoFileCounter();
 		mdeTechnologyRepoFileCounter.setWorkflow(this);
 		
@@ -115,7 +118,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoFileCounter.setMdeTechnologyRepoFileCountEntries(mdeTechnologyRepoFileCountEntries);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCounter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCounter")) {
 		mdeTechnologyRepoOwnerPopularityCounter = new MdeTechnologyRepoOwnerPopularityCounter();
 		mdeTechnologyRepoOwnerPopularityCounter.setWorkflow(this);
 		
@@ -125,7 +128,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoOwnerPopularityCounter.setMdeTechnologyRepoOwnerPopularityCountEntries(mdeTechnologyRepoOwnerPopularityCountEntries);
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoAuthorCountPrinter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoAuthorCountPrinter")) {
 		mdeTechnologyRepoAuthorCountPrinter = new MdeTechnologyRepoAuthorCountPrinter();
 		mdeTechnologyRepoAuthorCountPrinter.setWorkflow(this);
 		if (isMaster()) 		
@@ -136,7 +139,7 @@ public class MdeTechnologyExample extends Workflow {
 	
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoFileCountPrinter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFileCountPrinter")) {
 		mdeTechnologyRepoFileCountPrinter = new MdeTechnologyRepoFileCountPrinter();
 		mdeTechnologyRepoFileCountPrinter.setWorkflow(this);
 		if (isMaster()) 		
@@ -147,7 +150,7 @@ public class MdeTechnologyExample extends Workflow {
 	
 		}
 	
-		if(isMaster() || ( tasksToExclude!=null && !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCountPrinter") )) {
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCountPrinter")) {
 		mdeTechnologyRepoOwnerPopularityCountPrinter = new MdeTechnologyRepoOwnerPopularityCountPrinter();
 		mdeTechnologyRepoOwnerPopularityCountPrinter.setWorkflow(this);
 		if (isMaster()) 		
@@ -211,4 +214,20 @@ public class MdeTechnologyExample extends Workflow {
 		return mdeTechnologyRepoOwnerPopularityCountPrinter;
 	}
 	
+	public void setTaskInProgess(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskWaiting(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskBlocked(Object caller, String reason) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	}
+
+	public void setTaskUnblocked(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
 }

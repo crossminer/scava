@@ -115,8 +115,8 @@ public class GhRepos {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeGhRepos((GhRepo) job);
+					GhRepo ghRepo = (GhRepo) objectMessage.getObject();
+					consumer.consumeGhReposActual(ghRepo);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

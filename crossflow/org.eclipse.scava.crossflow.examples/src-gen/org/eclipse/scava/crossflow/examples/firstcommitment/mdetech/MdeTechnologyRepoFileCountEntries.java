@@ -127,8 +127,8 @@ public class MdeTechnologyRepoFileCountEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyRepoFileCountEntries((StringStringIntegerStringIntegerTuple) job);
+					StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple = (StringStringIntegerStringIntegerTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyRepoFileCountEntriesActual(stringStringIntegerStringIntegerTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

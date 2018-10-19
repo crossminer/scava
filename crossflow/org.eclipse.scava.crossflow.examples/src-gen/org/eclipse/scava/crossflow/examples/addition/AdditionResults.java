@@ -115,8 +115,8 @@ public class AdditionResults {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeAdditionResults((Number) job);
+					Number number = (Number) objectMessage.getObject();
+					consumer.consumeAdditionResultsActual(number);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

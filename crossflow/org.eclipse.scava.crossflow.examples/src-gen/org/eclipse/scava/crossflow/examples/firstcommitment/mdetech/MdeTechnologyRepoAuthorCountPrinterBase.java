@@ -28,4 +28,37 @@ public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTech
 	
 	
 	
+	@Override
+	public void consumeMdeTechnologyRepoAuthorCountEntriesActual(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
+
+		workflow.setTaskInProgess(this);
+		
+		consumeMdeTechnologyRepoAuthorCountEntries(stringStringIntegerStringIntegerTuple);
+		
+		workflow.setTaskWaiting(this);
+		
+	}
+	
+	
+	/**
+	 * Call this within consumeXYZ() to denote task blocked due to some reason
+	 * @param reason
+	 */
+	protected void taskBlocked(String reason) {
+		
+		workflow.setTaskBlocked(this,reason);
+		
+	}
+	
+	/**
+	 * Call this within consumeXYZ() to denote task is now unblocked
+	 * @param reason
+	 */
+	protected void taskUnblocked() {
+		
+		workflow.setTaskUnblocked(this);
+		
+	}
+	
+	
 }

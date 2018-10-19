@@ -127,8 +127,8 @@ public class MdeTechnologyRepoEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeMdeTechnologyRepoEntries((StringStringIntegerTuple) job);
+					StringStringIntegerTuple stringStringIntegerTuple = (StringStringIntegerTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyRepoEntriesActual(stringStringIntegerTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

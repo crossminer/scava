@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.examples.addition;
 
+import java.util.LinkedList;
 import java.util.Collection;
 
 import com.beust.jcommander.JCommander;
@@ -8,7 +9,7 @@ import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 public class AdditionExample extends Workflow {
 	
@@ -23,6 +24,7 @@ public class AdditionExample extends Workflow {
 	protected Additions additions;
 	protected AdditionResults additionResults;
 	protected EclipseResultPublisher eclipseResultPublisher;
+	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	// tasks
 	protected NumberPairSource numberPairSource;
@@ -30,7 +32,7 @@ public class AdditionExample extends Workflow {
 	protected Printer printer;
 	
 	// excluded tasks from workers
-	protected Collection<String> tasksToExclude;
+	protected Collection<String> tasksToExclude = new LinkedList<String>();
 	
 	public void excludeTasks(Collection<String> tasks){
 		tasksToExclude = tasks;
@@ -51,6 +53,7 @@ public class AdditionExample extends Workflow {
 		}
 
 		eclipseResultPublisher = new EclipseResultPublisher(this);
+		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
 		additions = new Additions(this);
 		additionResults = new AdditionResults(this);
@@ -105,4 +108,20 @@ public class AdditionExample extends Workflow {
 		return printer;
 	}
 	
+	public void setTaskInProgess(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskWaiting(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskBlocked(Object caller, String reason) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	}
+
+	public void setTaskUnblocked(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
 }

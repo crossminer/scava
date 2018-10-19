@@ -115,8 +115,8 @@ public class ResultsPublisher {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeResultsPublisher((Result) job);
+					Result result = (Result) objectMessage.getObject();
+					consumer.consumeResultsPublisherActual(result);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

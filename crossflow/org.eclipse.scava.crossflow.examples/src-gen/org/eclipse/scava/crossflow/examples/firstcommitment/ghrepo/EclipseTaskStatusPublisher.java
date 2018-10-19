@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
+package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -13,8 +13,9 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
-public class EclipseResultPublisher {
+public class EclipseTaskStatusPublisher {
 
 	protected Destination destination;
 	protected Destination pre;
@@ -22,16 +23,16 @@ public class EclipseResultPublisher {
 	protected Session session;
 	protected Workflow workflow;
 
-	public EclipseResultPublisher(Workflow workflow) throws Exception {
+	public EclipseTaskStatusPublisher(Workflow workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
 		connectionFactory.setTrustAllPackages(true);
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = session.createQueue("EclipseResultsPublisher");
-		pre = session.createQueue("EclipseResultsPublisherPre");
-		post = session.createQueue("EclipseResultsPublisherPost");
+		destination = session.createQueue("EclipseTaskStatusPublisher");
+		pre = session.createQueue("EclipseTaskStatusPublisherPre");
+		post = session.createQueue("EclipseTaskStatusPublisherPost");
 
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(pre);
@@ -55,12 +56,12 @@ public class EclipseResultPublisher {
 		}
 	}
 
-	public void send(Object[] result) {
+	public void send(TaskStatus taskStatus) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			message.setObject(result);
+			message.setObject(taskStatus);
 			producer.send(message);
 
 		} catch (Exception ex) {
@@ -68,7 +69,7 @@ public class EclipseResultPublisher {
 		}
 	}
 
-	public void addConsumer(EclipseResultPublisherConsumer consumer) throws Exception {
+	public void addConsumer(EclipseTaskStatusPublisherConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(post);
 		messageConsumer.setMessageListener(new MessageListener() {
 
@@ -76,8 +77,8 @@ public class EclipseResultPublisher {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Object[] job = (Object[]) objectMessage.getObject();
-					consumer.consumeEclipseResultPublisher((Object[]) job);
+					TaskStatus status = (TaskStatus) objectMessage.getObject();
+					consumer.consumeEclipseTaskStatusPublisher(status);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

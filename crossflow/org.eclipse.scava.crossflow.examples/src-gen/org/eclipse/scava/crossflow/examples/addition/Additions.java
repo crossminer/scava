@@ -115,8 +115,8 @@ public class Additions {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeAdditions((NumberPair) job);
+					NumberPair numberPair = (NumberPair) objectMessage.getObject();
+					consumer.consumeAdditionsActual(numberPair);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

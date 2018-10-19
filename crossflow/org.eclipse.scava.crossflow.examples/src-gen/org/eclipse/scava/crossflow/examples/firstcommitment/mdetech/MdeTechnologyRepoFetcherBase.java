@@ -38,4 +38,37 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	
 	
 	
+	@Override
+	public void consumeMdeTechnologiesActual(StringStringTuple stringStringTuple) {
+
+		workflow.setTaskInProgess(this);
+		
+		consumeMdeTechnologies(stringStringTuple);
+		
+		workflow.setTaskWaiting(this);
+		
+	}
+	
+	
+	/**
+	 * Call this within consumeXYZ() to denote task blocked due to some reason
+	 * @param reason
+	 */
+	protected void taskBlocked(String reason) {
+		
+		workflow.setTaskBlocked(this,reason);
+		
+	}
+	
+	/**
+	 * Call this within consumeXYZ() to denote task is now unblocked
+	 * @param reason
+	 */
+	protected void taskUnblocked() {
+		
+		workflow.setTaskUnblocked(this);
+		
+	}
+	
+	
 }
