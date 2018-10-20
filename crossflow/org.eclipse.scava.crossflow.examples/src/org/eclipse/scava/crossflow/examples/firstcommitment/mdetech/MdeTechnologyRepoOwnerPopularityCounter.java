@@ -3,7 +3,6 @@
  */
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
-import org.eclipse.scava.crossflow.restmule.client.github.model.Organization;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Repo;
 import org.eclipse.scava.crossflow.restmule.client.github.model.User;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
@@ -58,18 +56,10 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 			}
 			
 			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
-//				System.out.println("PRINTING ALL ENTRIES: ");
-//				System.out.println("stringStringIntegerTuple.field0 = " + stringStringIntegerStringTuple.field0);
-//				System.out.println("stringStringIntegerTuple.field1 = " + stringStringIntegerStringTuple.field1);
-//				System.out.println("stringStringIntegerTuple.field2 = " + stringStringIntegerStringTuple.field2);
-//				System.out.println("stringStringIntegerTuple.field3 = " + stringStringIntegerStringTuple.field3);
-//				
 				
 				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
-//				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerStringTuple.getField1() ) + " occurrences of " + stringStringIntegerStringTuple.getField1() );
 				
 				int repoOwnerFollowerCount = count(stringStringIntegerStringTuple.getField1());
-//				System.out.println("[" + workflow.getName() + "] " + " REPO OWNER FOLLOWER COUNT: " + repoOwnerFollowerCount + " !\n");
 				
 				StringStringIntegerStringIntegerTuple mdeTechnologyClonedRepoEntryOwnerFollowerCount = new StringStringIntegerStringIntegerTuple();
 				mdeTechnologyClonedRepoEntryOwnerFollowerCount.setField0(stringStringIntegerStringTuple.field0); // file extension
@@ -87,8 +77,31 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 	}
 
 	private int count(String repoUrl) {
-		// TODO: use Restmule to retrieve repository owner follower count (if user) or subscriber count (if organization)
-		return 0;
+		AtomicInteger ownerFollowerOrSubscriberCount = new AtomicInteger();
+		ownerFollowerOrSubscriberCount.set(-1);
+		
+		IGitHubApi client = GitHubUtils.getOAuthClient();
+		IData<User> repoOwner = client.getUsersUserByUsername(CloneUtils.extractGhRepoOwner(repoUrl));
+		
+		repoOwner.observe()
+        .doOnNext(o -> {
+        	if ( o.getType().equals("User") ) {
+        		ownerFollowerOrSubscriberCount.set( o.getFollowers() );   
+        		
+        	} else if ( o.getType().equals("Organization") ){
+        		IData<Repo> repo = client.getReposRepoByRepo(CloneUtils.extractGhRepoOwner(repoUrl), CloneUtils.extractGhRepoName(repoUrl));
+        		repo.observe()
+		              .doOnNext(r -> {
+		            	  ownerFollowerOrSubscriberCount.set(r.getSubscribersCount());
+		              })
+		              .blockingSubscribe();
+        		
+        	}
+        		
+        })
+        .blockingSubscribe();
+		
+		return ownerFollowerOrSubscriberCount.intValue();
 	}
 
 	/**
