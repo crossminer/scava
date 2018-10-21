@@ -41,7 +41,7 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 		IGitHubApi client = GitHubUtils.getOAuthClient();
 		
 		// Construct query parameters
-		String q = "figure extension:gmfgraph";//MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1());
+		String q = MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure extension:gmfgraph";
 		String order = "asc";
 		String sort = "stars";
 		
