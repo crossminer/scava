@@ -68,7 +68,7 @@ public enum MDE {
 		return new CodeSearchQuery()
 				.create(keyword)
 				.extension(extension)
-				//.inFile()
+				.inFile()
 				.repo(repository)
 				.build()
 				.getQuery();
@@ -84,7 +84,7 @@ public enum MDE {
 		return new CodeSearchQuery()
 				.create(keyword)
 				.extension(extension)
-				//.inFile()
+				.inFile()
 				.build()
 				.getQuery();
 	}
