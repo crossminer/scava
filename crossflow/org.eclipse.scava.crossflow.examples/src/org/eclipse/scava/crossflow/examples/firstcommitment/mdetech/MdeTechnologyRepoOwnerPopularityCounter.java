@@ -56,11 +56,11 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 			}
 			
 			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
-				
+//				
 				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
-				
+//				
 				int repoOwnerFollowerCount = count(stringStringIntegerStringTuple.getField1());
-				
+//				
 				StringStringIntegerStringIntegerTuple mdeTechnologyClonedRepoEntryOwnerFollowerCount = new StringStringIntegerStringIntegerTuple();
 				mdeTechnologyClonedRepoEntryOwnerFollowerCount.setField0(stringStringIntegerStringTuple.field0); // file extension
 				mdeTechnologyClonedRepoEntryOwnerFollowerCount.setField1(stringStringIntegerStringTuple.field1); // repository remote URL

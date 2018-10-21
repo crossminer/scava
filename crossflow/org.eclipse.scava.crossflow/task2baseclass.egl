@@ -27,55 +27,6 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 	
 	[%}%]
 	
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
-	
-	protected EclipseResultPublisher eclipseResultPublisher;
-	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
-	}
-	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
-	}
-	
-	[%}%]
-	
-	[%for (s in t.input) { %]
-	
-	@Override
-	public void consume[%=s.name%]Actual([%=s.type.name%] [%=s.type.name.ftlc()%]) {
-
-		workflow.setTaskInProgess(this);
-		
-		consume[%=s.name%]([%=s.type.name.ftlc()%]);
-		
-		workflow.setTaskWaiting(this);
-		
-	}
-	
-	[%}%]
-	
-	/**
-	 * Call this within consumeXYZ() to denote task blocked due to some reason
-	 * @param reason
-	 */
-	protected void taskBlocked(String reason) {
-		
-		workflow.setTaskBlocked(this,reason);
-		
-	}
-	
-	/**
-	 * Call this within consumeXYZ() to denote task is now unblocked
-	 * @param reason
-	 */
-	protected void taskUnblocked() {
-		
-		workflow.setTaskUnblocked(this);
-		
-	}
-	
 	[%if (t.isTypeOf(Source)){%]
 	public abstract void produce();
 	[%}%]

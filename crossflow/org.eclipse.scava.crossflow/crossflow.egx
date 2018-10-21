@@ -6,22 +6,6 @@ rule Workflow2Class
 	target : w.getPath() + w.name + ".java"
 }
 
-rule Workflow2EclipseTaskStatusPublisher 
-	transform w : Workflow {
-	
-	template : "workflow2eclipsetaskstatuspublisher.egl"
-	
-	target : w.getPath() + "EclipseTaskStatusPublisher.java"
-}
-
-rule Workflow2EclipseTaskStatusPublisherConsumer 
-	transform w : Workflow {
-	
-	template : "workflow2eclipsetaskstatuspublisherconsumer.egl"
-	
-	target : w.getPath() + "EclipseTaskStatusPublisherConsumer.java"
-}
-
 rule Type2Class 
 	transform t : Type {
 	
@@ -60,30 +44,6 @@ rule Steam2Consumer
 	
 	target : s.getPath() + s.name + "Consumer.java"
 }
-
-//
-
-@greedy
-rule Sink2EclipseResultStream
-	transform s : Sink {
-	
-	parameters : Map{"w" = s.eContainer()}
-	
-	template : "sink2eclipseresultstream.egl"
-	
-	target : s.getPath() + "EclipseResultPublisher.java"
-}
-
-@greedy
-rule Sink2EclipseResultStreamConsumer 
-	transform s : Sink {
-	
-	template : "stream2eclipseresultstreamconsumer.egl"
-	
-	target : s.getPath() + "EclipseResultPublisherConsumer.java"
-}
-
-
 
 operation Any getPath() {
 	var workflow = self;

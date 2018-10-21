@@ -28,7 +28,7 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 	
 	final static File CLONE_PARENT_DESTINATION = new File(
 			// level: same as this repo (scava)
-			".." + File.separator + ".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
+			".." + File.separator + ".." + File.separator + ".." + File.separator + "CLONED-REPOS");
 	
 	
 	/**

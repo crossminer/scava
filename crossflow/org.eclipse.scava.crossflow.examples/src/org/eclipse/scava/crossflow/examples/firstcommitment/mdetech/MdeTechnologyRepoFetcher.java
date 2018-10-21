@@ -39,9 +39,9 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 		
 		// Instantiate API client
 		IGitHubApi client = GitHubUtils.getOAuthClient();
-			
+		
 		// Construct query parameters
-		String q = "gmf"; // for the sake of experimentation   // MDE.query(stringStringTuple.field0, stringStringTuple.field1);
+		String q = "figure extension:gmfgraph";//MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1());
 		String order = "asc";
 		String sort = "stars";
 		
@@ -59,22 +59,21 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 				
 				getMdeTechnologyRepoEntries().send(extensionUrlStarsTuple);
 				
-				System.out.println("SENT: " + extensionUrlStarsTuple.getField1());
-				System.out.println(searchRepositories.status() + " --- " + searchRepositories.percentage() + "% completed.\n");
+				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionUrlStarsTuple.getField1() + " (search " + searchRepositories.percentage() + "% completed)");
 			})
 			
 			.doOnError(e -> {
-				System.err.println(e);
+				System.err.println("\n" + "[" + workflow.getName() + "] " + "Failure occurred during repository search: " + e.getMessage() );
 			})
 			
 			.doOnComplete(() -> {
-				System.out.println("COMPLETED: " + searchRepositories.id());
+				System.out.println("\n" + "[" + workflow.getName() + "] " + "Completed task: " + searchRepositories.id());
 			})
 			
 			.blockingSubscribe();
 	
 		Long count = searchRepositories.observe().count().blockingGet();
-		System.out.println("FINAL COUNT: " + count);
+		System.out.println("\n" + "[" + workflow.getName() + "] " + "Final observe count of task " + searchRepositories.id() + ": " + count);
 
 	}
 

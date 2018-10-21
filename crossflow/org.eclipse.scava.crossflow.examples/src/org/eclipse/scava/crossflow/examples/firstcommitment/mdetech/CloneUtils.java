@@ -97,20 +97,20 @@ public class CloneUtils {
 		System.out.println(extractGhRepoName(url.toString()));
 	}
 	
-	public static void cleanLocalParentCloneDirectory(File directory) {
+	public static void removeRepoClones(File repoLocation) {
 		// clean local clone parent destination if it exists
-		if (directory.exists()) {
+		if (repoLocation.exists()) {
 			try {
-				FileUtils.deleteDirectory(directory);
-				System.out.println("Successfully cleaned local clone parent destination: "
-						+ directory.getAbsolutePath());
+				FileUtils.deleteDirectory(repoLocation);
+				System.out.println("Successfully cleaned repo clone parent: "
+						+ repoLocation.getAbsolutePath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			directory.mkdir();
+			repoLocation.mkdir();
 		}
-	}	
+	}
 	
 
 }

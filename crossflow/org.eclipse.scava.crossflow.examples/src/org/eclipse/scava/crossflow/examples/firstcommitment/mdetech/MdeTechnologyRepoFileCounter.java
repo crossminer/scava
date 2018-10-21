@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBase {
@@ -24,10 +23,10 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	// < repository-url, number-of-repository-occurrence >
 	protected Map<String, Integer> committedRepoMap = new HashMap<String, Integer>(); 
 	
-
+	
 	final static File CLONE_PARENT_DESTINATION = new File(
-					// level: same as this (scava) repo
-					".." + File.separator + ".." + File.separator + ".." + File.separator + File.separator + "CLONED-REPOS");
+			// level: same as this (scava) repo
+			".." + File.separator + ".." + File.separator + ".." + File.separator + "CLONED-REPOS");
 	
 	public MdeTechnologyRepoFileCounter() {
 		// do nothing
@@ -53,8 +52,6 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 			}
 			
 			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
-				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
-				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerStringTuple.getField1() ) + " occurrences of " + stringStringIntegerStringTuple.getField1() );
 				
 				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
 				
@@ -84,6 +81,7 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 			paths.filter(p -> p.getFileName() != null).filter(p -> p.getFileName().toString().contains(".")).forEach(new Consumer<Path>() {
 				@Override
 				public void accept(Path p) {
+
 					String filename = p.getFileName().toString();
 
 					MDE ret = inCollection(filename.substring(filename.lastIndexOf(".") + 1, filename.length()));
@@ -130,7 +128,7 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	
 	public static void main(String args[]) throws IOException {
 		MdeTechnologyRepoFileCounter counter = new MdeTechnologyRepoFileCounter();
-		String repoLocation = "../../../CLONED-REPOS";
+		String repoLocation = "../../.git";
 		System.out.println(new File(repoLocation).getCanonicalPath());
 		int count = counter.count(repoLocation);
 		System.out.println("COUNT: " + count);

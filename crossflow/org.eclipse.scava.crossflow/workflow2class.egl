@@ -1,15 +1,10 @@
 package [%=w.package%];
 
-import java.util.LinkedList;
-import java.util.Collection;
-
 import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
-
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import com.beust.jcommander.Parameter;
 
 public class [%=w.name%] extends Workflow {
 	
@@ -36,22 +31,12 @@ public class [%=w.name%] extends Workflow {
 	[%for (s in w.streams) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	[%}%]
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
-	protected EclipseResultPublisher eclipseResultPublisher;
-	[%}%]
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	// tasks
 	[%for (t in w.tasks) {%]
 	protected [%=t.name%] [%=t.name.ftlc()%];
 	[%}%]
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
 	
 	public [%=w.name%]() {
 		this.name = "[%=w.name%]";
@@ -66,44 +51,23 @@ public class [%=w.name%] extends Workflow {
 			broker.addConnector(getBroker());
 			broker.start();
 		}
-
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
-		eclipseResultPublisher = new EclipseResultPublisher(this);
-	[%}%]
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
 		[%for (s in w.streams) { %]
 		[%=s.name.ftlc()%] = new [%=s.name%](this);
 		[%}%]
 		
 		[%for (t in w.tasks) {%]
-		[%if(t.masterOnly){%]
-		if (isMaster()) {
-		[%}%]
-		if(isMaster() || !tasksToExclude.contains("[%=t.name%]")) {
 		[%=t.name.ftlc()%] = new [%=t.name%]();
 		[%=t.name.ftlc()%].setWorkflow(this);
 		[%for (i in t.input) { %]
 		[%if(t.isTypeOf(Sink)){%]
 		if (isMaster()) [%}%]
-		
-			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%]);
-			
-		[%if(t.isTypeOf(Sink))%]
-			[%for(incoming in t.input){%]
-				[%for(task in incoming.outputOf){%]
-		if([%=task.name.ftlc()%]!=null)		
-			[%=task.name.ftlc()%].setEclipseResultPublisher(eclipseResultPublisher);
-				[%}%]
-			[%}%]	
+		[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%]);
 		[%}%]
 		[%for (o in t.output) { %]
 		[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 		[%}%]
-		}
-		[%if(t.masterOnly){%]
-		}
-		[%}%]	
+		
 		[%}%]
 		
 		if (isMaster()){
@@ -125,20 +89,4 @@ public class [%=w.name%] extends Workflow {
 	}
 	[%}%]
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
-	}
-
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
-	}
-
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
-	}
-
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
-	}
-
 }

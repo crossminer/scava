@@ -114,8 +114,8 @@ public class [%=s.name%] {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) objectMessage.getObject();
-					consumer.consume[%=s.name%]Actual([%=s.type.name.ftlc%]);
+					Job job = (Job) objectMessage.getObject();
+					consumer.consume[%=s.name%](([%=s.type.name%]) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

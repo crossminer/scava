@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="restmule-core/log4j-core-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/JavaEWAH-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/jsch-0.1.54.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/jzlib-1.1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/org.eclipse.jgit-5.1.2.201810061102-r.jar"/>
-	<classpathentry exported="true" kind="lib" path="jgit/slf4j-api-1.8.0-beta2.jar"/>
 	<classpathentry exported="true" kind="lib" path="activemq-all-5.15.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-client-github/commons-codec-1.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-client-github/commons-logging-1.2.jar"/>
