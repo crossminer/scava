@@ -42,39 +42,41 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 	 * @see org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyRepoEntriesConsumer#consumeMdeTechnologyRepoEntries(org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.StringStringIntegerTuple)
 	 */
 	@Override
-	public void consumeMdeTechnologyRepoEntries(StringStringIntegerTuple stringStringIntegerTuple) {
+	public void consumeMdeTechnologyRepoEntries(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+			workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
-			if ( alreadySeenJobs.contains( stringStringIntegerTuple.getId() ) ) { 
+			if ( alreadySeenJobs.contains( extensionKeywordStargazersTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( stringStringIntegerTuple.getField1(), 0 );
+				committedRepoMap.put( extensionKeywordStargazersTuple.getField1(), 0 );
 			
 			} else {
 				// We haven't seen this job before
 				// Record it and send it back
-				alreadySeenJobs.add( stringStringIntegerTuple.getId() );
-				workflow.getMdeTechnologyRepoEntries().send( stringStringIntegerTuple );
+				alreadySeenJobs.add( extensionKeywordStargazersTuple.getId() );
+				workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple );
 			}
 			
-			if ( committedRepoMap.containsKey( stringStringIntegerTuple.getField1() ) ) {
-				committedRepoMap.replace( stringStringIntegerTuple.getField1(), committedRepoMap.get( stringStringIntegerTuple.getField1()) + 1 );
+			if ( committedRepoMap.containsKey( extensionKeywordStargazersTuple.getField1() ) ) {
+				committedRepoMap.replace( extensionKeywordStargazersTuple.getField1(), committedRepoMap.get( extensionKeywordStargazersTuple.getField1()) + 1 );
 //				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerTuple.getField1() ) + " occurrences of " + stringStringIntegerTuple.getField1() );
 								
-				String clonedRepoLocation = cloneRepo(stringStringIntegerTuple.getField1(), false);
+				String clonedRepoLocation = cloneRepo(extensionKeywordStargazersTuple.getField1(), false);
 				
-				StringStringIntegerStringTuple mdeTechnologyClonedRepoEntry = new StringStringIntegerStringTuple();
-				mdeTechnologyClonedRepoEntry.setField0(stringStringIntegerTuple.field0); // file extension
-				mdeTechnologyClonedRepoEntry.setField1(stringStringIntegerTuple.field1); // repository remote URL
-				mdeTechnologyClonedRepoEntry.setField2(stringStringIntegerTuple.field2); // repository number of stars
-				mdeTechnologyClonedRepoEntry.setField3(clonedRepoLocation); // cloned repository local path
+				ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = new ExtensionKeywordStargazersRemoteRepoUrlTuple();
+				extensionKeywordStargazersRemoteRepoUrlTuple.setField0(extensionKeywordStargazersTuple.field0); // file extension
+				extensionKeywordStargazersRemoteRepoUrlTuple.setField1(extensionKeywordStargazersTuple.field1); // repository remote URL
+				extensionKeywordStargazersRemoteRepoUrlTuple.setField2(extensionKeywordStargazersTuple.field2); // repository number of stars
+				extensionKeywordStargazersRemoteRepoUrlTuple.setField3(clonedRepoLocation); // cloned repository local path
 
-				getMdeTechnologyClonedRepoEntries().send(mdeTechnologyClonedRepoEntry);
-			
+				getMdeTechnologyClonedRepoEntriesForAuthorCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
+				getMdeTechnologyClonedRepoEntriesForFileCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
+				getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
+
 			}
 			
 		}

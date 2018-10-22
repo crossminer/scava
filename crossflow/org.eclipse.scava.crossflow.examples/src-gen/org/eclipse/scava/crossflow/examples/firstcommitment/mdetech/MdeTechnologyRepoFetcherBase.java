@@ -39,11 +39,11 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	
 	
 	@Override
-	public void consumeMdeTechnologiesActual(StringStringTuple stringStringTuple) {
+	public void consumeMdeTechnologiesActual(ExtensionKeywordTuple extensionKeywordTuple) {
 
 		workflow.setTaskInProgess(this);
 		
-		consumeMdeTechnologies(stringStringTuple);
+		consumeMdeTechnologies(extensionKeywordTuple);
 		
 		workflow.setTaskWaiting(this);
 		

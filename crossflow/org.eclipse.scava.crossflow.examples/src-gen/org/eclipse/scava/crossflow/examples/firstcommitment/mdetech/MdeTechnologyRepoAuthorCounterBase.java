@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
-public abstract class MdeTechnologyRepoAuthorCounterBase implements MdeTechnologyClonedRepoEntriesConsumer{
+public abstract class MdeTechnologyRepoAuthorCounterBase implements MdeTechnologyClonedRepoEntriesForAuthorCounterConsumer{
 	
 	protected MdeTechnologyExample workflow;
 	
@@ -39,11 +39,11 @@ public abstract class MdeTechnologyRepoAuthorCounterBase implements MdeTechnolog
 	
 	
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesActual(StringStringIntegerStringTuple stringStringIntegerStringTuple) {
+	public void consumeMdeTechnologyClonedRepoEntriesForAuthorCounterActual(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 
 		workflow.setTaskInProgess(this);
 		
-		consumeMdeTechnologyClonedRepoEntries(stringStringIntegerStringTuple);
+		consumeMdeTechnologyClonedRepoEntriesForAuthorCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
 		
 		workflow.setTaskWaiting(this);
 		

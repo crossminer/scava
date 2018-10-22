@@ -29,11 +29,11 @@ public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTech
 	
 	
 	@Override
-	public void consumeMdeTechnologyRepoAuthorCountEntriesActual(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
+	public void consumeMdeTechnologyRepoAuthorCountEntriesActual(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
 
 		workflow.setTaskInProgess(this);
 		
-		consumeMdeTechnologyRepoAuthorCountEntries(stringStringIntegerStringIntegerTuple);
+		consumeMdeTechnologyRepoAuthorCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 		
 		workflow.setTaskWaiting(this);
 		

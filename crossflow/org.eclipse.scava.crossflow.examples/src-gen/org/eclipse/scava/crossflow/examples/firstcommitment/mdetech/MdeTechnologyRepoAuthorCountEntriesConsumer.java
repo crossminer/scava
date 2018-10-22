@@ -2,11 +2,11 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 public interface MdeTechnologyRepoAuthorCountEntriesConsumer {
 
-	public void consumeMdeTechnologyRepoAuthorCountEntries(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple);
+	public void consumeMdeTechnologyRepoAuthorCountEntries(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 	
 	/**
 	 * wraps consumeMdeTechnologyRepoAuthorCountEntries() to provide task status information
 	 */
-	public void consumeMdeTechnologyRepoAuthorCountEntriesActual(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple);
+	public void consumeMdeTechnologyRepoAuthorCountEntriesActual(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 
 }

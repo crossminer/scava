@@ -37,14 +37,14 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 	 * @see org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologiesConsumer#consumeMdeTechnologies(org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.StringStringTuple)
 	 */
 	@Override
-	public void consumeMdeTechnologies(StringStringTuple stringStringTuple) {
+	public void consumeMdeTechnologies(ExtensionKeywordTuple extensionKeywordTuple) {
 		// Use MDE extension-keyword tuple to issue API calls using generated RestMule client for GitHub
 		
 		// Instantiate API client
 		IGitHubApi client = GitHubUtils.getOAuthClient();
 		
 		// Construct query parameters
-		String q = MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
+		String q = "class+extension:kmt"; //MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
 		String order = "asc";
 		String sort = null;//"stars"; // sorting by "stars" is not possible for code search (works for repository search)
 		
@@ -55,13 +55,13 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 		searchCode.observe()
 		
 			.doOnNext(result -> {
-				StringStringIntegerTuple extensionUrlStarsTuple = new StringStringIntegerTuple();
-				extensionUrlStarsTuple.setField0(stringStringTuple.field0);
-				extensionUrlStarsTuple.setField1(result.getRepository().getHtmlUrl());
-				extensionUrlStarsTuple.setField2(getRepoStargazerCount(extensionUrlStarsTuple.getField1()));				
-				getMdeTechnologyRepoEntries().send(extensionUrlStarsTuple);
+				ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple = new ExtensionKeywordStargazersTuple();
+				extensionKeywordStargazersTuple.setField0(extensionKeywordTuple.field0);
+				extensionKeywordStargazersTuple.setField1(result.getRepository().getHtmlUrl());
+				extensionKeywordStargazersTuple.setField2(getRepoStargazerCount(extensionKeywordStargazersTuple.getField1()));				
+				getMdeTechnologyRepoEntries().send(extensionKeywordStargazersTuple);
 				
-				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionUrlStarsTuple.getField1() + " (search " + searchCode.percentage() + "% completed)");
+				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionKeywordStargazersTuple.getField1() + " (search " + searchCode.percentage() + "% completed)");
 			})
 			
 			.doOnError(e -> {

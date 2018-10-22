@@ -1,0 +1,75 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Example demonstrating how to implement non-static committment using RestMule -->
+	<workflow name="MdeTechnologyExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech">
+		
+		<!-- source of MDE technologies -->
+		<source name="MdeTechnologySource" out="MdeTechnologies"/> 
+		
+		<!-- queue of MDE technologies -->
+		<queue name="MdeTechnologies" type="ExtensionKeywordTuple"/> 
+		
+		<!-- task for retrieving repository information from GitHub API -->
+		<task name="MdeTechnologyRepoFetcher" in="MdeTechnologies" out="MdeTechnologyRepoEntries"/> 
+		
+		<!-- queue of repositories retrieved from GitHub API -->
+		<queue name="MdeTechnologyRepoEntries" type="ExtensionKeywordStargazersTuple"/> 
+				
+	 	<!-- task for cloning repositories retrieved from GitHub API -->
+		<task name="MdeTechnologyRepoCloner" in="MdeTechnologyRepoEntries" out="MdeTechnologyClonedRepoEntriesForAuthorCounter,MdeTechnologyClonedRepoEntriesForFileCounter,MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter"/> 
+				
+		<!-- queues of repositories cloned from GitHub -->
+		<queue name="MdeTechnologyClonedRepoEntriesForAuthorCounter" type="ExtensionKeywordStargazersRemoteRepoUrlTuple"/>
+		<queue name="MdeTechnologyClonedRepoEntriesForFileCounter" type="ExtensionKeywordStargazersRemoteRepoUrlTuple"/>
+		<queue name="MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter" type="ExtensionKeywordStargazersRemoteRepoUrlTuple"/>
+
+		<!-- tasks for counting unique authors, files, and owner followers of repositories cloned from GitHub -->
+		<task name="MdeTechnologyRepoAuthorCounter" in="MdeTechnologyClonedRepoEntriesForAuthorCounter" out="MdeTechnologyRepoAuthorCountEntries"/>
+		<task name="MdeTechnologyRepoFileCounter" in="MdeTechnologyClonedRepoEntriesForFileCounter" out="MdeTechnologyRepoFileCountEntries"/> <!-- not (!) all files but only those matching specific MDE technology -->
+		<task name="MdeTechnologyRepoOwnerPopularityCounter" in="MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter" out="MdeTechnologyRepoOwnerPopularityCountEntries"/>
+		
+		<!-- queues of unique author count, file count, and owner follower count of repositories cloned from GitHub  -->
+		<queue name="MdeTechnologyRepoAuthorCountEntries" type="ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple"/> 
+		<queue name="MdeTechnologyRepoFileCountEntries" type="ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple"/> 
+		<queue name="MdeTechnologyRepoOwnerPopularityCountEntries" type="ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple"/> 
+		
+		<!-- sinks for printing unique author count, file count, and owner follower count of repositories cloned from GitHub -->
+		<sink name="MdeTechnologyRepoAuthorCountPrinter" in="MdeTechnologyRepoAuthorCountEntries"/>
+		<sink name="MdeTechnologyRepoFileCountPrinter" in="MdeTechnologyRepoFileCountEntries"/>
+		<sink name="MdeTechnologyRepoOwnerPopularityCountPrinter" in="MdeTechnologyRepoOwnerPopularityCountEntries"/>
+				
+		<!-- MdeTechnologies: extension (= technology), keyword -->
+		<type name="ExtensionKeywordTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+		</type>
+		
+		<!-- MdeTechnologyRepoEntries: extension (= technology), repo remote URL, # of stars -->
+		<type name="ExtensionKeywordStargazersTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="Integer"/>
+		</type>
+		
+		<!-- MdeTechnologyClonedRepoEntries: extension (= technology), repo remote URL, # of stars, repo local path -->
+		<type name="ExtensionKeywordStargazersRemoteRepoUrlTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="Integer"/>
+			<field name="field3" type="String"/>
+		</type>
+		
+		<!-- extension (= technology), repo remote URL, # of stars, repo local path, count -->
+		<type name="ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="Integer"/>
+			<field name="field3" type="String"/>
+			<field name="field4" type="Integer"/> <!-- ( author | file | owner popularity ) count -->
+		</type>
+				
+	</workflow>
+	
+</_>

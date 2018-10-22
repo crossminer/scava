@@ -4,8 +4,8 @@ public class MdeTechnologyRepoAuthorCountPrinter extends MdeTechnologyRepoAuthor
 
 	@Override
 	public void consumeMdeTechnologyRepoAuthorCountEntries(
-			StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
-		System.out.println("[" + workflow.getName() + "] Repository " + stringStringIntegerStringIntegerTuple.getField1() + " with " + stringStringIntegerStringIntegerTuple.getField2() + " stars has " + stringStringIntegerStringIntegerTuple.getField4() + " unique authors (cached=" + stringStringIntegerStringIntegerTuple.isCached() + ")");
+			ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
+		System.out.println("[" + workflow.getName() + "] Repository " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField1() + " with " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField2() + " stars has " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField4() + " unique authors (cached=" + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.isCached() + ")");
 		
 	}
 

@@ -14,14 +14,34 @@ public abstract class MdeTechnologyRepoClonerBase implements MdeTechnologyRepoEn
 		return workflow;
 	}
 	
-	protected MdeTechnologyClonedRepoEntries mdeTechnologyClonedRepoEntries;
+	protected MdeTechnologyClonedRepoEntriesForAuthorCounter mdeTechnologyClonedRepoEntriesForAuthorCounter;
 	
-	public void setMdeTechnologyClonedRepoEntries(MdeTechnologyClonedRepoEntries mdeTechnologyClonedRepoEntries) {
-		this.mdeTechnologyClonedRepoEntries = mdeTechnologyClonedRepoEntries;
+	public void setMdeTechnologyClonedRepoEntriesForAuthorCounter(MdeTechnologyClonedRepoEntriesForAuthorCounter mdeTechnologyClonedRepoEntriesForAuthorCounter) {
+		this.mdeTechnologyClonedRepoEntriesForAuthorCounter = mdeTechnologyClonedRepoEntriesForAuthorCounter;
 	}
 	
-	public MdeTechnologyClonedRepoEntries getMdeTechnologyClonedRepoEntries() {
-		return mdeTechnologyClonedRepoEntries;
+	public MdeTechnologyClonedRepoEntriesForAuthorCounter getMdeTechnologyClonedRepoEntriesForAuthorCounter() {
+		return mdeTechnologyClonedRepoEntriesForAuthorCounter;
+	}
+	
+	protected MdeTechnologyClonedRepoEntriesForFileCounter mdeTechnologyClonedRepoEntriesForFileCounter;
+	
+	public void setMdeTechnologyClonedRepoEntriesForFileCounter(MdeTechnologyClonedRepoEntriesForFileCounter mdeTechnologyClonedRepoEntriesForFileCounter) {
+		this.mdeTechnologyClonedRepoEntriesForFileCounter = mdeTechnologyClonedRepoEntriesForFileCounter;
+	}
+	
+	public MdeTechnologyClonedRepoEntriesForFileCounter getMdeTechnologyClonedRepoEntriesForFileCounter() {
+		return mdeTechnologyClonedRepoEntriesForFileCounter;
+	}
+	
+	protected MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
+	
+	public void setMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter) {
+		this.mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter = mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
+	}
+	
+	public MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter() {
+		return mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
 	}
 	
 	
@@ -39,11 +59,11 @@ public abstract class MdeTechnologyRepoClonerBase implements MdeTechnologyRepoEn
 	
 	
 	@Override
-	public void consumeMdeTechnologyRepoEntriesActual(StringStringIntegerTuple stringStringIntegerTuple) {
+	public void consumeMdeTechnologyRepoEntriesActual(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
 
 		workflow.setTaskInProgess(this);
 		
-		consumeMdeTechnologyRepoEntries(stringStringIntegerTuple);
+		consumeMdeTechnologyRepoEntries(extensionKeywordStargazersTuple);
 		
 		workflow.setTaskWaiting(this);
 		

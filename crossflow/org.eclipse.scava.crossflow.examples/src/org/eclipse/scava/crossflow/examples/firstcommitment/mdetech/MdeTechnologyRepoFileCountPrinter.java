@@ -4,8 +4,8 @@ public class MdeTechnologyRepoFileCountPrinter extends MdeTechnologyRepoFileCoun
 
 	@Override
 	public void consumeMdeTechnologyRepoFileCountEntries(
-			StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
-		System.out.println("[" + workflow.getName() + "] Repository " + stringStringIntegerStringIntegerTuple.getField1() + " with " + stringStringIntegerStringIntegerTuple.getField2() + " stars has " + stringStringIntegerStringIntegerTuple.getField4() + " files (cached=" + stringStringIntegerStringIntegerTuple.isCached() + ")");
+			ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
+		System.out.println("[" + workflow.getName() + "] Repository " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField1() + " with " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField2() + " stars has " + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.getField4() + " files (cached=" + extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.isCached() + ")");
 		
 	}
 

@@ -29,11 +29,11 @@ public abstract class MdeTechnologyRepoOwnerPopularityCountPrinterBase implement
 	
 	
 	@Override
-	public void consumeMdeTechnologyRepoOwnerPopularityCountEntriesActual(StringStringIntegerStringIntegerTuple stringStringIntegerStringIntegerTuple) {
+	public void consumeMdeTechnologyRepoOwnerPopularityCountEntriesActual(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
 
 		workflow.setTaskInProgess(this);
 		
-		consumeMdeTechnologyRepoOwnerPopularityCountEntries(stringStringIntegerStringIntegerTuple);
+		consumeMdeTechnologyRepoOwnerPopularityCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 		
 		workflow.setTaskWaiting(this);
 		

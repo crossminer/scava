@@ -23,7 +23,9 @@ public class MdeTechnologyExample extends Workflow {
 	// streams
 	protected MdeTechnologies mdeTechnologies;
 	protected MdeTechnologyRepoEntries mdeTechnologyRepoEntries;
-	protected MdeTechnologyClonedRepoEntries mdeTechnologyClonedRepoEntries;
+	protected MdeTechnologyClonedRepoEntriesForAuthorCounter mdeTechnologyClonedRepoEntriesForAuthorCounter;
+	protected MdeTechnologyClonedRepoEntriesForFileCounter mdeTechnologyClonedRepoEntriesForFileCounter;
+	protected MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
 	protected MdeTechnologyRepoAuthorCountEntries mdeTechnologyRepoAuthorCountEntries;
 	protected MdeTechnologyRepoFileCountEntries mdeTechnologyRepoFileCountEntries;
 	protected MdeTechnologyRepoOwnerPopularityCountEntries mdeTechnologyRepoOwnerPopularityCountEntries;
@@ -67,7 +69,9 @@ public class MdeTechnologyExample extends Workflow {
 		
 		mdeTechnologies = new MdeTechnologies(this);
 		mdeTechnologyRepoEntries = new MdeTechnologyRepoEntries(this);
-		mdeTechnologyClonedRepoEntries = new MdeTechnologyClonedRepoEntries(this);
+		mdeTechnologyClonedRepoEntriesForAuthorCounter = new MdeTechnologyClonedRepoEntriesForAuthorCounter(this);
+		mdeTechnologyClonedRepoEntriesForFileCounter = new MdeTechnologyClonedRepoEntriesForFileCounter(this);
+		mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter = new MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(this);
 		mdeTechnologyRepoAuthorCountEntries = new MdeTechnologyRepoAuthorCountEntries(this);
 		mdeTechnologyRepoFileCountEntries = new MdeTechnologyRepoFileCountEntries(this);
 		mdeTechnologyRepoOwnerPopularityCountEntries = new MdeTechnologyRepoOwnerPopularityCountEntries(this);
@@ -95,14 +99,16 @@ public class MdeTechnologyExample extends Workflow {
 			mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner);
 			
 	
-		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntries(mdeTechnologyClonedRepoEntries);
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForAuthorCounter(mdeTechnologyClonedRepoEntriesForAuthorCounter);
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForFileCounter(mdeTechnologyClonedRepoEntriesForFileCounter);
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter);
 		}
 	
 		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoAuthorCounter")) {
 		mdeTechnologyRepoAuthorCounter = new MdeTechnologyRepoAuthorCounter();
 		mdeTechnologyRepoAuthorCounter.setWorkflow(this);
 		
-			mdeTechnologyClonedRepoEntries.addConsumer(mdeTechnologyRepoAuthorCounter);
+			mdeTechnologyClonedRepoEntriesForAuthorCounter.addConsumer(mdeTechnologyRepoAuthorCounter);
 			
 	
 		mdeTechnologyRepoAuthorCounter.setMdeTechnologyRepoAuthorCountEntries(mdeTechnologyRepoAuthorCountEntries);
@@ -112,7 +118,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoFileCounter = new MdeTechnologyRepoFileCounter();
 		mdeTechnologyRepoFileCounter.setWorkflow(this);
 		
-			mdeTechnologyClonedRepoEntries.addConsumer(mdeTechnologyRepoFileCounter);
+			mdeTechnologyClonedRepoEntriesForFileCounter.addConsumer(mdeTechnologyRepoFileCounter);
 			
 	
 		mdeTechnologyRepoFileCounter.setMdeTechnologyRepoFileCountEntries(mdeTechnologyRepoFileCountEntries);
@@ -122,7 +128,7 @@ public class MdeTechnologyExample extends Workflow {
 		mdeTechnologyRepoOwnerPopularityCounter = new MdeTechnologyRepoOwnerPopularityCounter();
 		mdeTechnologyRepoOwnerPopularityCounter.setWorkflow(this);
 		
-			mdeTechnologyClonedRepoEntries.addConsumer(mdeTechnologyRepoOwnerPopularityCounter);
+			mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter.addConsumer(mdeTechnologyRepoOwnerPopularityCounter);
 			
 	
 		mdeTechnologyRepoOwnerPopularityCounter.setMdeTechnologyRepoOwnerPopularityCountEntries(mdeTechnologyRepoOwnerPopularityCountEntries);
@@ -173,8 +179,14 @@ public class MdeTechnologyExample extends Workflow {
 	public MdeTechnologyRepoEntries getMdeTechnologyRepoEntries() {
 		return mdeTechnologyRepoEntries;
 	}
-	public MdeTechnologyClonedRepoEntries getMdeTechnologyClonedRepoEntries() {
-		return mdeTechnologyClonedRepoEntries;
+	public MdeTechnologyClonedRepoEntriesForAuthorCounter getMdeTechnologyClonedRepoEntriesForAuthorCounter() {
+		return mdeTechnologyClonedRepoEntriesForAuthorCounter;
+	}
+	public MdeTechnologyClonedRepoEntriesForFileCounter getMdeTechnologyClonedRepoEntriesForFileCounter() {
+		return mdeTechnologyClonedRepoEntriesForFileCounter;
+	}
+	public MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter() {
+		return mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
 	}
 	public MdeTechnologyRepoAuthorCountEntries getMdeTechnologyRepoAuthorCountEntries() {
 		return mdeTechnologyRepoAuthorCountEntries;

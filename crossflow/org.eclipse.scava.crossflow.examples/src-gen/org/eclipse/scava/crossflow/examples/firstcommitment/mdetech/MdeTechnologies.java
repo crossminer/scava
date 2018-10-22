@@ -47,22 +47,28 @@ public class MdeTechnologies {
 						if (workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
 								if (output.getDestination().equals("MdeTechnologies")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologies().send((StringStringTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologies().send((ExtensionKeywordTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyRepoEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoEntries().send((StringStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoEntries().send((ExtensionKeywordStargazersTuple) output);
 								}
-								if (output.getDestination().equals("MdeTechnologyClonedRepoEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntries().send((StringStringIntegerStringTuple) output);
+								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForAuthorCounter")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForAuthorCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForFileCounter")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForFileCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output);
+								}
+								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter")) {
+									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyRepoAuthorCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoAuthorCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoAuthorCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyRepoFileCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoFileCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoFileCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output);
 								}
 								if (output.getDestination().equals("MdeTechnologyRepoOwnerPopularityCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoOwnerPopularityCountEntries().send((StringStringIntegerStringIntegerTuple) output);
+									((MdeTechnologyExample) workflow).getMdeTechnologyRepoOwnerPopularityCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output);
 								}
 							}
 						}
@@ -104,13 +110,13 @@ public class MdeTechnologies {
 		}
 	}
 	
-	public void send(StringStringTuple stringStringTuple) {
+	public void send(ExtensionKeywordTuple extensionKeywordTuple) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			stringStringTuple.setDestination("MdeTechnologies");
-			message.setObject(stringStringTuple);
+			extensionKeywordTuple.setDestination("MdeTechnologies");
+			message.setObject(extensionKeywordTuple);
 			producer.send(message);
 			
 		}
@@ -127,8 +133,8 @@ public class MdeTechnologies {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					StringStringTuple stringStringTuple = (StringStringTuple) objectMessage.getObject();
-					consumer.consumeMdeTechnologiesActual(stringStringTuple);
+					ExtensionKeywordTuple extensionKeywordTuple = (ExtensionKeywordTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologiesActual(extensionKeywordTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

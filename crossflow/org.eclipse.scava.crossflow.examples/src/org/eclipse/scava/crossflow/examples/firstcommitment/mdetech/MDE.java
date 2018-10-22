@@ -2,28 +2,28 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 public enum MDE {
 
-	ATL("atl", "rule"), 
-	QVTo("qvto", "transformation"),
-	Emfatic("emf", "class" ), 
-	Acceleo(" mtl", "template"),
-	EGL("egl", "var"), 
-	IncQuery("eiq", "pattern"),
-	Eugenia("ecore", "gmf"), // 86 repos //Eugenia("ecore", "\"gmf.diagram\""),
-	GMF("gmfgraph", "figure"),
-	EOL("eol", "var"), 
-	Xtext("xtext", "grammar"),
-	ETL("etl", "transform"), 
-	Ecore ("ecore", "EClass"),
-	EVL("evl", "context"), 
-	OCL("ocl", "context"),
-	Sirius("odesign", "node"),
-	Henshin("henshin", "rule"),
-	MOFScript("m2t", "texttransformation"), 
-	Kermeta("kmt", "class"),
-	Xcore("xcore", "class"), 
-	JET ("javajet", "jet"),
-	EMFText("cs", "syntaxdef"), 
-	Xpand ("for", "xpt");
+	ATL("atl", "rule"),  // ~4.5k results
+	QVTo("qvto", "transformation"), // ~5.7k results
+	Emfatic("emf", "class" ),  // ~1.5k results
+	Acceleo(" mtl", "template"), // ~20.5k results
+	EGL("egl", "var"),  // ~3.5k results
+	IncQuery("eiq", "pattern"), // ~343 results
+	Eugenia("ecore", "gmf"), // ~1.8k repos //Eugenia("ecore", "\"gmf.diagram\""),
+	GMF("gmfgraph", "figure"), // ~1.7k results
+	EOL("eol", "var"),  // ~1.6k results
+	Xtext("xtext", "grammar"), // ~42k results
+	ETL("etl", "transform"), // ~1.4k results
+	Ecore ("ecore", "EClass"), // ~91.2k results
+	EVL("evl", "context"), // ~1.3k results
+	OCL("ocl", "context"), // ~6.8k results
+	Sirius("odesign", "node"), // ~2.4k results
+	Henshin("henshin", "rule"), // ~26k results
+	MOFScript("m2t", "texttransformation"), // ~107 results
+	Kermeta("kmt", "class"), // ~764 results
+	Xcore("xcore", "class"), // ~758 results
+	JET ("javajet", "jet"), // ~9.7k results
+	EMFText("cs", "syntaxdef"), // ~465 results
+	Xpand ("xpt", "for"); // ~16.4k results
 	
 	private String extension;
 	private String keyword;
@@ -84,13 +84,13 @@ public enum MDE {
 		return new CodeSearchQuery()
 				.create(keyword)
 				.extension(extension)
-				.inFile()
+				//.inFile()
 				.build()
 				.getQuery();
 	}
 	
 	public static void main(String args[]) {
-		System.out.println(MDE.query("atl", "rule"));
+		System.out.println(MDE.query("kmt", "class"));
 	}
 	
 	

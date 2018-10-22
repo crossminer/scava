@@ -16,7 +16,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 
-public class MdeTechnologyRepoEntries {
+public class MdeTechnologyClonedRepoEntriesForAuthorCounter {
 	
 	protected Destination destination;
 	protected Destination pre;
@@ -24,16 +24,16 @@ public class MdeTechnologyRepoEntries {
 	protected Session session;
 	protected Workflow workflow;
 	
-	public MdeTechnologyRepoEntries(Workflow workflow) throws Exception {
+	public MdeTechnologyClonedRepoEntriesForAuthorCounter(Workflow workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
 		connectionFactory.setTrustAllPackages(true);
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = session.createQueue("MdeTechnologyRepoEntries");
-		pre = session.createQueue("MdeTechnologyRepoEntriesPre");
-		post = session.createQueue("MdeTechnologyRepoEntriesPost");
+		destination = session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounter");
+		pre = session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPre");
+		post = session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPost");
 		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(pre);
@@ -110,13 +110,13 @@ public class MdeTechnologyRepoEntries {
 		}
 	}
 	
-	public void send(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
+	public void send(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			extensionKeywordStargazersTuple.setDestination("MdeTechnologyRepoEntries");
-			message.setObject(extensionKeywordStargazersTuple);
+			extensionKeywordStargazersRemoteRepoUrlTuple.setDestination("MdeTechnologyClonedRepoEntriesForAuthorCounter");
+			message.setObject(extensionKeywordStargazersRemoteRepoUrlTuple);
 			producer.send(message);
 			
 		}
@@ -125,7 +125,7 @@ public class MdeTechnologyRepoEntries {
 		}
 	}
 	
-	public void addConsumer(MdeTechnologyRepoEntriesConsumer consumer) throws Exception {
+	public void addConsumer(MdeTechnologyClonedRepoEntriesForAuthorCounterConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(post);
 		messageConsumer.setMessageListener(new MessageListener() {
 	
@@ -133,8 +133,8 @@ public class MdeTechnologyRepoEntries {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple = (ExtensionKeywordStargazersTuple) objectMessage.getObject();
-					consumer.consumeMdeTechnologyRepoEntriesActual(extensionKeywordStargazersTuple);
+					ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = (ExtensionKeywordStargazersRemoteRepoUrlTuple) objectMessage.getObject();
+					consumer.consumeMdeTechnologyClonedRepoEntriesForAuthorCounterActual(extensionKeywordStargazersRemoteRepoUrlTuple);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

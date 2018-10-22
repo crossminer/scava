@@ -38,39 +38,39 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 	 * @see org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyRepoEntriesConsumer#consumeMdeTechnologyRepoEntries(org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.StringStringStringTuple)
 	 */
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntries(StringStringIntegerStringTuple stringStringIntegerStringTuple) {
+	public void consumeMdeTechnologyClonedRepoEntriesForAuthorCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
+			workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
-			if ( alreadySeenJobs.contains( stringStringIntegerStringTuple.getId() ) ) { 
+			if ( alreadySeenJobs.contains( extensionKeywordStargazersRemoteRepoUrlTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( stringStringIntegerStringTuple.getField1(), 0 );
+				committedRepoMap.put( extensionKeywordStargazersRemoteRepoUrlTuple.getField1(), 0 );
 			
 			} else {
 				// We haven't seen this job before
 				// Record it and send it back
-				alreadySeenJobs.add( stringStringIntegerStringTuple.getId() );
-				workflow.getMdeTechnologyClonedRepoEntries().send( stringStringIntegerStringTuple );
+				alreadySeenJobs.add( extensionKeywordStargazersRemoteRepoUrlTuple.getId() );
+				workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
 			}
 			
-			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
+			if ( committedRepoMap.containsKey( extensionKeywordStargazersRemoteRepoUrlTuple.getField1() ) ) {
 				
-				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
+				committedRepoMap.replace( extensionKeywordStargazersRemoteRepoUrlTuple.getField1(), committedRepoMap.get( extensionKeywordStargazersRemoteRepoUrlTuple.getField1()) + 1 );
 				
-				int authorCount = count(stringStringIntegerStringTuple.getField1());
+				int authorCount = count(extensionKeywordStargazersRemoteRepoUrlTuple.getField1());
 				
-				StringStringIntegerStringIntegerTuple mdeTechnologyClonedRepoEntryAuthorCount = new StringStringIntegerStringIntegerTuple();
-				mdeTechnologyClonedRepoEntryAuthorCount.setField0(stringStringIntegerStringTuple.field0); // file extension
-				mdeTechnologyClonedRepoEntryAuthorCount.setField1(stringStringIntegerStringTuple.field1); // repository remote URL
-				mdeTechnologyClonedRepoEntryAuthorCount.setField2(stringStringIntegerStringTuple.field2); // repository number of stars
-				mdeTechnologyClonedRepoEntryAuthorCount.setField3(stringStringIntegerStringTuple.field3); // cloned repository local path
-				mdeTechnologyClonedRepoEntryAuthorCount.setField4(authorCount); // repository unique author count
+				ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple = new ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple();
+				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField0(extensionKeywordStargazersRemoteRepoUrlTuple.field0); // file extension
+				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField1(extensionKeywordStargazersRemoteRepoUrlTuple.field1); // repository remote URL
+				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField2(extensionKeywordStargazersRemoteRepoUrlTuple.field2); // repository number of stars
+				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
+				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(authorCount); // repository unique author count
 				
-				getMdeTechnologyRepoAuthorCountEntries().send(mdeTechnologyClonedRepoEntryAuthorCount);
+				getMdeTechnologyRepoAuthorCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			
 			}
 			
