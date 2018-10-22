@@ -89,5 +89,9 @@ public enum MDE {
 				.getQuery();
 	}
 	
+	public static void main(String args[]) {
+		System.out.println(MDE.query("atl", "rule"));
+	}
+	
 	
 }

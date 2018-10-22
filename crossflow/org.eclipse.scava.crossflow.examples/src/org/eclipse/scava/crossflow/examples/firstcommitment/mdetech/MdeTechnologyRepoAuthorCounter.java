@@ -5,10 +5,17 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 
 public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCounterBase {
 
@@ -51,12 +58,19 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 			}
 			
 			if ( committedRepoMap.containsKey( stringStringIntegerStringTuple.getField1() ) ) {
+				
 				committedRepoMap.replace( stringStringIntegerStringTuple.getField1(), committedRepoMap.get( stringStringIntegerStringTuple.getField1()) + 1 );
-				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( stringStringIntegerStringTuple.getField1() ) + " occurrences of " + stringStringIntegerStringTuple.getField1() );
 				
-				System.out.println("[" + workflow.getName() + "] " + "COUNT AUTHORS FROM LOCALLY CLONED REPO HERE !\n");
+				int authorCount = count(stringStringIntegerStringTuple.getField1());
 				
-				// TODO: count authors from locally cloned repo here !
+				StringStringIntegerStringIntegerTuple mdeTechnologyClonedRepoEntryAuthorCount = new StringStringIntegerStringIntegerTuple();
+				mdeTechnologyClonedRepoEntryAuthorCount.setField0(stringStringIntegerStringTuple.field0); // file extension
+				mdeTechnologyClonedRepoEntryAuthorCount.setField1(stringStringIntegerStringTuple.field1); // repository remote URL
+				mdeTechnologyClonedRepoEntryAuthorCount.setField2(stringStringIntegerStringTuple.field2); // repository number of stars
+				mdeTechnologyClonedRepoEntryAuthorCount.setField3(stringStringIntegerStringTuple.field3); // cloned repository local path
+				mdeTechnologyClonedRepoEntryAuthorCount.setField4(authorCount); // repository unique author count
+				
+				getMdeTechnologyRepoAuthorCountEntries().send(mdeTechnologyClonedRepoEntryAuthorCount);
 			
 			}
 			
@@ -65,8 +79,31 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 	}
 
 	private int count(String repoLocation) {	
-		// TODO: count unique authors by their e-mail address found in repository commits 
-		return 0;
+		HashSet<String> repoAuthorsSet = new HashSet<String>();
+		
+		try {
+			Repository repo = new FileRepository(new File(repoLocation).getCanonicalPath());
+			
+			// get a list of all known heads, tags, remotes, ...
+            Collection<Ref> allRefs = repo.getAllRefs().values();
+
+            // a RevWalk allows to walk over commits based on some filtering that is defined
+            try (RevWalk revWalk = new RevWalk( repo )) {
+                for( Ref ref : allRefs ) {
+                    revWalk.markStart( revWalk.parseCommit( ref.getObjectId() ));
+                }
+//                System.out.println("Walking all commits starting with " + allRefs.size() + " refs: " + allRefs);
+                for( RevCommit commit : revWalk ) {
+                	repoAuthorsSet.add(commit.getAuthorIdent().getEmailAddress());
+                }
+            }
+		
+		} catch (IOException e) {
+			System.err.println("\n" + "[" + workflow.getName() + "] " + "Failed to count repository authors. Wrong cloned repository location?");
+			e.printStackTrace();
+		}	 
+		
+		return repoAuthorsSet.size();
 	}
 
 	/**
