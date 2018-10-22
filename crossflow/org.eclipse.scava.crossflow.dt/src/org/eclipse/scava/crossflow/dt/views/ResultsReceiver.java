@@ -27,10 +27,10 @@ public class ResultsReceiver {
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		results = session.createQueue("EclipseResultsPublisher");
+		results = session.createTopic("EclipseResultsPublisher");
 
 		if (results == null)
-			throw new Exception("Cannot find queue: EclipseResultsPublisher at: tcp://localhost:61616");
+			throw new Exception("Cannot find topic: EclipseResultsPublisher at: tcp://localhost:61616");
 
 		// Queue queue = (Queue) namingContext.lookup("ResultsPublisher");
 

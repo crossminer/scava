@@ -55,6 +55,15 @@ public class GhRepoExample extends Workflow {
 		eclipseResultPublisher = new EclipseResultPublisher(this);
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
+//test of task status until it is integrated to ui
+//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//			@Override
+//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
+//			}
+//		});
+//
+		
 		ghRepos = new GhRepos(this);
 		resultsPublisher = new ResultsPublisher(this);
 		

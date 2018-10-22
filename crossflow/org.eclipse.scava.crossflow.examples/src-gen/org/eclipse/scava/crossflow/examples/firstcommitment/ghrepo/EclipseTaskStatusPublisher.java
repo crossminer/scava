@@ -18,8 +18,7 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 public class EclipseTaskStatusPublisher {
 
 	protected Destination destination;
-	protected Destination pre;
-	protected Destination post;
+
 	protected Session session;
 	protected Workflow workflow;
 
@@ -30,35 +29,13 @@ public class EclipseTaskStatusPublisher {
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = session.createQueue("EclipseTaskStatusPublisher");
-		pre = session.createQueue("EclipseTaskStatusPublisherPre");
-		post = session.createQueue("EclipseTaskStatusPublisherPost");
+		destination = session.createTopic("EclipseTaskStatusPublisher");
 
-		if (workflow.isMaster()) {
-			MessageConsumer preConsumer = session.createConsumer(pre);
-			preConsumer.setMessageListener(new MessageListener() {
-
-				@Override
-				public void onMessage(Message message) {
-					try {
-						MessageProducer producer2 = session.createProducer(destination);
-						producer2.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-						producer2.send(message);
-					}
-
-					catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-
-			});
-
-		}
 	}
 
 	public void send(TaskStatus taskStatus) {
 		try {
-			MessageProducer producer = session.createProducer(pre);
+			MessageProducer producer = session.createProducer(destination);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
 			message.setObject(taskStatus);
@@ -70,7 +47,7 @@ public class EclipseTaskStatusPublisher {
 	}
 
 	public void addConsumer(EclipseTaskStatusPublisherConsumer consumer) throws Exception {
-		MessageConsumer messageConsumer = session.createConsumer(post);
+		MessageConsumer messageConsumer = session.createConsumer(destination);
 		messageConsumer.setMessageListener(new MessageListener() {
 
 			@Override
