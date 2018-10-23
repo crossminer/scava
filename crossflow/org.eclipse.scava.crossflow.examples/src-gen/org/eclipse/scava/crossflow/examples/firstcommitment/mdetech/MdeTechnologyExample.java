@@ -67,6 +67,15 @@ public class MdeTechnologyExample extends Workflow {
 		eclipseResultPublisher = new EclipseResultPublisher(this);
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
+//TODO test of task status until it is integrated to ui
+//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//			@Override
+//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
+//			}
+//		});
+//
+		
 		mdeTechnologies = new MdeTechnologies(this);
 		mdeTechnologyRepoEntries = new MdeTechnologyRepoEntries(this);
 		mdeTechnologyClonedRepoEntriesForAuthorCounter = new MdeTechnologyClonedRepoEntriesForAuthorCounter(this);

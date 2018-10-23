@@ -61,6 +61,15 @@ public class OpinionatedExample extends Workflow {
 
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
+//TODO test of task status until it is integrated to ui
+//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//			@Override
+//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
+//			}
+//		});
+//
+		
 		words = new Words(this);
 		
 		if(isMaster() || !tasksToExclude.contains("WordSource")) {

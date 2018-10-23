@@ -28,7 +28,7 @@ public class EclipseResultPublisher {
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		destination = session.createTopic("EclipseResultsPublisher");
-
+		
 	}
 
 	public void send(Object[] result) {

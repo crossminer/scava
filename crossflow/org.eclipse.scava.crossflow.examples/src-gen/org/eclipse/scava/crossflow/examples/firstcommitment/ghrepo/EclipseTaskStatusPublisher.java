@@ -18,7 +18,6 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 public class EclipseTaskStatusPublisher {
 
 	protected Destination destination;
-
 	protected Session session;
 	protected Workflow workflow;
 
@@ -30,7 +29,7 @@ public class EclipseTaskStatusPublisher {
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		destination = session.createTopic("EclipseTaskStatusPublisher");
-
+		
 	}
 
 	public void send(TaskStatus taskStatus) {

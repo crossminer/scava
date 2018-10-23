@@ -51,6 +51,15 @@ public class FirstCommitmentExample extends Workflow {
 
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
+//TODO test of task status until it is integrated to ui
+//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//			@Override
+//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
+//			}
+//		});
+//
+		
 		animals = new Animals(this);
 		
 		if(isMaster() || !tasksToExclude.contains("AnimalSource")) {

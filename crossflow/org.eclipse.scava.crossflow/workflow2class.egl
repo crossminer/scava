@@ -72,6 +72,15 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
+//TODO test of task status until it is integrated to ui
+//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//			@Override
+//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
+//			}
+//		});
+//
+		
 		[%for (s in w.streams) { %]
 		[%=s.name.ftlc()%] = new [%=s.name%](this);
 		[%}%]
