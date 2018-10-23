@@ -44,4 +44,6 @@ public class Workflow {
 		return mode;
 	}
 	
+	public enum TaskStatuses{STARTED,WAITING,INPROGRESS,BLOCKED,FINISHED};
+	
 }

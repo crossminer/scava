@@ -1,0 +1,5 @@
+package [%=s.eContainer().package%];
+
+public interface EclipseResultPublisherConsumer {
+	public void consumeEclipseResultPublisher(Object[] results);
+}

@@ -1,6 +1,8 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepoExample;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class GhRepoExampleMasterWorkers {
@@ -14,10 +16,13 @@ public class GhRepoExampleMasterWorkers {
 		master.setName("Master");
 		
 		GhRepoExample worker1 = new GhRepoExample();
+		List<String> tasksToExclude = Collections.singletonList("GhRepoCounter");
+		worker1.excludeTasks(tasksToExclude);
 		worker1.setMode(Mode.WORKER);
 		worker1.setName("Worker1");
 		
 		GhRepoExample worker2 = new GhRepoExample();
+		worker2.excludeTasks(tasksToExclude);
 		worker2.setMode(Mode.WORKER);
 		worker2.setName("Worker2");
 		
@@ -42,9 +47,12 @@ public class GhRepoExampleMasterWorkers {
 	}
 	
 	private static void printStatistics(GhRepoExample ghRepoExample) {
+		try {
 		System.out.println("["+ghRepoExample.getName()+"] total # of jobs seen: " + ghRepoExample.getGhRepoCounter().getAlreadySeenJobs().size());
 		System.out.println("["+ghRepoExample.getName()+"] max # of job commitments: " + String.valueOf(ghRepoExample.getGhRepoCounter().MAX_NUMBER_OF_COMMITMENTS) );
 		System.out.println("["+ghRepoExample.getName()+"] total # of jobs committed to ( total # of occurrences ): " + ghRepoExample.getGhRepoCounter().getCommittedRepoMap().size() + " ( " + ghRepoExample.getGhRepoCounter().getCommittedRepoMap().values().stream().mapToInt(i->i).sum() + " )\n");
-	}
+	}catch (Exception e) {
+		// XXX this will crash for workers that dont have this task, temporary solution
+	}}
 	
 }

@@ -16,4 +16,12 @@ public class GhRepo extends Job {
 		return repoUrl;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[1];
+	 	ret[0] = getRepoUrl();
+		return ret;
+	}
+
+
 }

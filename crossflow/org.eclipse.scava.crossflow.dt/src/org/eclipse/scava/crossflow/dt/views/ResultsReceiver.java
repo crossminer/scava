@@ -11,8 +11,7 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.Result;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.ResultsPublisherConsumer;
+import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.EclipseResultPublisherConsumer;
 import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ResultsReceiver {
@@ -28,16 +27,16 @@ public class ResultsReceiver {
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		results = session.createQueue("ResultsPublisher");
+		results = session.createTopic("EclipseResultsPublisher");
 
 		if (results == null)
-			throw new Exception("Cannot find queue: ResultsPublisher at: tcp://localhost:61616");
+			throw new Exception("Cannot find topic: EclipseResultsPublisher at: tcp://localhost:61616");
 
 		// Queue queue = (Queue) namingContext.lookup("ResultsPublisher");
 
 	}
 
-	public void addConsumer(ResultsPublisherConsumer consumer) throws Exception {
+	public void addConsumer(EclipseResultPublisherConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(results);
 		messageConsumer.setMessageListener(new MessageListener() {
 			@Override
@@ -47,7 +46,7 @@ public class ResultsReceiver {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					Object[] job = (Object[]) objectMessage.getObject();
-					consumer.consumeResultsPublisher((Object[]) job);
+					consumer.consumeEclipseResultPublisher((Object[]) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

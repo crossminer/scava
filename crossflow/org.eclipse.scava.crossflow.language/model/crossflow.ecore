@@ -28,6 +28,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type">
       <eAnnotations source="gmf.link"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputOf" upperBound="-1"
+        eType="#//Task" eOpposite="#//Task/input"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputOf" upperBound="-1"
+        eType="#//Task" eOpposite="#//Task/output"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Topic" eSuperTypes="#//Stream"/>
   <eClassifiers xsi:type="ecore:EClass" name="Queue" eSuperTypes="#//Stream"/>
@@ -37,13 +41,15 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
-        eType="#//Stream">
+        eType="#//Stream" eOpposite="#//Stream/inputOf">
       <eAnnotations source="gmf.link"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="output" upperBound="-1"
-        eType="#//Stream">
+        eType="#//Stream" eOpposite="#//Stream/outputOf">
       <eAnnotations source="gmf.link"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="masterOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parallel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cached" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
   </eClassifiers>

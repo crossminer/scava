@@ -5,8 +5,6 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -99,6 +97,20 @@ public class CloneUtils {
 		System.out.println(extractGhRepoName(url.toString()));
 	}
 	
+	public static void removeRepoClones(File repoLocation) {
+		// clean local clone parent destination if it exists
+		if (repoLocation.exists()) {
+			try {
+				FileUtils.deleteDirectory(repoLocation);
+				System.out.println("Successfully cleaned repo clone parent: "
+						+ repoLocation.getAbsolutePath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			repoLocation.mkdir();
+		}
+	}
 	
 
 }

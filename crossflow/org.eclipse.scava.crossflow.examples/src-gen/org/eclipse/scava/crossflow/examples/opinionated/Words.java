@@ -112,8 +112,8 @@ public class Words {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeWords((Word) job);
+					Word word = (Word) objectMessage.getObject();
+					consumer.consumeWordsActual(word);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

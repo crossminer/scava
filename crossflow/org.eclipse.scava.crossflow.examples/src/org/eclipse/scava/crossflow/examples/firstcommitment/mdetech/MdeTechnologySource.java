@@ -19,11 +19,11 @@ public class MdeTechnologySource extends MdeTechnologySourceBase {
 	public void produce() {
 		// Use MDE extension-keyword tuple from enum to produce the same tuple in form of a String-String tuple for GhRepoRetriever to consume		
 		for (MDE m : MDE.values()) {
-			StringStringTuple extensionKeywordTuple = new StringStringTuple();
+			ExtensionKeywordTuple extensionKeywordTuple = new ExtensionKeywordTuple();
 			extensionKeywordTuple.field0 = m.getExtension();
 			extensionKeywordTuple.field1 = m.getKeyword();
+			//System.out.println("Produced tuple: " + extensionKeywordTuple.getField0() + ", " + extensionKeywordTuple.getField1());
 			getMdeTechnologies().send(extensionKeywordTuple);
-			System.out.println("SENT: " + extensionKeywordTuple);
 		}
 
 	}

@@ -112,8 +112,8 @@ public class Animals {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeAnimals((Animal) job);
+					Animal animal = (Animal) objectMessage.getObject();
+					consumer.consumeAnimalsActual(animal);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.EclipseResultPublisherConsumer;
 import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.ResultsPublisherConsumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -268,9 +269,9 @@ public class CrossflowExecutionView extends ViewPart {
 
 		try {
 			ResultsReceiver rp = new ResultsReceiver();
-			rp.addConsumer(new ResultsPublisherConsumer() {
+			rp.addConsumer(new EclipseResultPublisherConsumer() {
 				@Override
-				public void consumeResultsPublisher(Object[] job) {
+				public void consumeEclipseResultPublisher(Object[] job) {
 					System.err.println("consuming...");
 					System.err.println(Arrays.toString(job));
 					updateRowUsingAddition((String) job[0], job);

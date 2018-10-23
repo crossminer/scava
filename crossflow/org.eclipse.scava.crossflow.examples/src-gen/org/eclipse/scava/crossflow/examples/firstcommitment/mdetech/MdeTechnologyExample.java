@@ -1,10 +1,15 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import java.util.LinkedList;
+import java.util.Collection;
+
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
-import com.beust.jcommander.Parameter;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 public class MdeTechnologyExample extends Workflow {
 	
@@ -18,7 +23,14 @@ public class MdeTechnologyExample extends Workflow {
 	// streams
 	protected MdeTechnologies mdeTechnologies;
 	protected MdeTechnologyRepoEntries mdeTechnologyRepoEntries;
-	protected MdeTechnologyClonedRepoEntries mdeTechnologyClonedRepoEntries;
+	protected MdeTechnologyClonedRepoEntriesForAuthorCounter mdeTechnologyClonedRepoEntriesForAuthorCounter;
+	protected MdeTechnologyClonedRepoEntriesForFileCounter mdeTechnologyClonedRepoEntriesForFileCounter;
+	protected MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
+	protected MdeTechnologyRepoAuthorCountEntries mdeTechnologyRepoAuthorCountEntries;
+	protected MdeTechnologyRepoFileCountEntries mdeTechnologyRepoFileCountEntries;
+	protected MdeTechnologyRepoOwnerPopularityCountEntries mdeTechnologyRepoOwnerPopularityCountEntries;
+	protected EclipseResultPublisher eclipseResultPublisher;
+	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	// tasks
 	protected MdeTechnologySource mdeTechnologySource;
@@ -26,8 +38,17 @@ public class MdeTechnologyExample extends Workflow {
 	protected MdeTechnologyRepoCloner mdeTechnologyRepoCloner;
 	protected MdeTechnologyRepoAuthorCounter mdeTechnologyRepoAuthorCounter;
 	protected MdeTechnologyRepoFileCounter mdeTechnologyRepoFileCounter;
-	protected MdeTechnologyRepoOwnerFollowerCounter mdeTechnologyRepoOwnerFollowerCounter;
+	protected MdeTechnologyRepoOwnerPopularityCounter mdeTechnologyRepoOwnerPopularityCounter;
+	protected MdeTechnologyRepoAuthorCountPrinter mdeTechnologyRepoAuthorCountPrinter;
+	protected MdeTechnologyRepoFileCountPrinter mdeTechnologyRepoFileCountPrinter;
+	protected MdeTechnologyRepoOwnerPopularityCountPrinter mdeTechnologyRepoOwnerPopularityCountPrinter;
 	
+	// excluded tasks from workers
+	protected Collection<String> tasksToExclude = new LinkedList<String>();
+	
+	public void excludeTasks(Collection<String> tasks){
+		tasksToExclude = tasks;
+	}
 	
 	public MdeTechnologyExample() {
 		this.name = "MdeTechnologyExample";
@@ -42,37 +63,110 @@ public class MdeTechnologyExample extends Workflow {
 			broker.addConnector(getBroker());
 			broker.start();
 		}
+
+		eclipseResultPublisher = new EclipseResultPublisher(this);
+		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
 		
 		mdeTechnologies = new MdeTechnologies(this);
 		mdeTechnologyRepoEntries = new MdeTechnologyRepoEntries(this);
-		mdeTechnologyClonedRepoEntries = new MdeTechnologyClonedRepoEntries(this);
+		mdeTechnologyClonedRepoEntriesForAuthorCounter = new MdeTechnologyClonedRepoEntriesForAuthorCounter(this);
+		mdeTechnologyClonedRepoEntriesForFileCounter = new MdeTechnologyClonedRepoEntriesForFileCounter(this);
+		mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter = new MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(this);
+		mdeTechnologyRepoAuthorCountEntries = new MdeTechnologyRepoAuthorCountEntries(this);
+		mdeTechnologyRepoFileCountEntries = new MdeTechnologyRepoFileCountEntries(this);
+		mdeTechnologyRepoOwnerPopularityCountEntries = new MdeTechnologyRepoOwnerPopularityCountEntries(this);
 		
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologySource")) {
 		mdeTechnologySource = new MdeTechnologySource();
 		mdeTechnologySource.setWorkflow(this);
 		mdeTechnologySource.setMdeTechnologies(mdeTechnologies);
-		
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFetcher")) {
 		mdeTechnologyRepoFetcher = new MdeTechnologyRepoFetcher();
 		mdeTechnologyRepoFetcher.setWorkflow(this);
-		mdeTechnologies.addConsumer(mdeTechnologyRepoFetcher);
-		mdeTechnologyRepoFetcher.setMdeTechnologyRepoEntries(mdeTechnologyRepoEntries);
 		
+			mdeTechnologies.addConsumer(mdeTechnologyRepoFetcher);
+			
+	
+		mdeTechnologyRepoFetcher.setMdeTechnologyRepoEntries(mdeTechnologyRepoEntries);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoCloner")) {
 		mdeTechnologyRepoCloner = new MdeTechnologyRepoCloner();
 		mdeTechnologyRepoCloner.setWorkflow(this);
-		mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner);
-		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntries(mdeTechnologyClonedRepoEntries);
 		
+			mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner);
+			
+	
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForAuthorCounter(mdeTechnologyClonedRepoEntriesForAuthorCounter);
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForFileCounter(mdeTechnologyClonedRepoEntriesForFileCounter);
+		mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoAuthorCounter")) {
 		mdeTechnologyRepoAuthorCounter = new MdeTechnologyRepoAuthorCounter();
 		mdeTechnologyRepoAuthorCounter.setWorkflow(this);
-		mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoAuthorCounter);
 		
+			mdeTechnologyClonedRepoEntriesForAuthorCounter.addConsumer(mdeTechnologyRepoAuthorCounter);
+			
+	
+		mdeTechnologyRepoAuthorCounter.setMdeTechnologyRepoAuthorCountEntries(mdeTechnologyRepoAuthorCountEntries);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFileCounter")) {
 		mdeTechnologyRepoFileCounter = new MdeTechnologyRepoFileCounter();
 		mdeTechnologyRepoFileCounter.setWorkflow(this);
-		mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoFileCounter);
 		
-		mdeTechnologyRepoOwnerFollowerCounter = new MdeTechnologyRepoOwnerFollowerCounter();
-		mdeTechnologyRepoOwnerFollowerCounter.setWorkflow(this);
-		mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoOwnerFollowerCounter);
+			mdeTechnologyClonedRepoEntriesForFileCounter.addConsumer(mdeTechnologyRepoFileCounter);
+			
+	
+		mdeTechnologyRepoFileCounter.setMdeTechnologyRepoFileCountEntries(mdeTechnologyRepoFileCountEntries);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCounter")) {
+		mdeTechnologyRepoOwnerPopularityCounter = new MdeTechnologyRepoOwnerPopularityCounter();
+		mdeTechnologyRepoOwnerPopularityCounter.setWorkflow(this);
 		
+			mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter.addConsumer(mdeTechnologyRepoOwnerPopularityCounter);
+			
+	
+		mdeTechnologyRepoOwnerPopularityCounter.setMdeTechnologyRepoOwnerPopularityCountEntries(mdeTechnologyRepoOwnerPopularityCountEntries);
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoAuthorCountPrinter")) {
+		mdeTechnologyRepoAuthorCountPrinter = new MdeTechnologyRepoAuthorCountPrinter();
+		mdeTechnologyRepoAuthorCountPrinter.setWorkflow(this);
+		if (isMaster()) 		
+			mdeTechnologyRepoAuthorCountEntries.addConsumer(mdeTechnologyRepoAuthorCountPrinter);
+			
+		if(mdeTechnologyRepoAuthorCounter!=null)		
+			mdeTechnologyRepoAuthorCounter.setEclipseResultPublisher(eclipseResultPublisher);
+	
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoFileCountPrinter")) {
+		mdeTechnologyRepoFileCountPrinter = new MdeTechnologyRepoFileCountPrinter();
+		mdeTechnologyRepoFileCountPrinter.setWorkflow(this);
+		if (isMaster()) 		
+			mdeTechnologyRepoFileCountEntries.addConsumer(mdeTechnologyRepoFileCountPrinter);
+			
+		if(mdeTechnologyRepoFileCounter!=null)		
+			mdeTechnologyRepoFileCounter.setEclipseResultPublisher(eclipseResultPublisher);
+	
+		}
+	
+		if(isMaster() || !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCountPrinter")) {
+		mdeTechnologyRepoOwnerPopularityCountPrinter = new MdeTechnologyRepoOwnerPopularityCountPrinter();
+		mdeTechnologyRepoOwnerPopularityCountPrinter.setWorkflow(this);
+		if (isMaster()) 		
+			mdeTechnologyRepoOwnerPopularityCountEntries.addConsumer(mdeTechnologyRepoOwnerPopularityCountPrinter);
+			
+		if(mdeTechnologyRepoOwnerPopularityCounter!=null)		
+			mdeTechnologyRepoOwnerPopularityCounter.setEclipseResultPublisher(eclipseResultPublisher);
+	
+		}
+	
 		
 		if (isMaster()){
 			mdeTechnologySource.produce();
@@ -85,8 +179,23 @@ public class MdeTechnologyExample extends Workflow {
 	public MdeTechnologyRepoEntries getMdeTechnologyRepoEntries() {
 		return mdeTechnologyRepoEntries;
 	}
-	public MdeTechnologyClonedRepoEntries getMdeTechnologyClonedRepoEntries() {
-		return mdeTechnologyClonedRepoEntries;
+	public MdeTechnologyClonedRepoEntriesForAuthorCounter getMdeTechnologyClonedRepoEntriesForAuthorCounter() {
+		return mdeTechnologyClonedRepoEntriesForAuthorCounter;
+	}
+	public MdeTechnologyClonedRepoEntriesForFileCounter getMdeTechnologyClonedRepoEntriesForFileCounter() {
+		return mdeTechnologyClonedRepoEntriesForFileCounter;
+	}
+	public MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter() {
+		return mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter;
+	}
+	public MdeTechnologyRepoAuthorCountEntries getMdeTechnologyRepoAuthorCountEntries() {
+		return mdeTechnologyRepoAuthorCountEntries;
+	}
+	public MdeTechnologyRepoFileCountEntries getMdeTechnologyRepoFileCountEntries() {
+		return mdeTechnologyRepoFileCountEntries;
+	}
+	public MdeTechnologyRepoOwnerPopularityCountEntries getMdeTechnologyRepoOwnerPopularityCountEntries() {
+		return mdeTechnologyRepoOwnerPopularityCountEntries;
 	}
 	
 	public MdeTechnologySource getMdeTechnologySource() {
@@ -104,8 +213,33 @@ public class MdeTechnologyExample extends Workflow {
 	public MdeTechnologyRepoFileCounter getMdeTechnologyRepoFileCounter() {
 		return mdeTechnologyRepoFileCounter;
 	}
-	public MdeTechnologyRepoOwnerFollowerCounter getMdeTechnologyRepoOwnerFollowerCounter() {
-		return mdeTechnologyRepoOwnerFollowerCounter;
+	public MdeTechnologyRepoOwnerPopularityCounter getMdeTechnologyRepoOwnerPopularityCounter() {
+		return mdeTechnologyRepoOwnerPopularityCounter;
+	}
+	public MdeTechnologyRepoAuthorCountPrinter getMdeTechnologyRepoAuthorCountPrinter() {
+		return mdeTechnologyRepoAuthorCountPrinter;
+	}
+	public MdeTechnologyRepoFileCountPrinter getMdeTechnologyRepoFileCountPrinter() {
+		return mdeTechnologyRepoFileCountPrinter;
+	}
+	public MdeTechnologyRepoOwnerPopularityCountPrinter getMdeTechnologyRepoOwnerPopularityCountPrinter() {
+		return mdeTechnologyRepoOwnerPopularityCountPrinter;
 	}
 	
+	public void setTaskInProgess(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskWaiting(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	}
+
+	public void setTaskBlocked(Object caller, String reason) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	}
+
+	public void setTaskUnblocked(Object caller) {
+		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	}
+
 }

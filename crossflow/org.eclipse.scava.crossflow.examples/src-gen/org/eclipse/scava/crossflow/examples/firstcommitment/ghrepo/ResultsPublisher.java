@@ -1,6 +1,7 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -13,15 +14,16 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ResultsPublisher {
-
+	
 	protected Destination destination;
 	protected Destination pre;
 	protected Destination post;
 	protected Session session;
 	protected Workflow workflow;
-
+	
 	public ResultsPublisher(Workflow workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
@@ -32,7 +34,7 @@ public class ResultsPublisher {
 		destination = session.createQueue("ResultsPublisher");
 		pre = session.createQueue("ResultsPublisherPre");
 		post = session.createQueue("ResultsPublisherPost");
-
+		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(pre);
 			preConsumer.setMessageListener(new MessageListener() {
@@ -40,50 +42,86 @@ public class ResultsPublisher {
 				@Override
 				public void onMessage(Message message) {
 					try {
-						MessageProducer producer2 = session.createProducer(destination);
-						producer2.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-						producer2.send(message);
+						
+						Job job = (Job) ((ObjectMessage) message).getObject();
+						if (workflow.getCache().hasCachedOutputs(job)) {
+							for (Job output : workflow.getCache().getCachedOutputs(job)) {
+								if (output.getDestination().equals("GhRepos")) {
+									((GhRepoExample) workflow).getGhRepos().send((GhRepo) output);
+								}
+								if (output.getDestination().equals("ResultsPublisher")) {
+									((GhRepoExample) workflow).getResultsPublisher().send((Result) output);
+								}
+							}
+						}
+						else {
+							MessageProducer producer = session.createProducer(destination);
+							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+							producer.send(message);
+						}
+						
 					}
-
 					catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}
-
+				
 			});
+			
+			MessageConsumer destinationConsumer = session.createConsumer(destination);
+			destinationConsumer.setMessageListener(new MessageListener() {
 
+				@Override
+				public void onMessage(Message message) {
+					try {
+						ObjectMessage objectMessage = (ObjectMessage) message;
+						Job job = (Job) objectMessage.getObject();
+						if (!job.isCached()) {
+							workflow.getCache().cache(job);
+						}
+						MessageProducer producer = session.createProducer(post);
+						producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+						producer.send(message);
+					}
+					catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+				
+			});
 		}
 	}
-
-	public void send(Object[] result) {
+	
+	public void send(Result result) {
 		try {
 			MessageProducer producer = session.createProducer(pre);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			ObjectMessage message = session.createObjectMessage();
-			// result.setDestination("ResultsPublisher");
+			result.setDestination("ResultsPublisher");
 			message.setObject(result);
 			producer.send(message);
-
-		} catch (Exception ex) {
+			
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	public void addConsumer(ResultsPublisherConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(post);
 		messageConsumer.setMessageListener(new MessageListener() {
-
+	
 			@Override
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Object[] job = (Object[]) objectMessage.getObject();
-					consumer.consumeResultsPublisher((Object[]) job);
+					Result result = (Result) objectMessage.getObject();
+					consumer.consumeResultsPublisherActual(result);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}
-			}
+			}	
 		});
 	}
-
+	
 }

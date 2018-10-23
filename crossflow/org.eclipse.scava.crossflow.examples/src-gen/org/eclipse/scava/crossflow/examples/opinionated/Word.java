@@ -16,4 +16,12 @@ public class Word extends Job {
 		return w;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[1];
+	 	ret[0] = getW();
+		return ret;
+	}
+
+
 }

@@ -1,6 +1,7 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -49,7 +50,7 @@ public class GhRepos {
 									((GhRepoExample) workflow).getGhRepos().send((GhRepo) output);
 								}
 								if (output.getDestination().equals("ResultsPublisher")) {
-									//((GhRepoExample) workflow).getResultsPublisher().send((Result) output);
+									((GhRepoExample) workflow).getResultsPublisher().send((Result) output);
 								}
 							}
 						}
@@ -114,8 +115,8 @@ public class GhRepos {
 			public void onMessage(Message message) {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Job job = (Job) objectMessage.getObject();
-					consumer.consumeGhRepos((GhRepo) job);
+					GhRepo ghRepo = (GhRepo) objectMessage.getObject();
+					consumer.consumeGhReposActual(ghRepo);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

@@ -5,12 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepo;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepoCounterBase;
-
 public class GhRepoCounter extends GhRepoCounterBase {
 
-	protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
+	protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
 
 	protected Set<String> alreadySeenJobs = new HashSet<String>();
 
@@ -41,13 +38,21 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				committedRepoMap.replace(ghRepo.getRepoUrl(), committedRepoMap.get(ghRepo.getRepoUrl()) + 1);
 				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get(ghRepo.getRepoUrl())
 						+ " occurrences of " + ghRepo.getRepoUrl());
-				// send output to eclipse:
-				Object[] r = new Object[4];
-				r[0] = "gmf";
-				r[1] = 1;
-				r[2] = 0;
-				r[3] = 0;
+				// send output to sink:
+				Result r = new Result();
+				r.setTechnology("gmf");
+				r.setRepos(1);
+				r.setFiles(0);
+				r.setAuthors(0);
 				getResultsPublisher().send(r);
+				
+				// send output to eclipse:
+				Object[] ret = new Object[4];
+				ret[0] = "gmf";
+				ret[1] = 1;
+				ret[2] = 0;
+				ret[3] = 0;
+				getEclipseResultPublisher().send(ret);
 			}
 
 		}

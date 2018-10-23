@@ -26,4 +26,13 @@ public class NumberPair extends Job {
 		return b;
 	}
 	
+	
+	public Object[] toObjectArray(){
+		Object[] ret = new Object[2];
+	 	ret[0] = getA();
+	 	ret[1] = getB();
+		return ret;
+	}
+
+
 }
