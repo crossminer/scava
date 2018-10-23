@@ -13,6 +13,7 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.eclipse.importer.EclipseProjectImporter;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.sourceforge.importer.SourceforgeProjectImporter;
 
@@ -61,6 +62,8 @@ public class ProjectImporter {
 			
 			GitHubImporter importer = new GitHubImporter();//"f280531cd5712b6cbff971b7610155cecc134b02"); //FIXME Temporary token
 			try {
+				String token = "56fba86684aca3f79c4e39f92af2e41c3cad7393";
+				importer.setCredentials(new Credentials(token, "", ""));
 				p = importer.importProject(uName+"/" + pName, Platform.getInstance());
 			} catch (WrongUrlException e) {
 				e.printStackTrace(); // FIXME better handling

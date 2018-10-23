@@ -41,6 +41,7 @@ import org.eclipse.scava.repository.model.eclipse.EclipsePlatform;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.eclipse.MailingList;
 import org.eclipse.scava.repository.model.importer.IImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.vcs.cvs.CvsRepository;
@@ -1096,5 +1097,9 @@ public class EclipseProjectImporter implements IImporter {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void setCredentials(Credentials credentials) {
 	}
 }

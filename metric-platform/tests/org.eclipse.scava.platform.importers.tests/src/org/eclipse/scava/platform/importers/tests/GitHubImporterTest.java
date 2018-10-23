@@ -9,22 +9,20 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.importers.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.ExtensionPointBugTrackingSystemManager;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
-import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.github.GitHubRepository;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.eclipse.scava.metricprovider.trans.importer.github.GitHubImporterProvider;
 
-import com.googlecode.pongo.runtime.PongoDB;
 import com.mongodb.Mongo;
 
 public class GitHubImporterTest {

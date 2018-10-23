@@ -9,4 +9,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.importer.exception,
  org.eclipse.scava.repository.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.eclipse.scava.repository.model.importer
+Export-Package: org.eclipse.scava.repository.model.importer,
+ org.eclipse.scava.repository.model.importer.dto
