@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
 import org.eclipse.scava.repository.model.importer.exception.RepoInfoNotFound;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
@@ -36,4 +37,5 @@ public interface IImporter {
 	public boolean isProjectInDBByUrl(String projectId, Platform platform)
 			throws WrongUrlException, ProjectUnknownException,
 			MalformedURLException, IOException;
+	public void setCredentials(Credentials credentials);
 }

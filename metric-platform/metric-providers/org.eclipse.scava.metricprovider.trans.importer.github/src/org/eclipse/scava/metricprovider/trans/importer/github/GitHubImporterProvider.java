@@ -20,6 +20,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.github.GitHubRepository;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 
 import com.googlecode.pongo.runtime.PongoDB;
@@ -100,6 +101,7 @@ public class GitHubImporterProvider implements ITransientMetricProvider{
 		GitHubImporter epi = new GitHubImporter();
 		Platform platform = Platform.getInstance();
 		try{
+			epi.setCredentials(new Credentials(((GitHubRepository) project).getToken(), "", ""));
 			ep = epi.importProject( ((GitHubRepository)project).getFull_name(), platform);
 			if (ep == null)
 			{

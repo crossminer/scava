@@ -80,6 +80,7 @@ public class ProjectCreationResource extends ServerResource {
 	@Post
 	public Representation createProject(Representation entity) {
 		Mongo mongo = null;
+		Platform platform = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			
@@ -154,7 +155,7 @@ public class ProjectCreationResource extends ServerResource {
 				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
 				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
 			}
-			Platform platform = new Platform(mongo);
+			platform = new Platform(mongo);
 			String shortName = platform.getProjectRepositoryManager().generateUniqueId(project);
 			project.setShortName(shortName);
 			
@@ -177,6 +178,7 @@ public class ProjectCreationResource extends ServerResource {
 			return rep;
 		} finally {
 			if (mongo != null) mongo.close();
+			platform = null;
 		}
 	}
 	

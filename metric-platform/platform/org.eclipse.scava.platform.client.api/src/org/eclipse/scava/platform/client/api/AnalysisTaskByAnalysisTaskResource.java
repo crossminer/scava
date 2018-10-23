@@ -16,12 +16,16 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
+import com.mongodb.Mongo;
+
 public class AnalysisTaskByAnalysisTaskResource extends AbstractApiResource {
 
 	@Override
 	public Representation doRepresent() {
+		Mongo mongo = null;
 		try {
-			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());
+			mongo = Configuration.getInstance().getMongoConnection();
+			platform = new Platform(mongo);
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			String analysisTaskId = (String) getRequest().getAttributes().get("analysistaskid");
 
@@ -49,6 +53,8 @@ public class AnalysisTaskByAnalysisTaskResource extends AbstractApiResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
+		} finally {
+			if(mongo != null) mongo.close();
 		}
 
 	}
