@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -84,9 +85,17 @@ public class OssmeterApplication implements IApplication{
 		// Launch supervisor daily checking
 		TaskCheckExecutor checkerExecutor = new TaskCheckExecutor(platform);
 		executorService.execute(checkerExecutor);
-
+		
+		try {
+			executorService.shutdown();
+			executorService.awaitTermination(24, TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			logger.error("Exception thrown when shutting down executor service.", e);
+		}
+		
 		// Now, rest.
   		waitForDone();
+  		stop();
 		return IApplication.EXIT_OK;
 	}
 

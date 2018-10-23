@@ -23,14 +23,17 @@ import org.restlet.resource.ServerResource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.mongodb.Mongo;
 
 public class AnalysisCreationTaskResource extends ServerResource {
 
 	@Post
 	public Representation createAnalysisTask(Representation entity) {
-
+		Mongo mongo = null;
+		Platform platform = null;
 		try {
-			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			mongo = Configuration.getInstance().getMongoConnection();
+			platform = new Platform(mongo);				
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			try {
 				ObjectMapper mapper = new ObjectMapper();
@@ -83,6 +86,9 @@ public class AnalysisCreationTaskResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
+		} finally {
+			if (mongo != null) mongo.close();
+			platform = null;
 		}
 
 	}
