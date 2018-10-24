@@ -8,4 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.scava.crossflow.runtime,
  org.eclipse.scava.crossflow.restmule.core,
  org.eclipse.scava.crossflow.restmule.client.github
-Export-Package: org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo
+Export-Package: org.eclipse.scava.crossflow.examples.addition,
+ org.eclipse.scava.crossflow.examples.firstcommitment,
+ org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo,
+ org.eclipse.scava.crossflow.examples.firstcommitment.mdetech,
+ org.eclipse.scava.crossflow.examples.opinionated

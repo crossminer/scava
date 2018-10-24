@@ -12,3 +12,5 @@ local.properties
 # Maven
 target/
 
+
+crossflow/org\.eclipse\.scava\.crossflow\.examples/org\.eclipse\.scava\.crossflow\.examples-with-dependencies\.jar
