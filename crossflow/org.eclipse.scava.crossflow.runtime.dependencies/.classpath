@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="evosuite-master-1.0.7-SNAPSHOT.jar" sourcepath="evosuite-master-1.0.7-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-core/log4j-core-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/JavaEWAH-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/jsch-0.1.54.jar"/>
