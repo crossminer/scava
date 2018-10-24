@@ -32,6 +32,7 @@ public class ProjectRepository extends PongoDB {
 	protected ManagerAnalysisCollection managerAnalysis = null;
 	protected CompanyCollection companies = null;
 	protected ProjectErrorCollection errors = null;
+	protected PropertiesCollection properties = null;
 	
 	
 	
@@ -83,6 +84,10 @@ public class ProjectRepository extends PongoDB {
 		return errors;
 	}
 	
+	public PropertiesCollection getProperties() {
+		return properties;
+	}
+	
 	
 	@Override
 	public void setDb(DB db) {
@@ -111,5 +116,7 @@ public class ProjectRepository extends PongoDB {
 		pongoCollections.add(companies);
 		errors = new ProjectErrorCollection(db.getCollection("errors"));
 		pongoCollections.add(errors);
+		properties = new PropertiesCollection(db.getCollection("properties"));
+		pongoCollections.add(properties);
 	}
 }

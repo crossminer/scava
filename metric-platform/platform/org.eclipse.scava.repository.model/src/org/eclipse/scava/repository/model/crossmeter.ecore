@@ -14,6 +14,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="managerAnalysis" upperBound="-1" eType="//ManagerAnalysis" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="companies" upperBound="-1" eType="//Company" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="errors" upperBound="-1" eType="//ProjectError" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1" eType="//Properties" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectError">
     <eAnnotations source="customize"/>
@@ -234,6 +235,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="Company" eSuperTypes="//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="url">
       <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Properties" eSuperTypes="//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
   </eClassifiers>
