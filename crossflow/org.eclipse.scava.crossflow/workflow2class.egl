@@ -44,6 +44,8 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
+	private boolean createBroker = true;
+	
 	// tasks
 	[%for (t in w.tasks) {%]
 	protected [%=t.name%] [%=t.name.ftlc()%];
@@ -60,14 +62,20 @@ public class [%=w.name%] extends Workflow {
 		this.name = "[%=w.name%]";
 	}
 	
+	public void createBroker(boolean createBroker) {
+		this.createBroker = createBroker;
+	}
+	
 	public void run() throws Exception {
 	
 		if (isMaster()) {
 			cache = new Cache(this);
-			BrokerService broker = new BrokerService();
-			broker.setUseJmx(true);
-			broker.addConnector(getBroker());
-			broker.start();
+			if (createBroker) {
+				BrokerService broker = new BrokerService();
+				broker.setUseJmx(true);
+				broker.addConnector(getBroker());
+				broker.start();
+			}
 		}
 
 	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
