@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -52,11 +51,6 @@ public class GitHubImporter implements IImporter {
 
 	public GitHubImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.gitHub");
-	}
-
-	public String getToken() {
-		ResourceBundle myResources = ResourceBundle.getBundle("github_auth");
-		return myResources.getString("token");
 	}
 
 	private int getRemainingResource() {
@@ -757,13 +751,12 @@ public class GitHubImporter implements IImporter {
 	public boolean isProjectInDBByUrl(String url, Platform platform) {
 		return isProjectInDB(getProjectIdFromUrl(url), platform);
 	}
-
+	
 	@Override
 	public void setCredentials(Credentials credentials) {
-		if (credentials.getAuthToken() != null || !credentials.getAuthToken().equals(""))
+		if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null) {
 			authString = "?access_token=" + credentials.getAuthToken();
-		else
-			authString = "?access_token=" + getToken();
+		}
 	}
 
 }
