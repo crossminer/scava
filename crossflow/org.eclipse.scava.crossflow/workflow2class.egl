@@ -9,7 +9,10 @@ import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
+import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+
+
 
 public class [%=w.name%] extends Workflow {
 	
@@ -85,19 +88,19 @@ public class [%=w.name%] extends Workflow {
 		[%=s.name.ftlc()%] = new [%=s.name%](this);
 		[%}%]
 		
-		[%for (t in w.tasks) {%]
+		[%for (t in w.tasks) {%]		
 		[%if(t.masterOnly){%]
 		if (isMaster()) {
 		[%}%]
-		if(isMaster() || !tasksToExclude.contains("[%=t.name%]")) {
+		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
+		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
+		[%}%]				
 		[%=t.name.ftlc()%] = new [%=t.name%]();
 		[%=t.name.ftlc()%].setWorkflow(this);
 		[%for (i in t.input) { %]
 		[%if(t.isTypeOf(Sink)){%]
-		if (isMaster()) [%}%]
-		
-			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%]);
-			
+		if (isMaster()) [%}%]		
+			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%]);			
 		[%if(t.isTypeOf(Sink))%]
 			[%for(incoming in t.input){%]
 				[%for(task in incoming.outputOf){%]
@@ -109,12 +112,13 @@ public class [%=w.name%] extends Workflow {
 		[%for (o in t.output) { %]
 		[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 		[%}%]
-		}
 		[%if(t.masterOnly){%]
 		}
-		[%}%]	
-		[%}%]
-		
+		[%}%]		
+		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
+		}
+		[%}%]				
+		[%}%]		
 		if (isMaster()){
 			[%for (t in w.tasks.select(t|t.isTypeOf(Source))){%]
 			[%=t.name.ftlc()%].produce();

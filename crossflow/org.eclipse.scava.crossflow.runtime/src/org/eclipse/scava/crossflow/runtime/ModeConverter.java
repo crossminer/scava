@@ -8,7 +8,8 @@ public class ModeConverter implements IStringConverter<Mode> {
 		public Mode convert(String s) {
 			if ("master".equals(s)) return Mode.MASTER;
 			else if ("worker".equals(s)) return Mode.WORKER;
-			else throw new RuntimeException("Mode must be 'master' or 'worker' but was '" + s + "'");
+			else if ("master_bare".equals(s)) return Mode.MASTER;
+			else throw new RuntimeException("Mode must be 'master_bare', 'master' or 'worker' but was '" + s + "'");
 		}
 		
 	}

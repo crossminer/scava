@@ -8,7 +8,7 @@
 		<source name="GhRepoSource" out="GhRepos"/>
 		<queue name="GhRepos" type="GhRepo"/>
 		
-		<task masterOnly="true" name="GhRepoCounter" in="GhRepos" out="ResultsPublisher"/>
+		<task masterOnly="false" name="GhRepoCounter" in="GhRepos" out="ResultsPublisher"/>
 		
 		<queue name="ResultsPublisher" type="Result"/>
 

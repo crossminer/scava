@@ -1,3 +1,4 @@
+src-gen/
 activemq-data/
 crossflow-cache/
 org.eclipse.scava.crossflow.examples.jar
