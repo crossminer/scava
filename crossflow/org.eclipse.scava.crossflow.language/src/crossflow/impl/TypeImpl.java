@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link crossflow.impl.TypeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.impl.TypeImpl#getImpl <em>Impl</em>}</li>
  *   <li>{@link crossflow.impl.TypeImpl#isIsMany <em>Is Many</em>}</li>
  *   <li>{@link crossflow.impl.TypeImpl#getExtending <em>Extending</em>}</li>
  *   <li>{@link crossflow.impl.TypeImpl#getFields <em>Fields</em>}</li>
@@ -59,6 +60,26 @@ public class TypeImpl extends EObjectImpl implements Type {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getImpl() <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpl()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String IMPL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getImpl() <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpl()
+	 * @generated
+	 * @ordered
+	 */
+	protected String impl = IMPL_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isIsMany() <em>Is Many</em>}' attribute.
@@ -145,6 +166,27 @@ public class TypeImpl extends EObjectImpl implements Type {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getImpl() {
+		return impl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setImpl(String newImpl) {
+		String oldImpl = impl;
+		impl = newImpl;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TYPE__IMPL, oldImpl, impl));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isIsMany() {
 		return isMany;
 	}
@@ -209,6 +251,8 @@ public class TypeImpl extends EObjectImpl implements Type {
 		switch (featureID) {
 			case CrossflowPackage.TYPE__NAME:
 				return getName();
+			case CrossflowPackage.TYPE__IMPL:
+				return getImpl();
 			case CrossflowPackage.TYPE__IS_MANY:
 				return isIsMany();
 			case CrossflowPackage.TYPE__EXTENDING:
@@ -230,6 +274,9 @@ public class TypeImpl extends EObjectImpl implements Type {
 		switch (featureID) {
 			case CrossflowPackage.TYPE__NAME:
 				setName((String)newValue);
+				return;
+			case CrossflowPackage.TYPE__IMPL:
+				setImpl((String)newValue);
 				return;
 			case CrossflowPackage.TYPE__IS_MANY:
 				setIsMany((Boolean)newValue);
@@ -257,6 +304,9 @@ public class TypeImpl extends EObjectImpl implements Type {
 			case CrossflowPackage.TYPE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case CrossflowPackage.TYPE__IMPL:
+				setImpl(IMPL_EDEFAULT);
+				return;
 			case CrossflowPackage.TYPE__IS_MANY:
 				setIsMany(IS_MANY_EDEFAULT);
 				return;
@@ -280,6 +330,8 @@ public class TypeImpl extends EObjectImpl implements Type {
 		switch (featureID) {
 			case CrossflowPackage.TYPE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case CrossflowPackage.TYPE__IMPL:
+				return IMPL_EDEFAULT == null ? impl != null : !IMPL_EDEFAULT.equals(impl);
 			case CrossflowPackage.TYPE__IS_MANY:
 				return isMany != IS_MANY_EDEFAULT;
 			case CrossflowPackage.TYPE__EXTENDING:
@@ -299,9 +351,11 @@ public class TypeImpl extends EObjectImpl implements Type {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", impl: ");
+		result.append(impl);
 		result.append(", isMany: ");
 		result.append(isMany);
 		result.append(')');

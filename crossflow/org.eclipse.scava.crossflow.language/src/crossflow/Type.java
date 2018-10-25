@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link crossflow.Type#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.Type#getImpl <em>Impl</em>}</li>
  *   <li>{@link crossflow.Type#isIsMany <em>Is Many</em>}</li>
  *   <li>{@link crossflow.Type#getExtending <em>Extending</em>}</li>
  *   <li>{@link crossflow.Type#getFields <em>Fields</em>}</li>
@@ -51,6 +52,32 @@ public interface Type extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Impl</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Impl</em>' attribute.
+	 * @see #setImpl(String)
+	 * @see crossflow.CrossflowPackage#getType_Impl()
+	 * @model
+	 * @generated
+	 */
+	String getImpl();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Type#getImpl <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Impl</em>' attribute.
+	 * @see #getImpl()
+	 * @generated
+	 */
+	void setImpl(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Is Many</b></em>' attribute.

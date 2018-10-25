@@ -9,15 +9,18 @@ import crossflow.Task;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +33,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link crossflow.impl.TaskImpl#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getInput <em>Input</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getOutput <em>Output</em>}</li>
+ *   <li>{@link crossflow.impl.TaskImpl#getMasterOnly <em>Master Only</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getCached <em>Cached</em>}</li>
  * </ul>
@@ -76,6 +80,26 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @ordered
 	 */
 	protected EList<Stream> output;
+
+	/**
+	 * The default value of the '{@link #getMasterOnly() <em>Master Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMasterOnly()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean MASTER_ONLY_EDEFAULT = Boolean.FALSE;
+
+	/**
+	 * The cached value of the '{@link #getMasterOnly() <em>Master Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMasterOnly()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean masterOnly = MASTER_ONLY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getParallel() <em>Parallel</em>}' attribute.
@@ -164,7 +188,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public EList<Stream> getInput() {
 		if (input == null) {
-			input = new EObjectResolvingEList<Stream>(Stream.class, this, CrossflowPackage.TASK__INPUT);
+			input = new EObjectWithInverseResolvingEList.ManyInverse<Stream>(Stream.class, this, CrossflowPackage.TASK__INPUT, CrossflowPackage.STREAM__INPUT_OF);
 		}
 		return input;
 	}
@@ -176,9 +200,30 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 */
 	public EList<Stream> getOutput() {
 		if (output == null) {
-			output = new EObjectResolvingEList<Stream>(Stream.class, this, CrossflowPackage.TASK__OUTPUT);
+			output = new EObjectWithInverseResolvingEList.ManyInverse<Stream>(Stream.class, this, CrossflowPackage.TASK__OUTPUT, CrossflowPackage.STREAM__OUTPUT_OF);
 		}
 		return output;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Boolean getMasterOnly() {
+		return masterOnly;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMasterOnly(Boolean newMasterOnly) {
+		Boolean oldMasterOnly = masterOnly;
+		masterOnly = newMasterOnly;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TASK__MASTER_ONLY, oldMasterOnly, masterOnly));
 	}
 
 	/**
@@ -228,6 +273,39 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CrossflowPackage.TASK__INPUT:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getInput()).basicAdd(otherEnd, msgs);
+			case CrossflowPackage.TASK__OUTPUT:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutput()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CrossflowPackage.TASK__INPUT:
+				return ((InternalEList<?>)getInput()).basicRemove(otherEnd, msgs);
+			case CrossflowPackage.TASK__OUTPUT:
+				return ((InternalEList<?>)getOutput()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -237,6 +315,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getInput();
 			case CrossflowPackage.TASK__OUTPUT:
 				return getOutput();
+			case CrossflowPackage.TASK__MASTER_ONLY:
+				return getMasterOnly();
 			case CrossflowPackage.TASK__PARALLEL:
 				return getParallel();
 			case CrossflowPackage.TASK__CACHED:
@@ -265,6 +345,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 				getOutput().clear();
 				getOutput().addAll((Collection<? extends Stream>)newValue);
 				return;
+			case CrossflowPackage.TASK__MASTER_ONLY:
+				setMasterOnly((Boolean)newValue);
+				return;
 			case CrossflowPackage.TASK__PARALLEL:
 				setParallel((Boolean)newValue);
 				return;
@@ -292,6 +375,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case CrossflowPackage.TASK__OUTPUT:
 				getOutput().clear();
 				return;
+			case CrossflowPackage.TASK__MASTER_ONLY:
+				setMasterOnly(MASTER_ONLY_EDEFAULT);
+				return;
 			case CrossflowPackage.TASK__PARALLEL:
 				setParallel(PARALLEL_EDEFAULT);
 				return;
@@ -316,6 +402,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return input != null && !input.isEmpty();
 			case CrossflowPackage.TASK__OUTPUT:
 				return output != null && !output.isEmpty();
+			case CrossflowPackage.TASK__MASTER_ONLY:
+				return MASTER_ONLY_EDEFAULT == null ? masterOnly != null : !MASTER_ONLY_EDEFAULT.equals(masterOnly);
 			case CrossflowPackage.TASK__PARALLEL:
 				return PARALLEL_EDEFAULT == null ? parallel != null : !PARALLEL_EDEFAULT.equals(parallel);
 			case CrossflowPackage.TASK__CACHED:
@@ -333,9 +421,11 @@ public class TaskImpl extends EObjectImpl implements Task {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", masterOnly: ");
+		result.append(masterOnly);
 		result.append(", parallel: ");
 		result.append(parallel);
 		result.append(", cached: ");

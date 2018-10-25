@@ -1,0 +1,54 @@
+package [%=w.package%];
+
+[%if (t.isTypeOf(Source)){%]
+import java.util.Timer;
+import java.util.TimerTask;
+[%}%]
+
+public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.name%]Base[%}%] {
+	
+	[%if (t.isTypeOf(Source)){%]
+	@Override
+	public void produce() {
+		new Timer().schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+			
+				// TODO: Add implementation that instantiates, sets, and submits source objects (example below)
+				
+				/*
+				[%for (s in t.output) { %]
+				[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+				[%for (f in s.type.fields) { %]
+				[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( [%=f.type%] [%}%]);		
+				get[%=s.name%]().send([%=s.type.name.ftlc()%]);
+				[%}%]
+				*/
+				
+			}
+		}, 0, 100);
+	}
+	[%} else {%]
+	[% for (s in t.input) { %]
+	@Override
+	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+		
+		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
+		
+		/*
+		[%for (s in t.output) { %]
+		[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+		[%for (f in s.type.fields) { %]
+		[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( [%=f.type%] [%}%]);
+		get[%=s.name%]().send([%=s.type.name.ftlc()%]);
+		[%}%]
+		[% if (t.output.notEmpty()==false) { %]
+		System.out.println("[" + workflow.getName() + "] Result is " + [%=s.type.name.ftlc()%].toString() + " (cached=" + [%=s.type.name.ftlc()%].isCached() + ")");
+		[% } %]
+		*/
+		
+	}
+	[%}}%]
+
+}

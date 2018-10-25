@@ -25,6 +25,8 @@ rule Workflow2EclipseTaskStatusPublisherConsumer
 rule Type2Class 
 	transform t : Type {
 	
+	guard : t.impl.isUndefined()
+	
 	template : "type2class.egl"
 	
 	target : t.getPath() + t.name + ".java"
@@ -39,6 +41,19 @@ rule Task2BaseClass
 	template : "task2baseclass.egl"
 	
 	target : t.getPath() + t.name + "Base.java"	
+}
+
+@greedy
+rule Task2ImplClass 
+	transform t : Task {
+	
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "task2implclass.egl"
+	
+	target : t.getImplPath() + t.name + ".java"
+	
+	overwrite : false
 }
 
 @greedy
@@ -89,4 +104,11 @@ operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	return "src-gen/" + workflow.package.replaceAll("\\.", "/") + "/";
+}
+
+operation Any getImplPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	return "src/" + workflow.package.replaceAll("\\.", "/") + "/";
 }

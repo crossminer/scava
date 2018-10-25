@@ -166,13 +166,31 @@ public interface CrossflowPackage extends EPackage {
 	int STREAM__TYPE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Input Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM__INPUT_OF = 2;
+
+	/**
+	 * The feature id for the '<em><b>Output Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM__OUTPUT_OF = 3;
+
+	/**
 	 * The number of structural features of the '<em>Stream</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM_FEATURE_COUNT = 2;
+	int STREAM_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
@@ -201,6 +219,24 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int TOPIC__TYPE = STREAM__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Input Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TOPIC__INPUT_OF = STREAM__INPUT_OF;
+
+	/**
+	 * The feature id for the '<em><b>Output Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TOPIC__OUTPUT_OF = STREAM__OUTPUT_OF;
 
 	/**
 	 * The number of structural features of the '<em>Topic</em>' class.
@@ -238,6 +274,24 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int QUEUE__TYPE = STREAM__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Input Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUEUE__INPUT_OF = STREAM__INPUT_OF;
+
+	/**
+	 * The feature id for the '<em><b>Output Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUEUE__OUTPUT_OF = STREAM__OUTPUT_OF;
 
 	/**
 	 * The number of structural features of the '<em>Queue</em>' class.
@@ -286,13 +340,22 @@ public interface CrossflowPackage extends EPackage {
 	int TASK__OUTPUT = 2;
 
 	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__MASTER_ONLY = 3;
+
+	/**
 	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__PARALLEL = 3;
+	int TASK__PARALLEL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Cached</b></em>' attribute.
@@ -301,7 +364,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__CACHED = 4;
+	int TASK__CACHED = 5;
 
 	/**
 	 * The number of structural features of the '<em>Task</em>' class.
@@ -310,7 +373,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK_FEATURE_COUNT = 5;
+	int TASK_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -348,6 +411,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__MASTER_ONLY = TASK__MASTER_ONLY;
 
 	/**
 	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
@@ -414,6 +486,15 @@ public interface CrossflowPackage extends EPackage {
 	int SINK__OUTPUT = TASK__OUTPUT;
 
 	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
 	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -460,13 +541,22 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__IMPL = 1;
+
+	/**
 	 * The feature id for the '<em><b>Is Many</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__IS_MANY = 1;
+	int TYPE__IS_MANY = 2;
 
 	/**
 	 * The feature id for the '<em><b>Extending</b></em>' reference list.
@@ -475,7 +565,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__EXTENDING = 2;
+	int TYPE__EXTENDING = 3;
 
 	/**
 	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -484,7 +574,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__FIELDS = 3;
+	int TYPE__FIELDS = 4;
 
 	/**
 	 * The number of structural features of the '<em>Type</em>' class.
@@ -493,7 +583,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_FEATURE_COUNT = 4;
+	int TYPE_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.FieldImpl <em>Field</em>}' class.
@@ -708,6 +798,28 @@ public interface CrossflowPackage extends EPackage {
 	EReference getStream_Type();
 
 	/**
+	 * Returns the meta object for the reference list '{@link crossflow.Stream#getInputOf <em>Input Of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Input Of</em>'.
+	 * @see crossflow.Stream#getInputOf()
+	 * @see #getStream()
+	 * @generated
+	 */
+	EReference getStream_InputOf();
+
+	/**
+	 * Returns the meta object for the reference list '{@link crossflow.Stream#getOutputOf <em>Output Of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Output Of</em>'.
+	 * @see crossflow.Stream#getOutputOf()
+	 * @see #getStream()
+	 * @generated
+	 */
+	EReference getStream_OutputOf();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Topic <em>Topic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -771,6 +883,17 @@ public interface CrossflowPackage extends EPackage {
 	EReference getTask_Output();
 
 	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Task#getMasterOnly <em>Master Only</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Master Only</em>'.
+	 * @see crossflow.Task#getMasterOnly()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EAttribute getTask_MasterOnly();
+
+	/**
 	 * Returns the meta object for the attribute '{@link crossflow.Task#getParallel <em>Parallel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -832,6 +955,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getType_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Type#getImpl <em>Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Impl</em>'.
+	 * @see crossflow.Type#getImpl()
+	 * @see #getType()
+	 * @generated
+	 */
+	EAttribute getType_Impl();
 
 	/**
 	 * Returns the meta object for the attribute '{@link crossflow.Type#isIsMany <em>Is Many</em>}'.
@@ -1067,6 +1201,22 @@ public interface CrossflowPackage extends EPackage {
 		EReference STREAM__TYPE = eINSTANCE.getStream_Type();
 
 		/**
+		 * The meta object literal for the '<em><b>Input Of</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STREAM__INPUT_OF = eINSTANCE.getStream_InputOf();
+
+		/**
+		 * The meta object literal for the '<em><b>Output Of</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STREAM__OUTPUT_OF = eINSTANCE.getStream_OutputOf();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1121,6 +1271,14 @@ public interface CrossflowPackage extends EPackage {
 		EReference TASK__OUTPUT = eINSTANCE.getTask_Output();
 
 		/**
+		 * The meta object literal for the '<em><b>Master Only</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TASK__MASTER_ONLY = eINSTANCE.getTask_MasterOnly();
+
+		/**
 		 * The meta object literal for the '<em><b>Parallel</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1173,6 +1331,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TYPE__NAME = eINSTANCE.getType_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Impl</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TYPE__IMPL = eINSTANCE.getType_Impl();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Many</b></em>' attribute feature.

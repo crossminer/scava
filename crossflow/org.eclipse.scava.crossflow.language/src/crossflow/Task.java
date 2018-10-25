@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.Task#getInput <em>Input</em>}</li>
  *   <li>{@link crossflow.Task#getOutput <em>Output</em>}</li>
+ *   <li>{@link crossflow.Task#getMasterOnly <em>Master Only</em>}</li>
  *   <li>{@link crossflow.Task#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
  * </ul>
@@ -56,6 +57,7 @@ public interface Task extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Input</b></em>' reference list.
 	 * The list contents are of type {@link crossflow.Stream}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Stream#getInputOf <em>Input Of</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Input</em>' reference list isn't clear,
@@ -64,7 +66,8 @@ public interface Task extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Input</em>' reference list.
 	 * @see crossflow.CrossflowPackage#getTask_Input()
-	 * @model
+	 * @see crossflow.Stream#getInputOf
+	 * @model opposite="inputOf"
 	 * @generated
 	 */
 	EList<Stream> getInput();
@@ -72,6 +75,7 @@ public interface Task extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Output</b></em>' reference list.
 	 * The list contents are of type {@link crossflow.Stream}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Stream#getOutputOf <em>Output Of</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Output</em>' reference list isn't clear,
@@ -80,10 +84,38 @@ public interface Task extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Output</em>' reference list.
 	 * @see crossflow.CrossflowPackage#getTask_Output()
-	 * @model
+	 * @see crossflow.Stream#getOutputOf
+	 * @model opposite="outputOf"
 	 * @generated
 	 */
 	EList<Stream> getOutput();
+
+	/**
+	 * Returns the value of the '<em><b>Master Only</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master Only</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Master Only</em>' attribute.
+	 * @see #setMasterOnly(Boolean)
+	 * @see crossflow.CrossflowPackage#getTask_MasterOnly()
+	 * @model default="false"
+	 * @generated
+	 */
+	Boolean getMasterOnly();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getMasterOnly <em>Master Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Master Only</em>' attribute.
+	 * @see #getMasterOnly()
+	 * @generated
+	 */
+	void setMasterOnly(Boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Parallel</b></em>' attribute.
