@@ -14,12 +14,14 @@ import java.net.UnknownHostException;
 
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.repository.model.ProjectRepository;
 import org.eclipse.scava.repository.model.Properties;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Post;
+import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -28,10 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.Mongo;
 
-public class PlatformPropertiesResource extends ServerResource {
+public class PlatformUpdatePropertiesResource extends ServerResource {
 	
-	@Post
-	public Representation setupPlatformProperties(Representation entity) {
+	@Put
+	public Representation updatePlatformProperties(Representation entity) {
 		Mongo mongo = null;
 		Platform platform = null;
 		try {
@@ -44,6 +46,7 @@ public class PlatformPropertiesResource extends ServerResource {
 			
 			// Translate into a Properties object. FIXME
 			Properties properties = new Properties();
+			String oldKey = (json.get("oldkey").asText());
 			properties.setKey(json.get("key").asText());
 			properties.setValue(json.get("value").asText());
 			
@@ -57,12 +60,19 @@ public class PlatformPropertiesResource extends ServerResource {
 			platform = new Platform(mongo);
 			
 			// TODO: Check it doesn't already exist - how?
-			System.out.println("Setup platform properties ...");
-			platform.getProjectRepositoryManager().getProjectRepository().getProperties().add(properties);
+			System.out.println("Update platform properties ...");
+			
+			ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+			
+			Properties oldProperties = projectRepo.getProperties().findOneByKey(oldKey);
+			projectRepo.getProperties().remove(oldProperties);			
+			projectRepo.getProperties().add(properties);
 			platform.getProjectRepositoryManager().getProjectRepository().getProperties().sync();
 			
+			StringRepresentation rep = new StringRepresentation(properties.getDbObject().toString());
+			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_CREATED);
-			return new StringRepresentation(properties.getDbObject().toString());
+			return rep;
 
 		} catch (IOException e) {
 			e.printStackTrace(); // TODO

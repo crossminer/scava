@@ -18,7 +18,7 @@ import com.mongodb.Mongo;
 public class AnalysisDeleteTaskResource extends ServerResource {
 
 	@Delete
-	public Representation deleteAnalysisTask(Representation entity) {
+	public Representation deleteAnalysisTask() {
 		Mongo mongo = null;
 		Platform platform = null;
 		try {
