@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Crossflow
+Bundle-SymbolicName: org.eclipse.scava.crossflow
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.scava.crossflow
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

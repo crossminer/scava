@@ -1,0 +1,36 @@
+-- Shows an external label on A with the name of the B it's pointing to
+
+var canvas = GmfGraph!Canvas.all.first;
+var gallery = canvas.figures;
+
+-- Create figure descriptor for external label
+var fd = new GmfGraph!FigureDescriptor;
+fd.name = 'AFigureBName';
+gallery.descriptors.add(fd);
+
+var fdLabel = new GmfGraph!Label;
+fdLabel.name = 'AFigureBNameLabel';
+fd.actualFigure = fdLabel;
+var fdChildAccessor = new GmfGraph!ChildAccess;
+fdChildAccessor.accessor = 'getFigureBNameLabel';
+fdChildAccessor.figure = fdLabel;
+fd.accessors.add(fdChildAccessor);
+
+-- Create diagram label for that figure descriptor
+var diagLabel = new GmfGraph!DiagramLabel;
+canvas.labels.add(diagLabel);
+diagLabel.figure = fd;
+diagLabel.name = 'ABNameLabel';
+diagLabel.elementIcon = false;
+
+-- Add the label to the node mapping
+var nodeMapping = GmfMap!NodeMapping.all.selectOne(nm|nm.domainMetaElement.name='CommunicationChannel');
+var exprLabel   = new GmfMap!ExpressionLabelMapping;
+nodeMapping.labelMappings.add(exprLabel);
+var valueExpression = new GmfMap!ValueExpression;
+exprLabel.viewExpression = valueExpression;
+exprLabel.diagramLabel = diagLabel;
+
+-- OCL expression for computing the text of the label
+valueExpression.body = 'self.type.name';
+valueExpression.language = GmfMap!Language#ocl;

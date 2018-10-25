@@ -1,0 +1,236 @@
+import "../util/json.eol";
+import "../util/restmule.eol";
+
+operation String responseFormat() : Any {
+ 	if (self.toLowerCase().matches(".*xml.*")){
+ 		return RestMule!FormatEnum#XML;
+ 	}
+ 	if (self.toLowerCase().matches(".*json.*")){
+ 		return RestMule!FormatEnum#JSON;
+ 	} 
+ 	return null; 
+}
+
+operation Any reqParam(label : String) : Any {
+	var param;
+	switch (self.s_in.toLowerCase()){
+	case "header":
+		param = new RestMule!RequestHeader;
+		param.type = self.simpleType(label);
+	case "query": 
+		param = new RestMule!Query;
+		param.type = self.simpleType(label);
+	case "path":
+		param = new RestMule!Path;
+		param.type = self.simpleType(label);
+	case "body":
+		param = new RestMule!Body;
+		param.type = self.definition();
+		param.type.name = param.type.name + "Body"; 
+	default:
+		return null;
+	}
+	param.description =	self.s_description;
+	param.required = self.s_required.asBoolean();
+	return param;
+}
+
+operation Any definition(): Any {
+	if (self.properties.has("schema")){
+		if (self.e_schema.properties.has("$ref")){
+			var name = self.e_schema.`s_$ref`.getDef();
+			var root = JSON.getRoot;
+			if (root.e_definitions.properties.has(name)){
+				var def = root.e_definitions.properties.select(p | p.id == name).first;
+				return def.nest();
+			} else {
+				return self.e_schema.properties.nest();
+			}
+		} 
+	} else {
+		return null;
+	}
+}
+
+operation Any reqParam() : Any {
+	return self.reqParam(self.s_name);
+}
+
+operation Any nest() : Any {
+	return self.nest(self.id);
+}
+
+operation Any nest(name : String) : Any {
+	("self.id=" + self.id +", name=" + name).println;
+	if (self.s_type == "object" or (
+		self.s_type=="null" and self.properties.has("properties"))) {
+		var type = new RestMule!ObjectType;
+		if (self.s_type<>"null"){
+			type.label = name;
+		} else {
+			"null type in object nest ".println;
+			type.label = name;
+		}
+		type.name = type.label.sanitizeClass();
+		type.description = self.s_description;
+		if (self.properties.has("properties")){
+			for (prop in self.e_properties.properties.flatten){	
+				prop.handleObjectProperties(type);
+				type.required = true;
+			}
+		} 
+		if (self.properties.has("additionalProperties")){
+			"unhandled additional properties".println;
+		}
+		return type;
+	} else if (self.s_type == "array"){
+		return self.handleArray();
+	} else if (self.s_type == "null"){
+		return self.handleNull();
+	} else {
+		return self.simpleType();
+	}
+}
+
+operation Any handleObjectProperties(object : RestMule!ObjectType) : Any {
+	var field;
+	switch(self.s_type.toLowerCase()){
+	case "object":
+		var p = self.nest();
+		if (p <> null ){
+			object.nestedObjects.add(p);
+		}
+	case "array":
+		var a = self.handleArray();
+		if (a <> null ){
+			object.listFields.add(a);
+		}	
+	case "null":
+		var e = self.handleNull();
+		if (e <> null){
+			if (e.instanceOf(RestMule!TFormattedString) 
+			or e.instanceOf(RestMule!UndefinedType)){
+				object.attributes.add(e);
+			} else if (e.instanceOf(RestMule!ObjectType)){
+				object.nestedObjects.add(e);
+			}
+		}
+	default:
+		var f = self.simpleType();
+		if (f <> null){
+			object.attributes.add(f);
+		}
+	}
+}
+
+operation Any handleArray() : RestMule!ListType{
+	("handleArray " + self.id) .println;
+	var type = new RestMule!ListType;
+	type.label = self.id;
+	type.name = type.label.sanitizeClass();
+	type.description = self.s_description;
+	var p = self.e_items.nest(self.id);
+	p.label = type.label;
+	p.name = type.name.sanitizeFieldName();
+	type.elements.add(p);
+	return type;
+}
+
+operation Any handleNull() : Any{
+	var field;
+	("handlin null" + self.id + " " + self.properties.collect(e|e.id)).println;
+	if (self.properties.has("enum")){
+		field = new RestMule!TFormattedString;
+		field.pattern = "(" + self.e_enum.children.collect(e|e.value).flatten.concat("|") + ")";
+		field.label = self.id;
+		field.name = field.label.sanitizeFieldName();
+		field.description = self.s_description;
+		return field;
+	} else if (self.properties.has("properties")){
+		return self.nest(self.id);
+	} else {
+		field = new RestMule!UndefinedType;
+		field.label = self.id;
+		field.name = field.label.sanitizeFieldName();
+		field.description = self.s_description;
+		return field;
+	}
+}
+
+operation Any simpleType() : Any {
+	return self.simpleType(self.id);
+}
+
+operation Any simpleType(label : String) : Any {
+	var field;
+	switch (self.s_type){
+	case "string":
+		if (self.properties.flatten.has("format")){
+			switch (self.s_format){
+			case "byte":
+				field = new RestMule!TByte;
+			case "binary":
+				field = new RestMule!TBinary;
+			case "date":
+				field = new RestMule!TDate;
+			case "date-time":
+				field = new RestMule!TDateTime;
+			case "password":
+				field = new RestMule!TFormattedString;
+			} 
+		}
+		if (self.properties.flatten.has("pattern")){
+			if (field == null or not field.isKindOf(RestMule!TFormattedString)){
+				field = new RestMule!TFormattedString;
+			}
+			field.pattern = self.s_pattern;
+		} else if (self.properties.has("enum")) {
+			if (field == null or not field.isKindOf(RestMule!TFormattedString)){
+				field = new RestMule!TFormattedString;
+			}
+			field.pattern = "(" + self.e_enum.children.collect(e|e.value).flatten.concat("|") + ")";
+		} else{
+			field = new RestMule!TString;
+		}
+	case "boolean":
+		field = new RestMule!TBoolean;
+		field.`default` = self.s_default.toBoolean();
+	case "number":
+		switch (self.s_format){
+		case "double":
+			field = new RestMule!TDouble;
+			field.max = self.s_maximum.toReal();
+			field.min = self.s_maximum.toReal();
+		default:
+			field = new RestMule!TFloat;	
+			field.max = self.s_maximum.toReal();
+			field.min = self.s_maximum.toReal();
+		}
+		field.maxExclusive = self.s_exclusiveMaximum.toBoolean();
+		field.minExclusive = self.s_exclusiveMinimum.toBoolean();
+	case "integer":
+		switch (self.s_format){
+		case "int64":
+			field = new RestMule!TLong;
+			field.max = self.s_minimum.toInt();
+			field.min = self.s_maximum.toInt();
+		default:
+			field = new RestMule!TInteger;
+			field.max = self.s_maximum.toInt();
+			field.min = self.s_maximum.toInt();
+		}
+		field.maxExclusive = self.s_exclusiveMaximum.toBoolean();
+		field.minExclusive = self.s_exclusiveMinimum.toBoolean();
+	default: 
+		("unhandled " + self.s_type).println;
+		return null;	
+	}
+	field.label = label;
+	field.name = field.label.sanitizeFieldName();
+	field.description = self.s_description;
+	return field;
+}
+
+operation String isValidPath() : Boolean {
+	return self.matches("((/\\{[a-zA-Z\\d_\\-]*\\})|(/[a-zA-Z\\d_\\-]*))*");
+}

@@ -99,7 +99,7 @@ public class MetricListExecutor implements Runnable {
 			
 			try {
 				if (m.appliesTo(project)) {
-					
+					logger.info("Start Metric Execution ("+m.getShortIdentifier()+").");
 					if (m instanceof ITransientMetricProvider) {
 						((ITransientMetricProvider) m).measure(project, delta, ((ITransientMetricProvider) m).adapt(platform.getMetricsRepository(project).getDb()));
 					} else if (m instanceof IHistoricalMetricProvider) {

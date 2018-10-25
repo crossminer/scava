@@ -1,0 +1,40 @@
+[%
+var config = jt.eContainer.configuration;
+%]
+
+package [%=config.rootPackageName%].basegen;
+
+import org.apache.flink.streaming.api.functions.async.ResultFuture;
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
+import org.eclipse.scava.crossflow.restmule.client.github.model.*;
+
+import org.apache.flink.api.java.tuple.*;
+import org.eclipse.scava.crossflow.example.json.simple.*;
+
+public class [%=jt.name%]TaskAsyncBase extends RichAsyncFunction<[%=jt.incomingStream.getTypeString()%], [%=jt.outgoingStream.getTypeString()%]>{
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void asyncInvoke([%=jt.incomingStream.getTypeString()%] arg0, ResultFuture<[%=jt.outgoingStream.getTypeString()%]> arg1) throws Exception {
+		throw new UnsupportedOperationException("you need to impement this method");
+	}
+
+}
+
+[%
+@Cached
+operation Stream getTypeString() : String {
+	var t = self.type;
+	if(not t.isTypeOf(Struct) or t.fields.size==0)
+		return t.name;
+	else {
+		var ret = t.name + "<";
+		for(f in t.fields)
+			ret = ret + f.type.name + ", ";
+		ret = ret.substring(0, ret.length-2);
+		ret = ret + ">";
+		return ret;
+	}		
+}
+%]

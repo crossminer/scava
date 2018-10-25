@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RestMule GitHub Client Test
+Bundle-SymbolicName: org.eclipse.crossmeter.workflow.restmule.client.github.test;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.crossflow.runtime.dependencies;bundle-version="1.0.0",
+ org.eclipse.scava.crossflow.restmule.core;bundle-version="0.0.1",
+ org.eclipse.scava.crossflow.restmule.client.github;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.scava.crossflow.restmule.client.github.test,
+ org.eclipse.scava.crossflow.restmule.client.github.test.mde,
+ org.eclipse.scava.crossflow.restmule.client.github.test.query,
+ org.eclipse.scava.crossflow.restmule.client.github.test.util

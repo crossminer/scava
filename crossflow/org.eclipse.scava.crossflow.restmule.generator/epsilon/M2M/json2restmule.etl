@@ -1,0 +1,80 @@
+import "json2restmule.eol";
+
+pre { "Running ETL".println(); }
+
+rule Root2API 
+	transform j : JSON!t_root
+	to api : RestMule!API {
+	
+	api.name = j.e_info.s_title;
+	api.title = j.e_info.s_title;
+	api.apiVersion = j.e_info.s_version;
+
+	var schemes = j.e_schemes.children;
+	if (schemes.select(a | a.value == "https").size() == 1){
+		api.apiHost = "https://" + j.s_host;
+	} else {
+		api.apiHost = schemes.first.value + "://" + j.s_host;
+	}
+	
+	for (auth in j.e_securityDefinitions.properties){
+		if (auth.s_type == "oauth2"){
+			var a = new RestMule!OAuth;
+			a.authUrl = auth.s_authorizationUrl;
+			a.tokenUrl = auth.s_tokenUrl;
+			for (scope in auth.e_scopes.properties){
+				a.scopes.add(scope.id);
+			} 
+			api.auth.add(a);
+		}
+	}
+	
+	api.consumes = j.s_consumes.responseFormat();
+	api.produces = j.s_produces.responseFormat();
+	
+	for (path in j.e_paths.properties){
+		if (path.id.isValidPath()){
+		if (path.properties.has("get") or path.properties.has("post")){
+			var endpoint = new RestMule!Endpoint;
+			endpoint.path = path.id.println;
+			var ok : Boolean = false;
+			for (p in path.properties.select(p|p.id == "get")) {//) or p.id == "post")){
+				ok = true;
+				var req = new RestMule!Request;
+				req.description = path.s_description;
+				
+				var responses;
+				var parameters;
+				//if (p.id == "get"){
+				req.method = RestMule!MethodEnum#GET;			
+				responses = path.e_get.e_responses.properties;
+				parameters = path.e_get.e_parameters.children;
+				/*} else {
+					req.method = RestMule!MethodEnum#POST;			
+					responses = path.e_post.e_responses.properties;
+					parameters = path.e_post.e_parameters.children;
+				}*/
+				
+				for (r in responses){
+					var resp = new RestMule!Response;
+					resp.code = r.id.asInteger();
+					resp.description = r.s_description;
+					var rType = r.definition();
+					if (rType <> null){
+						resp.responseType = rType;
+					}
+					req.responses.add(resp);
+				}
+				for (p in parameters){
+					req.parameters.add(p.reqParam());				
+				}
+				endpoint.requests.add(req);
+			}
+			api.endpoints.add(endpoint);
+		}
+	}
+	}	
+}
+
+
+post { "Finished ETL".println(); }

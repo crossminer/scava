@@ -1,0 +1,157 @@
+import "../restmule.eol";
+
+var api = RestMule!API.all.first();
+
+// ADDING AUTH 
+
+api.auth.add(new RestMule!NoAuth);
+api.auth.add(new RestMule!BasicAuth);
+
+// RATE LIMITS
+
+var search = new RestMule!RatePolicyScope;
+search.scope = "Search";
+var entity = new RestMule!RatePolicyScope;
+entity.scope = "Entity";
+
+// SEARCH Authenticated
+
+var policyA = new RestMule!Policy;
+policyA.limit = 30;
+policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
+policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
+search.policies.add(policyA);
+
+// SEARCH Unauthenticated
+
+var policyB = new RestMule!Policy;
+policyB.limit = 10;
+policyB.auths.add(api.auth.select(a|a.instanceOf(RestMule!NoAuth)).first);
+search.policies.add(policyB);
+
+// ENTITY Authenticated 
+
+var policyC = new RestMule!Policy;
+policyC.limit = 5000;
+policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
+policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
+entity.policies.add(policyC);
+
+// ENTITY Unauthenticated
+
+var policyD = new RestMule!Policy;
+policyD.limit = 1000;
+policyD.auths.add(api.auth.select(a|a.instanceOf(RestMule!NoAuth)).first);
+entity.policies.add(policyD);
+
+// RATE POLICY
+
+var policy = new RestMule!RatePolicy;
+policy.scopes.add(entity);
+policy.scopes.add(search);
+
+var reset = new RestMule!ResponseHeader;
+var resetInt = new RestMule!TInteger;
+resetInt.label = "X-RateLimit-Reset";
+reset.type = resetInt;
+policy.reset = reset;
+
+var limit = new RestMule!ResponseHeader;
+var limitInt = new RestMule!TInteger;
+limitInt.label = "X-RateLimit-Limit";
+limit.type = limitInt;
+policy.limit = limit;
+
+var remaining = new RestMule!ResponseHeader;
+var remainingInt = new RestMule!TInteger;
+remainingInt.label = "X-RateLimit-Remaining";
+remaining.type = remainingInt;
+policy.remaining = remaining;
+
+api.ratePolicy = policy;
+
+// PAGINATION
+
+var pagination= new RestMule!PaginationPolicy;
+pagination.start = 1;
+pagination.max = 10;
+pagination.increment = 1;
+pagination.maxPerIteration = 100;
+
+var perIteration = new RestMule!Query; 
+perIteration.description = "Items per page";
+perIteration.required = false;
+var type = new RestMule!TInteger;
+type.label = "per_page";
+type.name = type.label;
+perIteration.type = type;
+pagination.perIteration = perIteration;
+
+var page = new RestMule!Query;
+page.description = "Page identifier";
+page.required = false;
+var type1 = new RestMule!TInteger;
+type1.label = "page";
+type1.name = type1.label;
+page.type = type1;
+pagination.page = page;
+
+var link = new RestMule!ResponseHeader;
+link.description = "Page links";
+var format = new RestMule!TFormattedString;
+format.label = "Link";
+format.name = format.label;
+link.type = format;
+pagination.links = link;
+
+api.pagination = pagination; 
+
+// WRAPPER
+
+var wrapper = new RestMule!Wrapper;
+wrapper.name = "Wrapper";
+var items = new RestMule!ListType;
+items.label = "items";
+wrapper.items = items;
+wrapper.totalLabel= "total_count";
+wrapper.incompleteLabel = "incomplete_results";
+api.pageWrapper = wrapper;
+
+// ADD RATE & WRAPPER TO REQUESTS (FIXME)
+
+for (r in RestMule!Request.all){
+	if (r.parent.path.startsWith("/search")){
+		r.scope = search;
+	} else {
+		r.scope = entity;
+	}
+	r.parameters.removeAll(r.parameters.select(p|p.instanceOf(RequestHeader)));
+	for (resp in r.responses.select(s|s.responseType <> null)){
+		resp.unwrap();
+	}
+}
+
+/*  //////////
+ * OPERATIONS
+ *//////////
+operation RestMule!ObjectType hasWrapper() : Boolean {
+	var wrapper = RestMule!Wrapper.all.first;
+	var lists = self.listFields.collect(a|a.label);
+	return (not lists.isEmpty()) and lists
+		.includes(wrapper.items.label);
+}
+
+operation RestMule!Response unwrap() : RestMule!ObjectType{
+	if (self.responseType.instanceOf(ObjectType)){
+		if (self.responseType.hasWrapper()){
+			("Unwrapping : "+ self.responseType.name).println;
+			var wrapper = RestMule!Wrapper.all.first;
+			var name = self.responseType.name.println;
+			self.responseType = self.responseType.println.listFields
+				.select(b| b.label == wrapper.items.label).first.elements.first;			
+			self.responseType.name = name;
+			self.pageWrapped = true;
+			self.responseType.description = "UNWRAPPED: " + self.responseType.description;
+		}
+	}
+}

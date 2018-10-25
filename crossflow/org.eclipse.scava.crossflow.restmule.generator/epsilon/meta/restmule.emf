@@ -1,0 +1,178 @@
+@namespace(uri="restmule", prefix="restmule")
+package restmule;
+
+datatype ETimeUnit : java.util.concurrent.TimeUnit;
+
+class API {
+	attr String name; 
+	attr String title;
+	attr String apiVersion;
+	attr String apiHost;
+	attr FormatEnum consumes;
+	attr FormatEnum produces;
+	
+	val Endpoint[*] endpoints; 
+	val Wrapper pageWrapper;
+	
+	val RatePolicy[0..1] ratePolicy;	
+	val PaginationPolicy[0..1] pagination;
+	val Auth[1..*] auth;
+}
+
+class RatePolicy{
+	val Parameter limit;
+	val Parameter reset;
+	val Parameter remaining;
+	val RatePolicyScope[*] scopes;
+}
+
+class RatePolicyScope{
+	attr String scope;
+	val RatePolicy[*] policies;
+	ref Request[*]#scope requests;
+}
+
+class Policy {
+	attr Integer limit;
+	ref Auth[*]#rateLimits auths;
+}
+
+abstract class Auth {
+	ref Policy[*]#auths rateLimits;
+}
+class NoAuth extends Auth {}
+class BasicAuth extends Auth{}
+class OAuth extends Auth{
+	attr String tokenUrl;
+	attr String authUrl;
+	attr String[*] scopes;
+}
+
+class PaginationPolicy{
+	attr Integer start;
+	attr Integer max;
+	attr Integer increment;
+	attr Integer maxPerIteration;
+	val RequestParameter perIteration;
+	val RequestParameter page;
+	val ResponseHeader links;
+}
+
+enum PaginationEnum	{ 
+	PAGE_NUMBER; LIMIT_OFFSET; LINK_HEADER; CURSOR; 
+}
+
+class Endpoint {
+	attr String path;
+	val Request[*]#parent requests;
+}
+
+class Request { 
+	attr MethodEnum method;
+	attr String description;
+	ref Endpoint#requests parent;
+	ref RatePolicyScope#requests scope;
+	val RequestParameter[*] parameters;
+	val Response[1..*]#request responses;
+}
+
+class Response {
+	attr int code;
+	attr String description;
+	attr boolean pageWrapped;
+	ref Request#responses request;
+	val ResponseHeader[*] headers;
+	val Type responseType;
+}
+
+abstract class Parameter {
+	attr String description;
+}
+
+class ResponseHeader extends Parameter {
+	val SimpleType type;
+}
+
+abstract class RequestParameter extends Parameter {
+	attr Boolean required;
+}
+
+class Path extends RequestParameter {
+	val SimpleType type;
+}
+class RequestHeader extends RequestParameter {
+	val SimpleType type;
+}
+class Query extends RequestParameter {
+	val SimpleType type;
+}
+class Body extends RequestParameter {
+	val Type type;
+}
+
+abstract class Type {
+	attr String name;
+	attr String label;
+	attr String description;
+	attr boolean required;
+}
+abstract class SimpleType extends Type {}
+
+class Wrapper extends Type {
+	attr String totalLabel;
+	attr String incompleteLabel;
+	val ListType items;
+}
+class ObjectType extends Type {
+  	val SimpleType[*] attributes;
+  	val ObjectType[*] nestedObjects;
+  	val ListType[*] listFields;
+}
+
+class UndefinedType extends SimpleType{}
+
+class ListType extends Type{
+	val Type[*] elements;
+}
+
+class TInteger extends SimpleType {
+	attr Integer max;
+	attr Integer min;
+	attr boolean maxExclusive;
+	attr boolean minExclusive;
+}
+class TLong extends SimpleType {
+	attr Long max;
+	attr Long min;
+	attr boolean maxExclusive;
+	attr boolean minExclusive;
+}
+class TFloat extends SimpleType {
+	attr Float max;
+	attr Float min;
+	attr boolean maxExclusive;
+	attr boolean minExclusive;
+}
+class TDouble extends SimpleType {
+	attr Double max;
+	attr Double min;
+	attr boolean maxExclusive;
+	attr boolean minExclusive;
+}
+class TBoolean extends SimpleType {
+	attr Boolean default;
+}
+class TString extends SimpleType {
+	attr int maxLength;
+	attr int minLength;
+}
+class TFormattedString extends TString {
+	attr String pattern;
+}
+class TDate extends TFormattedString {}
+class TDateTime extends TFormattedString {}
+class TByte extends TFormattedString {}
+class TBinary extends TFormattedString {}
+
+enum FormatEnum 	{ XML; JSON; }
+enum MethodEnum 	{ GET; POST; }

@@ -9,10 +9,15 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.client.api;
 
+import java.net.UnknownHostException;
+
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.ProjectRepository;
+import org.eclipse.scava.repository.model.Properties;
 import org.eclipse.scava.repository.model.eclipse.importer.EclipseProjectImporter;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.sourceforge.importer.SourceforgeProjectImporter;
 
@@ -20,7 +25,7 @@ public class ProjectImporter {
 
 	
 //	TODO: This should be smarter and return helpful error messages
-	public Project importProject(String url, Platform platform) throws WrongUrlException {
+	public Project importProject(String url, Platform platform) throws WrongUrlException, UnknownHostException {
 		Project p = null;
 		
 		url = url.replace("http://", "");
@@ -59,8 +64,15 @@ public class ProjectImporter {
 			String uName = ps[0];
 			String pName = ps[1];
 			
-			GitHubImporter importer = new GitHubImporter();//"f280531cd5712b6cbff971b7610155cecc134b02"); //FIXME Temporary token
+			GitHubImporter importer = new GitHubImporter();
 			try {
+				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+				Properties properties = projectRepo.getProperties().findOneByKey("githubToken");
+				if (properties != null) {
+					importer.setCredentials(new Credentials(properties.getValue(), "", ""));
+				} else {
+					importer.setCredentials(new Credentials("", "", ""));
+				}
 				p = importer.importProject(uName+"/" + pName, Platform.getInstance());
 			} catch (WrongUrlException e) {
 				e.printStackTrace(); // FIXME better handling
@@ -78,4 +90,5 @@ public class ProjectImporter {
 		
 		return p;
 	}
+
 }

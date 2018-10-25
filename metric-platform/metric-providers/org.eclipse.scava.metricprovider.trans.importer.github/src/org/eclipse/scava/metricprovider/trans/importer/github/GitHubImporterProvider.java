@@ -20,6 +20,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.github.GitHubRepository;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 
 import com.googlecode.pongo.runtime.PongoDB;
@@ -96,10 +97,11 @@ public class GitHubImporterProvider implements ITransientMetricProvider{
 	public void measure(Project project, ProjectDelta delta, PongoDB db) {
 		GitHubRepository ep = null;
 
-		
-		GitHubImporter epi = new GitHubImporter();
-		Platform platform = Platform.getInstance();
 		try{
+			GitHubImporter epi = new GitHubImporter();
+			Platform platform = Platform.getInstance();
+			
+			epi.setCredentials(new Credentials(((GitHubRepository) project).getToken(), "", ""));
 			ep = epi.importProject( ((GitHubRepository)project).getFull_name(), platform);
 			if (ep == null)
 			{
@@ -115,27 +117,5 @@ public class GitHubImporterProvider implements ITransientMetricProvider{
 		}
 		
 	}
-
-//	@Override
-//	public Pongo measure(Project project) {
-//		GitHubRepository ep = null;
-//		Mongo mongo;
-//		try {
-//			GitHubImporter epi = new GitHubImporter("ffab283e2be3265c7b0af244e474b28430351973");
-//			mongo = new Mongo();
-//			PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-//			Platform platform = new Platform(mongo);
-//			//logger.info("J "+ project.getId());
-//			ep = epi.importRepository( ((GitHubRepository)project).getFull_name(), platform);
-//			mongo.close();
-//		} catch (UnknownHostException e) {
-//			// TODO Auto-generated catch block
-//			logger.error("GitHub metric provider exception:" + e.getMessage());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			logger.error("GitHub metric provider exception:" + e.getMessage());
-//		}
-//		return ep;
-//	}
 
 }

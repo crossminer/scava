@@ -15,6 +15,7 @@ class ProjectRepository extends NamedElement {
   val ManagerAnalysis[*] managerAnalysis;
   val Company[*] companies;
   val ProjectError[*] errors;
+  val Properties[*] properties;
 }
 
 @customize
@@ -162,5 +163,11 @@ class License extends NamedElement {
 class Company extends NamedElement {
   @searchable
   attr String url;
+}
+
+class Properties extends NamedElement {
+  @searchable
+  attr String key;
+  attr String value;
 }
 

@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.github.importer,
  org.eclipse.scava.repository.model.importer.exception,
  org.eclipse.scava.repository.model,
- org.apache.log4j
+ org.apache.log4j,
+ org.eclipse.scava.repository.model.importer;bundle-version="1.0.0"
 Export-Package: org.eclipse.scava.metricprovider.trans.importer.github

@@ -1,0 +1,241 @@
+package org.eclipse.crossmeter.workflow.restmule.client.github.test;
+
+import static org.junit.Assert.assertTrue;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.crossmeter.workflow.restmule.client.github.api.IGitHubApi;
+import org.eclipse.crossmeter.workflow.restmule.client.github.model.Commits;
+import org.eclipse.crossmeter.workflow.restmule.client.github.util.GitHubUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
+@Ignore
+public class DistributedCacheTest extends GitHubUtils {
+
+    private static final Logger LOG = LogManager.getLogger(DistributedCacheTest.class);
+
+    private static IGitHubApi restmuleGitHubApi;
+    //private static ICache restmuleGitHubCache;
+
+    @BeforeClass
+    public static void setup() {
+        GitHubUtils.forceLocalCaching(false); // forceLocal=false
+    	restmuleGitHubApi = GitHubUtils.getOAuthClient();
+    }
+
+    @AfterClass
+    public static void tearDownCache() {
+        GitHubUtils.tearDownGitHubCache();
+    }
+
+    /**
+     * Assuming a sufficiently time-consuming request
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void singleDistributedCachingGithubTest() throws InterruptedException {
+        LOG.info("clearing cache");
+        GitHubUtils.clearGitHubCache();
+
+        IGitHubApi restmuleGitHubApi1 = GitHubUtils.getOAuthClient();
+
+        AtomicLong firstTimeToComplete = new AtomicLong();
+
+        // RUN #1
+        final long firstStart = System.currentTimeMillis();
+
+        Observable<Commits> commits1 = restmuleGitHubApi1.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe();
+                commits1.blockingSubscribe(new Observer<Commits>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //LOG.debug("onSubscribe: " + d.toString());
+                    }
+
+                    @Override
+                    public void onNext(Commits commits) {
+                        LOG.debug("onNext: " + commits.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                      //  LOG.error("onError: " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LOG.debug("RUN #1 completed.");
+                        firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+                        LOG.debug("");
+                        LOG.debug("==========================================");
+                        LOG.debug("DURATION (RUN #1): " + firstTimeToComplete + " milliseconds");
+                        LOG.debug("==========================================");
+                        LOG.debug("");
+
+                    }
+                });
+
+        //                        Iterable<org.eclipse.crossmeter.workflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
+
+
+
+    }
+
+    /**
+     * Assuming a sufficiently time-consuming request
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    @Ignore("does not behave as expected")
+    public void sequentialDistributedCachingGithubTest() throws InterruptedException {
+        LOG.info("clearing cache");
+        GitHubUtils.clearGitHubCache();
+
+        IGitHubApi restmuleGitHubApi1 = GitHubUtils.getOAuthClient();
+        IGitHubApi restmuleGitHubApi2 = GitHubUtils.getOAuthClient();
+
+        AtomicLong firstTimeToComplete = new AtomicLong();
+        AtomicLong secondTimeToComplete = new AtomicLong();
+
+
+        // RUN #1
+        final long firstStart = System.currentTimeMillis();
+
+        Observable<Commits> commits1 = restmuleGitHubApi1.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe();
+        commits1.blockingSubscribe(new Observer<Commits>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                //LOG.debug("onSubscribe: " + d.toString());
+            }
+
+            @Override
+            public void onNext(Commits commits) {
+                LOG.debug("onNext: " + commits.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                //  LOG.error("onError: " + e.getMessage());
+
+            }
+
+            @Override
+            public void onComplete() {
+                LOG.debug("RUN #1 completed.");
+                firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+                LOG.debug("");
+                LOG.debug("==========================================");
+                LOG.debug("DURATION (RUN #1): " + firstTimeToComplete + " milliseconds");
+                LOG.debug("==========================================");
+                LOG.debug("");
+
+                // RUN #1
+                final long secondStart = System.currentTimeMillis();
+
+                Observable<Commits> commits2 = restmuleGitHubApi2.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe();
+                commits2.blockingSubscribe(new Observer<Commits>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //LOG.debug("onSubscribe: " + d.toString());
+                    }
+
+                    @Override
+                    public void onNext(Commits commits) {
+                        LOG.debug("onNext: " + commits.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //  LOG.error("onError: " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LOG.debug("RUN #2 completed.");
+                        secondTimeToComplete.set(System.currentTimeMillis() - secondStart);
+                        LOG.debug("");
+                        LOG.debug("==========================================");
+                        LOG.debug("DURATION (RUN #2): " + secondTimeToComplete + " milliseconds");
+                        LOG.debug("==========================================");
+                        LOG.debug("");
+
+                    }
+                });
+
+            }
+        });
+
+        // Iterable<org.eclipse.crossmeter.workflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
+
+    }
+
+
+    @Test
+    public void distributedCachingGithubTest() throws InterruptedException {
+        long sleepDuration = 100000;
+
+        LOG.info("clearing cache");
+        GitHubUtils.clearGitHubCache();
+
+        IGitHubApi restmuleGitHubApi1 = GitHubUtils.getOAuthClient();
+        IGitHubApi restmuleGitHubApi2 = GitHubUtils.getOAuthClient();
+
+        AtomicLong firstTimeToComplete = new AtomicLong();
+        AtomicLong secondTimeToComplete = new AtomicLong();
+
+        LOG.info("STARTING RUN #1");
+
+        // RUN #1
+        final long firstStart = System.currentTimeMillis();
+
+        Observable<Commits> commits1 = restmuleGitHubApi1.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe().doOnComplete(() -> {
+            LOG.debug("RUN #1 completed.");
+            firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+        });
+        commits1.blockingSubscribe();
+
+        LOG.debug("sleeping for " + sleepDuration/1000 + " seconds...");
+        Thread.sleep(sleepDuration);
+        LOG.debug("... finished sleeping.");
+
+        LOG.info("STARTING RUN #2");
+
+        // RUN #2
+        final long secondStart = System.currentTimeMillis();
+
+        Observable<Commits> commits2 = restmuleGitHubApi2.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe().doOnComplete(() -> {
+            LOG.debug("RUN #2 completed.");
+            secondTimeToComplete.set(System.currentTimeMillis() - secondStart);
+        });
+        commits2.blockingSubscribe();
+
+        LOG.debug("sleeping for " + sleepDuration/1000 + " seconds...");
+        Thread.sleep(sleepDuration);
+        LOG.debug("... finished sleeping.");
+
+        LOG.debug("");
+        LOG.debug("==========================================");
+        LOG.debug("DURATION (RUN #1): " + firstTimeToComplete + " milliseconds");
+        LOG.debug("DURATION (RUN #2): " + secondTimeToComplete + " milliseconds");
+        LOG.debug("SPEEDUP: ~" + (Math.floorDiv(firstTimeToComplete.get(), secondTimeToComplete.get()) - 1) + "x");
+        LOG.debug("==========================================");
+        LOG.debug("");
+
+        assertTrue("RUN #2 execution time < RUN #1 execution time",
+                secondTimeToComplete.get() < firstTimeToComplete.get());
+
+    }
+
+}

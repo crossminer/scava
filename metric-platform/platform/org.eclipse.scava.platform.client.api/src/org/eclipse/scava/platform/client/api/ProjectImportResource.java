@@ -36,6 +36,7 @@ public class ProjectImportResource extends ServerResource {
 	public Representation importProject(Representation entity) {
 		
 		Mongo mongo = null;
+		Platform platform = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode obj = (ObjectNode)mapper.readTree(entity.getText());
@@ -51,7 +52,7 @@ public class ProjectImportResource extends ServerResource {
 				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
 				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
 			}
-			Platform platform = new Platform(mongo);
+			platform = new Platform(mongo);
 			
 			ProjectImporter importer = new ProjectImporter();
 			
@@ -104,6 +105,7 @@ public class ProjectImportResource extends ServerResource {
 			return rep;
 		} finally {
 			if (mongo != null) mongo.close();
+			platform = null;
 		}
 	}
 	

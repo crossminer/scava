@@ -13,13 +13,17 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ServerResource;
 
+import com.mongodb.Mongo;
+
 public class AnalysisTaskPushOnWorkerResource extends ServerResource {
 
 	@Delete
 	public Representation deleteAnalysisTask(Representation entity) {
-
+		Mongo mongo = null;
+		Platform platform = null;
 		try {
-			Platform platform = new Platform(Configuration.getInstance().getMongoConnection());				
+			mongo = Configuration.getInstance().getMongoConnection();
+			platform = new Platform(mongo);				
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			
 			String analysisTaskId = (String) getRequest().getAttributes().get("analysisTaskId");
@@ -37,6 +41,9 @@ public class AnalysisTaskPushOnWorkerResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
+		} finally {
+			if (mongo != null) mongo.close();
+			platform = null;
 		}
 
 	}

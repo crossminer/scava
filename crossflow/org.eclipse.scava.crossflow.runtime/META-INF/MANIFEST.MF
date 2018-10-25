@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Runtime
+Bundle-SymbolicName: org.eclipse.scava.crossflow.runtime
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.scava.crossflow.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.scava.crossflow.runtime.dependencies;visibility:=reexport
+Export-Package: org.eclipse.scava.crossflow.runtime,
+ org.eclipse.scava.crossflow.runtime.utils

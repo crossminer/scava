@@ -43,6 +43,7 @@ public class ApiApplication extends Application {
 		router.attach("/analysis/tasks", AnalysisTasksResource.class);
 		router.attach("/analysis/metricproviders", AnalysisMetricProvidersResource.class);
 		router.attach("/analysis/workers", AnalysisWorkerResource.class);
+		router.attach("/platform/properties", PlatformPropertiesResource.class);
 		router.attach("/projects/import", ProjectImportResource.class);
 		router.attach("/projects/create", ProjectCreationResource.class);
 		router.attach("/projects/p/{projectid}", ProjectResource.class);

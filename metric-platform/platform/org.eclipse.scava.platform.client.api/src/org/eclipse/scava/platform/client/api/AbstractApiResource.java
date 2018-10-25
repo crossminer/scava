@@ -61,6 +61,7 @@ public abstract class AbstractApiResource extends ServerResource {
 		Representation rep = doRepresent();
 		
 		mongo.close();
+		platform = null;
 		return rep;
 	}
 	

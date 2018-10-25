@@ -1,0 +1,237 @@
+package org.eclipse.crossmeter.workflow.restmule.core;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.flink.shaded.com.google.common.io.Files;
+import org.apache.hive.common.util.HiveStringUtils;
+import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.sql.*;
+
+/**
+ * @author Patrick Neubauer
+ *
+ * Tests the connection to Apache Hive and several operations as required for distributed http client caching.
+ *
+ * REQUIREMENTS:
+ * - Running Hadoop and Hive as described in Crossflow docker configuration:
+ *   https://github.com/crossminer/crossflow/tree/master/docker/docker-compose-based/hadoop
+ *
+ */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore("execute manually, make sure required infrastructure is up and running.")
+public class HiveJdbcClientTest {
+    public static final String DATABASE_URL = "jdbc:hive2://192.168.99.100:10000/default";
+    public static final String DATABASE_USER = "hive";
+    public static final String DATABASE_PASSWORD = "hive";
+    public static final String DATABASE_TABLE_NAME = "HiveJdbcClientTestTable";
+
+    private static String driverName = "org.apache.hive.jdbc.HiveDriver";
+    private static Connection connection = null;
+    
+    @BeforeClass
+    public static void init() {
+        try {
+            Class.forName(driverName);
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        try {
+            connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void A_dropTableTest() {
+        System.out.println("DROPPING TABLE IF EXISTS ...");
+        try {
+            Statement stmt = connection.createStatement();
+            int result = stmt.executeUpdate("drop table " + DATABASE_TABLE_NAME);
+            System.out.println("... TABLE DROPPED!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void B_createTableTest() {
+        System.out.println("CREATING TABLE IF NOT EXISTS ...");
+        try {
+            Statement stmt = connection.createStatement();
+            int result = stmt.executeUpdate("CREATE TABLE " + DATABASE_TABLE_NAME + " (key INT, requestUrl STRING, request BINARY, response BINARY)");
+            System.out.println("... TABLE CREATED!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void C_insertDatabaseTableStringRow() {
+        System.out.println("INSERTING DATABASE TABLE ROW ...");
+        String requestUrl = "https://api.github.com/search/repositories?order=asc&q=epsilon&sort=stars&per_page=100&page=1";
+        String request = "requestString";
+        String response = "responseString";
+        try {
+            Statement stmt1 = connection.createStatement();
+            stmt1.executeUpdate("INSERT INTO TABLE " + DATABASE_TABLE_NAME + " VALUES (" + Math.abs(requestUrl.hashCode()) + ", '" + requestUrl + "', '" + request + "', '" + response + "')");
+
+            Statement stmt2 = connection.createStatement();
+            ResultSet res = stmt2.executeQuery("SELECT * FROM " + DATABASE_TABLE_NAME + " where key=" + Math.abs(requestUrl.hashCode()));
+            while (res.next()) {
+                Assert.assertTrue(res.getInt(1) == Math.abs(requestUrl.hashCode()));
+                Assert.assertTrue(res.getString(2).equals(requestUrl));
+                Assert.assertTrue(res.getString(3).equals(request));
+                Assert.assertTrue(res.getString(4).equals(response));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void D_serializeJsonRequestFromString() {
+        String jsonString = "{\"body\":null,\"tagString\":\"FORCE NETWORK\",\"headers\":{\"namesAndValues\":[\"accept\",\"application/vnd.github.v3+json\",\"authorization\",\"Basic cGF0cmlja25ldWJhdWVyOjBiODI1NDkxMzdjNDQyMjRkODg1NDRlODIzMGE5N2ZmMTJhNzhmNDA=\",\"cache-control\",\"max-age=0\",\"user-agent\",\"RestMule/1.0\"]},\"method\":\"GET\",\"urlString\":\"https://api.github.com/repos/ossmeter/ossmeter/commits?per_page=100&page=1\",\"url\":{\"scheme\":\"https\",\"username\":\"\",\"password\":\"\",\"host\":\"api.github.com\",\"port\":443,\"pathSegments\":[\"repos\",\"ossmeter\",\"ossmeter\",\"commits\"],\"queryNamesAndValues\":[\"per_page\",\"100\",\"page\",\"1\"],\"fragment\":null,\"url\":\"https://api.github.com/repos/ossmeter/ossmeter/commits?per_page=100&page=1\",\"https\":true},\"tag\":\"FORCE NETWORK\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = null;
+        try {
+            actualObj = mapper.readTree(jsonString);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+
+        JsonNode jsonNode = actualObj.get("tagString");
+        Assert.assertTrue(jsonNode.textValue().equals("FORCE NETWORK"));
+    }
+
+    @Test
+    public void E_serializeJsonRequestFromFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = null;
+        try {
+            actualObj = mapper.readTree(new File("resources/test/request.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+
+        JsonNode jsonNode = actualObj.get("tagString");
+        Assert.assertTrue(jsonNode.textValue().equals("RETRY WITH FORCE NETWORK"));
+    }
+
+    @Test
+    public void F_serializeJsonResponseFromFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = null;
+        try {
+            actualObj = mapper.readTree(new File("resources/test/response.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+
+        JsonNode jsonNode = actualObj.get("message");
+        Assert.assertTrue(jsonNode.textValue().equals("OK"));
+    }
+
+    @Test
+    @Ignore
+    public void G_deserializeJsonResponseFromFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        OkHttp3Response deserializedObject = null;
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        try {
+            String responseString = Files.toString(new File("resources/test/responseReply.json"), Charset.defaultCharset());
+            // FIXME: HiveStringUtils.escapeHiveCommand(requestJsonNode.toString()) = Cannot find local variable 'requestJsonNode'
+            //HiveStringUtils.escapeHiveCommand(responseJsonNode.toString()) = Cannot find local variable 'responseJsonNode'
+            //responseJsonNode.toString() = Cannot find local variable 'responseJsonNode'
+            //objectMapper.readValue(jsonString, OkHttp3Response.class) = Cannot find local variable 'objectMapper'
+            //objectMapper.readValue(HiveStringUtils.escapeString(jsonString), OkHttp3Response.class) = Cannot find local variable 'objectMapper'
+            //mapper.readValue(responseString, OkHttp3Response.class) = Cannot find local variable 'responseString'
+            //this = {HiveJdbcClientTest@1796}
+            //mapper = {ObjectMapper@1829}
+            //deserializedObject = null
+            //e = {MismatchedInputException@3578} "com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.util.LinkedHashMap` out of START_ARRAY token\n at [Source: (StringReader); line: 94, column: 25] (through reference chain: org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response["request"]->org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request["headers"]->org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Headers["namesAndValues"])"
+            deserializedObject = mapper.readValue(responseString, OkHttp3Response.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+        System.out.println(deserializedObject);
+    }
+
+    @Test
+    public void G_insertDatabaseTableJsonStringRow() {
+        System.out.println("INSERTING DATABASE TABLE ROW ...");
+        String requestUrl = "https://api.github.com/search/repositories?order=asc&q=epsilon&sort=stars&per_page=100&page=2";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode requestJsonNode = null;
+        JsonNode responseJsonNode = null;
+        try {
+            requestJsonNode = mapper.readTree(new File("resources/test/request.json"));
+            responseJsonNode = mapper.readTree(new File("resources/test/response.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+        try {
+            // insert data into table
+            Statement stmt1 = connection.createStatement();
+            stmt1.executeUpdate("INSERT INTO TABLE " + DATABASE_TABLE_NAME + " (key, requesturl, request, response) " + " VALUES (" + Math.abs(requestUrl.hashCode()) + ", '" + requestUrl + "', '" + HiveStringUtils.escapeHiveCommand(requestJsonNode.toString()) + "', '" + HiveStringUtils.escapeHiveCommand(responseJsonNode.toString()) + "')");
+
+            // query table for previously inserted data for comparison
+            Statement stmt2 = connection.createStatement();
+            ResultSet res = stmt2.executeQuery("SELECT * FROM " + DATABASE_TABLE_NAME + " where key=" + Math.abs(requestUrl.hashCode()));
+            while (res.next()) {
+                Assert.assertTrue(res.getInt(1) == Math.abs(requestUrl.hashCode()));
+                Assert.assertTrue(res.getString(2).equals(requestUrl));
+                Assert.assertTrue(res.getString(3).equals(requestJsonNode.toString()));
+                Assert.assertTrue(res.getString(4).equals(responseJsonNode.toString()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void X_printDatabaseTableStringColumns() {
+        System.out.println("PRINTING DATABASE TABLE ROWS ...");
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM " + DATABASE_TABLE_NAME);
+            while (res.next()) {
+                System.out.println(String.valueOf(res.getInt(1)) + "\t" + res.getString(2) + "\t" + res.getString(3) + "\t" + res.getString(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+}

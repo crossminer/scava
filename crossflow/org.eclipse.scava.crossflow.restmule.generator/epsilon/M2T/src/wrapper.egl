@@ -1,0 +1,47 @@
+[% import "../../util/restmule.eol"; %]
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].page;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.crossmeter.workflow.restmule.core.page.IWrap;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/** Page Wrapper */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class [%= name %]Paged<T> implements IWrap<T> {
+
+	/** Wrapper Properties */
+	@JsonProperty("[%= W.items.label %]")
+	private List<T> items = new ArrayList<T>();
+
+	[% if (W.totalLabel<>null) {%]
+	@JsonProperty("[%= W.totalLabel %]")
+	[% } %]
+	private Integer totalCount;
+
+	[% if (W.incompleteLabel<>null) {%]
+	@JsonProperty("[%= W.incompleteLabel %]")
+	[% } %]
+	private Boolean incompleteResults;
+
+	/** Wrapper Property Getters */
+	
+	@Override
+	public Boolean isIncomplete() {
+		return incompleteResults;
+	}
+
+	@Override
+	public List<T> getItems() {
+		return items;
+	}
+
+	@Override
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+}

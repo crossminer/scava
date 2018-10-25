@@ -1,0 +1,14 @@
+[% import "../../util/restmule.eol"; %]
+[% import "../templates/templates.egl"; %]
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].client;
+
+import org.eclipse.crossmeter.workflow.restmule.core.data.IData;
+import org.eclipse.crossmeter.workflow.restmule.core.data.IDataSet;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name.toLowerCase() %].model.*;
+
+public interface I[%= scope %]Api {
+	[% for (response in responses) { %]	
+	[%= response.wrappedRequestInterface() %]
+	[% } %]
+	
+}

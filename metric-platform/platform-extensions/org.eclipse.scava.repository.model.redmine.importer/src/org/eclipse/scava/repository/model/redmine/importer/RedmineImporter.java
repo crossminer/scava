@@ -39,6 +39,7 @@ import org.eclipse.scava.repository.model.Person;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.importer.IImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.*;
 import org.eclipse.scava.repository.model.redmine.*;
 //import org.apache.commons.io.IOUtils;
@@ -635,6 +636,10 @@ public class RedmineImporter implements IImporter {
 		if (url.contains("/"))
 			return url.substring(url.lastIndexOf("/")+1,url.length());
 		else throw new WrongUrlException();
+	}
+
+	@Override
+	public void setCredentials(Credentials credentials) {
 	}
 	
 }

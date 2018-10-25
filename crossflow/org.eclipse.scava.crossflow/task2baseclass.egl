@@ -1,0 +1,83 @@
+package [%=w.package%];
+
+import org.eclipse.scava.crossflow.runtime.Workflow;
+
+public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
+	
+	protected [%=w.name%] workflow;
+	
+	public void setWorkflow([%=w.name%] workflow) {
+		this.workflow = workflow;
+	}
+	
+	public Workflow getWorkflow() {
+		return workflow;
+	}
+	
+	[%for (s in t.output) { %]
+	protected [%=s.name%] [%=s.name.ftlc()%];
+	
+	public void set[%=s.name%]([%=s.name%] [%=s.name.ftlc()%]) {
+		this.[%=s.name.ftlc()%] = [%=s.name.ftlc()%];
+	}
+	
+	public [%=s.name%] get[%=s.name%]() {
+		return [%=s.name.ftlc()%];
+	}
+	
+	[%}%]
+	
+	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
+	
+	protected EclipseResultPublisher eclipseResultPublisher;
+	
+	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
+		this.eclipseResultPublisher = eclipseResultPublisher;
+	}
+	
+	public EclipseResultPublisher getEclipseResultPublisher() {
+		return eclipseResultPublisher;
+	}
+	
+	[%}%]
+	
+	[%for (s in t.input) { %]
+	
+	@Override
+	public void consume[%=s.name%]Actual([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+
+		workflow.setTaskInProgess(this);
+		
+		consume[%=s.name%]([%=s.type.name.ftlc()%]);
+		
+		workflow.setTaskWaiting(this);
+		
+	}
+	
+	[%}%]
+	
+	/**
+	 * Call this within consumeXYZ() to denote task blocked due to some reason
+	 * @param reason
+	 */
+	protected void taskBlocked(String reason) {
+		
+		workflow.setTaskBlocked(this,reason);
+		
+	}
+	
+	/**
+	 * Call this within consumeXYZ() to denote task is now unblocked
+	 * @param reason
+	 */
+	protected void taskUnblocked() {
+		
+		workflow.setTaskUnblocked(this);
+		
+	}
+	
+	[%if (t.isTypeOf(Source)){%]
+	public abstract void produce();
+	[%}%]
+	
+}

@@ -1,0 +1,92 @@
+rule Workflow2Class 
+	transform w : Workflow {
+	
+	template : "workflow2class.egl"
+	
+	target : w.getPath() + w.name + ".java"
+}
+
+rule Workflow2EclipseTaskStatusPublisher 
+	transform w : Workflow {
+	
+	template : "workflow2eclipsetaskstatuspublisher.egl"
+	
+	target : w.getPath() + "EclipseTaskStatusPublisher.java"
+}
+
+rule Workflow2EclipseTaskStatusPublisherConsumer 
+	transform w : Workflow {
+	
+	template : "workflow2eclipsetaskstatuspublisherconsumer.egl"
+	
+	target : w.getPath() + "EclipseTaskStatusPublisherConsumer.java"
+}
+
+rule Type2Class 
+	transform t : Type {
+	
+	template : "type2class.egl"
+	
+	target : t.getPath() + t.name + ".java"
+}
+
+@greedy
+rule Task2BaseClass 
+	transform t : Task {
+	
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "task2baseclass.egl"
+	
+	target : t.getPath() + t.name + "Base.java"	
+}
+
+@greedy
+rule Steam2Class 
+	transform s : Stream {
+	
+	parameters : Map{"w" = s.eContainer()}
+	
+	template : "stream2class.egl"
+	
+	target : s.getPath() + s.name + ".java"
+}
+
+@greedy
+rule Steam2Consumer 
+	transform s : Stream {
+	
+	template : "stream2consumer.egl"
+	
+	target : s.getPath() + s.name + "Consumer.java"
+}
+
+//
+
+@greedy
+rule Sink2EclipseResultStream
+	transform s : Sink {
+	
+	parameters : Map{"w" = s.eContainer()}
+	
+	template : "sink2eclipseresultstream.egl"
+	
+	target : s.getPath() + "EclipseResultPublisher.java"
+}
+
+@greedy
+rule Sink2EclipseResultStreamConsumer 
+	transform s : Sink {
+	
+	template : "stream2eclipseresultstreamconsumer.egl"
+	
+	target : s.getPath() + "EclipseResultPublisherConsumer.java"
+}
+
+
+
+operation Any getPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	return "src-gen/" + workflow.package.replaceAll("\\.", "/") + "/";
+}

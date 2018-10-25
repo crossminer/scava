@@ -38,6 +38,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.cc.wiki.Wiki;
 import org.eclipse.scava.repository.model.importer.IImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.sourceforge.*;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
@@ -842,6 +843,10 @@ public class SourceforgeProjectImporter implements IImporter {
 			return url;
 		}
 		else throw new WrongUrlException();
+	}
+
+	@Override
+	public void setCredentials(Credentials credentials) {
 	}
 
 }

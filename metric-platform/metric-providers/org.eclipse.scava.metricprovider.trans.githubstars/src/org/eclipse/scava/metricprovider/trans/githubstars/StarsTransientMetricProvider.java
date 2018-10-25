@@ -98,15 +98,10 @@ public class StarsTransientMetricProvider implements ITransientMetricProvider<St
 		return new Stars(db);
 	}
 
-	private static String getToken() {
-		ResourceBundle myResources = ResourceBundle.getBundle("github_auth");
-		return myResources.getString("token");
-	}
-
-	private JSONObject getRemainingResource() throws IOException {
+	private JSONObject getRemainingResource(Project project) throws IOException {
 		URL url = new URL("https://api.github.com/rate_limit");
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-		connection.setRequestProperty("Authorization", "token " + getToken());
+		connection.setRequestProperty("Authorization", "token " + ((GitHubRepository) project).getToken());
 		connection.connect();
 		InputStream is = connection.getInputStream();
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
@@ -115,9 +110,9 @@ public class StarsTransientMetricProvider implements ITransientMetricProvider<St
 		return (JSONObject) obj.get("resources");
 	}
 
-	private long getRemainingResource(String value) {
+	private long getRemainingResource(Project project, String value) {
 		try {
-			JSONObject core = (JSONObject) getRemainingResource().get(value);
+			JSONObject core = (JSONObject) getRemainingResource(project).get(value);
 			return Long.parseLong(core.get("remaining").toString());
 		} catch (IOException e) {
 			logger.error(e.getMessage());
@@ -126,11 +121,11 @@ public class StarsTransientMetricProvider implements ITransientMetricProvider<St
 		return 0;
 	}
 
-	private void waitApiCoreRate() {
+	private void waitApiCoreRate(Project project) {
 		boolean sleep = true;
 		while (sleep) {
 
-			long remaining = getRemainingResource("core");
+			long remaining = getRemainingResource(project,"core");
 			if (remaining > 0)
 				sleep = false;
 			else
@@ -153,12 +148,12 @@ public class StarsTransientMetricProvider implements ITransientMetricProvider<St
 			db.getStargazers().getDbCollection().drop();
 			db.sync();
 			while (continueValue) {
-				if (getRemainingResource("core") == 0)
-					waitApiCoreRate();
+				if (getRemainingResource(project, "core") == 0)
+					waitApiCoreRate(project);
 				URL url;
 				try {
 					url = new URL("https://api.github.com/repos/" + rep.getFull_name() + "/stargazers?page=" + page
-							+ "&per_page=100&access_token=" + getToken());
+							+ "&per_page=100&access_token=" + ((GitHubRepository) project).getToken());
 					HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 					connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
 					connection.connect();

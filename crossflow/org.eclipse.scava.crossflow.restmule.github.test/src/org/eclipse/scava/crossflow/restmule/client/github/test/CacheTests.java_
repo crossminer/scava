@@ -1,0 +1,208 @@
+package org.eclipse.scava.crossflow.restmule.client.github.test;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.scava.crossflow.restmule.client.github.api.GitHubApi.GitHubBuilder;
+import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
+import org.eclipse.scava.crossflow.restmule.client.github.model.Commits;
+import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import io.reactivex.Observable;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+
+@Ignore
+public class CacheTests extends GitHubUtils {
+
+	private static final Logger LOG = LogManager.getLogger(BlockingTests.class);
+
+	private static IGitHubApi restmuleGitHubApi;
+	//private static ICache restmuleGitHubCache;
+
+
+	@BeforeClass
+	public static void setup() {
+		GitHubUtils.forceLocalCaching(false);
+		restmuleGitHubApi = GitHubUtils.getOAuthClient();
+	}
+
+	@AfterClass
+	public static void tearDownCache() {
+		GitHubUtils.tearDownGitHubCache();
+	}
+
+	/**
+	 * Assuming a sufficiently time-consuming request
+	 * 
+	 * @throws InterruptedException
+	 */
+	@Test
+	@Ignore("to be executed manually with credentials")
+	public void testResponseTimeDifferenceBetweenNetworkAndCache() throws InterruptedException {
+
+		// clear cache at startup
+		LOG.info("clearing cache");
+		GitHubUtils.clearGitHubCache();
+
+		// Use this variable to test how caching is being performed in the following
+		// calls.
+		// Cache okHttpCache = GitHubCacheManager.getInstance().getOkHttpCache();
+
+		AtomicLong firstTimeToComplete = new AtomicLong();
+		AtomicLong secondTimeToComplete = new AtomicLong();
+
+		final long firstStart = System.currentTimeMillis();
+		// Send request to network
+		LOG.info("Dispatching first request");
+		restmuleGitHubApi.getSearchRepositories("asc", "epsilon", "stars").observe().doOnComplete(() -> {
+			// api.getReposCommits("epsilonlabs", "emc-json", null, null, null, null,
+			// null).observe().doOnComplete( () -> {
+			firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+		}).blockingSubscribe();
+
+		// Send again but retrieve from cache
+		LOG.info("Dispatching second request");
+		final long secondStart = System.currentTimeMillis();
+		restmuleGitHubApi.getSearchRepositories("asc", "epsilon", "stars").observe().doOnComplete(() -> {
+			// api.getReposCommits("epsilonlabs", "emc-json", null, null, null, null,
+			// null).observe().doOnComplete( () -> {
+			secondTimeToComplete.set(System.currentTimeMillis() - secondStart);
+		}).blockingSubscribe();
+
+		long timeDifference = firstTimeToComplete.get() - secondTimeToComplete.get();
+		LOG.info(TimeUnit.MILLISECONDS.toSeconds(timeDifference) + " s of difference");
+		assertTrue(timeDifference > 0);
+
+		Thread.sleep(2000);
+
+	}
+
+	@Test
+	public void restmuleOkHttpCacheTest() throws InterruptedException {
+
+		LOG.info("clearing cache");
+		GitHubUtils.clearGitHubCache();
+		
+		IGitHubApi restmuleGitHubApi1 = GitHubUtils.getOAuthClient();
+		IGitHubApi restmuleGitHubApi2 = GitHubUtils.getOAuthClient();
+
+		AtomicLong firstTimeToComplete = new AtomicLong();
+		AtomicLong secondTimeToComplete = new AtomicLong();
+
+		// RUN #1
+		final long firstStart = System.currentTimeMillis();
+		
+		Observable<Commits> commits1 = restmuleGitHubApi1.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe().doOnComplete(() -> {
+			 LOG.debug("RUN #1 completed.");
+	        });
+		commits1.blockingSubscribe();
+		
+		firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+		
+		// RUN #2
+		final long secondStart = System.currentTimeMillis();
+		
+		Observable<Commits> commits2 = restmuleGitHubApi2.getReposCommits("ossmeter", "ossmeter", null, null, null, null, null).observe().doOnComplete(() -> {
+			 LOG.debug("RUN #2 completed.");
+	        });
+		commits2.blockingSubscribe();
+		
+		secondTimeToComplete.set(System.currentTimeMillis() - secondStart);		
+
+		LOG.debug("");
+		LOG.debug("==========================================");
+		LOG.debug("DURATION (RUN #1): " + firstTimeToComplete + " milliseconds");
+		LOG.debug("DURATION (RUN #2): " + secondTimeToComplete + " milliseconds");
+		LOG.debug("SPEEDUP: ~" + Math.floorDiv(firstTimeToComplete.get(), secondTimeToComplete.get()) + "x");
+		LOG.debug("==========================================");
+		LOG.debug("");
+		
+		assertTrue("RUN #2 execution time < RUN #1 execution time",
+				secondTimeToComplete.get() < firstTimeToComplete.get());
+
+	}
+
+	@Test
+	public void kohsukeOkHttpCacheTest() throws IOException {
+
+		File cacheDirectory = new File("local-kohsuke-cache");
+
+		// clear cache
+		deleteFolder(cacheDirectory);
+		
+		Cache cache = new Cache(cacheDirectory, 35 * 1024 * 1024); // 35MB cache
+
+		LOG.debug("Creating cache directory: " + cacheDirectory.getAbsolutePath());
+		
+		GitHub gitHub1 = GitHubBuilder.fromCredentials()
+				.withConnector(new OkHttp3Connector(new OkUrlFactory(new OkHttpClient().newBuilder().cache(cache).build())))
+				.build();
+		
+		GitHub gitHub2 = GitHubBuilder.fromCredentials()
+				.withConnector(new OkHttp3Connector(new OkUrlFactory(new OkHttpClient().newBuilder().cache(cache).build())))
+				.build();
+		
+		AtomicLong firstTimeToComplete = new AtomicLong();
+		AtomicLong secondTimeToComplete = new AtomicLong();
+
+		// RUN #1
+		final long firstStart = System.currentTimeMillis();
+		GHRepository repo1 = gitHub1.getUser("ossmeter").getRepository("ossmeter");
+		for (GHCommit c : repo1.listCommits()) {
+			// omitting printing/logging for fair comparison
+//			LOG.debug("COMMIT (RUN #1): commited by " + c.getCommitShortInfo().getCommitter().getName() + " on "
+//					+ c.getCommitShortInfo().getCommitDate());
+		}
+		firstTimeToComplete.set(System.currentTimeMillis() - firstStart);
+		
+		// RUN #2
+		final long secondStart = System.currentTimeMillis();
+		GHRepository repo2 = gitHub1.getUser("ossmeter").getRepository("ossmeter");
+		for (GHCommit c : repo2.listCommits()) {
+			// omitting printing/logging for fair comparison
+//			LOG.debug("COMMIT (RUN #2): commited by " + c.getCommitShortInfo().getCommitter().getName() + " on "
+//					+ c.getCommitShortInfo().getCommitDate());
+		}
+		secondTimeToComplete.set(System.currentTimeMillis() - secondStart);
+
+		LOG.debug("");
+		LOG.debug("==========================================");
+		LOG.debug("DURATION (RUN #1): " + firstTimeToComplete + " milliseconds");
+		LOG.debug("DURATION (RUN #2): " + secondTimeToComplete + " milliseconds");
+		LOG.debug("SPEEDUP: ~" + Math.floorDiv(firstTimeToComplete.get(), secondTimeToComplete.get()) + "x");
+		LOG.debug("==========================================");
+		LOG.debug("");
+
+		assertTrue("RUN #2 execution time < RUN #1 execution time",
+				secondTimeToComplete.get() < firstTimeToComplete.get());
+
+	}
+
+	public static void deleteFolder(File folder) {
+		System.out.print("Removing cache directory ... ");
+		File[] files = folder.listFiles();
+		if (files != null) { // some JVMs return null for empty dirs
+			for (File f : files) {
+				if (f.isDirectory()) {
+					deleteFolder(f);
+				} else {
+					f.delete();
+				}
+			}
+		}
+		folder.delete();
+		LOG.debug("... DONE!");
+	}
+
+}
