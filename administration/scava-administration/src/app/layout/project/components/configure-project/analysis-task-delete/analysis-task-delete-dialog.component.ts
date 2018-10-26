@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../../shared/services/analysis-task/analysis-task.service';
-import { ExecutionTask } from '../execution-task.model';
 
 @Component({
   selector: 'app-analysis-task-delete-dialog',

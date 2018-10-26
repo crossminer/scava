@@ -12,5 +12,8 @@
         <a routerLink="/worker" class="list-group-item" *ngIf="roleAuthorities.hasRole('ROLE_ADMIN')">
             <i class="fa fa-lg fa-cogs"></i>&nbsp;{{ 'Workers' }}
         </a>
+        <a routerLink="/properties" class="list-group-item" *ngIf="roleAuthorities.hasRole('ROLE_ADMIN')">
+            <i class="fa fa-lg fa-wrench"></i>&nbsp;{{ 'Properties' }}
+        </a>
     </div>
 </nav>
