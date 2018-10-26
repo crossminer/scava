@@ -1,0 +1,82 @@
+<div class="row">
+    <div class="col-8">
+        <h2>Edit your properties</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Property key</th>
+                    <th>Property value</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let properties of listProperties;">
+                    <td> {{ properties?.key }} </td>
+                    <td> {{ properties?.value }} </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-dark btn-sm" title="Edit Property" (click)="onEdit(properties.key)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Property" (click)="onDelete(properties.key)">
+                            <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
+                <i class="fa fa-arrow-left"></i>&nbsp;
+                <span>Go Back</span>
+            </button>&nbsp;
+            <button type="submit" class="btn btn-outline-dark btn-sm" (click)="onNew()">
+                <i class="fa fa-plus"></i>&nbsp;
+                <span>New</span>
+            </button>&nbsp;
+        </div>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #propertiesForm="ngForm" *ngIf="showNew && properties">
+            <div class="form-group">
+                <label class="form-control-label" for="key">Key</label>
+                <input type="text" class="form-control" id="key" name="key" placeholder="Your property key" [(ngModel)]="properties.key"
+                    minlength=1 maxlength=50 #keyInput="ngModel" required>
+                <div *ngIf="keyInput.dirty && keyInput.invalid">
+                    <small class="form-text text-danger" *ngIf="keyInput.errors.required">
+                        Your property key is required.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="keyInput.errors.minlength">
+                        Your property key is required to be at least 1 character.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="keyInput.errors.maxlength">
+                        Your property key cannot be longer than 50 characters.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="value">Value</label>
+                <input type="text" class="form-control" id="value" name="value" placeholder="Your property value"
+                    [(ngModel)]="properties.value" minlength=1 maxlength=50 #valueInput="ngModel" required>
+                <div *ngIf="valueInput.dirty && valueInput.invalid">
+                    <small class="form-text text-danger" *ngIf="valueInput.errors.required">
+                        Your property value is required.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="valueInput.errors.minlength">
+                        Your property value is required to be at least 1 character.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="valueInput.errors.maxlength">
+                        Your property value cannot be longer than 50 characters.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-outline-dark btn-sm" (click)="onCancel()">
+                    <i class="fa fa-ban"></i>&nbsp;
+                    <span>Cancel</span>
+                </button>&nbsp;
+                <button type="submit" [disabled]="propertiesForm.form.invalid" class="btn btn-outline-dark btn-sm">
+                    <i class="fa fa-save"></i>&nbsp;
+                    <span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

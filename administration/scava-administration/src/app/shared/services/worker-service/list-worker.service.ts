@@ -14,7 +14,6 @@ export class ListWorkerService {
     private administration = 'administration';
     private serviceUrl = 'analysis/workers';
     private jwtToken: string = null;
-    private worker: Worker;
 
     constructor(
         private httpClient: HttpClient,
