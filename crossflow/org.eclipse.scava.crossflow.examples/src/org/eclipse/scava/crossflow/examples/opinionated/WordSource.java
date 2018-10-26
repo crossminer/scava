@@ -21,7 +21,7 @@ public class WordSource extends WordSourceBase {
 		for (String w : words) {
 			Word word = new Word();
 			word.setW(w);
-			getWords().send(word);
+			getWords().send(word,this.getClass().getName());
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class OccurencesMonitor extends OccurencesMonitorBase {
 			skips++;
 			System.out.println("[" + workflow.getName() + "] Skipping " + word.getW() + " (" + skips + " skips)");
 			// Send it back to the queue for someone else to process
-			workflow.getWords().send(word);
+			workflow.getWords().send(word,this.getClass().getName());
 		}
  	}
 	

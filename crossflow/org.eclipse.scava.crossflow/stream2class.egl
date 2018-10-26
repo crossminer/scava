@@ -1,5 +1,9 @@
 package [%=w.package%];
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
@@ -18,9 +22,9 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class [%=s.name%] {
 	
-	protected Destination destination;
-	protected Destination pre;
-	protected Destination post;
+	protected Map<String, Destination> destination;
+	protected Map<String, Destination> pre;
+	protected Map<String, Destination> post;
 	protected Session session;
 	protected Workflow workflow;
 	
@@ -31,12 +35,57 @@ public class [%=s.name%] {
 		Connection connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = session.create[%=s.eClass().name%]("[%=s.name%]");
-		pre = session.createQueue("[%=s.name%]Pre");
-		post = session.createQueue("[%=s.name%]Post");
+		destination = new HashMap<String, Destination>();
+		pre = new HashMap<String, Destination>();
+		post = new HashMap<String, Destination>();
 		
+	}
+	
+	public void send([%=s.type.name%] [%=s.type.name.ftlc()%], String taskId) {
+		try {
+			Destination d = null;
+			// if the sender is one of the targets of this channel, it has re-sent a message
+			// so it should only be put in the relevant physical queue
+			if ((d = pre.get(taskId)) != null) {
+				MessageProducer producer = session.createProducer(d);
+				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+				ObjectMessage message = session.createObjectMessage();
+				[%=s.type.name.ftlc()%].setDestination("[%=s.name%]");
+				message.setObject([%=s.type.name.ftlc()%]);
+				producer.send(message);
+			} else
+				// otherwise the sender must be the source of this channel so intends to
+				// propagate its messages to all the physical queues
+				for (Entry<String, Destination> e : pre.entrySet()) {			
+					MessageProducer producer = session.createProducer(e.getValue());
+					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+					ObjectMessage message = session.createObjectMessage();
+					[%=s.type.name.ftlc()%].setDestination("[%=s.name%]");
+					message.setObject([%=s.type.name.ftlc()%]);
+					producer.send(message);
+				}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void addConsumer([%=s.name%]Consumer consumer, String consumerId) throws Exception {
+
+		// XXX use runtime class as ID of consumer as tasks are unique
+	
+		Destination preQueue = session.createQueue("[%=s.name%]Pre-" + consumerId);
+		pre.put(consumerId, preQueue);	
+	
+		Destination destQueue = session.createQueue("[%=s.name%]Destination-" + consumerId);
+		destination.put(consumerId, destQueue);	
+	
+		Destination postQueue = session.createQueue("[%=s.name%]Post-" + consumerId);
+		post.put(consumerId, postQueue);
+	
+		//
+	
 		if (workflow.isMaster()) {
-			MessageConsumer preConsumer = session.createConsumer(pre);
+			MessageConsumer preConsumer = session.createConsumer(preQueue);
 			preConsumer.setMessageListener(new MessageListener() {
 
 				@Override
@@ -46,28 +95,32 @@ public class [%=s.name%] {
 						Job job = (Job) ((ObjectMessage) message).getObject();
 						if (workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
-								[%for (s in w.streams) { %]
 								if (output.getDestination().equals("[%=s.name%]")) {
-									(([%=w.name%]) workflow).get[%=s.name%]().send(([%=s.type.name%]) output);
+									MessageProducer producer = session.createProducer(preQueue);
+									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+									ObjectMessage m = session.createObjectMessage();
+									m.setObject(output);
+									producer.send(m);
+								} else {
+									//XXX should not be the case?
+									System.err.println(
+											output.getDestination() + " destination found in [%=s.name%] pre consumer");
 								}
-								[%}%]
 							}
-						}
-						else {
-							MessageProducer producer = session.createProducer(destination);
+						} else {
+							MessageProducer producer = session.createProducer(destQueue);
 							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 							producer.send(message);
 						}
 						
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}
 				
 			});
 			
-			MessageConsumer destinationConsumer = session.createConsumer(destination);
+			MessageConsumer destinationConsumer = session.createConsumer(destQueue);
 			destinationConsumer.setMessageListener(new MessageListener() {
 
 				@Override
@@ -78,7 +131,7 @@ public class [%=s.name%] {
 						if (!job.isCached()) {
 							workflow.getCache().cache(job);
 						}
-						MessageProducer producer = session.createProducer(post);
+						MessageProducer producer = session.createProducer(postQueue);
 						producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 						producer.send(message);
 					}
@@ -89,25 +142,11 @@ public class [%=s.name%] {
 				
 			});
 		}
-	}
-	
-	public void send([%=s.type.name%] [%=s.type.name.ftlc()%]) {
-		try {
-			MessageProducer producer = session.createProducer(pre);
-			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-			ObjectMessage message = session.createObjectMessage();
-			[%=s.type.name.ftlc()%].setDestination("[%=s.name%]");
-			message.setObject([%=s.type.name.ftlc()%]);
-			producer.send(message);
 			
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public void addConsumer([%=s.name%]Consumer consumer) throws Exception {
-		MessageConsumer messageConsumer = session.createConsumer(post);
+		//only connect if the consumer exists (for example it will not in a master_bare situation)
+		if(consumer!=null) {
+		
+		MessageConsumer messageConsumer = session.createConsumer(postQueue);
 		messageConsumer.setMessageListener(new MessageListener() {
 	
 			@Override
@@ -121,6 +160,8 @@ public class [%=s.name%] {
 				}
 			}	
 		});
+	}
+	
 	}
 	
 }

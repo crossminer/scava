@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
+package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked;
 
 import java.util.ArrayList;
 import java.util.List;

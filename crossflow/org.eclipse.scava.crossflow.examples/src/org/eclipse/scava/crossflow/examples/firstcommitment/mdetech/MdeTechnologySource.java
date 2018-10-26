@@ -23,7 +23,7 @@ public class MdeTechnologySource extends MdeTechnologySourceBase {
 			extensionKeywordTuple.field0 = m.getExtension();
 			extensionKeywordTuple.field1 = m.getKeyword();
 			//System.out.println("Produced tuple: " + extensionKeywordTuple.getField0() + ", " + extensionKeywordTuple.getField1());
-			getMdeTechnologies().send(extensionKeywordTuple);
+			getMdeTechnologies().send(extensionKeywordTuple,this.getClass().getName());
 		}
 
 	}

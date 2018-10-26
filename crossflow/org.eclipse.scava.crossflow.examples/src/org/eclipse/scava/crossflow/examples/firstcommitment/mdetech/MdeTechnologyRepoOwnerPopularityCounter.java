@@ -40,7 +40,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 	public void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+			workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -52,7 +52,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( extensionKeywordStargazersRemoteRepoUrlTuple.getId() );
-				workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+				workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
 			}
 			
 			if ( committedRepoMap.containsKey( extensionKeywordStargazersRemoteRepoUrlTuple.getField1() ) ) {
@@ -68,7 +68,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(repoOwnerFollowerCount); // repository owner follower count
 				
-				getMdeTechnologyRepoOwnerPopularityCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+				getMdeTechnologyRepoOwnerPopularityCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple,this.getClass().getName());
 			
 			}
 			

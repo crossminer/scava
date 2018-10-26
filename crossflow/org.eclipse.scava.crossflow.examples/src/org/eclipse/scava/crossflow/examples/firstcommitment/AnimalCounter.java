@@ -21,7 +21,7 @@ public class AnimalCounter extends AnimalCounterBase {
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add(animal.getId());
-				workflow.getAnimals().send(animal);
+				workflow.getAnimals().send(animal,this.getClass().getName());
 			}
 		}
 		
@@ -31,7 +31,7 @@ public class AnimalCounter extends AnimalCounterBase {
 		}
 		else if (favouriteAnimal != null){
 			// Not our favourite animal so sending back
-			workflow.getAnimals().send(animal);
+			workflow.getAnimals().send(animal,this.getClass().getName());
 		}
 		
 		

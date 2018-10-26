@@ -11,7 +11,7 @@ public class Adder extends AdderBase {
 		Number number = new Number();
 		number.setCorrelationId(numberPair.getId());
 		number.setN(numberPair.getA() + numberPair.getB());
-		getAdditionResults().send(number);
+		getAdditionResults().send(number,this.getClass().getName());
 	}
 	
 }
