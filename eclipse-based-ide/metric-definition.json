@@ -1,0 +1,346 @@
+{
+  "terms": {
+    "short": {
+      "duration": 1,
+      "count": 24
+    },
+    "mid": {
+      "duration": 24,
+      "count": 7
+    },
+    "long": {
+      "duration": 168,
+      "count": 4
+    },
+    "overview": {
+      "duration": 1,
+      "count": 672
+    },
+    "session": {
+      "milestone": {
+        "event": {
+          "type": "Eclipse close"
+        }
+      },
+      "count": 15
+    },
+    "engagement": {
+      "milestone": {
+        "event": {
+          "type": "save"
+        }
+      },
+      "count": 15
+    },
+    "last-session": {
+      "milestone": {
+        "event": {
+          "type": "Eclipse close"
+        }
+      },
+      "count": 1
+    },
+    "last-engagement": {
+      "milestone": {
+        "event": {
+          "type": "save"
+        }
+      },
+      "count": 1
+    },
+    "coding-session": {
+      "milestone": {
+        "event": {
+          "type": "launch"
+        }
+      },
+      "count": 15
+    },
+    "last-coding-session": {
+      "milestone": {
+        "event": {
+          "type": "launch"
+        }
+      },
+      "count": 1
+    }
+  },
+  "basics": {
+    "scava-lib-usage": {
+      "human-readable": "Level of using CROSSMINER library change function",
+      "description": "Ratio between user or CROSSMINER plug-in executed library changes."
+    },
+    "scava-search-usage": {
+      "human-readable": "Level of using CROSSMINER search function",
+      "description": "Count of time when the user initiate any free text (keyword) search using CROSSMINER plug-in."
+    },
+    "scava-search-success": {
+      "human-readable": "Level of successfull free text serach using CROSSMINER plug-in",
+      "description": "Count of time when the user initiate any free text (keyword) search using CROSSMINER plug-in divided by the ratio between user or CROSSMINER plug-in executed library changes."
+    },
+    "modifictaion-rate": {
+      "human-readable": "Rate of changes applied to document",
+      "description": "Count of DocumentEvents, which denote content changes of various source files."
+    },
+    "gui-usage-rate": {
+      "human-readable": "Rate of activly using the GUI of Eclipse",
+      "description": "Count of Part and Window related events."
+    },
+    "testing-rate": {
+      "human-readable": "Rate of testing",
+      "description": "Count of executing tests."
+    },
+    "working-time": {
+      "human-readable": "Average working time for Java source files",
+      "description": "Average time while Java source files are open."
+    },
+    "file-access-rate": {
+      "human-readable": "Average rate of file access",
+      "description": "Average count of Java source files open and brought to top."
+    }
+  },
+  "metrics": {
+    "scava-lib-usage": {
+      "base": "scava-lib-usage",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "scava-search-usage": {
+      "base": "scava-search-usage",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "scava-search-success": {
+      "base": "scava-search-success",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "modifictaion-rate": {
+      "base": "modifictaion-rate",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "gui-usage-rate": {
+      "base": "gui-usage-rate",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "trust": {
+      "base": "modifictaion-rate",
+      "versions": {
+        "per-engagement": {
+          "time-frame": "engagement",
+          "aggregation": "average"
+        },
+        "recent": {
+          "time-frame": "last-engagement",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "engagement",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "confidence": {
+      "base": "modifictaion-rate",
+      "versions": {
+        "per-coding-session": {
+          "time-frame": "coding-session",
+          "aggregation": "average"
+        },
+        "recent": {
+          "time-frame": "last-coding-session",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "coding-session",
+          "aggregation": "stddev"
+        }
+      }
+    },
+    "testing-rate": {
+      "base": "testing-rate",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        },
+        "per-coding-session": {
+          "time-frame": "coding-session",
+          "aggregation": "average"
+        }
+      }
+    },
+    "working-time": {
+      "base": "working-time",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        },
+        "per-coding-session": {
+          "time-frame": "coding-session",
+          "aggregation": "average"
+        }
+      }
+    },
+    "file-access-rate": {
+      "base": "file-access-rate",
+      "versions": {
+        "shortterm": {
+          "time-frame": "short",
+          "aggregation": "average"
+        },
+        "midterm": {
+          "time-frame": "mid",
+          "aggregation": "average"
+        },
+        "longterm": {
+          "time-frame": "long",
+          "aggregation": "average"
+        },
+        "overview": {
+          "time-frame": "overview",
+          "aggregation": "average"
+        },
+        "divergency": {
+          "time-frame": "overview",
+          "aggregation": "stddev"
+        }
+      }
+    }
+  }
+}
