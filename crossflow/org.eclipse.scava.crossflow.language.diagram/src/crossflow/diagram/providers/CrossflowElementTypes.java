@@ -19,6 +19,8 @@ import org.eclipse.swt.graphics.Image;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.ConfigurationEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
@@ -66,6 +68,18 @@ public class CrossflowElementTypes {
 	 */
 	public static final IElementType Workflow_1000 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Workflow_1000"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType CsvSource_2009 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.CsvSource_2009"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType CsvSink_2010 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.CsvSink_2010"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -184,6 +198,10 @@ public class CrossflowElementTypes {
 
 			elements.put(Workflow_1000, CrossflowPackage.eINSTANCE.getWorkflow());
 
+			elements.put(CsvSource_2009, CrossflowPackage.eINSTANCE.getCsvSource());
+
+			elements.put(CsvSink_2010, CrossflowPackage.eINSTANCE.getCsvSink());
+
 			elements.put(Topic_2001, CrossflowPackage.eINSTANCE.getTopic());
 
 			elements.put(Queue_2002, CrossflowPackage.eINSTANCE.getQueue());
@@ -227,6 +245,8 @@ public class CrossflowElementTypes {
 		if (KNOWN_ELEMENT_TYPES == null) {
 			KNOWN_ELEMENT_TYPES = new HashSet<IElementType>();
 			KNOWN_ELEMENT_TYPES.add(Workflow_1000);
+			KNOWN_ELEMENT_TYPES.add(CsvSource_2009);
+			KNOWN_ELEMENT_TYPES.add(CsvSink_2010);
 			KNOWN_ELEMENT_TYPES.add(Topic_2001);
 			KNOWN_ELEMENT_TYPES.add(Queue_2002);
 			KNOWN_ELEMENT_TYPES.add(Source_2003);
@@ -251,6 +271,10 @@ public class CrossflowElementTypes {
 		switch (visualID) {
 		case WorkflowEditPart.VISUAL_ID:
 			return Workflow_1000;
+		case CsvSourceEditPart.VISUAL_ID:
+			return CsvSource_2009;
+		case CsvSinkEditPart.VISUAL_ID:
+			return CsvSink_2010;
 		case TopicEditPart.VISUAL_ID:
 			return Topic_2001;
 		case QueueEditPart.VISUAL_ID:

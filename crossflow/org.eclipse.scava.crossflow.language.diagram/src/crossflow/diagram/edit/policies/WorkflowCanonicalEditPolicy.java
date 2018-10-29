@@ -36,6 +36,8 @@ import org.eclipse.gmf.tooling.runtime.update.UpdaterLinkDescriptor;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.ConfigurationEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
@@ -78,8 +80,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	protected Set getFeaturesToSynchronize() {
 		if (myFeaturesToSynchronize == null) {
 			myFeaturesToSynchronize = new HashSet<EStructuralFeature>();
-			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Tasks());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Configuration());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
@@ -118,6 +120,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	private boolean isMyDiagramElement(View view) {
 		int visualID = CrossflowVisualIDRegistry.getVisualID(view);
 		switch (visualID) {
+		case CsvSourceEditPart.VISUAL_ID:
+		case CsvSinkEditPart.VISUAL_ID:
 		case TopicEditPart.VISUAL_ID:
 		case QueueEditPart.VISUAL_ID:
 		case SourceEditPart.VISUAL_ID:
@@ -281,6 +285,20 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case WorkflowEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getWorkflow_1000ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case CsvSourceEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getCsvSource_2009ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case CsvSinkEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getCsvSink_2010ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

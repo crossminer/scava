@@ -18,6 +18,8 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
+import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
+import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
 import crossflow.diagram.edit.parts.FieldNameEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
@@ -31,6 +33,40 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
  * @generated
  */
 public class CrossflowParserProvider extends AbstractProvider implements IParserProvider {
+
+	/**
+	* @generated
+	*/
+	private IParser csvSourceName_5008Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getCsvSourceName_5008Parser() {
+		if (csvSourceName_5008Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			csvSourceName_5008Parser = parser;
+		}
+		return csvSourceName_5008Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser csvSinkName_5009Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getCsvSinkName_5009Parser() {
+		if (csvSinkName_5009Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			csvSinkName_5009Parser = parser;
+		}
+		return csvSinkName_5009Parser;
+	}
 
 	/**
 	* @generated
@@ -166,6 +202,10 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	 */
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
+		case CsvSourceNameEditPart.VISUAL_ID:
+			return getCsvSourceName_5008Parser();
+		case CsvSinkNameEditPart.VISUAL_ID:
+			return getCsvSinkName_5009Parser();
 		case SourceNameEditPart.VISUAL_ID:
 			return getSourceName_5001Parser();
 		case SinkNameEditPart.VISUAL_ID:

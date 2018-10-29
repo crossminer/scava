@@ -66,6 +66,7 @@ public class TaskItemProvider
 			addNamePropertyDescriptor(object);
 			addInputPropertyDescriptor(object);
 			addOutputPropertyDescriptor(object);
+			addMasterOnlyPropertyDescriptor(object);
 			addParallelPropertyDescriptor(object);
 			addCachedPropertyDescriptor(object);
 		}
@@ -134,6 +135,28 @@ public class TaskItemProvider
 				 false,
 				 true,
 				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Master Only feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMasterOnlyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Task_masterOnly_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_masterOnly_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__MASTER_ONLY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -221,6 +244,7 @@ public class TaskItemProvider
 
 		switch (notification.getFeatureID(Task.class)) {
 			case CrossflowPackage.TASK__NAME:
+			case CrossflowPackage.TASK__MASTER_ONLY:
 			case CrossflowPackage.TASK__PARALLEL:
 			case CrossflowPackage.TASK__CACHED:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

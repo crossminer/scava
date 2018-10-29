@@ -46,7 +46,15 @@ class Task {
 class Source extends Task {
 }
 
+class CsvSource extends Source {
+  attr String path;
+}
+
 class Sink extends Task {
+}
+
+class CsvSink extends Sink {
+  attr String path;
 }
 
 @gmf.node(label="name")

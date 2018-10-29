@@ -92,8 +92,16 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createSourceAdapter();
 			}
 			@Override
+			public Adapter caseCsvSource(CsvSource object) {
+				return createCsvSourceAdapter();
+			}
+			@Override
 			public Adapter caseSink(Sink object) {
 				return createSinkAdapter();
+			}
+			@Override
+			public Adapter caseCsvSink(CsvSink object) {
+				return createCsvSinkAdapter();
 			}
 			@Override
 			public Adapter caseType(Type object) {
@@ -212,6 +220,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.CsvSource <em>Csv Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.CsvSource
+	 * @generated
+	 */
+	public Adapter createCsvSourceAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link crossflow.Sink <em>Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -222,6 +244,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.CsvSink <em>Csv Sink</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.CsvSink
+	 * @generated
+	 */
+	public Adapter createCsvSinkAdapter() {
 		return null;
 	}
 

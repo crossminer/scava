@@ -5,7 +5,9 @@ package crossflow.impl;
 import crossflow.CrossflowPackage;
 import crossflow.Source;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->

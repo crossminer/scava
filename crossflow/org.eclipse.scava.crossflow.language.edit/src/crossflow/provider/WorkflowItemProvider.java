@@ -239,7 +239,17 @@ public class WorkflowItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCsvSource()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
 				 CrossflowFactory.eINSTANCE.createSink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCsvSink()));
 
 		newChildDescriptors.add
 			(createChildParameter

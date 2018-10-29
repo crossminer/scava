@@ -67,6 +67,15 @@ public interface CrossflowFactory extends EFactory {
 	Source createSource();
 
 	/**
+	 * Returns a new object of class '<em>Csv Source</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Csv Source</em>'.
+	 * @generated
+	 */
+	CsvSource createCsvSource();
+
+	/**
 	 * Returns a new object of class '<em>Sink</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -74,6 +83,15 @@ public interface CrossflowFactory extends EFactory {
 	 * @generated
 	 */
 	Sink createSink();
+
+	/**
+	 * Returns a new object of class '<em>Csv Sink</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Csv Sink</em>'.
+	 * @generated
+	 */
+	CsvSink createCsvSink();
 
 	/**
 	 * Returns a new object of class '<em>Type</em>'.

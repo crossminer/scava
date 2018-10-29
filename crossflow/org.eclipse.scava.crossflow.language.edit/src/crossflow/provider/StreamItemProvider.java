@@ -62,6 +62,8 @@ public class StreamItemProvider
 
 			addNamePropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
+			addInputOfPropertyDescriptor(object);
+			addOutputOfPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -80,6 +82,50 @@ public class StreamItemProvider
 				 getString("_UI_Stream_type_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Stream_type_feature", "_UI_Stream_type"),
 				 CrossflowPackage.Literals.STREAM__TYPE,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Input Of feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addInputOfPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Stream_inputOf_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Stream_inputOf_feature", "_UI_Stream_type"),
+				 CrossflowPackage.Literals.STREAM__INPUT_OF,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Output Of feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOutputOfPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Stream_outputOf_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Stream_outputOf_feature", "_UI_Stream_type"),
+				 CrossflowPackage.Literals.STREAM__OUTPUT_OF,
 				 true,
 				 false,
 				 true,

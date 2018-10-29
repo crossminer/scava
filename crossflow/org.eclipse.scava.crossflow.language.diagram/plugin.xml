@@ -258,7 +258,7 @@
          </object>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" containerViews="referencing-diagrams"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Crossflow"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,3001"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2009,2010,2001,2002,2003,2004,2005,2006,2007,2008,3001"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4002,4003,4004"/>
       </viewProvider>
    </extension>
@@ -271,13 +271,13 @@
             <method name="getType()" value="Crossflow"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,3001"/>
+            <method name="getType()" value="2009,2010,2001,2002,2003,2004,2005,2006,2007,2008,3001"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4002,4003,4004"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5001,5002,5003,5004,5006,5007,5005"/>
+            <method name="getType()" value="5008,5009,5001,5002,5003,5004,5006,5007,5005"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
             <method name="getType()" value="7001"/>
@@ -293,6 +293,16 @@
          <Priority name="Lowest"/>
          <object class="crossflow.diagram.edit.parts.WorkflowEditPart" id="Workflow_1000"/>
          <context elements="Workflow_1000"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfCsvSourceEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.CsvSourceEditPart" id="CsvSource_2009"/>
+         <context elements="CsvSource_2009"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfCsvSinkEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.CsvSinkEditPart" id="CsvSink_2010"/>
+         <context elements="CsvSink_2010"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfTopicEditPart">
          <Priority name="Lowest"/>
@@ -362,7 +372,7 @@
       <decoratorProvider class="crossflow.diagram.providers.CrossflowShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
          <object class="org.eclipse.gmf.runtime.notation.Node(org.eclipse.gmf.runtime.notation)" id="generated-top-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008"/>
+            <method name="getType()" value="2009,2010,2001,2002,2003,2004,2005,2006,2007,2008"/>
          </object>
          <context decoratorTargets="generated-top-nodes"/>
       </decoratorProvider>
@@ -378,6 +388,26 @@
                eclass="Workflow"
                edithelper="crossflow.diagram.edit.helpers.WorkflowEditHelper">
             <param name="semanticHint" value="1000"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <metamodelType
+               id="org.eclipse.scava.crossflow.language.diagram.CsvSource_2009"
+               name="%metatype.name.CsvSource_2009"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CsvSource"
+               edithelper="crossflow.diagram.edit.helpers.CsvSourceEditHelper">
+            <param name="semanticHint" value="2009"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <metamodelType
+               id="org.eclipse.scava.crossflow.language.diagram.CsvSink_2010"
+               name="%metatype.name.CsvSink_2010"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CsvSink"
+               edithelper="crossflow.diagram.edit.helpers.CsvSinkEditHelper">
+            <param name="semanticHint" value="2010"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
@@ -518,6 +548,8 @@
       </clientContext> 
       <binding context="org.eclipse.scava.crossflow.language.diagram.TypeContext">
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Workflow_1000"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.CsvSource_2009"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.CsvSink_2010"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Topic_2001"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Queue_2002"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Source_2003"/>

@@ -187,6 +187,29 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CsvSource} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CsvSourceItemProvider csvSourceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CsvSource}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCsvSourceAdapter() {
+		if (csvSourceItemProvider == null) {
+			csvSourceItemProvider = new CsvSourceItemProvider(this);
+		}
+
+		return csvSourceItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link crossflow.Sink} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -207,6 +230,29 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		}
 
 		return sinkItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CsvSink} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CsvSinkItemProvider csvSinkItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CsvSink}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCsvSinkAdapter() {
+		if (csvSinkItemProvider == null) {
+			csvSinkItemProvider = new CsvSinkItemProvider(this);
+		}
+
+		return csvSinkItemProvider;
 	}
 
 	/**
@@ -382,7 +428,9 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (queueItemProvider != null) queueItemProvider.dispose();
 		if (taskItemProvider != null) taskItemProvider.dispose();
 		if (sourceItemProvider != null) sourceItemProvider.dispose();
+		if (csvSourceItemProvider != null) csvSourceItemProvider.dispose();
 		if (sinkItemProvider != null) sinkItemProvider.dispose();
+		if (csvSinkItemProvider != null) csvSinkItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
 		if (configurationItemProvider != null) configurationItemProvider.dispose();

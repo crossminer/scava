@@ -48,6 +48,10 @@ import org.eclipse.swt.graphics.FontData;
 
 import crossflow.diagram.edit.parts.ConfigurationEditPart;
 import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
+import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
@@ -155,6 +159,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 					return false; // foreign diagram
 				}
 				switch (visualID) {
+				case CsvSourceEditPart.VISUAL_ID:
+				case CsvSinkEditPart.VISUAL_ID:
 				case TopicEditPart.VISUAL_ID:
 				case QueueEditPart.VISUAL_ID:
 				case SourceEditPart.VISUAL_ID:
@@ -174,7 +180,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				}
 			}
 		}
-		return TopicEditPart.VISUAL_ID == visualID || QueueEditPart.VISUAL_ID == visualID
+		return CsvSourceEditPart.VISUAL_ID == visualID || CsvSinkEditPart.VISUAL_ID == visualID
+				|| TopicEditPart.VISUAL_ID == visualID || QueueEditPart.VISUAL_ID == visualID
 				|| SourceEditPart.VISUAL_ID == visualID || SinkEditPart.VISUAL_ID == visualID
 				|| ConfigurationEditPart.VISUAL_ID == visualID || TaskEditPart.VISUAL_ID == visualID
 				|| TypeEditPart.VISUAL_ID == visualID || FieldEditPart.VISUAL_ID == visualID
@@ -227,6 +234,10 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 			visualID = CrossflowVisualIDRegistry.getVisualID(semanticHint);
 		}
 		switch (visualID) {
+		case CsvSourceEditPart.VISUAL_ID:
+			return createCsvSource_2009(domainElement, containerView, index, persisted, preferencesHint);
+		case CsvSinkEditPart.VISUAL_ID:
+			return createCsvSink_2010(domainElement, containerView, index, persisted, preferencesHint);
 		case TopicEditPart.VISUAL_ID:
 			return createTopic_2001(domainElement, containerView, index, persisted, preferencesHint);
 		case QueueEditPart.VISUAL_ID:
@@ -269,6 +280,80 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		}
 		// can never happen, provided #provides(CreateEdgeViewOperation) is correct
 		return null;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createCsvSource_2009(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(CsvSourceEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5008 = createLabel(node, CrossflowVisualIDRegistry.getType(CsvSourceNameEditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createCsvSink_2010(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(CsvSinkEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5009 = createLabel(node, CrossflowVisualIDRegistry.getType(CsvSinkNameEditPart.VISUAL_ID));
+		return node;
 	}
 
 	/**

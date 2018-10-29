@@ -5,6 +5,8 @@ package crossflow.impl;
 import crossflow.Configuration;
 import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
+import crossflow.CsvSink;
+import crossflow.CsvSource;
 import crossflow.Field;
 import crossflow.Queue;
 import crossflow.Sink;
@@ -76,7 +78,21 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass csvSourceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass sinkEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass csvSinkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -372,8 +388,44 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getCsvSource() {
+		return csvSourceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCsvSource_Path() {
+		return (EAttribute)csvSourceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getSink() {
 		return sinkEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCsvSink() {
+		return csvSinkEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCsvSink_Path() {
+		return (EAttribute)csvSinkEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -559,7 +611,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 
 		sourceEClass = createEClass(SOURCE);
 
+		csvSourceEClass = createEClass(CSV_SOURCE);
+		createEAttribute(csvSourceEClass, CSV_SOURCE__PATH);
+
 		sinkEClass = createEClass(SINK);
+
+		csvSinkEClass = createEClass(CSV_SINK);
+		createEAttribute(csvSinkEClass, CSV_SINK__PATH);
 
 		typeEClass = createEClass(TYPE);
 		createEAttribute(typeEClass, TYPE__NAME);
@@ -610,7 +668,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		topicEClass.getESuperTypes().add(this.getStream());
 		queueEClass.getESuperTypes().add(this.getStream());
 		sourceEClass.getESuperTypes().add(this.getTask());
+		csvSourceEClass.getESuperTypes().add(this.getSource());
 		sinkEClass.getESuperTypes().add(this.getTask());
+		csvSinkEClass.getESuperTypes().add(this.getSink());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(workflowEClass, Workflow.class, "Workflow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -642,7 +702,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 
 		initEClass(sourceEClass, Source.class, "Source", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(csvSourceEClass, CsvSource.class, "CsvSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCsvSource_Path(), ecorePackage.getEString(), "path", null, 0, 1, CsvSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(sinkEClass, Sink.class, "Sink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(csvSinkEClass, CsvSink.class, "CsvSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCsvSink_Path(), ecorePackage.getEString(), "path", null, 0, 1, CsvSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

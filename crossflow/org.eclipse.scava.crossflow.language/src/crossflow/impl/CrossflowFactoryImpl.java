@@ -61,7 +61,9 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.QUEUE: return createQueue();
 			case CrossflowPackage.TASK: return createTask();
 			case CrossflowPackage.SOURCE: return createSource();
+			case CrossflowPackage.CSV_SOURCE: return createCsvSource();
 			case CrossflowPackage.SINK: return createSink();
+			case CrossflowPackage.CSV_SINK: return createCsvSink();
 			case CrossflowPackage.TYPE: return createType();
 			case CrossflowPackage.FIELD: return createField();
 			case CrossflowPackage.CONFIGURATION: return createConfiguration();
@@ -125,9 +127,29 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public CsvSource createCsvSource() {
+		CsvSourceImpl csvSource = new CsvSourceImpl();
+		return csvSource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Sink createSink() {
 		SinkImpl sink = new SinkImpl();
 		return sink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CsvSink createCsvSink() {
+		CsvSinkImpl csvSink = new CsvSinkImpl();
+		return csvSink;
 	}
 
 	/**

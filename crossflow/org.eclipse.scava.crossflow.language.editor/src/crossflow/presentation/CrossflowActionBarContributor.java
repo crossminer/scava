@@ -163,6 +163,7 @@ public class CrossflowActionBarContributor
 	 */
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
+		super.contributeToToolBar(toolBarManager);
 		toolBarManager.add(new Separator("crossflow-settings"));
 		toolBarManager.add(new Separator("crossflow-additions"));
 	}

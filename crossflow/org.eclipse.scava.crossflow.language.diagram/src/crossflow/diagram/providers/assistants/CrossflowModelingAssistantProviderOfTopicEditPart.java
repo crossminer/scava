@@ -119,10 +119,14 @@ public class CrossflowModelingAssistantProviderOfTopicEditPart extends Crossflow
 	public List<IElementType> doGetTypesForSource(TopicEditPart target, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.TaskInput_4002) {
+			types.add(CrossflowElementTypes.CsvSource_2009);
+			types.add(CrossflowElementTypes.CsvSink_2010);
 			types.add(CrossflowElementTypes.Source_2003);
 			types.add(CrossflowElementTypes.Sink_2004);
 			types.add(CrossflowElementTypes.Task_2006);
 		} else if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
+			types.add(CrossflowElementTypes.CsvSource_2009);
+			types.add(CrossflowElementTypes.CsvSink_2010);
 			types.add(CrossflowElementTypes.Source_2003);
 			types.add(CrossflowElementTypes.Sink_2004);
 			types.add(CrossflowElementTypes.Task_2006);

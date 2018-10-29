@@ -14,6 +14,10 @@ import crossflow.CrossflowPackage;
 import crossflow.Workflow;
 import crossflow.diagram.edit.parts.ConfigurationEditPart;
 import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
+import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
@@ -141,6 +145,12 @@ public class CrossflowVisualIDRegistry {
 		}
 		switch (containerVisualID) {
 		case WorkflowEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getCsvSource().isSuperTypeOf(domainElement.eClass())) {
+				return CsvSourceEditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getCsvSink().isSuperTypeOf(domainElement.eClass())) {
+				return CsvSinkEditPart.VISUAL_ID;
+			}
 			if (CrossflowPackage.eINSTANCE.getTopic().isSuperTypeOf(domainElement.eClass())) {
 				return TopicEditPart.VISUAL_ID;
 			}
@@ -195,6 +205,12 @@ public class CrossflowVisualIDRegistry {
 		}
 		switch (containerVisualID) {
 		case WorkflowEditPart.VISUAL_ID:
+			if (CsvSourceEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (CsvSinkEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (TopicEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -217,6 +233,16 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			if (FieldEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CsvSourceEditPart.VISUAL_ID:
+			if (CsvSourceNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CsvSinkEditPart.VISUAL_ID:
+			if (CsvSinkNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -346,6 +372,8 @@ public class CrossflowVisualIDRegistry {
 		case ConfigurationEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
+		case CsvSourceEditPart.VISUAL_ID:
+		case CsvSinkEditPart.VISUAL_ID:
 		case Field2EditPart.VISUAL_ID:
 			return true;
 		default:

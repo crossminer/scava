@@ -254,74 +254,94 @@ public class Messages extends NLS {
 	public static String Configuration1CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String Field2CreationTool_title;
-
-	/**
-	 * @generated
-	 */
-	public static String Field2CreationTool_desc;
+	* @generated
+	*/
+	public static String CsvSink2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Queue3CreationTool_title;
+	public static String CsvSink2CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Queue3CreationTool_desc;
+	public static String CsvSource3CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink4CreationTool_title;
+	public static String CsvSource3CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Sink4CreationTool_desc;
+	public static String Field4CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source5CreationTool_title;
+	public static String Field4CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source5CreationTool_desc;
+	public static String Queue5CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task6CreationTool_title;
+	public static String Queue5CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task6CreationTool_desc;
+	public static String Sink6CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic7CreationTool_title;
+	public static String Sink6CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic7CreationTool_desc;
+	public static String Source7CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type8CreationTool_title;
+	public static String Source7CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type8CreationTool_desc;
+	public static String Task8CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Task8CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Topic9CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Topic9CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type10CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type10CreationTool_desc;
 
 	/**
 	 * @generated
@@ -422,6 +442,16 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String NavigatorGroupName_Type_2007_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_CsvSource_2009_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_CsvSink_2010_outgoinglinks;
 
 	/**
 	* @generated

@@ -122,7 +122,8 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	private Command getEditHelperCommand(IEditCommandRequest request, Command editPolicyCommand) {
 		if (editPolicyCommand != null) {
 			ICommand command = editPolicyCommand instanceof ICommandProxy
-					? ((ICommandProxy) editPolicyCommand).getICommand() : new CommandProxy(editPolicyCommand);
+					? ((ICommandProxy) editPolicyCommand).getICommand()
+					: new CommandProxy(editPolicyCommand);
 			request.setParameter(GeneratedEditHelperBase.EDIT_POLICY_COMMAND, command);
 		}
 		IElementType requestContextElementType = getContextElementType(request);
@@ -330,6 +331,9 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 					return false;
 				}
 			}
+			if (target != null && (target.getInputOf().contains(target))) {
+				return false;
+			}
 
 			return canExistTaskInput_4002(source, target);
 		}
@@ -342,6 +346,9 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				if (source.getOutput().contains(target)) {
 					return false;
 				}
+			}
+			if (target != null && (target.getOutputOf().contains(target))) {
+				return false;
 			}
 
 			return canExistTaskOutput_4003(source, target);

@@ -449,6 +449,88 @@ public interface CrossflowPackage extends EPackage {
 	int SOURCE_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.CsvSourceImpl <em>Csv Source</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.CsvSourceImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getCsvSource()
+	 * @generated
+	 */
+	int CSV_SOURCE = 6;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__NAME = SOURCE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__INPUT = SOURCE__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__OUTPUT = SOURCE__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__MASTER_ONLY = SOURCE__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__PARALLEL = SOURCE__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__CACHED = SOURCE__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__PATH = SOURCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Csv Source</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE_FEATURE_COUNT = SOURCE_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.SinkImpl <em>Sink</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -456,7 +538,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getSink()
 	 * @generated
 	 */
-	int SINK = 6;
+	int SINK = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -522,6 +604,88 @@ public interface CrossflowPackage extends EPackage {
 	int SINK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.CsvSinkImpl <em>Csv Sink</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.CsvSinkImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getCsvSink()
+	 * @generated
+	 */
+	int CSV_SINK = 8;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__NAME = SINK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__INPUT = SINK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__OUTPUT = SINK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__MASTER_ONLY = SINK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__PARALLEL = SINK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__CACHED = SINK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__PATH = SINK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Csv Sink</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK_FEATURE_COUNT = SINK_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -529,7 +693,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 7;
+	int TYPE = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -593,7 +757,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getField()
 	 * @generated
 	 */
-	int FIELD = 8;
+	int FIELD = 10;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -630,7 +794,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getConfiguration()
 	 * @generated
 	 */
-	int CONFIGURATION = 9;
+	int CONFIGURATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Number Of Workers</b></em>' attribute.
@@ -926,6 +1090,27 @@ public interface CrossflowPackage extends EPackage {
 	EClass getSource();
 
 	/**
+	 * Returns the meta object for class '{@link crossflow.CsvSource <em>Csv Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Csv Source</em>'.
+	 * @see crossflow.CsvSource
+	 * @generated
+	 */
+	EClass getCsvSource();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.CsvSource#getPath <em>Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Path</em>'.
+	 * @see crossflow.CsvSource#getPath()
+	 * @see #getCsvSource()
+	 * @generated
+	 */
+	EAttribute getCsvSource_Path();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Sink <em>Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -934,6 +1119,27 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSink();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.CsvSink <em>Csv Sink</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Csv Sink</em>'.
+	 * @see crossflow.CsvSink
+	 * @generated
+	 */
+	EClass getCsvSink();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.CsvSink#getPath <em>Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Path</em>'.
+	 * @see crossflow.CsvSink#getPath()
+	 * @see #getCsvSink()
+	 * @generated
+	 */
+	EAttribute getCsvSink_Path();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Type <em>Type</em>}'.
@@ -1305,6 +1511,24 @@ public interface CrossflowPackage extends EPackage {
 		EClass SOURCE = eINSTANCE.getSource();
 
 		/**
+		 * The meta object literal for the '{@link crossflow.impl.CsvSourceImpl <em>Csv Source</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.CsvSourceImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getCsvSource()
+		 * @generated
+		 */
+		EClass CSV_SOURCE = eINSTANCE.getCsvSource();
+
+		/**
+		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CSV_SOURCE__PATH = eINSTANCE.getCsvSource_Path();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.SinkImpl <em>Sink</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1313,6 +1537,24 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SINK = eINSTANCE.getSink();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.CsvSinkImpl <em>Csv Sink</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.CsvSinkImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getCsvSink()
+		 * @generated
+		 */
+		EClass CSV_SINK = eINSTANCE.getCsvSink();
+
+		/**
+		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CSV_SINK__PATH = eINSTANCE.getCsvSink_Path();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.

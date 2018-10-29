@@ -28,6 +28,18 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case WorkflowEditPart.VISUAL_ID:
 				return new WorkflowEditPart(view);
 
+			case CsvSourceEditPart.VISUAL_ID:
+				return new CsvSourceEditPart(view);
+
+			case CsvSourceNameEditPart.VISUAL_ID:
+				return new CsvSourceNameEditPart(view);
+
+			case CsvSinkEditPart.VISUAL_ID:
+				return new CsvSinkEditPart(view);
+
+			case CsvSinkNameEditPart.VISUAL_ID:
+				return new CsvSinkNameEditPart(view);
+
 			case TopicEditPart.VISUAL_ID:
 				return new TopicEditPart(view);
 
