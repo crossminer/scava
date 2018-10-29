@@ -16,15 +16,15 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 			public void run() {
 			
 				// TODO: Add implementation that instantiates, sets, and submits source objects (example below)
-				
-				/*
+				[% var outCtr=0; %]
 				[%for (s in t.output) { %]
-				[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+				[%=s.type.name%] [%=s.type.name.ftlc()%][%=outCtr%] = new [%=s.type.name%]();
 				[%for (f in s.type.fields) { %]
-				[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( [%=f.type%] [%}%]);		
-				get[%=s.name%]().send([%=s.type.name.ftlc()%]);
-				[%}%]
-				*/
+				//	[%=s.type.name.ftlc()%][%=outCtr%].set[%=f.name.ftuc()%]( [%=f.type%] );
+				[%}%]		
+				get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%] );
+				
+				[% outCtr++; } %]
 				
 			}
 		}, 0, 100);
@@ -35,18 +35,18 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
 		
 		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
-		
-		/*
+		[% var outCtr=0; %]
 		[%for (s in t.output) { %]
-		[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+		[%=s.type.name%] [%=s.type.name.ftlc()%][%=outCtr%] = new [%=s.type.name%]();
 		[%for (f in s.type.fields) { %]
-		[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( [%=f.type%] [%}%]);
-		get[%=s.name%]().send([%=s.type.name.ftlc()%]);
+		//	[%=s.type.name.ftlc()%][%=outCtr%].set[%=f.name.ftuc()%]( [%=f.type%] );
 		[%}%]
+		get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%] );
+		
+		[% outCtr++; } %]
 		[% if (t.output.notEmpty()==false) { %]
 		System.out.println("[" + workflow.getName() + "] Result is " + [%=s.type.name.ftlc()%].toString() + " (cached=" + [%=s.type.name.ftlc()%].isCached() + ")");
 		[% } %]
-		*/
 		
 	}
 	[%}}%]

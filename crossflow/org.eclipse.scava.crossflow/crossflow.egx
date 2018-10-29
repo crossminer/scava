@@ -25,11 +25,31 @@ rule Workflow2EclipseTaskStatusPublisherConsumer
 rule Type2Class 
 	transform t : Type {
 	
-	guard : t.impl.isUndefined()
+	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
 	
 	template : "type2class.egl"
 	
 	target : t.getPath() + t.name + ".java"
+}
+
+rule CsvSource2Source
+	transform t : CsvSource {
+
+	parameters : Map{"w" = t.eContainer()}
+
+	template : "csvsource2source.egl"
+	
+	target : t.getImplPath() + t.name + ".java"	
+}
+
+rule CsvSink2Sink
+	transform t : CsvSink {
+
+	parameters : Map{"w" = t.eContainer()}
+
+	template : "csvsink2sink.egl"
+	
+	target : t.getImplPath() + t.name + ".java"	
 }
 
 @greedy
@@ -46,7 +66,7 @@ rule Task2BaseClass
 @greedy
 rule Task2ImplClass 
 	transform t : Task {
-	
+		
 	parameters : Map{"w" = t.eContainer()}
 	
 	template : "task2implclass.egl"

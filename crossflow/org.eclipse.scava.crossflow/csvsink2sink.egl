@@ -1,0 +1,19 @@
+package [%=w.package%];
+
+import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
+
+public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.name%]Base[%}%] {
+
+	[% var inputCtr=0; %]
+	[% for (s in t.input) { %]
+	private CsvWriter writer[%=inputCtr%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+	
+	@Override
+	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+			
+		writer[%=inputCtr%].writeRecord( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].isCached() );
+		
+	}
+	[% inputCtr++; }%]
+
+}

@@ -1,6 +1,11 @@
 package [%=w.package%];
 
 import org.eclipse.scava.crossflow.runtime.Workflow;
+[%if (t.isTypeOf(CsvSource)){%]
+import java.io.IOException;
+import org.apache.commons.csv.CSVRecord;
+import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+[%}%]
 
 public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 	
@@ -27,7 +32,7 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 	
 	[%}%]
 	
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
+	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
 	
 	protected EclipseResultPublisher eclipseResultPublisher;
 	
@@ -76,8 +81,34 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 		
 	}
 	
-	[%if (t.isTypeOf(Source)){%]
+	[%if (t.isKindOf(Source)){%]
 	public abstract void produce();
 	[%}%]
 	
+	[%if (t.isTypeOf(CsvSource)){%]
+	protected static final CsvParser parser = new CsvParser("[%=t.path%]");
+	protected static final Iterable<CSVRecord> records = parser.getRecordsIterable();
+	
+	/**
+	 * Determines if the provided String {@param s} occurs within {@param column}.
+	 * 
+	 * @param s String to look for in CSV column
+	 * @param column column number in CSV file
+	 * @return true if provided String {@param s} occurs within {@param column} and false otherwise
+	 */
+	public static boolean inCollection(String s, int column) {
+		try {
+			for (CSVRecord record : records) {
+				if (record.get(column).equals(s)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			if (e instanceof IOException && e.getMessage().contains("failed to parse")) {
+				// skip
+			}
+		}
+		return false;
+	}
+	[%}%]
 }

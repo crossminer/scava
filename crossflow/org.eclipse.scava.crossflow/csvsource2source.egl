@@ -1,0 +1,22 @@
+package [%=w.package%];
+
+import org.apache.commons.csv.CSVRecord;
+import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+
+public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.name%]Base[%}%] {
+
+	@Override
+	public void produce() {
+		for (CSVRecord record : records) {
+			[%for (s in t.output) { %]
+			[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+			[% var i=0; %]
+			[%for (f in s.type.fields) { %]
+			[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( record.get([%=i%]) );
+			[% i++; }%]
+			get[%=s.name%]().send( [%=s.type.name.ftlc()%] );
+			[%}%]	
+		}
+	}
+
+}
