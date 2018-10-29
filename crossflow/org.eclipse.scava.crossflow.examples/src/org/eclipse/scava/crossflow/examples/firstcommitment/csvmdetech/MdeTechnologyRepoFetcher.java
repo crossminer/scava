@@ -58,7 +58,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersTuple.setField0(extensionKeywordTuple.field0);
 				extensionKeywordStargazersTuple.setField1(result.getRepository().getHtmlUrl());
 				extensionKeywordStargazersTuple.setField2(getRepoStargazerCount(extensionKeywordStargazersTuple.getField1()));				
-				getMdeTechnologyRepoEntries().send(extensionKeywordStargazersTuple);
+				getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple, this.getClass().getName() );
 				
 				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionKeywordStargazersTuple.getField1() + " (search " + searchCode.percentage() + "% completed)");
 			})

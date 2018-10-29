@@ -41,7 +41,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+			workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName() );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -53,7 +53,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( extensionKeywordStargazersRemoteRepoUrlTuple.getId() );
-				workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+				workflow.getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName() );
 			}
 			
 			if ( committedRepoMap.containsKey( extensionKeywordStargazersRemoteRepoUrlTuple.getField1() ) ) {
@@ -69,7 +69,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(authorCount); // repository unique author count
 				
-				getMdeTechnologyRepoAuthorCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+				getMdeTechnologyRepoAuthorCountEntries().send( extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple, this.getClass().getName() );
 			
 			}
 			

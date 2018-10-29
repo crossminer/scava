@@ -39,7 +39,7 @@ public class [%=w.name%] extends Workflow {
 	[%for (s in w.streams) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	[%}%]
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
+	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
 	protected EclipseResultPublisher eclipseResultPublisher;
 	[%}%]
 	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
@@ -78,7 +78,7 @@ public class [%=w.name%] extends Workflow {
 			}
 		}
 
-	[%if(w.tasks.select(s|s.isTypeOf(Sink)).size>0){%]
+	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
 		eclipseResultPublisher = new EclipseResultPublisher(this);
 	[%}%]
 		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
@@ -103,19 +103,17 @@ public class [%=w.name%] extends Workflow {
 		[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
 		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
 		[%}%]	
-		[%if(t.isTypeOf(Sink)){%]
+		[%if(t.isKindOf(Sink)){%]
 		if (isMaster()) {
 		[%}%]				
 		[%=t.name.ftlc()%] = new [%=t.name%]();
 		[%=t.name.ftlc()%].setWorkflow(this);
-		[%if(t.isTypeOf(Sink)){%]
+		[%if(t.isKindOf(Sink)){%]
 		}
 		[%}%]		
 		[%for (i in t.input) { %]
-		[%if(t.isKindOf(Sink)){%]
-		if (isMaster()) [%}%]		
 			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
-		[%if(t.isTypeOf(Sink))%]
+		[%if(t.isKindOf(Sink))%]
 			[%for(incoming in t.input){%]
 				[%for(task in incoming.outputOf){%]
 		if([%=task.name.ftlc()%]!=null)		
@@ -126,7 +124,7 @@ public class [%=w.name%] extends Workflow {
 		[%for (o in t.output) { %]
 		[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 		[%}%]
-		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
+		[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
 		}
 		else if(isMaster()){
 		[%for (i in t.input) { %]
@@ -134,7 +132,7 @@ public class [%=w.name%] extends Workflow {
 		[%}%]
 		}
 		[%}%]		
-		[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
+		[%if(t.masterOnly){%]
 		}
 		[%}%]				
 		[%}%]		
