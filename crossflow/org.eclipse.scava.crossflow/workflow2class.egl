@@ -102,13 +102,17 @@ public class [%=w.name%] extends Workflow {
 		[%}%]
 		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
 		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
+		[%}%]	
+		[%if(t.isTypeOf(Sink)){%]
+		if (isMaster()) {
 		[%}%]				
 		[%=t.name.ftlc()%] = new [%=t.name%]();
 		[%=t.name.ftlc()%].setWorkflow(this);
-		[%for (i in t.input) { %]
 		[%if(t.isTypeOf(Sink)){%]
-		if (isMaster()) [%}%]		
-			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%]);			
+		}
+		[%}%]		
+		[%for (i in t.input) { %]
+			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
 		[%if(t.isTypeOf(Sink))%]
 			[%for(incoming in t.input){%]
 				[%for(task in incoming.outputOf){%]
@@ -120,10 +124,15 @@ public class [%=w.name%] extends Workflow {
 		[%for (o in t.output) { %]
 		[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 		[%}%]
-		[%if(t.masterOnly){%]
+		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
+		}
+		else if(isMaster()){
+		[%for (i in t.input) { %]
+			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
+		[%}%]
 		}
 		[%}%]		
-		[%if ( not ( t.isTypeOf(Sink) or t.isTypeOf(Source) ) ){%]
+		[%if(t.masterOnly){%]
 		}
 		[%}%]				
 		[%}%]		

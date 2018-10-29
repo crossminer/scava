@@ -16,7 +16,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 				pair.setA(new Random().nextInt(2));
 				pair.setB(new Random().nextInt(2));
 				//System.out.println("[" + workflow.getName() + "] Sending " + pair.getA() + " + " + pair.getB());
-				getAdditions().send(pair);
+				getAdditions().send(pair,this.getClass().getName());
 			}
 		}, 0, 100);
 	}

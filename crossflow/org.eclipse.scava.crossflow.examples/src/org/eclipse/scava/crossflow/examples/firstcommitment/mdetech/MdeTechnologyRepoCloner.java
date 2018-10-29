@@ -46,7 +46,7 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple );
+			workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple ,this.getClass().getName());
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -58,7 +58,7 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( extensionKeywordStargazersTuple.getId() );
-				workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple );
+				workflow.getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple ,this.getClass().getName());
 			}
 			
 			if ( committedRepoMap.containsKey( extensionKeywordStargazersTuple.getField1() ) ) {
@@ -73,9 +73,9 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField2(extensionKeywordStargazersTuple.field2); // repository number of stars
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField3(clonedRepoLocation); // cloned repository local path
 
-				getMdeTechnologyClonedRepoEntriesForAuthorCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
-				getMdeTechnologyClonedRepoEntriesForFileCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
-				getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple);
+				getMdeTechnologyClonedRepoEntriesForAuthorCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
+				getMdeTechnologyClonedRepoEntriesForFileCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
+				getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
 
 			}
 			

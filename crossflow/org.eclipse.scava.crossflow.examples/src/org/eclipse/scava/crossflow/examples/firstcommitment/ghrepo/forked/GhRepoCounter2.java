@@ -1,11 +1,11 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
+package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class GhRepoCounter extends GhRepoCounterBase {
+public class GhRepoCounter2 extends GhRepoCounter2Base {
 
 	protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
 
@@ -19,7 +19,7 @@ public class GhRepoCounter extends GhRepoCounterBase {
 
 		if (committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS) {
 			// do not commit to any more repositories - sending back
-			workflow.getGhRepos().send(ghRepo,this.getClass().getName());
+			workflow.getGhRepos().send(ghRepo, this.getClass().getName());
 
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -31,7 +31,7 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add(ghRepo.getId());
-				workflow.getGhRepos().send(ghRepo,this.getClass().getName());
+				workflow.getGhRepos().send(ghRepo, this.getClass().getName());
 			}
 
 			if (committedRepoMap.containsKey(ghRepo.getRepoUrl())) {
@@ -44,8 +44,8 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				r.setRepos(1);
 				r.setFiles(0);
 				r.setAuthors(0);
-				getResultsPublisher().send(r,this.getClass().getName());
-				
+				getResultsPublisher2().send(r, this.getClass().getName());
+
 				// send output to eclipse:
 				Object[] ret = new Object[4];
 				ret[0] = "gmf";
