@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
+package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,6 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
+import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlTuple;
+import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.MdeTechnologyRepoOwnerPopularityCounter;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Repo;
 import org.eclipse.scava.crossflow.restmule.client.github.model.User;
@@ -17,13 +17,9 @@ import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IData;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
-/**
- * @author blizzfire
- *
- */
 public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOwnerPopularityCounterBase {
-
-	protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
+	
+protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 	
 	protected Set<String> alreadySeenJobs = new HashSet<String>();
 	
@@ -41,7 +37,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 	public void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
+			workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -53,7 +49,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( extensionKeywordStargazersRemoteRepoUrlTuple.getId() );
-				workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
+				workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
 			}
 			
 			if ( committedRepoMap.containsKey( extensionKeywordStargazersRemoteRepoUrlTuple.getField1() ) ) {
@@ -69,7 +65,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(repoOwnerFollowerCount); // repository owner follower count
 				
-				getMdeTechnologyRepoOwnerPopularityCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple,this.getClass().getName());
+				getMdeTechnologyRepoOwnerPopularityCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			
 			}
 			

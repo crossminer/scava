@@ -15,6 +15,7 @@ import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IData;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
+import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
 public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 
@@ -44,7 +45,7 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 		IGitHubApi client = GitHubUtils.getOAuthClient();
 		
 		// Construct query parameters
-		String q = "class+extension:kmt"; //MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
+		String q = "extension:" + extensionKeywordTuple.getField0() + "+" + extensionKeywordTuple.getField1(); //class+extension:kmt"; //MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
 		String order = "asc";
 		String sort = null;//"stars"; // sorting by "stars" is not possible for code search (works for repository search)
 		

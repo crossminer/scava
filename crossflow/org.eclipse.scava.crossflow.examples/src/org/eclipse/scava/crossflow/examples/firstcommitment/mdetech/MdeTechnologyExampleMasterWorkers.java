@@ -3,6 +3,7 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 import java.io.File;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
 public class MdeTechnologyExampleMasterWorkers {
 		
