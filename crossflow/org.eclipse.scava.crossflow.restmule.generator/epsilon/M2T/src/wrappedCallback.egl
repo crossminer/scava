@@ -1,6 +1,6 @@
-package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].callback;
+package org.eclipse.scava.crossflow.restmule.client.[%= name %].callback;
 
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PAGE_INFO;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.PAGE_INFO;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.crossmeter.workflow.restmule.core.callback.AbstractWrappedCallback;
-import org.eclipse.crossmeter.workflow.restmule.core.page.IWrap;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].data.[%= R.name %]DataSet;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].page.[%= R.name %]Pagination;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
+import org.eclipse.scava.crossflow.restmule.core.callback.AbstractWrappedCallback;
+import org.eclipse.scava.crossflow.restmule.core.page.IWrap;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].data.[%= R.name %]DataSet;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].page.[%= R.name %]Pagination;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
 
 import okhttp3.Headers;
 import retrofit2.Call;

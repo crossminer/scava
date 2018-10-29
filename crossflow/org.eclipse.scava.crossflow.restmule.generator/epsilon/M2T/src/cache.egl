@@ -1,7 +1,7 @@
-package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].cache;
+package org.eclipse.scava.crossflow.restmule.client.[%= name %].cache;
 
-import org.eclipse.crossmeter.workflow.restmule.core.cache.AbstractCacheManager;
-import org.eclipse.crossmeter.workflow.restmule.core.cache.ICache;
+import org.eclipse.scava.crossflow.restmule.core.cache.AbstractCacheManager;
+import org.eclipse.scava.crossflow.restmule.core.cache.ICache;
 
 public class [%= R.name %]CacheManager extends AbstractCacheManager {
 

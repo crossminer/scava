@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<artifactId>org.eclipse.crossmeter.workflow.restmule.client.[%= R.name.toLowerCase() %]</artifactId>
+	<artifactId>org.eclipse.scava.crossflow.restmule.client.[%= R.name.toLowerCase() %]</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<parent>
-	    <artifactId>org.eclipse.crossmeter.workflow</artifactId>
-	    <groupId>org.eclipse.crossmeter</groupId>
+	    <artifactId>org.eclipse.scava.crossflow</artifactId>
+	    <groupId>org.eclipse.scava</groupId>
 	    <version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
@@ -40,9 +40,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.eclipse.crossmeter</groupId>
+			<groupId>org.eclipse.scava</groupId>
 			<artifactId>
-				org.eclipse.crossmeter.workflow.restmule.core
+				org.eclipse.scava.crossflow.restmule.core
 			</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

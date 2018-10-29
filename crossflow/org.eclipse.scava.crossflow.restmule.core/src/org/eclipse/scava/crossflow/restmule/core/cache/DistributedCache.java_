@@ -1,4 +1,4 @@
-package org.eclipse.crossmeter.workflow.restmule.core.cache;
+package org.eclipse.scava.crossflow.restmule.core.cache;
 
 import java.io.StringReader;
 import java.sql.Connection;
@@ -14,8 +14,8 @@ import org.apache.hive.common.util.HiveStringUtils;
 import org.apache.hive.jdbc.HiveDriver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request;
-import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
+import org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request;
+import org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;

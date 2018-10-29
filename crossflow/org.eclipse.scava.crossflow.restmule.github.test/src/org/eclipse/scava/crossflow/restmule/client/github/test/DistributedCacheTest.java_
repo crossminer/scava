@@ -1,4 +1,4 @@
-package org.eclipse.crossmeter.workflow.restmule.client.github.test;
+package org.eclipse.scava.crossflow.restmule.client.github.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.crossmeter.workflow.restmule.client.github.api.IGitHubApi;
-import org.eclipse.crossmeter.workflow.restmule.client.github.model.Commits;
-import org.eclipse.crossmeter.workflow.restmule.client.github.util.GitHubUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
+import org.eclipse.scava.crossflow.restmule.client.github.model.Commits;
+import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -85,7 +85,7 @@ public class DistributedCacheTest extends GitHubUtils {
                     }
                 });
 
-        //                        Iterable<org.eclipse.crossmeter.workflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
+        //                        Iterable<org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
 
 
 
@@ -177,7 +177,7 @@ public class DistributedCacheTest extends GitHubUtils {
             }
         });
 
-        // Iterable<org.eclipse.crossmeter.workflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
+        // Iterable<org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode> searchCode = client.getSearchCode("asc", query, null).observe().blockingIterable();
 
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.crossmeter.workflow.restmule.client.[%= R.name.toLowerCase() %]</name>
+	<name>org.eclipse.scava.crossflow.restmule.client.[%= R.name.toLowerCase() %]</name>
 	<comment></comment>
 	<projects>
 	</projects>

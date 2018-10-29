@@ -1,14 +1,14 @@
-package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].interceptor;
+package org.eclipse.scava.crossflow.restmule.client.[%= name %].interceptor;
 
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.ACCEPT;
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_LIMIT;
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_REMAINING;
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_RESET;
-import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.USER_AGENT;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.ACCEPT;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_LIMIT;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_REMAINING;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.RATE_LIMIT_RESET;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.USER_AGENT;
 
-import org.eclipse.crossmeter.workflow.restmule.core.interceptor.AbstractInterceptor;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].session.[%= R.name %]Session;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
+import org.eclipse.scava.crossflow.restmule.core.interceptor.AbstractInterceptor;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].session.[%= R.name %]Session;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
 
 import okhttp3.Interceptor;
 

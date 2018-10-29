@@ -1,4 +1,4 @@
-package org.eclipse.crossmeter.workflow.restmule.core;
+package org.eclipse.scava.crossflow.restmule.core;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.flink.shaded.com.google.common.io.Files;
 import org.apache.hive.common.util.HiveStringUtils;
-import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
+import org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
@@ -175,7 +175,7 @@ public class HiveJdbcClientTest {
             //this = {HiveJdbcClientTest@1796}
             //mapper = {ObjectMapper@1829}
             //deserializedObject = null
-            //e = {MismatchedInputException@3578} "com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.util.LinkedHashMap` out of START_ARRAY token\n at [Source: (StringReader); line: 94, column: 25] (through reference chain: org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response["request"]->org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request["headers"]->org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Headers["namesAndValues"])"
+            //e = {MismatchedInputException@3578} "com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.util.LinkedHashMap` out of START_ARRAY token\n at [Source: (StringReader); line: 94, column: 25] (through reference chain: org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response["request"]->org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request["headers"]->org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Headers["namesAndValues"])"
             deserializedObject = mapper.readValue(responseString, OkHttp3Response.class);
 
         } catch (IOException e) {

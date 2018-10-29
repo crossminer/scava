@@ -1,7 +1,7 @@
-package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].data;
+package org.eclipse.scava.crossflow.restmule.client.[%= name %].data;
 
-import org.eclipse.crossmeter.workflow.restmule.core.data.AbstractDataSet;
-import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].page.[%= R.name %]Pagination;
+import org.eclipse.scava.crossflow.restmule.core.data.AbstractDataSet;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].page.[%= R.name %]Pagination;
 
 public class [%= R.name %]DataSet<T> extends AbstractDataSet<T> {
 

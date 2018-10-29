@@ -1,6 +1,6 @@
 [% import "../../util/restmule.eol"; %]
 [% import "../templates/templates.egl"; %]
-package org.eclipse.crossmeter.workflow.restmule.client.[%= package %];
+package org.eclipse.scava.crossflow.restmule.client.[%= package %];
 
 [% if (hasList) { %]
 import java.util.ArrayList;

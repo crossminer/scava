@@ -5,12 +5,12 @@
 	<property name="api" value="github" />
 	<property name="json.model.file" value="schemas/github_v3.json" />
 
-	<property name="output" value="${basedir}/../generated/org.eclipse.crossmeter.workflow.restmule.client.${api}" />
+	<property name="output" value="${basedir}/../org.eclipse.scava.crossflow.restmule.client.${api}" />
 
 	<property name="fix" value="epsilon/util/fix/${api}.eol" />
 
 	<!--Properties -->
-	<property name="codegen" value="org.eclipse.crossmeter.workflow.restmule.generator" />
+	<property name="codegen" value="org.eclipse.scava.crossflow.restmule.generator" />
 	<property name="base" value="epsilon/base" />
 	<property name="base.model" value="epsilon/model/base/base.model" />
 	<property name="json" value="JSON" />

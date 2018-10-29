@@ -1,8 +1,8 @@
-package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].util;
+package org.eclipse.scava.crossflow.restmule.client.[%= name %].util;
 
 import java.util.Properties;
 
-import org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil;
+import org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil;
 
 public class [%= R.name %]PropertiesUtil {
 
