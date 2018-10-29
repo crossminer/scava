@@ -12,9 +12,9 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 			[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
 			[% var i=0; %]
 			[%for (f in s.type.fields) { %]
-			[%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( record.get([%=i%]) );
+			// [%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( record.get([%=i%]) );
 			[% i++; }%]
-			get[%=s.name%]().send( [%=s.type.name.ftlc()%] );
+			get[%=s.name%]().send( [%=s.type.name.ftlc()%], this.getClass().getName() );
 			[%}%]	
 		}
 	}
