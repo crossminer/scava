@@ -22,7 +22,7 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 				[%for (f in s.type.fields) { %]
 				//	[%=s.type.name.ftlc()%][%=outCtr%].set[%=f.name.ftuc()%]( [%=f.type%] );
 				[%}%]		
-				get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%] );
+				get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%], this.getClass().getName() );
 				
 				[% outCtr++; } %]
 				
@@ -41,7 +41,7 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 		[%for (f in s.type.fields) { %]
 		//	[%=s.type.name.ftlc()%][%=outCtr%].set[%=f.name.ftuc()%]( [%=f.type%] );
 		[%}%]
-		get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%] );
+		get[%=s.name%]().send( [%=s.type.name.ftlc()%][%=outCtr%], this.getClass().getName() );
 		
 		[% outCtr++; } %]
 		[% if (t.output.notEmpty()==false) { %]
