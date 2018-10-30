@@ -44,6 +44,7 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				r.setRepos(1);
 				r.setFiles(0);
 				r.setAuthors(0);
+				r.setCorrelationId(ghRepo.getId());
 				getResultsPublisher().send(r,this.getClass().getName());
 				
 				// send output to eclipse:

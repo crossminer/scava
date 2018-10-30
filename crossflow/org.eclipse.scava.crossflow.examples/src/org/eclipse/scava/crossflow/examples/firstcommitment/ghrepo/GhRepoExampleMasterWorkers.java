@@ -16,7 +16,7 @@ public class GhRepoExampleMasterWorkers {
 		GhRepoExample master = new GhRepoExample();
 		// default mode is MASTER
 		master.setMode(Mode.MASTER_BARE);
-		master.setName("Master");
+		master.setName("Master"+"-123456789");
 
 		// example using a second master connected to original broker 
 		// workflow (will produce 2 times the input, as expected)
