@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
 import org.apache.commons.csv.CSVRecord;
-import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
 public class MdeTechnologyCsvSource extends MdeTechnologyCsvSourceBase {
 

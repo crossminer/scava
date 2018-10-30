@@ -6,6 +6,9 @@ import java.io.IOException;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 [%}%]
+[%if (t.isTypeOf(CsvSink)){%]
+import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
+[%}%]
 
 public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 	
@@ -109,6 +112,21 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 			}
 		}
 		return false;
+	}
+	[%}%]
+	
+	[%if (t.isTypeOf(CsvSink)){%]
+	// CSV file writer(s)
+	[% var inputCtr=0; %]
+	[% for (s in t.input) { %]
+	protected CsvWriter writer[%=inputCtr%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+	[% inputCtr++; }%]
+	
+	public void flushAll() {
+	[% var inputCtr=0; %]
+	[% for (s in t.input) { %]
+		writer[%=inputCtr%].flush();
+	[% inputCtr++; }%]
 	}
 	[%}%]
 }

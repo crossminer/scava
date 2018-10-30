@@ -40,6 +40,8 @@ rule CsvSource2Source
 	template : "csvsource2source.egl"
 	
 	target : t.getImplPath() + t.name + ".java"	
+	
+	overwrite : false
 }
 
 rule CsvSink2Sink
@@ -50,6 +52,8 @@ rule CsvSink2Sink
 	template : "csvsink2sink.egl"
 	
 	target : t.getImplPath() + t.name + ".java"	
+	
+	overwrite : false
 }
 
 @greedy
