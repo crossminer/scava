@@ -17,3 +17,5 @@ crossflow/org\.eclipse\.scava\.crossflow\.examples/org\.eclipse\.scava\.crossflo
 crossflow/org\.eclipse\.scava\.crossflow\.tests/crossflow-cache/
 
 crossflow/org\.eclipse\.scava\.crossflow\.tests/activemq-data/
+
+crossflow/org\.eclipse\.scava\.crossflow\.tests/csvs/AdditionResultsCsvSink\.csv
