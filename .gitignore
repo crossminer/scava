@@ -14,3 +14,6 @@ target/
 
 
 crossflow/org\.eclipse\.scava\.crossflow\.examples/org\.eclipse\.scava\.crossflow\.examples-with-dependencies\.jar
+crossflow/org\.eclipse\.scava\.crossflow\.tests/crossflow-cache/
+
+crossflow/org\.eclipse\.scava\.crossflow\.tests/activemq-data/
