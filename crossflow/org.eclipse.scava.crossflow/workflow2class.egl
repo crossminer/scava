@@ -71,10 +71,10 @@ public class [%=w.name%] extends Workflow {
 		if (isMaster()) {
 			cache = new Cache(this);
 			if (createBroker) {
-				BrokerService broker = new BrokerService();
-				broker.setUseJmx(true);
-				broker.addConnector(getBroker());
-				broker.start();
+				brokerService = new BrokerService();
+				brokerService.setUseJmx(true);
+				brokerService.addConnector(getBroker());
+				brokerService.start();
 			}
 		}
 

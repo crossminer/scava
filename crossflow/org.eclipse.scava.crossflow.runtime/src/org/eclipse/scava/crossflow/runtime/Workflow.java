@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime;
 
+import org.apache.activemq.broker.BrokerService;
+
 import com.beust.jcommander.Parameter;
 
 public class Workflow {
@@ -12,7 +14,8 @@ public class Workflow {
 	protected Mode mode = Mode.MASTER;
 	@Parameter(names = { "-master" }, description = "IP of the master")
 	protected String master = "localhost";
-
+	protected BrokerService brokerService;
+	
 	public String getName() {
 		return name;
 	}
@@ -48,5 +51,13 @@ public class Workflow {
 	public enum TaskStatuses {
 		STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
 	};
-
+	
+	public void stop() {
+		try {
+			brokerService.stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
