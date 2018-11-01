@@ -68,13 +68,12 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 	   if (self.isPaged()){
 			params =  new Sequence;
 			params.addAll(request.parameters); 
-			params.add(paged.perIteration); 
+			params.add(paged.perIteration);
 			params.add(paged.page);
 	   }  else {
 	   		params = request.parameters;
 	   }
 	%]
-	// FIXME using endocde=true caused Lucene (cache) to break
 	@[%= request.method %]("[%= request.parent.path %]")
 	[%= self.getEndpointType(name) %] [%= self.methodName() 
 	%]([% if (params.size() == 0){ %]);

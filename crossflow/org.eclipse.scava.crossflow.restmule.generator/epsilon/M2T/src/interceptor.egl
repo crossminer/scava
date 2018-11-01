@@ -7,15 +7,19 @@ import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.RATE
 import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.USER_AGENT;
 
 import org.eclipse.scava.crossflow.restmule.core.interceptor.AbstractInterceptor;
+import org.eclipse.scava.crossflow.restmule.core.session.ISession;
+import org.eclipse.scava.crossflow.restmule.client.stackexchange.cache.[%= R.name %]CacheManager;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].session.[%= R.name %]Session;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
 
 import okhttp3.Interceptor;
 
 public class [%= R.name %]Interceptor extends AbstractInterceptor {
+
+	private final ISession session;
 	
-	public [%= R.name %]Interceptor(String session){
-		this.sessionId = session;
+	public [%= R.name %]Interceptor(ISession session){
+		this.session = session;
 	}
 
 	static {
@@ -28,7 +32,7 @@ public class [%= R.name %]Interceptor extends AbstractInterceptor {
 	}
 
 	public Interceptor mainInterceptor(boolean activeCaching){
-		return mainInterceptor(userAgent, accept,cache, sessionId, headerLimit, headerRemaining, headerReset);
+		return mainInterceptor(activeCaching, session.id(), new [%= R.name %]CacheManager());
 	}
 	
 }

@@ -93,7 +93,7 @@ operation String method() : String {
 
 operation String methodName() : String {
 	var result : String = "";
-	var elements = self.split("/");
+	var elements = self.replace("-","_").split("/");
 	for (e in elements){
 		if (e <> ""){
 			if (not e.startsWith("{")){

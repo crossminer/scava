@@ -6,16 +6,21 @@ import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.API_
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import org.eclipse.scava.crossflow.restmule.core.cache.ICache;
 import org.eclipse.scava.crossflow.restmule.core.client.AbstractClient;
 import org.eclipse.scava.crossflow.restmule.core.client.IClientBuilder;
 import org.eclipse.scava.crossflow.restmule.core.data.IData;
+import org.eclipse.scava.crossflow.restmule.core.interceptor.CacheControlInterceptor;
 import org.eclipse.scava.crossflow.restmule.core.data.Data;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 import org.eclipse.scava.crossflow.restmule.core.session.RateLimitExecutor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].cache.[%= name %]CacheManager;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].interceptor.[%= name %]Interceptor;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].model.*;
+import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].model.Error;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].page.[%= name %]Paged;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].page.[%= name %]Pagination;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].session.[%= name %]Session;
@@ -24,6 +29,8 @@ import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].uti
 import okhttp3.OkHttpClient.Builder;
 
 public class [%= scope %]Api  {
+
+	private static final Logger LOG = LogManager.getLogger(SearchApi.class);
 
 	[%= creators(scope, name) %]
 	
@@ -40,14 +47,20 @@ public class [%= scope %]Api  {
 			super();
 
 			ExecutorService executor = RateLimitExecutor.create(30, [%= name %]Session.class, session.id());
-			[%= name %]Interceptor interceptors = new [%= name %]Interceptor(session.id());
+			[%= name %]Interceptor interceptors = new [%= name %]Interceptor(session);
 			String baseurl = [%= name %]PropertiesUtil.get(API_BASE_URL);
 
 			if (!baseurl.endsWith("/")) baseurl += "/"; // FIXME Validate in Model with EVL 
 
 			Builder clientBuilder = AbstractClient.okHttp(executor);
 			
-			if (activeCaching) clientBuilder = clientBuilder.cache([%= name %]CacheManager.getInstance().getOkHttpCache()); // FIXME Use Lucene Instead
+			ICache localcache = new [%= name %]CacheManager().getCacheInstance();
+			if (activeCaching && localcache != null && !localcache.isDistributed()) {
+				clientBuilder = clientBuilder.cache(localcache.initializeLocal());
+				LOG.info("enabling local okhttp cache");
+			}
+						
+			clientBuilder = clientBuilder.addNetworkInterceptor(CacheControlInterceptor.REWRITE_CACHE_CONTROL_INTERCEPTOR);
 			clientBuilder = clientBuilder.addInterceptor(interceptors.mainInterceptor(activeCaching));
 						
 			this.client = clientBuilder.build();

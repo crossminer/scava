@@ -57,7 +57,7 @@ rule Root2API
 				
 				for (r in responses){
 					var resp = new RestMule!Response;
-					resp.code = r.id.asInteger();
+					resp.code = r.id.replace("default","400").asInteger();
 					resp.description = r.s_description;
 					var rType = r.definition();
 					if (rType <> null){

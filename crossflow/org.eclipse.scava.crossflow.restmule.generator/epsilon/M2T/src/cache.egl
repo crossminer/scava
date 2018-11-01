@@ -2,21 +2,20 @@ package org.eclipse.scava.crossflow.restmule.client.[%= name %].cache;
 
 import org.eclipse.scava.crossflow.restmule.core.cache.AbstractCacheManager;
 import org.eclipse.scava.crossflow.restmule.core.cache.ICache;
+import org.eclipse.scava.crossflow.restmule.core.cache.LocalCache;
 
 public class [%= R.name %]CacheManager extends AbstractCacheManager {
-
-	private static final String AGENT_NAME = "[%= name %]"; 
-
-	private static [%= R.name %]CacheManager agent;
-
-	public static ICache getInstance() {
-		if ([%= R.name %]CacheManager.agent == null){
-			[%= R.name %]CacheManager.agent = new [%= R.name %]CacheManager();
-		} 
-		return [%= R.name %]CacheManager.agent;
+	
+	public void setLocalInstance() {
+		if (cache == null)
+			cache = new LocalCache();
 	}
 
-	private [%= R.name %]CacheManager() { 
-		super(AGENT_NAME);
+	public AbstractCacheManager getInstance() {
+		return manager;
+	}
+
+	public ICache getCacheInstance() {
+		return cache;
 	}
 }

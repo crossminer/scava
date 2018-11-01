@@ -5,4 +5,4 @@ Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.generator;singleton:=t
 Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.apache.ant
+Require-Bundle: org.eclipse.scava.crossflow.runtime.dependencies;bundle-version="1.0.0"

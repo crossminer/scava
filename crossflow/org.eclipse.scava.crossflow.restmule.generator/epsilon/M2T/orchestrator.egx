@@ -4,7 +4,7 @@ pre {
 	("Setting up transformation").println;
 	var output : String = "../output/";
 	var api : RestMule!API = API.all.first;
-	var baseSrcDir : String = "src/main/java/org/eclipse/scava/crossflow/restmule/client/"+ api.name.toLowerCase() + "/"; 
+	var baseSrcDir : String = "src/org/eclipse/scava/crossflow/restmule/client/"+ api.name.toLowerCase() + "/"; 
 	var apiNameLowerCase : String = api.name.toLowerCase();
 	("Starting Transformation").println;
 }
@@ -286,12 +286,6 @@ rule Properties
 	target : output + "resources/" + apiNameLowerCase + ".properties"
 }
 
-rule POM
-	transform R : API {
-	template : "pom.egl"
-	target : output + "pom.xml"
-}
-
 rule Manifest
 	transform R : API {
 	parameters{
@@ -301,6 +295,17 @@ rule Manifest
 	}
 	template : "manifest.egl"
 	target : output + "META-INF/MANIFEST.MF"
+}
+
+rule Classpath
+	transform R : API {
+	parameters{
+		var params : new Map;  	
+  		params.put("name", apiNameLowerCase);
+  		return params;
+	}
+	template : "classpath.egl"
+	target : output + ".classpath"
 }
 
 rule Project

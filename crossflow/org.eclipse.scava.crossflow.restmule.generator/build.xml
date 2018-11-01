@@ -2,8 +2,8 @@
 <project default="setup">
 
 	<!--API Variables -->
-	<property name="api" value="github" />
-	<property name="json.model.file" value="schemas/github_v3.json" />
+	<property name="api" value="stackexchange" />
+	<property name="json.model.file" value="schemas/stackexchange_v2.0.json" />
 
 	<property name="output" value="${basedir}/../org.eclipse.scava.crossflow.restmule.client.${api}" />
 
