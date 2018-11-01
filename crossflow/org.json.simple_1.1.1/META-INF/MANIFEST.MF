@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: 1
+Bundle-SymbolicName: org.json.simple_1.1.1
+Bundle-Version: 1.1.1
+Bundle-ClassPath: json-simple-1.1.1.jar
+Export-Package: org.json.simple,
+ org.json.simple.parser
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
