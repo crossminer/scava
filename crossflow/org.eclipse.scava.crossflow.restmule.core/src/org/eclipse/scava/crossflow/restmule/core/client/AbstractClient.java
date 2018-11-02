@@ -4,6 +4,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.util.concurrent.ExecutorService;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -43,9 +46,11 @@ public abstract class AbstractClient<T> {
 	}
 
 	protected static Retrofit retrofit(OkHttpClient client, String baseUrl){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 		return new Retrofit.Builder()
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync()) 
-				.addConverterFactory(JacksonConverterFactory.create())
+				.addConverterFactory(JacksonConverterFactory.create(mapper))
 				.client(client)
 				.baseUrl(baseUrl)
 				.build();
