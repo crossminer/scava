@@ -8,17 +8,18 @@ import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class GhRepoExampleMasterWorkers {
 
-	private static final int START_WAITING_TIME = 5000;
-	private static final int COMPLETION_WAITING_TIME = 5000;
+	private static final int START_WAITING_TIME = 0;
+	private static final int COMPLETION_WAITING_TIME = 0;
 
 	public static void main(String[] args) throws Exception {
 
 		GhRepoExample master = new GhRepoExample();
 		// default mode is MASTER
 		master.setMode(Mode.MASTER_BARE);
-		master.setName("Master"+"-123456789");
+		master.setName("Master" + "-123456789");
+		master.run();
 
-		// example using a second master connected to original broker 
+		// example using a second master connected to original broker
 		// workflow (will produce 2 times the input, as expected)
 		GhRepoExample master2 = null;
 		if (args.length > 0) {
@@ -35,21 +36,28 @@ public class GhRepoExampleMasterWorkers {
 		worker1.excludeTasks(tasksToExclude);
 		worker1.setMode(Mode.WORKER);
 		worker1.setName("Worker1");
+		worker1.run();
 
 		GhRepoExample worker2 = new GhRepoExample();
 		// worker2.excludeTasks(tasksToExclude);
 		worker2.setMode(Mode.WORKER);
 		worker2.setName("Worker2");
+		worker2.run();
 
 		Thread.sleep(START_WAITING_TIME); // to allow connecting from eclipse
 
-		master.run();
-		worker1.run();
-		worker2.run();
 		if (args.length > 0)
 			master2.run();
 
-		Thread.sleep(COMPLETION_WAITING_TIME); // to allow printout after run is completed
+		// Thread.sleep(COMPLETION_WAITING_TIME); // to allow printout after run
+		// is completed
+
+		boolean t = master.isTerminated();
+		while (!t) {
+			// wait
+			t = master.isTerminated();
+			Thread.sleep(100);
+		}
 
 		System.out.println("\nPRINTING EXECUTION STATISTICS ...\n");
 
@@ -59,7 +67,7 @@ public class GhRepoExampleMasterWorkers {
 
 		System.out.println("... COMPLETED !");
 
-		System.exit(0);
+		// System.exit(0);
 
 	}
 
@@ -75,7 +83,8 @@ public class GhRepoExampleMasterWorkers {
 									.getGhRepoCounter().getCommittedRepoMap().values().stream().mapToInt(i -> i).sum()
 							+ " )\n");
 		} catch (Exception e) {
-			// XXX this will crash for workers that dont have this task, temporary solution
+			// XXX this will crash for workers that dont have this task,
+			// temporary solution
 			// e.printStackTrace();
 		}
 	}

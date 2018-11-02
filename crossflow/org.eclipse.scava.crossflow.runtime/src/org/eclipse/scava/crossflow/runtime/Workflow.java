@@ -52,6 +52,10 @@ public class Workflow {
 		STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
 	};
 	
+	public enum ControlReasons {
+		INTENTFORPRODUCTION,TERMINATION
+	};
+	
 	public void stop() {
 		try {
 			brokerService.stop();
