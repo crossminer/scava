@@ -423,7 +423,7 @@ public class Questions {
 		private Integer questionId;
 		
 		@JsonProperty("other_site") 
-		private OtherSiteInner otherSiteInner;
+		private OtherSite otherSite;
 		
 		public Integer getOnDate() {
 			return this.onDate;
@@ -433,8 +433,8 @@ public class Questions {
 			return this.questionId;
 		}
 		
-		public OtherSiteInner getOtherSiteInner() {
-			return this.otherSiteInner;
+		public OtherSite getOtherSite() {
+			return this.otherSite;
 		}
 		
 		@Override
@@ -442,13 +442,13 @@ public class Questions {
 			return "MigratedTo [ "
 				+ "onDate = " + this.onDate + ", "
 				+ "questionId = " + this.questionId + ", "
-				+ "otherSiteInner = " + this.otherSiteInner + ", "
+				+ "otherSite = " + this.otherSite + ", "
 				+ "]"; 
 		}	
 		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class OtherSiteInner {
+		public static class OtherSite {
 		
-			public OtherSiteInner(){}
+			public OtherSite(){}
 		
 			@JsonProperty("icon_url") 
 			private String iconUrl;
@@ -578,7 +578,7 @@ public class Questions {
 			
 			@Override
 			public String toString() {
-				return "OtherSiteInner [ "
+				return "OtherSite [ "
 					+ "iconUrl = " + this.iconUrl + ", "
 					+ "audience = " + this.audience + ", "
 					+ "faviconUrl = " + this.faviconUrl + ", "
@@ -911,7 +911,7 @@ public class Questions {
 		private Integer questionId;
 		
 		@JsonProperty("other_site") 
-		private OtherSite otherSite;
+		private OtherSiteInner otherSiteInner;
 		
 		public Integer getOnDate() {
 			return this.onDate;
@@ -921,8 +921,8 @@ public class Questions {
 			return this.questionId;
 		}
 		
-		public OtherSite getOtherSite() {
-			return this.otherSite;
+		public OtherSiteInner getOtherSiteInner() {
+			return this.otherSiteInner;
 		}
 		
 		@Override
@@ -930,13 +930,13 @@ public class Questions {
 			return "MigratedFrom [ "
 				+ "onDate = " + this.onDate + ", "
 				+ "questionId = " + this.questionId + ", "
-				+ "otherSite = " + this.otherSite + ", "
+				+ "otherSiteInner = " + this.otherSiteInner + ", "
 				+ "]"; 
 		}	
 		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class OtherSite {
+		public static class OtherSiteInner {
 		
-			public OtherSite(){}
+			public OtherSiteInner(){}
 		
 			@JsonProperty("icon_url") 
 			private String iconUrl;
@@ -1066,7 +1066,7 @@ public class Questions {
 			
 			@Override
 			public String toString() {
-				return "OtherSite [ "
+				return "OtherSiteInner [ "
 					+ "iconUrl = " + this.iconUrl + ", "
 					+ "audience = " + this.audience + ", "
 					+ "faviconUrl = " + this.faviconUrl + ", "

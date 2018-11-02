@@ -17,7 +17,7 @@ entity.scope = "Entity";
 // SEARCH Authenticated
 
 var policyA = new RestMule!Policy;
-policyA.limit = 30;
+policyA.limit = 10000;
 policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
 policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
 search.policies.add(policyA);
@@ -25,14 +25,14 @@ search.policies.add(policyA);
 // SEARCH Unauthenticated
 
 var policyB = new RestMule!Policy;
-policyB.limit = 10;
+policyB.limit = 1000;
 policyB.auths.add(api.auth.select(a|a.instanceOf(RestMule!NoAuth)).first);
 search.policies.add(policyB);
 
 // ENTITY Authenticated 
 
 var policyC = new RestMule!Policy;
-policyC.limit = 5000;
+policyC.limit = 10000;
 policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
 policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
 entity.policies.add(policyC);
@@ -74,15 +74,15 @@ api.ratePolicy = policy;
 
 var pagination= new RestMule!PaginationPolicy;
 pagination.start = 1;
-pagination.max = 10;
+pagination.max = 100; // defaultPageSize=30
 pagination.increment = 1;
-pagination.maxPerIteration = 100;
+pagination.maxPerIteration = 100; // 10000 div 100
 
 var perIteration = new RestMule!Query; 
 perIteration.description = "Items per page";
 perIteration.required = false;
 var type = new RestMule!TInteger;
-type.label = "rm_per_page";
+type.label = "rm_pagesize";
 type.name = type.label;
 perIteration.type = type;
 pagination.perIteration = perIteration;
@@ -120,7 +120,7 @@ api.pageWrapper = wrapper;
 // ADD RATE & WRAPPER TO REQUESTS (FIXME)
 
 for (r in RestMule!Request.all){
-	if (r.parent.path.startsWith("/search")){
+	if (r.parent.path.startsWith("/search")){ // {host}/{version}/search
 		r.scope = search;
 	} else {
 		r.scope = entity;

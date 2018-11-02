@@ -15,7 +15,8 @@ public interface ISearchEndpoint {
 
 	
 		@GET("/search/advanced")
-		Call<List<Questions>> getSearchAdvancedQuestions(			
+		Call<List<Questions>> getSearchAdvancedQuestions( 
+				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -41,11 +42,12 @@ public interface ISearchEndpoint {
 				@Query(value="user", encoded=true) Integer user,			
 				@Query(value="views", encoded=true) Integer views,			
 				@Query(value="wiki", encoded=true) String wiki,			
-				@Query(value="rm_per_page", encoded=true) Integer rm_per_page,			
+				@Query(value="rm_pagesize", encoded=true) Integer rm_pagesize,			
 				@Query(value="rm_page", encoded=true) Integer rm_page);
 	
 		@GET("/search")
-		Call<List<Questions>> getSearchQuestions(			
+		Call<List<Questions>> getSearchQuestions( 
+				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -60,7 +62,7 @@ public interface ISearchEndpoint {
 				@Query(value="site", encoded=true) String site,			
 				@Query(value="intitle", encoded=true) String intitle,			
 				@Query(value="nottagged", encoded=true) String nottagged,			
-				@Query(value="rm_per_page", encoded=true) Integer rm_per_page,			
+				@Query(value="rm_pagesize", encoded=true) Integer rm_pagesize,			
 				@Query(value="rm_page", encoded=true) Integer rm_page);
 	
 }

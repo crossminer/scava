@@ -67,9 +67,17 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 	   var params;
 	   if (self.isPaged()){
 			params =  new Sequence;
-			params.addAll(request.parameters); 
+			params.addAll( request.parameters );
 			params.add(paged.perIteration);
 			params.add(paged.page);
+			/*for ( param in params ) {
+				if ( not ( param.type.label = paged.perIteration.type.label) ) {
+					params.add(param);
+				} else if ( not ( param.type.label = paged.perIteration.type.label) ) {
+					params.add(param);
+				}
+			}*/
+			
 	   }  else {
 	   		params = request.parameters;
 	   }
@@ -77,10 +85,11 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 	@[%= request.method %]("[%= request.parent.path %]")
 	[%= self.getEndpointType(name) %] [%= self.methodName() 
 	%]([% if (params.size() == 0){ %]);
-	[% } else { %][% for (param in params) { %]
+	[% } else {  %] 
+		[% for (param in params) { %]
 			
 			@[%= param.paramType() %][%if (not param.instanceOf(Body)) {%](value="[%= param.type.label %]", encoded=true)[% } %] [%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 
-			if (param.type.name == params.last.type.name) { %]);
+			if (param == params.last) { %]);
 			[% } else {%],[% } %][% } %][% } %]
 [% } %]
 
