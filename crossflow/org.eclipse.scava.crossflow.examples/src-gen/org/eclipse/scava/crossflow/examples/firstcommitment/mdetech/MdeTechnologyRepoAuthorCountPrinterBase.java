@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTechnologyRepoAuthorCountEntriesConsumer{
-	
+public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTechnologyRepoAuthorCountEntriesConsumer, Task{
+		
 	protected MdeTechnologyExample workflow;
 	
 	public void setWorkflow(MdeTechnologyExample workflow) {
@@ -14,16 +16,20 @@ public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTech
 		return workflow;
 	}
 	
-	
-	
-	protected EclipseResultPublisher eclipseResultPublisher;
-	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public String getId(){
+		return "MdeTechnologyRepoAuthorCountPrinter:"+workflow.getName();
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	
+	
+	protected ResultsBroadcaster resultsBroadcaster;
+	
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
+	}
+	
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

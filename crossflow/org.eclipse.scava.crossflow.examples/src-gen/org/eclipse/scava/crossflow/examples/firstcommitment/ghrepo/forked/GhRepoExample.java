@@ -10,7 +10,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
@@ -27,8 +29,6 @@ public class GhRepoExample extends Workflow {
 	protected GhRepos ghRepos;
 	protected ResultsPublisher resultsPublisher;
 	protected ResultsPublisher2 resultsPublisher2;
-	protected EclipseResultPublisher eclipseResultPublisher;
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	private boolean createBroker = true;
 	
@@ -47,6 +47,7 @@ public class GhRepoExample extends Workflow {
 	}
 	
 	public GhRepoExample() {
+		super();
 		this.name = "GhRepoExample";
 	}
 	
@@ -54,108 +55,135 @@ public class GhRepoExample extends Workflow {
 		this.createBroker = createBroker;
 	}
 	
-	public void run() throws Exception {
+	/**
+	 * Run with initial delay i ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param i
+	 */
+	@Override
+	public void run(int i) throws Exception {
 	
-		if (isMaster()) {
-			cache = new Cache(this);
-			if (createBroker) {
-				brokerService = new BrokerService();
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				brokerService.start();
-			}
-		}
+		new Thread(new Runnable() {
 
-		eclipseResultPublisher = new EclipseResultPublisher(this);
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
-		
+			@Override
+			public void run() {
+
+				try {
+	
+					if (isMaster()) {
+					if(isCacheEnabled())
+						cache = new Cache(GhRepoExample.this);
+						if (createBroker) {
+							brokerService = new BrokerService();
+							brokerService.setUseJmx(true);
+							brokerService.addConnector(getBroker());
+							brokerService.start();
+						}
+					}
+
+					connect();
+
+					Thread.sleep(i);
+					
 //TODO test of task status until it is integrated to ui
-//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
 //			@Override
-//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//			public void consumeTaskStatusPublisher(TaskStatus status) {
 //				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
 //			}
 //		});
 //
-		
-		ghRepos = new GhRepos(this);
-		resultsPublisher = new ResultsPublisher(this);
-		resultsPublisher2 = new ResultsPublisher2(this);
-		
+					
+					ghRepos = new GhRepos(GhRepoExample.this);
+					activeQueues.add(ghRepos);
+					resultsPublisher = new ResultsPublisher(GhRepoExample.this);
+					activeQueues.add(resultsPublisher);
+					resultsPublisher2 = new ResultsPublisher2(GhRepoExample.this);
+					activeQueues.add(resultsPublisher2);
+					
 		
 	
 				
-		ghRepoSource = new GhRepoSource();
-		ghRepoSource.setWorkflow(this);
+					ghRepoSource = new GhRepoSource();
+					ghRepoSource.setWorkflow(GhRepoExample.this);
 		
-		ghRepoSource.setGhRepos(ghRepos);
-		
-				
-		
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("GhRepoCounter")) {
-	
-				
-		ghRepoCounter = new GhRepoCounter();
-		ghRepoCounter.setWorkflow(this);
-		
-			ghRepos.addConsumer(ghRepoCounter, GhRepoCounter.class.getName());			
-	
-		ghRepoCounter.setResultsPublisher(resultsPublisher);
-		}
-		else if(isMaster()){
-			ghRepos.addConsumer(ghRepoCounter, GhRepoCounter.class.getName());			
-		}
+					ghRepoSource.setGhRepos(ghRepos);
 		
 				
 		
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("GhRepoCounter2")) {
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("GhRepoCounter")) {
 	
 				
-		ghRepoCounter2 = new GhRepoCounter2();
-		ghRepoCounter2.setWorkflow(this);
+					ghRepoCounter = new GhRepoCounter();
+					ghRepoCounter.setWorkflow(GhRepoExample.this);
 		
-			ghRepos.addConsumer(ghRepoCounter2, GhRepoCounter2.class.getName());			
+						ghRepos.addConsumer(ghRepoCounter, GhRepoCounter.class.getName());			
 	
-		ghRepoCounter2.setResultsPublisher2(resultsPublisher2);
-		}
-		else if(isMaster()){
-			ghRepos.addConsumer(ghRepoCounter2, GhRepoCounter2.class.getName());			
-		}
+					ghRepoCounter.setResultsPublisher(resultsPublisher);
+					}
+					else if(isMaster()){
+						ghRepos.addConsumer(ghRepoCounter, GhRepoCounter.class.getName());			
+					}
 		
 				
 		
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("GhRepoCounter2")) {
 	
-		if (isMaster()) {
 				
-		emptySink = new EmptySink();
-		emptySink.setWorkflow(this);
-		}
+					ghRepoCounter2 = new GhRepoCounter2();
+					ghRepoCounter2.setWorkflow(GhRepoExample.this);
 		
-			resultsPublisher.addConsumer(emptySink, EmptySink.class.getName());			
-		if(ghRepoCounter!=null)		
-			ghRepoCounter.setEclipseResultPublisher(eclipseResultPublisher);
+						ghRepos.addConsumer(ghRepoCounter2, GhRepoCounter2.class.getName());			
 	
+					ghRepoCounter2.setResultsPublisher2(resultsPublisher2);
+					}
+					else if(isMaster()){
+						ghRepos.addConsumer(ghRepoCounter2, GhRepoCounter2.class.getName());			
+					}
 		
 				
 		
 	
-		if (isMaster()) {
+					if (isMaster()) {
 				
-		emptySink2 = new EmptySink2();
-		emptySink2.setWorkflow(this);
-		}
+					emptySink = new EmptySink();
+					emptySink.setWorkflow(GhRepoExample.this);
+					}
 		
-			resultsPublisher2.addConsumer(emptySink2, EmptySink2.class.getName());			
-		if(ghRepoCounter2!=null)		
-			ghRepoCounter2.setEclipseResultPublisher(eclipseResultPublisher);
+						resultsPublisher.addConsumer(emptySink, EmptySink.class.getName());			
+					if(ghRepoCounter!=null)		
+						ghRepoCounter.setResultsBroadcaster(resultsBroadcaster);
 	
 		
 				
 		
-		if (isMaster()){
-			ghRepoSource.produce();
-		}
-	}
+	
+					if (isMaster()) {
+				
+					emptySink2 = new EmptySink2();
+					emptySink2.setWorkflow(GhRepoExample.this);
+					}
+		
+						resultsPublisher2.addConsumer(emptySink2, EmptySink2.class.getName());			
+					if(ghRepoCounter2!=null)		
+						ghRepoCounter2.setResultsBroadcaster(resultsBroadcaster);
+	
+		
+				
+		
+					if (isMaster()){
+						ghRepoSource.produce();
+					}
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		
+		}).start();
+	
+	}				
 	
 	public GhRepos getGhRepos() {
 		return ghRepos;
@@ -183,20 +211,20 @@ public class GhRepoExample extends Workflow {
 		return emptySink2;
 	}
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskInProgess(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	public void setTaskWaiting(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	public void setTaskBlocked(Task caller, String reason) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskUnblocked(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 }

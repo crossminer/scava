@@ -1,10 +1,12 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyRepoOwnerPopularityCountCsvSinkBase implements MdeTechnologyRepoOwnerPopularityCountEntriesConsumer{
-	
+public abstract class MdeTechnologyRepoOwnerPopularityCountCsvSinkBase implements MdeTechnologyRepoOwnerPopularityCountEntriesConsumer, Task{
+		
 	protected MdeTechnologyCsvExample workflow;
 	
 	public void setWorkflow(MdeTechnologyCsvExample workflow) {
@@ -15,16 +17,20 @@ public abstract class MdeTechnologyRepoOwnerPopularityCountCsvSinkBase implement
 		return workflow;
 	}
 	
-	
-	
-	protected EclipseResultPublisher eclipseResultPublisher;
-	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public String getId(){
+		return "MdeTechnologyRepoOwnerPopularityCountCsvSink:"+workflow.getName();
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	
+	
+	protected ResultsBroadcaster resultsBroadcaster;
+	
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
+	}
+	
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

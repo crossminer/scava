@@ -10,7 +10,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
@@ -35,7 +37,6 @@ public class OpinionatedExample extends Workflow {
 	
 	// streams
 	protected Words words;
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	private boolean createBroker = true;
 	
@@ -51,6 +52,7 @@ public class OpinionatedExample extends Workflow {
 	}
 	
 	public OpinionatedExample() {
+		super();
 		this.name = "OpinionatedExample";
 	}
 	
@@ -58,60 +60,86 @@ public class OpinionatedExample extends Workflow {
 		this.createBroker = createBroker;
 	}
 	
-	public void run() throws Exception {
+	/**
+	 * Run with initial delay i ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param i
+	 */
+	@Override
+	public void run(int i) throws Exception {
 	
-		if (isMaster()) {
-			cache = new Cache(this);
-			if (createBroker) {
-				brokerService = new BrokerService();
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				brokerService.start();
-			}
-		}
+		new Thread(new Runnable() {
 
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
-		
+			@Override
+			public void run() {
+
+				try {
+	
+					if (isMaster()) {
+					if(isCacheEnabled())
+						cache = new Cache(OpinionatedExample.this);
+						if (createBroker) {
+							brokerService = new BrokerService();
+							brokerService.setUseJmx(true);
+							brokerService.addConnector(getBroker());
+							brokerService.start();
+						}
+					}
+
+					connect();
+
+					Thread.sleep(i);
+					
 //TODO test of task status until it is integrated to ui
-//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
 //			@Override
-//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//			public void consumeTaskStatusPublisher(TaskStatus status) {
 //				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
 //			}
 //		});
 //
-		
-		words = new Words(this);
-		
+					
+					words = new Words(OpinionatedExample.this);
+					activeQueues.add(words);
+					
 		
 	
 				
-		wordSource = new WordSource();
-		wordSource.setWorkflow(this);
+					wordSource = new WordSource();
+					wordSource.setWorkflow(OpinionatedExample.this);
 		
-		wordSource.setWords(words);
+					wordSource.setWords(words);
 		
 				
 		
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("OccurencesMonitor")) {
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("OccurencesMonitor")) {
 	
 				
-		occurencesMonitor = new OccurencesMonitor();
-		occurencesMonitor.setWorkflow(this);
+					occurencesMonitor = new OccurencesMonitor();
+					occurencesMonitor.setWorkflow(OpinionatedExample.this);
 		
-			words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
+						words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
 	
-		}
-		else if(isMaster()){
-			words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
-		}
+					}
+					else if(isMaster()){
+						words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
+					}
 		
 				
 		
-		if (isMaster()){
-			wordSource.produce();
-		}
-	}
+					if (isMaster()){
+						wordSource.produce();
+					}
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		
+		}).start();
+	
+	}				
 	
 	public Words getWords() {
 		return words;
@@ -124,20 +152,20 @@ public class OpinionatedExample extends Workflow {
 		return occurencesMonitor;
 	}
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskInProgess(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	public void setTaskWaiting(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	public void setTaskBlocked(Task caller, String reason) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskUnblocked(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 }

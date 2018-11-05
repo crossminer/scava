@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class AnimalSourceBase {
-	
+public abstract class AnimalSourceBase implements Task{
+		
 	protected FirstCommitmentExample workflow;
 	
 	public void setWorkflow(FirstCommitmentExample workflow) {
@@ -12,6 +14,10 @@ public abstract class AnimalSourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "AnimalSource:"+workflow.getName();
 	}
 	
 	protected Animals animals;

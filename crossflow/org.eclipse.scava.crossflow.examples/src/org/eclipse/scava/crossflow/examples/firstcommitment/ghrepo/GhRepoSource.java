@@ -53,9 +53,6 @@ public class GhRepoSource extends GhRepoSourceBase {
 
 				.doOnComplete(() -> {
 					System.out.println("COMPLETED: " + searchRepositories.id());
-					getGhRepos().sendTerminationSignal(this.getClass().getName() + ":" + workflow.getName());
-					System.err.println(
-							this.getClass().getName() + ":" + workflow.getName() + " sent termination signal!");
 				})
 
 				.blockingSubscribe();

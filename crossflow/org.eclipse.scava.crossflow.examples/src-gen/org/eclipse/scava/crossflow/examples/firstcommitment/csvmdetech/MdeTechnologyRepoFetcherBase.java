@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesConsumer{
-	
+public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesConsumer, Task{
+		
 	protected MdeTechnologyCsvExample workflow;
 	
 	public void setWorkflow(MdeTechnologyCsvExample workflow) {
@@ -12,6 +14,10 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "MdeTechnologyRepoFetcher:"+workflow.getName();
 	}
 	
 	protected MdeTechnologyRepoEntries mdeTechnologyRepoEntries;
@@ -26,14 +32,14 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

@@ -1,13 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.utils.ControlMessage;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class EmptySinkBase implements ResultsPublisherConsumer{
-	
+public abstract class EmptySinkBase implements ResultsPublisherConsumer, Task{
+		
 	protected GhRepoExample workflow;
 	
 	public void setWorkflow(GhRepoExample workflow) {
@@ -18,16 +16,20 @@ public abstract class EmptySinkBase implements ResultsPublisherConsumer{
 		return workflow;
 	}
 	
-	
-	
-	protected EclipseResultPublisher eclipseResultPublisher;
-	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public String getId(){
+		return "EmptySink:"+workflow.getName();
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	
+	
+	protected ResultsBroadcaster resultsBroadcaster;
+	
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
+	}
+	
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	
@@ -40,30 +42,6 @@ public abstract class EmptySinkBase implements ResultsPublisherConsumer{
 		consumeResultsPublisher(result);
 		
 		workflow.setTaskWaiting(this);
-		
-	}
-	
-	//generated for each incoming queue we are subscribed to
-	private static Set<String> incomingQueueIds = new HashSet<>();
-	static {
-		incomingQueueIds.add("org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.ResultsPublisher");
-	}
-
-	private Set<String> terminatedIncomingQueueIds = new HashSet<>();
-
-	@Override
-	public void processTerminationMessage(ControlMessage cm) {
-
-		terminatedIncomingQueueIds.add(cm.getCallerId());
-
-		if (terminatedIncomingQueueIds.equals(incomingQueueIds)) {
-			// FIXME TERMINATE TASK
-			//
-			//
-			System.err.println(
-					this.getClass().getName() + ":" + workflow.getName() + " sent termination signal!");
-			workflow.terminate();
-			}
 		
 	}
 	

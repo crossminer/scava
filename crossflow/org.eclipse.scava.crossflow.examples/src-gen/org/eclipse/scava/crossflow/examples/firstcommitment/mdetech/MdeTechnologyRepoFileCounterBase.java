@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyRepoFileCounterBase implements MdeTechnologyClonedRepoEntriesForFileCounterConsumer{
-	
+public abstract class MdeTechnologyRepoFileCounterBase implements MdeTechnologyClonedRepoEntriesForFileCounterConsumer, Task{
+		
 	protected MdeTechnologyExample workflow;
 	
 	public void setWorkflow(MdeTechnologyExample workflow) {
@@ -12,6 +14,10 @@ public abstract class MdeTechnologyRepoFileCounterBase implements MdeTechnologyC
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "MdeTechnologyRepoFileCounter:"+workflow.getName();
 	}
 	
 	protected MdeTechnologyRepoFileCountEntries mdeTechnologyRepoFileCountEntries;
@@ -26,14 +32,14 @@ public abstract class MdeTechnologyRepoFileCounterBase implements MdeTechnologyC
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

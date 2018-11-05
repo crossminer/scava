@@ -1,5 +1,6 @@
 package [%=w.package%];
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 [%if (t.isTypeOf(CsvSource)){%]
 import java.io.IOException;
@@ -9,9 +10,10 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 [%if (t.isTypeOf(CsvSink)){%]
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 [%}%]
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
-	
+public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t.input.collect(s|s.name + "Consumer").concat(",")+","%][%}%] Task{
+		
 	protected [%=w.name%] workflow;
 	
 	public void setWorkflow([%=w.name%] workflow) {
@@ -20,6 +22,10 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "[%=t.name%]:"+workflow.getName();
 	}
 	
 	[%for (s in t.output) { %]
@@ -37,14 +43,14 @@ public abstract class [%=t.name%]Base [%if(t.input.notEmpty()){%]implements [%=t
 	
 	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	[%}%]

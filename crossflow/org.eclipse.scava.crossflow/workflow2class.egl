@@ -10,7 +10,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
@@ -39,10 +41,6 @@ public class [%=w.name%] extends Workflow {
 	[%for (s in w.streams) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	[%}%]
-	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
-	protected EclipseResultPublisher eclipseResultPublisher;
-	[%}%]
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	private boolean createBroker = true;
 	
@@ -59,6 +57,7 @@ public class [%=w.name%] extends Workflow {
 	}
 	
 	public [%=w.name%]() {
+		super();
 		this.name = "[%=w.name%]";
 	}
 	
@@ -66,82 +65,105 @@ public class [%=w.name%] extends Workflow {
 		this.createBroker = createBroker;
 	}
 	
-	public void run() throws Exception {
+	/**
+	 * Run with initial delay i ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param i
+	 */
+	@Override
+	public void run(int i) throws Exception {
 	
-		if (isMaster()) {
-			cache = new Cache(this);
-			if (createBroker) {
-				brokerService = new BrokerService();
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				brokerService.start();
-			}
-		}
+		new Thread(new Runnable() {
 
-	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
-		eclipseResultPublisher = new EclipseResultPublisher(this);
-	[%}%]
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
-		
+			@Override
+			public void run() {
+
+				try {
+	
+					if (isMaster()) {
+					if(isCacheEnabled())
+						cache = new Cache([%=w.name%].this);
+						if (createBroker) {
+							brokerService = new BrokerService();
+							brokerService.setUseJmx(true);
+							brokerService.addConnector(getBroker());
+							brokerService.start();
+						}
+					}
+
+					connect();
+
+					Thread.sleep(i);
+					
 //TODO test of task status until it is integrated to ui
-//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
 //			@Override
-//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//			public void consumeTaskStatusPublisher(TaskStatus status) {
 //				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
 //			}
 //		});
 //
+					
+					[%for (s in w.streams) { %]
+					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this);
+					activeQueues.add([%=s.name.ftlc()%]);
+					[%}%]
+					
+					[%for (t in w.tasks) {%]		
+					[%if(t.masterOnly){%]
+					if (isMaster()) {
+					[%}%]
+					[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
+					[%}%]	
+					[%if(t.isKindOf(Sink)){%]
+					if (isMaster()) {
+					[%}%]				
+					[%=t.name.ftlc()%] = new [%=t.name%]();
+					[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
+					[%if(t.isKindOf(Sink)){%]
+					}
+					[%}%]		
+					[%for (i in t.input) { %]
+						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
+					[%if(t.isKindOf(Sink))%]
+						[%for(incoming in t.input){%]
+							[%for(task in incoming.outputOf){%]
+					if([%=task.name.ftlc()%]!=null)		
+						[%=task.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
+							[%}%]
+						[%}%]	
+					[%}%]
+					[%for (o in t.output) { %]
+					[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
+					[%}%]
+					[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
+					}
+					else if(isMaster()){
+					[%for (i in t.input) { %]
+						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
+					[%}%]
+					}
+					[%}%]		
+					[%if(t.masterOnly){%]
+					}
+					[%}%]				
+					[%}%]		
+					if (isMaster()){
+						[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
+						[%=t.name.ftlc()%].produce();
+						[%}%]
+					}
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		
-		[%for (s in w.streams) { %]
-		[%=s.name.ftlc()%] = new [%=s.name%](this);
-		[%}%]
-		
-		[%for (t in w.tasks) {%]		
-		[%if(t.masterOnly){%]
-		if (isMaster()) {
-		[%}%]
-		[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
-		[%}%]	
-		[%if(t.isKindOf(Sink)){%]
-		if (isMaster()) {
-		[%}%]				
-		[%=t.name.ftlc()%] = new [%=t.name%]();
-		[%=t.name.ftlc()%].setWorkflow(this);
-		[%if(t.isKindOf(Sink)){%]
-		}
-		[%}%]		
-		[%for (i in t.input) { %]
-			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
-		[%if(t.isKindOf(Sink))%]
-			[%for(incoming in t.input){%]
-				[%for(task in incoming.outputOf){%]
-		if([%=task.name.ftlc()%]!=null)		
-			[%=task.name.ftlc()%].setEclipseResultPublisher(eclipseResultPublisher);
-				[%}%]
-			[%}%]	
-		[%}%]
-		[%for (o in t.output) { %]
-		[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
-		[%}%]
-		[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
-		}
-		else if(isMaster()){
-		[%for (i in t.input) { %]
-			[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
-		[%}%]
-		}
-		[%}%]		
-		[%if(t.masterOnly){%]
-		}
-		[%}%]				
-		[%}%]		
-		if (isMaster()){
-			[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
-			[%=t.name.ftlc()%].produce();
-			[%}%]
-		}
-	}
+		}).start();
+	
+	}				
 	
 	[%for (s in w.streams) { %]
 	public [%=s.name%] get[%=s.name%]() {
@@ -155,20 +177,20 @@ public class [%=w.name%] extends Workflow {
 	}
 	[%}%]
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskInProgess(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	public void setTaskWaiting(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	public void setTaskBlocked(Task caller, String reason) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskUnblocked(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 }

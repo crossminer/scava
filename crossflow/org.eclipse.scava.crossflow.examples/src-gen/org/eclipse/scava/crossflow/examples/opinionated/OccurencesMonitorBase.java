@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.opinionated;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class OccurencesMonitorBase implements WordsConsumer{
-	
+public abstract class OccurencesMonitorBase implements WordsConsumer, Task{
+		
 	protected OpinionatedExample workflow;
 	
 	public void setWorkflow(OpinionatedExample workflow) {
@@ -12,6 +14,10 @@ public abstract class OccurencesMonitorBase implements WordsConsumer{
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "OccurencesMonitor:"+workflow.getName();
 	}
 	
 	

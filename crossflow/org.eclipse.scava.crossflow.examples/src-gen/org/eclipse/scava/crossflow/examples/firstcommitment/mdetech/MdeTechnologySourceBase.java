@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologySourceBase {
-	
+public abstract class MdeTechnologySourceBase implements Task{
+		
 	protected MdeTechnologyExample workflow;
 	
 	public void setWorkflow(MdeTechnologyExample workflow) {
@@ -12,6 +14,10 @@ public abstract class MdeTechnologySourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "MdeTechnologySource:"+workflow.getName();
 	}
 	
 	protected MdeTechnologies mdeTechnologies;
@@ -26,14 +32,14 @@ public abstract class MdeTechnologySourceBase {
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

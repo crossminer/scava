@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class GhRepoSourceBase {
-	
+public abstract class GhRepoSourceBase implements Task{
+		
 	protected GhRepoExample workflow;
 	
 	public void setWorkflow(GhRepoExample workflow) {
@@ -12,6 +14,10 @@ public abstract class GhRepoSourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "GhRepoSource:"+workflow.getName();
 	}
 	
 	protected GhRepos ghRepos;
@@ -26,14 +32,14 @@ public abstract class GhRepoSourceBase {
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

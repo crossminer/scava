@@ -8,8 +8,7 @@ import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class GhRepoExampleMasterWorkers {
 
-	private static final int START_WAITING_TIME = 0;
-	private static final int COMPLETION_WAITING_TIME = 0;
+	private static final int START_WAITING_TIME = 5000;
 
 	public static void main(String[] args) throws Exception {
 
@@ -17,7 +16,8 @@ public class GhRepoExampleMasterWorkers {
 		// default mode is MASTER
 		master.setMode(Mode.MASTER_BARE);
 		master.setName("Master" + "-123456789");
-		master.run();
+		master.setEnableCache(false);
+		master.run(START_WAITING_TIME);
 
 		// example using a second master connected to original broker
 		// workflow (will produce 2 times the input, as expected)
@@ -44,31 +44,40 @@ public class GhRepoExampleMasterWorkers {
 		worker2.setName("Worker2");
 		worker2.run();
 
-		Thread.sleep(START_WAITING_TIME); // to allow connecting from eclipse
-
 		if (args.length > 0)
 			master2.run();
 
-		// Thread.sleep(COMPLETION_WAITING_TIME); // to allow printout after run
-		// is completed
+		master.onTerminate(new Runnable() {
+			
+			@Override
+			public void run() {
 
-		boolean t = master.isTerminated();
-		while (!t) {
-			// wait
-			t = master.isTerminated();
-			Thread.sleep(100);
-		}
+				try {
+					worker1.manualTermination();
+					worker2.manualTermination();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				System.out.println("\nPRINTING EXECUTION STATISTICS ...\n");
 
-		System.out.println("\nPRINTING EXECUTION STATISTICS ...\n");
+				printStatistics(master);
+				printStatistics(worker1);
+				printStatistics(worker2);
 
-		printStatistics(master);
-		printStatistics(worker1);
-		printStatistics(worker2);
+				System.out.println("... COMPLETED !");
 
-		System.out.println("... COMPLETED !");
+				// System.exit(0);
 
-		// System.exit(0);
-
+			}
+		});
+		
+		
+		
+		
+		
+		//Thread.sleep(10000);
+		//master.manualTermination();
 	}
 
 	private static void printStatistics(GhRepoExample ghRepoExample) {

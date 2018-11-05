@@ -52,7 +52,7 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 				ret[1] = 1;
 				ret[2] = 0;
 				ret[3] = 0;
-				getEclipseResultPublisher().send(ret);
+				getResultsBroadcaster().send(ret);
 			}
 
 		}

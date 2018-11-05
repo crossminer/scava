@@ -1,12 +1,14 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import java.io.IOException;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyCsvSourceBase {
-	
+public abstract class MdeTechnologyCsvSourceBase implements Task{
+		
 	protected MdeTechnologyCsvExample workflow;
 	
 	public void setWorkflow(MdeTechnologyCsvExample workflow) {
@@ -15,6 +17,10 @@ public abstract class MdeTechnologyCsvSourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "MdeTechnologyCsvSource:"+workflow.getName();
 	}
 	
 	protected MdeTechnologies mdeTechnologies;
@@ -29,14 +35,14 @@ public abstract class MdeTechnologyCsvSourceBase {
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

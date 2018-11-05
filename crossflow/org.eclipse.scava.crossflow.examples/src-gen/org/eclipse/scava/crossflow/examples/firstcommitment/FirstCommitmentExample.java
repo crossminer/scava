@@ -10,7 +10,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
@@ -25,7 +27,6 @@ public class FirstCommitmentExample extends Workflow {
 	
 	// streams
 	protected Animals animals;
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	private boolean createBroker = true;
 	
@@ -41,6 +42,7 @@ public class FirstCommitmentExample extends Workflow {
 	}
 	
 	public FirstCommitmentExample() {
+		super();
 		this.name = "FirstCommitmentExample";
 	}
 	
@@ -48,60 +50,86 @@ public class FirstCommitmentExample extends Workflow {
 		this.createBroker = createBroker;
 	}
 	
-	public void run() throws Exception {
+	/**
+	 * Run with initial delay i ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param i
+	 */
+	@Override
+	public void run(int i) throws Exception {
 	
-		if (isMaster()) {
-			cache = new Cache(this);
-			if (createBroker) {
-				brokerService = new BrokerService();
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				brokerService.start();
-			}
-		}
+		new Thread(new Runnable() {
 
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
-		
+			@Override
+			public void run() {
+
+				try {
+	
+					if (isMaster()) {
+					if(isCacheEnabled())
+						cache = new Cache(FirstCommitmentExample.this);
+						if (createBroker) {
+							brokerService = new BrokerService();
+							brokerService.setUseJmx(true);
+							brokerService.addConnector(getBroker());
+							brokerService.start();
+						}
+					}
+
+					connect();
+
+					Thread.sleep(i);
+					
 //TODO test of task status until it is integrated to ui
-//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
 //			@Override
-//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//			public void consumeTaskStatusPublisher(TaskStatus status) {
 //				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
 //			}
 //		});
 //
-		
-		animals = new Animals(this);
-		
+					
+					animals = new Animals(FirstCommitmentExample.this);
+					activeQueues.add(animals);
+					
 		
 	
 				
-		animalSource = new AnimalSource();
-		animalSource.setWorkflow(this);
+					animalSource = new AnimalSource();
+					animalSource.setWorkflow(FirstCommitmentExample.this);
 		
-		animalSource.setAnimals(animals);
+					animalSource.setAnimals(animals);
 		
 				
 		
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("AnimalCounter")) {
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("AnimalCounter")) {
 	
 				
-		animalCounter = new AnimalCounter();
-		animalCounter.setWorkflow(this);
+					animalCounter = new AnimalCounter();
+					animalCounter.setWorkflow(FirstCommitmentExample.this);
 		
-			animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
+						animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
 	
-		}
-		else if(isMaster()){
-			animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
-		}
+					}
+					else if(isMaster()){
+						animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
+					}
 		
 				
 		
-		if (isMaster()){
-			animalSource.produce();
-		}
-	}
+					if (isMaster()){
+						animalSource.produce();
+					}
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		
+		}).start();
+	
+	}				
 	
 	public Animals getAnimals() {
 		return animals;
@@ -114,20 +142,20 @@ public class FirstCommitmentExample extends Workflow {
 		return animalCounter;
 	}
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskInProgess(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	public void setTaskWaiting(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	public void setTaskBlocked(Task caller, String reason) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskUnblocked(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 }
