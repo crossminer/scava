@@ -85,13 +85,15 @@ public class ProjectAnalyser {
 		Date[] dates = Date.range(enecutionDate,endDate);
 		logger.info("Dates: " + dates.length);
 		
-		long estimatedDuration = 0; 
+		long estimatedDuration = 0;
+		
+		ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
+		
 		for (Date date : dates) {
 			java.util.Date dailyExecution = new java.util.Date();
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
 	
-			ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
@@ -114,13 +116,6 @@ public class ProjectAnalyser {
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
-			}
-			
-			try {
-				executorService.shutdown();
-				executorService.awaitTermination(24, TimeUnit.HOURS);
-			} catch (InterruptedException e) {
-				logger.error("Exception thrown when shutting down executor service.", e);
 			}
 			
 			// Now fun the factoids: 
@@ -173,6 +168,13 @@ public class ProjectAnalyser {
 				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
 				return false;
 			}
+		}
+		
+		try {
+			executorService.shutdown();
+			executorService.awaitTermination(24, TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			logger.error("Exception thrown when shutting down executor service.", e);
 		}
 		
 		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
