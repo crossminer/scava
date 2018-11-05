@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.scava.feature_1.0.0.qualifier.jar" id="org.eclipse.scava.feature" version="1.0.0.qualifier">
+      <category name="CROSSMINER Eclipse-based IDE"/>
+   </feature>
+   <category-def name="CROSSMINER Eclipse-based IDE" label="CROSSMINER Eclipse-based IDE"/>
+</site>
