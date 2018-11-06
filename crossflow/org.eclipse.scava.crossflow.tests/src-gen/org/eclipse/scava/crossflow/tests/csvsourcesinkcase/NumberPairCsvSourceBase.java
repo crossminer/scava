@@ -1,12 +1,14 @@
 package org.eclipse.scava.crossflow.tests.csvsourcesinkcase;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import java.io.IOException;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class NumberPairCsvSourceBase {
-	
+public abstract class NumberPairCsvSourceBase implements Task{
+		
 	protected BaseCase workflow;
 	
 	public void setWorkflow(BaseCase workflow) {
@@ -15,6 +17,10 @@ public abstract class NumberPairCsvSourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "NumberPairCsvSource:"+workflow.getName();
 	}
 	
 	protected Additions additions;
@@ -29,14 +35,14 @@ public abstract class NumberPairCsvSourceBase {
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	

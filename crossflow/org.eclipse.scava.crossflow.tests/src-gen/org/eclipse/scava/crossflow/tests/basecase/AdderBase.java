@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.tests.basecase;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class AdderBase implements AdditionsConsumer{
-	
+public abstract class AdderBase implements AdditionsConsumer, Task{
+		
 	protected BaseCase workflow;
 	
 	public void setWorkflow(BaseCase workflow) {
@@ -12,6 +14,10 @@ public abstract class AdderBase implements AdditionsConsumer{
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "Adder:"+workflow.getName();
 	}
 	
 	protected AdditionResults additionResults;
@@ -26,14 +32,14 @@ public abstract class AdderBase implements AdditionsConsumer{
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	
@@ -69,6 +75,7 @@ public abstract class AdderBase implements AdditionsConsumer{
 		workflow.setTaskUnblocked(this);
 		
 	}
+	
 	
 	
 }

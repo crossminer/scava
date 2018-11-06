@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.tests.csvsourcesinkcase;
 
+import java.io.Serializable;
+import java.util.UUID;
 import org.eclipse.scava.crossflow.runtime.Job;
 
 public class NumberPair extends Job {

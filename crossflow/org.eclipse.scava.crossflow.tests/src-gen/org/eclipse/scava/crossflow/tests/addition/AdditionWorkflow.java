@@ -10,7 +10,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
@@ -26,8 +28,6 @@ public class AdditionWorkflow extends Workflow {
 	// streams
 	protected Additions additions;
 	protected AdditionResults additionResults;
-	protected EclipseResultPublisher eclipseResultPublisher;
-	protected EclipseTaskStatusPublisher eclipseTaskStatusPublisher;
 	
 	private boolean createBroker = true;
 	
@@ -44,6 +44,7 @@ public class AdditionWorkflow extends Workflow {
 	}
 	
 	public AdditionWorkflow() {
+		super();
 		this.name = "AdditionWorkflow";
 	}
 	
@@ -51,77 +52,103 @@ public class AdditionWorkflow extends Workflow {
 		this.createBroker = createBroker;
 	}
 	
-	public void run() throws Exception {
+	/**
+	 * Run with initial delay i ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param i
+	 */
+	@Override
+	public void run(int i) throws Exception {
 	
-		if (isMaster()) {
-			cache = new Cache(this);
-			if (createBroker) {
-				brokerService = new BrokerService();
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				brokerService.start();
-			}
-		}
+		new Thread(new Runnable() {
 
-		eclipseResultPublisher = new EclipseResultPublisher(this);
-		eclipseTaskStatusPublisher = new EclipseTaskStatusPublisher(this);
-		
+			@Override
+			public void run() {
+
+				try {
+	
+					if (isMaster()) {
+					if(isCacheEnabled())
+						cache = new Cache(AdditionWorkflow.this);
+						if (createBroker) {
+							brokerService = new BrokerService();
+							brokerService.setUseJmx(true);
+							brokerService.addConnector(getBroker());
+							brokerService.start();
+						}
+					}
+
+					connect();
+
+					Thread.sleep(i);
+					
 //TODO test of task status until it is integrated to ui
-//		eclipseTaskStatusPublisher.addConsumer(new EclipseTaskStatusPublisherConsumer() {
+//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
 //			@Override
-//			public void consumeEclipseTaskStatusPublisher(TaskStatus status) {
+//			public void consumeTaskStatusPublisher(TaskStatus status) {
 //				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
 //			}
 //		});
 //
-		
-		additions = new Additions(this);
-		additionResults = new AdditionResults(this);
-		
-		
-	
-				
-		numberPairSource = new NumberPairSource();
-		numberPairSource.setWorkflow(this);
-		
-		numberPairSource.setAdditions(additions);
-		
-				
-		
-		if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("Adder")) {
-	
-				
-		adder = new Adder();
-		adder.setWorkflow(this);
-		
-			additions.addConsumer(adder, Adder.class.getName());			
-	
-		adder.setAdditionResults(additionResults);
-		}
-		else if(isMaster()){
-			additions.addConsumer(adder, Adder.class.getName());			
-		}
-		
-				
+					
+					additions = new Additions(AdditionWorkflow.this);
+					activeQueues.add(additions);
+					additionResults = new AdditionResults(AdditionWorkflow.this);
+					activeQueues.add(additionResults);
+					
 		
 	
-		if (isMaster()) {
 				
-		additionResultsSink = new AdditionResultsSink();
-		additionResultsSink.setWorkflow(this);
-		}
+					numberPairSource = new NumberPairSource();
+					numberPairSource.setWorkflow(AdditionWorkflow.this);
 		
-			additionResults.addConsumer(additionResultsSink, AdditionResultsSink.class.getName());			
-		if(adder!=null)		
-			adder.setEclipseResultPublisher(eclipseResultPublisher);
+					numberPairSource.setAdditions(additions);
+		
+				
+		
+					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("Adder")) {
+	
+				
+					adder = new Adder();
+					adder.setWorkflow(AdditionWorkflow.this);
+		
+						additions.addConsumer(adder, Adder.class.getName());			
+	
+					adder.setAdditionResults(additionResults);
+					}
+					else if(isMaster()){
+						additions.addConsumer(adder, Adder.class.getName());			
+					}
+		
+				
+		
+	
+					if (isMaster()) {
+				
+					additionResultsSink = new AdditionResultsSink();
+					additionResultsSink.setWorkflow(AdditionWorkflow.this);
+					}
+		
+						additionResults.addConsumer(additionResultsSink, AdditionResultsSink.class.getName());			
+					if(adder!=null)		
+						adder.setResultsBroadcaster(resultsBroadcaster);
 	
 		
 				
 		
-		if (isMaster()){
-			numberPairSource.produce();
-		}
-	}
+					if (isMaster()){
+						numberPairSource.produce();
+					}
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		
+		}).start();
+	
+	}				
 	
 	public Additions getAdditions() {
 		return additions;
@@ -140,20 +167,20 @@ public class AdditionWorkflow extends Workflow {
 		return additionResultsSink;
 	}
 	
-	public void setTaskInProgess(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskInProgess(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getClass().getName(), ""));
+	public void setTaskWaiting(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Object caller, String reason) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getClass().getName(), reason));
+	public void setTaskBlocked(Task caller, String reason) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Object caller) {
-		eclipseTaskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getClass().getName(), ""));
+	public void setTaskUnblocked(Task caller) {
+		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 }

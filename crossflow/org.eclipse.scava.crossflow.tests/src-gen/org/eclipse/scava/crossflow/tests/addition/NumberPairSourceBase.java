@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class NumberPairSourceBase {
-	
+public abstract class NumberPairSourceBase implements Task{
+		
 	protected AdditionWorkflow workflow;
 	
 	public void setWorkflow(AdditionWorkflow workflow) {
@@ -12,6 +14,10 @@ public abstract class NumberPairSourceBase {
 	
 	public Workflow getWorkflow() {
 		return workflow;
+	}
+	
+	public String getId(){
+		return "NumberPairSource:"+workflow.getName();
 	}
 	
 	protected Additions additions;
@@ -26,14 +32,14 @@ public abstract class NumberPairSourceBase {
 	
 	
 	
-	protected EclipseResultPublisher eclipseResultPublisher;
+	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	
@@ -59,5 +65,6 @@ public abstract class NumberPairSourceBase {
 	}
 	
 	public abstract void produce();
+	
 	
 }

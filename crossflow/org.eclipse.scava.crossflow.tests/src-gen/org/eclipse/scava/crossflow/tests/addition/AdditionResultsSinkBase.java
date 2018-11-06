@@ -1,9 +1,11 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
+import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class AdditionResultsSinkBase implements AdditionResultsConsumer{
-	
+public abstract class AdditionResultsSinkBase implements AdditionResultsConsumer, Task{
+		
 	protected AdditionWorkflow workflow;
 	
 	public void setWorkflow(AdditionWorkflow workflow) {
@@ -14,16 +16,20 @@ public abstract class AdditionResultsSinkBase implements AdditionResultsConsumer
 		return workflow;
 	}
 	
-	
-	
-	protected EclipseResultPublisher eclipseResultPublisher;
-	
-	public void setEclipseResultPublisher(EclipseResultPublisher eclipseResultPublisher) {
-		this.eclipseResultPublisher = eclipseResultPublisher;
+	public String getId(){
+		return "AdditionResultsSink:"+workflow.getName();
 	}
 	
-	public EclipseResultPublisher getEclipseResultPublisher() {
-		return eclipseResultPublisher;
+	
+	
+	protected ResultsBroadcaster resultsBroadcaster;
+	
+	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+		this.resultsBroadcaster = resultsBroadcaster;
+	}
+	
+	public ResultsBroadcaster getResultsBroadcaster() {
+		return resultsBroadcaster;
 	}
 	
 	
@@ -59,6 +65,7 @@ public abstract class AdditionResultsSinkBase implements AdditionResultsConsumer
 		workflow.setTaskUnblocked(this);
 		
 	}
+	
 	
 	
 }
