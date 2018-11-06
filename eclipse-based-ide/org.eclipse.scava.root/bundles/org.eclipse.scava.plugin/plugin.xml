@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.MetricHandler"
+            commandId="org.eclipse.scava.plugin.menus.scava.command.metricinterface">
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.LibrarySearchHandler"
+            commandId="org.eclipse.scava.plugin.menus.scava.command.searchlibrary">
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.CodeRecommendationHandler"
+            commandId="org.eclipse.scava.plugin.popups.scava.command.coderecommendation">
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.ApiDocumentationHandler"
+            commandId="org.eclipse.scava.plugin.popups.scava.command.apidocumentation">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="org.eclipse.scava.plugin.menus.scava"
+               label="CROSSMINER"
+               mnemonic="C">
+            <command
+                  commandId="org.eclipse.scava.plugin.menus.scava.command.metricinterface"
+                  label="Metric Interface"
+                  mnemonic="M">
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.menus.scava.command.searchlibrary"
+                  label="Library search"
+                  mnemonic="L">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:#CompilationUnitEditorContext?after=additions">
+         <menu
+               id="org.eclipse.scava.plugin.popups.scava"
+               label="CROSSMINER"
+               mnemonic="C">
+            <command
+                  commandId="org.eclipse.scava.plugin.popups.scava.command.coderecommendation"
+                  label="Request code recommendation"
+                  mnemonic="c">
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.popups.scava.command.apidocumentation"
+                  label="Request API documentation or Q&amp;A posts"
+                  mnemonic="d">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         id="org.eclipse.scava.plugin.markers.sourcecodehighlight"
+         name="Source Code Highlight"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.scava.plugin.annotations.sourcecodehighlight"
+            colorPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.color"
+            colorPreferenceValue="255,108,211"
+            contributesToHeader="false"
+            highlightPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.highlight"
+            highlightPreferenceValue="true"
+            icon="icons/cm.gif"
+            includeOnPreferencePage="true"
+            label="CROSSMINER Source Code Highlight"
+            overviewRulerPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.overview"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="10000"
+            quickFixIcon="icons/cm.gif"
+            textPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.text"
+            textPreferenceValue="true"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.ruler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerSeverity="2"
+            markerType="org.eclipse.scava.plugin.markers.sourcecodehighlight"
+            name="org.eclipse.scava.plugin.annotations.sourcecodehighlight"
+            super="org.eclipse.ui.workbench.texteditor.error">
+      </type>
+      </extension>
+
+  <extension
+        point="org.eclipse.ui.decorators">
+     <decorator
+           adaptable="true"
+           class="org.eclipse.scava.plugin.eclipse.decorator.CodeHighlightDecorator"
+           icon="icons/icon-16-white.png"
+           id="org.eclipse.scava.plugin.decorators.sourcecodehighlight.namedmember"
+           label="CROSSMINER Source Code Highlight Decorator"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <objectClass
+                 name="org.eclipse.jdt.internal.core.NamedMember">
+           </objectClass>
+        </enablement>
+     </decorator>
+     <decorator
+           adaptable="true"
+           class="org.eclipse.scava.plugin.eclipse.decorator.CodeHighlightDecorator"
+           icon="icons/icon-16-white.png"
+           id="org.eclipse.scava.plugin.decorators.sourcecodehighlight.iresource"
+           label="CROSSMINER Source Code Highlight Decorator"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <objectClass
+                 name="org.eclipse.core.resources.IResource">
+           </objectClass>
+        </enablement>
+     </decorator>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.eclipse.scava.plugin.preferences.General"
+           id="org.eclipse.scava.plugin.preferencespages.general"
+           name="CROSSMINER">
+     </page>
+     <page
+           category="org.eclipse.scava.plugin.preferencespages.general"
+           class="org.eclipse.scava.plugin.preferences.Remote"
+           id="org.eclipse.scava.plugin.preferencespages.remote"
+           name="Remote settings">
+     </page>
+     <page
+           category="org.eclipse.scava.plugin.preferencespages.general"
+           class="org.eclipse.scava.plugin.preferences.Database"
+           id="org.eclipse.scava.plugin.preferencespages.database"
+           name="Database">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.eclipse.scava.plugin.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors">
+     <editor
+           class="org.eclipse.scava.plugin.librarysearch.EditorPartTest"
+           id="org.eclipse.scava.plugin.librarysearch.EditorPartTest"
+           name="New EditorPart">
+     </editor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <view
+           allowMultiple="false"
+           class="org.eclipse.scava.plugin.apidocumentation.ApiDocumentationView"
+           id="org.eclipse.scava.plugin.apidocumentation.ApiDocumentationView"
+           name="API documentation and Q&amp;A posts"
+           restorable="false">
+     </view>
+     <view
+           class="org.eclipse.scava.plugin.mvc.implementation.rcp.RCPViewPartView"
+           id="org.eclipse.scava.plugin.mvc.implementation.rcp.RCPViewPartView"
+           name="Abstract RPC View Part">
+     </view>
+  </extension>
+</plugin>
