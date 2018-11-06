@@ -76,7 +76,8 @@ public abstract class Workflow {
 		resultsBroadcaster = new ResultsBroadcaster(this);
 		controlTopic = new ControlTopic(this);
 		activeQueues.add(taskStatusPublisher);
-		activeQueues.add(resultsBroadcaster);
+		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
+		//activeQueues.add(resultsBroadcaster);
 		// do not add control topic to activequeues as it has to be managed explicitly
 		// in terminate
 		// activeQueues.add(controlTopic);
@@ -331,7 +332,16 @@ public abstract class Workflow {
 				DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, channel,
 						DestinationViewMBean.class, true);
 
-				long remainingMessages = mbView.getQueueSize();
+				long remainingMessages = 0;
+				
+				if ( destinationType == ChannelTypes.Queue ) {
+					remainingMessages = mbView.getQueueSize();
+				} else if ( destinationType == ChannelTypes.Topic ) {
+					if ( mbView.getInFlightCount() <= 1 ) {
+						// FIXME find out why inflight count is 1 instead of zero when the workflow is done
+						remainingMessages = 0;
+					}
+				}
 
 				connector.close();
 
@@ -377,6 +387,8 @@ public abstract class Workflow {
 		for (Channel activeQueue : activeQueues)
 			activeQueue.stop();
 
+		resultsBroadcaster.stop();
+		
 		if (isMaster()) {
 
 			controlTopic.stop();
