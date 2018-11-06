@@ -59,11 +59,6 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
 	 * BundleContext)
 	 */
-	
-	public static void activityMonitoring() {
-		EventManager.enableListeners();
-	}
-	
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 
