@@ -1,6 +1,8 @@
 package org.eclipse.scava.crossflow.runtime;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -11,10 +13,12 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
-import org.apache.activemq.command.ActiveMQDestination;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.ControlTopic;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.ControlTopicConsumer;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.ResultsBroadcaster;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.TaskStatusPublisher;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.TaskStatusPublisherConsumer;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 import com.beust.jcommander.Parameter;
@@ -33,19 +37,89 @@ public abstract class Workflow {
 
 	protected boolean enableCache = true;
 
-	private Runnable onTerminate = null;
+	private Collection<Runnable> onTerminate = new LinkedList<Runnable>();
 
 	private HashSet<String> activeJobs = new HashSet<String>();
 	protected HashSet<Channel> activeQueues = new HashSet<Channel>();
 
 	protected TaskStatusPublisher taskStatusPublisher = null;
 	protected ResultsBroadcaster resultsBroadcaster = null;
+	protected ControlTopic controlTopic = null;
+
+	// for master to keep track of terminated workers
+	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
+	//
+	protected Collection<String> activeWorkerIds = new HashSet<String>();
+
+	/**
+	 * used to manually add local workers to master as they may be enabled too
+	 * quickly to be registered using the control topic when on the same machine
+	 */
+	public void addActiveWorkerId(String id) {
+		activeWorkerIds.add(id);
+	}
+
+	// terminate workflow on master after this time (ms) regardless of confirmation
+	// from workers
+	private int terminationTimeout = 10000;
+
+	public void setTerminationTimeout(int timeout) {
+		terminationTimeout = timeout;
+	}
+
+	public int getTerminationTimeout() {
+		return terminationTimeout;
+	}
 
 	protected void connect() throws Exception {
 		taskStatusPublisher = new TaskStatusPublisher(this);
 		resultsBroadcaster = new ResultsBroadcaster(this);
+		controlTopic = new ControlTopic(this);
 		activeQueues.add(taskStatusPublisher);
 		activeQueues.add(resultsBroadcaster);
+		// do not add control topic to activequeues as it has to be managed explicitly
+		// in terminate
+		// activeQueues.add(controlTopic);
+
+		controlTopic.addConsumer(new ControlTopicConsumer() {
+
+			@Override
+			public void consumeControlTopic(ControlSignal signal) {
+				// System.err.println("consumeControlTopic on " + getName() + " : " +
+				// signal.getSignal() + " : " + signal.getSenderId());
+				if (isMaster()) {
+					switch (signal.getSignal()) {
+					case ACKNOWLEDGEMENT:
+						terminatedWorkerIds.add(signal.getSenderId());
+						break;
+					case WORKER_ADDED:
+						activeWorkerIds.add(signal.getSenderId());
+						break;
+					case WORKER_REMOVED:
+						activeWorkerIds.remove(signal.getSenderId());
+						break;
+
+					default:
+						break;
+					}
+
+				} else {
+					if (signal.getSignal().equals(ControlSignals.TERMINATION))
+						try {
+							terminate();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+				}
+
+			}
+		});
+		
+
+		// XXX if the worker sends this before the master is listening to this topic
+		// this information is lost which affects termiantion
+		if (!isMaster())
+			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
 		if (isMaster())
 			taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
@@ -81,32 +155,35 @@ public abstract class Workflow {
 	boolean terminating = false;
 
 	private void checkForTermination() throws Exception {
+		// System.err.println("checkForTermination entered");
 		if (!terminating && !terminationInProgress) {
 			terminationInProgress = true;
 
-			if (alreadyWaitedToTerminate) {
-				alreadyWaitedToTerminate = false;
-				if (activeJobs.size() == 0 && areQueuesEmpty())
-					try {
+			if (activeJobs.size() == 0 && areQueuesEmpty())
+				try {
+
+					if (alreadyWaitedToTerminate) {
+						alreadyWaitedToTerminate = false;
+
 						terminating = true;
 						terminate();
-					} catch (Exception e) {
-						e.printStackTrace();
+
+					} else {
+
+						alreadyWaitedToTerminate = true;
+						terminationInProgress = false;
+						Thread.sleep(5000);
+						checkForTermination();
+
 					}
-			} else {
-				try {
-					alreadyWaitedToTerminate = true;
-					terminationInProgress = false;
-					Thread.sleep(5000);
-					checkForTermination();
-				} catch (InterruptedException e) {
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
-			}
-
-			terminationInProgress = false;
 		}
+		terminationInProgress = false;
+
 	}
 
 	public String getName() {
@@ -161,16 +238,20 @@ public abstract class Workflow {
 		Queue, Topic, UNKNOWN
 	}
 
-	public void stop() {
+	public enum ControlSignals {
+		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED
+	}
+
+	public void stopBroker() {
 		try {
 			brokerService.deleteAllMessages();
-			//for(Channel d : activeQueues) {				
-			//	brokerService.removeDestination(d.get);
-			//}
-			//brokerService.setUseJmx(false);
+			// for(Channel d : activeQueues) {
+			// brokerService.removeDestination(d.get);
+			// }
+			// brokerService.setUseJmx(false);
 			brokerService.stopGracefully("", "", 1000, 1000);
-			//brokerService.stop();
-			System.out.println("terminated ("+getName()+")");
+			// brokerService.stop();
+			System.out.println("terminated broker (" + getName() + ")");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -253,7 +334,7 @@ public abstract class Workflow {
 				long remainingMessages = mbView.getQueueSize();
 
 				connector.close();
-				
+
 				if (remainingMessages > 0)
 					ret = false;
 
@@ -267,6 +348,29 @@ public abstract class Workflow {
 
 	private void terminate() throws Exception {
 
+		// master graceful termination logic
+		if (isMaster()) {
+
+			// ask all workers to terminate
+			controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
+
+			long startTime = System.currentTimeMillis();
+			// wait for workers to terminate or for the termination timeout
+			while ((System.currentTimeMillis() - startTime) < terminationTimeout) {
+				// System.err.println(activeWorkerIds);
+				// System.err.println(terminatedWorkerIds);
+				if (terminatedWorkerIds.equals(activeWorkerIds)) {
+					System.out.println("all workers terminated, terminating master...");
+					break;
+				}
+				Thread.sleep(100);
+			}
+			System.out.println("terminating master...");
+
+		}
+
+		// termination logic
+
 		System.out.println("terminating workflow... (" + getName() + ")");
 
 		// stop all channel connections
@@ -275,22 +379,29 @@ public abstract class Workflow {
 
 		if (isMaster()) {
 
-			if (onTerminate != null)
-				onTerminate.run();
+			controlTopic.stop();
+
+			for (Runnable onT : onTerminate)
+				onT.run();
 
 			//
-			stop();
+			stopBroker();
 			//
 
+		} else {
+			controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
+			controlTopic.stop();
 		}
+
+		System.out.println("workflow " + getName() + " terminated.");
 	}
 
 	public void manualTermination() throws Exception {
 		terminate();
 	}
 
-	public void onTerminate(Runnable runnable) {
-		onTerminate = runnable;
+	public void addShutdownHook(Runnable runnable) {
+		onTerminate.add(runnable);
 	}
 
 }
