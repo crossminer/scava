@@ -11,8 +11,7 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.EclipseResultPublisherConsumer;
-import org.eclipse.scava.crossflow.runtime.Job;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.ResultsBroadcasterConsumer;
 
 public class ResultsReceiver {
 
@@ -36,7 +35,7 @@ public class ResultsReceiver {
 
 	}
 
-	public void addConsumer(EclipseResultPublisherConsumer consumer) throws Exception {
+	public void addConsumer(ResultsBroadcasterConsumer consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(results);
 		messageConsumer.setMessageListener(new MessageListener() {
 			@Override
@@ -46,7 +45,7 @@ public class ResultsReceiver {
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
 					Object[] job = (Object[]) objectMessage.getObject();
-					consumer.consumeEclipseResultPublisher((Object[]) job);
+					consumer.consumeResultsBroadcaster((Object[]) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

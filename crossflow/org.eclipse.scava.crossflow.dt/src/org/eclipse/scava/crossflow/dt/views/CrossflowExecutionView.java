@@ -19,13 +19,10 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.EclipseResultPublisherConsumer;
-import org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.ResultsPublisherConsumer;
+import org.eclipse.scava.crossflow.runtime.permanentqueues.ResultsBroadcasterConsumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -269,9 +266,9 @@ public class CrossflowExecutionView extends ViewPart {
 
 		try {
 			ResultsReceiver rp = new ResultsReceiver();
-			rp.addConsumer(new EclipseResultPublisherConsumer() {
+			rp.addConsumer(new ResultsBroadcasterConsumer() {
 				@Override
-				public void consumeEclipseResultPublisher(Object[] job) {
+				public void consumeResultsBroadcaster(Object[] job) {
 					System.err.println("consuming...");
 					System.err.println(Arrays.toString(job));
 					updateRowUsingAddition((String) job[0], job);
