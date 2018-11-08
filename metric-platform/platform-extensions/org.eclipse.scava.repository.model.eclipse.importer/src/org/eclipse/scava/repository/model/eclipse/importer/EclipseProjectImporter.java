@@ -199,15 +199,15 @@ public class EclipseProjectImporter implements IImporter {
 			if ((isNotNull(currentProg, "description")))
 				project.setDescription(
 						((JSONObject) ((JSONArray) currentProg.get("description")).get(0)).get("value").toString());
-
-			if ((isNotNull(currentProg, "parent_project"))) {
-				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
-						.get("id").toString();
-				if (parentProjectName != null) {
-					project.setParent(importProject(parentProjectName, platform, false));
-					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
-				}
-			}
+			//The commented code enables to import the parent project
+//			if ((isNotNull(currentProg, "parent_project"))) {
+//				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
+//						.get("id").toString();
+//				if (parentProjectName != null) {
+//					project.setParent(importProject(parentProjectName, platform, false));
+//					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
+//				}
+//			}
 
 			if ((isNotNull(currentProg, "download_url")))
 				project.setDownloadsUrl(
