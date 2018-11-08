@@ -62,7 +62,7 @@ public class EclipseImporterTest {
 		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/modeling.epsilon", platform);
 		assertNotNull(project);
 	}
-	@Ignore
+	
 	@Test
 	public void eclipseValidInput() throws WrongUrlException, ProjectUnknownException {
 		// Prints " API rate limit exceeded." message.
