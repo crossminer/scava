@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RestMule Generator
+Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.generator;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.ant

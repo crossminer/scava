@@ -4,13 +4,13 @@ $topnav-background-color: #f8f8f8;
     position: fixed;
     z-index: 1000;
     top: 56px;
-    left: 235px;
-    width: 240px;
-    margin-left: -235px;
+    left: 175px;
+    width: 180px;
+    margin-left: -175px;
     border: none;
     border-radius: 0;
     overflow-y: auto;
-    background-color: $topnav-background-color;
+  
     bottom: 0;
     overflow-x: hidden;
     padding-bottom: 40px;
@@ -22,7 +22,7 @@ $topnav-background-color: #f8f8f8;
     // border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
         a.list-group-item {
-            background: $topnav-background-color;
+            //background: $topnav-background-color;
             border: 0;
             border-radius: 0;
             color: #000;

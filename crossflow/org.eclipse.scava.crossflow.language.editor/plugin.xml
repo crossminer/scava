@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated crossflow -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="crossflow.presentation.CrossflowModelWizardID"
+            name="%_UI_CrossflowModelWizard_label"
+            class="crossflow.presentation.CrossflowModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CrossflowModelFile.gif">
+         <description>%_UI_CrossflowModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated crossflow -->
+      <editor
+            id="crossflow.presentation.CrossflowEditorID"
+            name="%_UI_CrossflowEditor_label"
+            icon="icons/full/obj16/CrossflowModelFile.gif"
+            extensions="crossflow"
+            class="crossflow.presentation.CrossflowEditor"
+            contributorClass="crossflow.presentation.CrossflowActionBarContributor">
+      </editor>
+   </extension>
+</plugin>

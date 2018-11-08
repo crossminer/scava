@@ -1,0 +1,121 @@
+import "../util/restmule.eol";
+
+var reservedWords : String = "(abstract|continue|for|new|switch|assert|";
+reservedWords = reservedWords + "default|if|package|synchronized|boolean|do|goto|private|";
+reservedWords = reservedWords + "this|break|double|implements|protected|throw|byte|else|";
+reservedWords = reservedWords + "import|public|throws|case|enum|instanceof|return|transient|";
+reservedWords = reservedWords + "catch|extends|int|short|try|char|final|interface|static|";
+reservedWords = reservedWords + "void|class|finally|long|strictfp|volatile|const|float|";
+reservedWords = reservedWords + "native|super|while|null|true|false)";
+ 
+var validName = "([a-zA-Z_\\$][a-zA-Z\\d_\\$]*\\.)*[a-zA-Z_\\$][a-zA-Z\\d_\\$]*";
+
+for (t in RestMule!Type.all){
+	t.sanitizeReserved();
+}
+
+for (t in RestMule!ObjectType.all){
+	t.sanitizeObjectName();
+	t.uniqueFieldNames();
+}
+
+for (r in RestMule!Request.all){
+	r.uniqueParameterNames();
+}
+
+for (r in RestMule!Response.all){
+	r.sanitizeNestedObjects();
+}
+
+// OPERATIONS
+
+operation String validName() : Boolean {
+	return self.matches(validName);
+}
+
+operation String reserved() : Boolean {
+	return self.matches(reservedWords);
+}
+
+operation RestMule!Type sanitizeReserved() {
+	if (self.name.reserved()){
+		self.name = self.name + "Sanitized";
+	}
+}
+
+operation RestMule!ObjectType uniqueFieldNames(){
+	var elements = new Set;
+	elements.addAll(self.nestedObjects);
+	elements.addAll(self.attributes);
+	elements.addAll(self.listFields);
+	var names = new Set;
+	var counter = 0;
+	for (e in elements){
+		while (names.includes(e.name)){
+			e.name = e.name + "_" + counter;
+			counter = counter + 1;
+			e.name.println;
+		}
+		counter = 0;
+		names.add(e.name);
+	}
+}
+
+operation RestMule!Request uniqueParameterNames(){
+	var names = new Set;
+	var counter = 0;
+	for (e in self.parameters){
+		while (names.includes(e.type.name)){
+			e.type.name = e.type.name + "_" + counter;
+			counter = counter + 1;
+			e.type.name.println;
+		}
+		counter = 0;
+		names.add(e.type.name);
+	}
+}
+
+operation RestMule!ObjectType sanitizeObjectName(){
+	self.name = self.name.firstToUpperCase();
+	if (not self.name.validName()){
+		self.name = self.name._2ClassName();
+	} 
+}
+
+operation RestMule!Response sanitizeNestedObjects() {	
+	var root;
+	if (self.responseType.instanceOf(ObjectType)){
+		root = self.responseType;
+	} else if (self.responseType.instanceOf(ListType) and 
+		(self.responseType.elements.first.instanceOf(ObjectType))) {
+		root = self.responseType.elements.first;
+	} else{
+		return null;
+	}	
+	
+	var names : Set = new Set;
+	names.add(root.name);
+	
+	var nest = root.getSubObjects();
+	var ok : Boolean = not nest.isEmpty();
+	while (ok){
+		for (o in nest){
+			while (names.includes(o.name)){
+				("found clashing class in "+self.responseType.name).println;
+				o.name = (o.name + "Inner").println;
+			}
+			names.add(o.name);
+		}
+		
+		var tmp = new Set();
+		for (o in nest){
+			var n = o.getSubObjects();
+			if (not n.isEmpty()){
+				tmp.addAll(n);
+			}
+		}
+		nest = tmp;
+		ok = not nest.isEmpty();
+	}
+	
+}

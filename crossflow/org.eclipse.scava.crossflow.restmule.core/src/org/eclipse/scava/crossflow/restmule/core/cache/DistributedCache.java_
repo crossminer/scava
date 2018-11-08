@@ -1,0 +1,359 @@
+package org.eclipse.crossmeter.workflow.restmule.core.cache;
+
+import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.hive.common.util.HiveStringUtils;
+import org.apache.hive.jdbc.HiveDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Request;
+import org.eclipse.crossmeter.workflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class DistributedCache implements ICache {
+
+	private static final Logger LOG = LogManager.getLogger(DistributedCache.class);
+	public static final String TABLE_COLUMNS = "(key int, requestUrl STRING, request BINARY, response BINARY)\n";
+	private static final String ROW_FORMAT = ""; // = "ROW FORMAT SERDE
+													// 'org.apache.hive.hcatalog.data.JsonSerDe'\n";
+	private static final String STORED_AS = ""; // "STORED AS TEXTFILE";
+
+	private static String driverName = "org.apache.hive.jdbc.HiveDriver";
+	private Connection connection;
+	private static final int PORT = 10000;
+	private static final String PROTOCOL = "jdbc:hive2";
+	private static final String TABLE_NAME = "cache";
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+
+	// user specified fields
+	private String user = null;
+	private String password = null;
+	private String server = null;
+
+	public DistributedCache() {
+		LOG.debug("Cache instance created (not yet initialized).");
+	}
+
+	@Override
+	public DistributedCache initializeDistributed(String cacheServer, String user, String password) {
+		load();
+
+		this.server = cacheServer;
+		this.user = user;
+		this.password = password;
+
+		HiveDriver h = new HiveDriver();
+
+		LOG.info("Specified cache at location: " + getConnectionUrl());
+
+		init();
+
+		return this;
+	}
+
+	private void load() {
+		LOG.debug("Loading cache driver ...");
+		try {
+			Class.forName(driverName);
+			LOG.debug("... successfully loaded cache driver.");
+		} catch (ClassNotFoundException e) {
+			LOG.error("Failed to load cache driver: " + driverName);
+			LOG.error(e.getMessage());
+		}
+	}
+
+	private void init() {
+		LOG.debug("Initializing connection ...");
+		try {
+			connection = DriverManager.getConnection(getConnectionUrl(), user, password);
+			LOG.debug("... successfully initialized connection.");
+
+			// printAllTables(connection);
+
+			Statement stmt = connection.createStatement();
+			stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + TABLE_COLUMNS + ROW_FORMAT + STORED_AS);
+
+			// printAllTables(connection);
+
+			stmt.close();
+
+		} catch (SQLException e) {
+			LOG.error("Failed to initialize connection to: " + getConnectionUrl());
+			LOG.error(e.getMessage());
+		}
+	}
+
+	private String getConnectionUrl() {
+		return PROTOCOL + "://" + server + ":" + PORT + "/default";
+	}
+
+	/**
+	 * Avoid using this as it is done in load(Request)
+	 * 
+	 * @deprecated
+	 * @param request
+	 * @return
+	 */
+	private boolean exists(Request request) {
+		if (isInitialized()) {
+			try {
+				Statement stmt = connection.createStatement();
+				ResultSet res = stmt
+						.executeQuery("SELECT * FROM " + TABLE_NAME + " WHERE key=" + Math.abs(request.hashCode()));
+				while (res.next()) {
+					if (res.getString(2).equals(request.toString())) {
+						res.close();
+						stmt.close();
+						return true; // request exists
+					}
+				}
+				res.close();
+				stmt.close();
+				return false; // request does not exist
+
+			} catch (SQLException e) {
+				LOG.error("Failed to evaluate response existence for request: " + request.url());
+				LOG.error(e.getMessage());
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Response load(Request request) {
+		Response response = null;
+
+		if (!isInitialized()) {
+			LOG.error("Required connection not initialized. Cannot continue loading from cache.");
+			LOG.error("Failed to put (store) response for request: " + request.url());
+			return null; // requirements not fulfilled, cannot continue
+		}
+
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet res = stmt
+					.executeQuery("SELECT * FROM " + TABLE_NAME + " WHERE key=" + Math.abs(request.url().hashCode()));
+			while (res.next()) {
+				if (res.getString(2).equals(request.url().toString())) {
+					response = buildResponse(request, res.getString(4));
+					LOG.debug("Successfully loaded response for request: " + request.url());
+					break; // matching response determined, exiting loop
+				}
+			}
+			res.close();
+			stmt.close();
+
+		} catch (SQLException e) {
+			LOG.error("Failed to load response for request: " + request.url());
+			LOG.error(e.getMessage());
+		}
+
+		if (response == null) {
+			LOG.debug("No cached response available for request: " + request.url());
+		}
+
+		return response;
+	}
+
+	private Response buildResponse(Request request, String jsonResponse) {
+		// Headers (non serializable; toMultimap()) <--
+		// okHttp3Response.getResponseHeaders()
+		// OK: Headers <-- OkHttp3Headers.get()
+		// Map<String, List<String>> <-- Headers <-- Builder.build() <--
+		// Headers.add(String name, String value)
+
+		// Handshake (non serializable?) <-- okHttp3Response.getHandshake()
+		// OK: Handshake <-- OkHttp3Handshake.get()
+		// String <-- handshake.tlsVersion().javaName()
+		// String <-- handshake.cipherSuite().javaName()
+		// List<Certificates> <-- handshake.peerCertificates()
+		// List<Certificates> <-- handshake.localCertificates()
+
+		// ResponseBody (non serializable; bytes(), byteStream(), ...) <--
+		// okHttp3Response.getResponseBody()
+		// OK: ResponseBody <-- OkHttp3ResponseBody.get()
+
+		OkHttp3Response okHttp3Response = null;
+		// TODO: replace with JsonSerDe if necessary
+
+		Gson gson = new Gson();
+		JsonReader reader = new JsonReader(new StringReader(jsonResponse));
+		reader.setLenient(true);
+		okHttp3Response = gson.fromJson(reader, OkHttp3Response.class);
+
+		return okHttp3Response.get();
+	}// buildResponse
+
+	private OkHttp3Response replaceIllicitCharacters(OkHttp3Response okHttp3Response) {
+		if (okHttp3Response == null || okHttp3Response.getResponseHeaders() == null
+				|| okHttp3Response.getResponseHeaders().namesAndValues == null) {
+			return okHttp3Response;
+		}
+
+		// double quotes in headers
+		for (Map.Entry<String, List<String>> entry : okHttp3Response.getResponseHeaders().namesAndValues.entrySet()) {
+			String key = entry.getKey();
+			for (String value : entry.getValue()) {
+				if (value.contains("W/\"")) { // fixing "etag" entry in header
+					String newValue = value.replace("\"", "\\\"");
+					LOG.debug("Replacing value: " + value + " ... with: " + newValue);
+					okHttp3Response.getResponseHeaders().namesAndValues.get(key)
+							.set(okHttp3Response.getResponseHeaders().namesAndValues.get(key).indexOf(value), newValue);
+				}
+			}
+		}
+
+		return okHttp3Response;
+	}
+
+	@Override
+	public void put(Request request, Response response) {
+		if (!isInitialized()) {
+			LOG.error("Required connection to distributed cache not initialized.");
+			LOG.error("Failed to put (store) response for request: " + request.url());
+			return; // requirements not fulfilled, cannot continue
+		}
+
+		OkHttp3Request okHttp3Request = new OkHttp3Request(request);
+		Gson gsonRequest = new Gson();
+		String serializedRequest = gsonRequest.toJson(okHttp3Request);
+
+		OkHttp3Response okHttp3Response = new OkHttp3Response(response);
+		okHttp3Response = replaceIllicitCharacters(okHttp3Response);
+		Gson gsonResponse = new Gson();
+		String serializedResponse = gsonResponse.toJson(okHttp3Response);
+
+		// LOG.debug("");
+		// LOG.debug("====================================================");
+		// LOG.debug("serializedRequest: ");
+		// LOG.debug(serializedRequest);
+		// LOG.debug("====================================================");
+		//
+		// LOG.debug("");
+		// LOG.debug("====================================================");
+		// LOG.debug("serializedResponse: ");
+		// LOG.debug(serializedResponse);
+		// LOG.debug("====================================================");
+
+		if (serializedRequest != null && serializedResponse != null) {
+			insert(request.url(), serializedRequest, serializedResponse);
+		}
+
+	}
+
+	private void insert(HttpUrl requestUrl, String requestJsonString, String responseJsonString) {
+		try {
+			Statement stmt = connection.createStatement();
+
+			int res = stmt.executeUpdate(
+					"INSERT INTO TABLE " + TABLE_NAME + " VALUES (" + Math.abs(requestUrl.toString().hashCode()) + ", '"
+							+ requestUrl.toString() + "', '" + HiveStringUtils.escapeHiveCommand(requestJsonString)
+							+ "', '" + HiveStringUtils.escapeHiveCommand(responseJsonString) + "')");
+
+			if (res == 0) {
+				LOG.debug("Successfully put (stored) response for request: " + requestUrl.toString());
+			}
+
+			stmt.close();
+		} catch (SQLException e) {
+			LOG.error("Failed to put (stored) response for request: " + requestUrl.toString());
+			LOG.error(e.getMessage());
+		}
+	}
+
+	@Override
+	public void clear() {
+		if (isInitialized()) {
+			LOG.warn("CLEARING CACHE AT LOCATION: " + getConnectionUrl());
+
+			try {
+				Statement stmt = connection.createStatement();
+
+				// first, remove existing
+				LOG.warn("Removing existing cache ...");
+				stmt.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);
+				LOG.warn("... completed removing existing cache.");
+
+				// secondly, create new
+				LOG.warn("Creating new cache ...");
+				stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + TABLE_COLUMNS + ROW_FORMAT + STORED_AS);
+				LOG.warn("... completed creating new cache.");
+				stmt.close();
+
+			} catch (SQLException e) {
+				LOG.error("Failed to initialize connection to: " + getConnectionUrl());
+				LOG.error(e.getMessage());
+			}
+		} else {
+			LOG.error("Failed to clear cache. Not initialized?");
+		}
+	}
+
+	@Override
+	public void tearDown() {
+		LOG.debug("Tearing down connection ...");
+		if (isInitialized()) {
+			try {
+				connection.close();
+				LOG.info("... successfully teared down connection.");
+			} catch (SQLException e) {
+				LOG.error("Failed to tear down connection to: " + getConnectionUrl());
+				LOG.error(e.getMessage());
+			}
+		}
+	}
+
+	private boolean isInitialized() {
+		if (this.server != null && !this.server.equals(""))
+			return true;
+		LOG.error("Failed to proceed. Cache not initialized!");
+		LOG.warn("Any proceeding use of non-initialized cache will result in unexpected behavior.");
+		return false;
+	}
+
+	public boolean isRunning() {
+		return (this.server != null && !this.server.equals(""));
+	}
+
+	public static boolean tableExist(Connection conn, String tableName) throws SQLException {
+		boolean tExists = false;
+		try (ResultSet rs = conn.getMetaData().getTables(null, null, tableName, null)) {
+			while (rs.next()) {
+				String tName = rs.getString("TABLE_NAME");
+				if (tName != null && tName.equals(tableName)) {
+					tExists = true;
+					break;
+				}
+			}
+		}
+		return tExists;
+	}
+
+	public static void printAllTables(Connection conn) throws SQLException {
+		DatabaseMetaData md = conn.getMetaData();
+		ResultSet rs = md.getTables(null, null, "%", null);
+		while (rs.next()) {
+			LOG.debug("table: " + rs.getString(3));
+		}
+	}
+
+	@Override
+	public boolean isDistributed() {
+		return true;
+	}
+}

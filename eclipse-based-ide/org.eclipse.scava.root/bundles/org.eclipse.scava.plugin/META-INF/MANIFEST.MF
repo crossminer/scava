@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SCAVA Eclipse Base IDE
+Bundle-SymbolicName: org.eclipse.scava.plugin;singleton:=true
+Bundle-Version: 1.0.0.rev0
+Bundle-Activator: org.eclipse.scava.plugin.Activator
+Bundle-Vendor: FrontEndArt
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core;bundle-version="3.12.3",
+ org.eclipse.jface.text;bundle-version="3.11.2",
+ org.eclipse.jdt.ui;bundle-version="3.12.2",
+ org.eclipse.core.resources;bundle-version="3.11.1",
+ org.eclipse.ui.ide;bundle-version="3.12.3",
+ org.junit;bundle-version="4.12.0",
+ org.eclipse.debug.core;bundle-version="3.11.0",
+ com.google.gson;bundle-version="2.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.jdt.core.dom,
+ org.eclipse.jdt.internal.ui.javaeditor,
+ org.eclipse.ui.editors.text,
+ org.eclipse.ui.texteditor
+Bundle-ClassPath: .,
+ lib/swing2swt.jar,
+ lib/org.eclipse.scava.plugin.dependencies.jar

@@ -26,7 +26,7 @@ public class RawProjectListResource extends AbstractApiResource {
 		// TODO
 		boolean paging = getRequest().getAttributes().containsKey("page");
 		
-		Platform platform = Platform.getInstance();
+		//Platform platform = Platform.getInstance();
 		ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
 		
 		Iterator<Project> it = projectRepo.getProjects().iterator();

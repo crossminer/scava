@@ -16,23 +16,41 @@
     border-top: 0;
 }
 
+.panel {
+    width: 500px;
+}
+
 .panel-profile .panel-heading {
     height: 150px;
     background-size: cover;
     widows: 150px;
 }
 
-.panel-profile{
-    width: 200px;
+.panel-profile.up-to-date{
     border-radius: 25px;
-    padding: 5px;
     float: right;
-    margin-top: 20px;
-    margin-right: 50px;
+    //margin-right: 50px;
     color: green;
 }
-.panel-title{
 
+.panel-profile.in-progress{
+    border-radius: 25px;
+    float: right;
+    //margin-right: 50px;
+    color :dodgerblue;
 }
 
 .mb10{ margin-bottom:10px}
+
+.progress-div{
+    width: 250px;
+}
+
+table tbody tr td div#task-type-icon {
+    text-align: center;
+}
+
+span img.project-type-img {
+    margin-top: -20px;
+    margin-bottom: -15px;
+}

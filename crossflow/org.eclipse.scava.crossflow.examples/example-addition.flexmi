@@ -1,0 +1,22 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Simple example that adds pairs of numbers and prints the results -->
+	<workflow name="AdditionExample" package="org.eclipse.scava.crossflow.examples.addition">
+		<source name="NumberPairSource" out="Additions"/>
+		<queue name="Additions" type="NumberPair"/>
+		<task name="Adder" in="Additions" out="AdditionResults"/>
+		<queue name="AdditionResults" type="Number"/>
+		<sink name="Printer" in="AdditionResults"/>
+						
+		<type name="NumberPair">
+			<field name="a" type="int"/>
+			<field name="b" type="int"/>
+		</type>
+		<type name="Number">
+			<field name="n" type="int"/>
+		</type>
+	</workflow>	
+	
+</_>

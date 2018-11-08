@@ -19,7 +19,6 @@ public class ApiApplication extends Application {
 	public Restlet createInboundRoot() {
 		Router router = new Router(getContext());
 
-		
 		router.attach("/", PingResource.class); 	
 		router.attach("/search", SearchProjectResource.class);
 		router.attach("/search/", SearchProjectResource.class);
@@ -29,6 +28,26 @@ public class ApiApplication extends Application {
 		router.attach("/factoids/", FactoidListResource.class);
 		router.attach("/projects", ProjectListResource.class);
 		router.attach("/projects/", ProjectListResource.class);
+		router.attach("/analysis/task/create", AnalysisCreationTaskResource.class);
+		router.attach("/analysis/task/update", AnalysisUpdateTaskResource.class);
+		router.attach("/analysis/task/start", AnalysisStartTaskResource.class);
+		router.attach("/analysis/task/stop", AnalysisStopTaskResource.class);
+		router.attach("/analysis/task/reset", AnalysisResetTaskResource.class);
+		router.attach("/analysis/task/promote/{analysisTaskId}", AnalysisPromoteTaskResource.class);
+		router.attach("/analysis/task/demote/{analysisTaskId}", AnalysisDemoteTaskResource.class);
+		router.attach("/analysis/task/pushOnWorker/{analysisTaskId}/w/{workerId}", AnalysisTaskPushOnWorkerResource.class);
+		router.attach("/analysis/task/delete/{analysisTaskId}", AnalysisDeleteTaskResource.class);
+		router.attach("/analysis/tasks/project/{projectid}", AnalysisTasksByProjectResource.class);
+		router.attach("/analysis/tasks/status/project/{projectid}", AnalysisTasksStatusByProjectResource.class);
+		router.attach("/analysis/task/{analysistaskid}", AnalysisTaskByAnalysisTaskResource.class);
+		router.attach("/analysis/tasks", AnalysisTasksResource.class);
+		router.attach("/analysis/metricproviders", AnalysisMetricProvidersResource.class);
+		router.attach("/analysis/workers", AnalysisWorkerResource.class);
+		router.attach("/platform/properties/create", PlatformCreationPropertiesResource.class);
+		router.attach("/platform/properties/update", PlatformUpdatePropertiesResource.class);
+		router.attach("/platform/properties/delete/{key}", PlatformDeletePropertiesResource.class);
+		router.attach("/platform/properties/{key}", PlatformPropertiesByKeyResource.class);
+		router.attach("/platform/properties", PlatformListPropertiesResource.class);
 		router.attach("/projects/import", ProjectImportResource.class);
 		router.attach("/projects/create", ProjectCreationResource.class);
 		router.attach("/projects/p/{projectid}", ProjectResource.class);

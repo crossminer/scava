@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<project default="setup">
+
+	<!--API Variables -->
+	<property name="api" value="github" />
+	<property name="json.model.file" value="schemas/github_v3.json" />
+
+	<property name="output" value="${basedir}/../generated/org.eclipse.crossmeter.workflow.restmule.client.${api}" />
+
+	<property name="fix" value="epsilon/util/fix/${api}.eol" />
+
+	<!--Properties -->
+	<property name="codegen" value="org.eclipse.crossmeter.workflow.restmule.generator" />
+	<property name="base" value="epsilon/base" />
+	<property name="base.model" value="epsilon/model/base/base.model" />
+	<property name="json" value="JSON" />
+	<property name="json.meta.type" value="JSON" />
+	<property name="restmule" value="RestMule" />
+	<property name="restmule.meta.uri" value="restmule" />
+	<property name="restmule.meta.emf" value="epsilon/meta/restmule.emf" />
+	<property name="restmule.meta.ecore" value="epsilon/meta/restmule.ecore" />
+	<property name="restmule.model.file" value="epsilon/model/generated.model" />
+	<property name="validator" value="epsilon/validation/restmule.evl" />
+	<property name="sanitize" value="epsilon/validation/sanitize.eol" />
+	<property name="orchestrator" value="epsilon/M2T/orchestrator.egx" />
+	<property name="json2restmule" value="epsilon/M2M/json2restmule.etl" />
+	<property name="tmp.output" value="epsilon/output" />
+	<!-- WARNING: used on delete task -->
+
+	<target name="setup">
+
+		<!-- Transform EMF 2 Ecore -->
+		<epsilon.eugenia src="${restmule.meta.emf}" firstStep="ecore" lastStep="ecore" />
+
+		<!-- Register Ecore -->
+		<epsilon.emf.register file="${restmule.meta.ecore}" />
+
+		<!-- Refresh Resources -->
+		<eclipse.refreshLocal resource="${codegen}" depth="-1" />
+	</target>
+
+	<target name="M2M" depends="setup">
+
+		<!--Load JSON Model -->
+		<epsilon.loadModel name="${json}" type="${json.meta.type}">
+			<parameter name="file" file="${json.model.file}" />
+			<parameter name="readOnLoad" value="true" />
+			<parameter name="storeOnDisposal" value="false" />
+		</epsilon.loadModel>
+
+		<!--Load RestMule Model -->
+		<epsilon.emf.loadModel name="${restmule}" modelfile="${restmule.model.file}" metamodeluri="${restmule.meta.uri}" read="false" store="true" />
+
+		<!--JSON 2 RestMule -->
+		<epsilon.etl src="${json2restmule}">
+			<model ref="${json}" />
+			<model ref="${restmule}" />
+		</epsilon.etl>
+
+		<!--Refresh Codegen -->
+		<eclipse.refreshLocal resource="${codegen}" depth="-1" />
+
+		<!--Sanitize Model -->
+		<epsilon.eol src="${sanitize}">
+			<model ref="${restmule}" />
+		</epsilon.eol>
+
+		<!--Validate Model -->
+		<epsilon.evl src="${validator}" failonwarnings="false" failonerrors="false">
+			<model ref="${restmule}" />
+		</epsilon.evl>
+
+		<!--Fix OAS Model -->
+		<epsilon.eol src="${fix}">
+			<model ref="${restmule}" />
+		</epsilon.eol>
+
+		<!--Validate Model -->
+		<epsilon.evl src="${validator}" failonwarnings="false" failonerrors="true">
+			<model ref="${restmule}" />
+		</epsilon.evl>
+
+	</target>
+
+	<target name="M2T" depends="setup">
+
+		<!--Load Model -->
+		<epsilon.emf.loadModel name="${restmule}" modelfile="${restmule.model.file}" metamodeluri="${restmule.meta.uri}" read="true" store="false" />
+
+		<!--Validate Model -->
+		<epsilon.evl src="${validator}" failonerrors="true" failOnWarnings="true">
+			<model ref="${restmule}" />
+		</epsilon.evl>
+
+		<!--Create temporary otuput directory -->
+		<mkdir dir="${basedir}/${tmp.output}" />
+
+		<!--Copy Base Resource Files -->
+		<copy todir="${basedir}/${tmp.output}" overwrite="true">
+			<fileset dir="${basedir}/${base}" />
+		</copy>
+
+		<!--RestMule 2 Java -->
+		<epsilon.egl src="${orchestrator}">
+			<model ref="${restmule}" />
+		</epsilon.egl>
+
+		<!--Create otuput directory -->
+		<mkdir dir="${output}" />
+
+		<!--Copy Project to Target Output -->
+		<copy todir="${output}" overwrite="true">
+			<fileset dir="${basedir}/${tmp.output}" />
+		</copy>
+
+		<!--Clean temporary otuput directory -->
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}/${tmp.output}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+
+		<!--Refresh Codegen -->
+		<eclipse.refreshLocal resource="${codegen}" depth="-1" />
+
+	</target>
+
+</project>

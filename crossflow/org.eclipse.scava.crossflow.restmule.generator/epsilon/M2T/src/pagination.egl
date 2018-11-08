@@ -1,0 +1,60 @@
+package org.eclipse.crossmeter.workflow.restmule.client.[%= name %].page;
+
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PAGE_INCREMENT;
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PAGE_LABEL;
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PAGE_MAX_VALUE;
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PAGE_START_VALUE;
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PER_ITERATION_LABEL;
+import static org.eclipse.crossmeter.workflow.restmule.core.util.PropertiesUtil.PER_ITERATION_VALUE;
+
+import org.eclipse.crossmeter.workflow.restmule.core.data.IDataSet;
+import org.eclipse.crossmeter.workflow.restmule.core.page.AbstractPagination;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].callback.[%= R.name %]Callback;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].callback.[%= R.name %]WrappedCallback;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].data.[%= R.name %]DataSet;
+import org.eclipse.crossmeter.workflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
+
+import io.reactivex.annotations.NonNull;
+
+public class [%= R.name %]Pagination extends AbstractPagination{
+
+	private static [%= R.name %]Pagination instance;
+
+	public static [%= R.name %]Pagination get(){
+		if (instance == null){
+			instance = new [%= R.name %]Pagination();
+		}
+		return instance;
+	}
+
+	private [%= R.name %]Pagination() {
+		super(	[%= R.name %]PropertiesUtil.get(PAGE_LABEL),
+				[%= R.name %]PropertiesUtil.get(PER_ITERATION_LABEL), 
+				Integer.valueOf([%= R.name %]PropertiesUtil.get(PER_ITERATION_VALUE)),
+				Integer.valueOf([%= R.name %]PropertiesUtil.get(PAGE_MAX_VALUE)), 
+				Integer.valueOf([%= R.name %]PropertiesUtil.get(PAGE_START_VALUE)),
+				Integer.valueOf([%= R.name %]PropertiesUtil.get(PAGE_INCREMENT)));
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T, WRAP extends [%= R.name %]Paged<T>, END> IDataSet<T> traverse(
+			@NonNull String methodName, 
+			@NonNull Class<?>[] types, 
+			@NonNull Object[] vals, 
+			@NonNull END client)
+	{
+		return super.<T, WRAP, END, [%= R.name %]DataSet<T>, [%= R.name %]WrappedCallback>
+		traverse(new [%= R.name %]WrappedCallback<T, WRAP>(), methodName, types, vals, client);
+	}
+	
+	public <T, END> IDataSet<T> traverseList(
+			@NonNull String methodName, 
+			@NonNull Class<?>[] types, 
+			@NonNull Object[] vals, 
+			@NonNull END client)
+	{
+		return super.<T, END, [%= R.name %]DataSet<T>, [%= R.name %]Callback<T>>
+		traversePages(new [%= R.name %]Callback<T>(), methodName, types, vals, client);		
+	}
+
+}

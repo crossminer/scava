@@ -1,0 +1,145 @@
+operation cc2_LowerC() : String {
+	return self.replace("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
+}
+
+operation String cc2Constant() : String {
+	return self.replace("([a-z])([A-Z]+)", "$1_$2").toUpperCase();
+}
+
+operation String _2CC() : String {
+	return self.splitCC("_");
+}
+
+operation String contains(chars : String) : Boolean {
+	return self.matches("((\\w+)*(["+chars+"])(\\w+)*)*");
+}
+
+operation String splitCC(char : String) : String {
+	var result : String = self.firstToUpperCase();
+	if (self.contains(char)){
+		result = "";
+		var elements : Sequence = self.split(char);
+		for (e in elements){
+			if (e <> ""){
+				result = result + e.firstToUpperCase();
+			}
+		}
+	}
+	return result;
+}
+operation String splitMatchCC(regexChar : String) : String {
+	var result : String = self.firstToUpperCase();
+	if (self.matches(".*(" + regexChar + ").*")){
+		result = "";
+		var elements : Sequence = self.split(regexChar);
+		if (not elements.isEmpty()){
+			for (e in elements){
+				if (e <> ""){
+					result = result + e.firstToUpperCase();
+				}
+			}
+		}
+	}
+	return result;
+}
+
+operation String sanitizeClass() : String {
+	return self.sanitize().firstToUpperCase();
+}
+operation String sanitize() : String {
+	return self.sanitizeCC("[^a-zA-Z\\d\\$]");
+}
+
+operation String sanitizeFieldName() : String {
+	var a = self.sanitize();
+	if (a.matches("([a-zA-Z_\\$][a-zA-Z\\d_\\$]*\\.)*[a-zA-Z_\\$][a-zA-Z\\d_\\$]*")){
+		return a;
+	} else{
+		if (a.characterAt(0).matches("[^a-zA-Z\\$]")){
+			return "sanitized" + a;
+		} else{
+			return a;
+		}
+	}
+}
+
+operation String sanitizeCC(validRegex : String) : String {
+	var result = self;
+	if (self.matches(".*("+validRegex+")*.*")){
+		result = "";
+		var elements : Sequence = self.split(validRegex);
+		if (not elements.isEmpty()){
+			for (e in elements){
+				if (e <> ""){
+					result = result + e.firstToUpperCase();
+				}
+			}
+		}
+	}
+	return result.firstToLowerCase();
+}
+
+operation String _2ClassName() : String {
+	return self.splitCC("-").splitCC("_");
+}
+
+operation String fieldName() : String {
+	return self._2CC().firstToLowerCase();
+}
+
+operation String method() : String {
+	return self.fieldName().firstToUpperCase();
+}
+
+operation String methodName() : String {
+	var result : String = "";
+	var elements = self.split("/");
+	for (e in elements){
+		if (e <> ""){
+			if (not e.startsWith("{")){
+				result = result.concat(e.firstToUpperCase());
+			} 
+		}
+	}
+	return result;
+}
+
+operation String toInt() : Integer{
+	if (self == null or self == "null" or self ==""){
+		return null;
+	} else {
+		return self.asInteger();
+	}
+}
+
+operation String toReal() : Real {
+	if (self == null or self == "null" or self ==""){
+		return null;
+	} else {
+		return self.asReal();
+	}
+}
+
+operation Any toBoolean() : Boolean {
+	if (self == null or self == "null" or self ==""){
+		return null;
+	} else {
+		return self.asBoolean();
+	}
+}
+
+operation String isValidJava() : Boolean {
+	return self.matches("[~#@*+%{}<>\\[\\]|\"\\_^]");
+}
+
+operation String numberOfParameters() : Integer {
+	if (self.matches("(/[-a-zA-Z0-9+@#/%=~_|]+)*(/\\{[-a-zA-Z0-9+@#/%=~_|]+\\})+(/[-a-zA-Z0-9+@#/%=~_|]+)*")){
+		return (self.split("/\\{").size() - 1);
+	} else {
+		return 0;
+	}
+}
+
+operation String isValidURL() : Boolean {
+    return self.matches("^(https?|http)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
+}

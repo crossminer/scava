@@ -1,0 +1,72 @@
+rule executor transform w:Workflow{
+	parameters {
+		var params:new Map();
+		params.put("wf",w);
+		return params;
+	}
+	template:
+		"crossflowExecutorGenerator.egl"
+		target:
+		"main/java/"+(w.configuration.rootPackageName.packageToFileString())+"/basegen/"+(w.name)+".java"
+	//XXX windows-based separator -- make generic
+}
+
+rule sink transform jt:JavaTask{
+	guard : jt.taskType==TaskTypes#sink
+	parameters {
+		var params:new Map();
+		params.put("jt",jt);
+		return params;
+	}
+	template:
+		"crossflowSinkJavaTaskBaseGenerator.egl"
+		target:
+		"main/java/"+(jt.eContainer.configuration.rootPackageName.packageToFileString())+"/basegen/"+(jt.name)+"TaskBase.java"
+	//XXX windows-based separator -- make generic
+}
+
+rule map transform jt:JavaTask{
+	guard : jt.taskType==TaskTypes#map and not jt.isAsync
+	parameters {
+		var params:new Map();
+		params.put("jt",jt);
+		return params;
+	}
+	template:
+		"crossflowMapJavaTaskBaseGenerator.egl"
+		target:
+		"main/java/"+(jt.eContainer.configuration.rootPackageName.packageToFileString())+"/basegen/"+(jt.name)+"TaskBase.java"
+	//XXX windows-based separator -- make generic
+}
+
+rule flatMap transform jt:JavaTask{
+	guard : jt.taskType==TaskTypes#flatMap and not jt.isAsync
+	parameters {
+		var params:new Map();
+		params.put("jt",jt);
+		return params;
+	}
+	template:
+		"crossflowFlatMapJavaTaskBaseGenerator.egl"
+		target:
+		"main/java/"+(jt.eContainer.configuration.rootPackageName.packageToFileString())+"/basegen/"+(jt.name)+"TaskBase.java"
+	//XXX windows-based separator -- make generic
+}
+
+rule asyncmap transform jt:JavaTask{
+	guard : (jt.taskType==TaskTypes#map or jt.taskType==TaskTypes#flatMap) and jt.isAsync
+	parameters {
+		var params:new Map();
+		params.put("jt",jt);
+		return params;
+	}
+	template:
+		"crossflowAsyncMapperJavaTaskBaseGenerator.egl"
+		target:
+		"main/java/"+(jt.eContainer.configuration.rootPackageName.packageToFileString())+"/basegen/"+(jt.name)+"TaskAsyncBase.java"
+	//XXX windows-based separator -- make generic
+}
+
+operation String packageToFileString() : String{
+	return self.replaceAll("\\.","\\/");
+}

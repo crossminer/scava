@@ -32,6 +32,7 @@ class GitHubRepository extends Project {
   attr String ssh_url;
   attr String svn_url;
   attr String mirror_url;
+  attr String token;
   val Language[*] languages;
   attr Integer size;
   attr String master_branch;

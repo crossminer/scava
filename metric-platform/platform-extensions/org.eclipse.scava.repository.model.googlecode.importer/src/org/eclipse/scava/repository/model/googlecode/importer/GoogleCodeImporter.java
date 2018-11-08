@@ -26,6 +26,7 @@ import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.googlecode.*;
 import org.eclipse.scava.repository.model.importer.IImporter;
+import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 import org.eclipse.scava.repository.model.vcs.svn.SvnRepository;
@@ -770,6 +771,8 @@ public class GoogleCodeImporter implements IImporter{
 		}
 		else throw new WrongUrlException();
 	}
+	@Override
+	public void setCredentials(Credentials credentials) {
+	}
 
-	
 }

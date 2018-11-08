@@ -1,0 +1,72 @@
+@namespace(uri="org.eclipse.scava.crossflow", prefix="cf")
+@gmf
+package crossflow;
+
+@gmf.diagram(onefile="true")
+class Workflow {
+    val Configuration[1] configuration;
+
+	attr String name;
+	attr String ~package;
+	val Stream[*] streams;
+	val Task[*] tasks;
+	val Type[*] types;
+	val Field[*] parameters;
+}
+
+//ideally label is type.name
+@gmf.node(label.placement="none",figure="ellipse")
+abstract class Stream {
+	attr String name;
+	@gmf.link
+	ref Type type;
+	
+	ref Task[*]#input inputOf;
+	ref Task[*]#output outputOf;
+}
+
+class Topic extends Stream {}
+
+class Queue extends Stream {}
+
+@gmf.node(label="name")
+class Task {
+	attr String name;
+	@gmf.link
+	ref Stream[*]#inputOf input;
+	@gmf.link
+	ref Stream[*]#outputOf output;
+	attr Boolean masterOnly = false;
+	attr Boolean parallel; /*TODO*/
+	attr Boolean cached; /*TODO*/
+}
+
+class Source extends Task {}
+
+class Sink extends Task {}
+
+@gmf.node(label="name")
+class Type {
+	attr String name;
+	attr boolean[1] isMany;
+	@gmf.link
+    ref Type[*] extending;
+    @gmf.compartment
+	val Field[*] fields;
+}
+
+//ideally label is | name : type.name
+@gmf.node(label="name",label.pattern="{0}")
+class Field {
+	attr String name;
+	attr String type;
+}
+
+@gmf.node(label="numberOfWorkers,isMasterAlsoWorker", 
+			label.pattern="Config: NoW:{0}, iMaW:{1}")
+class Configuration {
+  attr Integer numberOfWorkers;
+  attr Boolean isMasterAlsoWorker;
+  attr String[1] rootPackageName;
+  attr String[1] projectName;
+}

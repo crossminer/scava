@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.scava.metricprovider.rascal.RascalFactoidProvider;
 import org.eclipse.scava.metricprovider.rascal.RascalManager;
 import org.eclipse.scava.metricprovider.rascal.RascalMetricHistoryWrapper;
@@ -34,17 +36,17 @@ import org.eclipse.scava.metricprovider.rascal.RascalProjectDeltas;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.AnalysisTaskService;
+import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
+import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.platform.osgi.executors.MetricListExecutor;
-import org.eclipse.scava.platform.osgi.executors.ProjectExecutor;
+import org.eclipse.scava.platform.osgi.analysis.MetricListExecutor;
+import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 import org.eclipse.scava.repository.model.LocalStorage;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.equinox.app.IApplication;
-import org.eclipse.equinox.app.IApplicationContext;
-
 import org.rascalmpl.interpreter.Evaluator;
 import org.rascalmpl.uri.URIResolverRegistry;
 import org.rascalmpl.values.ValueFactoryFactory;
@@ -83,7 +85,7 @@ public class RascalTestCaseGenerator implements IApplication  {
 		List<IMetricProvider> metricProviders = manager.getMetricProviders();
 		
 		// sort metric providers topologically
-		metricProviders = new ProjectExecutor(platform, new Project()) {
+		metricProviders = new ProjectAnalyser(platform) {
 			public List<IMetricProvider> order(List<IMetricProvider> metrics) {
 				List<IMetricProvider> result = new ArrayList<>(metrics.size());
 				for (List<IMetricProvider> branch : splitIntoBranches(metrics)) {
@@ -144,6 +146,23 @@ public class RascalTestCaseGenerator implements IApplication  {
 			moreDatesAvailable = false;
 			
 			for (Project project : projects) {
+				System.out.println("Creating analysis task");
+				AnalysisTask task = new AnalysisTask();
+				task.setLabel("analysis-task");
+				task.setAnalysisTaskId(project.getShortName() + task.getLabel());
+				task.setType(AnalysisExecutionMode.SINGLE_EXECUTION.name());
+				task.setStartDate(new java.util.Date(2010,01,01));
+				task.setEndDate(new java.util.Date(2010,12,01));
+				
+				List<String> metricsProviders = new ArrayList<String>();
+				metricsProviders.add("org.eclipse.scava.metricprovider.trans.commits.CommitsTransientMetricProvider");
+				metricsProviders.add("org.eclipse.scava.metricprovider.historic.bugs.bugs");
+				metricsProviders.add("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider");
+				metricsProviders.add("org.eclipse.scava.metricprovider.trans.bugs.activeusers.ActiveUsersTransMetricProvider");
+				
+				AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
+				service.createAnalysisTask(project.getShortName(), task, metricsProviders);
+				
 				for (VcsRepository repo : project.getVcsRepositories()) {
 					String repoURL = repo.getUrl();
 					Iterator<Date> dateIterator = repositoryDates.get(repoURL);
@@ -160,7 +179,7 @@ public class RascalTestCaseGenerator implements IApplication  {
 								File dir = new File(testDataDir, project.getName() + "/" + encode(repoURL) + "/" + date.toString());
 								dir.mkdirs();
 								
-								MetricListExecutor ex = new MetricListExecutor(project.getShortName(), delta, date);
+								MetricListExecutor ex = new MetricListExecutor(platform, project.getShortName(), task.getAnalysisTaskId() ,delta, date);
 								ex.setMetricList(metricProviders);
 								ex.run();
 								

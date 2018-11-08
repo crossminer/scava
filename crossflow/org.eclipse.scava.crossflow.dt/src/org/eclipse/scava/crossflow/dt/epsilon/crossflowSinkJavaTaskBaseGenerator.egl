@@ -1,0 +1,70 @@
+[%
+var config = jt.eContainer.configuration;
+%]
+
+package [%=config.rootPackageName%].basegen;
+
+import org.apache.flink.api.java.tuple.*;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+
+public abstract class [%=jt.name%]TaskBase extends RichSinkFunction<[%=jt.incomingStream.getTypeString()%]> {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Initialiser used to create any objects/variables which are not part of
+	 * the actual data flow of the task (and hence cannot be distributed at
+	 * runtime). This method will be called once for each instance/node upon its
+	 * creation, before any of the data has started flowing through it.
+	 * 
+	 * NB: any non-serialisable objects require initialisation in this method
+	 * (and can be declared as uninitialised fields so they can be accessed by
+	 * the task)
+	 */
+	@Override
+	public void open(Configuration parameters) throws Exception {
+		// FIXME replace this method with your own if you require this functionality
+	}
+
+	/**
+	 * Similar to {@link #init()}, this method is called after the task is
+	 * complete, once for each instance/node. This can be used for any cleanup
+	 * code.
+	 */
+	@Override
+	public void close() throws Exception {
+		// FIXME replace this method with your own if you require this functionality
+	}
+
+	/**
+	 * The execution logic of the task goes here. For sink tasks, this should
+	 * entail obtaining the {@code value} element, processing it, and performing
+	 * the sink logic
+	 * 
+	 * @param value
+	 *            The input element this task reads from.
+	 */
+	@Override
+	public void invoke([%=jt.incomingStream.getTypeString()%] value, Context context) throws Exception {
+		// FIXME replace this method with your own execution logic
+		throw new UnsupportedOperationException("This method requires a custom implementation.");
+	}
+
+}
+
+[%
+@Cached
+operation Stream getTypeString() : String {
+	var t = self.type;
+	if(not t.isTypeOf(Struct) or t.fields.size==0)
+		return t.name;
+	else {
+		var ret = t.name + "<";
+		for(f in t.fields)
+			ret = ret + f.type.name + ", ";
+		ret = ret.substring(0, ret.length-2);
+		ret = ret + ">";
+		return ret;
+	}		
+}
+%]

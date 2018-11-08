@@ -1,0 +1,11 @@
+**/resources/credentials/
+**/githubprivate\.properties
+
+**/bin/
+
+**/\.idea/
+**/docker/data/
+**/cloned-repos/
+**/okhttp_cache/
+
+**/*\.rar
