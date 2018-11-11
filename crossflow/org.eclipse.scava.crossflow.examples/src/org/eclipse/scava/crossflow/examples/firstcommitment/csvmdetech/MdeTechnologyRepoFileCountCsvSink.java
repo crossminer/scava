@@ -4,7 +4,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 public class MdeTechnologyRepoFileCountCsvSink extends MdeTechnologyRepoFileCountCsvSinkBase {
 
-	private CsvWriter writer0 = new CsvWriter("MDE-files.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
+	private CsvWriter writer0 = new CsvWriter("csvs/MDE-files.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
 	
 	@Override
 	public void consumeMdeTechnologyRepoFileCountEntries(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {

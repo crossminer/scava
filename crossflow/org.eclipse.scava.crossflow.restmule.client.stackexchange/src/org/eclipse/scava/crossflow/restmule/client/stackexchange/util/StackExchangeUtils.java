@@ -6,6 +6,10 @@ import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.CACH
 import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.PASSWORD;
 import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.PERSONAL_ACCESS_TOKEN;
 import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.USERNAME;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.KEY;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.ACCESS_TOKEN;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.CLIENT_ID;
+import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.CLIENT_SECRET;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +31,10 @@ public class StackExchangeUtils {
 	private static String token;
 	private static String username;
 	private static String password;
+	private static String key;
+	private static String client_id;
+	private static String client_secret;
+	private static String access_token;
 
 	private static IStackExchangeApi publicApi;
 	private static IStackExchangeApi basicApi;
@@ -78,12 +86,25 @@ public class StackExchangeUtils {
 				token = PrivateProperties.get(PERSONAL_ACCESS_TOKEN);
 				username = PrivateProperties.get(USERNAME);
 				password = PrivateProperties.get(PASSWORD);
+				key = PrivateProperties.get(KEY);
+				client_id = PrivateProperties.get(CLIENT_ID);
+				client_secret = PrivateProperties.get(CLIENT_SECRET);
+				access_token = PrivateProperties.get(ACCESS_TOKEN);
 
-				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-						.createWithBasicAuth(username, token);
+//				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
+//						.createWithBasicAuth(key, access_token); // TODO activate this when token obtained via https server running on the same domain as this client
+				
 				basicSession = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-						.createWithBasicAuth(username, password);
-				LOG.info("set up authentication from properties file with github user: " + username);
+						.createWithBasicAuth(key);
+				
+//				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
+//						.createWithBasicAuth(username, token);
+//				basicSession = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
+//						.createWithBasicAuth(username, password);
+				if ( key != null && !key.isEmpty() )
+					LOG.info("set up authentication from properties file with key: " + key); // TODO: remove this (should not be logged !)
+				if ( access_token != null && !access_token.isEmpty() )
+					LOG.info("set up authentication from properties file with access_token: " + access_token); // TODO: remove this (should not be logged !)
 			} else {
 				LOG.info("authentication from properties file not set up");
 			}

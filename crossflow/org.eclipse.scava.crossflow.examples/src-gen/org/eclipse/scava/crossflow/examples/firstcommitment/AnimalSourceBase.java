@@ -55,5 +55,4 @@ public abstract class AnimalSourceBase implements Task{
 	
 	public abstract void produce();
 	
-	
 }

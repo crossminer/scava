@@ -83,6 +83,9 @@ public class RateLimitExecutor extends ThreadPoolExecutor {
 	public void execute(Runnable command) {
 		LOG.info("[" + sessionId + "] ENTERING EXECUTE");
 		maxRequestsPerSecond.acquire();
+//		System.out.println("maxRequestsPerSecond.acquire()="+maxRequestsPerSecond.acquire());
+//		System.out.println("getLimiter().isSet()="+getLimiter().isSet());
+//		System.out.println("dispatchCounter="+dispatchCounter);
 
 		// Wait for first request to return
 		if (dispatchCounter.get() == 1) {
@@ -130,7 +133,7 @@ public class RateLimitExecutor extends ThreadPoolExecutor {
 		logCounterDebug("beforeExec");
 		super.execute(command);
 	}
-//lol
+
 	private void awaitToSet() {
 		int retry = 0;
 		while (!getLimiter().isSet().get() && retry <= 10) {

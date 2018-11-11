@@ -77,5 +77,4 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	}
 	
 	
-	
 }

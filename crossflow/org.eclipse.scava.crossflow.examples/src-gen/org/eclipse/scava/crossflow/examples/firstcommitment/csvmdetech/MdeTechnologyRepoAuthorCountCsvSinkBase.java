@@ -68,11 +68,4 @@ public abstract class MdeTechnologyRepoAuthorCountCsvSinkBase implements MdeTech
 	}
 	
 	
-	
-	// CSV file writer(s)
-	protected CsvWriter writer0 = new CsvWriter("MDE-authors.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
-	
-	public void flushAll() {
-		writer0.flush();
-	}
 }

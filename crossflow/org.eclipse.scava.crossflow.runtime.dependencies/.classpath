@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/converter-gson-2.4.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/converter-gson-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/converter-jackson-2.4.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/converter-jackson-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/jackson-annotations-2.9.7-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/jackson-annotations-2.9.7.jar" sourcepath="/Users/blizzfire/Downloads/jackson-annotations-2.9.7-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/retrofit-2.4.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="restmule-client-stackexchange/retrofit-2.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-core/ant-1.10.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="restmule-core/log4j-core-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgit/JavaEWAH-1.1.6.jar"/>

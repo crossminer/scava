@@ -105,41 +105,26 @@ public class MdeTechnologyRepoEntries implements Channel{
 						Job job = (Job) ((ObjectMessage) message).getObject();
 						if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
-								if (output.getDestination().equals("MdeTechnologies")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologies().send((ExtensionKeywordTuple) output, this.getClass().getName());
-								}
 								if (output.getDestination().equals("MdeTechnologyRepoEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoEntries().send((ExtensionKeywordStargazersTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForAuthorCounter")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForAuthorCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForFileCounter")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForFileCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send((ExtensionKeywordStargazersRemoteRepoUrlTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyRepoAuthorCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoAuthorCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyRepoFileCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoFileCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output, this.getClass().getName());
-								}
-								if (output.getDestination().equals("MdeTechnologyRepoOwnerPopularityCountEntries")) {
-									((MdeTechnologyExample) workflow).getMdeTechnologyRepoOwnerPopularityCountEntries().send((ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) output, this.getClass().getName());
+									MessageProducer producer = session.createProducer(preQueue);
+									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+									ObjectMessage m = session.createObjectMessage();
+									m.setObject(output);
+									producer.send(m);
+								} else {
+									//XXX should not be the case?
+									System.err.println(
+											output.getDestination() + " destination found in MdeTechnologyRepoEntries pre consumer");
 								}
 							}
-						}
-						else {
+						} else {
 							MessageProducer producer = session.createProducer(destQueue);
 							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 							producer.send(message);
 							producer.close();
 						}
 						
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}

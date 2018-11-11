@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 class BaseTestCase {
 	
-	private final static String BROKER_NAME = "localhost";
 	private final static long SLEEP_DURATION = 1000;
 	
 	@Test

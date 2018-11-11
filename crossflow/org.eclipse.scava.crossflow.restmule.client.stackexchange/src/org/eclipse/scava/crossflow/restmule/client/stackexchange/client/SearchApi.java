@@ -100,17 +100,17 @@ public class SearchApi  {
 		/** WRAPED METHODS FOR PAGINATION */
 	
 		@Override
-		public IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki){
-			Class<?>[] types = { String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class};
-			Object[] vals = { tagged, order, max, min, sort, fromdate, todate, pagesize, page, filter, callback, site, accepted, answers, body, closed, migrated, notice, nottagged, q, title, url, user, views, wiki};
+		public IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki){
+			Class<?>[] types = { String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class};
+			Object[] vals = { tagged, order, max, min, sort, fromdate, todate, filter, callback, site, accepted, answers, body, closed, migrated, notice, nottagged, q, title, url, user, views, wiki};
 			return paginationPolicy.<Questions, ISearchEndpoint> 
 				traverseList("getSearchAdvancedQuestions", types, vals, callbackEndpoint);
 		}
 		
 		@Override
-		public IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site, String intitle, String nottagged){
-			Class<?>[] types = { String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, String.class, String.class, String.class, String.class};
-			Object[] vals = { tagged, order, max, min, sort, fromdate, todate, pagesize, page, filter, callback, site, intitle, nottagged};
+		public IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged){
+			Class<?>[] types = { String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class, String.class, String.class, String.class, String.class};
+			Object[] vals = { tagged, order, max, min, sort, fromdate, todate, filter, callback, site, intitle, nottagged};
 			return paginationPolicy.<Questions, ISearchEndpoint> 
 				traverseList("getSearchQuestions", types, vals, callbackEndpoint);
 		}

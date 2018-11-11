@@ -67,5 +67,4 @@ public abstract class MdeTechnologyRepoAuthorCountPrinterBase implements MdeTech
 	}
 	
 	
-	
 }

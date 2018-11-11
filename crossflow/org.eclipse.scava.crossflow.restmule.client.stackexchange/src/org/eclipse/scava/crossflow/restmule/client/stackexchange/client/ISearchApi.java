@@ -22,8 +22,6 @@ public interface ISearchApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -72,7 +70,7 @@ public interface ISearchApi {
 	 * @return OK
 	 * @path /search/advanced 
 	 */		
-	IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki);
+	IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki);
 	
 	/**
 	 * null
@@ -89,8 +87,6 @@ public interface ISearchApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -128,6 +124,6 @@ public interface ISearchApi {
 	 * @return OK
 	 * @path /search 
 	 */		
-	IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site, String intitle, String nottagged);
+	IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged);
 	
 }

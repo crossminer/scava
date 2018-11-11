@@ -127,7 +127,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -142,7 +142,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -185,7 +185,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -194,7 +194,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -209,7 +209,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -233,7 +233,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -613,7 +613,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -656,7 +656,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -680,7 +680,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -704,7 +704,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -1023,73 +1023,6 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
-                <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
-                <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteType" label="site_type" description="null"/>
-                <attributes xsi:type="restmule:TString" name="logoUrl" label="logo_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="apiSiteParameter" label="api_site_parameter" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="openBetaDate" label="open_beta_date" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteState" label="site_state" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="closedBetaDate" label="closed_beta_date" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteUrl" label="site_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="name" label="name" description="null"/>
-                <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
-                  <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
-                  <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
-                  <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
-                </nestedObjects>
-                <listFields name="Aliases" label="aliases" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="aliases" label="aliases" description="null"/>
-                </listFields>
-                <listFields name="RelatedSites" label="related_sites" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="relatedSites" label="related_sites" description="null"/>
-                </listFields>
-                <listFields name="MarkdownExtensions" label="markdown_extensions" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="markdownExtensions" label="markdown_extensions" description="null"/>
-                </listFields>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="Notice" label="notice" description="null" required="true">
-              <attributes xsi:type="restmule:TInteger" name="ownerUserId" label="owner_user_id" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="creationDate" label="creation_date" description="null"/>
-              <attributes xsi:type="restmule:TString" name="body" label="body" description="null"/>
-            </nestedObjects>
-            <nestedObjects name="Owner" label="owner" description="null" required="true">
-              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
-              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
-              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
-              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
-                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="LastEditor" label="last_editor" description="null" required="true">
-              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
-              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
-              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
-              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
-                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
-              <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
               <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
@@ -1121,7 +1054,12 @@
                 </listFields>
               </nestedObjects>
             </nestedObjects>
-            <nestedObjects name="BountyUser" label="bounty_user" description="null" required="true">
+            <nestedObjects name="Notice" label="notice" description="null" required="true">
+              <attributes xsi:type="restmule:TInteger" name="ownerUserId" label="owner_user_id" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="creationDate" label="creation_date" description="null"/>
+              <attributes xsi:type="restmule:TString" name="body" label="body" description="null"/>
+            </nestedObjects>
+            <nestedObjects name="Owner" label="owner" description="null" required="true">
               <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
               <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
@@ -1130,6 +1068,68 @@
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
               <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="LastEditor" label="last_editor" description="null" required="true">
+              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
+              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
+              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
+              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
+              <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+                <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
+                <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteType" label="site_type" description="null"/>
+                <attributes xsi:type="restmule:TString" name="logoUrl" label="logo_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="apiSiteParameter" label="api_site_parameter" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="openBetaDate" label="open_beta_date" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteState" label="site_state" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="closedBetaDate" label="closed_beta_date" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteUrl" label="site_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="name" label="name" description="null"/>
+                <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                  <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
+                  <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
+                  <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
+                </nestedObjects>
+                <listFields name="Aliases" label="aliases" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="aliases" label="aliases" description="null"/>
+                </listFields>
+                <listFields name="RelatedSites" label="related_sites" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="relatedSites" label="related_sites" description="null"/>
+                </listFields>
+                <listFields name="MarkdownExtensions" label="markdown_extensions" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="markdownExtensions" label="markdown_extensions" description="null"/>
+                </listFields>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="BountyUser" label="bounty_user" description="null" required="true">
+              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
+              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
+              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
+              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -1377,7 +1377,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -1391,7 +1391,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -1503,7 +1503,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -1561,7 +1561,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -1570,7 +1570,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -1609,7 +1609,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2170,7 +2170,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -2213,7 +2213,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2237,7 +2237,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -2261,7 +2261,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2394,7 +2394,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -2423,7 +2423,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2437,7 +2437,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2461,7 +2461,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -2485,7 +2485,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2613,7 +2613,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2627,7 +2627,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2897,7 +2897,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -2911,7 +2911,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -3528,7 +3528,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -3542,7 +3542,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -3736,7 +3736,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -3780,7 +3780,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -3794,7 +3794,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -3803,7 +3803,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -3842,7 +3842,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4130,7 +4130,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -4159,7 +4159,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4173,7 +4173,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4197,7 +4197,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -4309,7 +4309,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4323,7 +4323,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4473,7 +4473,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4487,7 +4487,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4735,7 +4735,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -4778,7 +4778,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -4802,7 +4802,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -4826,7 +4826,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5012,7 +5012,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5026,7 +5026,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5144,7 +5144,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -5188,7 +5188,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5211,7 +5211,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -5250,7 +5250,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5340,7 +5340,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5354,7 +5354,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5435,7 +5435,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5449,7 +5449,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5596,7 +5596,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5610,7 +5610,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5716,7 +5716,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -5760,7 +5760,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5774,7 +5774,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -5783,7 +5783,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -5822,7 +5822,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6009,7 +6009,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6023,7 +6023,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6179,7 +6179,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6193,7 +6193,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6346,7 +6346,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6408,7 +6408,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6579,7 +6579,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -6608,7 +6608,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6622,7 +6622,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6646,7 +6646,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -6982,7 +6982,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -6996,7 +6996,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -7929,7 +7929,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -7944,7 +7944,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -7987,7 +7987,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -7996,7 +7996,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -8011,7 +8011,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8035,7 +8035,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8284,7 +8284,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -8299,7 +8299,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8328,7 +8328,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8342,7 +8342,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8351,7 +8351,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -8366,7 +8366,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8685,7 +8685,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -8700,7 +8700,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8729,7 +8729,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8743,7 +8743,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8752,7 +8752,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -8767,7 +8767,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8921,7 +8921,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -8950,7 +8950,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -8988,7 +8988,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -9012,7 +9012,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -9299,7 +9299,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -9313,7 +9313,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -9695,7 +9695,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -9709,7 +9709,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -9757,7 +9757,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -10856,7 +10856,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -10870,7 +10870,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -11035,7 +11035,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -11102,7 +11102,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -11262,7 +11262,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -11306,7 +11306,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -11320,7 +11320,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -11329,7 +11329,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -11603,73 +11603,6 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
-                <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
-                <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteType" label="site_type" description="null"/>
-                <attributes xsi:type="restmule:TString" name="logoUrl" label="logo_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="apiSiteParameter" label="api_site_parameter" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="openBetaDate" label="open_beta_date" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteState" label="site_state" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="closedBetaDate" label="closed_beta_date" description="null"/>
-                <attributes xsi:type="restmule:TString" name="siteUrl" label="site_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="name" label="name" description="null"/>
-                <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
-                <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
-                  <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
-                  <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
-                  <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
-                </nestedObjects>
-                <listFields name="Aliases" label="aliases" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="aliases" label="aliases" description="null"/>
-                </listFields>
-                <listFields name="RelatedSites" label="related_sites" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="relatedSites" label="related_sites" description="null"/>
-                </listFields>
-                <listFields name="MarkdownExtensions" label="markdown_extensions" description="null">
-                  <elements xsi:type="restmule:UndefinedType" name="markdownExtensions" label="markdown_extensions" description="null"/>
-                </listFields>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="Notice" label="notice" description="null" required="true">
-              <attributes xsi:type="restmule:TInteger" name="ownerUserId" label="owner_user_id" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="creationDate" label="creation_date" description="null"/>
-              <attributes xsi:type="restmule:TString" name="body" label="body" description="null"/>
-            </nestedObjects>
-            <nestedObjects name="Owner" label="owner" description="null" required="true">
-              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
-              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
-              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
-              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
-                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="LastEditor" label="last_editor" description="null" required="true">
-              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
-              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
-              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
-              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
-                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
-                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
-              </nestedObjects>
-            </nestedObjects>
-            <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
-              <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
-              <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
               <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
@@ -11701,7 +11634,12 @@
                 </listFields>
               </nestedObjects>
             </nestedObjects>
-            <nestedObjects name="BountyUser" label="bounty_user" description="null" required="true">
+            <nestedObjects name="Notice" label="notice" description="null" required="true">
+              <attributes xsi:type="restmule:TInteger" name="ownerUserId" label="owner_user_id" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="creationDate" label="creation_date" description="null"/>
+              <attributes xsi:type="restmule:TString" name="body" label="body" description="null"/>
+            </nestedObjects>
+            <nestedObjects name="Owner" label="owner" description="null" required="true">
               <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
               <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
@@ -11710,6 +11648,68 @@
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
               <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="LastEditor" label="last_editor" description="null" required="true">
+              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
+              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
+              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
+              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
+              <nestedObjects name="BadgeCountsInner" label="badge_counts" description="null" required="true">
+                <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
+              <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+                <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
+                <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteType" label="site_type" description="null"/>
+                <attributes xsi:type="restmule:TString" name="logoUrl" label="logo_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="apiSiteParameter" label="api_site_parameter" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="openBetaDate" label="open_beta_date" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteState" label="site_state" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="closedBetaDate" label="closed_beta_date" description="null"/>
+                <attributes xsi:type="restmule:TString" name="siteUrl" label="site_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="name" label="name" description="null"/>
+                <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
+                <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
+                <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                  <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
+                  <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
+                  <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
+                </nestedObjects>
+                <listFields name="Aliases" label="aliases" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="aliases" label="aliases" description="null"/>
+                </listFields>
+                <listFields name="RelatedSites" label="related_sites" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="relatedSites" label="related_sites" description="null"/>
+                </listFields>
+                <listFields name="MarkdownExtensions" label="markdown_extensions" description="null">
+                  <elements xsi:type="restmule:UndefinedType" name="markdownExtensions" label="markdown_extensions" description="null"/>
+                </listFields>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects name="BountyUser" label="bounty_user" description="null" required="true">
+              <attributes xsi:type="restmule:TString" name="profileImage" label="profile_image" description="null"/>
+              <attributes xsi:type="restmule:TString" name="userType" label="user_type" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="userId" label="user_id" description="null"/>
+              <attributes xsi:type="restmule:TString" name="link" label="link" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
+              <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
+              <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -11944,7 +11944,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -12006,7 +12006,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -12130,7 +12130,7 @@
             <nestedObjects name="MigratedTo" label="migrated_to" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -12145,7 +12145,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
+                <nestedObjects name="Styling" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -12174,7 +12174,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -12188,7 +12188,7 @@
               <attributes xsi:type="restmule:TInteger" name="reputation" label="reputation" description="null"/>
               <attributes xsi:type="restmule:TString" name="displayName" label="display_name" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="acceptRate" label="accept_rate" description="null"/>
-              <nestedObjects name="BadgeCounts" label="badge_counts" description="null" required="true">
+              <nestedObjects name="BadgeCountsInnerInner" label="badge_counts" description="null" required="true">
                 <attributes xsi:type="restmule:TInteger" name="gold" label="gold" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="silver" label="silver" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="bronze" label="bronze" description="null"/>
@@ -12197,7 +12197,7 @@
             <nestedObjects name="MigratedFrom" label="migrated_from" description="null" required="true">
               <attributes xsi:type="restmule:TInteger" name="onDate" label="on_date" description="null"/>
               <attributes xsi:type="restmule:TInteger" name="questionId" label="question_id" description="null"/>
-              <nestedObjects name="OtherSiteInner" label="other_site" description="null" required="true">
+              <nestedObjects name="OtherSite" label="other_site" description="null" required="true">
                 <attributes xsi:type="restmule:TString" name="iconUrl" label="icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="audience" label="audience" description="null"/>
                 <attributes xsi:type="restmule:TString" name="faviconUrl" label="favicon_url" description="null"/>
@@ -12212,7 +12212,7 @@
                 <attributes xsi:type="restmule:TString" name="highResolutionIconUrl" label="high_resolution_icon_url" description="null"/>
                 <attributes xsi:type="restmule:TString" name="twitterAccount" label="twitter_account" description="null"/>
                 <attributes xsi:type="restmule:TInteger" name="launchDate" label="launch_date" description="null"/>
-                <nestedObjects name="Styling" label="styling" description="null" required="true">
+                <nestedObjects name="StylingInner" label="styling" description="null" required="true">
                   <attributes xsi:type="restmule:TString" name="tagBackgroundColor" label="tag_background_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="linkColor" label="link_color" description="null"/>
                   <attributes xsi:type="restmule:TString" name="tagForegroundColor" label="tag_foreground_color" description="null"/>
@@ -12290,10 +12290,10 @@
   </ratePolicy>
   <pagination start="1" max="100" increment="1" maxPerIteration="100">
     <perIteration xsi:type="restmule:Query" description="Items per page" required="false">
-      <type xsi:type="restmule:TInteger" name="rm_pagesize" label="rm_pagesize"/>
+      <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize"/>
     </perIteration>
     <page xsi:type="restmule:Query" description="Page identifier" required="false">
-      <type xsi:type="restmule:TInteger" name="rm_page" label="rm_page"/>
+      <type xsi:type="restmule:TInteger" name="page" label="page"/>
     </page>
     <links description="Page links">
       <type xsi:type="restmule:TFormattedString" name="Link" label="Link"/>

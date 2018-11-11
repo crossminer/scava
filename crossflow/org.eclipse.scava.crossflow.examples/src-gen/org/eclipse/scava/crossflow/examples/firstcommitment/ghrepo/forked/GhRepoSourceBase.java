@@ -66,5 +66,4 @@ public abstract class GhRepoSourceBase implements Task{
 	
 	public abstract void produce();
 	
-	
 }

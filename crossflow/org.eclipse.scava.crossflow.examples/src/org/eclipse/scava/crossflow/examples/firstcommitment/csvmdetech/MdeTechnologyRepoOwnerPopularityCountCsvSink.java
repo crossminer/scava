@@ -4,7 +4,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 public class MdeTechnologyRepoOwnerPopularityCountCsvSink extends MdeTechnologyRepoOwnerPopularityCountCsvSinkBase {
 
-	private CsvWriter writer0 = new CsvWriter("MDE-ownerPopularity.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
+	private CsvWriter writer0 = new CsvWriter("csvs/MDE-ownerPopularity.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
 	
 	@Override
 	public void consumeMdeTechnologyRepoOwnerPopularityCountEntries(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {

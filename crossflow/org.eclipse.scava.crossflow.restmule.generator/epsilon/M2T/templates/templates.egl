@@ -44,11 +44,16 @@ implements IClientBuilder<I[%= name %]Api> {
 [% 	@template
 operation Response mainRequest() { %]
 [% var request = self.request; 
-   var params = request.parameters;
-   var scope = request.scope.scope.firstToLowerCase(); 
+   var paged = PaginationPolicy.all.first;
+   var params = request.parameters.filterParams();
+	
+	//params.add(paged.perIteration); // TODO PN: really?
+	//params.add(paged.page); // TODO PN: really?
+
+    var scope = request.scope.scope.firstToLowerCase(); 
 %] 
 @Override
-public [%= self.methodSignature()%]{ 
+public [%= self.methodSignature(PaginationPolicy.all.first)%]{ 
 	[% if (params.size() <> 0){ %]
 	[% for (param in params) { %]
 	[%= param.validate() %]
@@ -66,20 +71,11 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 [% var request = self.request; 
 	   var params;
 	   if (self.isPaged()){
-			params =  new Sequence;
-			params.addAll( request.parameters );
+			params =  request.parameters.filterParams();	
 			params.add(paged.perIteration);
 			params.add(paged.page);
-			/*for ( param in params ) {
-				if ( not ( param.type.label = paged.perIteration.type.label) ) {
-					params.add(param);
-				} else if ( not ( param.type.label = paged.perIteration.type.label) ) {
-					params.add(param);
-				}
-			}*/
-			
 	   }  else {
-	   		params = request.parameters;
+	   		params = request.parameters.filterParams();
 	   }
 	%]
 	@[%= request.method %]("[%= request.parent.path %]")
@@ -95,7 +91,7 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 
 [% 	@template 
 operation Response wrappedRequest(api : String, scope : String) { %]
-public [%= self.methodSignature()%]{
+public [%= self.methodSignature(PaginationPolicy.all.first)%]{
 	[%= self.innerWrappedResponse(api, scope) %]
 }
 [% } %]
@@ -107,11 +103,11 @@ operation Response innerWrappedResponse(api : String, scope : String) { %]
    var params = request.parameters; 
 %]
 [% if (self.pageWrapped or self.responseType.instanceOf(ListType)){%]
-Class<?>[] types = [% if (params.size() > 0) {%]{ [% for (param in params) {
-%][%= param.type.getType() %].class[%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+Class<?>[] types = [% if (params.size() > 0) {%]{ [% for (param in params.filterParams()) {
+%][%= param.type.getType() %].class[%if (param <> params.filterParams().last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
 
-Object[] vals = [% if (params.size() > 0) {%]{ [% for (param in params) {
-%][%= param.type.name.firstToLowerCase() %][%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+Object[] vals = [% if (params.size() > 0) {%]{ [% for (param in params.filterParams()) {
+%][%= param.type.name.firstToLowerCase() %][%if (param <> params.filterParams().last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
 
 [% if (self.pageWrapped) { %]
 return paginationPolicy.<[%= self.responseType.name %], [%= api %]Paged<[%= self.responseType.name %]>, I[%= scope%]Endpoint> 
@@ -122,18 +118,38 @@ return paginationPolicy.<[%= self.getApiInnerType() %], I[%= scope%]Endpoint>
 [% } %]
 [% } else { %]
 Data<[%= self.responseType.getType() %]> data = new Data<[%= self.responseType.getType() %]>();
-data.addElement(callbackEndpoint.[%= self.methodName() %]([% if (params.size() == 0){ %]));
-[% } else { %][% for (param in params) { %][%= param.type.name.firstToLowerCase() %][% 
-if (param.type.name == params.last.type.name) { %]));
+data.addElement(callbackEndpoint.[%= self.methodName() %]([% if (params.filterParams().size() == 0){ %]));
+[% } else { %][% for (param in params.filterParams()) { %][%= param.type.name.firstToLowerCase() %][% 
+if (param.type.name == params.filterParams().last.type.name) { %]));
 [% } else {%], [% } %][% } %][% } %]
 return data;
 [% } %]
 [% } %]
 
+[%
+operation Collection filterParams() : Sequence {
+   var params = new Sequence;
+   var paged = PaginationPolicy.all.first;
+   
+   for ( param in self ) {
+		if ( param.type.label = paged.page.type.label ) {
+			// do not add 
+		} else if ( param.type.label = paged.perIteration.type.label ) {
+			// do not add 
+		} else {
+			params.add(param);
+		}
+	}
+	//params.add(paged.perIteration);
+	//params.add(paged.page);
+	return params;
+}
+%]
+
 [% 	@template 
 operation Response wrappedRequestInterface() { %]
 [% var request = self.request; 
-   var params = request.parameters;  
+   var params = request.parameters.filterParams();
 %]
 /**
  * [%= request.description %]
@@ -143,13 +159,13 @@ operation Response wrappedRequestInterface() { %]
  * @return [%= self.description %]
  * @path [%= request.parent.path %] 
  */		
-[%= self.methodSignature()%];
+[%= self.methodSignature(paged)%];
 [% } %]
 
 [% 	@template 
-operation Response methodSignature() { %]
+operation Response methodSignature(paged : PaginationPolicy) { %]
 [% var request = self.request; 
-   var params = request.parameters;  
+   var params = request.parameters.filterParams(); 
 %]
 [%= self.getApiType() %] [%= self.methodName() %]([% if (params.size() == 0){ %])
 [% } else { %][% for (param in params) { %][%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 

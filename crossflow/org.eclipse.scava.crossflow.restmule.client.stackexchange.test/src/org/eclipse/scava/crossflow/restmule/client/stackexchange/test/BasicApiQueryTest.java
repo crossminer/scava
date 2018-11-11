@@ -1,16 +1,13 @@
 package org.eclipse.scava.crossflow.restmule.client.stackexchange.test;
-import static org.junit.Assert.*;
-
-import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.client.stackexchange.api.StackExchangeApi;
+import org.eclipse.scava.crossflow.restmule.client.stackexchange.model.Posts;
 import org.eclipse.scava.crossflow.restmule.client.stackexchange.model.Questions;
 import org.eclipse.scava.crossflow.restmule.client.stackexchange.api.IStackExchangeApi;
 import org.eclipse.scava.crossflow.restmule.client.stackexchange.util.StackExchangeUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class BasicApiQueryTest extends StackExchangeUtils {
@@ -18,40 +15,189 @@ public class BasicApiQueryTest extends StackExchangeUtils {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = LogManager.getLogger(BasicApiQueryTest.class);
 
-	private static IStackExchangeApi api;
-
+	
 	@Test
-	public void testPublicSession() {
-		api = StackExchangeApi.create()
-				.setSession(publicSession)
-				.build();
+	public void testPublicSessionTotal() {
+		// Instantiate API client
+		IStackExchangeApi client = StackExchangeUtils.getOAuthClient();
+		
 		String tagged = "java";
 		String order = "desc";
 		String max = "";
 		String min = "";
 		String sort = "creation";
-		Integer fromdate = 973107377;
-		Integer todate = 1541100981;
+		Integer fromdate = 1541091600;
+		Integer todate = 1541092200; // 10 results
+		Integer pagesize = 4;
+		Integer page = 1;
+		String filter = "total"; // the "total" filter will be removed after the 1st call (it is used to determine the total number of results required for pagination)
+		String callback = "";
+		String site = "stackoverflow";
+	
+		// Submit API query
+		IDataSet<Questions> questions = client.getQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+		
+		// Observe search repositories data set
+		questions.observe()
+		
+			.doOnNext(result -> {
+				LOG.info(questions.id() + " --- " + result.getQuestionId());
+			})
+			
+			.doOnError(e -> {
+				LOG.error(questions.id() + " --- " + "ERROR OCCURRED: " + e.getMessage());
+			})
+			
+			.doOnComplete(() -> {
+				LOG.info(questions.id() + " --- " + "COMPLETED !");
+			})
+			
+			.blockingSubscribe();
+	
+		Long count = questions.observe().count().blockingGet();
+		LOG.info("Final observe count of task " + questions.id() + ": " + count);
+	}
+	
+	@Test
+	public void testPublicSession() {
+		// Instantiate API client
+		IStackExchangeApi client = StackExchangeUtils.getOAuthClient();
+		
+		String tagged = "java";
+		String order = "desc";
+		String max = "";
+		String min = "";
+		String sort = "creation";
+		Integer fromdate = 1541091600; // 11/01/2018 @ 5:00pm (UTC)
+		Integer todate = 1541095200; // 11/01/2018 @ 6:00pm (UTC) --- 33 results
 		Integer pagesize = 10;
 		Integer page = 1;
 		String filter = "";
 		String callback = "";
 		String site = "stackoverflow";
-		
-		IDataSet<Questions> questions = api.getQuestions(tagged, order, max, min, sort, fromdate, todate, pagesize, page, filter, callback, site);
-		
-		questions.observe()
-		.doOnNext(item -> LOG.info(item.getQuestionId()))
-		.doOnError(e -> e.printStackTrace())
-		.blockingSubscribe();
-		
-		// FIXME: response deserialization exception (see below)
-		/*
-		 * com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.util.ArrayList out of START_OBJECT token
- 			at [Source: okhttp3.ResponseBody$BomAwareReader@24b801c5; line: 1, column: 1]
-			at com.fasterxml.jackson.databind.JsonMappingException.from(JsonMappingException.java:148)
-		 */
 	
+		// Submit API query
+		IDataSet<Questions> questions = client.getQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+		
+		// Observe search repositories data set
+		questions.observe()
+		
+			.doOnNext(result -> {
+				LOG.info(questions.id() + " --- " + result.getQuestionId());
+			})
+			
+			.doOnError(e -> {
+				LOG.error(questions.id() + " --- " + "ERROR OCCURRED: " + e.getMessage());
+			})
+			
+			.doOnComplete(() -> {
+				LOG.info(questions.id() + " --- " + "COMPLETED !");
+			})
+			
+			.blockingSubscribe();
+
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		Long count = questions.observe().count().blockingGet();
+		LOG.info("Final observe count of task " + questions.id() + ": " + count);
+
+	}
+	
+	@Test
+	public void testPublicSessionPosts() {
+		// Instantiate API client
+		IStackExchangeApi client = StackExchangeUtils.getOAuthClient();
+		
+		String tagged = "java";
+		String order = "desc";
+		String max = "";
+		String min = "";
+		String sort = "creation";
+		Integer fromdate = 1541091600; // 11/01/2018 @ 5:00pm (UTC)
+		Integer todate = 1541095200; // 11/01/2018 @ 6:00pm (UTC) --- 33 results
+		Integer pagesize = 10;
+		Integer page = 1;
+		String filter = "";
+		String callback = "";
+		String site = "stackoverflow";
+	
+		// Submit API query
+		IDataSet<Posts> posts = client.getPosts(order, max, min, sort, fromdate, todate, filter, callback, site);
+
+		
+		// Observe search repositories data set
+		posts.observe()
+		
+			.doOnNext(result -> {
+				LOG.info(posts.id() + " --- " + result.getPostId());
+			})
+			
+			.doOnError(e -> {
+				LOG.error(posts.id() + " --- " + "ERROR OCCURRED: " + e.getMessage());
+			})
+			
+			.doOnComplete(() -> {
+				LOG.info(posts.id() + " --- " + "COMPLETED !");
+			})
+			
+			.blockingSubscribe();
+
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		Long count = posts.observe().count().blockingGet();
+		LOG.info("Final observe count of task " + posts.id() + ": " + count);
+
+	}
+	
+	public static void main(String args[]) {
+		// Instantiate API client
+		IStackExchangeApi client = StackExchangeUtils.getOAuthClient();//.getPublicClient()
+		
+		String tagged = "java";
+		String order = "desc";
+		String max = "";
+		String min = "";
+		String sort = "creation";
+		Integer fromdate = 1541091600;
+		Integer todate = 1541712821;// (now) //1541092200; // 10 results
+		Integer pagesize = 5; // (many) // 2 pages
+		Integer page = 1;
+		String filter = "";//"total";
+		String callback = "";
+		String site = "stackoverflow";
+	
+		// Submit API query
+		IDataSet<Questions> questions = client.getQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+		
+		// Observe search repositories data set
+		questions.observe()
+		
+			.doOnNext(result -> {
+				LOG.info(questions.id() + " --- " + result.getQuestionId());
+			})
+			
+			.doOnError(e -> {
+				LOG.error(questions.id() + " --- " + "ERROR OCCURRED: " + e.getMessage());
+			})
+			
+			.doOnComplete(() -> {
+				LOG.info(questions.id() + " --- " + "COMPLETED !");
+			})
+			
+			.blockingSubscribe();
+	
+		Long count = questions.observe().count().blockingGet();
+		LOG.info("Final observe count of task " + questions.id() + ": " + count);
 	}
 
 }

@@ -66,5 +66,4 @@ public abstract class MdeTechnologySourceBase implements Task{
 	
 	public abstract void produce();
 	
-	
 }

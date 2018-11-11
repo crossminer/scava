@@ -50,21 +50,22 @@ var policy = new RestMule!RatePolicy;
 policy.scopes.add(entity);
 policy.scopes.add(search);
 
-var reset = new RestMule!ResponseHeader;
-var resetInt = new RestMule!TInteger;
-resetInt.label = "X-RateLimit-Reset";
-reset.type = resetInt;
-policy.reset = reset;
+// reset quota not available in stackexchange
+//var reset = new RestMule!ResponseHeader;
+//var resetInt = new RestMule!TInteger;
+//resetInt.label = "X-RateLimit-Reset";
+//reset.type = resetInt;
+//policy.reset = reset;
 
-var limit = new RestMule!ResponseHeader;
+var limit = new RestMule!ResponseHeader; // FIXME PN: (!) not here but in the respose body
 var limitInt = new RestMule!TInteger;
-limitInt.label = "X-RateLimit-Limit";
+limitInt.label = "quota_max";
 limit.type = limitInt;
 policy.limit = limit;
 
-var remaining = new RestMule!ResponseHeader;
+var remaining = new RestMule!ResponseHeader; // FIXME PN: (!) not here but in the respose body
 var remainingInt = new RestMule!TInteger;
-remainingInt.label = "X-RateLimit-Remaining";
+remainingInt.label = "quota_remaining";
 remaining.type = remainingInt;
 policy.remaining = remaining;
 
@@ -82,7 +83,7 @@ var perIteration = new RestMule!Query;
 perIteration.description = "Items per page";
 perIteration.required = false;
 var type = new RestMule!TInteger;
-type.label = "rm_pagesize";
+type.label = "pagesize";
 type.name = type.label;
 perIteration.type = type;
 pagination.perIteration = perIteration;
@@ -91,7 +92,7 @@ var page = new RestMule!Query;
 page.description = "Page identifier";
 page.required = false;
 var type1 = new RestMule!TInteger;
-type1.label = "rm_page";
+type1.label = "page";
 type1.name = type1.label;
 page.type = type1;
 pagination.page = page;

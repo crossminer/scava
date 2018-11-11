@@ -67,5 +67,4 @@ public abstract class PrinterBase implements AdditionResultsConsumer, Task{
 	}
 	
 	
-	
 }

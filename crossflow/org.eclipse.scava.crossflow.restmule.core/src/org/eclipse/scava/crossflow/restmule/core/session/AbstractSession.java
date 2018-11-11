@@ -42,7 +42,8 @@ public abstract class AbstractSession implements ISession {
 
 	private static final Logger LOG = LogManager.getLogger(AbstractSession.class);
 
-	private String id;
+	protected String id;
+	protected String key;
 
 	protected Integer rateLimit = -1;
 	protected AtomicInteger rateLimitRemaining = new AtomicInteger(-1);
@@ -200,6 +201,12 @@ public abstract class AbstractSession implements ISession {
 		this.type = Auth.BASIC_AUTH;
 		this.token = token;
 	}
+	
+	protected void setBasicAccessKeyInQuery(@Nonnull final String key) {
+		this.type = Auth.BASIC_AUTH;
+		this.key = key;
+		this.isHeader = false;
+	}
 
 	protected void setBasicAccessTokenInQuery(@Nonnull final String token) {
 		this.type = Auth.BASIC_AUTH;
@@ -249,7 +256,7 @@ public abstract class AbstractSession implements ISession {
 		return new AuthorizationCodeInstalledApp(flow, receiver).authorize(user).getAccessToken();
 	}
 
-	private static String generateRandomId() {
+	protected static String generateRandomId() {
 		return UUID.randomUUID().toString();
 	}
 
@@ -268,7 +275,9 @@ public abstract class AbstractSession implements ISession {
 	public static ISession getSession(Class<? extends ISession> clazz, String id) {
 		LOG.trace("Loading session " + id);
 		try {
-			return (ISession) clazz.getMethod("get", String.class).invoke(null, id);
+			ISession session = (ISession) clazz.getMethod("get", String.class).invoke(null, id);
+			System.out.println("session.getRateLimitRemaining()="+session.getRateLimitRemaining());
+			return session;
 		} catch (Exception e) {
 			LOG.error(e.getClass().getName() + e.getMessage());
 			return null;

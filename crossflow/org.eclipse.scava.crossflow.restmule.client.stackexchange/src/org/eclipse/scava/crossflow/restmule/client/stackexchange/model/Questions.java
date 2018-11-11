@@ -423,494 +423,6 @@ public class Questions {
 		private Integer questionId;
 		
 		@JsonProperty("other_site") 
-		private OtherSite otherSite;
-		
-		public Integer getOnDate() {
-			return this.onDate;
-		}
-		
-		public Integer getQuestionId() {
-			return this.questionId;
-		}
-		
-		public OtherSite getOtherSite() {
-			return this.otherSite;
-		}
-		
-		@Override
-		public String toString() {
-			return "MigratedTo [ "
-				+ "onDate = " + this.onDate + ", "
-				+ "questionId = " + this.questionId + ", "
-				+ "otherSite = " + this.otherSite + ", "
-				+ "]"; 
-		}	
-		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class OtherSite {
-		
-			public OtherSite(){}
-		
-			@JsonProperty("icon_url") 
-			private String iconUrl;
-			
-			@JsonProperty("audience") 
-			private String audience;
-			
-			@JsonProperty("favicon_url") 
-			private String faviconUrl;
-			
-			@JsonProperty("site_type") 
-			private String siteType;
-			
-			@JsonProperty("logo_url") 
-			private String logoUrl;
-			
-			@JsonProperty("api_site_parameter") 
-			private String apiSiteParameter;
-			
-			@JsonProperty("open_beta_date") 
-			private Integer openBetaDate;
-			
-			@JsonProperty("site_state") 
-			private String siteState;
-			
-			@JsonProperty("closed_beta_date") 
-			private Integer closedBetaDate;
-			
-			@JsonProperty("site_url") 
-			private String siteUrl;
-			
-			@JsonProperty("name") 
-			private String name;
-			
-			@JsonProperty("high_resolution_icon_url") 
-			private String highResolutionIconUrl;
-			
-			@JsonProperty("twitter_account") 
-			private String twitterAccount;
-			
-			@JsonProperty("launch_date") 
-			private Integer launchDate;
-			
-			@JsonProperty("styling") 
-			private StylingInner stylingInner;
-			
-			@JsonProperty("aliases") 
-			private List<Object> aliases = new ArrayList<Object>();
-			
-			@JsonProperty("related_sites") 
-			private List<Object> relatedSites = new ArrayList<Object>();
-			
-			@JsonProperty("markdown_extensions") 
-			private List<Object> markdownExtensions = new ArrayList<Object>();
-			
-			public String getIconUrl() {
-				return this.iconUrl;
-			}
-			
-			public String getAudience() {
-				return this.audience;
-			}
-			
-			public String getFaviconUrl() {
-				return this.faviconUrl;
-			}
-			
-			public String getSiteType() {
-				return this.siteType;
-			}
-			
-			public String getLogoUrl() {
-				return this.logoUrl;
-			}
-			
-			public String getApiSiteParameter() {
-				return this.apiSiteParameter;
-			}
-			
-			public Integer getOpenBetaDate() {
-				return this.openBetaDate;
-			}
-			
-			public String getSiteState() {
-				return this.siteState;
-			}
-			
-			public Integer getClosedBetaDate() {
-				return this.closedBetaDate;
-			}
-			
-			public String getSiteUrl() {
-				return this.siteUrl;
-			}
-			
-			public String getName() {
-				return this.name;
-			}
-			
-			public String getHighResolutionIconUrl() {
-				return this.highResolutionIconUrl;
-			}
-			
-			public String getTwitterAccount() {
-				return this.twitterAccount;
-			}
-			
-			public Integer getLaunchDate() {
-				return this.launchDate;
-			}
-			
-			public StylingInner getStylingInner() {
-				return this.stylingInner;
-			}
-			
-			public List<Object> getAliases() {
-				return this.aliases;
-			}
-			
-			public List<Object> getRelatedSites() {
-				return this.relatedSites;
-			}
-			
-			public List<Object> getMarkdownExtensions() {
-				return this.markdownExtensions;
-			}
-			
-			@Override
-			public String toString() {
-				return "OtherSite [ "
-					+ "iconUrl = " + this.iconUrl + ", "
-					+ "audience = " + this.audience + ", "
-					+ "faviconUrl = " + this.faviconUrl + ", "
-					+ "siteType = " + this.siteType + ", "
-					+ "logoUrl = " + this.logoUrl + ", "
-					+ "apiSiteParameter = " + this.apiSiteParameter + ", "
-					+ "openBetaDate = " + this.openBetaDate + ", "
-					+ "siteState = " + this.siteState + ", "
-					+ "closedBetaDate = " + this.closedBetaDate + ", "
-					+ "siteUrl = " + this.siteUrl + ", "
-					+ "name = " + this.name + ", "
-					+ "highResolutionIconUrl = " + this.highResolutionIconUrl + ", "
-					+ "twitterAccount = " + this.twitterAccount + ", "
-					+ "launchDate = " + this.launchDate + ", "
-					+ "stylingInner = " + this.stylingInner + ", "
-					+ "aliases = " + this.aliases + ", "
-					+ "relatedSites = " + this.relatedSites + ", "
-					+ "markdownExtensions = " + this.markdownExtensions + ", "
-					+ "]"; 
-			}	
-			@JsonIgnoreProperties(ignoreUnknown = true)
-			public static class StylingInner {
-			
-				public StylingInner(){}
-			
-				@JsonProperty("tag_background_color") 
-				private String tagBackgroundColor;
-				
-				@JsonProperty("link_color") 
-				private String linkColor;
-				
-				@JsonProperty("tag_foreground_color") 
-				private String tagForegroundColor;
-				
-				public String getTagBackgroundColor() {
-					return this.tagBackgroundColor;
-				}
-				
-				public String getLinkColor() {
-					return this.linkColor;
-				}
-				
-				public String getTagForegroundColor() {
-					return this.tagForegroundColor;
-				}
-				
-				@Override
-				public String toString() {
-					return "StylingInner [ "
-						+ "tagBackgroundColor = " + this.tagBackgroundColor + ", "
-						+ "linkColor = " + this.linkColor + ", "
-						+ "tagForegroundColor = " + this.tagForegroundColor + ", "
-						+ "]"; 
-				}	
-			}
-			
-		}
-		
-	}
-	
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class Notice {
-	
-		public Notice(){}
-	
-		@JsonProperty("owner_user_id") 
-		private Integer ownerUserId;
-		
-		@JsonProperty("creation_date") 
-		private Integer creationDate;
-		
-		@JsonProperty("body") 
-		private String body;
-		
-		public Integer getOwnerUserId() {
-			return this.ownerUserId;
-		}
-		
-		public Integer getCreationDate() {
-			return this.creationDate;
-		}
-		
-		public String getBody() {
-			return this.body;
-		}
-		
-		@Override
-		public String toString() {
-			return "Notice [ "
-				+ "ownerUserId = " + this.ownerUserId + ", "
-				+ "creationDate = " + this.creationDate + ", "
-				+ "body = " + this.body + ", "
-				+ "]"; 
-		}	
-	}
-	
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class Owner {
-	
-		public Owner(){}
-	
-		@JsonProperty("profile_image") 
-		private String profileImage;
-		
-		@JsonProperty("user_type") 
-		private String userType;
-		
-		@JsonProperty("user_id") 
-		private Integer userId;
-		
-		@JsonProperty("link") 
-		private String link;
-		
-		@JsonProperty("reputation") 
-		private Integer reputation;
-		
-		@JsonProperty("display_name") 
-		private String displayName;
-		
-		@JsonProperty("accept_rate") 
-		private Integer acceptRate;
-		
-		@JsonProperty("badge_counts") 
-		private BadgeCountsInnerInner badgeCountsInnerInner;
-		
-		public String getProfileImage() {
-			return this.profileImage;
-		}
-		
-		public String getUserType() {
-			return this.userType;
-		}
-		
-		public Integer getUserId() {
-			return this.userId;
-		}
-		
-		public String getLink() {
-			return this.link;
-		}
-		
-		public Integer getReputation() {
-			return this.reputation;
-		}
-		
-		public String getDisplayName() {
-			return this.displayName;
-		}
-		
-		public Integer getAcceptRate() {
-			return this.acceptRate;
-		}
-		
-		public BadgeCountsInnerInner getBadgeCountsInnerInner() {
-			return this.badgeCountsInnerInner;
-		}
-		
-		@Override
-		public String toString() {
-			return "Owner [ "
-				+ "profileImage = " + this.profileImage + ", "
-				+ "userType = " + this.userType + ", "
-				+ "userId = " + this.userId + ", "
-				+ "link = " + this.link + ", "
-				+ "reputation = " + this.reputation + ", "
-				+ "displayName = " + this.displayName + ", "
-				+ "acceptRate = " + this.acceptRate + ", "
-				+ "badgeCountsInnerInner = " + this.badgeCountsInnerInner + ", "
-				+ "]"; 
-		}	
-		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class BadgeCountsInnerInner {
-		
-			public BadgeCountsInnerInner(){}
-		
-			@JsonProperty("gold") 
-			private Integer gold;
-			
-			@JsonProperty("silver") 
-			private Integer silver;
-			
-			@JsonProperty("bronze") 
-			private Integer bronze;
-			
-			public Integer getGold() {
-				return this.gold;
-			}
-			
-			public Integer getSilver() {
-				return this.silver;
-			}
-			
-			public Integer getBronze() {
-				return this.bronze;
-			}
-			
-			@Override
-			public String toString() {
-				return "BadgeCountsInnerInner [ "
-					+ "gold = " + this.gold + ", "
-					+ "silver = " + this.silver + ", "
-					+ "bronze = " + this.bronze + ", "
-					+ "]"; 
-			}	
-		}
-		
-	}
-	
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class LastEditor {
-	
-		public LastEditor(){}
-	
-		@JsonProperty("profile_image") 
-		private String profileImage;
-		
-		@JsonProperty("user_type") 
-		private String userType;
-		
-		@JsonProperty("user_id") 
-		private Integer userId;
-		
-		@JsonProperty("link") 
-		private String link;
-		
-		@JsonProperty("reputation") 
-		private Integer reputation;
-		
-		@JsonProperty("display_name") 
-		private String displayName;
-		
-		@JsonProperty("accept_rate") 
-		private Integer acceptRate;
-		
-		@JsonProperty("badge_counts") 
-		private BadgeCounts badgeCounts;
-		
-		public String getProfileImage() {
-			return this.profileImage;
-		}
-		
-		public String getUserType() {
-			return this.userType;
-		}
-		
-		public Integer getUserId() {
-			return this.userId;
-		}
-		
-		public String getLink() {
-			return this.link;
-		}
-		
-		public Integer getReputation() {
-			return this.reputation;
-		}
-		
-		public String getDisplayName() {
-			return this.displayName;
-		}
-		
-		public Integer getAcceptRate() {
-			return this.acceptRate;
-		}
-		
-		public BadgeCounts getBadgeCounts() {
-			return this.badgeCounts;
-		}
-		
-		@Override
-		public String toString() {
-			return "LastEditor [ "
-				+ "profileImage = " + this.profileImage + ", "
-				+ "userType = " + this.userType + ", "
-				+ "userId = " + this.userId + ", "
-				+ "link = " + this.link + ", "
-				+ "reputation = " + this.reputation + ", "
-				+ "displayName = " + this.displayName + ", "
-				+ "acceptRate = " + this.acceptRate + ", "
-				+ "badgeCounts = " + this.badgeCounts + ", "
-				+ "]"; 
-		}	
-		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class BadgeCounts {
-		
-			public BadgeCounts(){}
-		
-			@JsonProperty("gold") 
-			private Integer gold;
-			
-			@JsonProperty("silver") 
-			private Integer silver;
-			
-			@JsonProperty("bronze") 
-			private Integer bronze;
-			
-			public Integer getGold() {
-				return this.gold;
-			}
-			
-			public Integer getSilver() {
-				return this.silver;
-			}
-			
-			public Integer getBronze() {
-				return this.bronze;
-			}
-			
-			@Override
-			public String toString() {
-				return "BadgeCounts [ "
-					+ "gold = " + this.gold + ", "
-					+ "silver = " + this.silver + ", "
-					+ "bronze = " + this.bronze + ", "
-					+ "]"; 
-			}	
-		}
-		
-	}
-	
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class MigratedFrom {
-	
-		public MigratedFrom(){}
-	
-		@JsonProperty("on_date") 
-		private Integer onDate;
-		
-		@JsonProperty("question_id") 
-		private Integer questionId;
-		
-		@JsonProperty("other_site") 
 		private OtherSiteInner otherSiteInner;
 		
 		public Integer getOnDate() {
@@ -927,7 +439,7 @@ public class Questions {
 		
 		@Override
 		public String toString() {
-			return "MigratedFrom [ "
+			return "MigratedTo [ "
 				+ "onDate = " + this.onDate + ", "
 				+ "questionId = " + this.questionId + ", "
 				+ "otherSiteInner = " + this.otherSiteInner + ", "
@@ -1116,6 +628,494 @@ public class Questions {
 				@Override
 				public String toString() {
 					return "Styling [ "
+						+ "tagBackgroundColor = " + this.tagBackgroundColor + ", "
+						+ "linkColor = " + this.linkColor + ", "
+						+ "tagForegroundColor = " + this.tagForegroundColor + ", "
+						+ "]"; 
+				}	
+			}
+			
+		}
+		
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class Notice {
+	
+		public Notice(){}
+	
+		@JsonProperty("owner_user_id") 
+		private Integer ownerUserId;
+		
+		@JsonProperty("creation_date") 
+		private Integer creationDate;
+		
+		@JsonProperty("body") 
+		private String body;
+		
+		public Integer getOwnerUserId() {
+			return this.ownerUserId;
+		}
+		
+		public Integer getCreationDate() {
+			return this.creationDate;
+		}
+		
+		public String getBody() {
+			return this.body;
+		}
+		
+		@Override
+		public String toString() {
+			return "Notice [ "
+				+ "ownerUserId = " + this.ownerUserId + ", "
+				+ "creationDate = " + this.creationDate + ", "
+				+ "body = " + this.body + ", "
+				+ "]"; 
+		}	
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class Owner {
+	
+		public Owner(){}
+	
+		@JsonProperty("profile_image") 
+		private String profileImage;
+		
+		@JsonProperty("user_type") 
+		private String userType;
+		
+		@JsonProperty("user_id") 
+		private Integer userId;
+		
+		@JsonProperty("link") 
+		private String link;
+		
+		@JsonProperty("reputation") 
+		private Integer reputation;
+		
+		@JsonProperty("display_name") 
+		private String displayName;
+		
+		@JsonProperty("accept_rate") 
+		private Integer acceptRate;
+		
+		@JsonProperty("badge_counts") 
+		private BadgeCounts badgeCounts;
+		
+		public String getProfileImage() {
+			return this.profileImage;
+		}
+		
+		public String getUserType() {
+			return this.userType;
+		}
+		
+		public Integer getUserId() {
+			return this.userId;
+		}
+		
+		public String getLink() {
+			return this.link;
+		}
+		
+		public Integer getReputation() {
+			return this.reputation;
+		}
+		
+		public String getDisplayName() {
+			return this.displayName;
+		}
+		
+		public Integer getAcceptRate() {
+			return this.acceptRate;
+		}
+		
+		public BadgeCounts getBadgeCounts() {
+			return this.badgeCounts;
+		}
+		
+		@Override
+		public String toString() {
+			return "Owner [ "
+				+ "profileImage = " + this.profileImage + ", "
+				+ "userType = " + this.userType + ", "
+				+ "userId = " + this.userId + ", "
+				+ "link = " + this.link + ", "
+				+ "reputation = " + this.reputation + ", "
+				+ "displayName = " + this.displayName + ", "
+				+ "acceptRate = " + this.acceptRate + ", "
+				+ "badgeCounts = " + this.badgeCounts + ", "
+				+ "]"; 
+		}	
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class BadgeCounts {
+		
+			public BadgeCounts(){}
+		
+			@JsonProperty("gold") 
+			private Integer gold;
+			
+			@JsonProperty("silver") 
+			private Integer silver;
+			
+			@JsonProperty("bronze") 
+			private Integer bronze;
+			
+			public Integer getGold() {
+				return this.gold;
+			}
+			
+			public Integer getSilver() {
+				return this.silver;
+			}
+			
+			public Integer getBronze() {
+				return this.bronze;
+			}
+			
+			@Override
+			public String toString() {
+				return "BadgeCounts [ "
+					+ "gold = " + this.gold + ", "
+					+ "silver = " + this.silver + ", "
+					+ "bronze = " + this.bronze + ", "
+					+ "]"; 
+			}	
+		}
+		
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class LastEditor {
+	
+		public LastEditor(){}
+	
+		@JsonProperty("profile_image") 
+		private String profileImage;
+		
+		@JsonProperty("user_type") 
+		private String userType;
+		
+		@JsonProperty("user_id") 
+		private Integer userId;
+		
+		@JsonProperty("link") 
+		private String link;
+		
+		@JsonProperty("reputation") 
+		private Integer reputation;
+		
+		@JsonProperty("display_name") 
+		private String displayName;
+		
+		@JsonProperty("accept_rate") 
+		private Integer acceptRate;
+		
+		@JsonProperty("badge_counts") 
+		private BadgeCountsInnerInner badgeCountsInnerInner;
+		
+		public String getProfileImage() {
+			return this.profileImage;
+		}
+		
+		public String getUserType() {
+			return this.userType;
+		}
+		
+		public Integer getUserId() {
+			return this.userId;
+		}
+		
+		public String getLink() {
+			return this.link;
+		}
+		
+		public Integer getReputation() {
+			return this.reputation;
+		}
+		
+		public String getDisplayName() {
+			return this.displayName;
+		}
+		
+		public Integer getAcceptRate() {
+			return this.acceptRate;
+		}
+		
+		public BadgeCountsInnerInner getBadgeCountsInnerInner() {
+			return this.badgeCountsInnerInner;
+		}
+		
+		@Override
+		public String toString() {
+			return "LastEditor [ "
+				+ "profileImage = " + this.profileImage + ", "
+				+ "userType = " + this.userType + ", "
+				+ "userId = " + this.userId + ", "
+				+ "link = " + this.link + ", "
+				+ "reputation = " + this.reputation + ", "
+				+ "displayName = " + this.displayName + ", "
+				+ "acceptRate = " + this.acceptRate + ", "
+				+ "badgeCountsInnerInner = " + this.badgeCountsInnerInner + ", "
+				+ "]"; 
+		}	
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class BadgeCountsInnerInner {
+		
+			public BadgeCountsInnerInner(){}
+		
+			@JsonProperty("gold") 
+			private Integer gold;
+			
+			@JsonProperty("silver") 
+			private Integer silver;
+			
+			@JsonProperty("bronze") 
+			private Integer bronze;
+			
+			public Integer getGold() {
+				return this.gold;
+			}
+			
+			public Integer getSilver() {
+				return this.silver;
+			}
+			
+			public Integer getBronze() {
+				return this.bronze;
+			}
+			
+			@Override
+			public String toString() {
+				return "BadgeCountsInnerInner [ "
+					+ "gold = " + this.gold + ", "
+					+ "silver = " + this.silver + ", "
+					+ "bronze = " + this.bronze + ", "
+					+ "]"; 
+			}	
+		}
+		
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class MigratedFrom {
+	
+		public MigratedFrom(){}
+	
+		@JsonProperty("on_date") 
+		private Integer onDate;
+		
+		@JsonProperty("question_id") 
+		private Integer questionId;
+		
+		@JsonProperty("other_site") 
+		private OtherSite otherSite;
+		
+		public Integer getOnDate() {
+			return this.onDate;
+		}
+		
+		public Integer getQuestionId() {
+			return this.questionId;
+		}
+		
+		public OtherSite getOtherSite() {
+			return this.otherSite;
+		}
+		
+		@Override
+		public String toString() {
+			return "MigratedFrom [ "
+				+ "onDate = " + this.onDate + ", "
+				+ "questionId = " + this.questionId + ", "
+				+ "otherSite = " + this.otherSite + ", "
+				+ "]"; 
+		}	
+		@JsonIgnoreProperties(ignoreUnknown = true)
+		public static class OtherSite {
+		
+			public OtherSite(){}
+		
+			@JsonProperty("icon_url") 
+			private String iconUrl;
+			
+			@JsonProperty("audience") 
+			private String audience;
+			
+			@JsonProperty("favicon_url") 
+			private String faviconUrl;
+			
+			@JsonProperty("site_type") 
+			private String siteType;
+			
+			@JsonProperty("logo_url") 
+			private String logoUrl;
+			
+			@JsonProperty("api_site_parameter") 
+			private String apiSiteParameter;
+			
+			@JsonProperty("open_beta_date") 
+			private Integer openBetaDate;
+			
+			@JsonProperty("site_state") 
+			private String siteState;
+			
+			@JsonProperty("closed_beta_date") 
+			private Integer closedBetaDate;
+			
+			@JsonProperty("site_url") 
+			private String siteUrl;
+			
+			@JsonProperty("name") 
+			private String name;
+			
+			@JsonProperty("high_resolution_icon_url") 
+			private String highResolutionIconUrl;
+			
+			@JsonProperty("twitter_account") 
+			private String twitterAccount;
+			
+			@JsonProperty("launch_date") 
+			private Integer launchDate;
+			
+			@JsonProperty("styling") 
+			private StylingInner stylingInner;
+			
+			@JsonProperty("aliases") 
+			private List<Object> aliases = new ArrayList<Object>();
+			
+			@JsonProperty("related_sites") 
+			private List<Object> relatedSites = new ArrayList<Object>();
+			
+			@JsonProperty("markdown_extensions") 
+			private List<Object> markdownExtensions = new ArrayList<Object>();
+			
+			public String getIconUrl() {
+				return this.iconUrl;
+			}
+			
+			public String getAudience() {
+				return this.audience;
+			}
+			
+			public String getFaviconUrl() {
+				return this.faviconUrl;
+			}
+			
+			public String getSiteType() {
+				return this.siteType;
+			}
+			
+			public String getLogoUrl() {
+				return this.logoUrl;
+			}
+			
+			public String getApiSiteParameter() {
+				return this.apiSiteParameter;
+			}
+			
+			public Integer getOpenBetaDate() {
+				return this.openBetaDate;
+			}
+			
+			public String getSiteState() {
+				return this.siteState;
+			}
+			
+			public Integer getClosedBetaDate() {
+				return this.closedBetaDate;
+			}
+			
+			public String getSiteUrl() {
+				return this.siteUrl;
+			}
+			
+			public String getName() {
+				return this.name;
+			}
+			
+			public String getHighResolutionIconUrl() {
+				return this.highResolutionIconUrl;
+			}
+			
+			public String getTwitterAccount() {
+				return this.twitterAccount;
+			}
+			
+			public Integer getLaunchDate() {
+				return this.launchDate;
+			}
+			
+			public StylingInner getStylingInner() {
+				return this.stylingInner;
+			}
+			
+			public List<Object> getAliases() {
+				return this.aliases;
+			}
+			
+			public List<Object> getRelatedSites() {
+				return this.relatedSites;
+			}
+			
+			public List<Object> getMarkdownExtensions() {
+				return this.markdownExtensions;
+			}
+			
+			@Override
+			public String toString() {
+				return "OtherSite [ "
+					+ "iconUrl = " + this.iconUrl + ", "
+					+ "audience = " + this.audience + ", "
+					+ "faviconUrl = " + this.faviconUrl + ", "
+					+ "siteType = " + this.siteType + ", "
+					+ "logoUrl = " + this.logoUrl + ", "
+					+ "apiSiteParameter = " + this.apiSiteParameter + ", "
+					+ "openBetaDate = " + this.openBetaDate + ", "
+					+ "siteState = " + this.siteState + ", "
+					+ "closedBetaDate = " + this.closedBetaDate + ", "
+					+ "siteUrl = " + this.siteUrl + ", "
+					+ "name = " + this.name + ", "
+					+ "highResolutionIconUrl = " + this.highResolutionIconUrl + ", "
+					+ "twitterAccount = " + this.twitterAccount + ", "
+					+ "launchDate = " + this.launchDate + ", "
+					+ "stylingInner = " + this.stylingInner + ", "
+					+ "aliases = " + this.aliases + ", "
+					+ "relatedSites = " + this.relatedSites + ", "
+					+ "markdownExtensions = " + this.markdownExtensions + ", "
+					+ "]"; 
+			}	
+			@JsonIgnoreProperties(ignoreUnknown = true)
+			public static class StylingInner {
+			
+				public StylingInner(){}
+			
+				@JsonProperty("tag_background_color") 
+				private String tagBackgroundColor;
+				
+				@JsonProperty("link_color") 
+				private String linkColor;
+				
+				@JsonProperty("tag_foreground_color") 
+				private String tagForegroundColor;
+				
+				public String getTagBackgroundColor() {
+					return this.tagBackgroundColor;
+				}
+				
+				public String getLinkColor() {
+					return this.linkColor;
+				}
+				
+				public String getTagForegroundColor() {
+					return this.tagForegroundColor;
+				}
+				
+				@Override
+				public String toString() {
+					return "StylingInner [ "
 						+ "tagBackgroundColor = " + this.tagBackgroundColor + ", "
 						+ "linkColor = " + this.linkColor + ", "
 						+ "tagForegroundColor = " + this.tagForegroundColor + ", "

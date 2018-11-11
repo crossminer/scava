@@ -77,5 +77,4 @@ public abstract class AdderBase implements AdditionsConsumer, Task{
 	}
 	
 	
-	
 }

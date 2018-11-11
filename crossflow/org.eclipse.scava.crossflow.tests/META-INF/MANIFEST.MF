@@ -3,9 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.eclipse.scava.crossflow.tests
 Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.crossflow.tests.Activator
 Require-Bundle: org.eclipse.scava.crossflow.runtime,
  org.eclipse.scava.crossflow.restmule.core,
  org.eclipse.scava.crossflow.restmule.client.github,
+ org.eclipse.scava.crossflow.restmule.client.stackexchange,
  org.junit,
  org.junit.jupiter.api,
  org.junit.jupiter.engine,

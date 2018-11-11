@@ -3,6 +3,7 @@ package org.eclipse.scava.crossflow.runtime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.function.BooleanSupplier;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -50,6 +51,8 @@ public abstract class Workflow {
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
 	//
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
+	
+	protected boolean terminated = false;
 
 	/**
 	 * used to manually add local workers to master as they may be enabled too
@@ -404,7 +407,7 @@ public abstract class Workflow {
 			controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
 			controlTopic.stop();
 		}
-
+		terminated = true;
 		System.out.println("workflow " + getName() + " terminated.");
 	}
 
@@ -414,6 +417,10 @@ public abstract class Workflow {
 
 	public void addShutdownHook(Runnable runnable) {
 		onTerminate.add(runnable);
+	}
+	
+	public boolean hasTerminated() {
+		return terminated;
 	}
 
 }

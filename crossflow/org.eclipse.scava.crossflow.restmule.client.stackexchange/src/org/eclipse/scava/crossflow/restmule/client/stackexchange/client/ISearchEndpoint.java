@@ -24,8 +24,6 @@ public interface ISearchEndpoint {
 				@Query(value="sort", encoded=true) String sort,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
 				@Query(value="todate", encoded=true) Integer todate,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
 				@Query(value="site", encoded=true) String site,			
@@ -42,8 +40,8 @@ public interface ISearchEndpoint {
 				@Query(value="user", encoded=true) Integer user,			
 				@Query(value="views", encoded=true) Integer views,			
 				@Query(value="wiki", encoded=true) String wiki,			
-				@Query(value="rm_pagesize", encoded=true) Integer rm_pagesize,			
-				@Query(value="rm_page", encoded=true) Integer rm_page);
+				@Query(value="pagesize", encoded=true) Integer pagesize,			
+				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/search")
 		Call<List<Questions>> getSearchQuestions( 
@@ -55,14 +53,12 @@ public interface ISearchEndpoint {
 				@Query(value="sort", encoded=true) String sort,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
 				@Query(value="todate", encoded=true) Integer todate,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
 				@Query(value="site", encoded=true) String site,			
 				@Query(value="intitle", encoded=true) String intitle,			
 				@Query(value="nottagged", encoded=true) String nottagged,			
-				@Query(value="rm_pagesize", encoded=true) Integer rm_pagesize,			
-				@Query(value="rm_page", encoded=true) Integer rm_page);
+				@Query(value="pagesize", encoded=true) Integer pagesize,			
+				@Query(value="page", encoded=true) Integer page);
 	
 }

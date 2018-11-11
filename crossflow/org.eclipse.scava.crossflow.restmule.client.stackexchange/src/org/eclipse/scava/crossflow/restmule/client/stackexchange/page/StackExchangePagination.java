@@ -56,5 +56,10 @@ public class StackExchangePagination extends AbstractPagination{
 		return super.<T, END, StackExchangeDataSet<T>, StackExchangeCallback<T>>
 		traversePages(new StackExchangeCallback<T>(), methodName, types, vals, client);		
 	}
+	
+	public static int getMaxResults() {
+		// FIXME add to fix model and generator
+		return 10000;
+	}
 
 }

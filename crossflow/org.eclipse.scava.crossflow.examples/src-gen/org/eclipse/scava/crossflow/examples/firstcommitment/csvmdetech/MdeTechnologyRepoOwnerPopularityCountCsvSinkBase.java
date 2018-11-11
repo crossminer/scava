@@ -68,11 +68,4 @@ public abstract class MdeTechnologyRepoOwnerPopularityCountCsvSinkBase implement
 	}
 	
 	
-	
-	// CSV file writer(s)
-	protected CsvWriter writer0 = new CsvWriter("MDE-ownerPopularity.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
-	
-	public void flushAll() {
-		writer0.flush();
-	}
 }

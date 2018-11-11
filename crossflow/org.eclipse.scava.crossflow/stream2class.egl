@@ -112,22 +112,26 @@ public class [%=s.name%] implements Channel{
 						Job job = (Job) ((ObjectMessage) message).getObject();
 						if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
-								[%for (s in w.streams) { %]
 								if (output.getDestination().equals("[%=s.name%]")) {
-									(([%=w.name%]) workflow).get[%=s.name%]().send(([%=s.type.name%]) output, this.getClass().getName());
+									MessageProducer producer = session.createProducer(preQueue);
+									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+									ObjectMessage m = session.createObjectMessage();
+									m.setObject(output);
+									producer.send(m);
+								} else {
+									//XXX should not be the case?
+									System.err.println(
+											output.getDestination() + " destination found in [%=s.name%] pre consumer");
 								}
-								[%}%]
 							}
-						}
-						else {
+						} else {
 							MessageProducer producer = session.createProducer(destQueue);
 							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 							producer.send(message);
 							producer.close();
 						}
 						
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}

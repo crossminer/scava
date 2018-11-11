@@ -59,8 +59,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -96,7 +94,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags 
 	 */		
-	IDataSet<Tags> getTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -111,8 +109,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -148,7 +144,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/synonyms 
 	 */		
-	IDataSet<TagSynonyms> getTagsSynonymsTagSynonyms(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TagSynonyms> getTagsSynonymsTagSynonyms(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -164,8 +160,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -201,7 +195,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me 
 	 */		
-	IData<User> getMeUser(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IData<User> getMeUser(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -216,8 +210,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -253,12 +245,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/unaccepted 
 	 */		
-	IDataSet<Questions> getUsersQuestionsUnacceptedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersQuestionsUnacceptedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -293,12 +283,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/associated 
 	 */		
-	IDataSet<NetworkUsers> getMeAssociatedNetworkUsers(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<NetworkUsers> getMeAssociatedNetworkUsers(String filter, String callback);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -334,12 +322,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/inbox 
 	 */		
-	IDataSet<InboxItems> getMeInboxInboxItems(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<InboxItems> getMeInboxInboxItems(String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -376,7 +362,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/inbox/unread 
 	 */		
-	IDataSet<InboxItems> getMeInboxUnreadInboxItems(Integer pagesize, Integer page, String filter, String callback, String site, Integer since);
+	IDataSet<InboxItems> getMeInboxUnreadInboxItems(String filter, String callback, String site, Integer since);
 	
 	/**
 	 * null
@@ -390,8 +376,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -427,12 +411,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/featured 
 	 */		
-	IDataSet<Questions> getMeQuestionsFeaturedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeQuestionsFeaturedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -468,7 +450,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/privileges 
 	 */		
-	IDataSet<Privileges> getMePrivileges(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Privileges> getMePrivileges(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -483,8 +465,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -520,7 +500,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/answers 
 	 */		
-	IDataSet<Answers> getUsersAnswers(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getUsersAnswers(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -535,8 +515,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -572,7 +550,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /posts/{ids} 
 	 */		
-	IDataSet<Posts> getPostsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Posts> getPostsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -587,8 +565,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -624,7 +600,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/unanswered 
 	 */		
-	IDataSet<Questions> getUsersQuestionsUnansweredQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersQuestionsUnansweredQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -639,8 +615,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -676,13 +650,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges 
 	 */		
-	IDataSet<Badges> getBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -718,7 +690,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/reputation-history/full 
 	 */		
-	IDataSet<ReputationHistory> getUsersReputation_historyFullReputationHistory(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<ReputationHistory> getUsersReputation_historyFullReputationHistory(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -733,8 +705,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -770,7 +740,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/info 
 	 */		
-	IDataSet<Tags> getTagsInfoTags(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getTagsInfoTags(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -784,8 +754,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -821,12 +789,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /suggested-edits 
 	 */		
-	IDataSet<SuggestedEdits> getSuggested_editsSuggestedEdits(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<SuggestedEdits> getSuggested_editsSuggestedEdits(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -862,7 +828,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/reputation-history 
 	 */		
-	IDataSet<ReputationHistory> getMeReputation_historyReputationHistory(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<ReputationHistory> getMeReputation_historyReputationHistory(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -877,8 +843,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -914,12 +878,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/suggested-edits 
 	 */		
-	IDataSet<SuggestedEdits> getUsersSuggested_editsSuggestedEdits(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<SuggestedEdits> getUsersSuggested_editsSuggestedEdits(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -955,7 +917,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/top-question-tags 
 	 */		
-	IDataSet<TopTagObjects> getMeTop_question_tagsTopTagObjects(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TopTagObjects> getMeTop_question_tagsTopTagObjects(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -970,8 +932,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1007,7 +967,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids} 
 	 */		
-	IDataSet<Questions> getQuestionsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1022,8 +982,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1059,12 +1017,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/featured 
 	 */		
-	IDataSet<Questions> getQuestionsFeaturedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsFeaturedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1100,7 +1056,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /privileges 
 	 */		
-	IDataSet<Privileges> getPrivileges(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Privileges> getPrivileges(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1113,8 +1069,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1150,7 +1104,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /comments/{ids} 
 	 */		
-	IDataSet<Comments> getCommentsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getCommentsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1163,8 +1117,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1200,7 +1152,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges/tags 
 	 */		
-	IDataSet<Badges> getBadgesTagsBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadgesTagsBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1215,8 +1167,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1252,7 +1202,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/tags/{tags}/top-answers 
 	 */		
-	IDataSet<Answers> getMeTagsTop_answersAnswers(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getMeTagsTop_answersAnswers(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1264,8 +1214,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1301,12 +1249,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/mentioned 
 	 */		
-	IDataSet<Comments> getMeMentionedComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getMeMentionedComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1341,15 +1287,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/merges 
 	 */		
-	IDataSet<AccountMerge> getMeMergesAccountMerge(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<AccountMerge> getMeMergesAccountMerge(String filter, String callback);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1385,12 +1329,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges/{ids}/recipients 
 	 */		
-	IDataSet<Badges> getBadgesRecipientsBadges(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadgesRecipientsBadges(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1425,7 +1367,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /errors 
 	 */		
-	IDataSet<Errors> getErrors(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<Errors> getErrors(String filter, String callback);
 	
 	/**
 	 * null
@@ -1439,8 +1381,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1476,12 +1416,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/badges 
 	 */		
-	IDataSet<Badges> getMeBadges(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getMeBadges(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1518,7 +1456,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /events 
 	 */		
-	IDataSet<Events> getEvents(Integer pagesize, Integer page, String filter, String callback, String site, Integer since);
+	IDataSet<Events> getEvents(String filter, String callback, String site, Integer since);
 	
 	/**
 	 * null
@@ -1545,8 +1483,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1582,13 +1518,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/moderators 
 	 */		
-	IDataSet<Users> getUsersModeratorsUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Users> getUsersModeratorsUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1625,13 +1559,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/inbox/unread 
 	 */		
-	IDataSet<InboxItems> getUsersInboxUnreadInboxItems(Integer id, Integer pagesize, Integer page, String filter, String callback, String site, Integer since);
+	IDataSet<InboxItems> getUsersInboxUnreadInboxItems(Integer id, String filter, String callback, String site, Integer since);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1666,13 +1598,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/merges 
 	 */		
-	IDataSet<AccountMerge> getUsersMergesAccountMerge(String ids, Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<AccountMerge> getUsersMergesAccountMerge(String ids, String filter, String callback);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1708,7 +1638,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/write-permissions 
 	 */		
-	IDataSet<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1721,8 +1651,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1758,12 +1686,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/comments/{toId} 
 	 */		
-	IDataSet<Comments> getMeCommentsByToId(Integer toId, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getMeCommentsByToId(Integer toId, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1799,13 +1725,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/top-answer-tags 
 	 */		
-	IDataSet<TopTagObjects> getMeTop_answer_tagsTopTagObjects(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TopTagObjects> getMeTop_answer_tagsTopTagObjects(String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1841,7 +1765,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/top-answer-tags 
 	 */		
-	IDataSet<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1856,8 +1780,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1893,7 +1815,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions 
 	 */		
-	IDataSet<Questions> getUsersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1906,8 +1828,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1943,15 +1863,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges/name 
 	 */		
-	IDataSet<Badges> getBadgesNameBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadgesNameBadges(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -1987,7 +1905,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /posts/{ids}/revisions 
 	 */		
-	IDataSet<Revisions> getPostsRevisions(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Revisions> getPostsRevisions(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2010,8 +1928,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2047,7 +1963,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/tags/{tags}/top-questions 
 	 */		
-	IDataSet<Questions> getMeTagsTop_questionsQuestions(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeTagsTop_questionsQuestions(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2059,8 +1975,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2096,7 +2010,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/comments 
 	 */		
-	IDataSet<Comments> getMeComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getMeComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2110,8 +2024,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2147,12 +2059,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/no-answers 
 	 */		
-	IDataSet<Questions> getMeQuestionsNo_answersQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeQuestionsNo_answersQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2188,7 +2098,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/notifications/unread 
 	 */		
-	IDataSet<Notifications> getMeNotificationsUnreadNotifications(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Notifications> getMeNotificationsUnreadNotifications(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2202,8 +2112,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2239,12 +2147,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions 
 	 */		
-	IDataSet<Questions> getMeQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2280,12 +2186,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/reputation-history/full 
 	 */		
-	IDataSet<ReputationHistory> getMeReputation_historyFullReputationHistory(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<ReputationHistory> getMeReputation_historyFullReputationHistory(String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2321,7 +2225,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/write-permissions 
 	 */		
-	IDataSet<WritePermissions> getMeWrite_permissionsWritePermissions(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<WritePermissions> getMeWrite_permissionsWritePermissions(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2337,8 +2241,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2374,7 +2276,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/tags/{tags}/top-answers 
 	 */		
-	IDataSet<Answers> getUsersTagsTop_answersAnswers(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getUsersTagsTop_answersAnswers(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2391,8 +2293,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2428,7 +2328,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/related 
 	 */		
-	IDataSet<Questions> getQuestionsRelatedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsRelatedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2441,8 +2341,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2478,7 +2376,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/mentioned 
 	 */		
-	IDataSet<Comments> getUsersMentionedComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getUsersMentionedComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2491,8 +2389,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2528,7 +2424,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /answers/{ids}/comments 
 	 */		
-	IDataSet<Comments> getAnswersComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getAnswersComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2543,8 +2439,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2580,7 +2474,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/moderator-only 
 	 */		
-	IDataSet<Tags> getTagsModerator_onlyTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getTagsModerator_onlyTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2593,8 +2487,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2630,7 +2522,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/comments 
 	 */		
-	IDataSet<Comments> getUsersComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getUsersComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2644,8 +2536,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2681,13 +2571,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/unanswered 
 	 */		
-	IDataSet<Questions> getMeQuestionsUnansweredQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeQuestionsUnansweredQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param accessTokens String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2722,13 +2610,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /access-tokens/{accessTokens}/invalidate 
 	 */		
-	IDataSet<AccessTokens> getAccess_tokensInvalidateAccessTokens(String accessTokens, Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<AccessTokens> getAccess_tokensInvalidateAccessTokens(String accessTokens, String filter, String callback);
 	
 	/**
 	 * null
 	 * @param tags String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2764,7 +2650,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/related 
 	 */		
-	IDataSet<Tags> getTagsRelatedTags(String tags, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getTagsRelatedTags(String tags, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2778,8 +2664,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2815,7 +2699,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/answers 
 	 */		
-	IDataSet<Answers> getMeAnswers(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getMeAnswers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2830,8 +2714,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2867,7 +2749,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/tags 
 	 */		
-	IDataSet<Tags> getUsersTags(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getUsersTags(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2880,8 +2762,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2917,7 +2797,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/comments 
 	 */		
-	IDataSet<Comments> getQuestionsComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getQuestionsComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2934,8 +2814,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -2971,13 +2849,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/favorites 
 	 */		
-	IDataSet<Questions> getUsersFavoritesQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersFavoritesQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param accessTokens String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3012,7 +2888,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /access-tokens/{accessTokens} 
 	 */		
-	IDataSet<AccessTokens> getAccess_tokensAccessTokensByAccessTokens(String accessTokens, Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<AccessTokens> getAccess_tokensAccessTokensByAccessTokens(String accessTokens, String filter, String callback);
 	
 	/**
 	 * null
@@ -3026,8 +2902,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3063,12 +2937,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/unaccepted 
 	 */		
-	IDataSet<Questions> getMeQuestionsUnacceptedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeQuestionsUnacceptedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3103,14 +2975,12 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /sites 
 	 */		
-	IDataSet<Sites> getSites(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<Sites> getSites(String filter, String callback);
 	
 	/**
 	 * null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3146,13 +3016,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/timeline 
 	 */		
-	IDataSet<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3188,12 +3056,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/reputation-history 
 	 */		
-	IDataSet<ReputationHistory> getUsersReputation_historyReputationHistory(String ids, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<ReputationHistory> getUsersReputation_historyReputationHistory(String ids, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3229,7 +3095,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/notifications 
 	 */		
-	IDataSet<Notifications> getMeNotifications(Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Notifications> getMeNotifications(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3241,8 +3107,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3278,13 +3142,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /comments 
 	 */		
-	IDataSet<Comments> getComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getComments(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3320,7 +3182,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/inbox 
 	 */		
-	IDataSet<InboxItems> getUsersInboxInboxItems(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<InboxItems> getUsersInboxInboxItems(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3335,8 +3197,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3372,7 +3232,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges/{ids} 
 	 */		
-	IDataSet<Badges> getBadgesByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadgesByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3387,8 +3247,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3424,7 +3282,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/required 
 	 */		
-	IDataSet<Tags> getTagsRequiredTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getTagsRequiredTags(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3439,8 +3297,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3476,13 +3332,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /suggested-edits/{ids} 
 	 */		
-	IDataSet<SuggestedEdits> getSuggested_editsSuggestedEditsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<SuggestedEdits> getSuggested_editsSuggestedEditsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param accessTokens String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3517,7 +3371,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /apps/{accessTokens}/de-authenticate 
 	 */		
-	IDataSet<AccessTokens> getAppsDe_authenticateAccessTokens(String accessTokens, Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<AccessTokens> getAppsDe_authenticateAccessTokens(String accessTokens, String filter, String callback);
 	
 	/**
 	 * null
@@ -3531,8 +3385,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3568,12 +3420,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /posts 
 	 */		
-	IDataSet<Posts> getPosts(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Posts> getPosts(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3608,7 +3458,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /notifications 
 	 */		
-	IDataSet<Notifications> getNotifications(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<Notifications> getNotifications(String filter, String callback);
 	
 	/**
 	 * null
@@ -3625,8 +3475,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3662,12 +3510,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids} 
 	 */		
-	IDataSet<Users> getUsersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Users> getUsersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3702,7 +3548,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /inbox 
 	 */		
-	IDataSet<InboxItems> getInboxInboxItems(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<InboxItems> getInboxInboxItems(String filter, String callback);
 	
 	/**
 	 * null
@@ -3716,8 +3562,6 @@ public interface IEntityApi {
 	 * null
 	 * @param tag null
 	 * @param period null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3753,15 +3597,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tag}/top-answerers/{period} 
 	 */		
-	IDataSet<TagScoreObjects> getTagsTop_answerersTagScoreObjectsByPeriod(String tag, String period, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TagScoreObjects> getTagsTop_answerersTagScoreObjectsByPeriod(String tag, String period, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3797,13 +3639,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/reputation 
 	 */		
-	IDataSet<ReputationChanges> getUsersReputationReputationChanges(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<ReputationChanges> getUsersReputationReputationChanges(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param tags String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3839,14 +3679,12 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/faq 
 	 */		
-	IDataSet<Questions> getTagsFaqQuestions(String tags, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getTagsFaqQuestions(String tags, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3882,7 +3720,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /badges/recipients 
 	 */		
-	IDataSet<Badges> getBadgesRecipientsBadges(Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getBadgesRecipientsBadges(Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3896,8 +3734,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3933,13 +3769,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/tags 
 	 */		
-	IDataSet<Tags> getMeTags(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Tags> getMeTags(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -3975,14 +3809,12 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/privileges 
 	 */		
-	IDataSet<Privileges> getUsersPrivileges(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Privileges> getUsersPrivileges(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param tag null
 	 * @param period null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4018,7 +3850,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tag}/top-askers/{period} 
 	 */		
-	IDataSet<TagScoreObjects> getTagsTop_askersTagScoreObjectsByPeriod(String tag, String period, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TagScoreObjects> getTagsTop_askersTagScoreObjectsByPeriod(String tag, String period, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4032,8 +3864,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4069,7 +3899,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/suggested-edits 
 	 */		
-	IDataSet<SuggestedEdits> getMeSuggested_editsSuggestedEdits(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<SuggestedEdits> getMeSuggested_editsSuggestedEdits(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4084,8 +3914,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4121,7 +3949,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/featured 
 	 */		
-	IDataSet<Questions> getUsersQuestionsFeaturedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersQuestionsFeaturedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4137,8 +3965,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4174,7 +4000,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/favorites 
 	 */		
-	IDataSet<Questions> getMeFavoritesQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getMeFavoritesQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4188,8 +4014,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4225,12 +4049,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /answers 
 	 */		
-	IDataSet<Answers> getAnswers(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getAnswers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4266,7 +4088,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /inbox/unread 
 	 */		
-	IDataSet<InboxItems> getInboxUnreadInboxItems(Integer pagesize, Integer page, String filter, String callback, Integer since);
+	IDataSet<InboxItems> getInboxUnreadInboxItems(String filter, String callback, Integer since);
 	
 	/**
 	 * null
@@ -4281,8 +4103,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4318,7 +4138,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/answers 
 	 */		
-	IDataSet<Answers> getQuestionsAnswers(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getQuestionsAnswers(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4335,8 +4155,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4372,7 +4190,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/badges 
 	 */		
-	IDataSet<Badges> getUsersBadges(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Badges> getUsersBadges(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4387,8 +4205,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4424,7 +4240,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /answers/{ids} 
 	 */		
-	IDataSet<Answers> getAnswersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Answers> getAnswersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4455,8 +4271,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4492,7 +4306,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions 
 	 */		
-	IDataSet<Questions> getQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4507,8 +4321,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4544,7 +4356,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /posts/{ids}/suggested-edits 
 	 */		
-	IDataSet<SuggestedEdits> getPostsSuggested_editsSuggestedEdits(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<SuggestedEdits> getPostsSuggested_editsSuggestedEdits(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4560,8 +4372,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4597,15 +4407,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/moderators/elected 
 	 */		
-	IDataSet<Users> getUsersModeratorsElectedUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Users> getUsersModeratorsElectedUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Guid list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4641,7 +4449,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /revisions/{ids} 
 	 */		
-	IDataSet<Revisions> getRevisionsByIds(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Revisions> getRevisionsByIds(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4658,8 +4466,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4695,7 +4501,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/linked 
 	 */		
-	IDataSet<Questions> getQuestionsLinkedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsLinkedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4716,8 +4522,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4753,7 +4557,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /posts/{ids}/comments 
 	 */		
-	IDataSet<Comments> getPostsComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getPostsComments(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4767,8 +4571,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4804,12 +4606,10 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/synonyms 
 	 */		
-	IDataSet<TagSynonyms> getTagsSynonymsTagSynonyms(String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TagSynonyms> getTagsSynonymsTagSynonyms(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4844,7 +4644,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /notifications/unread 
 	 */		
-	IDataSet<Notifications> getNotificationsUnreadNotifications(Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<Notifications> getNotificationsUnreadNotifications(String filter, String callback);
 	
 	/**
 	 * null
@@ -4858,8 +4658,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4895,13 +4693,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/comments/{toid} 
 	 */		
-	IDataSet<Comments> getUsersCommentsByToid(String ids, Integer toid, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Comments> getUsersCommentsByToid(String ids, Integer toid, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param tags String list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4937,7 +4733,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/wikis 
 	 */		
-	IDataSet<TagWikis> getTagsWikisTagWikis(String tags, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TagWikis> getTagsWikisTagWikis(String tags, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4954,8 +4750,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -4991,15 +4785,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users 
 	 */		
-	IDataSet<Users> getUsers(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Users> getUsers(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5035,15 +4827,13 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/timeline 
 	 */		
-	IDataSet<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5079,13 +4869,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/timeline 
 	 */		
-	IDataSet<QuestionTimelineEvents> getQuestionsTimelineQuestionTimelineEvents(String ids, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<QuestionTimelineEvents> getQuestionsTimelineQuestionTimelineEvents(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param ids Number list (semicolon delimited).
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5120,7 +4908,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/associated 
 	 */		
-	IDataSet<NetworkUsers> getUsersAssociatedNetworkUsers(String ids, Integer pagesize, Integer page, String filter, String callback);
+	IDataSet<NetworkUsers> getUsersAssociatedNetworkUsers(String ids, String filter, String callback);
 	
 	/**
 	 * null
@@ -5135,8 +4923,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5172,7 +4958,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/unanswered 
 	 */		
-	IDataSet<Questions> getQuestionsUnansweredQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsUnansweredQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5188,8 +4974,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5225,13 +5009,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/tags/{tags}/top-questions 
 	 */		
-	IDataSet<Questions> getUsersTagsTop_questionsQuestions(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersTagsTop_questionsQuestions(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5267,13 +5049,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/notifications 
 	 */		
-	IDataSet<Notifications> getUsersNotifications(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Notifications> getUsersNotifications(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5309,7 +5089,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/top-question-tags 
 	 */		
-	IDataSet<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5324,8 +5104,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5361,13 +5139,11 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/no-answers 
 	 */		
-	IDataSet<Questions> getUsersQuestionsNo_answersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getUsersQuestionsNo_answersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
 	 * @param id null
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5403,7 +5179,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/notifications/unread 
 	 */		
-	IDataSet<Notifications> getUsersNotificationsUnreadNotifications(Integer id, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Notifications> getUsersNotificationsUnreadNotifications(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5418,8 +5194,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5455,7 +5229,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/no-answers 
 	 */		
-	IDataSet<Questions> getQuestionsNo_answersQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site);
+	IDataSet<Questions> getQuestionsNo_answersQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5472,8 +5246,6 @@ public interface IEntityApi {
 	 * @param sort null
 	 * @param fromdate Unix date.
 	 * @param todate Unix date.
-	 * @param pagesize null
-	 * @param page null
 	 * @param filter #Discussion
 	                 
 	                 The Stack Exchange API allows applications to exclude almost every field returned. For example, if an application did not care about a user's badge counts it could exclude user.badge_counts whenever it calls a method that returns users.
@@ -5511,6 +5283,6 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /similar 
 	 */		
-	IDataSet<Questions> getSimilarQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, Integer pagesize, Integer page, String filter, String callback, String site, String nottagged, String title);
+	IDataSet<Questions> getSimilarQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String nottagged, String title);
 	
 }

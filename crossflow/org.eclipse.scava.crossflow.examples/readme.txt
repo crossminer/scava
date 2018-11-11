@@ -12,7 +12,7 @@ Running the first commitment-based GitHub repositories example (produces 290 rep
 
 - Make sure to import the following projects into active Eclipse workspace: 
   - org.eclipse.scava.crossflow.restmule.core
-  - org.eclipse.scava.crossflow.restmule.github
+  - org.eclipse.scava.crossflow.restmule.client.github
   
 - Run master: java -cp org.eclipse.scava.crossflow.examples.jar org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepoExample
 - Run worker1: java -cp org.eclipse.scava.crossflow.examples.jar org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.GhRepoExample -mode worker -name Worker1
@@ -25,7 +25,7 @@ Running the first commitment-based GitHub repositories example (produces 290 rep
 
 - Make sure to import the following projects into active Eclipse workspace: 
   - org.eclipse.scava.crossflow.restmule.core
-  - org.eclipse.scava.crossflow.restmule.github
+  - org.eclipse.scava.crossflow.restmule.client.github
   
 - Run master: java -cp org.eclipse.scava.crossflow.examples.jar org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyExample
 - Run worker1: java -cp org.eclipse.scava.crossflow.examples.jar org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyExample -mode worker -name Worker1

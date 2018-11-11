@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 
@@ -48,9 +49,11 @@ public abstract class AbstractClient<T> {
 	protected static Retrofit retrofit(OkHttpClient client, String baseUrl){
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+//		mapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
 		return new Retrofit.Builder()
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync()) 
 				.addConverterFactory(JacksonConverterFactory.create(mapper))
+//				.addConverterFactory(GsonConverterFactory.create())
 				.client(client)
 				.baseUrl(baseUrl)
 				.build();

@@ -67,5 +67,4 @@ public abstract class EmptySinkBase implements ResultsPublisherConsumer, Task{
 	}
 	
 	
-	
 }

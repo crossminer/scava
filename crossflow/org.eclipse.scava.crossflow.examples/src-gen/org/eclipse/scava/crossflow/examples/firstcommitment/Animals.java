@@ -106,19 +106,25 @@ public class Animals implements Channel{
 						if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
 								if (output.getDestination().equals("Animals")) {
-									((FirstCommitmentExample) workflow).getAnimals().send((Animal) output, this.getClass().getName());
+									MessageProducer producer = session.createProducer(preQueue);
+									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+									ObjectMessage m = session.createObjectMessage();
+									m.setObject(output);
+									producer.send(m);
+								} else {
+									//XXX should not be the case?
+									System.err.println(
+											output.getDestination() + " destination found in Animals pre consumer");
 								}
 							}
-						}
-						else {
+						} else {
 							MessageProducer producer = session.createProducer(destQueue);
 							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 							producer.send(message);
 							producer.close();
 						}
 						
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}

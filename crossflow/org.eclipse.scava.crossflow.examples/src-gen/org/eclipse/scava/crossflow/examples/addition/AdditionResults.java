@@ -105,23 +105,26 @@ public class AdditionResults implements Channel{
 						Job job = (Job) ((ObjectMessage) message).getObject();
 						if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
 							for (Job output : workflow.getCache().getCachedOutputs(job)) {
-								if (output.getDestination().equals("Additions")) {
-									((AdditionExample) workflow).getAdditions().send((NumberPair) output, this.getClass().getName());
-								}
 								if (output.getDestination().equals("AdditionResults")) {
-									((AdditionExample) workflow).getAdditionResults().send((Number) output, this.getClass().getName());
+									MessageProducer producer = session.createProducer(preQueue);
+									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+									ObjectMessage m = session.createObjectMessage();
+									m.setObject(output);
+									producer.send(m);
+								} else {
+									//XXX should not be the case?
+									System.err.println(
+											output.getDestination() + " destination found in AdditionResults pre consumer");
 								}
 							}
-						}
-						else {
+						} else {
 							MessageProducer producer = session.createProducer(destQueue);
 							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 							producer.send(message);
 							producer.close();
 						}
 						
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}

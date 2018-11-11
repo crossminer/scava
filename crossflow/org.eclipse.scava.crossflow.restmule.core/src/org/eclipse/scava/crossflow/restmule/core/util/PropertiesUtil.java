@@ -33,12 +33,13 @@ public class PropertiesUtil {
 	public final static String PER_ITERATION_VALUE = "per.iteration.value";
 	public final static String PER_ITERATION_LABEL = "per.iteration.label";
 	public final static String PAGE_LABEL = "page";
-	public final static String PAGE_INFO = "page.header";
+	public final static String PAGE_INFO = "page.header"; // TODO PN: move to fix file ("page.header" in Github; "total" in StackExchange)
 	
 	// PRIVATE PROPERTIES
-	public final static String CLIENT_ID = "client.id";
-	public final static String CLIENT_SECRET = "client.secret";
-	public final static String ACCESS_TOKEN = "access.token";
+	public final static String CLIENT_ID = "client_id";
+	public final static String CLIENT_SECRET = "client_secret";
+	public final static String KEY = "key";
+	public final static String ACCESS_TOKEN = "access_token";
 	public final static String USERNAME = "username";
 	public final static String PASSWORD = "password";
 	public final static String PERSONAL_ACCESS_TOKEN = "personal.access.token";

@@ -77,5 +77,4 @@ public abstract class GhRepoCounter2Base implements GhReposConsumer, Task{
 	}
 	
 	
-	
 }

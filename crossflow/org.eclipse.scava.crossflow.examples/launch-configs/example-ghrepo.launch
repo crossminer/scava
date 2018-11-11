@@ -7,7 +7,7 @@
 <intAttribute key="generateTo" value="1"/>
 <stringAttribute key="implementation_name" value="Default(Egx)"/>
 <listAttribute key="models">
-<listEntry value="isMetamodelFileBased=false&#10;name=M&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=&#10;metamodelUri=org.eclipse.scava.crossflow&#10;modelUri=platform\:/resource/org.eclipse.scava.crossflow.examples/example-firstcommitment.flexmi&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=EMF&#10;modelFile=/org.eclipse.scava.crossflow.examples/example-firstcommitment.flexmi&#10;expand=true&#10;metamodelFile="/>
+<listEntry value="isMetamodelFileBased=false&#10;name=M&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=&#10;metamodelUri=org.eclipse.scava.crossflow&#10;modelUri=platform\:/resource/org.eclipse.scava.crossflow.examples/models/example-ghrepo.flexmi&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=EMF&#10;modelFile=/org.eclipse.scava.crossflow.examples/example-ghrepo.flexmi&#10;expand=true&#10;metamodelFile="/>
 </listAttribute>
 <stringAttribute key="outputDirPath" value="/org.eclipse.scava.crossflow.examples"/>
 <stringAttribute key="outputFilePath" value=""/>

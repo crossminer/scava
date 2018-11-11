@@ -69,7 +69,7 @@ public abstract class MdeTechnologyCsvSourceBase implements Task{
 	
 	public abstract void produce();
 	
-	protected static final CsvParser parser = new CsvParser("MDE.csv");
+	protected static final CsvParser parser = new CsvParser("csvs/MDE.csv");
 	protected static final Iterable<CSVRecord> records = parser.getRecordsIterable();
 	
 	/**
@@ -93,5 +93,4 @@ public abstract class MdeTechnologyCsvSourceBase implements Task{
 		}
 		return false;
 	}
-	
 }

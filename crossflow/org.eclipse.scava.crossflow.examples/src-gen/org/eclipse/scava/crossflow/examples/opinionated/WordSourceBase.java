@@ -55,5 +55,4 @@ public abstract class WordSourceBase implements Task{
 	
 	public abstract void produce();
 	
-	
 }

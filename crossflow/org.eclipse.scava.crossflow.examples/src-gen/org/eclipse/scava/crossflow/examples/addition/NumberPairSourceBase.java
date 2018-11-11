@@ -66,5 +66,4 @@ public abstract class NumberPairSourceBase implements Task{
 	
 	public abstract void produce();
 	
-	
 }

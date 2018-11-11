@@ -7,17 +7,36 @@ import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.core.cache.AbstractCacheManager;
 import org.eclipse.scava.crossflow.restmule.core.cache.ICache;
+import org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
 import org.eclipse.scava.crossflow.restmule.core.session.AbstractSession;
 import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 import org.eclipse.scava.crossflow.restmule.core.util.OkHttpUtil;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
 import okhttp3.CacheControl;
 import okhttp3.Headers;
@@ -36,7 +55,7 @@ import okhttp3.ResponseBody;
  *
  */
 public abstract class AbstractInterceptor {
-	
+
 	private static final CacheControl FORCE_NETWORK = new CacheControl.Builder().maxAge(0, TimeUnit.SECONDS).build();
 	private static final String TAG_FORCE_NETWORK = "FORCE NETWORK";
 
@@ -88,9 +107,8 @@ public abstract class AbstractInterceptor {
 				// session not set -- go to network to get session info
 				if (!session.isSet().get()) {
 					requestBuilder.cacheControl(FORCE_NETWORK).tag(TAG_FORCE_NETWORK);
+//					networkRequest = requestBuilder.url(request.url().toString().replace("filter=", "filter=total")).build();
 					networkRequest = requestBuilder.build();
-					// LOG.debug("networkRequest.headers() = " +
-					// networkRequest.headers());
 
 					response = chain.proceed(networkRequest);
 				}
@@ -145,6 +163,7 @@ public abstract class AbstractInterceptor {
 				LOG.info("DEALING WITH NETWORK RESPONSE");
 
 				if (response.networkResponse() != null) {
+					
 					// erroneous response
 					if (!response.networkResponse().isSuccessful()) {
 						int code = response.networkResponse().code();
@@ -176,25 +195,60 @@ public abstract class AbstractInterceptor {
 						}
 					}
 					// normal response
-					peekResponse(response);
+					JsonElement jsonResponse = peekResponse(response);
+
 					LOG.info("UPDATING SESSION DETAILS FROM NETWORK RESPONSE");
 					// LOG.info(networkResponse.networkResponse().headers());
-					session.setRateLimit(response.networkResponse().header(headerLimit));
-					session.setRateLimitReset(response.networkResponse().header(headerReset));
-					session.setRateLimitRemaining(response.networkResponse().header(headerRemaining));
-					remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
+
+					if (response.networkResponse().header(headerLimit) != null) {
+						session.setRateLimit(response.networkResponse().header(headerLimit));
+					}
+					String header = response.networkResponse().header(headerReset);
+					if (header != null) {
+						System.out.println("session.setRateLimitReset(header="+header+")");
+						session.setRateLimitReset(header);
+					}
+					if (response.networkResponse().header(headerRemaining) != null) {
+						session.setRateLimitRemaining(response.networkResponse().header(headerRemaining));
+						remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
+					}
+					
+					// StackExchange
+					if ( jsonResponse instanceof JsonObject ) {
+						JsonObject jsonObject = (JsonObject) jsonResponse;
+						Set<Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+						for (Map.Entry<String, JsonElement> entry : entrySet) {
+							if ( entry.getKey().equals("has_next") ) {
+								LOG.info("has_next=" + entry.getValue().getAsString() );
+							} else if ( entry.getKey().equals(headerLimit) ) {
+								session.setRateLimit( entry.getValue().getAsString() );
+							} else if ( entry.getKey().equals(headerRemaining) ) {
+								session.setRateLimitRemaining( entry.getValue().getAsString() );
+								LocalTime midnight = LocalTime.MIDNIGHT;
+								LocalDate today = LocalDate.now(ZoneId.of("UTC"));
+								LocalDateTime tomorrowMidnight = LocalDateTime.of(today, midnight).plusDays(1);
+								long todayMidnightPlusOne = tomorrowMidnight.toEpochSecond(ZoneOffset.UTC)+1;
+								System.out.println("todayMidnightPlusOne="+todayMidnightPlusOne);
+								session.setRateLimitReset(String.valueOf(todayMidnightPlusOne));
+								remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
+							} else if ( entry.getKey().equals("total") ) {
+								LOG.info("total=" + entry.getValue().getAsString() );
+							}
+						}
+					} else if ( jsonResponse instanceof JsonArray ) {
+						// not required
+					}
+
 					LOG.info(session);
 
-					Response networkResponseClone = OkHttpUtil.clone(response);
-
 					if (cache != null) {
-						if (cache.isDistributed())
+						if (cache.isDistributed()) {
+							Response networkResponseClone = OkHttpUtil.clone(response);
 							cache.put(networkRequest, networkResponseClone);
-						else {
+						} else {
 							// local cache code - handled by okhttp
 						}
 					}
-
 					return response;
 				}
 
@@ -202,7 +256,8 @@ public abstract class AbstractInterceptor {
 				return null;
 			}
 
-			private void peekResponse(Response response) throws IOException {
+			private JsonElement peekResponse(Response response) throws IOException {
+				JsonElement jsonResponse = null;
 				if (response.networkResponse() != null) {
 					try {
 						LOG.debug(
@@ -228,13 +283,22 @@ public abstract class AbstractInterceptor {
 																// debug output
 				Reader bodyStream = body.charStream();
 
-				BufferedReader reader = new BufferedReader(bodyStream);
-				reader.lines().forEach(l -> LOG.info(l));
+				BufferedReader bufferedReader = new BufferedReader(bodyStream);
+				String bodyString = bufferedReader.lines().collect(Collectors.joining());
+				System.out.println(
+						"RESPONSE PEEK BODY:   " + bodyString);
+				Gson gson = new Gson();
+				JsonReader jsonReader = new JsonReader(new StringReader(bodyString));
+				jsonReader.setLenient(true);
+				jsonResponse = gson.fromJson(new JsonReader(new StringReader(bodyString)), JsonElement.class);
 
 				// Close Body and Readers
 				bodyStream.close();
 				body.close();
-				reader.close();
+				bufferedReader.close();
+				jsonReader.close();
+				
+				return jsonResponse;
 			}
 
 			private Headers headers(final String accept, final String userAgent, final ICache cache, ISession session,
@@ -263,21 +327,20 @@ public abstract class AbstractInterceptor {
 				Response response = chain.proceed(request);// getOkttpResponse(session,
 				// chain);
 				/*
-				 * chain.proceed(request); Response cacheResponse =
-				 * response.cacheResponse(); LOG.info("b"); if (cacheResponse !=
-				 * null){ LOG.info("RETURNING RESPONSE FROM CACHE");
-				 * cacheKeys.add(Cache.key(request.url())); return
-				 * cacheResponse; } else { return response; }
+				 * chain.proceed(request); Response cacheResponse = response.cacheResponse();
+				 * LOG.info("b"); if (cacheResponse != null){
+				 * LOG.info("RETURNING RESPONSE FROM CACHE");
+				 * cacheKeys.add(Cache.key(request.url())); return cacheResponse; } else {
+				 * return response; }
 				 */
 				return response;
 
 				// TODO uncomment
 				/*
-				 * Request request = chain.request(); LOG.info(request.url());
-				 * ISession session = AbstractSession.getSession(sessionClass,
-				 * sessionId); LOG.info(session); if (cache.exists(request,
-				 * session)) { Response response = cache.load(request, session);
-				 * LOG.info("RETURNING RESPONSE FROM CACHE"); return response; }
+				 * Request request = chain.request(); LOG.info(request.url()); ISession session
+				 * = AbstractSession.getSession(sessionClass, sessionId); LOG.info(session); if
+				 * (cache.exists(request, session)) { Response response = cache.load(request,
+				 * session); LOG.info("RETURNING RESPONSE FROM CACHE"); return response; }
 				 * return chain.proceed(request);
 				 */
 			}
@@ -332,15 +395,13 @@ public abstract class AbstractInterceptor {
 				 * chain.proceed(request); ISession session =
 				 * AbstractSession.getSession(sessionClass, sessionId);
 				 *
-				 * String code = String.valueOf(response.code()); if
-				 * (code.startsWith("2") || code.startsWith("3")){ if
-				 * (response.code() == SC_NOT_MODIFIED) {
-				 * LOG.info(SC_NOT_MODIFIED); return cache.load(request,
-				 * session); } else { LOG.info("PERSISTING RESPONSE IN CACHE");
-				 * Response clonedResponse = OkHttpUtil.clone(response);
-				 * cache.put(clonedResponse, session); return clonedResponse; }
-				 * } else { LOG.error("Something went wrong : " +response.code()
-				 * + " " + response.message() ) ; return response; }
+				 * String code = String.valueOf(response.code()); if (code.startsWith("2") ||
+				 * code.startsWith("3")){ if (response.code() == SC_NOT_MODIFIED) {
+				 * LOG.info(SC_NOT_MODIFIED); return cache.load(request, session); } else {
+				 * LOG.info("PERSISTING RESPONSE IN CACHE"); Response clonedResponse =
+				 * OkHttpUtil.clone(response); cache.put(clonedResponse, session); return
+				 * clonedResponse; } } else { LOG.error("Something went wrong : "
+				 * +response.code() + " " + response.message() ) ; return response; }
 				 */
 			}
 		};
