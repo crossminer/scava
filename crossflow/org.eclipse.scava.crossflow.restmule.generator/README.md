@@ -15,9 +15,11 @@ To generate the GitHub Resilient Client you need to import the `dependencies/emc
 
 3) Add new or uncomment existing OpenAPI property specification in `build.xml` file. For example:
 
+```xml
 <!-- GitHub API version 3 -->
 <property  name="api"  value="github"/>
 <property  name="json.model.file"  value="schemas/github_v3.json"/>
+```
 
 4) Make sure an `.eol` file that exactly matches the named provided in belows property value for `json.model.file` is available inside
  	the directory `epsilon/util/fix`. For example, `github.eol` for the property specified in the previous step.
