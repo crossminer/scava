@@ -1,23 +1,7 @@
 <?xml version="1.0"?>
 <project default="setup">
-
-	<!--
-		==================================
-		STEPS TO GENERATE RESTMULE CLIENTS
-		==================================
-		
-		1) Run "RESTMULE-CLIENT-GENERATOR-ECLIPSE-APPLICATION-LAUNCHER.launch" (will open a new Eclipse instance).
-		
-		2) Import "org.eclipse.scava.crossflow.restmule.generator" into workspace of Eclipse instance launched in step 2.  
-		
-		3) Add new or uncomment one of the API Variables below according to the desired API.
-		
-		4) Make sure an eol file that exactly matches the named provided in belows property value for "json.model.file" is available inside
-		 	the directory THIS_PROJECT/epsilon/util/fix
-		 	
-		5) Run "generateFromOAS.launch" (will produce visible console output) to produce the RestMule client for the specified API.
-		
-	-->
+	
+	<!-- SEE README.md ON HOW TO GENERATE RESTMULE CLIENTS FOR OPENAPI SPECIFICATIONS --> 
 	
 	<!--API Variables -->
 	
