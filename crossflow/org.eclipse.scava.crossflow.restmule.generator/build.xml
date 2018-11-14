@@ -1,9 +1,47 @@
 <?xml version="1.0"?>
 <project default="setup">
 
+	<!--
+		==================================
+		STEPS TO GENERATE RESTMULE CLIENTS
+		==================================
+		
+		1) Run "RESTMULE-CLIENT-GENERATOR-ECLIPSE-APPLICATION-LAUNCHER.launch" (will open a new Eclipse instance).
+		
+		2) Import "org.eclipse.scava.crossflow.restmule.generator" into workspace of Eclipse instance launched in step 2.  
+		
+		3) Add new or uncomment one of the API Variables below according to the desired API.
+		
+		4) Make sure an eol file that exactly matches the named provided in belows property value for "json.model.file" is available inside
+		 	the directory THIS_PROJECT/epsilon/util/fix
+		 	
+		5) Run "generateFromOAS.launch" (will produce visible console output) to produce the RestMule client for the specified API.
+		
+	-->
+	
 	<!--API Variables -->
-	<property name="api" value="stackexchange" />
+	
+	<!-- GitHub API version 3 --> 
+	<property name="api" value="github" />
+	<property name="json.model.file" value="schemas/github_v3.json" />
+	
+	<!-- StackExchange API version 2.2 --> 
+	<!--
+	<property name="api" value="stackexchange22" />
+	<property name="json.model.file" value="schemas/stackexchange_v2.2.json" />
+	-->
+	
+	<!-- StackExchange API version 2.0 (original) --> 
+	<!--
+	<property name="api" value="stackexchange20" />
+	<property name="json.model.file" value="schemas/stackexchange_v2.0_orig.json" />
+	-->
+	
+	<!-- StackExchange API version 2.0 (customized) --> 
+	<!--
+	<property name="api" value="stackexchange20" />
 	<property name="json.model.file" value="schemas/stackexchange_v2.0.json" />
+	-->
 
 	<property name="output" value="${basedir}/../org.eclipse.scava.crossflow.restmule.client.${api}" />
 

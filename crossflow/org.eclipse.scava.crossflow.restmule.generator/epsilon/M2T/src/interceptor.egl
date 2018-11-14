@@ -8,7 +8,7 @@ import static org.eclipse.scava.crossflow.restmule.core.util.PropertiesUtil.USER
 
 import org.eclipse.scava.crossflow.restmule.core.interceptor.AbstractInterceptor;
 import org.eclipse.scava.crossflow.restmule.core.session.ISession;
-import org.eclipse.scava.crossflow.restmule.client.stackexchange.cache.[%= R.name %]CacheManager;
+import org.eclipse.scava.crossflow.restmule.client.[%= name %].cache.[%= R.name %]CacheManager;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].session.[%= R.name %]Session;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].util.[%= R.name %]PropertiesUtil;
 

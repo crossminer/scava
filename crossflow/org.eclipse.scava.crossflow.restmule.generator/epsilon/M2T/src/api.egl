@@ -10,7 +10,6 @@ import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].client.[%= c.scope %]Api;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].client.I[%= c.scope %]Api;
 [% } %]import org.eclipse.scava.crossflow.restmule.client.[%= name %].model.*;
-import org.eclipse.scava.crossflow.restmule.client.[%= name %].model.Error;
 import org.eclipse.scava.crossflow.restmule.client.[%= name %].session.[%= R.name %]Session;
 
 public class [%= R.name %]Api  {
