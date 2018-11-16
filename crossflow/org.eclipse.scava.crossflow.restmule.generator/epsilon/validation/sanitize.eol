@@ -61,6 +61,7 @@ operation RestMule!ObjectType uniqueFieldNames(){
 	}
 }
 
+// original below
 operation RestMule!Request uniqueParameterNames(){
 	var names = new Set;
 	var counter = 0;
@@ -74,6 +75,24 @@ operation RestMule!Request uniqueParameterNames(){
 		names.add(e.type.name);
 	}
 }
+
+
+// customized below
+/*operation RestMule!Request uniqueParameterNames(){
+	var names = new Set;
+	var counter = 0;
+	for (e in self.parameters){
+		if ( e.type.isDefined() ) {
+			while (names.includes(e.type.name)){
+				e.type.name = e.type.name + "_" + counter;
+				counter = counter + 1;
+				e.type.name.println;
+			}
+			counter = 0;
+			names.add(e.type.name);
+		}
+	}
+}*/
 
 operation RestMule!ObjectType sanitizeObjectName(){
 	self.name = self.name.firstToUpperCase();

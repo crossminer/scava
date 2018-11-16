@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="ASCII"?>
+<restmule:API xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:restmule="restmule" name="StackExchange" title="StackExchange" apiVersion="2.2" apiHost="https://api.stackexchange.com">
+  <endpoints path="/me/reputation-history">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="ReputationHistoryResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{userIds}/reputation">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Path" description="null" required="true">
+        <type xsi:type="restmule:TString" name="userIds" label="userIds" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="fromdate" label="fromdate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="todate" label="todate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="ReputationResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{userIds}/reputation-history">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Path" description="null" required="true">
+        <type xsi:type="restmule:TString" name="userIds" label="userIds" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="ReputationHistoryResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/questions/no-answers">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="fromdate" label="fromdate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="todate" label="todate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="min" label="min" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="max" label="max" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TString" name="tagged" label="tagged" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="order" label="order" description="null" pattern="(desc|asc)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="sort" label="sort" description="null" pattern="(activity|votes|creation)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="QuestionsResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/questions/unanswered">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="fromdate" label="fromdate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="todate" label="todate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="min" label="min" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="max" label="max" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TString" name="tagged" label="tagged" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="order" label="order" description="null" pattern="(desc|asc)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="sort" label="sort" description="null" pattern="(activity|votes|creation)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="QuestionsResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/questions">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="fromdate" label="fromdate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="todate" label="todate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="min" label="min" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="max" label="max" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TString" name="tagged" label="tagged" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="order" label="order" description="null" pattern="(desc|asc)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="sort" label="sort" description="null" pattern="(activity|votes|creation|hot|week|month)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="QuestionsResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/questions/featured">
+    <requests description="null" scope="//@ratePolicy/@scopes.0">
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="fromdate" label="fromdate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="todate" label="todate" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="min" label="min" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="max" label="max" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TString" name="tagged" label="tagged" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="order" label="order" description="null" pattern="(desc|asc)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TFormattedString" name="sort" label="sort" description="null" pattern="(activity|votes|creation)"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="page" label="page" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="false">
+        <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize" description="null"/>
+      </parameters>
+      <parameters xsi:type="restmule:Query" description="null" required="true">
+        <type xsi:type="restmule:TString" name="site" label="site" description="null"/>
+      </parameters>
+      <responses code="400" description="Success" pageWrapped="true">
+        <responseType xsi:type="restmule:UndefinedType" name="QuestionsResponse" label="items" description="UNWRAPPED: null"/>
+      </responses>
+    </requests>
+  </endpoints>
+  <pageWrapper name="Wrapper" totalLabel="total_count" incompleteLabel="incomplete_results">
+    <items label="items"/>
+  </pageWrapper>
+  <ratePolicy>
+    <limit xsi:type="restmule:ResponseHeader">
+      <type xsi:type="restmule:TInteger" label="quota_max"/>
+    </limit>
+    <reset xsi:type="restmule:ResponseHeader">
+      <type xsi:type="restmule:TInteger" label=""/>
+    </reset>
+    <remaining xsi:type="restmule:ResponseHeader">
+      <type xsi:type="restmule:TInteger" label="quota_remaining"/>
+    </remaining>
+    <scopes scope="Entity" requests="//@endpoints.0/@requests.0 //@endpoints.1/@requests.0 //@endpoints.2/@requests.0 //@endpoints.3/@requests.0 //@endpoints.4/@requests.0 //@endpoints.5/@requests.0 //@endpoints.6/@requests.0">
+      <policies xsi:type="restmule:Policy" limit="10000" auths="//@auth.0 //@auth.2"/>
+      <policies xsi:type="restmule:Policy" limit="1000" auths="//@auth.1"/>
+    </scopes>
+    <scopes scope="Search">
+      <policies xsi:type="restmule:Policy" limit="10000" auths="//@auth.0 //@auth.2"/>
+      <policies xsi:type="restmule:Policy" limit="1000" auths="//@auth.1"/>
+    </scopes>
+  </ratePolicy>
+  <pagination start="1" max="100" increment="1" maxPerIteration="100">
+    <perIteration xsi:type="restmule:Query" description="Items per page" required="false">
+      <type xsi:type="restmule:TInteger" name="pagesize" label="pagesize"/>
+    </perIteration>
+    <page xsi:type="restmule:Query" description="Page identifier" required="false">
+      <type xsi:type="restmule:TInteger" name="page" label="page"/>
+    </page>
+    <links description="Page links">
+      <type xsi:type="restmule:TFormattedString" name="Link" label="Link"/>
+    </links>
+  </pagination>
+  <auth xsi:type="restmule:OAuth" rateLimits="//@ratePolicy/@scopes.1/@policies.0 //@ratePolicy/@scopes.0/@policies.0" tokenUrl="null" authUrl="https://stackexchange.com/oauth"/>
+  <auth xsi:type="restmule:NoAuth" rateLimits="//@ratePolicy/@scopes.1/@policies.1 //@ratePolicy/@scopes.0/@policies.1"/>
+  <auth xsi:type="restmule:BasicAuth" rateLimits="//@ratePolicy/@scopes.1/@policies.0 //@ratePolicy/@scopes.0/@policies.0"/>
+</restmule:API>

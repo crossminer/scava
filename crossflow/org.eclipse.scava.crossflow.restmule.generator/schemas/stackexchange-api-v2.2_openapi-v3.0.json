@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.0",
+  "schemes": [
+    "https"
+  ],
+  "host": "api.stackexchange.com",
+  "basePath": "/2.2",
   "servers": [{
     "url": "https://api.stackexchange.com/2.2"
   }],

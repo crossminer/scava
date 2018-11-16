@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].cache.[%= name %]CacheManager;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].interceptor.[%= name %]Interceptor;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].model.*;
+import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].model.Error;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].page.[%= name %]Paged;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].page.[%= name %]Pagination;
 import org.eclipse.scava.crossflow.restmule.client.[%= name.toLowerCase() %].session.[%= name %]Session;

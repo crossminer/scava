@@ -1,0 +1,284 @@
+"QuestionsResponse": {
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "A list of questions.",
+      "items": {
+        "$ref": "#/components/schemas/Question"
+      }
+    },
+    "has_more": {
+      "type": "boolean"
+    },
+    "quota_max": {
+      "type": "integer"
+    },
+    "quota_remaining": {
+      "type": "integer"
+    }
+  }
+},
+"Question": {
+  "type": "object",
+  "properties": {
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owner": {
+      "$ref": "#/components/schemas/QuestionOwner"
+    },
+    "is_answered": {
+      "type": "boolean"
+    },
+    "view_count": {
+      "type": "integer"
+    },
+    "answer_count": {
+      "type": "integer"
+    },
+    "score": {
+      "type": "integer"
+    },
+    "last_activity_date": {
+      "type": "integer"
+    },
+    "creation_date": {
+      "type": "integer"
+    },
+    "question_id": {
+      "type": "integer"
+    },
+    "link": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+},
+"QuestionOwner": {
+  "type": "object",
+  "properties": {
+    "reputation": {
+      "type": "integer"
+    },
+    "user_id": {
+      "type": "integer"
+    },
+    "user_type": {
+      "type": "string"
+    },
+    "profile_image": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+},
+"ReputationResponse": {
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "A list of reputation_history.",
+      "items": {
+        "$ref": "#/components/schemas/ReputationChange"
+      }
+    },
+    "has_more": {
+      "type": "boolean"
+    },
+    "quota_max": {
+      "type": "integer"
+    },
+    "quota_remaining": {
+      "type": "integer"
+    }
+  }
+},
+"ReputationChange": {
+  "type": "object",
+  "properties": {
+    "on_date": {
+      "type": "integer"
+    },
+    "reputation_change": {
+      "type": "integer"
+    },
+    "vote_type": {
+      "type": "string",
+      "enum": [
+        "accepts",
+        "bounties_won",
+        "down_votes",
+        "up_votes"
+      ]
+    },
+    "post_type": {
+      "type": "string"
+    },
+    "post_id": {
+      "type": "integer"
+    },
+    "user_id": {
+      "type": "integer"
+    }
+  }
+},
+"ReputationHistoryResponse": {
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "A list of reputation_history.",
+      "items": {
+        "$ref": "#/components/schemas/ReputationHistory"
+      }
+    },
+    "has_more": {
+      "type": "boolean"
+    },
+    "quota_max": {
+      "type": "integer"
+    },
+    "quota_remaining": {
+      "type": "integer"
+    }
+  }
+},
+"ReputationHistory": {
+  "type": "object",
+  "properties": {
+    "reputation_history_type": {
+      "type": "string"
+    },
+    "reputation_change": {
+      "type": "integer"
+    },
+    "post_id": {
+      "type": "integer"
+    },
+    "creation_date": {
+      "type": "integer"
+    },
+    "user_id": {
+      "type": "integer"
+    }
+  }
+},
+"User": {
+  "type": "object",
+  "properties": {
+    "badge_counts": {
+      "$ref": "#/components/schemas/UserBadgeCounts"
+    },
+    "account_id": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "is_employee": {
+      "type": "boolean"
+    },
+    "last_modified_date": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "last_access_date": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "reputation_change_year": {
+      "type": "integer"
+    },
+    "reputation_change_quarter": {
+      "type": "integer"
+    },
+    "reputation_change_month": {
+      "type": "integer"
+    },
+    "reputation_change_week": {
+      "type": "integer"
+    },
+    "reputation_change_day": {
+      "type": "integer"
+    },
+    "reputation": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "creation_date": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "user_type": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "accept_rate": {
+      "type": "integer"
+    },
+    "location": {
+      "type": "string"
+    },
+    "website_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "link": {
+      "type": "string",
+      "format": "uri"
+    },
+    "profile_image": {
+      "type": "string",
+      "format": "uri"
+    },
+    "display_name": {
+      "type": "string"
+    }
+  }
+},
+"UserBadgeCounts": {
+  "type": "object",
+  "properties": {
+    "bronze": {
+      "type": "integer"
+    },
+    "silver": {
+      "type": "integer"
+    },
+    "gold": {
+      "type": "integer"
+    }
+  }
+},
+"UsersResponse": {
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/User"
+      }
+    },
+    "has_more": {
+      "type": "boolean"
+    },
+    "quote_max": {
+      "type": "integer"
+    },
+    "quota_remaining": {
+      "type": "integer"
+    }
+  }
+}

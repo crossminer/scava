@@ -91,6 +91,7 @@ operation String method() : String {
 	return self.fieldName().firstToUpperCase();
 }
 
+// original below
 operation String methodName() : String {
 	var result : String = "";
 	var elements = self.replace("-","_").split("/");
@@ -103,6 +104,20 @@ operation String methodName() : String {
 	}
 	return result;
 }
+
+// customized below
+/*operation String methodName() : String {
+	var result : String = "";
+	var elements = self.replace("-","_").split("/");
+	for (e in elements){
+		if (e <> ""){
+			if (not e.startsWith("{")){
+				result = result.concat(e.firstToUpperCase());
+			} 
+		}
+	}
+	return result;
+}*/
 
 operation String toInt() : Integer{
 	if (self == null or self == "null" or self ==""){

@@ -1,29 +1,5 @@
 import "../util/restmule.eol";
 
-context RatePolicyScope{
-	
-	constraint RatePolicyScopesDefined {
-		check : RatePolicyScope.all.size() > 0
-		message : "No Rate Limit Scopes Defined"
-		fix {
-			title : "Creating default scope"
-			do {
-			var main = new RestMule!RatePolicyScope;
-			main.scope = "Main";
-				for (r in RESCLI!Request.all){
-					r.scope = main;
-					r.parameters.removeAll(r.parameters.select(p|p.instanceOf(RequestHeader)));
-					for (resp in r.responses.select(s|s.responseType <> null)){
-						resp.unwrap();
-					}
-					
-				}
-			}
-		}
-	}
-	
-}
-
 context API {
 
 	constraint API_Host {
@@ -89,8 +65,8 @@ context Request {
 			+ " parameters, but model has defined " 
 			+ self.parameters.select(p|p.instanceOf(Path)).size()
 	}
-		
 	
+	// original below
 	constraint Request_QueryParametersMatch {
 		guard : self.satisfies("Request_HasQueryParametersDefined")
 		check {
@@ -109,8 +85,81 @@ context Request {
 			}
 		}
 	}
+		
+	// customized below
+	/*constraint Request_QueryParametersMatch {
+		guard : self.satisfies("Request_HasQueryParametersDefined")
+		check {
+			for (p in self.parameters.select(p|p.instanceOf(Path))){
+				if ( p.type.isDefined() ) {
+					if (self.parent.path.split("/\\{"+p.type.name+"\\}").length == 1) {
+						return false;
+					} 
+				}
+			} 
+			return true;
+		} 
+		message : "Inconsistent path parameter naming convention"
+		fix {
+			title : "Add new param"
+			do {
+				UserInput.prompt("undefined");
+			}
+		}
+	}*/
 	
 }
+
+// original below
+context RatePolicyScope{
+	
+	constraint RatePolicyScopesDefined {
+		check : self.all.size() > 0
+		message : "No Rate Limit Scopes Defined"
+		fix {
+			title : "Creating default scope"
+			do {
+			var main = new RestMule!RatePolicyScope;
+			main.scope = "Main";
+				for (r in RESCLI!Request.all){
+					r.scope = main;
+					r.parameters.removeAll(r.parameters.select(p|p.instanceOf(RequestHeader)));
+					for (resp in r.responses.select(s|s.responseType <> null)){
+						resp.unwrap();
+					}
+					
+				}
+			}
+		}
+	}
+	
+}
+
+
+// customized below
+/*context RatePolicyScope{
+	
+	constraint RatePolicyScopesDefined {
+		check : RatePolicyScope.all.size() > 0
+		message : "No Rate Limit Scopes Defined"
+		fix {
+			title : "Creating default scope"
+			do {
+			var main = new RestMule!RatePolicyScope;
+			main.scope = "Main";
+				for (r in RESCLI!Request.all){
+					r.scope = main;
+					r.parameters.removeAll(r.parameters.select(p|p.instanceOf(RequestHeader)));
+					for (resp in r.responses.select(s|s.responseType <> null)){
+						resp.unwrap();
+					}
+					
+				}
+			}
+		}
+	}
+	
+}*/
 
 
 

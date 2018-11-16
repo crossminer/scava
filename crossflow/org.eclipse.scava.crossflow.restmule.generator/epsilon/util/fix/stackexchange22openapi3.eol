@@ -18,7 +18,7 @@ entity.scope = "Entity";
 
 var policyA = new RestMule!Policy;
 policyA.limit = 10000;
-policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
+//policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
 policyA.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
 search.policies.add(policyA);
 
@@ -33,7 +33,7 @@ search.policies.add(policyB);
 
 var policyC = new RestMule!Policy;
 policyC.limit = 10000;
-policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
+//policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!OAuth)).first);
 policyC.auths.add(api.auth.select(a|a.instanceOf(RestMule!BasicAuth)).first);
 entity.policies.add(policyC);
 

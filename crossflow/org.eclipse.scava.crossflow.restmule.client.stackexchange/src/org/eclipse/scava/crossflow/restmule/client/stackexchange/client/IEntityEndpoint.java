@@ -16,7 +16,7 @@ public interface IEntityEndpoint {
 
 	
 		@GET("/me/reputation")
-		Call<List<ReputationChanges>> getMeReputationReputationChanges( 
+		Call<StackExchangePaged<ReputationResponse>> getMeReputationReputationResponse( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -25,7 +25,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags")
-		Call<List<Tags>> getTags( 
+		Call<StackExchangePaged<Tags>> getTags( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -41,7 +41,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tags}/synonyms")
-		Call<List<TagSynonyms>> getTagsSynonymsTagSynonyms( 
+		Call<StackExchangePaged<TagSynonyms>> getTagsSynonymsTagSynonyms( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="order", encoded=true) String order,			
@@ -70,7 +70,7 @@ public interface IEntityEndpoint {
 				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{ids}/questions/unaccepted")
-		Call<List<Questions>> getUsersQuestionsUnacceptedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersQuestionsUnacceptedQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -86,7 +86,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/associated")
-		Call<List<NetworkUsers>> getMeAssociatedNetworkUsers( 
+		Call<StackExchangePaged<NetworkUsers>> getMeAssociatedNetworkUsers( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -94,7 +94,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/inbox")
-		Call<List<InboxItems>> getMeInboxInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getMeInboxInboxItems( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -103,7 +103,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/inbox/unread")
-		Call<List<InboxItems>> getMeInboxUnreadInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getMeInboxUnreadInboxItems( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -113,7 +113,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/questions/featured")
-		Call<List<Questions>> getMeQuestionsFeaturedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeQuestionsFeaturedQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -128,7 +128,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/privileges")
-		Call<List<Privileges>> getMePrivileges( 
+		Call<StackExchangePaged<Privileges>> getMePrivileges( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -137,7 +137,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/answers")
-		Call<List<Answers>> getUsersAnswers( 
+		Call<StackExchangePaged<Answers>> getUsersAnswers( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -153,7 +153,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/posts/{ids}")
-		Call<List<Posts>> getPostsByIds( 
+		Call<StackExchangePaged<Posts>> getPostsByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -169,7 +169,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/questions/unanswered")
-		Call<List<Questions>> getUsersQuestionsUnansweredQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersQuestionsUnansweredQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -185,7 +185,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges")
-		Call<List<Badges>> getBadges( 
+		Call<StackExchangePaged<Badges>> getBadges( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -201,7 +201,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/reputation-history/full")
-		Call<List<ReputationHistory>> getUsersReputation_historyFullReputationHistory( 
+		Call<StackExchangePaged<ReputationHistoryResponse>> getUsersReputation_historyFullReputationHistoryResponse( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -211,7 +211,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tags}/info")
-		Call<List<Tags>> getTagsInfoTags( 
+		Call<StackExchangePaged<Tags>> getTagsInfoTags( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="order", encoded=true) String order,			
@@ -227,7 +227,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/suggested-edits")
-		Call<List<SuggestedEdits>> getSuggested_editsSuggestedEdits( 
+		Call<StackExchangePaged<SuggestedEdits>> getSuggested_editsSuggestedEdits( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -242,7 +242,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/reputation-history")
-		Call<List<ReputationHistory>> getMeReputation_historyReputationHistory( 
+		Call<StackExchangePaged<ReputationHistoryResponse>> getMeReputation_historyReputationHistoryResponse( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -251,7 +251,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/suggested-edits")
-		Call<List<SuggestedEdits>> getUsersSuggested_editsSuggestedEdits( 
+		Call<StackExchangePaged<SuggestedEdits>> getUsersSuggested_editsSuggestedEdits( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -267,16 +267,14 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/top-question-tags")
-		Call<List<TopTagObjects>> getMeTop_question_tagsTopTagObjects( 
+		Observable<TopTagObjects> getMeTop_question_tagsTopTagObjects( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/questions/{ids}")
-		Call<List<Questions>> getQuestionsByIds( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsQuestionsResponseByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -292,7 +290,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/featured")
-		Call<List<Questions>> getQuestionsFeaturedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsFeaturedQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
@@ -308,7 +306,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/privileges")
-		Call<List<Privileges>> getPrivileges( 
+		Call<StackExchangePaged<Privileges>> getPrivileges( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -317,7 +315,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/comments/{ids}")
-		Call<List<Comments>> getCommentsByIds( 
+		Call<StackExchangePaged<Comments>> getCommentsByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -333,7 +331,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges/tags")
-		Call<List<Badges>> getBadgesTagsBadges( 
+		Call<StackExchangePaged<Badges>> getBadgesTagsBadges( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -349,7 +347,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/tags/{tags}/top-answers")
-		Call<List<Answers>> getMeTagsTop_answersAnswers( 
+		Call<StackExchangePaged<Answers>> getMeTagsTop_answersAnswers( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="order", encoded=true) String order,			
@@ -365,7 +363,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/mentioned")
-		Call<List<Comments>> getMeMentionedComments( 
+		Call<StackExchangePaged<Comments>> getMeMentionedComments( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -380,7 +378,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/merges")
-		Call<List<AccountMerge>> getMeMergesAccountMerge( 
+		Call<StackExchangePaged<AccountMerge>> getMeMergesAccountMerge( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -388,7 +386,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges/{ids}/recipients")
-		Call<List<Badges>> getBadgesRecipientsBadges( 
+		Call<StackExchangePaged<Badges>> getBadgesRecipientsBadges( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
@@ -400,7 +398,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/errors")
-		Call<List<Errors>> getErrors( 
+		Call<StackExchangePaged<Errors>> getErrors( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -408,7 +406,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/badges")
-		Call<List<Badges>> getMeBadges( 
+		Call<StackExchangePaged<Badges>> getMeBadges( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -423,7 +421,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/events")
-		Call<List<Events>> getEvents( 
+		Call<StackExchangePaged<Events>> getEvents( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -441,7 +439,7 @@ public interface IEntityEndpoint {
 				@Query(value="unsafe", encoded=true) Boolean unsafe);
 	
 		@GET("/users/moderators")
-		Call<List<Users>> getUsersModeratorsUsers( 
+		Call<StackExchangePaged<UsersResponse>> getUsersModeratorsUsersResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -456,7 +454,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/inbox/unread")
-		Call<List<InboxItems>> getUsersInboxUnreadInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getUsersInboxUnreadInboxItems( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -467,7 +465,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/merges")
-		Call<List<AccountMerge>> getUsersMergesAccountMerge( 
+		Call<StackExchangePaged<AccountMerge>> getUsersMergesAccountMerge( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -476,17 +474,15 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/write-permissions")
-		Call<List<WritePermissions>> getUsersWrite_permissionsWritePermissions( 
+		Observable<WritePermissions> getUsersWrite_permissionsWritePermissions( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/me/comments/{toId}")
-		Call<List<Comments>> getMeCommentsByToId( 
+		Call<StackExchangePaged<Comments>> getMeCommentsByToId( 
 				
 				@Path(value="toId", encoded=true) Integer toId,			
 				@Query(value="order", encoded=true) String order,			
@@ -502,26 +498,22 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/top-answer-tags")
-		Call<List<TopTagObjects>> getMeTop_answer_tagsTopTagObjects( 
+		Observable<TopTagObjects> getMeTop_answer_tagsTopTagObjects( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{id}/top-answer-tags")
-		Call<List<TopTagObjects>> getUsersTop_answer_tagsTopTagObjects( 
+		Observable<TopTagObjects> getUsersTop_answer_tagsTopTagObjects( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{ids}/questions")
-		Call<List<Questions>> getUsersQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersQuestionsQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -537,7 +529,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges/name")
-		Call<List<Badges>> getBadgesNameBadges( 
+		Call<StackExchangePaged<Badges>> getBadgesNameBadges( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -553,7 +545,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/posts/{ids}/revisions")
-		Call<List<Revisions>> getPostsRevisions( 
+		Call<StackExchangePaged<Revisions>> getPostsRevisions( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
@@ -565,7 +557,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/tags/{tags}/top-questions")
-		Call<List<Questions>> getMeTagsTop_questionsQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeTagsTop_questionsQuestionsResponse( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="order", encoded=true) String order,			
@@ -581,7 +573,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/comments")
-		Call<List<Comments>> getMeComments( 
+		Call<StackExchangePaged<Comments>> getMeComments( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -596,7 +588,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/questions/no-answers")
-		Call<List<Questions>> getMeQuestionsNo_answersQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeQuestionsNo_answersQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -611,7 +603,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/notifications/unread")
-		Call<List<Notifications>> getMeNotificationsUnreadNotifications( 
+		Call<StackExchangePaged<Notifications>> getMeNotificationsUnreadNotifications( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -620,7 +612,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/questions")
-		Call<List<Questions>> getMeQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeQuestionsQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -635,7 +627,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/reputation-history/full")
-		Call<List<ReputationHistory>> getMeReputation_historyFullReputationHistory( 
+		Call<StackExchangePaged<ReputationHistoryResponse>> getMeReputation_historyFullReputationHistoryResponse( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -644,16 +636,14 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/write-permissions")
-		Call<List<WritePermissions>> getMeWrite_permissionsWritePermissions( 
+		Observable<WritePermissions> getMeWrite_permissionsWritePermissions( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{id}/tags/{tags}/top-answers")
-		Call<List<Answers>> getUsersTagsTop_answersAnswers( 
+		Call<StackExchangePaged<Answers>> getUsersTagsTop_answersAnswers( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Path(value="tags", encoded=true) String tags,			
@@ -670,7 +660,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/{ids}/related")
-		Call<List<Questions>> getQuestionsRelatedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsRelatedQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -686,7 +676,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/mentioned")
-		Call<List<Comments>> getUsersMentionedComments( 
+		Call<StackExchangePaged<Comments>> getUsersMentionedComments( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -702,7 +692,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/answers/{ids}/comments")
-		Call<List<Comments>> getAnswersComments( 
+		Call<StackExchangePaged<Comments>> getAnswersComments( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -718,7 +708,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/moderator-only")
-		Call<List<Tags>> getTagsModerator_onlyTags( 
+		Call<StackExchangePaged<Tags>> getTagsModerator_onlyTags( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -734,7 +724,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/comments")
-		Call<List<Comments>> getUsersComments( 
+		Call<StackExchangePaged<Comments>> getUsersComments( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -750,7 +740,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/questions/unanswered")
-		Call<List<Questions>> getMeQuestionsUnansweredQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeQuestionsUnansweredQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -765,7 +755,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/access-tokens/{accessTokens}/invalidate")
-		Call<List<AccessTokens>> getAccess_tokensInvalidateAccessTokens( 
+		Call<StackExchangePaged<AccessTokens>> getAccess_tokensInvalidateAccessTokens( 
 				
 				@Path(value="accessTokens", encoded=true) String accessTokens,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -774,7 +764,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tags}/related")
-		Call<List<Tags>> getTagsRelatedTags( 
+		Call<StackExchangePaged<Tags>> getTagsRelatedTags( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -784,7 +774,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/answers")
-		Call<List<Answers>> getMeAnswers( 
+		Call<StackExchangePaged<Answers>> getMeAnswers( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -799,7 +789,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/tags")
-		Call<List<Tags>> getUsersTags( 
+		Call<StackExchangePaged<Tags>> getUsersTags( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -815,7 +805,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/{ids}/comments")
-		Call<List<Comments>> getQuestionsComments( 
+		Call<StackExchangePaged<Comments>> getQuestionsComments( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -831,7 +821,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/favorites")
-		Call<List<Questions>> getUsersFavoritesQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersFavoritesQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -847,7 +837,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/access-tokens/{accessTokens}")
-		Call<List<AccessTokens>> getAccess_tokensAccessTokensByAccessTokens( 
+		Call<StackExchangePaged<AccessTokens>> getAccess_tokensAccessTokensByAccessTokens( 
 				
 				@Path(value="accessTokens", encoded=true) String accessTokens,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -856,7 +846,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/questions/unaccepted")
-		Call<List<Questions>> getMeQuestionsUnacceptedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeQuestionsUnacceptedQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -871,7 +861,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/sites")
-		Call<List<Sites>> getSites( 
+		Call<StackExchangePaged<Sites>> getSites( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -879,18 +869,16 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/timeline")
-		Call<List<UserTimelineObjects>> getMeTimelineUserTimelineObjects( 
+		Observable<UserTimelineObjects> getMeTimelineUserTimelineObjects( 
 				
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
 				@Query(value="todate", encoded=true) Integer todate,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{ids}/reputation-history")
-		Call<List<ReputationHistory>> getUsersReputation_historyReputationHistory( 
+		Call<StackExchangePaged<ReputationHistoryResponse>> getUsersReputation_historyReputationHistoryResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -900,7 +888,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/notifications")
-		Call<List<Notifications>> getMeNotifications( 
+		Call<StackExchangePaged<Notifications>> getMeNotifications( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -909,7 +897,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/comments")
-		Call<List<Comments>> getComments( 
+		Call<StackExchangePaged<Comments>> getComments( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -924,7 +912,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/inbox")
-		Call<List<InboxItems>> getUsersInboxInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getUsersInboxInboxItems( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -934,7 +922,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges/{ids}")
-		Call<List<Badges>> getBadgesByIds( 
+		Call<StackExchangePaged<Badges>> getBadgesByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -950,7 +938,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/required")
-		Call<List<Tags>> getTagsRequiredTags( 
+		Call<StackExchangePaged<Tags>> getTagsRequiredTags( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -966,7 +954,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/suggested-edits/{ids}")
-		Call<List<SuggestedEdits>> getSuggested_editsSuggestedEditsByIds( 
+		Call<StackExchangePaged<SuggestedEdits>> getSuggested_editsSuggestedEditsByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -982,7 +970,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/apps/{accessTokens}/de-authenticate")
-		Call<List<AccessTokens>> getAppsDe_authenticateAccessTokens( 
+		Call<StackExchangePaged<AccessTokens>> getAppsDe_authenticateAccessTokens( 
 				
 				@Path(value="accessTokens", encoded=true) String accessTokens,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -991,7 +979,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/posts")
-		Call<List<Posts>> getPosts( 
+		Call<StackExchangePaged<Posts>> getPosts( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1006,7 +994,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/notifications")
-		Call<List<Notifications>> getNotifications( 
+		Call<StackExchangePaged<Notifications>> getNotifications( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -1014,7 +1002,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}")
-		Call<List<Users>> getUsersByIds( 
+		Call<StackExchangePaged<UsersResponse>> getUsersUsersResponseByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1030,7 +1018,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/inbox")
-		Call<List<InboxItems>> getInboxInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getInboxInboxItems( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -1043,7 +1031,7 @@ public interface IEntityEndpoint {
 				@Query(value="site", encoded=true) String site);
 	
 		@GET("/tags/{tag}/top-answerers/{period}")
-		Call<List<TagScoreObjects>> getTagsTop_answerersTagScoreObjectsByPeriod( 
+		Call<StackExchangePaged<TagScoreObjects>> getTagsTop_answerersTagScoreObjectsByPeriod( 
 				
 				@Path(value="tag", encoded=true) String tag,			
 				@Path(value="period", encoded=true) String period,			
@@ -1054,7 +1042,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/reputation")
-		Call<List<ReputationChanges>> getUsersReputationReputationChanges( 
+		Call<StackExchangePaged<ReputationResponse>> getUsersReputationReputationResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
@@ -1066,7 +1054,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tags}/faq")
-		Call<List<Questions>> getTagsFaqQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getTagsFaqQuestionsResponse( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1076,7 +1064,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/badges/recipients")
-		Call<List<Badges>> getBadgesRecipientsBadges( 
+		Call<StackExchangePaged<Badges>> getBadgesRecipientsBadges( 
 				
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
 				@Query(value="todate", encoded=true) Integer todate,			
@@ -1087,7 +1075,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/tags")
-		Call<List<Tags>> getMeTags( 
+		Call<StackExchangePaged<Tags>> getMeTags( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1102,7 +1090,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/privileges")
-		Call<List<Privileges>> getUsersPrivileges( 
+		Call<StackExchangePaged<Privileges>> getUsersPrivileges( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1112,7 +1100,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tag}/top-askers/{period}")
-		Call<List<TagScoreObjects>> getTagsTop_askersTagScoreObjectsByPeriod( 
+		Call<StackExchangePaged<TagScoreObjects>> getTagsTop_askersTagScoreObjectsByPeriod( 
 				
 				@Path(value="tag", encoded=true) String tag,			
 				@Path(value="period", encoded=true) String period,			
@@ -1123,7 +1111,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/suggested-edits")
-		Call<List<SuggestedEdits>> getMeSuggested_editsSuggestedEdits( 
+		Call<StackExchangePaged<SuggestedEdits>> getMeSuggested_editsSuggestedEdits( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1138,7 +1126,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/questions/featured")
-		Call<List<Questions>> getUsersQuestionsFeaturedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersQuestionsFeaturedQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1154,7 +1142,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/me/favorites")
-		Call<List<Questions>> getMeFavoritesQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getMeFavoritesQuestionsResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1169,7 +1157,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/answers")
-		Call<List<Answers>> getAnswers( 
+		Call<StackExchangePaged<Answers>> getAnswers( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1184,7 +1172,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/inbox/unread")
-		Call<List<InboxItems>> getInboxUnreadInboxItems( 
+		Call<StackExchangePaged<InboxItems>> getInboxUnreadInboxItems( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -1193,7 +1181,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/{ids}/answers")
-		Call<List<Answers>> getQuestionsAnswers( 
+		Call<StackExchangePaged<Answers>> getQuestionsAnswers( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1209,7 +1197,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/badges")
-		Call<List<Badges>> getUsersBadges( 
+		Call<StackExchangePaged<Badges>> getUsersBadges( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1225,7 +1213,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/answers/{ids}")
-		Call<List<Answers>> getAnswersByIds( 
+		Call<StackExchangePaged<Answers>> getAnswersByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1241,14 +1229,14 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/filters/{filters}")
-		Call<List<Filters>> getFiltersByFilters( 
+		Call<StackExchangePaged<Filters>> getFiltersByFilters( 
 				
 				@Path(value="filters", encoded=true) String filters,			
 				@Query(value="pagesize", encoded=true) Integer pagesize,			
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions")
-		Call<List<Questions>> getQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
@@ -1264,7 +1252,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/posts/{ids}/suggested-edits")
-		Call<List<SuggestedEdits>> getPostsSuggested_editsSuggestedEdits( 
+		Call<StackExchangePaged<SuggestedEdits>> getPostsSuggested_editsSuggestedEdits( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1280,7 +1268,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/moderators/elected")
-		Call<List<Users>> getUsersModeratorsElectedUsers( 
+		Call<StackExchangePaged<UsersResponse>> getUsersModeratorsElectedUsersResponse( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1295,7 +1283,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/revisions/{ids}")
-		Call<List<Revisions>> getRevisionsByIds( 
+		Call<StackExchangePaged<Revisions>> getRevisionsByIds( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
@@ -1307,7 +1295,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/{ids}/linked")
-		Call<List<Questions>> getQuestionsLinkedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsLinkedQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1323,12 +1311,12 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/errors/{id}")
-		Observable<Error> getErrorsErrorById( 
+		Observable<Errordefinition> getErrorsErrordefinitionById( 
 				
 				@Path(value="id", encoded=true) Integer id);
 	
 		@GET("/posts/{ids}/comments")
-		Call<List<Comments>> getPostsComments( 
+		Call<StackExchangePaged<Comments>> getPostsComments( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1344,7 +1332,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/synonyms")
-		Call<List<TagSynonyms>> getTagsSynonymsTagSynonyms( 
+		Call<StackExchangePaged<TagSynonyms>> getTagsSynonymsTagSynonyms( 
 				
 				@Query(value="order", encoded=true) String order,			
 				@Query(value="max", encoded=true) String max,			
@@ -1359,7 +1347,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/notifications/unread")
-		Call<List<Notifications>> getNotificationsUnreadNotifications( 
+		Call<StackExchangePaged<Notifications>> getNotificationsUnreadNotifications( 
 				
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
@@ -1367,7 +1355,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/comments/{toid}")
-		Call<List<Comments>> getUsersCommentsByToid( 
+		Call<StackExchangePaged<Comments>> getUsersCommentsByToid( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Path(value="toid", encoded=true) Integer toid,			
@@ -1384,7 +1372,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/tags/{tags}/wikis")
-		Call<List<TagWikis>> getTagsWikisTagWikis( 
+		Call<StackExchangePaged<TagWikis>> getTagsWikisTagWikis( 
 				
 				@Path(value="tags", encoded=true) String tags,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1394,7 +1382,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users")
-		Call<List<Users>> getUsers( 
+		Call<StackExchangePaged<UsersResponse>> getUsersUsersResponse( 
 				
 				@Query(value="inname", encoded=true) String inname,			
 				@Query(value="order", encoded=true) String order,			
@@ -1410,19 +1398,17 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/timeline")
-		Call<List<UserTimelineObjects>> getUsersTimelineUserTimelineObjects( 
+		Observable<UserTimelineObjects> getUsersTimelineUserTimelineObjects( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
 				@Query(value="todate", encoded=true) Integer todate,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/questions/{ids}/timeline")
-		Call<List<QuestionTimelineEvents>> getQuestionsTimelineQuestionTimelineEvents( 
+		Call<StackExchangePaged<QuestionTimelineEvents>> getQuestionsTimelineQuestionTimelineEvents( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="fromdate", encoded=true) Integer fromdate,			
@@ -1434,7 +1420,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{ids}/associated")
-		Call<List<NetworkUsers>> getUsersAssociatedNetworkUsers( 
+		Call<StackExchangePaged<NetworkUsers>> getUsersAssociatedNetworkUsers( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1443,7 +1429,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/unanswered")
-		Call<List<Questions>> getQuestionsUnansweredQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsUnansweredQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
@@ -1459,7 +1445,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/tags/{tags}/top-questions")
-		Call<List<Questions>> getUsersTagsTop_questionsQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersTagsTop_questionsQuestionsResponse( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Path(value="tags", encoded=true) String tags,			
@@ -1476,7 +1462,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/notifications")
-		Call<List<Notifications>> getUsersNotifications( 
+		Call<StackExchangePaged<Notifications>> getUsersNotifications( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1486,17 +1472,15 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/top-question-tags")
-		Call<List<TopTagObjects>> getUsersTop_question_tagsTopTagObjects( 
+		Observable<TopTagObjects> getUsersTop_question_tagsTopTagObjects( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
 				@Query(value="callback", encoded=true) String callback,			
-				@Query(value="site", encoded=true) String site,			
-				@Query(value="pagesize", encoded=true) Integer pagesize,			
-				@Query(value="page", encoded=true) Integer page);
+				@Query(value="site", encoded=true) String site);
 	
 		@GET("/users/{ids}/questions/no-answers")
-		Call<List<Questions>> getUsersQuestionsNo_answersQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getUsersQuestionsNo_answersQuestionsResponse( 
 				
 				@Path(value="ids", encoded=true) String ids,			
 				@Query(value="order", encoded=true) String order,			
@@ -1512,7 +1496,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/users/{id}/notifications/unread")
-		Call<List<Notifications>> getUsersNotificationsUnreadNotifications( 
+		Call<StackExchangePaged<Notifications>> getUsersNotificationsUnreadNotifications( 
 				
 				@Path(value="id", encoded=true) Integer id,			
 				@Query(value="filter", encoded=true) String filter,			
@@ -1522,7 +1506,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/questions/no-answers")
-		Call<List<Questions>> getQuestionsNo_answersQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getQuestionsNo_answersQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
@@ -1538,7 +1522,7 @@ public interface IEntityEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/similar")
-		Call<List<Questions>> getSimilarQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getSimilarQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			

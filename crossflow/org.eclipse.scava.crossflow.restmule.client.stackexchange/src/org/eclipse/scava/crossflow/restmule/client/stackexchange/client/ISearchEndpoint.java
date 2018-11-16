@@ -15,7 +15,7 @@ public interface ISearchEndpoint {
 
 	
 		@GET("/search/advanced")
-		Call<List<Questions>> getSearchAdvancedQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getSearchAdvancedQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			
@@ -44,7 +44,7 @@ public interface ISearchEndpoint {
 				@Query(value="page", encoded=true) Integer page);
 	
 		@GET("/search")
-		Call<List<Questions>> getSearchQuestions( 
+		Call<StackExchangePaged<QuestionsResponse>> getSearchQuestionsResponse( 
 				
 				@Query(value="tagged", encoded=true) String tagged,			
 				@Query(value="order", encoded=true) String order,			

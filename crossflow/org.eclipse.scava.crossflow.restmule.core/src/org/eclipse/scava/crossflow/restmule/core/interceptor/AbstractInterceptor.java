@@ -79,6 +79,8 @@ public abstract class AbstractInterceptor {
 			@Override
 			public Response intercept(Chain chain) throws IOException {
 
+				System.out.println("AbstractInterceptor.intercept( " +chain.request().url() + " )" );
+				
 				if (activateCaching)
 					cache = c.getCacheInstance();
 
@@ -237,6 +239,7 @@ public abstract class AbstractInterceptor {
 						}
 					} else if ( jsonResponse instanceof JsonArray ) {
 						// not required
+						System.out.println("Dealing with JsonArray response");
 					}
 
 					LOG.info(session);

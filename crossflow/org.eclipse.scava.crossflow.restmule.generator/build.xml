@@ -6,8 +6,10 @@
 	<!--API Variables -->
 	
 	<!-- GitHub API version 3 --> 
+	<!--
 	<property name="api" value="github" />
 	<property name="json.model.file" value="schemas/github_v3.json" />
+	-->
 	
 	<!-- StackExchange API version 2.2 --> 
 	<!--
@@ -26,6 +28,10 @@
 	<property name="api" value="stackexchange20" />
 	<property name="json.model.file" value="schemas/stackexchange_v2.0.json" />
 	-->
+	
+	<!-- StackExchange API version 2.0 (customized, no version in name) --> 
+	<property name="api" value="stackexchange" />
+	<property name="json.model.file" value="schemas/stackexchange_v2.0.json" />
 
 	<property name="output" value="${basedir}/../org.eclipse.scava.crossflow.restmule.client.${api}" />
 

@@ -44,16 +44,11 @@ implements IClientBuilder<I[%= name %]Api> {
 [% 	@template
 operation Response mainRequest() { %]
 [% var request = self.request; 
-   var paged = PaginationPolicy.all.first;
-   var params = request.parameters.filterParams();
-	
-	//params.add(paged.perIteration); // TODO PN: really?
-	//params.add(paged.page); // TODO PN: really?
-
-    var scope = request.scope.scope.firstToLowerCase(); 
+   var params = request.parameters;
+   var scope = request.scope.scope.firstToLowerCase(); 
 %] 
 @Override
-public [%= self.methodSignature(PaginationPolicy.all.first)%]{ 
+public [%= self.methodSignature()%]{ 
 	[% if (params.size() <> 0){ %]
 	[% for (param in params) { %]
 	[%= param.validate() %]
@@ -71,27 +66,28 @@ operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
 [% var request = self.request; 
 	   var params;
 	   if (self.isPaged()){
-			params =  request.parameters.filterParams();	
-			params.add(paged.perIteration);
+			params =  new Sequence;
+			params.addAll(request.parameters); 
+			params.add(paged.perIteration); 
 			params.add(paged.page);
 	   }  else {
-	   		params = request.parameters.filterParams();
+	   		params = request.parameters;
 	   }
 	%]
+	// FIXME using endocde=true caused Lucene (cache) to break
 	@[%= request.method %]("[%= request.parent.path %]")
 	[%= self.getEndpointType(name) %] [%= self.methodName() 
 	%]([% if (params.size() == 0){ %]);
-	[% } else {  %] 
-		[% for (param in params) { %]
+	[% } else { %][% for (param in params) { %]
 			
 			@[%= param.paramType() %][%if (not param.instanceOf(Body)) {%](value="[%= param.type.label %]", encoded=true)[% } %] [%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 
-			if (param == params.last) { %]);
+			if (param.type.name == params.last.type.name) { %]);
 			[% } else {%],[% } %][% } %][% } %]
 [% } %]
 
 [% 	@template 
 operation Response wrappedRequest(api : String, scope : String) { %]
-public [%= self.methodSignature(PaginationPolicy.all.first)%]{
+public [%= self.methodSignature()%]{
 	[%= self.innerWrappedResponse(api, scope) %]
 }
 [% } %]
@@ -103,11 +99,11 @@ operation Response innerWrappedResponse(api : String, scope : String) { %]
    var params = request.parameters; 
 %]
 [% if (self.pageWrapped or self.responseType.instanceOf(ListType)){%]
-Class<?>[] types = [% if (params.size() > 0) {%]{ [% for (param in params.filterParams()) {
-%][%= param.type.getType() %].class[%if (param <> params.filterParams().last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+Class<?>[] types = [% if (params.size() > 0) {%]{ [% for (param in params) {
+%][%= param.type.getType() %].class[%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
 
-Object[] vals = [% if (params.size() > 0) {%]{ [% for (param in params.filterParams()) {
-%][%= param.type.name.firstToLowerCase() %][%if (param <> params.filterParams().last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+Object[] vals = [% if (params.size() > 0) {%]{ [% for (param in params) {
+%][%= param.type.name.firstToLowerCase() %][%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
 
 [% if (self.pageWrapped) { %]
 return paginationPolicy.<[%= self.responseType.name %], [%= api %]Paged<[%= self.responseType.name %]>, I[%= scope%]Endpoint> 
@@ -116,40 +112,20 @@ return paginationPolicy.<[%= self.responseType.name %], [%= api %]Paged<[%= self
 return paginationPolicy.<[%= self.getApiInnerType() %], I[%= scope%]Endpoint> 
 	traverseList("[%= self.methodName() %]", types, vals, callbackEndpoint);
 [% } %]
-[% } else { %]
+[% } else { %]
 Data<[%= self.responseType.getType() %]> data = new Data<[%= self.responseType.getType() %]>();
-data.addElement(callbackEndpoint.[%= self.methodName() %]([% if (params.filterParams().size() == 0){ %]));
-[% } else { %][% for (param in params.filterParams()) { %][%= param.type.name.firstToLowerCase() %][% 
-if (param.type.name == params.filterParams().last.type.name) { %]));
+data.addElement(callbackEndpoint.[%= self.methodName() %]([% if (params.size() == 0){ %]));
+[% } else { %][% for (param in params) { %][%= param.type.name.firstToLowerCase() %][% 
+if (param.type.name == params.last.type.name) { %]));
 [% } else {%], [% } %][% } %][% } %]
 return data;
+[% } %]
 [% } %]
-[% } %]
-
-[%
-operation Any filterParams() : Any {
-   var params = new Sequence;
-   var paged = PaginationPolicy.all.first;
-   
-   for ( param in self ) {
-		if ( param.type.label = paged.page.type.label ) {
-			// do not add 
-		} else if ( param.type.label = paged.perIteration.type.label ) {
-			// do not add 
-		} else {
-			params.add(param);
-		}
-	}
-	//params.add(paged.perIteration);
-	//params.add(paged.page);
-	return params;
-}
-%]
 
 [% 	@template 
 operation Response wrappedRequestInterface() { %]
 [% var request = self.request; 
-   var params = request.parameters.filterParams();
+   var params = request.parameters;  
 %]
 /**
  * [%= request.description %]
@@ -159,13 +135,13 @@ operation Response wrappedRequestInterface() { %]
  * @return [%= self.description %]
  * @path [%= request.parent.path %] 
  */		
-[%= self.methodSignature(paged)%];
+[%= self.methodSignature()%];
 [% } %]
 
 [% 	@template 
-operation Response methodSignature(paged : PaginationPolicy) { %]
+operation Response methodSignature() { %]
 [% var request = self.request; 
-   var params = request.parameters.filterParams(); 
+   var params = request.parameters;  
 %]
 [%= self.getApiType() %] [%= self.methodName() %]([% if (params.size() == 0){ %])
 [% } else { %][% for (param in params) { %][%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 

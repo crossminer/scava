@@ -16,23 +16,16 @@ public class StackExchangePaged<T> implements IWrap<T> {
 	@JsonProperty("items")
 	private List<T> items = new ArrayList<T>();
 
-	@JsonProperty("total")
+	@JsonProperty("total_count")
 	private Integer totalCount;
 
-	@JsonProperty("has_more")
+	@JsonProperty("incomplete_results")
 	private Boolean incompleteResults;
 
-	@JsonProperty("quota_max")
-	private Boolean quotaMax;
-
-	@JsonProperty("quota_remaining")
-	private Boolean quotaRemaining;
-
 	/** Wrapper Property Getters */
-
+	
 	@Override
 	public Boolean isIncomplete() {
-		System.out.println("isIncomplete()=" + incompleteResults);
 		return incompleteResults;
 	}
 

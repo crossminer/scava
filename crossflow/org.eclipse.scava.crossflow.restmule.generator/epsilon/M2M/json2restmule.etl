@@ -11,12 +11,24 @@ rule Root2API
 	api.apiVersion = j.e_info.s_version;
 
 	var schemes = j.e_schemes.children;
+	
+	// original block below
 	if (schemes.select(a | a.value == "https").size() == 1){
 		api.apiHost = "https://" + j.s_host;
 	} else {
 		api.apiHost = schemes.first.value + "://" + j.s_host;
-	}
+	}// end original block
 	
+	// customized block below
+	/*if ( schemes.first.isDefined() ) {
+		if (schemes.select(a | a.value == "https").size() == 1){
+			api.apiHost = "https://" + j.s_host;
+		} else {
+			api.apiHost = schemes.first.value + "://" + j.s_host;
+		}
+	}// end customized block */
+	
+	// original block below
 	for (auth in j.e_securityDefinitions.properties){
 		if (auth.s_type == "oauth2"){
 			var a = new RestMule!OAuth;
@@ -27,7 +39,23 @@ rule Root2API
 			} 
 			api.auth.add(a);
 		}
-	}
+	}// end original block
+	
+	// customized block below
+	/*var securityDefinitions = j.e_securityDefinitions;
+	if ( securityDefinitions.isDefined() and securityDefinitions.properties.isDefined() ) {
+		for (auth in securityDefinitions.properties){
+			if (auth.s_type == "oauth2"){
+				var a = new RestMule!OAuth;
+				a.authUrl = auth.s_authorizationUrl;
+				a.tokenUrl = auth.s_tokenUrl;
+				for (scope in auth.e_scopes.properties){
+					a.scopes.add(scope.id);
+				} 
+				api.auth.add(a);
+			}
+		}
+	}// end customized block */
 	
 	api.consumes = j.s_consumes.responseFormat();
 	api.produces = j.s_produces.responseFormat();
@@ -57,8 +85,24 @@ rule Root2API
 				
 				for (r in responses){
 					var resp = new RestMule!Response;
-					resp.code = r.id.replace("default","400").asInteger();
+					
+					// original block below
+					/*
+					resp.code = r.id.asInteger();
 					resp.description = r.s_description;
+					// end original block
+					*/
+					
+					// customized block below
+					if ( r.id.isInteger() ) {
+						resp.code = r.id.asInteger();
+					} else if ( r.id == "default" ) { // should also have a child "description" with value "Success"
+						resp.code = 200;
+					}
+					resp.description = r.s_description;
+					//r.id.println("r.id=");
+					// end customized block
+					
 					var rType = r.definition();
 					if (rType <> null){
 						resp.responseType = rType;

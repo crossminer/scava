@@ -1,72 +1,106 @@
 package org.eclipse.scava.crossflow.restmule.client.stackexchange.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Answers {
+public class QuestionsResponse {
 
-	public Answers(){}
+	public QuestionsResponse(){}
 
 	@JsonProperty("score") 
 	private Integer score;
 	
-	@JsonProperty("is_accepted") 
-	private Boolean isAccepted;
+	@JsonProperty("link") 
+	private String link;
 	
 	@JsonProperty("last_activity_date") 
 	private Integer lastActivityDate;
 	
+	@JsonProperty("is_answered") 
+	private Boolean isAnswered;
+	
 	@JsonProperty("creation_date") 
 	private Integer creationDate;
+	
+	@JsonProperty("answer_count") 
+	private Integer answerCount;
+	
+	@JsonProperty("title") 
+	private String title;
 	
 	@JsonProperty("question_id") 
 	private Integer questionId;
 	
-	@JsonProperty("answer_id") 
-	private Integer answerId;
+	@JsonProperty("view_count") 
+	private Integer viewCount;
 	
 	@JsonProperty("owner") 
 	private Owner owner;
+	
+	@JsonProperty("tags") 
+	private List<String> tags = new ArrayList<String>();
 	
 	public Integer getScore() {
 		return this.score;
 	}
 	
-	public Boolean getIsAccepted() {
-		return this.isAccepted;
+	public String getLink() {
+		return this.link;
 	}
 	
 	public Integer getLastActivityDate() {
 		return this.lastActivityDate;
 	}
 	
+	public Boolean getIsAnswered() {
+		return this.isAnswered;
+	}
+	
 	public Integer getCreationDate() {
 		return this.creationDate;
+	}
+	
+	public Integer getAnswerCount() {
+		return this.answerCount;
+	}
+	
+	public String getTitle() {
+		return this.title;
 	}
 	
 	public Integer getQuestionId() {
 		return this.questionId;
 	}
 	
-	public Integer getAnswerId() {
-		return this.answerId;
+	public Integer getViewCount() {
+		return this.viewCount;
 	}
 	
 	public Owner getOwner() {
 		return this.owner;
 	}
 	
+	public List<String> getTags() {
+		return this.tags;
+	}
+	
 	@Override
 	public String toString() {
-		return "Answers [ "
+		return "QuestionsResponse [ "
 			+ "score = " + this.score + ", "
-			+ "isAccepted = " + this.isAccepted + ", "
+			+ "link = " + this.link + ", "
 			+ "lastActivityDate = " + this.lastActivityDate + ", "
+			+ "isAnswered = " + this.isAnswered + ", "
 			+ "creationDate = " + this.creationDate + ", "
+			+ "answerCount = " + this.answerCount + ", "
+			+ "title = " + this.title + ", "
 			+ "questionId = " + this.questionId + ", "
-			+ "answerId = " + this.answerId + ", "
+			+ "viewCount = " + this.viewCount + ", "
 			+ "owner = " + this.owner + ", "
+			+ "tags = " + this.tags + ", "
 			+ "]"; 
 	}	
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -92,12 +126,6 @@ public class Answers {
 		@JsonProperty("display_name") 
 		private String displayName;
 		
-		@JsonProperty("accept_rate") 
-		private Integer acceptRate;
-		
-		@JsonProperty("badge_counts") 
-		private BadgeCounts badgeCounts;
-		
 		public String getProfileImage() {
 			return this.profileImage;
 		}
@@ -122,14 +150,6 @@ public class Answers {
 			return this.displayName;
 		}
 		
-		public Integer getAcceptRate() {
-			return this.acceptRate;
-		}
-		
-		public BadgeCounts getBadgeCounts() {
-			return this.badgeCounts;
-		}
-		
 		@Override
 		public String toString() {
 			return "Owner [ "
@@ -139,46 +159,8 @@ public class Answers {
 				+ "link = " + this.link + ", "
 				+ "reputation = " + this.reputation + ", "
 				+ "displayName = " + this.displayName + ", "
-				+ "acceptRate = " + this.acceptRate + ", "
-				+ "badgeCounts = " + this.badgeCounts + ", "
 				+ "]"; 
 		}	
-		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class BadgeCounts {
-		
-			public BadgeCounts(){}
-		
-			@JsonProperty("gold") 
-			private Integer gold;
-			
-			@JsonProperty("silver") 
-			private Integer silver;
-			
-			@JsonProperty("bronze") 
-			private Integer bronze;
-			
-			public Integer getGold() {
-				return this.gold;
-			}
-			
-			public Integer getSilver() {
-				return this.silver;
-			}
-			
-			public Integer getBronze() {
-				return this.bronze;
-			}
-			
-			@Override
-			public String toString() {
-				return "BadgeCounts [ "
-					+ "gold = " + this.gold + ", "
-					+ "silver = " + this.silver + ", "
-					+ "bronze = " + this.bronze + ", "
-					+ "]"; 
-			}	
-		}
-		
 	}
 	
 }	

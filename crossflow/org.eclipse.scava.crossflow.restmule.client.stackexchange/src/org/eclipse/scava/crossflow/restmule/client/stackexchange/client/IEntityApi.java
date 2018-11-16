@@ -44,7 +44,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/reputation 
 	 */		
-	IDataSet<ReputationChanges> getMeReputationReputationChanges(String filter, String callback, String site);
+	IDataSet<ReputationResponse> getMeReputationReputationResponse(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -245,7 +245,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/unaccepted 
 	 */		
-	IDataSet<Questions> getUsersQuestionsUnacceptedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersQuestionsUnacceptedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -411,7 +411,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/featured 
 	 */		
-	IDataSet<Questions> getMeQuestionsFeaturedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeQuestionsFeaturedQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -600,7 +600,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/unanswered 
 	 */		
-	IDataSet<Questions> getUsersQuestionsUnansweredQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersQuestionsUnansweredQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -690,7 +690,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/reputation-history/full 
 	 */		
-	IDataSet<ReputationHistory> getUsersReputation_historyFullReputationHistory(Integer id, String filter, String callback, String site);
+	IDataSet<ReputationHistoryResponse> getUsersReputation_historyFullReputationHistoryResponse(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -828,7 +828,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/reputation-history 
 	 */		
-	IDataSet<ReputationHistory> getMeReputation_historyReputationHistory(String filter, String callback, String site);
+	IDataSet<ReputationHistoryResponse> getMeReputation_historyReputationHistoryResponse(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -917,7 +917,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/top-question-tags 
 	 */		
-	IDataSet<TopTagObjects> getMeTop_question_tagsTopTagObjects(String filter, String callback, String site);
+	IData<TopTagObjects> getMeTop_question_tagsTopTagObjects(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -967,7 +967,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids} 
 	 */		
-	IDataSet<Questions> getQuestionsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsQuestionsResponseByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1017,7 +1017,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/featured 
 	 */		
-	IDataSet<Questions> getQuestionsFeaturedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsFeaturedQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1518,7 +1518,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/moderators 
 	 */		
-	IDataSet<Users> getUsersModeratorsUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<UsersResponse> getUsersModeratorsUsersResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1638,7 +1638,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/write-permissions 
 	 */		
-	IDataSet<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, String filter, String callback, String site);
+	IData<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1725,7 +1725,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/top-answer-tags 
 	 */		
-	IDataSet<TopTagObjects> getMeTop_answer_tagsTopTagObjects(String filter, String callback, String site);
+	IData<TopTagObjects> getMeTop_answer_tagsTopTagObjects(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1765,7 +1765,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/top-answer-tags 
 	 */		
-	IDataSet<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, String filter, String callback, String site);
+	IData<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1815,7 +1815,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions 
 	 */		
-	IDataSet<Questions> getUsersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersQuestionsQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -1963,7 +1963,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/tags/{tags}/top-questions 
 	 */		
-	IDataSet<Questions> getMeTagsTop_questionsQuestions(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeTagsTop_questionsQuestionsResponse(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2059,7 +2059,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/no-answers 
 	 */		
-	IDataSet<Questions> getMeQuestionsNo_answersQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeQuestionsNo_answersQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2147,7 +2147,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions 
 	 */		
-	IDataSet<Questions> getMeQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeQuestionsQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2186,7 +2186,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/reputation-history/full 
 	 */		
-	IDataSet<ReputationHistory> getMeReputation_historyFullReputationHistory(String filter, String callback, String site);
+	IDataSet<ReputationHistoryResponse> getMeReputation_historyFullReputationHistoryResponse(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2225,7 +2225,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/write-permissions 
 	 */		
-	IDataSet<WritePermissions> getMeWrite_permissionsWritePermissions(String filter, String callback, String site);
+	IData<WritePermissions> getMeWrite_permissionsWritePermissions(String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2328,7 +2328,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/related 
 	 */		
-	IDataSet<Questions> getQuestionsRelatedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsRelatedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2571,7 +2571,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/unanswered 
 	 */		
-	IDataSet<Questions> getMeQuestionsUnansweredQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeQuestionsUnansweredQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2849,7 +2849,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/favorites 
 	 */		
-	IDataSet<Questions> getUsersFavoritesQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersFavoritesQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -2937,7 +2937,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/questions/unaccepted 
 	 */		
-	IDataSet<Questions> getMeQuestionsUnacceptedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeQuestionsUnacceptedQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3016,7 +3016,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/timeline 
 	 */		
-	IDataSet<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, String filter, String callback, String site);
+	IData<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3056,7 +3056,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/reputation-history 
 	 */		
-	IDataSet<ReputationHistory> getUsersReputation_historyReputationHistory(String ids, String filter, String callback, String site);
+	IDataSet<ReputationHistoryResponse> getUsersReputation_historyReputationHistoryResponse(String ids, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3510,7 +3510,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids} 
 	 */		
-	IDataSet<Users> getUsersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<UsersResponse> getUsersUsersResponseByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3639,7 +3639,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/reputation 
 	 */		
-	IDataSet<ReputationChanges> getUsersReputationReputationChanges(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<ReputationResponse> getUsersReputationReputationResponse(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3679,7 +3679,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /tags/{tags}/faq 
 	 */		
-	IDataSet<Questions> getTagsFaqQuestions(String tags, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getTagsFaqQuestionsResponse(String tags, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -3949,7 +3949,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/featured 
 	 */		
-	IDataSet<Questions> getUsersQuestionsFeaturedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersQuestionsFeaturedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4000,7 +4000,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /me/favorites 
 	 */		
-	IDataSet<Questions> getMeFavoritesQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getMeFavoritesQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4306,7 +4306,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions 
 	 */		
-	IDataSet<Questions> getQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4407,7 +4407,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/moderators/elected 
 	 */		
-	IDataSet<Users> getUsersModeratorsElectedUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<UsersResponse> getUsersModeratorsElectedUsersResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4501,7 +4501,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/{ids}/linked 
 	 */		
-	IDataSet<Questions> getQuestionsLinkedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsLinkedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4509,7 +4509,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /errors/{id} 
 	 */		
-	IData<Error> getErrorsErrorById(Integer id);
+	IData<Errordefinition> getErrorsErrordefinitionById(Integer id);
 	
 	/**
 	 * null
@@ -4785,7 +4785,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users 
 	 */		
-	IDataSet<Users> getUsers(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<UsersResponse> getUsersUsersResponse(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4827,7 +4827,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/timeline 
 	 */		
-	IDataSet<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IData<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -4958,7 +4958,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/unanswered 
 	 */		
-	IDataSet<Questions> getQuestionsUnansweredQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsUnansweredQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5009,7 +5009,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/tags/{tags}/top-questions 
 	 */		
-	IDataSet<Questions> getUsersTagsTop_questionsQuestions(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersTagsTop_questionsQuestionsResponse(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5089,7 +5089,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{id}/top-question-tags 
 	 */		
-	IDataSet<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, String filter, String callback, String site);
+	IData<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5139,7 +5139,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /users/{ids}/questions/no-answers 
 	 */		
-	IDataSet<Questions> getUsersQuestionsNo_answersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getUsersQuestionsNo_answersQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5229,7 +5229,7 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /questions/no-answers 
 	 */		
-	IDataSet<Questions> getQuestionsNo_answersQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
+	IDataSet<QuestionsResponse> getQuestionsNo_answersQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site);
 	
 	/**
 	 * null
@@ -5283,6 +5283,6 @@ public interface IEntityApi {
 	 * @return OK
 	 * @path /similar 
 	 */		
-	IDataSet<Questions> getSimilarQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String nottagged, String title);
+	IDataSet<QuestionsResponse> getSimilarQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String nottagged, String title);
 	
 }

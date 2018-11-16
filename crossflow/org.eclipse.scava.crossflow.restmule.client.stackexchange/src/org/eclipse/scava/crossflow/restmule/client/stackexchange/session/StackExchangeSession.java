@@ -54,26 +54,14 @@ public class StackExchangeSession extends AbstractSession {
 		return session;
 	}
 
-//	public static ISession createWithBasicAuth(String username, String password) {
-//		StackExchangeSession session = new StackExchangeSession(username, password);
-//		StackExchangeSession.addSession(session);
-//		return session;
-//	}
-	
-	public static ISession createWithBasicAuth(String key, String access_token) {
-		StackExchangeSession session = new StackExchangeSession(key, access_token);
+	public static ISession createWithBasicAuth(String username, String password) {
+		StackExchangeSession session = new StackExchangeSession(username, password);
 		StackExchangeSession.addSession(session);
 		return session;
 	}
 
-//	public static ISession createWithBasicAuth(String token) {
-//		StackExchangeSession session = new StackExchangeSession(token);
-//		StackExchangeSession.addSession(session);
-//		return session;
-//	}
-	
-	public static ISession createWithBasicAuth(String key) {
-		StackExchangeSession session = new StackExchangeSession(key);
+	public static ISession createWithBasicAuth(String token) {
+		StackExchangeSession session = new StackExchangeSession(token);
 		StackExchangeSession.addSession(session);
 		return session;
 	}
@@ -94,24 +82,12 @@ public class StackExchangeSession extends AbstractSession {
 		super(); 
 	}
 
-//	private StackExchangeSession(String username, String password) {
-//		super(username, password);
-//	}
-	
-	private StackExchangeSession(String key, String access_token) {
-		setBasicAccessKeyInQuery(key);
-		setBasicAccessTokenInQuery(access_token);
-		this.id = generateRandomId();
+	private StackExchangeSession(String username, String password) {
+		super(username, password);
 	}
 
-//	private StackExchangeSession(String token) {
-//		super(token);
-//	}
-	
-	private StackExchangeSession(String key) {
-		//super(key);
-		setBasicAccessKeyInQuery(key);
-		this.id = generateRandomId();
+	private StackExchangeSession(String token) {
+		super(token);
 	}
 
 	private StackExchangeSession(String clientId, 

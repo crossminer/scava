@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class UsersResponse {
 
-	public User(){}
+	public UsersResponse(){}
 
 	@JsonProperty("reputation_change_quarter") 
 	private Integer reputationChangeQuarter;
@@ -150,7 +150,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [ "
+		return "UsersResponse [ "
 			+ "reputationChangeQuarter = " + this.reputationChangeQuarter + ", "
 			+ "link = " + this.link + ", "
 			+ "lastModifiedDate = " + this.lastModifiedDate + ", "

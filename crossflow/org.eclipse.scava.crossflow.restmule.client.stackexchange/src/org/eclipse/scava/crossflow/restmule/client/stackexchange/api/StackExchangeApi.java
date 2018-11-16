@@ -72,11 +72,11 @@ public class StackExchangeApi  {
 		/** WRAPED METHODS */
 		 
 		@Override
-		public IDataSet<ReputationChanges> getMeReputationReputationChanges(String filter, String callback, String site){ 
+		public IDataSet<ReputationResponse> getMeReputationReputationResponse(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeReputationReputationChanges(filter, callback, site);
+			return entityClient.getMeReputationReputationResponse(filter, callback, site);
 		}
 		 
 		@Override
@@ -136,7 +136,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersQuestionsUnacceptedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersQuestionsUnacceptedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -151,7 +151,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersQuestionsUnacceptedQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersQuestionsUnacceptedQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -179,7 +179,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeQuestionsFeaturedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeQuestionsFeaturedQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -193,7 +193,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeQuestionsFeaturedQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeQuestionsFeaturedQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -243,7 +243,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersQuestionsUnansweredQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersQuestionsUnansweredQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -258,7 +258,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersQuestionsUnansweredQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersQuestionsUnansweredQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -281,12 +281,12 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<ReputationHistory> getUsersReputation_historyFullReputationHistory(Integer id, String filter, String callback, String site){ 
+		public IDataSet<ReputationHistoryResponse> getUsersReputation_historyFullReputationHistoryResponse(Integer id, String filter, String callback, String site){ 
 			Validate.notNull(id);
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersReputation_historyFullReputationHistory(id, filter, callback, site);
+			return entityClient.getUsersReputation_historyFullReputationHistoryResponse(id, filter, callback, site);
 		}
 		 
 		@Override
@@ -327,11 +327,11 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<ReputationHistory> getMeReputation_historyReputationHistory(String filter, String callback, String site){ 
+		public IDataSet<ReputationHistoryResponse> getMeReputation_historyReputationHistoryResponse(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeReputation_historyReputationHistory(filter, callback, site);
+			return entityClient.getMeReputation_historyReputationHistoryResponse(filter, callback, site);
 		}
 		 
 		@Override
@@ -354,7 +354,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<TopTagObjects> getMeTop_question_tagsTopTagObjects(String filter, String callback, String site){ 
+		public IData<TopTagObjects> getMeTop_question_tagsTopTagObjects(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
@@ -362,7 +362,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsQuestionsResponseByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -377,11 +377,11 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsByIds(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsQuestionsResponseByIds(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsFeaturedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsFeaturedQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -396,7 +396,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsFeaturedQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsFeaturedQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -544,7 +544,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Users> getUsersModeratorsUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<UsersResponse> getUsersModeratorsUsersResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -558,7 +558,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersModeratorsUsers(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersModeratorsUsersResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -580,7 +580,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, String filter, String callback, String site){ 
+		public IData<WritePermissions> getUsersWrite_permissionsWritePermissions(Integer id, String filter, String callback, String site){ 
 			Validate.notNull(id);
 			
 			
@@ -608,7 +608,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<TopTagObjects> getMeTop_answer_tagsTopTagObjects(String filter, String callback, String site){ 
+		public IData<TopTagObjects> getMeTop_answer_tagsTopTagObjects(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
@@ -616,7 +616,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, String filter, String callback, String site){ 
+		public IData<TopTagObjects> getUsersTop_answer_tagsTopTagObjects(Integer id, String filter, String callback, String site){ 
 			Validate.notNull(id);
 			
 			
@@ -625,7 +625,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersQuestionsQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -640,7 +640,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersQuestionsQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -674,7 +674,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeTagsTop_questionsQuestions(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeTagsTop_questionsQuestionsResponse(String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(tags);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -689,7 +689,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeTagsTop_questionsQuestions(tags, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeTagsTop_questionsQuestionsResponse(tags, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -711,7 +711,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeQuestionsNo_answersQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeQuestionsNo_answersQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -725,7 +725,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeQuestionsNo_answersQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeQuestionsNo_answersQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -737,7 +737,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeQuestionsQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -751,19 +751,19 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeQuestionsQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<ReputationHistory> getMeReputation_historyFullReputationHistory(String filter, String callback, String site){ 
+		public IDataSet<ReputationHistoryResponse> getMeReputation_historyFullReputationHistoryResponse(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeReputation_historyFullReputationHistory(filter, callback, site);
+			return entityClient.getMeReputation_historyFullReputationHistoryResponse(filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<WritePermissions> getMeWrite_permissionsWritePermissions(String filter, String callback, String site){ 
+		public IData<WritePermissions> getMeWrite_permissionsWritePermissions(String filter, String callback, String site){ 
 			
 			
 			Validate.notNull(site);
@@ -791,7 +791,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsRelatedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsRelatedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -806,7 +806,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsRelatedQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsRelatedQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -886,7 +886,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeQuestionsUnansweredQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeQuestionsUnansweredQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -900,7 +900,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeQuestionsUnansweredQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeQuestionsUnansweredQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -977,7 +977,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersFavoritesQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersFavoritesQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -992,7 +992,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersFavoritesQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersFavoritesQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1004,7 +1004,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeQuestionsUnacceptedQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeQuestionsUnacceptedQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -1018,7 +1018,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeQuestionsUnacceptedQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeQuestionsUnacceptedQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1029,7 +1029,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IData<UserTimelineObjects> getMeTimelineUserTimelineObjects(Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			
 			
@@ -1039,12 +1039,12 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<ReputationHistory> getUsersReputation_historyReputationHistory(String ids, String filter, String callback, String site){ 
+		public IDataSet<ReputationHistoryResponse> getUsersReputation_historyReputationHistoryResponse(String ids, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersReputation_historyReputationHistory(ids, filter, callback, site);
+			return entityClient.getUsersReputation_historyReputationHistoryResponse(ids, filter, callback, site);
 		}
 		 
 		@Override
@@ -1173,7 +1173,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Users> getUsersByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<UsersResponse> getUsersUsersResponseByIds(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1188,7 +1188,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersByIds(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersUsersResponseByIds(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1216,23 +1216,23 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<ReputationChanges> getUsersReputationReputationChanges(String ids, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<ReputationResponse> getUsersReputationReputationResponse(String ids, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			
 			
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersReputationReputationChanges(ids, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersReputationReputationResponse(ids, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getTagsFaqQuestions(String tags, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getTagsFaqQuestionsResponse(String tags, String filter, String callback, String site){ 
 			Validate.notNull(tags);
 			
 			
 			Validate.notNull(site);
-			return entityClient.getTagsFaqQuestions(tags, filter, callback, site);
+			return entityClient.getTagsFaqQuestionsResponse(tags, filter, callback, site);
 		}
 		 
 		@Override
@@ -1302,7 +1302,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersQuestionsFeaturedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersQuestionsFeaturedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1317,11 +1317,11 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersQuestionsFeaturedQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersQuestionsFeaturedQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getMeFavoritesQuestions(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getMeFavoritesQuestionsResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -1335,7 +1335,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getMeFavoritesQuestions(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getMeFavoritesQuestionsResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1428,7 +1428,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1443,7 +1443,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1466,7 +1466,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Users> getUsersModeratorsElectedUsers(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<UsersResponse> getUsersModeratorsElectedUsersResponse(String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
 			}
@@ -1480,7 +1480,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersModeratorsElectedUsers(order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersModeratorsElectedUsersResponse(order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1495,7 +1495,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsLinkedQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsLinkedQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1510,13 +1510,13 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsLinkedQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsLinkedQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IData<Error> getErrorsErrorById(Integer id){ 
+		public IData<Errordefinition> getErrorsErrordefinitionById(Integer id){ 
 			Validate.notNull(id);
-			return entityClient.getErrorsErrorById(id);
+			return entityClient.getErrorsErrordefinitionById(id);
 		}
 		 
 		@Override
@@ -1593,7 +1593,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Users> getUsers(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<UsersResponse> getUsersUsersResponse(String inname, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1608,11 +1608,11 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsers(inname, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersUsersResponse(inname, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IData<UserTimelineObjects> getUsersTimelineUserTimelineObjects(String ids, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			
 			
@@ -1642,7 +1642,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsUnansweredQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsUnansweredQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1657,11 +1657,11 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsUnansweredQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsUnansweredQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersTagsTop_questionsQuestions(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersTagsTop_questionsQuestionsResponse(Integer id, String tags, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(id);
 			Validate.notNull(tags);
 			if (order != null) {
@@ -1677,7 +1677,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersTagsTop_questionsQuestions(id, tags, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersTagsTop_questionsQuestionsResponse(id, tags, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1690,7 +1690,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, String filter, String callback, String site){ 
+		public IData<TopTagObjects> getUsersTop_question_tagsTopTagObjects(Integer id, String filter, String callback, String site){ 
 			Validate.notNull(id);
 			
 			
@@ -1699,7 +1699,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getUsersQuestionsNo_answersQuestions(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getUsersQuestionsNo_answersQuestionsResponse(String ids, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			Validate.notNull(ids);
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1714,7 +1714,7 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getUsersQuestionsNo_answersQuestions(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getUsersQuestionsNo_answersQuestionsResponse(ids, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
@@ -1727,7 +1727,7 @@ public class StackExchangeApi  {
 		}
 		 
 		@Override
-		public IDataSet<Questions> getQuestionsNo_answersQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
+		public IDataSet<QuestionsResponse> getQuestionsNo_answersQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1742,11 +1742,11 @@ public class StackExchangeApi  {
 			
 			
 			Validate.notNull(site);
-			return entityClient.getQuestionsNo_answersQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
+			return entityClient.getQuestionsNo_answersQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getSimilarQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String nottagged, String title){ 
+		public IDataSet<QuestionsResponse> getSimilarQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String nottagged, String title){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1763,11 +1763,11 @@ public class StackExchangeApi  {
 			Validate.notNull(site);
 			
 			
-			return entityClient.getSimilarQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, nottagged, title);
+			return entityClient.getSimilarQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, nottagged, title);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki){ 
+		public IDataSet<QuestionsResponse> getSearchAdvancedQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1805,11 +1805,11 @@ public class StackExchangeApi  {
 			if (wiki != null) {
 				Validate.matchesPattern(wiki,"(true|false)");
 			}
-			return searchClient.getSearchAdvancedQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, accepted, answers, body, closed, migrated, notice, nottagged, q, title, url, user, views, wiki);
+			return searchClient.getSearchAdvancedQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, accepted, answers, body, closed, migrated, notice, nottagged, q, title, url, user, views, wiki);
 		}
 		 
 		@Override
-		public IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged){ 
+		public IDataSet<QuestionsResponse> getSearchQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged){ 
 			
 			if (order != null) {
 				Validate.matchesPattern(order,"(desc|asc)");
@@ -1826,7 +1826,7 @@ public class StackExchangeApi  {
 			Validate.notNull(site);
 			
 			
-			return searchClient.getSearchQuestions(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, intitle, nottagged);
+			return searchClient.getSearchQuestionsResponse(tagged, order, max, min, sort, fromdate, todate, filter, callback, site, intitle, nottagged);
 		}
 	}
 }

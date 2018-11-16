@@ -2897,7 +2897,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -3565,7 +3565,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -3681,7 +3681,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -3797,7 +3797,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -3913,7 +3913,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -4029,7 +4029,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -4720,7 +4720,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6010,7 +6010,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6132,7 +6132,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6254,7 +6254,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6376,7 +6376,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6499,7 +6499,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6868,7 +6868,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -6992,7 +6992,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -7310,7 +7310,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -7519,7 +7519,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -7653,7 +7653,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -8517,7 +8517,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -9223,7 +9223,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/users_response"
+              "$ref": "#/definitions/users"
             }
           },
           "400": {
@@ -9340,7 +9340,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/users_response"
+              "$ref": "#/definitions/users"
             }
           },
           "400": {
@@ -9457,7 +9457,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/users_response"
+              "$ref": "#/definitions/users"
             }
           },
           "400": {
@@ -9581,7 +9581,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/users_response"
+              "$ref": "#/definitions/users"
             }
           },
           "400": {
@@ -10275,7 +10275,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -10593,7 +10593,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -10716,7 +10716,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -10839,7 +10839,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -10962,7 +10962,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -11085,7 +11085,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -12333,7 +12333,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/questions_response"
+              "$ref": "#/definitions/questions"
             }
           },
           "400": {
@@ -12608,103 +12608,545 @@
     }
   },
   "definitions": {
+    "questions": {
+      "type": "object"
+      "properties": {
+        "items": {
+          "properties": {
+            "accepted_answer_id": {
+              "type": "integer"
+            },
+            "answer_count": {
+              "type": "integer"
+            },
+            "answers": {
+              "items": {},
+              "type": "array"
+            },
+            "body": {
+              "type": "string"
+            },
+            "body_markdown": {
+              "type": "string"
+            },
+            "bounty_amount": {
+              "type": "integer"
+            },
+            "bounty_closes_date": {
+              "type": "integer"
+            },
+            "bounty_user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "can_close": {
+              "type": "boolean"
+            },
+            "can_flag": {
+              "type": "boolean"
+            },
+            "close_vote_count": {
+              "type": "integer"
+            },
+            "closed_date": {
+              "type": "integer"
+            },
+            "closed_details": {
+              "properties": {
+                "by_users": {
+                  "items": {},
+                  "type": "array"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "on_hold": {
+                  "type": "boolean"
+                },
+                "original_questions": {
+                  "items": {},
+                  "type": "array"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "closed_reason": {
+              "type": "string"
+            },
+            "comment_count": {
+              "type": "integer"
+            },
+            "comments": {
+              "items": {},
+              "type": "array"
+            },
+            "community_owned_date": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "delete_vote_count": {
+              "type": "integer"
+            },
+            "down_vote_count": {
+              "type": "integer"
+            },
+            "downvoted": {
+              "type": "boolean"
+            },
+            "favorite_count": {
+              "type": "integer"
+            },
+            "favorited": {
+              "type": "boolean"
+            },
+            "is_answered": {
+              "type": "boolean"
+            },
+            "last_activity_date": {
+              "type": "integer"
+            },
+            "last_edit_date": {
+              "type": "integer"
+            },
+            "last_editor": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "link": {
+              "type": "string"
+            },
+            "locked_date": {
+              "type": "integer"
+            },
+            "migrated_from": {
+              "properties": {
+                "on_date": {
+                  "type": "integer"
+                },
+                "other_site": {
+                  "properties": {
+                    "aliases": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "api_site_parameter": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "string"
+                    },
+                    "closed_beta_date": {
+                      "type": "integer"
+                    },
+                    "favicon_url": {
+                      "type": "string"
+                    },
+                    "high_resolution_icon_url": {
+                      "type": "string"
+                    },
+                    "icon_url": {
+                      "type": "string"
+                    },
+                    "launch_date": {
+                      "type": "integer"
+                    },
+                    "logo_url": {
+                      "type": "string"
+                    },
+                    "markdown_extensions": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "open_beta_date": {
+                      "type": "integer"
+                    },
+                    "related_sites": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "site_state": {
+                      "type": "string"
+                    },
+                    "site_type": {
+                      "type": "string"
+                    },
+                    "site_url": {
+                      "type": "string"
+                    },
+                    "styling": {
+                      "properties": {
+                        "link_color": {
+                          "type": "string"
+                        },
+                        "tag_background_color": {
+                          "type": "string"
+                        },
+                        "tag_foreground_color": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "twitter_account": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "question_id": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "migrated_to": {
+              "properties": {
+                "on_date": {
+                  "type": "integer"
+                },
+                "other_site": {
+                  "properties": {
+                    "aliases": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "api_site_parameter": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "string"
+                    },
+                    "closed_beta_date": {
+                      "type": "integer"
+                    },
+                    "favicon_url": {
+                      "type": "string"
+                    },
+                    "high_resolution_icon_url": {
+                      "type": "string"
+                    },
+                    "icon_url": {
+                      "type": "string"
+                    },
+                    "launch_date": {
+                      "type": "integer"
+                    },
+                    "logo_url": {
+                      "type": "string"
+                    },
+                    "markdown_extensions": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "open_beta_date": {
+                      "type": "integer"
+                    },
+                    "related_sites": {
+                      "items": {},
+                      "type": "array"
+                    },
+                    "site_state": {
+                      "type": "string"
+                    },
+                    "site_type": {
+                      "type": "string"
+                    },
+                    "site_url": {
+                      "type": "string"
+                    },
+                    "styling": {
+                      "properties": {
+                        "link_color": {
+                          "type": "string"
+                        },
+                        "tag_background_color": {
+                          "type": "string"
+                        },
+                        "tag_foreground_color": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "twitter_account": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "question_id": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "notice": {
+              "properties": {
+                "body": {
+                  "type": "string"
+                },
+                "creation_date": {
+                  "type": "integer"
+                },
+                "owner_user_id": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "owner": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "protected_date": {
+              "type": "integer"
+            },
+            "question_id": {
+              "type": "integer"
+            },
+            "reopen_vote_count": {
+              "type": "integer"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "share_link": {
+              "type": "string"
+            },
+            "tags": {
+              "items": {},
+              "type": "array"
+            },
+            "title": {
+              "type": "string"
+            },
+            "up_vote_count": {
+              "type": "integer"
+            },
+            "upvoted": {
+              "type": "boolean"
+            },
+            "view_count": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
     "revisions": {
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "body": {
-                "type": "string"
-              },
-              "comment": {
-                "type": "string"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "is_rollback": {
-                "type": "boolean"
-              },
-              "last_body": {
-                "type": "string"
-              },
-              "last_tags": {
-                "items": {},
-                "type": "array"
-              },
-              "last_title": {
-                "type": "string"
-              },
-              "post_id": {
-                "type": "integer"
-              },
-              "post_type": {
-                "type": "string"
-              },
-              "revision_guid": {
-                "type": "string"
-              },
-              "revision_number": {
-                "type": "integer"
-              },
-              "revision_type": {
-                "type": "string"
-              },
-              "set_community_wiki": {
-                "type": "boolean"
-              },
-              "tags": {
-                "items": {},
-                "type": "array"
-              },
-              "title": {
-                "type": "string"
-              },
-              "user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "is_rollback": {
+              "type": "boolean"
+            },
+            "last_body": {
+              "type": "string"
+            },
+            "last_tags": {
+              "items": {},
+              "type": "array"
+            },
+            "last_title": {
+              "type": "string"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "post_type": {
+              "type": "string"
+            },
+            "revision_guid": {
+              "type": "string"
+            },
+            "revision_number": {
+              "type": "integer"
+            },
+            "revision_type": {
+              "type": "string"
+            },
+            "set_community_wiki": {
+              "type": "boolean"
+            },
+            "tags": {
+              "items": {},
+              "type": "array"
+            },
+            "title": {
+              "type": "string"
+            },
+            "user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -12727,80 +13169,77 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "aliases": {
-                "items": {},
-                "type": "array"
-              },
-              "api_site_parameter": {
-                "type": "string"
-              },
-              "audience": {
-                "type": "string"
-              },
-              "closed_beta_date": {
-                "type": "integer"
-              },
-              "favicon_url": {
-                "type": "string"
-              },
-              "high_resolution_icon_url": {
-                "type": "string"
-              },
-              "icon_url": {
-                "type": "string"
-              },
-              "launch_date": {
-                "type": "integer"
-              },
-              "logo_url": {
-                "type": "string"
-              },
-              "markdown_extensions": {
-                "items": {},
-                "type": "array"
-              },
-              "name": {
-                "type": "string"
-              },
-              "open_beta_date": {
-                "type": "integer"
-              },
-              "related_sites": {
-                "items": {},
-                "type": "array"
-              },
-              "site_state": {
-                "type": "string"
-              },
-              "site_type": {
-                "type": "string"
-              },
-              "site_url": {
-                "type": "string"
-              },
-              "styling": {
-                "properties": {
-                  "link_color": {
-                    "type": "string"
-                  },
-                  "tag_background_color": {
-                    "type": "string"
-                  },
-                  "tag_foreground_color": {
-                    "type": "string"
-                  }
+          "properties": {
+            "aliases": {
+              "items": {},
+              "type": "array"
+            },
+            "api_site_parameter": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "closed_beta_date": {
+              "type": "integer"
+            },
+            "favicon_url": {
+              "type": "string"
+            },
+            "high_resolution_icon_url": {
+              "type": "string"
+            },
+            "icon_url": {
+              "type": "string"
+            },
+            "launch_date": {
+              "type": "integer"
+            },
+            "logo_url": {
+              "type": "string"
+            },
+            "markdown_extensions": {
+              "items": {},
+              "type": "array"
+            },
+            "name": {
+              "type": "string"
+            },
+            "open_beta_date": {
+              "type": "integer"
+            },
+            "related_sites": {
+              "items": {},
+              "type": "array"
+            },
+            "site_state": {
+              "type": "string"
+            },
+            "site_type": {
+              "type": "string"
+            },
+            "site_url": {
+              "type": "string"
+            },
+            "styling": {
+              "properties": {
+                "link_color": {
+                  "type": "string"
                 },
-                "type": "object"
+                "tag_background_color": {
+                  "type": "string"
+                },
+                "tag_foreground_color": {
+                  "type": "string"
+                }
               },
-              "twitter_account": {
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "twitter_account": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -12808,83 +13247,80 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "approval_date": {
-                "type": "integer"
-              },
-              "body": {
-                "type": "string"
-              },
-              "comment": {
-                "type": "string"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "post_id": {
-                "type": "integer"
-              },
-              "post_type": {
-                "type": "string"
-              },
-              "proposing_user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "approval_date": {
+              "type": "integer"
+            },
+            "body": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "post_type": {
+              "type": "string"
+            },
+            "proposing_user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "rejection_date": {
-                "type": "integer"
-              },
-              "suggested_edit_id": {
-                "type": "integer"
-              },
-              "tags": {
-                "items": {},
-                "type": "array"
-              },
-              "title": {
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "rejection_date": {
+              "type": "integer"
+            },
+            "suggested_edit_id": {
+              "type": "integer"
+            },
+            "tags": {
+              "items": {},
+              "type": "array"
+            },
+            "title": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -12892,58 +13328,55 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "post_count": {
-                "type": "integer"
-              },
-              "score": {
-                "type": "integer"
-              },
-              "user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
-                },
-                "type": "object"
-              }
+          "properties": {
+            "post_count": {
+              "type": "integer"
             },
-          }
+            "score": {
+              "type": "integer"
+            },
+            "user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
         }
       }
     },
@@ -12951,27 +13384,24 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "applied_count": {
-                "type": "integer"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "from_tag": {
-                "type": "string"
-              },
-              "last_applied_date": {
-                "type": "integer"
-              },
-              "to_tag": {
-                "type": "string"
-              }
+          "properties": {
+            "applied_count": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "from_tag": {
+              "type": "string"
+            },
+            "last_applied_date": {
+              "type": "integer"
+            },
+            "to_tag": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -12979,107 +13409,104 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "body": {
-                "type": "string"
-              },
-              "body_last_edit_date": {
-                "type": "integer"
-              },
-              "excerpt": {
-                "type": "string"
-              },
-              "excerpt_last_edit_date": {
-                "type": "integer"
-              },
-              "last_body_editor": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "body_last_edit_date": {
+              "type": "integer"
+            },
+            "excerpt": {
+              "type": "string"
+            },
+            "excerpt_last_edit_date": {
+              "type": "integer"
+            },
+            "last_body_editor": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              },
-              "last_excerpt_editor": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
                     },
-                    "type": "object"
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
                   },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+                  "type": "object"
                 },
-                "type": "object"
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "tag_name": {
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "last_excerpt_editor": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "tag_name": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13087,37 +13514,34 @@
       "type": "object",
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "count": {
-                "type": "integer"
-              },
-              "has_synonyms": {
-                "type": "boolean"
-              },
-              "is_moderator_only": {
-                "type": "boolean"
-              },
-              "is_required": {
-                "type": "boolean"
-              },
-              "last_activity_date": {
-                "type": "integer"
-              },
-              "name": {
-                "type": "string"
-              },
-              "synonyms": {
-                "items": {},
-                "type": "array"
-              },
-              "user_id": {
-                "type": "integer"
-              }
+          "properties": {
+            "count": {
+              "type": "integer"
             },
-          }
+            "has_synonyms": {
+              "type": "boolean"
+            },
+            "is_moderator_only": {
+              "type": "boolean"
+            },
+            "is_required": {
+              "type": "boolean"
+            },
+            "last_activity_date": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "synonyms": {
+              "items": {},
+              "type": "array"
+            },
+            "user_id": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
         }
       }
     },
@@ -13147,6 +13571,106 @@
           }
         }
       }
+    },
+    "user": {
+      "properties": {
+        "about_me": {
+          "type": "string"
+        },
+        "accept_rate": {
+          "type": "integer"
+        },
+        "account_id": {
+          "type": "integer"
+        },
+        "age": {
+          "type": "integer"
+        },
+        "answer_count": {
+          "type": "integer"
+        },
+        "badge_counts": {
+          "properties": {
+            "bronze": {
+              "type": "integer"
+            },
+            "gold": {
+              "type": "integer"
+            },
+            "silver": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "creation_date": {
+          "type": "integer"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "down_vote_count": {
+          "type": "integer"
+        },
+        "is_employee": {
+          "type": "boolean"
+        },
+        "last_access_date": {
+          "type": "integer"
+        },
+        "last_modified_date": {
+          "type": "integer"
+        },
+        "link": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "profile_image": {
+          "type": "string"
+        },
+        "question_count": {
+          "type": "integer"
+        },
+        "reputation": {
+          "type": "integer"
+        },
+        "reputation_change_day": {
+          "type": "integer"
+        },
+        "reputation_change_month": {
+          "type": "integer"
+        },
+        "reputation_change_quarter": {
+          "type": "integer"
+        },
+        "reputation_change_week": {
+          "type": "integer"
+        },
+        "reputation_change_year": {
+          "type": "integer"
+        },
+        "timed_penalty_date": {
+          "type": "integer"
+        },
+        "up_vote_count": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "user_type": {
+          "type": "string"
+        },
+        "view_count": {
+          "type": "integer"
+        },
+        "website_url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
     },
     "user_timeline_objects": {
       "type": "object"
@@ -13191,6 +13715,111 @@
         }
       }
     },
+    "users": {
+      "type": "object"
+      "properties": {
+        "items": {
+          "properties": {
+            "about_me": {
+              "type": "string"
+            },
+            "accept_rate": {
+              "type": "integer"
+            },
+            "account_id": {
+              "type": "integer"
+            },
+            "age": {
+              "type": "integer"
+            },
+            "answer_count": {
+              "type": "integer"
+            },
+            "badge_counts": {
+              "properties": {
+                "bronze": {
+                  "type": "integer"
+                },
+                "gold": {
+                  "type": "integer"
+                },
+                "silver": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "display_name": {
+              "type": "string"
+            },
+            "down_vote_count": {
+              "type": "integer"
+            },
+            "is_employee": {
+              "type": "boolean"
+            },
+            "last_access_date": {
+              "type": "integer"
+            },
+            "last_modified_date": {
+              "type": "integer"
+            },
+            "link": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "profile_image": {
+              "type": "string"
+            },
+            "question_count": {
+              "type": "integer"
+            },
+            "reputation": {
+              "type": "integer"
+            },
+            "reputation_change_day": {
+              "type": "integer"
+            },
+            "reputation_change_month": {
+              "type": "integer"
+            },
+            "reputation_change_quarter": {
+              "type": "integer"
+            },
+            "reputation_change_week": {
+              "type": "integer"
+            },
+            "reputation_change_year": {
+              "type": "integer"
+            },
+            "timed_penalty_date": {
+              "type": "integer"
+            },
+            "up_vote_count": {
+              "type": "integer"
+            },
+            "user_id": {
+              "type": "integer"
+            },
+            "user_type": {
+              "type": "string"
+            },
+            "view_count": {
+              "type": "integer"
+            },
+            "website_url": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
     "write_permissions": {
       "type": "object"
       "properties": {
@@ -13226,166 +13855,160 @@
       "type": "object"
       "properties": {
         "items": {
-          "items": {
-            "type": "object",
-            "properties": {
-              "body": {
-                "type": "string"
-              },
-              "body_markdown": {
-                "type": "string"
-              },
-              "comment_count": {
-                "type": "integer"
-              },
-              "comments": {
-                "items": {},
-                "type": "array"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "down_vote_count": {
-                "type": "integer"
-              },
-              "downvoted": {
-                "type": "boolean"
-              },
-              "last_activity_date": {
-                "type": "integer"
-              },
-              "last_edit_date": {
-                "type": "integer"
-              },
-              "last_editor": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "body_markdown": {
+              "type": "string"
+            },
+            "comment_count": {
+              "type": "integer"
+            },
+            "comments": {
+              "items": {},
+              "type": "array"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "down_vote_count": {
+              "type": "integer"
+            },
+            "downvoted": {
+              "type": "boolean"
+            },
+            "last_activity_date": {
+              "type": "integer"
+            },
+            "last_edit_date": {
+              "type": "integer"
+            },
+            "last_editor": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              },
-              "link": {
-                "type": "string"
-              },
-              "owner": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
                     },
-                    "type": "object"
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
                   },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+                  "type": "object"
                 },
-                "type": "object"
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "post_id": {
-                "type": "integer"
+              "type": "object"
+            },
+            "link": {
+              "type": "string"
+            },
+            "owner": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "post_type": {
-                "type": "string"
-              },
-              "score": {
-                "type": "integer"
-              },
-              "share_link": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "up_vote_count": {
-                "type": "integer"
-              },
-              "upvoted": {
-                "type": "boolean"
-              }
+              "type": "object"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "post_type": {
+              "type": "string"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "share_link": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "up_vote_count": {
+              "type": "integer"
+            },
+            "upvoted": {
+              "type": "boolean"
             }
           },
-          "type": "array"
-        }
+          "type": "object"
+        },
       }
     },
     "privileges": {
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string"
-              },
-              "reputation": {
-                "type": "integer"
-              },
-              "short_description": {
-                "type": "string"
-              }
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "reputation": {
+              "type": "integer"
+            },
+            "short_description": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13393,116 +14016,113 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "comment_id": {
-                "type": "integer"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "down_vote_count": {
-                "type": "integer"
-              },
-              "owner": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "comment_id": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "down_vote_count": {
+              "type": "integer"
+            },
+            "owner": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              },
-              "post_id": {
-                "type": "integer"
-              },
-              "question_id": {
-                "type": "integer"
-              },
-              "revision_guid": {
-                "type": "string"
-              },
-              "timeline_type": {
-                "type": "string"
-              },
-              "up_vote_count": {
-                "type": "integer"
-              },
-              "user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
                     },
-                    "type": "object"
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
                   },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+                  "type": "object"
                 },
-                "type": "object"
-              }
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "question_id": {
+              "type": "integer"
+            },
+            "revision_guid": {
+              "type": "string"
+            },
+            "timeline_type": {
+              "type": "string"
+            },
+            "up_vote_count": {
+              "type": "integer"
+            },
+            "user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13510,25 +14130,22 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "access_token": {
-                "type": "string"
-              },
-              "account_id": {
-                "type": "integer"
-              },
-              "expires_on_date": {
-                "type": "integer"
-              },
-              "scope": {
-                "items": {},
-                "type": "array"
-              }
+          "properties": {
+            "access_token": {
+              "type": "string"
+            },
+            "account_id": {
+              "type": "integer"
+            },
+            "expires_on_date": {
+              "type": "integer"
+            },
+            "scope": {
+              "items": {},
+              "type": "array"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13536,21 +14153,18 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "merge_date": {
-                "type": "integer"
-              },
-              "new_account_id": {
-                "type": "integer"
-              },
-              "old_account_id": {
-                "type": "integer"
-              }
+          "properties": {
+            "merge_date": {
+              "type": "integer"
+            },
+            "new_account_id": {
+              "type": "integer"
+            },
+            "old_account_id": {
+              "type": "integer"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13558,70 +14172,167 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "owner": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "accepted": {
+              "type": "boolean"
+            },
+            "answer_id": {
+              "type": "integer"
+            },
+            "awarded_bounty_amount": {
+              "type": "integer"
+            },
+            "awarded_bounty_users": {
+              "items": {},
+              "type": "array"
+            },
+            "body": {
+              "type": "string"
+            },
+            "body_markdown": {
+              "type": "string"
+            },
+            "can_flag": {
+              "type": "boolean"
+            },
+            "comment_count": {
+              "type": "integer"
+            },
+            "comments": {
+              "items": {},
+              "type": "array"
+            },
+            "community_owned_date": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "down_vote_count": {
+              "type": "integer"
+            },
+            "downvoted": {
+              "type": "boolean"
+            },
+            "is_accepted": {
+              "type": "boolean"
+            },
+            "last_activity_date": {
+              "type": "integer"
+            },
+            "last_edit_date": {
+              "type": "integer"
+            },
+            "last_editor": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "question_id": {
-                "type": "integer"
+              "type": "object"
+            },
+            "link": {
+              "type": "string"
+            },
+            "locked_date": {
+              "type": "integer"
+            },
+            "owner": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "is_accepted": {
-                "type": "boolean"
-              },
-              "score": {
-                "type": "integer"
-              },
-              "last_activity_date": {
-                "type": "integer"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "answer_id": {
-                "type": "integer"
-              }
+              "type": "object"
+            },
+            "question_id": {
+              "type": "integer"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "share_link": {
+              "type": "string"
+            },
+            "tags": {
+              "items": {},
+              "type": "array"
+            },
+            "title": {
+              "type": "string"
+            },
+            "up_vote_count": {
+              "type": "integer"
+            },
+            "upvoted": {
+              "type": "boolean"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13629,73 +14340,70 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "award_count": {
-                "type": "integer"
-              },
-              "badge_id": {
-                "type": "integer"
-              },
-              "badge_type": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "link": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "rank": {
-                "type": "string"
-              },
-              "user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "award_count": {
+              "type": "integer"
+            },
+            "badge_id": {
+              "type": "integer"
+            },
+            "badge_type": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "rank": {
+              "type": "string"
+            },
+            "user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13703,125 +14411,122 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "body": {
-                "type": "string"
-              },
-              "body_markdown": {
-                "type": "string"
-              },
-              "can_flag": {
-                "type": "boolean"
-              },
-              "comment_id": {
-                "type": "integer"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "edited": {
-                "type": "boolean"
-              },
-              "link": {
-                "type": "string"
-              },
-              "owner": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "body_markdown": {
+              "type": "string"
+            },
+            "can_flag": {
+              "type": "boolean"
+            },
+            "comment_id": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "edited": {
+              "type": "boolean"
+            },
+            "link": {
+              "type": "string"
+            },
+            "owner": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
                 },
-                "type": "object"
-              },
-              "post_id": {
-                "type": "integer"
-              },
-              "post_type": {
-                "type": "string"
-              },
-              "reply_to_user": {
-                "properties": {
-                  "accept_rate": {
-                    "type": "integer"
-                  },
-                  "badge_counts": {
-                    "properties": {
-                      "bronze": {
-                        "type": "integer"
-                      },
-                      "gold": {
-                        "type": "integer"
-                      },
-                      "silver": {
-                        "type": "integer"
-                      }
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
                     },
-                    "type": "object"
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
                   },
-                  "display_name": {
-                    "type": "string"
-                  },
-                  "link": {
-                    "type": "string"
-                  },
-                  "profile_image": {
-                    "type": "string"
-                  },
-                  "reputation": {
-                    "type": "integer"
-                  },
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "user_type": {
-                    "type": "string"
-                  }
+                  "type": "object"
                 },
-                "type": "object"
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "score": {
-                "type": "integer"
+              "type": "object"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "post_type": {
+              "type": "string"
+            },
+            "reply_to_user": {
+              "properties": {
+                "accept_rate": {
+                  "type": "integer"
+                },
+                "badge_counts": {
+                  "properties": {
+                    "bronze": {
+                      "type": "integer"
+                    },
+                    "gold": {
+                      "type": "integer"
+                    },
+                    "silver": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "profile_image": {
+                  "type": "string"
+                },
+                "reputation": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "user_type": {
+                  "type": "string"
+                }
               },
-              "upvoted": {
-                "type": "boolean"
-              }
+              "type": "object"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "upvoted": {
+              "type": "boolean"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13961,21 +14666,18 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string"
-              },
-              "error_id": {
-                "type": "integer"
-              },
-              "error_name": {
-                "type": "string"
-              }
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "error_id": {
+              "type": "integer"
+            },
+            "error_name": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -13983,27 +14685,24 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "creation_date": {
-                "type": "integer"
-              },
-              "event_type": {
-                "type": "string"
-              },
-              "excerpt": {
-                "type": "string"
-              },
-              "link": {
-                "type": "string"
-              },
-              "the id of the object (answer, comment, question, or user) the event describes": {
-                "type": "integer"
-              }
+          "properties": {
+            "creation_date": {
+              "type": "integer"
+            },
+            "event_type": {
+              "type": "string"
+            },
+            "excerpt": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            },
+            "the id of the object (answer, comment, question, or user) the event describes": {
+              "type": "integer"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -14011,22 +14710,19 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "filter": {
-                "type": "string"
-              },
-              "filter_type": {
-                "type": "string"
-              },
-              "included_fields": {
-                "items": {},
-                "type": "array"
-              }
+          "properties": {
+            "filter": {
+              "type": "string"
+            },
+            "filter_type": {
+              "type": "string"
+            },
+            "included_fields": {
+              "items": {},
+              "type": "array"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -14034,112 +14730,109 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "answer_id": {
-                "type": "integer"
-              },
-              "body": {
-                "type": "string"
-              },
-              "comment_id": {
-                "type": "integer"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "is_unread": {
-                "type": "boolean"
-              },
-              "item_type": {
-                "type": "string"
-              },
-              "link": {
-                "type": "string"
-              },
-              "question_id": {
-                "type": "integer"
-              },
-              "site": {
-                "properties": {
-                  "aliases": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "api_site_parameter": {
-                    "type": "string"
-                  },
-                  "audience": {
-                    "type": "string"
-                  },
-                  "closed_beta_date": {
-                    "type": "integer"
-                  },
-                  "favicon_url": {
-                    "type": "string"
-                  },
-                  "high_resolution_icon_url": {
-                    "type": "string"
-                  },
-                  "icon_url": {
-                    "type": "string"
-                  },
-                  "launch_date": {
-                    "type": "integer"
-                  },
-                  "logo_url": {
-                    "type": "string"
-                  },
-                  "markdown_extensions": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "open_beta_date": {
-                    "type": "integer"
-                  },
-                  "related_sites": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "site_state": {
-                    "type": "string"
-                  },
-                  "site_type": {
-                    "type": "string"
-                  },
-                  "site_url": {
-                    "type": "string"
-                  },
-                  "styling": {
-                    "properties": {
-                      "link_color": {
-                        "type": "string"
-                      },
-                      "tag_background_color": {
-                        "type": "string"
-                      },
-                      "tag_foreground_color": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "twitter_account": {
-                    "type": "string"
-                  }
+          "properties": {
+            "answer_id": {
+              "type": "integer"
+            },
+            "body": {
+              "type": "string"
+            },
+            "comment_id": {
+              "type": "integer"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "is_unread": {
+              "type": "boolean"
+            },
+            "item_type": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            },
+            "question_id": {
+              "type": "integer"
+            },
+            "site": {
+              "properties": {
+                "aliases": {
+                  "items": {},
+                  "type": "array"
                 },
-                "type": "object"
+                "api_site_parameter": {
+                  "type": "string"
+                },
+                "audience": {
+                  "type": "string"
+                },
+                "closed_beta_date": {
+                  "type": "integer"
+                },
+                "favicon_url": {
+                  "type": "string"
+                },
+                "high_resolution_icon_url": {
+                  "type": "string"
+                },
+                "icon_url": {
+                  "type": "string"
+                },
+                "launch_date": {
+                  "type": "integer"
+                },
+                "logo_url": {
+                  "type": "string"
+                },
+                "markdown_extensions": {
+                  "items": {},
+                  "type": "array"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "open_beta_date": {
+                  "type": "integer"
+                },
+                "related_sites": {
+                  "items": {},
+                  "type": "array"
+                },
+                "site_state": {
+                  "type": "string"
+                },
+                "site_type": {
+                  "type": "string"
+                },
+                "site_url": {
+                  "type": "string"
+                },
+                "styling": {
+                  "properties": {
+                    "link_color": {
+                      "type": "string"
+                    },
+                    "tag_background_color": {
+                      "type": "string"
+                    },
+                    "tag_foreground_color": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "twitter_account": {
+                  "type": "string"
+                }
               },
-              "title": {
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "title": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -14264,64 +14957,61 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "account_id": {
-                "type": "integer"
-              },
-              "answer_count": {
-                "type": "integer"
-              },
-              "badge_counts": {
-                "properties": {
-                  "bronze": {
-                    "type": "integer"
-                  },
-                  "gold": {
-                    "type": "integer"
-                  },
-                  "silver": {
-                    "type": "integer"
-                  }
+          "properties": {
+            "account_id": {
+              "type": "integer"
+            },
+            "answer_count": {
+              "type": "integer"
+            },
+            "badge_counts": {
+              "properties": {
+                "bronze": {
+                  "type": "integer"
                 },
-                "type": "object"
+                "gold": {
+                  "type": "integer"
+                },
+                "silver": {
+                  "type": "integer"
+                }
               },
-              "creation_date": {
-                "type": "integer"
-              },
-              "last_access_date": {
-                "type": "integer"
-              },
-              "question_count": {
-                "type": "integer"
-              },
-              "reputation": {
-                "type": "integer"
-              },
-              "site_name": {
-                "type": "string"
-              },
-              "site_url": {
-                "type": "string"
-              },
-              "top_answers": {
-                "items": {},
-                "type": "array"
-              },
-              "top_questions": {
-                "items": {},
-                "type": "array"
-              },
-              "user_id": {
-                "type": "integer"
-              },
-              "user_type": {
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "last_access_date": {
+              "type": "integer"
+            },
+            "question_count": {
+              "type": "integer"
+            },
+            "reputation": {
+              "type": "integer"
+            },
+            "site_name": {
+              "type": "string"
+            },
+            "site_url": {
+              "type": "string"
+            },
+            "top_answers": {
+              "items": {},
+              "type": "array"
+            },
+            "top_questions": {
+              "items": {},
+              "type": "array"
+            },
+            "user_id": {
+              "type": "integer"
+            },
+            "user_type": {
+              "type": "string"
             }
-          }
+          },
+          "type": "object"
         }
       }
     },
@@ -14329,102 +15019,100 @@
       "type": "object"
       "properties": {
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "body": {
-                "type": "string"
-              },
-              "creation_date": {
-                "type": "integer"
-              },
-              "is_unread": {
-                "type": "boolean"
-              },
-              "notification_type": {
-                "type": "string"
-              },
-              "post_id": {
-                "type": "integer"
-              },
-              "site": {
-                "properties": {
-                  "aliases": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "api_site_parameter": {
-                    "type": "string"
-                  },
-                  "audience": {
-                    "type": "string"
-                  },
-                  "closed_beta_date": {
-                    "type": "integer"
-                  },
-                  "favicon_url": {
-                    "type": "string"
-                  },
-                  "high_resolution_icon_url": {
-                    "type": "string"
-                  },
-                  "icon_url": {
-                    "type": "string"
-                  },
-                  "launch_date": {
-                    "type": "integer"
-                  },
-                  "logo_url": {
-                    "type": "string"
-                  },
-                  "markdown_extensions": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "open_beta_date": {
-                    "type": "integer"
-                  },
-                  "related_sites": {
-                    "items": {},
-                    "type": "array"
-                  },
-                  "site_state": {
-                    "type": "string"
-                  },
-                  "site_type": {
-                    "type": "string"
-                  },
-                  "site_url": {
-                    "type": "string"
-                  },
-                  "styling": {
-                    "properties": {
-                      "link_color": {
-                        "type": "string"
-                      },
-                      "tag_background_color": {
-                        "type": "string"
-                      },
-                      "tag_foreground_color": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "twitter_account": {
-                    "type": "string"
-                  }
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "creation_date": {
+              "type": "integer"
+            },
+            "is_unread": {
+              "type": "boolean"
+            },
+            "notification_type": {
+              "type": "string"
+            },
+            "post_id": {
+              "type": "integer"
+            },
+            "site": {
+              "properties": {
+                "aliases": {
+                  "items": {},
+                  "type": "array"
                 },
-                "type": "object"
-              }
+                "api_site_parameter": {
+                  "type": "string"
+                },
+                "audience": {
+                  "type": "string"
+                },
+                "closed_beta_date": {
+                  "type": "integer"
+                },
+                "favicon_url": {
+                  "type": "string"
+                },
+                "high_resolution_icon_url": {
+                  "type": "string"
+                },
+                "icon_url": {
+                  "type": "string"
+                },
+                "launch_date": {
+                  "type": "integer"
+                },
+                "logo_url": {
+                  "type": "string"
+                },
+                "markdown_extensions": {
+                  "items": {},
+                  "type": "array"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "open_beta_date": {
+                  "type": "integer"
+                },
+                "related_sites": {
+                  "items": {},
+                  "type": "array"
+                },
+                "site_state": {
+                  "type": "string"
+                },
+                "site_type": {
+                  "type": "string"
+                },
+                "site_url": {
+                  "type": "string"
+                },
+                "styling": {
+                  "properties": {
+                    "link_color": {
+                      "type": "string"
+                    },
+                    "tag_background_color": {
+                      "type": "string"
+                    },
+                    "tag_foreground_color": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "twitter_account": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         }
       }
+
     }
 
     "questions_response": {

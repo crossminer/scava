@@ -35,6 +35,7 @@ operation Any reqParam(label : String) : Any {
 	return param;
 }
 
+// original below
 operation Any definition(): Any {
 	if (self.properties.has("schema")){
 		if (self.e_schema.properties.has("$ref")){
@@ -52,14 +53,75 @@ operation Any definition(): Any {
 	}
 }
 
+// customized below
+/*operation Any definition(): Any {
+	if (self.properties.has("schema")){
+		if (self.e_schema.properties.has("$ref")){
+			var name = self.e_schema.`s_$ref`.getDef();//.println("self.e_schema.`s_$ref`.getDef()="); 
+			var root = JSON.getRoot;
+			if (root.e_definitions.properties.has(name)){
+				var def = root.e_definitions.properties.select(p | p.id == name).first;
+//				root.e_definitions.properties.println("root.e_definitions.properties=");
+				return def.nest();
+			} else {
+				//self.e_schema.properties.println("self.e_schema.properties=");
+				return self.e_schema.properties.nest();
+			}
+		} 
+	} else {
+		return null;
+	}
+}*/
+
+// custom method (not original)
+/*operation Any definition(label : String): Any {
+	if (self.properties.has("schema")){
+		if (self.e_schema.properties.has("$ref")){
+			var name = self.e_schema.`s_$ref`.getDef();
+			var root = JSON.getRoot;
+			if (root.e_definitions.properties.has(name)){
+				var def = root.e_definitions.properties.select(p | p.id == name).first;
+				//root.e_definitions.properties.println("root.e_definitions.properties=");
+				return def.nest();
+			} else {
+				//self.e_schema.properties.println("self.e_schema.properties=");
+				return self.e_schema.properties.nest();
+			}
+		} 
+	} else {
+		return self.simpleType(label);
+	}
+}*/
+
 operation Any reqParam() : Any {
 	return self.reqParam(self.s_name);
 }
 
+// original below
 operation Any nest() : Any {
 	return self.nest(self.id);
 }
 
+// customized below
+/*operation Any nest() : Any {
+	self.println("self.nest()=");
+	self.id.println("self.id=");
+	self.type.println("self.type=");
+	// if self.id=Sequence {$ref} then extract the reference name instead of passing "Sequence {$ref}"
+	//if (self.type<>null and self.type.name=="Sequence") {
+	//	println("dealing with Sequence: " + self.name);
+//		self.type.name.println("self.type.name=");
+		
+		//self.type.definition().println("self.type.definition()=");		
+		//self.id.definition().println("self.id.definition()=");
+		//self.parent.id.println("self.parent.id=");
+	//	return self.definition().nest();//.println("self.properties.nest("$ref")="); //;//.definition().println("self.parent.definition()=");
+
+	//}
+	return self.nest(self.id);
+}*/
+
+// original below
 operation Any nest(name : String) : Any {
 	("self.id=" + self.id +", name=" + name).println;
 	if (self.s_type == "object" or (
@@ -67,7 +129,7 @@ operation Any nest(name : String) : Any {
 		var type = new RestMule!ObjectType;
 		if (self.s_type<>"null"){
 			type.label = name;
-		} else {
+		} else {
 			"null type in object nest ".println;
 			type.label = name;
 		}
@@ -92,6 +154,78 @@ operation Any nest(name : String) : Any {
 	}
 }
 
+// customized below
+/*operation Any nest(name : String) : Any {
+	("self.id=" + self.id +", name=" + name).println;
+	if (self.s_type == "object" or (
+		self.s_type=="null" and self.properties.has("properties").println("self.properties.has(properties)="))) {
+		var type = new RestMule!ObjectType;
+		if (self.s_type<>"null"){
+			type.label = name;
+		} else {
+			"null type in object nest ".println;
+			type.label = name;
+		}
+		type.name = type.label.sanitizeClass();
+		type.name.println("nest(name).type.name="); // nest(name).type.name=QuestionsResponse
+		type.description = self.s_description;
+		if (self.properties.has("properties")){
+			for (prop in self.e_properties.properties.flatten){	
+				prop.handleObjectProperties(type);
+				type.required = true;
+			}
+		} 
+		if (self.properties.has("additionalProperties")){
+			"unhandled additional properties".println;
+		}
+		return type;
+		
+	} else if (self.id == "root" and name == "items" ) {
+		// ------------------------
+		("handling an array of objects").println;
+		var type = new RestMule!ObjectType;
+		if (self.s_type<>"null"){
+			type.label = name;
+		} else {
+			"null type in object nest ".println;
+			type.label = name;
+		}
+		type.name = type.label.sanitizeClass();
+		type.name.println("nest(name).type.name="); // nest(name).type.name=QuestionsResponse
+		type.description = self.s_description;
+		("self.properties.first="+self.properties.first).println;
+		("self.properties.first.type="+self.properties.first.type).println;
+		
+		//("self.properties.s_type="+self.properties.s_type).println;
+		
+		("self.e_properties="+self.e_properties).println;
+		self.properties.first.handleObjectProperties(type);
+		
+		/*if (self.properties.has("items")){
+			for (prop in self.e_properties.properties.flatten){	
+				prop.handleObjectProperties(type);
+				type.required = true;
+			}
+		} 
+		if (self.properties.has("additionalProperties")){
+			"unhandled additional properties".println;
+		}
+		// ------------------------
+		
+	} else if (self.s_type == "array"){
+		return self.handleArray();
+		
+	} else if (self.s_type == "null"){
+		// check if is not itself a nested sequence 
+		name.println("nest(name="); // nest(name=items
+		self.properties.println("self.properties=");
+		return self.handleNull(); // handlin nullroot Sequence {$ref}
+	} else {
+		return self.simpleType();
+	}
+}*/
+
+// original below
 operation Any handleObjectProperties(object : RestMule!ObjectType) : Any {
 	var field;
 	switch(self.s_type.toLowerCase()){
@@ -123,6 +257,44 @@ operation Any handleObjectProperties(object : RestMule!ObjectType) : Any {
 	}
 }
 
+
+// customized below
+/*operation Any handleObjectProperties(object : RestMule!ObjectType) : Any {
+	var field;
+	switch(self.s_type.toLowerCase().println("self.s_type.toLowerCase()=")){
+	case "object":
+		("handleObjectProperties(object="+object+") -- CASE: object").println;
+		var p = self.nest();
+		if (p <> null ){
+			object.nestedObjects.add(p);
+		}
+	case "array":
+		("handleObjectProperties(object="+object+") -- CASE: array").println;
+		var a = self.handleArray();
+		if (a <> null ){
+			object.listFields.add(a);
+		}	
+	case "null":
+		("handleObjectProperties(object="+object+") -- CASE: null").println;
+		var e = self.handleNull();
+		if (e <> null){
+			if (e.instanceOf(RestMule!TFormattedString) 
+			or e.instanceOf(RestMule!UndefinedType)){
+				object.attributes.add(e);
+			} else if (e.instanceOf(RestMule!ObjectType)){
+				object.nestedObjects.add(e);
+			}
+		}
+	default:
+		("handleObjectProperties(object="+object+") -- CASE: default").println;
+		var f = self.simpleType();
+		if (f <> null){
+			object.attributes.add(f);
+		}
+	}
+}*/
+
+// original below
 operation Any handleArray() : RestMule!ListType{
 	("handleArray " + self.id) .println;
 	var type = new RestMule!ListType;
@@ -136,6 +308,26 @@ operation Any handleArray() : RestMule!ListType{
 	return type;
 }
 
+// customized below
+/*operation Any handleArray() : RestMule!ListType{
+	("handleArray " + self.id) .println;
+	var type = new RestMule!ListType;
+	type.label = self.id;
+	type.name = type.label.sanitizeClass();
+	type.description = self.s_description;
+
+	// TODO: check if the array contains objects
+	("handleArray() = self.id=" + self.id + "  self.e_items=" + self.e_items).println;
+
+	var p = self.e_items.nest(self.id);
+	p.println("p=");
+	p.label = type.label;
+	p.name = type.name.sanitizeFieldName();
+	type.elements.add(p);
+	return type;
+}*/
+
+// original below
 operation Any handleNull() : Any{
 	var field;
 	("handlin null" + self.id + " " + self.properties.collect(e|e.id)).println;
@@ -156,6 +348,29 @@ operation Any handleNull() : Any{
 		return field;
 	}
 }
+
+
+// customized below
+/*operation Any handleNull() : Any{
+	var field;
+	("handlin null" + self.id + " " + self.properties.collect(e|e.id)).println;
+	if (self.properties.has("enum")){
+		field = new RestMule!TFormattedString;
+		field.pattern = "(" + self.e_enum.children.collect(e|e.value).flatten.concat("|") + ")";
+		field.label = self.id;
+		field.name = field.label.sanitizeFieldName();
+		field.description = self.s_description;
+		return field;
+	} else if (self.properties.has("properties")){
+		return self.nest(self.id);
+	} else {
+		field = new RestMule!UndefinedType;
+		field.label = self.id;
+		field.name = field.label.sanitizeFieldName();
+		field.description = self.s_description;
+		return field;
+	}
+}*/
 
 operation Any simpleType() : Any {
 	return self.simpleType(self.id);

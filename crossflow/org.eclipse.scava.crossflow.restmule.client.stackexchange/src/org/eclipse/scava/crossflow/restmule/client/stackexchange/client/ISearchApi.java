@@ -70,7 +70,7 @@ public interface ISearchApi {
 	 * @return OK
 	 * @path /search/advanced 
 	 */		
-	IDataSet<Questions> getSearchAdvancedQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki);
+	IDataSet<QuestionsResponse> getSearchAdvancedQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String accepted, Integer answers, String body, String closed, String migrated, String notice, String nottagged, String q, String title, String url, Integer user, Integer views, String wiki);
 	
 	/**
 	 * null
@@ -124,6 +124,6 @@ public interface ISearchApi {
 	 * @return OK
 	 * @path /search 
 	 */		
-	IDataSet<Questions> getSearchQuestions(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged);
+	IDataSet<QuestionsResponse> getSearchQuestionsResponse(String tagged, String order, String max, String min, String sort, Integer fromdate, Integer todate, String filter, String callback, String site, String intitle, String nottagged);
 	
 }
