@@ -114,8 +114,6 @@ public abstract class AbstractPagination implements IPaged {
 			Object[] vals, 
 			END client )
 	{
-		System.out.println("TRAVERSING !!");
-		// TODO PN: CONTINUE HERE !!
 		try {
 			Integer start = this.start();
 			Integer increment = this.increment(); 
@@ -151,47 +149,48 @@ public abstract class AbstractPagination implements IPaged {
 				listVals[i] = vals[i];
 				listClass[i] = types[i];
 			}
-
-			System.out.println("this.hasPerIteration()="+this.hasPerIteration());
-			System.out.println("start="+start);
-			System.out.println("increment="+increment);
-			System.out.println("pagedParams="+pagedParams);
-			for (int i=0; i<listVals.length; i++) {
-				if ( listVals[i] != null)
-					System.out.println("listVals[" + i + "]=" + listVals[i].toString());				
-			}
 			
 			listClass[argsLength + pagedParams - 1] = Integer.class;
 			listVals[argsLength + pagedParams - 1] = start;
+			
 			Call<WRAP> call = RetrofitUtil.<WRAP, END>getCall(methodName, listClass, listVals, (END) client);
+			
 			call.enqueue(new Callback<WRAP>() {
+				
 				@Override public void onResponse(Call<WRAP> call, Response<WRAP> response) {
+					// remove filtered=total after first response
+					if ( vals[vals.length-3] != null && String.valueOf(vals[vals.length-3]).equals("total") ) {
+						vals[vals.length-3] = null;
+					}
+					
 					callback.handleTotal(response);
 					callback.handleResponse(response);
-					Integer limit = callback.totalIterations(response); // FIXME
-					System.out.println("traverse.onResponse(..).limit="+limit);
-					if (limit != null && limit != start ){
-						for (int iteration = start + increment; iteration <= limit; iteration = iteration + increment){
+					Integer limit = callback.totalIterations(response); //response.body().getTotalCount(); 
+
+					if (limit != null){
+						for (int iteration = start; iteration <= limit; iteration = iteration + increment){
 							try {
 								listVals[argsLength + pagedParams - 1] = iteration;
+										
 								Call<WRAP> pageCall = RetrofitUtil.<WRAP, END>
 									getCall(methodName, listClass, listVals, client);
 								pageCall.enqueue((Callback<WRAP>) callback);
+								
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 									| NoSuchMethodException | SecurityException e) {
 								e.printStackTrace();
 							}
 						}
 					}
-				}
-				@Override public void onFailure(Call<WRAP> call, Throwable t) { t.printStackTrace(); }
-			});
+				}// onResponse
+				
+				@Override public void onFailure(Call<WRAP> call, Throwable t) {
+					t.printStackTrace();
+				}// onFailure
 			
-			
+			}); // call.enqueue
 			
 		} catch (Exception e) { e.printStackTrace(); }
-		
-
 		
 		return callback.getDataset();		
 	}
@@ -210,7 +209,6 @@ public abstract class AbstractPagination implements IPaged {
 			Object[] vals, 
 			END client)
 	{
-		System.out.println("TRAVERSING PAGES !!!");
 		try {
 			Integer start = this.start();
 			Integer increment = this.increment(); 
@@ -251,22 +249,13 @@ public abstract class AbstractPagination implements IPaged {
 			listClass[argsLength + pagedParams - 1] = Integer.class;
 			listVals[argsLength + pagedParams - 1] = start;
 			
-			System.out.println("this.hasPerIteration()="+this.hasPerIteration());
-			System.out.println("start="+start);
-			System.out.println("increment="+increment);
-			System.out.println("pagedParams="+pagedParams);
-			for (int i=0; i<listVals.length; i++) {
-				if ( listVals[i] != null)
-					System.out.println("listVals[" + i + "]=" + listVals[i].toString());				
-			}
-
 			Call<List<T>> call = RetrofitUtil.<List<T>, END>getCall(methodName, listClass, listVals, (END) client);
 			call.enqueue(new Callback<List<T>>() {
 				@Override public void onResponse(Call<List<T>> call, Response<List<T>> response) {
 					((CALL) callback).handleTotal(response);
 					((CALL) callback).handleResponse(response);
 					Integer limit = callback.totalIterations(response);
-					System.out.println("traversePages.onResponse(..).limit="+limit);
+
 					if (limit != null && limit != start){
 						for (int iteration = start + increment; iteration <= limit; iteration = iteration + increment){
 							try {
@@ -289,7 +278,6 @@ public abstract class AbstractPagination implements IPaged {
 			e.printStackTrace();
 		}
 		IDataSet<T> callbackDataset = callback.getDataset();
-		System.out.println("callbackDataset.toString()="+callbackDataset.toString());
 		return callbackDataset;		
 	}
 	

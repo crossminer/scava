@@ -43,6 +43,7 @@ import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Interceptor.Chain;
 import okhttp3.Request;
+import okhttp3.Request.Builder;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -109,14 +110,13 @@ public abstract class AbstractInterceptor {
 				// session not set -- go to network to get session info
 				if (!session.isSet().get()) {
 					requestBuilder.cacheControl(FORCE_NETWORK).tag(TAG_FORCE_NETWORK);
-//					networkRequest = requestBuilder.url(request.url().toString().replace("filter=", "filter=total")).build();
 					networkRequest = requestBuilder.build();
-
 					response = chain.proceed(networkRequest);
+					
 				}
 				// session set -- try to use cache or go to network
 				else {
-
+			
 					if (cache != null) {
 						if (cache.isDistributed()) {
 							try {
@@ -134,13 +134,13 @@ public abstract class AbstractInterceptor {
 							}
 							LOG.info("Tried to get response from distributed CACHE but it is not there");
 							requestBuilder.cacheControl(FORCE_NETWORK).tag(TAG_FORCE_NETWORK);
-							networkRequest = requestBuilder.build();
+							networkRequest = getFilteredRequest(request, requestBuilder);
 							response = chain.proceed(networkRequest);
 
 						} else {
 							// local cache code
 							requestBuilder.tag(TAG_FROM_CACHE);
-							networkRequest = requestBuilder.build();
+							networkRequest = getFilteredRequest(request, requestBuilder);
 							response = chain.proceed(networkRequest);
 							if (response.cacheResponse() != null
 									&& response.cacheResponse().code() != HttpStatus.SC_GATEWAY_TIMEOUT) {
@@ -157,7 +157,7 @@ public abstract class AbstractInterceptor {
 						LOG.warn("Cache disabled, if this is not intended make sure you initialise the cache.");
 						// not in cache
 						requestBuilder.cacheControl(FORCE_NETWORK).tag(TAG_FORCE_NETWORK);
-						networkRequest = requestBuilder.build();
+						networkRequest = getFilteredRequest(request, requestBuilder);
 						response = chain.proceed(networkRequest);
 					}
 				}
@@ -215,32 +215,49 @@ public abstract class AbstractInterceptor {
 						remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
 					}
 					
-					// StackExchange
-					if ( jsonResponse instanceof JsonObject ) {
+					if ( headerReset.contentEquals("midnight") ) {
+						String todayMidnightPlusOneString = getMidnightPlusOne();
+						session.setRateLimitReset(todayMidnightPlusOneString);
+						
+					}// headerReset = midnight
+					
+					// ---- START: STACKEXCHANGE API-SPECIFIC (TODO: move to API-specific client?) -----
+					if ( response.networkResponse().header("Server") == null && jsonResponse instanceof JsonObject ) {
 						JsonObject jsonObject = (JsonObject) jsonResponse;
 						Set<Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+						
 						for (Map.Entry<String, JsonElement> entry : entrySet) {
-							if ( entry.getKey().equals("has_next") ) {
-								LOG.info("has_next=" + entry.getValue().getAsString() );
+							
+							if ( entry.getKey().equals("has_more") ) {
+								LOG.info("has_more=" + entry.getValue().getAsString() );
+								if ( !entry.getValue().getAsBoolean() ) {
+									LOG.info("NO MORE RESULTS --- UNSETTING SESSION.");
+									session.unset();
+								}
+								
 							} else if ( entry.getKey().equals(headerLimit) ) {
 								session.setRateLimit( entry.getValue().getAsString() );
+								
 							} else if ( entry.getKey().equals(headerRemaining) ) {
 								session.setRateLimitRemaining( entry.getValue().getAsString() );
-								LocalTime midnight = LocalTime.MIDNIGHT;
-								LocalDate today = LocalDate.now(ZoneId.of("UTC"));
-								LocalDateTime tomorrowMidnight = LocalDateTime.of(today, midnight).plusDays(1);
-								long todayMidnightPlusOne = tomorrowMidnight.toEpochSecond(ZoneOffset.UTC)+1;
-								System.out.println("todayMidnightPlusOne="+todayMidnightPlusOne);
-								session.setRateLimitReset(String.valueOf(todayMidnightPlusOne));
 								remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
-							} else if ( entry.getKey().equals("total") ) {
+								
+							} 
+							else if ( entry.getKey().equals("total") ) {
 								LOG.info("total=" + entry.getValue().getAsString() );
+								if ( session.getRateLimitRemaining().intValue() == -1 ) {
+									// assuming that there are calls remaining 
+									session.setRateLimitRemaining( entry.getValue().getAsString() );
+									session.setRateLimit( entry.getValue().getAsString() );
+									remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
+								}
+
 							}
 						}
 					} else if ( jsonResponse instanceof JsonArray ) {
 						// not required
-						System.out.println("Dealing with JsonArray response");
 					}
+					// ---- END: STACKEXCHANGE API-SPECIFIC -----
 
 					LOG.info(session);
 
@@ -257,6 +274,40 @@ public abstract class AbstractInterceptor {
 
 				LOG.info("SOMETHING WENT WRONG");
 				return null;
+			}
+
+			private String getMidnightPlusOne() {
+				LocalTime midnight = LocalTime.MIDNIGHT;
+				LocalDate today = LocalDate.now(ZoneId.of("UTC"));
+				LocalDateTime tomorrowMidnight = LocalDateTime.of(today, midnight).plusDays(1);
+				String todayMidnightPlusOneString = String.valueOf( tomorrowMidnight.toEpochSecond(ZoneOffset.UTC)+1);
+				return todayMidnightPlusOneString;
+			}
+
+			/**
+			 * Make sure to include asking for the total number of items on the first call to StackExchange API
+			 * 
+			 * @param request
+			 * @param requestBuilder
+			 * @return
+			 */
+			private Request getFilteredRequest(Request request, Builder requestBuilder) {
+				// ---- START: STACKEXCHANGE API-SPECIFIC -----
+				// TODO: move API-specific code from core to API-specific project interceptor
+				if ( request.url().toString().startsWith("https://api.stackexchange.com") ) {
+					
+					if ( request.url().toString().contains("filter=total") ) {
+						// remove total filter (added beforehand by the same method)
+						
+//						request = requestBuilder.url(request.url().toString().replace("filter=total", "").replace("page=2", "page=1")).build();
+						request = requestBuilder.url(request.url().toString().replace("filter=total", "")).build();
+						
+					}		
+				// ---- END: STACKEXCHANGE API-SPECIFIC -----
+				} else {
+					request = requestBuilder.build();						
+				}
+				return request;
 			}
 
 			private JsonElement peekResponse(Response response) throws IOException {
