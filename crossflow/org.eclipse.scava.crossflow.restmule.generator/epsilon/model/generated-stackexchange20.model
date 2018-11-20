@@ -12266,7 +12266,7 @@
       <responses code="406" description="access_token_compromised &#xc3;&#x192;&#xc2;&#xa2;&#xc3;&#xa2;&#xe2;&#x20ac;&#x161;&#xc2;&#xac;&#xc3;&#xa2;&#xe2;&#x201a;&#xac;&#xc5;&#x201c; 406 An access token is no longer believed to be secure, normally because it was used on a non-HTTPS call. The access token will be invalidated if this error is returned."/>
     </requests>
   </endpoints>
-  <pageWrapper name="Wrapper" totalLabel="total_count" incompleteLabel="incomplete_results">
+  <pageWrapper name="Wrapper" totalLabel="total_count" incompleteLabel="has_more">
     <items label="items"/>
   </pageWrapper>
   <ratePolicy>

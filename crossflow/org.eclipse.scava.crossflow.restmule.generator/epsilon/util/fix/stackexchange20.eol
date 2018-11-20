@@ -114,7 +114,7 @@ var items = new RestMule!ListType;
 items.label = "items";
 wrapper.items = items;
 wrapper.totalLabel= "total_count";
-wrapper.incompleteLabel = "incomplete_results";
+wrapper.incompleteLabel = "has_more";
 api.pageWrapper = wrapper;
 
 // ADD RATE & WRAPPER TO REQUESTS (FIXME)

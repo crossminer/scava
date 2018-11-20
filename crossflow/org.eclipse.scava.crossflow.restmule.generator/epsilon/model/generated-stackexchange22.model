@@ -205,7 +205,7 @@
       </responses>
     </requests>
   </endpoints>
-  <pageWrapper name="Wrapper" totalLabel="total_count" incompleteLabel="incomplete_results">
+  <pageWrapper name="Wrapper" totalLabel="total_count" incompleteLabel="has_more">
     <items label="items"/>
   </pageWrapper>
   <ratePolicy>
