@@ -19,6 +19,7 @@ import io.reactivex.annotations.NonNull;
 public class StackExchangePagination extends AbstractPagination{
 
 	private static StackExchangePagination instance;
+	private boolean isFirst = true;
 
 	public static StackExchangePagination get(){
 		if (instance == null){
@@ -43,6 +44,18 @@ public class StackExchangePagination extends AbstractPagination{
 			@NonNull Object[] vals, 
 			@NonNull END client)
 	{
+		
+		// --- START: MANUAL CODE ---
+		if ( isFirst ) {
+			// set filter=total on first call to retrieve total number of results
+			vals[vals.length-3] = "total";
+			isFirst = false;
+		} else {
+			// make sure that filter is unset
+			vals[vals.length-3] = null;
+		}
+		// --- END: MANUAL CODE ---
+		
 		return super.<T, WRAP, END, StackExchangeDataSet<T>, StackExchangeWrappedCallback>
 		traverse(new StackExchangeWrappedCallback<T, WRAP>(), methodName, types, vals, client);
 	}
@@ -55,6 +68,11 @@ public class StackExchangePagination extends AbstractPagination{
 	{
 		return super.<T, END, StackExchangeDataSet<T>, StackExchangeCallback<T>>
 		traversePages(new StackExchangeCallback<T>(), methodName, types, vals, client);		
+	}
+	
+	public static int getMaxResults() {
+		// FIXME add to fix model and generator
+		return 10000;
 	}
 
 }
