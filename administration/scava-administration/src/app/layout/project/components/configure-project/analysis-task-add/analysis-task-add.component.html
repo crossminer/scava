@@ -9,21 +9,8 @@
             <div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
-                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel"
+                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label"
                         required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
-                    <div *ngIf="labelInput.dirty && labelInput.invalid">
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.required">
-                            This field is required.
-                        </small>
-
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
-                            This field cannot be longer than 50 characters.
-                        </small>
-
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
-                            This field can only contain letters, digits.
-                        </small>
-                    </div>
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label" for="type">Task type</label>
@@ -36,7 +23,7 @@
                     <label class="form-control-label">Start date</label>
                     <mat-form-field>
                         <input matInput name="startDate" [(ngModel)]="executionTask.startDate" [max]="maxStartDate"
-                            [matDatepicker]="startDate">
+                            [matDatepicker]="startDate" required>
                         <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
                         <mat-datepicker #startDate></mat-datepicker>
                     </mat-form-field>
@@ -45,7 +32,7 @@
                     <label class="form-control-label">End date</label>
                     <mat-form-field>
                         <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="endDate" [(ngModel)]="executionTask.endDate"
-                            [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
+                            required [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDate">
                         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
                         <mat-datepicker #endDate></mat-datepicker>
                     </mat-form-field>
@@ -54,7 +41,7 @@
                 <div class="col-md-12 form-group">
                     <label class="form-control-label">Metric Providers</label>
                     <br />
-                    <mat-radio-group name="toto" class="example-radio-group" [(ngModel)]="mpoption">
+                    <mat-radio-group name="toto" class="example-radio-group" required [(ngModel)]="mpoption">
                         <mat-radio-button value="mpoption-all" class="example-radio-button" (change)="$event ? masterToggle() : null">
                             All metrics
                         </mat-radio-button>
