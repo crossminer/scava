@@ -20,14 +20,6 @@
             class="org.eclipse.scava.plugin.eclipse.handlers.ApiDocumentationHandler"
             commandId="org.eclipse.scava.plugin.popups.scava.command.apidocumentation">
       </handler>
-      <handler
-            class="org.eclipse.scava.plugin.ui.toolbar.MetricHandler"
-            commandId="org.eclipse.scava.plugin.commands.metric">
-      </handler>
-      <handler
-            class="org.eclipse.scava.plugin.newcommunicationdemo.SearchArtifactMenuActionHandler"
-            commandId="org.eclipse.scava.plugin.commands.searchArtifact">
-      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -65,16 +57,6 @@
                   commandId="org.eclipse.scava.plugin.popups.scava.command.apidocumentation"
                   label="Request API documentation or Q&amp;A posts"
                   mnemonic="d">
-            </command>
-            <command
-                  commandId="org.eclipse.scava.plugin.commands.metric"
-                  id="org.eclipse.scava.plugin.menus.metricCommand"
-                  label="Metric Interface">
-            </command>
-            <command
-                  commandId="org.eclipse.scava.plugin.commands.searchArtifact"
-                  id="org.eclipse.scava.plugin.menus.searchArtifact"
-                  label="Search artifact">
             </command>
          </menu>
       </menuContribution>
