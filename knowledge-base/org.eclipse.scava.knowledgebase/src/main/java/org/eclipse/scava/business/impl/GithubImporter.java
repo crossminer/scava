@@ -64,6 +64,7 @@ import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
+import org.eclipse.scava.business.model.Tag;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.RepositoryId;
@@ -103,11 +104,11 @@ public class GithubImporter implements IImporter {
 	public Artifact importProject(String artId) throws IOException  {
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
 		if (checkRepo != null){
-			logger.debug("\t" + artId + " already in DB");
+			logger.info("\t" + artId + " already in DB");
 			return checkRepo;
 			
 		}
-		logger.debug("Importing project: " + artId);
+		logger.info("Importing project: " + artId);
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(token);
 		RepositoryService repoService = new RepositoryService(client);
@@ -149,11 +150,13 @@ public class GithubImporter implements IImporter {
 			} catch (IOException | XmlPullParserException | InterruptedException e) {
 				logger.error("Error getting dependencies: "  + e.getMessage());
 			}
-			
+//			if(p.getDependencies() != null && p.getDependencies().size()>8) {
 			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
 			storeGithubUser(p.getStarred(), p.getFullName());
 			projectRepository.save(p);
 		logger.debug("Imported project: " + artId);
+//			}
+
 		return p;
 	}
 	@Override
@@ -181,6 +184,29 @@ public class GithubImporter implements IImporter {
 		}
 	}
 
+	public List<Tag> getTags(String owner, String repo) throws IOException {
+		List<Tag> results = new ArrayList<>();
+		if (getRemainingResource("core") == 0)
+			waitApiCoreRate();
+		URL url = new URL("https://api.github.com/repos/" +
+						owner + "/" +
+						repo + "/topics?access_token=" + token);
+		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setRequestProperty("Accept", "application/vnd.github.mercy-preview+json");	
+		connection.connect();
+		InputStream is = connection.getInputStream();
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
+		String jsonText = readAll(bufferReader);
+		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
+		JSONArray topics = (JSONArray) obj.get("names"); 
+		for (Object object : topics) {
+			Tag tag = new Tag();
+			tag.setTag(object.toString());
+			results.add(tag);
+		}
+		return results;
+	}
+	
 	private List<Stargazers> getStargazers(Repository rep) throws IOException {
 		List<Stargazers> results = new ArrayList<>();
 		int page = 1;

@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IClusterCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -59,20 +59,20 @@ public class HierarchicalClulsterCalulator implements IClusterCalculator {
 		return result;
 	}
 	
-	@Override
-	public List<Cluster> calculateCluster(ISimilarityCalculator sm, com.apporiented.algorithm.clustering.Cluster hCluster) {
-
-		List<Cluster> result = new ArrayList<>();
-		List<com.apporiented.algorithm.clustering.Cluster> k = getClustersWithThreshold(hCluster, THRESHOLD);
-		for (com.apporiented.algorithm.clustering.Cluster cluster : k) {
-			Cluster clu = new Cluster();
-			clu.setArtifacts(new ArrayList<Artifact>());
-			getLeaf(cluster).forEach(z ->
-					clu.getArtifacts().add(arifactRepository.findOne(z)));
-			result.add(clu);
-		}
-		return result;
-	}
+//	@Override
+//	public List<Cluster> calculateCluster(ISimilarityCalculator sm, com.apporiented.algorithm.clustering.Cluster hCluster) {
+//
+//		List<Cluster> result = new ArrayList<>();
+//		List<com.apporiented.algorithm.clustering.Cluster> k = getClustersWithThreshold(hCluster, THRESHOLD);
+//		for (com.apporiented.algorithm.clustering.Cluster cluster : k) {
+//			Cluster clu = new Cluster();
+//			clu.setArtifacts(new ArrayList<Artifact>());
+//			getLeaf(cluster).forEach(z ->
+//					clu.getArtifacts().add(arifactRepository.findOne(z)));
+//			result.add(clu);
+//		}
+//		return result;
+//	}
 	
 	
 	private List<String> getLeaf(com.apporiented.algorithm.clustering.Cluster cluster){
@@ -85,14 +85,15 @@ public class HierarchicalClulsterCalulator implements IClusterCalculator {
 		return result;
 	}
 	
-	@Override
-	public com.apporiented.algorithm.clustering.Cluster getHierarchicalCluster(
+	private com.apporiented.algorithm.clustering.Cluster getHierarchicalCluster(
 			ISimilarityCalculator valuedRelationService) {
 		List<String> names = arifactRepository.findAll().
 				stream().map(n -> n.getId()).collect(Collectors.toList());
+		logger.info("Artifacts are loaded");
 		String[] namesString = new String[names.size()];
 		namesString = names.toArray(namesString);
 		double[][] distances = getSimilarityMatrix(valuedRelationService);
+		logger.info("Similarity Matrix is loaded");
 		ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
 		return alg.performClustering(distances, namesString,
 				new SingleLinkageStrategy());
