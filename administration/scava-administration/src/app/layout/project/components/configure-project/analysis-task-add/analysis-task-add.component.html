@@ -9,21 +9,8 @@
             <div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
-                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel"
+                    <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label"
                         required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
-                    <div *ngIf="labelInput.dirty && labelInput.invalid">
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.required">
-                            This field is required.
-                        </small>
-
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
-                            This field cannot be longer than 50 characters.
-                        </small>
-
-                        <small class="form-text text-danger" *ngIf="labelInput.errors.pattern">
-                            This field can only contain letters, digits.
-                        </small>
-                    </div>
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label" for="type">Task type</label>
