@@ -129,6 +129,7 @@ public abstract class AbstractSession implements ISession {
 		rateLimit = -1;
 		rateLimitRemaining.set(-1);
 		rateLimitReset = null;
+		key = null;
 		isSet.set(false);
 	}
 
@@ -268,6 +269,7 @@ public abstract class AbstractSession implements ISession {
 		this.type = session.type();
 		this.isHeader = session.isHeader();
 		this.hash = session.hash();
+		this.key = session.key();
 
 		this.token = session.token(permission);
 	}
@@ -276,7 +278,6 @@ public abstract class AbstractSession implements ISession {
 		LOG.trace("Loading session " + id);
 		try {
 			ISession session = (ISession) clazz.getMethod("get", String.class).invoke(null, id);
-			System.out.println("session.getRateLimitRemaining()="+session.getRateLimitRemaining());
 			return session;
 		} catch (Exception e) {
 			LOG.error(e.getClass().getName() + e.getMessage());

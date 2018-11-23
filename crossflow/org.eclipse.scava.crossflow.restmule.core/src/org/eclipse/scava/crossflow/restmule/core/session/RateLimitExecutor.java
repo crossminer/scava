@@ -109,7 +109,7 @@ public class RateLimitExecutor extends ThreadPoolExecutor {
 				} catch (InterruptedException e) {
 					LOG.error(e.getMessage());
 				}
-				// awaitToSet();
+//				 awaitToSet();
 				awaiting.set(false);
 				LOG.info("RESETING COUNTER");
 				remainingRequestCounter.set(getLimiter().getRateLimitRemaining().get());
@@ -128,6 +128,20 @@ public class RateLimitExecutor extends ThreadPoolExecutor {
 			}
 		} else {
 			LOG.info("LIMITER HAS NOT YET BEEN SET");
+			remainingRequestCounter.set(1);
+			getLimiter().setRateLimit("-1");
+			getLimiter().resetCacheCounter();
+			dispatchCounter.set(1);
+			//getLimiter().getRateLimit(), remainingRequestCounter.get(),
+//			getLimiter().cacheCounter().get(), dispatchCounter.get()
+			
+			remainingRequestCounter.incrementAndGet();
+
+			//			awaitToSet();
+//			remainingRequestCounter.set(1);
+//			dispatchCounter.set(0);
+//			awaiting.set(true);
+//			return;
 		}
 		remainingRequestCounter.decrementAndGet();
 		logCounterDebug("beforeExec");

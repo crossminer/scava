@@ -25,6 +25,7 @@ public interface ISession extends IRateLimiter {
 	Auth type();
 	String hash();
 	String id();
+	String key();
 	
 	boolean isCacheable();
 	Cache cache();
@@ -40,6 +41,7 @@ public interface ISession extends IRateLimiter {
 		Auth(String header){
 			this.header = header;
 		}
+		private String key;
 		
 		Headers header(String token){
 			switch (this){
