@@ -54,8 +54,11 @@ public class StackExchangeWrappedCallback<D,R extends IWrap<D>> extends Abstract
 	
 	@Override
 	public Integer totalIterations(Response<R> response) { // FIXME
-		Integer totalNumberOfPages = (response.body().getTotalCount() + Integer.valueOf(StackExchangePropertiesUtil.get(PER_ITERATION_VALUE)) - 1) / Integer.valueOf(StackExchangePropertiesUtil.get(PER_ITERATION_VALUE));
-		return totalNumberOfPages;
+		if ( response.body().getTotalCount() == null ) {
+			System.err.println("Cannot determine total number of iterations from non-existing total count.");
+			return -1;
+		}
+		return (response.body().getTotalCount() + Integer.valueOf(StackExchangePropertiesUtil.get(PER_ITERATION_VALUE)) - 1) / Integer.valueOf(StackExchangePropertiesUtil.get(PER_ITERATION_VALUE));
 	}
 	
 }

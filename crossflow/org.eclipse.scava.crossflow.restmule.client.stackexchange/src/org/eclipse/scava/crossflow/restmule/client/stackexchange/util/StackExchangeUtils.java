@@ -76,7 +76,7 @@ public class StackExchangeUtils {
 
 	}
 
-	private static void setup() {
+	protected static void setup() {
 
 		if (publicSession == null && basicSession == null) {
 
@@ -91,16 +91,13 @@ public class StackExchangeUtils {
 				client_secret = PrivateProperties.get(CLIENT_SECRET);
 				access_token = PrivateProperties.get(ACCESS_TOKEN);
 
-//				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-//						.createWithBasicAuth(key, access_token); // TODO activate this when token obtained via https server running on the same domain as this client
+			
+				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
+					.createWithBasicAuth(key, access_token); // this will only work if token has manually been obtained via https server running on the same domain as api client
 				
 				basicSession = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-						.createWithBasicAuth(key);
+					.createWithBasicAuth(key);
 				
-//				OAuthSessionWithToken = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-//						.createWithBasicAuth(username, token);
-//				basicSession = org.eclipse.scava.crossflow.restmule.client.stackexchange.session.StackExchangeSession
-//						.createWithBasicAuth(username, password);
 				if ( key != null && !key.isEmpty() )
 					LOG.info("set up authentication from properties file with key: " + key); // TODO: remove this (should not be logged !)
 				if ( access_token != null && !access_token.isEmpty() )

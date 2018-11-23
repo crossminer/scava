@@ -39,6 +39,7 @@ public class StackExchangeSession extends AbstractSession {
 	}
 
 	private static void addSession(StackExchangeSession session) {
+		session.isHeader = false;
 		StackExchangeSession.getSessions().put(session.id(), session);
 	}
 	
@@ -54,23 +55,11 @@ public class StackExchangeSession extends AbstractSession {
 		return session;
 	}
 
-//	public static ISession createWithBasicAuth(String username, String password) {
-//		StackExchangeSession session = new StackExchangeSession(username, password);
-//		StackExchangeSession.addSession(session);
-//		return session;
-//	}
-	
 	public static ISession createWithBasicAuth(String key, String access_token) {
 		StackExchangeSession session = new StackExchangeSession(key, access_token);
 		StackExchangeSession.addSession(session);
 		return session;
 	}
-
-//	public static ISession createWithBasicAuth(String token) {
-//		StackExchangeSession session = new StackExchangeSession(token);
-//		StackExchangeSession.addSession(session);
-//		return session;
-//	}
 	
 	public static ISession createWithBasicAuth(String key) {
 		StackExchangeSession session = new StackExchangeSession(key);
@@ -92,26 +81,18 @@ public class StackExchangeSession extends AbstractSession {
 	
 	private StackExchangeSession() {
 		super(); 
+		isHeader = false;
 	}
-
-//	private StackExchangeSession(String username, String password) {
-//		super(username, password);
-//	}
 	
 	private StackExchangeSession(String key, String access_token) {
+		super(); 
 		setBasicAccessKeyInQuery(key);
 		setBasicAccessTokenInQuery(access_token);
-		this.id = generateRandomId();
 	}
 
-//	private StackExchangeSession(String token) {
-//		super(token);
-//	}
-	
 	private StackExchangeSession(String key) {
-		//super(key);
+		super(); 
 		setBasicAccessKeyInQuery(key);
-		this.id = generateRandomId();
 	}
 
 	private StackExchangeSession(String clientId, 
@@ -119,6 +100,7 @@ public class StackExchangeSession extends AbstractSession {
 			List<String> scopes,
 			String username	) {
 		super();
+		isHeader = false;
 		setOAuthToken(ACCESS_TOKEN_URL, AUTHORIZATION_URL, clientId, clientSecret, scopes, username);
 	}
 	
@@ -187,6 +169,11 @@ public class StackExchangeSession extends AbstractSession {
 			StackExchangeSession.addSession(stackexchangeSession);
 			return stackexchangeSession;
 		}	
+	}
+
+	@Override
+	public String key() {
+		return key;
 	}
 	
 
