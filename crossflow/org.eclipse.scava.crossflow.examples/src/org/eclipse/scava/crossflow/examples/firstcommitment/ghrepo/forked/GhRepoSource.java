@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchRepositories;
-import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.test.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 
 public class GhRepoSource extends GhRepoSourceBase {

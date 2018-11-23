@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Repo;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode;
-import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.test.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IData;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
