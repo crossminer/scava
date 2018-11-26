@@ -24,12 +24,16 @@ public abstract class EmptySinkBase implements ResultsPublisherConsumer, Task{
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -65,6 +69,7 @@ public abstract class EmptySinkBase implements ResultsPublisherConsumer, Task{
 		workflow.setTaskUnblocked(this);
 		
 	}
+	
 	
 	
 }

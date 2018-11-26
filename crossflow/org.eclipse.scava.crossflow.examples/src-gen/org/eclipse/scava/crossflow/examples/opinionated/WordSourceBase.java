@@ -22,12 +22,16 @@ public abstract class WordSourceBase implements Task{
 	
 	protected Words words;
 	
-	public void setWords(Words words) {
+	protected void setWords(Words words) {
 		this.words = words;
 	}
 	
-	public Words getWords() {
+	private Words getWords() {
 		return words;
+	}
+	
+	public void sendToWords(Word word) {
+		getWords().send(word, this.getClass().getName());
 	}
 	
 	
@@ -54,5 +58,6 @@ public abstract class WordSourceBase implements Task{
 	}
 	
 	public abstract void produce();
+	
 	
 }

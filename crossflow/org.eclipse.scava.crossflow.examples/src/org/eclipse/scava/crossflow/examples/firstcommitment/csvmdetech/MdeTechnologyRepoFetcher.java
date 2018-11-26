@@ -6,12 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordTuple;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Repo;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode;
-import org.eclipse.scava.crossflow.restmule.client.github.test.util.GitHubUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IData;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
@@ -58,7 +56,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersTuple.setField0(extensionKeywordTuple.field0);
 				extensionKeywordStargazersTuple.setField1(result.getRepository().getHtmlUrl());
 				extensionKeywordStargazersTuple.setField2(getRepoStargazerCount(extensionKeywordStargazersTuple.getField1()));				
-				getMdeTechnologyRepoEntries().send( extensionKeywordStargazersTuple, this.getClass().getName() );
+				sendToMdeTechnologyRepoEntries(extensionKeywordStargazersTuple);
 				
 				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionKeywordStargazersTuple.getField1() + " (search " + searchCode.percentage() + "% completed)");
 			})

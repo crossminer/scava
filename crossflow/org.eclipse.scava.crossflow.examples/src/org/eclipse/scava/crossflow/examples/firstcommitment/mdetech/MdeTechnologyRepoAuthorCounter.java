@@ -70,8 +70,7 @@ public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCount
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(authorCount); // repository unique author count
 				
-				getMdeTechnologyRepoAuthorCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple,this.getClass().getName());
-			
+				sendToMdeTechnologyRepoAuthorCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			}
 			
 		}

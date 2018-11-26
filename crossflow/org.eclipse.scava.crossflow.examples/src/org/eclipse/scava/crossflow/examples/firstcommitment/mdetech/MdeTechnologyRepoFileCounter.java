@@ -64,8 +64,7 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(fileCount); // repository file count
 				
-				getMdeTechnologyRepoFileCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple,this.getClass().getName());
-			
+				sendToMdeTechnologyRepoFileCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			}
 			
 		}

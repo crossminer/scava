@@ -74,9 +74,9 @@ public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField2(extensionKeywordStargazersTuple.field2); // repository number of stars
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField3(clonedRepoLocation); // cloned repository local path
 
-				getMdeTechnologyClonedRepoEntriesForAuthorCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
-				getMdeTechnologyClonedRepoEntriesForFileCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
-				getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send(extensionKeywordStargazersRemoteRepoUrlTuple,this.getClass().getName());
+				sendToMdeTechnologyClonedRepoEntriesForAuthorCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
+				sendToMdeTechnologyClonedRepoEntriesForFileCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
+				sendToMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
 
 			}
 			

@@ -9,10 +9,6 @@ import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.MdeTechnologyCsvExample;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.MdeTechnologyRepoCloner;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
 public class MdeTechnologyRepoCloner extends MdeTechnologyRepoClonerBase {
@@ -71,9 +67,9 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField2(extensionKeywordStargazersTuple.field2); // repository number of stars
 				extensionKeywordStargazersRemoteRepoUrlTuple.setField3(clonedRepoLocation); // cloned repository local path
 
-				getMdeTechnologyClonedRepoEntriesForAuthorCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName() );
-				getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName() );
-				getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName());
+				sendToMdeTechnologyClonedRepoEntriesForAuthorCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
+				sendToMdeTechnologyClonedRepoEntriesForFileCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
+				sendToMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
 
 			}
 			

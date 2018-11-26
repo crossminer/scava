@@ -14,12 +14,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.apache.commons.csv.CSVRecord;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.MdeTechnologyRepoFileCounter;
-import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
-
 public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBase {
 	
 protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
@@ -70,8 +64,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(fileCount); // repository file count
 				
-				getMdeTechnologyRepoFileCountEntries().send( extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple, this.getClass().getName() );
-			
+				sendToMdeTechnologyRepoFileCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			}
 			
 		}

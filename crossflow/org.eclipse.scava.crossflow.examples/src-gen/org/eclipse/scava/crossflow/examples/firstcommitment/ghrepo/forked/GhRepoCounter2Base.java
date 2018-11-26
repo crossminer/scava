@@ -22,24 +22,32 @@ public abstract class GhRepoCounter2Base implements GhReposConsumer, Task{
 	
 	protected ResultsPublisher2 resultsPublisher2;
 	
-	public void setResultsPublisher2(ResultsPublisher2 resultsPublisher2) {
+	protected void setResultsPublisher2(ResultsPublisher2 resultsPublisher2) {
 		this.resultsPublisher2 = resultsPublisher2;
 	}
 	
-	public ResultsPublisher2 getResultsPublisher2() {
+	private ResultsPublisher2 getResultsPublisher2() {
 		return resultsPublisher2;
+	}
+	
+	public void sendToResultsPublisher2(Result result) {
+		getResultsPublisher2().send(result, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -75,6 +83,7 @@ public abstract class GhRepoCounter2Base implements GhReposConsumer, Task{
 		workflow.setTaskUnblocked(this);
 		
 	}
+	
 	
 	
 }

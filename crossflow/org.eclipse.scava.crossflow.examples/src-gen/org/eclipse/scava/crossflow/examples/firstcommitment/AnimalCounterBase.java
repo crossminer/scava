@@ -56,4 +56,5 @@ public abstract class AnimalCounterBase implements AnimalsConsumer, Task{
 	}
 	
 	
+	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchRepositories;
-import org.eclipse.scava.crossflow.restmule.client.github.test.util.GitHubUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 
 public class GhRepoSource extends GhRepoSourceBase {
@@ -41,7 +41,7 @@ public class GhRepoSource extends GhRepoSourceBase {
 					ghRepo.setRepoUrl(repo.getUrl());
 					ghRepoUrls.add(ghRepo.getRepoUrl());
 					// System.out.println("ADDED: " + ghRepo.getRepoUrl());
-					getGhRepos().send(ghRepo, this.getClass().getName());
+					sendToGhRepos(ghRepo);
 					// System.out.println("SENT: " + ghRepo.getRepoUrl());
 					// System.out.println(searchRepositories.status() + " --- "
 					// + searchRepositories.percentage() + "% completed.\n");

@@ -25,12 +25,16 @@ public abstract class MdeTechnologyRepoAuthorCountCsvSinkBase implements MdeTech
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -68,4 +72,11 @@ public abstract class MdeTechnologyRepoAuthorCountCsvSinkBase implements MdeTech
 	}
 	
 	
+	
+	// CSV file writer(s)
+	protected CsvWriter writer0 = new CsvWriter("csvs/MDE-authors.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
+	
+	public void flushAll() {
+		writer0.flush();
+	}
 }

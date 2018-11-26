@@ -22,24 +22,32 @@ public abstract class MdeTechnologySourceBase implements Task{
 	
 	protected MdeTechnologies mdeTechnologies;
 	
-	public void setMdeTechnologies(MdeTechnologies mdeTechnologies) {
+	protected void setMdeTechnologies(MdeTechnologies mdeTechnologies) {
 		this.mdeTechnologies = mdeTechnologies;
 	}
 	
-	public MdeTechnologies getMdeTechnologies() {
+	private MdeTechnologies getMdeTechnologies() {
 		return mdeTechnologies;
+	}
+	
+	public void sendToMdeTechnologies(ExtensionKeywordTuple extensionKeywordTuple) {
+		getMdeTechnologies().send(extensionKeywordTuple, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -65,5 +73,6 @@ public abstract class MdeTechnologySourceBase implements Task{
 	}
 	
 	public abstract void produce();
+	
 	
 }

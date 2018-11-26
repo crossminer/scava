@@ -22,12 +22,16 @@ public abstract class AnimalSourceBase implements Task{
 	
 	protected Animals animals;
 	
-	public void setAnimals(Animals animals) {
+	protected void setAnimals(Animals animals) {
 		this.animals = animals;
 	}
 	
-	public Animals getAnimals() {
+	private Animals getAnimals() {
 		return animals;
+	}
+	
+	public void sendToAnimals(Animal animal) {
+		getAnimals().send(animal, this.getClass().getName());
 	}
 	
 	
@@ -54,5 +58,6 @@ public abstract class AnimalSourceBase implements Task{
 	}
 	
 	public abstract void produce();
+	
 	
 }

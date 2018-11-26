@@ -1,21 +1,16 @@
 package org.eclipse.scava.crossflow.examples.acknowledgement;
 
-import javax.jms.Connection;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQMessageConsumer;
 import org.apache.activemq.ActiveMQSession;
-import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.apache.activemq.util.Callback;
 
 public class AcknowledgementExample {
 

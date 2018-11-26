@@ -1,6 +1,5 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

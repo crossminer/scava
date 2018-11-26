@@ -22,24 +22,32 @@ public abstract class GhRepoSourceBase implements Task{
 	
 	protected GhRepos ghRepos;
 	
-	public void setGhRepos(GhRepos ghRepos) {
+	protected void setGhRepos(GhRepos ghRepos) {
 		this.ghRepos = ghRepos;
 	}
 	
-	public GhRepos getGhRepos() {
+	private GhRepos getGhRepos() {
 		return ghRepos;
+	}
+	
+	public void sendToGhRepos(GhRepo ghRepo) {
+		getGhRepos().send(ghRepo, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -65,5 +73,6 @@ public abstract class GhRepoSourceBase implements Task{
 	}
 	
 	public abstract void produce();
+	
 	
 }

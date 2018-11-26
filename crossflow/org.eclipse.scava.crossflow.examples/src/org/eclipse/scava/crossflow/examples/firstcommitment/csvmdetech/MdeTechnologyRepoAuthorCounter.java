@@ -13,9 +13,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.ExtensionKeywordStargazersRemoteRepoUrlTuple;
-import org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech.MdeTechnologyRepoAuthorCounter;
 
 public class MdeTechnologyRepoAuthorCounter extends MdeTechnologyRepoAuthorCounterBase {
 	
@@ -69,8 +66,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(authorCount); // repository unique author count
 				
-				getMdeTechnologyRepoAuthorCountEntries().send( extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple, this.getClass().getName() );
-			
+				sendToMdeTechnologyRepoAuthorCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 			}
 			
 		}

@@ -23,7 +23,7 @@ public class AnimalSource extends AnimalSourceBase {
 			public void run() {
 				Animal animal = new Animal();
 				animal.setName(animals.get(ThreadLocalRandom.current().nextInt(animals.size())));
-				getAnimals().send(animal,this.getClass().getName());
+				sendToAnimals(animal);
 				runs ++;
 				if (runs >= 10) timer.cancel();
 			}

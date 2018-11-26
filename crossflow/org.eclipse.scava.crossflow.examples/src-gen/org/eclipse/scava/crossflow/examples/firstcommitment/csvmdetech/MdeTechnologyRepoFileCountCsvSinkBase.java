@@ -25,12 +25,16 @@ public abstract class MdeTechnologyRepoFileCountCsvSinkBase implements MdeTechno
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -68,4 +72,11 @@ public abstract class MdeTechnologyRepoFileCountCsvSinkBase implements MdeTechno
 	}
 	
 	
+	
+	// CSV file writer(s)
+	protected CsvWriter writer0 = new CsvWriter("csvs/MDE-files.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
+	
+	public void flushAll() {
+		writer0.flush();
+	}
 }

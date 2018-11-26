@@ -162,6 +162,13 @@ public class GitHubSession extends AbstractSession {
 			return githubSession;
 		}	
 	}
+
+	//FIXME is this fixed by the new generator? if so please push the updated code
+	@Override
+	public String key() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

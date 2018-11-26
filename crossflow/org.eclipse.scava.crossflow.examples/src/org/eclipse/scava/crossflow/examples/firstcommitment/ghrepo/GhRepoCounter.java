@@ -44,7 +44,7 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				r.setRepos(1);
 				r.setFiles(0);
 				r.setAuthors(0);
-				getResultsPublisher().send(r,this.getClass().getName());
+				sendToResultsPublisher(r);
 				
 				// send output to eclipse:
 				Object[] ret = new Object[4];
@@ -52,7 +52,7 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				ret[1] = 1;
 				ret[2] = 0;
 				ret[3] = 0;
-				getResultsBroadcaster().send(ret);
+				sendToResultsBroadcaster(ret);
 			}
 
 		}

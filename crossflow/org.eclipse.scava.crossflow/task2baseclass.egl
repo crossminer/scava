@@ -31,12 +31,16 @@ public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t
 	[%for (s in t.output) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	
-	public void set[%=s.name%]([%=s.name%] [%=s.name.ftlc()%]) {
+	protected void set[%=s.name%]([%=s.name%] [%=s.name.ftlc()%]) {
 		this.[%=s.name.ftlc()%] = [%=s.name.ftlc()%];
 	}
 	
-	public [%=s.name%] get[%=s.name%]() {
+	private [%=s.name%] get[%=s.name%]() {
 		return [%=s.name.ftlc()%];
+	}
+	
+	public void sendTo[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+		get[%=s.name%]().send([%=s.type.name.ftlc()%], this.getClass().getName());
 	}
 	
 	[%}%]
@@ -45,12 +49,16 @@ public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	[%}%]

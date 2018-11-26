@@ -22,24 +22,32 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 	
 	protected MdeTechnologyRepoEntries mdeTechnologyRepoEntries;
 	
-	public void setMdeTechnologyRepoEntries(MdeTechnologyRepoEntries mdeTechnologyRepoEntries) {
+	protected void setMdeTechnologyRepoEntries(MdeTechnologyRepoEntries mdeTechnologyRepoEntries) {
 		this.mdeTechnologyRepoEntries = mdeTechnologyRepoEntries;
 	}
 	
-	public MdeTechnologyRepoEntries getMdeTechnologyRepoEntries() {
+	private MdeTechnologyRepoEntries getMdeTechnologyRepoEntries() {
 		return mdeTechnologyRepoEntries;
+	}
+	
+	public void sendToMdeTechnologyRepoEntries(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
+		getMdeTechnologyRepoEntries().send(extensionKeywordStargazersTuple, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	
@@ -75,6 +83,7 @@ public abstract class MdeTechnologyRepoFetcherBase implements MdeTechnologiesCon
 		workflow.setTaskUnblocked(this);
 		
 	}
+	
 	
 	
 }
