@@ -1,59 +1,26 @@
 <div style="padding-top:20px;">
     <h2>Register project</h2>
     <hr />
-
-    <form [formGroup]="form" role="form" #addProjectForm="ngForm" name="addProjectForm" novalidate (ngSubmit)="save()">
+    <form [formGroup]="form" role="form" #createProjectForm="ngForm" name="createProjectForm" novalidate (ngSubmit)="save()">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="form-group">
-                    <label for="projectName">Project Name</label>
-                    <input type="text" class="form-control" id="projectName" name="projectName" [(ngModel)]="project.name"
-                        [ngModelOptions]="{standalone: true}" aria-describedby="projectName" placeholder="E.g. CROSSMINER"
-                        #nameInput="ngModel" required minlength="1" maxlength="50">
-                    <div *ngIf="nameInput.dirty && nameInput.invalid">
-                        <small class="form-text text-danger" *ngIf="nameInput.errors.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="nameInput.errors.maxlength">
-                            This field cannot be longer than 50 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="nameInput.errors.pattern">
-                            This field can only contain letters, digits.
-                        </small>
-                    </div>
+                    <label for="name">Project Name</label>
+                    <input type="text" class="form-control" id="name" name="name" formControlName="name"
+                        aria-describedby="name" placeholder="E.g. CROSSMINER" required minlength="1" maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description" [(ngModel)]="project.description"
-                        [ngModelOptions]="{standalone: true}" rows="4" placeholder="E.g." #descriptionInput="ngModel"
-                        required minlength="1" maxlength="100"></textarea>
-                    <div *ngIf="descriptionInput.dirty && descriptionInput.invalid">
-                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.maxlength">
-                            This field cannot be longer than 100 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="descriptionInput.errors.pattern">
-                            This field can only contain letters, digits.
-                        </small>
-                    </div>
+                    <textarea class="form-control" id="description" name="description" formControlName="description"
+                        rows="4" placeholder="E.g." required minlength="1" maxlength="250"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="homePage">Home Page</label>
-                    <input type="text" class="form-control" id="homePage" name="homePage" [(ngModel)]="project.homePage"
-                        [ngModelOptions]="{standalone: true}" ngModel placeholder="E.g. www.crossminer.org"
-                        #homepageInput="ngModel" required minlength="1" maxlength="100">
-                    <div *ngIf="homepageInput.dirty && homepageInput.invalid">
-                        <small class="form-text text-danger" *ngIf="homepageInput.errors.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="homepageInput.errors.maxlength">
-                            This field cannot be longer than 50 characters.
-                        </small>
-                    </div>
+                    <input type="text" class="form-control" id="homePage" name="homePage" formControlName="homePage"
+                        placeholder="E.g. www.crossminer.org" required minlength="1" maxlength="100">
                 </div>
-                <div class="form-group"> <label for="informationSources">Information Sources</label>
+                <div class="form-group">
+                    <label for="informationSources">Information Sources</label>
                     <br />
                     <small>Click the button below to add new information sources to the project.</small>
                     <br />
@@ -204,12 +171,12 @@
             </div>
         </div>
         <hr />
-        <div>
+        <div class="form-group">
             <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
                 <i class="fa fa-ban"></i>&nbsp;
                 <span>Cancel</span>
             </button>&nbsp;
-            <button type="submit" [disabled]="addProjectForm.form.invalid || isSaving" class="btn btn-outline-dark btn-sm">
+            <button type="submit" [disabled]="createProjectForm.form.invalid || isSaving || !infosSouceExist" class="btn btn-outline-dark btn-sm">
                 <i class="fa fa-save"></i>&nbsp;
                 <span>Save</span>
             </button>
