@@ -119,8 +119,6 @@ export class CreateProjectComponent implements OnInit {
   removeInformationSource(sourceName: string, index: number) {
     const formArray = <FormArray>this.form.get(sourceName);
     formArray.removeAt(index);
-    debugger
-    console.log(this.form.value)
     const formValue = this.form.value;
     if(formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0){
       this.infosSouceExist = false;
