@@ -33,9 +33,36 @@ from perceval.backends.scava.scava import Scava
 from grimoirelab_toolkit.datetime import str_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
+from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
 
 UUIDS = {}
+
+
+class Mapping(BaseMapping):
+
+    @staticmethod
+    def get_elastic_mappings(es_major):
+        """Get Elasticsearch mapping.
+
+        geopoints type is not created in dynamic mapping
+
+        :param es_major: major version of Elasticsearch, as string
+        :returns:        dictionary with a key, 'items', with the mapping
+        """
+
+        mapping = """
+        {
+            "properties": {
+               "scava": {
+                    "dynamic": "false",
+                    "properties": {}
+               }
+            }
+        }
+        """
+
+        return {"items": mapping}
 
 
 def get_params():
@@ -112,7 +139,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': max_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'data': mdata
+        'scava': mdata
     }
 
     metric_min = {
@@ -125,7 +152,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': min_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'data': mdata
+        'scava': mdata
     }
 
     metric_mean = {
@@ -138,7 +165,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': mean_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'data': mdata
+        'scava': mdata
     }
 
     metric_median = {
@@ -151,7 +178,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': median_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'data': mdata
+        'scava': mdata
     }
 
     return [metric_max, metric_min, metric_mean, metric_median]
@@ -171,7 +198,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
                 'metric_es_value': sample[mdata['y']],
                 'metric_es_compute': 'cumulative',
                 'datetime': mupdated,
-                'data': mdata
+                'scava': mdata
             }
 
             if 'Date' in sample:
@@ -192,7 +219,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
                     'metric_es_value': sample[y],
                     'metric_es_compute': 'cumulative',
                     'datetime': mupdated,
-                    'data': mdata
+                    'scava': mdata
                 }
 
                 if 'Date' in sample:
@@ -220,7 +247,7 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
                 'metric_es_value': sample[mdata['y']],
                 'metric_es_compute': 'cumulative',
                 'datetime': mupdated,
-                'data': mdata
+                'scava': mdata
             }
 
             if 'Date' in sample:
@@ -330,7 +357,8 @@ if __name__ == '__main__':
 
     logging.info("Importing items from %s to %s/%s", ARGS.url, ARGS.elastic_url, ARGS.index)
 
-    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index)
+    mapping = Mapping
+    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index, mappings=mapping)
 
     scava_metrics = fetch_scava(ARGS.url, ARGS.project)
 
