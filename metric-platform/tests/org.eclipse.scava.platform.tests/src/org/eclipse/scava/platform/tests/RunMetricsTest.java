@@ -128,6 +128,7 @@ public class RunMetricsTest {
 		mongo.dropDatabase("vallangtest");
 		mongo.dropDatabase("scava");
 		mongo.dropDatabase("scava-analysis");
+		mongo.close();
 	}
 
 	private Project createGitProject(String name, String url) {
