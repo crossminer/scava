@@ -24,8 +24,8 @@ import json
 import logging
 import urllib.parse
 
-from grimoirelab_toolkit.datetime import str_to_datetime
-from grimoirelab_toolkit.uris import urijoin
+from grimoirelab.toolkit.datetime import str_to_datetime
+from grimoirelab.toolkit.uris import urijoin
 
 from ...backend import (Backend,
                         BackendCommand,
@@ -39,22 +39,21 @@ CATEGORY_PROJECT = 'project'
 logger = logging.getLogger(__name__)
 
 
+class Crossminer(Backend):
+    """Crossminer backend for Perceval.
 
-class Scava(Backend):
-    """Scava backend for Perceval.
-
-    This class retrieves the projects and metrics from a Scava URL. To initialize
-    this class an URL must be provided with the Scava sever.
+    This class retrieves the projects and metrics from a Crossminer URL. To initialize
+    this class an URL must be provided with the Crossminer sever.
     The origin of the data will be set to this URL.
 
     It uses v1 API to get projects and metrics.
 
-    :param url: Scava URL
+    :param url: Crossminer URL
 
     :param tag: label used to mark the data
     :param archive: archive to store/retrieve items
     """
-    version = '0.0.2'
+    version = '0.0.1'
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT]
 
@@ -67,9 +66,9 @@ class Scava(Backend):
         self.client = None
 
     def fetch(self, category=CATEGORY_METRIC):
-        """Fetch items from the Scava url.
+        """Fetch items from the Crossminer url.
 
-        The method retrieves, from a Scava URL, the set of items
+        The method retrieves, from a Crossminer URL, the set of items
         of the given `category`.
 
         :param category: the category of items to fetch
@@ -95,10 +94,8 @@ class Scava(Backend):
         """
         project = kwargs['project']
 
-        if category == CATEGORY_PROJECT:
-            logger.info("Looking for projects at url '%s'", self.url)
-        else:
-            logger.info("Looking for '%s' project metrics at url '%s'", project, self.url)
+        logger.info("Looking for metrics at url '%s' of %s category and %s project",
+                    self.url, category, project)
 
         nitems = 0  # number of items processed
 
@@ -106,17 +103,12 @@ class Scava(Backend):
             items = json.loads(raw_items)
             items = [items] if isinstance(items, dict) else items
             for item in items:
-                if 'executionInformation' in item and 'lastExecuted' not in item['executionInformation']:
-                    logger.warning("Item filtered due to missing lastExecuted info: %s", str(item))
-                    continue
-
                 if category == CATEGORY_METRIC:
                     item['updated'] = self.project_updated
-                    item['project'] = self.project
                 yield item
                 nitems += 1
 
-        logger.info("Total number of items: %i (%s)", nitems, category)
+        logger.info("Total number of items: %i", nitems)
 
     @staticmethod
     def metadata_category(item):
@@ -150,18 +142,18 @@ class Scava(Backend):
 
         :returns: this backend supports items resuming
         """
-        return False
+        return True
 
     @staticmethod
     def metadata_id(item):
-        """Extracts the identifier from a Scava item."""
+        """Extracts the identifier from a Crossminer item."""
 
-        if 'id' in item:
-            # the item is a metric
-            mid = item['id'] + item['updated'] + item['project']
-        elif 'name' in item:
-            # the item is a project
+        # name for a project
+
+        if 'name' in item:
             mid = item['name']
+        elif '_id' in item:
+            mid = item['_id']
         else:
             raise TypeError("Can not extract metadata_id from", item)
 
@@ -169,7 +161,7 @@ class Scava(Backend):
 
     @staticmethod
     def metadata_updated_on(item):
-        """Extracts the update time from a Scava item.
+        """Extracts the update time from a Crossminer item.
 
         The timestamp is extracted from 'end' field.
         This date is converted to a perceval format using a float value.
@@ -179,10 +171,10 @@ class Scava(Backend):
         :returns: a UNIX timestamp
         """
 
-        if 'updated' in item:
-            updated = item['updated']
-        elif 'executionInformation' in item:
+        if 'executionInformation' in item:
             updated = item['executionInformation']['lastExecuted']
+        elif 'id' in item:
+            updated = item['updated']
         else:
             raise TypeError("Can not extract metadata_updated_on from", item)
 
@@ -190,7 +182,7 @@ class Scava(Backend):
 
     @staticmethod
     def metadata_category(item):
-        """Extracts the category from a Scava item.
+        """Extracts the category from a Crossminer item.
 
         This backend generates items types 'project', 'metric'.
         To guess the type of item, the code will look
@@ -208,28 +200,28 @@ class Scava(Backend):
     def _init_client(self, from_archive=False):
         """Init client"""
 
-        client = ScavaClient(self.url, self.project, self.archive, from_archive)
+        client = CrossminerClient(self.url, self.project, self.archive, from_archive)
         if self.project:
             self.project_updated = client.get_project_update(self.project)
         return client
 
 
-class ScavaClient(HttpClient):
-    """Scava API client.
+class CrossminerClient(HttpClient):
+    """Crossminer API client.
 
     This class implements a simple client to retrieve metrics from
-    projects in a Scava site.
+    projects in a Crossminer site.
 
-    :param url: URL of Scava
-    :param project: Scava project from which to get the data
+    :param url: URL of Crossminer
+    :param project: Crossminer project from which to get the data
     :param archive: an archive to store/read fetched data
     :param from_archive: it tells whether to write/read the archive
 
     :raises HTTPError: when an error occurs doing the request
     """
 
-    FIRST_PAGE = 1  # Initial page in Scava API
-    ITEMS_PER_PAGE = 20  # Items per page in Scava API
+    FIRST_PAGE = 1  # Initial page in Crossminer API
+    ITEMS_PER_PAGE = 20  # Items per page in Crossminer API
     API_PATH = '/'
 
     def __init__(self, url, project=None, archive=None, from_archive=False):
@@ -248,8 +240,7 @@ class ScavaClient(HttpClient):
         api = self.api_projects_url
         projects = self.fetch(api)
         for project in json.loads(projects):
-            if project_name in [project['name'], project['shortName']]:
-                # project['shortName'] is used for building the API URLs so it is the one used in general
+            if project['name'] == project_name:
                 updated = project['executionInformation']['lastExecuted']
 
         return updated
@@ -267,17 +258,18 @@ class ScavaClient(HttpClient):
             api_metrics = self.api_metrics_url
             metrics = json.loads(self.fetch(api_metrics))
         else:
-            raise ValueError(category + ' not supported in Scava')
+            raise ValueError(category + ' not supported in Crossminer')
 
         if category == CATEGORY_PROJECT:
-            logger.debug("Scava client calls APIv1: %s", api)
+            logger.debug("Crossminer client calls APIv1: %s", api)
             projects = self.fetch(api)
             yield projects
         else:
             for metric in metrics:
                 metric_id = metric['id']
                 api = urijoin(self.api_projects_url, "/p/%s/m/%s" % (project, metric_id))
-                logger.debug("Scava client calls API: %s", api)
+                logger.debug("Crossminer client calls APIv1: %s", api)
+                print(api)
                 project_metric = self.fetch(api)
                 yield project_metric
 
@@ -289,24 +281,24 @@ class ScavaClient(HttpClient):
         return response.text
 
 
-class ScavaCommand(BackendCommand):
-    """Class to run Scava backend from the command line."""
+class CrossminerCommand(BackendCommand):
+    """Class to run Crossminer backend from the command line."""
 
-    BACKEND = Scava
+    BACKEND = Crossminer
 
     @staticmethod
     def setup_cmd_parser():
-        """Returns the Scava argument parser."""
+        """Returns the Crossminer argument parser."""
 
         parser = BackendCommandArgumentParser(archive=True)
         # Required arguments
         parser.parser.add_argument('url', nargs='?',
                                    default="http://localhost:8182",
-                                   help="Scava REST API URL (default: http://localhost:8182")
+                                   help="Crossminer REST API URL (default: http://localhost:8182")
         # Optional arguments
-        group = parser.parser.add_argument_group('Scava arguments')
+        group = parser.parser.add_argument_group('Crossminer arguments')
         group.add_argument('--project', dest='project',
                            required=False,
-                           help="Name of the Scava project")
+                           help="Name of the Crossminer project")
 
         return parser

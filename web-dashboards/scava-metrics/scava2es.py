@@ -27,23 +27,42 @@
 import argparse
 import hashlib
 import logging
+import statistics
 
-from dateutil import parser
 from perceval.backends.scava.scava import Scava
+from grimoirelab_toolkit.datetime import str_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
+from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
 
 UUIDS = {}
 
-DEBUG_METRIC = "bugs.cumulativeNewUsers"
-DEBUG_METRIC = "newsgroups.severity.sentimentAtThreadEnd"
-DEBUG_METRIC = "bugs.newbugs"
-DEBUG_METRIC = "commitsovertimeline"
-DEBUG_METRIC = None
 
-DEBUG_PROJECT = "puppetrocketchat"
-DEBUG_PROJECT = None
+class Mapping(BaseMapping):
+
+    @staticmethod
+    def get_elastic_mappings(es_major):
+        """Get Elasticsearch mapping.
+
+        geopoints type is not created in dynamic mapping
+
+        :param es_major: major version of Elasticsearch, as string
+        :returns:        dictionary with a key, 'items', with the mapping
+        """
+
+        mapping = """
+        {
+            "properties": {
+               "scava": {
+                    "dynamic": "false",
+                    "properties": {}
+               }
+            }
+        }
+        """
+
+        return {"items": mapping}
 
 
 def get_params():
@@ -98,6 +117,153 @@ def uuid(*args):
     return uuid_sha1
 
 
+def create_item_metrics_from_barchart(mdata, mupdated):
+    if not isinstance(mdata['y'], str):
+        logging.warning("Barchart metric, Y axis not handled %s", mdata)
+        return []
+
+    values = [bar[mdata['y']] for bar in mdata['datatable']]
+
+    max_values = max(values)
+    min_values = min(values)
+    mean_values = statistics.mean(values)
+    median_values = statistics.median(values)
+
+    metric_max = {
+        'project': mdata['project'],
+        'metric_class': mdata['id'].split(".")[0],
+        'metric_type': mdata['type'],
+        'metric_id': mdata['id'] + '_max',
+        'metric_desc': mdata['description'] + '(Max)',
+        'metric_name': mdata['name'] + '(Max)',
+        'metric_es_value': max_values,
+        'metric_es_compute': 'sample',
+        'datetime': mupdated,
+        'scava': mdata
+    }
+
+    metric_min = {
+        'project': mdata['project'],
+        'metric_class': mdata['id'].split(".")[0],
+        'metric_type': mdata['type'],
+        'metric_id': mdata['id'] + '_min',
+        'metric_desc': mdata['description'] + '(Min)',
+        'metric_name': mdata['name'] + '(Min)',
+        'metric_es_value': min_values,
+        'metric_es_compute': 'sample',
+        'datetime': mupdated,
+        'scava': mdata
+    }
+
+    metric_mean = {
+        'project': mdata['project'],
+        'metric_class': mdata['id'].split(".")[0],
+        'metric_type': mdata['type'],
+        'metric_id': mdata['id'] + '_mean',
+        'metric_desc': mdata['description'] + '(Mean)',
+        'metric_name': mdata['name'] + '(Mean)',
+        'metric_es_value': mean_values,
+        'metric_es_compute': 'sample',
+        'datetime': mupdated,
+        'scava': mdata
+    }
+
+    metric_median = {
+        'project': mdata['project'],
+        'metric_class': mdata['id'].split(".")[0],
+        'metric_type': mdata['type'],
+        'metric_id': mdata['id'] + '_median',
+        'metric_desc': mdata['description'] + '(Median)',
+        'metric_name': mdata['name'] + '(Median)',
+        'metric_es_value': median_values,
+        'metric_es_compute': 'sample',
+        'datetime': mupdated,
+        'scava': mdata
+    }
+
+    return [metric_max, metric_min, metric_mean, metric_median]
+
+
+def create_item_metrics_from_linechart(mdata, mupdated):
+    metrics = []
+    if isinstance(mdata['y'], str):
+        for sample in mdata['datatable']:
+            metric = {
+                'project': mdata['project'],
+                'metric_class': mdata['id'].split(".")[0],
+                'metric_type': mdata['type'],
+                'metric_id': mdata['id'],
+                'metric_desc': mdata['description'],
+                'metric_name': mdata['name'],
+                'metric_es_value': sample[mdata['y']],
+                'metric_es_compute': 'cumulative',
+                'datetime': mupdated,
+                'scava': mdata
+            }
+
+            if 'Date' in sample:
+                metric['metric_es_compute'] = 'sample'
+                metric['datetime'] = sample['Date']
+
+            metrics.append(metric)
+    elif isinstance(mdata['y'], list):
+        for sample in mdata['datatable']:
+            for y in mdata['y']:
+                metric = {
+                    'project': mdata['project'],
+                    'metric_class': mdata['id'].split(".")[0],
+                    'metric_type': mdata['type'],
+                    'metric_id': mdata['id'] + '_' + y,
+                    'metric_desc': mdata['description'] + '(' + y + ')',
+                    'metric_name': mdata['name'] + '(' + y + ')',
+                    'metric_es_value': sample[y],
+                    'metric_es_compute': 'cumulative',
+                    'datetime': mupdated,
+                    'scava': mdata
+                }
+
+                if 'Date' in sample:
+                    metric['metric_es_compute'] = 'sample'
+                    metric['datetime'] = sample['Date']
+
+                metrics.append(metric)
+    else:
+        logging.warning("Linechart metric, Y axis not handled %s", mdata)
+
+    return metrics
+
+
+def create_item_metrics_from_linechart_series(mdata, mupdated):
+    metrics = []
+    for sample in mdata['datatable']:
+        if isinstance(mdata['y'], str):
+            metric = {
+                'project': mdata['project'],
+                'metric_class': mdata['id'].split(".")[0],
+                'metric_type': mdata['type'],
+                'metric_id': mdata['id'] + '_' + mdata['series'],
+                'metric_desc': mdata['description'] + '(' + mdata['series'] + ')',
+                'metric_name': mdata['name'] + '(' + mdata['series'] + ')',
+                'metric_es_value': sample[mdata['y']],
+                'metric_es_compute': 'cumulative',
+                'datetime': mupdated,
+                'scava': mdata
+            }
+
+            if 'Date' in sample:
+                metric['metric_es_compute'] = 'sample'
+                metric['datetime'] = sample['Date']
+            if mdata['series'] in sample:
+                metric['metric_id'] = mdata['id'] + '_' + sample[mdata['series']]
+                metric['metric_desc'] = mdata['description'] + '(' + sample[mdata['series']] + ')',
+                metric['metric_name'] = mdata['name'] + '(' + sample[mdata['series']] + ')'
+
+            metrics.append(metric)
+        else:
+            logging.warning("Linechart series metric, Y axis not handled %s", mdata)
+    return metrics
+
+
 def extract_metrics(scava_metric):
     """
     Extract metric names and values from an scava_metric. It can be
@@ -107,121 +273,26 @@ def extract_metrics(scava_metric):
     :param scava_metric: metric collected using Scava API REST
     :return: the list of metrics values from a scava_metric
     """
-
-    def create_item_metrics(metric_name, value, updated=None):
-        """
-        The main goal of this method is to find the value and datetime for a metric
-        :param metric_name: name of the scava metric
-        :param value: value for the scava metric
-        :param updated: the datetime string when the metric was updated
-        :return: a dict with a metric ready to be consumed from ES
-        """
-
-        # The metrics could be computed as cumulative, average or single sample
-        item_metric = {}
-        item_metric['metric_es_name'] = metric_name
-
-        no_value_fields = ['Committer', 'Date', 'Language', 'Repository']
-
-        if isinstance(value, dict):
-            value_fields = list(set(value.keys()) - set(no_value_fields))
-            if len(value_fields) > 1:
-                # Multivalue metric: we need to generate different items
-                # {'Requests': 0.0, 'Comments': 0.0, 'Date': '20150818', 'Replies': 0.0}
-                # raise RuntimeError("More than of value detected %s: %s" % (metric_name, value))
-                if 'Date' in value.keys():
-                    # {'Requests': 0.0, 'Comments': 0.0, 'Date': '20150818', 'Replies': 0.0}
-                    for field in value_fields:
-                        submetric_name = metric_name + "_" + field
-                        subvalue = {'Date': value['Date'], submetric_name: value[field]}
-                        for submetric in create_item_metrics(submetric_name, subvalue, updated=None):
-                            yield submetric
-                else:
-                    # 'Average Response Time per Thread (ms)' {'Threads': 0, 'Response Time': 0}
-                    for field in value_fields:
-                        submetric_name = metric_name + "_" + field
-                        subvalue = {submetric_name: value[field]}
-                        for submetric in create_item_metrics(submetric_name, subvalue, updated=updated):
-                            yield submetric
-
-                    # logging.debug("Metric not supported %s" % value)
-
-            item_metric.update(value)
-            item_metric['metric_es_value'] = value[value_fields[0]]
-
-            if 'Date' in value.keys():
-                # {'Users': 0, 'Date': '20150818'}
-                # {'Language': 'Python', 'Date': '20150818', 'LOC': 31}
-                # Always add the full details of the metric
-                item_metric['datetime'] = parser.parse(value['Date']).isoformat()
-                item_metric['metric_es_compute'] = 'sample'
-            else:
-                logging.debug("No ts metric %s: %s" % (metric_name, value))
-                # {'Churn': 28, 'Committer': 'Prabhat'}
-                # {'Replies': 0.0, 'Date': '20150818', 'Requests': 0.0, 'Comments': 0.0}
-                item_metric['metric_es_compute'] = 'cumulative'
-                item_metric['datetime'] = parser.parse(updated).isoformat()
-        else:
-            item_metric['metric_es_value'] = value
-            item_metric['metric_es_compute'] = 'cumulative'
-            item_metric['datetime'] = updated.isoformat()
-
-        # if 'cumulative' in field.lower():
-        #     item_metric['metric_es_compute'] = 'cumulative'
-        # if 'avg' in field.lower() or 'average' in field.lower():
-        #     item_metric['metric_es_compute'] = 'average'
-        # For the topic metrics we get the topic label and add it as a field
-        # topic = find_topic()
-        # if topic:
-        #     item_metric['topic'] = find_topic()
-
-        yield item_metric
-
     item_metrics = []
 
-    field = 'datatable'
+    mdata = scava_metric['data']
+    mupdated = mdata['updated']
 
-    mupdated = scava_metric['data']['updated']
-
-    if isinstance(scava_metric['data'][field], list):
-        # time series metric: a new ES metric is created per each sample
-        for sample in scava_metric['data'][field]:
-            value = sample
-            for item_metric in create_item_metrics(scava_metric['data']['name'], value, mupdated):
-                item_metrics.append(item_metric)
-            if len(item_metrics) % 100 == 0:
-                logging.debug("Processed %i" % len(item_metrics))
-    elif isinstance(scava_metric[field], (int, float)):
-        # global metric
-        value = scava_metric[field]
-        for item_metric in create_item_metrics(scava_metric['data']['name'], value, mupdated):
+    if mdata['type'] == 'BarChart':
+        for item_metric in create_item_metrics_from_barchart(mdata, mupdated):
             item_metrics.append(item_metric)
-        item_metrics.append(item_metric)
+    elif mdata['type'] == 'LineChart' and 'series' not in mdata:
+        for item_metric in create_item_metrics_from_linechart(mdata, mupdated):
+            item_metrics.append(item_metric)
+    elif mdata['type'] == 'LineChart':
+        for item_metric in create_item_metrics_from_linechart_series(mdata, mupdated):
+            item_metrics.append(item_metric)
+    else:
+        logging.warning("Metric type %s not handled, skipping item %s", mdata['type'], scava_metric)
 
     logging.debug("Metrics found: %s", item_metrics)
-
     return item_metrics
 
-
-def enrich_scava_metric(scava_metric):
-    """
-    Given a ossmeter item enrich it to be used in Kibana
-
-    :param scava_metric: Scava metric to enrich
-    :return:
-    """
-
-    # A Scava metric could generate several enriched items, one for
-    # each metric value
-    eitems = []
-
-    for metric in extract_metrics(scava_metric):
-        eitem = metric
-        # It is useful to have all item fields for debugging
-        # eitem['scava_metric'] = scava_metric
-        eitems.append(eitem)
-
-    return eitems
 
 def enrich_metrics(scava_metrics):
     """
@@ -230,27 +301,15 @@ def enrich_metrics(scava_metrics):
     :param scava_metrics: metrics generator
     :return:
     """
-
     for scava_metric in scava_metrics:
 
-        if DEBUG_METRIC and scava_metric['data']['id'] != DEBUG_METRIC:
+        if not scava_metric['data']['datatable']:
+            logging.warning("Missing datable for item %s, skipping it", scava_metric)
             continue
 
-        # id : 'bugs.cumulativeNewUsers'
-        metric_meta = {
-            'project': scava_metric['data']['project'],
-            'metric_class': scava_metric['data']['id'].split(".")[0],
-            'metric_type': scava_metric['data']['type'],
-            'metric_id': scava_metric['data']['id'],
-            'metric_desc': scava_metric['data']['description'],
-            'metric_name': scava_metric['data']['name']
-        }
-
-        enriched_items = enrich_scava_metric(scava_metric)
+        enriched_items = extract_metrics(scava_metric)
         for eitem in enriched_items:
-            eitem.update(metric_meta)
-            if 'datetime' not in eitem:
-                logging.error("Can not find datetime field in %s" % eitem)
+            eitem['datetime'] = str_to_datetime(eitem['datetime']).isoformat()
             eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
             yield eitem
 
@@ -263,23 +322,27 @@ def fetch_scava(url_api_rest, project=None):
     :param url_api_rest: URL for the Scava API REST
     :return: a metrics generator
     """
-
     scava = Scava(url=url_api_rest, project=project)
 
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
 
-            if DEBUG_PROJECT and project_scava['data']['shortName'] != DEBUG_PROJECT:
-                continue
-
             scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
             logging.info("Getting metrics for %s" % project_scava['data']['shortName'])
             for enriched_metric in enrich_metrics(scavaProject.fetch()):
+                if isinstance(enriched_metric['metric_es_value'], str):
+                    logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
+                    continue
+
                 yield enriched_metric
     else:
         # Get the metrics directly
         for enriched_metric in enrich_metrics(scava.fetch()):
+            if isinstance(enriched_metric['metric_es_value'], str):
+                logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
+                continue
+
             yield enriched_metric
 
 
@@ -294,7 +357,8 @@ if __name__ == '__main__':
 
     logging.info("Importing items from %s to %s/%s", ARGS.url, ARGS.elastic_url, ARGS.index)
 
-    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index)
+    mapping = Mapping
+    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index, mappings=mapping)
 
     scava_metrics = fetch_scava(ARGS.url, ARGS.project)
 
