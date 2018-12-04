@@ -26,9 +26,10 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 		Platform platform = null;
 		try {
 			mongo = Configuration.getInstance().getMongoConnection();
-			platform = new Platform(mongo);		
-			org.eclipse.scava.platform.analysis.MetricProviderService service = platform.getAnalysisRepositoryManager().getMetricProviderService();
-			
+			platform = new Platform(mongo);
+			org.eclipse.scava.platform.analysis.MetricProviderService service = platform.getAnalysisRepositoryManager()
+					.getMetricProviderService();
+
 			List<MetricProvider> metricProviders = service.getMetricProviders();
 
 			ArrayNode listMetricProviders = mapper.createArrayNode();
@@ -37,13 +38,16 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 					metric.getDbObject().removeField("_id");
 					metric.getDbObject().removeField("_type");
 					metric.getDbObject().removeField("storages");
-					
+
 					List<Object> dependingMetrics = new ArrayList<Object>();
 					for (MetricProvider mp : metric.getDependOf()) {
-						Map<String, String> newMetric = new HashMap<>();
-						newMetric.put("metricProviderId", mp.getDbObject().get("metricProviderId").toString());
-						newMetric.put("label", mp.getDbObject().get("label").toString());
-						dependingMetrics.add(newMetric);
+						if (mp != null && mp.getDbObject() != null
+								&& mp.getDbObject().get("metricProviderId") != null) {
+							Map<String, String> newMetric = new HashMap<>();
+							newMetric.put("metricProviderId", mp.getDbObject().get("metricProviderId").toString());
+							newMetric.put("label", mp.getDbObject().get("label").toString());
+							dependingMetrics.add(newMetric);
+						}
 					}
 					metric.getDbObject().put("dependOf", dependingMetrics);
 					listMetricProviders.add(mapper.readTree(metric.getDbObject().toString()));
@@ -69,7 +73,8 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
 		} finally {
-			if (mongo != null) mongo.close();
+			if (mongo != null)
+				mongo.close();
 			platform = null;
 		}
 	}
