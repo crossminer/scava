@@ -30,8 +30,14 @@
 	-->
 	
 	<!-- StackExchange API version 2.0 (customized, no version in name) --> 
+	<!--
 	<property name="api" value="stackexchange" />
 	<property name="json.model.file" value="schemas/stackexchange_v2.0.json" />
+	-->
+	
+	<!-- BugZilla API version 1.0 (customized, no version in name) --> 
+	<property name="api" value="bugzilla" />
+	<property name="json.model.file" value="schemas/bugzilla.json" />
 
 	<property name="output" value="${basedir}/../org.eclipse.scava.crossflow.restmule.client.${api}" />
 

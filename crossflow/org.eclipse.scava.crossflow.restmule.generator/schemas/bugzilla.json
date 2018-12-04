@@ -1,0 +1,2833 @@
+{
+  "basePath": "/rest/",
+  "host": "bugzilla.mozilla.org",
+  "info": {
+    "description": "The BugZilla Mozilla API",
+    "title": "BugZilla",
+    "version": "latest"
+  },
+  "paths": {
+    "/bug": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The unique aliases of this bug. An empty array will\nbe returned if this bug has no aliases.",
+            "in": "query",
+            "name": "alias",
+            "type": "string"
+          },
+          {
+            "description": "The login name of a user that a bug is assigned to.",
+            "in": "query",
+            "name": "assigned_to",
+            "type": "string"
+          },
+          {
+            "description": "The name of the Component that the bug is in. Note\nthat if there are multiple Components with the same\nname, and you search for that name, bugs in all\nthose Components will be returned. If you don't want\nthis, be sure to also specify the product argument.",
+            "in": "query",
+            "name": "component",
+            "type": "string"
+          },
+          {
+            "description": "Searches for bugs that were created at this time or\nlater. May not be an array.",
+            "in": "query",
+            "name": "creation_time",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user who created the bug. You\ncan also pass this argument with the name\nreporter, for backwards compatibility with\nolder Bugzillas.",
+            "in": "query",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "description": "The numeric ID of the bug.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "Searches for bugs that were modified at this time\nor later. May not be an array.",
+            "in": "query",
+            "name": "last_change_time",
+            "type": "string"
+          },
+          {
+            "description": "Limit the number of results returned. If the limit\nis more than zero and higher than the maximum limit\nset by the administrator, then the maximum limit will\nbe used instead. If you set the limit equal to zero,\nthen all matching results will be returned instead.",
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "description": "The number of comments a bug has. The bug's description\nis the first comment. For example, to find bugs which someone\nhas commented on after they have been filed, search on\nlongdescs.count greater than 1.",
+            "in": "query",
+            "name": "longdescs.count",
+            "type": "string"
+          },
+          {
+            "description": "Used in conjunction with the limit argument,\noffset defines the starting position for the\nsearch. For example, given a search that would\nreturn 100 bugs, setting limit to 10 and\noffset to 10 would return bugs 11 through 20\nfrom the set of 100.",
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          },
+          {
+            "description": "The \"Operating System\" field of a bug.",
+            "in": "query",
+            "name": "op_sys",
+            "type": "string"
+          },
+          {
+            "description": "The Platform (sometimes called \"Hardware\") field of\na bug.",
+            "in": "query",
+            "name": "platform",
+            "type": "string"
+          },
+          {
+            "description": "The Priority field on a bug.",
+            "in": "query",
+            "name": "priority",
+            "type": "string"
+          },
+          {
+            "description": "The name of the Product that the bug is in.",
+            "in": "query",
+            "name": "product",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the bug's QA Contact. Note that\neven if this Bugzilla does not have the QA Contact\nfield enabled, you can still search for bugs by QA\nContact (though it is likely that no bug will have a\nQA Contact set, if the field is disabled).",
+            "in": "query",
+            "name": "qa_contact",
+            "type": "string"
+          },
+          {
+            "description": "Search for bugs using quicksearch syntax.",
+            "in": "query",
+            "name": "quicksearch",
+            "type": "string"
+          },
+          {
+            "description": "The current resolution--only set if a bug is closed.\nYou can find open bugs by searching for bugs with an\nempty resolution.",
+            "in": "query",
+            "name": "resolution",
+            "type": "string"
+          },
+          {
+            "description": "The Severity field on a bug.",
+            "in": "query",
+            "name": "severity",
+            "type": "string"
+          },
+          {
+            "description": "The current status of a bug (not including its\nresolution, if it has one, which is a separate field\nabove).",
+            "in": "query",
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "description": "Searches for substrings in the single-line Summary\nfield on bugs. If you specify an array, then bugs\nwhose summaries match any of the passed substrings\nwill be returned. Note that unlike searching in the\nBugzilla UI, substrings are not split on spaces. So\nsearching for foo bar will match \"This is a foo\nbar\" but not \"This foo is a bar\". ['foo', 'bar'],\nwould, however, match the second item.",
+            "in": "query",
+            "name": "summary",
+            "type": "string"
+          },
+          {
+            "description": "Searches for a bug with the specified tag. If you\nspecify an array, then any bugs that match any of\nthe tags will be returned. Note that tags are\npersonal to the currently logged in user.",
+            "in": "query",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "description": "The Target Milestone field of a bug. Note that even\nif this Bugzilla does not have the Target Milestone\nfield enabled, you can still search for bugs by\nTarget Milestone. However, it is likely that in that\ncase, most bugs will not have a Target Milestone set\n(it defaults to \"---\" when the field isn't enabled).",
+            "in": "query",
+            "name": "target_milestone",
+            "type": "string"
+          },
+          {
+            "description": "The \"URL\" field of a bug.",
+            "in": "query",
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "description": "The Version field of a bug.",
+            "in": "query",
+            "name": "version",
+            "type": "string"
+          },
+          {
+            "description": "Search the \"Status Whiteboard\" field on bugs for a\nsubstring. Works the same as the summary field\ndescribed above, but searches the Status Whiteboard\nfield.",
+            "in": "query",
+            "name": "whiteboard",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "alias": {
+                  "type": "string"
+                },
+                "assigned_to": {
+                  "type": "string"
+                },
+                "cc": {
+                  "type": "string"
+                },
+                "comment_is_private": {
+                  "type": "boolean"
+                },
+                "comment_tags": {
+                  "type": "string"
+                },
+                "component": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "flags": {
+                  "type": "string"
+                },
+                "groups": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "is_markdown": {
+                  "type": "boolean"
+                },
+                "keywords": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "op_sys": {
+                  "type": "string"
+                },
+                "platform": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "qa_contact": {
+                  "type": "string"
+                },
+                "requestee": {
+                  "type": "string"
+                },
+                "resolution": {
+                  "type": "string"
+                },
+                "severity": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "target_milestone": {
+                  "type": "string"
+                },
+                "type_id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug_user_last_visit/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "An integer bug id.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "One or more optional bug ids to get.",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          },
+          {
+            "description": "The timestamp the user last visited the bug.",
+            "in": "query",
+            "name": "last_visit_ts",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "ids": {
+                  "type": "string"
+                },
+                "last_visit_ts": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "An integer bug id.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/{bug_id}/attachment": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Integer attachment ID.",
+            "in": "query",
+            "name": "attachment_id",
+            "type": "string"
+          },
+          {
+            "description": "Integer bug ID.",
+            "in": "path",
+            "name": "bug_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The MIME type of the attachment.",
+            "in": "query",
+            "name": "content_type",
+            "type": "string"
+          },
+          {
+            "description": "The timestamp when this flag was originally created.",
+            "in": "query",
+            "name": "creation_date",
+            "type": "string"
+          },
+          {
+            "description": "The time the attachment was created.",
+            "in": "query",
+            "name": "creation_time",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user that created the\nattachment.",
+            "in": "query",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "description": "The raw data of the attachment, encoded as Base64.",
+            "in": "query",
+            "name": "data",
+            "type": "string"
+          },
+          {
+            "description": "The file name of the attachment.",
+            "in": "query",
+            "name": "file_name",
+            "type": "string"
+          },
+          {
+            "description": "Array of objects, each containing the information\nabout the flag currently set for each attachment.\nEach flag object contains items described in the\nFlag object below.",
+            "in": "query",
+            "name": "flags",
+            "type": "string"
+          },
+          {
+            "description": "The numeric ID of the attachment.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "true if the attachment is obsolete, false\notherwise.",
+            "in": "query",
+            "name": "is_obsolete",
+            "type": "boolean"
+          },
+          {
+            "description": "true if the attachment is a patch, false\notherwise.",
+            "in": "query",
+            "name": "is_patch",
+            "type": "boolean"
+          },
+          {
+            "description": "true if the attachment is private (only visible\nto a certain group called the \"insidergroup\",\nfalse otherwise.",
+            "in": "query",
+            "name": "is_private",
+            "type": "boolean"
+          },
+          {
+            "description": "The last time the attachment was modified.",
+            "in": "query",
+            "name": "last_change_time",
+            "type": "string"
+          },
+          {
+            "description": "The timestamp when the flag was last modified.",
+            "in": "query",
+            "name": "modification_date",
+            "type": "string"
+          },
+          {
+            "description": "The name of the flag.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user this flag has been\nrequested to be granted or denied. Note, this field\nis only returned if a requestee is set.",
+            "in": "query",
+            "name": "requestee",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user who created or last\nmodified the flag.",
+            "in": "query",
+            "name": "setter",
+            "type": "string"
+          },
+          {
+            "description": "The length (in bytes) of the attachment.",
+            "in": "query",
+            "name": "size",
+            "type": "string"
+          },
+          {
+            "description": "The current status of the flag such as ?, +, or -.",
+            "in": "query",
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "description": "A short string describing the attachment.",
+            "in": "query",
+            "name": "summary",
+            "type": "string"
+          },
+          {
+            "description": "The type ID of the flag.",
+            "in": "query",
+            "name": "type_id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "string"
+                },
+                "file_name": {
+                  "type": "string"
+                },
+                "flags": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_markdown": {
+                  "type": "boolean"
+                },
+                "is_patch": {
+                  "type": "boolean"
+                },
+                "is_private": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "requestee": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "type_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "in": "path",
+            "name": "bug_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/{id_or_alias}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The total number of hours that this bug has\ntaken so far. If you are not in the time-tracking\ngroup, this field will not be included in the\nreturn value.",
+            "in": "query",
+            "name": "actual_time",
+            "type": "string"
+          },
+          {
+            "description": "The unique aliases of this bug. An empty array\nwill be returned if this bug has no aliases.",
+            "in": "query",
+            "name": "alias",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user to whom the bug is\nassigned.",
+            "in": "query",
+            "name": "assigned_to",
+            "type": "string"
+          },
+          {
+            "description": "An object containing detailed user information\nfor the assigned_to. To see the keys included\nin the user detail object, see below.",
+            "in": "query",
+            "name": "assigned_to_detail",
+            "type": "string"
+          },
+          {
+            "description": "The IDs of bugs that are \"blocked\" by this bug.",
+            "in": "query",
+            "name": "blocks",
+            "type": "string"
+          },
+          {
+            "description": "The login names of users on the CC list of this\nbug.",
+            "in": "query",
+            "name": "cc",
+            "type": "string"
+          },
+          {
+            "description": "Array of objects containing detailed user\ninformation for each of the cc list members.\nTo see the keys included in the user detail\nobject, see below.",
+            "in": "query",
+            "name": "cc_detail",
+            "type": "string"
+          },
+          {
+            "description": "The name of the current classification the bug\nis in.",
+            "in": "query",
+            "name": "classification",
+            "type": "string"
+          },
+          {
+            "description": "The name of the current component of this bug.",
+            "in": "query",
+            "name": "component",
+            "type": "string"
+          },
+          {
+            "description": "The timestamp when this flag was originally created.",
+            "in": "query",
+            "name": "creation_date",
+            "type": "string"
+          },
+          {
+            "description": "When the bug was created.",
+            "in": "query",
+            "name": "creation_time",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the person who filed this bug\n(the reporter).",
+            "in": "query",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "description": "An object containing detailed user information\nfor the creator. To see the keys included in the\nuser detail object, see below.",
+            "in": "query",
+            "name": "creator_detail",
+            "type": "string"
+          },
+          {
+            "description": "The day that this bug is due to be completed, in\nthe format YYYY-MM-DD.",
+            "in": "query",
+            "name": "deadline",
+            "type": "string"
+          },
+          {
+            "description": "The IDs of bugs that this bug \"depends on\".",
+            "in": "query",
+            "name": "depends_on",
+            "type": "string"
+          },
+          {
+            "description": "The bug ID of the bug that this bug is a\nduplicate of. If this bug isn't a duplicate of\nany bug, this will be null.",
+            "in": "query",
+            "name": "dupe_of",
+            "type": "string"
+          },
+          {
+            "description": "Each array item is a bug ID that is a duplicate of this bug.",
+            "in": "query",
+            "name": "duplicates",
+            "type": "string"
+          },
+          {
+            "description": "The number of hours that it was estimated that\nthis bug would take. If you are not in the\ntime-tracking group, this field will not be\nincluded in the return value.",
+            "in": "query",
+            "name": "estimated_time",
+            "type": "string"
+          },
+          {
+            "description": "An array of objects containing the information\nabout flags currently set for the bug. Each flag\nobjects contains the following items",
+            "in": "query",
+            "name": "flags",
+            "type": "string"
+          },
+          {
+            "description": "The names of all the groups that this bug is in.",
+            "in": "query",
+            "name": "groups",
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID of this bug.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "An integer bug ID or a bug alias string.",
+            "in": "path",
+            "name": "id_or_alias",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "If true, this bug can be accessed by members of\nthe CC list, even if they are not in the groups\nthe bug is restricted to.",
+            "in": "query",
+            "name": "is_cc_accessible",
+            "type": "boolean"
+          },
+          {
+            "description": "true if the bug has been confirmed. Usually\nthis means that the bug has at some point been\nmoved out of the UNCONFIRMED status and into\nanother open status.",
+            "in": "query",
+            "name": "is_confirmed",
+            "type": "boolean"
+          },
+          {
+            "description": "If true, this bug can be accessed by the\ncreator of the bug, even if they are not a\nmember of the groups the bug is restricted to.",
+            "in": "query",
+            "name": "is_creator_accessible",
+            "type": "boolean"
+          },
+          {
+            "description": "true if this bug is open, false if it\nis closed.",
+            "in": "query",
+            "name": "is_open",
+            "type": "boolean"
+          },
+          {
+            "description": "Each keyword that is on this bug.",
+            "in": "query",
+            "name": "keywords",
+            "type": "string"
+          },
+          {
+            "description": "When the bug was last changed.",
+            "in": "query",
+            "name": "last_change_time",
+            "type": "string"
+          },
+          {
+            "description": "The timestamp when the flag was last modified.",
+            "in": "query",
+            "name": "modification_date",
+            "type": "string"
+          },
+          {
+            "description": "The user's Bugzilla login.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "The name of the operating system that the bug\nwas filed against.",
+            "in": "query",
+            "name": "op_sys",
+            "type": "string"
+          },
+          {
+            "description": "The name of the platform (hardware) that the bug\nwas filed against.",
+            "in": "query",
+            "name": "platform",
+            "type": "string"
+          },
+          {
+            "description": "The priority of the bug.",
+            "in": "query",
+            "name": "priority",
+            "type": "string"
+          },
+          {
+            "description": "The name of the product this bug is in.",
+            "in": "query",
+            "name": "product",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the current QA Contact on the\nbug.",
+            "in": "query",
+            "name": "qa_contact",
+            "type": "string"
+          },
+          {
+            "description": "An object containing detailed user information\nfor the qa_contact. To see the keys included in\nthe user detail object, see below.",
+            "in": "query",
+            "name": "qa_contact_detail",
+            "type": "string"
+          },
+          {
+            "description": "The 'real' name for this user, if any.",
+            "in": "query",
+            "name": "real_name",
+            "type": "string"
+          },
+          {
+            "description": "The number of hours of work remaining until work\non this bug is complete. If you are not in the\ntime-tracking group, this field will not be\nincluded in the return value.",
+            "in": "query",
+            "name": "remaining_time",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user this flag has been\nrequested to be granted or denied. Note, this field\nis only returned if a requestee is set.",
+            "in": "query",
+            "name": "requestee",
+            "type": "string"
+          },
+          {
+            "description": "The current resolution of the bug, or an empty\nstring if the bug is open.",
+            "in": "query",
+            "name": "resolution",
+            "type": "string"
+          },
+          {
+            "description": "The URLs in the See Also field on the bug.",
+            "in": "query",
+            "name": "see_also",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user who created or last\nmodified the flag.",
+            "in": "query",
+            "name": "setter",
+            "type": "string"
+          },
+          {
+            "description": "The current severity of the bug.",
+            "in": "query",
+            "name": "severity",
+            "type": "string"
+          },
+          {
+            "description": "The current status of the bug.",
+            "in": "query",
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "description": "The summary of this bug.",
+            "in": "query",
+            "name": "summary",
+            "type": "string"
+          },
+          {
+            "description": "Each array item is a tag name. Note that tags are\npersonal to the currently logged in user and are not the same as\ncomment tags.",
+            "in": "query",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "description": "The milestone that this bug is supposed to be\nfixed by, or for closed bugs, the milestone that\nit was fixed for.",
+            "in": "query",
+            "name": "target_milestone",
+            "type": "string"
+          },
+          {
+            "description": "The type ID of the flag.",
+            "in": "query",
+            "name": "type_id",
+            "type": "string"
+          },
+          {
+            "description": "The token that you would have to pass to the\nprocess_bug.cgi page in order to update this\nbug. This changes every time the bug is updated.\nThis field is not returned to logged-out users.",
+            "in": "query",
+            "name": "update_token",
+            "type": "string"
+          },
+          {
+            "description": "A URL that demonstrates the problem described in\nthe bug, or is somehow related to the bug report.",
+            "in": "query",
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "description": "The version the bug was reported against.",
+            "in": "query",
+            "name": "version",
+            "type": "string"
+          },
+          {
+            "description": "The value of the \"status whiteboard\" field on\nthe bug.",
+            "in": "query",
+            "name": "whiteboard",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "alias": {
+                  "type": "string"
+                },
+                "assigned_to": {
+                  "type": "string"
+                },
+                "blocks": {
+                  "type": "string"
+                },
+                "cc": {
+                  "type": "string"
+                },
+                "changes": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "comment_is_private": {
+                  "type": "string"
+                },
+                "comment_tags": {
+                  "type": "string"
+                },
+                "component": {
+                  "type": "string"
+                },
+                "deadline": {
+                  "type": "string"
+                },
+                "depends_on": {
+                  "type": "string"
+                },
+                "dupe_of": {
+                  "type": "string"
+                },
+                "estimated_time": {
+                  "type": "string"
+                },
+                "flags": {
+                  "type": "string"
+                },
+                "groups": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_cc_accessible": {
+                  "type": "boolean"
+                },
+                "is_creator_accessible": {
+                  "type": "boolean"
+                },
+                "keywords": {
+                  "type": "string"
+                },
+                "last_change_time": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "boolean"
+                },
+                "op_sys": {
+                  "type": "string"
+                },
+                "platform": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "qa_contact": {
+                  "type": "string"
+                },
+                "remaining_time": {
+                  "type": "string"
+                },
+                "requestee": {
+                  "type": "string"
+                },
+                "reset_assigned_to": {
+                  "type": "boolean"
+                },
+                "reset_qa_contact": {
+                  "type": "boolean"
+                },
+                "resolution": {
+                  "type": "string"
+                },
+                "see_also": {
+                  "type": "string"
+                },
+                "severity": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "target_milestone": {
+                  "type": "string"
+                },
+                "type_id": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "whiteboard": {
+                  "type": "string"
+                },
+                "work_time": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "An integer bug ID or alias.",
+            "in": "path",
+            "name": "id_or_alias",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/{id_or_alias}/comment": {
+      "get": {
+        "parameters": [
+          {
+            "description": "If the comment was made on an attachment, this will be\nthe ID of that attachment. Otherwise it will be null.",
+            "in": "query",
+            "name": "attachment_id",
+            "type": "string"
+          },
+          {
+            "description": "The ID of the bug that this comment is on.",
+            "in": "query",
+            "name": "bug_id",
+            "type": "string"
+          },
+          {
+            "description": "A single integer comment ID.",
+            "in": "query",
+            "name": "comment_id",
+            "type": "string"
+          },
+          {
+            "description": "The number of the comment local to the bug. The\nDescription is 0, comments start with 1.",
+            "in": "query",
+            "name": "count",
+            "type": "string"
+          },
+          {
+            "description": "This is exactly same as the time key. Use this\nfield instead of time for consistency with other\nmethods including Get Bug and\nGet Attachment.\nFor compatibility, time is still usable. However,\nplease note that time may be deprecated and removed\nin a future release.",
+            "in": "query",
+            "name": "creation_time",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the comment's author.",
+            "in": "query",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "description": "The globally unique ID for the comment.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "A single integer bug ID or alias.",
+            "in": "path",
+            "name": "id_or_alias",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "true if this comment needs Markdown processing;\nfalse otherwise.",
+            "in": "query",
+            "name": "is_markdown",
+            "type": "boolean"
+          },
+          {
+            "description": "true if this comment is private (only visible to a\ncertain group called the \"insidergroup\"), false\notherwise.",
+            "in": "query",
+            "name": "is_private",
+            "type": "boolean"
+          },
+          {
+            "description": "If specified, the method will only return comments\nnewer than this time. This only affects comments\nreturned from the ids argument. You will always be\nreturned all comments you request in the\ncomment_ids argument, even if they are older than\nthis date.",
+            "in": "query",
+            "name": "new_since",
+            "type": "string"
+          },
+          {
+            "description": "An array of comment tags currently set for the comment.",
+            "in": "query",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "description": "The actual text of the comment.",
+            "in": "query",
+            "name": "text",
+            "type": "string"
+          },
+          {
+            "description": "The time (in Bugzilla's timezone) that the comment was\nadded.",
+            "in": "query",
+            "name": "time",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/{id}/comment": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "comment_tags": {
+                  "type": "string"
+                },
+                "is_markdown": {
+                  "type": "boolean"
+                },
+                "is_private": {
+                  "type": "boolean"
+                },
+                "work_time": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "The ID or alias of the bug to append a comment to.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/{id}/history": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The new value of the bug field which has been added\nby the change.",
+            "in": "query",
+            "name": "added",
+            "type": "string"
+          },
+          {
+            "description": "The unique aliases of this bug. An empty array will be returned\nif this bug has no aliases.",
+            "in": "query",
+            "name": "alias",
+            "type": "string"
+          },
+          {
+            "description": "The ID of the attachment that was changed.\nThis only appears if the change was to an attachment,\notherwise attachment_id will not be present in this\nobject.",
+            "in": "query",
+            "name": "attachment_id",
+            "type": "string"
+          },
+          {
+            "description": "An array of Change objects which contain all the changes that\nhappened to the bug at this time (as specified by when).",
+            "in": "query",
+            "name": "changes",
+            "type": "string"
+          },
+          {
+            "description": "The name of the bug field that has changed.",
+            "in": "query",
+            "name": "field_name",
+            "type": "string"
+          },
+          {
+            "description": "An array of History objects.",
+            "in": "query",
+            "name": "history",
+            "type": "string"
+          },
+          {
+            "description": "An integer bug ID or alias.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A datetime timestamp to only show history since.",
+            "in": "query",
+            "name": "new_since",
+            "type": "string"
+          },
+          {
+            "description": "The previous value of the bug field which has been\ndeleted by the change.",
+            "in": "query",
+            "name": "removed",
+            "type": "string"
+          },
+          {
+            "description": "The date the bug activity/change happened.",
+            "in": "query",
+            "name": "when",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user who performed the bug change.",
+            "in": "query",
+            "name": "who",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/attachment/{attachment_id}": {
+      "put": {
+        "parameters": [
+          {
+            "description": "Integer attachment ID.",
+            "in": "path",
+            "name": "attachment_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "changes": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string"
+                },
+                "file_name": {
+                  "type": "string"
+                },
+                "flags": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_markdown": {
+                  "type": "boolean"
+                },
+                "is_obsolete": {
+                  "type": "boolean"
+                },
+                "is_patch": {
+                  "type": "boolean"
+                },
+                "is_private": {
+                  "type": "boolean"
+                },
+                "last_change_time": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "new": {
+                  "type": "boolean"
+                },
+                "requestee": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "type_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/comment/{comment_id}/tags": {
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "add": {
+                  "type": "string"
+                },
+                "remove": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "The ID of the comment to update.",
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bug/comment/tags/{query}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "If provided will return no more than limit tags.\nDefaults to 10.",
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "description": "Only tags containing this substring will be returned.",
+            "in": "path",
+            "name": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/classification/{id_or_name}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The description of the classificaion.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "The ID of the classification.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "An Integer classification ID or name.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The name of the classification.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "Products the user is authorized to access within the\nclassification. The product object keys are described below.",
+            "in": "query",
+            "name": "products",
+            "type": "string"
+          },
+          {
+            "description": "The value which determines the order the classification is\nsorted.",
+            "in": "query",
+            "name": "sort_key",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/component": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "default_assignee": {
+                  "type": "string"
+                },
+                "default_cc": {
+                  "type": "string"
+                },
+                "default_qa_contact": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "is_open": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/component/{component_id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The id of the component that was deleted.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "Numeric ids of the components that you wish to delete.",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          },
+          {
+            "description": "Objects containing the names of the components that you wish\nto delete. The object keys are \"product\" and \"component\",\nrepresenting the name of the product and the component you\nwish to delete.",
+            "in": "query",
+            "name": "names",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "component_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "changes": {
+                  "type": "string"
+                },
+                "default_assignee": {
+                  "type": "string"
+                },
+                "default_cc": {
+                  "type": "string"
+                },
+                "default_qa_contact": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_open": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "names": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "in": "path",
+            "name": "component_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/extensions": {
+      "get": {
+        "parameters": [
+          {
+            "description": "An object containing the extensions enabled as keys.\nEach extension object contains the following keys:\n\nversion (string) The version of the extension.",
+            "in": "query",
+            "name": "extensions",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/field/bug": {
+      "get": {
+        "parameters": [
+          {
+            "description": "For bug_status values, this is an array of\nobjects that determine which statuses you can\ntransition to from this status. (This item is only\nincluded for the bug_status field.)\nEach object contains the following items:\n\nname: (string) The name of the new status\ncomment_required: (boolean) true if a comment\nis required when you change a bug into this status\nusing this transition.",
+            "in": "query",
+            "name": "can_change_to",
+            "type": "string"
+          },
+          {
+            "description": "The description of the value. This item is only\nincluded for the keywords field.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "The name of the field, as it is shown in the user\ninterface.",
+            "in": "query",
+            "name": "display_name",
+            "type": "string"
+          },
+          {
+            "description": "An integer ID uniquely identifying this field in this\ninstallation only.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "An integer field ID or string representing the field name.",
+            "in": "query",
+            "name": "id_or_name",
+            "type": "string"
+          },
+          {
+            "description": "This value is defined only for certain\nproduct-specific fields such as version,\ntarget_milestone or component. When true, the value\nis active; otherwise the value is not active.",
+            "in": "query",
+            "name": "is_active",
+            "type": "boolean"
+          },
+          {
+            "description": "true when this is a custom field, false\notherwise.",
+            "in": "query",
+            "name": "is_custom",
+            "type": "boolean"
+          },
+          {
+            "description": "true if the field must have a value when filing\nnew bugs. Also, mandatory fields cannot have their\nvalue cleared when updating bugs.",
+            "in": "query",
+            "name": "is_mandatory",
+            "type": "boolean"
+          },
+          {
+            "description": "For custom fields, this is true if the field is\nshown when you enter a new bug. For standard fields,\nthis is currently always false, even if the field\nshows up when entering a bug. (To know whether or not\na standard field is valid on bug entry, see\nCreate Bug.",
+            "in": "query",
+            "name": "is_on_bug_entry",
+            "type": "boolean"
+          },
+          {
+            "description": "For bug_status values, determines whether this\nstatus specifies that the bug is \"open\" (true)\nor \"closed\" (false). This item is only included\nfor the bug_status field.",
+            "in": "query",
+            "name": "is_open",
+            "type": "boolean"
+          },
+          {
+            "description": "The internal name of this field. This is a unique\nidentifier for this field. If this is not a custom\nfield, then this name will be the same across all\nBugzilla installations.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "Values, when displayed in a list, are sorted first by\nthis integer and then secondly by their name.",
+            "in": "query",
+            "name": "sort_key",
+            "type": "string"
+          },
+          {
+            "description": "The number of the fieldtype. The following values are\ndefined:\n\n0 Field type unknown\n1 Single-line string field\n2 Single value field\n3 Multiple value field\n4 Multi-line text value\n5 Date field with time\n6 Bug ID field\n7 See Also field\n8 Keywords field\n9 Date field\n10 Integer field",
+            "in": "query",
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "description": "The name of the field that controls whether or not\nparticular values of the field are shown in the user\ninterface. Can be null.",
+            "in": "query",
+            "name": "value_field",
+            "type": "string"
+          },
+          {
+            "description": "Objects representing the legal values for\nselect-type (drop-down and multiple-selection)\nfields. This is  also populated for the\ncomponent, version, target_milestone,\nand keywords fields, but not for the product\nfield (you must use get_accessible_products for\nthat). For fields that aren't select-type fields,\nthis will simply be an empty array. Each object\ncontains the items described in the Value object\nbelow.",
+            "in": "query",
+            "name": "values",
+            "type": "string"
+          },
+          {
+            "description": "The name of a field that controls the visibility of\nthis field in the user interface. This field only\nappears in the user interface when the named field is\nequal to one of the values is visibility_values.\nCan be null.",
+            "in": "query",
+            "name": "visibility_field",
+            "type": "string"
+          },
+          {
+            "description": "This field is only shown when visibility_field\nmatches one of these string values. When\nvisibility_field is null, then this is an empty\narray.",
+            "in": "query",
+            "name": "visibility_values",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/field/bug/{field}/values": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The name of the field you want information about.\nThis should be the same as the name you would use in\nCreate Bug, below.",
+            "in": "path",
+            "name": "field",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "If you're picking a product-specific field, you have to\nspecify the ID of the product you want the values for.",
+            "in": "query",
+            "name": "product_id",
+            "type": "string"
+          },
+          {
+            "description": "The legal values for this field. The values will be sorted\nas they normally would be in Bugzilla.",
+            "in": "query",
+            "name": "values",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unknown"
+          }
+        }
+      }
+    },
+    "/flag_type": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "cc_list": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "exclusions": {
+                  "type": "string"
+                },
+                "flag_id": {
+                  "type": "string"
+                },
+                "grant_group": {
+                  "type": "string"
+                },
+                "inclusions": {
+                  "type": "string"
+                },
+                "is_active": {
+                  "type": "boolean"
+                },
+                "is_multiplicable": {
+                  "type": "boolean"
+                },
+                "is_requestable": {
+                  "type": "boolean"
+                },
+                "is_specifically_requestable": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "request_group": {
+                  "type": "string"
+                },
+                "sortkey": {
+                  "type": "string"
+                },
+                "target_type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/flag_type/{id_or_name}": {
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "cc_list": {
+                  "type": "string"
+                },
+                "changes": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "exclusions": {
+                  "type": "string"
+                },
+                "grant_group": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "inclusions": {
+                  "type": "string"
+                },
+                "is_active": {
+                  "type": "boolean"
+                },
+                "is_multiplicable": {
+                  "type": "boolean"
+                },
+                "is_requestable": {
+                  "type": "boolean"
+                },
+                "is_specifically_requestable": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "names": {
+                  "type": "string"
+                },
+                "request_group": {
+                  "type": "string"
+                },
+                "sortkey": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "Integer flag type ID or name.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/flag_type/{product}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "An optional valid component name associated with the\nproduct.",
+            "in": "query",
+            "name": "component",
+            "type": "string"
+          },
+          {
+            "description": "The description of the flag type.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "An integer ID uniquely identifying this flag type.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "Multiple flags of this type can be set for the same\nbug or attachment.",
+            "in": "query",
+            "name": "is_multiplicable",
+            "type": "boolean"
+          },
+          {
+            "description": "Users can ask specific other users to set flags of\nthis type.",
+            "in": "query",
+            "name": "is_requesteeble",
+            "type": "boolean"
+          },
+          {
+            "description": "The name for the flag type.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "The name of a valid product.",
+            "in": "path",
+            "name": "product",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The target of the flag type which is either bug\nor attachment.",
+            "in": "query",
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "description": "String values that the user can set on the flag type.",
+            "in": "query",
+            "name": "values",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/group": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "icon_url": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "is_active": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "user_regexp": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/group/{id_or_name}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "A boolean value to indicate if the user can login into\nbugzilla.",
+            "in": "query",
+            "name": "can_login",
+            "type": "boolean"
+          },
+          {
+            "description": "The description of the group.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "A text field that holds the reason for disabling a user\nfrom logging into Bugzilla. If empty, then the user\naccount is enabled; otherwise it is disabled/closed.",
+            "in": "query",
+            "name": "disabled_text",
+            "type": "string"
+          },
+          {
+            "description": "The email address of the user.",
+            "in": "query",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "description": "A boolean value to indicate if bug-related mail will\nbe sent to the user or not.",
+            "in": "query",
+            "name": "email_enabled",
+            "type": "boolean"
+          },
+          {
+            "description": "The unique integer ID that Bugzilla uses to identify this\ngroup. Even if the name of the group changes, this ID will\nstay the same.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "Integer group ID or name.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Integer IDs of groups.",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          },
+          {
+            "description": "Whether this group is currently active or not.",
+            "in": "query",
+            "name": "is_active",
+            "type": "string"
+          },
+          {
+            "description": "Whether this group is to be used for bug reports or is\nonly administrative specific.",
+            "in": "query",
+            "name": "is_bug_group",
+            "type": "string"
+          },
+          {
+            "description": "Set to 1 then a list of members of the passed groups names\nand IDs will be returned.",
+            "in": "query",
+            "name": "membership",
+            "type": "boolean"
+          },
+          {
+            "description": "The name of the group.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "Names of groups.",
+            "in": "query",
+            "name": "names",
+            "type": "string"
+          },
+          {
+            "description": "The actual name of the user.",
+            "in": "query",
+            "name": "real_name",
+            "type": "string"
+          },
+          {
+            "description": "A regular expression that allows users to be added to\nthis group if their login matches.",
+            "in": "query",
+            "name": "user_regexp",
+            "type": "string"
+          },
+          {
+            "description": "User objects that are members of this group; only\nreturned if the user sets the membership parameter to\n1. Each user object has the items describe in the User\nobject below.",
+            "in": "query",
+            "name": "users",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "changes": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "icon_url": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_active": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "names": {
+                  "type": "string"
+                },
+                "user_regexp": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "Integer group or name.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/last_audit_time": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The class names are defined as Bugzilla::<class_name>\" such as\nBugzilla:Product`` for products.",
+            "in": "query",
+            "name": "class",
+            "type": "string"
+          },
+          {
+            "description": "The maximum of the at_time from the audit_log.",
+            "in": "query",
+            "name": "last_audit_time",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Numeric ID of the user that was logged in.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "login",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "type": "string"
+          },
+          {
+            "description": "If set to a true value, the token returned by this\nmethod will only be valid from the IP address which\ncalled this method.",
+            "in": "query",
+            "name": "restrict_login",
+            "type": "boolean"
+          },
+          {
+            "description": "Token which can be passed in the parameters as\nauthentication in other calls. The token can be sent along\nwith any future requests to the webservice, for the duration\nof the session, i.e. til Logout is called.",
+            "in": "query",
+            "name": "token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unknown"
+          }
+        }
+      }
+    },
+    "/parameters": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/product": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Returns the concatenated CC list for the flagtype, as\na single string.",
+            "in": "query",
+            "name": "cc_list",
+            "type": "string"
+          },
+          {
+            "description": "The classification name for the product.",
+            "in": "query",
+            "name": "classification",
+            "type": "string"
+          },
+          {
+            "description": "Each component object has the items described in the\nComponent object below.",
+            "in": "query",
+            "name": "components",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user to whom new bugs\nwill be assigned by default.",
+            "in": "query",
+            "name": "default_assigned_to",
+            "type": "string"
+          },
+          {
+            "description": "The name of the default milestone for the product.",
+            "in": "query",
+            "name": "default_milestone",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user who will be set as\nthe QA Contact for new bugs by default. Empty\nstring if the QA contact is not defined.",
+            "in": "query",
+            "name": "default_qa_contact",
+            "type": "string"
+          },
+          {
+            "description": "A description of the product, which may contain HTML.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "An object containing two items bug and\nattachment that each contains an array of\nobjects, where each describes a flagtype. The\nflagtype items are described in the Flagtype\nobject below.",
+            "in": "query",
+            "name": "flag_types",
+            "type": "string"
+          },
+          {
+            "description": "the group ID that is allowed to grant/deny flags of\nthis type. If the item is not included all users are\nallowed to grant/deny this flagtype.",
+            "in": "query",
+            "name": "grant_group",
+            "type": "string"
+          },
+          {
+            "description": "Indicates whether the UNCONFIRMED bug status is\navailable for this product.",
+            "in": "query",
+            "name": "has_unconfirmed",
+            "type": "boolean"
+          },
+          {
+            "description": "An integer ID uniquely identifying the product in\nthis installation only.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "Integer product ID or product name.",
+            "in": "query",
+            "name": "id_or_name",
+            "type": "string"
+          },
+          {
+            "description": "Product IDs",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          },
+          {
+            "description": "A boolean indicating if the product is active.",
+            "in": "query",
+            "name": "is_active",
+            "type": "boolean"
+          },
+          {
+            "description": "Returns whether you can have more than one\nflag for the given flagtype in a given bug/attachment.",
+            "in": "query",
+            "name": "is_multiplicable",
+            "type": "boolean"
+          },
+          {
+            "description": "Returns whether you can request for the given\nflagtype (i.e. whether the '?' flag is available or\nnot).",
+            "in": "query",
+            "name": "is_requestable",
+            "type": "boolean"
+          },
+          {
+            "description": "Returns whether you can ask someone specifically\nor not.",
+            "in": "query",
+            "name": "is_requesteeble",
+            "type": "boolean"
+          },
+          {
+            "description": "Each object describes a milestone, and has the\nfollowing items: name, sort_key and\nis_active.",
+            "in": "query",
+            "name": "milestones",
+            "type": "string"
+          },
+          {
+            "description": "The name of the product. This is a unique identifier\nfor the product.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "Product names",
+            "in": "query",
+            "name": "names",
+            "type": "string"
+          },
+          {
+            "description": "The group ID that is allowed to request the flag if\nthe flag is of the type requestable. If the item is\nnot included all users are allowed request this\nflagtype.",
+            "in": "query",
+            "name": "request_group",
+            "type": "string"
+          },
+          {
+            "description": "Components, when displayed in a list, are sorted\nfirst by this integer and then secondly by their\nname.",
+            "in": "query",
+            "name": "sort_key",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "description": "Each object describes a version, and has the\nfollowing items: name, sort_key and\nis_active.",
+            "in": "query",
+            "name": "versions",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "classification": {
+                  "type": "string"
+                },
+                "create_series": {
+                  "type": "boolean"
+                },
+                "default_milestone": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "has_unconfirmed": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "is_open": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/product_selectable": {
+      "get": {
+        "parameters": [
+          {
+            "description": "List of integer product IDs.",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/product/{id_or_name}": {
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "changes": {
+                  "type": "string"
+                },
+                "default_milestone": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "has_unconfirmed": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "is_open": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "names": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "Integer product ID or name.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/time": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The current time in UTC, according to the Bugzilla\ndatabase server.\nNote that Bugzilla assumes that the database and the\nwebserver are running in the same time zone. However,\nif the web server and the database server aren't\nsynchronized or some reason, this is the time that\nyou should rely on for doing searches and other input\nto the WebService.",
+            "in": "query",
+            "name": "db_time",
+            "type": "string"
+          },
+          {
+            "description": "This is the current time in UTC, according to\nBugzilla's web server.\nThis might be different by a second from db_time\nsince this comes from a different source. If it's any\nmore different than a second, then there is likely\nsome problem with this Bugzilla instance. In this\ncase you should rely  on the db_time, not the\nweb_time.",
+            "in": "query",
+            "name": "web_time",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/timezone": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The timezone offset as a string in (+/-)XXXX (RFC 2822) format.",
+            "in": "query",
+            "name": "timezone",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "full_name": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "login": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/{id_or_name}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "A boolean value to indicate if the user can login\ninto bugzilla.",
+            "in": "query",
+            "name": "can_login",
+            "type": "boolean"
+          },
+          {
+            "description": "The description for the group",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "The email address of the user.",
+            "in": "query",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "description": "A boolean value to indicate if bug-related mail will\nbe sent to the user or not.",
+            "in": "query",
+            "name": "email_enabled",
+            "type": "boolean"
+          },
+          {
+            "description": "Numeric IDs for groups that a user can be in.",
+            "in": "query",
+            "name": "group_ids",
+            "type": "string"
+          },
+          {
+            "description": "Names of groups that a user can be in. If\ngroup_ids or groups are specified, they\nlimit the return value to users who are in any\nof the groups specified.",
+            "in": "query",
+            "name": "groups",
+            "type": "string"
+          },
+          {
+            "description": "The unique integer ID that Bugzilla uses to represent\nthis user. Even if the user's login name changes,\nthis will not change.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "An integer user ID or login name of the user.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Integer user IDs. Logged=out users cannot pass\nthis parameter to this function. If they try,\nthey will get an error. Logged=in users will get\nan error if they specify the ID of a user they\ncannot see.",
+            "in": "query",
+            "name": "ids",
+            "type": "string"
+          },
+          {
+            "description": "By default, when using the match parameter,\ndisabled users are excluded from the returned\nresults unless their full username is identical\nto the match string. Setting include_disabled to\ntrue will include disabled users in the returned\nresults even if their username doesn't fully match\nthe input string.",
+            "in": "query",
+            "name": "include_disabled",
+            "type": "boolean"
+          },
+          {
+            "description": "Limit the number of users matched by the\nmatch parameter. If the value is greater than the\nsystem limit, the system limit will be used.\nThis parameter is only valid when using the match\nparameter.",
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "description": "A text field that holds the reason for disabling a\nuser from logging into Bugzilla. If empty then the\nuser account is enabled; otherwise it is\ndisabled/closed.",
+            "in": "query",
+            "name": "login_denied_text",
+            "type": "string"
+          },
+          {
+            "description": "This works just like \"user matching\" in Bugzilla\nitself. Users will be returned whose real name\nor login name contains any one of the specified\nstrings. Users that you cannot see will not be\nincluded in the returned list.\nMost installations have a limit on how many\nmatches are returned for each string; the default\nis 1000 but can be changed by the Bugzilla\nadministrator.\nLogged-out users cannot use this argument, and\nan error will be thrown if they try. (This is to\nmake it harder for spammers to harvest email\naddresses from Bugzilla, and also to enforce the\nuser visibility restrictions that are\nimplemented on some Bugzillas.)",
+            "in": "query",
+            "name": "match",
+            "type": "string"
+          },
+          {
+            "description": "The login name of the user.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "Login names.",
+            "in": "query",
+            "name": "names",
+            "type": "string"
+          },
+          {
+            "description": "The CGI parameters for the saved report.",
+            "in": "query",
+            "name": "query",
+            "type": "string"
+          },
+          {
+            "description": "The actual name of the user. May be blank.",
+            "in": "query",
+            "name": "real_name",
+            "type": "string"
+          },
+          {
+            "description": "User's saved reports, each having the following\nSearch object items described below.",
+            "in": "query",
+            "name": "saved_reports",
+            "type": "string"
+          },
+          {
+            "description": "User's saved searches, each having the following\nSearch object items described below.",
+            "in": "query",
+            "name": "saved_searches",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "add": {
+                  "type": "string"
+                },
+                "bless_groups": {
+                  "type": "string"
+                },
+                "changes": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "email_enabled": {
+                  "type": "boolean"
+                },
+                "full_name": {
+                  "type": "string"
+                },
+                "groups": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "string"
+                },
+                "login_denied_text": {
+                  "type": "string"
+                },
+                "names": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "remove": {
+                  "type": "string"
+                },
+                "set": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "description": "Either the ID or the login name of the user to\nupdate.",
+            "in": "path",
+            "name": "id_or_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/1": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "_all",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "_custom",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "_default",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "_extra",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "include_fields",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unknown"
+          }
+        }
+      }
+    },
+    "/valid_login": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "login",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The current version of this Bugzilla",
+            "in": "query",
+            "name": "version",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "default": {
+            "description": "Unknown"
+          }
+        }
+      }
+    },
+    "/whoami": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The unique integer ID that Bugzilla uses to represent\nthis user. Even if the user's login name changes,\nthis will not change.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "string  The login name of the user.",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "description": "The actual name of the user. May be blank.",
+            "in": "query",
+            "name": "real_name",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {},
+  "swagger": "2.0"
+}
