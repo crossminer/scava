@@ -125,14 +125,7 @@ public class GithubImporter implements IImporter {
 		p.setHomePage(rep.getHomepage());
 		p.setName(rep.getName());
 		p.setShortName(p.getShortName());
-			try {
-				p.setStarred(getStargazers(rep));
-				
-			} catch (MalformedURLException e) {
-				logger.error(e.getMessage());
-			} catch (Exception e) {
-				logger.error("Error getting stars" + e.getMessage());
-			}
+			
 			try {
 				p.setCommitteers(getCommitters(rep));
 			} catch (MalformedURLException e) {
@@ -141,20 +134,32 @@ public class GithubImporter implements IImporter {
 				logger.error("Error getting committers" + e.getMessage());
 			}
 			try {
+				p.setDependencies(getDependencies(client, rep));
+				if (p.getDependencies().size() < 8)
+					return p;
+			} catch (IOException | XmlPullParserException | InterruptedException e) {
+				logger.error("Error getting dependencies: "  + e.getMessage());
+			}
+			try {
 				p.setReadmeText(getReadmeContent(client, rep));
 			} catch (Exception e) {
 				logger.error("Error getting readmefile" + e.getMessage());
 			}
 			try {
-				p.setDependencies(getDependencies(client, rep));
-			} catch (IOException | XmlPullParserException | InterruptedException e) {
-				logger.error("Error getting dependencies: "  + e.getMessage());
+				p.setStarred(getStargazers(rep));
+				
+			} catch (MalformedURLException e) {
+				logger.error(e.getMessage());
+			} catch (Exception e) {
+				logger.error("Error getting stars" + e.getMessage());
 			}
+			p.setTags(getTags(artId.split("/")[0],artId.split("/")[1]));
+			
 //			if(p.getDependencies() != null && p.getDependencies().size()>8) {
-			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
-			storeGithubUser(p.getStarred(), p.getFullName());
-			projectRepository.save(p);
-		logger.debug("Imported project: " + artId);
+				storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
+				storeGithubUser(p.getStarred(), p.getFullName());
+				projectRepository.save(p);
+				logger.debug("Imported project: " + artId);
 //			}
 
 		return p;
@@ -553,13 +558,14 @@ public class GithubImporter implements IImporter {
 				if (model.getParent() != null) {
 					String parent = model.getParent().getGroupId() + ":" + model.getParent().getArtifactId() + ":"
 							+ model.getParent().getVersion();
-					try {
-						List<String> deps;
-						deps = getMavenParentDependencies(parent);
-						result.addAll(deps);
-					} catch (DependencyResolutionException | ArtifactDescriptorException e) {
-						logger.error(e.getMessage());
-					}
+					result.add(parent);
+//					try {
+//						List<String> deps;
+//						deps = getMavenParentDependencies(parent);
+//						result.addAll(deps);
+//					} catch (DependencyResolutionException | ArtifactDescriptorException e) {
+//						logger.error(e.getMessage());
+//					}
 				}
 			} catch (XmlPullParserException | IOException e) {
 				logger.error(e.getMessage());
