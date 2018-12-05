@@ -32,19 +32,10 @@ import com.mongodb.Mongo;
 public class ProjectListResource extends AbstractApiResource {
 
     public Representation doRepresent() {
-		 // Defaults
-        int pageSize = 10;
-        int page = 0;
-        
         // Ready query params
         String _page = getQueryValue("page");
         String _size = getQueryValue("size");
-        if (_page != null && !"".equals(_page) && isInteger(_page)) {
-            page = Integer.valueOf(_page); 
-        }
-        if (_size != null && !"".equals(_size) && isInteger(_size)) {
-        	pageSize = Integer.valueOf(_size); 
-        }
+
         Mongo mongo = null;
         try {
         	mongo = Configuration.getInstance().getMongoConnection();
@@ -58,7 +49,14 @@ public class ProjectListResource extends AbstractApiResource {
         
         ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
         
-        DBCursor cursor = projectRepo.getProjects().getDbCollection().find().skip(page*pageSize).limit(pageSize);
+        DBCursor cursor;
+        if(_page != null && !"".equals(_page) && isInteger(_page) && _size != null && !"".equals(_size) && isInteger(_size)) {
+        	int page = Integer.valueOf(_page);
+        	int pageSize = Integer.valueOf(_size);
+        	cursor = projectRepo.getProjects().getDbCollection().find().skip(page*pageSize).limit(pageSize);
+        } else {
+        	cursor = projectRepo.getProjects().getDbCollection().find();
+        }
         
         ArrayNode projects = mapper.createArrayNode();
         
@@ -90,45 +88,7 @@ public class ProjectListResource extends AbstractApiResource {
 		resp.setMediaType(MediaType.APPLICATION_JSON);
 		return resp;
 		
-		
-//		// TODO
-//		boolean paging = getRequest().getAttributes().containsKey("page");
-//		
-//		Platform platform = Platform.getInstance();
-//		ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
-//		
-//		Iterator<Project> it = projectRepo.getProjects().iterator();
-//	
-//		ObjectMapper mapper = new ObjectMapper();
-//		ArrayNode projects = mapper.createArrayNode();
-//		
-//		while (it.hasNext()) {
-//			try {
-//				Project project  = it.next();
-//				DBObject p = project.getDbObject();
-//				
-//				p.removeField("storage");
-//				p.removeField("metricProviderData");
-//				p.removeField("_superTypes");
-//				p.removeField("_id");
-//				
-//				// FIXME: Temporary solution
-//				p.removeField("licenses");
-//				p.removeField("persons");
-//				
-//				projects.add(mapper.readTree(p.toString())); //TODO: There must be a better way..
-//				
-//			} catch (Exception e) {
-//				System.err.println("Error: " + e.getMessage());
-//				ObjectNode m = mapper.createObjectNode();
-//				m.put("apicall", "list-all-projects");
-//				return Util.generateErrorMessageRepresentation(m, e.getMessage());
-//			}			
-//		}
-//		StringRepresentation resp = new StringRepresentation(projects.toString());
-//		resp.setMediaType(MediaType.APPLICATION_JSON);
-//		return resp;
-	}
+    }
 
 	@Post("json")
 	public Representation postProject(Representation entity) {
