@@ -171,21 +171,12 @@ public class SimilarityManagerTest {
 	}
 
 
-
 	@Test
 	public void testGetSimilarProjectsArtifactDouble() {
 		List<Artifact> result = similarityManager.getSimilarProjects(artifacts.get(0), 0.1);
 		assertNotEquals(result.size(), 0);
 	}
-	
 
-	
-//
-//	@Test
-//	public void testGetDistanceMatrix() {
-//		fail("Not yet implemented");
-//	}
-//
 	@Test
 	public void testGetRelation() {
 		assertNotNull(similarityManager.getRelation(artifacts.get(0), artifacts.get(1), simReadmeCalculator));

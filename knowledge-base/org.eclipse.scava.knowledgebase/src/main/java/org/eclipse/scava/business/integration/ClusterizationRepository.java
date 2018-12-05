@@ -10,7 +10,6 @@
 package org.eclipse.scava.business.integration;
 
 import org.eclipse.scava.business.model.Clusterization;
-import org.eclipse.scava.business.model.SimilarityMethod;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -21,4 +20,5 @@ public interface ClusterizationRepository extends MongoRepository<Clusterization
 	Clusterization findOneBySimilarityMethodOrderByClusterizationDateDesc(String name);
 	Clusterization findTopByOrderByClusterizationDate();
 	Clusterization findTopBySimilarityMethodOrderByClusterizationDate(String similarityMethod);
+	Clusterization findTopBySimilarityMethodAndClusterAlgorithmOrderByClusterizationDate(String similarityMethod, String clusterAlgorithm);
 }

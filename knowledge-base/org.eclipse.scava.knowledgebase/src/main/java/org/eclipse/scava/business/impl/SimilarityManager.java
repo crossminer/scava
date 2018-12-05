@@ -169,12 +169,19 @@ public class SimilarityManager implements ISimilarityManager {
 
 	@Override
 	public Table<String, String, Double> getDistanceMatrix(ISimilarityCalculator simCalculator) {
-		List<Relation> relList = relationRepository.findAllByTypeName(simCalculator.getSimilarityName());
+		List<Artifact> arts = artifactRepository.findAll();
 		Table<String, String, Double> result = HashBasedTable.create();
-		for (Relation relation : relList) {
-			result.put(relation.getFromProject().getId(), relation.getToProject().getId(), relation.getValue());
+		int count = 1;
+		for (Artifact artifact : arts) {
+			
+			List<Relation> relList = relationRepository.findByToArtifactIdAndTypeName(new ObjectId(artifact.getId()), simCalculator.getSimilarityName());
+			logger.info("Relations are extracted: " + count);
+			count++;
+			for (Relation relation : relList) {
+				result.put(relation.getFromProject().getId(), relation.getToProject().getId(), relation.getValue());
+			}
+			artifactRepository.findAll().forEach(z -> result.put(z.getId(), z.getId(), 1.0));
 		}
-		artifactRepository.findAll().forEach(z -> result.put(z.getId(), z.getId(), 1.0));
 		return result;
 	}
 

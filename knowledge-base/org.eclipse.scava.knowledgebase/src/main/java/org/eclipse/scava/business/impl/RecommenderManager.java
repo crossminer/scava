@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.scava.business.IClusterCalculator;
 import org.eclipse.scava.business.IClusterManager;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.IRecommenderManager;
@@ -64,6 +65,10 @@ public class RecommenderManager implements IRecommenderManager {
 	@Autowired
 	List<ISimilarityCalculator> similarityFunction;
 	@Autowired
+	List<IClusterCalculator> clustercalculators;
+	
+	
+	@Autowired
 	private IClusterManager clusterManager;
 	@Autowired
 	private ISimilarityManager similarityManager;
@@ -87,9 +92,19 @@ public class RecommenderManager implements IRecommenderManager {
 	}
 
 	@Override
-	public List<Cluster> getClusters(String similarityName) {
+	public List<Cluster> getClusters(String similarityName, String algorithmName) {
 		try {
-			return clusterManager.getClusters(similarityFunction.get(0));
+			ISimilarityCalculator currentSimilarityCalculator = null;
+			for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
+				if(similarityName.equals(iSimilarityCalculator.getSimilarityName()))
+					currentSimilarityCalculator = iSimilarityCalculator;
+			}
+			IClusterCalculator currentClusterCalculator = null;
+			for (IClusterCalculator iClusterSimilarityCalculator : clustercalculators) {
+				if(algorithmName.equals(iClusterSimilarityCalculator.getClusterName()))
+					currentClusterCalculator = iClusterSimilarityCalculator;
+			}
+			return clusterManager.getClusters(currentSimilarityCalculator, currentClusterCalculator);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ArrayList<>();
@@ -134,5 +149,22 @@ public class RecommenderManager implements IRecommenderManager {
 				.with(page);
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		return recipes;
+	}
+
+	@Override
+	public Cluster getClusterByArtifact(String artId, String simCalculator,
+			String clusterAlgorithm) {
+		ISimilarityCalculator currentSimilarityCalculator = null;
+		for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
+			if(simCalculator.equals(iSimilarityCalculator.getSimilarityName()))
+				currentSimilarityCalculator = iSimilarityCalculator;
+		}
+		IClusterCalculator currentClusterCalculator = null;
+		for (IClusterCalculator iClusterSimilarityCalculator : clustercalculators) {
+			if(clusterAlgorithm.equals(iClusterSimilarityCalculator.getClusterName()))
+				currentClusterCalculator = iClusterSimilarityCalculator;
+		}
+		Artifact art = artifactRepository.findOne(artId);
+		return clusterManager.getClusterFromArtifact(art, currentSimilarityCalculator, currentClusterCalculator);
 	}
 }
