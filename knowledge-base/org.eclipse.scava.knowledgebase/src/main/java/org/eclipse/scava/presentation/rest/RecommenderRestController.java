@@ -58,11 +58,12 @@ public class RecommenderRestController {
 	private IRecommenderManager recommenderManager;
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderRestController.class);
 
-//	@RequestMapping(value = "cluster/{sim_method}", produces = "application/json", method = RequestMethod.GET)
-//	public List<Cluster> getClusters(
-//			@ApiParam(value = "String value which can be Compound, CrossSim, Dependency, Readme, RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction) {
-//		return recommenderManager.getClusters(simFunction);
-//	}
+	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}", produces = "application/json", method = RequestMethod.GET)
+	public List<Cluster> getClusters(
+			@ApiParam(value = "String value which can be Compound, CrossSim, Dependency, Readme, RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
+			@ApiParam(value = "String value which can be Clara, KMeans, or HCLibrary.", required = true) @PathVariable("cluster_algo") String clusterAlgo) {
+		return recommenderManager.getClusters(simFunction,clusterAlgo);
+	}
 	@ApiOperation(value ="This resource is used to retrieve recommended libraries.")
 	@RequestMapping(value = "recommended_library", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Recommendation getRecommendedLibraries(

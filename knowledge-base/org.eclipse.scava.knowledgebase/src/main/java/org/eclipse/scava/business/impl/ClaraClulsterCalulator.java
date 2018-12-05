@@ -55,7 +55,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 	private Cluster[] clusters;
 	private ISimilarityCalculator sm;
 	int _NUM_OF_CLUSTER = 47;
-	private final static String _CLUSTER_NAME = "CLARA";
+	private final static String _CLUSTER_NAME = "Clara";
 	@Override
 	public List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionOrTreshold) {
 		objects = arifactRepository.findAll();

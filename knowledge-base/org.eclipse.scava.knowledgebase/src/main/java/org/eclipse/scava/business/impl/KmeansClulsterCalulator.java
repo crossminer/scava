@@ -44,7 +44,7 @@ import com.mongodb.DBRef;
 @Service
 @Qualifier("KMeans")
 public class KmeansClulsterCalulator implements IClusterCalculator {
-	private final static String _CLUSTER_NAME = "Kmedoids";
+	private final static String _CLUSTER_NAME = "KMeans";
 
 	private static final Logger logger = LoggerFactory.getLogger(KmeansClulsterCalulator.class);
 	@Autowired
