@@ -135,8 +135,7 @@ public class ProjectAnalyser {
 			if (project.getExecutionInformation().getInErrorState()) {
 				// TODO: what should we do? Is the act of not-updating the lastExecuted flag enough?
 				// If it continues to loop, it simply tries tomorrow. We need to stop this happening.
-				logger.warn("Project in error state. Stopping execution.");
-				break;
+				logger.warn("Project in error state. Resuming execution.");
 			} else {
 				logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());

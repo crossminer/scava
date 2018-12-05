@@ -54,7 +54,7 @@ class Scava(Backend):
     :param tag: label used to mark the data
     :param archive: archive to store/retrieve items
     """
-    version = '0.0.1'
+    version = '0.0.2'
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT]
 
@@ -106,6 +106,10 @@ class Scava(Backend):
             items = json.loads(raw_items)
             items = [items] if isinstance(items, dict) else items
             for item in items:
+                if 'executionInformation' in item and 'lastExecuted' not in item['executionInformation']:
+                    logger.warning("Item filtered due to missing lastExecuted info: %s", str(item))
+                    continue
+
                 if category == CATEGORY_METRIC:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
@@ -175,10 +179,10 @@ class Scava(Backend):
         :returns: a UNIX timestamp
         """
 
-        if 'executionInformation' in item:
-            updated = item['executionInformation']['lastExecuted']
-        elif 'id' in item:
+        if 'updated' in item:
             updated = item['updated']
+        elif 'executionInformation' in item:
+            updated = item['executionInformation']['lastExecuted']
         else:
             raise TypeError("Can not extract metadata_updated_on from", item)
 

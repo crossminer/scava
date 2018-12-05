@@ -13,4 +13,10 @@
    <extension
          point="scava.rascal.metricprovider">
    </extension>
+   <extension
+         point="org.eclipse.scava.platform.visualisation.metric">
+      <visualisation
+            json="vis/ratioUnusedOSGiImportedPackages.json">
+      </visualisation>
+   </extension>
 </plugin>

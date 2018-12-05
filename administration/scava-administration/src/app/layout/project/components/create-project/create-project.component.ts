@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Project,IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ export class CreateProjectComponent implements OnInit {
   form: FormGroup;
   project: Project;
   isSaving: boolean;
+  infosSouceExist: boolean;
 
   constructor(
     private router: Router,
@@ -23,30 +24,41 @@ export class CreateProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isSaving = false;
+    this.infosSouceExist = false;
     this.project = new Project();
     this.buildForm();
-    this.isSaving = false;
   }
 
   buildForm() {
     this.form = this.formBuilder.group({
+      name: this.addControlProject(),
+      description: this.addControlProject(),
+      homePage: this.addControlProject(),
       vcs: this.formBuilder.array([]),
       communication_channels: this.formBuilder.array([]),
       bts: this.formBuilder.array([])
     });
   }
 
+  addControlProject(){
+    return ['', Validators.required];
+  }
+
   addInformationSource(source: string, type: string) {
-    const control = <FormArray>this.form.get(source);
+    const formArray = <FormArray>this.form.get(source);
     switch (source) {
       case 'vcs':
-        control.push(this.createVersionControlSystems(type));
+        formArray.push(this.createVersionControlSystems(type));
+        this.infosSouceExist = true;
         break;
       case 'bts':
-        control.push(this.createIssueTrackingSystems(type));
+        formArray.push(this.createIssueTrackingSystems(type));
+        this.infosSouceExist = true;
         break;
       case 'communication_channels':
-        control.push(this.createCommunicationChannels(type));
+        formArray.push(this.createCommunicationChannels(type));
+        this.infosSouceExist = true;
       default:
         break;
     }
@@ -57,12 +69,12 @@ export class CreateProjectComponent implements OnInit {
       case 'git':
         return this.formBuilder.group({
           'type': [type],
-          'url': ['']
+          'url': ['', Validators.required]
         });
       case 'svn':
         return this.formBuilder.group({
           'type': [type],
-          'url': ['']
+          'url': ['', Validators.required]
         });
       default:
         break;
@@ -74,7 +86,7 @@ export class CreateProjectComponent implements OnInit {
     return this.formBuilder.group({
       'type': [type],
       'name': ['NNTP'],
-      'url': [''],
+      'url': ['', Validators.required],
     });
   }
 
@@ -83,21 +95,21 @@ export class CreateProjectComponent implements OnInit {
       case 'bugzilla':
         return this.formBuilder.group({
           'type': [type],
-          'product': [''],
-          'component': [''],
-          'url': [''],
+          'product': ['', Validators.required],
+          'component': ['', Validators.required],
+          'url': ['', Validators.required],
         });
       case 'sourceforge':
         return this.formBuilder.group({
           'type': [type],
-          'url': ['']
+          'url': ['', Validators.required]
         });
       case 'redmine':
         return this.formBuilder.group({
           'type': [type],
-          'name': [''],
-          'project': [''],
-          'url': ['']
+          'name': ['', Validators.required],
+          'project': ['', Validators.required],
+          'url': ['', Validators.required]
         });
       default:
         break;
@@ -105,23 +117,35 @@ export class CreateProjectComponent implements OnInit {
   }
 
   removeInformationSource(sourceName: string, index: number) {
-    const control = <FormArray>this.form.get(sourceName);
-    control.removeAt(index);
+    const formArray = <FormArray>this.form.get(sourceName);
+    formArray.removeAt(index);
+    const formValue = this.form.value;
+    if(formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0){
+      this.infosSouceExist = false;
+    }
   }
 
   save() {
     this.isSaving = true;
+    this.project.name= this.saveControlProject('name');
+    this.project.description= this.saveControlProject('description');
+    this.project.homePage= this.saveControlProject('homePage');
     this.project.vcsRepositories = this.saveInformationSources('vcs');
     this.project.bts = this.saveInformationSources('bts');
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
-      this.onShowMessage(resp)
       let project : IProject = resp as IProject;
+      this.onShowMessage(project)
       this.router.navigate(['/project']);
     }, error => {
       this.onShowMessage(error)
     })
 
+  }
+
+  saveControlProject(elem: string) {
+    const control = <FormArray>this.form.get(elem);
+    return control.value;
   }
 
   saveInformationSources(sourceName: string) {

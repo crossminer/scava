@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.dependency.maven.ratioOptionalMavenDependencies.historic",
+	"vis" : [ 
+		{
+			"id" : "ratioOptionalMavenDependenciesTimeLine",
+			"name" : "Ratio of optional Maven dependencies",
+			"description" : "This metric shows the ratio of optional dependencies over the total number of dependencies.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Ratio", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Ratio", 
+			"x-label" : "Date",		
+			"y-label" : "Ratio (%)",
+			"timeSeries" : true
+		}
+	]
+}

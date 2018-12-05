@@ -6,6 +6,11 @@ body {
   background: #eee;
 }
 
+
 .worker-card-body {
     padding: 0.5rem;
+}
+
+.card-columns{
+  column-count : 2 !important;
 }
