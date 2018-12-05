@@ -166,7 +166,7 @@ public class ClusterManagerTest {
 	public void testGetClusterByArtifactsIdAndClusterizationId() {
 		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simDependencyCalculator, clara);
 		Cluster cluster = clusterManager.getClusterByArtifactsIdAndClusterizationId(artifacts.get(0).getId(),
-				clusterization.getId(), clara);
+				clusterization.getId());
 		assertNotNull(cluster);
 	}
 

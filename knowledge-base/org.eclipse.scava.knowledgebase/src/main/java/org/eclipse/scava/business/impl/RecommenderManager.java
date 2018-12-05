@@ -96,7 +96,7 @@ public class RecommenderManager implements IRecommenderManager {
 		try {
 			ISimilarityCalculator currentSimilarityCalculator = null;
 			for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
-				if(algorithmName.equals(iSimilarityCalculator.getSimilarityName()))
+				if(similarityName.equals(iSimilarityCalculator.getSimilarityName()))
 					currentSimilarityCalculator = iSimilarityCalculator;
 			}
 			IClusterCalculator currentClusterCalculator = null;
@@ -149,5 +149,22 @@ public class RecommenderManager implements IRecommenderManager {
 				.with(page);
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		return recipes;
+	}
+
+	@Override
+	public Cluster getClusterByArtifact(String artId, String simCalculator,
+			String clusterAlgorithm) {
+		ISimilarityCalculator currentSimilarityCalculator = null;
+		for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
+			if(simCalculator.equals(iSimilarityCalculator.getSimilarityName()))
+				currentSimilarityCalculator = iSimilarityCalculator;
+		}
+		IClusterCalculator currentClusterCalculator = null;
+		for (IClusterCalculator iClusterSimilarityCalculator : clustercalculators) {
+			if(clusterAlgorithm.equals(iClusterSimilarityCalculator.getClusterName()))
+				currentClusterCalculator = iClusterSimilarityCalculator;
+		}
+		Artifact art = artifactRepository.findOne(artId);
+		return clusterManager.getClusterFromArtifact(art, currentSimilarityCalculator, currentClusterCalculator);
 	}
 }

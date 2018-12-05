@@ -28,6 +28,5 @@ public interface IRecommenderManager {
 	List<Artifact> getSimilarProjects(String projectId, String similarityFunction, int numOfResult);
 	List<Artifact> getArtifactsByQuery(String projectQuery);
 	List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page);
-	
-	
+	Cluster getClusterByArtifact(String artId, String simCalculator, String clusterAlgorithm);
 }

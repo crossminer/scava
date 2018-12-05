@@ -136,7 +136,7 @@ public class ClusterManager implements IClusterManager{
 	}
 
 	@Override
-	public Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId, IClusterCalculator clusterAlgorithm) {
+	public Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId) {
 		Query q1 = new Query();
 		q1.addCriteria(Criteria.where("clusterization.$id").is(new ObjectId(clusterizationId)).orOperator(
 				Criteria.where("artifacts._id").is(new ObjectId(artifactId)),
