@@ -37,18 +37,19 @@ import com.google.common.collect.Table;
 @Qualifier("HCLibrary")
 public class HierarchicalClulsterCalulator implements IClusterCalculator {
 
-	private static final double THRESHOLD = 0.15;
+	private final static String _CLUSTER_NAME = "Hierarchical";
+	//private static final double THRESHOLD = 0.15;
 	private static final Logger logger = LoggerFactory.getLogger(HierarchicalClulsterCalulator.class);
 	@Autowired
 	private ArtifactRepository arifactRepository;
 	@Autowired
 	private SimilarityManager similarityManager;
 	@Override
-	public List<Cluster> calculateCluster(ISimilarityCalculator sm) {
+	public List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionOrTreshold) {
 
 		List<Cluster> result = new ArrayList<>();
 		com.apporiented.algorithm.clustering.Cluster c = getHierarchicalCluster(sm);
-		List<com.apporiented.algorithm.clustering.Cluster> k = getClustersWithThreshold(c, THRESHOLD);
+		List<com.apporiented.algorithm.clustering.Cluster> k = getClustersWithThreshold(c, partitionOrTreshold );
 		for (com.apporiented.algorithm.clustering.Cluster cluster : k) {
 			Cluster clu = new Cluster();
 			clu.setArtifacts(new ArrayList<Artifact>());
@@ -57,6 +58,10 @@ public class HierarchicalClulsterCalulator implements IClusterCalculator {
 			result.add(clu);
 		}
 		return result;
+	}
+	@Override
+	public String getClusterName() {
+		return _CLUSTER_NAME;
 	}
 	
 //	@Override

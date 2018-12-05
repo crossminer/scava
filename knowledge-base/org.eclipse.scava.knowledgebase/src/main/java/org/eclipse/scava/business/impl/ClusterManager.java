@@ -11,7 +11,6 @@ package org.eclipse.scava.business.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -24,10 +23,8 @@ import org.eclipse.scava.business.integration.ClusterizationRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
 import org.eclipse.scava.business.model.Clusterization;
-import org.eclipse.scava.business.model.Relation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -67,19 +64,17 @@ public class ClusterManager implements IClusterManager{
 	private ClusterizationRepository clusterizationRepository;
 	@Autowired
 	private ClusterRepository clusterRepository;
-	@Autowired
-	@Qualifier("HCLibrary")
-	private IClusterCalculator libraryClusterCalculator;
 	
-	
+	private static final double _PARTITION_OR_THRESHOLD = 5;
 
 	@Override
-	public void calculateAndStoreClusterization(ISimilarityCalculator simCalc) {
+	public void calculateAndStoreClusterization(ISimilarityCalculator simCalc, IClusterCalculator libraryClusterCalculator) {
 		Clusterization clusterization = new Clusterization();
 		clusterization.setClusterizationDate(new Date());
 		List<Cluster> clusters = new ArrayList<>();
-		clusters  = libraryClusterCalculator.calculateCluster(simCalc);
+		clusters  = libraryClusterCalculator.calculateCluster(simCalc, _PARTITION_OR_THRESHOLD);
 		clusterization.setSimilarityMethod(simCalc.getSimilarityName());
+		clusterization.setClusterAlgorithm(libraryClusterCalculator.getClusterName());
 		clusterizationRepository.save(clusterization);
 		for (Cluster cluster : clusters) {
 			cluster.setClusterization(clusterization);
@@ -88,8 +83,8 @@ public class ClusterManager implements IClusterManager{
 	}
 	
 	@Override
-	public List<Cluster> getClusters(ISimilarityCalculator simCalc) throws Exception {
-		
+	public List<Cluster> getClusters(ISimilarityCalculator simCalc, IClusterCalculator clusterAlgoritms) throws Exception {
+		//TODO USE CLUSTERALGORITHMS
 		Clusterization clusterization = clusterizationRepository.findTopBySimilarityMethodOrderByClusterizationDate(simCalc.getSimilarityName());
 		if (clusterization == null)
 			throw new Exception("No clusterization found!");

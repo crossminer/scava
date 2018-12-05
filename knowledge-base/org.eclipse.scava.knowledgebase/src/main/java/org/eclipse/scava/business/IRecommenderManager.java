@@ -24,7 +24,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface IRecommenderManager {
 	Recommendation getRecommendation(Query query, RecommendationType rt) throws Exception;
-	List<Cluster> getClusters(String similarityName);
+	List<Cluster> getClusters(String similarityName, String algorithmsName);
 	List<Artifact> getSimilarProjects(String projectId, String similarityFunction, int numOfResult);
 	List<Artifact> getArtifactsByQuery(String projectQuery);
 	List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page);

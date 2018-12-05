@@ -54,13 +54,16 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 	private Artifact[] medoids;
 	private Cluster[] clusters;
 	private ISimilarityCalculator sm;
-
+	int _NUM_OF_CLUSTER = 47;
+	private final static String _CLUSTER_NAME = "CLARA";
 	@Override
-	public List<Cluster> calculateCluster(ISimilarityCalculator sm) {
+	public List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionOrTreshold) {
 		objects = arifactRepository.findAll();
 		// TODO num of cluster as parameter
-		Cluster[] clusters = new Cluster[43];
-		this.clusters = new Cluster[43];
+		
+		Cluster[] clusters = new Cluster[new Double(partitionOrTreshold).intValue()];
+		
+		this.clusters = new Cluster[_NUM_OF_CLUSTER ];
 		this.sm = sm;
 		for (int i = 0; i < this.clusters.length; i++) {
 			clusters[i] = new Cluster();
@@ -100,6 +103,10 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 
 		for (int i = 0; i < this.clusters.length; i++) {
 			int randElement = (int) Math.floor(Math.random() * candidateObjects.size());
+			if (randElement > this.objects.size() - 1)
+				randElement = this.objects.size() - 1;
+			if (this.objects.size() == 0)
+				continue;
 			medoids[i] = candidateObjects.get(randElement);
 //            this.Clusters[i].setMedoid(medoids[i]);
 			candidateObjects.remove(randElement);
@@ -108,13 +115,16 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 	}
 
 	private List<Artifact> sampling(int numOfDocs, int numOfClusters) {
-
+		List<Artifact> tempObjects = new ArrayList<Artifact>(this.objects);
 		List<Artifact> objects = new ArrayList<Artifact>();
-		int size = 40 + 2 * numOfClusters;
+		int size = 40 + 2*numOfClusters;
 		for (int i = 0; i < size; i++) {
-			int randElement = (int) Math.floor(Math.random() * this.objects.size());
+			int randElement = (int) Math.floor(Math.random() * tempObjects.size());
+			if (randElement > this.objects.size() - 1)
+				randElement = this.objects.size() - 1;
+			if(this.objects.size() == 0)continue;
 			objects.add(this.objects.get(randElement));
-			this.objects.remove(randElement);
+			tempObjects.remove(randElement);
 		}
 		return objects;
 	}
@@ -178,7 +188,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 		}
 		Set<Artifact> tmp = new HashSet<Artifact>();
 		tmp.addAll(Objects);
-		for (int i = 0; i < clusters.length; i++) 
+		for (int i = 0; i < clusters.length; i++)
 			tmp.remove(medoids[i]);
 		for (Artifact object : tmp) {
 			distance = readDistanceScores(object.getId());
@@ -195,7 +205,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 		}
 		return tmpClusters;
 	}
-	
+
 	private int getIndexOfSmallestElement(Float[] elements) {
 		int length = elements.length;
 		float min = elements[0];
@@ -228,7 +238,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 		}
 		return result;
 	}
-	
+
 	/* calculate the average distance of all objects */
 	private float getClusteringQuality(Cluster[] Clusters) {
 		float ret = 0, val = 0;
@@ -247,7 +257,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 
 		return ret;
 	}
-	
+
 	/*
 	 * calculate the average distance from a medoid to all other objects of a
 	 * cluster
@@ -291,5 +301,10 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 			}
 		}
 		return newMedoid;
+	}
+
+	@Override
+	public String getClusterName() {
+		return _CLUSTER_NAME;
 	}
 }

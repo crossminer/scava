@@ -18,7 +18,8 @@ import org.eclipse.scava.business.model.Cluster;
  *
  */
 public interface IClusterCalculator {
-	List<Cluster> calculateCluster(ISimilarityCalculator sm);
+	List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionsOrTreshold);
+	String getClusterName();
 	//com.apporiented.algorithm.clustering.Cluster getHierarchicalCluster(ISimilarityCalculator valuedRelationService);
 //	List<Cluster> calculateCluster(ISimilarityCalculator sm, com.apporiented.algorithm.clustering.Cluster cluster);
 }

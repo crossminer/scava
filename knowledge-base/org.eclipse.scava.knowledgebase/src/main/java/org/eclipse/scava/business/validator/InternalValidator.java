@@ -125,9 +125,15 @@ public class InternalValidator {
 		}
 
 		for (int clusterID1 = 0; clusterID1 < this.numberOfClusters - 1; clusterID1++) {
+			
 			distances = readDistanceScores(medoids[clusterID1].getId());
 			for (int clusterID2 = clusterID1 + 1; clusterID2 < this.numberOfClusters; clusterID2++) {
-				denominator += distances.get(medoids[clusterID2].getId());
+				try{
+					denominator += distances.get(medoids[clusterID2].getId());
+				}
+				catch (Exception e) {
+					denominator += 1;
+				}
 			}
 		}
 
@@ -178,8 +184,13 @@ public class InternalValidator {
 
 					len = tmp2.size();
 					sum = 0.0f;
-					for (String t : tmp2)
-						sum += distances.get(t);
+					for (String t : tmp2) {
+						try {
+							sum += distances.get(t);
+						}catch (Exception e) {
+							sum += 1;
+						}
+					}
 					distenceBetweenElementAndCluster.put(clusterElement, clusterID2, sum / len);
 				}
 				min = distenceBetweenElementAndCluster.get(clusterElement, 0==clusterID1?1:0);

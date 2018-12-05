@@ -44,6 +44,7 @@ import com.mongodb.DBRef;
 @Service
 @Qualifier("KMeans")
 public class KmeansClulsterCalulator implements IClusterCalculator {
+	private final static String _CLUSTER_NAME = "Kmedoids";
 
 	private static final Logger logger = LoggerFactory.getLogger(KmeansClulsterCalulator.class);
 	@Autowired
@@ -55,13 +56,13 @@ public class KmeansClulsterCalulator implements IClusterCalculator {
 	private Cluster[] clusters;
 	private ISimilarityCalculator sm;
 	@Override
-	public List<Cluster> calculateCluster(ISimilarityCalculator sm) {
+	public List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionOrTreshold) {
 		
 		// TODO num of cluster as parameter
 		
 		this.sm = sm;
 		
-		clusters = new Cluster[43];
+		clusters = new Cluster[new Double(partitionOrTreshold).intValue()];
 		for (int i = 0; i < clusters.length; i++) {
 			clusters[i] = new Cluster();
 		}
@@ -71,6 +72,10 @@ public class KmeansClulsterCalulator implements IClusterCalculator {
 		clusters = execute(newMedoids);
 		return Arrays.asList(clusters);
 		
+	}
+	@Override
+	public String getClusterName() {
+		return _CLUSTER_NAME;
 	}
 
 	private Cluster[] execute(Artifact[] initialMedoids) {

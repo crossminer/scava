@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
@@ -16,9 +17,10 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 
+
 @Service
 public class ExternalValidator {
-
+	private static final Logger logger = LoggerFactory.getLogger(ExternalValidator.class);
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	private Cluster[] clusters;
@@ -56,9 +58,11 @@ public class ExternalValidator {
 				String item = line.split(",")[0];
 				int cluster = Integer.parseInt(line.split(",")[1]);
 				Artifact art = artifactRepository.findOneByFullName(item.replace("__", "/"));
-				if (art != null)
+				if (art != null) {					
 					result[cluster].getArtifacts().add(art);
+				}
 			}
+				
 			bw.close();
 			return result;
 		} catch (IOException e) {
@@ -177,7 +181,6 @@ public class ExternalValidator {
 			vector1.add(id.getId());
 		vector1.add(clusters[clusterID].getMostRepresentative().getId());
 		
-		Set<String> vector2 = new HashSet<String>();
 		Set<String> common = null;
 
 		int ni = vector1.size();
@@ -187,7 +190,8 @@ public class ExternalValidator {
 		Float[] F = new Float[this.clusters.length];
 
 		for (int j = 0; j < clusters.length; j++) {
-			for (Artifact string : Classes[j].getArtifacts())
+		Set<String> vector2 = new HashSet<String>();
+		for (Artifact string : Classes[j].getArtifacts())
 				try {
 					vector2.add(string.getId());
 				} catch (Exception e) {
