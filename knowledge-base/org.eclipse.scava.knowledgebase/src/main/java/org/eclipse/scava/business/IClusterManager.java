@@ -23,9 +23,9 @@ public interface IClusterManager {
 	void calculateAndStoreClusterization(ISimilarityCalculator simCalc, IClusterCalculator libraryClusterCalculator);
 	List<Cluster> getClusters(ISimilarityCalculator simCalc, IClusterCalculator clusterAlgorithm) throws Exception;
 	void deleteClusterization(Clusterization clusterization);
-	Cluster getClusterFromArtifact(Artifact art, ISimilarityCalculator simCalc);
-	Cluster getOneByArtifactsName(String string, ISimilarityCalculator simCalc);
-	Clusterization getClusterizationBySimilarityMethodLastDate(ISimilarityCalculator simDependencyCalculator);
-	Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId);
+	Cluster getClusterFromArtifact(Artifact art, ISimilarityCalculator simCalc, IClusterCalculator clusterAlgorithm);
+	Cluster getOneByArtifactsName(String string, ISimilarityCalculator simCalc, IClusterCalculator clusterAlgorithm);
+	Clusterization getClusterizationBySimilarityMethodLastDate(ISimilarityCalculator simDependencyCalculator, IClusterCalculator clusterAlgorithm);
+	Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId, IClusterCalculator clusterAlgorithm);
 
 }

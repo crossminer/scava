@@ -135,8 +135,6 @@ public class GithubImporter implements IImporter {
 			}
 			try {
 				p.setDependencies(getDependencies(client, rep));
-				if (p.getDependencies().size() < 8)
-					return p;
 			} catch (IOException | XmlPullParserException | InterruptedException e) {
 				logger.error("Error getting dependencies: "  + e.getMessage());
 			}

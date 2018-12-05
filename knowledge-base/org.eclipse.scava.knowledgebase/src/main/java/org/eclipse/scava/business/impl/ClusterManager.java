@@ -85,7 +85,7 @@ public class ClusterManager implements IClusterManager{
 	@Override
 	public List<Cluster> getClusters(ISimilarityCalculator simCalc, IClusterCalculator clusterAlgoritms) throws Exception {
 		//TODO USE CLUSTERALGORITHMS
-		Clusterization clusterization = clusterizationRepository.findTopBySimilarityMethodOrderByClusterizationDate(simCalc.getSimilarityName());
+		Clusterization clusterization = clusterizationRepository.findTopBySimilarityMethodAndClusterAlgorithmOrderByClusterizationDate(simCalc.getSimilarityName(), clusterAlgoritms.getClusterName());
 		if (clusterization == null)
 			throw new Exception("No clusterization found!");
 		
@@ -95,12 +95,14 @@ public class ClusterManager implements IClusterManager{
 	}
 	
 	@Override
-	public Cluster getClusterFromArtifact(Artifact art, ISimilarityCalculator simCalc){
-		Clusterization clusterization = clusterizationRepository.findOneBySimilarityMethodOrderByClusterizationDateDesc(simCalc.getSimilarityName());
-		Query q1 = new Query(
-				new Criteria().andOperator(
-						Criteria.where("clusterization.$id").is(new ObjectId(clusterization.getId())),
-						Criteria.where("artifacts.$id").is(new ObjectId(art.getId()))));
+	public Cluster getClusterFromArtifact(Artifact art, ISimilarityCalculator simCalc, IClusterCalculator clusterAlgorithm){
+		Clusterization clusterization = clusterizationRepository.findTopBySimilarityMethodAndClusterAlgorithmOrderByClusterizationDate(simCalc.getSimilarityName(), clusterAlgorithm.getClusterName());
+		
+		Query q1 = new Query();
+		q1.addCriteria(Criteria.where("clusterization.$id").is(new ObjectId(clusterization.getId())).orOperator(
+				Criteria.where("artifacts._id").is(new ObjectId(art.getId())),
+				Criteria.where("mostRepresentative._id").is(new ObjectId(art.getId()))));
+		
 		Cluster result = mongoOperations.findOne(q1, Cluster.class);
 		return result;
 	}
@@ -116,28 +118,30 @@ public class ClusterManager implements IClusterManager{
 	}
 
 	@Override
-	public Cluster getOneByArtifactsName(String artifactName, ISimilarityCalculator simCalc) {
+	public Cluster getOneByArtifactsName(String artifactName, ISimilarityCalculator simCalc, IClusterCalculator clusterAlgorithm) {
 		Artifact artifact = artifactRepository.findOneByName(artifactName);
-		Clusterization clusterization = clusterizationRepository.findOneBySimilarityMethodOrderByClusterizationDateDesc(simCalc.getSimilarityName());
-		Query q1 = new Query(
-				new Criteria().andOperator(
-						Criteria.where("clusterization.$id").is(new ObjectId(clusterization.getId())),
-						Criteria.where("artifacts.$id").is(new ObjectId(artifact.getId()))));
+		Clusterization clusterization = clusterizationRepository.findTopBySimilarityMethodAndClusterAlgorithmOrderByClusterizationDate(simCalc.getSimilarityName(), clusterAlgorithm.getClusterName());
+		Query q1 = new Query();
+		q1.addCriteria(Criteria.where("clusterization.$id").is(new ObjectId(clusterization.getId())).orOperator(
+				Criteria.where("artifacts._id").is(new ObjectId(artifact.getId())),
+				Criteria.where("mostRepresentative._id").is(new ObjectId(artifact.getId()))));
+		
 		Cluster result = mongoOperations.findOne(q1, Cluster.class);
 		return result;
 	}
 
 	@Override
-	public Clusterization getClusterizationBySimilarityMethodLastDate(ISimilarityCalculator simDependencyCalculator) {
-		return clusterizationRepository.findTopBySimilarityMethodOrderByClusterizationDate(simDependencyCalculator.getSimilarityName());
+	public Clusterization getClusterizationBySimilarityMethodLastDate(ISimilarityCalculator simDependencyCalculator, IClusterCalculator clusterAlgorithm) {
+		return clusterizationRepository.findTopBySimilarityMethodAndClusterAlgorithmOrderByClusterizationDate(simDependencyCalculator.getSimilarityName(), clusterAlgorithm.getClusterName());
 	}
 
 	@Override
-	public Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId) {
-		
-		Query q1 = new Query(new Criteria().andOperator(Criteria.where("clusterization.$id").is(new ObjectId(clusterizationId)),
-				Criteria.where("artifacts.$id").is(new ObjectId(artifactId))));
-		
+	public Cluster getClusterByArtifactsIdAndClusterizationId(String artifactId, String clusterizationId, IClusterCalculator clusterAlgorithm) {
+		Query q1 = new Query();
+		q1.addCriteria(Criteria.where("clusterization.$id").is(new ObjectId(clusterizationId)).orOperator(
+				Criteria.where("artifacts._id").is(new ObjectId(artifactId)),
+				Criteria.where("mostRepresentative._id").is(new ObjectId(artifactId))));
+				
 		Cluster result = mongoOperations.findOne(q1, Cluster.class);
 		
 		return result;

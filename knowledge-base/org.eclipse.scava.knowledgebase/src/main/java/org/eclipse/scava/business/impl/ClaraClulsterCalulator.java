@@ -54,7 +54,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 	private Artifact[] medoids;
 	private Cluster[] clusters;
 	private ISimilarityCalculator sm;
-	int _NUM_OF_CLUSTER = 47;
+	
 	private final static String _CLUSTER_NAME = "Clara";
 	@Override
 	public List<Cluster> calculateCluster(ISimilarityCalculator sm, double partitionOrTreshold) {
@@ -63,7 +63,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 		
 		Cluster[] clusters = new Cluster[new Double(partitionOrTreshold).intValue()];
 		
-		this.clusters = new Cluster[_NUM_OF_CLUSTER ];
+		this.clusters = new Cluster[new Double(partitionOrTreshold).intValue()];
 		this.sm = sm;
 		for (int i = 0; i < this.clusters.length; i++) {
 			clusters[i] = new Cluster();
@@ -123,6 +123,7 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 			if (randElement > this.objects.size() - 1)
 				randElement = this.objects.size() - 1;
 			if(this.objects.size() == 0)continue;
+			if(tempObjects.size() == 0) continue;
 			objects.add(this.objects.get(randElement));
 			tempObjects.remove(randElement);
 		}
