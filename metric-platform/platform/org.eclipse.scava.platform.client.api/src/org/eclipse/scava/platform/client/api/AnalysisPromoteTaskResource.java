@@ -11,14 +11,15 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Delete;
+import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 
 import com.mongodb.Mongo;
 
-public class AnalysisPromoteTaskResource extends ServerResource {
+public class AnalysisPromoteTaskResource extends AbstractApiResource {
 
-	@Delete
-	public Representation deleteAnalysisTask(Representation entity) {
+	@Override
+	public Representation doRepresent() {
 		Mongo mongo = null;
 		Platform platform = null;
 		try {
@@ -26,7 +27,7 @@ public class AnalysisPromoteTaskResource extends ServerResource {
 			platform = new Platform(mongo);				
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			
-			String analysisTaskId = (String) getRequest().getAttributes().get("analysisTaskId");
+			String analysisTaskId = getQueryValue("analysisTaskId");
 
 			AnalysisTask task = service.promoteTask(analysisTaskId);
 
@@ -45,7 +46,6 @@ public class AnalysisPromoteTaskResource extends ServerResource {
 			if (mongo != null) mongo.close();
 			platform = null;
 		}
-
 	}
 
 }

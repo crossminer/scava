@@ -27,7 +27,8 @@ public class AnalysisTaskByAnalysisTaskResource extends AbstractApiResource {
 			mongo = Configuration.getInstance().getMongoConnection();
 			platform = new Platform(mongo);
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
-			String analysisTaskId = (String) getRequest().getAttributes().get("analysistaskid");
+			
+			String analysisTaskId = getQueryValue("analysisTaskId");
 
 			AnalysisTask analysisTask = service.getTaskByAnalysisTaskId(analysisTaskId);
 			analysisTask.getDbObject().put("projectId", analysisTask.getProject().getProjectId());

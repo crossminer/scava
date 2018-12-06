@@ -33,13 +33,13 @@ public class ApiApplication extends Application {
 		router.attach("/analysis/task/start", AnalysisStartTaskResource.class);
 		router.attach("/analysis/task/stop", AnalysisStopTaskResource.class);
 		router.attach("/analysis/task/reset", AnalysisResetTaskResource.class);
-		router.attach("/analysis/task/promote/{analysisTaskId}", AnalysisPromoteTaskResource.class);
-		router.attach("/analysis/task/demote/{analysisTaskId}", AnalysisDemoteTaskResource.class);
-		router.attach("/analysis/task/pushOnWorker/{analysisTaskId}/w/{workerId}", AnalysisTaskPushOnWorkerResource.class);
-		router.attach("/analysis/task/delete/{analysisTaskId}", AnalysisDeleteTaskResource.class);
+		router.attach("/analysis/task/promote", AnalysisPromoteTaskResource.class);
+		router.attach("/analysis/task/demote", AnalysisDemoteTaskResource.class);
+		router.attach("/analysis/task/pushOnWorker", AnalysisTaskPushOnWorkerResource.class);
+		router.attach("/analysis/task/delete", AnalysisDeleteTaskResource.class);
 		router.attach("/analysis/tasks/project/{projectid}", AnalysisTasksByProjectResource.class);
 		router.attach("/analysis/tasks/status/project/{projectid}", AnalysisTasksStatusByProjectResource.class);
-		router.attach("/analysis/task/{analysistaskid}", AnalysisTaskByAnalysisTaskResource.class);
+		router.attach("/analysis/task", AnalysisTaskByAnalysisTaskResource.class);
 		router.attach("/analysis/tasks", AnalysisTasksResource.class);
 		router.attach("/analysis/metricproviders", AnalysisMetricProvidersResource.class);
 		router.attach("/analysis/workers", AnalysisWorkerResource.class);
