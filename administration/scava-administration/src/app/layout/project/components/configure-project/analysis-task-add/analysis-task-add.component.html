@@ -10,7 +10,7 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
                     <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label"
-                        required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9- ]*$">
+                        required minlength="1" maxlength="50" pattern="^\w+(\s\w+)*$">
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label" for="type">Task type</label>
