@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment.prod';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from '../authentication/local-storage.service';
 import { Observable } from 'rxjs';
-import { ExecutionTask, MetricProvider } from '../../../layout/project/components/configure-project/execution-task.model';
+import { ExecutionTask } from '../../../layout/project/components/configure-project/execution-task.model';
 import { ConfigService } from '../configuration/configuration-service';
 
 @Injectable({
@@ -14,6 +13,8 @@ export class AnalysisTaskService {
   private administration: string = 'administration';
   private analysis: string = 'analysis';
   private task: string = 'task';
+  private analysisTaskId: string = 'analysisTaskId';
+  private workerId: string = 'workerId';
   private create: string = 'create';
   private update: string = 'update'
   private start: string = 'start';
@@ -80,7 +81,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${analysisTaskId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}?${this.analysisTaskId}=${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -115,7 +116,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.delete}/${analysisTaskId}`,
+    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.delete}?${this.analysisTaskId}=${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -123,7 +124,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.promote}/${analysisTaskId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.promote}?${this.analysisTaskId}=${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 
@@ -131,7 +132,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.demote}/${analysisTaskId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.demote}?${this.analysisTaskId}=${analysisTaskId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
   
@@ -139,7 +140,7 @@ export class AnalysisTaskService {
     if (this.jwtToken == null) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.push}/${analysisTaskId}/w/${workerId}`,
+    return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.push}?${this.analysisTaskId}=${analysisTaskId}&${this.workerId}=${workerId}`,
       { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
 

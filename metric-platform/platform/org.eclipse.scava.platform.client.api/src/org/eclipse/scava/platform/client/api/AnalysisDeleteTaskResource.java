@@ -26,7 +26,7 @@ public class AnalysisDeleteTaskResource extends ServerResource {
 			platform = new Platform(mongo);				
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			
-			String analysisTaskId = (String) getRequest().getAttributes().get("analysisTaskId");
+			String analysisTaskId = getQueryValue("analysisTaskId");
 
 			AnalysisTask task = service.deleteAnalysisTask(analysisTaskId);
 
