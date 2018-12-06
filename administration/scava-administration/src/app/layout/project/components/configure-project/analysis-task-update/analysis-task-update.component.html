@@ -10,7 +10,7 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
                     <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel" required minlength="1"
-                        maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
+                        maxlength="50" pattern="^[_.@A-Za-z0-9- ]*$">
                     <div *ngIf="labelInput.dirty && labelInput.invalid">
                         <small class="form-text text-danger" *ngIf="labelInput.errors.required">
                             This field is required.
