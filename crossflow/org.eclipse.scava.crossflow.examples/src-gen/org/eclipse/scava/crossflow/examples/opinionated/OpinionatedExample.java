@@ -61,13 +61,13 @@ public class OpinionatedExample extends Workflow {
 	}
 	
 	/**
-	 * Run with initial delay i ms before starting execution (after creating broker
+	 * Run with initial delay in ms before starting execution (after creating broker
 	 * if master)
 	 * 
-	 * @param i
+	 * @param delay
 	 */
 	@Override
-	public void run(int i) throws Exception {
+	public void run(int delay) throws Exception {
 	
 		new Thread(new Runnable() {
 
@@ -89,7 +89,7 @@ public class OpinionatedExample extends Workflow {
 
 					connect();
 
-					Thread.sleep(i);
+					Thread.sleep(delay);
 					
 //TODO test of task status until it is integrated to ui
 //		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {

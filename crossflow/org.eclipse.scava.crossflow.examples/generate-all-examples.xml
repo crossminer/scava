@@ -5,7 +5,7 @@
 		
 		<!-- epsilon.for requires Epsilon 1.6 -->
 		<epsilon.for>
-			<fileset dir="models"></fileset>
+			<fileset dir="models" excludes="graphviz.egl"></fileset>
 			<epsilon.emf.loadModel name="M" modelfile="models/${it}"
 				metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
 			<epsilon.egl src="../org.eclipse.scava.crossflow/crossflow.egx" outputroot=".">

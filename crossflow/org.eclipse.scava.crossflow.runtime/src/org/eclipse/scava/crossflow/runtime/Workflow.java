@@ -265,7 +265,7 @@ public abstract class Workflow {
 		run(0);
 	}
 
-	public abstract void run(int i) throws Exception;
+	public abstract void run(int delay) throws Exception;
 
 //	private ObjectName getQueueObjectName(String type, String queueName) throws Exception {
 //		// String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
