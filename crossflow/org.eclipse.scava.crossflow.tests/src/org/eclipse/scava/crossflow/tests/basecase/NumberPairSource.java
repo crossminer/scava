@@ -9,7 +9,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 			NumberPair pair = new NumberPair();
 			pair.setA(i);
 			pair.setB(i);
-			getAdditions().send(pair, getClass().getName());
+			sendToAdditions(pair);
 		}
 		
 	}

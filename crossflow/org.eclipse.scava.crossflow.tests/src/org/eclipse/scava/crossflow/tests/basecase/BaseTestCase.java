@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.UUID;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class BaseTestCase {
+public class BaseTestCase {
 	
 	private final static long SLEEP_DURATION = 1000;
 	
 	@Test
-	void testCase() {
+	public void testCase() {
 		
 		// setup test case configuration
 		BaseCase master = new BaseCase();

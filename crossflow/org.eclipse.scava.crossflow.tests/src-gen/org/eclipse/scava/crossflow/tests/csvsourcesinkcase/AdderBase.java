@@ -22,24 +22,32 @@ public abstract class AdderBase implements AdditionsConsumer, Task{
 	
 	protected AdditionResults additionResults;
 	
-	public void setAdditionResults(AdditionResults additionResults) {
+	protected void setAdditionResults(AdditionResults additionResults) {
 		this.additionResults = additionResults;
 	}
 	
-	public AdditionResults getAdditionResults() {
+	private AdditionResults getAdditionResults() {
 		return additionResults;
+	}
+	
+	public void sendToAdditionResults(Number number) {
+		getAdditionResults().send(number, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	

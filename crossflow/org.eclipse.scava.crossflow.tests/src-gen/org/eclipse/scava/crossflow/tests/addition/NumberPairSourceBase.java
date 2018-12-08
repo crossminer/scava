@@ -22,24 +22,32 @@ public abstract class NumberPairSourceBase implements Task{
 	
 	protected Additions additions;
 	
-	public void setAdditions(Additions additions) {
+	protected void setAdditions(Additions additions) {
 		this.additions = additions;
 	}
 	
-	public Additions getAdditions() {
+	private Additions getAdditions() {
 		return additions;
+	}
+	
+	public void sendToAdditions(NumberPair numberPair) {
+		getAdditions().send(numberPair, this.getClass().getName());
 	}
 	
 	
 	
 	protected ResultsBroadcaster resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	private ResultsBroadcaster getResultsBroadcaster() {
 		return resultsBroadcaster;
+	}
+	
+	public void sendToResultsBroadcaster(Object[] row){
+		getResultsBroadcaster().send(row);
 	}
 	
 	

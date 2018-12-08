@@ -9,8 +9,7 @@ public class Adder extends AdderBase {
 		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
 		Number number0 = new Number();
 		number0.setN( numberPair.getA() + numberPair.getB() );
-		getAdditionResults().send( number0, this.getClass().getName() );
-		
+		sendToAdditionResults(number0);
 		
 	}
 

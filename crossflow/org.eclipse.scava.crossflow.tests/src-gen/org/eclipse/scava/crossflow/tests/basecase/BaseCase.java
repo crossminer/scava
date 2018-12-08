@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.basecase;
 
 import java.util.LinkedList;
-import java.util.function.BooleanSupplier;
 import java.util.Collection;
 
 import com.beust.jcommander.JCommander;

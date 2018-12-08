@@ -10,7 +10,7 @@ public class Adder extends AdderBase {
 		executions++;
 		Number result = new Number();
 		result.setN(numberPair.getA() + numberPair.getB());
-		getAdditionResults().send(result, this.getClass().getName());
+		sendToAdditionResults(result);
 	}
 	
 	public int getExecutions() {
