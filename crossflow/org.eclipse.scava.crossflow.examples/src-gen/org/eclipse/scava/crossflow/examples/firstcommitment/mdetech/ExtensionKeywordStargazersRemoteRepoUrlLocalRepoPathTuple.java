@@ -6,6 +6,16 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extends Job {
 	
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple() {}
+	
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple(String field0, String field1, Integer field2, String field3, Integer field4) {
+		this.field0 = field0;
+		this.field1 = field1;
+		this.field2 = field2;
+		this.field3 = field3;
+		this.field4 = field4;
+	}
+	
 	protected String field0;
 	
 	public void setField0(String field0) {

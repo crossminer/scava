@@ -6,6 +6,15 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Result extends Job {
 	
+	public Result() {}
+	
+	public Result(String technology, Integer repos, Integer files, Integer authors) {
+		this.technology = technology;
+		this.repos = repos;
+		this.files = files;
+		this.authors = authors;
+	}
+	
 	protected String technology;
 	
 	public void setTechnology(String technology) {

@@ -19,9 +19,7 @@ public class WordSource extends WordSourceBase {
 	@Override
 	public void produce() {
 		for (String w : words) {
-			Word word = new Word();
-			word.setW(w);
-			sendToWords(word);
+			sendToWords(new Word(w));
 		}
 	}
 }

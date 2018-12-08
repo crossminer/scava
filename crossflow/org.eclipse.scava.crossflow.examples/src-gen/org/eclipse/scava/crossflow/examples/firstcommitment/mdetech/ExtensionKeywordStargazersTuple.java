@@ -6,6 +6,14 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ExtensionKeywordStargazersTuple extends Job {
 	
+	public ExtensionKeywordStargazersTuple() {}
+	
+	public ExtensionKeywordStargazersTuple(String field0, String field1, Integer field2) {
+		this.field0 = field0;
+		this.field1 = field1;
+		this.field2 = field2;
+	}
+	
 	protected String field0;
 	
 	public void setField0(String field0) {

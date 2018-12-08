@@ -6,6 +6,13 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class ExtensionKeywordTuple extends Job {
 	
+	public ExtensionKeywordTuple() {}
+	
+	public ExtensionKeywordTuple(String field0, String field1) {
+		this.field0 = field0;
+		this.field1 = field1;
+	}
+	
 	protected String field0;
 	
 	public void setField0(String field0) {

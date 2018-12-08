@@ -6,6 +6,12 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Word extends Job {
 	
+	public Word() {}
+	
+	public Word(String w) {
+		this.w = w;
+	}
+	
 	protected String w;
 	
 	public void setW(String w) {

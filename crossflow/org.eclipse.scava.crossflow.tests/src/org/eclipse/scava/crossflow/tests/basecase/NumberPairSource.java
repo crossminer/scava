@@ -6,10 +6,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 	public void produce() {
 
 		for (int i=1;i<=10; i++) {
-			NumberPair pair = new NumberPair();
-			pair.setA(i);
-			pair.setB(i);
-			sendToAdditions(pair);
+			sendToAdditions(new NumberPair(i, i));
 		}
 		
 	}

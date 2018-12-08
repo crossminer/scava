@@ -6,6 +6,12 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class GhRepo extends Job {
 	
+	public GhRepo() {}
+	
+	public GhRepo(String repoUrl) {
+		this.repoUrl = repoUrl;
+	}
+	
 	protected String repoUrl;
 	
 	public void setRepoUrl(String repoUrl) {

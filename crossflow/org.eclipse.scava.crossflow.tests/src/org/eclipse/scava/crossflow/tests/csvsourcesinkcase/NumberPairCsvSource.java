@@ -7,10 +7,7 @@ public class NumberPairCsvSource extends NumberPairCsvSourceBase {
 	@Override
 	public void produce() {
 		for (CSVRecord record : records) {
-			NumberPair numberPair = new NumberPair();
-			numberPair.setA( Integer.parseInt( record.get(0) ) );
-			numberPair.setB( Integer.parseInt ( record.get(1) ) );
-			sendToAdditions(numberPair);
+			sendToAdditions(new NumberPair(Integer.parseInt(record.get(0)), Integer.parseInt (record.get(1))));
 		}
 	}
 

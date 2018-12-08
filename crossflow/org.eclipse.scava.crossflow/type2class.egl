@@ -6,6 +6,14 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class [%=t.name%] extends Job {
 	
+	public [%=t.name%]() {}
+	
+	public [%=t.name%]([%=t.fields.collect(f|f.type + " " + f.name).concat(", ")%]) {
+		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+	}
+	
 	[%for (f in t.fields) { %]
 	protected [%=f.type%] [%=f.name%];
 	

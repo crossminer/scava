@@ -6,6 +6,12 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Animal extends Job {
 	
+	public Animal() {}
+	
+	public Animal(String name) {
+		this.name = name;
+	}
+	
 	protected String name;
 	
 	public void setName(String name) {

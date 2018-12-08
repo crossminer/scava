@@ -6,6 +6,12 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Number extends Job {
 	
+	public Number() {}
+	
+	public Number(int n) {
+		this.n = n;
+	}
+	
 	protected int n;
 	
 	public void setN(int n) {

@@ -21,9 +21,7 @@ public class AnimalSource extends AnimalSourceBase {
 			
 			@Override
 			public void run() {
-				Animal animal = new Animal();
-				animal.setName(animals.get(ThreadLocalRandom.current().nextInt(animals.size())));
-				sendToAnimals(animal);
+				sendToAnimals(new Animal(animals.get(ThreadLocalRandom.current().nextInt(animals.size()))));
 				runs ++;
 				if (runs >= 10) timer.cancel();
 			}
