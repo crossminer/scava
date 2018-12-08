@@ -1,0 +1,17 @@
+<project default="main">
+	<target name="main">
+		
+		<epsilon.emf.register file="../org.eclipse.scava.crossflow.language/model/crossflow.ecore"/>
+		
+		<!-- epsilon.for requires Epsilon 1.6 -->
+		<epsilon.for>
+			<fileset dir="models"></fileset>
+			<epsilon.emf.loadModel name="M" modelfile="models/${it}"
+				metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
+			<epsilon.egl src="../org.eclipse.scava.crossflow/crossflow.egx" outputroot=".">
+				<model ref="M"/>
+			</epsilon.egl>
+			<epsilon.disposeModel model="M"/>
+		</epsilon.for>
+	</target>
+</project>
