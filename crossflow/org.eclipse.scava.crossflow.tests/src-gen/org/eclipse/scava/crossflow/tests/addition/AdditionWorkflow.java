@@ -37,8 +37,13 @@ public class AdditionWorkflow extends Workflow {
 	protected AdditionResultsSink additionResultsSink;
 	
 	public AdditionWorkflow() {
+		this(Mode.MASTER);
+	}
+	
+	public AdditionWorkflow(Mode mode) {
 		super();
 		this.name = "AdditionWorkflow";
+		this.mode = mode;
 		if (isMaster()) {
 		numberPairSource = new NumberPairSource();
 		numberPairSource.setWorkflow(this);

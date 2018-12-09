@@ -40,8 +40,13 @@ public class GhRepoExample extends Workflow {
 	protected EmptySink2 emptySink2;
 	
 	public GhRepoExample() {
+		this(Mode.MASTER);
+	}
+	
+	public GhRepoExample(Mode mode) {
 		super();
 		this.name = "GhRepoExample";
+		this.mode = mode;
 		if (isMaster()) {
 		ghRepoSource = new GhRepoSource();
 		ghRepoSource.setWorkflow(this);

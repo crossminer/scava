@@ -12,9 +12,7 @@ public class GhRepoExampleMasterWorkers {
 
 	public static void main(String[] args) throws Exception {
 
-		GhRepoExample master = new GhRepoExample();
-		// default mode is MASTER
-		master.setMode(Mode.MASTER_BARE);
+		GhRepoExample master = new GhRepoExample(Mode.MASTER_BARE);
 		master.setName("Master" + "-123456789");
 		master.setEnableCache(false);
 
@@ -22,23 +20,19 @@ public class GhRepoExampleMasterWorkers {
 		// workflow (will produce 2 times the input, as expected)
 		GhRepoExample master2 = null;
 		if (args.length > 0) {
-			master2 = new GhRepoExample();
+			master2 = new GhRepoExample(Mode.MASTER_BARE);
 			// default mode is MASTER
-			master2.setMode(Mode.MASTER_BARE);
 			master2.createBroker(Boolean.parseBoolean(args[0]));
 			master2.setName("Master2");
 		}
 
-		GhRepoExample worker1 = new GhRepoExample();
+		GhRepoExample worker1 = new GhRepoExample(Mode.WORKER);
 		List<String> tasksToExclude = new LinkedList<String>();
 		tasksToExclude = Collections.singletonList("GhRepoCounter");
 		worker1.excludeTasks(tasksToExclude);
-		worker1.setMode(Mode.WORKER);
 		worker1.setName("Worker1");
 
-		GhRepoExample worker2 = new GhRepoExample();
-		// worker2.excludeTasks(tasksToExclude);
-		worker2.setMode(Mode.WORKER);
+		GhRepoExample worker2 = new GhRepoExample(Mode.WORKER);
 		worker2.setName("Worker2");
 
 		master.addActiveWorkerId(worker1.getName());

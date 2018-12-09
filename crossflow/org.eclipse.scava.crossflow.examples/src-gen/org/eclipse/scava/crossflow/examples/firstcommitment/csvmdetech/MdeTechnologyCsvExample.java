@@ -49,8 +49,13 @@ public class MdeTechnologyCsvExample extends Workflow {
 	protected MdeTechnologyRepoOwnerPopularityCountCsvSink mdeTechnologyRepoOwnerPopularityCountCsvSink;
 	
 	public MdeTechnologyCsvExample() {
+		this(Mode.MASTER);
+	}
+	
+	public MdeTechnologyCsvExample(Mode mode) {
 		super();
 		this.name = "MdeTechnologyCsvExample";
+		this.mode = mode;
 		if (isMaster()) {
 		}
 		

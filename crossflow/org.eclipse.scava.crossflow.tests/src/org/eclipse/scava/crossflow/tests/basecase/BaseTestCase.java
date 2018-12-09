@@ -22,9 +22,8 @@ public class BaseTestCase {
 		master.setName("Master-"+UUID.randomUUID().toString());
 		master.setEnableCache(false);
 		
-		BaseCase worker = new BaseCase();
+		BaseCase worker = new BaseCase(Mode.WORKER);
 		worker.setName("Worker");
-		worker.setMode(Mode.WORKER);
 		
 		master.addActiveWorkerId(worker.getName());
 		master.addShutdownHook(new Runnable() {

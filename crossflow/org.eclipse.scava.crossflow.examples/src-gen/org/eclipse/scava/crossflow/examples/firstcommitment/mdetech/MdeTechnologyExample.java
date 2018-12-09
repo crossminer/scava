@@ -49,8 +49,13 @@ public class MdeTechnologyExample extends Workflow {
 	protected MdeTechnologyRepoOwnerPopularityCountPrinter mdeTechnologyRepoOwnerPopularityCountPrinter;
 	
 	public MdeTechnologyExample() {
+		this(Mode.MASTER);
+	}
+	
+	public MdeTechnologyExample(Mode mode) {
 		super();
 		this.name = "MdeTechnologyExample";
+		this.mode = mode;
 		if (isMaster()) {
 		mdeTechnologySource = new MdeTechnologySource();
 		mdeTechnologySource.setWorkflow(this);

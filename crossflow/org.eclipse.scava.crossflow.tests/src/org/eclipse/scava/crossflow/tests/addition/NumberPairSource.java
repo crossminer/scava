@@ -1,6 +1,5 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class NumberPairSource extends NumberPairSourceBase {

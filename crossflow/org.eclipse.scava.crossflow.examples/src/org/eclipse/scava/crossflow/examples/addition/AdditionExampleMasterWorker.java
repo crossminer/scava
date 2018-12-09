@@ -12,9 +12,8 @@ public class AdditionExampleMasterWorker {
 		
 		master.setEnableCache(false);
 		
-		AdditionExample worker = new AdditionExample();
+		AdditionExample worker = new AdditionExample(Mode.WORKER);
 		worker.setName("Worker");
-		worker.setMode(Mode.WORKER);
 		
 		master.addActiveWorkerId(worker.getName());
 		

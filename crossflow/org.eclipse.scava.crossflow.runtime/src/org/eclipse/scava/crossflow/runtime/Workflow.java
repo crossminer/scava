@@ -232,10 +232,6 @@ public abstract class Workflow {
 		return "tcp://" + master + ":61616";
 	}
 
-	public void setMode(Mode mode) {
-		this.mode = mode;
-	}
-
 	public Mode getMode() {
 		return mode;
 	}

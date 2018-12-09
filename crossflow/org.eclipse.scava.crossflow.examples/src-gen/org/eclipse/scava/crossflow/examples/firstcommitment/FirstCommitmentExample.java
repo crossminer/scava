@@ -35,8 +35,13 @@ public class FirstCommitmentExample extends Workflow {
 	protected AnimalCounter animalCounter;
 	
 	public FirstCommitmentExample() {
+		this(Mode.MASTER);
+	}
+	
+	public FirstCommitmentExample(Mode mode) {
 		super();
 		this.name = "FirstCommitmentExample";
+		this.mode = mode;
 		if (isMaster()) {
 		animalSource = new AnimalSource();
 		animalSource.setWorkflow(this);

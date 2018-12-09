@@ -45,8 +45,13 @@ public class OpinionatedExample extends Workflow {
 	protected OccurencesMonitor occurencesMonitor;
 	
 	public OpinionatedExample() {
+		this(Mode.MASTER);
+	}
+	
+	public OpinionatedExample(Mode mode) {
 		super();
 		this.name = "OpinionatedExample";
+		this.mode = mode;
 		if (isMaster()) {
 		wordSource = new WordSource();
 		wordSource.setWorkflow(this);

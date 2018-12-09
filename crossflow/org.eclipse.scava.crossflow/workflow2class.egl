@@ -50,8 +50,13 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	
 	public [%=w.name%]() {
+		this(Mode.MASTER);
+	}
+	
+	public [%=w.name%](Mode mode) {
 		super();
 		this.name = "[%=w.name%]";
+		this.mode = mode;
 		if (isMaster()) {
 		[%for (t in w.getMasterTasks()){%]
 		[%=t.name.ftlc()%] = new [%=t.name%]();

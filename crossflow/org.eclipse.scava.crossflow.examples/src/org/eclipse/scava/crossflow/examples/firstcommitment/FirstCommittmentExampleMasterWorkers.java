@@ -9,12 +9,10 @@ public class FirstCommittmentExampleMasterWorkers {
 		FirstCommitmentExample master = new FirstCommitmentExample();
 		master.setName("Master");
 		
-		FirstCommitmentExample worker1 = new FirstCommitmentExample();
-		worker1.setMode(Mode.WORKER);
+		FirstCommitmentExample worker1 = new FirstCommitmentExample(Mode.WORKER);
 		worker1.setName("Worker1");
 		
-		FirstCommitmentExample worker2 = new FirstCommitmentExample();
-		worker2.setMode(Mode.WORKER);
+		FirstCommitmentExample worker2 = new FirstCommitmentExample(Mode.WORKER);
 		worker2.setName("Worker2");
 		
 		master.run();

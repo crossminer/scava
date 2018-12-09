@@ -37,8 +37,13 @@ public class AdditionExample extends Workflow {
 	protected Printer printer;
 	
 	public AdditionExample() {
+		this(Mode.MASTER);
+	}
+	
+	public AdditionExample(Mode mode) {
 		super();
 		this.name = "AdditionExample";
+		this.mode = mode;
 		if (isMaster()) {
 		numberPairSource = new NumberPairSource();
 		numberPairSource.setWorkflow(this);

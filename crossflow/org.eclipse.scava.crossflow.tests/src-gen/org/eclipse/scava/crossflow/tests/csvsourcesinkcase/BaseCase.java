@@ -37,8 +37,13 @@ public class BaseCase extends Workflow {
 	protected PrinterCsvSink printerCsvSink;
 	
 	public BaseCase() {
+		this(Mode.MASTER);
+	}
+	
+	public BaseCase(Mode mode) {
 		super();
 		this.name = "BaseCase";
+		this.mode = mode;
 		if (isMaster()) {
 		}
 		
