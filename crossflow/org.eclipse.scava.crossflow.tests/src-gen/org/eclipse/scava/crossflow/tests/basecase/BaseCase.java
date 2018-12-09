@@ -39,6 +39,19 @@ public class BaseCase extends Workflow {
 	public BaseCase() {
 		super();
 		this.name = "BaseCase";
+		if (isMaster()) {
+		numberPairSource = new NumberPairSource();
+		numberPairSource.setWorkflow(this);
+		printer = new Printer();
+		printer.setWorkflow(this);
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("Adder")) {
+				adder = new Adder();
+				adder.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -76,40 +89,24 @@ public class BaseCase extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					additions = new Additions(BaseCase.this);
 					activeQueues.add(additions);
 					additionResults = new AdditionResults(BaseCase.this);
 					activeQueues.add(additionResults);
 					
 					if (isMaster()) {
-						numberPairSource = new NumberPairSource();
-						numberPairSource.setWorkflow(BaseCase.this);
-						numberPairSource.setResultsBroadcaster(resultsBroadcaster);
-						numberPairSource.setAdditions(additions);
-						printer = new Printer();
-						printer.setWorkflow(BaseCase.this);
-						printer.setResultsBroadcaster(resultsBroadcaster);
-						additionResults.addConsumer(printer, "Printer");			
+							numberPairSource.setResultsBroadcaster(resultsBroadcaster);
+							numberPairSource.setAdditions(additions);
+							printer.setResultsBroadcaster(resultsBroadcaster);
+							additionResults.addConsumer(printer, "Printer");			
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("Adder")) {
-							adder = new Adder();
-							adder.setWorkflow(BaseCase.this);
-							adder.setResultsBroadcaster(resultsBroadcaster);
-							additions.addConsumer(adder, "Adder");			
-							adder.setAdditionResults(additionResults);
+								adder.setResultsBroadcaster(resultsBroadcaster);
+								additions.addConsumer(adder, "Adder");			
+								adder.setAdditionResults(additionResults);
 						}
-	
 					}
 					
 					

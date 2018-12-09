@@ -39,6 +39,19 @@ public class AdditionWorkflow extends Workflow {
 	public AdditionWorkflow() {
 		super();
 		this.name = "AdditionWorkflow";
+		if (isMaster()) {
+		numberPairSource = new NumberPairSource();
+		numberPairSource.setWorkflow(this);
+		additionResultsSink = new AdditionResultsSink();
+		additionResultsSink.setWorkflow(this);
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("Adder")) {
+				adder = new Adder();
+				adder.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -76,40 +89,24 @@ public class AdditionWorkflow extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					additions = new Additions(AdditionWorkflow.this);
 					activeQueues.add(additions);
 					additionResults = new AdditionResults(AdditionWorkflow.this);
 					activeQueues.add(additionResults);
 					
 					if (isMaster()) {
-						numberPairSource = new NumberPairSource();
-						numberPairSource.setWorkflow(AdditionWorkflow.this);
-						numberPairSource.setResultsBroadcaster(resultsBroadcaster);
-						numberPairSource.setAdditions(additions);
-						additionResultsSink = new AdditionResultsSink();
-						additionResultsSink.setWorkflow(AdditionWorkflow.this);
-						additionResultsSink.setResultsBroadcaster(resultsBroadcaster);
-						additionResults.addConsumer(additionResultsSink, "AdditionResultsSink");			
+							numberPairSource.setResultsBroadcaster(resultsBroadcaster);
+							numberPairSource.setAdditions(additions);
+							additionResultsSink.setResultsBroadcaster(resultsBroadcaster);
+							additionResults.addConsumer(additionResultsSink, "AdditionResultsSink");			
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("Adder")) {
-							adder = new Adder();
-							adder.setWorkflow(AdditionWorkflow.this);
-							adder.setResultsBroadcaster(resultsBroadcaster);
-							additions.addConsumer(adder, "Adder");			
-							adder.setAdditionResults(additionResults);
+								adder.setResultsBroadcaster(resultsBroadcaster);
+								additions.addConsumer(adder, "Adder");			
+								adder.setAdditionResults(additionResults);
 						}
-	
 					}
 					
 					

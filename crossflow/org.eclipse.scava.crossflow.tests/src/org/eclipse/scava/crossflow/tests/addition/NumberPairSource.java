@@ -5,10 +5,10 @@ import java.util.List;
 
 public class NumberPairSource extends NumberPairSourceBase {
 	
+	protected List<Integer> numbers = null;
+	
 	@Override
 	public void produce() {
-		
-		List<Integer> numbers = Arrays.asList(1, 2);
 		
 		for (int i : numbers) {
 			sendToAdditions(new NumberPair(i, i));
@@ -19,6 +19,10 @@ public class NumberPairSource extends NumberPairSourceBase {
 			}
 		}
 		
+	}
+	
+	public void setNumbers(List<Integer> numbers) {
+		this.numbers = numbers;
 	}
 	
 }

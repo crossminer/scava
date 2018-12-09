@@ -52,6 +52,21 @@ public class [%=w.name%] extends Workflow {
 	public [%=w.name%]() {
 		super();
 		this.name = "[%=w.name%]";
+		if (isMaster()) {
+		[%for (t in w.getMasterTasks()){%]
+		[%=t.name.ftlc()%] = new [%=t.name%]();
+		[%=t.name.ftlc()%].setWorkflow(this);
+		[%}%]
+		}
+		
+		if (isWorker()) {
+		[%for (t in w.getWorkerTasks()){%]
+			if (!tasksToExclude.contains("[%=t.name%]")) {
+				[%=t.name.ftlc()%] = new [%=t.name%]();
+				[%=t.name.ftlc()%].setWorkflow(this);
+			}
+		[%}%]
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -89,15 +104,6 @@ public class [%=w.name%] extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					[%for (s in w.streams) { %]
 					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this);
 					activeQueues.add([%=s.name.ftlc()%]);
@@ -105,32 +111,16 @@ public class [%=w.name%] extends Workflow {
 					
 					if (isMaster()) {
 					[%for (t in w.getMasterTasks()){%]
-						[%=t.name.ftlc()%] = new [%=t.name%]();
-						[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
-						[%=t.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
-						[%for (i in t.input) { %]
-						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], "[%=t.name%]");			
-						[%}%]
-						[%for (o in t.output) { %]
-						[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
-						[%}%]
+						[%=t.setup()%]
 					[%}%]
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 					[%for (t in w.getWorkerTasks()){%]
 						if (!tasksToExclude.contains("[%=t.name%]")) {
-							[%=t.name.ftlc()%] = new [%=t.name%]();
-							[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
-							[%=t.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
-							[%for (i in t.input) { %]
-							[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], "[%=t.name%]");			
-							[%}%]
-							[%for (o in t.output) { %]
-							[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
-							[%}%]
+							[%=t.setup()%]
 						}
-					[%}%]	
+					[%}%]
 					}
 					
 					[**
@@ -213,5 +203,16 @@ operation Workflow getMasterTasks() {
 operation Workflow getWorkerTasks() {
 	return self.tasks.excludingAll(self.getMasterTasks());
 }
+
+@template
+operation Task setup() {%]
+	[%=self.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
+	[%for (i in self.input) { %]
+	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], "[%=self.name%]");			
+	[%}%]
+	[%for (o in self.output) { %]
+	[%=self.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
+	[%}%]
+[%}
 
 %]

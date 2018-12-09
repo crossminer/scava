@@ -39,6 +39,23 @@ public class BaseCase extends Workflow {
 	public BaseCase() {
 		super();
 		this.name = "BaseCase";
+		if (isMaster()) {
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("NumberPairCsvSource")) {
+				numberPairCsvSource = new NumberPairCsvSource();
+				numberPairCsvSource.setWorkflow(this);
+			}
+			if (!tasksToExclude.contains("Adder")) {
+				adder = new Adder();
+				adder.setWorkflow(this);
+			}
+			if (!tasksToExclude.contains("PrinterCsvSink")) {
+				printerCsvSink = new PrinterCsvSink();
+				printerCsvSink.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -76,15 +93,6 @@ public class BaseCase extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					additions = new Additions(BaseCase.this);
 					activeQueues.add(additions);
 					additionResults = new AdditionResults(BaseCase.this);
@@ -93,27 +101,20 @@ public class BaseCase extends Workflow {
 					if (isMaster()) {
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("NumberPairCsvSource")) {
-							numberPairCsvSource = new NumberPairCsvSource();
-							numberPairCsvSource.setWorkflow(BaseCase.this);
-							numberPairCsvSource.setResultsBroadcaster(resultsBroadcaster);
-							numberPairCsvSource.setAdditions(additions);
+								numberPairCsvSource.setResultsBroadcaster(resultsBroadcaster);
+								numberPairCsvSource.setAdditions(additions);
 						}
 						if (!tasksToExclude.contains("Adder")) {
-							adder = new Adder();
-							adder.setWorkflow(BaseCase.this);
-							adder.setResultsBroadcaster(resultsBroadcaster);
-							additions.addConsumer(adder, "Adder");			
-							adder.setAdditionResults(additionResults);
+								adder.setResultsBroadcaster(resultsBroadcaster);
+								additions.addConsumer(adder, "Adder");			
+								adder.setAdditionResults(additionResults);
 						}
 						if (!tasksToExclude.contains("PrinterCsvSink")) {
-							printerCsvSink = new PrinterCsvSink();
-							printerCsvSink.setWorkflow(BaseCase.this);
-							printerCsvSink.setResultsBroadcaster(resultsBroadcaster);
-							additionResults.addConsumer(printerCsvSink, "PrinterCsvSink");			
+								printerCsvSink.setResultsBroadcaster(resultsBroadcaster);
+								additionResults.addConsumer(printerCsvSink, "PrinterCsvSink");			
 						}
-	
 					}
 					
 					

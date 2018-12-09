@@ -47,6 +47,17 @@ public class OpinionatedExample extends Workflow {
 	public OpinionatedExample() {
 		super();
 		this.name = "OpinionatedExample";
+		if (isMaster()) {
+		wordSource = new WordSource();
+		wordSource.setWorkflow(this);
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("OccurencesMonitor")) {
+				occurencesMonitor = new OccurencesMonitor();
+				occurencesMonitor.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -84,33 +95,19 @@ public class OpinionatedExample extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					words = new Words(OpinionatedExample.this);
 					activeQueues.add(words);
 					
 					if (isMaster()) {
-						wordSource = new WordSource();
-						wordSource.setWorkflow(OpinionatedExample.this);
-						wordSource.setResultsBroadcaster(resultsBroadcaster);
-						wordSource.setWords(words);
+							wordSource.setResultsBroadcaster(resultsBroadcaster);
+							wordSource.setWords(words);
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("OccurencesMonitor")) {
-							occurencesMonitor = new OccurencesMonitor();
-							occurencesMonitor.setWorkflow(OpinionatedExample.this);
-							occurencesMonitor.setResultsBroadcaster(resultsBroadcaster);
-							words.addConsumer(occurencesMonitor, "OccurencesMonitor");			
+								occurencesMonitor.setResultsBroadcaster(resultsBroadcaster);
+								words.addConsumer(occurencesMonitor, "OccurencesMonitor");			
 						}
-	
 					}
 					
 					

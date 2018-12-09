@@ -224,6 +224,10 @@ public abstract class Workflow {
 		return mode == Mode.MASTER || mode == Mode.MASTER_BARE;
 	}
 
+	public boolean isWorker() {
+		return !isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE));
+	}
+	
 	public String getBroker() {
 		return "tcp://" + master + ":61616";
 	}

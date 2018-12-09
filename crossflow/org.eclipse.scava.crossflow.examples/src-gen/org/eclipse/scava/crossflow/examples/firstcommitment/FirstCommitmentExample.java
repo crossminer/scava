@@ -37,6 +37,17 @@ public class FirstCommitmentExample extends Workflow {
 	public FirstCommitmentExample() {
 		super();
 		this.name = "FirstCommitmentExample";
+		if (isMaster()) {
+		animalSource = new AnimalSource();
+		animalSource.setWorkflow(this);
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("AnimalCounter")) {
+				animalCounter = new AnimalCounter();
+				animalCounter.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -74,33 +85,19 @@ public class FirstCommitmentExample extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					animals = new Animals(FirstCommitmentExample.this);
 					activeQueues.add(animals);
 					
 					if (isMaster()) {
-						animalSource = new AnimalSource();
-						animalSource.setWorkflow(FirstCommitmentExample.this);
-						animalSource.setResultsBroadcaster(resultsBroadcaster);
-						animalSource.setAnimals(animals);
+							animalSource.setResultsBroadcaster(resultsBroadcaster);
+							animalSource.setAnimals(animals);
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("AnimalCounter")) {
-							animalCounter = new AnimalCounter();
-							animalCounter.setWorkflow(FirstCommitmentExample.this);
-							animalCounter.setResultsBroadcaster(resultsBroadcaster);
-							animals.addConsumer(animalCounter, "AnimalCounter");			
+								animalCounter.setResultsBroadcaster(resultsBroadcaster);
+								animals.addConsumer(animalCounter, "AnimalCounter");			
 						}
-	
 					}
 					
 					

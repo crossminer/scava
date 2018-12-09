@@ -39,6 +39,19 @@ public class GhRepoExample extends Workflow {
 	public GhRepoExample() {
 		super();
 		this.name = "GhRepoExample";
+		if (isMaster()) {
+		ghRepoSource = new GhRepoSource();
+		ghRepoSource.setWorkflow(this);
+		emptySink = new EmptySink();
+		emptySink.setWorkflow(this);
+		}
+		
+		if (isWorker()) {
+			if (!tasksToExclude.contains("GhRepoCounter")) {
+				ghRepoCounter = new GhRepoCounter();
+				ghRepoCounter.setWorkflow(this);
+			}
+		}
 	}
 	
 	public void createBroker(boolean createBroker) {
@@ -76,40 +89,24 @@ public class GhRepoExample extends Workflow {
 
 					Thread.sleep(delay);
 					
-//TODO test of task status until it is integrated to ui
-//		taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
-//			@Override
-//			public void consumeTaskStatusPublisher(TaskStatus status) {
-//				System.err.println(status.getCaller()+" : "+status.getStatus()+" : "+status.getReason());
-//			}
-//		});
-//
-					
 					ghRepos = new GhRepos(GhRepoExample.this);
 					activeQueues.add(ghRepos);
 					resultsPublisher = new ResultsPublisher(GhRepoExample.this);
 					activeQueues.add(resultsPublisher);
 					
 					if (isMaster()) {
-						ghRepoSource = new GhRepoSource();
-						ghRepoSource.setWorkflow(GhRepoExample.this);
-						ghRepoSource.setResultsBroadcaster(resultsBroadcaster);
-						ghRepoSource.setGhRepos(ghRepos);
-						emptySink = new EmptySink();
-						emptySink.setWorkflow(GhRepoExample.this);
-						emptySink.setResultsBroadcaster(resultsBroadcaster);
-						resultsPublisher.addConsumer(emptySink, "EmptySink");			
+							ghRepoSource.setResultsBroadcaster(resultsBroadcaster);
+							ghRepoSource.setGhRepos(ghRepos);
+							emptySink.setResultsBroadcaster(resultsBroadcaster);
+							resultsPublisher.addConsumer(emptySink, "EmptySink");			
 					}
 					
-					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					if (isWorker()) {
 						if (!tasksToExclude.contains("GhRepoCounter")) {
-							ghRepoCounter = new GhRepoCounter();
-							ghRepoCounter.setWorkflow(GhRepoExample.this);
-							ghRepoCounter.setResultsBroadcaster(resultsBroadcaster);
-							ghRepos.addConsumer(ghRepoCounter, "GhRepoCounter");			
-							ghRepoCounter.setResultsPublisher(resultsPublisher);
+								ghRepoCounter.setResultsBroadcaster(resultsBroadcaster);
+								ghRepos.addConsumer(ghRepoCounter, "GhRepoCounter");			
+								ghRepoCounter.setResultsPublisher(resultsPublisher);
 						}
-	
 					}
 					
 					
