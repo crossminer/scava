@@ -11,5 +11,4 @@ Require-Bundle: org.eclipse.scava.crossflow.runtime,
 Export-Package: org.eclipse.scava.crossflow.examples.addition,
  org.eclipse.scava.crossflow.examples.firstcommitment,
  org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo,
- org.eclipse.scava.crossflow.examples.firstcommitment.mdetech,
- org.eclipse.scava.crossflow.examples.opinionated
+ org.eclipse.scava.crossflow.examples.firstcommitment.mdetech

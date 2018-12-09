@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.opinionated;
+package org.eclipse.scava.crossflow.tests.opinionated;
 
 import java.util.LinkedList;
 import java.util.Collection;
@@ -17,10 +17,10 @@ import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 
 
-public class OpinionatedExample extends Workflow {
+public class OpinionatedWorkflow extends Workflow {
 	
 	public static void main(String[] args) throws Exception {
-		OpinionatedExample app = new OpinionatedExample();
+		OpinionatedWorkflow app = new OpinionatedWorkflow();
 		new JCommander(app, args);
 		app.run();
 	}
@@ -45,13 +45,13 @@ public class OpinionatedExample extends Workflow {
 	protected WordSource wordSource;
 	protected OccurencesMonitor occurencesMonitor;
 	
-	public OpinionatedExample() {
+	public OpinionatedWorkflow() {
 		this(Mode.MASTER);
 	}
 	
-	public OpinionatedExample(Mode mode) {
+	public OpinionatedWorkflow(Mode mode) {
 		super();
-		this.name = "OpinionatedExample";
+		this.name = "OpinionatedWorkflow";
 		this.mode = mode;
 		if (isMaster()) {
 		wordSource = new WordSource();
@@ -99,7 +99,7 @@ public class OpinionatedExample extends Workflow {
 
 					Thread.sleep(delay);
 					
-					words = new Words(OpinionatedExample.this);
+					words = new Words(OpinionatedWorkflow.this);
 					activeQueues.add(words);
 					
 					if (isMaster()) {

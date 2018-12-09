@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.opinionated;
+package org.eclipse.scava.crossflow.tests.opinionated;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
@@ -6,9 +6,9 @@ import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class OccurencesMonitorBase extends Task  implements WordsConsumer{
 		
-	protected OpinionatedExample workflow;
+	protected OpinionatedWorkflow workflow;
 	
-	public void setWorkflow(OpinionatedExample workflow) {
+	public void setWorkflow(OpinionatedWorkflow workflow) {
 		this.workflow = workflow;
 	}
 	

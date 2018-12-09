@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.opinionated;
+package org.eclipse.scava.crossflow.tests.opinionated;
 
 import java.util.HashMap;
 import java.util.Map;

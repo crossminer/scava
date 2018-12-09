@@ -3,7 +3,6 @@ package org.eclipse.scava.crossflow.tests.addition;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -25,7 +24,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	}
 	
 	@Test
-	public void testCache() throws Exception {
+	public void testCachingWithCache() throws Exception {
 		
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.getAdder().setCaching(true);
@@ -46,7 +45,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	}
 	
 	@Test
-	public void testCachingWithNoCache() throws Exception {
+	public void testCachingWithoutCache() throws Exception {
 		
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.getAdder().setCaching(true);
@@ -81,10 +80,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		
 		assertArrayEquals(new Integer[] {2, 4, 6, 8, 10}, 
 				master.getAdditionResultsSink().getNumbers().toArray());
-	}
-	
-	public static void main(String[] args) throws Exception {
-		new AdditionWorkflowTests().testBareMasterWorker();
 	}
 	
 	@Test
