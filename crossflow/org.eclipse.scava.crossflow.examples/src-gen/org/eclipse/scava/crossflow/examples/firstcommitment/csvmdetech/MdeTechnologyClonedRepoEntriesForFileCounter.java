@@ -25,7 +25,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Channel;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel{
+public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel {
 	
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
@@ -45,6 +45,10 @@ public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel{
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();
+		
+		pre.put("MdeTechnologyRepoFileCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterPre.MdeTechnologyRepoFileCounter"));
+		destination.put("MdeTechnologyRepoFileCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterDestination.MdeTechnologyRepoFileCounter"));
+		post.put("MdeTechnologyRepoFileCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterPost.MdeTechnologyRepoFileCounter"));
 		
 	}
 	
@@ -79,20 +83,11 @@ public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel{
 	}
 	
 	public void addConsumer(MdeTechnologyClonedRepoEntriesForFileCounterConsumer consumer, String consumerId) throws Exception {
-
-		// XXX use runtime class as ID of consumer as tasks are unique
 	
-		ActiveMQDestination preQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterPre." + consumerId);
-		pre.put(consumerId, preQueue);	
-	
-		ActiveMQDestination destQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterDestination." + consumerId);
-		destination.put(consumerId, destQueue);	
-	
-		ActiveMQDestination postQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterPost." + consumerId);
-		post.put(consumerId, postQueue);
-	
-		//
-	
+		ActiveMQDestination preQueue = pre.get(consumerId);
+		ActiveMQDestination destQueue = destination.get(consumerId);
+		ActiveMQDestination postQueue = post.get(consumerId);
+		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(preQueue);
 			consumers.add(preConsumer);

@@ -25,7 +25,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Channel;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class AdditionResults implements Channel{
+public class AdditionResults implements Channel {
 	
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
@@ -45,6 +45,10 @@ public class AdditionResults implements Channel{
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();
+		
+		pre.put("PrinterCsvSink", (ActiveMQDestination) session.createQueue("AdditionResultsPre.PrinterCsvSink"));
+		destination.put("PrinterCsvSink", (ActiveMQDestination) session.createQueue("AdditionResultsDestination.PrinterCsvSink"));
+		post.put("PrinterCsvSink", (ActiveMQDestination) session.createQueue("AdditionResultsPost.PrinterCsvSink"));
 		
 	}
 	
@@ -79,20 +83,11 @@ public class AdditionResults implements Channel{
 	}
 	
 	public void addConsumer(AdditionResultsConsumer consumer, String consumerId) throws Exception {
-
-		// XXX use runtime class as ID of consumer as tasks are unique
 	
-		ActiveMQDestination preQueue = (ActiveMQDestination) session.createQueue("AdditionResultsPre." + consumerId);
-		pre.put(consumerId, preQueue);	
-	
-		ActiveMQDestination destQueue = (ActiveMQDestination) session.createQueue("AdditionResultsDestination." + consumerId);
-		destination.put(consumerId, destQueue);	
-	
-		ActiveMQDestination postQueue = (ActiveMQDestination) session.createQueue("AdditionResultsPost." + consumerId);
-		post.put(consumerId, postQueue);
-	
-		//
-	
+		ActiveMQDestination preQueue = pre.get(consumerId);
+		ActiveMQDestination destQueue = destination.get(consumerId);
+		ActiveMQDestination postQueue = post.get(consumerId);
+		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(preQueue);
 			consumers.add(preConsumer);

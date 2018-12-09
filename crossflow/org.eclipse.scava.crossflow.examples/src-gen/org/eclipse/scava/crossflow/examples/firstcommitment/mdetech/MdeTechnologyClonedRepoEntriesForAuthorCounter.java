@@ -25,7 +25,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Channel;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class MdeTechnologyClonedRepoEntriesForAuthorCounter implements Channel{
+public class MdeTechnologyClonedRepoEntriesForAuthorCounter implements Channel {
 	
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
@@ -45,6 +45,10 @@ public class MdeTechnologyClonedRepoEntriesForAuthorCounter implements Channel{
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();
+		
+		pre.put("MdeTechnologyRepoAuthorCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPre.MdeTechnologyRepoAuthorCounter"));
+		destination.put("MdeTechnologyRepoAuthorCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterDestination.MdeTechnologyRepoAuthorCounter"));
+		post.put("MdeTechnologyRepoAuthorCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPost.MdeTechnologyRepoAuthorCounter"));
 		
 	}
 	
@@ -79,20 +83,11 @@ public class MdeTechnologyClonedRepoEntriesForAuthorCounter implements Channel{
 	}
 	
 	public void addConsumer(MdeTechnologyClonedRepoEntriesForAuthorCounterConsumer consumer, String consumerId) throws Exception {
-
-		// XXX use runtime class as ID of consumer as tasks are unique
 	
-		ActiveMQDestination preQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPre." + consumerId);
-		pre.put(consumerId, preQueue);	
-	
-		ActiveMQDestination destQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterDestination." + consumerId);
-		destination.put(consumerId, destQueue);	
-	
-		ActiveMQDestination postQueue = (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForAuthorCounterPost." + consumerId);
-		post.put(consumerId, postQueue);
-	
-		//
-	
+		ActiveMQDestination preQueue = pre.get(consumerId);
+		ActiveMQDestination destQueue = destination.get(consumerId);
+		ActiveMQDestination postQueue = post.get(consumerId);
+		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(preQueue);
 			consumers.add(preConsumer);

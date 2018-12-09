@@ -111,7 +111,7 @@ public class OpinionatedExample extends Workflow {
 					if (isWorker()) {
 						if (!tasksToExclude.contains("OccurencesMonitor")) {
 								occurencesMonitor.setResultsBroadcaster(resultsBroadcaster);
-								words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
+								words.addConsumer(occurencesMonitor, "OccurencesMonitor");			
 						}
 					}
 					

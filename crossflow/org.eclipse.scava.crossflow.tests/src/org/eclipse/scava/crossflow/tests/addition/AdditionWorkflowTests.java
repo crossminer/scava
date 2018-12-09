@@ -1,6 +1,8 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -33,8 +35,12 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		
 		waitFor(master);
 		
-		// Fails because messages sent from the worker Adder end up nowhere
-		assertArrayEquals(new Integer[] {2, 4}, master.getAdditionResultsSink().getNumbers().toArray());
+	
+		assertTrue(master.getAdder().getExecutions() < 5);
+		assertEquals(5, worker.getAdder().getExecutions() + master.getAdder().getExecutions());
+		
+		assertArrayEquals(new Integer[] {2, 4, 6, 8, 10}, 
+				master.getAdditionResultsSink().getNumbers().toArray());
 	}
 	
 }

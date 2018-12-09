@@ -101,7 +101,7 @@ public class FirstCommitmentExample extends Workflow {
 					if (isWorker()) {
 						if (!tasksToExclude.contains("AnimalCounter")) {
 								animalCounter.setResultsBroadcaster(resultsBroadcaster);
-								animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
+								animals.addConsumer(animalCounter, "AnimalCounter");			
 						}
 					}
 					

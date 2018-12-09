@@ -25,7 +25,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Channel;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class GhRepos implements Channel{
+public class GhRepos implements Channel {
 	
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
@@ -45,6 +45,13 @@ public class GhRepos implements Channel{
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();
+		
+		pre.put("GhRepoCounter", (ActiveMQDestination) session.createQueue("GhReposPre.GhRepoCounter"));
+		destination.put("GhRepoCounter", (ActiveMQDestination) session.createQueue("GhReposDestination.GhRepoCounter"));
+		post.put("GhRepoCounter", (ActiveMQDestination) session.createQueue("GhReposPost.GhRepoCounter"));
+		pre.put("GhRepoCounter2", (ActiveMQDestination) session.createQueue("GhReposPre.GhRepoCounter2"));
+		destination.put("GhRepoCounter2", (ActiveMQDestination) session.createQueue("GhReposDestination.GhRepoCounter2"));
+		post.put("GhRepoCounter2", (ActiveMQDestination) session.createQueue("GhReposPost.GhRepoCounter2"));
 		
 	}
 	
@@ -79,20 +86,11 @@ public class GhRepos implements Channel{
 	}
 	
 	public void addConsumer(GhReposConsumer consumer, String consumerId) throws Exception {
-
-		// XXX use runtime class as ID of consumer as tasks are unique
 	
-		ActiveMQDestination preQueue = (ActiveMQDestination) session.createQueue("GhReposPre." + consumerId);
-		pre.put(consumerId, preQueue);	
-	
-		ActiveMQDestination destQueue = (ActiveMQDestination) session.createQueue("GhReposDestination." + consumerId);
-		destination.put(consumerId, destQueue);	
-	
-		ActiveMQDestination postQueue = (ActiveMQDestination) session.createQueue("GhReposPost." + consumerId);
-		post.put(consumerId, postQueue);
-	
-		//
-	
+		ActiveMQDestination preQueue = pre.get(consumerId);
+		ActiveMQDestination destQueue = destination.get(consumerId);
+		ActiveMQDestination postQueue = post.get(consumerId);
+		
 		if (workflow.isMaster()) {
 			MessageConsumer preConsumer = session.createConsumer(preQueue);
 			consumers.add(preConsumer);

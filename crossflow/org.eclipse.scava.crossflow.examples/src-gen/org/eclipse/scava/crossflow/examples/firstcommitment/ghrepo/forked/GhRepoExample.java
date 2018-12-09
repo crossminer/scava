@@ -114,20 +114,20 @@ public class GhRepoExample extends Workflow {
 							ghRepoSource.setResultsBroadcaster(resultsBroadcaster);
 							ghRepoSource.setGhRepos(ghRepos);
 							emptySink.setResultsBroadcaster(resultsBroadcaster);
-							resultsPublisher.addConsumer(emptySink, EmptySink.class.getName());			
+							resultsPublisher.addConsumer(emptySink, "EmptySink");			
 							emptySink2.setResultsBroadcaster(resultsBroadcaster);
-							resultsPublisher2.addConsumer(emptySink2, EmptySink2.class.getName());			
+							resultsPublisher2.addConsumer(emptySink2, "EmptySink2");			
 					}
 					
 					if (isWorker()) {
 						if (!tasksToExclude.contains("GhRepoCounter")) {
 								ghRepoCounter.setResultsBroadcaster(resultsBroadcaster);
-								ghRepos.addConsumer(ghRepoCounter, GhRepoCounter.class.getName());			
+								ghRepos.addConsumer(ghRepoCounter, "GhRepoCounter");			
 								ghRepoCounter.setResultsPublisher(resultsPublisher);
 						}
 						if (!tasksToExclude.contains("GhRepoCounter2")) {
 								ghRepoCounter2.setResultsBroadcaster(resultsBroadcaster);
-								ghRepos.addConsumer(ghRepoCounter2, GhRepoCounter2.class.getName());			
+								ghRepos.addConsumer(ghRepoCounter2, "GhRepoCounter2");			
 								ghRepoCounter2.setResultsPublisher2(resultsPublisher2);
 						}
 					}

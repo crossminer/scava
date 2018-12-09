@@ -103,13 +103,13 @@ public class AdditionWorkflow extends Workflow {
 							numberPairSource.setResultsBroadcaster(resultsBroadcaster);
 							numberPairSource.setAdditions(additions);
 							additionResultsSink.setResultsBroadcaster(resultsBroadcaster);
-							additionResults.addConsumer(additionResultsSink, AdditionResultsSink.class.getName());			
+							additionResults.addConsumer(additionResultsSink, "AdditionResultsSink");			
 					}
 					
 					if (isWorker()) {
 						if (!tasksToExclude.contains("Adder")) {
 								adder.setResultsBroadcaster(resultsBroadcaster);
-								additions.addConsumer(adder, Adder.class.getName());			
+								additions.addConsumer(adder, "Adder");			
 								adder.setAdditionResults(additionResults);
 						}
 					}
