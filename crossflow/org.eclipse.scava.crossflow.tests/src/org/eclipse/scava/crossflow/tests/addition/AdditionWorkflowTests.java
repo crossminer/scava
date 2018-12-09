@@ -23,16 +23,17 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
-		master.setTerminationTimeout(0);
-		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		master.setTerminationTimeout(5000);
+		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
 		AdditionWorkflow worker = new AdditionWorkflow(Mode.WORKER);
 		
 		master.run();
-		// Add a delay so that the master can set up its stuff
-		worker.run(1000);
+		worker.run();
 		
 		waitFor(master);
+		
+		// Fails because messages sent from the worker Adder end up nowhere
 		assertArrayEquals(new Integer[] {2, 4}, master.getAdditionResultsSink().getNumbers().toArray());
 	}
 	

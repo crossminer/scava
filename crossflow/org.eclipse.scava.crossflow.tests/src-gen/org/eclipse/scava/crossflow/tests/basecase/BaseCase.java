@@ -103,13 +103,13 @@ public class BaseCase extends Workflow {
 							numberPairSource.setResultsBroadcaster(resultsBroadcaster);
 							numberPairSource.setAdditions(additions);
 							printer.setResultsBroadcaster(resultsBroadcaster);
-							additionResults.addConsumer(printer, "Printer");			
+							additionResults.addConsumer(printer, Printer.class.getName());			
 					}
 					
 					if (isWorker()) {
 						if (!tasksToExclude.contains("Adder")) {
 								adder.setResultsBroadcaster(resultsBroadcaster);
-								additions.addConsumer(adder, "Adder");			
+								additions.addConsumer(adder, Adder.class.getName());			
 								adder.setAdditionResults(additionResults);
 						}
 					}

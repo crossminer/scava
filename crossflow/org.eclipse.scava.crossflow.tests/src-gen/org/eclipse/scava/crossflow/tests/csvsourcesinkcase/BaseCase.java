@@ -113,12 +113,12 @@ public class BaseCase extends Workflow {
 						}
 						if (!tasksToExclude.contains("Adder")) {
 								adder.setResultsBroadcaster(resultsBroadcaster);
-								additions.addConsumer(adder, "Adder");			
+								additions.addConsumer(adder, Adder.class.getName());			
 								adder.setAdditionResults(additionResults);
 						}
 						if (!tasksToExclude.contains("PrinterCsvSink")) {
 								printerCsvSink.setResultsBroadcaster(resultsBroadcaster);
-								additionResults.addConsumer(printerCsvSink, "PrinterCsvSink");			
+								additionResults.addConsumer(printerCsvSink, PrinterCsvSink.class.getName());			
 						}
 					}
 					

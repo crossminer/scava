@@ -213,7 +213,7 @@ operation Workflow getWorkerTasks() {
 operation Task setup() {%]
 	[%=self.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
 	[%for (i in self.input) { %]
-	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], "[%=self.name%]");			
+	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], [%=self.name%].class.getName());			
 	[%}%]
 	[%for (o in self.output) { %]
 	[%=self.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);

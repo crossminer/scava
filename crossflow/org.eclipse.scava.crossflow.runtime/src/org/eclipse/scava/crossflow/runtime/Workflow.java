@@ -225,7 +225,7 @@ public abstract class Workflow {
 	}
 
 	public boolean isWorker() {
-		return !isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE));
+		return mode == Mode.MASTER || mode == Mode.WORKER;
 	}
 	
 	public String getBroker() {

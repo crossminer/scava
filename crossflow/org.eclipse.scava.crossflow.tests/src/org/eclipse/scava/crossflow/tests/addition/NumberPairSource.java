@@ -8,7 +8,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 	
 	@Override
 	public void produce() {
-		
+		System.out.println("Producing");
 		for (int i : numbers) {
 			sendToAdditions(new NumberPair(i, i));
 			try {
