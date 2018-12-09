@@ -2,6 +2,8 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +13,7 @@ import java.util.UUID;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class DirectoryCache {
+public class DirectoryCache implements Cache {
 	
 	protected HashMap<String, File> jobFolderMap = new HashMap<String, File>();
 	protected HashMap<String, Job> jobMap = new HashMap<String, Job>();
@@ -20,7 +22,20 @@ public class DirectoryCache {
 	protected Workflow workflow = null;
 	protected XStream xstream = new XStream(new DomDriver());
 	
+	public DirectoryCache() {
+		try {
+			init(Files.createTempDirectory("crossflow").toFile());
+		}
+		catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
 	public DirectoryCache(File directory) {
+		init(directory);
+	}
+	
+	protected void init(File directory) {
 		this.directory = directory;
 		if (!directory.exists()) return;
 		for (File streamFolder : directory.listFiles()) {
@@ -76,6 +91,8 @@ public class DirectoryCache {
 		}
 	}
 	
-	
+	public File getDirectory() {
+		return directory;
+	}
 	
 }

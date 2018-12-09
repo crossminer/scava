@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.nio.file.Files;
 
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.tests.addition.NumberPair;
@@ -16,14 +15,14 @@ public class DirectoryCacheTests {
 	
 	@Test
 	public void testCache() throws Exception {
-		File directory = Files.createTempDirectory("crossflow").toFile();
 		
 		NumberPair input = new NumberPair(1, 2);
 		input.setDestination("Additions");
 		NumberPair output = new NumberPair(2, 4);
 		output.setCorrelationId(input.getId());
 		
-		DirectoryCache cache = new DirectoryCache(directory);
+		DirectoryCache cache = new DirectoryCache();
+		File directory = cache.getDirectory();
 		cache.cache(input);
 		cache.cache(output);
 		

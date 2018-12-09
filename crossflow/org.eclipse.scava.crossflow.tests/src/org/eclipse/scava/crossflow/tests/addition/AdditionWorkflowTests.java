@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
+import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;
@@ -21,6 +22,45 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		workflow.run();
 		waitFor(workflow);
 		assertArrayEquals(new Integer[] {2, 4}, workflow.getAdditionResultsSink().getNumbers().toArray());
+	}
+	
+	@Test
+	public void testCache() throws Exception {
+		
+		AdditionWorkflow workflow = new AdditionWorkflow();
+		workflow.getAdder().setCaching(true);
+		workflow.setCache(new DirectoryCache());
+		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		workflow.run();
+		waitFor(workflow);
+		
+		AdditionWorkflow fresh = new AdditionWorkflow();
+		fresh.getAdder().setCaching(true);
+		fresh.setCache(new DirectoryCache(((DirectoryCache)workflow.getCache()).getDirectory()));
+		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
+		fresh.run();
+		waitFor(fresh);
+		
+		assertEquals(1, fresh.getAdder().getExecutions());
+		
+	}
+	
+	@Test
+	public void testCachingWithNoCache() throws Exception {
+		
+		AdditionWorkflow workflow = new AdditionWorkflow();
+		workflow.getAdder().setCaching(true);
+		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		workflow.run();
+		waitFor(workflow);
+		
+		AdditionWorkflow fresh = new AdditionWorkflow();
+		fresh.getAdder().setCaching(true);
+		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
+		fresh.run();
+		waitFor(fresh);
+		
+		assertEquals(3, fresh.getAdder().getExecutions());
 	}
 	
 	@Test
