@@ -26,7 +26,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
-		//master.setEnableCache(false);
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
@@ -37,9 +36,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		
 		waitFor(master);
 		
-		System.err.println(master.getAdder().getExecutions() + "/" + worker.getAdder().getExecutions());
-		//TODO: When executed individually this passes but when the whole class is executed it fails (i.e the master does all the work). setEnableCache() seems to be related - when set to false it works well.  
-		//assertEquals(true, master.getAdder().getExecutions() < 5);
+		assertEquals(true, master.getAdder().getExecutions() < 5);
 		assertEquals(5, worker.getAdder().getExecutions() + master.getAdder().getExecutions());
 		
 		assertArrayEquals(new Integer[] {2, 4, 6, 8, 10}, 
@@ -53,7 +50,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testBareMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER_BARE);
-		//master.setEnableCache(false);
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
