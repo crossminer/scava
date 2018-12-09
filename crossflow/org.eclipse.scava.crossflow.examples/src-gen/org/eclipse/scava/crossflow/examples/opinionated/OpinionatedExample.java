@@ -44,13 +44,6 @@ public class OpinionatedExample extends Workflow {
 	protected WordSource wordSource;
 	protected OccurencesMonitor occurencesMonitor;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public OpinionatedExample() {
 		super();
 		this.name = "OpinionatedExample";
@@ -103,35 +96,28 @@ public class OpinionatedExample extends Workflow {
 					words = new Words(OpinionatedExample.this);
 					activeQueues.add(words);
 					
-		
-	
-				
-					wordSource = new WordSource();
-					wordSource.setWorkflow(OpinionatedExample.this);
-		
-					wordSource.setWords(words);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("OccurencesMonitor")) {
-	
-				
-					occurencesMonitor = new OccurencesMonitor();
-					occurencesMonitor.setWorkflow(OpinionatedExample.this);
-		
-						words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
+					if (isMaster()) {
+						wordSource = new WordSource();
+						wordSource.setWorkflow(OpinionatedExample.this);
+						wordSource.setResultsBroadcaster(resultsBroadcaster);
+						wordSource.setWords(words);
+					}
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("OccurencesMonitor")) {
+							occurencesMonitor = new OccurencesMonitor();
+							occurencesMonitor.setWorkflow(OpinionatedExample.this);
+							occurencesMonitor.setResultsBroadcaster(resultsBroadcaster);
+							words.addConsumer(occurencesMonitor, "OccurencesMonitor");			
+						}
 	
 					}
-					else if(isMaster()){
-						words.addConsumer(occurencesMonitor, OccurencesMonitor.class.getName());			
-					}
-		
-				
-		
+					
+					
 					if (isMaster()){
 						wordSource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -153,3 +139,4 @@ public class OpinionatedExample extends Workflow {
 	}
 
 }
+

@@ -36,13 +36,6 @@ public class BaseCase extends Workflow {
 	protected Adder adder;
 	protected PrinterCsvSink printerCsvSink;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public BaseCase() {
 		super();
 		this.name = "BaseCase";
@@ -97,50 +90,37 @@ public class BaseCase extends Workflow {
 					additionResults = new AdditionResults(BaseCase.this);
 					activeQueues.add(additionResults);
 					
-		
-	
-				
-					numberPairCsvSource = new NumberPairCsvSource();
-					numberPairCsvSource.setWorkflow(BaseCase.this);
-		
-					numberPairCsvSource.setAdditions(additions);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("Adder")) {
-	
-				
-					adder = new Adder();
-					adder.setWorkflow(BaseCase.this);
-		
-						additions.addConsumer(adder, Adder.class.getName());			
-	
-					adder.setAdditionResults(additionResults);
-					}
-					else if(isMaster()){
-						additions.addConsumer(adder, Adder.class.getName());			
-					}
-		
-				
-		
-	
 					if (isMaster()) {
-				
-					printerCsvSink = new PrinterCsvSink();
-					printerCsvSink.setWorkflow(BaseCase.this);
 					}
-		
-						additionResults.addConsumer(printerCsvSink, PrinterCsvSink.class.getName());			
-					if(adder!=null)		
-						adder.setResultsBroadcaster(resultsBroadcaster);
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("NumberPairCsvSource")) {
+							numberPairCsvSource = new NumberPairCsvSource();
+							numberPairCsvSource.setWorkflow(BaseCase.this);
+							numberPairCsvSource.setResultsBroadcaster(resultsBroadcaster);
+							numberPairCsvSource.setAdditions(additions);
+						}
+						if (!tasksToExclude.contains("Adder")) {
+							adder = new Adder();
+							adder.setWorkflow(BaseCase.this);
+							adder.setResultsBroadcaster(resultsBroadcaster);
+							additions.addConsumer(adder, "Adder");			
+							adder.setAdditionResults(additionResults);
+						}
+						if (!tasksToExclude.contains("PrinterCsvSink")) {
+							printerCsvSink = new PrinterCsvSink();
+							printerCsvSink.setWorkflow(BaseCase.this);
+							printerCsvSink.setResultsBroadcaster(resultsBroadcaster);
+							additionResults.addConsumer(printerCsvSink, "PrinterCsvSink");			
+						}
 	
-		
-				
-		
+					}
+					
+					
 					if (isMaster()){
 						numberPairCsvSource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -168,3 +148,4 @@ public class BaseCase extends Workflow {
 	}
 
 }
+

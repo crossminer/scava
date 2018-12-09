@@ -4,7 +4,7 @@ import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class OccurencesMonitorBase implements WordsConsumer, Task{
+public abstract class OccurencesMonitorBase extends Task  implements WordsConsumer{
 		
 	protected OpinionatedExample workflow;
 	
@@ -22,7 +22,6 @@ public abstract class OccurencesMonitorBase implements WordsConsumer, Task{
 	
 	
 	
-	
 	@Override
 	public void consumeWordsActual(Word word) {
 
@@ -34,26 +33,6 @@ public abstract class OccurencesMonitorBase implements WordsConsumer, Task{
 		
 	}
 	
-	
-	/**
-	 * Call this within consumeXYZ() to denote task blocked due to some reason
-	 * @param reason
-	 */
-	protected void taskBlocked(String reason) {
-		
-		workflow.setTaskBlocked(this,reason);
-		
-	}
-	
-	/**
-	 * Call this within consumeXYZ() to denote task is now unblocked
-	 * @param reason
-	 */
-	protected void taskUnblocked() {
-		
-		workflow.setTaskUnblocked(this);
-		
-	}
 	
 	
 	

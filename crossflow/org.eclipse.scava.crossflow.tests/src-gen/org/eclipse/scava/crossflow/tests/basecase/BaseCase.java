@@ -36,13 +36,6 @@ public class BaseCase extends Workflow {
 	protected Adder adder;
 	protected Printer printer;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public BaseCase() {
 		super();
 		this.name = "BaseCase";
@@ -97,50 +90,33 @@ public class BaseCase extends Workflow {
 					additionResults = new AdditionResults(BaseCase.this);
 					activeQueues.add(additionResults);
 					
-		
-	
-				
-					numberPairSource = new NumberPairSource();
-					numberPairSource.setWorkflow(BaseCase.this);
-		
-					numberPairSource.setAdditions(additions);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("Adder")) {
-	
-				
-					adder = new Adder();
-					adder.setWorkflow(BaseCase.this);
-		
-						additions.addConsumer(adder, Adder.class.getName());			
-	
-					adder.setAdditionResults(additionResults);
-					}
-					else if(isMaster()){
-						additions.addConsumer(adder, Adder.class.getName());			
-					}
-		
-				
-		
-	
 					if (isMaster()) {
-				
-					printer = new Printer();
-					printer.setWorkflow(BaseCase.this);
+						numberPairSource = new NumberPairSource();
+						numberPairSource.setWorkflow(BaseCase.this);
+						numberPairSource.setResultsBroadcaster(resultsBroadcaster);
+						numberPairSource.setAdditions(additions);
+						printer = new Printer();
+						printer.setWorkflow(BaseCase.this);
+						printer.setResultsBroadcaster(resultsBroadcaster);
+						additionResults.addConsumer(printer, "Printer");			
 					}
-		
-						additionResults.addConsumer(printer, Printer.class.getName());			
-					if(adder!=null)		
-						adder.setResultsBroadcaster(resultsBroadcaster);
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("Adder")) {
+							adder = new Adder();
+							adder.setWorkflow(BaseCase.this);
+							adder.setResultsBroadcaster(resultsBroadcaster);
+							additions.addConsumer(adder, "Adder");			
+							adder.setAdditionResults(additionResults);
+						}
 	
-		
-				
-		
+					}
+					
+					
 					if (isMaster()){
 						numberPairSource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -168,3 +144,4 @@ public class BaseCase extends Workflow {
 	}
 
 }
+

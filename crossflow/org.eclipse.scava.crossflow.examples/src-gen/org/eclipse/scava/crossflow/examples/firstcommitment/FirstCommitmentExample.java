@@ -34,13 +34,6 @@ public class FirstCommitmentExample extends Workflow {
 	protected AnimalSource animalSource;
 	protected AnimalCounter animalCounter;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public FirstCommitmentExample() {
 		super();
 		this.name = "FirstCommitmentExample";
@@ -93,35 +86,28 @@ public class FirstCommitmentExample extends Workflow {
 					animals = new Animals(FirstCommitmentExample.this);
 					activeQueues.add(animals);
 					
-		
-	
-				
-					animalSource = new AnimalSource();
-					animalSource.setWorkflow(FirstCommitmentExample.this);
-		
-					animalSource.setAnimals(animals);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("AnimalCounter")) {
-	
-				
-					animalCounter = new AnimalCounter();
-					animalCounter.setWorkflow(FirstCommitmentExample.this);
-		
-						animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
+					if (isMaster()) {
+						animalSource = new AnimalSource();
+						animalSource.setWorkflow(FirstCommitmentExample.this);
+						animalSource.setResultsBroadcaster(resultsBroadcaster);
+						animalSource.setAnimals(animals);
+					}
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("AnimalCounter")) {
+							animalCounter = new AnimalCounter();
+							animalCounter.setWorkflow(FirstCommitmentExample.this);
+							animalCounter.setResultsBroadcaster(resultsBroadcaster);
+							animals.addConsumer(animalCounter, "AnimalCounter");			
+						}
 	
 					}
-					else if(isMaster()){
-						animals.addConsumer(animalCounter, AnimalCounter.class.getName());			
-					}
-		
-				
-		
+					
+					
 					if (isMaster()){
 						animalSource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -143,3 +129,4 @@ public class FirstCommitmentExample extends Workflow {
 	}
 
 }
+

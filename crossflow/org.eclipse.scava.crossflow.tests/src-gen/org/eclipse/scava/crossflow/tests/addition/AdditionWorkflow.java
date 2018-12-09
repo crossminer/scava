@@ -36,13 +36,6 @@ public class AdditionWorkflow extends Workflow {
 	protected Adder adder;
 	protected AdditionResultsSink additionResultsSink;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public AdditionWorkflow() {
 		super();
 		this.name = "AdditionWorkflow";
@@ -97,50 +90,33 @@ public class AdditionWorkflow extends Workflow {
 					additionResults = new AdditionResults(AdditionWorkflow.this);
 					activeQueues.add(additionResults);
 					
-		
-	
-				
-					numberPairSource = new NumberPairSource();
-					numberPairSource.setWorkflow(AdditionWorkflow.this);
-		
-					numberPairSource.setAdditions(additions);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("Adder")) {
-	
-				
-					adder = new Adder();
-					adder.setWorkflow(AdditionWorkflow.this);
-		
-						additions.addConsumer(adder, Adder.class.getName());			
-	
-					adder.setAdditionResults(additionResults);
-					}
-					else if(isMaster()){
-						additions.addConsumer(adder, Adder.class.getName());			
-					}
-		
-				
-		
-	
 					if (isMaster()) {
-				
-					additionResultsSink = new AdditionResultsSink();
-					additionResultsSink.setWorkflow(AdditionWorkflow.this);
+						numberPairSource = new NumberPairSource();
+						numberPairSource.setWorkflow(AdditionWorkflow.this);
+						numberPairSource.setResultsBroadcaster(resultsBroadcaster);
+						numberPairSource.setAdditions(additions);
+						additionResultsSink = new AdditionResultsSink();
+						additionResultsSink.setWorkflow(AdditionWorkflow.this);
+						additionResultsSink.setResultsBroadcaster(resultsBroadcaster);
+						additionResults.addConsumer(additionResultsSink, "AdditionResultsSink");			
 					}
-		
-						additionResults.addConsumer(additionResultsSink, AdditionResultsSink.class.getName());			
-					if(adder!=null)		
-						adder.setResultsBroadcaster(resultsBroadcaster);
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("Adder")) {
+							adder = new Adder();
+							adder.setWorkflow(AdditionWorkflow.this);
+							adder.setResultsBroadcaster(resultsBroadcaster);
+							additions.addConsumer(adder, "Adder");			
+							adder.setAdditionResults(additionResults);
+						}
 	
-		
-				
-		
+					}
+					
+					
 					if (isMaster()){
 						numberPairSource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -168,3 +144,4 @@ public class AdditionWorkflow extends Workflow {
 	}
 
 }
+

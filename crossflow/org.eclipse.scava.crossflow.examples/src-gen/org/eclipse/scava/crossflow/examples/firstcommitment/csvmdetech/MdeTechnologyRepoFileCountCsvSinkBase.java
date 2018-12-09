@@ -5,7 +5,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class MdeTechnologyRepoFileCountCsvSinkBase implements MdeTechnologyRepoFileCountEntriesConsumer, Task{
+public abstract class MdeTechnologyRepoFileCountCsvSinkBase extends Task  implements MdeTechnologyRepoFileCountEntriesConsumer{
 		
 	protected MdeTechnologyCsvExample workflow;
 	
@@ -23,22 +23,6 @@ public abstract class MdeTechnologyRepoFileCountCsvSinkBase implements MdeTechno
 	
 	
 	
-	protected ResultsBroadcaster resultsBroadcaster;
-	
-	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
-		this.resultsBroadcaster = resultsBroadcaster;
-	}
-	
-	private ResultsBroadcaster getResultsBroadcaster() {
-		return resultsBroadcaster;
-	}
-	
-	public void sendToResultsBroadcaster(Object[] row){
-		getResultsBroadcaster().send(row);
-	}
-	
-	
-	
 	@Override
 	public void consumeMdeTechnologyRepoFileCountEntriesActual(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
 
@@ -50,26 +34,6 @@ public abstract class MdeTechnologyRepoFileCountCsvSinkBase implements MdeTechno
 		
 	}
 	
-	
-	/**
-	 * Call this within consumeXYZ() to denote task blocked due to some reason
-	 * @param reason
-	 */
-	protected void taskBlocked(String reason) {
-		
-		workflow.setTaskBlocked(this,reason);
-		
-	}
-	
-	/**
-	 * Call this within consumeXYZ() to denote task is now unblocked
-	 * @param reason
-	 */
-	protected void taskUnblocked() {
-		
-		workflow.setTaskUnblocked(this);
-		
-	}
 	
 	
 	

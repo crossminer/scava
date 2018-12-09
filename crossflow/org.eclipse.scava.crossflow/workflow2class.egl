@@ -49,13 +49,6 @@ public class [%=w.name%] extends Workflow {
 	protected [%=t.name%] [%=t.name.ftlc()%];
 	[%}%]
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public [%=w.name%]() {
 		super();
 		this.name = "[%=w.name%]";
@@ -110,6 +103,37 @@ public class [%=w.name%] extends Workflow {
 					activeQueues.add([%=s.name.ftlc()%]);
 					[%}%]
 					
+					if (isMaster()) {
+					[%for (t in w.getMasterTasks()){%]
+						[%=t.name.ftlc()%] = new [%=t.name%]();
+						[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
+						[%=t.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
+						[%for (i in t.input) { %]
+						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], "[%=t.name%]");			
+						[%}%]
+						[%for (o in t.output) { %]
+						[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
+						[%}%]
+					[%}%]
+					}
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+					[%for (t in w.getWorkerTasks()){%]
+						if (!tasksToExclude.contains("[%=t.name%]")) {
+							[%=t.name.ftlc()%] = new [%=t.name%]();
+							[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
+							[%=t.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
+							[%for (i in t.input) { %]
+							[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], "[%=t.name%]");			
+							[%}%]
+							[%for (o in t.output) { %]
+							[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
+							[%}%]
+						}
+					[%}%]	
+					}
+					
+					[**
 					[%for (t in w.tasks) {%]		
 					[%if(t.masterOnly){%]
 					if (isMaster()) {
@@ -149,13 +173,15 @@ public class [%=w.name%] extends Workflow {
 					[%if(t.masterOnly){%]
 					}
 					[%}%]				
-					[%}%]		
+					[%}%]
+					**]
+					
 					if (isMaster()){
 						[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
 						[%=t.name.ftlc()%].produce();
 						[%}%]
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -178,3 +204,14 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 
 }
+
+[%
+operation Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isTypeOf(Source) or t.isTypeOf(Sink) or t.masterOnly);
+}
+
+operation Workflow getWorkerTasks() {
+	return self.tasks.excludingAll(self.getMasterTasks());
+}
+
+%]

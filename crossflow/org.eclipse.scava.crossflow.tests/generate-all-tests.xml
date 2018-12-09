@@ -13,5 +13,6 @@
 			</epsilon.egl>
 			<epsilon.disposeModel model="M"/>
 		</epsilon.for>
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.tests" depth="-1"/>
 	</target>
 </project>

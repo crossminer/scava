@@ -3,7 +3,6 @@ package org.eclipse.scava.crossflow.runtime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.function.BooleanSupplier;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -51,6 +50,13 @@ public abstract class Workflow {
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
 	//
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
+	
+	// excluded tasks from workers
+	protected Collection<String> tasksToExclude = new LinkedList<String>();
+	
+	public void excludeTasks(Collection<String> tasks){
+		tasksToExclude = tasks;
+	}
 	
 	protected boolean terminated = false;
 

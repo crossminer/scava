@@ -12,7 +12,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 [%}%]
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
-public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t.input.collect(s|s.name + "Consumer").concat(",")+","%][%}%] Task{
+public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 		
 	protected [%=w.name%] workflow;
 	
@@ -45,24 +45,6 @@ public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t
 	
 	[%}%]
 	
-	[%if(w.tasks.select(s|s.isKindOf(Sink)).size>0){%]
-	
-	protected ResultsBroadcaster resultsBroadcaster;
-	
-	protected void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
-		this.resultsBroadcaster = resultsBroadcaster;
-	}
-	
-	private ResultsBroadcaster getResultsBroadcaster() {
-		return resultsBroadcaster;
-	}
-	
-	public void sendToResultsBroadcaster(Object[] row){
-		getResultsBroadcaster().send(row);
-	}
-	
-	[%}%]
-	
 	[%for (s in t.input) { %]
 	
 	@Override
@@ -77,26 +59,6 @@ public abstract class [%=t.name%]Base implements[%if(t.input.notEmpty()){%] [%=t
 	}
 	
 	[%}%]
-	
-	/**
-	 * Call this within consumeXYZ() to denote task blocked due to some reason
-	 * @param reason
-	 */
-	protected void taskBlocked(String reason) {
-		
-		workflow.setTaskBlocked(this,reason);
-		
-	}
-	
-	/**
-	 * Call this within consumeXYZ() to denote task is now unblocked
-	 * @param reason
-	 */
-	protected void taskUnblocked() {
-		
-		workflow.setTaskUnblocked(this);
-		
-	}
 	
 	[%if (t.isKindOf(Source)){%]
 	public abstract void produce();

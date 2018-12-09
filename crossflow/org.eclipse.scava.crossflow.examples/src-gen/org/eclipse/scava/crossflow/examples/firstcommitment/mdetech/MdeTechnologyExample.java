@@ -48,13 +48,6 @@ public class MdeTechnologyExample extends Workflow {
 	protected MdeTechnologyRepoFileCountPrinter mdeTechnologyRepoFileCountPrinter;
 	protected MdeTechnologyRepoOwnerPopularityCountPrinter mdeTechnologyRepoOwnerPopularityCountPrinter;
 	
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
-	
-	public void excludeTasks(Collection<String> tasks){
-		tasksToExclude = tasks;
-	}
-	
 	public MdeTechnologyExample() {
 		super();
 		this.name = "MdeTechnologyExample";
@@ -121,144 +114,71 @@ public class MdeTechnologyExample extends Workflow {
 					mdeTechnologyRepoOwnerPopularityCountEntries = new MdeTechnologyRepoOwnerPopularityCountEntries(MdeTechnologyExample.this);
 					activeQueues.add(mdeTechnologyRepoOwnerPopularityCountEntries);
 					
-		
-	
-				
-					mdeTechnologySource = new MdeTechnologySource();
-					mdeTechnologySource.setWorkflow(MdeTechnologyExample.this);
-		
-					mdeTechnologySource.setMdeTechnologies(mdeTechnologies);
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("MdeTechnologyRepoFetcher")) {
-	
-				
-					mdeTechnologyRepoFetcher = new MdeTechnologyRepoFetcher();
-					mdeTechnologyRepoFetcher.setWorkflow(MdeTechnologyExample.this);
-		
-						mdeTechnologies.addConsumer(mdeTechnologyRepoFetcher, MdeTechnologyRepoFetcher.class.getName());			
-	
-					mdeTechnologyRepoFetcher.setMdeTechnologyRepoEntries(mdeTechnologyRepoEntries);
-					}
-					else if(isMaster()){
-						mdeTechnologies.addConsumer(mdeTechnologyRepoFetcher, MdeTechnologyRepoFetcher.class.getName());			
-					}
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("MdeTechnologyRepoCloner")) {
-	
-				
-					mdeTechnologyRepoCloner = new MdeTechnologyRepoCloner();
-					mdeTechnologyRepoCloner.setWorkflow(MdeTechnologyExample.this);
-		
-						mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner, MdeTechnologyRepoCloner.class.getName());			
-	
-					mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForAuthorCounter(mdeTechnologyClonedRepoEntriesForAuthorCounter);
-					mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForFileCounter(mdeTechnologyClonedRepoEntriesForFileCounter);
-					mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter);
-					}
-					else if(isMaster()){
-						mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner, MdeTechnologyRepoCloner.class.getName());			
-					}
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("MdeTechnologyRepoAuthorCounter")) {
-	
-				
-					mdeTechnologyRepoAuthorCounter = new MdeTechnologyRepoAuthorCounter();
-					mdeTechnologyRepoAuthorCounter.setWorkflow(MdeTechnologyExample.this);
-		
-						mdeTechnologyClonedRepoEntriesForAuthorCounter.addConsumer(mdeTechnologyRepoAuthorCounter, MdeTechnologyRepoAuthorCounter.class.getName());			
-	
-					mdeTechnologyRepoAuthorCounter.setMdeTechnologyRepoAuthorCountEntries(mdeTechnologyRepoAuthorCountEntries);
-					}
-					else if(isMaster()){
-						mdeTechnologyClonedRepoEntriesForAuthorCounter.addConsumer(mdeTechnologyRepoAuthorCounter, MdeTechnologyRepoAuthorCounter.class.getName());			
-					}
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("MdeTechnologyRepoFileCounter")) {
-	
-				
-					mdeTechnologyRepoFileCounter = new MdeTechnologyRepoFileCounter();
-					mdeTechnologyRepoFileCounter.setWorkflow(MdeTechnologyExample.this);
-		
-						mdeTechnologyClonedRepoEntriesForFileCounter.addConsumer(mdeTechnologyRepoFileCounter, MdeTechnologyRepoFileCounter.class.getName());			
-	
-					mdeTechnologyRepoFileCounter.setMdeTechnologyRepoFileCountEntries(mdeTechnologyRepoFileCountEntries);
-					}
-					else if(isMaster()){
-						mdeTechnologyClonedRepoEntriesForFileCounter.addConsumer(mdeTechnologyRepoFileCounter, MdeTechnologyRepoFileCounter.class.getName());			
-					}
-		
-				
-		
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCounter")) {
-	
-				
-					mdeTechnologyRepoOwnerPopularityCounter = new MdeTechnologyRepoOwnerPopularityCounter();
-					mdeTechnologyRepoOwnerPopularityCounter.setWorkflow(MdeTechnologyExample.this);
-		
-						mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter.addConsumer(mdeTechnologyRepoOwnerPopularityCounter, MdeTechnologyRepoOwnerPopularityCounter.class.getName());			
-	
-					mdeTechnologyRepoOwnerPopularityCounter.setMdeTechnologyRepoOwnerPopularityCountEntries(mdeTechnologyRepoOwnerPopularityCountEntries);
-					}
-					else if(isMaster()){
-						mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter.addConsumer(mdeTechnologyRepoOwnerPopularityCounter, MdeTechnologyRepoOwnerPopularityCounter.class.getName());			
-					}
-		
-				
-		
-	
 					if (isMaster()) {
-				
-					mdeTechnologyRepoAuthorCountPrinter = new MdeTechnologyRepoAuthorCountPrinter();
-					mdeTechnologyRepoAuthorCountPrinter.setWorkflow(MdeTechnologyExample.this);
+						mdeTechnologySource = new MdeTechnologySource();
+						mdeTechnologySource.setWorkflow(MdeTechnologyExample.this);
+						mdeTechnologySource.setResultsBroadcaster(resultsBroadcaster);
+						mdeTechnologySource.setMdeTechnologies(mdeTechnologies);
+						mdeTechnologyRepoAuthorCountPrinter = new MdeTechnologyRepoAuthorCountPrinter();
+						mdeTechnologyRepoAuthorCountPrinter.setWorkflow(MdeTechnologyExample.this);
+						mdeTechnologyRepoAuthorCountPrinter.setResultsBroadcaster(resultsBroadcaster);
+						mdeTechnologyRepoAuthorCountEntries.addConsumer(mdeTechnologyRepoAuthorCountPrinter, "MdeTechnologyRepoAuthorCountPrinter");			
+						mdeTechnologyRepoFileCountPrinter = new MdeTechnologyRepoFileCountPrinter();
+						mdeTechnologyRepoFileCountPrinter.setWorkflow(MdeTechnologyExample.this);
+						mdeTechnologyRepoFileCountPrinter.setResultsBroadcaster(resultsBroadcaster);
+						mdeTechnologyRepoFileCountEntries.addConsumer(mdeTechnologyRepoFileCountPrinter, "MdeTechnologyRepoFileCountPrinter");			
+						mdeTechnologyRepoOwnerPopularityCountPrinter = new MdeTechnologyRepoOwnerPopularityCountPrinter();
+						mdeTechnologyRepoOwnerPopularityCountPrinter.setWorkflow(MdeTechnologyExample.this);
+						mdeTechnologyRepoOwnerPopularityCountPrinter.setResultsBroadcaster(resultsBroadcaster);
+						mdeTechnologyRepoOwnerPopularityCountEntries.addConsumer(mdeTechnologyRepoOwnerPopularityCountPrinter, "MdeTechnologyRepoOwnerPopularityCountPrinter");			
 					}
-		
-						mdeTechnologyRepoAuthorCountEntries.addConsumer(mdeTechnologyRepoAuthorCountPrinter, MdeTechnologyRepoAuthorCountPrinter.class.getName());			
-					if(mdeTechnologyRepoAuthorCounter!=null)		
-						mdeTechnologyRepoAuthorCounter.setResultsBroadcaster(resultsBroadcaster);
+					
+					if (!isMaster() || (isMaster() && !getMode().equals(Mode.MASTER_BARE))) {
+						if (!tasksToExclude.contains("MdeTechnologyRepoFetcher")) {
+							mdeTechnologyRepoFetcher = new MdeTechnologyRepoFetcher();
+							mdeTechnologyRepoFetcher.setWorkflow(MdeTechnologyExample.this);
+							mdeTechnologyRepoFetcher.setResultsBroadcaster(resultsBroadcaster);
+							mdeTechnologies.addConsumer(mdeTechnologyRepoFetcher, "MdeTechnologyRepoFetcher");			
+							mdeTechnologyRepoFetcher.setMdeTechnologyRepoEntries(mdeTechnologyRepoEntries);
+						}
+						if (!tasksToExclude.contains("MdeTechnologyRepoCloner")) {
+							mdeTechnologyRepoCloner = new MdeTechnologyRepoCloner();
+							mdeTechnologyRepoCloner.setWorkflow(MdeTechnologyExample.this);
+							mdeTechnologyRepoCloner.setResultsBroadcaster(resultsBroadcaster);
+							mdeTechnologyRepoEntries.addConsumer(mdeTechnologyRepoCloner, "MdeTechnologyRepoCloner");			
+							mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForAuthorCounter(mdeTechnologyClonedRepoEntriesForAuthorCounter);
+							mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForFileCounter(mdeTechnologyClonedRepoEntriesForFileCounter);
+							mdeTechnologyRepoCloner.setMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter);
+						}
+						if (!tasksToExclude.contains("MdeTechnologyRepoAuthorCounter")) {
+							mdeTechnologyRepoAuthorCounter = new MdeTechnologyRepoAuthorCounter();
+							mdeTechnologyRepoAuthorCounter.setWorkflow(MdeTechnologyExample.this);
+							mdeTechnologyRepoAuthorCounter.setResultsBroadcaster(resultsBroadcaster);
+							mdeTechnologyClonedRepoEntriesForAuthorCounter.addConsumer(mdeTechnologyRepoAuthorCounter, "MdeTechnologyRepoAuthorCounter");			
+							mdeTechnologyRepoAuthorCounter.setMdeTechnologyRepoAuthorCountEntries(mdeTechnologyRepoAuthorCountEntries);
+						}
+						if (!tasksToExclude.contains("MdeTechnologyRepoFileCounter")) {
+							mdeTechnologyRepoFileCounter = new MdeTechnologyRepoFileCounter();
+							mdeTechnologyRepoFileCounter.setWorkflow(MdeTechnologyExample.this);
+							mdeTechnologyRepoFileCounter.setResultsBroadcaster(resultsBroadcaster);
+							mdeTechnologyClonedRepoEntriesForFileCounter.addConsumer(mdeTechnologyRepoFileCounter, "MdeTechnologyRepoFileCounter");			
+							mdeTechnologyRepoFileCounter.setMdeTechnologyRepoFileCountEntries(mdeTechnologyRepoFileCountEntries);
+						}
+						if (!tasksToExclude.contains("MdeTechnologyRepoOwnerPopularityCounter")) {
+							mdeTechnologyRepoOwnerPopularityCounter = new MdeTechnologyRepoOwnerPopularityCounter();
+							mdeTechnologyRepoOwnerPopularityCounter.setWorkflow(MdeTechnologyExample.this);
+							mdeTechnologyRepoOwnerPopularityCounter.setResultsBroadcaster(resultsBroadcaster);
+							mdeTechnologyClonedRepoEntriesForOwnerPopularityCounter.addConsumer(mdeTechnologyRepoOwnerPopularityCounter, "MdeTechnologyRepoOwnerPopularityCounter");			
+							mdeTechnologyRepoOwnerPopularityCounter.setMdeTechnologyRepoOwnerPopularityCountEntries(mdeTechnologyRepoOwnerPopularityCountEntries);
+						}
 	
-		
-				
-		
-	
-					if (isMaster()) {
-				
-					mdeTechnologyRepoFileCountPrinter = new MdeTechnologyRepoFileCountPrinter();
-					mdeTechnologyRepoFileCountPrinter.setWorkflow(MdeTechnologyExample.this);
 					}
-		
-						mdeTechnologyRepoFileCountEntries.addConsumer(mdeTechnologyRepoFileCountPrinter, MdeTechnologyRepoFileCountPrinter.class.getName());			
-					if(mdeTechnologyRepoFileCounter!=null)		
-						mdeTechnologyRepoFileCounter.setResultsBroadcaster(resultsBroadcaster);
-	
-		
-				
-		
-	
-					if (isMaster()) {
-				
-					mdeTechnologyRepoOwnerPopularityCountPrinter = new MdeTechnologyRepoOwnerPopularityCountPrinter();
-					mdeTechnologyRepoOwnerPopularityCountPrinter.setWorkflow(MdeTechnologyExample.this);
-					}
-		
-						mdeTechnologyRepoOwnerPopularityCountEntries.addConsumer(mdeTechnologyRepoOwnerPopularityCountPrinter, MdeTechnologyRepoOwnerPopularityCountPrinter.class.getName());			
-					if(mdeTechnologyRepoOwnerPopularityCounter!=null)		
-						mdeTechnologyRepoOwnerPopularityCounter.setResultsBroadcaster(resultsBroadcaster);
-	
-		
-				
-		
+					
+					
 					if (isMaster()){
 						mdeTechnologySource.produce();
 					}
-	
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -322,3 +242,4 @@ public class MdeTechnologyExample extends Workflow {
 	}
 
 }
+
