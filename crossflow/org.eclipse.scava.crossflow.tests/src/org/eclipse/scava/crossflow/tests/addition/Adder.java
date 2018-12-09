@@ -7,6 +7,7 @@ public class Adder extends AdderBase {
 	
 	@Override
 	public void consumeAdditions(NumberPair numberPair) {
+		System.out.println("Adding " + numberPair);
 		executions++;
 		Number result = new Number();
 		result.setN(numberPair.getA() + numberPair.getB());

@@ -50,6 +50,74 @@ public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel {
 		destination.put("MdeTechnologyRepoFileCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterDestination.MdeTechnologyRepoFileCounter"));
 		post.put("MdeTechnologyRepoFileCounter", (ActiveMQDestination) session.createQueue("MdeTechnologyClonedRepoEntriesForFileCounterPost.MdeTechnologyRepoFileCounter"));
 		
+		for (String consumerId : pre.keySet()) {
+			ActiveMQDestination preQueue = pre.get(consumerId);
+			ActiveMQDestination destQueue = destination.get(consumerId);
+			ActiveMQDestination postQueue = post.get(consumerId);
+			
+			if (workflow.isMaster()) {
+				MessageConsumer preConsumer = session.createConsumer(preQueue);
+				consumers.add(preConsumer);
+				preConsumer.setMessageListener(new MessageListener() {
+	
+					@Override
+					public void onMessage(Message message) {
+						try {
+							
+							Job job = (Job) ((ObjectMessage) message).getObject();
+							if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
+								for (Job output : workflow.getCache().getCachedOutputs(job)) {
+									if (output.getDestination().equals("Additions")) {
+										MessageProducer producer = session.createProducer(preQueue);
+										producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+										ObjectMessage m = session.createObjectMessage();
+										m.setObject(output);
+										producer.send(m);
+									} else {
+										//XXX should not be the case?
+										System.err.println(
+												output.getDestination() + " destination found in Additions pre consumer");
+									}
+								}
+							} else {
+								MessageProducer producer = session.createProducer(destQueue);
+								producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+								producer.send(message);
+								producer.close();
+							}
+							
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+					
+				});
+				
+				MessageConsumer destinationConsumer = session.createConsumer(destQueue);
+				consumers.add(destinationConsumer);
+				destinationConsumer.setMessageListener(new MessageListener() {
+	
+					@Override
+					public void onMessage(Message message) {
+						try {
+							ObjectMessage objectMessage = (ObjectMessage) message;
+							Job job = (Job) objectMessage.getObject();
+							if (workflow.isCacheEnabled() && !job.isCached()) {
+								workflow.getCache().cache(job);
+							}
+							MessageProducer producer = session.createProducer(postQueue);
+							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+							producer.send(message);
+							producer.close();
+						}
+						catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+					
+				});
+			}
+		}
 	}
 	
 	public void send(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple, String taskId) {
@@ -84,92 +152,27 @@ public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel {
 	
 	public void addConsumer(MdeTechnologyClonedRepoEntriesForFileCounterConsumer consumer, String consumerId) throws Exception {
 	
-		ActiveMQDestination preQueue = pre.get(consumerId);
-		ActiveMQDestination destQueue = destination.get(consumerId);
 		ActiveMQDestination postQueue = post.get(consumerId);
 		
-		if (workflow.isMaster()) {
-			MessageConsumer preConsumer = session.createConsumer(preQueue);
-			consumers.add(preConsumer);
-			preConsumer.setMessageListener(new MessageListener() {
-
-				@Override
-				public void onMessage(Message message) {
-					try {
-						
-						Job job = (Job) ((ObjectMessage) message).getObject();
-						if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
-							for (Job output : workflow.getCache().getCachedOutputs(job)) {
-								if (output.getDestination().equals("MdeTechnologyClonedRepoEntriesForFileCounter")) {
-									MessageProducer producer = session.createProducer(preQueue);
-									producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-									ObjectMessage m = session.createObjectMessage();
-									m.setObject(output);
-									producer.send(m);
-								} else {
-									//XXX should not be the case?
-									System.err.println(
-											output.getDestination() + " destination found in MdeTechnologyClonedRepoEntriesForFileCounter pre consumer");
-								}
-							}
-						} else {
-							MessageProducer producer = session.createProducer(destQueue);
-							producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-							producer.send(message);
-							producer.close();
-						}
-						
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-				
-			});
-			
-			MessageConsumer destinationConsumer = session.createConsumer(destQueue);
-			consumers.add(destinationConsumer);
-			destinationConsumer.setMessageListener(new MessageListener() {
-
-				@Override
-				public void onMessage(Message message) {
-					try {
-						ObjectMessage objectMessage = (ObjectMessage) message;
-						Job job = (Job) objectMessage.getObject();
-						if (workflow.isCacheEnabled() && !job.isCached()) {
-							workflow.getCache().cache(job);
-						}
-						MessageProducer producer = session.createProducer(postQueue);
-						producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-						producer.send(message);
-						producer.close();
-					}
-					catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-				
-			});
-		}
-			
 		//only connect if the consumer exists (for example it will not in a master_bare situation)
 		if(consumer!=null) {
 		
-		MessageConsumer messageConsumer = session.createConsumer(postQueue);
-		consumers.add(messageConsumer);
-		messageConsumer.setMessageListener(new MessageListener() {
-	
-			@Override
-			public void onMessage(Message message) {
-				ObjectMessage objectMessage = (ObjectMessage) message;
-				try {
-					ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = (ExtensionKeywordStargazersRemoteRepoUrlTuple) objectMessage.getObject();
-					consumer.consumeMdeTechnologyClonedRepoEntriesForFileCounterActual(extensionKeywordStargazersRemoteRepoUrlTuple);
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
-			}	
-		});
-	}
+			MessageConsumer messageConsumer = session.createConsumer(postQueue);
+			consumers.add(messageConsumer);
+			messageConsumer.setMessageListener(new MessageListener() {
+		
+				@Override
+				public void onMessage(Message message) {
+					ObjectMessage objectMessage = (ObjectMessage) message;
+					try {
+						ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = (ExtensionKeywordStargazersRemoteRepoUrlTuple) objectMessage.getObject();
+						consumer.consumeMdeTechnologyClonedRepoEntriesForFileCounterActual(extensionKeywordStargazersRemoteRepoUrlTuple);
+					} catch (JMSException e) {
+						e.printStackTrace();
+					}
+				}	
+			});
+		}
 	
 	}
 	
