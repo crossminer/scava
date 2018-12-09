@@ -23,12 +23,10 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
-		master.setName("master");
-		master.setTerminationTimeout(5000);
+		master.setTerminationTimeout(0);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		
 		AdditionWorkflow worker = new AdditionWorkflow(Mode.WORKER);
-		worker.setName("worker");
 		
 		master.run();
 		// Add a delay so that the master can set up its stuff
