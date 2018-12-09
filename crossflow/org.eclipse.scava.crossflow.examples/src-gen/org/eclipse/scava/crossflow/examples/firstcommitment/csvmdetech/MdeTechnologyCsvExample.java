@@ -320,21 +320,5 @@ public class MdeTechnologyCsvExample extends Workflow {
 	public MdeTechnologyRepoOwnerPopularityCountCsvSink getMdeTechnologyRepoOwnerPopularityCountCsvSink() {
 		return mdeTechnologyRepoOwnerPopularityCountCsvSink;
 	}
-	
-	public void setTaskInProgess(Task caller) {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
-	}
-
-	public void setTaskWaiting(Task caller) {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
-	}
-
-	public void setTaskBlocked(Task caller, String reason) {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
-	}
-
-	public void setTaskUnblocked(Task caller) {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
-	}
 
 }
