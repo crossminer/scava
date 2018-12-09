@@ -24,7 +24,17 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	
 	@Test
 	public void testMasterWorker() throws Exception {
-		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
+		testMasterWorker(Mode.MASTER);
+	}
+	
+	/*
+	@Test
+	public void testBareMasterWorker() throws Exception {
+		testMasterWorker(Mode.MASTER_BARE);
+	}*/
+	
+	public void testMasterWorker(Mode masterMode) throws Exception {
+		AdditionWorkflow master = new AdditionWorkflow(masterMode);
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
@@ -35,8 +45,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		
 		waitFor(master);
 		
-	
-		assertTrue(master.getAdder().getExecutions() < 5);
+		System.err.println(master.getAdder().getExecutions() + "/" + worker.getAdder().getExecutions());
+		assertEquals(true, master.getAdder().getExecutions() < 5);
 		assertEquals(5, worker.getAdder().getExecutions() + master.getAdder().getExecutions());
 		
 		assertArrayEquals(new Integer[] {2, 4, 6, 8, 10}, 
