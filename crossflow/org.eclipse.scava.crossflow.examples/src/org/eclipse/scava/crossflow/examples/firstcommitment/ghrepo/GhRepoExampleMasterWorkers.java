@@ -14,7 +14,6 @@ public class GhRepoExampleMasterWorkers {
 
 		GhRepoExample master = new GhRepoExample(Mode.MASTER_BARE);
 		master.setName("Master" + "-123456789");
-		master.setEnableCache(false);
 
 		// example using a second master connected to original broker
 		// workflow (will produce 2 times the input, as expected)

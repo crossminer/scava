@@ -49,14 +49,7 @@ public class [%=s.name%] implements Channel {
 		[%for (t in s.inputOf){%]
 		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]"));
 		destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]"));
-		[%
-			var channelType = "UNKNOWN";
-			if(s.isKindOf(Queue))
-					channelType = "Queue";
-			else if (s.isKindOf(Topic))
-					channelType = "Topic";
-		%]
-		post.put("[%=t.name%]", (ActiveMQDestination) session.create[%=channelType%]("[%=s.name%]Post.[%=t.name%]"));
+		post.put("[%=t.name%]", (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]"));
 		[%}%]
 		
 		for (String consumerId : pre.keySet()) {
@@ -74,7 +67,7 @@ public class [%=s.name%] implements Channel {
 						try {
 							
 							Job job = (Job) ((ObjectMessage) message).getObject();
-							if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
+							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								for (Job output : workflow.getCache().getCachedOutputs(job)) {
 									if (output.getDestination().equals("Additions")) {
 										MessageProducer producer = session.createProducer(preQueue);
@@ -111,7 +104,7 @@ public class [%=s.name%] implements Channel {
 						try {
 							ObjectMessage objectMessage = (ObjectMessage) message;
 							Job job = (Job) objectMessage.getObject();
-							if (workflow.isCacheEnabled() && !job.isCached()) {
+							if (workflow.getCache() != null && !job.isCached()) {
 								workflow.getCache().cache(job);
 							}
 							MessageProducer producer = session.createProducer(postQueue);

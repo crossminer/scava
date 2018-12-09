@@ -10,8 +10,6 @@ public class AdditionExampleMasterWorker {
 		AdditionExample master = new AdditionExample();
 		master.setName("Master-" + UUID.randomUUID().toString());
 		
-		master.setEnableCache(false);
-		
 		AdditionExample worker = new AdditionExample(Mode.WORKER);
 		worker.setName("Worker");
 		

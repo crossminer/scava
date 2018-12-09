@@ -68,7 +68,7 @@ public class GhRepos implements Channel {
 						try {
 							
 							Job job = (Job) ((ObjectMessage) message).getObject();
-							if (workflow.isCacheEnabled() && workflow.getCache().hasCachedOutputs(job)) {
+							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								for (Job output : workflow.getCache().getCachedOutputs(job)) {
 									if (output.getDestination().equals("Additions")) {
 										MessageProducer producer = session.createProducer(preQueue);
@@ -105,7 +105,7 @@ public class GhRepos implements Channel {
 						try {
 							ObjectMessage objectMessage = (ObjectMessage) message;
 							Job job = (Job) objectMessage.getObject();
-							if (workflow.isCacheEnabled() && !job.isCached()) {
+							if (workflow.getCache() != null && !job.isCached()) {
 								workflow.getCache().cache(job);
 							}
 							MessageProducer producer = session.createProducer(postQueue);

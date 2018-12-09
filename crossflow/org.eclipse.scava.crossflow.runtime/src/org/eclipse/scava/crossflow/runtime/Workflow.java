@@ -35,7 +35,7 @@ public abstract class Workflow {
 	protected String master = "localhost";
 	protected BrokerService brokerService;
 
-	protected boolean enableCache = true;
+	protected boolean cacheEnabled = true;
 
 	private Collection<Runnable> onTerminate = new LinkedList<Runnable>();
 
@@ -204,14 +204,6 @@ public abstract class Workflow {
 		this.name = name;
 	}
 
-	public boolean isCacheEnabled() {
-		return enableCache;
-	}
-
-	public void setEnableCache(boolean ec) {
-		enableCache = ec;
-	}
-
 	public Cache getCache() {
 		return cache;
 	}
@@ -235,7 +227,7 @@ public abstract class Workflow {
 	public Mode getMode() {
 		return mode;
 	}
-
+	
 	public enum TaskStatuses {
 		STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
 	};

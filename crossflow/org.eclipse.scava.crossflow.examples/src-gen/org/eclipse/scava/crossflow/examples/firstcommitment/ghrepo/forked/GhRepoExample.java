@@ -9,6 +9,7 @@ import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
+import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
@@ -87,10 +88,8 @@ public class GhRepoExample extends Workflow {
 			public void run() {
 
 				try {
-	
+					
 					if (isMaster()) {
-					if(isCacheEnabled())
-						cache = new Cache(GhRepoExample.this);
 						if (createBroker) {
 							brokerService = new BrokerService();
 							brokerService.setUseJmx(true);
