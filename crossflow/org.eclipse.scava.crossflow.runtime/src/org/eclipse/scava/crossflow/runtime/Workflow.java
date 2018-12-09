@@ -23,14 +23,12 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 import com.beust.jcommander.Parameter;
 
-public abstract class Workflow {
+public abstract class Workflow extends Moded {
 
 	@Parameter(names = { "-name" }, description = "The name of the workflow")
 	protected String name;
 	protected Cache cache;
-	@Parameter(names = {
-			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
-	protected Mode mode = Mode.MASTER;
+	
 	@Parameter(names = { "-master" }, description = "IP of the master")
 	protected String master = "localhost";
 	protected BrokerService brokerService;
@@ -222,10 +220,6 @@ public abstract class Workflow {
 	
 	public String getBroker() {
 		return "tcp://" + master + ":61616";
-	}
-
-	public Mode getMode() {
-		return mode;
 	}
 	
 	public enum TaskStatuses {

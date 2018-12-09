@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.tests;
 
+import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowCommandLineTests;
 import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowTests;
 import org.eclipse.scava.crossflow.tests.cache.DirectoryCacheTests;
 import org.eclipse.scava.crossflow.tests.csvsourcesinkcase.CsvSourceSinkTestCase;
@@ -11,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	AdditionWorkflowTests.class,
+	AdditionWorkflowCommandLineTests.class,
 	CsvSourceSinkTestCase.class,
 	DirectoryCacheTests.class,
 	OccurencesWorkflowTests.class

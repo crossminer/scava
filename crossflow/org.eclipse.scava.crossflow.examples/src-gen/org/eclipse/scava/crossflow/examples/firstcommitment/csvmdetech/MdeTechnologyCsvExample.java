@@ -11,6 +11,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Moded;
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
@@ -20,7 +21,9 @@ import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 public class MdeTechnologyCsvExample extends Workflow {
 	
 	public static void main(String[] args) throws Exception {
-		MdeTechnologyCsvExample app = new MdeTechnologyCsvExample();
+		Moded moded = new Moded();
+		new JCommander(moded, args);
+		MdeTechnologyCsvExample app = new MdeTechnologyCsvExample(moded.getMode());
 		new JCommander(app, args);
 		app.run();
 	}
