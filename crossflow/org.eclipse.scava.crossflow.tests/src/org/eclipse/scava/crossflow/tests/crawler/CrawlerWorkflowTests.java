@@ -21,7 +21,8 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 		waitFor(master);
 		
 		assertNull(worker.getUrlCollector());
-		assertArrayEquals(new String[] {"index.html", "a.html", "b.html"}, master.getUrlCollector().getLocations().toArray());
+		assertArrayEquals(new String[] {"index.html", "a.html", "b.html"}, 
+				master.getUrlCollector().getLocations().toArray());
 
 	}
 	
