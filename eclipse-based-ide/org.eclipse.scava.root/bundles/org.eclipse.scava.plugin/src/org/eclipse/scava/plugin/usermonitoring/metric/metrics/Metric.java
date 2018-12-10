@@ -51,5 +51,8 @@ public class Metric {
 	public String getDescription() {
 		return basicMetric.getDiscription();
 	}
-
+	
+	public IBasicMetric getBasicMetric() {
+		return basicMetric;
+	}
 }

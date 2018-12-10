@@ -1,32 +1,33 @@
 Write-Host "Updatesite Building module" -ForegroundColor Red;
 
+# Configuration
+
 $pathToPom = $PSScriptRoot+"/../../../org.eclipse.scava.root/pom.xml";
 $pathToLog = $PSScriptRoot+"/maven.log";
 
-# remove old log
-Remove-Item -Path $pathToLog -ErrorAction Ignore;
+# Do not modify anything under this line
 
-# log stream
-$logStream = [System.IO.StreamWriter] $pathToLog;
+try {
+    $logStream = [System.IO.StreamWriter] $pathToLog;
+    $success = $false;
 
-# indicator of success
-$success = $false;
+    Write-Host "Build updatesite (This can take a while, please be patient)";
 
-# 2>&1 rediret error output to the standard outoput
-(mvn -f $pathToPom clean verify) 2>&1 | Foreach-Object {
-    if( $_ -eq "[INFO] BUILD SUCCESS" ) {
-        $success = $true;
+    # 2>&1 rediret error output to the standard outoput
+    (mvn -f $pathToPom clean verify) 2>&1 | Foreach-Object {
+        if( $_ -eq "[INFO] BUILD SUCCESS" ) {
+            $success = $true;
+        }
+        $logStream.WriteLine($_);
     }
-    
-    $logStream.WriteLine($_);
-}
 
-# close log stream
-$logStream.close();
+    $logStream.close();
 
-# check if it was a successful build
-if( $success ) {
-    Write-Host "`aSUCCESSFUL updatesite build" -ForegroundColor green;
-}else{
-    Write-Host "`aSomething went wrong. Please see the $pathToLog log." -ForegroundColor Red;
+    if( $success ) {
+        Write-Host "`Updatesite build has been finished successfully" -ForegroundColor green;
+    }else{
+        throw "Maven build failed. Please check the log at $pathToLog";
+    }  
+}catch {
+    Write-Error "`aSomething went wrong: $_";
 }

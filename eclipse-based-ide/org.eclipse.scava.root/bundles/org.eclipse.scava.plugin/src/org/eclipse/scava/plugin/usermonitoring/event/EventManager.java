@@ -6,6 +6,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.scava.plugin.usermonitoring.UserMonitor;
 import org.eclipse.scava.plugin.usermonitoring.event.classpath.ClasspathChangeListener;
 import org.eclipse.scava.plugin.usermonitoring.event.eclipse.EclipseCloseEventListener;
 import org.eclipse.scava.plugin.usermonitoring.event.launch.LaunchEventListener;
@@ -24,9 +25,11 @@ public class EventManager {
 	private static ITextEditor textEditor;
 	private static boolean saveToDatabase = true;
 	private final GremlinAdapter adapter;
+	private final UserMonitor userMonitor;
 
-	public EventManager(GremlinAdapter adapter, EventBus eventBus) {
-		this.adapter = adapter;
+	public EventManager(UserMonitor userMonitor, EventBus eventBus) {
+		this.userMonitor = userMonitor;
+		this.adapter = userMonitor.getGremlinAdapter();
 		eventBus.register(this);
 		enableListeners();
 
@@ -44,7 +47,11 @@ public class EventManager {
 
 	@Subscribe
 	public void processEvent(IEvent event) {
-
+		
+		if( userMonitor.getDisablements().isDisabled(event.getClass()) ) {
+			return;
+		}
+		
 		if (saveToDatabase) {
 			adapter.insertVertex(event);
 		}
