@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.scava.plugin.Activator;
 
+import com.google.gson.Gson;
+
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
@@ -23,6 +25,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		preferences.setDefault(Preferences.KNOWLEDGEBASE_SERVER_ADDRESS, "http://localhost");
 		preferences.setDefault(Preferences.KNOWLEDGEBASE_SERVER_PORT, 8080);
 		preferences.setDefault(Preferences.WEBDASHBOARD_BASE_PATH, "https://crossminer.biterg.io");
+		preferences.setDefault(Preferences.USERMONITORING_DISABLEMENTS, new Gson().toJson(new UserActivityDisablements()));
 	}
 
 }

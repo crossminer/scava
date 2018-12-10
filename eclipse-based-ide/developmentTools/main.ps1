@@ -34,6 +34,11 @@ while ( $true ) {
 
     # execute input
     Clear-Host;
-    Invoke-Expression $modules[$read].command;
-    pause;
+    try{
+        Invoke-Expression $modules[$read].command;
+    }finally{
+        if( $modules[$read].command -ne "exit" ) {
+            pause;
+        }
+    }
 }
