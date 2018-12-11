@@ -102,4 +102,11 @@ public class AdditionWorkflowTests extends WorkflowTests {
 				master.getAdditionResultsSink().getNumbers().toArray());
 	}
 	
+	@Test
+	public void testNotifications() {
+		
+		AdditionWorkflow master = new AdditionWorkflow();
+		
+	}
+	
 }

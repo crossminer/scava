@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.tests.addition;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class NumberPairSourceBase extends Task {
 		

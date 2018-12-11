@@ -14,9 +14,6 @@ import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Moded;
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
-
-
 
 public class CrawlerWorkflow extends Workflow {
 	

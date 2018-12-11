@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.tests.crawler;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class UrlCollectorBase extends Task  implements UrlsConsumer{
 		

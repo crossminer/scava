@@ -13,11 +13,6 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.ControlTopic;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.ControlTopicConsumer;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.ResultsBroadcaster;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.TaskStatusPublisher;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.TaskStatusPublisherConsumer;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
@@ -40,9 +35,9 @@ public abstract class Workflow extends Moded {
 	private HashSet<String> activeJobs = new HashSet<String>();
 	protected HashSet<Channel> activeQueues = new HashSet<Channel>();
 
-	protected TaskStatusPublisher taskStatusPublisher = null;
-	protected ResultsBroadcaster resultsBroadcaster = null;
-	protected ControlTopic controlTopic = null;
+	protected BuiltinTopic<TaskStatus> taskStatusPublisher = null;
+	protected BuiltinTopic<Object[]> resultsBroadcaster = null;
+	protected BuiltinTopic<ControlSignal> controlTopic = null;
 
 	// for master to keep track of terminated workers
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
@@ -79,9 +74,9 @@ public abstract class Workflow extends Moded {
 	}
 
 	protected void connect() throws Exception {
-		taskStatusPublisher = new TaskStatusPublisher(this);
-		resultsBroadcaster = new ResultsBroadcaster(this);
-		controlTopic = new ControlTopic(this);
+		taskStatusPublisher = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher");
+		resultsBroadcaster = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster");
+		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic");
 		activeQueues.add(taskStatusPublisher);
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
@@ -89,10 +84,10 @@ public abstract class Workflow extends Moded {
 		// in terminate
 		// activeQueues.add(controlTopic);
 
-		controlTopic.addConsumer(new ControlTopicConsumer() {
+		controlTopic.addConsumer(new BuiltinTopicConsumer<ControlSignal>() {
 
 			@Override
-			public void consumeControlTopic(ControlSignal signal) {
+			public void consume(ControlSignal signal) {
 				// System.err.println("consumeControlTopic on " + getName() + " : " +
 				// signal.getSignal() + " : " + signal.getSenderId());
 				if (isMaster()) {
@@ -130,10 +125,10 @@ public abstract class Workflow extends Moded {
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
 		if (isMaster())
-			taskStatusPublisher.addConsumer(new TaskStatusPublisherConsumer() {
+			taskStatusPublisher.addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
 
 				@Override
-				public void consumeTaskStatusPublisher(TaskStatus status) {
+				public void consume(TaskStatus status) {
 					switch (status.getStatus()) {
 
 					case INPROGRESS:

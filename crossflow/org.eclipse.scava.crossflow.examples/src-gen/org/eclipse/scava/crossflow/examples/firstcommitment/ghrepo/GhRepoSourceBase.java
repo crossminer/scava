@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class GhRepoSourceBase extends Task {
 		

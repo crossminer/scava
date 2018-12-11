@@ -2,7 +2,6 @@ package [%=w.package%];
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 		

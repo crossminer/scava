@@ -1,20 +1,18 @@
 package org.eclipse.scava.crossflow.runtime;
 
-import org.eclipse.scava.crossflow.runtime.permanentqueues.ResultsBroadcaster;
-
 public abstract class Task {
 
 	public abstract String getId();
 	
 	public abstract Workflow getWorkflow();
 	
-	protected ResultsBroadcaster resultsBroadcaster;
+	protected BuiltinTopic<Object[]> resultsBroadcaster;
 	
-	public void setResultsBroadcaster(ResultsBroadcaster resultsBroadcaster) {
+	public void setResultsBroadcaster(BuiltinTopic<Object[]> resultsBroadcaster) {
 		this.resultsBroadcaster = resultsBroadcaster;
 	}
 	
-	public ResultsBroadcaster getResultsBroadcaster() {
+	public BuiltinTopic<Object[]> getResultsBroadcaster() {
 		return resultsBroadcaster;
 	}
 	

@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="org/eclipse/scava/crossflow/runtime/permanentqueues/ControlTopicConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/ResultsBroadcasterConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/TaskStatusPublisherConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ControlTopic.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ControlTopicConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ResultsBroadcaster.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ResultsBroadcasterConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/TaskStatusPublisher.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/TaskStatusPublisherConsumer.java" kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
