@@ -169,7 +169,7 @@ public class [%=s.name%] implements Channel {
 					try {
 						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) objectMessage.getObject();
 						consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
-					} catch (JMSException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}	

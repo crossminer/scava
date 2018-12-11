@@ -16,7 +16,7 @@ public abstract class Task {
 		return resultsBroadcaster;
 	}
 	
-	public void sendToResultsBroadcaster(Object[] row){
+	public void sendToResultsBroadcaster(Object[] row) throws Exception {
 		getResultsBroadcaster().send(row);
 	}
 	
@@ -24,7 +24,7 @@ public abstract class Task {
 	 * Call this within consumeXYZ() to denote task blocked due to some reason
 	 * @param reason
 	 */
-	protected void taskBlocked(String reason) {
+	protected void taskBlocked(String reason) throws Exception {
 		
 		getWorkflow().setTaskBlocked(this,reason);
 		
@@ -34,7 +34,7 @@ public abstract class Task {
 	 * Call this within consumeXYZ() to denote task is now unblocked
 	 * @param reason
 	 */
-	protected void taskUnblocked() {
+	protected void taskUnblocked() throws Exception {
 		
 		getWorkflow().setTaskUnblocked(this);
 		

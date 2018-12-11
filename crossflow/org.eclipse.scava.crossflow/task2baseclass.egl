@@ -38,7 +38,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	
 	[%for (s in t.input) { %]
 	@Override
-	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 		workflow.setTaskInProgess(this);
 		consume[%=s.name%]([%=s.type.name.ftlc()%]);
 		workflow.setTaskWaiting(this);

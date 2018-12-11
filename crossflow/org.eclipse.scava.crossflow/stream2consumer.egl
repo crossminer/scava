@@ -2,6 +2,6 @@ package [%=s.eContainer().package%];
 
 public interface [%=s.name%]Consumer {
 	
-	void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]);
+	void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
 	
 }

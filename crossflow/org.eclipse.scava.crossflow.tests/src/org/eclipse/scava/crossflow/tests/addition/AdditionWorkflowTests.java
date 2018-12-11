@@ -6,8 +6,10 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 
+import org.eclipse.scava.crossflow.runtime.BuiltinTopicConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;
 
@@ -103,9 +105,20 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	}
 	
 	@Test
-	public void testNotifications() {
+	public void testNotifications() throws Exception {
 		
 		AdditionWorkflow master = new AdditionWorkflow();
+		master.setName("master");
+		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
+		master.getTaskStatusPublisher().addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
+			
+			@Override
+			public void consume(TaskStatus t) {
+				System.out.println(t.getCaller() + "/" + t.getStatus());
+			}
+		});
+		master.run();
+		waitFor(master);
 		
 	}
 	

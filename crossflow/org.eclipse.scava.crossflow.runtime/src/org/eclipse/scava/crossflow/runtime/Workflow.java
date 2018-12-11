@@ -38,7 +38,7 @@ public abstract class Workflow extends Moded {
 	protected BuiltinTopic<TaskStatus> taskStatusPublisher = null;
 	protected BuiltinTopic<Object[]> resultsBroadcaster = null;
 	protected BuiltinTopic<ControlSignal> controlTopic = null;
-
+	
 	// for master to keep track of terminated workers
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
 	//
@@ -72,11 +72,19 @@ public abstract class Workflow extends Moded {
 	public int getTerminationTimeout() {
 		return terminationTimeout;
 	}
-
-	protected void connect() throws Exception {
+	
+	public Workflow() {
 		taskStatusPublisher = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher");
 		resultsBroadcaster = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster");
 		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic");
+	}
+	
+	protected void connect() throws Exception {
+		
+		taskStatusPublisher.init();
+		resultsBroadcaster.init();
+		controlTopic.init();
+		
 		activeQueues.add(taskStatusPublisher);
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
@@ -410,19 +418,31 @@ public abstract class Workflow extends Moded {
 		return terminated;
 	}
 	
-	public void setTaskInProgess(Task caller) {
+	public BuiltinTopic<TaskStatus> getTaskStatusPublisher() {
+		return taskStatusPublisher;
+	}
+	
+	public BuiltinTopic<Object[]> getResultsBroadcaster() {
+		return resultsBroadcaster;
+	}
+	
+	public BuiltinTopic<ControlSignal> getControlTopic() {
+		return controlTopic;
+	}
+	
+	public void setTaskInProgess(Task caller) throws Exception {
 		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
-	public void setTaskWaiting(Task caller) {
+	public void setTaskWaiting(Task caller) throws Exception {
 		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
-	public void setTaskBlocked(Task caller, String reason) {
+	public void setTaskBlocked(Task caller, String reason) throws Exception {
 		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
-	public void setTaskUnblocked(Task caller) {
+	public void setTaskUnblocked(Task caller) throws Exception {
 		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 }
