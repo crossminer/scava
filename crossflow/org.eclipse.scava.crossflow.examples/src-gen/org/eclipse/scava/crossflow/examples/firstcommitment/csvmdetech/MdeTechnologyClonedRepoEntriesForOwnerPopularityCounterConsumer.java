@@ -1,7 +1,0 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
-
-public interface MdeTechnologyClonedRepoEntriesForOwnerPopularityCounterConsumer {
-	
-	void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounterWithNotifications(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple);
-	
-}

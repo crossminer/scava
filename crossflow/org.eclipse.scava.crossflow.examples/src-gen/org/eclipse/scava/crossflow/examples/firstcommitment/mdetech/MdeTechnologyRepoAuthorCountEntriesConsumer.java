@@ -1,7 +1,0 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.mdetech;
-
-public interface MdeTechnologyRepoAuthorCountEntriesConsumer {
-	
-	void consumeMdeTechnologyRepoAuthorCountEntriesWithNotifications(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
-	
-}
