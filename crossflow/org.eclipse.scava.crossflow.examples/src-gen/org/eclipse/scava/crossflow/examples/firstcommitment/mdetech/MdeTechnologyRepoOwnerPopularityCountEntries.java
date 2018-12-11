@@ -166,7 +166,7 @@ public class MdeTechnologyRepoOwnerPopularityCountEntries implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple = (ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologyRepoOwnerPopularityCountEntriesActual(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+						consumer.consumeMdeTechnologyRepoOwnerPopularityCountEntriesWithNotifications(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

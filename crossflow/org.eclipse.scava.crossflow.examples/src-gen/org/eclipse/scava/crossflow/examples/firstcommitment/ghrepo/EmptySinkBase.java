@@ -21,18 +21,14 @@ public abstract class EmptySinkBase extends Task  implements ResultsPublisherCon
 	}
 	
 	
-	
 	@Override
-	public void consumeResultsPublisherActual(Result result) {
-
+	public final void consumeResultsPublisherWithNotifications(Result result) {
 		workflow.setTaskInProgess(this);
-		
 		consumeResultsPublisher(result);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeResultsPublisher(Result result);
 	
 	
 	

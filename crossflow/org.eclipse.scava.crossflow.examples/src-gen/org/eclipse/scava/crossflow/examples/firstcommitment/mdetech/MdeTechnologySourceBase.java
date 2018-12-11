@@ -36,7 +36,7 @@ public abstract class MdeTechnologySourceBase extends Task {
 	
 	
 	
-	public abstract void produce();
 	
+	public abstract void produce();
 	
 }

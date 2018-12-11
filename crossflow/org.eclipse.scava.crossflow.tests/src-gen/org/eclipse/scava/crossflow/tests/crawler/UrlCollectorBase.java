@@ -35,18 +35,14 @@ public abstract class UrlCollectorBase extends Task  implements UrlsConsumer{
 	}
 	
 	
-	
 	@Override
-	public void consumeUrlsActual(Url url) {
-
+	public final void consumeUrlsWithNotifications(Url url) {
 		workflow.setTaskInProgess(this);
-		
 		consumeUrls(url);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeUrls(Url url);
 	
 	
 	

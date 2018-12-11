@@ -35,18 +35,14 @@ public abstract class AdderBase extends Task  implements AdditionsConsumer{
 	}
 	
 	
-	
 	@Override
-	public void consumeAdditionsActual(NumberPair numberPair) {
-
+	public final void consumeAdditionsWithNotifications(NumberPair numberPair) {
 		workflow.setTaskInProgess(this);
-		
 		consumeAdditions(numberPair);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeAdditions(NumberPair numberPair);
 	
 	
 	

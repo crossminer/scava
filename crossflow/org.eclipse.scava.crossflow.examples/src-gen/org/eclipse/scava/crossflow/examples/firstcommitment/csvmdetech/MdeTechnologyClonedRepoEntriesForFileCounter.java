@@ -166,7 +166,7 @@ public class MdeTechnologyClonedRepoEntriesForFileCounter implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = (ExtensionKeywordStargazersRemoteRepoUrlTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologyClonedRepoEntriesForFileCounterActual(extensionKeywordStargazersRemoteRepoUrlTuple);
+						consumer.consumeMdeTechnologyClonedRepoEntriesForFileCounterWithNotifications(extensionKeywordStargazersRemoteRepoUrlTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

@@ -166,7 +166,7 @@ public class MdeTechnologyRepoEntries implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple = (ExtensionKeywordStargazersTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologyRepoEntriesActual(extensionKeywordStargazersTuple);
+						consumer.consumeMdeTechnologyRepoEntriesWithNotifications(extensionKeywordStargazersTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

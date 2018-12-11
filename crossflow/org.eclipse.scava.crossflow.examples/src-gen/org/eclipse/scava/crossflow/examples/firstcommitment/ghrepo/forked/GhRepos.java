@@ -169,7 +169,7 @@ public class GhRepos implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						GhRepo ghRepo = (GhRepo) objectMessage.getObject();
-						consumer.consumeGhReposActual(ghRepo);
+						consumer.consumeGhReposWithNotifications(ghRepo);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

@@ -166,7 +166,7 @@ public class AdditionResults implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Number number = (Number) objectMessage.getObject();
-						consumer.consumeAdditionResultsActual(number);
+						consumer.consumeAdditionResultsWithNotifications(number);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

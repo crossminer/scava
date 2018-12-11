@@ -21,18 +21,14 @@ public abstract class OccurencesMonitorBase extends Task  implements WordsConsum
 	}
 	
 	
-	
 	@Override
-	public void consumeWordsActual(Word word) {
-
+	public final void consumeWordsWithNotifications(Word word) {
 		workflow.setTaskInProgess(this);
-		
 		consumeWords(word);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeWords(Word word);
 	
 	
 	

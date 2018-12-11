@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,11 +15,14 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.apache.commons.csv.CSVRecord;
+
 public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBase {
 	
 protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 	
 	protected Set<String> alreadySeenJobs = new HashSet<String>();
+	protected MdeTechnologyCsvSource mdeTechnologyCsvSource = new MdeTechnologyCsvSource();
 	
 	// < repository-url, number-of-repository-occurrence >
 	protected Map<String, Integer> committedRepoMap = new HashMap<String, Integer>(); 
@@ -83,7 +87,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 
 					String filename = p.getFileName().toString();
 					
-					boolean ret = MdeTechnologyCsvSource.inCollection(filename.substring(filename.lastIndexOf(".") + 1, filename.length()), 0);
+					boolean ret = inCollection(mdeTechnologyCsvSource.getRecords(), filename.substring(filename.lastIndexOf(".") + 1, filename.length()), 0);
 					if (ret == true) {
 						acceptedFilesList.add(p);
 					}
@@ -113,6 +117,27 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 		return committedRepoMap;
 	}
 	
+	/**
+	 * Determines if the provided String {@param s} occurs within {@param column}.
+	 * 
+	 * @param s String to look for in CSV column
+	 * @param column column number in CSV file
+	 * @return true if provided String {@param s} occurs within {@param column} and false otherwise
+	 */
+	protected boolean inCollection(Iterable<CSVRecord> records, String s, int column) {
+		try {
+			for (CSVRecord record : records) {
+				if (record.get(column).equals(s)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			if (e instanceof IOException && e.getMessage().contains("failed to parse")) {
+				// skip
+			}
+		}
+		return false;
+	}
 	public static void main(String args[]) throws IOException {
 		MdeTechnologyRepoFileCounter counter = new MdeTechnologyRepoFileCounter();
 		String repoLocation = "../../.git";

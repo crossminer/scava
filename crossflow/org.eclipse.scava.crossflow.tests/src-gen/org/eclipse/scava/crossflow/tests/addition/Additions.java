@@ -166,7 +166,7 @@ public class Additions implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						NumberPair numberPair = (NumberPair) objectMessage.getObject();
-						consumer.consumeAdditionsActual(numberPair);
+						consumer.consumeAdditionsWithNotifications(numberPair);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

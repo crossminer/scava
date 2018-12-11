@@ -166,7 +166,7 @@ public class Urls implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Url url = (Url) objectMessage.getObject();
-						consumer.consumeUrlsActual(url);
+						consumer.consumeUrlsWithNotifications(url);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

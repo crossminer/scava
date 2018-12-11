@@ -35,18 +35,14 @@ public abstract class GhRepoCounter2Base extends Task  implements GhReposConsume
 	}
 	
 	
-	
 	@Override
-	public void consumeGhReposActual(GhRepo ghRepo) {
-
+	public final void consumeGhReposWithNotifications(GhRepo ghRepo) {
 		workflow.setTaskInProgess(this);
-		
 		consumeGhRepos(ghRepo);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeGhRepos(GhRepo ghRepo);
 	
 	
 	

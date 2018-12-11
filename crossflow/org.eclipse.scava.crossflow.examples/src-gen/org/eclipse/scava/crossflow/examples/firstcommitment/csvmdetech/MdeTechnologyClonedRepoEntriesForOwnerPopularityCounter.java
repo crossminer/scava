@@ -166,7 +166,7 @@ public class MdeTechnologyClonedRepoEntriesForOwnerPopularityCounter implements 
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple = (ExtensionKeywordStargazersRemoteRepoUrlTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounterActual(extensionKeywordStargazersRemoteRepoUrlTuple);
+						consumer.consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounterWithNotifications(extensionKeywordStargazersRemoteRepoUrlTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

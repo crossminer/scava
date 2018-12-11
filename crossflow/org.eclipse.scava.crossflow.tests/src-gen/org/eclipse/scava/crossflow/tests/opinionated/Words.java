@@ -166,7 +166,7 @@ public class Words implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Word word = (Word) objectMessage.getObject();
-						consumer.consumeWordsActual(word);
+						consumer.consumeWordsWithNotifications(word);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

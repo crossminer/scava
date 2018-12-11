@@ -166,7 +166,7 @@ public class MdeTechnologyRepoAuthorCountEntries implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple = (ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologyRepoAuthorCountEntriesActual(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+						consumer.consumeMdeTechnologyRepoAuthorCountEntriesWithNotifications(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

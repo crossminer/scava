@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.tests.csvsourcesinkcase;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class PrinterCsvSinkBase extends Task  implements AdditionResultsConsumer{
@@ -22,25 +21,15 @@ public abstract class PrinterCsvSinkBase extends Task  implements AdditionResult
 	}
 	
 	
-	
 	@Override
-	public void consumeAdditionResultsActual(Number number) {
-
+	public final void consumeAdditionResultsWithNotifications(Number number) {
 		workflow.setTaskInProgess(this);
-		
 		consumeAdditionResults(number);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeAdditionResults(Number number);
 	
 	
 	
-	// CSV file writer(s)
-	protected CsvWriter writer0 = new CsvWriter("csvs/AdditionResultsCsvSink.csv", "n",  "cached");
-	
-	public void flushAll() {
-		writer0.flush();
-	}
 }

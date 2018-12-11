@@ -20,12 +20,17 @@ import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public class MdeTechnologyCsvExample extends Workflow {
 	
-	public static void main(String[] args) throws Exception {
+	public static MdeTechnologyCsvExample run(String[] args) throws Exception {
 		Moded moded = new Moded();
 		new JCommander(moded, args);
 		MdeTechnologyCsvExample app = new MdeTechnologyCsvExample(moded.getMode());
 		new JCommander(app, args);
 		app.run();
+		return app;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		run(args);
 	}
 	
 	

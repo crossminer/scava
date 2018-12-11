@@ -166,7 +166,7 @@ public class Animals implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Animal animal = (Animal) objectMessage.getObject();
-						consumer.consumeAnimalsActual(animal);
+						consumer.consumeAnimalsWithNotifications(animal);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

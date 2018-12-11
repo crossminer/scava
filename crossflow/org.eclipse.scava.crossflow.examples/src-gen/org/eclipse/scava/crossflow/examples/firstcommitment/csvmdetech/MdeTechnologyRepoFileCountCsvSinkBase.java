@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech;
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class MdeTechnologyRepoFileCountCsvSinkBase extends Task  implements MdeTechnologyRepoFileCountEntriesConsumer{
@@ -22,25 +21,15 @@ public abstract class MdeTechnologyRepoFileCountCsvSinkBase extends Task  implem
 	}
 	
 	
-	
 	@Override
-	public void consumeMdeTechnologyRepoFileCountEntriesActual(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
-
+	public final void consumeMdeTechnologyRepoFileCountEntriesWithNotifications(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple) {
 		workflow.setTaskInProgess(this);
-		
 		consumeMdeTechnologyRepoFileCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeMdeTechnologyRepoFileCountEntries(ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
 	
 	
 	
-	// CSV file writer(s)
-	protected CsvWriter writer0 = new CsvWriter("csvs/MDE-files.csv", "field0", "field1", "field2", "field3", "field4",  "cached");
-	
-	public void flushAll() {
-		writer0.flush();
-	}
 }

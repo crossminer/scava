@@ -35,18 +35,14 @@ public abstract class UrlAnalyserBase extends Task  implements UrlsToAnalyseCons
 	}
 	
 	
-	
 	@Override
-	public void consumeUrlsToAnalyseActual(Url url) {
-
+	public final void consumeUrlsToAnalyseWithNotifications(Url url) {
 		workflow.setTaskInProgess(this);
-		
 		consumeUrlsToAnalyse(url);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeUrlsToAnalyse(Url url);
 	
 	
 	

@@ -35,18 +35,14 @@ public abstract class MdeTechnologyRepoFetcherBase extends Task  implements MdeT
 	}
 	
 	
-	
 	@Override
-	public void consumeMdeTechnologiesActual(ExtensionKeywordTuple extensionKeywordTuple) {
-
+	public final void consumeMdeTechnologiesWithNotifications(ExtensionKeywordTuple extensionKeywordTuple) {
 		workflow.setTaskInProgess(this);
-		
 		consumeMdeTechnologies(extensionKeywordTuple);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeMdeTechnologies(ExtensionKeywordTuple extensionKeywordTuple);
 	
 	
 	

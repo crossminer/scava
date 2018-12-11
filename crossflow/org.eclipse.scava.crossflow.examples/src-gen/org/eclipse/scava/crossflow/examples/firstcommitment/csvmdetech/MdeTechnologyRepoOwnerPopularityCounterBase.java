@@ -35,18 +35,14 @@ public abstract class MdeTechnologyRepoOwnerPopularityCounterBase extends Task  
 	}
 	
 	
-	
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounterActual(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
-
+	public final void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounterWithNotifications(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		workflow.setTaskInProgess(this);
-		
 		consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(extensionKeywordStargazersRemoteRepoUrlTuple);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple);
 	
 	
 	

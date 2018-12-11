@@ -21,18 +21,14 @@ public abstract class PrinterBase extends Task  implements AdditionResultsConsum
 	}
 	
 	
-	
 	@Override
-	public void consumeAdditionResultsActual(Number number) {
-
+	public final void consumeAdditionResultsWithNotifications(Number number) {
 		workflow.setTaskInProgess(this);
-		
 		consumeAdditionResults(number);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeAdditionResults(Number number);
 	
 	
 	

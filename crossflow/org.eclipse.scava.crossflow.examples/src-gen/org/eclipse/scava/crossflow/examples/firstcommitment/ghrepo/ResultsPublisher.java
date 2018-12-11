@@ -166,7 +166,7 @@ public class ResultsPublisher implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Result result = (Result) objectMessage.getObject();
-						consumer.consumeResultsPublisherActual(result);
+						consumer.consumeResultsPublisherWithNotifications(result);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

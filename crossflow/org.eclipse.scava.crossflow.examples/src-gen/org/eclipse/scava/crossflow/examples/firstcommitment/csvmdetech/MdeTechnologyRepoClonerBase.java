@@ -63,18 +63,14 @@ public abstract class MdeTechnologyRepoClonerBase extends Task  implements MdeTe
 	}
 	
 	
-	
 	@Override
-	public void consumeMdeTechnologyRepoEntriesActual(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
-
+	public final void consumeMdeTechnologyRepoEntriesWithNotifications(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple) {
 		workflow.setTaskInProgess(this);
-		
 		consumeMdeTechnologyRepoEntries(extensionKeywordStargazersTuple);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeMdeTechnologyRepoEntries(ExtensionKeywordStargazersTuple extensionKeywordStargazersTuple);
 	
 	
 	

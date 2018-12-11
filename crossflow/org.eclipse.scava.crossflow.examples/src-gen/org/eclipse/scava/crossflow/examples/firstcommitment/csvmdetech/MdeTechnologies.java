@@ -166,7 +166,7 @@ public class MdeTechnologies implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						ExtensionKeywordTuple extensionKeywordTuple = (ExtensionKeywordTuple) objectMessage.getObject();
-						consumer.consumeMdeTechnologiesActual(extensionKeywordTuple);
+						consumer.consumeMdeTechnologiesWithNotifications(extensionKeywordTuple);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

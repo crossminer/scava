@@ -166,7 +166,7 @@ public class UrlsToAnalyse implements Channel {
 					ObjectMessage objectMessage = (ObjectMessage) message;
 					try {
 						Url url = (Url) objectMessage.getObject();
-						consumer.consumeUrlsToAnalyseActual(url);
+						consumer.consumeUrlsToAnalyseWithNotifications(url);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

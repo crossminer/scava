@@ -84,10 +84,6 @@ rule Steam2Consumer
 	target : s.getPath() + s.name + "Consumer.java"
 }
 
-//
-
-
-
 operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();

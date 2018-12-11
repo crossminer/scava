@@ -2,14 +2,6 @@ package [%=w.package%];
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-[%if (t.isTypeOf(CsvSource)){%]
-import java.io.IOException;
-import org.apache.commons.csv.CSVRecord;
-import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
-[%}%]
-[%if (t.isTypeOf(CsvSink)){%]
-import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
-[%}%]
 import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
@@ -46,63 +38,18 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	[%}%]
 	
 	[%for (s in t.input) { %]
-	
 	@Override
-	public void consume[%=s.name%]Actual([%=s.type.name%] [%=s.type.name.ftlc()%]) {
-
+	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
 		workflow.setTaskInProgess(this);
-		
 		consume[%=s.name%]([%=s.type.name.ftlc()%]);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
-	[%}%]
+	public abstract void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]);
+	[%}%]	
 	
 	[%if (t.isKindOf(Source)){%]
 	public abstract void produce();
 	[%}%]
 	
-	[%if (t.isTypeOf(CsvSource)){%]
-	protected static final CsvParser parser = new CsvParser("[%=t.path%]");
-	protected static final Iterable<CSVRecord> records = parser.getRecordsIterable();
-	
-	/**
-	 * Determines if the provided String {@param s} occurs within {@param column}.
-	 * 
-	 * @param s String to look for in CSV column
-	 * @param column column number in CSV file
-	 * @return true if provided String {@param s} occurs within {@param column} and false otherwise
-	 */
-	public static boolean inCollection(String s, int column) {
-		try {
-			for (CSVRecord record : records) {
-				if (record.get(column).equals(s)) {
-					return true;
-				}
-			}
-		} catch (Exception e) {
-			if (e instanceof IOException && e.getMessage().contains("failed to parse")) {
-				// skip
-			}
-		}
-		return false;
-	}
-	[%}%]
-	
-	[%if (t.isTypeOf(CsvSink)){%]
-	// CSV file writer(s)
-	[% var inputCtr=0; %]
-	[% for (s in t.input) { %]
-	protected CsvWriter writer[%=inputCtr%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
-	[% inputCtr++; }%]
-	
-	public void flushAll() {
-	[% var inputCtr=0; %]
-	[% for (s in t.input) { %]
-		writer[%=inputCtr%].flush();
-	[% inputCtr++; }%]
-	}
-	[%}%]
 }

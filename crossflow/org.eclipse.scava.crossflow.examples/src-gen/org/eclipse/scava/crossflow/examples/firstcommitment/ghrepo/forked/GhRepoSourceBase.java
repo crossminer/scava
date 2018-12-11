@@ -36,7 +36,7 @@ public abstract class GhRepoSourceBase extends Task {
 	
 	
 	
-	public abstract void produce();
 	
+	public abstract void produce();
 	
 }

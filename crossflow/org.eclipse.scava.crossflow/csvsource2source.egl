@@ -2,9 +2,13 @@ package [%=w.package%];
 
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+import java.io.IOException;
 
-public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.name%]Base[%}%] {
-
+public class [%=t.name%] extends [%=t.name%]Base {
+	
+	protected final CsvParser parser = new CsvParser("[%=t.path%]");
+	protected final Iterable<CSVRecord> records = parser.getRecordsIterable();
+	
 	@Override
 	public void produce() {
 		for (CSVRecord record : records) {
@@ -12,11 +16,14 @@ public class [%=t.name%] [%if (t.isTypeOf(Workflow)==false) { %] extends [%=t.na
 			[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
 			[% var i=0; %]
 			[%for (f in s.type.fields) { %]
-			// [%=s.type.name.ftlc()%].set[%=f.name.ftuc()%]( record.get([%=i%]) );
+			// [%=s.type.name.ftlc()%].set[%=f.name.ftuc()%](record.get([%=i%]));
 			[% i++; }%]
-			get[%=s.name%]().send( [%=s.type.name.ftlc()%], this.getClass().getName() );
+			sendTo[%=s.name%]( [%=s.type.name.ftlc()%]);
 			[%}%]	
 		}
 	}
-
+	
+	public Iterable<CSVRecord> getRecords() {
+		return records;
+	}
 }

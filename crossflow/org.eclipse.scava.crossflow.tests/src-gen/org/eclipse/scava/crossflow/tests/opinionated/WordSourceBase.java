@@ -36,7 +36,7 @@ public abstract class WordSourceBase extends Task {
 	
 	
 	
-	public abstract void produce();
 	
+	public abstract void produce();
 	
 }

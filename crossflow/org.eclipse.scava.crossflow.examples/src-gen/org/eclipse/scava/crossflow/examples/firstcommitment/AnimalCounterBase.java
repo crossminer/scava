@@ -21,18 +21,14 @@ public abstract class AnimalCounterBase extends Task  implements AnimalsConsumer
 	}
 	
 	
-	
 	@Override
-	public void consumeAnimalsActual(Animal animal) {
-
+	public final void consumeAnimalsWithNotifications(Animal animal) {
 		workflow.setTaskInProgess(this);
-		
 		consumeAnimals(animal);
-		
 		workflow.setTaskWaiting(this);
-		
 	}
 	
+	public abstract void consumeAnimals(Animal animal);
 	
 	
 	

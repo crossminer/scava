@@ -20,12 +20,17 @@ import org.eclipse.scava.crossflow.runtime.permanentqueues.*;
 
 public class FirstCommitmentExample extends Workflow {
 	
-	public static void main(String[] args) throws Exception {
+	public static FirstCommitmentExample run(String[] args) throws Exception {
 		Moded moded = new Moded();
 		new JCommander(moded, args);
 		FirstCommitmentExample app = new FirstCommitmentExample(moded.getMode());
 		new JCommander(app, args);
 		app.run();
+		return app;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		run(args);
 	}
 	
 	
