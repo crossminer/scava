@@ -5,12 +5,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.eclipse.scava.crossflow.runtime.BuiltinTopicConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.Workflow.TaskStatuses;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
+import org.eclipse.scava.crossflow.tests.util.BuiltinTopicRecorder;
 import org.junit.Test;
 
 public class AdditionWorkflowTests extends WorkflowTests {
@@ -105,20 +108,25 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	}
 	
 	@Test
-	public void testNotifications() throws Exception {
+	public void testTaskStatusNotifications() throws Exception {
 		
 		AdditionWorkflow master = new AdditionWorkflow();
-		master.setName("master");
-		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
-		master.getTaskStatusPublisher().addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
-			
-			@Override
-			public void consume(TaskStatus t) {
-				System.out.println(t.getCaller() + "/" + t.getStatus());
-			}
-		});
+		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+		master.getNumberPairSource().setNumbers(numbers);
+		
+		BuiltinTopicRecorder<TaskStatus> recorder = new BuiltinTopicRecorder<>();
+		master.getTaskStatusPublisher().addConsumer(recorder);
+		
 		master.run();
 		waitFor(master);
+		
+		assertEquals(numbers.size() * 2, recorder.getRecorded().stream().
+			filter(r -> (r.getStatus() == TaskStatuses.INPROGRESS)).
+			 collect(Collectors.toList()).size());
+		
+		assertEquals(numbers.size() * 2, recorder.getRecorded().stream().
+				filter(r -> (r.getStatus() == TaskStatuses.WAITING)).
+				 collect(Collectors.toList()).size());
 		
 	}
 	

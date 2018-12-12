@@ -3,6 +3,8 @@ package org.eclipse.scava.crossflow.runtime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -31,9 +33,9 @@ public abstract class Workflow extends Moded {
 	protected boolean cacheEnabled = true;
 
 	private Collection<Runnable> onTerminate = new LinkedList<Runnable>();
-
+	
 	private HashSet<String> activeJobs = new HashSet<String>();
-	protected HashSet<Channel> activeQueues = new HashSet<Channel>();
+	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
 
 	protected BuiltinTopic<TaskStatus> taskStatusPublisher = null;
 	protected BuiltinTopic<Object[]> resultsBroadcaster = null;
@@ -85,7 +87,7 @@ public abstract class Workflow extends Moded {
 		resultsBroadcaster.init();
 		controlTopic.init();
 		
-		activeQueues.add(taskStatusPublisher);
+		activeChannels.add(taskStatusPublisher);
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
 		// do not add control topic to activequeues as it has to be managed explicitly
@@ -139,9 +141,11 @@ public abstract class Workflow extends Moded {
 				public void consume(TaskStatus status) {
 					switch (status.getStatus()) {
 
-					case INPROGRESS:
+					case INPROGRESS: {
 						activeJobs.add(status.getCaller());
+						cancelTermination();
 						break;
+					}
 					case WAITING:
 						activeJobs.remove(status.getCaller());
 						try {
@@ -160,41 +164,31 @@ public abstract class Workflow extends Moded {
 			});
 
 	}
-
-	boolean terminationInProgress = false;
-	boolean alreadyWaitedToTerminate = false;
-	boolean terminating = false;
-
-	private void checkForTermination() throws Exception {
-		// System.err.println("checkForTermination entered");
-		if (!terminating && !terminationInProgress) {
-			terminationInProgress = true;
-
-			if (activeJobs.size() == 0 && areQueuesEmpty())
-				try {
-
-					if (alreadyWaitedToTerminate) {
-						alreadyWaitedToTerminate = false;
-
-						terminating = true;
-						terminate();
-
-					} else {
-
-						alreadyWaitedToTerminate = true;
-						terminationInProgress = false;
-						Thread.sleep(5000);
-						checkForTermination();
-
+	
+	boolean aboutToTerminate = false;
+	
+	public void checkForTermination() throws Exception {
+		if (activeJobs.size() == 0 && areQueuesEmpty()) {
+			aboutToTerminate = true;
+			new Timer().schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					try {
+						if (aboutToTerminate && areQueuesEmpty()) {
+							terminate();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
+					
 				}
-
+			}, 2000);
 		}
-		terminationInProgress = false;
-
+	}
+	
+	public void cancelTermination() {
+		aboutToTerminate = false;
 	}
 
 	public String getName() {
@@ -241,19 +235,10 @@ public abstract class Workflow extends Moded {
 		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED
 	}
 
-	public void stopBroker() {
-		try {
-			brokerService.deleteAllMessages();
-			// for(Channel d : activeQueues) {
-			// brokerService.removeDestination(d.get);
-			// }
-			// brokerService.setUseJmx(false);
-			brokerService.stopGracefully("", "", 1000, 1000);
-			// brokerService.stop();
-			System.out.println("terminated broker (" + getName() + ")");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void stopBroker() throws Exception {
+		brokerService.deleteAllMessages();
+		brokerService.stopGracefully("", "", 1000, 1000);
+		System.out.println("terminated broker (" + getName() + ")");
 	}
 
 	public void run() throws Exception {
@@ -283,79 +268,56 @@ public abstract class Workflow extends Moded {
 //
 //	}
 
-	private boolean areQueuesEmpty() throws Exception {
-		boolean ret = true;
-
-//		    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616/");
-//
-//		    ActiveMQConnection connection = (ActiveMQConnection) connectionFactory.createConnection();
-//		    DestinationSource ds = connection.getDestinationSource();
-//
-//		    connection.start();
-//
-//		    Set<ActiveMQQueue> queues = ds.getQueues();
-//		    System.out.println(queues);
-//
-//		    for (ActiveMQQueue activeMQQueue : queues)
-//		            System.out.println(activeMQQueue.getQueueName());
-//		    
-//		    Set<ActiveMQTopic> topics = ds.getTopics();
-//		    System.out.println(topics);
-//
-//		    for (ActiveMQTopic activeMQTopic : topics)
-//		            System.out.println(activeMQTopic);
-//		    
-//		    connection.close();
-
-		for (Channel c : activeQueues) {
-			for (String postId : c.getPostIds()) {
-
-				// System.err.println("checking size of queue: " + postId);
-
-				ChannelTypes destinationType = c.type();
-
-				// ObjectName channel = getQueueObjectName(destinationType.toString(), postId);
-
-				// DestinationViewMBean mbView = (DestinationViewMBean)
-				// brokerService.getManagementContext().newProxyInstance(channel,
-				// DestinationViewMBean.class, true);
-
-				String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
-				JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
-				MBeanServerConnection connection = connector.getMBeanServerConnection();
-
-				ObjectName channel = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
-						+ ",destinationType=" + destinationType + ",destinationName=" + postId);
-
-				DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, channel,
-						DestinationViewMBean.class, true);
-
-				long remainingMessages = 0;
-				
-				if ( destinationType == ChannelTypes.Queue ) {
-					remainingMessages = mbView.getQueueSize();
-				} else if ( destinationType == ChannelTypes.Topic ) {
-					if ( mbView.getInFlightCount() <= 1 ) {
-						// FIXME find out why inflight count is 1 instead of zero when the workflow is done
-						remainingMessages = 0;
+	private boolean areQueuesEmpty() {
+		
+		boolean result = true;
+		
+		try {
+			for (Channel c : activeChannels) {
+				for (String postId : c.getPostIds()) {
+	
+					ChannelTypes destinationType = c.type();
+					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
+					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
+					MBeanServerConnection connection = connector.getMBeanServerConnection();
+	
+					ObjectName channel = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
+							+ ",destinationType=" + destinationType + ",destinationName=" + postId);
+	
+					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, channel,
+							DestinationViewMBean.class, true);
+	
+					long remainingMessages = 0;
+					
+					if ( destinationType == ChannelTypes.Queue ) {
+						remainingMessages = mbView.getQueueSize();
+					} else if ( destinationType == ChannelTypes.Topic ) {
+						if ( mbView.getInFlightCount() <= 1 ) {
+							// FIXME find out why inflight count is 1 instead of zero when the workflow is done
+							remainingMessages = 0;
+						}
 					}
+	
+					connector.close();
+	
+					if (remainingMessages > 0)
+						result = false;
+	
 				}
-
-				connector.close();
-
-				if (remainingMessages > 0)
-					ret = false;
-
-				// System.err.println(postId + " size: " + remainingMessages);
-
 			}
 		}
-
-		return ret;
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return result;
+		
 	}
 
-	private void terminate() throws Exception {
+	private synchronized void terminate() throws Exception {
 
+		if (terminated) return;
+		
 		// master graceful termination logic
 		if (isMaster()) {
 
@@ -382,7 +344,7 @@ public abstract class Workflow extends Moded {
 		System.out.println("terminating workflow... (" + getName() + ")");
 
 		// stop all channel connections
-		for (Channel activeQueue : activeQueues)
+		for (Channel activeQueue : activeChannels)
 			activeQueue.stop();
 
 		resultsBroadcaster.stop();

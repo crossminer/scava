@@ -3,6 +3,9 @@ package [%=w.package%];
 import java.util.LinkedList;
 import java.util.Collection;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
@@ -115,7 +118,7 @@ public class [%=w.name%] extends Workflow {
 					
 					[%for (s in w.streams) { %]
 					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this);
-					activeQueues.add([%=s.name.ftlc()%]);
+					activeChannels.add([%=s.name.ftlc()%]);
 					[%}%]
 					
 					if (isMaster()) {
@@ -132,52 +135,15 @@ public class [%=w.name%] extends Workflow {
 					[%}%]
 					}
 					
-					[**
-					[%for (t in w.tasks) {%]		
-					[%if(t.masterOnly){%]
-					if (isMaster()) {
-					[%}%]
-					[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
-					if (!getMode().equals(Mode.MASTER_BARE) && !tasksToExclude.contains("[%=t.name%]")) {
-					[%}%]	
-					[%if(t.isKindOf(Sink)){%]
-					if (isMaster()) {
-					[%}%]				
-					[%=t.name.ftlc()%] = new [%=t.name%]();
-					[%=t.name.ftlc()%].setWorkflow([%=w.name%].this);
-					[%if(t.isKindOf(Sink)){%]
-					}
-					[%}%]		
-					[%for (i in t.input) { %]
-						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
-					[%if(t.isKindOf(Sink))%]
-						[%for(incoming in t.input){%]
-							[%for(task in incoming.outputOf){%]
-					if([%=task.name.ftlc()%]!=null)		
-						[%=task.name.ftlc()%].setResultsBroadcaster(resultsBroadcaster);
-							[%}%]
-						[%}%]	
-					[%}%]
-					[%for (o in t.output) { %]
-					[%=t.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
-					[%}%]
-					[%if ( not ( t.isKindOf(Sink) or t.isKindOf(Source) ) ){%]
-					}
-					else if(isMaster()){
-					[%for (i in t.input) { %]
-						[%=i.name.ftlc()%].addConsumer([%=t.name.ftlc()%], [%=t.name%].class.getName());			
-					[%}%]
-					}
-					[%}%]		
-					[%if(t.masterOnly){%]
-					}
-					[%}%]				
-					[%}%]
-					**]
-					
 					if (isMaster()){
 						[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
-						[%=t.name.ftlc()%].produce();
+						new Timer().schedule(new TimerTask() {
+						
+							@Override
+							public void run() {
+								[%=t.name.ftlc()%].produce();
+							}
+						}, 0);
 						[%}%]
 					}
 					

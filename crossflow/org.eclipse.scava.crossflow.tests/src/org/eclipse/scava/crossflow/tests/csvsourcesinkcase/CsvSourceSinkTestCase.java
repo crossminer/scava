@@ -24,7 +24,6 @@ public class CsvSourceSinkTestCase extends WorkflowTests {
 		
 		// setup test case configuration
 		BaseCase workflow = new BaseCase();
-		workflow.setTerminationTimeout(0);
 		workflow.setName("Master-"+UUID.randomUUID().toString());
 		
 		// run test case configuration

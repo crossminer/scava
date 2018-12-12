@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -20,7 +21,6 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
-import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 public class BuiltinTopic<T extends Serializable> implements Channel {
 	
@@ -28,8 +28,8 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 	protected Connection connection;
 	protected Session session;
 	protected Workflow workflow;
-	protected List<MessageConsumer> consumers = new LinkedList<>();
-	protected List<BuiltinTopicConsumer<T>> pendingConsumers = new ArrayList<>();
+	protected MessageConsumer messageConsumer;
+	protected List<BuiltinTopicConsumer<T>> consumers = new ArrayList<>();
 	protected String name;
 	
 	public BuiltinTopic(Workflow workflow, String name) {
@@ -43,13 +43,33 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 		connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		
 		destination = (ActiveMQDestination) session.createTopic(name);
 		
-		for (BuiltinTopicConsumer<T> pendingConsumer : pendingConsumers) {
-			addConsumer(pendingConsumer);
-		}
-		pendingConsumers.clear();
 		
+		messageConsumer = session.createConsumer(destination);
+		messageConsumer.setMessageListener(new MessageListener() {
+
+			@Override
+			public void onMessage(Message message) {
+				ObjectMessage objectMessage = (ObjectMessage) message;
+				for (BuiltinTopicConsumer<T> consumer : consumers) {
+					new Timer().schedule(new TimerTask() {
+						
+						@Override
+						public void run() {
+							try {
+								consumer.consume((T) objectMessage.getObject());
+							} catch (JMSException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}, 0);
+					
+				}
+			}
+		});
 	}
 	
 	public void send(T t) throws Exception {
@@ -63,31 +83,11 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 	}
 
 	public void addConsumer(BuiltinTopicConsumer<T> consumer) throws Exception {
-		
-		if (session == null) {
-			pendingConsumers.add(consumer);
-			return;
-		}
-		
-		MessageConsumer messageConsumer = session.createConsumer(destination);
-		consumers.add(messageConsumer);
-		messageConsumer.setMessageListener(new MessageListener() {
-
-			@Override
-			public void onMessage(Message message) {
-				ObjectMessage objectMessage = (ObjectMessage) message;
-				try {
-					consumer.consume((T) objectMessage.getObject());
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		consumers.add(consumer);
 	}
 
 	public void stop() throws JMSException {
-		for (MessageConsumer c : consumers)
-			c.close();
+		messageConsumer.close();
 		session.close();
 		connection.close();
 	}
