@@ -4,7 +4,7 @@ import { ProfileComponent } from './profile.component';
 
 const routes: Routes = [
   {
-    path: ':login/edit',
+    path: ':login',
     component: ProfileComponent
   }
 ];

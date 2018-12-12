@@ -20,7 +20,7 @@ export class PropertiesComponent implements OnInit {
   constructor(
     public propertiesService: PropertiesService,
     private router: Router,
-    public modalService: NgbModal,
+    public modalService: NgbModal
   ) { }
 
   ngOnInit() {
