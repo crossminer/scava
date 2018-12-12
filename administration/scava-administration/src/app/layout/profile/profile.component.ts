@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserManagementService } from '../../shared/services/user-management/user-management.service';
 import { AccountService } from '../../shared/services/user-management/account.service';
 import { Account } from './account-model';
@@ -23,17 +23,17 @@ export class ProfileComponent implements OnInit {
   public listTokenAuthorities: TokenAuthorities[] = null;
   public tokenAuthorities: TokenAuthorities;
   public newTokenAuthorities: TokenAuthorities;
-  public profilesAuthorities: any;
+  public selectedAuthorities: any[];
   public rightAccesses = ['Monitoring Authorities'];
   public generateNew: boolean;
   public successToken: boolean = false;
+  public errorTokenExists: boolean = false;
 
   constructor(
     private userManagementService: UserManagementService,
     private accountAccount: AccountService,
     private tokenAuthoritiesService: TokenAuthoritiesService,
     private route: ActivatedRoute,
-    private router: Router,
     public modalService: NgbModal
   ) { }
 
@@ -87,7 +87,10 @@ export class ProfileComponent implements OnInit {
   }
 
   save2() {
-    this.profilesAuthorities.forEach(rightRight => {
+    if(this.selectedAuthorities == undefined){
+      this.selectedAuthorities = ["Monitoring Authorities"];
+    }
+    this.selectedAuthorities.forEach(rightRight => {
       if (rightRight == "Monitoring Authorities"){
         this.tokenAuthorities.monitoringAuthorities = true;
       }
@@ -109,6 +112,10 @@ export class ProfileComponent implements OnInit {
         this.onShowMessage(error);
       }
     )
+  }
+
+  isTokenExists() {
+    this.errorTokenExists = this.listTokenAuthorities.some(tokenAuth => { return tokenAuth.label == this.tokenAuthorities.label});
   }
 
   onCancel() {
@@ -135,10 +142,6 @@ export class ProfileComponent implements OnInit {
         this.loadAll();
       }
     );
-  }
-
-  previousState() {
-    this.router.navigate(['/home']);
   }
 
   onShowMessage(msg: any) {
