@@ -1,6 +1,17 @@
 package org.eclipse.scava.authservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.scava.authservice.configuration.Constants;
 import org.hibernate.validator.constraints.Email;
@@ -9,15 +20,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-import java.time.Instant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A user.
@@ -81,6 +84,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
+    
+    @JsonIgnore
+    private Set<TokenAuthorities> tokenAuthorities = new HashSet<TokenAuthorities>();
 
     public String getId() {
         return id;
@@ -186,8 +192,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+    
+	public Set<TokenAuthorities> getTokenAuthorities() {
+		return tokenAuthorities;
+	}
 
-    @Override
+	public void setTokenAuthorities(Set<TokenAuthorities> tokenAuthorities) {
+		this.tokenAuthorities = tokenAuthorities;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

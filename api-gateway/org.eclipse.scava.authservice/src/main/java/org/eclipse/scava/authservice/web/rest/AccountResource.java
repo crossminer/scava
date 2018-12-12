@@ -12,6 +12,7 @@ import org.eclipse.scava.authservice.repository.UserRepository;
 import org.eclipse.scava.authservice.service.MailService;
 import org.eclipse.scava.authservice.service.UserService;
 import org.eclipse.scava.authservice.service.dto.PasswordChangeDTO;
+import org.eclipse.scava.authservice.service.dto.TokenAuthoritiesDTO;
 import org.eclipse.scava.authservice.service.dto.UserDTO;
 import org.eclipse.scava.authservice.web.rest.errors.EmailAlreadyUsedException;
 import org.eclipse.scava.authservice.web.rest.errors.EmailNotFoundException;

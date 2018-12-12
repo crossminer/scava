@@ -26,9 +26,9 @@ export class ImportProjectComponent implements OnInit {
     save() {
         this.isSaving = true;
         this.importProjectService.importProject(this.project).subscribe(resp => {
-            var project: IProject = resp as IProject;
             this.router.navigate(['/project']);
         }, (error) => {
+            this.isSaving = false;
             this.onShowMessage(error);
         });
     }

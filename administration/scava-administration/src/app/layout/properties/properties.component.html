@@ -14,21 +14,19 @@
                     <td> {{ properties?.key }} </td>
                     <td> {{ properties?.value }} </td>
                     <td>
-                        <button type="button" class="btn btn-outline-dark btn-sm" title="Edit Property" (click)="onEdit(properties.key)">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
-                        </button>&nbsp;
-                        <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Property" (click)="onDelete(properties.key)">
-                            <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
-                        </button>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-outline-dark btn-sm" title="Edit Property" (click)="onEdit(properties.key)">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Property" (click)="onDelete(properties.key)">
+                                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class="text-right">
-            <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
-                <i class="fa fa-arrow-left"></i>&nbsp;
-                <span>Go Back</span>
-            </button>&nbsp;
             <button type="submit" class="btn btn-outline-dark btn-sm" (click)="onNew()">
                 <i class="fa fa-plus"></i>&nbsp;
                 <span>New</span>
