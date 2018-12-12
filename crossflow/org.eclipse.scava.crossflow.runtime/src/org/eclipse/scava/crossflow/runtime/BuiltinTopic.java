@@ -84,11 +84,16 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 		});
 	}
 
-	public void stop() throws JMSException {
-		for (MessageConsumer c : consumers)
-			c.close();
-		session.close();
-		connection.close();
+	public void stop() {
+		try {
+			for (MessageConsumer c : consumers)
+				c.close();
+			session.close();
+			connection.close();
+		}
+		catch (Exception ex) {
+			// Nothing to do at this stage
+		}
 	}
 
 	@Override

@@ -115,7 +115,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		master.getNumberPairSource().setNumbers(numbers);
 		
 		BuiltinTopicRecorder<TaskStatus> recorder = new BuiltinTopicRecorder<>();
-		master.getTaskStatusPublisher().addConsumer(recorder);
+		master.getTaskStatusTopic().addConsumer(recorder);
 		
 		master.run();
 		waitFor(master);

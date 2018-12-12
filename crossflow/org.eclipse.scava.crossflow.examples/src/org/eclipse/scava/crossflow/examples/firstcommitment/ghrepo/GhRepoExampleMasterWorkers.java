@@ -42,26 +42,19 @@ public class GhRepoExampleMasterWorkers {
 		worker1.run();
 		worker2.run();
 
-		master.addShutdownHook(new Runnable() {
+		while (!master.hasTerminated()) {
+			Thread.sleep(100);
+		}
+		
 
-			@Override
-			public void run() {
+		System.out.println("\nPRINTING EXECUTION STATISTICS ...\n");
 
-				System.out.println("\nPRINTING EXECUTION STATISTICS ...\n");
+		printStatistics(master);
+		printStatistics(worker1);
+		printStatistics(worker2);
 
-				printStatistics(master);
-				printStatistics(worker1);
-				printStatistics(worker2);
+		System.out.println("... COMPLETED !");
 
-				System.out.println("... COMPLETED !");
-
-				// System.exit(0);
-
-			}
-		});
-
-		// Thread.sleep(10000);
-		// master.manualTermination();
 	}
 
 	private static void printStatistics(GhRepoExample ghRepoExample) {

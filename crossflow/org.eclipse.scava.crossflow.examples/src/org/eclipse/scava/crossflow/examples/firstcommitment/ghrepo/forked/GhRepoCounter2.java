@@ -53,7 +53,7 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 				ret[2] = 0;
 				ret[3] = 0;
 				try {
-					sendToResultsBroadcaster(ret);
+					sendToResultsTopic(ret);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

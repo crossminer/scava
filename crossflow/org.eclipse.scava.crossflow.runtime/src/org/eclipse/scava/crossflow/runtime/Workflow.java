@@ -31,20 +31,16 @@ public abstract class Workflow extends Moded {
 	protected BrokerService brokerService;
 
 	protected boolean cacheEnabled = true;
-
-	private Collection<Runnable> onTerminate = new LinkedList<Runnable>();
-	
 	private HashSet<String> activeJobs = new HashSet<String>();
 	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
 
-	protected BuiltinTopic<TaskStatus> taskStatusPublisher = null;
-	protected BuiltinTopic<Object[]> resultsBroadcaster = null;
+	protected BuiltinTopic<TaskStatus> taskStatusTopic = null;
+	protected BuiltinTopic<Object[]> resultsTopic = null;
 	protected BuiltinTopic<ControlSignal> controlTopic = null;
 	
-	// for master to keep track of terminated workers
-	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
-	//
+	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
+	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
 	
 	// excluded tasks from workers
 	protected Collection<String> tasksToExclude = new LinkedList<String>();
@@ -63,8 +59,7 @@ public abstract class Workflow extends Moded {
 		activeWorkerIds.add(id);
 	}
 
-	// terminate workflow on master after this time (ms) regardless of confirmation
-	// from workers
+	// terminate workflow on master after this time (ms) regardless of confirmation from workers
 	private int terminationTimeout = 10000;
 
 	public void setTerminationTimeout(int timeout) {
@@ -76,18 +71,18 @@ public abstract class Workflow extends Moded {
 	}
 	
 	public Workflow() {
-		taskStatusPublisher = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher");
-		resultsBroadcaster = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster");
+		taskStatusTopic = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher");
+		resultsTopic = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster");
 		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic");
 	}
 	
 	protected void connect() throws Exception {
 		
-		taskStatusPublisher.init();
-		resultsBroadcaster.init();
+		taskStatusTopic.init();
+		resultsTopic.init();
 		controlTopic.init();
 		
-		activeChannels.add(taskStatusPublisher);
+		activeChannels.add(taskStatusTopic);
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
 		// do not add control topic to activequeues as it has to be managed explicitly
@@ -135,29 +130,24 @@ public abstract class Workflow extends Moded {
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
 		if (isMaster())
-			taskStatusPublisher.addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
+			taskStatusTopic.addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
 
 				@Override
 				public void consume(TaskStatus status) {
 					switch (status.getStatus()) {
 
-					case INPROGRESS: {
-						activeJobs.add(status.getCaller());
-						cancelTermination();
-						break;
-					}
-					case WAITING:
-						activeJobs.remove(status.getCaller());
-						try {
-							checkForTermination();
-						} catch (Exception e) {
-							e.printStackTrace();
+						case INPROGRESS: {
+							activeJobs.add(status.getCaller());
+							cancelTermination();
+							break;
 						}
-						break;
-
-					default:
-						break;
-
+						case WAITING: {
+							activeJobs.remove(status.getCaller());
+							checkForTermination();
+							break;
+						}
+						default:
+							break;
 					}
 				}
 
@@ -167,15 +157,15 @@ public abstract class Workflow extends Moded {
 	
 	boolean aboutToTerminate = false;
 	
-	public void checkForTermination() throws Exception {
-		if (activeJobs.size() == 0 && areQueuesEmpty()) {
+	public void checkForTermination() {
+		if (activeJobs.size() == 0 && areChannelsEmpty()) {
 			aboutToTerminate = true;
 			new Timer().schedule(new TimerTask() {
 				
 				@Override
 				public void run() {
 					try {
-						if (aboutToTerminate && areQueuesEmpty()) {
+						if (aboutToTerminate && areChannelsEmpty()) {
 							terminate();
 						}
 					} catch (Exception e) {
@@ -247,28 +237,7 @@ public abstract class Workflow extends Moded {
 
 	public abstract void run(int delay) throws Exception;
 
-//	private ObjectName getQueueObjectName(String type, String queueName) throws Exception {
-//		// String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
-//		// JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
-//		// MBeanServerConnection connection = connector.getMBeanServerConnection();
-//		// return connection;
-//
-//		String amqDomain = "org.apache.activemq";
-//
-//		// The parameters for an ObjectName
-//		Hashtable<String, String> params = new Hashtable<String, String>();
-//		params.put("Type", type);
-//		params.put("BrokerName", master);
-//		params.put("Destination", queueName);
-//
-//		// Create an ObjectName
-//		ObjectName queueObjectName = ObjectName.getInstance(amqDomain, params);
-//
-//		return queueObjectName;
-//
-//	}
-
-	private boolean areQueuesEmpty() {
+	private boolean areChannelsEmpty() {
 		
 		boolean result = true;
 		
@@ -307,85 +276,75 @@ public abstract class Workflow extends Moded {
 			}
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
+			// If an exception occurs it means
+			// that at least one of the channels
+			// is closed/null
+			return true;
 		}
 		
 		return result;
 		
 	}
 
-	private synchronized void terminate() throws Exception {
+	public synchronized void terminate() {
 
 		if (terminated) return;
 		
-		// master graceful termination logic
-		if (isMaster()) {
-
-			// ask all workers to terminate
-			controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
-
-			long startTime = System.currentTimeMillis();
-			// wait for workers to terminate or for the termination timeout
-			while ((System.currentTimeMillis() - startTime) < terminationTimeout) {
-				// System.err.println(activeWorkerIds);
-				// System.err.println(terminatedWorkerIds);
-				if (terminatedWorkerIds.equals(activeWorkerIds)) {
-					System.out.println("all workers terminated, terminating master...");
-					break;
+		try {
+			// master graceful termination logic
+			if (isMaster()) {
+	
+				// ask all workers to terminate
+				controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
+	
+				long startTime = System.currentTimeMillis();
+				// wait for workers to terminate or for the termination timeout
+				while ((System.currentTimeMillis() - startTime) < terminationTimeout) {
+					if (terminatedWorkerIds.equals(activeWorkerIds)) {
+						System.out.println("all workers terminated, terminating master...");
+						break;
+					}
+					Thread.sleep(100);
 				}
-				Thread.sleep(100);
+				System.out.println("terminating master...");
+	
 			}
-			System.out.println("terminating master...");
-
+	
+			// termination logic
+			System.out.println("terminating workflow... (" + getName() + ")");
+	
+			// stop all channel connections
+			for (Channel activeQueue : activeChannels) {
+				activeQueue.stop();
+			}
+	
+			resultsTopic.stop();
+			
+			if (isMaster()) {
+				controlTopic.stop();
+				stopBroker();
+			} else {
+				controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
+				controlTopic.stop();
+			}
+			terminated = true;
+			System.out.println("workflow " + getName() + " terminated.");
 		}
-
-		// termination logic
-
-		System.out.println("terminating workflow... (" + getName() + ")");
-
-		// stop all channel connections
-		for (Channel activeQueue : activeChannels)
-			activeQueue.stop();
-
-		resultsBroadcaster.stop();
-		
-		if (isMaster()) {
-
-			controlTopic.stop();
-
-			for (Runnable onT : onTerminate)
-				onT.run();
-
-			//
-			stopBroker();
-			//
-
-		} else {
-			controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
-			controlTopic.stop();
+		catch (Exception ex) {
+			// There is nothing to do at this stage
 		}
-		terminated = true;
-		System.out.println("workflow " + getName() + " terminated.");
-	}
-
-	public void manualTermination() throws Exception {
-		terminate();
-	}
-
-	public void addShutdownHook(Runnable runnable) {
-		onTerminate.add(runnable);
 	}
 	
 	public boolean hasTerminated() {
 		return terminated;
 	}
 	
-	public BuiltinTopic<TaskStatus> getTaskStatusPublisher() {
-		return taskStatusPublisher;
+	public BuiltinTopic<TaskStatus> getTaskStatusTopic() {
+		return taskStatusTopic;
 	}
 	
-	public BuiltinTopic<Object[]> getResultsBroadcaster() {
-		return resultsBroadcaster;
+	public BuiltinTopic<Object[]> getResultsTopic() {
+		return resultsTopic;
 	}
 	
 	public BuiltinTopic<ControlSignal> getControlTopic() {
@@ -393,18 +352,18 @@ public abstract class Workflow extends Moded {
 	}
 	
 	public void setTaskInProgess(Task caller) throws Exception {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
+		taskStatusTopic.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
 	public void setTaskWaiting(Task caller) throws Exception {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
+		taskStatusTopic.send(new TaskStatus(TaskStatuses.WAITING, caller.getId(), ""));
 	}
 
 	public void setTaskBlocked(Task caller, String reason) throws Exception {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
+		taskStatusTopic.send(new TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason));
 	}
 
 	public void setTaskUnblocked(Task caller) throws Exception {
-		taskStatusPublisher.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
+		taskStatusTopic.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 }

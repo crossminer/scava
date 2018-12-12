@@ -6,18 +6,18 @@ public abstract class Task {
 	
 	public abstract Workflow getWorkflow();
 	
-	protected BuiltinTopic<Object[]> resultsBroadcaster;
+	protected BuiltinTopic<Object[]> resultsTopic;
 	
-	public void setResultsBroadcaster(BuiltinTopic<Object[]> resultsBroadcaster) {
-		this.resultsBroadcaster = resultsBroadcaster;
+	public void setResultsTopic(BuiltinTopic<Object[]> resultsTopic) {
+		this.resultsTopic = resultsTopic;
 	}
 	
-	public BuiltinTopic<Object[]> getResultsBroadcaster() {
-		return resultsBroadcaster;
+	public BuiltinTopic<Object[]> getResultsTopic() {
+		return resultsTopic;
 	}
 	
-	public void sendToResultsBroadcaster(Object[] row) throws Exception {
-		getResultsBroadcaster().send(row);
+	public void sendToResultsTopic(Object[] row) throws Exception {
+		getResultsTopic().send(row);
 	}
 	
 	/**

@@ -38,7 +38,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 		CrawlerWorkflow worker = new CrawlerWorkflow(Mode.WORKER);
 		
 		BuiltinTopicRecorder<TaskStatus> recorder = new BuiltinTopicRecorder<>();
-		master.getTaskStatusPublisher().addConsumer(recorder);
+		master.getTaskStatusTopic().addConsumer(recorder);
 		
 		master.run();
 		worker.run();
