@@ -3,7 +3,9 @@ package org.eclipse.scava.plugin.usermonitoring.metric.basicmetrics;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.scava.plugin.usermonitoring.database.VertexType;
+import org.eclipse.scava.plugin.usermonitoring.event.scava.ScavaSearchUsageEvent;
 
+@BasedOn(ScavaSearchUsageEvent.class)
 public class ScavaSearchUsageBasicMetric implements IBasicMetric {
 
 	private static final String DESCRIPTION = "Level of using CROSSMINER search function";

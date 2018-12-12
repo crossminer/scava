@@ -154,6 +154,12 @@
            id="org.eclipse.scava.plugin.preferencespages.database"
            name="Database">
      </page>
+     <page
+           category="org.eclipse.scava.plugin.preferencespages.general"
+           class="org.eclipse.scava.plugin.preferences.UserActivityEvents"
+           id="org.eclipse.scava.plugin.preferencespages.useractivityevents"
+           name="User activity events">
+     </page>
   </extension>
   <extension
         point="org.eclipse.core.runtime.preferences">
