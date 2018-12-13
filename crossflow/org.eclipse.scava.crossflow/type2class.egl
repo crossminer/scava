@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-public class [%=t.name%] [%if(Stream.all.exists(s|s.type=t)){%] extends Job [%}else{%] implements Serializable [%}%] {
+public class [%=t.name%] [%if(t.isJob()){%] extends Job [%}else{%] implements Serializable [%}%] {
 	
 	public [%=t.name%]() {}
 	
@@ -37,10 +37,23 @@ public class [%=t.name%] [%if(Stream.all.exists(s|s.type=t)){%] extends Job [%}e
 	[%i++;}%]
 		return ret;
 	}
-
+	
+	public String toString() {
+		[%
+		var fields = t.fields.name;
+		if (t.isJob()) fields = fields.includingAll(Sequence{"id", "correlationId", "destination"});
+		%]
+		return "[%=t.name%] (" + [%=fields.collect(f|'" ' + f + '=" + ' + f).concat(" + ")%] + ")";
+	}
+	
 }
 
-[%operation Field getJavaType() {
+[%
+operation Type isJob() {
+	return Stream.all.exists(s|s.type=self);
+}
+
+operation Field getJavaType() {
 	if (self.many) {
 		return "List<" + self.type + ">";
 	}

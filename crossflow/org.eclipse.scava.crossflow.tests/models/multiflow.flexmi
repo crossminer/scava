@@ -1,0 +1,25 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Example with multiple input/output channels -->
+	<workflow name="Multiflow" package="org.eclipse.scava.crossflow.tests.multiflow">
+		<source name="MultiSource" out="In1, In2"/>
+		
+		<task name="MultiTask" in="In1, In2" out="Out1, Out2"/>
+		
+		<queue name="In1" type="Number"/>
+		<queue name="In2" type="Number"/>
+		<queue name="Out1" type="Number"/>
+		<queue name="Out2" type="Number"/>
+		
+		<sink name="MultiSink" in="Out1, Out2"/>
+		
+		<type name="Number">
+			<field name="n" type="int"/>
+		</type>
+		
+		
+	</workflow>
+	
+</_>

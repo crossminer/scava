@@ -69,7 +69,7 @@ public class DirectoryCache implements Cache {
 		return jobFolderMap.containsKey(input.getHash());
 	}
 	
-	public void cache(Job output) {
+	public synchronized void cache(Job output) {
 		
 		jobMap.put(output.getId(), output);
 		Job input = jobMap.get(output.getCorrelationId());

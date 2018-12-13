@@ -65,7 +65,8 @@ public class [%=s.name%] implements Channel {
 					@Override
 					public void onMessage(Message message) {
 						try {
-							
+							[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
+							[%if (isCached){%]
 							Job job = (Job) ((ObjectMessage) message).getObject();
 							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								for (Job output : workflow.getCache().getCachedOutputs(job)) {
@@ -78,11 +79,14 @@ public class [%=s.name%] implements Channel {
 									
 								}
 							} else {
+							[%}%]
 								MessageProducer producer = session.createProducer(destQueue);
 								producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 								producer.send(message);
 								producer.close();
+							[%if (isCached){%]
 							}
+							[%}%]
 							
 						} catch (Exception ex) {
 							ex.printStackTrace();

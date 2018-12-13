@@ -1,0 +1,23 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Minimal example -->
+	<workflow name="MinimalWorkflow" package="org.eclipse.scava.crossflow.tests.minimal">
+		<source name="MinimalSource" out="Input"/>
+		
+		<task name="CopierTask" in="Input" out="Output"/>
+		
+		<queue name="Input" type="Number"/>
+		<queue name="Output" type="Number"/>
+	
+		<sink name="MinimalSink" in="Output"/>
+		
+		<type name="Number">
+			<field name="n" type="int"/>
+		</type>
+		
+		
+	</workflow>
+	
+</_>
