@@ -1,5 +1,5 @@
 <?nsuri org.eclipse.scava.crossflow?>
-<?render-graphviz-dot graphviz.egl?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
 <_>
 	
 	<!-- Example demonstrating how to implement non-static committment using RestMule -->
