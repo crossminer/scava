@@ -74,6 +74,7 @@ class Type {
 class Field {
   attr String name;
   attr String type;
+  attr boolean many = false;
 }
 
 @gmf.node(label="numberOfWorkers,isMasterAlsoWorker", label.pattern="Config: NoW:{0}, iMaW:{1}")

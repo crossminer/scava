@@ -3,25 +3,28 @@ package [%=t.eContainer().package%];
 import java.io.Serializable;
 import java.util.UUID;
 import org.eclipse.scava.crossflow.runtime.Job;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.Serializable;
 
-public class [%=t.name%] extends Job {
+public class [%=t.name%] [%if(Stream.all.exists(s|s.type=t)){%] extends Job [%}else{%] implements Serializable [%}%] {
 	
 	public [%=t.name%]() {}
 	
-	public [%=t.name%]([%=t.fields.collect(f|f.type + " " + f.name).concat(", ")%]) {
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%]) {
 		[%for (f in t.fields) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
 	}
 	
 	[%for (f in t.fields) { %]
-	protected [%=f.type%] [%=f.name%];
+	protected [%=f.getJavaType()%] [%=f.name%] [%if(f.many){%]= new ArrayList<>()[%}%];
 	
-	public void set[%=f.name.ftuc()%]([%=f.type%] [%=f.name%]) {
+	public void set[%=f.name.ftuc()%]([%=f.getJavaType()%] [%=f.name%]) {
 		this.[%=f.name%] = [%=f.name%];
 	}
 	
-	public [%=f.type%] get[%=f.name.ftuc()%]() {
+	public [%=f.getJavaType()%] get[%=f.name.ftuc()%]() {
 		return [%=f.name%];
 	}
 	
@@ -35,5 +38,13 @@ public class [%=t.name%] extends Job {
 		return ret;
 	}
 
-
 }
+
+[%operation Field getJavaType() {
+	if (self.many) {
+		return "List<" + self.type + ">";
+	}
+	else {
+		return self.type;
+	}
+}%]

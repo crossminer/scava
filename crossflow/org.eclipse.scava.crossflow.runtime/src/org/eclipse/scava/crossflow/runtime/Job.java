@@ -8,10 +8,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class Job implements Serializable {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 666L;
+	private static final long serialVersionUID = 431981L;
 
 	public Job() {
 		this.id = UUID.randomUUID().toString();

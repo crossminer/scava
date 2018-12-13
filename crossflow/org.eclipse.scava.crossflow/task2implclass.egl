@@ -17,11 +17,12 @@ public class [%=t.name%] extends [%=t.name%]Base {
 			
 				// TODO: Add implementation that instantiates, sets, and submits source objects (example below)
 				[%for (s in t.output) { %]
-				[%=s.type.name%] [%=s.type.name.ftlc()%][%=loopCount%] = new [%=s.type.name%]();
+				[%var number = loopCount;%]
+				[%=s.type.name%] [%=s.type.name.ftlc()%][%=number%] = new [%=s.type.name%]();
 				[%for (f in s.type.fields) { %]
-				//	[%=s.type.name.ftlc()%][%=loopCount%].set[%=f.name.ftuc()%]( [%=f.type%] );
+				//	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
 				[%}%]		
-				sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=loopCount%]);
+				sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%]);
 				
 				[% } %]
 				
@@ -35,11 +36,12 @@ public class [%=t.name%] extends [%=t.name%]Base {
 		
 		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
 		[%for (s in t.output) { %]
-		[%=s.type.name%] [%=s.type.name.ftlc()%][%=loopCount%] = new [%=s.type.name%]();
+		[%var number= loopCount;%]
+		[%=s.type.name%] [%=s.type.name.ftlc()%][%=number%] = new [%=s.type.name%]();
 		[%for (f in s.type.fields) { %]
-		//	[%=s.type.name.ftlc()%][%=loopCount%].set[%=f.name.ftuc()%]( [%=f.type%] );
+		//	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
 		[%}%]
-		sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=loopCount%]);
+		sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%]);
 		
 		[% } %]
 		[% if (t.output.notEmpty()==false) { %]
