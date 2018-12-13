@@ -69,17 +69,13 @@ public class [%=s.name%] implements Channel {
 							Job job = (Job) ((ObjectMessage) message).getObject();
 							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								for (Job output : workflow.getCache().getCachedOutputs(job)) {
-									if (output.getDestination().equals("Additions")) {
-										MessageProducer producer = session.createProducer(preQueue);
-										producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-										ObjectMessage m = session.createObjectMessage();
-										m.setObject(output);
-										producer.send(m);
-									} else {
-										//XXX should not be the case?
-										System.err.println(
-												output.getDestination() + " destination found in Additions pre consumer");
+									
+									[%for (next in s.inputOf.output.flatten()){%]
+									if (output.getDestination().equals("[%=next.name%]")) {
+										(([%=w.name%]) workflow).get[%=next.name%]().send(([%=next.type.name%]) output, consumerId);
 									}
+									[%}%]
+									
 								}
 							} else {
 								MessageProducer producer = session.createProducer(destQueue);

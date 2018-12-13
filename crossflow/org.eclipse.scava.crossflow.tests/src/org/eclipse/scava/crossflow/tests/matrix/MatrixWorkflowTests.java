@@ -24,12 +24,15 @@ public class MatrixWorkflowTests extends WorkflowTests {
 		
 	}
 	
-	/*
 	@Test
 	public void testCache() throws Exception {
 		
 		MatrixWorkflow workflow = new MatrixWorkflow();
-		DirectoryCache cache = new DirectoryCache(new File("/Users/dkolovos/Desktop/matrix-cache"));
+		/*
+		DirectoryCache cache = new DirectoryCache(
+			new File("/Users/dkolovos/Desktop/matrix-cache")
+		);*/
+		DirectoryCache cache = new DirectoryCache();
 		workflow.setCache(cache);
 		workflow.getMatrixConfigurationSource().setNumberOfConfigurations(2);
 		workflow.run();
@@ -44,5 +47,5 @@ public class MatrixWorkflowTests extends WorkflowTests {
 		assertEquals(3, workflow.getMatrixSink().getMatrices().size());
 		assertEquals(1, workflow.getMatrixConstructor().getExecutions());
 		
-	}*/
+	}
 }
