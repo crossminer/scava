@@ -1,0 +1,50 @@
+import "lib.eol";
+operation String isObject() : Boolean {
+	return self == "object"; 
+}
+
+operation Map type(f : String) : String {
+	if (self.get(f).isObject()) { 
+		return f._2ClassName(); 
+	} else { 
+		return self.get(f).firstToUpperCase; 
+	}
+}
+
+operation String getDef() : String {
+	return self.substring("#/definitions/".length);
+}
+
+operation String baseEndpoint() : String {
+	var split : Sequence = self.split("/");
+	if (split.first() == ""){
+		return split.second();
+	} else {
+		return split.first();
+	}
+}
+
+operation Collection has(val : String) : Boolean {
+	if (self.select(p | p.id == val).size > 0){ 
+		return true;
+	} else {
+		return false;
+	}
+}
+
+operation Collection matches(val : String) : Boolean {
+	if (self.select(p | p.id.matches(val)).size > 0){ 
+		return true;
+	} else {
+		return false;
+	}
+}
+
+operation String requestMethodName(httpMethod : String) : String {
+	var name = self.replace("{[a_zA_Z0_9_]+})","By").split("/");
+	var method : new String;
+	for (e in name){
+		method = method + e.toLowerCase().firstToUpperCase();
+	}
+	return  httpMethod.toLowerCase() + name;
+}

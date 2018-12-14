@@ -1,0 +1,2263 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rescli:API xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rescli="rescli" name="GitHub" title="GitHub" apiVersion="v3" apiHost="api.github.com" consumes="JSON" produces="JSON">
+  <endpoints path="/repos/{owner}/{repo}/git/commits">
+    <requests method="POST" description="null">
+      <responses code="201" description="Created">
+        <responseType xsi:type="rescli:ObjectType" label="gitCommit" description="null">
+          <attributes xsi:type="rescli:TString" label="tree" description="null"/>
+          <attributes xsi:type="rescli:TString" label="message" description="null"/>
+          <attributes xsi:type="rescli:TString" label="parents" description="null"/>
+          <nestedObjects label="author" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="organization" description="null">
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="blog" description="null"/>
+          <attributes xsi:type="rescli:TString" label="login" description="null"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="company" description="null"/>
+          <attributes xsi:type="rescli:TString" label="location" description="null"/>
+          <attributes xsi:type="rescli:TString" label="email" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/emojis">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="emojis" description="null">
+          <attributes xsi:type="rescli:TString" label="100" description="null"/>
+          <attributes xsi:type="rescli:TString" label="a" description="null"/>
+          <attributes xsi:type="rescli:TString" label="ab" description="null"/>
+          <attributes xsi:type="rescli:TString" label="-1" description="null"/>
+          <attributes xsi:type="rescli:TString" label="8ball" description="null"/>
+          <attributes xsi:type="rescli:TString" label="1234" description="null"/>
+          <attributes xsi:type="rescli:TString" label="+1" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/repos">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/markdown/raw">
+    <requests method="POST" description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/{number}/merge">
+    <requests description="null">
+      <responses code="204" description="Pull request has been merged."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Pull request has not been merged."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/events">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/{number}/labels/{name}"/>
+  <endpoints path="/repos/{owner}/{repo}/watchers">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/subscriptions/{owner}/{repo}">
+    <requests description="null">
+      <responses code="204" description="Repository is watched by you."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Repository is not watched by you."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/gists">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repositories">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/hooks">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/keys/{keyId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="user-keys-keyId" description="null">
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TString" label="key" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/assignees/{assignee}">
+    <requests description="null">
+      <responses code="204" description="User is an assignee."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="User isn't an assignee."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/downloads">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="downloads" description="null">
+          <attributes xsi:type="rescli:TString" label="content_type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/merges">
+    <requests method="POST" description="null">
+      <responses code="201" description="Successful Response (The resulting merge commit)">
+        <responseType xsi:type="rescli:ObjectType" label="mergesSuccessful" description="null">
+          <attributes xsi:type="rescli:TString" label="comments_url" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="merged" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="message" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="committer" description="null">
+            <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="author" description="null">
+            <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="commit" description="null">
+            <attributes xsi:type="rescli:TString" label="message" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="committer" description="null">
+              <attributes xsi:type="rescli:TString" label="date" description="null"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="email" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="author" description="null">
+              <attributes xsi:type="rescli:TString" label="date" description="null"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="email" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="tree" description="null">
+              <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="204" description="No-op response (base already contains the head, nothing to merge)"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Missing base response or missing head response">
+        <responseType xsi:type="rescli:ObjectType" label="mergesConflict" description="null">
+          <attributes xsi:type="rescli:TString" label="message" description="Error message"/>
+        </responseType>
+      </responses>
+      <responses code="409" description="Merge conflict response.">
+        <responseType xsi:type="rescli:ObjectType" label="mergesConflict" description="null">
+          <attributes xsi:type="rescli:TString" label="message" description="Error message"/>
+        </responseType>
+      </responses>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/public_members/{username}">
+    <requests description="null">
+      <responses code="204" description="User is a public member."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="User is not a public member."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/starred/{owner}/{repo}">
+    <requests description="null">
+      <responses code="204" description="This repository is starred by you."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="This repository is not starred by you."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/deployments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/releases/{id}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="release" description="null">
+          <attributes xsi:type="rescli:TString" label="tag_name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="assets_url" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="prerelease" description="null" default="false"/>
+          <attributes xsi:type="rescli:TBoolean" label="draft" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="target_commitish" description="null"/>
+          <attributes xsi:type="rescli:TString" label="zipball_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="upload_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="published_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="tarball_url" description="null"/>
+          <nestedObjects label="author" description="null">
+            <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TBoolean" label="site_admin" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/releases/{id}/assets">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/refs">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/commits/{shaCode}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="commit" description="null">
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="committer" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="stats" description="null"/>
+          <nestedObjects label="author" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="commit" description="null">
+            <attributes xsi:type="rescli:TString" label="message" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="committer" description="null">
+              <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="email" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="author" description="null">
+              <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="email" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="tree" description="null">
+              <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/milestones">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="milestone" description="null">
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TString" label="due_on" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="creator" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="milestone" description="null">
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TString" label="due_on" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="creator" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/languages">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="languages" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="repo" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+          <attributes xsi:type="rescli:TBoolean" label="has_downloads" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="pushed_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="language" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="has_wiki" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="svn_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="master_branch" description="null"/>
+          <attributes xsi:type="rescli:TString" label="ssh_url" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="has_issues" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="mirror_url" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="clone_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="homepage" description="null"/>
+          <nestedObjects label="parent" description="Is present when the repo is a fork. Parent is the repo this repo was forked from.">
+            <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="pushed_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="description" description="null"/>
+            <attributes xsi:type="rescli:TString" label="language" description="null"/>
+            <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="svn_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="master_branch" description="null"/>
+            <attributes xsi:type="rescli:TString" label="ssh_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="mirror_url" description="null"/>
+            <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="clone_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="homepage" description="null"/>
+            <nestedObjects label="owner" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="source" description="Is present when the repo is a fork. Source is the ultimate source for the network.">
+            <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="pushed_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="description" description="null"/>
+            <attributes xsi:type="rescli:TString" label="language" description="null"/>
+            <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="svn_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="master_branch" description="null"/>
+            <attributes xsi:type="rescli:TString" label="ssh_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="mirror_url" description="null"/>
+            <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="clone_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="homepage" description="null"/>
+            <nestedObjects label="owner" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="owner" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="organization" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/memberships/{username}">
+    <requests description="null">
+      <responses code="200" description="User is a member.">
+        <responseType xsi:type="rescli:ObjectType" label="teamMembership" description="null">
+          <attributes xsi:type="rescli:TString" label="state" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="User has no membership with team"/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/tags/{shaCode}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="tag" description="null">
+          <attributes xsi:type="rescli:TString" label="tag" description="null"/>
+          <attributes xsi:type="rescli:TString" label="message" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="tagger" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="object" description="null">
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/readme">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="contents-path" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="encoding" description="null"/>
+          <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="content" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <attributes xsi:type="rescli:TString" label="git" description="null"/>
+            <attributes xsi:type="rescli:TString" label="self" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/repos/{org}/{repo}"/>
+  <endpoints path="/gists/{id}/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/starred">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/repos">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/legacy/user/email/{email}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-user-by-email" description="null">
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="created" description="null"/>
+            <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+            <attributes xsi:type="rescli:TString" label="blog" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="company" description="null"/>
+            <attributes xsi:type="rescli:TString" label="location" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gitignore/templates">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/following/{username}">
+    <requests description="null">
+      <responses code="204" description="Response if you are following this user."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Response if you are not following this user."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/keys">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/repos/{owner}/{repo}">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/search/users">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-users" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/legacy/issues/search/{owner}/{repository}/{state}/{keyword}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-issues-by-keyword" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/{id}/star">
+    <requests description="null">
+      <responses code="204" description="Exists."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Not exists."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/deployments/{id}/statuses">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/followers">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/{id}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="gist" description="null">
+          <attributes xsi:type="rescli:TString" label="git_push_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="Timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ."/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="comments_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="git_pull_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="id" description="null"/>
+          <nestedObjects label="files" description="null">
+            <nestedObjects label="ring.erl" description="null">
+              <attributes xsi:type="rescli:TString" label="filename" description="null"/>
+              <attributes xsi:type="rescli:TString" label="raw_url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/{id}/comments/{commentId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="comment" description="null">
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/issues">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/markdown">
+    <requests method="POST" description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/events/{eventId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="event" description="null">
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="event" description="null"/>
+          <attributes xsi:type="rescli:TString" label="commit_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="issue" description="null">
+            <attributes xsi:type="rescli:TString" label="closed_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="body" description="null"/>
+            <attributes xsi:type="rescli:TString" label="title" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <nestedObjects label="pull_request" description="null">
+              <attributes xsi:type="rescli:TString" label="patch_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="diff_url" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="milestone" description="null">
+              <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+              <attributes xsi:type="rescli:TString" label="description" description="null"/>
+              <attributes xsi:type="rescli:TString" label="title" description="null"/>
+              <attributes xsi:type="rescli:TString" label="due_on" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <nestedObjects label="creator" description="null">
+                <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+                <attributes xsi:type="rescli:TString" label="login" description="null"/>
+                <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+                <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects label="user" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/orgs">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/networks/{owner}/{repo}/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/compare/{baseId}...{headId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="compare-commits" description="null">
+          <attributes xsi:type="rescli:TString" label="patch_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="diff_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="permalink_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="status" description="null"/>
+          <nestedObjects label="base_commit" description="null">
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="committer" description="null">
+              <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="type" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+              <attributes xsi:type="rescli:TBoolean" label="site_admin" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="author" description="null">
+              <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="type" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+              <attributes xsi:type="rescli:TBoolean" label="site_admin" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="commit" description="null">
+              <attributes xsi:type="rescli:TString" label="message" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <nestedObjects label="committer" description="null">
+                <attributes xsi:type="rescli:TString" label="date" description="null"/>
+                <attributes xsi:type="rescli:TString" label="name" description="null"/>
+                <attributes xsi:type="rescli:TString" label="email" description="null"/>
+              </nestedObjects>
+              <nestedObjects label="author" description="null">
+                <attributes xsi:type="rescli:TString" label="date" description="null"/>
+                <attributes xsi:type="rescli:TString" label="name" description="null"/>
+                <attributes xsi:type="rescli:TString" label="email" description="null"/>
+              </nestedObjects>
+              <nestedObjects label="tree" description="null">
+                <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+                <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/members">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/milestones/{number}/labels">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/members">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="302" description="Response if requester is not an organization member."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/hooks/{hookId}">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/refs/{ref}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="headBranch" description="null">
+          <attributes xsi:type="rescli:TString" label="ref" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="object" description="null">
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/starred">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/events/orgs/{org}">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/subscribers">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/collaborators">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/keys">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/branches/{branch}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="branch" description="null">
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <attributes xsi:type="rescli:TString" label="self" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="commit" description="null">
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="committer" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="author" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="commit" description="null">
+              <attributes xsi:type="rescli:TString" label="message" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <nestedObjects label="committer" description="null">
+                <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+                <attributes xsi:type="rescli:TString" label="name" description="null"/>
+                <attributes xsi:type="rescli:TString" label="email" description="null"/>
+              </nestedObjects>
+              <nestedObjects label="tree" description="null">
+                <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+                <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/labels/{name}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="label" description="null">
+          <attributes xsi:type="rescli:TString" label="color" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/{number}/comments">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="pullsComment" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="commit_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <nestedObjects label="pull_request" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="self" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="html" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="pullsComment" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="commit_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <nestedObjects label="pull_request" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="self" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="html" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/labels">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/subscription">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="subscribition" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="ignored" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="reason" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="subscribed" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="repository_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/members/{username}">
+    <requests description="null">
+      <responses code="302" description="Found. Response if requester is not an organization member"/>
+      <responses code="204" description="No content. Response if requester is an organization member and user is a member"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Not Found.&#xA;a. Response if requester is an organization member and user is not a member&#xA;b. Response if requester is not an organization member and is inquiring about themselves"/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="team" description="null">
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="permission" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/comments/{commentId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="pullsComment" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="commit_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <nestedObjects label="pull_request" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="self" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="html" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/commits">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/downloads/{downloadId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="downloads" description="null">
+          <attributes xsi:type="rescli:TString" label="content_type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/{number}/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/teams">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/{number}/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/public_members">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/meta">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="meta" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stats/commit_activity">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/branches">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/repos">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/statuses/{ref}">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/legacy/repos/search/{keyword}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-repositories-by-keyword" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/milestones/{number}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="milestone" description="null">
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="description" description="null"/>
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TString" label="due_on" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="creator" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/notifications">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="notifications" description="null">
+          <attributes xsi:type="rescli:TString" label="reason" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="unread" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="last_read_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="subject" description="null">
+            <attributes xsi:type="rescli:TString" label="latest_comment_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="title" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="repository" description="null">
+            <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+            <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="description" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="owner" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/tags">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="tags" description="null">
+          <attributes xsi:type="rescli:TString" label="tag" description="null"/>
+          <attributes xsi:type="rescli:TString" label="message" description="String of the tag message."/>
+          <attributes xsi:type="rescli:TString" label="type" description="String of the type of the object we&#xe2;&#x20ac;&#x2122;re tagging. Normally this is a commit but it can also be a tree or a blob."/>
+          <attributes xsi:type="rescli:TString" label="object" description="String of the SHA of the git object this is tagging."/>
+          <nestedObjects label="tagger" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="Timestamp of when this object was tagged."/>
+            <attributes xsi:type="rescli:TString" label="name" description="String of the name of the author of the tag."/>
+            <attributes xsi:type="rescli:TString" label="email" description="String of the email of the author of the tag."/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/public">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/issues">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/received_events/public">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/teams">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/subscriptions">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/notifications/threads/{id}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="notifications" description="null">
+          <attributes xsi:type="rescli:TString" label="reason" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="unread" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="last_read_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="subject" description="null">
+            <attributes xsi:type="rescli:TString" label="latest_comment_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="title" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="repository" description="null">
+            <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+            <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="description" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="owner" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/members/{username}">
+    <requests description="null">
+      <responses code="204" description="User is a member."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="User is not a member."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/blobs">
+    <requests method="POST" description="null">
+      <responses code="201" description="Created">
+        <responseType xsi:type="rescli:ObjectType" label="blobs" description="null">
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/orgs">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/notifications">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="notifications" description="null">
+          <attributes xsi:type="rescli:TString" label="reason" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="unread" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="last_read_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="subject" description="null">
+            <attributes xsi:type="rescli:TString" label="latest_comment_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="title" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="repository" description="null">
+            <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+            <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="description" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <nestedObjects label="owner" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/releases">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/{number}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="pullRequest" description="null">
+          <attributes xsi:type="rescli:TString" label="issue_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="diff_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="mergeable" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="patch_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="merge_commit_sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="state" description="null"/>
+          <attributes xsi:type="rescli:TString" label="closed_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="merged_at" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="merged" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <nestedObjects label="comments" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="review_comments" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="self" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+            <nestedObjects label="html" description="null">
+              <attributes xsi:type="rescli:TString" label="href" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="merged_by" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="head" description="null">
+            <attributes xsi:type="rescli:TString" label="ref" description="null"/>
+            <attributes xsi:type="rescli:TString" label="label" description="null"/>
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <nestedObjects label="repo" description="null">
+              <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="pushed_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="description" description="null"/>
+              <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="svn_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="master_branch" description="null"/>
+              <attributes xsi:type="rescli:TString" label="ssh_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="mirror_url" description="null"/>
+              <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="clone_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="homepage" description="null"/>
+              <nestedObjects label="owner" description="null">
+                <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+                <attributes xsi:type="rescli:TString" label="login" description="null"/>
+                <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+                <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects label="user" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="base" description="null">
+            <attributes xsi:type="rescli:TString" label="ref" description="null"/>
+            <attributes xsi:type="rescli:TString" label="label" description="null"/>
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <nestedObjects label="repo" description="null">
+              <attributes xsi:type="rescli:TBoolean" label="private" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="pushed_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="description" description="null"/>
+              <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+              <attributes xsi:type="rescli:TString" label="svn_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="master_branch" description="null"/>
+              <attributes xsi:type="rescli:TString" label="ssh_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="mirror_url" description="null"/>
+              <attributes xsi:type="rescli:TBoolean" label="fork" description="null" default="false"/>
+              <attributes xsi:type="rescli:TString" label="full_name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="clone_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="name" description="null"/>
+              <attributes xsi:type="rescli:TString" label="homepage" description="null"/>
+              <nestedObjects label="owner" description="null">
+                <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+                <attributes xsi:type="rescli:TString" label="login" description="null"/>
+                <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+                <attributes xsi:type="rescli:TString" label="url" description="null"/>
+              </nestedObjects>
+            </nestedObjects>
+            <nestedObjects label="user" description="null">
+              <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+              <attributes xsi:type="rescli:TString" label="login" description="null"/>
+              <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+              <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            </nestedObjects>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/{archive_format}/{path}">
+    <requests description="null">
+      <responses code="302" description="Found."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/subscriptions">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stargazers">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/search/code">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-code" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stats/code_frequency">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/assignees">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/tags">
+    <requests method="POST" description="null">
+      <responses code="201" description="Created">
+        <responseType xsi:type="rescli:ObjectType" label="tags" description="null">
+          <attributes xsi:type="rescli:TString" label="tag" description="null"/>
+          <attributes xsi:type="rescli:TString" label="message" description="String of the tag message."/>
+          <attributes xsi:type="rescli:TString" label="type" description="String of the type of the object we&#xe2;&#x20ac;&#x2122;re tagging. Normally this is a commit but it can also be a tree or a blob."/>
+          <attributes xsi:type="rescli:TString" label="object" description="String of the SHA of the git object this is tagging."/>
+          <nestedObjects label="tagger" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="Timestamp of when this object was tagged."/>
+            <attributes xsi:type="rescli:TString" label="name" description="String of the name of the author of the tag."/>
+            <attributes xsi:type="rescli:TString" label="email" description="String of the email of the author of the tag."/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/following">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/following/{targetUser}">
+    <requests description="null">
+      <responses code="204" description="Response if user follows target user."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Response if user does not follow target user."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gitignore/templates/{language}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="gitignore-lang" description="null">
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="source" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/comments/{commentId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="commitComments" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="commit_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/{number}/files">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/trees">
+    <requests method="POST" description="null">
+      <responses code="201" description="Created">
+        <responseType xsi:type="rescli:ObjectType" label="trees" description="null">
+          <attributes xsi:type="rescli:TString" label="base_tree" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="SHA1 checksum ID of the object in the tree."/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/contents/{path}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="contents-path" description="null">
+          <attributes xsi:type="rescli:TString" label="path" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="encoding" description="null"/>
+          <attributes xsi:type="rescli:TString" label="git_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="content" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="_links" description="null">
+            <attributes xsi:type="rescli:TString" label="git" description="null"/>
+            <attributes xsi:type="rescli:TString" label="self" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/rate_limit">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="rate_limit" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="user" description="null">
+          <attributes xsi:type="rescli:TString" label="bio" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="blog" description="null"/>
+          <attributes xsi:type="rescli:TString" label="login" description="null"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="company" description="null"/>
+          <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+          <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          <attributes xsi:type="rescli:TBoolean" label="hireable" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="location" description="null"/>
+          <nestedObjects label="plan" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stats/punch_card">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stats/participation">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="participationStats" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/stats/contributors">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/gists/{id}/forks">
+    <requests method="POST" description="null">
+      <responses code="204" description="Exists."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="Not exists."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/emails">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/search/issues">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-issues" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/events">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="events" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="public" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="type" description="null"/>
+          <nestedObjects label="actor" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="org" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="payload" description="null"/>
+          <nestedObjects label="repo" description="null">
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="created_at" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/commits/{shaCode}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="repoCommit" description="null">
+          <attributes xsi:type="rescli:TString" label="message" description="null"/>
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="committer" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="author" description="null">
+            <attributes xsi:type="rescli:TString" label="date" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+            <attributes xsi:type="rescli:TString" label="name" description="null"/>
+            <attributes xsi:type="rescli:TString" label="email" description="null"/>
+          </nestedObjects>
+          <nestedObjects label="tree" description="null">
+            <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/feeds">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="feeds" description="null">
+          <attributes xsi:type="rescli:TString" label="current_user_organization_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="current_user_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="user_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="current_user_actor_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="current_user_public" description="null"/>
+          <attributes xsi:type="rescli:TString" label="timeline_url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/{number}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="issue" description="null">
+          <attributes xsi:type="rescli:TString" label="assignee" description="null"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/issues">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/followers">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/contributors">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/{number}/labels">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/collaborators/{user}">
+    <requests description="null">
+      <responses code="204" description="User is a collaborator."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+      <responses code="404" description="User is not a collaborator."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/pulls/{number}/commits">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/starred">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/commits/{ref}/status">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/commits/{shaCode}/comments">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/blobs/{shaCode}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="blob" description="null">
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="content" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/teams/{teamId}/repos">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/hooks/{hookId}/tests">
+    <requests method="POST" description="null">
+      <responses code="204" description="Hook is triggered."/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/user/keys/{keyId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="user-keys-keyId" description="null">
+          <attributes xsi:type="rescli:TString" label="title" description="null"/>
+          <attributes xsi:type="rescli:TString" label="key" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/forks">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/legacy/user/search/{keyword}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-users-by-keyword" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/issues/comments/{commentId}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="issuesComment" description="null">
+          <attributes xsi:type="rescli:TString" label="updated_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"/>
+          <attributes xsi:type="rescli:TString" label="body" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="user" description="null">
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/releases/assets/{id}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="asset" description="null">
+          <attributes xsi:type="rescli:TString" label="content_type" description="null"/>
+          <attributes xsi:type="rescli:TString" label="updated_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="name" description="null"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="label" description="null"/>
+          <attributes xsi:type="rescli:TString" label="state" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+          <nestedObjects label="uploader" description="null">
+            <attributes xsi:type="rescli:TString" label="gists_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="repos_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="following_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="starred_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="followers_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="login" description="null"/>
+            <attributes xsi:type="rescli:TString" label="type" description="null"/>
+            <attributes xsi:type="rescli:TString" label="url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="subscriptions_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="received_events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="avatar_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="events_url" description="null"/>
+            <attributes xsi:type="rescli:TString" label="html_url" description="null"/>
+            <attributes xsi:type="rescli:TBoolean" label="site_admin" description="null" default="false"/>
+            <attributes xsi:type="rescli:TString" label="gravatar_id" description="null"/>
+            <attributes xsi:type="rescli:TString" label="organizations_url" description="null"/>
+          </nestedObjects>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/users/{username}/received_events">
+    <requests description="null">
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/orgs/{org}/teams">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/git/trees/{shaCode}">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="tree" description="null">
+          <attributes xsi:type="rescli:TString" label="sha" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/repos/{owner}/{repo}/keys">
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+    <requests description="null">
+      <responses code="200" description="OK"/>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/notifications/threads/{id}/subscription">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="subscription" description="null">
+          <attributes xsi:type="rescli:TBoolean" label="ignored" description="null" default="false"/>
+          <attributes xsi:type="rescli:TBoolean" label="reason" description="null" default="false"/>
+          <attributes xsi:type="rescli:TBoolean" label="subscribed" description="null" default="false"/>
+          <attributes xsi:type="rescli:TString" label="created_at" description="null"/>
+          <attributes xsi:type="rescli:TString" label="thread_url" description="null"/>
+          <attributes xsi:type="rescli:TString" label="url" description="null"/>
+        </responseType>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+  <endpoints path="/search/repositories">
+    <requests description="null">
+      <responses code="200" description="OK">
+        <responseType xsi:type="rescli:ObjectType" label="search-repositories" description="null"/>
+      </responses>
+      <responses code="403" description="API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting&#xA;for details."/>
+    </requests>
+  </endpoints>
+</rescli:API>
