@@ -79,12 +79,11 @@ public class DirectoryCache implements Cache {
 			try {
 				File inputFolder = new File(streamFolder, input.getHash());
 				inputFolder.mkdirs();
+				File inputFile = new File(inputFolder, "job.xml");
+				if (!inputFile.exists()) save(input, inputFile);
 				File outputFile = new File(inputFolder, output.getHash());
 				jobFolderMap.put(input.getHash(), inputFolder);
-				FileOutputStream fos = new FileOutputStream(outputFile);
-				fos.write(output.getXML().getBytes());
-				fos.flush();
-				fos.close();
+				save(output, outputFile);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -93,6 +92,13 @@ public class DirectoryCache implements Cache {
 	
 	public File getDirectory() {
 		return directory;
+	}
+	
+	protected void save(Job job, File file) throws Exception {
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(job.getXML().getBytes());
+		fos.flush();
+		fos.close();
 	}
 	
 }
