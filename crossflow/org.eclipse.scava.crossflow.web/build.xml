@@ -1,0 +1,45 @@
+<project default="main">
+	
+	<!-- Copies all jars from o.e.s.c.runtime.dependencies here, builds o.e.s.c.tests.jar and runs Thrift -->
+	
+    <target name="main">
+    
+    	<copy todir="WebContent/WEB-INF/lib/">
+    		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies" includes="*.jar"/>
+    	</copy>
+        <jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar">
+            <fileset    dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+            <fileset    dir="../org.eclipse.scava.crossflow.tests/bin"/>
+        </jar>
+    	
+    	<exec executable="/usr/local/bin/thrift">
+			<arg value="--gen"/>
+			<arg value="java"/>
+			<arg value="-out"/>
+			<arg value="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
+			<arg value="crossflow.thrift"/>
+		</exec>
+		
+    	<exec executable="/usr/local/bin/thrift">
+			<arg value="--gen"/>
+			<arg value="java"/>
+			<arg value="-out"/>
+			<arg value="src-gen"/>
+			<arg value="crossflow.thrift"/>
+		</exec>
+    	
+		<exec executable="/usr/local/bin/thrift">
+			<arg value="--gen"/>
+			<arg value="js"/>
+			<arg value="-out"/>
+			<arg value="WebContent/js/gen"/>
+			<arg value="crossflow.thrift"/>
+		</exec>
+    	
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1"/>
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1"/>
+
+    </target>
+    
+    
+</project>
