@@ -7,9 +7,13 @@
     	<copy todir="WebContent/WEB-INF/lib/">
     		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies" includes="*.jar"/>
     	</copy>
+    			
+    	<jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.runtime.jar">
+            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+        </jar>
+    	
         <jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar">
-            <fileset    dir="../org.eclipse.scava.crossflow.runtime/bin"/>
-            <fileset    dir="../org.eclipse.scava.crossflow.tests/bin"/>
+            <fileset dir="../org.eclipse.scava.crossflow.tests/bin"/>
         </jar>
     	
     	<exec executable="/usr/local/bin/thrift">

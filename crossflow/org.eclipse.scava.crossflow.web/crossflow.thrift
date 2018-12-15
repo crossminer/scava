@@ -10,10 +10,8 @@ service Crossflow {
 	void stopBroker();
 	bool isBrokerRunning();
 	
-	string run(1:string workflow);
-	
-	
-	//int add(1:int n1, 2:int n2),
-	//int multiply(1:int n1, 2:int n2),
+	string startWorkflow(1:string jar, 2:string main);
+	bool isWorkflowRunning(1:string instanceId);
+	void stopWorkflow(1:string instanceId);
 	
 }

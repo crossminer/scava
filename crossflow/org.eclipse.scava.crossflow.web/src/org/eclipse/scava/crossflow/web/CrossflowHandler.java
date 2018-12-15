@@ -1,36 +1,61 @@
 package org.eclipse.scava.crossflow.web;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.thrift.TException;
+import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflow;
 
 public class CrossflowHandler implements Crossflow.Iface {
 
-	protected HashMap<String, Workflow> workflows = new HashMap<>();
+	protected HashMap<String, WorkflowInstance> workflows = new HashMap<>();
 	protected BrokerService brokerService;
+	protected CrossflowServlet servlet;
 	
-	public void waitFor(Workflow workflow) throws Exception {
-		while (!workflow.hasTerminated()) {
-			Thread.sleep(100);
-		}
+	public CrossflowHandler(CrossflowServlet servlet) {
+		this.servlet = servlet;
+	}
+	
+	protected ClassLoader getClassLoader() throws Exception {
+		return Thread.currentThread().getContextClassLoader();
 	}
 	
 	@Override
-	public String run(String workflowId) throws TException {
-		AdditionWorkflow workflow = new AdditionWorkflow();
-		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+	public String startWorkflow(String jar, String workflowClass) throws TException {
 		try {
+			Workflow workflow = (Workflow) getClassLoader().loadClass(workflowClass).getConstructor(Mode.class).newInstance(Mode.MASTER);
+			workflow.createBroker(false);
 			workflow.run();
+			workflows.put(workflow.getInstanceId(), new WorkflowInstance(workflow, jar));
+			return workflow.getInstanceId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TException(e);
 		}
-		return workflow.getInstanceId();
+	}
+	
+	@Override
+	public void stopWorkflow(String instanceId) throws TException {
+		WorkflowInstance workflowInstance = workflows.get(instanceId);
+		if (workflowInstance != null) {
+			workflowInstance.getWorkflow().terminate();
+		}
+	}
+	
+	@Override
+	public boolean isWorkflowRunning(String instanceId) throws TException {
+		WorkflowInstance workflowInstance = workflows.get(instanceId);
+		if (workflowInstance != null) {
+			return !workflowInstance.getWorkflow().hasTerminated();
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
@@ -39,9 +64,9 @@ public class CrossflowHandler implements Crossflow.Iface {
 			stopBroker();
 		}
 		
-		brokerService = new BrokerService();
-		brokerService.setUseJmx(true);
 		try {
+			brokerService = new BrokerService();
+			brokerService.setUseJmx(true);
 			brokerService.addConnector("tcp://localhost:61616");
 			brokerService.start();
 		}
