@@ -47,9 +47,9 @@ public class [%=s.name%] implements Channel {
 		post = new HashMap<String, ActiveMQDestination>();
 		
 		[%for (t in s.inputOf){%]
-		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]"));
-		destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]"));
-		post.put("[%=t.name%]", (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]"));
+		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]." + workflow.getInstanceId()));
+		destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]." + workflow.getInstanceId()));
+		post.put("[%=t.name%]", (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]." + workflow.getInstanceId()));
 		[%}%]
 		
 		for (String consumerId : pre.keySet()) {

@@ -21,7 +21,7 @@ public class OccurencesWorkflowTests extends WorkflowTests {
 		master.setFavouriteWord("Apple");
 		master.getWordSource().setWordMap(wordMap);
 		
-		OpinionatedWorkflow worker = new OpinionatedWorkflow(Mode.WORKER);
+		OpinionatedWorkflow worker = master.createWorker();
 		worker.setFavouriteWord("Banana");
 		
 		master.run();

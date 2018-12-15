@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
+import javax.jms.Session;
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
 import javax.management.ObjectName;
@@ -15,12 +17,13 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 import com.beust.jcommander.Parameter;
 
-public abstract class Workflow extends Moded {
+public abstract class Workflow {
 
 	@Parameter(names = { "-name" }, description = "The name of the workflow")
 	protected String name;
@@ -29,7 +32,15 @@ public abstract class Workflow extends Moded {
 	@Parameter(names = { "-master" }, description = "IP of the master")
 	protected String master = "localhost";
 	protected BrokerService brokerService;
-
+	
+	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
+	protected String instanceId;
+	
+	@Parameter(names = {
+	"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
+	protected Mode mode = Mode.MASTER;
+	
+	protected boolean createBroker = true;
 	protected boolean cacheEnabled = true;
 	private HashSet<String> activeJobs = new HashSet<String>();
 	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
@@ -47,6 +58,10 @@ public abstract class Workflow extends Moded {
 	
 	public void excludeTasks(Collection<String> tasks){
 		tasksToExclude = tasks;
+	}
+	
+	public void createBroker(boolean createBroker) {
+		this.createBroker = createBroker;
 	}
 	
 	protected boolean terminated = false;
@@ -71,9 +86,10 @@ public abstract class Workflow extends Moded {
 	}
 	
 	public Workflow() {
-		taskStatusTopic = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher");
-		resultsTopic = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster");
-		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic");
+		taskStatusTopic = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher." + getInstanceId());
+		resultsTopic = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster." + getInstanceId());
+		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic." + getInstanceId());
+		instanceId = UUID.randomUUID().toString();
 	}
 	
 	protected void connect() throws Exception {
@@ -189,6 +205,14 @@ public abstract class Workflow extends Moded {
 		this.name = name;
 	}
 
+	public String getInstanceId() {
+		return instanceId;
+	}
+	
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
+	
 	public Cache getCache() {
 		return cache;
 	}
@@ -203,6 +227,10 @@ public abstract class Workflow extends Moded {
 
 	public boolean isWorker() {
 		return mode == Mode.MASTER || mode == Mode.WORKER;
+	}
+	
+	public Mode getMode() {
+		return mode;
 	}
 	
 	public String getBroker() {
@@ -322,7 +350,10 @@ public abstract class Workflow extends Moded {
 			
 			if (isMaster()) {
 				controlTopic.stop();
-				stopBroker();
+				System.out.println("createBroker: " + createBroker);
+				if (createBroker) {
+					stopBroker();
+				}
 			} else {
 				controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
 				controlTopic.stop();
@@ -334,7 +365,7 @@ public abstract class Workflow extends Moded {
 			// There is nothing to do at this stage
 		}
 	}
-	
+ 	
 	public boolean hasTerminated() {
 		return terminated;
 	}

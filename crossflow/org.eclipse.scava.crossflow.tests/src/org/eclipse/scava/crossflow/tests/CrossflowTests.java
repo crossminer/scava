@@ -5,7 +5,7 @@ import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowTests;
 import org.eclipse.scava.crossflow.tests.cache.DirectoryCacheTests;
 import org.eclipse.scava.crossflow.tests.commitment.CommitmentWorkflowTests;
 import org.eclipse.scava.crossflow.tests.crawler.CrawlerWorkflowTests;
-import org.eclipse.scava.crossflow.tests.csvsourcesinkcase.CsvSourceSinkTestCase;
+import org.eclipse.scava.crossflow.tests.csvsourcesinkcase.CsvSourceSinkTests;
 import org.eclipse.scava.crossflow.tests.matrix.MatrixWorkflowTests;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflowTests;
 import org.eclipse.scava.crossflow.tests.multiflow.MultiflowTests;
@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	AdditionWorkflowTests.class,
 	AdditionWorkflowCommandLineTests.class,
-	CsvSourceSinkTestCase.class,
+	CsvSourceSinkTests.class,
 	DirectoryCacheTests.class,
 	OccurencesWorkflowTests.class,
 	CrawlerWorkflowTests.class,

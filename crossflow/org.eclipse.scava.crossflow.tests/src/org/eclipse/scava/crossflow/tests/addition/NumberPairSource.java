@@ -6,6 +6,7 @@ import java.util.List;
 public class NumberPairSource extends NumberPairSourceBase {
 	
 	protected List<Integer> numbers = null;
+	protected long interval = 500; 
 	
 	@Override
 	public void produce() {
@@ -17,7 +18,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 		for (int i : numbers) {
 			sendToAdditions(new NumberPair(i, i));
 			try {
-				Thread.sleep(500);
+				Thread.sleep(interval);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
@@ -27,6 +28,10 @@ public class NumberPairSource extends NumberPairSourceBase {
 	
 	public void setNumbers(List<Integer> numbers) {
 		this.numbers = numbers;
+	}
+	
+	public void setInterval(long interval) {
+		this.interval = interval;
 	}
 	
 }

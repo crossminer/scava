@@ -11,8 +11,8 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 		
-		AdditionWorkflow master = AdditionWorkflow.run(new String[] {});
-		AdditionWorkflow worker = AdditionWorkflow.run(new String[] {"-mode", "worker"});
+		AdditionWorkflow master = AdditionWorkflow.run(new String[] {"-instance", "aw1"});
+		AdditionWorkflow worker = AdditionWorkflow.run(new String[] {"-mode", "worker", "-instance", "aw1"});
 		
 		waitFor(master);
 		assertArrayEquals(new Integer[] {2, 4, 6, 8, 10}, master.getAdditionResultsSink().getNumbers().toArray());

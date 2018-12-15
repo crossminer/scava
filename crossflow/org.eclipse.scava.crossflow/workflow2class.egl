@@ -11,19 +11,14 @@ import com.beust.jcommander.Parameter;
 
 import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.Cache;
-import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.Moded;
-import org.eclipse.scava.crossflow.runtime.Task;
-import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 public class [%=w.name%] extends Workflow {
 	
 	public static [%=w.name%] run(String[] args) throws Exception {
-		Moded moded = new Moded();
-		new JCommander(moded, args);
-		[%=w.name%] app = new [%=w.name%](moded.getMode());
+		[%=w.name%] throwAway = new [%=w.name%]();
+		new JCommander(throwAway, args);
+		[%=w.name%] app = new [%=w.name%](throwAway.getMode());
 		new JCommander(app, args);
 		app.run();
 		return app;
@@ -31,6 +26,13 @@ public class [%=w.name%] extends Workflow {
 	
 	public static void main(String[] args) throws Exception {
 		run(args);
+	}
+	
+	
+	public [%=w.name%] createWorker() {
+		[%=w.name%] worker = new [%=w.name%](Mode.WORKER);
+		worker.setInstanceId(instanceId);
+		return worker;
 	}
 	
 	[%for (p in w.parameters) { %]
@@ -50,8 +52,6 @@ public class [%=w.name%] extends Workflow {
 	[%for (s in w.streams) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	[%}%]
-	
-	private boolean createBroker = true;
 	
 	// tasks
 	[%for (t in w.tasks) {%]
@@ -81,10 +81,6 @@ public class [%=w.name%] extends Workflow {
 			}
 		[%}%]
 		}
-	}
-	
-	public void createBroker(boolean createBroker) {
-		this.createBroker = createBroker;
 	}
 	
 	/**

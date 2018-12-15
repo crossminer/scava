@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;
 
-public class CsvSourceSinkTestCase extends WorkflowTests {
+public class CsvSourceSinkTests extends WorkflowTests {
 	
 	private final static Path ACTUAL_TEST_CASE_RESULT = Paths.get("csvs/AdditionResultsCsvSink.csv");
 	private final static Path EXPECTED_TEST_CASE_RESULT = Paths.get("csvs/AdditionResultsCsvSink-expected.csv");
@@ -24,7 +24,6 @@ public class CsvSourceSinkTestCase extends WorkflowTests {
 		
 		// setup test case configuration
 		BaseCase workflow = new BaseCase();
-		workflow.setName("Master-"+UUID.randomUUID().toString());
 		
 		// run test case configuration
 		workflow.run();

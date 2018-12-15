@@ -73,7 +73,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
-		AdditionWorkflow worker = new AdditionWorkflow(Mode.WORKER);
+		AdditionWorkflow worker = master.createWorker();
 		
 		master.run();
 		worker.run();
@@ -93,7 +93,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 		
-		AdditionWorkflow worker = new AdditionWorkflow(Mode.WORKER);
+		AdditionWorkflow worker = master.createWorker();
 		
 		master.run();
 		worker.run();
@@ -110,15 +110,15 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testTaskStatusNotifications() throws Exception {
 		
-		AdditionWorkflow master = new AdditionWorkflow();
+		AdditionWorkflow workflow = new AdditionWorkflow();
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
-		master.getNumberPairSource().setNumbers(numbers);
+		workflow.getNumberPairSource().setNumbers(numbers);
 		
 		BuiltinTopicRecorder<TaskStatus> recorder = new BuiltinTopicRecorder<>();
-		master.getTaskStatusTopic().addConsumer(recorder);
+		workflow.getTaskStatusTopic().addConsumer(recorder);
 		
-		master.run();
-		waitFor(master);
+		workflow.run();
+		waitFor(workflow);
 		
 		assertEquals(numbers.size() * 2, recorder.getRecorded().stream().
 			filter(r -> (r.getStatus() == TaskStatuses.INPROGRESS)).
@@ -128,6 +128,48 @@ public class AdditionWorkflowTests extends WorkflowTests {
 				filter(r -> (r.getStatus() == TaskStatuses.WAITING)).
 				 collect(Collectors.toList()).size());
 		
+	}
+	
+	@Test
+	public void testWithExistingBroker() throws Exception {
+		
+		startBroker();
+		
+		AdditionWorkflow workflow = new AdditionWorkflow();
+		workflow.createBroker(false);
+		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		workflow.setTerminationTimeout(0);
+		workflow.run();
+		
+		waitFor(workflow);
+		assertArrayEquals(new Integer[] {2, 4}, workflow.getAdditionResultsSink().getNumbers().toArray());
+		
+		stopBroker();
+	}
+	
+	@Test
+	public void testParallelWorkflows() throws Exception {
+		
+		startBroker();
+		
+		AdditionWorkflow workflow1 = new AdditionWorkflow();
+		workflow1.createBroker(false);
+		workflow1.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		
+		AdditionWorkflow workflow2 = new AdditionWorkflow();
+		workflow2.createBroker(false);
+		workflow2.getNumberPairSource().setNumbers(Arrays.asList(3, 4));
+		
+		workflow1.run();
+		workflow2.run();
+		
+		waitFor(workflow1);
+		waitFor(workflow2);
+		
+		assertArrayEquals(new Integer[] {2, 4}, workflow1.getAdditionResultsSink().getNumbers().toArray());
+		assertArrayEquals(new Integer[] {6, 8}, workflow2.getAdditionResultsSink().getNumbers().toArray());
+		
+		stopBroker();
 	}
 	
 }

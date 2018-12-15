@@ -40,7 +40,7 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 		List<CommitmentWorkflow> workers = new ArrayList<>();
 		
 		for (int i=0;i<5;i++) {
-			CommitmentWorkflow worker = new CommitmentWorkflow(Mode.WORKER);
+			CommitmentWorkflow worker = master.createWorker();
 			workers.add(worker);
 			worker.run();
 		}

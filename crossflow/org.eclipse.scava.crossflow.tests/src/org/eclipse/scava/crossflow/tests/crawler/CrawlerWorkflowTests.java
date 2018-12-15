@@ -18,7 +18,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 	public void testOutput() throws Exception {
 		
 		CrawlerWorkflow master = new CrawlerWorkflow(Mode.MASTER_BARE);
-		CrawlerWorkflow worker = new CrawlerWorkflow(Mode.WORKER);
+		CrawlerWorkflow worker = master.createWorker();
 		
 		master.run();
 		worker.run();
@@ -35,7 +35,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 	public void testTaskStatusNotifications() throws Exception {
 		
 		CrawlerWorkflow master = new CrawlerWorkflow(Mode.MASTER_BARE);
-		CrawlerWorkflow worker = new CrawlerWorkflow(Mode.WORKER);
+		CrawlerWorkflow worker = master.createWorker();
 		
 		BuiltinTopicRecorder<TaskStatus> recorder = new BuiltinTopicRecorder<>();
 		master.getTaskStatusTopic().addConsumer(recorder);
