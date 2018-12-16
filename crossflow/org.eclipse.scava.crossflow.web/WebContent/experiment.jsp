@@ -13,7 +13,7 @@
 		    <span class="sr-only">Toggle Dropdown</span>
 		  </button>
 		  <div class="dropdown-menu">
-		    <a class="dropdown-item" href="#" v-on:click="startExperiment">Master + one worker</a>
+		    <a class="dropdown-item" href="#" v-on:click="startExperiment">Master and worker</a>
 		    <a class="dropdown-item" href="#" v-on:click="startExperimentMasterOnly">Master only</a>
 		  </div>
 		</div>
@@ -41,6 +41,11 @@
 				  <div class="tab-pane fade show" v-for="(fileDescriptor,index) in experiment.fileDescriptors" :id="'home'+index" role="tabpanel" :aria-labelledby="'home'+index+'-tab'">
 				  	<p/>
 				  	<table class="table table-striped" v-if="fileDescriptor.table">
+				  		<thead v-if="fileDescriptor.table.header">
+				  			<tr>
+				  				<th v-for="cell in fileDescriptor.table.header.cells"> {{ cell }}</th>
+				  			</tr>
+				  		</thead>
 				  		<tr v-for="row in fileDescriptor.table.rows">
 				  			<td v-for="cell in row.cells"> {{ cell }}</td>
 				  		</tr>
@@ -49,10 +54,28 @@
 				  <div class="tab-pane fade show active" id="diagnostics" role="tabpanel" aria-labelledby="diagnostics-tab">
 				  <p>
 					  <table class="table table-striped">
-					  	<tr><td>Broker running</td><td>{{ diagnostics.brokerRunning }}</td></tr>
-					  	<tr><td>Serving from</td><td>{{ diagnostics.rootDirectory }}</td></tr>
-					  	<tr><td>Executed</td><td>{{ experiment.executed }}</td></tr>
-					  	<tr><td>Cached</td><td>{{ experiment.cached }}</td></tr>
+					  	<tr>
+					  		<td>Broker</td>
+					  		<td>
+					  			<span class="badge badge-success" v-if="diagnostics.brokerRunning">running</span>
+                    			<span class="badge badge-danger" v-if="!diagnostics.brokerRunning">stopped</span>
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<td>Executed</td>
+					  		<td>
+					  			<span class="badge badge-success" v-if="experiment.executed">yes</span>
+                    			<span class="badge badge-dark" v-if="!experiment.executed">no</span>
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<td>Cached</td>
+					  		<td>
+					  			<span class="badge badge-success" v-if="experiment.cached">yes</span>
+                    			<span class="badge badge-dark" v-if="!experiment.cached">no</span>
+					  		</td>
+					  	</tr>
+					  	<tr><td>Serving from</td><td><code>{{ diagnostics.rootDirectory }}</code></td></tr>
 					  </table>
 				  </p>
 				  </div>

@@ -2,6 +2,7 @@ package org.eclipse.scava.crossflow.web;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.activemq.broker.BrokerService;
+import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
@@ -138,17 +140,28 @@ public class CrossflowHandler implements Crossflow.Iface {
 		File file = new File(servlet.getServletContext().getRealPath("experiments/" + fileDescriptor.getExperimentId() + "/" + fileDescriptor.getPath()));
 		if (!file.exists()) return new Table();
 		
-		CsvParser parser = new CsvParser(file.getAbsolutePath());
-		Table table = new Table();
-		
-		for (CSVRecord record : parser.getRecordsList()) {
-			Row row = new Row();
-			for (String s : record.toMap().values()) {
-				row.addToCells(s);
+		try {
+			Table table = new Table();
+			boolean header = true;
+			for (CSVRecord record : CSVFormat.RFC4180.parse(new FileReader(file))) {
+				Row row = new Row();
+				for (int i=0;i<record.size();i++) {
+					row.addToCells(record.get(i));
+				}
+				if (header) {
+					table.setHeader(row);
+					header = false;
+				}
+				else {
+					table.addToRows(row);
+				}
 			}
-			table.addToRows(row);
+			return table;
 		}
-		return table;
+		catch (Exception ex) {
+			throw new TException(ex);
+		}
+		
 	}
 	
 	protected Experiment getExperiment(File experimentDirectory) throws TException {

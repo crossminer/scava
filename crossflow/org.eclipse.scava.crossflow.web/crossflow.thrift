@@ -32,7 +32,8 @@ struct FileDescriptor {
 }
 
 struct Table {
-	1: optional list<Row> rows;
+	1: optional Row header;
+	2: optional list<Row> rows;
 }
 
 struct Row {
