@@ -14,22 +14,7 @@ public class CrossflowWorkbench {
 		
 		Crossflow.Client client = new Crossflow.Client(protocol);
 		
-		client.startBroker();
-		
-		Thread.sleep(1000);
-		
-		String instanceId = client.startWorkflow("org.eclipse.scava.crossflow.tests.jar", 
-			"org.eclipse.scava.crossflow.tests.addition.AdditionWorkflow");
-		
-		Thread.sleep(1000);
-		
-		System.out.println(client.isWorkflowRunning(instanceId));
-		
-		while (client.isWorkflowRunning(instanceId)) {
-			Thread.sleep(1000);
-		}
-		
-		System.out.println("Finished");
+		System.out.println(client.startExperiment("wordcount"));
 		
 		transport.close();
 		

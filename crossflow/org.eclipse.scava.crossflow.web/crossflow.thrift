@@ -10,8 +10,21 @@ service Crossflow {
 	void stopBroker();
 	bool isBrokerRunning();
 	
-	string startWorkflow(1:string jar, 2:string main);
-	bool isWorkflowRunning(1:string instanceId);
-	void stopWorkflow(1:string instanceId);
+	string startExperiment(1:string experimentId);
+	bool isExperimentRunning(1:string experimentId);
+	void stopExperiment(1:string experimentId);
 	
+	list<Experiment> getExperiments();
+	Experiment getExperiment(1:string experimentId);
+	
+}
+
+struct Experiment {
+	1: optional string id;
+	2: optional string title;
+	3: optional string className;
+	4: optional string jar;
+	5: optional string summary;
+	6: optional string description;
+	7: optional string status;
 }

@@ -1,19 +1,25 @@
 package org.eclipse.scava.crossflow.web;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class CrossflowHandler implements Crossflow.Iface {
 
-	protected HashMap<String, WorkflowInstance> workflows = new HashMap<>();
+	protected HashMap<String, Workflow> workflows = new HashMap<>();
 	protected BrokerService brokerService;
 	protected CrossflowServlet servlet;
 	
@@ -26,12 +32,14 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 	
 	@Override
-	public String startWorkflow(String jar, String workflowClass) throws TException {
+	public String startExperiment(String experimentId) throws TException {
+		Experiment experiment = getExperiment(experimentId);
 		try {
-			Workflow workflow = (Workflow) getClassLoader().loadClass(workflowClass).getConstructor(Mode.class).newInstance(Mode.MASTER);
+			Workflow workflow = (Workflow) getClassLoader().loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(Mode.MASTER);
+			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
 			workflow.run();
-			workflows.put(workflow.getInstanceId(), new WorkflowInstance(workflow, jar));
+			workflows.put(experimentId, workflow);
 			return workflow.getInstanceId();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,21 +48,71 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 	
 	@Override
-	public void stopWorkflow(String instanceId) throws TException {
-		WorkflowInstance workflowInstance = workflows.get(instanceId);
-		if (workflowInstance != null) {
-			workflowInstance.getWorkflow().terminate();
+	public void stopExperiment(String experimentId) throws TException {
+		Workflow workflow = workflows.get(experimentId);
+		if (workflow != null) {
+			workflow.terminate();
+			workflows.remove(experimentId);
 		}
 	}
 	
 	@Override
-	public boolean isWorkflowRunning(String instanceId) throws TException {
-		WorkflowInstance workflowInstance = workflows.get(instanceId);
-		if (workflowInstance != null) {
-			return !workflowInstance.getWorkflow().hasTerminated();
+	public boolean isExperimentRunning(String experimentId) throws TException {
+		Workflow workflow = workflows.get(experimentId);
+		if (workflow != null) {
+			return workflow.hasTerminated();
 		}
 		else {
 			return false;
+		}
+	}
+	
+	@Override
+	public Experiment getExperiment(String experimentId) throws TException {
+		return getExperiments().stream().filter(e -> e.getId().equals(experimentId)).
+				collect(Collectors.toList()).iterator().next();
+	}
+	
+	@Override
+	public List<Experiment> getExperiments() throws TException {
+		File experimentsDirectory = new File(servlet.getServletContext().getRealPath("experiments"));
+		if (experimentsDirectory.exists()) {
+			List<Experiment> experiments = new ArrayList<>();
+			for (File experimentDirectory : experimentsDirectory.listFiles()) {
+				if (experimentDirectory.isDirectory()) {
+					experiments.add(getExperiment(experimentDirectory));
+				}
+			}
+			return experiments;
+		}
+		return Collections.emptyList();
+	}
+	
+	protected Experiment getExperiment(File experimentDirectory) throws TException {
+		try {
+			File config = new File(experimentDirectory, "experiment.xml");
+			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new FileInputStream(config));
+			Element experimentElement = document.getDocumentElement();
+			Experiment experiment = new Experiment();
+			experiment.setId(experimentDirectory.getName());
+			experiment.setTitle(experimentElement.getAttribute("title"));
+			experiment.setClassName(experimentElement.getAttribute("class"));
+			experiment.setJar(experimentElement.getAttribute("jar"));
+			experiment.setSummary(experimentElement.getAttribute("summary"));
+			experiment.setDescription(experimentElement.getTextContent());
+			
+			Workflow workflow = workflows.get(experiment.getId());
+			if (workflow != null && !workflow.hasTerminated()) {
+				experiment.status = "running";
+			}
+			else {
+				experiment.status = "stopped";
+			}
+			
+			return experiment;
+		}
+		catch (Exception ex) {
+			throw new TException(ex);
 		}
 	}
 

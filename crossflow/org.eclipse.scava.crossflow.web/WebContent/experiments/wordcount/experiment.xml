@@ -1,0 +1,5 @@
+<experiment title="Word Count" 
+	class="org.eclipse.scava.crossflow.tests.wordcount.WordcountWorkflow" 
+	jar="org.eclipse.scava.crossflow.tests.jar" in="." out="." summary="A Crossflow-based implementation of the standard word-count example.">
+	To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
+</experiment>
