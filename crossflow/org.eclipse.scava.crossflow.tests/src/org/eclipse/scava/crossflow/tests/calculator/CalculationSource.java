@@ -10,7 +10,7 @@ public class CalculationSource extends CalculationSourceBase {
 	@Override
 	public void produce() {
 		try {
-			CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "inputs.csv").getAbsolutePath());
+			CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "input.csv").getAbsolutePath());
 			
 			for (CSVRecord record : parser.getRecordsList()){
 				Calculation calculation = new Calculation();
@@ -19,6 +19,7 @@ public class CalculationSource extends CalculationSourceBase {
 				calculation.setB(Integer.parseInt(record.get(2)));
 				sendToCalculations(calculation);
 			}
+		
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);

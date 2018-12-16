@@ -10,10 +10,10 @@
           that supports opinionated and episodical workers. 
           Below are a few data processing workflows you can contribute to.
           </p>
-          <p>
+          <!--p>
             <a href="#" class="btn btn-primary my-2">Main call to action</a>
             <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-          </p>
+          </p-->
         </div>
       </section>
 

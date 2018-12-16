@@ -11,12 +11,15 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.activemq.broker.BrokerService;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class CrossflowHandler implements Crossflow.Iface {
 
@@ -33,7 +36,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 	
 	@Override
-	public String startExperiment(String experimentId) throws TException {
+	public String startExperiment(String experimentId, boolean worker) throws TException {
 		Experiment experiment = getExperiment(experimentId);
 		try {
 			
@@ -41,12 +44,15 @@ public class CrossflowHandler implements Crossflow.Iface {
 				startBroker();
 			}
 			
-			Workflow workflow = (Workflow) getClassLoader().loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(Mode.MASTER);
+			Mode mode = Mode.MASTER;
+			if (!worker) mode = Mode.MASTER_BARE;
+			
+			Workflow workflow = (Workflow) getClassLoader().loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(mode);
 			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
 			workflow.setCache(new DirectoryCache(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"))));
-			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInput())));
-			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutput())));
+			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));
+			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 			
 			workflow.run();
 			workflows.put(experimentId, workflow);
@@ -101,13 +107,11 @@ public class CrossflowHandler implements Crossflow.Iface {
 	@Override
 	public void resetExperiment(String experimentId) throws TException {
 		
-		System.out.println("RESET!!!");
-		
 		Experiment experiment = getExperiment(experimentId);
-		System.out.println(experiment.getOutput() == null);
+		System.out.println(experiment.getOutputDirectory() == null);
 		
-		if (experiment.getOutput() != null) {
-			File output = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutput()));
+		if (experiment.getOutputDirectory() != null) {
+			File output = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory()));
 			if (output != null && output.exists()) {
 				delete(output);
 			}
@@ -128,6 +132,25 @@ public class CrossflowHandler implements Crossflow.Iface {
 		file.delete();
 	}
 	
+	@Override
+	public Table getContent(FileDescriptor fileDescriptor) throws TException {
+		
+		File file = new File(servlet.getServletContext().getRealPath("experiments/" + fileDescriptor.getExperimentId() + "/" + fileDescriptor.getPath()));
+		if (!file.exists()) return new Table();
+		
+		CsvParser parser = new CsvParser(file.getAbsolutePath());
+		Table table = new Table();
+		
+		for (CSVRecord record : parser.getRecordsList()) {
+			Row row = new Row();
+			for (String s : record.toMap().values()) {
+				row.addToCells(s);
+			}
+			table.addToRows(row);
+		}
+		return table;
+	}
+	
 	protected Experiment getExperiment(File experimentDirectory) throws TException {
 		try {
 			File config = new File(experimentDirectory, "experiment.xml");
@@ -139,14 +162,31 @@ public class CrossflowHandler implements Crossflow.Iface {
 			experiment.setClassName(experimentElement.getAttribute("class"));
 			experiment.setJar(experimentElement.getAttribute("jar"));
 			experiment.setSummary(experimentElement.getAttribute("summary"));
-			experiment.setInput(experimentElement.getAttribute("input"));
-			experiment.setOutput(experimentElement.getAttribute("output"));
-			experiment.setDescription(experimentElement.getTextContent());
+			experiment.setInputDirectory(experimentElement.getAttribute("input"));
+			experiment.setOutputDirectory(experimentElement.getAttribute("output"));
 			experiment.setCached(new File(experimentDirectory, "cache").exists());
-			if (experiment.getOutput() != null) {
-				experiment.setExecuted(new File(experimentDirectory, experiment.getOutput()).exists());
+			if (experiment.getOutputDirectory() != null) {
+				experiment.setExecuted(new File(experimentDirectory, experiment.getOutputDirectory()).exists());
 			}
 			
+			for (Element descriptionElement : toElementList(experimentElement.getElementsByTagName("description"))) {
+				experiment.setDescription(descriptionElement.getTextContent());
+			}
+
+			for (Element inputElement : toElementList(experimentElement.getElementsByTagName("input"))) {
+				FileDescriptor fileDescriptor = elementToFileDescriptor(inputElement);
+				fileDescriptor.setExperimentId(experiment.getId());
+				fileDescriptor.setInput(true);
+				experiment.addToFileDescriptors(fileDescriptor);
+			}
+			
+			for (Element outputElement : toElementList(experimentElement.getElementsByTagName("output"))) {
+				FileDescriptor fileDescriptor = elementToFileDescriptor(outputElement);
+				fileDescriptor.setExperimentId(experiment.getId());
+				fileDescriptor.setInput(false);
+				experiment.addToFileDescriptors(fileDescriptor);
+			}
+
 			Workflow workflow = workflows.get(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
 				experiment.status = "running";
@@ -204,5 +244,19 @@ public class CrossflowHandler implements Crossflow.Iface {
 		diagnostics.setRootDirectory(servlet.getServletContext().getRealPath(""));
 		return diagnostics;
 	}
-
+	
+	protected ArrayList<Element> toElementList(NodeList nodeList) {
+		ArrayList<Element> list = new ArrayList<Element>();
+		for (int i=0;i<nodeList.getLength();i++) {
+			list.add((Element)nodeList.item(i));
+		}
+		return list;
+	}
+	
+	protected FileDescriptor elementToFileDescriptor(Element element) {
+		FileDescriptor fileDescriptor = new FileDescriptor();
+		fileDescriptor.setPath(element.getAttribute("path"));
+		fileDescriptor.setTitle(element.getAttribute("title"));
+		return fileDescriptor;
+	}
 }

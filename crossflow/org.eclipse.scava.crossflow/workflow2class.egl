@@ -137,7 +137,14 @@ public class [%=w.name%] extends Workflow {
 						
 							@Override
 							public void run() {
-								[%=t.name.ftlc()%].produce();
+								try {
+									setTaskInProgess([%=t.name.ftlc()%]);
+									[%=t.name.ftlc()%].produce();
+									setTaskWaiting([%=t.name.ftlc()%]);
+								}
+								catch (Exception ex) {
+									throw new RuntimeException(ex);
+								}
 							}
 						}, 0);
 						[%}%]

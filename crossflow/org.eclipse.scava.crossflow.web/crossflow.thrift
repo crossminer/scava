@@ -10,16 +10,33 @@ service Crossflow {
 	void stopBroker();
 	bool isBrokerRunning();
 	
-	string startExperiment(1:string experimentId);
+	string startExperiment(1:string experimentId, 2:bool worker);
 	bool isExperimentRunning(1:string experimentId);
 	void stopExperiment(1:string experimentId);
 	void resetExperiment(1:string experimentId);
+	Table getContent(1:FileDescriptor fileDescriptor);
 	
 	list<Experiment> getExperiments();
 	Experiment getExperiment(1:string experimentId);
 	
 	Diagnostics getDiagnostics();
 	
+}
+
+struct FileDescriptor {
+	1: optional string experimentId;
+	2: optional string id;
+	3: optional string path;
+	4: optional string title;
+	5: optional bool input;
+}
+
+struct Table {
+	1: optional list<Row> rows;
+}
+
+struct Row {
+	1: optional list<string> cells;
 }
 
 struct Diagnostics {
@@ -35,8 +52,9 @@ struct Experiment {
 	5: optional string summary;
 	6: optional string description;
 	7: optional string status;
-	8: optional string input;
-	9: optional string output;
+	8: optional string inputDirectory;
+	9: optional string outputDirectory;
 	10: optional bool cached;
 	11: optional bool executed;
+	12: optional list<FileDescriptor> fileDescriptors;
 }

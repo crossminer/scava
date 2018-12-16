@@ -13,6 +13,7 @@ public class CalculationResultsSink extends CalculationResultsSinkBase {
 		try {
 			if (writer == null) {
 				File output = new File(workflow.getOutputDirectory(), "output.csv");
+				if (output.exists()) { output.delete(); }
 				writer = new CsvWriter(output.getAbsolutePath(), 
 						"a", "operator", "b", "result", "worker");
 			}

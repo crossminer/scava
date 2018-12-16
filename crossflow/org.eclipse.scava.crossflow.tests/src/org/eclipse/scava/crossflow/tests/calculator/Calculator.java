@@ -3,9 +3,13 @@ package org.eclipse.scava.crossflow.tests.calculator;
 
 public class Calculator extends CalculatorBase {
 	
+	protected int executions = 0;
+	protected int delay = 0;
+	
 	@Override
 	public void consumeCalculations(Calculation calculation) {
 		
+		try { Thread.sleep(delay); } catch (InterruptedException e) {}
 		
 		String result = "";
 		
@@ -27,5 +31,13 @@ public class Calculator extends CalculatorBase {
 		sendToCalculationResults(calculationResult);
 		
 	}
-
+	
+	public int getExecutions() {
+		return executions;
+	}
+	
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+	
 }
