@@ -6,39 +6,48 @@
 	<div class="container">
 		<h1 class="jumbotron-heading">{{ experiment.title }}</h1>
 		<p class="lead text-muted">{{ experiment.summary }}</p>
-		<p>
-			<button v-on:click="startWorkflow"
-				v-if="experiment.status == 'stopped'" class="btn btn-success my-2">Start</button>
-			<button v-on:click="stopWorkflow"
-				v-if="experiment.status == 'running'" class="btn btn-danger my-2">Stop</button>
-		</p>
+		<button v-on:click="startWorkflow"
+			v-if="experiment.status == 'stopped'" class="btn btn-success my-2">Start</button>
+		<button v-on:click="stopWorkflow"
+			v-if="experiment.status == 'running'" class="btn btn-danger my-2">Stop</button>
+		<button v-on:click="resetWorkflow"
+			v-if="experiment.status != 'running' && (experiment.cached || experiment.executed)" class="btn btn-information my-2">Reset</button>
 	</div>
 </section>
 
-<!--div class="album py-5 bg-light">
+<section>
 	<div class="container">
-
 		<div class="row">
-			<div class="col-md-4" v-for="experiment in experiments">
-				<div class="card mb-4 box-shadow">
-
-					<div class="card-body">
-						<h3>{{ experiment.title }}</h3>
-						<p class="card-text">{{ experiment.summary }}</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<a role="button" class="btn btn-sm btn-outline-secondary"
-								:href="'experiment.jsp?id=' + experiment.id">Details</a> <span
-								class="badge badge-success"
-								v-if="experiment.status == 'running'">running</span> <span
-								class="badge badge-danger" v-if="experiment.status == 'stopped'">stopped</span>
-						</div>
-					</div>
+            <div class="col-sm-12 col-md-12 py-12">	
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				  <li class="nav-item">
+				    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" id="diagnostics-tab" data-toggle="tab" href="#diagnostics" role="tab" aria-controls="diagnostics" aria-selected="false">Diagnostics</a>
+				  </li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+				  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+				  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+				  <div class="tab-pane fade" id="diagnostics" role="tabpanel" aria-labelledby="diagnostics-tab">
+				  <p>
+					  <table class="table table-striped">
+					  	<tr><td>Broker running</td><td>{{ diagnostics.brokerRunning }}</td></tr>
+					  	<tr><td>Serving from</td><td>{{ diagnostics.rootDirectory }}</td></tr>
+					  	<tr><td>Executed</td><td>{{ experiment.executed }}</td></tr>
+					  	<tr><td>Cached</td><td>{{ experiment.cached }}</td></tr>
+					  </table>
+				  </p>
+				  </div>
 				</div>
 			</div>
-
 		</div>
 	</div>
-</div-->
+</section>
 
 </main>
 
@@ -48,7 +57,8 @@
 		data : {
 			message : 'Hello Vue!',
 			experimentId : null,
-			experiment : new Experiment()
+			experiment : new Experiment(),
+			diagnostics : new Diagnostics()
 		},
 		methods : {
 			startWorkflow : function(event) {
@@ -56,6 +66,9 @@
 			},
 			stopWorkflow : function(event) {
 				crossflow.stopExperiment(this.experimentId);
+			},
+			resetWorkflow : function(event) {
+				crossflow.resetExperiment(this.experimentId);
 			}
 		}
 	})
@@ -69,6 +82,10 @@
 
 	setInterval(function() {
 		app.experiment = crossflow.getExperiment(app.experimentId);
+	}, 1000);
+	
+	setInterval(function() {
+		app.diagnostics = crossflow.getDiagnostics();
 	}, 1000);
 	
 </script>

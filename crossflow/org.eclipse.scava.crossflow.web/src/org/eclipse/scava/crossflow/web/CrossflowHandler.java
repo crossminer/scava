@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.thrift.TException;
+import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.w3c.dom.Document;
@@ -35,9 +36,18 @@ public class CrossflowHandler implements Crossflow.Iface {
 	public String startExperiment(String experimentId) throws TException {
 		Experiment experiment = getExperiment(experimentId);
 		try {
+			
+			if (!isBrokerRunning()) {
+				startBroker();
+			}
+			
 			Workflow workflow = (Workflow) getClassLoader().loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(Mode.MASTER);
 			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
+			workflow.setCache(new DirectoryCache(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"))));
+			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInput())));
+			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutput())));
+			
 			workflow.run();
 			workflows.put(experimentId, workflow);
 			return workflow.getInstanceId();
@@ -88,6 +98,36 @@ public class CrossflowHandler implements Crossflow.Iface {
 		return Collections.emptyList();
 	}
 	
+	@Override
+	public void resetExperiment(String experimentId) throws TException {
+		
+		System.out.println("RESET!!!");
+		
+		Experiment experiment = getExperiment(experimentId);
+		System.out.println(experiment.getOutput() == null);
+		
+		if (experiment.getOutput() != null) {
+			File output = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutput()));
+			if (output != null && output.exists()) {
+				delete(output);
+			}
+		}
+		File cache = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"));
+		if (cache != null && cache.exists()) {
+			delete(cache);
+		}
+		
+	}
+	
+	public void delete(File file) {
+		if (file.isDirectory()) {
+			for (File child : file.listFiles()) {
+				delete(child);
+			}
+		}
+		file.delete();
+	}
+	
 	protected Experiment getExperiment(File experimentDirectory) throws TException {
 		try {
 			File config = new File(experimentDirectory, "experiment.xml");
@@ -99,7 +139,13 @@ public class CrossflowHandler implements Crossflow.Iface {
 			experiment.setClassName(experimentElement.getAttribute("class"));
 			experiment.setJar(experimentElement.getAttribute("jar"));
 			experiment.setSummary(experimentElement.getAttribute("summary"));
+			experiment.setInput(experimentElement.getAttribute("input"));
+			experiment.setOutput(experimentElement.getAttribute("output"));
 			experiment.setDescription(experimentElement.getTextContent());
+			experiment.setCached(new File(experimentDirectory, "cache").exists());
+			if (experiment.getOutput() != null) {
+				experiment.setExecuted(new File(experimentDirectory, experiment.getOutput()).exists());
+			}
 			
 			Workflow workflow = workflows.get(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
@@ -145,11 +191,18 @@ public class CrossflowHandler implements Crossflow.Iface {
 			brokerService = null;
 		}
 	}
-
+	
 	@Override
 	public boolean isBrokerRunning() throws TException {
 		return brokerService != null;
 	}
 	
+	@Override
+	public Diagnostics getDiagnostics() throws TException {
+		Diagnostics diagnostics = new Diagnostics();
+		diagnostics.setBrokerRunning(isBrokerRunning());
+		diagnostics.setRootDirectory(servlet.getServletContext().getRealPath(""));
+		return diagnostics;
+	}
 
 }

@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -7,7 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import javax.jms.Session;
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
 import javax.management.ObjectName;
@@ -17,7 +18,6 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
@@ -44,7 +44,11 @@ public abstract class Workflow {
 	protected boolean cacheEnabled = true;
 	private HashSet<String> activeJobs = new HashSet<String>();
 	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
-
+	
+	protected File inputDirectory = new File(".");
+	protected File outputDirectory = new File(".");
+	protected File tempDirectory = null;
+	
 	protected BuiltinTopic<TaskStatus> taskStatusTopic = null;
 	protected BuiltinTopic<Object[]> resultsTopic = null;
 	protected BuiltinTopic<ControlSignal> controlTopic = null;
@@ -94,6 +98,9 @@ public abstract class Workflow {
 	
 	protected void connect() throws Exception {
 		
+		if (tempDirectory == null) {
+			tempDirectory = Files.createTempDirectory("crossflow").toFile();
+		}
 		taskStatusTopic.init();
 		resultsTopic.init();
 		controlTopic.init();
@@ -397,4 +404,29 @@ public abstract class Workflow {
 	public void setTaskUnblocked(Task caller) throws Exception {
 		taskStatusTopic.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
+
+	public File getInputDirectory() {
+		return inputDirectory;
+	}
+
+	public void setInputDirectory(File inputDirectory) {
+		this.inputDirectory = inputDirectory;
+	}
+
+	public File getOutputDirectory() {
+		return outputDirectory;
+	}
+
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
+
+	public File getTempDirectory() {
+		return tempDirectory;
+	}
+
+	public void setTempDirectory(File tempDirectory) {
+		this.tempDirectory = tempDirectory;
+	}
+	
 }

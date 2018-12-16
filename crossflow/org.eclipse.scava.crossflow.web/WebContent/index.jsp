@@ -43,22 +43,21 @@
     </main>
 
 	<script>
-	var app = new Vue({
-	  el: '#app',
-	  data: {
-	    message: 'Hello Vue!',
-	    experiments: null
-	  }
-	})
-	
-	var transport = new Thrift.TXHRTransport("/org.eclipse.scava.crossflow.web/crossflow");
-       var protocol = new Thrift.TJSONProtocol(transport);
-       var crossflow = new CrossflowClient(protocol);
-       
-       setInterval(function(){ 
-    	   app.experiments = crossflow.getExperiments();
-	   }, 1000);
-    
+		var app = new Vue({
+			el: '#app',
+	  		data: {
+		    	message: 'Hello Vue!',
+		    	experiments: null
+	    	}
+		})
+		
+		var transport = new Thrift.TXHRTransport("/org.eclipse.scava.crossflow.web/crossflow");
+		var protocol = new Thrift.TJSONProtocol(transport);
+		var crossflow = new CrossflowClient(protocol);
+
+		setInterval(function() {
+			app.experiments = crossflow.getExperiments();
+		}, 1000);
 	</script>
 	
 <jsp:include page="footer.jsp"/>

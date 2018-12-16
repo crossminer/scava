@@ -1,5 +1,0 @@
-<experiment title="Addition" 
-	class="org.eclipse.scava.crossflow.tests.addition.AdditionWorkflow" 
-	jar="org.eclipse.scava.crossflow.tests.jar" in="." out="." summary="A minimal example that just adds numbers">
-	To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
-</experiment>

@@ -1,8 +1,11 @@
-<experiment title="Word Count" 
-	class="org.eclipse.scava.crossflow.tests.wordcount.WordcountWorkflow" 
+<experiment 
+	title="Calculator" 
+	class="org.eclipse.scava.crossflow.tests.calculator.CalculatorWorkflow" 
 	jar="org.eclipse.scava.crossflow.tests.jar" 
 	input="in" 
 	output="out" 
-	summary="A Crossflow-based implementation of the standard word-count program.">
+	summary="A minimal example that performs numeric operations on numbers from a CSV file."
+	>
+	
 	To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
 </experiment>

@@ -14,7 +14,7 @@ public class CrossflowWorkbench {
 		
 		Crossflow.Client client = new Crossflow.Client(protocol);
 		
-		System.out.println(client.startExperiment("wordcount"));
+		client.resetExperiment("calculator");
 		
 		transport.close();
 		
