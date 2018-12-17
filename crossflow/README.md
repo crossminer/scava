@@ -1,48 +1,45 @@
-
 # Crossflow
 
-Crossflow language, editors, distributed execution, and monitoring.
+Crossflow is a distributed data processing framework that supports dispensation of work across multiple opinionated and low-commitment workers.
 
-HOW TO USE:
------------
+## Running from source
 
-1. Download the Eclipse Epsilon Distribution from: http://www.eclipse.org/epsilon/download/
+To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thrift. Brief instructions are provided below.
 
-2. Clone repository.
+### Eclipse
 
-3. Import projects to Eclipse workspace as projects using the Eclipse "Existing Projects into Workspace" dialog.
+- Start with a J2EE distribution from 
+- Install Emfatic from http://download.eclipse.org/emfatic/update/ (Untick the " Group items by category " check box)
+- Install the Graphical Modelling Framework (GMF) Tooling SDK from http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases/
+- Install the following features from http://download.eclipse.org/epsilon/interim/
+	- Epsilon Core
+	- Epsilon Core Develoment Tools
+	- Epsilon EMF Integration
+	- Epsilon GMF Integration
 
-Projects org.eclipse.scava.crossflow.language.* contain the workflow metamodel and graphical editor.
+Tomcat
+---
+- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip
+- Set up Tomcat in your Eclipse through the Servers view
 
-Projects org.eclipse.scava.crossflow.restmule.* contain the resilient clients used by crossflow.
+Thrift
+---
+Install Apache Thrift
+	- Standalone executable for Windows
+	- Homebrew for Mac
 
-Project org.eclipse.scava.crossflow contains the Epsilon-based code generators used to create Java code from a workflow model.
+Git
+---
+- Clone the https://github.com/crossminer/scava/ repository
+- Switch to the crossflow branch
+- Import all projects from the crossflow and the restmule folders
 
-Project org.eclipse.scava.crossflow.runtime contains the execution engine for workflows.
+Web application
+---
+- To run the web application right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
+- The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
 
-Project org.eclipse.scava.crossflow.examples contains examples of workflows that can be executed.
-
-3. To use the graphical editor launch a new eclipse that includes these plugins in its execution and create a new crossflow model or open an existing one using the crossflow diagram editor.
-
-------------------------------------------------------------------
-![CROSSMINER project logo](https://github.com/crossminer/internal-material/blob/b312a1244b7edbbf402b7f61c7e0edb5cb9faf61/Templates/Logos/CROSSMINER%20logo%20small.png?raw=true)
-
-Crossflow is part of the [CROSSMINER](https://www.crossminer.org) project --- Developer-Centric Knowledge Mining from Large Open-Source Software Repositories --- and belongs to the [Crossminer Github organization](https://github.com/crossminer). The integrated software framework of the CROSSMINER project is referred to as [Scava](https://github.com/crossminer/scava).
-
-## Project Partners
-The CROSSMINER  consortium consists of the following organisations:
-
-* The Open Group (X/Open Company), UK
-* University of York, UK
-* University of L'Aquila, Italy
-* Edge Hill University, UK
-* Centrum Voor Wiskunde en Informatica, Netherlands
-* Athens University of Economics and Business, Greece
-* Unparallel, Portugal
-* Softeam, France
-* Frontendart, Hungary
-* Bitergia, Spain
-* OW2 Consortium, France
-* Eclipse Foundation Europe GmbH, Germany
-
-The [CROSSMINER](https://www.crossminer.org) project receives funding under the [European Union's Horizon 2020 Research and Innovation Programme](https://ec.europa.eu/programmes/horizon2020/en/h2020-section/information-and-communication-technologies) under grant agreement No. 732223.
+Generating stuff
+---
+- org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
+- /org.eclipse.scava.crossflow.web/deploy-tests-run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and Javascript and also deploys org.eclipse.scava.crossflow.tests under org.eclipse.scava.crossflow.web
