@@ -1,0 +1,13 @@
+<experiment 
+	title="Word Count" 
+	class="org.eclipse.scava.crossflow.tests.wordcount.WordCountWorkflow" 
+	jar="org.eclipse.scava.crossflow.tests.jar" 
+	input="in" 
+	output="out" 
+	summary="Counts the frequencies of words in a set of text files and displays the 100 most frequent"
+	>
+	<output path="out/output.csv" title="Results"/>
+	<description>
+		To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
+	</description>
+</experiment>

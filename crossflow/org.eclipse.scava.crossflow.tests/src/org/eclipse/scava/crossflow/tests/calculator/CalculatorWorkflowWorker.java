@@ -8,7 +8,7 @@ public class CalculatorWorkflowWorker {
 		
 		CalculatorWorkflow worker1 = new CalculatorWorkflow(Mode.WORKER);
 		worker1.setName("Eclipse");
-		worker1.getCalculator().setDelay(500);
+		worker1.getCalculator().setDelay(1000);
 		worker1.setInstanceId("calculator");
 		worker1.run();
 		

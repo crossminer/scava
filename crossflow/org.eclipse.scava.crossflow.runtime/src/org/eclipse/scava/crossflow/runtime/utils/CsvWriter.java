@@ -36,7 +36,11 @@ public class CsvWriter {
 	public void flush() throws IOException {
 		csvPrinter.flush();
 	}
-
+	
+	public void close() throws IOException {
+		csvPrinter.close();
+	}
+  
 	public static void main(String[] args) throws IOException {
 
 		CsvWriter writer = new CsvWriter("record-out.csv", "FileExtension", "Keyword");

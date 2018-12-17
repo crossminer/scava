@@ -40,20 +40,29 @@
 				<div class="tab-content" id="myTabContent">
 				  <div class="tab-pane fade show" v-for="(fileDescriptor,index) in experiment.fileDescriptors" :id="'home'+index" role="tabpanel" :aria-labelledby="'home'+index+'-tab'">
 				  	<p/>
-				  	<table class="table table-striped" v-if="fileDescriptor.table">
-				  		<thead v-if="fileDescriptor.table.header">
+				  	<table class="table table-striped table-bordered" v-if="fileDescriptor.table">
+				  		<thead v-if="fileDescriptor.table.header" class="thead-dark">
 				  			<tr>
+				  				<th width="50px"><span class="badge badge-secondary">#</span></th>
 				  				<th v-for="cell in fileDescriptor.table.header.cells"> {{ cell }}</th>
 				  			</tr>
 				  		</thead>
-				  		<tr v-for="row in fileDescriptor.table.rows">
+				  		<tr v-for="(row,index) in fileDescriptor.table.rows">
+				  			<td><span class="badge badge-secondary">{{ index+1 }}</span></td>
 				  			<td v-for="cell in row.cells"> {{ cell }}</td>
 				  		</tr>
 				  	</table>
+				  	<div class="alert alert-info" role="alert" v-if="!fileDescriptor.table && !fileDescriptor.input && !experiment.executed">
+				  	Not what you were hoping for? <a href="#" v-on:click="startExperiment">Start the experiment</a> and data will appear here soon.
+				  	</div>
+				  	<div class="alert alert-warning" role="alert" v-if="!fileDescriptor.table && !fileDescriptor.input && experiment.executed">
+				  	The experiment produced no data here.
+				  	</div>
+				  	
 				  </div>
 				  <div class="tab-pane fade show active" id="diagnostics" role="tabpanel" aria-labelledby="diagnostics-tab">
 				  <p>
-					  <table class="table table-striped">
+					  <table class="table table-striped table-bordered">
 					  	<tr>
 					  		<td>Broker</td>
 					  		<td>

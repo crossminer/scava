@@ -79,8 +79,8 @@ public class DirectoryCache implements Cache {
 			try {
 				File inputFolder = new File(streamFolder, input.getHash());
 				inputFolder.mkdirs();
-				File inputFile = new File(inputFolder, "job.xml");
-				if (!inputFile.exists()) save(input, inputFile);
+				//File inputFile = new File(inputFolder, "job.xml");
+				//if (!inputFile.exists()) save(input, inputFile);
 				File outputFile = new File(inputFolder, output.getHash());
 				jobFolderMap.put(input.getHash(), inputFolder);
 				save(output, outputFile);
