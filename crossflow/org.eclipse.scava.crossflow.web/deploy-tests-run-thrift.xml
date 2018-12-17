@@ -2,7 +2,23 @@
 	
 	<!-- Copies all jars from o.e.s.c.runtime.dependencies here, builds o.e.s.c.tests.jar and runs Thrift -->
 	
-    <target name="main">
+	<condition property="is-mac">
+		<os family="mac" />
+	</condition>
+	
+	<condition property="is-windows">
+		<os family="windows" />
+	</condition>
+	
+    <target name="mac-init" if="is-mac">
+         <property name="thrift" value="/usr/local/bin/thrift"/>
+    </target>
+
+    <target name="windows-init" if="is-windows">
+		<property name="thrift" value="c:\tools\thrift\thrift"/>
+	</target>
+
+    <target name="main" depends="mac-init, windows-init">
     
     	<copy todir="WebContent/WEB-INF/lib/">
     		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies" includes="*.jar"/>
@@ -17,8 +33,8 @@
         </jar>
     	
     	<mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
-    	    	
-    	<exec executable="c:\tools\thrift\thrift">
+    	
+    	<exec executable="${thrift}">
 			<arg value="--gen"/>
 			<arg value="java"/>
 			<arg value="-out"/>
@@ -26,7 +42,7 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
 		
-    	<exec executable="c:\tools\thrift\thrift">
+    	<exec executable="${thrift}">
 			<arg value="--gen"/>
 			<arg value="java"/>
 			<arg value="-out"/>
@@ -34,7 +50,7 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
     	
-		<exec executable="c:\tools\thrift\thrift">
+		<exec executable="${thrift}">
 			<arg value="--gen"/>
 			<arg value="js"/>
 			<arg value="-out"/>
