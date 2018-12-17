@@ -85,6 +85,9 @@
 					  		</td>
 					  	</tr>
 					  	<tr><td>Serving from</td><td><code>{{ diagnostics.rootDirectory }}</code></td></tr>
+					  	<tr><td>Workflow class</td><td><code>{{ experiment.className }}</code></td></tr>
+					  	<tr><td>Input/output directories</td><td><code>{{ experiment.inputDirectory }} / {{ experiment.outputDirectory }}</code></td></tr>
+					  	
 					  </table>
 				  </p>
 				  </div>
