@@ -8,7 +8,7 @@
           <p class="lead text-muted">
           Crossflow is a distributed data processing framework 
           that supports opinionated and episodical workers. 
-          Below are a few data processing workflows you can contribute to.
+          Below are a few data processing workflows you can try out and contribute to.
           </p>
           <!--p>
             <a href="#" class="btn btn-primary my-2">Main call to action</a>
