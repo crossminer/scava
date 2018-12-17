@@ -29,13 +29,16 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 - Switch to the crossflow branch
 - Import all projects from the crossflow and the restmule folders
 
+### Generating stuff
+You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
+
+- org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
+- org.eclipse.scava.crossflow.web/deploy-tests-run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript and also deploys org.eclipse.scava.crossflow.tests under org.eclipse.scava.crossflow.web
+- org.eclipse.scava.crossflow.examples/generate-all-examples.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.examples/models
+
 ### Web application
 - To run the web application right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
 - The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
-
-### Generating stuff
-- org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
-- org.eclipse.scava.crossflow.web/deploy-tests-run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript and also deploys org.eclipse.scava.crossflow.tests under org.eclipse.scava.crossflow.web
 
 ### Screenshots
 
