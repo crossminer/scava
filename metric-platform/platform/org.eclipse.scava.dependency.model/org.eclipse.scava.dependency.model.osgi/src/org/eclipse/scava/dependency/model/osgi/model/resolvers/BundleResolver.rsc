@@ -64,8 +64,8 @@ private map[str,str] setRequiredBundlesParams(RequireBundle reqBundle, OSGiModel
 }
 
 private map[str,str] getReqBundleVersionRange(QuotedHybridVersion ver, map[str,str] params) {
-	vRange;
-	vSpec;
+	tuple[str, str] vRange;
+	str vSpec;
 	
 	if((QuotedHybridVersion)`"<Version version>"` := ver) {
 		vRange = <"[<version>", "(-1">;

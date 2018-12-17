@@ -21,5 +21,6 @@ data OSGiModel = osgiModel (
 	rel[loc bundle, loc impPackage, map[str,str] params] importedPackages = {},
 	rel[loc bundle, loc expPackage, map[str,str] params] exportedPackages = {},
 	rel[loc bundle, loc dynImpPackage, map[str,str] params] dynamicImportedPackages = {},
-	rel[loc bundle, set[Header] header] headers = {}
+	rel[loc bundle, set[Header] header] headers = {},
+	rel[loc bundle, set[loc] pluginFiles] pluginFiles = {}
 );
