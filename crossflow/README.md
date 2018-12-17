@@ -20,7 +20,7 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 - Set up Tomcat in your Eclipse through the Servers view
 
 ### Thrift
-Install Apache Thrift (http://thrift.apache.org/)
+- Install Apache Thrift (http://thrift.apache.org/)
 	- Standalone executable for Windows
 	- Homebrew for Mac
 
