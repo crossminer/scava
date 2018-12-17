@@ -7,8 +7,8 @@
           <h1 class="jumbotron-heading">Crossflow</h1>
           <p class="lead text-muted">
           Crossflow is a distributed data processing framework 
-          that supports opinionated and episodical workers. 
-          Below are a few data processing workflows you can try out and contribute to.
+          that supports dispensation of work across multiple opinionated and low-commitment workers. 
+          Below are a few data processing workflows you can try out.
           </p>
           <!--p>
             <a href="#" class="btn btn-primary my-2">Main call to action</a>
