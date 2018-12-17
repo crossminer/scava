@@ -16,7 +16,9 @@
             <fileset dir="../org.eclipse.scava.crossflow.tests/bin"/>
         </jar>
     	
-    	<exec executable="/usr/local/bin/thrift">
+    	<mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
+    	    	
+    	<exec executable="c:\tools\thrift\thrift">
 			<arg value="--gen"/>
 			<arg value="java"/>
 			<arg value="-out"/>
@@ -24,7 +26,7 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
 		
-    	<exec executable="/usr/local/bin/thrift">
+    	<exec executable="c:\tools\thrift\thrift">
 			<arg value="--gen"/>
 			<arg value="java"/>
 			<arg value="-out"/>
@@ -32,7 +34,7 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
     	
-		<exec executable="/usr/local/bin/thrift">
+		<exec executable="c:\tools\thrift\thrift">
 			<arg value="--gen"/>
 			<arg value="js"/>
 			<arg value="-out"/>
