@@ -31,14 +31,14 @@
             <div class="col-sm-12 col-md-12 py-12">	
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 				  <li class="nav-item" v-for="(fileDescriptor,index) in experiment.fileDescriptors">
-				    <a class="nav-link" :id="'tab' + index" data-toggle="tab" :href="'#home' + index" role="tab" :aria-controls="'home'+index" aria-selected="true">{{ fileDescriptor.title }}</a>
+				    <a class="nav-link" :id="'tab' + index" data-toggle="tab" :href="'#file' + index" role="tab" :aria-controls="'file'+index" aria-selected="true">{{ fileDescriptor.title }}</a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link active" id="advanced-tab" data-toggle="tab" href="#advanced" role="tab" aria-controls="advanced" aria-selected="false">Advanced</a>
 				  </li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
-				  <div class="tab-pane fade show" v-for="(fileDescriptor,index) in experiment.fileDescriptors" :id="'home'+index" role="tabpanel" :aria-labelledby="'home'+index+'-tab'">
+				  <div class="tab-pane fade show" v-for="(fileDescriptor,index) in experiment.fileDescriptors" :id="'file'+index" role="tabpanel" :aria-labelledby="'file'+index+'-tab'">
 				  	<p/>
 				  	<table class="table table-striped table-bordered" v-if="fileDescriptor.table">
 				  		<thead v-if="fileDescriptor.table.header" class="thead-dark">
