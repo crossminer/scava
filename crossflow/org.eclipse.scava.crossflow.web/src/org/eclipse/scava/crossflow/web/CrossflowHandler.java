@@ -138,7 +138,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 	public Table getContent(FileDescriptor fileDescriptor) throws TException {
 		
 		File file = new File(servlet.getServletContext().getRealPath("experiments/" + fileDescriptor.getExperimentId() + "/" + fileDescriptor.getPath()));
-		if (!file.exists()) return null;
+		if (!file.exists()) return new Table();
 		
 		try {
 			Table table = new Table();

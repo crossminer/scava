@@ -52,7 +52,7 @@
 				  			<td v-for="cell in row.cells"> {{ cell }}</td>
 				  		</tr>
 				  	</table>
-				  	<div class="alert alert-info" role="alert" v-if="!fileDescriptor.table && !fileDescriptor.input && !experiment.executed">
+				  	<div class="alert alert-info" role="alert" v-if="(!fileDescriptor.table || !fileDescriptor.table.header) && !fileDescriptor.input && !experiment.executed">
 				  	Not what you were hoping for? <a href="#" v-on:click="startExperiment">Start the experiment</a> and data will appear here soon.
 				  	</div>
 				  	<div class="alert alert-warning" role="alert" v-if="!fileDescriptor.table && !fileDescriptor.input && experiment.executed">
@@ -131,16 +131,19 @@
 	var url = new URL(window.location.href);
 	app.experimentId = url.searchParams.get("id");
 	
+	refresh();
+	
 	setInterval(function() {
+		refresh()
+	}, 2000);
+	
+	function refresh() {
 		app.experiment = crossflow.getExperiment(app.experimentId);
 		app.experiment.fileDescriptors.forEach(function(fileDescriptor){
 			fileDescriptor.table = crossflow.getContent(fileDescriptor);
 		});
-	}, 1000);
-	
-	setInterval(function() {
 		app.diagnostics = crossflow.getDiagnostics();
-	}, 1000);
+	}
 	
 </script>
 
