@@ -64,6 +64,12 @@
 				  <p>
 					  <table class="table table-striped table-bordered">
 					  	<tr>
+					  		<td>Auto-refresh</td>
+					  		<td>
+					  			<input type="checkbox" id="refresh" checked>
+					  		</td>
+					  	</tr>
+					  	<tr>
 					  		<td>Broker</td>
 					  		<td>
 					  			<span class="badge badge-success" v-if="diagnostics.brokerRunning">running</span>
@@ -134,8 +140,10 @@
 	refresh();
 	
 	setInterval(function() {
-		refresh()
-	}, 2000);
+		if (document.getElementById("refresh").checked) {
+			refresh();
+		}
+	}, 3000);
 	
 	function refresh() {
 		app.experiment = crossflow.getExperiment(app.experimentId);
