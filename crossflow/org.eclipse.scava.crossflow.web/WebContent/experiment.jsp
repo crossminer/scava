@@ -34,7 +34,7 @@
 				    <a class="nav-link" :id="'tab' + index" data-toggle="tab" :href="'#home' + index" role="tab" :aria-controls="'home'+index" aria-selected="true">{{ fileDescriptor.title }}</a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link active" id="diagnostics-tab" data-toggle="tab" href="#diagnostics" role="tab" aria-controls="diagnostics" aria-selected="false">Diagnostics</a>
+				    <a class="nav-link active" id="advanced-tab" data-toggle="tab" href="#advanced" role="tab" aria-controls="advanced" aria-selected="false">Advanced</a>
 				  </li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
@@ -60,7 +60,7 @@
 				  	</div>
 				  	
 				  </div>
-				  <div class="tab-pane fade show active" id="diagnostics" role="tabpanel" aria-labelledby="diagnostics-tab">
+				  <div class="tab-pane fade show active" id="advanced" role="tabpanel" aria-labelledby="advanced-tab">
 				  <p>
 					  <table class="table table-striped table-bordered">
 					  	<tr>
