@@ -16,7 +16,14 @@ public class [%=t.name%] [%if(t.isJob()){%] extends Job [%}else{%] implements Se
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
 	}
-	
+
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%], Job correlation) {
+		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		this.correlationId = correlation.getId();
+	}
+		
 	[%for (f in t.fields) { %]
 	protected [%=f.getJavaType()%] [%=f.name%] [%if(f.many){%]= new ArrayList<>()[%}%];
 	
