@@ -21,19 +21,25 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelType;
 
-public class BuiltinTopic<T extends Serializable> implements Channel {
+public class BuiltinChannel<T extends Serializable> implements Channel {
 	
 	protected ActiveMQDestination destination;
 	protected Connection connection;
 	protected Session session;
 	protected Workflow workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<>();
-	protected List<BuiltinTopicConsumer<T>> pendingConsumers = new ArrayList<>();
+	protected List<BuiltinChannelConsumer<T>> pendingConsumers = new ArrayList<>();
 	protected String name;
+	protected boolean broadcast;
 	
-	public BuiltinTopic(Workflow workflow, String name) {
+	public BuiltinChannel(Workflow workflow, String name) {
+		this(workflow, name, true);
+	}
+	
+	public BuiltinChannel(Workflow workflow, String name, boolean broadcast) {
 		this.workflow = workflow;
 		this.name = name;
+		this.broadcast = broadcast;
 	}
 	
 	public void init() throws Exception {
@@ -42,9 +48,10 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 		connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = (ActiveMQDestination) session.createTopic(name);
+		if (broadcast) destination = (ActiveMQDestination) session.createTopic(name);
+		else destination = (ActiveMQDestination) session.createQueue(name);
 		
-		for (BuiltinTopicConsumer<T> pendingConsumer : pendingConsumers) {
+		for (BuiltinChannelConsumer<T> pendingConsumer : pendingConsumers) {
 			addConsumer(pendingConsumer);
 		}
 		pendingConsumers.clear();
@@ -61,7 +68,7 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 		producer.close();
 	}
 
-	public void addConsumer(BuiltinTopicConsumer<T> consumer) throws Exception {
+	public void addConsumer(BuiltinChannelConsumer<T> consumer) throws Exception {
 		
 		if (session == null) {
 			pendingConsumers.add(consumer);

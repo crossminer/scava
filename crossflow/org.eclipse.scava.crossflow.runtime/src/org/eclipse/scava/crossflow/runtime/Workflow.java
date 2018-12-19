@@ -53,9 +53,9 @@ public abstract class Workflow {
 	protected File outputDirectory = new File(".");
 	protected File tempDirectory = null;
 	
-	protected BuiltinTopic<TaskStatus> taskStatusTopic = null;
-	protected BuiltinTopic<Object[]> resultsTopic = null;
-	protected BuiltinTopic<ControlSignal> controlTopic = null;
+	protected BuiltinChannel<TaskStatus> taskStatusTopic = null;
+	protected BuiltinChannel<Object[]> resultsTopic = null;
+	protected BuiltinChannel<ControlSignal> controlTopic = null;
 	
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
@@ -94,9 +94,9 @@ public abstract class Workflow {
 	}
 	
 	public Workflow() {
-		taskStatusTopic = new BuiltinTopic<TaskStatus>(this, "TaskStatusPublisher." + getInstanceId());
-		resultsTopic = new BuiltinTopic<Object[]>(this, "ResultsBroadcaster." + getInstanceId());
-		controlTopic = new BuiltinTopic<ControlSignal>(this, "ControlTopic." + getInstanceId());
+		taskStatusTopic = new BuiltinChannel<TaskStatus>(this, "TaskStatusPublisher." + getInstanceId());
+		resultsTopic = new BuiltinChannel<Object[]>(this, "ResultsBroadcaster." + getInstanceId());
+		controlTopic = new BuiltinChannel<ControlSignal>(this, "ControlTopic." + getInstanceId());
 		instanceId = UUID.randomUUID().toString();
 	}
 	
@@ -116,7 +116,7 @@ public abstract class Workflow {
 		// in terminate
 		// activeQueues.add(controlTopic);
 
-		controlTopic.addConsumer(new BuiltinTopicConsumer<ControlSignal>() {
+		controlTopic.addConsumer(new BuiltinChannelConsumer<ControlSignal>() {
 
 			@Override
 			public void consume(ControlSignal signal) {
@@ -157,7 +157,7 @@ public abstract class Workflow {
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
 		if (isMaster())
-			taskStatusTopic.addConsumer(new BuiltinTopicConsumer<TaskStatus>() {
+			taskStatusTopic.addConsumer(new BuiltinChannelConsumer<TaskStatus>() {
 
 				@Override
 				public void consume(TaskStatus status) {
@@ -397,15 +397,15 @@ public abstract class Workflow {
 		return terminated;
 	}
 	
-	public BuiltinTopic<TaskStatus> getTaskStatusTopic() {
+	public BuiltinChannel<TaskStatus> getTaskStatusTopic() {
 		return taskStatusTopic;
 	}
 	
-	public BuiltinTopic<Object[]> getResultsTopic() {
+	public BuiltinChannel<Object[]> getResultsTopic() {
 		return resultsTopic;
 	}
 	
-	public BuiltinTopic<ControlSignal> getControlTopic() {
+	public BuiltinChannel<ControlSignal> getControlTopic() {
 		return controlTopic;
 	}
 	

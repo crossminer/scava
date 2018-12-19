@@ -3,9 +3,9 @@ package org.eclipse.scava.crossflow.tests.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.scava.crossflow.runtime.BuiltinTopicConsumer;
+import org.eclipse.scava.crossflow.runtime.BuiltinChannelConsumer;
 
-public class BuiltinTopicRecorder<T> implements BuiltinTopicConsumer<T> {
+public class BuiltinChannelRecorder<T> implements BuiltinChannelConsumer<T> {
 	
 	protected List<T> recorded = new ArrayList<>();
 	

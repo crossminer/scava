@@ -6,13 +6,13 @@ public abstract class Task {
 	
 	public abstract Workflow getWorkflow();
 	
-	protected BuiltinTopic<Object[]> resultsTopic;
+	protected BuiltinChannel<Object[]> resultsTopic;
 	
-	public void setResultsTopic(BuiltinTopic<Object[]> resultsTopic) {
+	public void setResultsTopic(BuiltinChannel<Object[]> resultsTopic) {
 		this.resultsTopic = resultsTopic;
 	}
 	
-	public BuiltinTopic<Object[]> getResultsTopic() {
+	public BuiltinChannel<Object[]> getResultsTopic() {
 		return resultsTopic;
 	}
 	

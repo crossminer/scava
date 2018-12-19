@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.scava.crossflow.runtime.BuiltinTopicConsumer;
+import org.eclipse.scava.crossflow.runtime.BuiltinChannelConsumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
@@ -266,7 +266,7 @@ public class CrossflowExecutionView extends ViewPart {
 
 		try {
 			ResultsReceiver rp = new ResultsReceiver();
-			rp.addConsumer(new BuiltinTopicConsumer<Object[]>() {
+			rp.addConsumer(new BuiltinChannelConsumer<Object[]>() {
 				@Override
 				public void consume(Object[] job) {
 					System.err.println("consuming...");
