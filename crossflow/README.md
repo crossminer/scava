@@ -29,6 +29,11 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 - Switch to the crossflow branch
 - Import all projects from the crossflow and the restmule folders
 
+### Ivy
+We're using Apache Ivy for dependency management (i.e. so that we don't need to store jars in the repo)
+- Install the Ivy Eclipse plugin: https://ant.apache.org/ivy/ivyde/
+- If Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click and select Ivy -> Resolve
+
 ### Generating stuff
 You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
 
