@@ -46,7 +46,8 @@ operation Task getShape() {
 		return "invhouse";
 	}
 	else {
-		return "box";
+		if (self.masterOnly) return "box3d";
+		else return "box";
 	}
 }
 %]

@@ -73,7 +73,7 @@ class Type {
 @gmf.node(label="name", label.pattern="{0}")
 class Field {
   attr String name;
-  attr String type;
+  attr String type = "String";
   attr boolean many = false;
 }
 
