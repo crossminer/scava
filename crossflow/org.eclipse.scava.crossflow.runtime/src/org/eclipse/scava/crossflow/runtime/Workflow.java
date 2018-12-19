@@ -31,6 +31,10 @@ public abstract class Workflow {
 	
 	@Parameter(names = { "-master" }, description = "IP of the master")
 	protected String master = "localhost";
+	
+	@Parameter(names = { "-port" }, description = "Port of the master")
+	protected int port = 61616;
+	
 	protected BrokerService brokerService;
 	
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
@@ -240,8 +244,24 @@ public abstract class Workflow {
 		return mode;
 	}
 	
+	public void setMaster(String master) {
+		this.master = master;
+	}
+	
+	public String getMaster() {
+		return master;
+	}
+	
+	public int getPort() {
+		return port;
+	}
+	
+	public void setPort(int port) {
+		this.port = port;
+	}
+	
 	public String getBroker() {
-		return "tcp://" + master + ":61616";
+		return "tcp://" + master + ":" + port;
 	}
 	
 	public enum TaskStatuses {
