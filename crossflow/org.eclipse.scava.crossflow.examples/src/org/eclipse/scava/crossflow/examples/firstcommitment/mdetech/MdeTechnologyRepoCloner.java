@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
+import org.eclipse.scava.crossflow.examples.utils.CloneUtils;
 
 /**
  * @author blizzfire

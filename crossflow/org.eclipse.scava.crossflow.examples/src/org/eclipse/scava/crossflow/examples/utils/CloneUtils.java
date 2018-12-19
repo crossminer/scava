@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.eclipse.scava.crossflow.runtime.utils;
+package org.eclipse.scava.crossflow.examples.utils;
 
 import java.io.File;
 import java.io.IOException;
