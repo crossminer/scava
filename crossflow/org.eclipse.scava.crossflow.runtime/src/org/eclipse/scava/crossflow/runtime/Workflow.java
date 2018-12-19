@@ -21,7 +21,9 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 
 import com.beust.jcommander.Parameter;
 
@@ -295,22 +297,6 @@ public abstract class Workflow {
 		return "tcp://" + master + ":" + port;
 	}
 	
-	public enum TaskStatuses {
-		STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
-	};
-
-	public enum ControlReasons {
-		INTENTFORPRODUCTION, TERMINATION
-	};
-
-	public enum ChannelType {
-		Queue, Topic, UNKNOWN
-	}
-
-	public enum ControlSignals {
-		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED
-	}
-
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);
@@ -330,8 +316,10 @@ public abstract class Workflow {
 		try {
 			for (Channel c : activeChannels) {
 				for (String postId : c.getPhysicalNames()) {
-	
-					ChannelType destinationType = c.getType();
+					
+					
+					String destinationType = c.isBroadcast() ? "topic" : "queue";
+					
 					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
 					MBeanServerConnection connection = connector.getMBeanServerConnection();
@@ -344,13 +332,11 @@ public abstract class Workflow {
 	
 					long remainingMessages = 0;
 					
-					if ( destinationType == ChannelType.Queue ) {
+					if (!c.isBroadcast()) {
 						remainingMessages = mbView.getQueueSize();
-					} else if ( destinationType == ChannelType.Topic ) {
-						if ( mbView.getInFlightCount() <= 1 ) {
-							// FIXME find out why inflight count is 1 instead of zero when the workflow is done
-							remainingMessages = 0;
-						}
+					} else if ( mbView.getInFlightCount() <= 1 ) {
+						// FIXME find out why inflight count is 1 instead of zero when the workflow is done
+						remainingMessages = 0;
 					}
 	
 					connector.close();

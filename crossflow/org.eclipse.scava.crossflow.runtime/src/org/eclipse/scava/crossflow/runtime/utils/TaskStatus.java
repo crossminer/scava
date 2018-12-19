@@ -2,10 +2,12 @@ package org.eclipse.scava.crossflow.runtime.utils;
 
 import java.io.Serializable;
 
-import org.eclipse.scava.crossflow.runtime.Workflow.TaskStatuses;
-
 public class TaskStatus implements Serializable{
-
+	
+	public enum TaskStatuses {
+		STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
+	};
+	
 	private TaskStatuses status;
 	private String caller;
 	private String reason;

@@ -17,7 +17,6 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.eclipse.scava.crossflow.runtime.Workflow.ChannelType;
 
 public abstract class Stream<T extends Job> implements Channel {
 	
@@ -86,11 +85,7 @@ public abstract class Stream<T extends Job> implements Channel {
 	}
 
 	@Override
-	public ChannelType getType() {
-		if (destination.values().iterator().next().isQueue())
-			return ChannelType.Queue;
-		if (destination.values().iterator().next().isTopic())
-			return ChannelType.Topic;
-		return ChannelType.UNKNOWN;
+	public boolean isBroadcast() {
+		return destination.values().iterator().next().isTopic();
 	}
 }

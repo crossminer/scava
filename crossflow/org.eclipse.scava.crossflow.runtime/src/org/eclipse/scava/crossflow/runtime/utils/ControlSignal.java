@@ -2,10 +2,12 @@ package org.eclipse.scava.crossflow.runtime.utils;
 
 import java.io.Serializable;
 
-import org.eclipse.scava.crossflow.runtime.Workflow.ControlSignals;
-
 public class ControlSignal implements Serializable {
 
+	public enum ControlSignals {
+		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED
+	}
+	
 	private ControlSignals signal;
 	private String senderId;
 

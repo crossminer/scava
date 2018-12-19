@@ -19,7 +19,6 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.eclipse.scava.crossflow.runtime.Workflow.ChannelType;
 
 public class BuiltinChannel<T extends Serializable> implements Channel {
 	
@@ -104,12 +103,8 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 	}
 
 	@Override
-	public ChannelType getType() {
-		if (destination.isQueue())
-			return ChannelType.Queue;
-		if (destination.isTopic())
-			return ChannelType.Topic;
-		return ChannelType.UNKNOWN;
+	public boolean isBroadcast() {
+		return broadcast;
 	}
 
 	@Override

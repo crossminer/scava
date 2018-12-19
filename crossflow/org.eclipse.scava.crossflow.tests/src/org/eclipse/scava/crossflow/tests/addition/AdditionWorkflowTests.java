@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.Workflow.TaskStatuses;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.eclipse.scava.crossflow.tests.util.BuiltinChannelRecorder;
 import org.junit.Test;
