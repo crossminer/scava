@@ -23,7 +23,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Stream;
-import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
+import org.eclipse.scava.crossflow.runtime.Workflow.ChannelType;
 
 public class [%=s.name%] extends Stream<[%=s.type.name%]> {
 		

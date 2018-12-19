@@ -252,7 +252,7 @@ public abstract class Workflow {
 		INTENTFORPRODUCTION, TERMINATION
 	};
 
-	public enum ChannelTypes {
+	public enum ChannelType {
 		Queue, Topic, UNKNOWN
 	}
 
@@ -278,9 +278,9 @@ public abstract class Workflow {
 		
 		try {
 			for (Channel c : activeChannels) {
-				for (String postId : c.getPostIds()) {
+				for (String postId : c.getPhysicalNames()) {
 	
-					ChannelTypes destinationType = c.type();
+					ChannelType destinationType = c.getType();
 					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
 					MBeanServerConnection connection = connector.getMBeanServerConnection();
@@ -293,9 +293,9 @@ public abstract class Workflow {
 	
 					long remainingMessages = 0;
 					
-					if ( destinationType == ChannelTypes.Queue ) {
+					if ( destinationType == ChannelType.Queue ) {
 						remainingMessages = mbView.getQueueSize();
-					} else if ( destinationType == ChannelTypes.Topic ) {
+					} else if ( destinationType == ChannelType.Topic ) {
 						if ( mbView.getInFlightCount() <= 1 ) {
 							// FIXME find out why inflight count is 1 instead of zero when the workflow is done
 							remainingMessages = 0;

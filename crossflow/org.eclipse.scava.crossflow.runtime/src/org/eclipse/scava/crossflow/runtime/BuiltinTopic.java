@@ -19,7 +19,7 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
+import org.eclipse.scava.crossflow.runtime.Workflow.ChannelType;
 
 public class BuiltinTopic<T extends Serializable> implements Channel {
 	
@@ -97,16 +97,16 @@ public class BuiltinTopic<T extends Serializable> implements Channel {
 	}
 
 	@Override
-	public ChannelTypes type() {
+	public ChannelType getType() {
 		if (destination.isQueue())
-			return ChannelTypes.Queue;
+			return ChannelType.Queue;
 		if (destination.isTopic())
-			return ChannelTypes.Topic;
-		return ChannelTypes.UNKNOWN;
+			return ChannelType.Topic;
+		return ChannelType.UNKNOWN;
 	}
 
 	@Override
-	public Collection<String> getPostIds() {
+	public Collection<String> getPhysicalNames() {
 		return Collections.singleton(destination.getPhysicalName());
 	}
 	
