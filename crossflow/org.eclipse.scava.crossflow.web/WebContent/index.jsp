@@ -8,12 +8,12 @@
           <p class="lead text-muted">
           Crossflow is a distributed data processing framework 
           that supports dispensation of work across multiple opinionated and low-commitment workers. 
-          Below are a few data processing workflows you can try out.
+          You can try out available data processing workflows displayed below or upload a new workflow.
           </p>
-          <!--p>
-            <a href="#" class="btn btn-primary my-2">Main call to action</a>
-            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-          </p-->
+          <p>
+            <a href="upload.jsp" class="btn btn-primary my-2">Upload New Workflow</a>
+            <!-- a href="#" class="btn btn-secondary my-2">Secondary action</a-->
+          </p>
         </div>
       </section>
 
