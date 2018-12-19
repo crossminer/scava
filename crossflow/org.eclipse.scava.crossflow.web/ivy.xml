@@ -1,0 +1,8 @@
+<ivy-module version="2.0">
+	<info organisation="org.eclipse.scava" module="crossflow.web" status="integration"/>
+	<dependencies>
+		<dependency org="org.apache.thrift" name="libthrift" rev="0.11.0">
+    <artifact name="libthrift" type="pom" ext="pom"/>
+</dependency>
+	</dependencies>
+</ivy-module>

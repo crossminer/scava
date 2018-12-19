@@ -124,6 +124,9 @@ public abstract class Workflow {
 		internalExceptionsQueue.init();
 		
 		activeChannels.add(taskStatusTopic);
+		activeChannels.add(failedJobsQueue);
+		activeChannels.add(internalExceptionsQueue);
+		
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
 		// do not add control topic to activequeues as it has to be managed explicitly
@@ -199,6 +202,7 @@ public abstract class Workflow {
 				
 				@Override
 				public void consume(FailedJob failedJob) {
+					failedJob.getException().printStackTrace();
 					failedJobs.add(failedJob);
 				}
 			});
@@ -359,7 +363,7 @@ public abstract class Workflow {
 	}
 
 	public synchronized void terminate() {
-
+		
 		if (terminated) return;
 		
 		try {

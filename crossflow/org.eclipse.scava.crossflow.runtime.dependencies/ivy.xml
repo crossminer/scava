@@ -1,0 +1,9 @@
+<ivy-module version="2.0">
+	<info organisation="org.eclipse.scava" module="crossflow.runtime" status="integration"/>
+	<dependencies>
+		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.6"/>
+		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
+		<dependency org="com.beust" name="jcommander" rev="1.72"/>
+		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+	</dependencies>
+</ivy-module>

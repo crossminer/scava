@@ -1,0 +1,38 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+
+	<workflow name="TechrankWorkflow" package="org.eclipse.scava.crossflow.examples.github.techrank">
+		<source name="TechnologySource" out="Technologies"/>
+		<queue name="Technologies" type="Technology"/>
+		<task name="GitHubCodeSearcher" in="Technologies" out="Repositories"/>
+		<queue name="Repositories" type="Repository"/>
+		<task name="RepositorySearchDispatcher" in="Repositories" out="RepositorySearches" master="true"/>
+		<queue name="RepositorySearches" type="RepositorySearch"/>
+		<task name="RepositorySearcher" in="RepositorySearches" out="RepositorySearchResults"/>
+		<queue name="RepositorySearchResults" type="RepositorySearchResult"/>
+		<sink name="ResultsSink" in="RepositorySearchResults"/>
+		
+		<type name="Technology">
+			<field name="name"/>
+			<field name="keyword"/>
+			<field name="extension"/>
+		</type>
+		
+		<type name="Repository">
+			<field name="path"/>
+		</type>
+		
+		<type name="RepositorySearch">
+			<field name="repository"/>
+			<field name="technologies" type="Technology" many="true"/>
+		</type>
+		
+		<type name="RepositorySearchResult">
+			<field name="technology"/>
+			<field name="results" type="int"/>
+		</type>
+		
+	</workflow>	
+
+</_>

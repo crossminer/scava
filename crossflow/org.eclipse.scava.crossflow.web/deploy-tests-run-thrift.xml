@@ -21,7 +21,7 @@
     <target name="main" depends="mac-init, windows-init">
     
     	<copy todir="WebContent/WEB-INF/lib/">
-    		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies" includes="*.jar"/>
+    		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies/lib" includes="*.jar"/>
     	</copy>
     			
     	<jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.runtime.jar">

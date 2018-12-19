@@ -1,5 +1,4 @@
 /build/
 WebContent/js/gen/*.js
 src-gen
-WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar
-WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.runtime.jar
+WebContent/WEB-INF/lib/*.jar
