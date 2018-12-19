@@ -7,19 +7,14 @@ import java.io.FileReader;
 public class LineSource extends LineSourceBase {
 	
 	@Override
-	public void produce() {
-		try {
-			for (File file : workflow.getInputDirectory().listFiles()) {
-				BufferedReader reader = new BufferedReader(new FileReader(file));
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					sendToLines(new Line(line));
-				}
-				reader.close();
+	public void produce() throws Exception {
+		for (File file : workflow.getInputDirectory().listFiles()) {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sendToLines(new Line(line));
 			}
-		}
-		catch (Exception ex) {
-			throw new RuntimeException(ex);
+			reader.close();
 		}
 	}
 

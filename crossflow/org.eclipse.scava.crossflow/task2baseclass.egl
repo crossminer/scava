@@ -2,6 +2,7 @@ package [%=w.package%];
 
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.FailedJob;
 
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 		
@@ -38,17 +39,33 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	
 	[%for (s in t.input) { %]
 	@Override
-	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
-		workflow.setTaskInProgess(this);
-		consume[%=s.name%]([%=s.type.name.ftlc()%]);
-		workflow.setTaskWaiting(this);
+	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+		try {
+			workflow.setTaskInProgess(this);
+			consume[%=s.name%]([%=s.type.name.ftlc()%]);
+		}
+		catch (Exception ex) {
+			try {
+				[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures()+1);
+				workflow.getFailedJobsQueue().send(new FailedJob([%=s.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
+			} catch (Exception e) {
+				workflow.reportInternalException(e);
+			}
+		}
+		finally {
+			try {
+				workflow.setTaskWaiting(this);
+			} catch (Exception e) {
+				workflow.reportInternalException(e);
+			}
+		}
 	}
 	
-	public abstract void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]);
+	public abstract void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
 	[%}%]	
 	
 	[%if (t.isKindOf(Source)){%]
-	public abstract void produce();
+	public abstract void produce() throws Exception;
 	[%}%]
 	
 }

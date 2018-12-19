@@ -9,7 +9,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 	
 	[%if (t.isTypeOf(Source)){%]
 	@Override
-	public void produce() {
+	public void produce() throws Exception {
 		new Timer().schedule(new TimerTask() {
 			
 			@Override
@@ -32,7 +32,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 	[%} else {%]
 	[% for (s in t.input) { %]
 	@Override
-	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 		
 		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
 		[%for (s in t.output) { %]

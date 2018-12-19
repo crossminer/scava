@@ -9,7 +9,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 	protected long interval = 500; 
 	
 	@Override
-	public void produce() {
+	public void produce() throws Exception {
 		
 		if (numbers == null) {
 			numbers = Arrays.asList(1, 2, 3, 4, 5);
@@ -17,11 +17,7 @@ public class NumberPairSource extends NumberPairSourceBase {
 		
 		for (int i : numbers) {
 			sendToAdditions(new NumberPair(i, i));
-			try {
-				Thread.sleep(interval);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			Thread.sleep(interval);
 		}
 		
 	}

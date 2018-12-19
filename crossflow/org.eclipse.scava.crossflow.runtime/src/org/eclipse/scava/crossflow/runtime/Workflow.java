@@ -2,9 +2,11 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -56,6 +58,11 @@ public abstract class Workflow {
 	protected BuiltinChannel<TaskStatus> taskStatusTopic = null;
 	protected BuiltinChannel<Object[]> resultsTopic = null;
 	protected BuiltinChannel<ControlSignal> controlTopic = null;
+	protected BuiltinChannel<FailedJob> failedJobsQueue = null;
+	protected BuiltinChannel<InternalException> internalExceptionsQueue = null;
+	
+	protected List<FailedJob> failedJobs = null;
+	protected List<InternalException> internalExceptions = null;
 	
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
@@ -97,6 +104,9 @@ public abstract class Workflow {
 		taskStatusTopic = new BuiltinChannel<TaskStatus>(this, "TaskStatusPublisher." + getInstanceId());
 		resultsTopic = new BuiltinChannel<Object[]>(this, "ResultsBroadcaster." + getInstanceId());
 		controlTopic = new BuiltinChannel<ControlSignal>(this, "ControlTopic." + getInstanceId());
+		failedJobsQueue = new BuiltinChannel<FailedJob>(this, "FailedJobs." + getInstanceId(), false);
+		internalExceptionsQueue = new BuiltinChannel<InternalException>(this, "InternalExceptions." + getInstanceId(), false);
+		
 		instanceId = UUID.randomUUID().toString();
 	}
 	
@@ -108,6 +118,8 @@ public abstract class Workflow {
 		taskStatusTopic.init();
 		resultsTopic.init();
 		controlTopic.init();
+		failedJobsQueue.init();
+		internalExceptionsQueue.init();
 		
 		activeChannels.add(taskStatusTopic);
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
@@ -143,7 +155,7 @@ public abstract class Workflow {
 						try {
 							terminate();
 						} catch (Exception e) {
-							e.printStackTrace();
+							unrecoverableException(e);
 						}
 				}
 
@@ -156,7 +168,7 @@ public abstract class Workflow {
 		if (!isMaster())
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
-		if (isMaster())
+		if (isMaster()) {
 			taskStatusTopic.addConsumer(new BuiltinChannelConsumer<TaskStatus>() {
 
 				@Override
@@ -179,7 +191,26 @@ public abstract class Workflow {
 				}
 
 			});
-
+			
+			failedJobs = new ArrayList<>();
+			failedJobsQueue.addConsumer(new BuiltinChannelConsumer<FailedJob>() {
+				
+				@Override
+				public void consume(FailedJob failedJob) {
+					failedJobs.add(failedJob);
+				}
+			});
+			
+			internalExceptions = new ArrayList<>();
+			internalExceptionsQueue.addConsumer(new BuiltinChannelConsumer<InternalException>() {
+				
+				@Override
+				public void consume(InternalException internalException) {
+					internalExceptions.add(internalException);
+				}
+			});
+			
+		}
 	}
 	
 	boolean aboutToTerminate = false;
@@ -196,7 +227,7 @@ public abstract class Workflow {
 							terminate();
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
+						unrecoverableException(e);
 					}
 					
 				}
@@ -407,6 +438,30 @@ public abstract class Workflow {
 	
 	public BuiltinChannel<ControlSignal> getControlTopic() {
 		return controlTopic;
+	}
+	
+	public BuiltinChannel<FailedJob> getFailedJobsQueue() {
+		return failedJobsQueue;
+	}
+	
+	public List<FailedJob> getFailedJobs() {
+		return failedJobs;
+	}
+	
+	public List<InternalException> getInternalExceptions() {
+		return internalExceptions;
+	}
+	
+	public void reportInternalException(Exception ex) {
+		try {
+			internalExceptionsQueue.send(new InternalException(ex, this.getName()));
+		} catch (Exception e) {
+			unrecoverableException(e);
+		}
+	}
+	
+	public void unrecoverableException(Exception ex) {
+		ex.printStackTrace();
 	}
 	
 	public void setTaskInProgess(Task caller) throws Exception {

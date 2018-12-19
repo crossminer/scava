@@ -50,7 +50,7 @@ public abstract class Stream<T extends Job> implements Channel {
 				MessageProducer producer = session.createProducer(d);
 				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 				ObjectMessage message = session.createObjectMessage();
-				job.setDestination("[%=s.name%]");
+				job.setDestination(getClass().getSimpleName());
 				message.setObject(job);
 				producer.send(message);
 				producer.close();
@@ -67,7 +67,7 @@ public abstract class Stream<T extends Job> implements Channel {
 					producer.close();
 				}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			workflow.reportInternalException(ex);
 		}
 	}
 	

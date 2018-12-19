@@ -85,7 +85,7 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 				try {
 					consumer.consume((T) objectMessage.getObject());
 				} catch (JMSException e) {
-					e.printStackTrace();
+					workflow.reportInternalException(e);
 				}
 			}
 		});

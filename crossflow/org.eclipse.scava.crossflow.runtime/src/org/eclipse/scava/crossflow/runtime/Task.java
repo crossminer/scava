@@ -35,8 +35,6 @@ public abstract class Task {
 	 * @param reason
 	 */
 	protected void taskUnblocked() throws Exception {
-		
 		getWorkflow().setTaskUnblocked(this);
-		
 	}
 }

@@ -27,7 +27,7 @@ public class DirectoryCache implements Cache {
 			init(Files.createTempDirectory("crossflow").toFile());
 		}
 		catch (Exception ex) {
-			throw new RuntimeException(ex);
+			workflow.reportInternalException(ex);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class DirectoryCache implements Cache {
 				jobFolderMap.put(input.getHash(), inputFolder);
 				save(output, outputFile);
 			} catch (Exception e) {
-				e.printStackTrace();
+				workflow.reportInternalException(e);
 			}
 		}
 	}
