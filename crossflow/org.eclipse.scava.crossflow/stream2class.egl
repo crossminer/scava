@@ -25,7 +25,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Stream;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class [%=s.name%] extends Stream {
+public class [%=s.name%] extends Stream<[%=s.type.name%]> {
 		
 	public [%=s.name%](Workflow workflow) throws Exception {
 		super(workflow);
@@ -103,36 +103,6 @@ public class [%=s.name%] extends Stream {
 					
 				});
 			}
-		}
-	}
-	
-	public void send([%=s.type.name%] [%=s.type.name.ftlc()%], String taskId) {
-		try {
-			ActiveMQDestination d = null;
-			// if the sender is one of the targets of this channel, it has re-sent a message
-			// so it should only be put in the relevant physical queue
-			if ((d = pre.get(taskId)) != null) {
-				MessageProducer producer = session.createProducer(d);
-				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-				ObjectMessage message = session.createObjectMessage();
-				[%=s.type.name.ftlc()%].setDestination("[%=s.name%]");
-				message.setObject([%=s.type.name.ftlc()%]);
-				producer.send(message);
-				producer.close();
-			} else
-				// otherwise the sender must be the source of this channel so intends to
-				// propagate its messages to all the physical queues
-				for (Entry<String, ActiveMQDestination> e : pre.entrySet()) {			
-					MessageProducer producer = session.createProducer(e.getValue());
-					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-					ObjectMessage message = session.createObjectMessage();
-					[%=s.type.name.ftlc()%].setDestination("[%=s.name%]");
-					message.setObject([%=s.type.name.ftlc()%]);
-					producer.send(message);
-					producer.close();
-				}
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 	

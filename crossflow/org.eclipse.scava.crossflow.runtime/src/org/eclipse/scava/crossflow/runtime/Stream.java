@@ -5,17 +5,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.jms.Connection;
+import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public abstract class Stream implements Channel {
+public abstract class Stream<T extends Job> implements Channel {
 	
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
@@ -35,6 +39,36 @@ public abstract class Stream implements Channel {
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();
+	}
+	
+	public void send(T job, String taskId) {
+		try {
+			ActiveMQDestination d = null;
+			// if the sender is one of the targets of this channel, it has re-sent a message
+			// so it should only be put in the relevant physical queue
+			if ((d = pre.get(taskId)) != null) {
+				MessageProducer producer = session.createProducer(d);
+				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+				ObjectMessage message = session.createObjectMessage();
+				job.setDestination("[%=s.name%]");
+				message.setObject(job);
+				producer.send(message);
+				producer.close();
+			} else
+				// otherwise the sender must be the source of this channel so intends to
+				// propagate its messages to all the physical queues
+				for (Entry<String, ActiveMQDestination> e : pre.entrySet()) {			
+					MessageProducer producer = session.createProducer(e.getValue());
+					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+					ObjectMessage message = session.createObjectMessage();
+					job.setDestination(this.getClass().getSimpleName());
+					message.setObject(job);
+					producer.send(message);
+					producer.close();
+				}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	public Collection<String> getPostIds() {

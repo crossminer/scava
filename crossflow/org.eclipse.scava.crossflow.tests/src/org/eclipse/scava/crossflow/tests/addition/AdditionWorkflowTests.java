@@ -120,11 +120,12 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		workflow.run();
 		waitFor(workflow);
 		
-		assertEquals(numbers.size() * 2, recorder.getRecorded().stream().
+		// one for each task and one from the producer
+		assertEquals(numbers.size() * 2 + 1, recorder.getRecorded().stream().
 			filter(r -> (r.getStatus() == TaskStatuses.INPROGRESS)).
 			 collect(Collectors.toList()).size());
 		
-		assertEquals(numbers.size() * 2, recorder.getRecorded().stream().
+		assertEquals(numbers.size() * 2 + 1, recorder.getRecorded().stream().
 				filter(r -> (r.getStatus() == TaskStatuses.WAITING)).
 				 collect(Collectors.toList()).size());
 		
