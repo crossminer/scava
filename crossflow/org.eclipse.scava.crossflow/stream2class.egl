@@ -22,29 +22,13 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
-import org.eclipse.scava.crossflow.runtime.Channel;
+import org.eclipse.scava.crossflow.runtime.Stream;
 import org.eclipse.scava.crossflow.runtime.Workflow.ChannelTypes;
 
-public class [%=s.name%] implements Channel {
-	
-	protected Map<String, ActiveMQDestination> destination;
-	protected Map<String, ActiveMQDestination> pre;
-	protected Map<String, ActiveMQDestination> post;
-	protected Connection connection;
-	protected Session session;
-	protected Workflow workflow;
-	protected List<MessageConsumer> consumers = new LinkedList<MessageConsumer>();
-	
+public class [%=s.name%] extends Stream {
+		
 	public [%=s.name%](Workflow workflow) throws Exception {
-		this.workflow = workflow;
-		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
-		connectionFactory.setTrustAllPackages(true);
-		connection = connectionFactory.createConnection();
-		connection.start();
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		destination = new HashMap<String, ActiveMQDestination>();
-		pre = new HashMap<String, ActiveMQDestination>();
-		post = new HashMap<String, ActiveMQDestination>();
+		super(workflow);
 		
 		[%for (t in s.inputOf){%]
 		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]." + workflow.getInstanceId()));
@@ -176,29 +160,6 @@ public class [%=s.name%] implements Channel {
 			});
 		}
 	
-	}
-	
-	public Collection<String> getPostIds() {
-		List<String> ret = new LinkedList<String>();
-		for (ActiveMQDestination d : post.values())
-			ret.add(d.getPhysicalName());
-		return ret;
-	}
-	
-	public void stop() throws JMSException {
-		for (MessageConsumer c : consumers)
-			c.close();
-		session.close();
-		connection.close();
-	}
-
-	@Override
-	public ChannelTypes type() {
-		if (destination.values().iterator().next().isQueue())
-			return ChannelTypes.Queue;
-		if (destination.values().iterator().next().isTopic())
-			return ChannelTypes.Topic;
-		return ChannelTypes.UNKNOWN;
 	}
 
 }
