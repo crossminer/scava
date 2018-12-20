@@ -5,5 +5,6 @@
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 	</dependencies>
 </ivy-module>

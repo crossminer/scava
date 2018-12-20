@@ -2,5 +2,6 @@
 	<info organisation="org.eclipse.scava" module="crossflow.web" status="integration"/>
 	<dependencies>
 		<dependency org="org.apache.thrift" name="libthrift" rev="0.11.0"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 	</dependencies>
 </ivy-module>
