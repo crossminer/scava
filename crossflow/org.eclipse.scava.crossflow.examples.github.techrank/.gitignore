@@ -1,3 +1,5 @@
-cloned-repos
+cache
 activemq-data
 lib
+crossflow.properties
+okhttp-cache
