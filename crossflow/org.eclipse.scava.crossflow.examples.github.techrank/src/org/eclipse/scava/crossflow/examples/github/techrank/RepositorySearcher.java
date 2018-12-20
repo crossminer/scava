@@ -1,12 +1,12 @@
 package org.eclipse.scava.crossflow.examples.github.techrank;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -14,31 +14,49 @@ import org.eclipse.jgit.api.Git;
 
 public class RepositorySearcher extends RepositorySearcherBase {
 	
-	protected Set<String> rejected = new HashSet<>();
-	
 	@Override
 	public void consumeRepositorySearches(RepositorySearch repositorySearch) throws Exception {
 		
-		File clone = new File("cloned-repos/" + UUID.nameUUIDFromBytes(repositorySearch.getRepository().getBytes()));
+		TechrankWorkflowContext context = new TechrankWorkflowContext(workflow);
+		
+		File clone = new File(context.getProperties().getProperty("clones") + "/" + UUID.nameUUIDFromBytes(repositorySearch.getRepository().getBytes()));
 		
 		if (!clone.exists()) {
-			if (rejected.contains(repositorySearch.getRepository())) {
-				// System.out.println("Cloning " + repositorySearch.getRepository());
-				Git git = Git.cloneRepository()
-						.setURI( "https://github.com/" + repositorySearch.getRepository() + ".git" )
-						.setDirectory(clone)
-						.call();
+				
+			try {
+				// Try the command-line option first as it supports --depth 1
+				Process process = Runtime.getRuntime().exec("git clone --depth 1 " + "https://github.com/" + 
+						repositorySearch.getRepository() + ".git " + clone.getAbsolutePath());
+				process.waitFor();
 			}
-			else {
-				// System.out.println("Rejecting " + repositorySearch.getRepository());
-				rejected.add(repositorySearch.getRepository());
-				workflow.getRepositorySearches().send(repositorySearch, "RepositorySearcher");
-				return;
+			catch (Exception ex) {
+				System.out.println("Falling back to JGit because " + ex.getMessage());
+				Git.cloneRepository()
+					.setURI( "https://github.com/" + repositorySearch.getRepository() + ".git" )
+					.setDirectory(clone)
+					.call();
 			}
 		}
 		
 		for (Technology technology : repositorySearch.getTechnologies()) {
-			sendToRepositorySearchResults(new RepositorySearchResult(technology.getName(), countFiles(clone, technology), repositorySearch));
+			
+			try {
+				Process process = Runtime.getRuntime().exec("grep -r -l --include=\"*." + technology.getExtension() + "\" \"" + 
+						technology.getKeyword() + "\" " + clone.getAbsolutePath());
+				
+				BufferedReader processInputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				
+				int files = 0;
+				while (processInputStream.readLine() != null) { files++; }
+				
+				RepositorySearchResult result = new RepositorySearchResult(technology.getName(), files, repositorySearch);
+				sendToRepositorySearchResults(result);
+				
+			}
+			catch (Exception ex) {
+				System.out.println("Falling back to file-by-file searching because " + ex.getMessage());
+				sendToRepositorySearchResults(new RepositorySearchResult(technology.getName(), countFiles(clone, technology), repositorySearch));
+			}
 		}
 		
 	}
@@ -47,7 +65,7 @@ public class RepositorySearcher extends RepositorySearcherBase {
 		if (directory.isDirectory()) {
 			return Arrays.asList(directory.listFiles()).stream().filter(f -> 
 				!f.isDirectory() && conforms(f, technology)).collect(Collectors.toList()).size() +
-				Arrays.asList(directory.listFiles()).stream().filter(f -> f.isDirectory()).
+				Arrays.asList(directory.listFiles()).stream().filter(f -> f.isDirectory() && !f.getName().equals(".git")).
 					mapToInt(f -> countFiles(f, technology)).sum();	
 		}
 		else return 0;
