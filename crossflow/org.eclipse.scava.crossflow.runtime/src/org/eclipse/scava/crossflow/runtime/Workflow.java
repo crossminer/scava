@@ -3,6 +3,7 @@ package org.eclipse.scava.crossflow.runtime;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -50,11 +51,11 @@ public abstract class Workflow {
 	
 	protected boolean createBroker = true;
 	protected boolean cacheEnabled = true;
-	private HashSet<String> activeJobs = new HashSet<String>();
+	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
 	
-	protected File inputDirectory = new File(".");
-	protected File outputDirectory = new File(".");
+	protected File inputDirectory = new File("").getAbsoluteFile();
+	protected File outputDirectory = new File("").getParentFile();
 	protected File tempDirectory = null;
 	
 	protected BuiltinChannel<TaskStatus> taskStatusTopic = null;
@@ -81,6 +82,8 @@ public abstract class Workflow {
 		this.createBroker = createBroker;
 	}
 	
+	protected Timer terminationTimer;
+	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
 
 	/**
@@ -103,11 +106,11 @@ public abstract class Workflow {
 	}
 	
 	public Workflow() {
-		taskStatusTopic = new BuiltinChannel<TaskStatus>(this, "TaskStatusPublisher." + getInstanceId());
-		resultsTopic = new BuiltinChannel<Object[]>(this, "ResultsBroadcaster." + getInstanceId());
-		controlTopic = new BuiltinChannel<ControlSignal>(this, "ControlTopic." + getInstanceId());
-		failedJobsQueue = new BuiltinChannel<FailedJob>(this, "FailedJobs." + getInstanceId(), false);
-		internalExceptionsQueue = new BuiltinChannel<InternalException>(this, "InternalExceptions." + getInstanceId(), false);
+		taskStatusTopic = new BuiltinChannel<TaskStatus>(this, "TaskStatusPublisher");
+		resultsTopic = new BuiltinChannel<Object[]>(this, "ResultsBroadcaster");
+		controlTopic = new BuiltinChannel<ControlSignal>(this, "ControlTopic");
+		failedJobsQueue = new BuiltinChannel<FailedJob>(this, "FailedJobs", false);
+		internalExceptionsQueue = new BuiltinChannel<InternalException>(this, "InternalExceptions", false);
 		
 		instanceId = UUID.randomUUID().toString();
 	}
@@ -187,7 +190,6 @@ public abstract class Workflow {
 						}
 						case WAITING: {
 							activeJobs.remove(status.getCaller());
-							checkForTermination();
 							break;
 						}
 						default:
@@ -212,34 +214,35 @@ public abstract class Workflow {
 				
 				@Override
 				public void consume(InternalException internalException) {
+					internalException.getException().printStackTrace();
 					internalExceptions.add(internalException);
 				}
 			});
 			
-		}
-	}
-	
-	boolean aboutToTerminate = false;
-	
-	public void checkForTermination() {
-		if (activeJobs.size() == 0 && areChannelsEmpty()) {
-			aboutToTerminate = true;
-			new Timer().schedule(new TimerTask() {
+			terminationTimer = new Timer();
+			
+			terminationTimer.schedule(new TimerTask() {
 				
 				@Override
 				public void run() {
-					try {
-						if (aboutToTerminate && areChannelsEmpty()) {
+					
+					boolean canTerminate = activeJobs.size() == 0 && areChannelsEmpty();
+					
+					if (aboutToTerminate) {
+						if (canTerminate) {
 							terminate();
 						}
-					} catch (Exception e) {
-						unrecoverableException(e);
 					}
-					
+					else {
+						aboutToTerminate = canTerminate;
+					}
 				}
-			}, 2000);
+			}, 0, 2000);
+			
 		}
 	}
+	
+
 	
 	public void cancelTermination() {
 		aboutToTerminate = false;
@@ -310,15 +313,12 @@ public abstract class Workflow {
 	public void run() throws Exception {
 		run(0);
 	}
-
 	public abstract void run(int delay) throws Exception;
 
-	private boolean areChannelsEmpty() {
-		
-		boolean result = true;
+	private synchronized boolean areChannelsEmpty() {
 		
 		try {
-			for (Channel c : activeChannels) {
+			for (Channel c : new ArrayList<>(activeChannels)) {
 				for (String postId : c.getPhysicalNames()) {
 					
 					
@@ -327,38 +327,39 @@ public abstract class Workflow {
 					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
 					MBeanServerConnection connection = connector.getMBeanServerConnection();
-	
+					
 					ObjectName channel = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
 							+ ",destinationType=" + destinationType + ",destinationName=" + postId);
 	
 					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, channel,
 							DestinationViewMBean.class, true);
-	
-					long remainingMessages = 0;
-					
-					if (!c.isBroadcast()) {
-						remainingMessages = mbView.getQueueSize();
-					} else if ( mbView.getInFlightCount() <= 1 ) {
-						// FIXME find out why inflight count is 1 instead of zero when the workflow is done
-						remainingMessages = 0;
+						
+					try {
+						if (!c.isBroadcast()) {
+							if (mbView.getQueueSize() > 0) {
+								return false;
+							}
+						} else { 
+							if ( mbView.getInFlightCount() > 1 ) {
+								return false;
+							}
+						}
+					}
+					catch (Exception ex) {
+						// Ignore exception
 					}
 	
 					connector.close();
-	
-					if (remainingMessages > 0)
-						result = false;
 	
 				}
 			}
 		}
 		catch (Exception ex) {
-			// If an exception occurs it means
-			// that at least one of the channels
-			// is closed/null
+			unrecoverableException(ex);
 			return true;
 		}
 		
-		return result;
+		return true;
 		
 	}
 

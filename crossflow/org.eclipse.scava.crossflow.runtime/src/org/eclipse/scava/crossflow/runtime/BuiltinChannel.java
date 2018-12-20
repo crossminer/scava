@@ -41,14 +41,18 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 		this.broadcast = broadcast;
 	}
 	
+	protected String getDestinationName() {
+		return name + "." + workflow.getInstanceId();
+	}
+	
 	public void init() throws Exception {
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
 		connectionFactory.setTrustAllPackages(true);
 		connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		if (broadcast) destination = (ActiveMQDestination) session.createTopic(name);
-		else destination = (ActiveMQDestination) session.createQueue(name);
+		if (broadcast) destination = (ActiveMQDestination) session.createTopic(getDestinationName());
+		else destination = (ActiveMQDestination) session.createQueue(getDestinationName());
 		
 		for (BuiltinChannelConsumer<T> pendingConsumer : pendingConsumers) {
 			addConsumer(pendingConsumer);
@@ -106,7 +110,7 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 	public boolean isBroadcast() {
 		return broadcast;
 	}
-
+	
 	@Override
 	public Collection<String> getPhysicalNames() {
 		return Collections.singleton(destination.getPhysicalName());

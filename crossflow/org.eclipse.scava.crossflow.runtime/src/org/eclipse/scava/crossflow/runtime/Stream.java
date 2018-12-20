@@ -27,6 +27,18 @@ public abstract class Stream<T extends Job> implements Channel {
 	protected Session session;
 	protected Workflow workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<MessageConsumer>();
+	protected Task cacheManagerTask = new Task() {
+		
+		@Override
+		public Workflow getWorkflow() {
+			return workflow;
+		}
+		
+		@Override
+		public String getId() {
+			return "CacheManager";
+		}
+	};
 	
 	public Stream(Workflow workflow) throws Exception {
 		this.workflow = workflow;
