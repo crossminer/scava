@@ -1,14 +1,15 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.scava.crossflow.examples.utils.CloneUtils;
 
 public class GhTopSearchRepoCloner extends GhTopSearchRepoClonerBase {
@@ -48,49 +49,41 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 	
 	public String cloneRepo(String owner, String repo, boolean replace) {
 		String ghRepoUrl = "https://github.com/" + owner + "/" + repo;
-		final String CLONE_SOURCE = ghRepoUrl + ".git";
+		final String cloneSource = ghRepoUrl + ".git";
 		
-		final File CLONE_REPO_DESTINATION = new File(CLONE_PARENT_DESTINATION + File.separator
+		final File cloneRepoDestination = new File(CLONE_PARENT_DESTINATION + File.separator
 				+ CloneUtils.createUniqueFolderForRepo(ghRepoUrl));
 	
-		System.out.print("\n" + "[" + workflow.getName() + "] " + "Cloning Git repository " + CLONE_SOURCE + " to " + CLONE_REPO_DESTINATION + " ... ");
-	
-		String ret = CLONE_REPO_DESTINATION.getAbsolutePath();
-	
-		try {
-			// create local clone parent destination if it does not exists
-			if ( !CLONE_PARENT_DESTINATION.exists() ) {
-				CLONE_PARENT_DESTINATION.mkdir();
-			}
+		System.out.print("\n" + "[" + workflow.getName() + "] " + "Cloning Git repository " + cloneSource + " to " + cloneRepoDestination + " ... ");
 			
-			if ( CLONE_REPO_DESTINATION.exists() && !replace ) {
-				System.out.print("SKIPPED (repo pre-exists and replace is false) !");
-				return ret;
+		if (!cloneRepoDestination.exists()) {
 				
-			} else if ( !CLONE_REPO_DESTINATION.exists() || replace ) {
-				// create local clone destination if it does not yet exist
-				if ( !CLONE_REPO_DESTINATION.exists() ) {
-					CLONE_REPO_DESTINATION.mkdir();
-				}							
-				
-				Git git = Git.cloneRepository().setURI(CLONE_SOURCE).setDirectory(CLONE_REPO_DESTINATION.getAbsoluteFile()).call();
-				git.close();
-				System.out.println("COMPLETED !");
-				
-			}				
-	
-		} catch (JGitInternalException e) {
-			if (e.getMessage().contains("Could not rename file")) {
-				// JGit bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=481187
-				// fail silently
+			try {
+				// Try the command-line option first as it supports --depth 1
+				Process process = Runtime.getRuntime().exec("git clone --depth 1 " + cloneSource + cloneRepoDestination.getAbsolutePath());
+				process.waitFor();
 			}
-			
-		} catch (Exception e) {
-			System.out.println("FAILED !");
-			System.err.println("\n" + "[" + workflow.getName() + "] " + "Error in creating clone: " + e.getMessage());
+			catch (Exception ex) {
+				System.out.println("Falling back to JGit because " + ex.getMessage());
+				try {
+					Git.cloneRepository()
+						.setURI( cloneSource )
+						.setDirectory(cloneRepoDestination)
+						.call();
+				} catch (InvalidRemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TransportException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (GitAPIException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-	
-		return ret;
+		
+		return cloneRepoDestination.getAbsolutePath();
 	}
 	
 	@Override
