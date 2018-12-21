@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -217,9 +218,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 
 	@Override
 	public void startBroker() throws TException {
-		if (brokerService != null) {
-			stopBroker();
-		}
+		
+		if (isBrokerRunning()) return;
 		
 		try {
 			brokerService = new BrokerService();
@@ -247,7 +247,13 @@ public class CrossflowHandler implements Crossflow.Iface {
 	
 	@Override
 	public boolean isBrokerRunning() throws TException {
-		return brokerService != null;
+		try {
+			new ActiveMQConnectionFactory("tcp://localhost:61616").createConnection();
+			return true;
+		}
+		catch (Exception ex) {
+			return false;
+		}
 	}
 	
 	@Override
