@@ -58,8 +58,14 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
     	
+    	<war destfile="../org.eclipse.scava.crossflow.web.docker/org.eclipse.scava.crossflow.web.war" needxmlfile='false'>
+    		<fileset dir="WebContent"/>
+    		<classes dir="build/classes"/>
+    	</war>
+    	
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1"/>
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1"/>
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.docker" depth="-1"/>
 
     </target>
     
