@@ -18,13 +18,13 @@
 		<queue name="GhTopSearchClonedRepoEntries" type="OwnerRepoUrlTuple"/>
 		
 		<!-- tasks for counting unique authors of repositories cloned from GitHub -->
-		<task name="GhTopSearchRepoAuthorCounter" in="GhTopSearchClonedRepoEntries" out="GhTopSearchRepoAuthorCountEntries"/>
+		<task name="GhTopSearchRepoAuthorCounter" in="GhTopSearchClonedRepoEntries" out="OwnerRepoAuthorCountEntries"/>
 		
 		<!-- queues of unique author count of repositories cloned from GitHub  -->
-		<queue name="GhTopSearchRepoAuthorCountEntries" type="OwnerRepoLocalRepoPathTuple"/> 
-	
-		<!-- sinks for printing unique author count of repositories cloned from GitHub -->
-		<sink name="GhTopSearchRepoAuthorCountPrinter" in="GhTopSearchRepoAuthorCountEntries"/>
+		<queue name="OwnerRepoAuthorCountEntries" type="OwnerRepoAuthorCountTuple"/> 
+		
+		<!-- csv sink for printing unique author count of repositories cloned from GitHub -->
+		<csvsink name="GhTopSearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="csvs/GhTopJava-authors.csv"/>
 				
 		<!-- Github JavaProjects: github owner/repo -->
 		<type name="OwnerRepoTuple">
@@ -40,11 +40,10 @@
 		</type>
 		
 		<!-- github owner/repo, repo remote URL, repo local path, count -->
-		<type name="OwnerRepoLocalRepoPathTuple">
+		<type name="OwnerRepoAuthorCountTuple">
 			<field name="field0" type="String"/>
 			<field name="field1" type="String"/>
-			<field name="field2" type="String"/>
-			<field name="field3" type="Integer"/> <!-- author count -->
+			<field name="field2" type="Integer"/> <!-- author count -->
 		</type>
 		
 	</workflow>	

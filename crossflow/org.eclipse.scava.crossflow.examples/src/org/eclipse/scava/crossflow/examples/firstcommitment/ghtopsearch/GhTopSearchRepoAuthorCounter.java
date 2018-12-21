@@ -20,7 +20,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBase {
 
 	
-	protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
+	protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
 	
 	protected Set<String> alreadySeenJobs = new HashSet<String>();
 	
@@ -111,13 +111,12 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 				
 				int authorCount = count(ownerRepoUrlTuple.getField1());
 				
-				OwnerRepoLocalRepoPathTuple ownerRepoLocalRepoPathTuple = new OwnerRepoLocalRepoPathTuple();
-				ownerRepoLocalRepoPathTuple.setField0(ownerRepoUrlTuple.field0); // GitHub owner (user name or organisation)
-				ownerRepoLocalRepoPathTuple.setField1(ownerRepoUrlTuple.field1); // GitHub repository name
-				ownerRepoLocalRepoPathTuple.setField2(ownerRepoUrlTuple.field2); // cloned repository local path
-				ownerRepoLocalRepoPathTuple.setField3(authorCount); // repository unique author count
+				OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple = new OwnerRepoAuthorCountTuple();
+				ownerRepoAuthorCountTuple.setField0(ownerRepoUrlTuple.field0); // GitHub owner (user name or organisation)
+				ownerRepoAuthorCountTuple.setField1(ownerRepoUrlTuple.field1); // GitHub repository name
+				ownerRepoAuthorCountTuple.setField2(authorCount); // repository unique author count
 				
-				sendToGhTopSearchRepoAuthorCountEntries(ownerRepoLocalRepoPathTuple);
+				sendToOwnerRepoAuthorCountEntries(ownerRepoAuthorCountTuple);
 			}
 			
 		}
