@@ -1,6 +1,6 @@
 package org.eclipse.scava.crossflow.runtime;
 
-public interface BuiltinChannelConsumer<T> {
+public interface BuiltinStreamConsumer<T> {
 	
 	public void consume(T t);
 	

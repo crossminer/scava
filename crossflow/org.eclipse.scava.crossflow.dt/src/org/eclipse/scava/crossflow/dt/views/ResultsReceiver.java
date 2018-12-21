@@ -11,7 +11,7 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.eclipse.scava.crossflow.runtime.BuiltinChannelConsumer;
+import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 
 public class ResultsReceiver {
 
@@ -35,7 +35,7 @@ public class ResultsReceiver {
 
 	}
 
-	public void addConsumer(BuiltinChannelConsumer<Object[]> consumer) throws Exception {
+	public void addConsumer(BuiltinStreamConsumer<Object[]> consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(results);
 		messageConsumer.setMessageListener(new MessageListener() {
 			@Override

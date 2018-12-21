@@ -13,7 +13,7 @@ import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
-import org.eclipse.scava.crossflow.tests.util.BuiltinChannelRecorder;
+import org.eclipse.scava.crossflow.tests.util.BuiltinStreamRecorder;
 import org.junit.Test;
 
 public class AdditionWorkflowTests extends WorkflowTests {
@@ -136,7 +136,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 		workflow.getNumberPairSource().setNumbers(numbers);
 		
-		BuiltinChannelRecorder<TaskStatus> recorder = new BuiltinChannelRecorder<>();
+		BuiltinStreamRecorder<TaskStatus> recorder = new BuiltinStreamRecorder<>();
 		workflow.getTaskStatusTopic().addConsumer(recorder);
 		
 		workflow.run();

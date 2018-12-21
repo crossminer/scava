@@ -2,7 +2,7 @@
 <?render-graphviz-dot graphviz.egl?>
 <_>
 
-	<!-- Example with multiple input/output channels -->
+	<!-- Example with multiple input/output streams -->
 	<workflow name="Multiflow" package="org.eclipse.scava.crossflow.tests.multiflow">
 		<source name="MultiSource" out="In1, In2"/>
 		

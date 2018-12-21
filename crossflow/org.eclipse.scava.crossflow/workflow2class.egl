@@ -114,7 +114,7 @@ public class [%=w.name%] extends Workflow {
 					
 					[%for (s in w.streams) { %]
 					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this);
-					activeChannels.add([%=s.name.ftlc()%]);
+					activeStreams.add([%=s.name.ftlc()%]);
 					[%}%]
 					
 					if (isMaster()) {

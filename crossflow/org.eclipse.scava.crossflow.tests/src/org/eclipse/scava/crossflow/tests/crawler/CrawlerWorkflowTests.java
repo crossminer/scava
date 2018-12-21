@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
-import org.eclipse.scava.crossflow.tests.util.BuiltinChannelRecorder;
+import org.eclipse.scava.crossflow.tests.util.BuiltinStreamRecorder;
 import org.junit.Test;
 
 public class CrawlerWorkflowTests extends WorkflowTests {
@@ -37,7 +37,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 		CrawlerWorkflow master = new CrawlerWorkflow(Mode.MASTER_BARE);
 		CrawlerWorkflow worker = master.createWorker();
 		
-		BuiltinChannelRecorder<TaskStatus> recorder = new BuiltinChannelRecorder<>();
+		BuiltinStreamRecorder<TaskStatus> recorder = new BuiltinStreamRecorder<>();
 		master.getTaskStatusTopic().addConsumer(recorder);
 		
 		master.run();

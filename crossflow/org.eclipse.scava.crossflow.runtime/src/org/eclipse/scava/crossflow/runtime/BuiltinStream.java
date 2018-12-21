@@ -20,22 +20,22 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 
-public class BuiltinChannel<T extends Serializable> implements Channel {
+public class BuiltinStream<T extends Serializable> implements Stream {
 	
 	protected ActiveMQDestination destination;
 	protected Connection connection;
 	protected Session session;
 	protected Workflow workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<>();
-	protected List<BuiltinChannelConsumer<T>> pendingConsumers = new ArrayList<>();
+	protected List<BuiltinStreamConsumer<T>> pendingConsumers = new ArrayList<>();
 	protected String name;
 	protected boolean broadcast;
 	
-	public BuiltinChannel(Workflow workflow, String name) {
+	public BuiltinStream(Workflow workflow, String name) {
 		this(workflow, name, true);
 	}
 	
-	public BuiltinChannel(Workflow workflow, String name, boolean broadcast) {
+	public BuiltinStream(Workflow workflow, String name, boolean broadcast) {
 		this.workflow = workflow;
 		this.name = name;
 		this.broadcast = broadcast;
@@ -54,7 +54,7 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 		if (broadcast) destination = (ActiveMQDestination) session.createTopic(getDestinationName());
 		else destination = (ActiveMQDestination) session.createQueue(getDestinationName());
 		
-		for (BuiltinChannelConsumer<T> pendingConsumer : pendingConsumers) {
+		for (BuiltinStreamConsumer<T> pendingConsumer : pendingConsumers) {
 			addConsumer(pendingConsumer);
 		}
 		pendingConsumers.clear();
@@ -71,7 +71,7 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 		producer.close();
 	}
 
-	public void addConsumer(BuiltinChannelConsumer<T> consumer) throws Exception {
+	public void addConsumer(BuiltinStreamConsumer<T> consumer) throws Exception {
 		
 		if (session == null) {
 			pendingConsumers.add(consumer);
@@ -112,7 +112,7 @@ public class BuiltinChannel<T extends Serializable> implements Channel {
 	}
 	
 	@Override
-	public Collection<String> getPhysicalNames() {
+	public Collection<String> getDestinationNames() {
 		return Collections.singleton(destination.getPhysicalName());
 	}
 	

@@ -52,17 +52,17 @@ public abstract class Workflow {
 	protected boolean createBroker = true;
 	protected boolean cacheEnabled = true;
 	private List<String> activeJobs = new ArrayList<String>();
-	protected HashSet<Channel> activeChannels = new HashSet<Channel>();
+	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
 	
 	protected File inputDirectory = new File("").getAbsoluteFile();
 	protected File outputDirectory = new File("").getParentFile();
 	protected File tempDirectory = null;
 	
-	protected BuiltinChannel<TaskStatus> taskStatusTopic = null;
-	protected BuiltinChannel<Object[]> resultsTopic = null;
-	protected BuiltinChannel<ControlSignal> controlTopic = null;
-	protected BuiltinChannel<FailedJob> failedJobsQueue = null;
-	protected BuiltinChannel<InternalException> internalExceptionsQueue = null;
+	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
+	protected BuiltinStream<Object[]> resultsTopic = null;
+	protected BuiltinStream<ControlSignal> controlTopic = null;
+	protected BuiltinStream<FailedJob> failedJobsQueue = null;
+	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
 	
 	protected List<FailedJob> failedJobs = null;
 	protected List<InternalException> internalExceptions = null;
@@ -106,11 +106,11 @@ public abstract class Workflow {
 	}
 	
 	public Workflow() {
-		taskStatusTopic = new BuiltinChannel<TaskStatus>(this, "TaskStatusPublisher");
-		resultsTopic = new BuiltinChannel<Object[]>(this, "ResultsBroadcaster");
-		controlTopic = new BuiltinChannel<ControlSignal>(this, "ControlTopic");
-		failedJobsQueue = new BuiltinChannel<FailedJob>(this, "FailedJobs", false);
-		internalExceptionsQueue = new BuiltinChannel<InternalException>(this, "InternalExceptions", false);
+		taskStatusTopic = new BuiltinStream<TaskStatus>(this, "TaskStatusPublisher");
+		resultsTopic = new BuiltinStream<Object[]>(this, "ResultsBroadcaster");
+		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
+		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
+		internalExceptionsQueue = new BuiltinStream<InternalException>(this, "InternalExceptions", false);
 		
 		instanceId = UUID.randomUUID().toString();
 	}
@@ -126,9 +126,9 @@ public abstract class Workflow {
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
 		
-		activeChannels.add(taskStatusTopic);
-		activeChannels.add(failedJobsQueue);
-		activeChannels.add(internalExceptionsQueue);
+		activeStreams.add(taskStatusTopic);
+		activeStreams.add(failedJobsQueue);
+		activeStreams.add(internalExceptionsQueue);
 		
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
 		//activeQueues.add(resultsBroadcaster);
@@ -136,7 +136,7 @@ public abstract class Workflow {
 		// in terminate
 		// activeQueues.add(controlTopic);
 
-		controlTopic.addConsumer(new BuiltinChannelConsumer<ControlSignal>() {
+		controlTopic.addConsumer(new BuiltinStreamConsumer<ControlSignal>() {
 
 			@Override
 			public void consume(ControlSignal signal) {
@@ -177,7 +177,7 @@ public abstract class Workflow {
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
 		if (isMaster()) {
-			taskStatusTopic.addConsumer(new BuiltinChannelConsumer<TaskStatus>() {
+			taskStatusTopic.addConsumer(new BuiltinStreamConsumer<TaskStatus>() {
 
 				@Override
 				public void consume(TaskStatus status) {
@@ -200,7 +200,7 @@ public abstract class Workflow {
 			});
 			
 			failedJobs = new ArrayList<>();
-			failedJobsQueue.addConsumer(new BuiltinChannelConsumer<FailedJob>() {
+			failedJobsQueue.addConsumer(new BuiltinStreamConsumer<FailedJob>() {
 				
 				@Override
 				public void consume(FailedJob failedJob) {
@@ -210,7 +210,7 @@ public abstract class Workflow {
 			});
 			
 			internalExceptions = new ArrayList<>();
-			internalExceptionsQueue.addConsumer(new BuiltinChannelConsumer<InternalException>() {
+			internalExceptionsQueue.addConsumer(new BuiltinStreamConsumer<InternalException>() {
 				
 				@Override
 				public void consume(InternalException internalException) {
@@ -226,7 +226,7 @@ public abstract class Workflow {
 				@Override
 				public void run() {
 					
-					boolean canTerminate = activeJobs.size() == 0 && areChannelsEmpty();
+					boolean canTerminate = activeJobs.size() == 0 && areStreamsEmpty();
 					
 					if (aboutToTerminate) {
 						if (canTerminate) {
@@ -315,12 +315,11 @@ public abstract class Workflow {
 	}
 	public abstract void run(int delay) throws Exception;
 
-	private synchronized boolean areChannelsEmpty() {
+	private synchronized boolean areStreamsEmpty() {
 		
 		try {
-			for (Channel c : new ArrayList<>(activeChannels)) {
-				for (String postId : c.getPhysicalNames()) {
-					
+			for (Stream c : new ArrayList<>(activeStreams)) {
+				for (String destinationName : c.getDestinationNames()) {
 					
 					String destinationType = c.isBroadcast() ? "Topic" : "Queue";
 					
@@ -328,10 +327,10 @@ public abstract class Workflow {
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
 					MBeanServerConnection connection = connector.getMBeanServerConnection();
 					
-					ObjectName channel = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
-							+ ",destinationType=" + destinationType + ",destinationName=" + postId);
+					ObjectName destination = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
+							+ ",destinationType=" + destinationType + ",destinationName=" + destinationName);
 	
-					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, channel,
+					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, destination,
 							DestinationViewMBean.class, true);
 						
 					try {
@@ -392,9 +391,9 @@ public abstract class Workflow {
 			// termination logic
 			System.out.println("terminating workflow... (" + getName() + ")");
 	
-			// stop all channel connections
-			for (Channel activeQueue : activeChannels) {
-				activeQueue.stop();
+			// stop all stream connections
+			for (Stream stream : activeStreams) {
+				stream.stop();
 			}
 	
 			resultsTopic.stop();
@@ -421,19 +420,19 @@ public abstract class Workflow {
 		return terminated;
 	}
 	
-	public BuiltinChannel<TaskStatus> getTaskStatusTopic() {
+	public BuiltinStream<TaskStatus> getTaskStatusTopic() {
 		return taskStatusTopic;
 	}
 	
-	public BuiltinChannel<Object[]> getResultsTopic() {
+	public BuiltinStream<Object[]> getResultsTopic() {
 		return resultsTopic;
 	}
 	
-	public BuiltinChannel<ControlSignal> getControlTopic() {
+	public BuiltinStream<ControlSignal> getControlTopic() {
 		return controlTopic;
 	}
 	
-	public BuiltinChannel<FailedJob> getFailedJobsQueue() {
+	public BuiltinStream<FailedJob> getFailedJobsQueue() {
 		return failedJobsQueue;
 	}
 	
