@@ -1,0 +1,52 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<!-- Example counting the committer count of the most popular Java projects on Github -->
+	<workflow name="GhTopSearchExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch">
+	
+		<!-- csv source of Github top search result projects (owner/repo) -->
+		<csvsource name="GhTopSearchCsvSource" out="GhTopSearchRepos" path="csvs/GhTopJava.csv"/>
+		
+		<!-- queue of Github top search repos -->
+		<queue name="GhTopSearchRepos" type="OwnerRepoTuple"/> 
+				
+	 	<!-- task for cloning repositories retrieved from GitHub API -->
+		<task name="GhTopSearchRepoCloner" in="GhTopSearchRepos" out="GhTopSearchClonedRepoEntries"/> 
+				
+		<!-- queues of repositories cloned from GitHub -->
+		<queue name="GhTopSearchClonedRepoEntries" type="OwnerRepoUrlTuple"/>
+		
+		<!-- tasks for counting unique authors of repositories cloned from GitHub -->
+		<task name="GhTopSearchRepoAuthorCounter" in="GhTopSearchClonedRepoEntries" out="GhTopSearchRepoAuthorCountEntries"/>
+		
+		<!-- queues of unique author count of repositories cloned from GitHub  -->
+		<queue name="GhTopSearchRepoAuthorCountEntries" type="OwnerRepoLocalRepoPathTuple"/> 
+	
+		<!-- sinks for printing unique author count of repositories cloned from GitHub -->
+		<sink name="GhTopSearchRepoAuthorCountPrinter" in="GhTopSearchRepoAuthorCountEntries"/>
+				
+		<!-- Github JavaProjects: github owner/repo -->
+		<type name="OwnerRepoTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+		</type>
+		
+		<!-- GhTopSearchClonedRepoEntries: github owner/repo, repo remote URL, repo local path -->
+		<type name="OwnerRepoUrlTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="String"/>
+		</type>
+		
+		<!-- github owner/repo, repo remote URL, repo local path, count -->
+		<type name="OwnerRepoLocalRepoPathTuple">
+			<field name="field0" type="String"/>
+			<field name="field1" type="String"/>
+			<field name="field2" type="String"/>
+			<field name="field3" type="Integer"/> <!-- author count -->
+		</type>
+		
+	</workflow>	
+	
+</_>
