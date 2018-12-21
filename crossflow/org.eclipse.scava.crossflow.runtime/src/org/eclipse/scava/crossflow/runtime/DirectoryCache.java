@@ -71,6 +71,8 @@ public class DirectoryCache implements Cache {
 	
 	public synchronized void cache(Job output) {
 		
+		if (!output.isCacheable()) return;
+		
 		jobMap.put(output.getId(), output);
 		Job input = jobMap.get(output.getCorrelationId());
 		

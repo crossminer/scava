@@ -2,6 +2,8 @@ package org.eclipse.scava.crossflow.runtime;
 
 public abstract class Task {
 
+	protected boolean cacheable = true;
+	
 	public abstract String getId();
 	
 	public abstract Workflow getWorkflow();
@@ -20,14 +22,20 @@ public abstract class Task {
 		getResultsTopic().send(row);
 	}
 	
+	public boolean isCacheable() {
+		return cacheable;
+	}
+	
+	public void setCacheable(boolean cacheable) {
+		this.cacheable = cacheable;
+	}
+	
 	/**
 	 * Call this within consumeXYZ() to denote task blocked due to some reason
 	 * @param reason
 	 */
 	protected void taskBlocked(String reason) throws Exception {
-		
 		getWorkflow().setTaskBlocked(this,reason);
-		
 	}
 	
 	/**

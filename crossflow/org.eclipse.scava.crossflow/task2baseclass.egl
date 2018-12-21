@@ -32,6 +32,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	}
 	
 	public void sendTo[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+		[%=s.type.name.ftlc()%].setCacheable(this.cacheable);
 		get[%=s.name%]().send([%=s.type.name.ftlc()%], this.getClass().getName());
 	}
 	

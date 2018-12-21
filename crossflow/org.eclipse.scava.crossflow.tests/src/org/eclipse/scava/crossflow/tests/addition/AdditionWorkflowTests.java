@@ -50,6 +50,28 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	}
 	
 	@Test
+	public void testUncacheable() throws Exception {
+		AdditionWorkflow workflow = new AdditionWorkflow();
+		workflow.getAdder().setCaching(true);
+		workflow.setCache(new DirectoryCache());
+		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
+		workflow.getAdder().setCacheable(false);
+		workflow.run();
+		waitFor(workflow);
+		
+		AdditionWorkflow fresh = new AdditionWorkflow();
+		fresh.getAdder().setCaching(true);
+		fresh.getAdder().setCacheable(false);
+		fresh.setCache(new DirectoryCache(((DirectoryCache)workflow.getCache()).getDirectory()));
+		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
+		fresh.run();
+		waitFor(fresh);
+		
+		assertEquals(3, fresh.getAdder().getExecutions());
+	}
+	
+	
+	@Test
 	public void testCachingWithoutCache() throws Exception {
 		
 		AdditionWorkflow workflow = new AdditionWorkflow();

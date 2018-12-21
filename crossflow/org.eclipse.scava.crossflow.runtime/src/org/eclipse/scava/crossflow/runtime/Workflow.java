@@ -367,6 +367,8 @@ public abstract class Workflow {
 		
 		if (terminated) return;
 		
+		terminationTimer.cancel();
+		
 		try {
 			// master graceful termination logic
 			if (isMaster()) {

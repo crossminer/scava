@@ -1,9 +1,7 @@
 package org.eclipse.scava.crossflow.examples.github.techrank;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -16,6 +14,8 @@ public class RepositorySearcher extends RepositorySearcherBase {
 	
 	@Override
 	public void consumeRepositorySearches(RepositorySearch repositorySearch) throws Exception {
+		
+		System.out.println("Searching " + repositorySearch.getRepository());
 		
 		TechrankWorkflowContext context = new TechrankWorkflowContext(workflow);
 		
@@ -40,23 +40,40 @@ public class RepositorySearcher extends RepositorySearcherBase {
 		
 		for (Technology technology : repositorySearch.getTechnologies()) {
 			
+			/* TODO: See why grep has stopped working (it returns 0 results even when the terminal says otherwise
 			try {
-				Process process = Runtime.getRuntime().exec("grep -r -l --include=\"*." + technology.getExtension() + "\" \"" + 
-						technology.getKeyword() + "\" " + clone.getAbsolutePath());
+				String grep = "grep -r -l --include=\"*." + technology.getExtension() + "\" \"" + 
+						technology.getKeyword() + "\" " + clone.getAbsolutePath();
+				
+				System.out.println("Grepping: " + grep);
+				
+				Process process = Runtime.getRuntime().exec(grep);
+				
 				
 				BufferedReader processInputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				BufferedReader processErrorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				
 				
 				int files = 0;
-				while (processInputStream.readLine() != null) { files++; }
+				String s;
+				while ((s = processInputStream.readLine()) != null) { 
+					System.out.println("Found: " + s);
+					files++; 
+				}
+				
+				String e;
+				while ((e = processErrorStream.readLine()) != null) { 
+					System.out.println("Error: " + e);
+				}
 				
 				RepositorySearchResult result = new RepositorySearchResult(technology.getName(), files, repositorySearch);
 				sendToRepositorySearchResults(result);
 				
 			}
 			catch (Exception ex) {
-				System.out.println("Falling back to file-by-file searching because " + ex.getMessage());
+				System.out.println("Falling back to file-by-file searching because " + ex.getMessage());*/
 				sendToRepositorySearchResults(new RepositorySearchResult(technology.getName(), countFiles(clone, technology), repositorySearch));
-			}
+			//}
 		}
 		
 	}

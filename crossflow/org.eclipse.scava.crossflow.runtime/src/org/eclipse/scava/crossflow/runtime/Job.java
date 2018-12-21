@@ -19,6 +19,7 @@ public class Job implements Serializable {
 	protected String destination;
 	protected boolean cached = false;
 	protected int failures = 0;
+	protected boolean cacheable = true;
 	
 	public void setId(String id) {
 		this.id = id;
@@ -52,6 +53,14 @@ public class Job implements Serializable {
 		this.cached = cached;
 	}
 	
+	public boolean isCacheable() {
+		return cacheable;
+	}
+	
+	public void setCacheable(boolean cacheable) {
+		this.cacheable = cacheable;
+	}
+	
 	public int getFailures() {
 		return failures;
 	}
@@ -65,11 +74,13 @@ public class Job implements Serializable {
 		int failures = this.getFailures();
 		String correlationId = this.correlationId;
 		boolean cached = this.cached;
+		boolean cacheable = this.cacheable;
 		
 		this.id = null;
 		this.correlationId = null;
 		this.failures = 0;
 		this.cached = false;
+		this.cacheable = true;
 		
 		String xml = new XStream(new DomDriver()).toXML(this);
 		
@@ -77,6 +88,7 @@ public class Job implements Serializable {
 		this.correlationId = correlationId;
 		this.cached = cached;
 		this.failures = failures;
+		this.cacheable = cacheable;
 		
 		return xml;
 	}

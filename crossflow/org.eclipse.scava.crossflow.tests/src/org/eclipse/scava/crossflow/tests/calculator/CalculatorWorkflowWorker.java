@@ -7,6 +7,7 @@ public class CalculatorWorkflowWorker {
 	public static void main(String[] args) throws Exception {
 		
 		CalculatorWorkflow worker1 = new CalculatorWorkflow(Mode.WORKER);
+		//worker1.setMaster("crossminer1.york.ac.uk");
 		worker1.setName("Eclipse");
 		worker1.getCalculator().setDelay(1000);
 		worker1.setInstanceId("calculator");
