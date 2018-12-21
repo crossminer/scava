@@ -322,7 +322,7 @@ public abstract class Workflow {
 				for (String postId : c.getPhysicalNames()) {
 					
 					
-					String destinationType = c.isBroadcast() ? "topic" : "queue";
+					String destinationType = c.isBroadcast() ? "Topic" : "Queue";
 					
 					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
