@@ -5,20 +5,24 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 public class [%=t.name%] extends [%=t.name%]Base {
 	// CSV file writer(s)
 	[% for (s in t.input) {%]
-	protected CsvWriter writer[%=loopCount%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+	protected CsvWriter writer[%=loopCount%];
 	[%}%]
-	
-	public void flushAll() {
-	[% for (s in t.input) { %]
-		writer[%=loopCount%].flush();
-	[% } %]
-	}
 	
 	[%for (s in t.input) {%]
 	@Override
 	public void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
-		writer[%=loopCount%].writeRecord( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].isCached() );
-		writer[%=loopCount%].flush();
+		try {
+			[% for (s in t.input) {%]
+			if ( writer[%=loopCount%] == null ) {
+				writer[%=loopCount%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+			}
+			[%}%]
+		
+			writer[%=loopCount%].writeRecord( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].isCached() );
+			writer[%=loopCount%].flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	[%}%]
