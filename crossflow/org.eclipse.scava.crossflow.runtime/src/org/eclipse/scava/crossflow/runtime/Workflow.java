@@ -70,6 +70,7 @@ public abstract class Workflow {
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
+	protected Serializer serializer = new Serializer();
 	
 	// excluded tasks from workers
 	protected Collection<String> tasksToExclude = new LinkedList<String>();
@@ -366,7 +367,7 @@ public abstract class Workflow {
 		
 		if (terminated) return;
 		
-		terminationTimer.cancel();
+		if (terminationTimer != null) terminationTimer.cancel();
 		
 		try {
 			// master graceful termination logic
@@ -494,6 +495,10 @@ public abstract class Workflow {
 
 	public void setTempDirectory(File tempDirectory) {
 		this.tempDirectory = tempDirectory;
+	}
+	
+	public Serializer getSerializer() {
+		return serializer;
 	}
 	
 }

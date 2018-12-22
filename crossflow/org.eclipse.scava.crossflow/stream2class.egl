@@ -15,7 +15,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
+import javax.jms.TextMessage;
 import javax.jms.Session;
 
 import org.apache.activemq.command.ActiveMQDestination;
@@ -51,7 +51,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 							workflow.cancelTermination();
 							[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
 							[%if (isCached){%]
-							Job job = (Job) ((ObjectMessage) message).getObject();
+							Job job = (Job) workflow.getSerializer().toObject(((TextMessage) message).getText());
 							
 							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								
@@ -93,8 +93,8 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 					public void onMessage(Message message) {
 						try {
 							workflow.cancelTermination();
-							ObjectMessage objectMessage = (ObjectMessage) message;
-							Job job = (Job) objectMessage.getObject();
+							TextMessage textMessage = (TextMessage) message;
+							Job job = (Job) workflow.getSerializer().toObject(textMessage.getText());
 							if (workflow.getCache() != null && !job.isCached()) {
 								workflow.getCache().cache(job);
 							}
@@ -126,9 +126,9 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
 				@Override
 				public void onMessage(Message message) {
-					ObjectMessage objectMessage = (ObjectMessage) message;
+					TextMessage textMessage = (TextMessage) message;
 					try {
-						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) objectMessage.getObject();
+						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) workflow.getSerializer().toObject(textMessage.getText());
 						consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
 					} catch (Exception ex) {
 						workflow.reportInternalException(ex);

@@ -1,4 +1,4 @@
 /build/
 WebContent/js/gen/*.js
 src-gen
-WebContent/WEB-INF/lib/*.jar
+**/*.jar

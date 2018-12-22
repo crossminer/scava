@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="org/eclipse/scava/crossflow/runtime/permanentqueues/ControlTopicConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/ResultsBroadcasterConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/TaskStatusPublisherConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ControlTopic.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ControlTopicConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ResultsBroadcaster.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/ResultsBroadcasterConsumer.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/TaskStatusPublisher.java|org/eclipse/scava/crossflow/runtime/permanentqueues/temp/TaskStatusPublisherConsumer.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.utility"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_151]">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

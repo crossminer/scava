@@ -38,8 +38,12 @@ We're using Apache Ivy for dependency management (i.e. so that we don't need to 
 You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
 
 - org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
-- org.eclipse.scava.crossflow.web/deploy-tests-run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript and also deploys org.eclipse.scava.crossflow.tests under org.eclipse.scava.crossflow.web
+- org.eclipse.scava.crossflow.web/run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript source code
+- org.eclipse.scava.crossflow.web/build-war.xml builds a Tomcat WAR file from org.eclipse.scava.crossflow.web
 - org.eclipse.scava.crossflow.examples/generate-all-examples.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.examples/models
+
+### Tests
+- JUnit tests can be ran through the CrossflowTests class in org.eclipse.scava.crossflow.tests
 
 ### Web application
 - To run the web application right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server

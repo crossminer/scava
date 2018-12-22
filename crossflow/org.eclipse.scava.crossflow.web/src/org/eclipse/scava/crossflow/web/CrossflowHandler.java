@@ -3,6 +3,8 @@ package org.eclipse.scava.crossflow.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +21,6 @@ import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -50,8 +51,13 @@ public class CrossflowHandler implements Crossflow.Iface {
 			Mode mode = Mode.MASTER;
 			if (!worker) mode = Mode.MASTER_BARE;
 			
-			Workflow workflow = (Workflow) getClassLoader().loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(mode);
+			ClassLoader classLoader = new URLClassLoader(new URL[] {
+					new File(servlet.getServletContext().getRealPath("jars/" + experiment.getJar())).toURI().toURL()}, 
+					Thread.currentThread().getContextClassLoader());
+			
+			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(mode);
 			workflow.setInstanceId(experimentId);
+			workflow.getSerializer().setClassloader(classLoader);
 			workflow.createBroker(false);
 			workflow.setCache(new DirectoryCache(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"))));
 			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));

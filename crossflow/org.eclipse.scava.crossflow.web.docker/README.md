@@ -1,6 +1,6 @@
 # Running the Crossflow web app in Docker
 - Follow [these instructions](https://github.com/crossminer/scava/blob/crossflow/crossflow/README.md) to check out and build the Crossflow source code
-- Run `org.eclipse.scava.crossflow.web/deploy-tests-run-thrift.xml`
+- Run `org.eclipse.scava.crossflow.web/build-war`
 - This should create a zipped Tomcat application (`org.eclipse.scava.crossflow.web.war`) in `org.eclipse.scava.crossflow.web.docker`
 - Run the following commands to build and run a Docker image 
 	- `docker build -t crossflow .` 

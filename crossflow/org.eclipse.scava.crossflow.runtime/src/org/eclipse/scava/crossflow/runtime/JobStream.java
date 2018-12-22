@@ -12,7 +12,6 @@ import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -60,10 +59,8 @@ public abstract class JobStream<T extends Job> implements Stream {
 			if ((d = pre.get(taskId)) != null) {
 				MessageProducer producer = session.createProducer(d);
 				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-				ObjectMessage message = session.createObjectMessage();
 				job.setDestination(getClass().getSimpleName());
-				message.setObject(job);
-				producer.send(message);
+				producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
 				producer.close();
 			} else
 				// otherwise the sender must be the source of this stream so intends to
@@ -71,10 +68,8 @@ public abstract class JobStream<T extends Job> implements Stream {
 				for (Entry<String, ActiveMQDestination> e : pre.entrySet()) {			
 					MessageProducer producer = session.createProducer(e.getValue());
 					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-					ObjectMessage message = session.createObjectMessage();
 					job.setDestination(this.getClass().getSimpleName());
-					message.setObject(job);
-					producer.send(message);
+					producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
 					producer.close();
 				}
 		} catch (Exception ex) {

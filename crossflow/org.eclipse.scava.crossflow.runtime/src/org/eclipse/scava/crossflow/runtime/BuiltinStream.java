@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.runtime;
+ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -65,9 +65,7 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 		MessageProducer producer = session.createProducer(destination);
 		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		producer.setPriority(9);
-		ObjectMessage message = session.createObjectMessage();
-		message.setObject(t);
-		producer.send(message);
+		producer.send(session.createTextMessage(workflow.getSerializer().toString(t)));
 		producer.close();
 	}
 
@@ -84,9 +82,9 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 
 			@Override
 			public void onMessage(Message message) {
-				ObjectMessage objectMessage = (ObjectMessage) message;
+				TextMessage textMessage = (TextMessage) message;
 				try {
-					consumer.consume((T) objectMessage.getObject());
+					consumer.consume((T) workflow.getSerializer().toObject(textMessage.getText()));
 				} catch (JMSException e) {
 					workflow.reportInternalException(e);
 				}

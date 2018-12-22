@@ -19,18 +19,6 @@
 	</target>
 
     <target name="main" depends="mac-init, windows-init">
-    
-    	<copy todir="WebContent/WEB-INF/lib/">
-    		<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies/lib" includes="*.jar"/>
-    	</copy>
-    			
-    	<jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.runtime.jar">
-            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin"/>
-        </jar>
-    	
-        <jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar">
-            <fileset dir="../org.eclipse.scava.crossflow.tests/bin"/>
-        </jar>
     	
     	<mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
     	
@@ -58,16 +46,9 @@
 			<arg value="crossflow.thrift"/>
 		</exec>
     	
-    	<war destfile="../org.eclipse.scava.crossflow.web.docker/org.eclipse.scava.crossflow.web.war" needxmlfile='false'>
-    		<fileset dir="WebContent"/>
-    		<classes dir="build/classes"/>
-    	</war>
-    	
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1"/>
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1"/>
-		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.docker" depth="-1"/>
-
+	
     </target>
-    
     
 </project>
