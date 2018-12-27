@@ -95,7 +95,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 		final String CLONE_SOURCE = repoUrl + ".git";
 		
 		final File CLONE_REPO_DESTINATION = new File(CLONE_PARENT_DESTINATION + File.separator
-				+ CloneUtils.createUniqueFolderForRepo(repoUrl));
+				+ CloneUtils.getUniqueRepoFolderName(repoUrl));
 	
 		System.out.print("\n" + "[" + workflow.getName() + "] " + "Cloning Git repository " + CLONE_SOURCE + " to " + CLONE_REPO_DESTINATION + " ... ");
 	

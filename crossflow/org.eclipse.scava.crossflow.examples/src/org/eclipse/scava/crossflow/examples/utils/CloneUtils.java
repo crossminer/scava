@@ -18,11 +18,11 @@ import org.apache.commons.io.FileUtils;
  */
 public class CloneUtils {
 	
-	public static String createUniqueFolderForRepo(String repoUrl) {
-		return createUniqueFolderForRepo(extractGhRepoName(repoUrl), repoUrl);
+	public static String getUniqueRepoFolderName(String repoUrl) {
+		return getUniqueRepoFolderName(extractGhRepoName(repoUrl), repoUrl);
 	}
 	
-	public static String createUniqueFolderForRepo(String name, String url) {
+	public static String getUniqueRepoFolderName(String name, String url) {
 
 		//System.out.println("creating unique hash (SHA-1) for url: " + url);
 

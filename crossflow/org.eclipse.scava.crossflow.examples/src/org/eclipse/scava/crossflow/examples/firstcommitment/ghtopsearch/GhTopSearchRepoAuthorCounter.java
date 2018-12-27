@@ -35,10 +35,11 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	}
 
 	private int count(String repoLocation) {	
+		System.out.println("count ( " + repoLocation + " )");
 		HashSet<String> repoAuthorsSet = new HashSet<String>();
 		
 		try {
-			Repository repo = new FileRepository(new File(repoLocation).getCanonicalPath());
+			Repository repo = new FileRepository(new File(repoLocation + "/.git").getCanonicalPath());
 			
 			// get a list of all known heads, tags, remotes, ...
             Collection<Ref> allRefs = repo.getAllRefs().values();
@@ -48,7 +49,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
                 for( Ref ref : allRefs ) {
                     revWalk.markStart( revWalk.parseCommit( ref.getObjectId() ));
                 }
-//                System.out.println("Walking all commits starting with " + allRefs.size() + " refs: " + allRefs);
+                System.out.println("Walking all commits starting with " + allRefs.size() + " refs: " + allRefs);
                 for( RevCommit commit : revWalk ) {
                 	repoAuthorsSet.add(commit.getAuthorIdent().getEmailAddress());
                 }
@@ -78,7 +79,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	
 	public static void main(String args[]) throws IOException {
 		GhTopSearchRepoAuthorCounter counter = new GhTopSearchRepoAuthorCounter();
-		String repoLocation = "../../.git";
+		String repoLocation = "/Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava/crossflow/org.eclipse.scava.crossflow.examples/../../../CLONED-REPOS/javascript-8213ab1e4140c89a1d7ee5a5efcfd343312de521";
 		System.out.println(new File(repoLocation).getCanonicalPath());
 		int count = counter.count(repoLocation);
 		System.out.println("COUNT: " + count);
@@ -109,7 +110,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 				
 				committedRepoMap.replace( ownerRepoUrlTuple.getField1(), committedRepoMap.get( ownerRepoUrlTuple.getField1()) + 1 );
 				
-				int authorCount = count(ownerRepoUrlTuple.getField1());
+				int authorCount = count(ownerRepoUrlTuple.getField2());
 				
 				OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple = new OwnerRepoAuthorCountTuple();
 				ownerRepoAuthorCountTuple.setField0(ownerRepoUrlTuple.field0); // GitHub owner (user name or organisation)
