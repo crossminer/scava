@@ -176,7 +176,7 @@ public class [%=w.name%] extends Workflow {
 
 [%
 operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isTypeOf(Source) or t.isTypeOf(Sink) or t.masterOnly);
+	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
 }
 
 operation Workflow getWorkerTasks() {
