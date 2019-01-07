@@ -10,7 +10,7 @@ public class TechnologySource extends TechnologySourceBase {
 	@Override
 	public void produce() throws Exception {
 		
-		technologies = Arrays.asList(new Technology("eugenia", "gmf.node", "ecore"));
+		technologies = Arrays.asList(new Technology("eugenia", "gmf.node", "ecore"), new Technology("eol", "var", "eol"));
 		
 		for (Technology technology : technologies) {
 			sendToTechnologies(technology);
