@@ -36,7 +36,7 @@ public class UploadExperiment extends HttpServlet {
 		// prepare target locations
 		String experimentName = request.getParameter("inputName");
 		String experimentPath = getServletContext().getRealPath("/experiments/") + experimentName + "/";
-		String experimentJarPath= getServletContext().getRealPath("/WEB-INF/lib/");
+		String experimentJarPath= getServletContext().getRealPath("/jars/");
 		
 		
 		Files.createDirectories(Paths.get(experimentPath));
