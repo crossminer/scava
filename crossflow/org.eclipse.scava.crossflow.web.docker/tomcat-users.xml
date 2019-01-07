@@ -35,8 +35,8 @@
   <role rolename="role1"/>
   <role rolename="tomee-admin" />
   <role rolename="manager-gui"/>
-  <user username="tomcat" password="tomcat" roles="tomcat,manager-gui,tomee-admin"/>
-  <user username="both" password="both" roles="tomcat,role1"/>
-  <user username="role1" password="role1" roles="role1"/>
+  <user username="tomcat" password="cr0$$m1n3r" roles="tomcat,manager-gui,tomee-admin"/>
+  <user username="both" password="cr0$$m1n3r" roles="tomcat,role1"/>
+  <user username="role1" password="cr0$$m1n3r" roles="role1"/>
 
 </tomcat-users>
