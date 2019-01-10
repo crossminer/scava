@@ -1,15 +1,15 @@
 <?nsuri org.eclipse.scava.crossflow?>
 <?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
 <_>
 
 	<!-- Simple example that adds pairs of numbers and prints the results -->
+	<!-- Needs an interim version of Epsilon after 10/1/2019 as it makes use of templates -->
 	<workflow name="AdditionWorkflow" package="org.eclipse.scava.crossflow.tests.addition">
-		<source name="NumberPairSource" out="Additions"/>
-		<queue name="Additions" type="NumberPair"/>
-		<task name="Adder" in="Additions" out="AdditionResults"/>
-		<queue name="AdditionResults" type="Number"/>
-		<sink name="AdditionResultsSink" in="AdditionResults"/>
-						
+		<simple-source name="NumberPairSource" produces="NumberPair" to="Additions"/>
+		<simple-task name="Adder" produces="Number" to="AdditionResults"/>
+		<simple-sink name="AdditionResultsSink"/>
+		
 		<type name="NumberPair">
 			<field name="a" type="int"/>
 			<field name="b" type="int"/>
@@ -17,6 +17,6 @@
 		<type name="Number">
 			<field name="n" type="int"/>
 		</type>
-	</workflow>	
+	</workflow>
 	
 </_>

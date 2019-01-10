@@ -1,14 +1,13 @@
 <?nsuri org.eclipse.scava.crossflow?>
 <?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
 <_>
 
 	<!-- Example where participants can choose which word to count instances of -->
 	<workflow name="MatrixWorkflow" package="org.eclipse.scava.crossflow.tests.matrix">
-		<source name="MatrixConfigurationSource" out="MatrixConfigurations"/>
-		<queue name="MatrixConfigurations" type="MatrixConfiguration"/>
-		<task name="MatrixConstructor" in="MatrixConfigurations" out="Matrices"/>
-		<queue name="Matrices" type="Matrix"/>
-		<sink name="MatrixSink" in="Matrices"/>
+		<simple-source name="MatrixConfigurationSource" produces="MatrixConfiguration" to="MatrixConfigurations"/>
+		<simple-task name="MatrixConstructor" produces="Matrix" to="Matrices"/>
+		<simple-sink name="MatrixSink"/>
 		
 		<type name="MatrixConfiguration">
 			<field name="rows" type="int"/>

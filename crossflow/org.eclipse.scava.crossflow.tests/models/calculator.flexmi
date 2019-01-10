@@ -1,15 +1,14 @@
 <?nsuri org.eclipse.scava.crossflow?>
 <?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
 <_>
 
 	<!-- Simple example that performs calculations from a CSV -->
 	<workflow name="CalculatorWorkflow" package="org.eclipse.scava.crossflow.tests.calculator">
-		<source name="CalculationSource" out="Calculations"/>
-		<queue name="Calculations" type="Calculation"/>
-		<task name="Calculator" in="Calculations" out="CalculationResults"/>
-		<queue name="CalculationResults" type="CalculationResult"/>
-		<sink name="CalculationResultsSink" in="CalculationResults"/>
-						
+		<simple-source name="CalculationSource" produces="Calculation" to="Calculations"/>
+		<simple-task name="Calculator" produces="CalculationResult" to="CalculationResults"/>
+		<simple-sink name="CalculationResultsSink"/>
+		
 		<type name="Calculation">
 			<field name="a" type="int"/>
 			<field name="b" type="int"/>
