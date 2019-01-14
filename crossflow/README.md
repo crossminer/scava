@@ -14,6 +14,7 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 	- Epsilon Core Develoment Tools
 	- Epsilon EMF Integration
 	- Epsilon GMF Integration
+- Install Web Tools Platform SDK (WTP SDK) from http://download.eclipse.org/webtools/repository/photon
 
 ### Tomcat
 - Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip
@@ -31,7 +32,7 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 
 ### Ivy
 We're using Apache Ivy for dependency management (i.e. so that we don't need to store jars in the repo)
-- Install the Ivy Eclipse plugin: https://ant.apache.org/ivy/ivyde/
+- Install the Ivy Eclipse plugin: http://www.apache.org/dist/ant/ivyde/updatesite
 - If Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click and select Ivy -> Resolve
 
 ### Generating stuff
