@@ -12,7 +12,12 @@ digraph G{
 		
 		[%for (s in w.streams){%]
 		[%=s.name%] [shape=box,style=rounded]
-		[%=s.name%]Type [shape=note, label="[%=s.type.fields.collect(f|f.name + " : " + f.getTypeLabel()).concat("\\n")%]"]
+		[%=s.name%]Type [shape=plaintext, margin=0, label=<
+			<table cellpadding='4' border='0' cellborder='1' cellspacing='0'>
+			<tr><td>[%=s.type.name%]</td></tr>
+			<tr><td>[%=s.type.fields.collect(f|f.name + " : " + f.getTypeLabel()).concat("<br/>")%]</td></tr>
+			</table>
+		>]
 		[%=s.name%] -> [%=s.name%]Type [arrowhead=none]
 		{rank=same; [%=s.name%]; [%=s.name%]Type;}
 		[%}%]
