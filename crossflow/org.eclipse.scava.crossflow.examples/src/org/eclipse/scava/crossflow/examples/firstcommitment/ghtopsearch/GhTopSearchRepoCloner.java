@@ -13,7 +13,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.scava.crossflow.examples.utils.CloneUtils;
+import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
 public class GhTopSearchRepoCloner extends GhTopSearchRepoClonerBase {
 	

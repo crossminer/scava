@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch;
 
 import java.io.File;
 
-import org.eclipse.scava.crossflow.examples.utils.CloneUtils;
+import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
