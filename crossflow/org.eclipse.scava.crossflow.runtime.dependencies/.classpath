@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.jgit-5.2.0.201812061821-r.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/activemq-all-5.15.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cglib-nodep-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-csv-1.6.jar"/>
