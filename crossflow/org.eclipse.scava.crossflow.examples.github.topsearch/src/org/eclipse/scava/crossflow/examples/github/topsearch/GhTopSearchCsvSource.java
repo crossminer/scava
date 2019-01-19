@@ -2,6 +2,8 @@ package org.eclipse.scava.crossflow.examples.github.topsearch;
 
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+
+import java.io.File;
 import java.io.IOException;
 
 public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
@@ -11,7 +13,8 @@ public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
 	@Override
 	public void produce() {
 		try {
-			final CsvParser parser = new CsvParser("build/in/GhTopJava.csv");
+			CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "input.csv").getAbsolutePath());
+
 			records = parser.getRecordsIterable();
 		
 			for (CSVRecord record : records) {

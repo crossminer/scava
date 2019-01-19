@@ -95,6 +95,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 	
 	@Override
 	public void consumeGhTopSearchRepos(OwnerRepoTuple ownerRepoTuple) throws Exception {
+		System.out.println("GhTopSearchRepoCloner.consumeGhTopSearchRepos( " + ownerRepoTuple + " )");
 		if ( committedRepoMap.size() == GhTopSearchRepoProperties.MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
 			workflow.getGhTopSearchRepos().send( ownerRepoTuple, this.getClass().getName() );

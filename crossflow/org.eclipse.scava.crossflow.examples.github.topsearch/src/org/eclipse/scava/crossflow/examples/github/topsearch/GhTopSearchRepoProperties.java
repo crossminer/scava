@@ -5,8 +5,7 @@ import java.io.File;
 public class GhTopSearchRepoProperties {
 
 	final static File CLONE_PARENT_DESTINATION = new File(
-	// level: same as this repo (scava)
-	".." + File.separator + ".." + File.separator + ".." + File.separator + "CLONED-REPOS");
+	"tmp" + File.separator + "clones");
 	
 	protected final static int MAX_NUMBER_OF_COMMITMENTS = 128;
 

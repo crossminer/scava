@@ -3,10 +3,10 @@
 <_>
 	
 	<!-- Example counting the committer count of the most popular Java projects on Github -->
-	<workflow name="GhTopSearchExample" package="org.eclipse.scava.crossflow.examples.github.topsearch">
+	<workflow name="GhTopSearchWorkflow" package="org.eclipse.scava.crossflow.examples.github.topsearch">
 	
 		<!-- csv source of Github top search result projects (owner/repo) -->
-		<csvsource name="GhTopSearchCsvSource" out="GhTopSearchRepos" path="build/in/GhTopJava.csv"/>
+		<csvsource name="GhTopSearchCsvSource" out="GhTopSearchRepos" path="in/input.csv"/>
 		
 		<!-- queue of Github top search repos -->
 		<queue name="GhTopSearchRepos" type="OwnerRepoTuple"/> 
@@ -24,7 +24,7 @@
 		<queue name="OwnerRepoAuthorCountEntries" type="OwnerRepoAuthorCountTuple"/> 
 		
 		<!-- csv sink for printing unique author count of repositories cloned from GitHub -->
-		<csvsink name="GhTopSearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="build/in/GhTopJava-authors.csv"/>
+		<csvsink name="GhTopSearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="in/output.csv"/>
 				
 		<!-- Github JavaProjects: github owner/repo -->
 		<type name="OwnerRepoTuple">
