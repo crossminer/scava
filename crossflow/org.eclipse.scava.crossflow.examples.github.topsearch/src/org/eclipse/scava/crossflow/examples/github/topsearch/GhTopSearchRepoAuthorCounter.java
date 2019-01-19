@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch;
+package org.eclipse.scava.crossflow.examples.github.topsearch;
 
 import java.io.File;
 import java.io.IOException;

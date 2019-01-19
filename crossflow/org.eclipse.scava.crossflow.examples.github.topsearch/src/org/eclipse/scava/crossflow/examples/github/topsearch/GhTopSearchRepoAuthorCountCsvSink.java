@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch;
+package org.eclipse.scava.crossflow.examples.github.topsearch;
 
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
@@ -10,7 +10,7 @@ public class GhTopSearchRepoAuthorCountCsvSink extends GhTopSearchRepoAuthorCoun
 	public void consumeOwnerRepoAuthorCountEntries(OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple) {
 		try {
 			if ( writer1 == null ) {
-				writer1 = new CsvWriter("csvs/GhTopJava-authors.csv", "owner", "repo", "authorCount",  "cached");
+				writer1 = new CsvWriter("build/out/GhTopJava-authors.csv", "owner", "repo", "authorCount",  "cached");
 			}
 		
 			writer1.writeRecord( ownerRepoAuthorCountTuple.getField0(), ownerRepoAuthorCountTuple.getField1(), ownerRepoAuthorCountTuple.getField2(),  ownerRepoAuthorCountTuple.isCached() );

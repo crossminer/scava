@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: topsearch
+Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.github.topsearch
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.scava.crossflow.examples.github.topsearch
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.crossflow.runtime;bundle-version="1.0.0"

@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.firstcommitment.ghtopsearch;
+package org.eclipse.scava.crossflow.examples.github.topsearch;
 
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
@@ -11,7 +11,7 @@ public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
 	@Override
 	public void produce() {
 		try {
-			final CsvParser parser = new CsvParser("csvs/GhTopJava.csv");
+			final CsvParser parser = new CsvParser("build/in/GhTopJava.csv");
 			records = parser.getRecordsIterable();
 		
 			for (CSVRecord record : records) {
