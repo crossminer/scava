@@ -21,3 +21,5 @@ crossflow/org\.eclipse\.scava\.crossflow\.tests/activemq-data/
 crossflow/org\.eclipse\.scava\.crossflow\.tests/csvs/AdditionResultsCsvSink\.csv
 
 crossflow/org\.eclipse\.scava\.crossflow\.restmule\.client\.github/resources/githubprivate\.properties
+
+restmule/org\.eclipse\.scava\.crossflow\.restmule\.client\.github/resources/githubprivate\.properties
