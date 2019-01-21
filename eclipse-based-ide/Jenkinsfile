@@ -38,7 +38,7 @@ pipeline {
       }
       post {
         success {
-        	archiveArtifacts 'eclipse-based-ide/org.eclipse.scava.root/releng/org.eclipse.scava.update/target'
+        	archiveArtifacts 'eclipse-based-ide/org.eclipse.scava.root/releng/org.eclipse.scava.update/target/**'
         }
       }
     }
