@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.tests;
 
+import org.eclipse.scava.crossflow.tests.ack.AckWorkflowTests;
 import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowCommandLineTests;
 import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowTests;
 import org.eclipse.scava.crossflow.tests.cache.DirectoryCacheTests;
@@ -25,7 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MultiflowTests.class,
 	MinimalWorkflowTests.class,
 	CommitmentWorkflowTests.class,
-	ExceptionsWorkflowTests.class
+	ExceptionsWorkflowTests.class,
+	AckWorkflowTests.class
 })
 public class CrossflowTests {
 
