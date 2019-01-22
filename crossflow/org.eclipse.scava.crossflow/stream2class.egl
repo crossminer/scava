@@ -26,13 +26,21 @@ import org.eclipse.scava.crossflow.runtime.JobStream;
 
 public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
-	public [%=s.name%](Workflow workflow) throws Exception {
+	private boolean ack = true;	
+		
+	public [%=s.name%](Workflow workflow, boolean enablePrefetch, boolean enableAck) throws Exception {
 		super(workflow);
 		
+		ack = enableAck;
+		
+		ActiveMQDestination postQ;
 		[%for (t in s.inputOf){%]
 		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]." + workflow.getInstanceId()));
 		destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]." + workflow.getInstanceId()));
-		post.put("[%=t.name%]", (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]." + workflow.getInstanceId()));
+		postQ = (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]." + workflow.getInstanceId()
+				+ (enablePrefetch?"":"?consumer.prefetchSize=1")
+			);		
+		post.put("[%=t.name%]", postQ);
 		[%}%]
 		
 		for (String consumerId : pre.keySet()) {
@@ -129,7 +137,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 					TextMessage textMessage = (TextMessage) message;
 					try {
 						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) workflow.getSerializer().toObject(textMessage.getText());
-						consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
+						consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%], message, ack);
 					} catch (Exception ex) {
 						workflow.reportInternalException(ex);
 					}

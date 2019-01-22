@@ -15,6 +15,7 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQSession;
 import org.apache.activemq.command.ActiveMQDestination;
 
 public abstract class JobStream<T extends Job> implements Stream {
@@ -45,7 +46,8 @@ public abstract class JobStream<T extends Job> implements Stream {
 		connectionFactory.setTrustAllPackages(true);
 		connection = connectionFactory.createConnection();
 		connection.start();
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		session = connection.createSession(false, ActiveMQSession.INDIVIDUAL_ACKNOWLEDGE);
+				
 		destination = new HashMap<String, ActiveMQDestination>();
 		pre = new HashMap<String, ActiveMQDestination>();
 		post = new HashMap<String, ActiveMQDestination>();

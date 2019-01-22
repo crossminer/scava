@@ -14,7 +14,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class [%=w.name%] extends Workflow {
-	
+
 	public static [%=w.name%] run(String[] args) throws Exception {
 		[%=w.name%] throwAway = new [%=w.name%]();
 		new JCommander(throwAway, args);
@@ -113,7 +113,7 @@ public class [%=w.name%] extends Workflow {
 					Thread.sleep(delay);
 					
 					[%for (s in w.streams) { %]
-					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this);
+					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch, enableAck);
 					activeStreams.add([%=s.name.ftlc()%]);
 					[%}%]
 					
@@ -172,7 +172,33 @@ public class [%=w.name%] extends Workflow {
 	}
 	[%}%]
 
-}
+	/**
+	* Sets whether tasks are able to obtain more jobs while they are in the middle of processing one already
+	*/
+	private boolean enablePrefetch = false;
+	
+	public boolean isEnablePrefetch() {
+		return enablePrefetch;
+	}
+
+	public void setEnablePrefetch(boolean enablePrefetch) {
+		this.enablePrefetch = enablePrefetch;
+	}
+	
+	/**
+	* Sets whether tasks will acknowledge their processed messages (TESTING ONLY)
+	*/
+	private boolean enableAck = true;
+	
+	public boolean isAckEnabled() {
+		return enableAck;
+	}
+
+	public void setEnableAck(boolean enable) {
+		enableAck = enable;
+	}
+	
+}	
 
 [%
 operation Workflow getMasterTasks() {

@@ -3,7 +3,6 @@ package org.eclipse.scava.crossflow.runtime;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -33,56 +32,58 @@ public abstract class Workflow {
 	@Parameter(names = { "-name" }, description = "The name of the workflow")
 	protected String name;
 	protected Cache cache;
-	
+
 	@Parameter(names = { "-master" }, description = "IP of the master")
 	protected String master = "localhost";
-	
+
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
-	
+
 	protected BrokerService brokerService;
-	
+
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
 	protected String instanceId;
-	
+
 	@Parameter(names = {
-	"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
+			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
 	protected Mode mode = Mode.MASTER;
-	
+
 	protected boolean createBroker = true;
 	protected boolean cacheEnabled = true;
 	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
-	
+
 	protected File inputDirectory = new File("").getAbsoluteFile();
 	protected File outputDirectory = new File("").getParentFile();
 	protected File tempDirectory = null;
-	
+
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
 	protected BuiltinStream<Object[]> resultsTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<FailedJob> failedJobsQueue = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
-	
+
 	protected List<FailedJob> failedJobs = null;
 	protected List<InternalException> internalExceptions = null;
-	
+
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<String>();
 	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
 	protected Serializer serializer = new Serializer();
-	
+
 	// excluded tasks from workers
 	protected Collection<String> tasksToExclude = new LinkedList<String>();
+
+	private boolean enablePrefetch = false;
 	
-	public void excludeTasks(Collection<String> tasks){
+	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
 	}
-	
+
 	public void createBroker(boolean createBroker) {
 		this.createBroker = createBroker;
 	}
-	
+
 	protected Timer terminationTimer;
 	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
@@ -95,7 +96,8 @@ public abstract class Workflow {
 		activeWorkerIds.add(id);
 	}
 
-	// terminate workflow on master after this time (ms) regardless of confirmation from workers
+	// terminate workflow on master after this time (ms) regardless of confirmation
+	// from workers
 	private int terminationTimeout = 10000;
 
 	public void setTerminationTimeout(int timeout) {
@@ -105,19 +107,19 @@ public abstract class Workflow {
 	public int getTerminationTimeout() {
 		return terminationTimeout;
 	}
-	
+
 	public Workflow() {
 		taskStatusTopic = new BuiltinStream<TaskStatus>(this, "TaskStatusPublisher");
 		resultsTopic = new BuiltinStream<Object[]>(this, "ResultsBroadcaster");
 		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
 		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
 		internalExceptionsQueue = new BuiltinStream<InternalException>(this, "InternalExceptions", false);
-		
+
 		instanceId = UUID.randomUUID().toString();
 	}
-	
+
 	protected void connect() throws Exception {
-		
+
 		if (tempDirectory == null) {
 			tempDirectory = Files.createTempDirectory("crossflow").toFile();
 		}
@@ -126,13 +128,13 @@ public abstract class Workflow {
 		controlTopic.init();
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
-		
+
 		activeStreams.add(taskStatusTopic);
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
-		
+
 		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
-		//activeQueues.add(resultsBroadcaster);
+		// activeQueues.add(resultsBroadcaster);
 		// do not add control topic to activequeues as it has to be managed explicitly
 		// in terminate
 		// activeQueues.add(controlTopic);
@@ -170,7 +172,6 @@ public abstract class Workflow {
 
 			}
 		});
-		
 
 		// XXX if the worker sends this before the master is listening to this topic
 		// this information is lost which affects termiantion
@@ -182,69 +183,70 @@ public abstract class Workflow {
 
 				@Override
 				public void consume(TaskStatus status) {
+					// System.err.println("consumeTaskStatusTopic on " + getName() + " : " +
+					// status.getCaller() + " : " + status.getStatus());
 					switch (status.getStatus()) {
 
-						case INPROGRESS: {
-							activeJobs.add(status.getCaller());
-							cancelTermination();
-							break;
-						}
-						case WAITING: {
-							activeJobs.remove(status.getCaller());
-							break;
-						}
-						default:
-							break;
+					case INPROGRESS: {
+						activeJobs.add(status.getCaller());
+						cancelTermination();
+						break;
+					}
+					case WAITING: {
+						activeJobs.remove(status.getCaller());
+						break;
+					}
+					default:
+						break;
 					}
 				}
 
 			});
-			
+
 			failedJobs = new ArrayList<>();
 			failedJobsQueue.addConsumer(new BuiltinStreamConsumer<FailedJob>() {
-				
+
 				@Override
 				public void consume(FailedJob failedJob) {
 					failedJob.getException().printStackTrace();
 					failedJobs.add(failedJob);
 				}
 			});
-			
+
 			internalExceptions = new ArrayList<>();
 			internalExceptionsQueue.addConsumer(new BuiltinStreamConsumer<InternalException>() {
-				
+
 				@Override
 				public void consume(InternalException internalException) {
 					internalException.getException().printStackTrace();
 					internalExceptions.add(internalException);
 				}
 			});
-			
+
 			terminationTimer = new Timer();
-			
+
 			terminationTimer.schedule(new TimerTask() {
-				
+
 				@Override
 				public void run() {
-					
+
+					// System.err.println(activeJobs.size() + " " + areStreamsEmpty());
+
 					boolean canTerminate = activeJobs.size() == 0 && areStreamsEmpty();
-					
+
 					if (aboutToTerminate) {
 						if (canTerminate) {
 							terminate();
 						}
-					}
-					else {
+					} else {
 						aboutToTerminate = canTerminate;
 					}
 				}
 			}, 0, 2000);
-			
+
 		}
 	}
-	
 
-	
 	public void cancelTermination() {
 		aboutToTerminate = false;
 	}
@@ -260,11 +262,11 @@ public abstract class Workflow {
 	public String getInstanceId() {
 		return instanceId;
 	}
-	
+
 	public void setInstanceId(String instanceId) {
 		this.instanceId = instanceId;
 	}
-	
+
 	public Cache getCache() {
 		return cache;
 	}
@@ -280,31 +282,31 @@ public abstract class Workflow {
 	public boolean isWorker() {
 		return mode == Mode.MASTER || mode == Mode.WORKER;
 	}
-	
+
 	public Mode getMode() {
 		return mode;
 	}
-	
+
 	public void setMaster(String master) {
 		this.master = master;
 	}
-	
+
 	public String getMaster() {
 		return master;
 	}
-	
+
 	public int getPort() {
 		return port;
 	}
-	
+
 	public void setPort(int port) {
 		this.port = port;
 	}
-	
+
 	public String getBroker() {
 		return "tcp://" + master + ":" + port;
 	}
-	
+
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);
@@ -314,68 +316,74 @@ public abstract class Workflow {
 	public void run() throws Exception {
 		run(0);
 	}
+
 	public abstract void run(int delay) throws Exception;
 
 	private synchronized boolean areStreamsEmpty() {
-		
+
 		try {
 			for (Stream c : new ArrayList<>(activeStreams)) {
 				for (String destinationName : c.getDestinationNames()) {
-					
+
 					String destinationType = c.isBroadcast() ? "Topic" : "Queue";
-					
+
 					String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
 					JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
 					MBeanServerConnection connection = connector.getMBeanServerConnection();
-					
+
 					ObjectName destination = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + master
 							+ ",destinationType=" + destinationType + ",destinationName=" + destinationName);
-	
+
 					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, destination,
 							DestinationViewMBean.class, true);
-						
+
+//					System.err.println(destinationName + ":" 
+//							+ destinationType + " " 
+//							+ mbView.getQueueSize() + " "
+//							+ mbView.getInFlightCount());
+
 					try {
 						if (!c.isBroadcast()) {
 							if (mbView.getQueueSize() > 0) {
 								return false;
 							}
-						} else { 
-							if ( mbView.getInFlightCount() > 1 ) {
+						} else {
+							if (mbView.getInFlightCount() > 1) {
 								return false;
 							}
 						}
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						// Ignore exception
 					}
-	
+
 					connector.close();
-	
+
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			unrecoverableException(ex);
 			return true;
 		}
-		
+
 		return true;
-		
+
 	}
 
 	public synchronized void terminate() {
-		
-		if (terminated) return;
-		
-		if (terminationTimer != null) terminationTimer.cancel();
-		
+
+		if (terminated)
+			return;
+
+		if (terminationTimer != null)
+			terminationTimer.cancel();
+
 		try {
 			// master graceful termination logic
 			if (isMaster()) {
-	
+
 				// ask all workers to terminate
 				controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
-	
+
 				long startTime = System.currentTimeMillis();
 				// wait for workers to terminate or for the termination timeout
 				while ((System.currentTimeMillis() - startTime) < terminationTimeout) {
@@ -386,19 +394,19 @@ public abstract class Workflow {
 					Thread.sleep(100);
 				}
 				System.out.println("terminating master...");
-	
+
 			}
-	
+
 			// termination logic
 			System.out.println("terminating workflow... (" + getName() + ")");
-	
+
 			// stop all stream connections
 			for (Stream stream : activeStreams) {
 				stream.stop();
 			}
-	
+
 			resultsTopic.stop();
-			
+
 			if (isMaster()) {
 				controlTopic.stop();
 				System.out.println("createBroker: " + createBroker);
@@ -411,40 +419,39 @@ public abstract class Workflow {
 			}
 			terminated = true;
 			System.out.println("workflow " + getName() + " terminated.");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// There is nothing to do at this stage
 		}
 	}
- 	
+
 	public boolean hasTerminated() {
 		return terminated;
 	}
-	
+
 	public BuiltinStream<TaskStatus> getTaskStatusTopic() {
 		return taskStatusTopic;
 	}
-	
+
 	public BuiltinStream<Object[]> getResultsTopic() {
 		return resultsTopic;
 	}
-	
+
 	public BuiltinStream<ControlSignal> getControlTopic() {
 		return controlTopic;
 	}
-	
+
 	public BuiltinStream<FailedJob> getFailedJobsQueue() {
 		return failedJobsQueue;
 	}
-	
+
 	public List<FailedJob> getFailedJobs() {
 		return failedJobs;
 	}
-	
+
 	public List<InternalException> getInternalExceptions() {
 		return internalExceptions;
 	}
-	
+
 	public void reportInternalException(Exception ex) {
 		try {
 			internalExceptionsQueue.send(new InternalException(ex, this.getName()));
@@ -452,11 +459,11 @@ public abstract class Workflow {
 			unrecoverableException(e);
 		}
 	}
-	
+
 	public void unrecoverableException(Exception ex) {
 		ex.printStackTrace();
 	}
-	
+
 	public void setTaskInProgess(Task caller) throws Exception {
 		taskStatusTopic.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
@@ -496,9 +503,9 @@ public abstract class Workflow {
 	public void setTempDirectory(File tempDirectory) {
 		this.tempDirectory = tempDirectory;
 	}
-	
+
 	public Serializer getSerializer() {
 		return serializer;
 	}
-	
+
 }
