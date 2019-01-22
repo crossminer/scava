@@ -7,7 +7,7 @@
 		<parameter name="to"/>
 		<content>
 			<source name="${name}" out="${to}"/>
-			<stream name="${to}" type="${produces}" :var="out"/>
+			<queue name="${to}" type="${produces}" :var="out"/>
 		</content>
 	</:template>
 	
@@ -17,7 +17,7 @@
 		<parameter name="to"/>
 		<content>
 			<task name="${name}" out="${to}" :in="Sequence{out}"/>
-			<stream name="${to}" type="${produces}" :var="out"/>
+			<queue name="${to}" type="${produces}" :var="out"/>
 		</content>
 	</:template>
 	
