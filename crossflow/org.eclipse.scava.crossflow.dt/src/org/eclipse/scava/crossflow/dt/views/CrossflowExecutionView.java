@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.dt.views;
 
 import java.io.PrintStream;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +19,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
+import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
@@ -44,17 +44,17 @@ import org.osgi.framework.Bundle;
 public class CrossflowExecutionView extends ViewPart {
 
 	public static final String ID = "org.eclipse.scava.crossflow.dt.views.CrossflowExecutionView";
-	
+
 	private class Row {
 		private String key;
-		private Object[] values;
+		private Result values;
 
-		public Row(String key, int valuesLength) {
+		public Row(String key) {
 			this.key = key;
-			values = new Object[valuesLength];
+			values = new Result();
 		}
 
-		public Row(String key, Object[] values) {
+		public Row(String key, Result values) {
 			this.key = key;
 			this.values = values;
 		}
@@ -65,45 +65,44 @@ public class CrossflowExecutionView extends ViewPart {
 
 		@Override
 		public String toString() {
-			return key + ": " + Arrays.toString(values);
+			return key + ": " + values;
 		}
 
-		public Object[] getValues() {
+		public Result getValues() {
 			return values;
 		}
 
-		public void setValues(Object[] values) {
-			if (this.values == null || this.values.length == values.length)
+		public void setValues(Result values) {
+			if (this.values == null || this.values.size() == values.size())
 				this.values = values;
 			else
 				throw new UnsupportedOperationException(
-						"cannot set values to ones of a different length, original length was: " + this.values.length
-								+ ", new length is: " + values.length);
+						"cannot set values to ones of a different length, original length was: " + this.values.size()
+								+ ", new length is: " + values.size());
 		}
 
-
-		public void addToValues(Object[] values2) {
-			for (int i = 0; i < values.length; i++)
-				if (values[i] instanceof Integer && values2[i] instanceof Integer)
-					values[i] = (Integer) values[i] + (Integer) values2[i];
+		public void addToValues(Result values2) {
+			for (int i = 0; i < values.size(); i++)
+				if (values.get(i) instanceof Integer && values2.get(i) instanceof Integer)
+					values.set(i, (Integer) values.get(i) + (Integer) values2.get(i));
 
 		}
-			
-			public void addToValue(Object[] values2, int arrayPosition) {
-			if (values[arrayPosition] instanceof Integer && values2[arrayPosition] instanceof Integer)
-				values[arrayPosition] = (Integer) values[arrayPosition] + (Integer) values2[arrayPosition];
+
+		public void addToValue(Result values2, int arrayPosition) {
+			if (values.get(arrayPosition) instanceof Integer && values2.get(arrayPosition) instanceof Integer)
+				values.set(arrayPosition, (Integer) values.get(arrayPosition) + (Integer) values2.get(arrayPosition));
 		}
 
-		public void addToAllValues(Object[] values2) {
-			if (values.length == values2.length)
-				for (int i = 0; i < values.length; i++) {
-					if (values[i] instanceof Integer && values2[i] instanceof Integer)
-						values[i] = (Integer) values[i] + (Integer) values2[i];
+		public void addToAllValues(Result values2) {
+			if (values.size() == values2.size())
+				for (int i = 0; i < values.size(); i++) {
+					if (values.get(i) instanceof Integer && values2.get(i) instanceof Integer)
+						values.set(i, (Integer) values.get(i) + (Integer) values2.get(i));
 				}
 			else
 				throw new UnsupportedOperationException(
 						"cannot update all values to ones from a source of a different length, original length was: "
-								+ values.length + ", new length is: " + values2.length);
+								+ values.size() + ", new length is: " + values2.size());
 
 		}
 	}
@@ -162,7 +161,7 @@ public class CrossflowExecutionView extends ViewPart {
 
 	}
 
-	public boolean initializeColumnNames(String[] cols) {
+	public boolean initializeColumnNames(Result cols) {
 		if (columnNamesInitialized)
 			return false;
 
@@ -171,12 +170,12 @@ public class CrossflowExecutionView extends ViewPart {
 		return true;
 	}
 
-	private void createColumns(String[] cols) {
+	private void createColumns(Result cols) {
 
-		for (int i = 0; i < cols.length; i++) {
+		for (int i = 0; i < cols.size(); i++) {
 
 			final int it = i;
-			final String name = cols[it];
+			final String name = (String) cols.get(it);
 			TableViewerColumn colI = new TableViewerColumn(viewer, SWT.NONE);
 			colI.getColumn().setWidth(200);
 			colI.getColumn().setText(name);
@@ -184,7 +183,7 @@ public class CrossflowExecutionView extends ViewPart {
 				@Override
 				public String getText(Object element) {
 					Row r = (Row) element;
-					return r.getValues()[it].toString();
+					return r.getValues().get(it).toString();
 				}
 			});
 
@@ -266,13 +265,13 @@ public class CrossflowExecutionView extends ViewPart {
 
 		try {
 			ResultsReceiver rp = new ResultsReceiver();
-			rp.addConsumer(new BuiltinStreamConsumer<Object[]>() {
+			rp.addConsumer(new BuiltinStreamConsumer<Result>() {
 				@Override
-				public void consume(Object[] job) {
+				public void consume(Result job) {
 					System.err.println("consuming...");
-					System.err.println(Arrays.toString(job));
-					updateRowUsingAddition((String) job[0], job);
-					out.println("updated technology: " + job[0]);
+					System.err.println(job);
+					updateRowUsingAddition((String) job.get(0), job);
+					out.println("updated technology: " + job.get(0));
 
 				}
 
@@ -303,10 +302,10 @@ public class CrossflowExecutionView extends ViewPart {
 	//
 	// }
 
-	private void updateRowUsingAddition(String key, Object[] values) {
+	private void updateRowUsingAddition(String key, Result values) {
 
 		out.println("updating row: " + key);
-		out.println("by adding values: " + Arrays.toString(values));
+		out.println("by adding values: " + values);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -326,10 +325,10 @@ public class CrossflowExecutionView extends ViewPart {
 
 	}
 
-	void updateRowUsingReplacement(String key, Object[] values) {
+	void updateRowUsingReplacement(String key, Result values) {
 
 		out.println("updating row: " + key);
-		out.println("with values: " + Arrays.toString(values));
+		out.println("with values: " + values);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override

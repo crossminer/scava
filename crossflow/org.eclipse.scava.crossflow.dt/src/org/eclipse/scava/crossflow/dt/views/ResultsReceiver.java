@@ -12,6 +12,7 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
+import org.eclipse.scava.crossflow.runtime.utils.Result;
 
 public class ResultsReceiver {
 
@@ -35,7 +36,7 @@ public class ResultsReceiver {
 
 	}
 
-	public void addConsumer(BuiltinStreamConsumer<Object[]> consumer) throws Exception {
+	public void addConsumer(BuiltinStreamConsumer<Result> consumer) throws Exception {
 		MessageConsumer messageConsumer = session.createConsumer(results);
 		messageConsumer.setMessageListener(new MessageListener() {
 			@Override
@@ -44,8 +45,8 @@ public class ResultsReceiver {
 				// System.out.println(message);
 				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					Object[] job = (Object[]) objectMessage.getObject();
-					consumer.consume((Object[]) job);
+					Result job = (Result) objectMessage.getObject();
+					consumer.consume((Result) job);
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

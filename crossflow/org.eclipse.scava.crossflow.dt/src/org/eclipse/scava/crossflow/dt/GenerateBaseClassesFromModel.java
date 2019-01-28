@@ -44,7 +44,7 @@ public class GenerateBaseClassesFromModel extends EpsilonStandaloneExample {
 	@Override
 	public List<IModel> getModels() throws Exception {
 		List<IModel> models = new ArrayList<IModel>();
-		models.add(createAndLoadAnEmfModel("http://org.eclipse.scava.crossflow",
+		models.add(createAndLoadAnEmfModel("org.eclipse.scava.crossflow",
 				projectLocation + File.separator + "model" + File.separator + crossflowDiagramModelName, "Model",
 				true, false, false));
 

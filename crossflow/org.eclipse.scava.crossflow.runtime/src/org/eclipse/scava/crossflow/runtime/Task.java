@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime;
 
+import org.eclipse.scava.crossflow.runtime.utils.Result;
+
 public abstract class Task {
 
 	protected boolean cacheable = true;
@@ -8,18 +10,18 @@ public abstract class Task {
 	
 	public abstract Workflow getWorkflow();
 	
-	protected BuiltinStream<Object[]> resultsTopic;
+	protected BuiltinStream<Result> resultsTopic;
 	
-	public void setResultsTopic(BuiltinStream<Object[]> resultsTopic) {
+	public void setResultsTopic(BuiltinStream<Result> resultsTopic) {
 		this.resultsTopic = resultsTopic;
 	}
 	
-	public BuiltinStream<Object[]> getResultsTopic() {
+	public BuiltinStream<Result> getResultsTopic() {
 		return resultsTopic;
 	}
 	
-	public void sendToResultsTopic(Object[] row) throws Exception {
-		getResultsTopic().send(row);
+	public void sendToResultsTopic(Result res) throws Exception {
+		getResultsTopic().send(res);
 	}
 	
 	public boolean isCacheable() {

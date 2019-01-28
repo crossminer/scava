@@ -26,6 +26,8 @@ import crossflow.Type;
 import crossflow.impl.CrossflowPackageImpl;
 import crossflow.impl.WorkflowImpl;
 
+import org.eclipse.scava.crossflow.runtime.utils.Result;
+
 /**
  * @generated NOT
  * @author kb
@@ -79,13 +81,13 @@ public class RunAction extends Action {
 
 		// FIXME only looks at the first sink for output and its first input stream
 		// (which should be fine as all input streams should have the same type)
-		String[] resultStructure = null;
+		Result resultStructure = null;
 		for (Task t : wfi.getTasks())
 			if (t instanceof Sink) {
 				Type type = t.getInput().get(0).getType();
-				resultStructure = new String[type.getFields().size()];
-				for (int i = 0; i < resultStructure.length; i++)
-					resultStructure[i] = type.getFields().get(i).getName();
+				Result resultMeta = new Result();
+				for (int i = 0; i < type.getFields().size(); i++)
+					resultMeta.add(type.getFields().get(i).getName());
 				break;
 			}
 
