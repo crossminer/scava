@@ -22,6 +22,8 @@ import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
+import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 
@@ -58,7 +60,8 @@ public abstract class Workflow {
 	protected File tempDirectory = null;
 
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
-	protected BuiltinStream<Object[]> resultsTopic = null;
+	protected BuiltinStream<Result> resultsTopic = null;
+	protected BuiltinStream<StreamMetadata> streamMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<FailedJob> failedJobsQueue = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
@@ -75,7 +78,7 @@ public abstract class Workflow {
 	protected Collection<String> tasksToExclude = new LinkedList<String>();
 
 	private boolean enablePrefetch = false;
-	
+
 	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
 	}
@@ -85,6 +88,7 @@ public abstract class Workflow {
 	}
 
 	protected Timer terminationTimer;
+	protected Timer streamMetadataTimer;
 	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
 
@@ -99,6 +103,8 @@ public abstract class Workflow {
 	// terminate workflow on master after this time (ms) regardless of confirmation
 	// from workers
 	private int terminationTimeout = 10000;
+	// time in milliseconds between stream metadata updates
+	private int streamMetadataPeriod = 3000;
 
 	public void setTerminationTimeout(int timeout) {
 		terminationTimeout = timeout;
@@ -110,7 +116,8 @@ public abstract class Workflow {
 
 	public Workflow() {
 		taskStatusTopic = new BuiltinStream<TaskStatus>(this, "TaskStatusPublisher");
-		resultsTopic = new BuiltinStream<Object[]>(this, "ResultsBroadcaster");
+		resultsTopic = new BuiltinStream<Result>(this, "ResultsBroadcaster");
+		streamMetadataTopic = new BuiltinStream<StreamMetadata>(this, "StreamMetadataBroadcaster");
 		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
 		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
 		internalExceptionsQueue = new BuiltinStream<InternalException>(this, "InternalExceptions", false);
@@ -125,6 +132,7 @@ public abstract class Workflow {
 		}
 		taskStatusTopic.init();
 		resultsTopic.init();
+		streamMetadataTopic.init();
 		controlTopic.init();
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
@@ -174,7 +182,7 @@ public abstract class Workflow {
 		});
 
 		// XXX if the worker sends this before the master is listening to this topic
-		// this information is lost which affects termiantion
+		// this information is lost which affects termination
 		if (!isMaster())
 			controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
 
@@ -242,7 +250,67 @@ public abstract class Workflow {
 						aboutToTerminate = canTerminate;
 					}
 				}
-			}, 0, 2000);
+			}, delay, 2000);
+
+			// timer for publishing stream metadata
+			streamMetadataTimer = new Timer();
+					
+			streamMetadataTimer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					StreamMetadata sm = new StreamMetadata();
+					//
+					for (Stream c : activeStreams) {
+
+						try {
+
+							for (String destinationName : c.getDestinationNames()) {
+
+								String destinationType = c.isBroadcast() ? "Topic" : "Queue";
+
+								String url = "service:jmx:rmi:///jndi/rmi://" + master + ":1099/jmxrmi";
+								JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
+								MBeanServerConnection connection = connector.getMBeanServerConnection();
+
+								ObjectName destination = new ObjectName(
+										"org.apache.activemq:type=Broker,brokerName=" + master + ",destinationType="
+												+ destinationType + ",destinationName=" + destinationName);
+
+								DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection,
+										destination, DestinationViewMBean.class, true);
+
+//									System.err.println(destinationName + ":" 
+//											+ destinationType + " " 
+//											+ mbView.getQueueSize() + " "
+//											+ mbView.getInFlightCount());
+
+								try {
+
+									sm.addStream(destinationName, mbView.getQueueSize(), mbView.getInFlightCount(),
+											c.isBroadcast());
+
+								} catch (Exception ex) {
+									// Ignore exception
+								}
+
+								connector.close();
+
+							}
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					//
+					try {
+						streamMetadataTopic.send(sm);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+			}, 3000, streamMetadataPeriod);
 
 		}
 	}
@@ -317,6 +385,15 @@ public abstract class Workflow {
 		run(0);
 	}
 
+	protected int delay = 0;
+
+	/**
+	 * delays the execution of sources for 'delay' milliseconds. Needs to set the
+	 * delay field in the superclass.
+	 * 
+	 * @param delay
+	 * @throws Exception
+	 */
 	public abstract void run(int delay) throws Exception;
 
 	private synchronized boolean areStreamsEmpty() {
@@ -406,6 +483,9 @@ public abstract class Workflow {
 			}
 
 			resultsTopic.stop();
+			
+			streamMetadataTimer.cancel();
+			streamMetadataTopic.stop();
 
 			if (isMaster()) {
 				controlTopic.stop();
@@ -432,8 +512,12 @@ public abstract class Workflow {
 		return taskStatusTopic;
 	}
 
-	public BuiltinStream<Object[]> getResultsTopic() {
+	public BuiltinStream<Result> getResultsTopic() {
 		return resultsTopic;
+	}
+
+	public BuiltinStream<StreamMetadata> getStreamMetadataTopic() {
+		return streamMetadataTopic;
 	}
 
 	public BuiltinStream<ControlSignal> getControlTopic() {
@@ -508,4 +592,11 @@ public abstract class Workflow {
 		return serializer;
 	}
 
+	public void setStreamMetadataPeriod(int p) {
+		streamMetadataPeriod = p;
+	}
+	
+	public int getStreamMetadataPeriod() {
+		return streamMetadataPeriod;
+	}
 }

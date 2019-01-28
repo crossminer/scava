@@ -42,4 +42,9 @@ public class TaskStatus implements Serializable{
 		this.reason = reason;
 	}
 	
+	@Override
+	public String toString() {
+		return status+" | caller: "+caller+" reason: "+reason;
+	}
+	
 }

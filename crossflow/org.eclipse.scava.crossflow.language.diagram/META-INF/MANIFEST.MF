@@ -44,7 +44,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.egl.engine,
  org.eclipse.epsilon.eol.engine;bundle-version="1.5.0",
- org.eclipse.scava.crossflow.dt
+ org.eclipse.scava.crossflow.dt,
+ org.eclipse.scava.crossflow.runtime;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: crossflow.diagram.edit.commands,

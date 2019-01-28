@@ -92,6 +92,8 @@ public class [%=w.name%] extends Workflow {
 	@Override
 	public void run(int delay) throws Exception {
 	
+	this.delay=delay;
+	
 		new Thread(new Runnable() {
 
 			@Override
