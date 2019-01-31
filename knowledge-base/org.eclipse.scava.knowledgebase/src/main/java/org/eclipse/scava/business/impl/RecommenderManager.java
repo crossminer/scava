@@ -10,6 +10,7 @@
 package org.eclipse.scava.business.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +32,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Juri Di Rocco
@@ -147,7 +153,10 @@ public class RecommenderManager implements IRecommenderManager {
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(page);
+		
 		List<Artifact> recipes = template.find(query, Artifact.class);
+		if(page.getSort().getOrderFor("temp").getDirection() == Direction.ASC)
+			return Lists.reverse(recipes);
 		return recipes;
 	}
 

@@ -10,6 +10,7 @@
 package org.eclipse.scava.presentation.rest;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.business.IRecommenderManager;
@@ -22,7 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -82,20 +87,20 @@ public class ArtifactsRestController {
 //		return recommenderManager.getArtifactsByQuery(projectQuery);
 //    }
 	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "page",
 						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "size",
 						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: property(,asc|desc). "
-								  + "Default sort order is ascending. "
-								  + "Multiple sort criteria are supported.")
+		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "sort",
+						  value = "Sorting criteria in the format: [asc|desc]")
 	})
 	@ApiOperation(value = "Search artifact to KB")
 	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
     public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
-    		Pageable page) {
-		return recommenderManager.getArtifactsByQuery(projectQuery, page);
+    		int page, int size, String sort) {
+		PageRequest pr = new PageRequest(page, size, new Sort(Arrays.asList(
+				sort.equalsIgnoreCase("ASC")? new Order(Direction.ASC, "temp"): new Order(Direction.DESC, "temp"))));
+		return recommenderManager.getArtifactsByQuery(projectQuery, pr);
     }
 	
 	@ApiOperation(value = "Add github project to KB")
