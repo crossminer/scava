@@ -14,12 +14,14 @@ public class StreamMetadata implements Serializable {
 		private long size;
 		private long inFlight;
 		private boolean isTopic;
+		private long numberOfSubscribers;
 
-		public Stream(String name, long size, long inFlight, boolean isTopic) {
+		public Stream(String name, long size, long inFlight, boolean isTopic, long numberOfSubscribers) {
 			this.name = name;
 			this.size = size;
 			this.inFlight = inFlight;
 			this.isTopic = isTopic;
+			this.numberOfSubscribers = numberOfSubscribers;
 		};
 
 		public String getName() {
@@ -37,14 +39,22 @@ public class StreamMetadata implements Serializable {
 		public boolean isTopic() {
 			return isTopic;
 		}
+
+		public long getNumberOfSubscribers() {
+			return numberOfSubscribers;
+		}
+
+		public void setNumberOfSubscribers(int numberOfSubscribers) {
+			this.numberOfSubscribers = numberOfSubscribers;
+		}
 	}
 
 	private Set<Stream> streams = new HashSet<Stream>();
 
 	//
 
-	public boolean addStream(String name, long size, long inFlight, boolean isTopic) {
-		return streams.add(new Stream(name, size, inFlight, isTopic));
+	public boolean addStream(String name, long size, long inFlight, boolean isTopic, long l) {
+		return streams.add(new Stream(name, size, inFlight, isTopic, l));
 	}
 
 	public Set<Stream> getStreams() {
@@ -59,13 +69,16 @@ public class StreamMetadata implements Serializable {
 		for (Stream s : streams)
 			if (s.name.length() >= length)
 				s.name = s.name.substring(0, length);
+			else if (s.name.length() < length)
+				s.name = String.format("%-" + length + "s", s.name);
 	}
 
 	@Override
 	public String toString() {
 		String ret = "Stream Metadata at epoch: " + System.currentTimeMillis() + "\r\n";
 		for (Stream s : streams)
-			ret = ret + s.name + "\tsize: " + s.size + "\tinFlight: " + s.inFlight + "\tisTopic: " + s.isTopic + "\r\n";
+			ret = ret + s.name + "\tsize: " + s.size + "\tinFlight: " + s.inFlight + "\tisTopic: " + s.isTopic
+					+ "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n";
 		return ret;
 	}
 }

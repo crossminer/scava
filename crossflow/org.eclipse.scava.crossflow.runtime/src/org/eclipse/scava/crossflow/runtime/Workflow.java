@@ -138,6 +138,9 @@ public abstract class Workflow {
 		internalExceptionsQueue.init();
 
 		activeStreams.add(taskStatusTopic);
+		activeStreams.add(resultsTopic);
+		activeStreams.add(streamMetadataTopic);
+		activeStreams.add(controlTopic);
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
 
@@ -254,14 +257,14 @@ public abstract class Workflow {
 
 			// timer for publishing stream metadata
 			streamMetadataTimer = new Timer();
-					
+
 			streamMetadataTimer.schedule(new TimerTask() {
 
 				@Override
 				public void run() {
 					StreamMetadata sm = new StreamMetadata();
 					//
-					for (Stream c : activeStreams) {
+					for (Stream c : new ArrayList<>(activeStreams)) {
 
 						try {
 
@@ -288,7 +291,7 @@ public abstract class Workflow {
 								try {
 
 									sm.addStream(destinationName, mbView.getQueueSize(), mbView.getInFlightCount(),
-											c.isBroadcast());
+											c.isBroadcast(), mbView.getConsumerCount());
 
 								} catch (Exception ex) {
 									// Ignore exception
@@ -306,11 +309,11 @@ public abstract class Workflow {
 					try {
 						streamMetadataTopic.send(sm);
 					} catch (Exception e) {
-						e.printStackTrace();
+						// Ignore exception
 					}
 
 				}
-			}, 3000, streamMetadataPeriod);
+			}, 1000, streamMetadataPeriod);
 
 		}
 	}
@@ -477,30 +480,65 @@ public abstract class Workflow {
 			// termination logic
 			System.out.println("terminating workflow... (" + getName() + ")");
 
-			// stop all stream connections
-			for (Stream stream : activeStreams) {
-				stream.stop();
-			}
-
-			resultsTopic.stop();
-			
-			streamMetadataTimer.cancel();
-			streamMetadataTopic.stop();
-
 			if (isMaster()) {
-				controlTopic.stop();
+				//
+				streamMetadataTimer.cancel();
+				try {
+					streamMetadataTopic.stop();
+				} catch (Exception e) {
+					// Ignore any exception
+				}
+				activeStreams.remove(streamMetadataTopic);
+				//
+				try {
+					controlTopic.stop();
+				} catch (Exception e) {
+					// Ignore any exception
+				}
+				activeStreams.remove(controlTopic);
+				//
 				System.out.println("createBroker: " + createBroker);
 				if (createBroker) {
 					stopBroker();
 				}
 			} else {
 				controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
-				controlTopic.stop();
+
+				try {
+					controlTopic.stop();
+				} catch (Exception e) {
+					// Ignore any exception
+				}
+				activeStreams.remove(controlTopic);
 			}
+
+			//
+
+			try {
+				resultsTopic.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+			}
+
+			activeStreams.remove(resultsTopic);
+
+			//
+			// stop all remaining stream connections
+			for (Stream stream : activeStreams) {
+				try {
+					stream.stop();
+				} catch (Exception e) {
+					// Ignore any exception
+				}
+			}
+
 			terminated = true;
 			System.out.println("workflow " + getName() + " terminated.");
+			//
 		} catch (Exception ex) {
-			// There is nothing to do at this stage
+			// There is nothing to do at this stage -- print error for debugging purposes
+			// only
+			// ex.printStackTrace();
 		}
 	}
 
@@ -595,7 +633,7 @@ public abstract class Workflow {
 	public void setStreamMetadataPeriod(int p) {
 		streamMetadataPeriod = p;
 	}
-	
+
 	public int getStreamMetadataPeriod() {
 		return streamMetadataPeriod;
 	}
