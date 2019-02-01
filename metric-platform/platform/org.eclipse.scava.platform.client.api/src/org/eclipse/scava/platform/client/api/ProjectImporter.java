@@ -86,6 +86,14 @@ public class ProjectImporter {
 				e.printStackTrace();
 				throw e;
 			}
+		} else if (url.contains("gitlab")) { // FIXME: ...
+			GitLabImporter importer = new GitLabImporter();
+			try {
+				p = importer.importProject(url, platform);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
 		return p;

@@ -39,4 +39,6 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.platform.communicationchannel.zendesk.dependency;bundle-version="1.0.0",
  org.eclipse.scava.repository.model.cc.zendesk;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.0.0",
- org.eclipse.scava.repository.model.importer;bundle-version="1.0.0"
+ org.eclipse.scava.repository.model.importer;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.gitlab;bundle-version="0.1.0",
+ org.eclipse.scava.repository.model.gitlab.importer;bundle-version="1.0.0"
