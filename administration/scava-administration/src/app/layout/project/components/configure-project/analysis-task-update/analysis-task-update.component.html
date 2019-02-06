@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Start date</label><br>
-                    <small>* Starting time range of the project analysis process</small>
+                    <small>* Starting time range of the project's analysis process</small>
                     <mat-form-field>
                         <input matInput name="startDate" [(ngModel)]="startDate" [max]="maxStartDate" [matDatepicker]="startDateInput" required>
                         <mat-datepicker-toggle matSuffix [for]="startDateInput"></mat-datepicker-toggle>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">End date</label><br>
-                    <small>* Ending time range of the project analysis process</small>
+                    <small>* Ending time range of the project's analysis process</small>
                     <mat-form-field>
                         <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="startDateInput" [(ngModel)]="endDate" 
                             [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDateInput" required>
