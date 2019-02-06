@@ -6,7 +6,7 @@ import java.util.List;
 public class NumberPairSource extends NumberPairSourceBase {
 	
 	protected List<Integer> numbers = null;
-	protected long interval = 500; 
+	protected long interval = 100; 
 	
 	@Override
 	public void produce() throws Exception {

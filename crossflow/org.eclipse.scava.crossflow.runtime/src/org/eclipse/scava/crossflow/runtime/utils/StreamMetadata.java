@@ -62,7 +62,11 @@ public class StreamMetadata implements Serializable {
 	}
 
 	public Stream getStream(String name) {
-		return streams.stream().filter(s -> s.name.equals(name)).collect(Collectors.toList()).get(0);
+		try {
+			return streams.stream().filter(s -> s.name.equals(name)).collect(Collectors.toList()).get(0);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void pruneNames(int length) {

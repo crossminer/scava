@@ -21,14 +21,14 @@ public class AckWorkflowTests extends WorkflowTests {
 	private void prefetchTest(boolean enable) throws Exception {
 
 		AckWorkflow masterbare = new AckWorkflow(Mode.MASTER_BARE);
-		masterbare.setInstanceId("Pre-"+enable);
+		masterbare.setInstanceId("Pre-" + enable);
 		masterbare.setName("Master");
 		masterbare.setEnablePrefetch(enable);
 		masterbare.run();
 
 		AckWorkflow worker1 = new AckWorkflow(Mode.WORKER);
 		worker1.setMaster("localhost");
-		worker1.setInstanceId("Pre-"+enable);
+		worker1.setInstanceId("Pre-" + enable);
 		worker1.setName("Worker1");
 		worker1.setEnablePrefetch(enable);
 		worker1.run();
@@ -37,7 +37,7 @@ public class AckWorkflowTests extends WorkflowTests {
 
 		AckWorkflow worker2 = new AckWorkflow(Mode.WORKER);
 		worker2.setMaster("localhost");
-		worker2.setInstanceId("Pre-"+enable);
+		worker2.setInstanceId("Pre-" + enable);
 		worker2.setName("Worker2");
 		worker2.setEnablePrefetch(enable);
 		worker2.run();
@@ -70,7 +70,7 @@ public class AckWorkflowTests extends WorkflowTests {
 	private void ackTerminationTest(boolean ack, long timeout) throws Exception {
 
 		AckWorkflow wf = new AckWorkflow();
-		wf.setInstanceId("Ack-"+ack);
+		wf.setInstanceId("Ack-" + ack);
 		wf.getProcessingTask().setLag(1);
 		wf.setEnableAck(ack);
 		wf.run();

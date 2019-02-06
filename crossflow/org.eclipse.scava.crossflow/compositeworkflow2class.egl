@@ -1,0 +1,156 @@
+package [%=w.package%];
+
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
+import org.eclipse.scava.crossflow.runtime.ModeConverter;
+import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.CompositeWorkflow;
+
+public class Composite[%=w.name%] extends CompositeWorkflow {
+
+	// default parallel instances on each node equal to the number of virtual cores
+	// on the machine
+	@Parameter(names = { "-parallelization" }, description = "The paralellization of the workflow, defaults to the number of virtual cores of the machine")	
+	protected int parallelization = Runtime.getRuntime().availableProcessors();
+
+	protected List<[%=w.name%]> elements = new ArrayList<[%=w.name%]>();
+
+	@Parameter(names = { "-name" }, description = "The name of the workflow")
+	protected String name = "";
+
+	@Parameter(names = { "-master" }, description = "IP of the master")
+	protected String master = "localhost";
+
+	@Parameter(names = { "-port" }, description = "Port of the master")
+	protected int port = 61616;
+
+	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
+	protected String instanceId = UUID.randomUUID().toString();
+
+	@Parameter(names = {
+			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
+	protected Mode mode = Mode.MASTER;
+
+	protected boolean cacheEnabled = true;
+	protected boolean enablePrefetch = false;
+
+	/**
+	 * 
+	 * @return The elements of this composite, in order
+	 */
+	public List<[%=w.name%]> getElements(){
+		return elements;
+	}
+
+	public static Composite[%=w.name%] run(String[] args) throws Exception {
+		Composite[%=w.name%] throwAway = new Composite[%=w.name%]();
+		new JCommander(throwAway, args);
+		Composite[%=w.name%] app = new Composite[%=w.name%](throwAway.getMode(), throwAway.getParallelization(), throwAway.getName());
+		new JCommander(app, args);
+		app.run();
+		return app;
+	}
+
+	private Mode getMode() {
+		return mode;
+	}
+	
+	public int getParallelization() {
+		return parallelization;
+	}
+
+	public static void main(String[] args) throws Exception {
+		run(args);
+	}
+
+	public Composite[%=w.name%](){
+		this(Mode.MASTER, -1, null);
+	}
+
+	public Composite[%=w.name%](Mode mode) {
+		this(mode, -1, null);
+	}
+
+	public Composite[%=w.name%](Mode mode, int parallelization, String name){
+		if(name!=null)
+			this.name=name;
+		
+		if(parallelization>0)
+			this.parallelization = parallelization;
+			
+		[%=w.name%] originatingWf = new [%=w.name%](mode);
+		originatingWf.setName(name+":Composite[%=w.name%]:"+mode);
+		elements.add(originatingWf);
+		
+		for(int i=1;i<this.parallelization;i++){
+			[%=w.name%] spawnedWf = new [%=w.name%](Mode.WORKER);
+			spawnedWf.setName(originatingWf.getName()+":SPAWN:"+i);
+			elements.add(spawnedWf);
+		}
+	}
+
+	public void run() throws Exception{
+		run(0, true);
+	}
+
+	public void run(int delay) throws Exception {
+		run(delay, true);
+	}
+
+	public void run(int delay, boolean masterOnlyDelay) throws Exception {
+		elements.forEach(e -> e.setMaster(master));
+		elements.forEach(e -> e.setEnablePrefetch(enablePrefetch));
+		elements.forEach(e -> e.setInstanceId(instanceId));
+		elements.forEach(e -> {
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						e.run(masterOnlyDelay ? (e.isMaster() ? delay : 0) : delay);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		});
+	}
+	
+		public String getInstanceId() {
+		return instanceId;
+	}
+
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
+	
+	public boolean hasTerminated() {
+		return elements.stream().allMatch(e -> e.hasTerminated());
+	}
+	
+	public boolean isEnablePrefetch() {
+		return enablePrefetch;
+	}
+
+	public void setEnablePrefetch(boolean enablePrefetch) {
+		this.enablePrefetch = enablePrefetch;
+	}
+	
+	public String getMaster() {
+		return master;
+	}
+
+	public void setMaster(String master) {
+		this.master = master;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+}

@@ -77,7 +77,11 @@ public abstract class Workflow {
 	// excluded tasks from workers
 	protected Collection<String> tasksToExclude = new LinkedList<String>();
 
-	private boolean enablePrefetch = false;
+	/**
+	 * Sets whether tasks are able to obtain more jobs while they are in the middle
+	 * of processing one already
+	 */
+	protected boolean enablePrefetch = false;
 
 	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
@@ -467,6 +471,8 @@ public abstract class Workflow {
 				long startTime = System.currentTimeMillis();
 				// wait for workers to terminate or for the termination timeout
 				while ((System.currentTimeMillis() - startTime) < terminationTimeout) {
+					// System.out.println(terminatedWorkerIds);
+					// System.out.println(activeWorkerIds);
 					if (terminatedWorkerIds.equals(activeWorkerIds)) {
 						System.out.println("all workers terminated, terminating master...");
 						break;
@@ -637,4 +643,5 @@ public abstract class Workflow {
 	public int getStreamMetadataPeriod() {
 		return streamMetadataPeriod;
 	}
+
 }

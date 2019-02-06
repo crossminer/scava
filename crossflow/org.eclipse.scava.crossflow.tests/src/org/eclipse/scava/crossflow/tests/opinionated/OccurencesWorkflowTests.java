@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 
-import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;
 

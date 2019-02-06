@@ -6,6 +6,14 @@ rule Workflow2Class
 	target : w.getPath() + w.name + ".java"
 }
 
+rule CompositeWorkflow2Class 
+	transform w : Workflow {
+	
+	template : "compositeworkflow2class.egl"
+	
+	target : w.getPath() + "Composite" + w.name + ".java"
+}
+
 rule Type2Class 
 	transform t : Type {
 	

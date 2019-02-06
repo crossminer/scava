@@ -2,6 +2,7 @@ package org.eclipse.scava.crossflow.tests.minimal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MinimalSink extends MinimalSinkBase {
 
@@ -12,14 +13,17 @@ public class MinimalSink extends MinimalSinkBase {
 	@Override
 	public void consumeOutput(Number number) {
 
-		numbers.add(number.getN());
-
 		if (delay > 0)
 			try {
-				Thread.sleep(delay);
+				int sleep = ThreadLocalRandom.current().nextInt((int) delay / 2, (int) delay * 3 / 2);
+				// System.out.println("sleeping for: " + sleep + "ms");
+				Thread.sleep(sleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+
+		numbers.add(number.getN());
+
 	}
 
 	public List<Integer> getNumbers() {

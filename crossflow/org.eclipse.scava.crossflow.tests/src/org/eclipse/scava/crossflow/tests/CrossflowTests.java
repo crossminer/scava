@@ -11,6 +11,7 @@ import org.eclipse.scava.crossflow.tests.matrix.MatrixWorkflowTests;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflowTests;
 import org.eclipse.scava.crossflow.tests.multiflow.MultiflowTests;
 import org.eclipse.scava.crossflow.tests.opinionated.OccurencesWorkflowTests;
+import org.eclipse.scava.crossflow.tests.parallel.ParallelWorkflowTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MinimalWorkflowTests.class,
 	CommitmentWorkflowTests.class,
 	ExceptionsWorkflowTests.class,
-	AckWorkflowTests.class
+	AckWorkflowTests.class,
+	ParallelWorkflowTests.class
 })
 public class CrossflowTests {
 

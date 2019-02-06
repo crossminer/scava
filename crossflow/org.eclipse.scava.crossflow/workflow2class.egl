@@ -1,15 +1,14 @@
 package [%=w.package%];
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Collection;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
@@ -57,15 +56,17 @@ public class [%=w.name%] extends Workflow {
 	[%for (t in w.tasks) {%]
 	protected [%=t.name%] [%=t.name.ftlc()%];
 	[%}%]
-	
+
 	public [%=w.name%]() {
 		this(Mode.MASTER);
 	}
 	
 	public [%=w.name%](Mode mode) {
 		super();
+			
 		this.name = "[%=w.name%]";
 		this.mode = mode;
+		
 		if (isMaster()) {
 		[%for (t in w.getMasterTasks()){%]
 		[%=t.name.ftlc()%] = new [%=t.name%]();
@@ -81,6 +82,7 @@ public class [%=w.name%] extends Workflow {
 			}
 		[%}%]
 		}
+
 	}
 	
 	/**
@@ -93,73 +95,72 @@ public class [%=w.name%] extends Workflow {
 	public void run(int delay) throws Exception {
 	
 	this.delay=delay;
-	
-		new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-
-				try {
+	try {
 					
-					if (isMaster()) {
-						if (createBroker) {
-							brokerService = new BrokerService();
-							brokerService.setUseJmx(true);
-							brokerService.addConnector(getBroker());
-							brokerService.start();
-						}
-					}
-
-					connect();
-
-					Thread.sleep(delay);
-					
-					[%for (s in w.streams) { %]
-					[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch, enableAck);
-					activeStreams.add([%=s.name.ftlc()%]);
-					[%}%]
-					
-					if (isMaster()) {
-					[%for (t in w.getMasterTasks()){%]
-						[%=t.setup()%]
-					[%}%]
-					}
-					
-					if (isWorker()) {
-					[%for (t in w.getWorkerTasks()){%]
-						if (!tasksToExclude.contains("[%=t.name%]")) {
-							[%=t.setup()%]
-						}
-					[%}%]
-					}
-					
-					if (isMaster()){
-						[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
-						new Timer().schedule(new TimerTask() {
-						
-							@Override
-							public void run() {
-								try {
-									setTaskInProgess([%=t.name.ftlc()%]);
-									[%=t.name.ftlc()%].produce();
-									setTaskWaiting([%=t.name.ftlc()%]);
-								}
-								catch (Exception ex) {
-									reportInternalException(ex);
-									terminate();
-								}
-							}
-						}, 0);
-						[%}%]
-					}
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		if (isMaster()) {
+			if (createBroker) {
+				brokerService = new BrokerService();
+				brokerService.setUseJmx(true);
+				brokerService.addConnector(getBroker());
+				brokerService.start();
 			}
+		}
+
+		connect();
+
+		Thread.sleep(delay);
 		
-		}).start();
-	
+		[%for (s in w.streams) { %]
+		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch, enableAck);
+		activeStreams.add([%=s.name.ftlc()%]);
+		[%}%]
+		
+			if (isMaster()) {
+			[%for (t in w.getMasterTasks()){%]
+				[%=t.setup()%]
+			[%}%]
+			}
+			
+			if (isWorker()) {
+			[%for (t in w.getWorkerTasks()){%]
+				if (!tasksToExclude.contains("[%=t.name%]")) {
+					[%=t.setup()%]
+				}
+			[%}%]
+			}
+			
+			if (isMaster()){
+			[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
+				// run all sources in parallel threads
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							setTaskInProgess([%=t.name.ftlc()%]);
+							[%=t.name.ftlc()%].produce();
+							setTaskWaiting([%=t.name.ftlc()%]);
+						} catch (Exception ex) {
+							reportInternalException(ex);
+							terminate();
+						}
+					}
+				}).run();	
+			[%}%]
+			}
+				
+			// delay non-master connections to allow master to create the relevant listeners
+			// (in a multi-threaded parallel execution) to facilitate termination, by
+			// re-sending worker_added message
+			if (!isMaster()) {
+				Thread.sleep(1000);
+				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
+			}	
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}				
 	
 	[%for (s in w.streams) { %]
@@ -201,7 +202,6 @@ public class [%=w.name%] extends Workflow {
 	}
 	
 }	
-
 [%
 operation Workflow getMasterTasks() {
 	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
@@ -221,5 +221,4 @@ operation Task setup() {%]
 	[%=self.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 	[%}%]
 [%}
-
 %]
