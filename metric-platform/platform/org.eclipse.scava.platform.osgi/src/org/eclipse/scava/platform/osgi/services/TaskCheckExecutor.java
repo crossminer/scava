@@ -53,7 +53,7 @@ public class TaskCheckExecutor implements Runnable {
 			
 			// Detect New Daily Execution
 			for(AnalysisTask task : this.platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks()) {			
-				if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name()) && task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
+				if(task.getType().equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name()) && task.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) && task.getScheduling().getCurrentDate().compareTo(day)< 0) {
 					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());	
 					this.platform.getAnalysisRepositoryManager().getRepository().sync();
 				}

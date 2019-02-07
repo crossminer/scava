@@ -68,7 +68,7 @@ public class AnalysisSchedulingService {
 		double dailyMetrics = task.getMetricExecutions().size();
 		double totalDays = 0;
 		double currentDay = 0;
-		if (task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())) {
+		if (task.getType().equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())) {
 			totalDays = (new Date().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
 			currentDay = totalDays - ((new Date().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
 		} else {
@@ -97,7 +97,7 @@ public class AnalysisSchedulingService {
 		double dailyMetrics = task.getMetricExecutions().size();
 		double totalDays = 0;
 		double currentDay = 0;
-		if (task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())) {
+		if (task.getType().equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())) {
 			totalDays = (new Date().getTime() - task.getStartDate().getTime()) / MILISECOND_IN_DAY;
 			currentDay = totalDays - ((new Date().getTime() - task.getScheduling().getCurrentDate().getTime()) / MILISECOND_IN_DAY);
 		} else {

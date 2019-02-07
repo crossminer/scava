@@ -76,7 +76,7 @@ public class ProjectAnalyser {
 
 		Date enecutionDate = new Date(task.getScheduling().getCurrentDate());
 		Date endDate = null;
-		if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())){
+		if(task.getType().equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())){
 			endDate = new Date().addDays(-1);
 		}else {
 			endDate = new Date(task.getEndDate());
