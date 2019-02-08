@@ -7,12 +7,13 @@ import { ConfigureProjectComponent } from './components/configure-project/config
 import { RoleGuard } from '../../shared/guard/role.guard';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
 import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
-
+import { JwtTokenGuard } from '../../shared';
 
 const routes: Routes = [
     {
         path: '', 
-        component: ProjectComponent
+        canActivate: [JwtTokenGuard],
+        component: ProjectComponent,
     },
     {
         path: 'create', 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '../services/authentication/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -46,5 +46,20 @@ export class RoleAuthorities {
     } else {
       return false;
     }
+  }
+
+  isCurrentTokenExpired(): boolean {
+    if (this.tokenExpired(this.localStorageService.loadToken())) {
+      this.localStorageService.logOut();
+      return true;
+    }
+    return false;
+  }
+
+  tokenExpired(jwtToken: string): boolean {
+      if (this.jwtHelper.isTokenExpired(jwtToken)) {
+          return true;
+      }
+      return false;
   }
 }

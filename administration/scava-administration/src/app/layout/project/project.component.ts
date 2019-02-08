@@ -3,7 +3,7 @@ import { ListProjectService } from '../../shared/services/project-service/list-p
 import { AnalysisTaskService } from '../../shared/services/analysis-task/analysis-task.service';
 import { Project } from './project.model';
 import { ExecutionTask } from './components/configure-project/execution-task.model';
-import { RoleAuthorities } from '../../shared/guard/role-authorities';
+import { RoleAuthorities } from '../../shared/services/authentication/role-authorities';
 
 @Component({
   selector: 'app-project',
@@ -29,7 +29,6 @@ export class ProjectComponent implements OnInit {
       (resp) => {
         this.hasAuthorities = this.roleAuthorities.showCommands();
         this.projectList = resp as Project[];
-        console.log(this.projectList)
         this.projectList.forEach(project => {
           this.analysisTaskService.getAnalysisTasksStatusByProject(project.shortName).subscribe(
             (status) => {

@@ -4,6 +4,7 @@ import { LocalStorageService } from '../authentication/local-storage.service';
 import { Observable } from 'rxjs';
 import { ExecutionTask } from '../../../layout/project/components/configure-project/execution-task.model';
 import { ConfigService } from '../configuration/configuration-service';
+import { RoleAuthorities } from '../authentication/role-authorities';
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +35,12 @@ export class AnalysisTaskService {
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private roleAuthorities: RoleAuthorities
   ) { }
 
   createTask(executionTask: ExecutionTask): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.create}`, executionTask,
@@ -46,7 +48,7 @@ export class AnalysisTaskService {
   }
 
   updateTask(executionTask: ExecutionTask): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.put(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.update}`, executionTask,
@@ -54,7 +56,7 @@ export class AnalysisTaskService {
   }
 
   getTasks(): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}`,
@@ -62,7 +64,7 @@ export class AnalysisTaskService {
   }
 
   getTasksbyProject(projectId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${this.project}/${projectId}`,
@@ -70,7 +72,7 @@ export class AnalysisTaskService {
   }
 
   getAnalysisTasksStatusByProject(projectId: string){
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.tasks}/${this.status}/${this.project}/${projectId}`,
@@ -78,7 +80,7 @@ export class AnalysisTaskService {
   }
 
   getTaskByAnalysisTaskId(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}?${this.analysisTaskId}=${analysisTaskId}`,
@@ -86,7 +88,7 @@ export class AnalysisTaskService {
   }
 
   startTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.start}`,
@@ -95,7 +97,7 @@ export class AnalysisTaskService {
   }
 
   stopTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.stop}`,
@@ -104,7 +106,7 @@ export class AnalysisTaskService {
   }
 
   resetTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.reset}`,
@@ -113,7 +115,7 @@ export class AnalysisTaskService {
   }
 
   deleteTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.delete(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.delete}?${this.analysisTaskId}=${analysisTaskId}`,
@@ -121,7 +123,7 @@ export class AnalysisTaskService {
   }
 
   promoteTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.promote}?${this.analysisTaskId}=${analysisTaskId}`,
@@ -129,7 +131,7 @@ export class AnalysisTaskService {
   }
 
   demoteTask(analysisTaskId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.demote}?${this.analysisTaskId}=${analysisTaskId}`,
@@ -137,7 +139,7 @@ export class AnalysisTaskService {
   }
   
   pushOnWorker(analysisTaskId: string,workerId: string): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.task}/${this.push}?${this.analysisTaskId}=${analysisTaskId}&${this.workerId}=${workerId}`,
@@ -145,7 +147,7 @@ export class AnalysisTaskService {
   }
 
   getMetricProviders(): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.metricproviders}`,
@@ -153,7 +155,7 @@ export class AnalysisTaskService {
   }
 
   getWorkers(): Observable<ExecutionTask> {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath()}/${this.administration}/${this.analysis}/${this.workers}`,

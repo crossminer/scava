@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
-import { RoleGuard } from '../shared/guard/role.guard';
 
 const routes: Routes = [
     {
