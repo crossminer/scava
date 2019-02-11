@@ -23,6 +23,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSortModule} from '@angular/material/sort';
 import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ProjectMgmtDeleteDialogComponent } from './project-delete/project-delete-dialog.component';
 
 @NgModule({
   imports: [
@@ -51,11 +52,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     AnalysisTaskAddComponent,
     AnalysisTaskUpdateComponent,
     AnalysisTaskMgmtDeleteDialogComponent,
-    MetricProvidersMgmtInfoDialogComponent
+    MetricProvidersMgmtInfoDialogComponent,
+    ProjectMgmtDeleteDialogComponent
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent,
-    MetricProvidersMgmtInfoDialogComponent
+    MetricProvidersMgmtInfoDialogComponent,
+    ProjectMgmtDeleteDialogComponent
   ],
   providers: [
     NgbModal,

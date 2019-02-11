@@ -4,6 +4,8 @@ import { AnalysisTaskService } from '../../shared/services/analysis-task/analysi
 import { Project } from './project.model';
 import { ExecutionTask } from './components/configure-project/execution-task.model';
 import { RoleAuthorities } from '../../shared/services/authentication/role-authorities';
+import { ProjectMgmtDeleteDialogComponent } from './project-delete/project-delete-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-project',
@@ -21,10 +23,15 @@ export class ProjectComponent implements OnInit {
   constructor(
     private listProjectService: ListProjectService,
     private analysisTaskService: AnalysisTaskService,
-    private roleAuthorities: RoleAuthorities
+    private roleAuthorities: RoleAuthorities,
+    public modalService: NgbModal,
   ) { }
 
   ngOnInit() {
+    this.loadAll();
+  }
+
+  loadAll() {
     this.listProjectService.listProjects().subscribe(
       (resp) => {
         this.hasAuthorities = this.roleAuthorities.showCommands();
@@ -53,6 +60,21 @@ export class ProjectComponent implements OnInit {
       },
       (error) => {
         this.onShowMessage(error);
+      }
+    );
+  }
+
+  deleteProject(projectId: string) {
+    const modalRef = this.modalService.open(ProjectMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.projectId = projectId;
+    modalRef.result.then(
+      (result) => {
+        this.onShowMessage('delete success');
+        this.loadAll();
+      },
+      (reason) => {
+        this.onShowMessage('delete failed');
+        this.loadAll();
       }
     );
   }
