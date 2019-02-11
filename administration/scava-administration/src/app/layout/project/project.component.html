@@ -1,16 +1,21 @@
 <div>
   <div class="page-header">
     <h2>Projects</h2>
-    <div *ngIf="hasAuthorities" class="btn-group" role="group" style="float: right;margin-top: -40px;"> 
+    <div *ngIf="hasAuthorities" class="btn-group" role="group" style="float: right;margin-top: -40px;">
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
     </div>
-    <hr/>
+    <hr />
   </div>
   <div class="col-xs col-sm col-md col-lg col-xl">
     <div *ngFor="let project of projectList" class="bg-light card mb-3" style="margin :10px;">
       <div class="card-header overflow-guard text-white bg-secondary" style="padding: 0.5rem;">
-        <h4 style="margin: 0px;" class="card-title">{{project.name}}</h4>
+        <h4 style="margin: 0px; white-space: nowrap; overflow: hidden;" class="card-title">
+          <span>{{project.name}}</span> 
+          <span class="pull-right" title="Delete Task" (click)="deleteProject(project.shortName)">
+            <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+        </span>
+        </h4>
       </div>
       <div class="card-body worker-card-body">
         <div class="row">
@@ -19,8 +24,10 @@
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
             <span style="white-space: nowrap" *ngIf="!project?.hasTasks">Not Defined</span>
-            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'up-to-date' && project?.hasTasks">Up To Date</span>
-            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis In Progress</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'up-to-date' && project?.hasTasks">Up To
+              Date</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis
+              In Progress</span>
           </div>
         </div>
         <div class="row" *ngIf="project.homePage">
@@ -37,7 +44,7 @@
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
             <span *ngFor="let vcs of project.vcsRepositories">
-              <a style="white-space: nowrap" href="{{vcs.url}}" title="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br/>
+              <a style="white-space: nowrap" href="{{vcs.url}}" title="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br />
             </span>
           </div>
         </div>
@@ -54,12 +61,12 @@
             <b style="white-space: nowrap">Project Size :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 overflow-multi">
-              <span style="white-space: nowrap">{{project?.size}}</span>
+            <span style="white-space: nowrap">{{project?.size}}</span>
           </div>
         </div>
       </div>
       <div class="card-footer text-right" style="padding: 0.5em;">
-        <button type="button" class="btn btn-outline-dark btn-sm " [routerLink]="['/project/configure/', project.shortName]">Configure</button>
+        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
   </div>
