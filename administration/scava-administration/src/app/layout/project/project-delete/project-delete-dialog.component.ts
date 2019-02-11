@@ -8,6 +8,8 @@ import { DeleteProjectService } from '../../../shared/services/project-service/d
 })
 export class ProjectMgmtDeleteDialogComponent {
 
+  projectId: string;
+  
   constructor(
     public activeModal: NgbActiveModal,
     private deleteProjectService: DeleteProjectService
