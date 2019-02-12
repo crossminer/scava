@@ -29,6 +29,7 @@ import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
 import org.eclipse.scava.repository.model.importer.exception.RepoInfoNotFound;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
+import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -38,21 +39,6 @@ public class GitLabImporter implements IImporter {
 
 	public GitLabImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.gitLab");
-	}
-	
-	public static void main(String[] args) {
-		try {
-			new GitLabImporter().importProject("gitlab.ow2.org/asm/asm", null);
-		} catch (ProjectUnknownException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (WrongUrlException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepoInfoNotFound e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -66,20 +52,20 @@ public class GitLabImporter implements IImporter {
 			URI projectURI = new URI(fullProjectURI);
 			String host = projectURI.getHost();
 			String path = projectURI.getPath().substring(1, projectURI.getPath().length());
-			
+
 			// API Call is in the form: https://gitlabhost.org/api/v4/projects/user%2Frepo
 			String apiURI = "https://" + host + "/api/v4/projects/" + path.replace("/", "%2F");
 			logger.info("Gathering project information from " + apiURI);
-			
+
 			URL apiURL = new URL(apiURI);
 			URLConnection conn = apiURL.openConnection();
 			InputStream is = conn.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
 			JSONObject json = (JSONObject) JSONValue.parse(jsonText);
-			
+
 			GitLabRepository repo = new GitLabRepository();
-			
+
 			// NPEs everywhere
 			repo.setClone_url(json.get("http_url_to_repo").toString());
 			repo.setDescription(json.get("description").toString());
@@ -87,18 +73,22 @@ public class GitLabImporter implements IImporter {
 			repo.setFull_name(json.get("name").toString());
 			repo.setGit_url(json.get("ssh_url_to_repo").toString());
 			repo.setHomePage(json.get("web_url").toString());
-			
+
+			GitRepository git = new GitRepository();
+			git.setUrl(json.get("http_url_to_repo").toString());
+			repo.getVcsRepositories().add(git);
+
 			repo.setShortName(platform.getProjectRepositoryManager().generateUniqueId(repo));
 			platform.getProjectRepositoryManager().getProjectRepository().getProjects().add(repo);
 			platform.getProjectRepositoryManager().getProjectRepository().sync();
-			
+
 			logger.info("Project has been imported");
-			
+
 			return repo;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -134,7 +124,7 @@ public class GitLabImporter implements IImporter {
 	public void setCredentials(Credentials credentials) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
