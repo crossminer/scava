@@ -17,6 +17,7 @@ import org.eclipse.scava.repository.model.ProjectRepository;
 import org.eclipse.scava.repository.model.Properties;
 import org.eclipse.scava.repository.model.eclipse.importer.EclipseProjectImporter;
 import org.eclipse.scava.repository.model.github.importer.GitHubImporter;
+import org.eclipse.scava.repository.model.gitlab.importer.GitLabImporter;
 import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.eclipse.scava.repository.model.sourceforge.importer.SourceforgeProjectImporter;

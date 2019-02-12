@@ -11,13 +11,6 @@
 <plugin>
    
 <extension point="com.googlecode.pongo.runtime.osgi">
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubRepository"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.Language"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubContent"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubDownload"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubBugTracker"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubIssue"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubMilestone"/>
-    <class name="org.eclipse.scava.repository.model.gitlab.GitHubUser"/>
+    <class name="org.eclipse.scava.repository.model.gitlab.GitLabRepository"/>
   </extension>
 </plugin>
