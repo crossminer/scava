@@ -57,7 +57,6 @@ public class GhRepoCounter extends GhRepoCounterBase {
 				try {
 					sendToResultsTopic(ret);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
