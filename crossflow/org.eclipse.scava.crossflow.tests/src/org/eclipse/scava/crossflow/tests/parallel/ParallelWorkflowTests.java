@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.parallel;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.AbstractMap;
@@ -25,18 +24,28 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.eclipse.scava.crossflow.tests.minimal.CompositeMinimalWorkflow;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflow;
+import org.eclipse.scava.crossflow.tests.util.Retry;
+import org.eclipse.scava.crossflow.tests.util.RetryRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ParallelWorkflowTests extends WorkflowTests {
 
 	int parallelization = Math.max(Runtime.getRuntime().availableProcessors(), 2);
 
+	// define the number of retries for tests in this class (annotated with @Retry)
+	@Rule
+	public RetryRule rule = new RetryRule(3);
+
 	@Test
-	public void simpleParallelOutputTests() throws Exception {
-
+	public void simpleParallelOutputTestsNP() throws Exception {
 		simpleParallelOutputTestActual(false);
-		simpleParallelOutputTestActual(true);
+	}
 
+	@Test
+	@Retry
+	public void simpleParallelOutputTestsP() throws Exception {
+		simpleParallelOutputTestActual(true);
 	}
 
 	public void simpleParallelOutputTestActual(boolean parallel) throws Exception {
@@ -148,7 +157,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		@Override
 		public void consume(TaskStatus t) {
 
-			//System.out.println(t);
+			// System.out.println(t);
 
 			if (t.getCaller().startsWith("CopierTask:wf:CompositeMinimalWorkflow")
 					&& t.getStatus().equals(TaskStatuses.WAITING))
