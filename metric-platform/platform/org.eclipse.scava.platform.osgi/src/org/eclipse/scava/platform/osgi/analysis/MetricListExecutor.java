@@ -27,6 +27,7 @@ import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.logging.AnalysisProcessLogger;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.logging.OssmeterLoggerFactory;
 import org.eclipse.scava.repository.model.Project;
@@ -41,7 +42,8 @@ public class MetricListExecutor implements Runnable {
 	protected List<IMetricProvider> metrics;
 	protected ProjectDelta delta;
 	protected Date date;
-	protected OssmeterLogger logger;
+	protected OssmeterLogger loggerOssmeter;
+	protected AnalysisProcessLogger loggerAnalysisProcess;
 	protected Platform platform;
 	
 	// FIXME: The delta object already references a Project object. Rascal metrics seem to
@@ -50,7 +52,8 @@ public class MetricListExecutor implements Runnable {
 		this.taskId = taskId;
 		this.delta = delta;
 		this.date = date;
-		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("MetricListExecutor (" + projectId + ", " + date.toString() + ")");
+		this.loggerOssmeter = (OssmeterLogger) OssmeterLogger.getLogger("MetricListExecutor (" + projectId + ", " + date.toString() + ")");
+		this.loggerAnalysisProcess = (AnalysisProcessLogger) AnalysisProcessLogger.getLogger("AnalysisTask '" + this.taskId + ", " + date.toString() + ")");
 		this.platform = platform;
 	}
 	
@@ -69,17 +72,16 @@ public class MetricListExecutor implements Runnable {
 
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(projectId);
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(this.taskId);
-		
 
 		for (IMetricProvider m : metrics) {
+			long startTime = System.currentTimeMillis();
+			loggerOssmeter.info("Starting execution AnalysisTask '" + taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name()) || task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
 				return;
 			}
 			
 			m.setMetricProviderContext(new MetricProviderContext(platform, OssmeterLoggerFactory.getInstance().makeNewLoggerInstance(m.getIdentifier())));
 			addDependenciesToMetricProvider(platform, m);
-			
-		
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().startMetricExecution(this.taskId,  m.getIdentifier());
 			
@@ -89,7 +91,7 @@ public class MetricListExecutor implements Runnable {
 				Date lastExec = new Date(mpd.getLastExecutionDate());	
 				// Check we haven't already executed the MP for this day.
 				if (date.compareTo(lastExec) < 0) {
-					logger.warn("Metric provider '" + m.getIdentifier() + "' has been executed for this date already. Ignoring.");
+					loggerAnalysisProcess.warn("Metric provider '" + m.getIdentifier() + "' has been executed for this date already. Ignoring.");
 					platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
 					continue;
 				}
@@ -99,7 +101,7 @@ public class MetricListExecutor implements Runnable {
 			
 			try {
 				if (m.appliesTo(project)) {
-					logger.info("Start Metric Execution ("+m.getShortIdentifier()+").");
+					loggerAnalysisProcess.info("Starting Metric Execution ("+m.getShortIdentifier()+").");
 					if (m instanceof ITransientMetricProvider) {
 						((ITransientMetricProvider) m).measure(project, delta, ((ITransientMetricProvider) m).adapt(platform.getMetricsRepository(project).getDb()));
 					} else if (m instanceof IHistoricalMetricProvider) {
@@ -107,10 +109,9 @@ public class MetricListExecutor implements Runnable {
 						historyManager.store(project, date, (IHistoricalMetricProvider) m);
 					}
 
-					logger.info("Metric Executed ("+m.getShortIdentifier()+").");
+					loggerAnalysisProcess.info("Started Metric Executed ("+m.getShortIdentifier()+").");
 				}
 			} catch (Exception e) {
-				logger.error("Exception thrown during metric provider execution ("+m.getShortIdentifier()+").", e);
 				project.getExecutionInformation().setInErrorState(true);
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 				
@@ -118,10 +119,11 @@ public class MetricListExecutor implements Runnable {
 				ProjectError error = ProjectError.create(date.toString(), "MetricListExecutor: " + m.getIdentifier(), projectId, project.getName(), e, Configuration.getInstance().getSlaveIdentifier());
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
-				
+				loggerAnalysisProcess.error("Exception thrown during metric provider execution ("+m.getShortIdentifier()+").", e);
 				break;
 			}finally {
 				platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
+				loggerAnalysisProcess.info("Ending execution AnalysisTask '" + this.taskId + "' with MetricExecution '" + m.getIdentifier() + "' done in " + (System.currentTimeMillis() - startTime) + " ms");
 			}		
 		}
 	}
@@ -134,6 +136,7 @@ public class MetricListExecutor implements Runnable {
 	 * @param mp
 	 */
 	protected void addDependenciesToMetricProvider(Platform platform, IMetricProvider mp) {
+		loggerAnalysisProcess.info("Adding dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
 		if (mp.getIdentifiersOfUses() == null) return; 
 		
 		List<IMetricProvider> uses = new ArrayList<IMetricProvider>();
@@ -146,6 +149,7 @@ public class MetricListExecutor implements Runnable {
 			}
 		}
 		mp.setUses(uses);
+		loggerAnalysisProcess.info("Added dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
 	}
 
 }

@@ -33,6 +33,8 @@ import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.logging.AnalysisProcessLogger;
+import org.eclipse.scava.platform.logging.AnalysisProcessLoggerFactory;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.LocalStorage;
 import org.eclipse.scava.repository.model.Project;
@@ -43,8 +45,7 @@ public class ProjectAnalyser {
 	
 	private Platform platform;
 	private int analysisThreadNumber;
-	private Logger logger;
-
+	private Logger loggerOssmeter,loggerAnalysisProcess;
 	
 	public ProjectAnalyser(Platform platform) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
@@ -52,13 +53,21 @@ public class ProjectAnalyser {
 	}
 
 	public boolean executeAnalyse(String analysisTaskId, String workerId) {
-		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
-
+		long startTime = System.currentTimeMillis();
+		this.loggerOssmeter = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");
+		
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(task.getProject().getProjectId());
-
-		logger.info("Beginning execution.");
+				
+		loggerOssmeter.info("Beginning execution.");
+		//Initialize the project local storage
 		initialiseProjectLocalStorage(project);
+		
+		//Initialize the logging analysis process
+		initialiseAnalysisLoggingSetting(project, analysisTaskId);
+		this.loggerAnalysisProcess = AnalysisProcessLogger.getLogger("ProjectExecutor (" + workerId + " : "+analysisTaskId +" )");
+		loggerAnalysisProcess.info("ProjectAnalyser( Project '" + project.getShortName() +"' Worker '" + workerId + "' AnalysisTask : " + analysisTaskId +")");
+
 		
 		// Clear any open flags
 		project.getExecutionInformation().setInErrorState(false);
@@ -69,10 +78,7 @@ public class ProjectAnalyser {
 		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
 		
-		logger.info("Creating metric branches.");
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
-		logger.info("Created metric branches.");
-		
 
 		Date enecutionDate = new Date(task.getScheduling().getCurrentDate());
 		Date endDate = null;
@@ -83,18 +89,18 @@ public class ProjectAnalyser {
 		}		
 		
 		Date[] dates = Date.range(enecutionDate,endDate);
-		logger.info("Dates: " + dates.length);
+		loggerAnalysisProcess.info("Dates: " + dates.length);
 		
 		long estimatedDuration = 0;
 		
 		ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
 		
 		for (Date date : dates) {
+			long startTimeDate = System.currentTimeMillis();
+			this.loggerAnalysisProcess.info("Project " + project.getShortName() + "Task execution ( " + analysisTaskId + " : Date " + date + " )");
 			java.util.Date dailyExecution = new java.util.Date();
-			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
-	
-			logger.info("Date: " + date + ", project: " + project.getName());
+			loggerAnalysisProcess.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
 			
@@ -108,7 +114,7 @@ public class ProjectAnalyser {
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
 				
-				logger.error("Project delta creation failed. Aborting.");
+				loggerAnalysisProcess.error("Project delta creation failed. Aborting.");
 				return false;
 			}
 			
@@ -123,7 +129,7 @@ public class ProjectAnalyser {
 			// depend on other 0669...
 			// TODO: Should check if in error state before and after factoids
 			if (factoids.size() > 0) {
-				logger.info("Executing factoids.");
+				loggerAnalysisProcess.info("Executing factoids.");
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(factoids);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
@@ -135,9 +141,9 @@ public class ProjectAnalyser {
 			if (project.getExecutionInformation().getInErrorState()) {
 				// TODO: what should we do? Is the act of not-updating the lastExecuted flag enough?
 				// If it continues to loop, it simply tries tomorrow. We need to stop this happening.
-				logger.warn("Project in error state. Resuming execution.");
+				loggerAnalysisProcess.warn("Project in error state. Resuming execution.");
 			} else {
-				logger.info("Updating last executed date."); 
+				loggerAnalysisProcess.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 			}		
@@ -156,7 +162,7 @@ public class ProjectAnalyser {
 			
 			
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				loggerAnalysisProcess.info("Analysis Task Execution  '" + analysisTaskId + "' STOPED at [ "+ date + " ]");
 				return false;
 			}
 			
@@ -164,24 +170,26 @@ public class ProjectAnalyser {
 				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
 				task.getScheduling().setWorkerId(null);	
 				platform.getAnalysisRepositoryManager().getRepository().sync();
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				loggerAnalysisProcess.info("Analysis Task Execution  '" +analysisTaskId +"' STOPED at [ "+ date + " ]");
 				return false;
 			}
+			loggerAnalysisProcess.info("Date " + date + " Task Execution ( " + analysisTaskId + " completed in " + (System.currentTimeMillis() - startTimeDate) + " ms )");
 		}
 		
 		try {
 			executorService.shutdown();
 			executorService.awaitTermination(24, TimeUnit.HOURS);
 		} catch (InterruptedException e) {
-			logger.error("Exception thrown when shutting down executor service.", e);
+			loggerAnalysisProcess.error("Exception thrown when shutting down executor service.", e);
 		}
-		
-		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
+		loggerAnalysisProcess.info("Project " + project.getShortName() + " Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"' in " + (System.currentTimeMillis() - startTime) + " ms");
 		return true;
 	}
 
 
 	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
+		long startTime = System.currentTimeMillis();
+		loggerAnalysisProcess.info("Loading all metricProviders");
 		List<IMetricProvider> filtredProviders = new ArrayList<>();
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
 		
@@ -195,11 +203,12 @@ public class ProjectAnalyser {
 				filtredProviders.add(platformProvider);
 			}
 		}
-		
+		loggerAnalysisProcess.info("Loading all metricProviders is done in " + (System.currentTimeMillis() - startTime) + " ms");
 		return filtredProviders;
 	}
 
 	protected List<IMetricProvider> extractFactoidProviders(List<IMetricProvider> allProviders) {
+		loggerAnalysisProcess.info("Extracting Factoid metrics of all metricProviders");
 		List<IMetricProvider> factoids = new ArrayList<>();
 		
 		for (IMetricProvider imp : allProviders) {
@@ -207,9 +216,8 @@ public class ProjectAnalyser {
 				factoids.add(imp);
 			}
 		}
-		
 		allProviders.removeAll(factoids);
-		
+		loggerAnalysisProcess.info("Extracting Factoid metricProviders is done.");
 		return factoids;
 	}
 	
@@ -221,6 +229,8 @@ public class ProjectAnalyser {
 	 * @return
 	 */
 	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
+		long startTime = System.currentTimeMillis();
+		loggerAnalysisProcess.info("Creating metric branches.");
 		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
 		
 		for (IMetricProvider m : metrics) {
@@ -261,7 +271,7 @@ public class ProjectAnalyser {
 		for (Set<IMetricProvider> b : branches) {
 			sortedBranches.add(sortMetricProviders(new ArrayList<IMetricProvider>(b)));
 		}
-		
+		loggerAnalysisProcess.info("Creating metric branches is done in " + (System.currentTimeMillis() - startTime) + " ms");
 		return sortedBranches;
 	}
 	
@@ -276,7 +286,7 @@ public class ProjectAnalyser {
 		
 
 	
-	public List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
+	private List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
 		List<IMetricProvider> sorted = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> marked = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> temporarilyMarked = new ArrayList<IMetricProvider>();
@@ -330,5 +340,10 @@ public class ProjectAnalyser {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void initialiseAnalysisLoggingSetting(Project affectedProject, String affectedTask) {
+		AnalysisProcessLoggerFactory.setAffectedProjectStoragePath (affectedProject.getExecutionInformation().getStorage().getPath());
+		AnalysisProcessLoggerFactory.setAffectedTaskName(affectedTask);
+	}
+	
 }
