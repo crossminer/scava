@@ -17,6 +17,8 @@ public class MultiSourceWorkflowTests extends WorkflowTests {
 	public void testMultiSource() throws Exception {
 
 		MSWorkflow wf = new MSWorkflow();
+		if (singleBroker)
+			wf.createBroker(false);
 		wf.setInstanceId("MSWF");
 		wf.run();
 

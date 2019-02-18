@@ -11,7 +11,9 @@ public class MultiflowTests extends WorkflowTests {
 	@Test
 	public void testOutput() throws Exception {
 		
-		Multiflow workflow = new Multiflow();
+		Multiflow workflow = new Multiflow();		
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMultiSource().setNumbers(2);
 		workflow.run();
 		
@@ -31,6 +33,8 @@ public class MultiflowTests extends WorkflowTests {
 	public void testCache(boolean cacheIn1, boolean cacheIn2, int executions) throws Exception {
 		System.out.println(cacheIn1+" : "+cacheIn2+" : "+executions);
 		Multiflow workflow = new Multiflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMultiTask().configureCache(cacheIn1, cacheIn2);
 		DirectoryCache cache = new DirectoryCache();
 		workflow.setCache(cache);
@@ -39,6 +43,8 @@ public class MultiflowTests extends WorkflowTests {
 		waitFor(workflow);
 		
 		workflow = new Multiflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.getMultiSource().setNumbers(2);
 		workflow.run();

@@ -17,6 +17,8 @@ public class OccurencesWorkflowTests extends WorkflowTests {
 		wordMap.put("Banana", 2);
 		
 		OpinionatedWorkflow master = new OpinionatedWorkflow();
+		if (singleBroker)
+			master.createBroker(false);
 		master.setFavouriteWord("Apple");
 		master.getWordSource().setWordMap(wordMap);
 		

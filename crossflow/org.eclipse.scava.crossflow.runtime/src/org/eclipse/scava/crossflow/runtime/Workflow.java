@@ -50,7 +50,9 @@ public abstract class Workflow {
 			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
 	protected Mode mode = Mode.MASTER;
 
+	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
 	protected boolean createBroker = true;
+
 	protected boolean cacheEnabled = true;
 	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
@@ -85,6 +87,10 @@ public abstract class Workflow {
 
 	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
+	}
+
+	public boolean isCreateBroker() {
+		return createBroker;
 	}
 
 	public void createBroker(boolean createBroker) {
@@ -142,15 +148,16 @@ public abstract class Workflow {
 		internalExceptionsQueue.init();
 
 		activeStreams.add(taskStatusTopic);
-		activeStreams.add(resultsTopic);
-		activeStreams.add(controlTopic);
+
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
 		// XXX do not add this topic/queue or any other non-essential ones to
 		// activestreams as the workflow should be able to terminate regardless of their
 		// state
+		// activeStreams.add(resultsTopic);
+		// activeStreams.add(controlTopic);
 		// activeStreams.add(streamMetadataTopic);
-		
+
 		controlTopic.addConsumer(new BuiltinStreamConsumer<ControlSignal>() {
 
 			@Override
@@ -377,7 +384,8 @@ public abstract class Workflow {
 	}
 
 	public String getBroker() {
-		return "tcp://" + master + ":" + port;
+		//adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
+		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
 
 	public void stopBroker() throws Exception {
@@ -419,12 +427,12 @@ public abstract class Workflow {
 					DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection, destination,
 							DestinationViewMBean.class, true);
 
-//					System.err.println(destinationName + ":" 
-//							+ destinationType + " " 
-//							+ mbView.getQueueSize() + " "
-//							+ mbView.getInFlightCount());
-
 					try {
+
+//						System.err.println(getName() + " : " + getInstanceId());
+//						System.err.println(destinationName + ":" + destinationType + " " + mbView.getQueueSize() + " "
+//								+ mbView.getInFlightCount());
+
 						if (!c.isBroadcast()) {
 							if (mbView.getQueueSize() > 0) {
 								return false;
@@ -434,7 +442,9 @@ public abstract class Workflow {
 								return false;
 							}
 						}
+
 					} catch (Exception ex) {
+						// ex.printStackTrace();
 						// Ignore exception
 					}
 

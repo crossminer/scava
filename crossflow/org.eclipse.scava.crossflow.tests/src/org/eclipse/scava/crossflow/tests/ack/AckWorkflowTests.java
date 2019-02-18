@@ -21,6 +21,8 @@ public class AckWorkflowTests extends WorkflowTests {
 	private void prefetchTest(boolean enable) throws Exception {
 
 		AckWorkflow masterbare = new AckWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			masterbare.createBroker(false);
 		masterbare.setInstanceId("Pre-" + enable);
 		masterbare.setName("Master");
 		masterbare.setEnablePrefetch(enable);

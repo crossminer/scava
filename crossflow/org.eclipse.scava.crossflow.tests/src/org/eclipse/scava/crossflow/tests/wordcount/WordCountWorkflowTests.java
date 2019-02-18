@@ -10,6 +10,8 @@ public class WordCountWorkflowTests extends WorkflowTests {
 	@Test
 	public void testOutput() throws Exception {
 		WordCountWorkflow workflow = new WordCountWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setInputDirectory(new File("inputs/wordcount"));
 		workflow.setOutputDirectory(new File("outputs/wordcount"));
 		workflow.run();

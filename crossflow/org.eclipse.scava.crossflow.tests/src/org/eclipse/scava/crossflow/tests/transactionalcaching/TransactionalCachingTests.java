@@ -18,7 +18,9 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
-		MinimalWorkflow mb = new MinimalWorkflow(Mode.MASTER_BARE);
+		MinimalWorkflow mb = new MinimalWorkflow(Mode.MASTER_BARE);		
+		if (singleBroker)
+			mb.createBroker(false);
 		mb.setInstanceId("minimalwfcacheteststransactional");
 		mb.getMinimalSource().setElements(elems);
 		DirectoryCache cache = new DirectoryCache();
@@ -39,6 +41,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		//
 		mb = new MinimalWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			mb.createBroker(false);
 		mb.setInstanceId("minimalwfcacheteststransactional");
 		mb.getMinimalSource().setElements(elems);
 		mb.setCache(new DirectoryCache(cache.getDirectory()));
@@ -58,6 +62,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		//
 		mb = new MinimalWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			mb.createBroker(false);
 		mb.setInstanceId("minimalwfcacheteststransactional");
 		mb.getMinimalSource().setElements(elems);
 		mb.setCache(new DirectoryCache(cache.getDirectory()));
@@ -83,6 +89,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
 		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow();
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 		workflow.setInstanceId("minimalwfcacheteststransactional");
 		MinimalWorkflow master = workflow.getElements().get(0);
 		master.getMinimalSource().setElements(elems);
@@ -100,6 +108,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		//
 		workflow = new CompositeMinimalWorkflow();
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 		master = workflow.getElements().get(0);
 		master.getMinimalSource().setElements(elems);
 		workflow.getElements().forEach(e -> e.getClonerTask().setFail(false));
@@ -141,6 +151,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setInstanceId("minimalwfcacheteststransactional");
 		workflow.getMinimalSource().setElements(elems);
 		workflow.getClonerTask().setFail(fail1);
@@ -156,6 +168,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		//
 		workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMinimalSource().setElements(elems);
 		workflow.getClonerTask().setFail(fail2);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
@@ -169,6 +183,8 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		//
 		workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMinimalSource().setElements(elems);
 		workflow.getClonerTask().setFail(fail3);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));

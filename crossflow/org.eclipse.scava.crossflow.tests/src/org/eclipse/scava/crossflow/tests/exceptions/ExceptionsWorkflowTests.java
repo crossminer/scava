@@ -14,6 +14,8 @@ public class ExceptionsWorkflowTests extends WorkflowTests {
 	public void testFailedJobs() throws Exception {
 		
 		ExceptionsWorkflow master = new ExceptionsWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			master.createBroker(false);
 		
 		ExceptionsWorkflow worker = master.createWorker();
 		worker.setFailOnNumber(1);
