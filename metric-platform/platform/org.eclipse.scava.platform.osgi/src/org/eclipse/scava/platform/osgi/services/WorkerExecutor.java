@@ -21,46 +21,46 @@ import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 public class WorkerExecutor implements Runnable {
 
 	private static String WORKER_ID;
-	private Logger logger = OssmeterLogger.getLogger("OssmeterApplication");
+	private Logger loggerOssmeter = OssmeterLogger.getLogger("WorkerExecutor");
 
 	private static final Integer CYCLE = 10000;
 
 	private Platform platform;
 
 	private ProjectAnalyser analyser;
-	private Boolean executeTasks;;
+	private Boolean executeTasks;
 
-	public WorkerExecutor(Platform platform,String workerId) {
+	public WorkerExecutor(Platform platform, String workerId) {
 		this.platform = platform;
 		this.executeTasks = true;
-		
-		if( workerId == null) {
+
+		if (workerId == null) {
 			WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
-		}else {
+		} else {
 			WORKER_ID = workerId;
 		}
 	}
 
 	@Override
 	public void run() {
-		
 		// Register Worker
 		platform.getAnalysisRepositoryManager().getWorkerService().registerWorker(WORKER_ID);
-		
+
 		while (executeTasks) {
 			String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
 			if (analysisTaskId != null) {
-				logger.info("Worker '" + WORKER_ID + "' Executing " + analysisTaskId + " Task");
-				platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId,WORKER_ID);
-				this.analyser = new ProjectAnalyser(this.platform);		
-				this.analyser.executeAnalyse(analysisTaskId,WORKER_ID);	
+				loggerOssmeter.info("Worker '" + WORKER_ID + "' Executing " + analysisTaskId + " Task");
+				platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId, WORKER_ID);
+				this.analyser = new ProjectAnalyser(this.platform);
+				this.analyser.executeAnalyse(analysisTaskId, WORKER_ID);
 				platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
 
-			} else {				
-				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
+			} else {
+				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers()
+						.findOneByWorkerId(WORKER_ID);
 				worker.setHeartbeat(new Date());
-				platform.getAnalysisRepositoryManager().getRepository().sync();	
-				logger.info("Worker '" + WORKER_ID + "' Waiting New Tasks");
+				platform.getAnalysisRepositoryManager().getRepository().sync();
+				loggerOssmeter.info("Worker '" + WORKER_ID + "' Waiting new Tasks");
 			}
 
 			try {

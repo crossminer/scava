@@ -17,7 +17,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.IVcsManager;
 import org.eclipse.scava.platform.delta.vcs.VcsProjectDelta;
-import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.logging.AnalysisProcessLogger;
 import org.eclipse.scava.repository.model.Project;
 
 import com.mongodb.DB;
@@ -34,7 +34,7 @@ public class ProjectDelta {
 	protected CommunicationChannelProjectDelta communicationChannelDelta;
 	protected BugTrackingSystemProjectDelta bugTrackingSystemDelta;
 
-	protected OssmeterLogger logger;
+	protected AnalysisProcessLogger loggerAnalysisProcess;
 	
 	public ProjectDelta(Project project, Date date, Platform platform) {
 //			IVcsManager vcsManager, 
@@ -47,7 +47,7 @@ public class ProjectDelta {
 		this.bugTrackingSystemManager = platform.getBugTrackingSystemManager();
 		this.platform = platform;
 		
-		this.logger = (OssmeterLogger)OssmeterLogger.getLogger("ProjectDelta ("+project.getName() + "," + date.toString() + ")");
+		this.loggerAnalysisProcess = (AnalysisProcessLogger)AnalysisProcessLogger.getLogger("ProjectDelta ("+project.getName() + "," + date.toString() + ")");
 	}
 	
 	// TODO: Is it more important to execute SOME metrics or execute ALL metrics?
@@ -55,6 +55,7 @@ public class ProjectDelta {
 	// for the others? I think not. Next time we run the project we'll re-create
 	// some deltas unnecessarily.
 	public void create() throws Exception{
+		loggerAnalysisProcess.info("Creating Delta");
 		try {
 			long startVcsDelta = System.currentTimeMillis();
 			vcsDelta = new VcsProjectDelta(project, date, vcsManager);
@@ -68,9 +69,9 @@ public class ProjectDelta {
 			long startBTSDelta = System.currentTimeMillis();
 			bugTrackingSystemDelta = new BugTrackingSystemProjectDelta(db, project, date, bugTrackingSystemManager);
 			long endBTSDelta = System.currentTimeMillis();
-			
+			loggerAnalysisProcess.info("Created Delta");
 		} catch (Exception e) {
-			logger.error("Delta creation failed.", e);
+			loggerAnalysisProcess.error("Delta creation failed.", e);
 			throw e;
 		}
 	}
