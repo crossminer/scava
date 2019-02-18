@@ -20,7 +20,6 @@ public class DirectoryCache implements Cache {
 	
 	protected File directory;
 	protected Workflow workflow = null;
-	protected XStream xstream = new XStream(new DomDriver());
 	
 	public DirectoryCache() {
 		try {
@@ -52,7 +51,7 @@ public class DirectoryCache implements Cache {
 			ArrayList<Job> outputs = new ArrayList<Job>();
 			File inputFolder = jobFolderMap.get(input.getHash());
 			for (File outputFile : inputFolder.listFiles()) {
-				Job output = (Job) xstream.fromXML(outputFile); 
+				Job output = (Job) workflow.getSerializer().toObject(outputFile); 
 				output.setId(UUID.randomUUID().toString());
 				output.setCorrelationId(input.getId());
 				output.setCached(true);
@@ -101,6 +100,11 @@ public class DirectoryCache implements Cache {
 		fos.write(job.getXML().getBytes());
 		fos.flush();
 		fos.close();
+	}
+	
+	@Override
+	public void setWorkflow(Workflow workflow) {
+		this.workflow = workflow;
 	}
 	
 }

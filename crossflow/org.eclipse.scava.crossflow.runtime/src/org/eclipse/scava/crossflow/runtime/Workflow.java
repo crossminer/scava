@@ -348,6 +348,7 @@ public abstract class Workflow {
 
 	public void setCache(Cache cache) {
 		this.cache = cache;
+		cache.setWorkflow(this);
 	}
 
 	public boolean isMaster() {
