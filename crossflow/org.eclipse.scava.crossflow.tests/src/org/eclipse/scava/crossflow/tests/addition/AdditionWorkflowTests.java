@@ -29,7 +29,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		assertArrayEquals(new Integer[] { 2, 4 }, workflow.getAdditionResultsSink().getNumbers().toArray());
 	}
 
-	@Test
+	@Test 
 	public void testCachingWithCache() throws Exception {
 
 		AdditionWorkflow workflow = new AdditionWorkflow();

@@ -1,0 +1,27 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
+<_>
+
+	<!-- Simple example that adds pairs of numbers and prints the results -->
+	<!-- Needs an interim version of Epsilon after 10/1/2019 as it makes use of templates -->
+	<workflow name="ChurnRateWorkflow" package="org.eclipse.scava.crossflow.tests.churnRateRepo">
+		<simple-source name="remoteURLSource" produces="URL" to="URLs"/>
+		<simple-task name="ChurnRateCalculator" produces="ChurnRate" to="ChurnRates"/>
+				
+		<simple-sink name="ResultsSink"/>
+		
+		<type name="URL">
+			<field name="url" type="String"/>
+			
+		</type>
+		
+	<type name="ChurnRate">
+			<field name="url" type="String"/>
+			<field name="branch" type="String"/>
+			<field name="churnRate" type="Double"/>
+			 
+		</type>
+	</workflow> 
+	
+</_>
