@@ -6,7 +6,7 @@
 	<!-- Simple example that counts words -->
 	<workflow name="WordCountWorkflow" package="org.eclipse.scava.crossflow.tests.wordcount">
 		<simple-source name="LineSource" produces="Line" to="Lines"/>
-		<simple-task name="WordCounter" produces="WordFrequency" to="WordFrequencies"/>
+		<simple-task multipleOutputs="true" name="WordCounter" produces="WordFrequency" to="WordFrequencies"/>
 		<simple-sink name="WordCountSink"/>
 						
 		<type name="Line">

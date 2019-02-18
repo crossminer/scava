@@ -13,6 +13,8 @@ import org.eclipse.scava.crossflow.tests.multiflow.MultiflowTests;
 import org.eclipse.scava.crossflow.tests.opinionated.OccurencesWorkflowTests;
 import org.eclipse.scava.crossflow.tests.parallel.ParallelWorkflowTests;
 import org.eclipse.scava.crossflow.tests.transactionalcaching.TransactionalCachingTests;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -33,6 +35,26 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelWorkflowTests.class,
 	TransactionalCachingTests.class
 })
-public class CrossflowTests {
+
+public class CrossflowTestsSingleBroker {
+
+	@BeforeClass
+	public static void setUp() {
+		WorkflowTests.singleBroker = true;
+			try {
+				new WorkflowTests().startBroker();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
+
+	@AfterClass
+	public static void tearDown() {
+			try {
+				new WorkflowTests().stopBroker();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
 
 }

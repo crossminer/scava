@@ -38,7 +38,7 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 	}
 
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple consumeMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
 			workflow.getMdeTechnologyClonedRepoEntriesForOwnerPopularityCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
@@ -69,10 +69,11 @@ public class MdeTechnologyRepoOwnerPopularityCounter extends MdeTechnologyRepoOw
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(repoOwnerFollowerCount); // repository owner follower count
 				
-				sendToMdeTechnologyRepoOwnerPopularityCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+				return extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
 			}
 			
 		}
+		return null;
 		
 	}
 

@@ -10,4 +10,8 @@ public interface Cache {
 	
 	public void cache(Job output);
 	
+	public void setWorkflow(Workflow workflow);
+	
+	public void cacheTransactionally(Job output);
+
 }

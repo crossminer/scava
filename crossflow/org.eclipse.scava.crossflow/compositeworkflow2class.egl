@@ -36,6 +36,9 @@ public class Composite[%=w.name%] extends CompositeWorkflow {
 			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
 	protected Mode mode = Mode.MASTER;
 
+	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
+	private boolean createBroker = true;
+
 	protected boolean cacheEnabled = true;
 	protected boolean enablePrefetch = false;
 
@@ -50,7 +53,7 @@ public class Composite[%=w.name%] extends CompositeWorkflow {
 	public static Composite[%=w.name%] run(String[] args) throws Exception {
 		Composite[%=w.name%] throwAway = new Composite[%=w.name%]();
 		new JCommander(throwAway, args);
-		Composite[%=w.name%] app = new Composite[%=w.name%](throwAway.getMode(), throwAway.getParallelization(), throwAway.getName());
+		Composite[%=w.name%] app = new Composite[%=w.name%](throwAway.getMode(), throwAway.getParallelization(), throwAway.getName(), throwAway.isCreateBroker());
 		new JCommander(app, args);
 		app.run();
 		return app;
@@ -69,22 +72,29 @@ public class Composite[%=w.name%] extends CompositeWorkflow {
 	}
 
 	public Composite[%=w.name%](){
-		this(Mode.MASTER, -1, null);
+		this(Mode.MASTER, -1, null, true);
 	}
 
 	public Composite[%=w.name%](Mode mode) {
-		this(mode, -1, null);
+		this(mode, -1, null, true);
+	}
+	
+	public Composite[%=w.name%](Mode mode, boolean createBroker) {
+		this(mode, -1, null, createBroker);
 	}
 
-	public Composite[%=w.name%](Mode mode, int parallelization, String name){
+	public Composite[%=w.name%](Mode mode, int parallelization, String name, boolean createBroker){
 		if(name!=null)
 			this.name=name;
+			
+		this.createBroker = createBroker;	
 		
 		if(parallelization>0)
 			this.parallelization = parallelization;
 			
 		[%=w.name%] originatingWf = new [%=w.name%](mode);
 		originatingWf.setName(name+":Composite[%=w.name%]:"+mode);
+		originatingWf.createBroker(createBroker);
 		elements.add(originatingWf);
 		
 		for(int i=1;i<this.parallelization;i++){
@@ -151,6 +161,14 @@ public class Composite[%=w.name%] extends CompositeWorkflow {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public boolean isCreateBroker() {
+		return createBroker;
+	}
+
+	public void createBroker(boolean createBroker) {
+		this.createBroker = createBroker;
 	}
 	
 }

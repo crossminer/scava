@@ -8,6 +8,7 @@ import java.io.File;
 
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.tests.addition.NumberPair;
+import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflow;
 import org.junit.Test;
 
 
@@ -22,6 +23,7 @@ public class DirectoryCacheTests {
 		output.setCorrelationId(input.getId());
 		
 		DirectoryCache cache = new DirectoryCache();
+		cache.setWorkflow(new MinimalWorkflow());
 		File directory = cache.getDirectory();
 		cache.cache(input);
 		cache.cache(output);
@@ -32,6 +34,7 @@ public class DirectoryCacheTests {
 		assertEquals(4, ((NumberPair) cache.getCachedOutputs(input).get(0)).getB());
 		
 		DirectoryCache fresh = new DirectoryCache(directory);
+		fresh.setWorkflow(new MinimalWorkflow());
 		
 		assertTrue(fresh.hasCachedOutputs(input));
 		assertFalse(fresh.hasCachedOutputs(output));

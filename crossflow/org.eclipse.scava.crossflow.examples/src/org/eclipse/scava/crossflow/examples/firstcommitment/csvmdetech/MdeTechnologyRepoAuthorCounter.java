@@ -34,7 +34,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 	 * @see org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyRepoEntriesConsumer#consumeMdeTechnologyRepoEntries(org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.StringStringStringTuple)
 	 */
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesForAuthorCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple consumeMdeTechnologyClonedRepoEntriesForAuthorCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
@@ -66,10 +66,11 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(authorCount); // repository unique author count
 				
-				sendToMdeTechnologyRepoAuthorCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+				return extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
 			}
 			
 		}
+		return null;
 		
 	}
 

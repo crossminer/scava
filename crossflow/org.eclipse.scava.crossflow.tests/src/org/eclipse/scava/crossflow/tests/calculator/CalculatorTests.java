@@ -19,6 +19,8 @@ public class CalculatorTests extends WorkflowTests {
 		if (output.exists()) output.delete();
 		
 		CalculatorWorkflow workflow = new CalculatorWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setName("master");
 		workflow.setInputDirectory(new File("inputs/calculator"));
 		workflow.setOutputDirectory(new File("outputs/calculator"));
@@ -34,6 +36,8 @@ public class CalculatorTests extends WorkflowTests {
 	@Test
 	public void testCache() throws Exception {
 		CalculatorWorkflow workflow = new CalculatorWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setInputDirectory(new File("inputs/calculator"));
 		workflow.setOutputDirectory(new File("outputs/calculator"));
 		DirectoryCache cache = new DirectoryCache();

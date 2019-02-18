@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.parallel;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.AbstractMap;
@@ -25,24 +24,34 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.eclipse.scava.crossflow.tests.minimal.CompositeMinimalWorkflow;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflow;
+import org.eclipse.scava.crossflow.tests.util.Retry;
+import org.eclipse.scava.crossflow.tests.util.RetryRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ParallelWorkflowTests extends WorkflowTests {
 
 	int parallelization = Math.max(Runtime.getRuntime().availableProcessors(), 2);
 
+	// define the number of retries for tests in this class (annotated with @Retry)
+	@Rule
+	public RetryRule rule = new RetryRule(3);
+
 	@Test
-	public void simpleParallelOutputTests() throws Exception {
-
+	public void simpleParallelOutputTestsNP() throws Exception {
 		simpleParallelOutputTestActual(false);
-		simpleParallelOutputTestActual(true);
+	}
 
+	@Test
+	@Retry
+	public void simpleParallelOutputTestsP() throws Exception {
+		simpleParallelOutputTestActual(true);
 	}
 
 	public void simpleParallelOutputTestActual(boolean parallel) throws Exception {
 
 		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallel ? parallelization : 1,
-				"wf");
+				"wf", singleBroker ? false : true);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -78,7 +87,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		for (int i = 1; i <= num; i++)
 			numbers.add(i);
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf");
+		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
+				singleBroker ? false : true);
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 		MinimalWorkflow master = workflow.getElements().get(0);
 		master.getMinimalSource().setNumbers(numbers);
 		final DirectoryCache cache = new DirectoryCache();
@@ -91,7 +103,8 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		assertEquals(num, (int) workflow.getElements().stream()
 				.collect(Collectors.summingInt(e -> e.getCopierTask().getExecutions())));
 
-		workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf");
+		workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
+				singleBroker ? false : true);
 		master = workflow.getElements().get(0);
 		master.getMinimalSource().setNumbers(numbers);
 		workflow.getElements().forEach(e -> e.setCache(new DirectoryCache(cache.getDirectory())));
@@ -121,7 +134,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		for (int i = 1; i <= num; i++)
 			numbers.add(i);
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf");
+		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
+				singleBroker ? false : true);
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 		Set<Integer> results = new HashSet<Integer>();
 		MinimalWorkflow master = workflow.getElements().get(0);
 		master.getMinimalSource().setNumbers(new ArrayList<>(numbers));
@@ -148,7 +164,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		@Override
 		public void consume(TaskStatus t) {
 
-			//System.out.println(t);
+			// System.out.println(t);
 
 			if (t.getCaller().startsWith("CopierTask:wf:CompositeMinimalWorkflow")
 					&& t.getStatus().equals(TaskStatuses.WAITING))
@@ -176,7 +192,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 	public synchronized void testStreamMetadataTopicActual(boolean enablePrefetch) throws Exception {
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf");
+		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
+				singleBroker ? false : true);
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -262,7 +281,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 	@Test
 	public void parallelTestStreamMetadataTopicMultiConsumer() throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf");
+		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
+				singleBroker ? false : true);
+		if (singleBroker)
+			workflow.getElements().get(0).createBroker(false);
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 
 		MinimalWorkflow master = workflow.getElements().get(0);

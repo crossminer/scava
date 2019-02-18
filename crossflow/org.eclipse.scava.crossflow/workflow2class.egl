@@ -17,7 +17,7 @@ public class [%=w.name%] extends Workflow {
 	public static [%=w.name%] run(String[] args) throws Exception {
 		[%=w.name%] throwAway = new [%=w.name%]();
 		new JCommander(throwAway, args);
-		[%=w.name%] app = new [%=w.name%](throwAway.getMode());
+		[%=w.name%] app = new [%=w.name%](throwAway.getMode(), throwAway.isCreateBroker());
 		new JCommander(app, args);
 		app.run();
 		return app;
@@ -58,11 +58,17 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 
 	public [%=w.name%]() {
-		this(Mode.MASTER);
+		this(Mode.MASTER, true);
 	}
 	
 	public [%=w.name%](Mode mode) {
+		this(mode, true);
+	}
+	
+	public [%=w.name%](Mode mode, boolean createBroker) {
 		super();
+			
+		this.createBroker = createBroker;	
 			
 		this.name = "[%=w.name%]";
 		this.mode = mode;
@@ -112,7 +118,7 @@ public class [%=w.name%] extends Workflow {
 		Thread.sleep(delay);
 		
 		[%for (s in w.streams) { %]
-		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch, enableAck);
+		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
 		activeStreams.add([%=s.name.ftlc()%]);
 		[%}%]
 		
@@ -186,19 +192,6 @@ public class [%=w.name%] extends Workflow {
 
 	public void setEnablePrefetch(boolean enablePrefetch) {
 		this.enablePrefetch = enablePrefetch;
-	}
-	
-	/**
-	* Sets whether tasks will acknowledge their processed messages (TESTING ONLY)
-	*/
-	private boolean enableAck = true;
-	
-	public boolean isAckEnabled() {
-		return enableAck;
-	}
-
-	public void setEnableAck(boolean enable) {
-		enableAck = enable;
 	}
 	
 }	

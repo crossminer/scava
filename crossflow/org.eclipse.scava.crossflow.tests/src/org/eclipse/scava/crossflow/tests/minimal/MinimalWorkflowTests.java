@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.minimal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.AbstractMap;
@@ -30,6 +29,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		List<Integer> numbers = Arrays.asList(1, 1);
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMinimalSource().setNumbers(numbers);
 		DirectoryCache cache = new DirectoryCache();
 		workflow.setCache(cache);
@@ -41,6 +42,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		assertEquals(2, workflow.getCopierTask().getExecutions());
 
 		workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMinimalSource().setNumbers(numbers);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.run();
@@ -61,6 +64,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testResultsTopicActual(int initialDelay) throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2);
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		List<Integer> results = new LinkedList<Integer>();
 		workflow.getMinimalSource().setNumbers(numbers);
 		//
@@ -109,6 +114,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public synchronized void testStreamMetadataTopicActual(boolean enablePrefetch) throws Exception {
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -191,6 +198,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testStreamMetadataTopicMultiConsumer() throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 		workflow.setName("master");
 

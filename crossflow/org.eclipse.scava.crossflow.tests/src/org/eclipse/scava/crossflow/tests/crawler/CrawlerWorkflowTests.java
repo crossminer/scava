@@ -18,6 +18,8 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 	public void testOutput() throws Exception {
 		
 		CrawlerWorkflow master = new CrawlerWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			master.createBroker(false);
 		CrawlerWorkflow worker = master.createWorker();
 		
 		master.run();
@@ -35,6 +37,8 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 	public void testTaskStatusNotifications() throws Exception {
 		
 		CrawlerWorkflow master = new CrawlerWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			master.createBroker(false);
 		CrawlerWorkflow worker = master.createWorker();
 		
 		BuiltinStreamRecorder<TaskStatus> recorder = new BuiltinStreamRecorder<>();

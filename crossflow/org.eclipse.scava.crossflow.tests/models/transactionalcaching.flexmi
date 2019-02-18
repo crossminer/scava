@@ -1,0 +1,18 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
+<_>
+
+	<!-- Minimal example -->
+	<workflow name="MinimalWorkflow" package="org.eclipse.scava.crossflow.tests.transactionalcaching">
+		<simple-source name="MinimalSource" produces="Element" to="Input"/>
+		<simple-task multipleOutputs="true" name="ClonerTask" produces="Element" to="Output"/>
+		<simple-sink name="MinimalSink"/>
+		
+		<type name="Element">
+			<field name="s" type="String"/>
+		</type>
+		
+	</workflow>
+	
+</_>

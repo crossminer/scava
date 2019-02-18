@@ -12,6 +12,8 @@ public class MatrixWorkflowTests extends WorkflowTests {
 	public void testOutput() throws Exception {
 		
 		MatrixWorkflow workflow = new MatrixWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getMatrixConfigurationSource().setNumberOfConfigurations(2);
 		workflow.run();
 		waitFor(workflow);
@@ -26,6 +28,8 @@ public class MatrixWorkflowTests extends WorkflowTests {
 	public void testCache() throws Exception {
 		
 		MatrixWorkflow workflow = new MatrixWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		/*
 		DirectoryCache cache = new DirectoryCache(
 			new File("/Users/dkolovos/Desktop/matrix-cache")
@@ -37,6 +41,8 @@ public class MatrixWorkflowTests extends WorkflowTests {
 		waitFor(workflow);
 		
 		workflow = new MatrixWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);		
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.getMatrixConfigurationSource().setNumberOfConfigurations(3);
 		workflow.run();

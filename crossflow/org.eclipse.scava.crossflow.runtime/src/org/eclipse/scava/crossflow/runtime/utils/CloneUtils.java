@@ -105,7 +105,6 @@ public class CloneUtils {
 				System.out.println("Successfully cleaned repo clone parent: "
 						+ repoLocation.getAbsolutePath());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			repoLocation.mkdir();

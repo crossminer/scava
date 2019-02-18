@@ -22,6 +22,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testOutput() throws Exception {
 		AdditionWorkflow workflow = new AdditionWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		workflow.setTerminationTimeout(0);
 		workflow.run();
@@ -33,6 +35,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	public void testCachingWithCache() throws Exception {
 
 		AdditionWorkflow workflow = new AdditionWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getAdder().setCaching(true);
 		workflow.setCache(new DirectoryCache());
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
@@ -40,6 +44,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		waitFor(workflow);
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
+		if (singleBroker)
+			fresh.createBroker(false);
 		fresh.getAdder().setCaching(true);
 		fresh.setCache(new DirectoryCache(((DirectoryCache) workflow.getCache()).getDirectory()));
 		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
@@ -53,6 +59,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testUncacheable() throws Exception {
 		AdditionWorkflow workflow = new AdditionWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getAdder().setCaching(true);
 		workflow.setCache(new DirectoryCache());
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
@@ -61,6 +69,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		waitFor(workflow);
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
+		if (singleBroker)
+			fresh.createBroker(false);
 		fresh.getAdder().setCaching(true);
 		fresh.getAdder().setCacheable(false);
 		fresh.setCache(new DirectoryCache(((DirectoryCache) workflow.getCache()).getDirectory()));
@@ -75,12 +85,16 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	public void testCachingWithoutCache() throws Exception {
 
 		AdditionWorkflow workflow = new AdditionWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
 		workflow.getAdder().setCaching(true);
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		workflow.run();
 		waitFor(workflow);
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
+		if (singleBroker)
+			fresh.createBroker(false);
 		fresh.getAdder().setCaching(true);
 		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
 		fresh.run();
@@ -92,6 +106,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
+		if (singleBroker)
+			master.createBroker(false);
 		master.setTerminationTimeout(5000);
 		List<Integer> input = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		master.getNumberPairSource().setNumbers(input);
@@ -126,6 +142,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testBareMasterWorker() throws Exception {
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			master.createBroker(false);
 		master.setTerminationTimeout(5000);
 		master.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5));
 
@@ -145,7 +163,9 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testTaskStatusNotifications() throws Exception {
 
-		AdditionWorkflow workflow = new AdditionWorkflow();
+		AdditionWorkflow workflow = new AdditionWorkflow();	
+		if (singleBroker)
+			workflow.createBroker(false);
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 		workflow.getNumberPairSource().setNumbers(numbers);
 
@@ -167,7 +187,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testWithExistingBroker() throws Exception {
 
-		startBroker();
+		if (!singleBroker)
+			startBroker();
 
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.createBroker(false);
@@ -178,19 +199,25 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		waitFor(workflow);
 		assertArrayEquals(new Integer[] { 2, 4 }, workflow.getAdditionResultsSink().getNumbers().toArray());
 
-		stopBroker();
+		if (!singleBroker)
+			stopBroker();
 	}
 
 	@Test
 	public void testParallelWorkflows() throws Exception {
 
-		startBroker();
+		if (!singleBroker)
+			startBroker();
 
 		AdditionWorkflow workflow1 = new AdditionWorkflow();
+		if (singleBroker)
+			workflow1.createBroker(false);
 		workflow1.createBroker(false);
 		workflow1.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 
 		AdditionWorkflow workflow2 = new AdditionWorkflow();
+		if (singleBroker)
+			workflow2.createBroker(false);
 		workflow2.createBroker(false);
 		workflow2.getNumberPairSource().setNumbers(Arrays.asList(3, 4));
 
@@ -203,7 +230,8 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		assertArrayEquals(new Integer[] { 2, 4 }, workflow1.getAdditionResultsSink().getNumbers().toArray());
 		assertArrayEquals(new Integer[] { 6, 8 }, workflow2.getAdditionResultsSink().getNumbers().toArray());
 
-		stopBroker();
+		if (!singleBroker)
+			stopBroker();
 	}
 
 }

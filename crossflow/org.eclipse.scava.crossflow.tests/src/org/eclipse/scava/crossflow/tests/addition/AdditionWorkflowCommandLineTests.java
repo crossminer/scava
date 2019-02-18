@@ -1,12 +1,10 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
@@ -17,11 +15,22 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 	@Test
 	public void testMasterWorker() throws Exception {
 
-		AdditionWorkflow master = AdditionWorkflow.run(new String[] { "-instance", "aw1" });
+		String[] broker = new String[] { "-instance", "aw1" };
+		String[] noBroker = new String[] { "-createBroker", "false", "-instance", "aw1" };
+
+		AdditionWorkflow master;
+		if (singleBroker)
+			master = AdditionWorkflow.run(noBroker);
+		else
+			master = AdditionWorkflow.run(broker);
 		AdditionWorkflow worker = AdditionWorkflow.run(new String[] { "-mode", "worker", "-instance", "aw1" });
 
 		waitFor(master);
-		assertArrayEquals(new Integer[] { 2, 4, 6, 8, 10 }, master.getAdditionResultsSink().getNumbers().toArray());
+		HashSet<Integer> expected = new HashSet<Integer>(Arrays.asList(new Integer[] { 2, 4, 6, 8, 10 }));
+		System.out.println(expected);
+		HashSet<Integer> actual = new HashSet<Integer>(master.getAdditionResultsSink().getNumbers());
+		System.out.println(actual);
+		assertEquals(expected, actual);
 		assertTrue(master.getAdder().getExecutions() < 5);
 		assertTrue(worker.getAdder().getExecutions() > 0);
 
@@ -36,8 +45,15 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 
 	public void parallelTestMasterWorkerActual(int p) throws Exception {
 
-		CompositeAdditionWorkflow master = CompositeAdditionWorkflow
-				.run(new String[] { "-parallelization", "" + p, "-instance", "aw1", "-name", "m1" });
+		String[] broker = new String[] { "-parallelization", "" + p, "-instance", "aw1", "-name", "m1" };
+		String[] noBroker = new String[] { "-createBroker", "false", "-parallelization", "" + p, "-instance", "aw1",
+				"-name", "m1" };
+
+		CompositeAdditionWorkflow master;
+		if (singleBroker)
+			master = CompositeAdditionWorkflow.run(noBroker);
+		else
+			master = CompositeAdditionWorkflow.run(broker);
 		CompositeAdditionWorkflow worker = CompositeAdditionWorkflow
 				.run(new String[] { "-parallelization", "" + p, "-mode", "worker", "-instance", "aw1", "-name", "w1" });
 

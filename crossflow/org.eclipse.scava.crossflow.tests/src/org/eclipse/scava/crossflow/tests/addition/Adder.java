@@ -7,18 +7,18 @@ public class Adder extends AdderBase {
 	private long interval = 500;
 
 	@Override
-	public void consumeAdditions(NumberPair numberPair) {
+	public Number consumeAdditions(NumberPair numberPair) {
 		executions++;
 		Number result = new Number();
 		result.setN(numberPair.getA() + numberPair.getB());
 		if (caching)
 			result.setCorrelationId(numberPair.getId());
-		sendToAdditionResults(result);
 		try {
 			Thread.sleep(interval);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 
 	public int getExecutions() {

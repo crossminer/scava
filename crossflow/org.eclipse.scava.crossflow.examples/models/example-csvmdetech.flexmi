@@ -12,7 +12,7 @@
 		<queue name="MdeTechnologies" type="ExtensionKeywordTuple"/> 
 		
 		<!-- task for retrieving repository information from GitHub API -->
-		<task name="MdeTechnologyRepoFetcher" in="MdeTechnologies" out="MdeTechnologyRepoEntries"/> 
+		<task name="MdeTechnologyRepoFetcher" multipleOutputs="true" in="MdeTechnologies" out="MdeTechnologyRepoEntries"/> 
 		
 		<!-- queue of repositories retrieved from GitHub API -->
 		<queue name="MdeTechnologyRepoEntries" type="ExtensionKeywordStargazersTuple"/> 

@@ -21,6 +21,8 @@ public class AckWorkflowTests extends WorkflowTests {
 	private void prefetchTest(boolean enable) throws Exception {
 
 		AckWorkflow masterbare = new AckWorkflow(Mode.MASTER_BARE);
+		if (singleBroker)
+			masterbare.createBroker(false);
 		masterbare.setInstanceId("Pre-" + enable);
 		masterbare.setName("Master");
 		masterbare.setEnablePrefetch(enable);
@@ -50,43 +52,45 @@ public class AckWorkflowTests extends WorkflowTests {
 				: masterbare.getSink().results.contains(worker2.getName()));
 
 	}
-	
-	@Test
-	public void testAcknowledgementTermination() throws Exception {
 
-		// run execution with acknowledgements to estimate termination time (needed for
-		// non-ack test)
-		long init = System.currentTimeMillis();
-		ackTerminationTest(true, 0);
-		long execTime = System.currentTimeMillis() - init;
-		System.out.println("normal execution time: " + execTime / 1000 + "s");
+	// XXX removed to reduce redundant parameters in engine, after being already
+	// tested
+//	@Test
+//	public void testAcknowledgementTermination() throws Exception {
+//
+//		// run execution with acknowledgements to estimate termination time (needed for
+//		// non-ack test)
+//		long init = System.currentTimeMillis();
+//		ackTerminationTest(true, 0);
+//		long execTime = System.currentTimeMillis() - init;
+//		System.out.println("normal execution time: " + execTime / 1000 + "s");
+//
+//		// run execution without acknowledgements, giving a timeout for when to check if
+//		// the workflow has terminated
+//		ackTerminationTest(false, execTime);
+//
+//	}
 
-		// run execution without acknowledgements, giving a timeout for when to check if
-		// the workflow has terminated
-		ackTerminationTest(false, execTime);
-
-	}
-
-	private void ackTerminationTest(boolean ack, long timeout) throws Exception {
-
-		AckWorkflow wf = new AckWorkflow();
-		wf.setInstanceId("Ack-" + ack);
-		wf.getProcessingTask().setLag(1);
-		wf.setEnableAck(ack);
-		wf.run();
-
-		if (ack) {
-			waitFor(wf);
-			// workflow should terminate properly with ack enabled
-		} else {
-			// wait for "2 x timeout" seconds, and if the workflow is not terminated there
-			// are pending acknowledgements keeping it alive
-			Thread.sleep(2 * timeout);
-			assertTrue(!wf.hasTerminated());
-			if (!wf.hasTerminated())
-				wf.terminate();
-		}
-
-	}
+//	private void ackTerminationTest(boolean ack, long timeout) throws Exception {
+//
+//		AckWorkflow wf = new AckWorkflow();
+//		wf.setInstanceId("Ack-" + ack);
+//		wf.getProcessingTask().setLag(1);
+//		wf.setEnableAck(ack);
+//		wf.run();
+//
+//		if (ack) {
+//			waitFor(wf);
+//			// workflow should terminate properly with ack enabled
+//		} else {
+//			// wait for "2 x timeout" seconds, and if the workflow is not terminated there
+//			// are pending acknowledgements keeping it alive
+//			Thread.sleep(2 * timeout);
+//			assertTrue(!wf.hasTerminated());
+//			if (!wf.hasTerminated())
+//				wf.terminate();
+//		}
+//
+//	}
 
 }

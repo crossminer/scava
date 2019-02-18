@@ -1,14 +1,17 @@
-package org.eclipse.scava.crossflow.tests.minimal;
+package org.eclipse.scava.crossflow.tests.transactionalcaching;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CopierTask extends CopierTaskBase {
+public class MinimalSink extends MinimalSinkBase {
 
-	protected int executions;
-	private long delay = 0;
+	protected List<String> elements = new ArrayList<>();
+
+	protected long delay = 0;
 
 	@Override
-	public Number consumeInput(Number number) {
+	public void consumeOutput(Element number) {
 
 		if (delay > 0)
 			try {
@@ -19,17 +22,12 @@ public class CopierTask extends CopierTaskBase {
 				e.printStackTrace();
 			}
 
-		executions++;
-
-		Number output = new Number();
-		output.setN(number.getN());
-		output.setCorrelationId(number.getId());
-		return output;
+		elements.add(number.getS());
 
 	}
 
-	public int getExecutions() {
-		return executions;
+	public List<String> getElements() {
+		return elements;
 	}
 
 	public long getDelay() {

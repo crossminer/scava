@@ -1,8 +1,5 @@
 package org.eclipse.scava.crossflow.tests.ack;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Source extends SourceBase {
 
 	private boolean started = false;
