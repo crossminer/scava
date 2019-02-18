@@ -1,6 +1,12 @@
 package org.eclipse.scava.platform.client.api;
 
-import java.net.UnknownHostException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.eclipse.scava.platform.Configuration;
@@ -19,7 +25,10 @@ import org.restlet.resource.ServerResource;
 import com.mongodb.Mongo;
 
 public class ProjectDeleteResource extends ServerResource {
-
+	
+	private static final String WORKING_COPY_DIRECTORY = "workingCopies";
+	private static final String MODEL_DIRECTORY = "workingModels";
+	
 	@Delete
 	public Representation deleteAnalysisTask() {
 		Mongo mongo = null;
@@ -36,22 +45,36 @@ public class ProjectDeleteResource extends ServerResource {
 				service.deleteAnalysisTask(analysisTask.getAnalysisTaskId());
 			}
 			
-			ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
-			Iterable<Project> projectToDelete = projectRepo.getProjects().findByShortName(projectId);
+			ProjectRepository projectRepository = platform.getProjectRepositoryManager().getProjectRepository();
+			Iterable<Project> projectToDelete = projectRepository.getProjects().findByShortName(projectId);
 			for (Project project : projectToDelete) {
 				if (project.getShortName().equals(projectId)) {
+					// Drop project analysis database
 					platform.getMetricsRepository(project).getDb().dropDatabase();
-					projectRepo.getProjects().remove(project);
+					// Remove project's source and models
+					Path pathStorage = Paths.get(platform.getLocalStorageHomeDirectory().toString(), project.getShortName());
+					if (pathStorage.toString() != null) {
+						File storage = new File(pathStorage.toString());
+					    File wc = new File(storage, WORKING_COPY_DIRECTORY);
+					    if (wc.exists()) {
+					    	deleteDirectoryRecursion(wc.toPath());
+					    }
+					    File md = new File(storage, MODEL_DIRECTORY);
+					    if (md.exists()) {
+					    	deleteDirectoryRecursion(md.toPath());
+					    }
+					}
+					projectRepository.getProjects().remove(project);
 				}
 			}
-			projectRepo.sync();
+			projectRepository.sync();
 
 			StringRepresentation rep = new StringRepresentation("");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_OK);
 			return rep;
 
-		} catch (UnknownHostException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
@@ -62,5 +85,16 @@ public class ProjectDeleteResource extends ServerResource {
 			platform = null;
 		}
 
+	}
+	
+	void deleteDirectoryRecursion(Path path) throws IOException {
+		if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
+			try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
+				for (Path entry : entries) {
+					deleteDirectoryRecursion(entry);
+				}
+			}
+		}
+		Files.delete(path);
 	}
 }
