@@ -10,9 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 public class DirectoryCache implements Cache {
 	
 	protected HashMap<String, File> jobFolderMap = new HashMap<String, File>();
