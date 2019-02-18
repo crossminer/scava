@@ -15,15 +15,29 @@ public class Job implements Serializable {
 	}
 
 	public String toString() {
-		return id+" "+correlationId+" "+destination+" "+cacheable+" "+failures;
+		return id + " " + correlationId + " " + destination + " " + cacheable + " " + failures;
 	}
-	
+
 	protected String id;
 	protected String correlationId;
 	protected String destination;
 	protected boolean cached = false;
 	protected int failures = 0;
 	protected boolean cacheable = true;
+	// sets whether this job requires a transactional level of caching (usually due
+	// to being created multiple times per single task)
+	protected boolean transactional = true;
+	// denotes that this job is a simple message denoting success of a transaction
+	// (with this correlationId)
+	private boolean isTransactionSuccessMessage = false;
+
+	public boolean isTransactional() {
+		return transactional;
+	}
+
+	public void setTransactional(boolean transactional) {
+		this.transactional = transactional;
+	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -99,8 +113,16 @@ public class Job implements Serializable {
 
 	public String getHash() {
 		// FIXME if two outputs have the same signature (aka if a task outputs two
-		// identical elements) then suplicates are lost!
+		// identical elements) then duplicates are lost!
 		return UUID.nameUUIDFromBytes(getXML().getBytes()).toString();
+	}
+
+	public boolean isTransactionSuccessMessage() {
+		return isTransactionSuccessMessage;
+	}
+
+	public void setIsTransactionSuccessMessage(boolean isTransactionSuccessMessage) {
+		this.isTransactionSuccessMessage = isTransactionSuccessMessage;
 	}
 
 }

@@ -112,7 +112,7 @@ public class [%=w.name%] extends Workflow {
 		Thread.sleep(delay);
 		
 		[%for (s in w.streams) { %]
-		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch, enableAck);
+		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
 		activeStreams.add([%=s.name.ftlc()%]);
 		[%}%]
 		
@@ -186,19 +186,6 @@ public class [%=w.name%] extends Workflow {
 
 	public void setEnablePrefetch(boolean enablePrefetch) {
 		this.enablePrefetch = enablePrefetch;
-	}
-	
-	/**
-	* Sets whether tasks will acknowledge their processed messages (TESTING ONLY)
-	*/
-	private boolean enableAck = true;
-	
-	public boolean isAckEnabled() {
-		return enableAck;
-	}
-
-	public void setEnableAck(boolean enable) {
-		enableAck = enable;
 	}
 	
 }	

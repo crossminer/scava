@@ -6,7 +6,7 @@
 	<!-- Minimal example -->
 	<workflow name="MinimalWorkflow" package="org.eclipse.scava.crossflow.tests.transactionalcaching">
 		<simple-source name="MinimalSource" produces="Element" to="Input"/>
-		<simple-task name="ClonerTask" produces="Element" to="Output"/>
+		<simple-task multipleOutputs="true" name="ClonerTask" produces="Element" to="Output"/>
 		<simple-sink name="MinimalSink"/>
 		
 		<type name="Element">

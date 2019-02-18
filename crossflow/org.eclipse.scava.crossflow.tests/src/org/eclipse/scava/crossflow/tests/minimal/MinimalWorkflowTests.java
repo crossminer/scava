@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.minimal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.AbstractMap;

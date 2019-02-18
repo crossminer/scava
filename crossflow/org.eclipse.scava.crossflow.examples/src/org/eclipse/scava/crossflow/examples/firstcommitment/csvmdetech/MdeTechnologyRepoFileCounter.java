@@ -37,7 +37,7 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 	}
 
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesForFileCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple consumeMdeTechnologyClonedRepoEntriesForFileCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
 			workflow.getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple, this.getClass().getName() );
@@ -68,10 +68,11 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 128;
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(fileCount); // repository file count
 				
-				sendToMdeTechnologyRepoFileCountEntries(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
+				return extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
 			}
 			
 		}
+		return null;
 		
 	}
 

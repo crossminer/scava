@@ -8,7 +8,7 @@ public class CopierTask extends CopierTaskBase {
 	private long delay = 0;
 
 	@Override
-	public void consumeInput(Number number) {
+	public Number consumeInput(Number number) {
 
 		if (delay > 0)
 			try {
@@ -24,7 +24,7 @@ public class CopierTask extends CopierTaskBase {
 		Number output = new Number();
 		output.setN(number.getN());
 		output.setCorrelationId(number.getId());
-		sendToOutput(output);
+		return output;
 
 	}
 

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
+import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.tests.addition.NumberPair;
 import org.junit.Test;
 

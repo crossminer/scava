@@ -14,10 +14,10 @@ public class ProcessingTask extends ProcessingTaskBase {
 	}
 
 	@Override
-	public void consumeNumbers(IntElement intElement) throws Exception {
+	public StringElement consumeNumbers(IntElement intElement) throws Exception {
 		Thread.sleep(lag);
 		System.out.println(workflow.getName()+" used for processing");
-		sendToResults(new StringElement(workflow.getName()));
+		return new StringElement(workflow.getName());
 	}
 
 }

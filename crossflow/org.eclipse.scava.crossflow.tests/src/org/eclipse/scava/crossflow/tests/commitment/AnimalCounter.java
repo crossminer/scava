@@ -13,7 +13,7 @@ public class AnimalCounter extends AnimalCounterBase {
 	protected Set<String> committments = new HashSet<>();
 	
 	@Override
-	public void consumeAnimals(Animal animal) {
+	public Animal consumeAnimals(Animal animal) {
 		
 		executions ++;
 		
@@ -27,8 +27,9 @@ public class AnimalCounter extends AnimalCounterBase {
 		else {
 			seen.add(animal.getId());
 			rejections++;
-			sendToAnimals(animal);
+			return animal;
 		}
+		return null;
 	}
 
 	public int getExecutions() {

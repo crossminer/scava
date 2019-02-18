@@ -143,17 +143,14 @@ public abstract class Workflow {
 
 		activeStreams.add(taskStatusTopic);
 		activeStreams.add(resultsTopic);
-		activeStreams.add(streamMetadataTopic);
 		activeStreams.add(controlTopic);
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
-
-		// XXX Should we be checking this queue (resultsBroadcaster) for termination?
-		// activeQueues.add(resultsBroadcaster);
-		// do not add control topic to activequeues as it has to be managed explicitly
-		// in terminate
-		// activeQueues.add(controlTopic);
-
+		// XXX do not add this topic/queue or any other non-essential ones to
+		// activestreams as the workflow should be able to terminate regardless of their
+		// state
+		// activeStreams.add(streamMetadataTopic);
+		
 		controlTopic.addConsumer(new BuiltinStreamConsumer<ControlSignal>() {
 
 			@Override
@@ -348,6 +345,7 @@ public abstract class Workflow {
 
 	public void setCache(Cache cache) {
 		this.cache = cache;
+		cache.setWorkflow(this);
 	}
 
 	public boolean isMaster() {

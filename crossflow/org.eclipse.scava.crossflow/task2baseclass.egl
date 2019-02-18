@@ -35,6 +35,9 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	
 	public void sendTo[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
 		[%=s.type.name.ftlc()%].setCacheable(this.cacheable);
+		[%if(t.isTypeOf(Source)){%]
+		[%=s.type.name.ftlc()%].setTransactional(false);
+		[%}%]
 		get[%=s.name%]().send([%=s.type.name.ftlc()%], this.getClass().getName());
 	}
 	
@@ -42,10 +45,24 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	
 	[%for (s in t.input) { %]
 	@Override
-	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%], Message m, boolean ack) {
+	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
 		try {
 			workflow.setTaskInProgess(this);
+	[%if(not t.multipleOutputs and t.output.size==1) {%]
+			[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
+			if(result != null){
+				result.setTransactional(false);
+				sendTo[%=t.output.first.name%](result);
+			}
+	[%}else {%]
 			consume[%=s.name%]([%=s.type.name.ftlc()%]);
+	[%if(t.output.size>0) {%]
+			[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
+			conf.setCorrelationId([%=s.type.name.ftlc()%].getId());
+			conf.setIsTransactionSuccessMessage(true);
+			sendTo[%=t.output.first.name%](conf);
+	[%}%]
+	[%}%]
 		}
 		catch (Exception ex) {
 			try {
@@ -57,8 +74,6 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		}
 		finally {
 			try {
-				if(ack) 
-					m.acknowledge();
 				workflow.setTaskWaiting(this);
 			} catch (Exception e) {
 				workflow.reportInternalException(e);
@@ -66,8 +81,12 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		}
 	}
 	
+	[%if(t.multipleOutputs or t.output.size<>1) {%]
 	public abstract void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
-	[%}%]	
+	[%}else {%]
+	public abstract [%=t.output.first.type.name%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
+	[%}%]
+	[%}%]
 	
 	[%if (t.isKindOf(Source)){%]
 	public abstract void produce() throws Exception;

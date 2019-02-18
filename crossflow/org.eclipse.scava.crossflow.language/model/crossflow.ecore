@@ -52,6 +52,9 @@
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parallel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cached" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multipleOutputs" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Source" eSuperTypes="#//Task"/>
   <eClassifiers xsi:type="ecore:EClass" name="CsvSource" eSuperTypes="#//Source">

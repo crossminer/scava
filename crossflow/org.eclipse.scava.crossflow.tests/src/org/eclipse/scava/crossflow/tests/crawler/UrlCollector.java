@@ -8,12 +8,13 @@ public class UrlCollector extends UrlCollectorBase {
 	protected List<String> locations = new ArrayList<String>();
 	
 	@Override
-	public void consumeUrls(Url url) {
+	public Url consumeUrls(Url url) {
 		
 		if (!locations.contains(url.getLocation())) {
 			locations.add(url.location);
-			sendToUrlsToAnalyse(new Url(url.location));
+			return new Url(url.location);
 		}
+		return null;
 		
 	}
 

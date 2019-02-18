@@ -8,7 +8,7 @@
 		<queue name="Urls" type="Url"/>
 		<task name="UrlCollector" in="Urls" out="UrlsToAnalyse" master="true"/>
 		<queue name="UrlsToAnalyse" type="Url"/>
-		<task name="UrlAnalyser" in="UrlsToAnalyse" out="Urls"/>
+		<task name="UrlAnalyser" multipleOutputs="true" in="UrlsToAnalyse" out="Urls"/>
 		
 		<type name="Url">
 			<field name="location" type="String"/>

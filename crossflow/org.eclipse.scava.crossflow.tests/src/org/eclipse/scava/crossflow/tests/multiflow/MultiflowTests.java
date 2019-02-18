@@ -29,6 +29,7 @@ public class MultiflowTests extends WorkflowTests {
 	}
 	
 	public void testCache(boolean cacheIn1, boolean cacheIn2, int executions) throws Exception {
+		System.out.println(cacheIn1+" : "+cacheIn2+" : "+executions);
 		Multiflow workflow = new Multiflow();
 		workflow.getMultiTask().configureCache(cacheIn1, cacheIn2);
 		DirectoryCache cache = new DirectoryCache();

@@ -17,7 +17,7 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 	protected Map<String, Integer> committedRepoMap = new HashMap<String, Integer>();
 
 	@Override
-	public void consumeGhRepos(GhRepo ghRepo) {
+	public org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked.Result consumeGhRepos(GhRepo ghRepo) {
 
 		if (committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS) {
 			// do not commit to any more repositories - sending back
@@ -46,7 +46,6 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 				r.setRepos(1);
 				r.setFiles(0);
 				r.setAuthors(0);
-				sendToResultsPublisher2(r);
 
 				// send output to eclipse:
 				Result ret = new Result();
@@ -59,9 +58,11 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				return r;
 			}
 
 		}
+		return null;
 
 	}
 

@@ -7,7 +7,7 @@ public class Calculator extends CalculatorBase {
 	protected int delay = 0;
 	
 	@Override
-	public void consumeCalculations(Calculation calculation) {
+	public CalculationResult consumeCalculations(Calculation calculation) {
 		
 		try { Thread.sleep(delay); } catch (InterruptedException e) {}
 		
@@ -28,7 +28,7 @@ public class Calculator extends CalculatorBase {
 		calculationResult.setOperator(calculation.getOperator());
 		calculationResult.setWorker(workflow.getName());
 		calculationResult.setResult(result);
-		sendToCalculationResults(calculationResult);
+		return calculationResult;
 		
 	}
 	
