@@ -1,9 +1,12 @@
 <div>
   <div class="page-header">
     <h2>Projects</h2>
-    <div *ngIf="hasAuthorities" class="btn-group" role="group" style="float: right;margin-top: -40px;">
-      <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import/']">Import Project</button>
-      <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create/']">Create Project</button>
+    <div class="btn-group" role="group" style="float: right;margin-top: -40px;">
+      <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/metric-providers']">Metric Providers</button>
+      <span *ngIf="hasAuthorities">
+        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import']">Import Project</button>
+        <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create']">Create Project</button>
+      </span>
     </div>
     <hr />
   </div>

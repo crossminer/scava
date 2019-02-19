@@ -24,6 +24,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/project-delete-dialog.component';
+import { MetricProvidersComponent } from './components/metric-providers/metric-providers.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/pr
     AnalysisTaskUpdateComponent,
     AnalysisTaskMgmtDeleteDialogComponent,
     MetricProvidersMgmtInfoDialogComponent,
-    ProjectMgmtDeleteDialogComponent
+    ProjectMgmtDeleteDialogComponent,
+    MetricProvidersComponent
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent,
