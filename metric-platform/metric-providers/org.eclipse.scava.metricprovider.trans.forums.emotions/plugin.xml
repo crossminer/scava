@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.scava.platform.metricprovider">
+	   <metricProvider provider="org.eclipse.scava.metricprovider.trans.forums.emotions.EmotionsTransMetricProvider">
+	   </metricProvider>
+	</extension>
+
+	<extension point="com.googlecode.pongo.runtime.osgi">
+		<class name="org.eclipse.scava.metricprovider.trans.forums.emotions.model.ForumsEmotionsTransMetric"/>
+		<class name="org.eclipse.scava.metricprovider.trans.forums.emotions.model.ForumEmotionsData"/>
+		<class name="org.eclipse.scava.metricprovider.trans.forums.emotions.model.EmotionDimension"/>
+	</extension>
+
+</plugin>

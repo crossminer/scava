@@ -9,9 +9,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.bts.bugzilla,
  org.eclipse.scava.platform,
  com.googlecode.pongo.runtime.osgi,
- org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm,
  org.eclipse.scava.platform.visualisation,
- org.eclipse.scava.repository.model
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.trans.emotionclassification;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.trans.bugs.emotions,

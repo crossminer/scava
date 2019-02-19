@@ -13,14 +13,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 
 public class Features {
 	private Map<Integer, String> orderLemma;
@@ -93,23 +89,25 @@ public class Features {
 	}
 	
 	private void loadFromFile(String filename) {
+        String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        if (path.endsWith("bin/"))
+        	path = path.substring(0, path.lastIndexOf("bin/"));
+		File file = new File(path, filename);
 		String content = null;
 		try {
-			URL resource = getClass().getResource("/" + filename);
-			content = Resources.toString(resource, Charsets.UTF_8);
+			content = readFileAsString(file);
 		} catch (IOException e) {
+			System.err.println("Unable to read file: " + filename);
 			e.printStackTrace();
 		}
-		if (content != null) {
-			for (String line: content.split("\\n")) {
-				String[] elements = line.split("\\t");
-				int order = Integer.parseInt(elements[0].trim());
-				String lemma = elements[1].trim();
-				if (lemma.length()>0) {
-					orderLemma.put(order, lemma);
-					lemmaOrder.put(lemma, order);
-					if (order > highestOrder) highestOrder = order;
-				}
+		for (String line: content.split("\\n")) {
+			String[] elements = line.split("\\t");
+			int order = Integer.parseInt(elements[0].trim());
+			String lemma = elements[1].trim();
+			if (lemma.length()>0) {
+				orderLemma.put(order, lemma);
+				lemmaOrder.put(lemma, order);
+				if (order > highestOrder) highestOrder = order;
 			}
 		}
 	}

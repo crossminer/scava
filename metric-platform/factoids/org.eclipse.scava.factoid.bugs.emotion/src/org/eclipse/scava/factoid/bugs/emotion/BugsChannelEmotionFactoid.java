@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -40,7 +41,7 @@ public class BugsChannelEmotionFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding emotions for bug trackers"; // This method will NOT be removed in a later version.
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class BugsChannelEmotionFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public void measureImpl(Project project, ProjectDelta delta, Factoid factoid) {
-//		factoid.setCategory(FactoidCategory.BUGS);
+
 		factoid.setName(getFriendlyName());
 
 		BugsEmotionsTransMetric emotionsTransMetric = 
@@ -69,58 +70,64 @@ public class BugsChannelEmotionFactoid extends AbstractFactoidMetricProvider{
 		StringBuffer stringBuffer = new StringBuffer();
 		
 		float positiveEmotionPercentageSum = 0,
-			  negativeEmotionPercentageSum = 0,
-			  mostCommonPositivePercentage = 0,
-			  mostCommonNegativePercentage = 0;
-		String mostCommonPositive = "",
-			   mostCommonNegative = "";
-		for (EmotionDimension dimension: emotionsTransMetric.getDimensions()) {
-			if ( ( dimension.getEmotionLabel().equals("anger") )
-			  || ( dimension.getEmotionLabel().equals("sadness") )
-			  || ( dimension.getEmotionLabel().equals("disgust") )
-			  || ( dimension.getEmotionLabel().equals("fear") ) ) {
-				negativeEmotionPercentageSum += dimension.getCumulativePercentage();
-				if ( mostCommonNegativePercentage < dimension.getCumulativePercentage() ) {
-					mostCommonNegativePercentage = dimension.getCumulativePercentage();
-					mostCommonNegative = dimension.getEmotionLabel();
+				  negativeEmotionPercentageSum = 0,
+				  surpriseEmotionPercentageSum = 0, 
+				  mostCommonPositivePercentage = 0,
+				  mostCommonNegativePercentage = 0;
+			String mostCommonPositive = "",
+				   mostCommonNegative = "";
+			for (EmotionDimension dimension: emotionsTransMetric.getDimensions()) {
+				if ( ( dimension.getEmotionLabel().equals("__label__anger") )
+				  || ( dimension.getEmotionLabel().equals("__label__sadness") )
+				  || ( dimension.getEmotionLabel().equals("__label__fear") ) ) {
+					negativeEmotionPercentageSum += dimension.getCumulativePercentage();
+					if ( mostCommonNegativePercentage < dimension.getCumulativePercentage() ) {
+						mostCommonNegativePercentage = dimension.getCumulativePercentage();
+						mostCommonNegative = dimension.getEmotionLabel().substring(9); //We remove the __label__
+					}
+				} 
+				else if(dimension.getEmotionLabel().equals("__label__surpise")) {
+					surpriseEmotionPercentageSum += dimension.getCumulativePercentage();
 				}
-			} else {
-				positiveEmotionPercentageSum += dimension.getCumulativePercentage();
-				if ( mostCommonPositivePercentage < dimension.getCumulativePercentage() ) {
-					mostCommonPositivePercentage = dimension.getCumulativePercentage();
-					mostCommonPositive = dimension.getEmotionLabel();
+				else { //__label__joy and __label__love
+					positiveEmotionPercentageSum += dimension.getCumulativePercentage();
+					if ( mostCommonPositivePercentage < dimension.getCumulativePercentage() ) {
+						mostCommonPositivePercentage = dimension.getCumulativePercentage();
+						mostCommonPositive = dimension.getEmotionLabel().substring(9);
+					}
 				}
 			}
-		}
-		
-		float positiveEmotionPercentage = positiveEmotionPercentageSum / 4,
-			  negativeEmotionPercentage = negativeEmotionPercentageSum / 4;
-		
-		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-		
-		if ( ( positiveEmotionPercentage > 80 ) || ( negativeEmotionPercentage < 35 ) ) {
-			factoid.setStars(StarRating.FOUR);
-		} else if ( ( positiveEmotionPercentage > 65 ) || ( negativeEmotionPercentage < 50 ) ) {
-			factoid.setStars(StarRating.THREE);
-		} else if ( ( positiveEmotionPercentage > 50 ) || ( negativeEmotionPercentage < 65 ) ) {
-			factoid.setStars(StarRating.TWO);
-		} else {
-			factoid.setStars(StarRating.ONE);
-		}
-		
-		stringBuffer.append(decimalFormat.format(positiveEmotionPercentage));
-		stringBuffer.append(" % of comments and postings express positive emotions, while ");
-		stringBuffer.append(decimalFormat.format(negativeEmotionPercentage));
-		stringBuffer.append(" % express negative emotions. ");
-		stringBuffer.append("A comment or posting can express both positive and negative emotions at the same time.\n");
+			
+			float positiveEmotionPercentage = positiveEmotionPercentageSum / 2,
+					  negativeEmotionPercentage = negativeEmotionPercentageSum / 3;
+				
+			DecimalFormat decimalFormat = new DecimalFormat("#.##");
+			
+			if ( ( positiveEmotionPercentage > 80 ) || ( negativeEmotionPercentage < 35 ) ) {
+				factoid.setStars(StarRating.FOUR);
+			} else if ( ( positiveEmotionPercentage > 65 ) || ( negativeEmotionPercentage < 50 ) ) {
+				factoid.setStars(StarRating.THREE);
+			} else if ( ( positiveEmotionPercentage > 50 ) || ( negativeEmotionPercentage < 65 ) ) {
+				factoid.setStars(StarRating.TWO);
+			} else {
+				factoid.setStars(StarRating.ONE);
+			}
+			
+			stringBuffer.append(decimalFormat.format(positiveEmotionPercentage));
+			stringBuffer.append(" % of comments and postings express positive emotions, while ");
+			stringBuffer.append(decimalFormat.format(negativeEmotionPercentage));
+			stringBuffer.append(" % express negative emotions. ");
+			stringBuffer.append(decimalFormat.format(surpriseEmotionPercentageSum));
+			stringBuffer.append(" % of comments raised a suprise emotion. ");
+			stringBuffer.append("A comment or posting can express positive, negative and surprise emotions at the same time.\n");
 
-		stringBuffer.append("The most common negative emotion is ");
-		stringBuffer.append(mostCommonNegative);
-		stringBuffer.append(", while the most common positive emotions is ");
-		stringBuffer.append(mostCommonPositive);
-		stringBuffer.append(".\n");
-		
-		factoid.setFactoid(stringBuffer.toString());
+			stringBuffer.append("The most common negative emotion is ");
+			stringBuffer.append(mostCommonNegative);
+			stringBuffer.append(", while the most common positive emotions is ");
+			stringBuffer.append(mostCommonPositive);
+			stringBuffer.append(".\n");
+			
+			factoid.setFactoid(stringBuffer.toString());
 	}
 
 }

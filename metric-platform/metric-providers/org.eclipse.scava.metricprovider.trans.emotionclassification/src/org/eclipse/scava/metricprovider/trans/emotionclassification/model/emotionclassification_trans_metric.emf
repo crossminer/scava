@@ -1,0 +1,31 @@
+package org.eclipse.scava.metricprovider.trans.emotionclassification.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class EmotionClassificationTransMetric {
+	val BugTrackerCommentsEmotionClassification[*] bugTrackerComments;
+	val NewsgroupArticlesEmotionClassification[*] newsgroupArticles;
+	val ForumPostEmotionClassification[*] forumPosts;
+}
+
+class BugTrackerCommentsEmotionClassification {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String commentId;
+   	attr String[] emotions;
+}
+
+class NewsgroupArticlesEmotionClassification {
+	@searchable
+   	attr String newsGroupName;
+   	attr int articleNumber;
+   	attr String[] emotions;
+}
+
+class ForumPostEmotionClassification {
+	attr String forumId;
+	attr String topicId;
+	attr String postId;
+	attr String[] emotions;
+}

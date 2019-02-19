@@ -18,9 +18,9 @@ public class ClassifierTest {
     	int doc2 = 1002;
     	int doc3 = 1003;
     	int doc4 = 1004;
-    	String sub1 = "the latest of a series of inconclusive Western moves";
-    	String sub2 = "re: the latest of a series of inconclusive Western moves";
-    	String text1 = "redirection forgot option mailbox";
+    	String sub1 = "Critital alert, this can be very dangerous";
+    	String sub2 = "";
+    	String text1 = "critical and severe secuerity riks.";
     	String text2 = "Wot about Fig. 2 and (Fig. 3)? We created a myosinII-responsive FA interactome from proteins " +
         			  "in the expected FA list by color-coding proteins according to MDR magnitude (Supplemental Fig. " +
         			  "S4 and Table 7, http://dir.nhlbi.nih.gov/papers/lctm/focaladhesion/Home/index.html). The " +
@@ -44,7 +44,7 @@ public class ClassifierTest {
     	ClassifierMessage classifierMessage1 = new ClassifierMessage();
         classifierMessage1.setNewsgroupName(newsgroupName);
         classifierMessage1.setThreadId(doc1);
-        classifierMessage1.setSubject(sub1);
+        //classifierMessage1.setSubject(sub1);
         classifierMessage1.setText(text1);
         
         FeatureIdCollection featureIdCollection = new FeatureIdCollection();
@@ -62,21 +62,21 @@ public class ClassifierTest {
         classifierMessage2.setThreadId(doc2);
         classifierMessage2.setSubject(sub2);
         classifierMessage2.setText(text2);
-        classifier.add(classifierMessage2);
+        classifier.add(classifierMessage2, featureIdCollection);
 
         ClassifierMessage classifierMessage3 = new ClassifierMessage();
         classifierMessage3.setNewsgroupName(newsgroupName);
         classifierMessage3.setThreadId(doc3);
         classifierMessage3.setSubject(sub1);
         classifierMessage3.setText(text2);
-        classifier.add(classifierMessage3);
+        classifier.add(classifierMessage3,featureIdCollection);
         
         ClassifierMessage classifierMessage4 = new ClassifierMessage();
         classifierMessage4.setNewsgroupName(newsgroupName);
         classifierMessage4.setThreadId(doc3);
         classifierMessage4.setSubject(sub2);
         classifierMessage4.setText(text1);
-        classifier.add(classifierMessage4);
+        classifier.add(classifierMessage4,featureIdCollection);
 
         classifier.classify();
         

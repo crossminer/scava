@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -17,6 +18,7 @@ import java.util.TreeSet;
 
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 
 import uk.ac.nactem.posstemmer.OpenNlpTartarusSingleton;
 import uk.ac.nactem.posstemmer.Token;
@@ -29,6 +31,10 @@ public class ClassificationInstance {
 	private String newsgroupName;
 	private int threadId;
 	private String subject;
+	
+	private String forumId;
+	private String topicId;
+	
 	private List<List<Token>> tokenSentences;
 	private List<List<Token>> cleanTokenSentences;
 
@@ -74,6 +80,12 @@ public class ClassificationInstance {
 		initialiseMetadata(url, deltaArticle, threadId);
 		addText(deltaArticle.getText());
 	}
+	
+	public ClassificationInstance(String forumId, CommunicationChannelForumPost deltaArticle, String topicId) {
+		initialiseNGrams();
+		initialiseMetadata(deltaArticle);
+		addText(deltaArticle.getText());
+	}
 
 
 	public void update(ClassifierMessage classifierMessage) {
@@ -95,6 +107,8 @@ public class ClassificationInstance {
 		setNewsgroupName(classifierMessage.getNewsgroupName());
 		setThreadId(classifierMessage.getThreadId());
 		setSubject(classifierMessage.getSubject());
+		setForumId(classifierMessage.getForumId());
+		setTopicId(classifierMessage.getTopicId());
 	}
 
 	private void initialiseMetadata(ArticleData articleData, int threadId) {
@@ -115,6 +129,21 @@ public class ClassificationInstance {
 			setSubject("");
 		}
 	}
+	
+	private void initialiseMetadata(CommunicationChannelForumPost deltaArticle)
+	{
+		setForumId(deltaArticle.getForumId());
+		setTopicId(deltaArticle.getTopicId());
+		if (deltaArticle.getSubject()!=null || !deltaArticle.getSubject().isEmpty())
+		{
+			System.err.println("deltaArticle.getSubject() : " + deltaArticle.getSubject());
+			setSubject(deltaArticle.getSubject());
+			} else {
+				setSubject("");
+		}
+	}
+	
+	
 
 	private void updateFeatureIds(FeatureGenerator featureGenerator, 
 								  FeatureIdCollection featureIdCollection) {
@@ -147,6 +176,8 @@ public class ClassificationInstance {
 			composedId = bugTrackerId+"#"+bugId;
 		else if ((newsgroupName!=null)&&(threadId!=0)) 
 			composedId = newsgroupName+"#"+threadId;
+		else if ((forumId != null) && (topicId != null))
+			composedId = forumId + "#" + topicId;
 		else {
 			System.err.println("Unable to compose ID");
 		}
@@ -196,6 +227,24 @@ public class ClassificationInstance {
 	
 	void setSubject(String subject) {
 		this.subject = subject;
+	}
+	
+	String getForumId() {
+		return forumId;
+	}
+	
+	void setForumId(String forumId) {
+		this.forumId = forumId;
+		if (composedId!=null) setComposedId();
+	}
+	
+	String getTopicId() {
+		return topicId;
+	}
+	
+	void setTopicId(String topicId) {
+		this.topicId = topicId;
+		if (composedId!=null) setComposedId();
 	}
 	
 //	String getText() {
@@ -416,9 +465,12 @@ public class ClassificationInstance {
 		if (newsgroupName!=null)
 			return "ClassificationInstance " + "[newsgroupName=" + newsgroupName + 
 					", threadId=" + threadId + ", subject=" + subject + "]";
-		else
+		else if(bugTrackerId!=null)
 			return "ClassificationInstance "+ "[bugTrackerId=" + bugTrackerId + 
 					", bugId=" + bugId + ", subject=" + subject + "]";
+		else
+			return "ClassificationInstance "+ "[forumId=" + forumId + 
+					", topicId=" + topicId + ", subject=" + subject + "]";
 			
 	}
 

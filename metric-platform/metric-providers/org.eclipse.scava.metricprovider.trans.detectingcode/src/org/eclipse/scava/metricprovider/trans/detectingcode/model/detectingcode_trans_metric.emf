@@ -1,0 +1,34 @@
+package org.eclipse.scava.metricprovider.trans.detectingcode.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DetectingCodeTransMetric {
+	val BugTrackerCommentDetectingCode[*] bugTrackerComments;
+	val NewsgroupArticleDetectingCode[*] newsgroupArticles;
+	val ForumPostDetectingCode[*] forumPosts;
+}
+
+class BugTrackerCommentDetectingCode {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String commentId;
+	attr String naturalLanguage;
+	attr String code;
+}
+
+class NewsgroupArticleDetectingCode {
+	@searchable
+   	attr String newsGroupName;
+   	attr int articleNumber;
+   	attr String naturalLanguage;
+	attr String code;
+}
+
+class ForumPostDetectingCode {
+	attr String forumId;
+	attr String topicId;
+	attr String postId;
+	attr String naturalLanguage;
+	attr String code;
+}

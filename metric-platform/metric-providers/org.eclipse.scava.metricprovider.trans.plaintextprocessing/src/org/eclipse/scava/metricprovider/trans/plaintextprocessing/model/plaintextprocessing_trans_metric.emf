@@ -1,0 +1,35 @@
+package org.eclipse.scava.metricprovider.trans.plaintextprocessing.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class PlainTextProcessingTransMetric {
+	val BugTrackerCommentPlainTextProcessing[*] bugTrackerComments;
+	val NewsgroupArticlePlainTextProcessing[*] newsgroupArticles;
+	val ForumPostPlainTextProcessing[*] forumPosts;
+}
+
+class BugTrackerCommentPlainTextProcessing {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String commentId;
+	attr String[*] plainText;
+	attr boolean hadReplies;
+}
+
+class NewsgroupArticlePlainTextProcessing {
+	@searchable
+   	attr String newsGroupName;
+   	attr int articleNumber;
+   	attr String[*] plainText;
+   	attr boolean hadReplies;
+}
+
+class ForumPostPlainTextProcessing {
+	@searchable
+	attr String forumId;
+	attr String topicId;
+	attr String postId;
+	attr String[*] plainText;
+	attr boolean hadReplies;
+}

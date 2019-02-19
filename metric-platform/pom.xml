@@ -256,6 +256,73 @@
     <module>tests/org.eclipse.scava.platform.visualisation.tests</module>
     <module>tests/org.eclipse.scava.rascal.test</module>-->
     <module>releng</module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.mantis
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.eclipseforums
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.eclipseforums
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.emotionclassifier
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreplydetector
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyser
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.libraries.fasttext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.resources.sentinet5
+    </module>
+    <module>metric-providers/org.eclipse.scava.nlp.tools.core</module>
+    <module>metric-providers/org.eclipse.scava.nlp.tools.other</module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.plaintext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.predictions
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.preprocessor
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.vasttext
+    </module>
+    <module>../migration/third-party/org.jsoup.jsoup</module>
+    <module>factoids/org.eclipse.scava.factoid.forums.emotion</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.historic.forums.emotions
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.detectingcode
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.emotionclassification
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.forums.emotions
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.plaintextprocessing
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.emotion
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreply
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.sentiment
+    </module>
   </modules>
   <build>
     <plugins>

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Emotion
+Bundle-SymbolicName: org.eclipse.scava.factoid.forums.emotion;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.factoid.forums.emotion
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
+ com.googlecode.pongo.runtime;bundle-version="0.5.0",
+ org.eclipse.scava.platform;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.cc.eclipseforums;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.forums.emotions;bundle-version="1.0.0"

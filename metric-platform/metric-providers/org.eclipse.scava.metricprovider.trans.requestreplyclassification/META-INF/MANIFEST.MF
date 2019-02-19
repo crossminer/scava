@@ -7,14 +7,15 @@ Bundle-Activator: org.eclipse.scava.metricprovider.trans.requestreplyclassificat
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model.cc.nntp,
- org.eclipse.scava.repository.model.bts.bugzilla,
- com.googlecode.pongo.runtime.osgi,
- org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm,
- org.apache.commons.lang,
- org.eclipse.scava.platform.visualisation,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
- org.eclipse.scava.repository.model.sourceforge
+ org.eclipse.scava.repository.model.sourceforge,
+ org.eclipse.scava.metricprovider.trans.detectingcode,
+ org.eclipse.scava.nlp.classifiers.requestreply;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.cc.eclipseforums,
+ org.eclipse.scava.nlp.tools.predictions,
+ org.eclipse.scava.metricprovider.trans.plaintextprocessing,
+ org.eclipse.scava.nlp.tools.plaintext
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.trans.requestreplyclassification,

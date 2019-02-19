@@ -5,6 +5,7 @@ package org.eclipse.scava.metricprovider.trans.requestreplyclassification.model;
 class RequestReplyClassificationTransMetric {
 	val BugTrackerComments[*] bugTrackerComments;
 	val NewsgroupArticles[*] newsgroupArticles;
+	val ForumsPosts[*] forumPosts;
 }
 
 class BugTrackerComments {
@@ -20,6 +21,15 @@ class NewsgroupArticles {
 	@searchable
    	attr String newsgroupName;
    	attr int articleNumber;
+   	attr String classificationResult;
+   	attr String date;
+}
+
+class ForumsPosts {
+	@searchable
+   	attr String forumId;
+   	attr String topicId;
+   	attr String postId;
    	attr String classificationResult;
    	attr String date;
 }

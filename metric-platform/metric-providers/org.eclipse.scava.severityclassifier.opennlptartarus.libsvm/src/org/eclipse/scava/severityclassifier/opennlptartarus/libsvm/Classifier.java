@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -59,8 +60,12 @@ public class Classifier {
 		classificationInstanceCollection.add(featureGenerator, articleData, threadId, featureIdCollection);
 	}
 
-	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId) {
-		classificationInstanceCollection.add(url, deltaArticle, threadId);
+//	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId) {
+//		classificationInstanceCollection.add(url, deltaArticle, threadId);
+//	}
+	
+	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId, ClassificationInstance classificationInstance) {
+		classificationInstanceCollection.add(url, deltaArticle, threadId, classificationInstance);
 	}
 
 	public ClassificationInstance getClassificationInstance(ClassifierMessage classifierMessage) {

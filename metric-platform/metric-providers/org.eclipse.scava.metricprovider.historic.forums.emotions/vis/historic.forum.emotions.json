@@ -1,0 +1,69 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.forums.emotions",
+	"vis" : [ 
+		{
+			"id" : "forums.emotions.articles",
+			"name" : "Post Emotions",
+			"description" : "The number of posts containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Posts", "field" : "$numberOfPosts" } ]
+			},
+			"x" : "Date",
+			"y" : "Posts", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "forums.emotions.cumulativeArticles",
+			"name" : "Post Emotions (Cumulative)",
+			"description" : "The cumulative number of posts containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Posts", "field" : "$cumulativeNumberOfPosts" } ]
+			},
+			"x" : "Date",
+			"y" : "Posts", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "forums.emotions.postPercentages",
+			"name" : "Post Emotion Percentages",
+			"description" : "The percentages of posts containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Posts", "field" : "$percentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Posts", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		},
+		{
+			"id" : "forums.emotions.cumulativePostPercentages",
+			"name" : "Post Emotion Percentages (Cumulative)",
+			"description" : "The cumulative percentages of posts containing each emotion",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$emotions",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Emotion", "field" : "$emotionLabel" },
+					{ "name" : "Posts", "field" : "$cumulativePercentage" } ]
+			},
+			"x" : "Date",
+			"y" : "Posts", 
+			"series" : "Emotion",
+			"timeSeries" : true
+		}
+	]
+}

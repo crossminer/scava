@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -7,6 +8,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
+//Adrián was here
 package org.eclipse.scava.severityclassifier.opennlptartarus.libsvm;
 
 
@@ -20,6 +22,10 @@ public class ClassifierMessage {
 	private int threadId;
 	private int articleNumber;
 	private String subject;
+	
+	private String forumId;
+	private String topicId;
+	private String postId;
 
 	private String text;
 	private String composedId;
@@ -37,6 +43,8 @@ public class ClassifierMessage {
 			composedId = bugTrackerId+"#"+bugId;
 		else if ((newsgroupName!=null)&&(threadId!=0)) 
 			composedId = newsgroupName+"#"+threadId;
+		else if ((forumId != null) && (topicId != null))
+			composedId = forumId + "#" + topicId;
 		else {
 			System.err.println("Unable to compose ID");
 		}
@@ -60,6 +68,28 @@ public class ClassifierMessage {
 		this.newsgroupName = newsgroupName;
 		if (composedId!=null) setComposedId();
 	}
+	
+	public String getForumId()
+	{
+		return forumId;
+	}
+	
+	public void setForumId(String forumId)
+	{
+		this.forumId = forumId;
+		if (composedId!=null) setComposedId();
+	}
+	
+	public String getTopicId()
+	{
+		return topicId;
+	}
+	
+	public void setTopicId(String topicId)
+	{
+		this.topicId = topicId;
+		if (composedId!=null) setComposedId();
+	}
 
 	public String getBugId() {
 		return bugId;
@@ -76,6 +106,17 @@ public class ClassifierMessage {
 
 	public void setCommentId(String commentId) {
 		this.commentId = commentId;
+		if (composedId!=null) setComposedId();
+	}
+	
+	public String getPostId()
+	{
+		return postId;
+	}
+	
+	public void setPostId(String postId)
+	{
+		this.postId = postId;
 		if (composedId!=null) setComposedId();
 	}
 
@@ -118,9 +159,12 @@ public class ClassifierMessage {
 		if (newsgroupName!=null)
 			return "ClassifierMessage " + "[newsgroupName=" + newsgroupName + ", threadId=" + threadId + 
 					", articleNumber=" + articleNumber + ", subject=" + subject + "]";
-		else
+		else if(bugTrackerId!=null)
 			return "ClassifierMessage "+ "[bugTrackerId=" + bugTrackerId + 
 					", bugId=" + bugId + ", commentId=" + commentId + ", subject=" + subject + "]";
+		else
+			return "ClassifierMessage "+ "[forumId=" + forumId + 
+					", topicId=" + topicId + ", postId=" + postId + ", subject=" + subject + "]";
 			
 	}
 

@@ -1,0 +1,30 @@
+package org.eclipse.scava.metricprovider.trans.forums.emotions.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class ForumsEmotionsTransMetric {
+	@series
+	val ForumEmotionsData[*] forums;
+	val EmotionDimension[*] dimensions;
+}
+
+class ForumEmotionsData {
+	@searchable
+	attr String forumId;
+	attr String topicId;
+	attr int numberOfPosts;
+	attr int cumulativeNumberOfPosts;
+}
+
+
+class EmotionDimension {
+	@searchable
+	attr String forumId;
+	attr String topicId;
+	attr String emotionLabel;
+	attr int numberOfPosts;
+	attr int cumulativeNumberOfPosts;
+	attr float percentage;
+	attr float cumulativePercentage;
+}
+
