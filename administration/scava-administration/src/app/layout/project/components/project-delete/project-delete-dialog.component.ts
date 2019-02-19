@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteProjectService } from '../../../shared/services/project-service/delete-project.service';
+import { DeleteProjectService } from '../../../../shared/services/project-service/delete-project.service';
 
 @Component({
   selector: 'app-project-delete-dialog',

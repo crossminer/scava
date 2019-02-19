@@ -23,7 +23,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSortModule} from '@angular/material/sort';
 import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { ProjectMgmtDeleteDialogComponent } from './project-delete/project-delete-dialog.component';
+import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/project-delete-dialog.component';
 
 @NgModule({
   imports: [

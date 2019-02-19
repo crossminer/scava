@@ -4,7 +4,7 @@ import { AnalysisTaskService } from '../../shared/services/analysis-task/analysi
 import { Project } from './project.model';
 import { ExecutionTask } from './components/configure-project/execution-task.model';
 import { RoleAuthorities } from '../../shared/services/authentication/role-authorities';
-import { ProjectMgmtDeleteDialogComponent } from './project-delete/project-delete-dialog.component';
+import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/project-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
