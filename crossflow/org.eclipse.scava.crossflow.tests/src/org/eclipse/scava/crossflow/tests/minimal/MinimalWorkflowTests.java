@@ -6,10 +6,23 @@ import static org.junit.Assert.assertTrue;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
+import javax.management.MBeanServerConnection;
+import javax.management.MBeanServerInvocationHandler;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
+import org.apache.activemq.broker.jmx.DestinationViewMBean;
+import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
@@ -52,6 +65,105 @@ public class MinimalWorkflowTests extends WorkflowTests {
 
 		assertEquals(2, workflow.getMinimalSink().getNumbers().size());
 		assertEquals(0, workflow.getCopierTask().getExecutions());
+	}
+
+	//
+	private abstract class InternalQueueMonitor extends TimerTask {
+		Map<String, Long> queueSizes = new HashMap<String, Long>();
+		boolean queueSizesActive = false;
+		Map<String, Long> queuesInFlight = new HashMap<String, Long>();
+		boolean queuesInFlightActive = false;
+
+	};
+
+	@Test
+	public void testInternalQueues() throws Exception {
+
+		MinimalWorkflow workflow = new MinimalWorkflow();
+		if (singleBroker)
+			workflow.createBroker(false);
+
+		InternalQueueMonitor monitor = new InternalQueueMonitor() {
+
+			@Override
+			public void run() {
+
+				for (ActiveMQDestination c : workflow.getAllJobStreamsInternals()) {
+					try {
+						// System.out.println(s);
+
+						String url = "service:jmx:rmi:///jndi/rmi://" + workflow.getMaster() + ":1099/jmxrmi";
+						JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
+						MBeanServerConnection connection = connector.getMBeanServerConnection();
+
+						ObjectName destination = new ObjectName("org.apache.activemq:type=Broker,brokerName="
+								+ workflow.getMaster() + ",destinationType=" + (c.isQueue() ? "Queue" : "Topic")
+								+ ",destinationName=" + c.getPhysicalName());
+
+						DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection,
+								destination, DestinationViewMBean.class, true);
+
+//							System.err.println(destinationName + ":" 
+//									+ destinationType + " " 
+//									+ mbView.getQueueSize() + " "
+//									+ mbView.getInFlightCount());
+
+						try {
+							long qSize = mbView.getQueueSize();
+							queueSizes.put(c.toString(), qSize);
+							if (qSize > 0)
+								queueSizesActive = true;
+							long qIFC = mbView.getInFlightCount();
+							queuesInFlight.put(c.toString(), qIFC);
+							if (qIFC > 0)
+								queuesInFlightActive = true;
+						} catch (Exception ex) {
+							// Ignore exception as we will be getting these during workflow termination as
+							// we keep trying to get queue info on queues that will be shutting down
+						}
+
+						connector.close();
+
+						// streamSizes.put(s.getName(), s.getSize());
+						// streamsInFlight.put(s.getName(), s.getInFlight());
+
+					} catch (Exception e) {
+						// Ignore exception as we will be getting these during workflow termination as
+						// we keep trying to get queue info on queues that will be shutting down
+					}
+				}
+				//
+				// System.out.println(queueSizes + "\r\n" + queuesInFlight);
+				// System.out.println("" + queueSizes.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())));
+				// System.out.println(queueSizesActive);
+				// System.out.println("" + queuesInFlight.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())));
+				// System.out.println(queuesInFlightActive);				 
+				//
+			}
+		};
+
+		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+		workflow.setInstanceId("testInternalQueues");
+		workflow.getMinimalSource().setNumbers(numbers);
+		workflow.getCopierTask().setDelay(100);
+		workflow.getMinimalSink().setDelay(200);
+		// workflow.setStreamMetadataPeriod(10);
+
+		workflow.run();
+
+		long delay = 5;
+		Timer timer = new Timer();
+		timer.schedule(monitor, 0, delay);
+
+		waitFor(workflow);
+
+		assertEquals(10, workflow.getMinimalSink().getNumbers().size());
+		assertTrue(monitor.queueSizesActive && monitor.queuesInFlightActive);
+		assertEquals(0L,
+				monitor.queueSizes.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())).longValue());
+		assertEquals(0L, monitor.queuesInFlight.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue()))
+				.longValue());
 	}
 
 	@Test

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -20,10 +21,11 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
+import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 
@@ -318,6 +320,7 @@ public abstract class Workflow {
 						streamMetadataTopic.send(sm);
 					} catch (Exception e) {
 						// Ignore exception
+						// e.printStackTrace();
 					}
 
 				}
@@ -384,7 +387,7 @@ public abstract class Workflow {
 	}
 
 	public String getBroker() {
-		//adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
+		// adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
 
@@ -650,6 +653,17 @@ public abstract class Workflow {
 
 	public int getStreamMetadataPeriod() {
 		return streamMetadataPeriod;
+	}
+
+	/**
+	 * 
+	 * @return A set containing all ActiveMQDestination objects used by all active JobStreams 
+	 */
+	public Set<ActiveMQDestination> getAllJobStreamsInternals() {
+		Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
+		activeStreams.stream().filter(s -> s instanceof JobStream)
+				.forEach(js -> ret.addAll(((JobStream<?>) js).getAllQueues()));
+		return ret;
 	}
 
 }

@@ -2,10 +2,12 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -96,5 +98,17 @@ public abstract class JobStream<T extends Job> implements Stream {
 	@Override
 	public boolean isBroadcast() {
 		return destination.values().iterator().next().isTopic();
+	}
+
+	/**
+	 * 
+	 * @return A set containing all ActiveMQDestination objects used by this JobStream 
+	 */
+	protected Set<ActiveMQDestination> getAllQueues() {
+		Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
+		ret.addAll(pre.values());
+		ret.addAll(post.values());
+		ret.addAll(destination.values());
+		return ret;
 	}
 }
