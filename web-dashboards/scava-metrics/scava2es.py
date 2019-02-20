@@ -29,7 +29,10 @@ import hashlib
 import logging
 import statistics
 
-from perceval.backends.scava.scava import Scava
+from dateutil import parser
+from perceval.backends.scava.scava import (Scava,
+                                           CATEGORY_FACTOID,
+                                           CATEGORY_METRIC)
 from grimoirelab_toolkit.datetime import str_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
@@ -69,6 +72,7 @@ def get_params():
     parser = argparse.ArgumentParser(usage="usage: scava2es [options]",
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
+    parser.add_argument("--category", help="category (either metric or factoid)")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
                         help="URL for Scava API REST (default: http://localhost:8182)")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
@@ -314,12 +318,24 @@ def enrich_metrics(scava_metrics):
             yield eitem
 
 
-def fetch_scava(url_api_rest, project=None):
+def enrich_factoids(scava_factoids):
+    """
+    Enrich factoids coming from Scava to use them in Kibana
+
+    :param scava_factoids: factoid generator
+    :return:
+    """
+    for scava_factoid in scava_factoids:
+        yield scava_factoid
+
+
+def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
     """
     Fetch the metrics from a Scava project using the Scava API REST
 
     :param project: name of the Scava project to get the metrics from
     :param url_api_rest: URL for the Scava API REST
+    :param category: category of the items to fetch
     :return: a metrics generator
     """
     scava = Scava(url=url_api_rest, project=project)
@@ -330,20 +346,30 @@ def fetch_scava(url_api_rest, project=None):
 
             scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
             logging.info("Getting metrics for %s" % project_scava['data']['shortName'])
-            for enriched_metric in enrich_metrics(scavaProject.fetch()):
+
+            if category == CATEGORY_METRIC:
+                for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC)):
+                    if isinstance(enriched_metric['metric_es_value'], str):
+                        logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
+                        continue
+
+                    yield enriched_metric
+
+            else:
+                for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID)):
+                    yield enriched_factoid
+    else:
+        if category == CATEGORY_METRIC:
+            # Get the metrics directly
+            for enriched_metric in enrich_metrics(scava.fetch(CATEGORY_METRIC)):
                 if isinstance(enriched_metric['metric_es_value'], str):
                     logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
                     continue
 
                 yield enriched_metric
-    else:
-        # Get the metrics directly
-        for enriched_metric in enrich_metrics(scava.fetch()):
-            if isinstance(enriched_metric['metric_es_value'], str):
-                logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
-                continue
-
-            yield enriched_metric
+        else:
+            for enriched_factoid in enrich_factoids(scava.fetch(CATEGORY_FACTOID)):
+                yield enriched_factoid
 
 
 if __name__ == '__main__':
@@ -360,8 +386,8 @@ if __name__ == '__main__':
     mapping = Mapping
     elastic = ElasticSearch(ARGS.elastic_url, ARGS.index, mappings=mapping)
 
-    scava_metrics = fetch_scava(ARGS.url, ARGS.project)
+    scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
 
-    if scava_metrics:
-        logging.info("Loading Scava metrics in Elasticsearch")
-        elastic.bulk_upload(scava_metrics, "uuid")
+    if scava_data:
+        logging.info("Loading Scava metrics/factoids in Elasticsearch")
+        elastic.bulk_upload(scava_data, "uuid")
