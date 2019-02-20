@@ -7,7 +7,7 @@
 	<!-- Needs an interim version of Epsilon after 10/1/2019 as it makes use of templates -->
 	<workflow name="ChurnRateWorkflow" package="org.eclipse.scava.crossflow.tests.churnRateRepo">
 		<simple-source name="remoteURLSource" produces="URL" to="URLs"/>
-		<simple-task name="ChurnRateCalculator" produces="ChurnRate" to="ChurnRates"/>
+		<simple-task multipleOutputs="true" name="ChurnRateCalculator" produces="ChurnRate" to="ChurnRates"/>
 				
 		<simple-sink name="ResultsSink"/>
 		
