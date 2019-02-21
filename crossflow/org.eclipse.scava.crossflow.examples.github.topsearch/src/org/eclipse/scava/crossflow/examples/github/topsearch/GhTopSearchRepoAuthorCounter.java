@@ -86,9 +86,11 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	}
 
 	@Override
-	public void consumeGhTopSearchClonedRepoEntries(OwnerRepoUrlTuple ownerRepoUrlTuple)
+	public OwnerRepoAuthorCountTuple consumeGhTopSearchClonedRepoEntries(OwnerRepoUrlTuple ownerRepoUrlTuple)
 			throws Exception {
 
+		OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple = null;
+		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
 			workflow.getGhTopSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
@@ -112,15 +114,16 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 				
 				int authorCount = count(ownerRepoUrlTuple.getField2());
 				
-				OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple = new OwnerRepoAuthorCountTuple();
+				ownerRepoAuthorCountTuple = new OwnerRepoAuthorCountTuple();
 				ownerRepoAuthorCountTuple.setField0(ownerRepoUrlTuple.field0); // GitHub owner (user name or organisation)
 				ownerRepoAuthorCountTuple.setField1(ownerRepoUrlTuple.field1); // GitHub repository name
 				ownerRepoAuthorCountTuple.setField2(authorCount); // repository unique author count
 				
-				sendToOwnerRepoAuthorCountEntries(ownerRepoAuthorCountTuple);
 			}
 			
 		}
+		
+		return ownerRepoAuthorCountTuple;
 		
 	}
 

@@ -94,7 +94,9 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 	}
 	
 	@Override
-	public void consumeGhTopSearchRepos(OwnerRepoTuple ownerRepoTuple) throws Exception {
+	public OwnerRepoUrlTuple consumeGhTopSearchRepos(OwnerRepoTuple ownerRepoTuple) throws Exception {
+		OwnerRepoUrlTuple ownerRepoUrlTuple = null;
+		
 		System.out.println("GhTopSearchRepoCloner.consumeGhTopSearchRepos( " + ownerRepoTuple + " )");
 		if ( committedRepoMap.size() == GhTopSearchRepoProperties.MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
@@ -119,7 +121,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 								
 				String clonedRepoLocation = cloneRepo(ownerRepoTuple.getField0(), ownerRepoTuple.getField1(), false);
 				
-				OwnerRepoUrlTuple ownerRepoUrlTuple = new OwnerRepoUrlTuple();
+				ownerRepoUrlTuple = new OwnerRepoUrlTuple();
 				ownerRepoUrlTuple.setField0(ownerRepoTuple.field0); // github owner
 				ownerRepoUrlTuple.setField1(ownerRepoTuple.field1); // github repo
 				ownerRepoUrlTuple.setField2(clonedRepoLocation); // cloned repository local path
@@ -130,6 +132,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 			
 		}
 		
+		return ownerRepoUrlTuple;
 	}
 
 }
