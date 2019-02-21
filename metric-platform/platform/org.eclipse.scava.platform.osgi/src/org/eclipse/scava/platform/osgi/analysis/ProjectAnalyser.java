@@ -44,11 +44,13 @@ public class ProjectAnalyser {
 	private Platform platform;
 	private int analysisThreadNumber;
 	private Logger logger;
+	private List<IMetricProvider> platformMetricProviders;
 
 	
 	public ProjectAnalyser(Platform platform) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
 		this.platform = platform;
+		platformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
 	}
 
 	public boolean executeAnalyse(String analysisTaskId, String workerId) {
@@ -65,12 +67,20 @@ public class ProjectAnalyser {
 		platform.getProjectRepositoryManager().getProjectRepository().sync();
 		
 		// Split metrics into branches
-		List<IMetricProvider> paltformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
-		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
+		//List<IMetricProvider> paltformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
+		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(platformMetricProviders,analysisTaskId);
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
 		
 		logger.info("Creating metric branches.");
-		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
+		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider, factoids, task);
+		//Method for updating the AnalysisTask if there were found new metrics dependencies
+		int counter=0;
+		for(List<IMetricProvider> branch : metricBranches)
+		{
+			counter+=branch.size();
+		}
+		if(counter>filtredMetricProvider.size())
+			task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		logger.info("Created metric branches.");
 		
 
@@ -188,7 +198,13 @@ public class ProjectAnalyser {
 		for(MetricExecution provider : task.getMetricExecutions()) {
 			taskProviders.add(provider.getMetricProviderId());
 		}
-		
+
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(IMetricProvider platformProvider : metricProviders) {
 			if(taskProviders.contains(platformProvider.getIdentifier())) {
 				filtredProviders.add(platformProvider);
@@ -219,9 +235,105 @@ public class ProjectAnalyser {
 	 * @param metrics
 	 * @return
 	 */
-	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
-		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
+//	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
+//		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
+//		
+//		for (IMetricProvider m : metrics) {
+//			Set<IMetricProvider> mBranch = new HashSet<>();
+//			
+//			for (Set<IMetricProvider> branch : branches) {
+//				if (branch.contains(m)) {
+//					mBranch = branch;
+//					break;
+//				}
+//			}
+//			if (!mBranch.contains(m)) mBranch.add(m);
+//			if (!branches.contains(mBranch)) branches.add(mBranch);
+//
+//			if (m.getIdentifiersOfUses() != null) {
+//				for (String id : m.getIdentifiersOfUses()) {
+//					IMetricProvider use = lookupMetricProviderById(metrics, id);
+//					if (use == null) continue;
+//					boolean foundUse = false;
+//					for (Set<IMetricProvider> branch : branches) {
+//						if (branch.contains(use)) {
+//							branch.addAll(mBranch);
+//							branches.remove(mBranch);
+//							mBranch = branch;
+//							foundUse = true;
+//							break;
+//						}
+//					}
+//					if (!foundUse) {
+//						mBranch.add(use);
+//					}
+//				}
+//			}
+//			if (!branches.contains(mBranch)) branches.add(mBranch);
+//		}
+//		
+//		List<List<IMetricProvider>> sortedBranches = new ArrayList<List<IMetricProvider>>();
+//		for (Set<IMetricProvider> b : branches) {
+//			sortedBranches.add(sortMetricProviders(new ArrayList<IMetricProvider>(b)));
+//		}
+//		
+//		return sortedBranches;
+//	}
+	
+	private List<IMetricProvider> getIdentifiersOfUse(List<IMetricProvider> metrics) {
+		List<IMetricProvider> identifiersOfUse = new ArrayList<IMetricProvider>(0);
 		
+		for(IMetricProvider metric : metrics)
+		{
+			if (metric.getIdentifiersOfUses() != null)
+			{
+				for (String id : metric.getIdentifiersOfUses())
+				{
+					IMetricProvider use = lookupMetricProviderById(platformMetricProviders, id);
+					if (use == null)
+						continue;
+					if(!identifiersOfUse.contains(use))
+						identifiersOfUse.add(use);
+				}
+			}
+		}
+		return identifiersOfUse;
+	}
+	
+	private List<IMetricProvider> getRecursiveIdentifiersOfUse(IMetricProvider metric) {
+		List<IMetricProvider> finalMetrics = new ArrayList<IMetricProvider>();
+		List<IMetricProvider> intermediateMetrics = new ArrayList<IMetricProvider>();
+		intermediateMetrics.add(metric);
+		boolean finished=false;
+		
+		while(!finished)
+		{
+			intermediateMetrics=getIdentifiersOfUse(intermediateMetrics);
+			if(intermediateMetrics.isEmpty())
+				finished=true;
+			else
+			{
+				for(IMetricProvider m : intermediateMetrics)
+				{
+					if(!finalMetrics.contains(m))
+						finalMetrics.add(m);
+				}
+			}
+		}
+		return finalMetrics;
+	}
+	
+	/**
+	 * For the moment the factoids are necessary to update the AnalysisTask, however, we need to find a way to include the dependencies of the factoids
+	 * @param metrics
+	 * @param factoids
+	 * @param task
+	 * @return
+	 */
+	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics, List<IMetricProvider> factoids, AnalysisTask task) {
+		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
+		List<String> toAddInTask = new ArrayList<String>(0);
+		boolean foundUse;
 		for (IMetricProvider m : metrics) {
 			Set<IMetricProvider> mBranch = new HashSet<>();
 			
@@ -233,12 +345,15 @@ public class ProjectAnalyser {
 			}
 			if (!mBranch.contains(m)) mBranch.add(m);
 			if (!branches.contains(mBranch)) branches.add(mBranch);
-
+			
 			if (m.getIdentifiersOfUses() != null) {
-				for (String id : m.getIdentifiersOfUses()) {
-					IMetricProvider use = lookupMetricProviderById(metrics, id);
-					if (use == null) continue;
-					boolean foundUse = false;
+				
+				for (IMetricProvider use : getRecursiveIdentifiersOfUse(m))
+				{
+					MetricExecution mpd = platform.getAnalysisRepositoryManager().getSchedulingService().findMetricExecution(task.getProject().getId(),m.getIdentifier());
+					if(mpd==null)
+						toAddInTask.add(use.getIdentifier());
+					foundUse = false;
 					for (Set<IMetricProvider> branch : branches) {
 						if (branch.contains(use)) {
 							branch.addAll(mBranch);
@@ -254,6 +369,18 @@ public class ProjectAnalyser {
 				}
 			}
 			if (!branches.contains(mBranch)) branches.add(mBranch);
+		}
+		
+		if(!toAddInTask.isEmpty())
+		{
+			for (IMetricProvider m : metrics) {
+				toAddInTask.add(m.getIdentifier());
+			}
+			for (IMetricProvider m : factoids) {
+				toAddInTask.add(m.getIdentifier());
+			}
+			platform.getAnalysisRepositoryManager().getTaskService().updateAnalysisTask(task.getAnalysisTaskId(), task, toAddInTask);
+			platform.getAnalysisRepositoryManager().getTaskService().startAnalysisTask(task.getAnalysisTaskId());
 		}
 		
 		List<List<IMetricProvider>> sortedBranches = new ArrayList<List<IMetricProvider>>();

@@ -16,8 +16,9 @@ import java.util.List;
 import org.eclipse.scava.nlp.emotion.processing.TextProcessor;
 import org.eclipse.scava.nlp.tools.predictions.multilabel.MultiLabelPrediction;
 import org.eclipse.scava.nlp.tools.predictions.multilabel.MultiLabelPredictionCollection;
-import org.eclipse.scava.tools.vasttext.Vasttext;
-import org.eclipse.scava.tools.vasttext.datasets.memory.NoLabelMemoryDataSet;
+
+import vasttext.Vasttext;
+import vasttext.datasets.memory.NoLabelMemoryDataSet;
 
 public class EmotionClassifier
 {

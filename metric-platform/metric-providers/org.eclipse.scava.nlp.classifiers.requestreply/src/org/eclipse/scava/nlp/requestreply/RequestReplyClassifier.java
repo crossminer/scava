@@ -15,8 +15,9 @@ import java.util.List;
 import org.eclipse.scava.nlp.requestreply.processing.TextProcessor;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
-import org.eclipse.scava.tools.vasttext.Vasttext;
-import org.eclipse.scava.tools.vasttext.datasets.memory.NoLabelMemoryDataSet;
+
+import vasttext.Vasttext;
+import vasttext.datasets.memory.NoLabelMemoryDataSet;
 
 public class RequestReplyClassifier
 {

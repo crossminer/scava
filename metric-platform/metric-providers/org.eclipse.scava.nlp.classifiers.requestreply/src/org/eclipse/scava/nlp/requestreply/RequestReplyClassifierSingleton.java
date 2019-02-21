@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
-import org.eclipse.scava.tools.vasttext.Vasttext;
+import vasttext.Vasttext;
 
 class RequestReplyClassifierSingleton
 {

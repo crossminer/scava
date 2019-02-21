@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
-import org.eclipse.scava.tools.vasttext.Vasttext;
+import vasttext.Vasttext;
 
 class EmotionClassifierSingleton
 {
@@ -48,6 +48,8 @@ class EmotionClassifierSingleton
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 		if (path.endsWith("bin/"))
 			path = path.substring(0, path.lastIndexOf("bin/"));
+		if (path.endsWith("target/classes/"))
+			path = path.substring(0, path.lastIndexOf("target/classes/"));
 		File file= new File(path+"model/Sentic_no_lemma_Vasttext_model.zip");
 		checkModelFile(file.toPath());
 		emotionClassifier.loadModel(file);
