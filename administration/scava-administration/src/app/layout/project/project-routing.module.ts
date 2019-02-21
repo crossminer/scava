@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProjectComponent } from './project.component';
 import { ImportProjectComponent } from './components/import-project/import-project.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
-import { MetricProvidersComponent } from './components/metric-providers/metric-providers.component'
 import { ConfigureProjectComponent } from './components/configure-project/configure-project.component';
 import { RoleGuard } from '../../shared/guard/role.guard';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
@@ -30,14 +29,6 @@ const routes: Routes = [
         canActivate: [RoleGuard],
         data: {
             authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER']
-        }
-    },
-    {
-        path: 'metric-providers',
-        component: MetricProvidersComponent,
-        canActivate: [RoleGuard],
-        data: {
-            authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']
         }
     },
     {

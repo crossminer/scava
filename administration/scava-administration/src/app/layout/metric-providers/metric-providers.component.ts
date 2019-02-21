@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
 import { MatTableDataSource, MatSort } from '@angular/material';
-import { MetricProvider } from '../configure-project/execution-task.model';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MetricProvider } from '../project/components/configure-project/execution-task.model';
+import { AnalysisTaskService } from '../../shared/services/analysis-task/analysis-task.service';
 
 @Component({
   selector: 'app-metric-providers',
@@ -29,7 +29,6 @@ export class MetricProvidersComponent implements OnInit {
     this.analysisTaskService.getMetricProviders().subscribe(
       (resp) => {
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
-        console.log(this.dataSource);
         this.selection = new SelectionModel<MetricProvider>(true, []);
         this.dataSource.sort = this.sort;
       },

@@ -36,7 +36,6 @@ export class AnalysisTaskAddComponent implements OnInit {
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
   @ViewChild(MatSort) sort: MatSort;
-
   displayedColumns: string[] = ['select', 'kind', 'label', 'description', 'dependOf'];
 
   constructor(
@@ -56,10 +55,6 @@ export class AnalysisTaskAddComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit() {
-    // this.dataSource.sort = this.sort;
-  }
-
   loadAll() {
     this.isSaving = false;
     this.maxStartDate = new Date();
@@ -71,7 +66,7 @@ export class AnalysisTaskAddComponent implements OnInit {
         //console.log(this.metricProviders)
 
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
-        //console.log(this.dataSource);
+        console.log(this.dataSource);
         this.selection = new SelectionModel<MetricProvider>(true, []);
         this.dataSource.sort = this.sort;
         
