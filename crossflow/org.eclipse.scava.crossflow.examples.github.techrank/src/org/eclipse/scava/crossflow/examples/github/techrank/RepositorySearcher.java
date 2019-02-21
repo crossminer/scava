@@ -13,7 +13,7 @@ import org.eclipse.jgit.api.Git;
 public class RepositorySearcher extends RepositorySearcherBase {
 	
 	@Override
-	public void consumeRepositorySearches(RepositorySearch repositorySearch) throws Exception {
+	public RepositorySearchResult consumeRepositorySearches(RepositorySearch repositorySearch) throws Exception {
 		
 		System.out.println("Searching " + repositorySearch.getRepository());
 		
@@ -72,10 +72,10 @@ public class RepositorySearcher extends RepositorySearcherBase {
 			}
 			catch (Exception ex) {
 				System.out.println("Falling back to file-by-file searching because " + ex.getMessage());*/
-				sendToRepositorySearchResults(new RepositorySearchResult(technology.getName(), countFiles(clone, technology), repositorySearch));
+				return new RepositorySearchResult(technology.getName(), countFiles(clone, technology), repositorySearch);
 			//}
 		}
-		
+		return null;
 	}
 	
 	protected int countFiles(File directory, Technology technology) {

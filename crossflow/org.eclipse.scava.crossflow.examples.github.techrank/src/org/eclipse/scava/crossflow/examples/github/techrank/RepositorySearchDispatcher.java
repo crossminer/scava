@@ -7,14 +7,14 @@ public class RepositorySearchDispatcher extends RepositorySearchDispatcherBase {
 	protected HashSet<String> repositories = new HashSet<>();
 	
 	@Override
-	public void consumeRepositories(Repository repository) throws Exception {
+	public RepositorySearch consumeRepositories(Repository repository) throws Exception {
 		
 		if (!repositories.contains(repository.getPath())) {
 			repositories.add(repository.getPath());
-			sendToRepositorySearches(new RepositorySearch(repository.getPath(), 
-					workflow.getTechnologySource().getTechnologies(), repository));
+			return new RepositorySearch(repository.getPath(), 
+					workflow.getTechnologySource().getTechnologies(), repository);
 		}
-		
+		return null;
 	}
 
 }
