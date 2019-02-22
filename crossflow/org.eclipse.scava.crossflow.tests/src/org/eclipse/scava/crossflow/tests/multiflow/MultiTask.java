@@ -20,6 +20,8 @@ public class MultiTask extends MultiTaskBase {
 	public void consume(Number number, boolean cache) {
 		executions ++;
 		
+		// System.err.println("consuming: "+number +", caching: "+cache);
+		
 		Number out1 = new Number(number.getN() + number.getN());
 		if (cache) out1.setCorrelationId(number.getId());
 		sendToOut1(out1);

@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests;
 
 import org.apache.activemq.broker.BrokerService;
-import org.eclipse.scava.crossflow.runtime.CompositeWorkflow;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
 public class WorkflowTests {
@@ -9,12 +8,6 @@ public class WorkflowTests {
 	public static boolean singleBroker = false;
 
 	protected BrokerService brokerService;
-
-	public void waitFor(CompositeWorkflow workflow) throws Exception {
-		while (!workflow.hasTerminated()) {
-			Thread.sleep(100);
-		}
-	}
 
 	public void waitFor(Workflow workflow) throws Exception {
 		while (!workflow.hasTerminated()) {

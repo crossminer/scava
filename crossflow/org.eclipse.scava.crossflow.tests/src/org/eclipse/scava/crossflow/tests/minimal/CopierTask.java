@@ -10,6 +10,8 @@ public class CopierTask extends CopierTaskBase {
 	@Override
 	public Number consumeInput(Number number) {
 
+		// System.err.println("CopierTask:"+workflow.getCopierTasks().lastIndexOf(this)+" consuming: "+number);
+		
 		if (delay > 0)
 			try {
 				int sleep = ThreadLocalRandom.current().nextInt((int) delay / 2, (int) delay * 3 / 2);

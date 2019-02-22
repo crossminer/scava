@@ -30,9 +30,9 @@ public class RetryRule implements TestRule {
 						if (retryCount.get() > 0 && description.getAnnotation(Retry.class) != null) {
 							caughtThrowable = t;
 							System.err.println(description.getDisplayName() + ": Failed, " + retryCount.toString()
-									+ "retries remain");
+									+ " retries remain");
 						} else {
-							throw caughtThrowable;
+							throw caughtThrowable == null ? new Throwable("null throwable") : caughtThrowable;
 						}
 					}
 				}

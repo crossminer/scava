@@ -1,5 +1,6 @@
 package [%=w.package%];
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +18,7 @@ public class [%=w.name%] extends Workflow {
 	public static [%=w.name%] run(String[] args) throws Exception {
 		[%=w.name%] throwAway = new [%=w.name%]();
 		new JCommander(throwAway, args);
-		[%=w.name%] app = new [%=w.name%](throwAway.getMode(), throwAway.isCreateBroker());
+		[%=w.name%] app = new [%=w.name%](throwAway.getMode(),throwAway.getParallelization());
 		new JCommander(app, args);
 		app.run();
 		return app;
@@ -29,7 +30,7 @@ public class [%=w.name%] extends Workflow {
 	
 	
 	public [%=w.name%] createWorker() {
-		[%=w.name%] worker = new [%=w.name%](Mode.WORKER);
+		[%=w.name%] worker = new [%=w.name%](Mode.WORKER,parallelization);
 		worker.setInstanceId(instanceId);
 		return worker;
 	}
@@ -53,38 +54,43 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	
 	// tasks
-	[%for (t in w.tasks) {%]
+
+	[%for (t in w.getSingletonTasks()) {%]
 	protected [%=t.name%] [%=t.name.ftlc()%];
 	[%}%]
 
+	[%for (t in w.getParallelizableTasks()) {%]
+	protected List<[%=t.name%]> [%=t.name.ftlc()%]s = new ArrayList<>();
+	[%}%]
+
+	//
+
 	public [%=w.name%]() {
-		this(Mode.MASTER, true);
+		this(Mode.MASTER, 1);
 	}
 	
-	public [%=w.name%](Mode mode) {
-		this(mode, true);
+	public [%=w.name%](Mode m) {
+		this(m, 1);
 	}
 	
-	public [%=w.name%](Mode mode, boolean createBroker) {
+	public [%=w.name%](Mode mode, int parallelization) {
 		super();
 			
-		this.createBroker = createBroker;	
+		this.parallelization = parallelization;	
 			
 		this.name = "[%=w.name%]";
 		this.mode = mode;
 		
 		if (isMaster()) {
 		[%for (t in w.getMasterTasks()){%]
-		[%=t.name.ftlc()%] = new [%=t.name%]();
-		[%=t.name.ftlc()%].setWorkflow(this);
+		[%=t.createTask()%]
 		[%}%]
 		}
 		
 		if (isWorker()) {
 		[%for (t in w.getWorkerTasks()){%]
 			if (!tasksToExclude.contains("[%=t.name%]")) {
-				[%=t.name.ftlc()%] = new [%=t.name%]();
-				[%=t.name.ftlc()%].setWorkflow(this);
+			[%=t.createTask()%]
 			}
 		[%}%]
 		}
@@ -177,25 +183,32 @@ public class [%=w.name%] extends Workflow {
 	
 	[%for (t in w.tasks) {%]
 	public [%=t.name%] get[%=t.name%]() {
+	[%if(w.getSingletonTasks().contains(t)){%]
 		return [%=t.name.ftlc()%];
-	}
+	[%} else {%]
+		if([%=t.name.ftlc()%]s.size()>0)
+			return [%=t.name.ftlc()%]s.get(0);
+		else 
+			return null;
 	[%}%]
-
-	/**
-	* Sets whether tasks are able to obtain more jobs while they are in the middle of processing one already
-	*/
-	private boolean enablePrefetch = false;
-	
-	public boolean isEnablePrefetch() {
-		return enablePrefetch;
 	}
-
-	public void setEnablePrefetch(boolean enablePrefetch) {
-		this.enablePrefetch = enablePrefetch;
-	}
+	[%if(w.getParallelizableTasks().contains(t)){%]
+	public List<[%=t.name%]> get[%=t.name%]s() {
+		return [%=t.name.ftlc()%]s;	
+	}	
+	[%}%]
+	[%}%]
 	
 }	
 [%
+operation Workflow getParallelizableTasks() {
+	return self.tasks.select(t | not (t.isKindOf(Source) or t.isKindOf(Sink)));
+}
+
+operation Workflow getSingletonTasks() {
+	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink));
+}
+
 operation Workflow getMasterTasks() {
 	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
 }
@@ -205,7 +218,28 @@ operation Workflow getWorkerTasks() {
 }
 
 @template
-operation Task setup() {%]
+operation Task createTask() {
+	if(w.getSingletonTasks().contains(self)){
+%]
+	[%=self.name.ftlc()%] = new [%=self.name%]();
+	[%=self.name.ftlc()%].setWorkflow(this);
+[%
+	} else{
+%]
+	for(int i=1;i<=parallelization;i++){
+		[%=self.name%] task = new [%=self.name%]();
+		task.setWorkflow(this);
+		[%=self.name.ftlc()%]s.add(task);
+	}
+[%	
+	}
+}
+
+@template
+operation Task setup() {
+
+	if(w.getSingletonTasks().contains(self)){
+%]
 	[%=self.name.ftlc()%].setResultsTopic(resultsTopic);
 	[%for (i in self.input) { %]
 	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], "[%=self.name%]");			
@@ -213,5 +247,22 @@ operation Task setup() {%]
 	[%for (o in self.output) { %]
 	[%=self.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
 	[%}%]
-[%}
+[%
+	} else{
+%]
+	for(int i = 1; i <=[%=self.name.ftlc()%]s.size(); i++){
+		[%=self.name%] task = [%=self.name.ftlc()%]s.get(i-1);
+		task.setResultsTopic(resultsTopic);
+		[%for (i in self.input) { %]
+		[%=i.name.ftlc()%].addConsumer(task, "[%=self.name%]");			
+		[%}%]
+		[%for (o in self.output) { %]
+		task.set[%=o.name%]([%=o.name.ftlc%]);
+		[%}%]
+	}
+[%	
+	}
+
+}
+
 %]

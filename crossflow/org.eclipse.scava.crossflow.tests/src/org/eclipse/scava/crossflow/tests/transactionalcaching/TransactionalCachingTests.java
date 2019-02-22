@@ -13,12 +13,14 @@ import org.junit.Test;
 
 public class TransactionalCachingTests extends WorkflowTests {
 
+	int parallelization = Math.max(Runtime.getRuntime().availableProcessors(), 2);
+
 	@Test
 	public void testCacheMasterWorker() throws Exception {
 
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
-		MinimalWorkflow mb = new MinimalWorkflow(Mode.MASTER_BARE);		
+		MinimalWorkflow mb = new MinimalWorkflow(Mode.MASTER_BARE);
 		if (singleBroker)
 			mb.createBroker(false);
 		mb.setInstanceId("minimalwfcacheteststransactional");
@@ -88,40 +90,41 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow();
+		MinimalWorkflow workflow = new MinimalWorkflow();
+		workflow.setParallelization(parallelization);
 		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
+			workflow.createBroker(false);
 		workflow.setInstanceId("minimalwfcacheteststransactional");
-		MinimalWorkflow master = workflow.getElements().get(0);
-		master.getMinimalSource().setElements(elems);
-		workflow.getElements().forEach(e -> e.getClonerTask().setFail(true));
+		workflow.getMinimalSource().setElements(elems);
+		workflow.getClonerTasks().forEach(c -> c.setFail(true));
 		DirectoryCache cache = new DirectoryCache();
-		workflow.getElements().forEach(e -> e.setCache(cache));
+		workflow.setCache(cache);
 		workflow.run();
 
 		waitFor(workflow);
 
-		System.out.println(master.getMinimalSink().getElements());
-		assertEquals(5, master.getMinimalSink().getElements().size());
-		assertEquals(5, (int) workflow.getElements().stream()
-				.collect(Collectors.summingInt(e -> e.getClonerTask().getExecutions())));
+		System.out.println(workflow.getMinimalSink().getElements());
+		assertEquals(5, workflow.getMinimalSink().getElements().size());
+		assertEquals(5,
+				(int) workflow.getClonerTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
 
 		//
-		workflow = new CompositeMinimalWorkflow();
+		workflow = new MinimalWorkflow();
+		workflow.setParallelization(parallelization);
 		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
-		master = workflow.getElements().get(0);
-		master.getMinimalSource().setElements(elems);
-		workflow.getElements().forEach(e -> e.getClonerTask().setFail(false));
-		workflow.getElements().forEach(e -> e.setCache(new DirectoryCache(cache.getDirectory())));
+			workflow.createBroker(false);
+		workflow.setInstanceId("minimalwfcacheteststransactional");
+		workflow.getMinimalSource().setElements(elems);
+		workflow.getClonerTasks().forEach(c -> c.setFail(false));
+		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.run();
 
 		waitFor(workflow);
 
-		System.out.println(master.getMinimalSink().getElements());
-		assertEquals(10, master.getMinimalSink().getElements().size());
-		assertEquals(5, (int) workflow.getElements().stream()
-				.collect(Collectors.summingInt(e -> e.getClonerTask().getExecutions())));
+		System.out.println(workflow.getMinimalSink().getElements());
+		assertEquals(10, workflow.getMinimalSink().getElements().size());
+		assertEquals(5,
+				(int) workflow.getClonerTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
 
 	}
 

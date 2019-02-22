@@ -1,25 +1,15 @@
 package [%=w.package%];
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Collection;
 import java.util.List;
-import java.util.LinkedList;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.TextMessage;
-import javax.jms.Session;
 
 import org.apache.activemq.command.ActiveMQDestination;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.JobStream;
@@ -31,12 +21,11 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
 		ActiveMQDestination postQ;
 		[%for (t in s.inputOf){%]
-		pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]." + workflow.getInstanceId()));
-		destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]." + workflow.getInstanceId()));
-		postQ = (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]." + workflow.getInstanceId()
-				+ (enablePrefetch?"":"?consumer.prefetchSize=1")
-			);		
-		post.put("[%=t.name%]", postQ);
+			pre.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Pre.[%=t.name%]." + workflow.getInstanceId()));
+			destination.put("[%=t.name%]", (ActiveMQDestination) session.createQueue("[%=s.name%]Destination.[%=t.name%]." + workflow.getInstanceId()));
+			postQ = (ActiveMQDestination) session.create[%=s.eClass().name%]("[%=s.name%]Post.[%=t.name%]." + workflow.getInstanceId()
+					+ (enablePrefetch?"":"?consumer.prefetchSize=1"));		
+			post.put("[%=t.name%]", postQ);			
 		[%}%]
 		
 		for (String consumerId : pre.keySet()) {
@@ -164,3 +153,9 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 	}
 
 }
+
+[%
+operation Task isSingletonTask() {
+	return self.isKindOf(Source) or self.isKindOf(Sink);
+}
+%]

@@ -22,7 +22,6 @@ import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata.Stream;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
-import org.eclipse.scava.crossflow.tests.minimal.CompositeMinimalWorkflow;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflow;
 import org.eclipse.scava.crossflow.tests.util.Retry;
 import org.eclipse.scava.crossflow.tests.util.RetryRule;
@@ -50,8 +49,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 	public void simpleParallelOutputTestActual(boolean parallel) throws Exception {
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallel ? parallelization : 1,
-				"wf", singleBroker ? false : true);
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallel ? parallelization : 1);
+		System.out.println("running spota: " + workflow.getParallelization());
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -63,19 +64,36 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			numbers.add(i);
 		//
 		// workflow.setStreamMetadataPeriod(500);
-		workflow.getElements().get(0).getMinimalSource().setNumbers(numbers);
-		workflow.getElements().forEach(e -> e.getCopierTask().setDelay(500));
+		workflow.getMinimalSource().setNumbers(numbers);
+		workflow.getCopierTasks().forEach(c -> c.setDelay(500));
 		// workflow.getMinimalSink().setDelay(500);
+
+		//
+
+		StreamMetadataBuiltinStreamConsumer con = new StreamMetadataBuiltinStreamConsumer() {
+
+			@Override
+			public void consume(StreamMetadata t) {
+
+				t.pruneNames(30);
+				System.out.println(t);
+
+			}
+		};
+
+		workflow.getStreamMetadataTopic().addConsumer(con);
 
 		//
 		workflow.run();
 
 		waitFor(workflow);
 
-		System.out.println(workflow.getElements().get(0).getMinimalSink().getNumbers());
+		workflow.getCopierTasks().forEach(c -> System.out.print(c.getExecutions() + " : "));
+		System.out.println();
+		System.out.println(workflow.getMinimalSink().getNumbers());
 
-		assertTrue(parallel ? !numbers.equals(workflow.getElements().get(0).getMinimalSink().getNumbers())
-				: numbers.equals(workflow.getElements().get(0).getMinimalSink().getNumbers()));
+		assertTrue(parallel ? !numbers.equals(workflow.getMinimalSink().getNumbers())
+				: numbers.equals(workflow.getMinimalSink().getNumbers()));
 
 	}
 
@@ -87,70 +105,68 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		for (int i = 1; i <= num; i++)
 			numbers.add(i);
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
-				singleBroker ? false : true);
-		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
-		MinimalWorkflow master = workflow.getElements().get(0);
-		master.getMinimalSource().setNumbers(numbers);
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);
+
+		workflow.getMinimalSource().setNumbers(numbers);
 		final DirectoryCache cache = new DirectoryCache();
-		workflow.getElements().forEach(e -> e.setCache(cache));
+		workflow.setCache(cache);
 		workflow.run();
 
 		waitFor(workflow);
 
-		assertEquals(num, master.getMinimalSink().getNumbers().size());
-		assertEquals(num, (int) workflow.getElements().stream()
-				.collect(Collectors.summingInt(e -> e.getCopierTask().getExecutions())));
+		assertEquals(num, workflow.getMinimalSink().getNumbers().size());
+		assertEquals(num,
+				(int) workflow.getCopierTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
 
-		workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
-				singleBroker ? false : true);
-		master = workflow.getElements().get(0);
-		master.getMinimalSource().setNumbers(numbers);
-		workflow.getElements().forEach(e -> e.setCache(new DirectoryCache(cache.getDirectory())));
+		workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);
+
+		workflow.getMinimalSource().setNumbers(numbers);
+		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.run();
 
 		waitFor(workflow);
 
-		assertEquals(num, master.getMinimalSink().getNumbers().size());
-		assertEquals(0, (int) workflow.getElements().stream()
-				.collect(Collectors.summingInt(e -> e.getCopierTask().getExecutions())));
+		assertEquals(num, workflow.getMinimalSink().getNumbers().size());
+		assertEquals(0,
+				(int) workflow.getCopierTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
 	}
 
 	@Test
 	public void parallelTestResultsTopic() throws Exception {
-		testResultsTopicActual(0, true);
-		// ensures result topic is accurate with an initial delay on master
-		testResultsTopicActual(4000, true);
+		testResultsTopicActual(0);
 		// ensures result topic is accurate with an initial delay on all (parallel)
 		// workflows
-		testResultsTopicActual(4000, false);
+		testResultsTopicActual(4000);
 	}
 
-	public void testResultsTopicActual(int initialDelay, boolean masterOnlyDelay) throws Exception {
+	public void testResultsTopicActual(int initialDelay) throws Exception {
 
 		int num = Math.max(4 * parallelization, 8);
 		Set<Integer> numbers = new HashSet<Integer>();
 		for (int i = 1; i <= num; i++)
 			numbers.add(i);
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
-				singleBroker ? false : true);
-		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);
+		workflow.getMinimalSource().setNumbers(new ArrayList<>(numbers));
+
 		Set<Integer> results = new HashSet<Integer>();
-		MinimalWorkflow master = workflow.getElements().get(0);
-		master.getMinimalSource().setNumbers(new ArrayList<>(numbers));
+
 		//
-		master.getMinimalSource().setSendToResults(true);
-		master.getResultsTopic().addConsumer(new BuiltinStreamConsumer<Result>() {
+		workflow.getMinimalSource().setSendToResults(true);
+		workflow.getResultsTopic().addConsumer(new BuiltinStreamConsumer<Result>() {
 			@Override
 			public void consume(Result t) {
 				results.add((Integer) t.get(0));
 			}
 		});
 		//
-		workflow.run(initialDelay, masterOnlyDelay);
+		workflow.run(initialDelay);
 		//
 		waitFor(workflow);
 		System.out.println(numbers);
@@ -166,10 +182,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 			// System.out.println(t);
 
-			if (t.getCaller().startsWith("CopierTask:wf:CompositeMinimalWorkflow")
+			if (t.getCaller().startsWith("CopierTask:wf")
 					&& t.getStatus().equals(TaskStatuses.WAITING))
 				outputQueueSize++;
-			if (t.getCaller().startsWith("MinimalSink:wf:CompositeMinimalWorkflow")
+			if (t.getCaller().startsWith("MinimalSink:wf")
 					&& t.getStatus().equals(TaskStatuses.WAITING))
 				outputQueueSize--;
 			//
@@ -177,7 +193,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 	}
 
 	private abstract class StreamMetadataBuiltinStreamConsumer implements BuiltinStreamConsumer<StreamMetadata> {
-		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();;
+		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();
 		public boolean updated = false;
 		public long maxQueueSize = 0;
 		public int nonZeroMatches = 0;
@@ -192,10 +208,9 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 	public synchronized void testStreamMetadataTopicActual(boolean enablePrefetch) throws Exception {
 
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
-				singleBroker ? false : true);
-		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -207,12 +222,11 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		for (int i = 1; i <= num; i++)
 			numbers.add(i);
 		//
-		MinimalWorkflow master = workflow.getElements().get(0);
-		master.setTerminationTimeout(5000);
-		master.setStreamMetadataPeriod(500);
-		master.getMinimalSource().setNumbers(new ArrayList<>(numbers));
-		workflow.getElements().forEach(e -> e.getCopierTask().setDelay(10));
-		master.getMinimalSink().setDelay(500);
+		workflow.setTerminationTimeout(5000);
+		workflow.setStreamMetadataPeriod(500);
+		workflow.getMinimalSource().setNumbers(new ArrayList<>(numbers));
+		workflow.getCopierTasks().forEach(c -> c.setDelay(10));
+		workflow.getMinimalSink().setDelay(500);
 
 		TaskStatusBuiltinStreamConsumer con = new TaskStatusBuiltinStreamConsumer();
 		StreamMetadataBuiltinStreamConsumer con2 = new StreamMetadataBuiltinStreamConsumer() {
@@ -221,7 +235,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			@Override
 			public void consume(StreamMetadata t) {
 
-				// t.pruneNames(OUTPUT_STREAM_ID.length());
+				//t.pruneNames(OUTPUT_STREAM_ID.length());
 				// System.out.println(t);
 
 				long streamSize = -1;
@@ -257,15 +271,15 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			}
 		};
 
-		master.getTaskStatusTopic().addConsumer(con);
+		workflow.getTaskStatusTopic().addConsumer(con);
 		//
-		master.getStreamMetadataTopic().addConsumer(con2);
+		workflow.getStreamMetadataTopic().addConsumer(con2);
 		//
 		workflow.run();
 		//
 		waitFor(workflow);
 
-		System.out.println(master.getMinimalSink().getNumbers());
+		System.out.println(workflow.getMinimalSink().getNumbers());
 
 		System.out
 				.println("need: " + con2.failures.size() + " < " + con2.nonZeroMatches + " maxQ: " + con2.maxQueueSize);
@@ -281,16 +295,16 @@ public class ParallelWorkflowTests extends WorkflowTests {
 	@Test
 	public void parallelTestStreamMetadataTopicMultiConsumer() throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
-		CompositeMinimalWorkflow workflow = new CompositeMinimalWorkflow(Mode.MASTER, parallelization, "wf",
-				singleBroker ? false : true);
-		if (singleBroker)
-			workflow.getElements().get(0).createBroker(false);
+		
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
+		workflow.setName("wf");
+		workflow.createBroker(singleBroker ? false : true);		
+		
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 
-		MinimalWorkflow master = workflow.getElements().get(0);
-		master.setStreamMetadataPeriod(500);
-		master.getMinimalSource().setNumbers(numbers);
-		master.getMinimalSink().setDelay(100);
+		workflow.setStreamMetadataPeriod(500);
+		workflow.getMinimalSource().setNumbers(numbers);
+		workflow.getMinimalSink().setDelay(100);
 
 		StreamMetadataBuiltinStreamConsumer con = new StreamMetadataBuiltinStreamConsumer() {
 			public static final String INPUT_STREAM_ID = "InputPost.CopierTask.testStreamMetadataTopicWorkflowMC";
@@ -314,7 +328,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 				}
 			}
 		};
-		master.getStreamMetadataTopic().addConsumer(con);
+		workflow.getStreamMetadataTopic().addConsumer(con);
 		//
 		workflow.run();
 

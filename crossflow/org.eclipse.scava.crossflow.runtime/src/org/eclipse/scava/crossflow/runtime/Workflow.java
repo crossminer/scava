@@ -55,6 +55,10 @@ public abstract class Workflow {
 	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
 	protected boolean createBroker = true;
 
+	@Parameter(names = {
+			"-parallelization" }, description = "The parallelization of the workflow (for non-singleton tasks), defaults to 1")
+	protected int parallelization = 1;// Runtime.getRuntime().availableProcessors();
+
 	protected boolean cacheEnabled = true;
 	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
@@ -657,13 +661,31 @@ public abstract class Workflow {
 
 	/**
 	 * 
-	 * @return A set containing all ActiveMQDestination objects used by all active JobStreams 
+	 * @return A set containing all ActiveMQDestination objects used by all active
+	 *         JobStreams
 	 */
 	public Set<ActiveMQDestination> getAllJobStreamsInternals() {
 		Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
 		activeStreams.stream().filter(s -> s instanceof JobStream)
 				.forEach(js -> ret.addAll(((JobStream<?>) js).getAllQueues()));
 		return ret;
+	}
+
+	public boolean isEnablePrefetch() {
+		return enablePrefetch;
+	}
+
+	public void setEnablePrefetch(boolean enablePrefetch) {
+		this.enablePrefetch = enablePrefetch;
+	}
+
+	public int getParallelization() {
+		return parallelization;
+	}
+
+	public void setParallelization(int parallelization) {
+		if (parallelization > 0)
+			this.parallelization = parallelization;
 	}
 
 }
