@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Gitlab
+Bundle-SymbolicName: org.eclipse.scava.repository.model.bts.gitlab;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model
+Export-Package: org.eclipse.scava.repository.model.bts.gitlab

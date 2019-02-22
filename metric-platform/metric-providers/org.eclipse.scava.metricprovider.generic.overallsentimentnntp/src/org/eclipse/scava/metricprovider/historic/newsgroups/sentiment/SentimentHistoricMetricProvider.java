@@ -70,14 +70,14 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 		for (ThreadStatistics threadStatistics: sentimentTransMetric.getThreads()) {
 			overallSentiment += threadStatistics.getAverageSentiment();
 			String start = threadStatistics.getStartSentiment();
-			if (start.equals("Positive"))
+			if (start.equals("__label__positive"))
 				startSentiment+=1;
-			else if (start.equals("Negative"))
+			else if (start.equals("__label__negative"))
 				startSentiment-=1;
 			String end = threadStatistics.getEndSentiment();
-			if (end.equals("Positive"))
+			if (end.equals("__label__positive"))
 				endSentiment+=1;
-			else if (end.equals("Negative"))
+			else if (end.equals("__label__negative"))
 				endSentiment-=1;
 		}
 		long size = sentimentTransMetric.getThreads().size();

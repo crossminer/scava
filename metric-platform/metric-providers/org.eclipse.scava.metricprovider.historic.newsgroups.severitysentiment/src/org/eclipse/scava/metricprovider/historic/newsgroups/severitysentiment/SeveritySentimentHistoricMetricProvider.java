@@ -127,9 +127,9 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 	}
 	
 	private int transformSentimentToInteger(String sentimentString) {
-		 if (sentimentString.equals("Negative"))
+		 if (sentimentString.equals("__label__negative"))
 			 return -1;
-		 else if (sentimentString.equals("Positive"))
+		 else if (sentimentString.equals("__label__positive"))
 			 return 1;
 		 else
 			 return 0;

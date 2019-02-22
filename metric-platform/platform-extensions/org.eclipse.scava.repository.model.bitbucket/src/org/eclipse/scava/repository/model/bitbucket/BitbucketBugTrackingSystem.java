@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of L'Aquila
+ * Copyright (c) 2019 University of Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -11,13 +11,10 @@ package org.eclipse.scava.repository.model.bitbucket;
 
 import com.googlecode.pongo.runtime.querying.*;
 
-// protected region custom-imports on begin
-// protected region custom-imports end
 
 public class BitbucketBugTrackingSystem extends org.eclipse.scava.repository.model.BugTrackingSystem {
 	
-	
-	// protected region custom-fields-and-methods on begin
+
     @Override
     public String getBugTrackerType() {
         return "bitbucket";
@@ -28,7 +25,6 @@ public class BitbucketBugTrackingSystem extends org.eclipse.scava.repository.mod
         return getUser() + '/' + getRepository();
     }
 
-    // protected region custom-fields-and-methods end
 	
 	public BitbucketBugTrackingSystem() { 
 		super();
@@ -81,8 +77,5 @@ public class BitbucketBugTrackingSystem extends org.eclipse.scava.repository.mod
 		notifyChanged();
 		return this;
 	}
-	
-	
-	
 	
 }

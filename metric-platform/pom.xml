@@ -323,6 +323,17 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.sentiment
     </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.gitlab
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.mantis
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.bts.gitlab
+    </module>
+    <module>../migration/third-party/com.squareup.okhttp3</module>
+    <module>../migration/third-party/com.squareup.okio</module>
   </modules>
   <build>
     <plugins>

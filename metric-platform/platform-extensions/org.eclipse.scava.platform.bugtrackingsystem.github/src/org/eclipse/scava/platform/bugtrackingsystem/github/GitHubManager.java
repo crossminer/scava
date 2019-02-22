@@ -29,7 +29,6 @@ import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import org.eclipse.scava.workflow.restmule.core.data.IData;
 import org.eclipse.scava.workflow.restmule.core.data.IDataSet;
 import org.eclipse.scava.workflow.restmule.generated.client.github.api.IGitHubApi;
-import org.eclipse.scava.workflow.restmule.generated.client.github.model.Comment;
 import org.eclipse.scava.workflow.restmule.generated.client.github.model.Issues;
 import org.eclipse.scava.workflow.restmule.generated.client.github.model.IssuesComments;
 import org.eclipse.scava.workflow.restmule.generated.client.github.model.PullRequest;

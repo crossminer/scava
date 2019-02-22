@@ -83,14 +83,14 @@ public class RequestsRepliesHistoricMetricProvider extends AbstractHistoricalMet
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (naData.getClassificationResult().equals("Request")) {
+				if (naData.getClassificationResult().equals("__label__Request")) {
 					crr = cumulativeRequests;
 					cumulativeRequestSum++;
 					if (naDate.compareTo(currentDate)==0) {
 						rr = requests;
 						requestSum++;
 					}
-				} else if (naData.getClassificationResult().equals("Reply")) {
+				} else if (naData.getClassificationResult().equals("__label__Reply")) {
 					crr = cumulativeReplies;
 					cumulativeReplySum++;
 					if (naDate.compareTo(currentDate)==0) {

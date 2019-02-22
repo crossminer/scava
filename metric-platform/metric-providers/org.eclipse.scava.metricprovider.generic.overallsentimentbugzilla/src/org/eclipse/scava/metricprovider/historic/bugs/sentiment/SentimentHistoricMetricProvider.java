@@ -56,14 +56,14 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 			 for (BugData bugData: usedBhm.getBugData()) {
 				 overallSentiment += bugData.getAverageSentiment();
 				 String start = bugData.getStartSentiment();
-				 if (start.equals("Positive"))
+				 if (start.equals("__label__positive"))
 					 startSentiment+=1;
-				 else if (start.equals("Negative"))
+				 else if (start.equals("__label__negative"))
 					 startSentiment-=1;
 				 String end = bugData.getEndSentiment();
-				 if (end.equals("Positive"))
+				 if (end.equals("__label__positive"))
 					 endSentiment+=1;
-				 else if (end.equals("Negative"))
+				 else if (end.equals("__label__negative"))
 					 endSentiment-=1;
 			 }
 			 long size = usedBhm.getBugData().size();
