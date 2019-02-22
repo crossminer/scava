@@ -75,8 +75,9 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			@Override
 			public void consume(StreamMetadata t) {
 
-				t.pruneNames(30);
-				System.out.println(t);
+				//
+				//t.pruneNames(30);
+				//System.out.println(t);
 
 			}
 		};
