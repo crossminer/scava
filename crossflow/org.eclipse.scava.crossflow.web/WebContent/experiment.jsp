@@ -36,6 +36,9 @@
 				  <li class="nav-item">
 				    <a class="nav-link active" id="advanced-tab" data-toggle="tab" href="#advanced" role="tab" aria-controls="advanced" aria-selected="false">Advanced</a>
 				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" id="model-tab" data-toggle="tab" href="#model" role="tab" aria-controls="model" aria-selected="false">Model</a>
+				  </li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
 				  <div class="tab-pane fade show" v-for="(fileDescriptor,index) in experiment.fileDescriptors" :id="'file'+index" role="tabpanel" :aria-labelledby="'file'+index+'-tab'">
@@ -95,6 +98,11 @@
 					  	<tr><td>Input/output directories</td><td><code>{{ experiment.inputDirectory }} / {{ experiment.outputDirectory }}</code></td></tr>
 					  	
 					  </table>
+				  </p>
+				  </div>
+				  <div class="tab-pane fade" id="model" role="tabpanel" aria-labelledby="model-tab">
+				  <p>
+					  Model File: {{ experiment.runtimeModel }}
 				  </p>
 				  </div>
 				</div>

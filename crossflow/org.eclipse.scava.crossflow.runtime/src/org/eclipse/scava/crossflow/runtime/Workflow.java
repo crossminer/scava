@@ -65,6 +65,7 @@ public abstract class Workflow {
 
 	protected File inputDirectory = new File("").getAbsoluteFile();
 	protected File outputDirectory = new File("").getParentFile();
+	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
 
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
@@ -637,6 +638,14 @@ public abstract class Workflow {
 
 	public void setOutputDirectory(File outputDirectory) {
 		this.outputDirectory = outputDirectory;
+	}
+	
+	public void setRuntimeModel(File runtimeModel) {
+		this.runtimeModel = runtimeModel;
+	}
+	
+	public File getRuntimeModel() {
+		return runtimeModel;
 	}
 
 	public File getTempDirectory() {

@@ -55,7 +55,8 @@ struct Experiment {
 	7: optional string status;
 	8: optional string inputDirectory;
 	9: optional string outputDirectory;
-	10: optional bool cached;
-	11: optional bool executed;
-	12: optional list<FileDescriptor> fileDescriptors;
+	10: optional string runtimeModel;
+	11: optional bool cached;
+	12: optional bool executed;
+	13: optional list<FileDescriptor> fileDescriptors;
 }

@@ -62,6 +62,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.setCache(new DirectoryCache(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"))));
 			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));
 			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
+			workflow.setRuntimeModel(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getRuntimeModel())));
 			
 			workflow.run();
 			workflows.put(experimentId, workflow);
@@ -184,6 +185,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			experiment.setSummary(experimentElement.getAttribute("summary"));
 			experiment.setInputDirectory(experimentElement.getAttribute("input"));
 			experiment.setOutputDirectory(experimentElement.getAttribute("output"));
+			experiment.setRuntimeModel(experimentElement.getAttribute("runtimeModel"));
 			experiment.setCached(new File(experimentDirectory, "cache").exists());
 			if (experiment.getOutputDirectory() != null) {
 				experiment.setExecuted(new File(experimentDirectory, experiment.getOutputDirectory()).exists());
