@@ -35,27 +35,33 @@ public class UploadExperiment extends HttpServlet {
 	 
 		// prepare target locations
 		String experimentName = request.getParameter("inputName");
-		String experimentPath = getServletContext().getRealPath("/experiments/") + experimentName + "/";
-		String experimentJarPath= getServletContext().getRealPath("/jars/");
+		Path experimentPath = Paths.get(getServletContext().getRealPath("/experiments/"), experimentName);
+		Path experimentJarPath= Paths.get(getServletContext().getRealPath("/jars/"));
 		
+		try {
+			Files.createDirectories(experimentPath);
+			
+			// serialize
+		    serialize(request, "xmlFile", experimentPath + "/experiment.xml");
+		    serialize(request, "runtimeModelFile", experimentPath + "/runtimeModel.flexmi");
+	    	serialize(request, "jarFile", experimentJarPath + "/" + experimentName + ".jar");
+	    	serialize(request, "inputDataZipFile", experimentPath + "/in.zip");
+	
+		    // unzip  to "in"
+		    unzip(Paths.get(experimentPath.toString(), "in.zip"), experimentPath);
+		    Files.deleteIfExists(Paths.get(experimentPath + "in.zip"));
+		    
+		    // submit successful upload notification
+		    String inputEmail = request.getParameter("inputEmail"); 
+		    // TODO: submit successful upload notification
+		    
+		    
+		} catch (IOException e) {
+			System.err.println("Failed to upload experiment. Make sure no experiment with the same name has already been deployed.");
+			System.err.println(e.getMessage());
+		}
 		
-		Files.createDirectories(Paths.get(experimentPath));
-		
-		// serialize
-	    serialize(request, "xmlFile", experimentPath + "experiment.xml");
-    	serialize(request, "jarFile", experimentJarPath + experimentName + ".jar");
-    	serialize(request, "inputDataZipFile", experimentPath + "in.zip");
-
-	    // unzip  to "in"
-	    unzip(experimentPath + "in.zip", experimentPath);
-	    Files.deleteIfExists(Paths.get(experimentPath + "in.zip"));
-	    
-	    // submit successful upload notification
-	    String inputEmail = request.getParameter("inputEmail"); 
-	    // TODO: submit successful upload notification
-	    
-	    response.sendRedirect("/org.eclipse.scava.crossflow.web/");
-	    
+		response.sendRedirect("/org.eclipse.scava.crossflow.web/");
 	}
 
 	/**
@@ -65,33 +71,46 @@ public class UploadExperiment extends HttpServlet {
 	 * @throws FileNotFoundException
 	 */
 	private void serialize(HttpServletRequest request, String inputFieldName, String targetLocation) throws IOException, ServletException, FileNotFoundException {
-		Part filePart = request.getPart(inputFieldName); 
-	 
-	    InputStream fileContent = filePart.getInputStream();
-	    
-	    byte[] buffer = new byte[fileContent.available()];
-	    fileContent.read(buffer);
-	 
-	    File targetFile = new File(targetLocation);
-	    
-	    OutputStream outStream = new FileOutputStream(targetFile);
-	    outStream.write(buffer);
-	    
-	    outStream.flush();
-	    outStream.close();
-	    
-	    //System.out.println("targetFile="+targetFile.getAbsolutePath());
+		try { 
+			Part filePart = request.getPart(inputFieldName); 
+		 
+			if (filePart == null) {
+				System.err.println("Unable to process workflow upload (input specification missing).");
+				return; // quit
+			}
+			
+		    InputStream fileContent = filePart.getInputStream();
+		    
+		    byte[] buffer = new byte[fileContent.available()];
+		    fileContent.read(buffer);
+		 
+		    File targetFile = new File(targetLocation);
+		    
+		    OutputStream outStream = new FileOutputStream(targetFile);
+		    outStream.write(buffer);
+		    
+		    outStream.flush();
+		    outStream.close();
+		    
+		} catch (FileNotFoundException e) {
+			System.err.println("Unable to process workflow upload (specified file not found).");
+			System.err.println(e.getMessage());
+			
+		} catch (IOException e) {
+			System.err.println("Unable to process workflow upload (i/o exception occurred).");
+			System.err.println(e.getMessage());
+		}
 	}
 	
-	protected static void unzip(final String zipFilePath, final String unzipLocation) throws IOException {
+	protected static void unzip(final Path zipFilePath, final Path unzipLocation) throws IOException {
 
-        if (!(Files.exists(Paths.get(unzipLocation)))) {
-            Files.createDirectories(Paths.get(unzipLocation));
+        if (!(Files.exists(unzipLocation))) {
+            Files.createDirectories(unzipLocation);
         }
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath))) {
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath.toString()))) {
             ZipEntry entry = zipInputStream.getNextEntry();
             while (entry != null) {
-                Path filePath = Paths.get(unzipLocation, entry.getName());
+                Path filePath = Paths.get(unzipLocation.toString(), entry.getName());
                 if (!entry.isDirectory()) {
                     unzipFiles(zipInputStream, filePath);
                 } else {

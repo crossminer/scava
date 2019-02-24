@@ -6,7 +6,7 @@
         <dependent-module archiveName="org.eclipse.scava.crossflow.runtime.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/org.eclipse.scava.crossflow.runtime/org.eclipse.scava.crossflow.runtime">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="org.eclipse.scava.crossflow.tests.jar" deploy-path="/jars" handle="module:/resource/org.eclipse.scava.crossflow.tests/org.eclipse.scava.crossflow.tests">
+        <dependent-module archiveName="org.eclipse.scava.crossflow.tests.jar" deploy-path="/jars/" handle="module:/resource/org.eclipse.scava.crossflow.tests/org.eclipse.scava.crossflow.tests">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="org.eclipse.scava.crossflow.web"/>

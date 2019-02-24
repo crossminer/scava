@@ -22,7 +22,7 @@
 		<form action="uploadExperiment" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<input type="text" class="form-control" id="inputName" name="inputName"
-					aria-describedby="textHelp" placeholder="Enter experiment name"/> 
+					aria-describedby="textHelp" placeholder="Enter experiment name (unique internal identifier)"/> 
 			</div>
 		<br /> <br />
 			<div class="custom-file">
@@ -36,6 +36,13 @@
 				<input type="file" class="custom-file-input" id="xmlFile" name="xmlFile" @change="updateXmlFileState"/>
 				<label class="custom-file-label" for="xmlFile" id="xmlFileLabel">
 				Choose experiment descriptor XML file
+				</label>
+			</div>
+			<br /> <br />
+			<div class="custom-file">
+				<input type="file" class="custom-file-input" id="runtimeModelFile" name="runtimeModelFile" @change="updateRuntimeModelFileState"/>
+				<label class="custom-file-label" for="runtimeModelFile" id="runtimeModelFileLabel">
+				Choose experiment runtime model file
 				</label>
 			</div>
 			<br /> <br />
@@ -77,6 +84,10 @@ var app = new Vue({
 		updateXmlFileState : function(event) {
 			let xmlFileName = document.getElementById("xmlFile").value;
 			document.getElementById("xmlFileLabel").innerHTML = xmlFileName.replace(/^.*\\/, "");
+		},
+		updateRuntimeModelFileState : function(event) {
+			let runtimeModelFileName = document.getElementById("runtimeModelFile").value;
+			document.getElementById("runtimeModelFileLabel").innerHTML = runtimeModelFileName.replace(/^.*\\/, "");
 		},
 		updateZipFileState : function(event) {
 			let inputDataZipFileName = document.getElementById("inputDataZipFile").value;
