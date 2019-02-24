@@ -4,6 +4,7 @@
 	jar="org.eclipse.scava.crossflow.tests.jar" 
 	input="in" 
 	output="out" 
+	runtimeModel="wordcount.flexmi"
 	summary="Counts the frequencies of words in a set of text files and displays the 100 most frequent of them."
 	>
 	<output path="out/output.csv" title="Results"/>
