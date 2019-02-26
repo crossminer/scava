@@ -28,8 +28,9 @@ public class Job implements Serializable {
 	// to being created multiple times per single task)
 	protected boolean transactional = true;
 	// denotes that this job is a simple message denoting success of a transaction
-	// (with this correlationId)
-	private boolean isTransactionSuccessMessage = false;
+	// (with this correlationId and to totalOutputs # of channels)
+	private boolean isTransactionSuccessMessage = false;	
+	private int totalOutputs = 0; 
 
 	public boolean isTransactional() {
 		return transactional;
@@ -125,4 +126,12 @@ public class Job implements Serializable {
 		this.isTransactionSuccessMessage = isTransactionSuccessMessage;
 	}
 
+	public int getTotalOutputs() {
+		return totalOutputs;
+	}
+
+	public void setTotalOutputs(int totalOutputs) {
+		this.totalOutputs = totalOutputs;
+	}
+	
 }

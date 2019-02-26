@@ -11,26 +11,27 @@ import java.util.List;
 import java.util.UUID;
 
 public class DirectoryCache implements Cache {
-	
+
+	boolean verbose = false;
+
 	protected HashMap<String, File> jobFolderMap = new HashMap<String, File>();
 	protected HashMap<String, Job> jobMap = new HashMap<String, Job>();
-	
+
 	protected File directory;
 	protected Workflow workflow = null;
-	
+
 	public DirectoryCache() {
 		try {
 			init(Files.createTempDirectory("crossflow").toFile());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			workflow.reportInternalException(ex);
 		}
 	}
-	
+
 	public DirectoryCache(File directory) {
 		init(directory);
 	}
-	
+
 	protected void init(File directory) {
 		this.directory = directory;
 		if (!directory.exists())
@@ -45,37 +46,36 @@ public class DirectoryCache implements Cache {
 			}
 		}
 	}
-	
+
 	public List<Job> getCachedOutputs(Job input) {
 		if (hasCachedOutputs(input)) {
 			ArrayList<Job> outputs = new ArrayList<Job>();
 			File inputFolder = jobFolderMap.get(input.getHash());
 			for (File outputFile : inputFolder.listFiles()) {
-				Job output = (Job) workflow.getSerializer().toObject(outputFile); 
+				Job output = (Job) workflow.getSerializer().toObject(outputFile);
 				output.setId(UUID.randomUUID().toString());
 				output.setCorrelationId(input.getId());
 				output.setCached(true);
 				outputs.add(output);
 			}
 			return outputs;
-		}
-		else {
+		} else {
 			return Collections.emptyList();
 		}
 	}
-	
+
 	public boolean hasCachedOutputs(Job input) {
 		return jobFolderMap.containsKey(input.getHash());
 	}
-	
+
 	public synchronized void cache(Job output) {
-		
+
 		if (!output.isCacheable())
 			return;
 
 		jobMap.put(output.getId(), output);
 		Job input = jobMap.get(output.getCorrelationId());
-		
+
 		if (input != null) {
 			File streamFolder = new File(directory, input.getDestination());
 			try {
@@ -91,30 +91,30 @@ public class DirectoryCache implements Cache {
 			}
 		}
 	}
-	
+
 	public File getDirectory() {
 		return directory;
 	}
-	
+
 	protected void save(Job job, File file) throws Exception {
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(job.getXML().getBytes());
 		fos.flush();
 		fos.close();
 	}
-	
+
 	@Override
 	public void setWorkflow(Workflow workflow) {
 		this.workflow = workflow;
 	}
-	
+
 	HashMap<String, LinkedList<Job>> pendingTransactions = new HashMap<String, LinkedList<Job>>();
 
 	@Override
 	public synchronized void cacheTransactionally(Job output) {
 
 		if (output.isTransactionSuccessMessage()) {
-			cachePendingTransactions(output.getCorrelationId());
+			cachePendingTransactions(output);
 			return;
 		}
 
@@ -139,25 +139,65 @@ public class DirectoryCache implements Cache {
 
 	}
 
-	private void cachePendingTransactions(String correlationId) {
+	private HashMap<String, Integer> confirmations = new HashMap<String, Integer>();
 
-		Job input = jobMap.get(correlationId);
+	private void cachePendingTransactions(Job output) {
+
+		String corr = output.getCorrelationId();
+		int total = output.getTotalOutputs();
+
+		if (total == 1) {
+			if (verbose)
+				System.err
+						.println("trying to commit transaction for " + corr + " and only 1 confirmation is necessary!");
+			// continue, as only one confirmation is necessary
+		} else if (total > 1) {
+			if (!confirmations.containsKey(corr)) {
+				if (verbose)
+					System.err.println("trying to commit transaction for " + corr + " but only had 1 out of " + total
+							+ " confirmations so far...");
+				confirmations.put(corr, 1);
+				return;
+			} else if (confirmations.get(corr) != total) {
+				int current = confirmations.get(corr);
+				confirmations.put(corr, current + 1);
+				if (confirmations.get(corr) != total) {
+					if (verbose)
+						System.err.println("trying to commit transaction for " + corr + " but only had " + (current + 1)
+								+ " out of " + total + " confirmations so far...");
+					return;
+				} else {
+					if (verbose)
+						System.err.println("trying to commit transaction for " + corr + " and all " + total
+								+ " confirmations have arrived!");
+				}
+			}
+		} else {
+			if (verbose)
+				System.err.println("warning: cachePendingTransactions called with 0 output queues for :" + corr + "!");
+			return;
+		}
+
+		if (verbose)
+			System.err.println("committing transaction for " + corr);
+
+		Job input = jobMap.get(corr);
 
 		if (input != null) {
 			File streamFolder = new File(directory, input.getDestination());
 			try {
-				LinkedList<Job> pending = pendingTransactions.get(correlationId);
+				LinkedList<Job> pending = pendingTransactions.get(corr);
 				if (pending != null) {
 					File inputFolder = new File(streamFolder, input.getHash());
 					inputFolder.mkdirs();
-					for (Job output : pending) {
-						File outputFile = new File(inputFolder, output.getHash());
+					for (Job out : pending) {
+						File outputFile = new File(inputFolder, out.getHash());
 						jobFolderMap.put(input.getHash(), inputFolder);
-						save(output, outputFile);
+						save(out, outputFile);
 					}
 				}
 			} catch (Exception e) {
-				System.out.println(correlationId);
+				System.out.println(corr);
 				System.out.println(pendingTransactions);
 				workflow.reportInternalException(e);
 			}

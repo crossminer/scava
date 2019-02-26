@@ -36,9 +36,15 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		[%if(t.isTypeOf(Source)){%]
 		[%=s.type.name.ftlc()%].setTransactional(false);
 		[%}%]
+		[%if(t.multipleOutputs or not (t.output.size==1)) {%]
+		hasSentTo[%=s.name%] = true;
+		[%}%]
 		get[%=s.name%]().send([%=s.type.name.ftlc()%], this.getClass().getName());
 	}
 	
+	[%if(t.multipleOutputs or not (t.output.size==1)) {%]
+	boolean hasSentTo[%=s.name%] = false;
+	[%}%]
 	[%}%]
 	
 	[%for (s in t.input) { %]
@@ -52,25 +58,36 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 			workflow.reportInternalException(e);
 		}
 				
+		[%if(t.multipleOutputs or not (t.output.size==1)) {%]
+		[%for (ss in t.output) { %]
+		hasSentTo[%=ss.name%] = false;
+		[%}%]
+		[%}%]
+				
 		Runnable consumer = () -> {		
 		[%}%]
 			try {
 				workflow.setTaskInProgess(this);
-	[%if(not t.multipleOutputs and t.output.size==1) {%]
+		[%if(not t.multipleOutputs and t.output.size==1) {%]
 				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				if(result != null){
 					result.setTransactional(false);
 					sendTo[%=t.output.first.name%](result);
 				}
-	[%}else {%]
+		[%}else {%]
 				consume[%=s.name%]([%=s.type.name.ftlc()%]);
-	[%if(t.output.size>0) {%]
+		[%if(t.output.size>0) {%]
 				[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
 				conf.setCorrelationId([%=s.type.name.ftlc()%].getId());
 				conf.setIsTransactionSuccessMessage(true);
-				sendTo[%=t.output.first.name%](conf);
-	[%}%]
-	[%}%]
+				conf.setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
+				[%for (ss in t.output) { %]
+				if (hasSentTo[%=ss.name%]) {
+					sendTo[%=ss.name%](conf);
+				}
+				[%}%]
+		[%}%]
+		[%}%]
 			}
 			catch (Exception ex) {
 				try {
