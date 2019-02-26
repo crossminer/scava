@@ -14,8 +14,4 @@ Require-Bundle: org.eclipse.scava.platform,
  com.squareup.okhttp3;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.eclipseforums.Activator
-Bundle-ClassPath: .,
- libs/commons-lang3-3.3.2.jar,
- libs/okio-1.14.0.jar,
- libs/okhttp-3.10.0.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

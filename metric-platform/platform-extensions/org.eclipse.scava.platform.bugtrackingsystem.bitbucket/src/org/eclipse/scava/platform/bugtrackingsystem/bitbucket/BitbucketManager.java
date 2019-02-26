@@ -51,7 +51,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private int rateLimit;
 	private static String host = "https://api.bitbucket.org/";
 	private static String exthost = "2.0/repositories/";
-	private final static String PAGE_SIZE = "10";
+	private final static String PAGE_SIZE = "50";
 	private int current_page;
 	private int next_page;
 	private int last_page;
@@ -129,7 +129,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getLogin());
+		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
 		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
@@ -167,7 +167,8 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getLogin());
+		//builder.addEncodedPathSegment(bitbucketTracker.getLogin());
+		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
 		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
@@ -211,7 +212,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getLogin());
+		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
 		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedPathSegment(issue_id);
@@ -257,7 +258,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 						comment.setBugTrackingSystem(bitbucketTracker);
 						comment.setCreationTime(creationTime.toJavaDate());
 						comment.setCreator(username);
-						comment.setText(content.get("html").toString());
+						comment.setText(content.get("raw").textValue());
 						comment.setBugId(issue_id);
 						comment.setCommentId(commentId);
 						
