@@ -74,7 +74,7 @@ public class RedmineManager implements
 			item.setDescription(null); // remove content field
 			for (BugTrackingSystemComment comment : item.getComments()) {
 				comment.setBugTrackingSystem(bugTracker); // Is this needed?
-				comment.setText(null); // remove content field
+				comment.setText(comment.getText()); // remove content field
 			}
 		}
 

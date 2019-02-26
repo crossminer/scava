@@ -121,7 +121,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				
 				switch(bugTracker.getBugTrackerType())
 				{
-					//case "bitbucket" might be the same as GitHub
+					case "bitbucket": 
 					case "github": plainTextObject=PlainTextGitHub.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
 					//case "jira":
@@ -131,8 +131,9 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				}
 				commentsData.setPlainText(plainTextObject.getPlainTextAsList());
 				commentsData.setHadReplies(plainTextObject.hadReplies());
+				db.sync();
 			}
-			db.sync();
+			
 		}
 		
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
@@ -155,6 +156,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					plainTextObject = PlainTextEclipseForums.process(post.getText());
 					forumPostsData.setPlainText(plainTextObject.getPlainTextAsList());
 					forumPostsData.setHadReplies(plainTextObject.hadReplies());
+					db.sync();
 				}
 			}
 			else
@@ -178,9 +180,9 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					plainTextObject = PlainTextNewsgroups.process(article.getText());
 					newsgroupArticlesData.setPlainText(plainTextObject.getPlainTextAsList());
 					newsgroupArticlesData.setHadReplies(plainTextObject.hadReplies());
+					db.sync();
 				}
 			}
-			db.sync();
 		}
 		
 	}

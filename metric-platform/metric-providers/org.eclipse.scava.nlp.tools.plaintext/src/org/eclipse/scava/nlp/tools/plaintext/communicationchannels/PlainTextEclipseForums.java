@@ -12,6 +12,9 @@ package org.eclipse.scava.nlp.tools.plaintext.communicationchannels;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
+import org.eclipse.scava.nlp.tools.plaintext.utils.IntermadiatePlainTextObject;
+import org.eclipse.scava.nlp.tools.plaintext.utils.PlainTextVerticalSplit;
+import org.eclipse.scava.nlp.tools.plaintext.utils.ReplyLineDetection;
 import org.eclipse.scava.nlp.tools.preprocessor.htmlparser.HtmlParser;
 
 public class PlainTextEclipseForums
@@ -26,7 +29,9 @@ public class PlainTextEclipseForums
 	public static PlainTextObject process(String text)
 	{
 		text=escapedNewline.matcher(text).replaceAll("\n");
-		return new PlainTextObject(HtmlParser.parse(text));
+		text=String.join("\n", HtmlParser.parse(text));
+		IntermadiatePlainTextObject intermadiatePlainTextObject= ReplyLineDetection.process(text);
+		return new PlainTextObject(PlainTextVerticalSplit.process(intermadiatePlainTextObject.getPlainText()),intermadiatePlainTextObject.hadReplies());
 	}
 	
 }

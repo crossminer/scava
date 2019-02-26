@@ -18,5 +18,4 @@ Export-Package: org.apache.http.impl.nio,
  org.apache.http.nio.reactor.ssl,
  org.apache.http.nio.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.apache.httpcomponents.httpclient;bundle-version="4.3.4",
- org.apache.httpcomponents.httpcore;bundle-version="4.3.2"
+Require-Bundle: org.apache.httpcomponents.httpcore;bundle-version="4.3.2"

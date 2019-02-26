@@ -56,9 +56,10 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		this.currentPagePattern = Pattern.compile("\\d>; rel=\"self\"");
 		this.nextPageUrlPattern = Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
 		this.client = new OkHttpClient();
-
+		this.temporalFlag=false;
 	}
 
+	private boolean temporalFlag;
 	private EclipseForumsForum forum;
 	private int callsRemaning;
 	private int timeToReset;
@@ -161,6 +162,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		getTopicBuilder.addEncodedPathSegment("topic");
 		getTopicBuilder.addQueryParameter("forum_id", eclipseForum.getForum_id());
 		getTopicBuilder.addQueryParameter("pagesize", PAGE_SIZE);
+		getTopicBuilder.addQueryParameter("order_by", "ASC");
 
 		// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
 		if (this.callsRemaning == 0) {
@@ -197,6 +199,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
 			getPostsBuilder.addEncodedPathSegment("forums");
 			getPostsBuilder.addEncodedPathSegment("post");
+			getPostsBuilder.addQueryParameter("order_by", "ASC");
 			getPostsBuilder.addEncodedPathSegment(topic.getRoot_post_id());
 
 			// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
@@ -240,6 +243,12 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	@Override
 	public CommunicationChannelDelta getDelta(DB db, EclipseForum forum, Date date) throws Exception {
 
+		if(temporalFlag==false)
+		{
+			getFirstDate(db, forum);
+			temporalFlag=true;
+		}
+		
 		System.out.println("[Eclipse Forum] - getDelta() Calls remaining" + callsRemaning);
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
@@ -248,12 +257,13 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		for (EclipseForumsTopic topic : temporal_topic_data) {
 
-			
 			if ((topic.getFirst_post_date().compareTo(date.toJavaDate())) == 0){ 
 				
 				delta.getTopics().add(topic);// adds topic to delta, by assuming the first post is the creation date
 							
 			}
+			
+			List<EclipseForumsPost> posts = getPosts(forum, topic);
 			
 			//The is checks if the 'current processing date' is within range of the posts in the forum 
 			if (compareDate(topic.getFirst_post_date(), topic.getLast_post_date(), date) == true) {
@@ -304,6 +314,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
 		getPostsBuilder.addEncodedPathSegment("forums");
 		getPostsBuilder.addEncodedPathSegment("post");
+		getPostsBuilder.addQueryParameter("order_by", "ASC");
 		getPostsBuilder.addQueryParameter("topic_id", topic.getTopic_id());
 
 		/*

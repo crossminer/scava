@@ -9,23 +9,20 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.tools.plaintext.bugtrackers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
+import org.eclipse.scava.nlp.tools.plaintext.utils.PlainTextVerticalSplit;
 
 public class PlainTextBugTrackersOthers
 {
-	private static Pattern verticalSpacing;
-	
-	static
-	{
-		verticalSpacing=Pattern.compile("\\v+");
-	}
 
 	public static PlainTextObject process(String text)
 	{
-		return new PlainTextObject(Arrays.asList(verticalSpacing.split(text)));
+		if(text==null)
+			return new PlainTextObject(new ArrayList<>(Arrays.asList("")));
+		return new PlainTextObject(PlainTextVerticalSplit.process(text));
 	}
 
 }
