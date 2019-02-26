@@ -45,3 +45,5 @@ Export-Package: opennlp.maxent,
  opennlp.tools.util.eval,
  opennlp.tools.util.featuregen,
  opennlp.tools.util.model
+Bundle-ClassPath: opennlp/,
+ .

@@ -334,6 +334,9 @@
     </module>
     <module>../migration/third-party/com.squareup.okhttp3</module>
     <module>../migration/third-party/com.squareup.okio</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.sentimentclassification
+    </module>
   </modules>
   <build>
     <plugins>

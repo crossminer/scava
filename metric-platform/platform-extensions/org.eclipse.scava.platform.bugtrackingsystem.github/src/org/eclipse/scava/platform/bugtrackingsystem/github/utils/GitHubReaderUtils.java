@@ -1,12 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2018 Edge Hill University
+ * Copyright Disclaimer
  * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ * Contributors:
+ * Daniel Campbell - Implementation.
+ *******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.github.utils;
 
 import java.util.Date;
@@ -35,7 +32,7 @@ public class GitHubReaderUtils {
 	 * @return gitHubIssue
 	 * 
 	 **/
-	public static GitHubIssue convertToGitHubIssue(Issues issue, BugTrackingSystem ghbt, Date day)  {
+	public static GitHubIssue convertToGitHubIssue(Issues issue, BugTrackingSystem ghbt)  {
 		
 		GitHubIssue gitHubIssue = new GitHubIssue();
 		gitHubIssue.setCreator(issue.getUser().getLogin());
@@ -65,14 +62,14 @@ public class GitHubReaderUtils {
 	 * 
 	 **/
 	
-	public static GitHubComment convertToGitHubComment(IssuesComments comment, BugTrackingSystem ghbt, Integer issueId){
+	public static GitHubComment convertToGitHubComment(IssuesComments comment, BugTrackingSystem ghbt, String issueId){
 		GitHubComment gitHubComment = new GitHubComment();
 		gitHubComment.setBugTrackingSystem(ghbt);
 		gitHubComment.setCommentId(comment.getId().toString());
 		gitHubComment.setCreator(comment.getUser().getLogin());
 		gitHubComment.setCreationTime(convertStringToDate(comment.getCreatedAt().trim()));
 		gitHubComment.setText(comment.getBody());
-		gitHubComment.setBugId(issueId.toString());
+		gitHubComment.setBugId(issueId);
 		gitHubComment.setUpdatedAt(convertStringToDate(comment.getUpdatedAt()));
 		gitHubComment.setUrl(comment.getUrl());
 		
@@ -89,7 +86,7 @@ public class GitHubReaderUtils {
 	 * 
 	 **/
 	
-	public static GitHubComment convertToGitHubComment(PullsComment comment, BugTrackingSystem ghbt, Integer issueId){
+	public static GitHubComment convertToGitHubComment(PullsComment comment, BugTrackingSystem ghbt, Issues issue){
 		GitHubComment gitHubComment = new GitHubComment();
 		
 		gitHubComment.setBugTrackingSystem(ghbt);
@@ -97,7 +94,7 @@ public class GitHubReaderUtils {
 		gitHubComment.setCreator(comment.getUser().getId().toString());
 		gitHubComment.setCreationTime(convertStringToDate(comment.getCreatedAt()));
 		gitHubComment.setText(comment.getBody());
-		gitHubComment.setBugId(issueId.toString());
+		gitHubComment.setBugId(issue.getNumber().toString());
 		gitHubComment.setUpdatedAt(convertStringToDate(comment.getUpdatedAt()));
 		gitHubComment.setUrl(comment.getUrl());
 		
@@ -139,12 +136,6 @@ public class GitHubReaderUtils {
 		gitHubPullRequest.setUrl(pullRequest);
 		gitHubPullRequest.setMergedBy(pullRequest);
 		gitHubPullRequest.setUser(pullRequest);
-		
-		
-		
-	
-	
-		
 
 		return gitHubPullRequest;
 	}

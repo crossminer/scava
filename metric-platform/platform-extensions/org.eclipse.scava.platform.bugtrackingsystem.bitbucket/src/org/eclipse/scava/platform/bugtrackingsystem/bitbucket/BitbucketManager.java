@@ -44,6 +44,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugTrackingSystem> {
+	
+	
 
 	private int callsRemaning;
 	private int timeToReset;
@@ -51,7 +53,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private int rateLimit;
 	private static String host = "https://api.bitbucket.org/";
 	private static String exthost = "2.0/repositories/";
-	private final static String PAGE_SIZE = "50";
+	private final static String PAGE_SIZE = "10";
 	private int current_page;
 	private int next_page;
 	private int last_page;
@@ -78,45 +80,41 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
 		delta.setBugTrackingSystem(bitbucketTracker);
-		List<String> issue_id_list = new ArrayList<>();
-
-		
 
 		for (Issue issue : getIssues(bitbucketTracker)) {
-			issue_id_list.add(issue.getId());
-			
 
 			Date created_on = new Date(convertStringToDate(issue.getCreatedOn()));
-			
+
 			if (created_on.compareTo(date) == 0) { // New
 
 				BitbucketIssue bug = new BitbucketIssue(issue, bitbucketTracker);
-				
+
 				delta.getNewBugs().add(bug);
 
 			}
-			
+
 			Date updated_on = new Date(convertStringToDate(issue.getUpdatedOn()));
-			
-			if ((updated_on.compareTo(date) == 0) && (updated_on.compareTo(created_on) !=0)){ //updated
-			
-			 BitbucketIssue bug = new BitbucketIssue(issue, bitbucketTracker);
-			 
-			 delta.getUpdatedBugs().add(bug);
-			 
-			 }
-			
-			
-			for (BitbucketComment comment : getComments(bitbucketTracker, issue.getId())){
+
+			if ((updated_on.compareTo(date) == 0) && (updated_on.compareTo(created_on) != 0)) { // updated
+
+				BitbucketIssue bug = new BitbucketIssue(issue, bitbucketTracker);
+
+				delta.getUpdatedBugs().add(bug);
+
+			}
+
+			for (BitbucketComment comment : getComments(bitbucketTracker, issue.getId())) {
 				
-				if (comment.getCreationTime().compareTo(date.toJavaDate()) == 0) {
+				Date created = new Date(comment.getCreationTime());
+		
+
+				if (created.compareTo(date.toJavaDate()) == 0) {
 					delta.getComments().add(comment);
 				}
-			
-			}	
+
+			}
 
 		}
-	
 
 		return delta;
 	}
@@ -167,7 +165,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		//builder.addEncodedPathSegment(bitbucketTracker.getLogin());
+		// builder.addEncodedPathSegment(bitbucketTracker.getLogin());
 		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
 		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
 		builder.addEncodedPathSegment("issues");
@@ -176,7 +174,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		builder.addEncodedQueryParameter("pagelen", PAGE_SIZE); // page size
 
 		this.builder = builder.toString();
-
+		
 		Request request = new Request.Builder().url(builder.toString()).get().build();
 
 		Response response = this.client.newCall(request).execute();
@@ -189,15 +187,62 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 				Issue issue = mapper.treeToValue(element, Issue.class);
 				issues.add(issue);
-			
+
 			}
 
 		}
+		
+		try {
+		//This will handle pagination 	
+		if (!(rootNode.get("next").equals(null))) {
+			
+			String nextPageUrl = rootNode.get("next").textValue();
+			
+			response.close();
+				
+			do {
 
-		// need for pagination - issues are returned as an array with a max size = to
-		// page_size.
+				boolean flag = false;
 
-		response.close();
+				Request paigantionRequest = new Request.Builder().url(nextPageUrl).get().build();
+				
+				Response paginationResponse = this.client.newCall(paigantionRequest).execute();
+			
+				JsonNode paginationNode = new ObjectMapper().readTree(paginationResponse.body().string());
+				
+				
+				if (paginationNode.get("values").isArray()) {
+					
+					for (JsonNode element : paginationNode.get("values")) {
+
+						Issue issue = mapper.treeToValue(element, Issue.class);
+						issues.add(issue);
+					}
+				}
+				
+				try {
+
+					if (!(paginationNode.get("next").equals(null))) {
+						
+						nextPageUrl = paginationNode.get("next").textValue();
+
+					} 
+					
+					
+				}catch(NullPointerException np) {
+					
+					flag = true;
+					
+				}
+			
+				paginationResponse.close();
+
+			} while (false);
+		}
+		}catch (NullPointerException np) {
+			
+			//Do nothing no extra pages
+		}
 
 		return issues;
 
@@ -207,7 +252,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 			throws IOException {
 
 		List<BitbucketComment> comments = new ArrayList<>();
-	
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -217,8 +262,6 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedPathSegment(issue_id);
 		builder.addEncodedPathSegment("comments");
-		// builder.addEncodedQueryParameter("sort", "created_on");
-		// Add date range
 		builder.addEncodedQueryParameter("pagelen", PAGE_SIZE); // page size
 
 		this.builder = builder.toString();
@@ -232,43 +275,122 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		if (rootNode.get("values").isArray()) {
 
 			for (JsonNode element : rootNode.get("values")) {
-				
-				Date creationTime = null;
-				
-				creationTime = new Date(convertStringToDate(element.get("created_on").toString()));
-		
-				String commentId = element.get("id").toString();
-				String username ="";
 
-				if (!(rootNode.get("user") == null)) {
-					
+				Date creationTime = null;
+
+				creationTime = new Date(convertStringToDate(element.get("created_on").toString()));
+
+				String commentId = element.get("id").toString();
+				String username = "";
+
+				if (!(element.get("user") == null)) {
+
 					JsonNode user = new ObjectMapper().readTree(element.get("user").toString());
-					
-					username = user.get("userame").toString();
-					
+
+					username = user.get("username").toString();
+
 				}
-				
+
 				if (!(rootNode == null)) {
 
 					JsonNode content = new ObjectMapper().readTree(element.get("content").toString());
 					if (!(content.get("raw") == null)) {
-						
+
 						// Manual mapping of Comment
 						BitbucketComment comment = new BitbucketComment();
 						comment.setBugTrackingSystem(bitbucketTracker);
 						comment.setCreationTime(creationTime.toJavaDate());
 						comment.setCreator(username);
-						comment.setText(content.get("raw").textValue());
+						comment.setText(content.get("html").toString());
 						comment.setBugId(issue_id);
 						comment.setCommentId(commentId);
-						
+
 						comments.add(comment);
 					}
 				}
 			}
 		}
+		
+		//This will handle pagination 	
+		try {
+				if (!(rootNode.get("next").equals(null))) {
+					
+					String nextPageUrl = rootNode.get("next").textValue();
+					
+					response.close();	
+					
+					do {
 
-		response.close();
+						boolean flag = false;
+
+						Request paigantionRequest = new Request.Builder().url(nextPageUrl).get().build();
+						
+						Response paginationResponse = this.client.newCall(paigantionRequest).execute();
+					
+						JsonNode paginationNode = new ObjectMapper().readTree(paginationResponse.body().string());
+		
+						for (JsonNode element : paginationNode.get("values")) {
+							
+						
+							Date creationTime = null;
+
+							creationTime = new Date(convertStringToDate(element.get("created_on").toString()));
+
+							String commentId = element.get("id").toString();
+							String username = "";
+
+							if (!(element.get("user") == null)) {
+
+								JsonNode user = new ObjectMapper().readTree(element.get("user").toString());
+								username = user.get("username").toString();
+
+							}
+
+							if (!(paginationNode == null)) {
+
+								JsonNode content = new ObjectMapper().readTree(element.get("content").toString());
+								if (!(content.get("raw") == null)) {
+
+									// Manual mapping of Comment
+									BitbucketComment comment = new BitbucketComment();
+									comment.setBugTrackingSystem(bitbucketTracker);
+									comment.setCreationTime(creationTime.toJavaDate());
+									comment.setCreator(username);
+									comment.setText(content.get("html").toString());
+									comment.setBugId(issue_id);
+									comment.setCommentId(commentId);
+
+									comments.add(comment);
+								}
+							}
+						}
+					
+						
+						try {
+
+							if (!(paginationNode.get("next").equals(null))) {
+								
+								nextPageUrl = paginationNode.get("next").textValue();
+
+							} 
+							
+							
+						}catch(NullPointerException np) {
+							
+							flag = true;
+							
+						}
+					
+						paginationResponse.close();
+
+					} while (false);
+				}
+		}catch(NullPointerException np) {
+			
+			//Do nothing no extra pages
+		}
+				
+		
 		return comments;
 	}
 
@@ -312,6 +434,10 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 								Credentials.basic(bitbucket.getLogin(), bitbucket.getPassword()));
 
 					}
+					
+					//FIXME: OAuth authentication - reader currently defaults to unauthenticated client
+					
+					
 					// else if (!(bitbucket.getPersonal_access_token() == null)) {
 					//
 					// newRequest = request.newBuilder().header("Private-Token",
@@ -451,7 +577,6 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		return date.toDate();
 	}
 
-
 	// ----------------------------------------------------------------------------------------
 	// NOT USED
 	// ----------------------------------------------------------------------------------------
@@ -468,4 +593,6 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		return null;
 	}
+
+
 }

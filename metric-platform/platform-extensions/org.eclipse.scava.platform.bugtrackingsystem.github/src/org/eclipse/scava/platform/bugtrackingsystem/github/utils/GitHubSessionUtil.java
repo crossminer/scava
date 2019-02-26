@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2018 Edge Hill University
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ * Copyright (c) 2018 Edge Hill University.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: 
+ * 	  Daniel Campbell
+ * 	  Luis Adri�n Cabrera Diego
+ *  
+ *******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.github.utils;
 import java.util.Map;
 
