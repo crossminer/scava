@@ -47,6 +47,7 @@ You will need to run the ANT build-files below to generate stuff after you impor
 - JUnit tests can be ran through the CrossflowTests class in org.eclipse.scava.crossflow.tests
 
 ### Web application
+- To build the web application, run `$ yarn install && yarn run build` from directory  org.eclipse.scava.crossflow.web
 - To run the web application right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
 - The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
 
