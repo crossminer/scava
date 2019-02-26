@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="sprotty/sprotty.css">
+  <link rel="stylesheet" href="diagram.css">
+  <style>
+    body {
+      overflow: hidden;
+    }
+		.nav > .title {
+			margin: 6px 15px;
+      font-size: 24px;
+      font-weight: 500;
+			color: #448;
+		}
+    #sprotty {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+    #navbox {
+      min-width: 300px;
+      height: 30px;
+			margin: 1px 15px;
+    }
+    #autocomplete {
+      border: 1px solid #888;
+      width: 100%;
+      height: 100%;
+    }
+
+    .autocomplete-suggestions { 
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      border: 1px solid #999; 
+      background: #FFF; 
+      overflow: auto; 
+    }
+
+    .autocomplete-suggestion { 
+      padding: 2px 5px; 
+      white-space: nowrap; 
+      overflow: hidden; 
+    }
+
+    .autocomplete-selected { 
+      background: #ddf; 
+    }
+
+    .autocomplete-suggestions strong { 
+      font-weight: normal; 
+      color: #448; 
+    }
+
+    .autocomplete-group { 
+      padding: 2px 5px; 
+    }
+
+    .autocomplete-group strong { 
+      display: block; 
+      border-bottom: 1px solid #000; 
+    }
+
+    #loading {
+      margin-top: 10px;
+      display: none;
+      border: 8px solid #ddf;
+      border-top: 8px solid #448;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #error {
+      display: none;
+      height: auto;
+      top: 0;
+      margin: 6px auto;
+      padding: 6px 12px; 
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sprotty"></div>
+
+	<nav class="navbar navbar-default" id="navbar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">ELK Graph Viewers</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="title">Model Browser</li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div id="navbox" class="form-group">
+          <input type="text" id="autocomplete" class="form-control" placeholder="Type to select a model ...">
+        </div>
+      </form>
+      <div id="loading" class="navbar-left"></div>
+      <div id="error" class="navbar-text navbar-left alert alert-danger"></div>
+		</div>
+  </nav>
+
+  <script src="models.bundle.js"></script>
+	<script src="jquery/jquery.slim.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

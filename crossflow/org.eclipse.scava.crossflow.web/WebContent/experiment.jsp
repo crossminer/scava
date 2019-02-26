@@ -100,9 +100,21 @@
 					  </table>
 				  </p>
 				  </div>
-				  <div class="tab-pane fade" id="model" role="tabpanel" aria-labelledby="model-tab">
+				  <div class="tab-pane fade show" id="model" role="tabpanel" aria-labelledby="model-tab">
 				  <p>
 					  Model File: {{ experiment.runtimeModel }}
+					  
+					   <div class="container">
+						<div class="row">
+							<div class="col-md-6">
+								<div id="monaco-editor" class="content-widget" data-input-type="elkt"></div>
+							</div>
+							<div class="col-md-6">
+								<div id="sprotty" class="content-widget"></div>
+							</div>
+						</div>
+					</div>
+					  
 				  </p>
 				  </div>
 				</div>
@@ -112,6 +124,11 @@
 </section>
 
 </main>
+
+<script src="vs/loader.js"></script>
+<script src="elkgraph.bundle.js"></script>
+<script src="jquery/jquery.slim.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 
 <script>
 	var app = new Vue({
