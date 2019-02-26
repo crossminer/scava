@@ -17,3 +17,5 @@ Export-Package: com.sun.mail.handlers,
  javax.mail.search,
  javax.mail.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: javaxmail_generatedEHU.jar,
+ .
