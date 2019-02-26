@@ -46,8 +46,8 @@ url_parameters_1.setupModelLink(editor, function (event) {
     };
 });
 // Create the web socket
-//var socketUrl = (location.protocol === 'https:' ? 'wss' : 'ws') + "://" + location.host + "/elkgraph";
-var socketUrl = (location.protocol === 'https:' ? 'wss' : 'ws') + "://" + 'localhost:9090' + "/elkgraph";
+// const socketUrl = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/elkgraph`
+var socketUrl = (location.protocol === 'https:' ? 'wss' : 'ws') + "://localhost:9090/elkgraph";
 var socketOptions = {
     maxReconnectionDelay: 10000,
     minReconnectionDelay: 1000,
