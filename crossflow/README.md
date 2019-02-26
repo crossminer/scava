@@ -48,7 +48,8 @@ You will need to run the ANT build-files below to generate stuff after you impor
 
 ### Web application
 - To build the web application, run `$ yarn install && yarn run build` from directory  org.eclipse.scava.crossflow.web
-- To run the web application right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
+- To run the elkgraph application (port: 9090) right-click on class `ServerLauncher.java/xtend` in project `org.eclipse.scava.crossflow.elkgraph.web` and select Run as -> Java Application  
+- To run the web application (port: 8080) right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
 - The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
 
 ### Screenshots
