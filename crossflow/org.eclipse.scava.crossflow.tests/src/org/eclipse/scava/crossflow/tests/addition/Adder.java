@@ -4,7 +4,7 @@ public class Adder extends AdderBase {
 
 	protected int executions = 0;
 	protected boolean caching = false;
-	private long interval = 500;
+	private long interval = 1000;
 
 	@Override
 	public Number consumeAdditions(NumberPair numberPair) {
@@ -18,6 +18,7 @@ public class Adder extends AdderBase {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		// System.err.println(workflow.getName()+" adding: "+numberPair);
 		return result;
 	}
 

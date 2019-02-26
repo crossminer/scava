@@ -10,6 +10,7 @@ public class AdditionResultsSink extends AdditionResultsSinkBase {
 	@Override
 	public void consumeAdditionResults(Number number) {
 		numbers.add(number.getN());
+		// System.err.println(workflow.getName()+" consumed "+number);
 	}
 	
 	public List<Integer> getNumbers() {

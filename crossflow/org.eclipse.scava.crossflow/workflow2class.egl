@@ -8,6 +8,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.utils.ParallelList;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.Workflow;
@@ -60,7 +61,7 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 
 	[%for (t in w.getParallelizableTasks()) {%]
-	protected List<[%=t.name%]> [%=t.name.ftlc()%]s = new ArrayList<>();
+	protected ParallelList<[%=t.name%]> [%=t.name.ftlc()%]s = new ParallelList<>();
 	[%}%]
 
 	//
@@ -105,6 +106,10 @@ public class [%=w.name%] extends Workflow {
 	 */
 	@Override
 	public void run(int delay) throws Exception {
+	
+	[%for (t in w.getParallelizableTasks()) {%]
+	[%=t.name.ftlc()%]s.init(this);
+	[%}%]
 	
 	this.delay=delay;
 
@@ -193,7 +198,7 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	}
 	[%if(w.getParallelizableTasks().contains(t)){%]
-	public List<[%=t.name%]> get[%=t.name%]s() {
+	public ParallelList<[%=t.name%]> get[%=t.name%]s() {
 		return [%=t.name.ftlc()%]s;	
 	}	
 	[%}%]

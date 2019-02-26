@@ -4,8 +4,6 @@ import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
-import javax.jms.Message;
-
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 		
 	protected [%=w.name%] workflow;
@@ -46,39 +44,57 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	[%for (s in t.input) { %]
 	@Override
 	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+		
+		[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
 		try {
-			workflow.setTaskInProgess(this);
+			workflow.get[%=t.name%]s().getSemaphore().acquire();
+		} catch (Exception e) {
+			workflow.reportInternalException(e);
+		}
+				
+		Runnable consumer = () -> {		
+		[%}%]
+			try {
+				workflow.setTaskInProgess(this);
 	[%if(not t.multipleOutputs and t.output.size==1) {%]
-			[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
-			if(result != null){
-				result.setTransactional(false);
-				sendTo[%=t.output.first.name%](result);
-			}
+				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
+				if(result != null){
+					result.setTransactional(false);
+					sendTo[%=t.output.first.name%](result);
+				}
 	[%}else {%]
-			consume[%=s.name%]([%=s.type.name.ftlc()%]);
+				consume[%=s.name%]([%=s.type.name.ftlc()%]);
 	[%if(t.output.size>0) {%]
-			[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
-			conf.setCorrelationId([%=s.type.name.ftlc()%].getId());
-			conf.setIsTransactionSuccessMessage(true);
-			sendTo[%=t.output.first.name%](conf);
+				[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
+				conf.setCorrelationId([%=s.type.name.ftlc()%].getId());
+				conf.setIsTransactionSuccessMessage(true);
+				sendTo[%=t.output.first.name%](conf);
 	[%}%]
 	[%}%]
-		}
-		catch (Exception ex) {
-			try {
-				[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures()+1);
-				workflow.getFailedJobsQueue().send(new FailedJob([%=s.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
-			} catch (Exception e) {
-				workflow.reportInternalException(e);
 			}
-		}
-		finally {
-			try {
-				workflow.setTaskWaiting(this);
-			} catch (Exception e) {
-				workflow.reportInternalException(e);
+			catch (Exception ex) {
+				try {
+					[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures()+1);
+					workflow.getFailedJobsQueue().send(new FailedJob([%=s.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
+				} catch (Exception e) {
+					workflow.reportInternalException(e);
+				}
 			}
-		}
+			finally {
+				try {
+					[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
+					workflow.get[%=t.name%]s().getSemaphore().release();
+					[%}%]
+					workflow.setTaskWaiting(this);
+				} catch (Exception e) {
+					workflow.reportInternalException(e);
+				}
+			}
+		[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]		
+		};
+
+		workflow.get[%=t.name%]s().getExecutor().submit(consumer);
+		[%}%]
 	}
 	
 	[%if(t.multipleOutputs or t.output.size<>1) {%]
