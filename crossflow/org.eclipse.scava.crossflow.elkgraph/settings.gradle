@@ -1,0 +1,3 @@
+rootProject.name = 'org.eclipse.scava.crossflow.elkgraph'
+
+include 'org.eclipse.scava.crossflow.elkgraph.web'
