@@ -4,7 +4,8 @@ Bundle-Name: Okhttp3
 Bundle-SymbolicName: com.squareup.okhttp3
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: com.squareup.okio;bundle-version="1.0.0"
-Bundle-ClassPath: okhttp-3.10.0.jar
+Bundle-ClassPath: okhttp-3.10.0.jar,
+ .
 Export-Package: okhttp3,
  okhttp3.internal,
  okhttp3.internal.cache,
