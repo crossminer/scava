@@ -106,7 +106,7 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 			if (idr.getModified().compareTo(analysisDate) == 0) {
 				
 				// This checks to see if the modified date is in the future compared to the creation date.
-				if ((idr.getModified().compareTo(idr.getCreated()) >= 0)) {
+				if ((idr.getModified().compareTo(idr.getCreated()) > 0)) {
 
 					delta.getUpdatedBugs().add(issuesMap.get(issueID));
 				}
@@ -114,8 +114,8 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 			}
 
 			//THis only requests comments for issues that are within the scope of the date range 
-			if ((idr.getCreated().compareTo(analysisDate) >= 0)
-					&& (idr.getModified().compareTo(analysisDate) <= 0)) {
+			if ((idr.getCreated().compareTo(analysisDate) <= 0)
+					&& (idr.getModified().compareTo(analysisDate) >= 0)) {
 
 				// this should attempt to get comments for that particular issue and then add to a list
 				getIssueComments(ghbt, issueID);
