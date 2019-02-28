@@ -1,19 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2019 Edge Hill University
-*
-* This program and the accompanying materials are made
-* available under the terms of the Eclipse Public License 2.0
-* which is available at https://www.eclipse.org/legal/epl-2.0/
-*
-* SPDX-License-Identifier: EPL-2.0
-******************************************************************************/
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -85,36 +84,53 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	public BugTrackingSystemDelta getDelta(DB db, GitLabTracker gitlabTracker, Date date) throws Exception {
 
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
-		Map<String, String> tempBugIds = new HashMap<>();
-
+	
+		setClient(gitlabTracker);
+		
 		delta.setBugTrackingSystem(gitlabTracker);
 
-		for (Issue issue : getIssuesCreatedAt(date, gitlabTracker)) {
-
-			tempBugIds.put(issue.getIid(), issue.getIid());// a map that contains global issue ID and local (repository) iid
-			delta.getNewBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds new issues to delta
 		
-		}
-		
-		for (Issue issue : getIssuesUpdatedAt(date, gitlabTracker)) {
+		for (Issue issue : getAllIssues(date, gitlabTracker)) {
 			
-			tempBugIds.put(issue.getIid(), issue.getIid());	
-			delta.getUpdatedBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds modified issues to delta
-		
-		}
-
-		for (String bugID : tempBugIds.keySet()) {
 			
-			for (Comment gitlabComment : getComments(date, bugID, gitlabTracker)) {
+			Date created = new Date(convertStringToDate(issue.getCreated_at()));
+			Date modified = new Date(convertStringToDate(issue.getUpdated_at()));
+			
+			if(created.compareTo(date) == 0) {
 				
-				delta.getComments().add(gitLabCommentToBtsComment(gitlabComment, gitlabTracker, bugID, tempBugIds.get(bugID)));//adds comments to delta
-			
+				delta.getNewBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds new issues to delta
+				
 			}
+			
+			if ( (modified.compareTo(date) == 0) && (modified.toJavaDate().after(created.toJavaDate()))) {
+				
+				delta.getUpdatedBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds modified issues to delta
+				
+			}
+			
+			if (issue.getUser_notes_count() > 0) {
+				for (Comment gitlabComment : getComments(date, issue.getIid(), gitlabTracker)) {
+					
+					Date commentDate = new Date(convertStringToDate(gitlabComment.getCreated_at()));
+					
+					if (commentDate.compareTo(date) == 0) {//Prevents past and future comments being added to the detla
+						
+						delta.getComments().add(gitLabCommentToBtsComment(gitlabComment, gitlabTracker, issue.getId(), issue.getIid()));//adds comments to delta
+						
+					}				
+					
+				}
+				
+			}
+		
 		}
+
 
 		return delta;
 	}
 
+
+	
 	@Override
 	public Date getFirstDate(DB db, GitLabTracker gitlabTracker) throws Exception {
 		
@@ -178,29 +194,22 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		return gitlabComment;	
 	}
 	
-	// ------------------------------------------------------------------------------------------
-	// GET METHODS
-	// ------------------------------------------------------------------------------------------
-	
-	private List<Issue> getIssuesUpdatedAt(Date date, GitLabTracker gitlabTracker) throws IOException {
-		
-		List<Issue> issues = new ArrayList<>();
 
-		String after = createISODateString(date) + "T00:00:00.00Z";
-		String before = createISODateString(date) + "T23:59:59.999Z";
+	private List<Issue> getAllIssues(Date date, GitLabTracker gitlabTracker) throws IOException {
+		List<Issue> issues = new ArrayList<>();
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+		
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
 		builder.addEncodedPathSegment(gitlabTracker.getProject_id());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("scope", "all");
 		builder.addEncodedQueryParameter("sort", "asc");
-		builder.addEncodedQueryParameter("updated_after", after);
-		builder.addEncodedQueryParameter("updated_before", before);
-		builder.addEncodedQueryParameter("order_by", "updated_at");
+
 		builder.addEncodedQueryParameter("per_page", PAGE_SIZE);
+		//Default order is created_at no need to include as a query parameter
+
 
 		this.builder = builder.toString();
 
@@ -219,13 +228,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 				
 				Issue issue = mapper.treeToValue(element, Issue.class);
 				
-				Date created = new Date(convertStringToDate(issue.getCreated_at().toString()));
-				Date updated = new Date(convertStringToDate(issue.getUpdated_at().toString()));
-				
-				if((created.toJavaDate().before(updated.toJavaDate())) && (updated.toJavaDate().compareTo(date.toJavaDate()) == 0)) {
-		
-					issues.add(issue);
-					}
+				issues.add(issue);
+					
 				}
 			}
 		
@@ -259,81 +263,15 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		response.close();
 
 		return issues;
-
 	}
+
 	
-	private List<Issue> getIssuesCreatedAt(Date date, GitLabTracker gitlabTracker) throws IOException {
-		
-		List<Issue> issues = new ArrayList<>();
-
-		String after = createISODateString(date) + "T00:00:00.00Z";
-		String before = createISODateString(date) + "T23:59:59.999Z";
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(gitlabTracker.getProject_id());
-		builder.addEncodedPathSegment("issues");
-		builder.addEncodedQueryParameter("scope", "all");
-		builder.addEncodedQueryParameter("sort", "asc");
-		builder.addEncodedQueryParameter("created_after", after);
-		builder.addEncodedQueryParameter("created_before", before);
-		builder.addEncodedQueryParameter("per_page", PAGE_SIZE);
-		//Default order is created_at no need to include as a query parameter
-
-		this.builder = builder.toString();
-
-		Request request = new Request.Builder().url(builder.build().toString()).build();
-
-		Response response = this.client.newCall(request).execute();
-
-		// check header
-		checkHeader(response.headers(), gitlabTracker);
-
-		JsonNode rootNode = new ObjectMapper().readTree(response.body().string());
-		// first page
-		if (rootNode.isArray()) {
-
-			for (JsonNode element : rootNode) {
-
-				issues.add(mapper.treeToValue(element, Issue.class));
-			}
-		}
-
-		// pagination
-		if (this.last_page > 1) {
-			while (this.current_page != this.last_page) {
-
-				response = getNextPage(gitlabTracker);
-				rootNode = new ObjectMapper().readTree(response.body().string());
-
-				if (rootNode.isArray()) {
-
-					for (JsonNode e : rootNode) {
-
-						issues.add(mapper.treeToValue(e, Issue.class));
-
-					}
-				}
-			}
-		}
-
-		response.close();
-
-		return issues;
-
-	}
-
 	private List<Comment> getComments(Date date, String issueID, GitLabTracker gitlabTracker) throws IOException {
 		
 		List<Comment> comments = new ArrayList<>();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		String after = createISODateString(date) + "T00:00:00.00Z";
-		String before = createISODateString(date) + "T23:59:59.999Z";
 
 		// projects/:id/issues/:issue_iid/notes
 		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
@@ -343,8 +281,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		builder.addEncodedPathSegment("notes");
 		builder.addEncodedQueryParameter("scope", "all");
 		builder.addEncodedQueryParameter("sort", "asc");
-		builder.addEncodedQueryParameter("created_after", after);
-		builder.addEncodedQueryParameter("created_before", before);
 		builder.addEncodedQueryParameter("per_page", PAGE_SIZE);
 		
 		this.builder = builder.toString();
@@ -358,6 +294,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		
 		JsonNode rootNode = new ObjectMapper().readTree(response.body().string());
 		
+		
+	
 		// first page
 		if (rootNode.isArray()) {
 	
@@ -560,10 +498,61 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 
 		}
 	}
+
+	// ------------------------------------------------------------------------------------------
+	// TESTING METHOD
+	// ------------------------------------------------------------------------------------------
+
+	public static void main(String[] args) throws ParseException, Exception {
+
+		int issueCount = 0;
+		int commentCount = 0;
+
+		GitLabTracker gitlabTracker = new GitLabTracker();
+		gitlabTracker.setPersonal_access_token("bgxmGow5eCnbcoJi_sMt");
+		//gitlabTracker.setProject_id("8418424");
+		gitlabTracker.setProject_id("4735523");
+		GitLabManager manager = new GitLabManager();
+
+		Date today = new Date();
+		today.addDays(1);
+		//Date date = new Date(manager.getFirstDate(null, gitlabTracker).toString());
+		Date date = new Date("20180109");
+		
+		System.out.println(
+				"---------------------------------------------------------------------------------------------------------------------\n"
+						+ "First Date - " + manager.getFirstDate(null, gitlabTracker)
+						+ "\n---------------------------------------------------------------------------------------------------------------------");
+
+		do {
+
+			BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
+			delta = manager.getDelta(null, gitlabTracker, date);
+			System.out
+					.println("\n\tDate :\t" + date + "\tNew Bugs :\t" + delta.getNewBugs().size() + "\tUpdated Bugs :\t"
+							+ delta.getUpdatedBugs().size() + "\tComments :\t" + delta.getComments().size());
+			issueCount = issueCount + delta.getNewBugs().size();
+			commentCount = commentCount + delta.getComments().size();
+			date = new Date(date.addDays(1).toString());
+
+		} while (date.compareTo(today) < 1);
+		
+		System.out.println(
+				"\n---------------------------------------------------------------------------------------------------------------------"
+			  + "\n"
+			  + "\n---------------------------------------------------------------------------------------------------------------------");
+		
+		System.out.println(issueCount);
+		System.out.println(commentCount);
+		System.exit(0);
+		
+	}
+	
+	
 	
 	// ------------------------------------------------------------------------------------------
 	// NOT USED
-
+	// ------------------------------------------------------------------------------------------
 	
 	@Override
 	public String getContents(DB db, GitLabTracker bugTrackingSystem, BugTrackingSystemBug bug) throws Exception {

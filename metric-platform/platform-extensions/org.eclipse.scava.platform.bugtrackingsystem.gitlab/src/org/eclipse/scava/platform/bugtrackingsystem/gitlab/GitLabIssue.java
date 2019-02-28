@@ -1,16 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2019 Edge Hill University
-* 
-* This program and the accompanying materials are made
-* available under the terms of the Eclipse Public License 2.0
-* which is available at https://www.eclipse.org/legal/epl-2.0/
-* 
-* SPDX-License-Identifier: EPL-2.0
-******************************************************************************/
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Assignee;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Author;
@@ -34,12 +35,12 @@ public class GitLabIssue extends BugTrackingSystemBug {
 		private Date closed_at = null;
 		private Date updated_at = null;
 		private String closed_by = null;
-		ArrayList < Object > labels = new ArrayList < Object > ();
-		Milestone MilestoneObject;
+		private ArrayList < Object > labels = new ArrayList < Object > ();
+		private Milestone MilestoneObject;
 		ArrayList < Object > assignees = new ArrayList < Object > ();
 		Author AuthorObject;
 		Assignee AssigneeObject;
-		private int user_notes_count;
+		private float user_notes_count;
 		private int upvotes;
 		private int downvotes;
 		private String due_date;
@@ -57,6 +58,8 @@ public class GitLabIssue extends BugTrackingSystemBug {
 			this.creationTime = convertStringToDate(issue.getCreated_at());
 			this.summary = issue.getTitle();
 			this.bugTrackingSystem = gitlabTracker;
+			this.iid = issue.getIid();
+			this.user_notes_count = issue.getUser_notes_count();
 		}
 	
 	/**
@@ -139,7 +142,7 @@ public class GitLabIssue extends BugTrackingSystemBug {
 	/**
 	 * @return the user_notes_count
 	 */
-	public int getUser_notes_count() {
+	public float getUser_notes_count() {
 		return user_notes_count;
 	}
 
