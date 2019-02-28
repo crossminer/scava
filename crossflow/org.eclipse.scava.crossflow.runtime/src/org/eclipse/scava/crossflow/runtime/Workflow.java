@@ -108,6 +108,7 @@ public abstract class Workflow {
 	protected Timer streamMetadataTimer;
 	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
+	private boolean terminationEnabled = true;
 
 	/**
 	 * used to manually add local workers to master as they may be enabled too
@@ -249,26 +250,31 @@ public abstract class Workflow {
 				}
 			});
 
-			terminationTimer = new Timer();
+			if (terminationEnabled) {
 
-			terminationTimer.schedule(new TimerTask() {
+				// timer for managing automatic workflow termination
+				terminationTimer = new Timer();
 
-				@Override
-				public void run() {
+				terminationTimer.schedule(new TimerTask() {
 
-					// System.err.println(activeJobs.size() + " " + areStreamsEmpty());
+					@Override
+					public void run() {
 
-					boolean canTerminate = activeJobs.size() == 0 && areStreamsEmpty();
+						// System.err.println(activeJobs.size() + " " + areStreamsEmpty());
 
-					if (aboutToTerminate) {
-						if (canTerminate) {
-							terminate();
+						boolean canTerminate = activeJobs.size() == 0 && areStreamsEmpty();
+
+						if (aboutToTerminate) {
+							if (canTerminate) {
+								terminate();
+							}
+						} else {
+							aboutToTerminate = canTerminate;
 						}
-					} else {
-						aboutToTerminate = canTerminate;
 					}
-				}
-			}, delay, 2000);
+				}, delay, 2000);
+
+			}
 
 			// timer for publishing stream metadata
 			streamMetadataTimer = new Timer();
@@ -660,6 +666,11 @@ public abstract class Workflow {
 		return serializer;
 	}
 
+	/**
+	 * default = 3000
+	 * 
+	 * @param p
+	 */
 	public void setStreamMetadataPeriod(int p) {
 		streamMetadataPeriod = p;
 	}
@@ -680,21 +691,67 @@ public abstract class Workflow {
 		return ret;
 	}
 
+	/**
+	 * 
+	 * @return Whether queues used by this workflow will keep providing messages to
+	 *         consumers before they are finished with their current task (default =
+	 *         false)
+	 */
 	public boolean isEnablePrefetch() {
 		return enablePrefetch;
 	}
 
+	/**
+	 * 
+	 * @param enablePrefetch Sets whether queues used by this workflow will keep
+	 *                       providing messages to consumers before they are
+	 *                       finished with their current task (default = false)
+	 */
 	public void setEnablePrefetch(boolean enablePrefetch) {
 		this.enablePrefetch = enablePrefetch;
 	}
 
+	/**
+	 * 
+	 * @return The maximum number of parallel instances for each non source/sink
+	 *         task running in this workflow
+	 */
 	public int getParallelization() {
 		return parallelization;
 	}
 
+	/**
+	 * 
+	 * @param parallelization Sets the maximum number of parallel instances for each
+	 *                        non source/sink task running in this workflow (default
+	 *                        = 1)
+	 */
 	public void setParallelization(int parallelization) {
 		if (parallelization > 0)
 			this.parallelization = parallelization;
+	}
+
+	/**
+	 * For master workflows this flag determines whether automatic workflow
+	 * termination will be triggered when there are no more messages in any queue
+	 * and no tasks are in progress
+	 * 
+	 * @return Whether this workflow will terminate automatically
+	 */
+	public boolean isTerminationEnabled() {
+		return terminationEnabled;
+	}
+
+	/**
+	 * For master workflows this flag determines whether automatic workflow
+	 * termination will be triggered when there are no more messages in any queue
+	 * and no tasks are in progress
+	 * 
+	 * @param enableTermination Sets whether this workflow will automatically
+	 *                          terminate (default = true)
+	 */
+	public void setEnableTermination(boolean enableTermination) {
+		terminationEnabled = enableTermination;
 	}
 
 }

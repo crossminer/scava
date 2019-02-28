@@ -4,9 +4,16 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
+import org.eclipse.scava.crossflow.tests.util.Retry;
+import org.eclipse.scava.crossflow.tests.util.RetryRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class AckWorkflowTests extends WorkflowTests {
+
+	// define the number of retries for tests in this class (annotated with @Retry)
+	@Rule
+	public RetryRule rule = new RetryRule(3);
 
 	@Test
 	public void testPrefetchEnabled() throws Exception {
@@ -53,44 +60,49 @@ public class AckWorkflowTests extends WorkflowTests {
 
 	}
 
-	// XXX removed to reduce redundant parameters in engine, after being already
-	// tested
-//	@Test
-//	public void testAcknowledgementTermination() throws Exception {
-//
-//		// run execution with acknowledgements to estimate termination time (needed for
-//		// non-ack test)
-//		long init = System.currentTimeMillis();
-//		ackTerminationTest(true, 0);
-//		long execTime = System.currentTimeMillis() - init;
-//		System.out.println("normal execution time: " + execTime / 1000 + "s");
-//
-//		// run execution without acknowledgements, giving a timeout for when to check if
-//		// the workflow has terminated
-//		ackTerminationTest(false, execTime);
-//
-//	}
+	@Test
+	@Retry
+	public void testTerminationEnabled() throws Exception {
 
-//	private void ackTerminationTest(boolean ack, long timeout) throws Exception {
-//
-//		AckWorkflow wf = new AckWorkflow();
-//		wf.setInstanceId("Ack-" + ack);
-//		wf.getProcessingTask().setLag(1);
-//		wf.setEnableAck(ack);
-//		wf.run();
-//
-//		if (ack) {
-//			waitFor(wf);
-//			// workflow should terminate properly with ack enabled
-//		} else {
-//			// wait for "2 x timeout" seconds, and if the workflow is not terminated there
-//			// are pending acknowledgements keeping it alive
-//			Thread.sleep(2 * timeout);
-//			assertTrue(!wf.hasTerminated());
-//			if (!wf.hasTerminated())
-//				wf.terminate();
-//		}
-//
-//	}
+		// run execution with termination to estimate termination time
+		long init = System.currentTimeMillis();
+
+		AckWorkflow master = new AckWorkflow(Mode.MASTER);
+		if (singleBroker)
+			master.createBroker(false);
+		master.setInstanceId("Termination-" + "true");
+		master.setName("Master");
+		master.getProcessingTask().setLag(100);
+		master.setEnableTermination(true);
+		master.run();
+
+		waitFor(master);
+
+		long execTime = System.currentTimeMillis() - init;
+		System.out.println("normal execution time: " + execTime / 1000 + "s");
+
+		// run execution without termination, giving a timeout for when to check if the
+		// workflow has terminated
+
+		master = new AckWorkflow(Mode.MASTER);
+		if (singleBroker)
+			master.createBroker(false);
+		master.setInstanceId("Termination-" + "true");
+		master.setName("Master");
+		master.getProcessingTask().setLag(100);
+		master.setEnableTermination(false);
+		master.run();
+
+		// wait for "3 x execTime" seconds to ensure automatic termination is disabled
+		Thread.sleep(3 * execTime);
+
+		System.out.println("waited for: " + execTime * 3 / 1000 + "s");
+
+		assertTrue(!master.hasTerminated());
+
+		if (!master.hasTerminated())
+			master.terminate();
+
+	}
 
 }
