@@ -39,7 +39,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectError;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 
-public class ProjectAnalyser {
+public class ProjectAnalyserEHU {
 	
 	private Platform platform;
 	private int analysisThreadNumber;
@@ -47,7 +47,7 @@ public class ProjectAnalyser {
 	private List<IMetricProvider> platformMetricProviders;
 
 	
-	public ProjectAnalyser(Platform platform) {
+	public ProjectAnalyserEHU(Platform platform) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
 		this.platform = platform;
 		platformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
