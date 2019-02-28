@@ -28,8 +28,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = 
-			"org.eclipse.scava.metricprovider.historic.newsgroups.sentiment";
+	public final static String IDENTIFIER = SentimentHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

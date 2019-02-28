@@ -7,6 +7,7 @@
     <eAnnotations source="customize"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bugTrackerComments" upperBound="-1" eType="//BugTrackerCommentPlainTextProcessing" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newsgroupArticles" upperBound="-1" eType="//NewsgroupArticlePlainTextProcessing" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forumPosts" upperBound="-1" eType="//ForumPostPlainTextProcessing" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BugTrackerCommentPlainTextProcessing">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugTrackerId">
@@ -32,7 +33,7 @@
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="articleNumber">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="plainText" upperBound="-1">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>

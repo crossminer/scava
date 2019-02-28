@@ -25,7 +25,7 @@ class BugTrackerCommentsData {
 class NewsgroupArticlesData {
 	@searchable
    	attr String newsgroupName;
-   	attr int articleNumber;
+   	attr long articleNumber;
    	attr String subject;
    	attr String text;
    	attr String date;

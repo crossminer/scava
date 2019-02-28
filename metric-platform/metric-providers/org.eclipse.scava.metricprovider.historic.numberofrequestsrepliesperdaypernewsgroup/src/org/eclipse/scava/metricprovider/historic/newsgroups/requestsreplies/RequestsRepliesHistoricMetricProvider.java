@@ -34,7 +34,7 @@ import org.eclipse.scava.repository.model.sourceforge.Discussion;
 import com.googlecode.pongo.runtime.Pongo;
 
 public class RequestsRepliesHistoricMetricProvider extends AbstractHistoricalMetricProvider{
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies";
+	public final static String IDENTIFIER = RequestsRepliesHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

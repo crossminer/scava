@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2018 University of York
  * 
  * This program and the accompanying materials are made
@@ -22,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.regex.Pattern;
 
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
@@ -31,7 +31,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
-import org.apache.commons.collections.functors.InstanceofPredicate;
 import org.apache.commons.net.io.DotTerminatedMessageReader;
 import org.apache.commons.net.nntp.Article;
 import org.apache.commons.net.nntp.NNTPClient;
@@ -44,15 +43,6 @@ import com.google.common.io.CharStreams;
 
 public class NntpUtil {
 	
-	//private static Session session;
-	private static Pattern plaintextMime;
-	
-	static
-	{
-		//session = Session.getInstance(new Properties());	//For parsing the messages correctly
-		plaintextMime=Pattern.compile("text/plain");
-	}
-
 	public static NNTPClient connectToNntpServer(NntpNewsGroup newsgroup) {
 
 		
@@ -109,12 +99,11 @@ public class NntpUtil {
 		}
 	}
 
-	public static Article[] getArticleInfo(NNTPClient nntpClient,
-			int startArticleNumber, int endArticleNumber) throws IOException {
+	public static Article[] getArticleInfo(NNTPClient nntpClient, 
+			long startArticleNumber, long endArticleNumber) throws IOException {
 		Reader reader = null;
 		Article[] articles = null;
-		reader = (DotTerminatedMessageReader) nntpClient.retrieveArticleInfo(
-					startArticleNumber, endArticleNumber);
+		reader = (DotTerminatedMessageReader) nntpClient.retrieveArticleInfo(startArticleNumber, endArticleNumber);
 
 		if (reader != null) {
 			String theInfo = readerToString(reader);
@@ -131,12 +120,12 @@ public class NntpUtil {
 			while (st.hasMoreTokens()) {
 				StringTokenizer stt = new StringTokenizer(st.nextToken(), "\t");
 				Article article = new Article();
-				article.setArticleNumber(Integer.parseInt(stt.nextToken()));
+				article.setArticleNumber(Long.parseLong(stt.nextToken()));
 				article.setSubject(decodeSubject(stt.nextToken()));
 				article.setFrom(stt.nextToken());
 				article.setDate(stt.nextToken());
 				article.setArticleId(stt.nextToken());
-				article.addHeaderField("References", stt.nextToken());
+				article.addReference(stt.nextToken());
 				articles[index++] = article;
 			}
 		} else {
@@ -146,7 +135,7 @@ public class NntpUtil {
 		return articles;
 	}
 	
-	public static Article getArticleInfo(NNTPClient client, int articleNumber)
+	public static Article getArticleInfo(NNTPClient client, long articleNumber)
 			throws IOException {
 		return getArticleInfo(client, articleNumber, articleNumber)[0];
 /*		DotTerminatedMessageReader reader = (DotTerminatedMessageReader) client.retrieveArticleInfo(articlePointer.articleNumber);
@@ -209,12 +198,11 @@ public class NntpUtil {
     		return subject;
     }
 
-	public  static String getArticleBody(NNTPClient client, int articleNumber)
+	public  static String getArticleBody(NNTPClient client, long articleNumber)
 			throws IOException {
 			String articleBody = null;
-			String typeContent;
+			//We convert the full message into a MIME message for getting exactly the text message clean
 			Reader reader = (DotTerminatedMessageReader) client.retrieveArticle(articleNumber);
-			//Reader reader = (DotTerminatedMessageReader) client.retrieveArticleBody(articleNumber);
 			if (reader != null) {
 				InputStream inputStream = new ByteArrayInputStream(CharStreams.toString(reader).getBytes(Charsets.UTF_8));
 				try {

@@ -19,7 +19,7 @@ public class CommunicationChannelArticle implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String articleId;
-	private int articleNumber;
+	private long articleNumber;
 	transient private NntpNewsGroup newsgroup;
 	private String messageThreadId;
 	private String subject;
@@ -38,11 +38,11 @@ public class CommunicationChannelArticle implements Serializable {
 		this.articleId = articleId;
 	}
 
-	public int getArticleNumber() {
+	public long getArticleNumber() {
 		return articleNumber;
 	}
 
-	public void setArticleNumber(int articleNumber) {
+	public void setArticleNumber(long articleNumber) {
 		this.articleNumber = articleNumber;
 	}
 

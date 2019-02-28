@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 
-public class PlainTextGitHub
+public class PlainTextMarkdownBased
 {
 	private static Pattern newlines;
 	

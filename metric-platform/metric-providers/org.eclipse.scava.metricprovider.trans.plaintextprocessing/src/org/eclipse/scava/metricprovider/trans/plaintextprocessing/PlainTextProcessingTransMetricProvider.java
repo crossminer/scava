@@ -10,7 +10,7 @@ import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTex
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugTrackersOthers;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugzilla;
-import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextGitHub;
+import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextMarkdownBased;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextEclipseForums;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextNewsgroups;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -121,15 +121,15 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				
 				switch(bugTracker.getBugTrackerType())
 				{
-					case "bitbucket": 
-					case "github": plainTextObject=PlainTextGitHub.process(comment.getText()); break;
+					case "bitbucket":
+					case "github": plainTextObject=PlainTextMarkdownBased.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
 					//case "jira":
 					//case "redmine":
 					//case "mantis":
 					default: plainTextObject=PlainTextBugTrackersOthers.process(comment.getText()); break;
 				}
-				commentsData.setPlainText(plainTextObject.getPlainTextAsList());
+				commentsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
 				commentsData.setHadReplies(plainTextObject.hadReplies());
 				db.sync();
 			}
@@ -154,7 +154,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 						db.getForumPosts().add(forumPostsData);
 					}
 					plainTextObject = PlainTextEclipseForums.process(post.getText());
-					forumPostsData.setPlainText(plainTextObject.getPlainTextAsList());
+					forumPostsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
 					forumPostsData.setHadReplies(plainTextObject.hadReplies());
 					db.sync();
 				}
@@ -178,7 +178,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 						db.getNewsgroupArticles().add(newsgroupArticlesData);
 					}
 					plainTextObject = PlainTextNewsgroups.process(article.getText());
-					newsgroupArticlesData.setPlainText(plainTextObject.getPlainTextAsList());
+					newsgroupArticlesData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
 					newsgroupArticlesData.setHadReplies(plainTextObject.hadReplies());
 					db.sync();
 				}

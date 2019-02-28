@@ -20,7 +20,7 @@ class BugTrackerCommentDetectingCode {
 class NewsgroupArticleDetectingCode {
 	@searchable
    	attr String newsGroupName;
-   	attr int articleNumber;
+   	attr long articleNumber;
    	attr String naturalLanguage;
 	attr String code;
 }

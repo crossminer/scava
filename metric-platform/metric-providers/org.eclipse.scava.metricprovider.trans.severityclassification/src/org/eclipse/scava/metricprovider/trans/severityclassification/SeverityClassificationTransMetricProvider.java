@@ -213,10 +213,10 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				if (communicationChannelDelta.getArticles().size()==0) continue;
 
 				//Load all stored articles for this newsgroup
-				Map<Integer, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannelName);
+				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannelName);
 				System.err.println("articlesFeatureIdCollections.size(): " + articlesFeatureIdCollections.size());
 
-				Map<Integer, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<Integer, CommunicationChannelArticle>();
+				Map<Long, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<Long, CommunicationChannelArticle>();
 				for (CommunicationChannelArticle article: communicationChannelDelta.getArticles())
 					articlesDeltaArticles.put(article.getArticleNumber(), article);
 				System.err.println("articlesDeltaArticles.size(): " + articlesDeltaArticles.size());
@@ -596,9 +596,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return featureIdCollection;
 	}
 
-	private Map<Integer, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String communicationChannelName)
+	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String communicationChannelName)
 	{
-		Map<Integer, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<Integer, FeatureIdCollection>();
+		Map<Long, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<Long, FeatureIdCollection>();
 		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(communicationChannelName));
 		for (NewsgroupArticleData newsgroupArticleData:  newsgroupArticleDataIt)
 		{

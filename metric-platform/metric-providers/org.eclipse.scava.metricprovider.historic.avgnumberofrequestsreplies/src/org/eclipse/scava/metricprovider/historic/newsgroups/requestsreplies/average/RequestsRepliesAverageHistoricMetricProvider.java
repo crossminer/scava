@@ -28,7 +28,7 @@ import org.eclipse.scava.repository.model.sourceforge.Discussion;
 import com.googlecode.pongo.runtime.Pongo;
 
 public class RequestsRepliesAverageHistoricMetricProvider extends AbstractHistoricalMetricProvider{
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.average";
+	public final static String IDENTIFIER = RequestsRepliesAverageHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

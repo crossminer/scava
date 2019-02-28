@@ -173,21 +173,21 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 			{
 				
 				BugTrackerCommentsEmotionClassification commentInSentiment = findBugTrackerComment(db, comment);
-				commentInSentiment.setEmotions(predictions.get(getBugTrackerCommentId(comment)));
+				commentInSentiment.getEmotions().addAll(predictions.get(getBugTrackerCommentId(comment)));
 				db.sync();
 			}
 	
 			for(NewsgroupArticleDetectingCode article : articlesIt)
 			{
 				NewsgroupArticlesEmotionClassification articleInSentiment = findNewsgroupArticle(db, article);
-				articleInSentiment.setEmotions(predictions.get(getNewsgroupArticleId(article)));
+				articleInSentiment.getEmotions().addAll(predictions.get(getNewsgroupArticleId(article)));
 				db.sync();
 			}
 			
 			for(ForumPostDetectingCode post : postsIt)
 			{
 				ForumPostEmotionClassification postInSentiment = findForumPost(db, post);
-				postInSentiment.setEmotions(predictions.get(getForumPostId(post)));
+				postInSentiment.getEmotions().addAll(predictions.get(getForumPostId(post)));
 				db.sync();
 			}
 		}
