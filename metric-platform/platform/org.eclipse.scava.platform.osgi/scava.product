@@ -8,7 +8,7 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-master -slave -apiServer
+      <programArgs>-worker -apiServer
       </programArgs>
       <vmArgsLin>-Xmx8g
       </vmArgsLin>
@@ -20,7 +20,6 @@
 
 
    <launcher>
-      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
@@ -45,5 +44,12 @@
       <plugin id="org.restlet" autoStart="true" startLevel="0" />
       <plugin id="org.restlet.ext.jetty" autoStart="true" startLevel="0" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

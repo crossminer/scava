@@ -31,7 +31,7 @@ public class HtmlParser
 {
 	
 	private static OutputSettings outputSettings= new OutputSettings();
-	private static String[] tagsToRemove= {"b","em","i","small","strong","sub","sup","ins","del","mark","span","a"};
+	private static String[] tagsToRemoveWhitelist= {"b","em","i","small","strong","sub","sup","ins","del","mark","span","a"};
 	private static Pattern newline;
 	
 	static
@@ -42,17 +42,17 @@ public class HtmlParser
 	
 	private static Whitelist whitelist()
 	{		
-		return Whitelist.basic().removeTags(tagsToRemove);
+		return Whitelist.basic().removeTags(tagsToRemoveWhitelist);
 	}
 	
-	private static Whitelist whitelist(String extraTagToRemove)
+	private static Whitelist whitelist(String extraTagToRemoveWhitelist)
 	{		
-		return Whitelist.basic().removeTags(tagsToRemove).removeTags(extraTagToRemove);
+		return Whitelist.basic().removeTags(tagsToRemoveWhitelist).removeTags(extraTagToRemoveWhitelist);
 	}
 	
-	private static Whitelist whitelist(String[] extraTagToRemove)
+	private static Whitelist whitelist(String[] extraTagToRemoveWhitelist)
 	{		
-		return Whitelist.basic().removeTags(tagsToRemove).removeTags(extraTagToRemove);
+		return Whitelist.basic().removeTags(tagsToRemoveWhitelist).removeTags(extraTagToRemoveWhitelist);
 	}
 	
 	
@@ -67,22 +67,14 @@ public class HtmlParser
 		return new String(encoded, "UTF-8");
 	}
 	
-	/**
-	 * 
-	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
-	 */
-	public static List<String> parse(Path path, String extraTagToRemove) throws IOException 
+	public static List<String> parse(Path path, String extraTagToRemoveWhitelist) throws IOException 
 	{
-		return parse(readFile(path), whitelist(extraTagToRemove));
+		return parse(readFile(path), whitelist(extraTagToRemoveWhitelist));
 	}
 	
-	/**
-	 * 
-	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
-	 */
-	public static List<String> parse(Path path, String[] extraTagToRemove) throws IOException 
+	public static List<String> parse(Path path, String[] extraTagToRemoveWhitelist) throws IOException 
 	{
-		return parse(readFile(path), whitelist(extraTagToRemove));
+		return parse(readFile(path), whitelist(extraTagToRemoveWhitelist));
 	}
 	
 
@@ -91,25 +83,15 @@ public class HtmlParser
 		return parse(input, whitelist());
 	}
 	
-	/**
-	 * 
-	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
-	 */
-	public static List<String> parse(String input, String extraTagToRemove)
+	public static List<String> parse(String input, String extraTagToRemoveWhitelist)
 	{
-		return parse(input, whitelist(extraTagToRemove));
+		return parse(input, whitelist(extraTagToRemoveWhitelist));
 	}
 	
-	/**
-	 * 
-	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
-	 */
-	public static List<String> parse(String input, String[] extraTagToRemove)
+	public static List<String> parse(String input, String[] extraTagToRemoveWhitelist)
 	{
-		return parse(input, whitelist(extraTagToRemove));
+		return parse(input, whitelist(extraTagToRemoveWhitelist));
 	}
-	
-	
 	
 	private static List<String> parse(String input, Whitelist wl)
 	{
