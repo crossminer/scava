@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2019 Edge Hill University
-*
-* This program and the accompanying materials are made
-* available under the terms of the Eclipse Public License 2.0
-* which is available at https://www.eclipse.org/legal/epl-2.0/
-*
-* SPDX-License-Identifier: EPL-2.0
-******************************************************************************/
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab.model;
 
 public class Comment  {
@@ -15,7 +15,7 @@ public class Comment  {
 	 private String type = null;
 	 private String body;
 	 private String attachment = null;
-	 Author AuthorObject;
+	 private Author AuthorObject;
 	 private String created_at;
 	 private String updated_at;
 	 private boolean system;

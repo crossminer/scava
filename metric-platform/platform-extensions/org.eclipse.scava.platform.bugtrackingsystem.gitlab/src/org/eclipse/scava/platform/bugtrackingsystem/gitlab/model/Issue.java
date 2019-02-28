@@ -1,15 +1,24 @@
 /*******************************************************************************
-* Copyright (c) 2019 Edge Hill University
-*
-* This program and the accompanying materials are made
-* available under the terms of the Eclipse Public License 2.0
-* which is available at https://www.eclipse.org/legal/epl-2.0/
-*
-* SPDX-License-Identifier: EPL-2.0
-******************************************************************************/
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Issue {
 	
@@ -35,7 +44,7 @@ public class Issue {
 	 private boolean confidential;
 	 private String discussion_locked = null;
 	 private String web_url;
-	 private Time_stats Time_statsObject;
+	 Time_stats Time_statsObject;
 	 private String weight = null;
 
 

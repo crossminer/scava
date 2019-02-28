@@ -121,6 +121,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				
 				switch(bugTracker.getBugTrackerType())
 				{
+					case "gitlab":
 					case "bitbucket":
 					case "github": plainTextObject=PlainTextMarkdownBased.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
