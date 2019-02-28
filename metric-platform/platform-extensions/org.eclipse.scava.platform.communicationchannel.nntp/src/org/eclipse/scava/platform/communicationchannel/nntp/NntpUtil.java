@@ -11,28 +11,52 @@ package org.eclipse.scava.platform.communicationchannel.nntp;
 
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
+import javax.mail.BodyPart;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
+import org.apache.commons.collections.functors.InstanceofPredicate;
 import org.apache.commons.net.io.DotTerminatedMessageReader;
 import org.apache.commons.net.nntp.Article;
 import org.apache.commons.net.nntp.NNTPClient;
 import org.apache.commons.net.nntp.NewsgroupInfo;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
+
 
 public class NntpUtil {
+	
+	//private static Session session;
+	private static Pattern plaintextMime;
+	
+	static
+	{
+		//session = Session.getInstance(new Properties());	//For parsing the messages correctly
+		plaintextMime=Pattern.compile("text/plain");
+	}
 
 	public static NNTPClient connectToNntpServer(NntpNewsGroup newsgroup) {
 
+		
+		
 		NNTPClient client = new NNTPClient();
 		client.setDefaultPort(newsgroup.getPort());
 		String serverUrl = newsgroup.getUrl();		
@@ -188,15 +212,42 @@ public class NntpUtil {
 	public  static String getArticleBody(NNTPClient client, int articleNumber)
 			throws IOException {
 			String articleBody = null;
-			Reader reader = (DotTerminatedMessageReader) client.retrieveArticleBody(articleNumber);
-
+			String typeContent;
+			Reader reader = (DotTerminatedMessageReader) client.retrieveArticle(articleNumber);
+			//Reader reader = (DotTerminatedMessageReader) client.retrieveArticleBody(articleNumber);
 			if (reader != null) {
-				articleBody = readerToString(reader);
+				InputStream inputStream = new ByteArrayInputStream(CharStreams.toString(reader).getBytes(Charsets.UTF_8));
+				try {
+					Session session = Session.getInstance(new Properties());	//For parsing the messages correctly
+					MimeMessage message = new MimeMessage(session, inputStream);
+					articleBody = getBodyPart((MimeMultipart) message.getContent());
+					
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				return articleBody;
 			}
 			return articleBody;
 		}
+	
+	private static String getBodyPart(MimeMultipart mimeMultiPart) throws IOException, MessagingException
+	{
+		for(int i=0; i<mimeMultiPart.getCount(); i++)
+		{
+			BodyPart bodyPart = mimeMultiPart.getBodyPart(i); 
+			if(bodyPart.isMimeType("text/plain"))
+			{
+				return (String) bodyPart.getContent();
+			}
+			else if(bodyPart.getContent() instanceof MimeMultipart)
+			{
+				return getBodyPart((MimeMultipart)bodyPart.getContent());
+			}
+		}
+		return "";
+	}
 	
 	public static String readerToString(Reader reader) {
 		String temp = null;
