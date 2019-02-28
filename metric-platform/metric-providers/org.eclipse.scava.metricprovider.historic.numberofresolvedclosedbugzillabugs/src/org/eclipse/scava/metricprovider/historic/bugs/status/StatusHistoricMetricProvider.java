@@ -25,7 +25,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class StatusHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.status";
+	public final static String IDENTIFIER = StatusHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

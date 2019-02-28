@@ -31,7 +31,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment";
+	public final static String IDENTIFIER = SeveritySentimentHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

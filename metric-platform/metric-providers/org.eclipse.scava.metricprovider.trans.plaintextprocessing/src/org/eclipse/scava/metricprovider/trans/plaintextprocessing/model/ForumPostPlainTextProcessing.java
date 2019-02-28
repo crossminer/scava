@@ -73,10 +73,5 @@ public class ForumPostPlainTextProcessing extends Pongo {
 	}
 	
 	
-	public ForumPostPlainTextProcessing setPlainText(List<String> plainText) {
-		dbObject.put("plainText", plainText);
-		this.plainText = plainText;
-		notifyChanged();
-		return this;	
-	}
+	
 }

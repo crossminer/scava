@@ -20,7 +20,7 @@ class BugTrackerComments {
 class NewsgroupArticles {
 	@searchable
    	attr String newsgroupName;
-   	attr int articleNumber;
+   	attr long articleNumber;
    	attr String classificationResult;
    	attr String date;
 }

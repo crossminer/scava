@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2019 Edge Hill University
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.emotionclassification.model;
 
 import com.mongodb.*;
@@ -42,11 +33,11 @@ public class NewsgroupArticlesEmotionClassification extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getArticleNumber() {
-		return parseInteger(dbObject.get("articleNumber")+"", 0);
+	public long getArticleNumber() {
+		return parseLong(dbObject.get("articleNumber")+"", 0);
 	}
 	
-	public NewsgroupArticlesEmotionClassification setArticleNumber(int articleNumber) {
+	public NewsgroupArticlesEmotionClassification setArticleNumber(long articleNumber) {
 		dbObject.put("articleNumber", articleNumber);
 		notifyChanged();
 		return this;
@@ -59,11 +50,6 @@ public class NewsgroupArticlesEmotionClassification extends Pongo {
 		return emotions;
 	}
 	
-	public NewsgroupArticlesEmotionClassification setEmotions(List<String> emotions) {
-		this.emotions=emotions;
-		dbObject.put("emotions", emotions);
-		notifyChanged();
-		return this;
-	}
+	
 	
 }

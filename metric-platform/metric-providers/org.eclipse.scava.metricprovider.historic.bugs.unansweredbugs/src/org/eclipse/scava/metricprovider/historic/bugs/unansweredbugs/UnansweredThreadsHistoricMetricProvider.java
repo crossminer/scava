@@ -25,8 +25,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = 
-			"org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs";
+	public final static String IDENTIFIER = UnansweredThreadsHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

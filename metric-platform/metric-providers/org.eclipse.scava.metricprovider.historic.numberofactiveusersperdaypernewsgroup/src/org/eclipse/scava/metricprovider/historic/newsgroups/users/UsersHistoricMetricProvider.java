@@ -29,8 +29,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = 
-			"org.eclipse.scava.metricprovider.historic.newsgroups.users";
+	public final static String IDENTIFIER = UsersHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

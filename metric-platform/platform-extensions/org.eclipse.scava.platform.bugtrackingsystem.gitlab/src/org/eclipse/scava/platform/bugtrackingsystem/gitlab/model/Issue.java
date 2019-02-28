@@ -22,12 +22,12 @@ public class Issue {
 	 private String created_at;
 	 private String updated_at;
 	 private String closed_at = null;
-	 private String closed_by = null;
-	 ArrayList < Object > labels = new ArrayList < Object > ();
-	 Milestone MilestoneObject;
-	 ArrayList < Object > assignees = new ArrayList < Object > ();
-	 Author AuthorObject;
-	 Assignee AssigneeObject;
+	 private Author closed_by = null;
+	 private ArrayList < Object > labels = new ArrayList < Object > ();
+	 private Milestone MilestoneObject;
+	 private ArrayList < Object > assignees = new ArrayList < Object > ();
+	 private Author AuthorObject;
+	 private Assignee AssigneeObject;
 	 private float user_notes_count;
 	 private float upvotes;
 	 private float downvotes;
@@ -35,7 +35,7 @@ public class Issue {
 	 private boolean confidential;
 	 private String discussion_locked = null;
 	 private String web_url;
-	 Time_stats Time_statsObject;
+	 private Time_stats Time_statsObject;
 	 private String weight = null;
 
 
@@ -77,7 +77,7 @@ public class Issue {
 	  return closed_at;
 	 }
 
-	 public String getClosed_by() {
+	 public Author getClosed_by() {
 	  return closed_by;
 	 }
 
@@ -167,7 +167,7 @@ public class Issue {
 	  this.closed_at = closed_at;
 	 }
 
-	 public void setClosed_by(String closed_by) {
+	 public void setClosed_by(Author closed_by) {
 	  this.closed_by = closed_by;
 	 }
 

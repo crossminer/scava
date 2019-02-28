@@ -28,7 +28,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class EmotionsHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.emotions";
+	public final static String IDENTIFIER = EmotionsHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

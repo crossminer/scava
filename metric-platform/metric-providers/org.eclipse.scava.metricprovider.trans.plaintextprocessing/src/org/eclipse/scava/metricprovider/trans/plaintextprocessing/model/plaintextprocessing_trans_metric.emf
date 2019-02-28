@@ -20,7 +20,7 @@ class BugTrackerCommentPlainTextProcessing {
 class NewsgroupArticlePlainTextProcessing {
 	@searchable
    	attr String newsGroupName;
-   	attr int articleNumber;
+   	attr long articleNumber;
    	attr String[*] plainText;
    	attr boolean hadReplies;
 }

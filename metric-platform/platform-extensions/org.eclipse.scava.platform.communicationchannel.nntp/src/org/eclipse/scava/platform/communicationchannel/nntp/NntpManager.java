@@ -25,7 +25,7 @@ import com.mongodb.DB;
 
 public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> {
 	
-	private final static int RETRIEVAL_STEP = 50;
+	private final static long RETRIEVAL_STEP = 50;
 
 	@Override
 	public boolean appliesTo(CommunicationChannel newsgroup) {
@@ -37,7 +37,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 		NNTPClient nntpClient = NntpUtil.connectToNntpServer(newsgroup);
 		
 		NewsgroupInfo newsgroupInfo = NntpUtil.selectNewsgroup(nntpClient, newsgroup);
-		int lastArticle = newsgroupInfo.getLastArticle();
+		long lastArticle = newsgroupInfo.getLastArticleLong();
 
 //		 The following statement is not really needed, but I added it to speed up running,
 //		 in the date is far latter than the first day of the newsgroup.
@@ -46,8 +46,8 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 
 		String lac = newsgroup.getLastArticleChecked();
 		if (lac == null || lac.equals("") || lac.equals("null")) lac = "-1";
-		int lastArticleChecked = Integer.parseInt(lac);
-		if (lastArticleChecked<0) lastArticleChecked = newsgroupInfo.getFirstArticle();
+		long lastArticleChecked = Long.parseLong(lac);
+		if (lastArticleChecked<0) lastArticleChecked = newsgroupInfo.getFirstArticleLong();
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
 		delta.setNewsgroup(newsgroup);
@@ -58,7 +58,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 			return null;
 		}
 		
-		int retrievalStep = RETRIEVAL_STEP;
+		long retrievalStep = RETRIEVAL_STEP;
 		Boolean dayCompleted = false;
 		while (!dayCompleted) {
 			if (lastArticleChecked + retrievalStep > lastArticle) {
@@ -76,7 +76,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 					java.util.Date javaArticleDate = NntpUtil.parseDate(lastArticleRetrieved.getDate());
 					articleDate = new Date(javaArticleDate);
 					if (date.compareTo(articleDate) > 0)
-						lastArticleChecked = lastArticleRetrieved.getArticleNumber();
+						lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
 				}
 			} while (date.compareTo(articleDate) > 0);
 
@@ -91,7 +91,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 					else if (date.compareTo(articleDate) == 0) {
 						CommunicationChannelArticle communicationChannelArticle = new CommunicationChannelArticle();
 						communicationChannelArticle.setArticleId(article.getArticleId());
-						communicationChannelArticle.setArticleNumber(article.getArticleNumber());
+						communicationChannelArticle.setArticleNumber(article.getArticleNumberLong());
 						communicationChannelArticle.setDate(javaArticleDate);
 //						I haven't seen any messageThreadIds on NNTP servers, yet.
 //						communicationChannelArticle.setMessageThreadId(article.messageThreadId());
@@ -110,7 +110,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 						communicationChannelArticle.setText(
 								getContents(db, newNewsgroup, communicationChannelArticle));
 						delta.getArticles().add(communicationChannelArticle);
-						lastArticleChecked = article.getArticleNumber();
+						lastArticleChecked = article.getArticleNumberLong();
 //						System.out.println("dayNOTCompleted");
 					} 
 					else {
@@ -137,7 +137,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 	public Date getFirstDate(DB db, NntpNewsGroup newsgroup) throws Exception {
 		NNTPClient nntpClient = NntpUtil.connectToNntpServer(newsgroup);
 		NewsgroupInfo newsgroupInfo = NntpUtil.selectNewsgroup(nntpClient, newsgroup);
-		int firstArticleNumber = newsgroupInfo.getFirstArticle();
+		long firstArticleNumber = newsgroupInfo.getFirstArticleLong();
 		
 		if (firstArticleNumber == 0) {
 			return new Date(); // This is to deal with message-less newsgroups.
@@ -147,7 +147,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 		while (reader == null) {
 			firstArticleNumber++;
 			reader = nntpClient.retrieveArticle(firstArticleNumber);
-			if (firstArticleNumber >= newsgroupInfo.getLastArticle()) break;
+			if (firstArticleNumber >= newsgroupInfo.getLastArticleLong()) break;
 		}
 		
 		ArticleHeader articleHeader = new ArticleHeader(reader);

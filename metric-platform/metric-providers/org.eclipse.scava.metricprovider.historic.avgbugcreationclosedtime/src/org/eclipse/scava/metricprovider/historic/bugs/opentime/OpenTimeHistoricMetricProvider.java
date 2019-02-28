@@ -28,7 +28,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class OpenTimeHistoricMetricProvider extends AbstractHistoricalMetricProvider {
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.opentime";
+	public final static String IDENTIFIER = OpenTimeHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

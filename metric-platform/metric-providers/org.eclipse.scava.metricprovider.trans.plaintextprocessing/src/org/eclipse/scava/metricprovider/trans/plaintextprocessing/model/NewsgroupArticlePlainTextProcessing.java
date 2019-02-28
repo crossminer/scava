@@ -35,11 +35,11 @@ public class NewsgroupArticlePlainTextProcessing extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getArticleNumber() {
-		return parseInteger(dbObject.get("articleNumber")+"", 0);
+	public long getArticleNumber() {
+		return parseLong(dbObject.get("articleNumber")+"", 0);
 	}
 	
-	public NewsgroupArticlePlainTextProcessing setArticleNumber(int articleNumber) {
+	public NewsgroupArticlePlainTextProcessing setArticleNumber(long articleNumber) {
 		dbObject.put("articleNumber", articleNumber);
 		notifyChanged();
 		return this;
@@ -61,10 +61,6 @@ public class NewsgroupArticlePlainTextProcessing extends Pongo {
 		return plainText;
 	}
 	
-	public NewsgroupArticlePlainTextProcessing setPlainText(List<String> plainText) {
-		dbObject.put("plainText", plainText);
-		this.plainText = plainText;
-		notifyChanged();
-		return this;	
-	}
+	
+	
 }
