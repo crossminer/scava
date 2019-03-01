@@ -53,7 +53,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallel ? parallelization : 1);
 		System.out.println("running spota: " + workflow.getParallelization());
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
 
 		//
@@ -127,7 +127,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 
 		workflow.getMinimalSource().setNumbers(numbers);
 		final DirectoryCache cache = new DirectoryCache();
@@ -142,7 +142,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 
 		workflow.getMinimalSource().setNumbers(numbers);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
@@ -172,7 +172,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 		workflow.getMinimalSource().setNumbers(new ArrayList<>(numbers));
 
 		Set<Integer> results = new HashSet<Integer>();
@@ -231,7 +231,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -319,7 +319,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
 		workflow.setName("wf");
-		workflow.createBroker(singleBroker ? false : true);
+		workflow.createBroker(createBroker);
 
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 

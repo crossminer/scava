@@ -16,8 +16,7 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 	public void testOutput() throws Exception {
 
 		CommitmentWorkflow workflow = new CommitmentWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 		workflow.getAnimalSource().setAnimalNames(Arrays.asList("cat", "dog", "cat", "horse", "dog", "cat"));
 		workflow.run();
 
@@ -33,8 +32,7 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 	public void testMasterWorkers() throws Exception {
 
 		CommitmentWorkflow master = new CommitmentWorkflow(Mode.MASTER_BARE);
-		if (singleBroker)
-			master.createBroker(false);
+		master.createBroker(createBroker);
 		master.getAnimalSource().setAnimalNames(Arrays.asList("cat", "dog", "cat", "horse", "dog", "cat"));
 
 		List<CommitmentWorkflow> workers = new ArrayList<>();

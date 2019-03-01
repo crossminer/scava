@@ -28,8 +28,7 @@ public class AckWorkflowTests extends WorkflowTests {
 	private void prefetchTest(boolean enable) throws Exception {
 
 		AckWorkflow masterbare = new AckWorkflow(Mode.MASTER_BARE);
-		if (singleBroker)
-			masterbare.createBroker(false);
+		masterbare.createBroker(createBroker);
 		masterbare.setInstanceId("Pre-" + enable);
 		masterbare.setName("Master");
 		masterbare.setEnablePrefetch(enable);
@@ -68,8 +67,7 @@ public class AckWorkflowTests extends WorkflowTests {
 		long init = System.currentTimeMillis();
 
 		AckWorkflow master = new AckWorkflow(Mode.MASTER);
-		if (singleBroker)
-			master.createBroker(false);
+		master.createBroker(createBroker);
 		master.setInstanceId("Termination-" + "true");
 		master.setName("Master");
 		master.getProcessingTask().setLag(100);
@@ -85,8 +83,7 @@ public class AckWorkflowTests extends WorkflowTests {
 		// workflow has terminated
 
 		master = new AckWorkflow(Mode.MASTER);
-		if (singleBroker)
-			master.createBroker(false);
+		master.createBroker(createBroker);
 		master.setInstanceId("Termination-" + "true");
 		master.setName("Master");
 		master.getProcessingTask().setLag(100);

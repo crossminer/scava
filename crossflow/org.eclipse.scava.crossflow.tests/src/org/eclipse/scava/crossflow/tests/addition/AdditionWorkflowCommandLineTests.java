@@ -21,7 +21,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 		String[] noBroker = new String[] { "-createBroker", "false", "-instance", "aw1" };
 
 		AdditionWorkflow master;
-		if (singleBroker)
+		if (!createBroker)
 			master = AdditionWorkflow.run(noBroker);
 		else
 			master = AdditionWorkflow.run(broker);
@@ -41,8 +41,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 	@Test
 	public void parallelTestMasterWorker() throws Exception {
 		parallelTestMasterWorkerActual(1);
-		// uses default parallelization
-		parallelTestMasterWorkerActual(Runtime.getRuntime().availableProcessors());
+		parallelTestMasterWorkerActual(4);
 	}
 
 	public void parallelTestMasterWorkerActual(int p) throws Exception {
@@ -52,7 +51,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 				"-name", "m1" };
 
 		AdditionWorkflow master;
-		if (singleBroker)
+		if (!createBroker)
 			master = AdditionWorkflow.run(noBroker);
 		else
 			master = AdditionWorkflow.run(broker);

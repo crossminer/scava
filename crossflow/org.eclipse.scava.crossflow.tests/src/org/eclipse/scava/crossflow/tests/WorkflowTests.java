@@ -5,7 +5,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 
 public class WorkflowTests {
 
-	public static boolean singleBroker = false;
+	public static boolean createBroker = true;
 
 	protected BrokerService brokerService;
 

@@ -42,8 +42,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		List<Integer> numbers = Arrays.asList(1, 1);
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 		workflow.getMinimalSource().setNumbers(numbers);
 		DirectoryCache cache = new DirectoryCache();
 		workflow.setCache(cache);
@@ -55,8 +54,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		assertEquals(2, workflow.getCopierTask().getExecutions());
 
 		workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 		workflow.getMinimalSource().setNumbers(numbers);
 		workflow.setCache(new DirectoryCache(cache.getDirectory()));
 		workflow.run();
@@ -80,8 +78,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testInternalQueues() throws Exception {
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 
 		InternalQueueMonitor monitor = new InternalQueueMonitor() {
 
@@ -134,10 +131,14 @@ public class MinimalWorkflowTests extends WorkflowTests {
 				}
 				//
 				// System.out.println(queueSizes + "\r\n" + queuesInFlight);
-				// System.out.println("" + queueSizes.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())));
+				// System.out.println("" +
+				// queueSizes.entrySet().stream().collect(Collectors.summingLong(e ->
+				// e.getValue())));
 				// System.out.println(queueSizesActive);
-				// System.out.println("" + queuesInFlight.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())));
-				// System.out.println(queuesInFlightActive);				 
+				// System.out.println("" +
+				// queuesInFlight.entrySet().stream().collect(Collectors.summingLong(e ->
+				// e.getValue())));
+				// System.out.println(queuesInFlightActive);
 				//
 			}
 		};
@@ -176,8 +177,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testResultsTopicActual(int initialDelay) throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2);
 		MinimalWorkflow workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 		List<Integer> results = new LinkedList<Integer>();
 		workflow.getMinimalSource().setNumbers(numbers);
 		//
@@ -226,8 +226,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public synchronized void testStreamMetadataTopicActual(boolean enablePrefetch) throws Exception {
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
@@ -310,8 +309,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testStreamMetadataTopicMultiConsumer() throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 		MinimalWorkflow workflow = new MinimalWorkflow();
-		if (singleBroker)
-			workflow.createBroker(false);
+		workflow.createBroker(createBroker);
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 		workflow.setName("master");
 
