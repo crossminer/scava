@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Codedetector
+Bundle-SymbolicName: org.eclipse.scava.nlp.classifiers.codedetector;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.nlp.libraries.fasttext;bundle-version="1.0.0",
+ org.eclipse.scava.nlp.tools.preprocessor;bundle-version="1.0.0",
+ org.eclipse.scava.nlp.tools.predictions,
+ org.eclipse.core.runtime;bundle-version="3.13.0"
+Automatic-Module-Name: org.eclipse.scava.nlp.codedetector
+Export-Package: org.eclipse.scava.nlp.codedetector
+Bundle-Activator: org.eclipse.scava.nlp.codedetector.Activator
+Bundle-ActivationPolicy: lazy

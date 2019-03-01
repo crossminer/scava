@@ -8,14 +8,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.github,
- org.eclipse.egit.github.core,
  org.joda.time,
- com.google.guava,
- org.eclipse.scava.platform.bugtrackingsystem,
  org.apache.log4j,
  org.apache.commons.lang3,
  com.googlecode.pongo.runtime.dependencies,
- com.google.code.gson
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.eclipse.scava.workflow.restmule.core;bundle-version="0.0.1",
+ org.eclipse.scava.workflow.restmule.generated.client.github;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.github

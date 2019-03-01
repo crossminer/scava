@@ -45,6 +45,16 @@ public class Wiki extends org.eclipse.scava.repository.model.CommunicationChanne
 		notifyChanged();
 		return this;
 	}
+
+	@Override
+	public String getCommunicationChannelType() {
+		return "Wiki";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return getName();
+	}
 	
 	
 	

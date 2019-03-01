@@ -19,6 +19,7 @@ public class GitHubComment extends BugTrackingSystemComment {
 
     private Date updatedAt;
     private String url;
+    
 
     public Date getUpdatedAt() {
         return updatedAt;
@@ -39,5 +40,7 @@ public class GitHubComment extends BugTrackingSystemComment {
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+
+    
 
 }

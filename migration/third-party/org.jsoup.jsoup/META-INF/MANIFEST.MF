@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jsoup
+Bundle-SymbolicName: org.jsoup.jsoup
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: jsoup-1.11.2.jar
+Export-Package: org.jsoup,
+ org.jsoup.helper,
+ org.jsoup.internal,
+ org.jsoup.nodes,
+ org.jsoup.parser,
+ org.jsoup.safety,
+ org.jsoup.select
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

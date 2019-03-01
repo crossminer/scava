@@ -1,0 +1,119 @@
+package org.eclipse.scava.repository.model.mantis;
+
+@stub(javaClass="org.eclipse.scava.repository.model.BugTrackingSystem")
+abstract class BugTrackingSystem {
+   
+}
+
+@stub(javaClass="org.eclipse.scava.repository.model.Project")
+class Project {  
+}
+
+@customize
+class MantisBugTrackingSystem extends BugTrackingSystem {
+
+    attr String project_id;
+    attr String token;
+    attr String host;
+}
+
+class MantisIssue{
+  attr String _id;
+  attr String summary;
+  attr String description;
+  ref MantisProject[1] project;
+  val MantisCategory[*] category;
+  ref MantisReporter[1] reporter;
+  ref MantisHandler[1] handler;
+  ref MantisStatus[1] status;
+  ref MantisResoultion[1] resolution;
+  val MantisViewState[*] view_state;
+  ref MantisPriority[1] priority;
+  ref MantisSeverity[1] severity;
+  ref MantisReproducability[1] reproducibility;
+  attr String  sticky;
+  attr String created_at;
+  attr String updated_at;
+  val MantisNote[*] notes;
+  val MantisTag[*] tags;
+}
+
+
+class MantisProject{
+  attr String _id;
+  attr String name;
+}
+
+class MantisCategory{
+  attr String _id;
+  attr String name;
+}
+
+class MantisReporter{
+  attr String _id;
+  attr String name;
+  attr String email;
+}
+
+class MantisHandler{
+  attr String _id;
+  attr String name;
+  attr String real_name;
+  attr String email;
+}
+
+class MantisStatus{
+  attr String _id;
+  attr String name;
+  attr String label;
+  attr String colour;
+
+}
+
+class MantisResoultion{
+  attr String _id;
+  attr String name;
+  attr String label;
+}
+
+class MantisViewState{
+  attr String _id;
+  attr String name;
+  attr String label;
+}
+
+class MantisPriority{
+  attr String _id;
+  attr String name;
+  attr String label;
+}
+
+class MantisSeverity{
+  attr String _id;
+  attr String name;
+  attr String label;
+}
+
+class MantisReproducability{
+  attr String _id;
+  attr String name;
+  attr String label;
+}
+
+class MantisNote{
+  attr String _id;
+  attr String text;
+  attr String type;
+  attr String created_at;
+  attr String updated_at;
+
+  val MantisReporter[*] reporter;
+  val MantisViewState[*] view_state;
+
+}
+
+class MantisTag{
+  attr String _id;
+  attr String name;
+
+}

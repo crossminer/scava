@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: restmule.github
+Bundle-SymbolicName: org.eclipse.scava.workflow.restmule.generated.client.github
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.workflow.restmule.core;bundle-version="0.0.1"
+Export-Package: org.eclipse.scava.workflow.restmule.generated.client.github.api,
+ org.eclipse.scava.workflow.restmule.generated.client.github.cache,
+ org.eclipse.scava.workflow.restmule.generated.client.github.client,
+ org.eclipse.scava.workflow.restmule.generated.client.github.data,
+ org.eclipse.scava.workflow.restmule.generated.client.github.model,
+ org.eclipse.scava.workflow.restmule.generated.client.github.session
+Bundle-ClassPath: .,
+ resources/

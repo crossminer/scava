@@ -67,6 +67,16 @@ public class MailingList extends org.eclipse.scava.repository.model.Communicatio
 		notifyChanged();
 		return this;
 	}
+
+	@Override
+	public String getCommunicationChannelType() {
+		return "Eclipse Mailing List";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return getName();
+	}
 	
 	
 	

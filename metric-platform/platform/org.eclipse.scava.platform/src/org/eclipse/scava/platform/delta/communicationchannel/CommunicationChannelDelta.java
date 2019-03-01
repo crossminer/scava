@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 University of York
+ * Copyright (c) 2018 University of York and Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,26 +21,38 @@ public class CommunicationChannelDelta  implements Serializable {
 	
 	transient protected CommunicationChannel communicationChannel;
 	protected List<CommunicationChannelArticle> articles = new ArrayList<CommunicationChannelArticle>();
-//	protected String latestArticleId;
+	protected List<CommunicationChannelForumPost> posts = new ArrayList<CommunicationChannelForumPost>();
+	protected List<CommunicationChannelTopic> topics = new ArrayList<CommunicationChannelTopic>();
+
 	
 	public CommunicationChannel getCommunicationChannel() {
 		return communicationChannel;
+	}
+	
+	public void setCommunicationChannel(CommunicationChannel communicationChannel) {
+		this.communicationChannel = communicationChannel;
 	}
 	
 	public void setNewsgroup(CommunicationChannel communicationChannel) {
 		this.communicationChannel = communicationChannel;
 	}
 	
+	public void setForum(CommunicationChannel communicationChannel) {
+		this.communicationChannel = communicationChannel;
+	}
+	
+	
 	public List<CommunicationChannelArticle> getArticles() {
 		return articles;
 	}
 	
-//	public String getLatestArticleId() {
-//		return latestArticleId;
-//	}
 	
-//	public void setLatestArticleId(String latestArticleId) {
-//		this.latestArticleId = latestArticleId;
-//	} //TODO THIS NEEDS SETTING ON CREATION
+	public List<CommunicationChannelTopic> getTopics() {
+		return topics;
+	}
+	
+	public List<CommunicationChannelForumPost> getPosts() {
+		return posts;
+	}
 	
 }

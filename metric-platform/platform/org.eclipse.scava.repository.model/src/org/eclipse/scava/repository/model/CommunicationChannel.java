@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of L'Aquila
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,6 +19,32 @@ public abstract class CommunicationChannel extends Pongo {
 	
 	protected List<Person> persons = null;
 	
+	/**
+     * @return a string unique to each subclass of Communication Channels (e.g.
+     *         "nntp", "IRC", "eclipse Forums")
+     */
+    public abstract String getCommunicationChannelType();
+    
+    /**
+     * @return a string uniquely identifying an instance of a Communication Channel
+     *         (e.g. for Eclipse Forums, this could be 'Forum Name/Forum ID')
+     */
+    public abstract String getInstanceId();
+    
+    @Override
+    protected void notifyChanged() {
+        dbObject.put("_ossmeterId", getInstanceId() + ':' + getCommunicationChannelType());
+
+        super.notifyChanged();
+    }
+    
+    /**
+     * @return a string uniquely identifying a Communication Channel instance within
+     *         the Scava environment
+     */
+    public String getOSSMeterId() {
+        return parseString(dbObject.get("_ossmeterId") + "", null);
+    }
 	
 	public CommunicationChannel() { 
 		super();

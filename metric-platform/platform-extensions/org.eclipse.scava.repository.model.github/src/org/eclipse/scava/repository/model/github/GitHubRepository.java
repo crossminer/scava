@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.scava.repository.model.github;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.PongoList;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class GitHubRepository extends org.eclipse.scava.repository.model.Project {
@@ -43,6 +41,7 @@ public class GitHubRepository extends org.eclipse.scava.repository.model.Project
 		SSH_URL.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
 		SVN_URL.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
 		MIRROR_URL.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
+		TOKEN.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
 		SIZE.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
 		MASTER_BRANCH.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
 	}
@@ -56,6 +55,7 @@ public class GitHubRepository extends org.eclipse.scava.repository.model.Project
 	public static StringQueryProducer SSH_URL = new StringQueryProducer("ssh_url"); 
 	public static StringQueryProducer SVN_URL = new StringQueryProducer("svn_url"); 
 	public static StringQueryProducer MIRROR_URL = new StringQueryProducer("mirror_url"); 
+	public static StringQueryProducer TOKEN = new StringQueryProducer("token"); 
 	public static NumericalQueryProducer SIZE = new NumericalQueryProducer("size");
 	public static StringQueryProducer MASTER_BRANCH = new StringQueryProducer("master_branch"); 
 	
@@ -138,6 +138,15 @@ public class GitHubRepository extends org.eclipse.scava.repository.model.Project
 	
 	public GitHubRepository setMirror_url(String mirror_url) {
 		dbObject.put("mirror_url", mirror_url);
+		notifyChanged();
+		return this;
+	}
+	public String getToken() {
+		return parseString(dbObject.get("token")+"", "");
+	}
+	
+	public GitHubRepository setToken(String token) {
+		dbObject.put("token", token);
 		notifyChanged();
 		return this;
 	}

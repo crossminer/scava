@@ -46,7 +46,15 @@ public class Forum extends org.eclipse.scava.repository.model.CommunicationChann
 		return this;
 	}
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "OssmeterForum";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return getName();
+	}
 	
 	
 }

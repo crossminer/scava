@@ -1,0 +1,15 @@
+package org.eclipse.scava.repository.model.cc.eclipseforums;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+
+}
+
+
+class EclipseForum extends CommunicationChannel {
+	@searchable
+	attr String client_id;
+	attr String client_secret;
+  	attr String forum_id;
+  	attr String forum_name;
+}

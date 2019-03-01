@@ -2,3 +2,4 @@ Manifest-Version: 1.0
 Bundle-SymbolicName: Eclipse SCAVA Commons
 Bundle-Name: Eclipse SCAVA Commons
 Bundle-Version: 0.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

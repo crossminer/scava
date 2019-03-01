@@ -18,6 +18,16 @@ public class RedmineWiki extends org.eclipse.scava.repository.model.Communicatio
 		super();
 		super.setSuperTypes("org.eclipse.scava.repository.model.redmine.CommunicationChannel");
 	}
+
+	@Override
+	public String getCommunicationChannelType() {
+		return "RedmineWiki";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}
 	
 	
 	

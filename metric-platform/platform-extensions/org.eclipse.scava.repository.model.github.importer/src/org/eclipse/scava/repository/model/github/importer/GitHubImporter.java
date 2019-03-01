@@ -409,8 +409,7 @@ public class GitHubImporter implements IImporter{
 				bt.setUrl("https://api.github.com/repos/" + projectId + "/issues");
 				String user = projectId.split("/")[0];
 				String repo = projectId.split("/")[1];
-				bt.setUser(user);
-				bt.setRepository(repo);
+				bt.setProject(user, repo);
 				repository.getBugTrackingSystems().add(bt);
 			}
 			

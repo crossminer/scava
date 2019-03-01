@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2018 Edge Hill University
+  
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.googlecode.pongo.runtime.osgi">
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisCategory">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisHandler">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisIssue">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisNote">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisPriority">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisProject">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisReporter">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisReproducability">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisResoultion">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisSeverity">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisStatus">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisTag">
+      </class>
+      <class
+            name="org.eclipse.scava.repository.model.mantis.MantisViewState">
+      </class>
+   </extension>
+
+</plugin>
