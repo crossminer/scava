@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class ParallelWorkflowTests extends WorkflowTests {
 
-	int parallelization = Math.max(Runtime.getRuntime().availableProcessors(), 2);
+	int parallelization = 4;
 
 	// define the number of retries for tests in this class (annotated with @Retry)
 	@Rule

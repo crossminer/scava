@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class TransactionalCachingTests extends WorkflowTests {
 
-	int parallelization = Math.max(Runtime.getRuntime().availableProcessors(), 2);
+	int parallelization = 4;
 
 	@Test
 	public void testCacheMasterWorker() throws Exception {
