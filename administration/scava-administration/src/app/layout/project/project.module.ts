@@ -12,7 +12,7 @@ import { TreeviewModule } from 'ngx-treeview';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './components/configure-project/analysis-task-delete/analysis-task-delete-dialog.component';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
 import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,10 +26,15 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/project-delete-dialog.component';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonToggleModule, MatCardModule, MatChipsModule, MatDialogModule, MatDividerModule, MatExpansionModule, MatGridListModule, MatMenuModule, MatProgressBarModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatStepperModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { EditProjectComponent } from './components/edit-project/edit-project.component';
+import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
 
 @NgModule({
   imports: [
+    CdkTableModule,
+    CdkTreeModule,
     NgbModalModule,
     CommonModule,
     ProjectRoutingModule,
@@ -46,9 +51,32 @@ import { MatButtonModule } from '@angular/material';
     MatRadioModule,
     MatSortModule,
     MatPaginatorModule,
-    MatTreeModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
     MatIconModule,
-    MatButtonModule
+    MatMenuModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
   ],
   declarations: [
     ProjectComponent, 
@@ -59,7 +87,8 @@ import { MatButtonModule } from '@angular/material';
     AnalysisTaskUpdateComponent,
     AnalysisTaskMgmtDeleteDialogComponent,
     MetricProvidersMgmtInfoDialogComponent,
-    ProjectMgmtDeleteDialogComponent
+    ProjectMgmtDeleteDialogComponent,
+    EditProjectComponent
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent,

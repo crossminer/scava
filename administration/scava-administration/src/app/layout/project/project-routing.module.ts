@@ -8,10 +8,11 @@ import { RoleGuard } from '../../shared/guard/role.guard';
 import { AnalysisTaskAddComponent } from './components/configure-project/analysis-task-add/analysis-task-add.component';
 import { AnalysisTaskUpdateComponent } from './components/configure-project/analysis-task-update/analysis-task-update.component';
 import { JwtTokenGuard } from '../../shared';
+import { EditProjectComponent } from './components/edit-project/edit-project.component';
 
 const routes: Routes = [
     {
-        path: '', 
+        path: '',
         canActivate: [JwtTokenGuard],
         component: ProjectComponent,
     },
@@ -50,6 +51,14 @@ const routes: Routes = [
     {
         path: 'configure/:id/update-task/:label', 
         component: AnalysisTaskUpdateComponent,
+        canActivate: [RoleGuard],
+        data: {
+            authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']
+        }
+    },
+    {
+        path: 'edit/:id',
+        component: EditProjectComponent,
         canActivate: [RoleGuard],
         data: {
             authorities: ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_USER']

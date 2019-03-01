@@ -5,7 +5,7 @@
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/import']">Import Project</button>
       <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/create']">Create Project</button>
     </div>
-    <hr />
+    <hr/>
   </div>
   <div class="col-xs col-sm col-md col-lg col-xl">
     <div *ngFor="let project of projectList" class="bg-light card mb-3" style="margin :10px;">
@@ -66,6 +66,7 @@
         </div>
       </div>
       <div class="card-footer text-right" style="padding: 0.5em;">
+        <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/project/edit/', project.shortName]">Edit</button>&nbsp;
         <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/project/configure/', project.shortName]">Configure</button>
       </div>
     </div>
