@@ -499,56 +499,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		}
 	}
 
-	// ------------------------------------------------------------------------------------------
-	// TESTING METHOD
-	// ------------------------------------------------------------------------------------------
-
-	public static void main(String[] args) throws ParseException, Exception {
-
-		int issueCount = 0;
-		int commentCount = 0;
-
-		GitLabTracker gitlabTracker = new GitLabTracker();
-		gitlabTracker.setPersonal_access_token("bgxmGow5eCnbcoJi_sMt");
-		//gitlabTracker.setProject_id("8418424");
-		gitlabTracker.setProject_id("4735523");
-		GitLabManager manager = new GitLabManager();
-
-		Date today = new Date();
-		today.addDays(1);
-		//Date date = new Date(manager.getFirstDate(null, gitlabTracker).toString());
-		Date date = new Date("20180109");
-		
-		System.out.println(
-				"---------------------------------------------------------------------------------------------------------------------\n"
-						+ "First Date - " + manager.getFirstDate(null, gitlabTracker)
-						+ "\n---------------------------------------------------------------------------------------------------------------------");
-
-		do {
-
-			BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
-			delta = manager.getDelta(null, gitlabTracker, date);
-			System.out
-					.println("\n\tDate :\t" + date + "\tNew Bugs :\t" + delta.getNewBugs().size() + "\tUpdated Bugs :\t"
-							+ delta.getUpdatedBugs().size() + "\tComments :\t" + delta.getComments().size());
-			issueCount = issueCount + delta.getNewBugs().size();
-			commentCount = commentCount + delta.getComments().size();
-			date = new Date(date.addDays(1).toString());
-
-		} while (date.compareTo(today) < 1);
-		
-		System.out.println(
-				"\n---------------------------------------------------------------------------------------------------------------------"
-			  + "\n"
-			  + "\n---------------------------------------------------------------------------------------------------------------------");
-		
-		System.out.println(issueCount);
-		System.out.println(commentCount);
-		System.exit(0);
-		
-	}
-	
-	
 	
 	// ------------------------------------------------------------------------------------------
 	// NOT USED

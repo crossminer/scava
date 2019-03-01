@@ -96,12 +96,14 @@ public class ProjectAnalyserEHU {
 		logger.info("Dates: " + dates.length);
 		
 		long estimatedDuration = 0; 
+			
 		for (Date date : dates) {
 			java.util.Date dailyExecution = new java.util.Date();
 			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
 	
 			ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
+			
 			logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
@@ -126,6 +128,7 @@ public class ProjectAnalyserEHU {
 				executorService.execute(mExe);
 			}
 			
+			//If put at the end the metrics run too fast despite they have some dependencies
 			try {
 				executorService.shutdown();
 				executorService.awaitTermination(24, TimeUnit.HOURS);
@@ -150,8 +153,7 @@ public class ProjectAnalyserEHU {
 			if (project.getExecutionInformation().getInErrorState()) {
 				// TODO: what should we do? Is the act of not-updating the lastExecuted flag enough?
 				// If it continues to loop, it simply tries tomorrow. We need to stop this happening.
-				logger.warn("Project in error state. Stopping execution.");
-				break;
+				logger.warn("Project in error state. Resuming execution.");
 			} else {
 				logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
@@ -185,6 +187,8 @@ public class ProjectAnalyserEHU {
 			}
 		}
 		
+		
+
 		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
 		return true;
 	}

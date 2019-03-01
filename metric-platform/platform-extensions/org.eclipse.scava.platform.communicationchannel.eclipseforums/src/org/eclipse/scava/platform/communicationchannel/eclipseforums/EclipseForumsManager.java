@@ -641,38 +641,5 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		
 		return result;
 	}
-	public static void main(String[] args) throws Exception {
-
-		EclipseForum ef = new EclipseForum();
-
-		// EXAMPLE FORUMS
-		ef.setClient_id("H13SyatW6qPuXZ77Oorwc4i4Xw5");
-		ef.setClient_secret("wpl9NBtLn2KxA0r9lmPxWoDbb5I");
-		ef.setForum_id("223");
-
-		// ef.setForum_id("305"); // Can't run java program in Eclipse - javaw error
-		// ef.setTopic_id("799069");// Eclipse Won't Start
-
-		EclipseForumsManager efc = new EclipseForumsManager();
-
-		// efc.generateOpenId(ef);// this generates a openID
-
-		Date today = new Date();
-		Date date = new Date(efc.getFirstDate(null, ef).toString());
-		int postcount = 0;
-		int topiccount = 0;
-		do {
-			System.out.println("\nDate : " + date + "----------------------------------");
-			CommunicationChannelDelta delta = new CommunicationChannelDelta();
-			delta = efc.getDelta(null, ef, date);
-			postcount = postcount+ delta.getPosts().size();
-			topiccount = topiccount + delta.getTopics().size();
-			date = new Date(date.addDays(1).toString());
-		} while (date.compareTo(today) < 1);
-		
-		
-		System.out.println("posts  = " + postcount);
-		System.out.println("topics = " + topiccount);
-		System.exit(0);
-	}
+	
 }
