@@ -28,10 +28,8 @@ set[loc] getJUnit3TestMethods(M3 m) {
     set[loc] candidateMethods = { candidate | candidate <- m.containment[testClass], isMethod(candidate) };
     rel[loc, str] invertedNamesRel = m.names<1,0>;
     for (candidate <- candidateMethods) {
-      if (size(invertedNamesRel[candidate]) > 0) {
-        if (nameStartsWithTest(getOneFrom(invertedNamesRel[candidate]))) {
-          result += candidate;
-        }
+      if (nameStartsWithTest(getOneFrom(invertedNamesRel[candidate]))) {
+        result += candidate;
       }
     }
   }
@@ -44,10 +42,8 @@ set[loc] getJUnit3SetupMethods(M3 m) {
     set[loc] candidateMethods = { candidate | candidate <- m.containment[testClass], isMethod(candidate) };
     rel[loc, str] invertedNamesRel = m.names<1,0>;
     for (candidate <- candidateMethods) {
-      if (size(invertedNamesRel[candidate]) > 0) {
-        if (isTestSetup(getOneFrom(invertedNamesRel[candidate]))) {
-          result += candidate;
-        }
+      if (isTestSetup(getOneFrom(invertedNamesRel[candidate]))) {
+        result += candidate;
       }
     }
   }
