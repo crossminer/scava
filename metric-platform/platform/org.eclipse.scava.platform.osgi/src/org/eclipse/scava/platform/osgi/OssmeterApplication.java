@@ -104,7 +104,7 @@ public class OssmeterApplication implements IApplication{
 		if (args == null) return;
 		
 		for (int i = 0; i < args.length; i++) {
-			if ("-ossmeterConfig".equals(args[i])) {
+			if ("-config".equals(args[i])) {
 				Properties configuration = new Properties();
 				try {
 					configuration.load(new FileReader(args[i+1]));
@@ -123,7 +123,7 @@ public class OssmeterApplication implements IApplication{
 				i++;
 			}else if ("-worker".equals(args[i])) { 
 				worker = true;
-				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-ossmeterConfig".equals(args[i]) ) {
+				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-config".equals(args[i]) ) {
 					this.workerId = args[i+1];
 				}
 				

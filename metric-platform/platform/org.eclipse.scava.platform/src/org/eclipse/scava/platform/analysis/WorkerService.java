@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
-import org.eclipse.scava.platform.analysis.data.model.WorkerCollection;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
-import org.eclipse.scava.platform.logging.AnalysisProcessLogger;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class WorkerService {
