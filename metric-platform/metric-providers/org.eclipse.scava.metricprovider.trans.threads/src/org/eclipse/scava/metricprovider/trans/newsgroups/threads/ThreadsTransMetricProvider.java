@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -78,7 +79,6 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		return new NewsgroupsThreadsTransMetric(db);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsThreadsTransMetric db) {
 
@@ -99,7 +99,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		
 		CommunicationChannelProjectDelta delta = projectDelta.getCommunicationChannelDelta();
 
-		Map<String, Set<Integer>> articleIdsPerNewsgroup = new HashMap<String, Set<Integer>>();
+		Map<String, Set<Long>> articleIdsPerNewsgroup = new HashMap<String, Set<Long>>();
 		Map<String, Set<Integer>> threadsPerNewsgroup = new HashMap<String, Set<Integer>>();
 
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
@@ -114,7 +114,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					communicationChannelName = newsgroup.getNewsGroupName();
 				}
 				
-				Map<Integer, String> previousClassAssignments = new HashMap<Integer, String>();
+				Map<Long, String> previousClassAssignments = new HashMap<Long, String>();
 				
 				List<Article> articles = new ArrayList<Article>();
 				for (ThreadData threadData: db.getThreads()) {
@@ -122,11 +122,11 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 						if (articleData.getNewsgroupName().equals(communicationChannelName)) {
 							previousClassAssignments.put(articleData.getArticleNumber(), articleData.getContentClass());
 							articles.add(prepareArticle(articleData));
-							Set<Integer> articleIds = null;
+							Set<Long> articleIds = null;
 							if (articleIdsPerNewsgroup.containsKey(articleData.getNewsgroupName()))
 								articleIds = articleIdsPerNewsgroup.get(articleData.getNewsgroupName());
 							else {
-								articleIds = new HashSet<Integer>();
+								articleIds = new HashSet<Long>();
 								articleIdsPerNewsgroup.put(articleData.getNewsgroupName(), articleIds);
 							}
 							articleIds.add(articleData.getArticleNumber());
@@ -134,7 +134,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					}
 				}
 				
-				Map<Integer, ClassificationInstance> instanceIndex = new HashMap<Integer, ClassificationInstance>();
+				Map<Long, ClassificationInstance> instanceIndex = new HashMap<Long, ClassificationInstance>();
 				for (CommunicationChannelArticle deltaArticle :communicationChannelDelta.getArticles()) {
 
 					Boolean articleExists = false;
@@ -163,8 +163,8 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					int positionInThread = 0;
 					for (Article article: list) {
 						positionInThread++;
-						if (instanceIndex.containsKey(article.getArticleNumber())) {
-							ClassificationInstance instance = instanceIndex.get(article.getArticleNumber());
+						if (instanceIndex.containsKey(article.getArticleNumberLong())) {
+							ClassificationInstance instance = instanceIndex.get(article.getArticleNumberLong());
 							instance.setPositionFromThreadBeginning(positionInThread);
 //							instance.setPositionFromThreadEnd(list.size()+1-positionInThread);
 							classifier.add(instance);
@@ -226,7 +226,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		return instance;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	private Article prepareArticle(CommunicationChannelArticle deltaArticle) {
 		Article article = new Article();
 		article.setArticleId(deltaArticle.getArticleId());
@@ -240,14 +240,14 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		return article;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	private ArticleData prepareArticleData(Article article, 
 					String communicationChannelName, Classifier classifier, 
-					Map<Integer, String> previousClassAssignments, Map<Integer, ClassificationInstance> instanceIndex) {
+					Map<Long, String> previousClassAssignments, Map<Long, ClassificationInstance> instanceIndex) {
 		ArticleData articleData = new ArticleData();
 		articleData.setNewsgroupName(communicationChannelName);
 		articleData.setArticleId(article.getArticleId());
-		articleData.setArticleNumber(article.getArticleNumber());
+		articleData.setArticleNumber(article.getArticleNumberLong());
 		articleData.setDate(article.getDate());
 		articleData.setFrom(article.getFrom());
 		articleData.setSubject(article.getSubject());
@@ -255,18 +255,18 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		for (String reference: article.getReferences())
 			references += " " + reference;
 		articleData.setReferences(references.trim());
-		if (previousClassAssignments.containsKey(article.getArticleNumber())) {
-			articleData.setContentClass(previousClassAssignments.get(article.getArticleNumber()));
+		if (previousClassAssignments.containsKey(article.getArticleNumberLong())) {
+			articleData.setContentClass(previousClassAssignments.get(article.getArticleNumberLong()));
 		}
 		else {
 			articleData.setContentClass(
-					classifier.getClassificationResult(instanceIndex.get(article.getArticleNumber())));
+					classifier.getClassificationResult(instanceIndex.get(article.getArticleNumberLong())));
 		}
 //		printArticle(article, "|3| ");
 		return articleData;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	private Article prepareArticle(ArticleData articleData) {
 		Article article = new Article();
 		article.setArticleId(articleData.getArticleId());
@@ -306,13 +306,13 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 				"The threading algorithm is executed from scratch everytime.";
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	public static List<List<Article>> zeroLevelCall(Article article) {
 //		Article root = article;
 		List<List<Article>> threadList = new ArrayList<List<Article>>();
 		while (article!=null) {
 			List<Article> articleNumbers = new ArrayList<Article>();
-			if (article.getArticleNumber()>0)
+			if (article.getArticleNumberLong()>0)
 				articleNumbers.add(article);
 			if (article.kid != null)
 				articleNumbers.addAll(higherLevelCall(article.kid));
@@ -322,8 +322,8 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			else {
 				int index=0;
 				while ((index<threadList.size()) && 
-						(articleNumbers.get(0).getArticleNumber() > 
-							threadList.get(index).get(0).getArticleNumber()))
+						(articleNumbers.get(0).getArticleNumberLong() > 
+							threadList.get(index).get(0).getArticleNumberLong()))
 					index++;
 				threadList.add(index, articleNumbers);
 			}

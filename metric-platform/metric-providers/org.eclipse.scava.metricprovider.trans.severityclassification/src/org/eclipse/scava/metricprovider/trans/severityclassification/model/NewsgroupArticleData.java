@@ -66,11 +66,11 @@ public class NewsgroupArticleData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getArticleNumber() {
-		return parseInteger(dbObject.get("articleNumber")+"", 0);
+	public long getArticleNumber() {
+		return parseLong(dbObject.get("articleNumber")+"", 0);
 	}
 	
-	public NewsgroupArticleData setArticleNumber(int articleNumber) {
+	public NewsgroupArticleData setArticleNumber(long articleNumber) {
 		dbObject.put("articleNumber", articleNumber);
 		notifyChanged();
 		return this;

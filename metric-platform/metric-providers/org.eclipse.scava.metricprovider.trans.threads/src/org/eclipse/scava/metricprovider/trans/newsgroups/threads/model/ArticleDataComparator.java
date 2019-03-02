@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -18,7 +19,7 @@ public class ArticleDataComparator implements Comparator<ArticleData>{
 		if (!articleA.getNewsgroupName().equals(articleB.getNewsgroupName()))
 			return articleA.getNewsgroupName().compareTo(articleB.getNewsgroupName());
 		else 
-			return articleA.getArticleNumber() - articleB.getArticleNumber();
+			return (int)(articleA.getArticleNumber() - articleB.getArticleNumber());
 	}
 
 }

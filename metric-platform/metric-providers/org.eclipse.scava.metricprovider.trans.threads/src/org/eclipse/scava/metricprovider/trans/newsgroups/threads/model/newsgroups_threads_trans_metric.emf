@@ -22,7 +22,7 @@ class ArticleData {
    @searchable
    attr String newsgroupName;
    @searchable
-   attr int articleNumber;
+   attr long articleNumber;
    attr String articleId;
    attr String date;
    attr String from;
