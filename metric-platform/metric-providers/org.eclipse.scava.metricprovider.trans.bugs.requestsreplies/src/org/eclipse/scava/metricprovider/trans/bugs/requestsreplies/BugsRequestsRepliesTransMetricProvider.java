@@ -119,8 +119,8 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 				String responseReply = comment.getRequestReplyPrediction();
 				if (first)
 					firstMessageTime = comment.getCreationTime();
-				if ((first)&&(responseReply.equals("Reply"))) isFirstRequest=false;
-				if ( ( !first ) && ( noReplyFound ) && ( responseReply.equals("Reply") ) ) {
+				if ((first)&&(responseReply.equals("__label__Reply"))) isFirstRequest=false;
+				if ( ( !first ) && ( noReplyFound ) && ( responseReply.equals("__label__Reply") ) ) {
 					BugStatistics bugStats = new BugStatistics();
 					bugStats.setBugTrackerId(lastBugTrackerId);
 					bugStats.setFirstRequest(isFirstRequest);
@@ -137,7 +137,7 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 //							"firstResponseTime: " + comment.getCreationTime() + "\t" + 
 //							"duration: " + duration);
 				}
-				if (responseReply.equals("Reply")) noReplyFound=false;
+				if (responseReply.equals("__label__Reply")) noReplyFound=false;
 				first=false;
 			}
 			

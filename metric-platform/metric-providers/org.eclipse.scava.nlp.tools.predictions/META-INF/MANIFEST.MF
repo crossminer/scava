@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Predictions
+Bundle-SymbolicName: org.eclipse.scava.nlp.tools.predictions;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.nlp.tools.predictions.externalExtra,
+ org.eclipse.scava.nlp.tools.predictions.multilabel,
+ org.eclipse.scava.nlp.tools.predictions.singlelabel
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.scava.nlp.tools.predictions.Activator
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0"

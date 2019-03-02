@@ -126,7 +126,15 @@ public class Zendesk extends org.eclipse.scava.repository.model.CommunicationCha
 		return this;
 	}
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "Zendesk";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return getName();
+	}	
 	
 	
 }

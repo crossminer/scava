@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Predictionmanager
+Bundle-SymbolicName: org.eclipse.scava.nlp.tools.other
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.scava.nlp.tools.other,
+ org.eclipse.scava.nlp.tools.other.emoticons,
+ org.eclipse.scava.nlp.tools.other.featuresextractor,
+ org.eclipse.scava.nlp.tools.other.ngrams,
+ org.eclipse.scava.nlp.tools.other.symbolconverter
+Automatic-Module-Name: org.eclipse.scava.nlp.predictionmanager
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0"
+Bundle-Activator: org.eclipse.scava.nlp.tools.other.Activator
+Bundle-ActivationPolicy: lazy

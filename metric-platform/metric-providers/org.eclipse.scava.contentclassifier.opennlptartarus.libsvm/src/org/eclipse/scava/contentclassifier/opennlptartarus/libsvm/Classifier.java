@@ -85,12 +85,8 @@ public class Classifier {
 //		previousTime = printTimeMessage(startTime, previousTime, instanceListSize(), 
 //										"generated features");
 
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		String argumentString = "-b 1 classifierFiles/Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m";
 //		String argumentString = "-b 1 " + path + "classifierFiles/Test-TfIdfFeatures-Clean-AllPoS.m";
-		svm_model model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "), getClass().getClassLoader());
+		svm_model model = svm_predict_nofiles.parse_args_and_load_model(getClass().getClassLoader(), "classifierFiles", "Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m", true );
 		
 		List<List<Double>> output_list = null;
 		try {

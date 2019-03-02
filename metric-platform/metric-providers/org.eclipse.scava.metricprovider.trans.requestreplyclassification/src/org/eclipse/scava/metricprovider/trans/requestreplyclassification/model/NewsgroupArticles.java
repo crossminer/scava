@@ -1,17 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.requestreplyclassification.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class NewsgroupArticles extends Pongo {
@@ -41,11 +33,11 @@ public class NewsgroupArticles extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getArticleNumber() {
-		return parseInteger(dbObject.get("articleNumber")+"", 0);
+	public long getArticleNumber() {
+		return parseLong(dbObject.get("articleNumber")+"", 0);
 	}
 	
-	public NewsgroupArticles setArticleNumber(int articleNumber) {
+	public NewsgroupArticles setArticleNumber(long articleNumber) {
 		dbObject.put("articleNumber", articleNumber);
 		notifyChanged();
 		return this;

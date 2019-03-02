@@ -135,9 +135,9 @@ BugsDailyRequestsRepliesTransMetric>{
 
 				dayComments.setNumberOfComments(dayComments.getNumberOfComments()+1);
 				String requestReplyClass = getRequestReplyClass(usedClassifier, bugTrackingSystem, comment);
-				if (requestReplyClass.equals("Request"))
+				if (requestReplyClass.equals("__label__Request"))
 					dayComments.setNumberOfRequests(dayComments.getNumberOfRequests()+1);
-				else if (requestReplyClass.equals("Reply"))
+				else if (requestReplyClass.equals("__label__Reply"))
 					dayComments.setNumberOfReplies(dayComments.getNumberOfReplies()+1);
 				db.sync();
 			}

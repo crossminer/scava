@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipseforums
+Bundle-SymbolicName: org.eclipse.scava.platform.communicationchannel.eclipseforums;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.platform.communicationchannel.eclipseforums,
+ org.eclipse.scava.platform.communicationchannel.eclipseforums.utils
+Require-Bundle: org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.cc.eclipseforums,
+ org.eclipse.osgi,
+ com.fasterxml.jackson;bundle-version="2.3.1",
+ org.apache.log4j;bundle-version="1.0.0",
+ com.squareup.okhttp3;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.scava.platform.communicationchannel.eclipseforums.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
