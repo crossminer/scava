@@ -49,6 +49,10 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 		
 	}
 	
+	/*
+	 * Deprecated until fix in CROSSFLOW
+	 */
+	@Deprecated
 	public void setProject(String user, String accessToken, String repository, String repositoryOwner)
 	{
 		try {

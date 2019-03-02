@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
+import org.eclipse.scava.crossflow.restmule.client.github.model.Issues;
+import org.eclipse.scava.crossflow.restmule.client.github.model.IssuesComments;
+import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 //OSSMETER
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubReaderUtils;
@@ -30,14 +34,9 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemMana
 //DB Model packages
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.github.GitHubBugTracker;
-import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
-import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
-import org.eclipse.scava.crossflow.restmule.client.github.model.Issues;
-import org.eclipse.scava.crossflow.restmule.client.github.model.IssuesComments;
 
 //Mongo DB package
 import com.mongodb.DB;
-import io.reactivex.Observable;
 
 public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker> {
 
