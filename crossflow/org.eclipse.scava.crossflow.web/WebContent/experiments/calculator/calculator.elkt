@@ -17,7 +17,7 @@ node Q_Calculations {
 }
 
 edge Q_Calculations -> T_Calculator {
-    label "Calculation(a, b, operator)"
+    label "Calculation(a : int, b : int, operator : String)"
 }
 
 node T_Calculator {
@@ -25,7 +25,7 @@ node T_Calculator {
 }
 
 edge T_Calculator -> Q_CalculationResults {
-    label "CalculationResult(a, b, operator, worker, result)"
+    label "CalculationResult(a : int, b : int, operator : String, worker : String, result : String)"
 }
 
 node Q_CalculationResults {

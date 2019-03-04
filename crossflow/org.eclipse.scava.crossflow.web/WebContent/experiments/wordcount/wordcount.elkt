@@ -17,7 +17,7 @@ node Q_Lines {
 }
 
 edge Q_Lines -> T_WordCounter {
-    label "Line(text)"
+    label "Line(text : String)"
 }
 
 node T_WordCounter {
@@ -25,7 +25,7 @@ node T_WordCounter {
 }
 
 edge T_WordCounter -> Q_WordFrequencies {
-    label "WordFrequency(word, frequency)"
+    label "WordFrequency(word : String, frequency : int)"
 }
 
 node Q_WordFrequencies {
