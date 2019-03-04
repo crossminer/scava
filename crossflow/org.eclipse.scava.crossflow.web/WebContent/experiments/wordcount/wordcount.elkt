@@ -1,0 +1,44 @@
+graph G1
+algorithm: layered
+
+node T_LineSource {
+	label "LineSource"
+}
+
+edge T_LineSource -> Q_Lines {
+    label ""
+}
+
+node Q_Lines {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.minimum: "(50.0,30.0)"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+    label "Lines"
+}
+
+edge Q_Lines -> T_WordCounter {
+    label "Line(text)"
+}
+
+node T_WordCounter {
+	label "WordCounter"
+}
+
+edge T_WordCounter -> Q_WordFrequencies {
+    label "WordFrequency(word, frequency)"
+}
+
+node Q_WordFrequencies {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.minimum: "(50.0,30.0)"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+    label "WordFrequencies"
+}
+
+edge Q_WordFrequencies -> T_WordFrequenciesSink {
+    label ""
+}
+
+node T_WordFrequenciesSink {
+	label "WordFrequenciesSink"
+}
