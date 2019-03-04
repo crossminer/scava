@@ -90,7 +90,6 @@ export class AnalysisTaskAddComponent implements OnInit {
 
   getSelectedData(data: SelectionChange<MetricProvider>) {
     //console.log("event !!!!!!")
-    debugger
     if (data.added.length !== 0) {
       console.log('selected');
       console.log(data);
@@ -131,7 +130,6 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
   selectDependencies(ownerMP: MetricProvider) {
-    debugger
     for (let obj of ownerMP.dependOf) {
       //console.log(obj)
       let mp = this.dataSource.data.find(mp => mp.metricProviderId == obj.metricProviderId);
