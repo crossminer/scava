@@ -7,6 +7,7 @@ import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 import { MatSort } from '@angular/material';
+import { debug } from 'util';
 
 
 @Component({
@@ -89,15 +90,20 @@ export class AnalysisTaskAddComponent implements OnInit {
 
   getSelectedData(data: SelectionChange<MetricProvider>) {
     //console.log("event !!!!!!")
+    debugger
     if (data.added.length !== 0) {
       console.log('selected');
       console.log(data);
-      this.onRowSelect(data.added[0]);
+      for (let mp of data.added) {
+        this.onRowSelect(mp);
+      } 
     }
     if (data.removed.length !== 0) {
       console.log('unselected');
       console.log(data);
-      this.onRowUnselect(data.removed[0]);
+      for (let mp of data.removed) {
+        this.onRowUnselect(mp);
+      }
     }
   }
 
@@ -125,6 +131,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
   selectDependencies(ownerMP: MetricProvider) {
+    debugger
     for (let obj of ownerMP.dependOf) {
       //console.log(obj)
       let mp = this.dataSource.data.find(mp => mp.metricProviderId == obj.metricProviderId);
