@@ -1,0 +1,44 @@
+graph G1
+algorithm: layered
+
+node T_CalculationSource {
+	label "CalculationSource"
+}
+
+edge T_CalculationSource -> Q_Calculations {
+    label ""
+}
+
+node Q_Calculations {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.minimum: "(50.0,30.0)"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+    label "Calculations"
+}
+
+edge Q_Calculations -> T_Calculator {
+    label "Calculation(a, b, operator)"
+}
+
+node T_Calculator {
+	label "Calculator"
+}
+
+edge T_Calculator -> Q_CalculationResults {
+    label "CalculationResult(a, b, operator, worker, result)"
+}
+
+node Q_CalculationResults {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.minimum: "(50.0,30.0)"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+    label "CalculationResults"
+}
+
+edge Q_CalculationResults -> T_CalculationResultsSink {
+    label ""
+}
+
+node T_CalculationResultsSink {
+	label "CalculationResultsSink"
+}

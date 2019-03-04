@@ -4,7 +4,7 @@
 	jar="org.eclipse.scava.crossflow.tests.jar" 
 	input="in" 
 	output="out" 
-	runtimeModel="calculator.flexmi"
+	runtimeModel="calculator.elkt"
 	summary="A minimal example that performs numerical operations defined in a comma-seprated values (CSV) file."
 	>
 	<input path="in/input.csv" title="Calculations"/>
