@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import libsvm.svm_model;
-import libsvm.svm_node;
-
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+
+import libsvm.svm_model;
+import libsvm.svm_node;
 
 public class Classifier {
 

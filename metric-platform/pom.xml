@@ -184,8 +184,6 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.threadsrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.topics</module>
     <module>metric-providers/org.eclipse.scava.opennlp</module>
-    <module>metric-providers/org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm</module>
-    <module>metric-providers/org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
 	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency</module>
@@ -310,9 +308,6 @@
     </module>
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.plaintextprocessing
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.bts.gitlab
     </module>
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.cc.eclipseforums

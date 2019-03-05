@@ -10,7 +10,6 @@
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -26,7 +25,7 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComme
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemManager;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
-import org.eclipse.scava.repository.model.bts.gitlab.GitLabTracker;
+import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
