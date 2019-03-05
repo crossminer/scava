@@ -130,18 +130,14 @@
 						<p>
 						<table class="table table-striped table-bordered">
 							<tr>
-								<td
-									style="overflow: hidden; position: relative; width: 100%; height: 100%;">
+								<td>
 
 									<div class="container">
-										<div class="row">
+										<div class="row" class="runtime-viewer">
 											<div class="sprotty-hidden">
 												<div id="monaco-editor" data-input-type="elkt"></div>
 											</div>
-											<div>
-												<div id="sprotty"
-													style="height: 100%; width: 100%; position: absolute; right: 0; top: 0;"></div>
-											</div>
+											<div id="sprotty" class="runtime-viewer"></div>
 										</div>
 									</div>
 								</td>
