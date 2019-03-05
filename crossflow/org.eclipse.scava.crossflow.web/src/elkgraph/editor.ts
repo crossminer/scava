@@ -26,13 +26,7 @@ if (urlParameters.compressedContent !== undefined) {
 } else if (urlParameters.initialContent !== undefined) {
     initialContent = decodeURIComponent(urlParameters.initialContent)
 } else {
-    initialContent = `algorithm: layered
-
-node n1
-node n2
-node n3
-edge n1 -> n2
-edge n1 -> n3`
+    initialContent = ``
 }
 
 // Create Sprotty viewer

@@ -26,7 +26,7 @@ else if (urlParameters.initialContent !== undefined) {
     initialContent = decodeURIComponent(urlParameters.initialContent);
 }
 else {
-    initialContent = "algorithm: layered\n\nnode n1\nnode n2\nnode n3\nedge n1 -> n2\nedge n1 -> n3";
+    initialContent = "";
 }
 // Create Sprotty viewer
 var sprottyContainer = sprotty_config_1.default();

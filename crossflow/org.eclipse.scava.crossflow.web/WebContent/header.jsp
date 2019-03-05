@@ -14,6 +14,11 @@
     <script src="js/gen/crossflow_types.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link href="css/album.css" rel="stylesheet">
+
+	<script src="elkgraph.bundle.js"></script>
+	<script src="jquery/jquery.slim.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="vs/loader.js"></script>
     
     <style>
 		.content-widget {

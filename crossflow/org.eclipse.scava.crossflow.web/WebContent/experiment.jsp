@@ -133,8 +133,6 @@
 								<td
 									style="overflow: hidden; position: relative; width: 100%; height: 100%;">
 
-									Model File: {{ experiment.runtimeModel }}
-
 									<div class="container">
 										<div class="row">
 											<div class="sprotty-hidden">
@@ -162,10 +160,7 @@
 </main>
 
 
-<script src="elkgraph.bundle.js"></script>
-<script src="jquery/jquery.slim.min.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="vs/loader.js"></script>
+
 
 <script>
 	var app = new Vue({
@@ -191,7 +186,7 @@
 			}
 		}
 	})
-
+	
 	var transport = new Thrift.TXHRTransport(
 			"/org.eclipse.scava.crossflow.web/crossflow");
 	var protocol = new Thrift.TJSONProtocol(transport);
@@ -199,7 +194,14 @@
 
 	var url = new URL(window.location.href);
 	app.experimentId = url.searchParams.get("id");
-
+	
+	var runtimeModel = crossflow.getExperiment(app.experimentId).runtimeModel;
+	var runtimeModelEncoded = encodeURIComponent(runtimeModel);
+	
+	if ( window.location.href.includes("initialContent") == false ) {
+		window.location.href = window.location + "&initialContent=" + runtimeModelEncoded;
+	}
+	
 	refresh();
 
 	setInterval(function() {

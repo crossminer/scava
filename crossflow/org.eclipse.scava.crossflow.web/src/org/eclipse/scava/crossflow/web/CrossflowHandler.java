@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -185,7 +186,6 @@ public class CrossflowHandler implements Crossflow.Iface {
 			experiment.setSummary(experimentElement.getAttribute("summary"));
 			experiment.setInputDirectory(experimentElement.getAttribute("input"));
 			experiment.setOutputDirectory(experimentElement.getAttribute("output"));
-			experiment.setRuntimeModel(experimentElement.getAttribute("runtimeModel"));
 			experiment.setCached(new File(experimentDirectory, "cache").exists());
 			if (experiment.getOutputDirectory() != null) {
 				experiment.setExecuted(new File(experimentDirectory, experiment.getOutputDirectory()).exists());
@@ -208,6 +208,15 @@ public class CrossflowHandler implements Crossflow.Iface {
 				fileDescriptor.setInput(false);
 				experiment.addToFileDescriptors(fileDescriptor);
 			}
+
+			String runtimeModel = "";
+			try {
+				File runtimeModelFile = new File(experimentDirectory, experimentElement.getAttribute("runtimeModel"));
+				runtimeModel = new String(Files.readAllBytes(runtimeModelFile.toPath()));
+			} catch (Exception ex) {
+				System.err.println("Failed to read runtime model from location defined in experiment configuration: " + experimentElement.getAttribute("runtimeModel"));
+			}
+			experiment.setRuntimeModel(runtimeModel);
 
 			Workflow workflow = workflows.get(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
