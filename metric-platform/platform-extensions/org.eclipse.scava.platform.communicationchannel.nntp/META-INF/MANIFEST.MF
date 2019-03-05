@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.cc.nntp,
  javax.mail,
  org.eclipse.scava.repository.model,
- com.google.guava;bundle-version="16.0.0"
+ com.google.guava
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.communicationchannel.nntp

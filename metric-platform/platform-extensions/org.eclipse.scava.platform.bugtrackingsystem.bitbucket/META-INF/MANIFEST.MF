@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.bitbucket,
  org.joda.time,
  com.fasterxml.jackson,
- com.squareup.okhttp3;bundle-version="1.0.0",
+ com.squareup.okhttp3,
  org.eclipse.scava.platform.bugtrackingsystem
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
