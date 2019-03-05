@@ -13,11 +13,10 @@
 package org.eclipse.scava.platform.bugtrackingsystem.github.utils;
 import java.util.Map;
 
-import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 import org.eclipse.scava.crossflow.restmule.client.github.api.GitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
-import org.eclipse.scava.crossflow.restmule.client.github.cache.GitHubCacheManager;
 import org.eclipse.scava.crossflow.restmule.client.github.session.GitHubSession;
+import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 
 public class GitHubSessionUtil {
 
@@ -35,11 +34,12 @@ public class GitHubSessionUtil {
 		}
 		else if(AuthentificationData.get("SECURITY_TYPE").equals("token"))
 		{
-			session = GitHubSession.createWithBasicAuth(AuthentificationData.get("TOKEN"));
+			session = GitHubSession.createWithOAuth(AuthentificationData.get("TOKEN"));
 		}
 		else
 		{
-			System.err.println("No authentification data has ben set");
+			System.err.println("No authentification data has ben set, using public access");
+			session = GitHubSession.createPublic();
 		}
 		
 		if (session != null) {

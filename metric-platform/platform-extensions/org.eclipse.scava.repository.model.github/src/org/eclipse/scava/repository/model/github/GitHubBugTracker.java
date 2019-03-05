@@ -10,17 +10,17 @@
 
 package org.eclipse.scava.repository.model.github;
 
-import com.mongodb.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.googlecode.pongo.runtime.querying.*;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 // protected region custom-imports on begin
 // protected region custom-imports end
 
 public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrackingSystem {
 	
-	private static StringQueryProducer USER = new StringQueryProducer("user"); 
 	private static StringQueryProducer REPOSITORY = new StringQueryProducer("repository"); 
 	private static StringQueryProducer LOGIN = new StringQueryProducer("login"); 
 	private static StringQueryProducer PASSWORD = new StringQueryProducer("password");
@@ -34,10 +34,9 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 		super.setSuperTypes("org.eclipse.scava.repository.model.github.BugTrackingSystem");
 	}
 	
-	public void setProject(String user, String userLogin, String password, String repository, String repositoryOwner)
+	public void setProject(String userLogin, String password, String repositoryOwner, String repository)
 	{
 		try {
-			setUser(user);
 			setLogin(userLogin);
 			setPassword(password);
 			setRepository(repository);
@@ -49,14 +48,9 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 		
 	}
 	
-	/*
-	 * Deprecated until fix in CROSSFLOW
-	 */
-	@Deprecated
-	public void setProject(String user, String accessToken, String repository, String repositoryOwner)
+	public void setProject(String accessToken, String repositoryOwner, String repository)
 	{
 		try {
-			setUser(user);
 			setToken(accessToken);
 			setRepository(repository);
 			setOwner(repositoryOwner);
@@ -67,11 +61,11 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 		
 	}
 	
-	public void setProject(String user, String repository) 
+	public void setProject(String repositoryOwner, String repository)
 	{
 		try {
-			setUser(user);
 			setRepository(repository);
+			setOwner(repositoryOwner);
 		} catch (GitHubBugTrackerException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -129,21 +123,10 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 
     @Override
     public String getInstanceId() {
-        return getUser() + '/' + getRepository();
+        return getOwner() + '/' + getRepository();
     }
     //protected region custom-fields-and-methods end
-	
-	private void setUser(String user) throws GitHubBugTrackerException{
-		user=validateEntry(user, "user");
-		USER.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
-		dbObject.put("user", user);
-		notifyChanged();
-	}
-	
-	public String getUser() {
-		return parseString(dbObject.get("user")+"", "");
-	}
-	
+		
 	private void setRepository(String repository) throws GitHubBugTrackerException{
 		repository=validateEntry(repository, "repository");
 		REPOSITORY.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
