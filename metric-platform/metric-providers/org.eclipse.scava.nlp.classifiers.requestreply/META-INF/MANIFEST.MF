@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.scava.nlp.libraries.fasttext,
  org.eclipse.scava.nlp.tools.preprocessor,
  org.eclipse.scava.nlp.tools.other,
- org.eclipse.core.runtime;bundle-version="3.13.0",
+ org.eclipse.core.runtime,
  org.eclipse.scava.nlp.tools.predictions,
  org.eclipse.scava.nlp.tools.core,
  org.eclipse.scava.nlp.tools.vasttext
