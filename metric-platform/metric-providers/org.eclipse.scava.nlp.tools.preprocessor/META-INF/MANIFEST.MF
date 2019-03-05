@@ -9,8 +9,8 @@ Export-Package: org.eclipse.scava.nlp.tools.preprocessor,
  org.eclipse.scava.nlp.tools.preprocessor.htmlparser,
  org.eclipse.scava.nlp.tools.preprocessor.markdown,
  org.eclipse.scava.nlp.tools.preprocessor.normalizer
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
- org.jsoup.jsoup;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.core.runtime,
+ org.jsoup.jsoup
 Bundle-Activator: org.eclipse.scava.nlp.tools.preprocessor.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/commonmark-0.12.1.jar,

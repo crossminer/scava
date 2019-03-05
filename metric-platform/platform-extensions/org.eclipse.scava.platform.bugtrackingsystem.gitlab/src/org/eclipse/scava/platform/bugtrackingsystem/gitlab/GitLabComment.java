@@ -13,7 +13,7 @@ import java.util.Date;
 
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Comment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
-import org.eclipse.scava.repository.model.bts.gitlab.GitLabTracker;
+import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;

@@ -6,12 +6,12 @@ Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.gitlab,
  org.eclipse.scava.platform.bugtrackingsystem.gitlab.utils
 Require-Bundle: org.eclipse.scava.platform,
- org.eclipse.scava.repository.model.bts.gitlab,
  org.eclipse.scava.repository.model,
  org.eclipse.osgi,
- com.squareup.okhttp3;bundle-version="1.0.0",
- org.joda.time;bundle-version="2.3.0",
- com.fasterxml.jackson;bundle-version="2.3.1",
- com.googlecode.pongo.runtime.dependencies
+ com.squareup.okhttp3,
+ org.joda.time,
+ com.fasterxml.jackson,
+ com.googlecode.pongo.runtime.dependencies,
+ org.eclipse.scava.repository.model.gitlab
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

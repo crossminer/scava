@@ -11,8 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.joda.time,
  org.apache.log4j,
  com.googlecode.pongo.runtime.dependencies,
- org.eclipse.scava.crossflow.restmule.client.github;bundle-version="1.0.0",
- org.eclipse.scava.crossflow.restmule.core;bundle-version="0.0.1",
+ org.eclipse.scava.crossflow.restmule.client.github,
+ org.eclipse.scava.crossflow.restmule.core,
  org.eclipse.scava.crossflow.runtime.dependencies
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

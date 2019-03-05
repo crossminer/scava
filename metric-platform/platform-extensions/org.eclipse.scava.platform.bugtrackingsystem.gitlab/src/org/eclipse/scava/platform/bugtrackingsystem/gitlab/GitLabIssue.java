@@ -11,7 +11,6 @@ package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Assignee;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Author;
@@ -19,7 +18,7 @@ import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Issue;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Milestone;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Time_stats;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
-import org.eclipse.scava.repository.model.bts.gitlab.GitLabTracker;
+import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
