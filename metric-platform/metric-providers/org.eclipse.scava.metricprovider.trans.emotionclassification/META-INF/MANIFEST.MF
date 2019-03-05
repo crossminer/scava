@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.emotionclassificatio
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.metricprovider.trans.emotionclassification,
  org.eclipse.scava.metricprovider.trans.emotionclassification.model
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
+Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model.cc.nntp,
