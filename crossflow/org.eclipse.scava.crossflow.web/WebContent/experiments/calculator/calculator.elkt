@@ -1,7 +1,17 @@
 graph G1
 algorithm: layered
 
+wrapping.additionalEdgeSpacing: 10.0
+wrapping.correctionFactor: 8.0
+layered.nodePlacement.strategy: NETWORK_SIMPLEX
+layered.wrapping.strategy: MULTI_EDGE
+aspectRatio: 0.6 
+edgeRouting: SPLINES
+spacing.nodeNodeBetweenLayers: 20.0
+
 node T_CalculationSource {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "CalculationSource"
 }
 
@@ -11,7 +21,6 @@ edge T_CalculationSource -> Q_Calculations {
 
 node Q_Calculations {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-    nodeSize.minimum: "(50.0,30.0)"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "Calculations"
 }
@@ -21,6 +30,8 @@ edge Q_Calculations -> T_Calculator {
 }
 
 node T_Calculator {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "Calculator"
 }
 
@@ -30,7 +41,6 @@ edge T_Calculator -> Q_CalculationResults {
 
 node Q_CalculationResults {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-    nodeSize.minimum: "(50.0,30.0)"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "CalculationResults"
 }
@@ -40,5 +50,7 @@ edge Q_CalculationResults -> T_CalculationResultsSink {
 }
 
 node T_CalculationResultsSink {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "CalculationResultsSink"
 }
