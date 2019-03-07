@@ -121,7 +121,11 @@
         <shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
         </shutdownHooks>
-
+        
+        <plugins>
+    		<statisticsBrokerPlugin/>
+  		</plugins>
+       
     </broker>
 
     <!--
