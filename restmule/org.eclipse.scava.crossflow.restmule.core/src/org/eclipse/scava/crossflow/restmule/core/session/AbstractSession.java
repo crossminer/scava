@@ -199,7 +199,7 @@ public abstract class AbstractSession implements ISession {
 	}
 
 	protected void setBasicAccessTokenInHeader(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
+		this.type = Auth.OAUTH;
 		this.token = token;
 	}
 	
@@ -210,7 +210,7 @@ public abstract class AbstractSession implements ISession {
 	}
 
 	protected void setBasicAccessTokenInQuery(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
+		this.type = Auth.OAUTH;
 		this.token = token;
 		this.isHeader = false;
 	}
