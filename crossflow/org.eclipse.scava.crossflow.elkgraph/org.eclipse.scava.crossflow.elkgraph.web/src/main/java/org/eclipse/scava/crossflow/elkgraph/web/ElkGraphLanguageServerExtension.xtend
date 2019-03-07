@@ -1,15 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2017 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
 package org.eclipse.scava.crossflow.elkgraph.web
 
 import io.typefox.sprotty.api.IDiagramServer
 import io.typefox.sprotty.server.xtext.DiagramLanguageServerExtension
-import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.websocket.LanguageServerEndpoint
 import org.eclipse.xtext.ide.server.LanguageServerImpl
@@ -21,6 +13,8 @@ import org.eclipse.xtext.ide.server.LanguageServerImpl
  */
 class ElkGraphLanguageServerExtension extends DiagramLanguageServerExtension {
 	
+	LanguageAwareDiagramServer languageAwareDiagramServer
+			
 	override protected initializeDiagramServer(IDiagramServer server) {
 		super.initializeDiagramServer(server)
 		val languageAware = server as LanguageAwareDiagramServer
@@ -33,7 +27,10 @@ class ElkGraphLanguageServerExtension extends DiagramLanguageServerExtension {
 	 * exactly one client for each instance of this class.
 	 */
 	override findDiagramServersByUri(String uri) {
-		#[getDiagramServer('sprotty') as ILanguageAwareDiagramServer]
+		System.out.println("calling findDiagramServersByUri with uri = " + uri)
+		languageAwareDiagramServer = getDiagramServer('sprotty') as LanguageAwareDiagramServer
+		new ElkGraphDiagramUpdater(languageAwareDiagramServer, 2000, 3000);
+		#[languageAwareDiagramServer]
 	}
 
 }
