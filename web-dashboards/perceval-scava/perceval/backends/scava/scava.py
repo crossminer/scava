@@ -107,7 +107,7 @@ class Scava(Backend):
             items = [items] if isinstance(items, dict) else items
             for item in items:
                 if 'executionInformation' in item and 'lastExecuted' not in item['executionInformation']:
-                    logger.warning("Item filtered due to missing lastExecuted info: %s", str(item))
+                    logger.warning("%s filtered due to missing lastExecuted info: %s", category, str(item))
                     continue
 
                 if category in [CATEGORY_FACTOID, CATEGORY_METRIC]:
