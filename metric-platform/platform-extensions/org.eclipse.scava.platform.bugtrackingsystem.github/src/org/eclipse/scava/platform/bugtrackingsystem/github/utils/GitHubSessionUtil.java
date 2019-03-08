@@ -34,7 +34,7 @@ public class GitHubSessionUtil {
 		}
 		else if(AuthentificationData.get("SECURITY_TYPE").equals("token"))
 		{
-			session = GitHubSession.createWithOAuth(AuthentificationData.get("TOKEN"));
+			session = GitHubSession.createWithBasicAuth(AuthentificationData.get("TOKEN"));
 		}
 		else
 		{

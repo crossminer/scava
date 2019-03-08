@@ -63,13 +63,6 @@ public class GitHubSession extends AbstractSession {
 		GitHubSession.addSession(session);
 		return session;
 	}
-	
-	//Patch GitHub EHU
-	public static ISession createWithOAuth(String token) {
-		GitHubSession session = new GitHubSession(token, true);
-		GitHubSession.addSession(session);
-		return session;
-	}
 
 	public static ISession createWithOAuth(
 			String clientId, 
@@ -93,11 +86,6 @@ public class GitHubSession extends AbstractSession {
 
 	private GitHubSession(String token) {
 		super(token);
-	}
-	
-	//Patch for GitHub EHU
-	private GitHubSession(String token, boolean Oauth) {
-		super(token, true);
 	}
 
 	private GitHubSession(String clientId, 

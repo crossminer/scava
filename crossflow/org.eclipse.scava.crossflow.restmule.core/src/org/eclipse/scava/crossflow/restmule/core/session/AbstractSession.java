@@ -74,20 +74,6 @@ public abstract class AbstractSession implements ISession {
 		setBasicAccessTokenInHeader(token);
 		this.id = generateRandomId();
 	}
-	
-	//Patch for GitHub, EHU
-	protected AbstractSession(@Nonnull String token, boolean oauth) {
-		if(oauth)
-		{
-			setOauthTokenInHeader(token);
-			this.id = generateRandomId();
-		}
-		else
-		{
-			setBasicAccessTokenInHeader(token);
-			this.id = generateRandomId();
-		}
-	}
 
 	protected AbstractSession(@Nonnull String accessTokenUrl, @Nonnull String authorizationUrl,
 							  @Nonnull String clientId, @Nonnull String clientSecret, @Nonnull List<String> scopes,
@@ -210,19 +196,13 @@ public abstract class AbstractSession implements ISession {
 		this.receiverPort = port;
 	}
 	
-	//Patch for Github, EHU
-	protected void setOauthTokenInHeader(@Nonnull final String token) {
+	protected void setBasicAccessTokenInHeader(@Nonnull final String token) {
 		this.type = Auth.OAUTH;
 		this.token = token;
 	}
 
-	protected void setBasicAccessTokenInHeader(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
-		this.token = token;
-	}
-
 	protected void setBasicAccessTokenInQuery(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
+		this.type = Auth.OAUTH;
 		this.token = token;
 		this.isHeader = false;
 	}
