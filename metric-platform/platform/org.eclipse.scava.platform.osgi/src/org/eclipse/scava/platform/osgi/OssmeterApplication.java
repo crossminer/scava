@@ -35,7 +35,7 @@ public class OssmeterApplication implements IApplication{
 	private String workerId = null;
 	private boolean apiServer = false;
 	
-	private OssmeterLogger logger;
+	private OssmeterLogger loggerOssmeter;
 	private boolean done = false;
 	private Object appLock = new Object();
 	
@@ -56,8 +56,8 @@ public class OssmeterApplication implements IApplication{
 		prop = new Properties();
 		prop.load(this.getClass().getResourceAsStream("/config/log4j.properties"));
 		
-		logger = (OssmeterLogger)OssmeterLogger.getLogger("OssmeterApplication");
-		logger.info("Application initialising.");
+		loggerOssmeter = (OssmeterLogger)OssmeterLogger.getLogger("OssmeterApplication");
+		loggerOssmeter.info("Application initialising.");
 
 		// Connect to Mongo - single instance per node
 		mongo = Configuration.getInstance().getMongoConnection();
@@ -90,7 +90,7 @@ public class OssmeterApplication implements IApplication{
 			executorService.shutdown();
 			executorService.awaitTermination(24, TimeUnit.HOURS);
 		} catch (InterruptedException e) {
-			logger.error("Exception thrown when shutting down executor service.", e);
+			loggerOssmeter.error("Exception thrown when shutting down executor service.", e);
 		}
 		
 		// Now, rest.
@@ -104,12 +104,12 @@ public class OssmeterApplication implements IApplication{
 		if (args == null) return;
 		
 		for (int i = 0; i < args.length; i++) {
-			if ("-ossmeterConfig".equals(args[i])) {
+			if ("-config".equals(args[i])) {
 				Properties configuration = new Properties();
 				try {
 					configuration.load(new FileReader(args[i+1]));
 				} catch (Exception e) {
-					logger.error("Unable to read the specified platform configuration file. Using defaults.", e);
+					loggerOssmeter.error("Unable to read the specified platform configuration file. Using defaults.", e);
 				}
 				// Update the configuraiton instance
 				Configuration.getInstance().setConfigurationProperties(configuration);
@@ -123,7 +123,7 @@ public class OssmeterApplication implements IApplication{
 				i++;
 			}else if ("-worker".equals(args[i])) { 
 				worker = true;
-				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-ossmeterConfig".equals(args[i]) ) {
+				if(args.length >=  i+1 && ! "-apiServer".equals(args[i+1]) && !"-config".equals(args[i]) ) {
 					this.workerId = args[i+1];
 				}
 				

@@ -221,6 +221,8 @@
     <module>platform-extensions/org.eclipse.scava.repository.model.eclipse.importer</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.github</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.github.importer</module>
+	<module>platform-extensions/org.eclipse.scava.repository.model.gitlab</module>
+	<module>platform-extensions/org.eclipse.scava.repository.model.gitlab.importer</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.googlecode</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.googlecode.importer</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.importer.exception</module>

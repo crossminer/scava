@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
-import { RoleGuard } from '../shared/guard/role.guard';
 
 const routes: Routes = [
     {
@@ -16,6 +15,7 @@ const routes: Routes = [
             { path: 'properties', loadChildren: './properties/properties.module#PropertiesModule' },
             { path: 'worker', loadChildren: './worker/worker.module#WorkerModule' },
             { path: 'user-management', loadChildren: './user-management/user-management.module#UserManagementModule' },
+            { path: 'metric-providers', loadChildren: './metric-providers/metric-providers.module#MetricProvidersModule' },
         ]
     }
 ];

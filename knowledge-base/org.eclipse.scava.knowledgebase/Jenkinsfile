@@ -2,6 +2,7 @@ pipeline {
   agent any
   options {
     disableConcurrentBuilds()  //each branch has 1 job running at a time
+    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
   }
   stages {
     stage('Build Knowledge Base') {
@@ -19,19 +20,19 @@ pipeline {
     stage('Test Knowledge Base') {
       steps {
         lock('knowledge-base-test-lock') {
-	        configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
-	          dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
-	            sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
-	            sh 'mvn test'
-	          }
-          }
-	        junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
-  	    }
-      }
-      post {
-      	success {
-      	  archiveArtifacts 'knowledge-base/org.eclipse.scava.knowledgebase/target/scava.knoledgebase.jar'
-       	}
+            configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
+                dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
+                    sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
+                    sh 'mvn test'
+                }
+            }
+            junit(testResults: 'knowledge-base/org.eclipse.scava.knowledgebase/target/surefire-reports/*.xml', allowEmptyResults: true)
+        }
+    }
+    post {
+        success {
+            archiveArtifacts 'knowledge-base/org.eclipse.scava.knowledgebase/target/scava.knoledgebase.jar'
+        }
       }
     }
   }

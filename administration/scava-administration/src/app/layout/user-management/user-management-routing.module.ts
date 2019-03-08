@@ -3,13 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserManagementComponent } from './user-management.component';
 import { UserManagementUpdateComponent } from './user-management-update/user-management-update.component';
 import { RoleGuard } from '../../shared/guard/role.guard';
-
+import { JwtTokenGuard } from '../../shared';
 
 const routes: Routes = [
   {
-    path: '', 
+    path: '',
+    canActivate: [RoleGuard, JwtTokenGuard],
     component: UserManagementComponent,
-    canActivate: [RoleGuard],
     data: {
       authorities: ['ROLE_ADMIN']
     }

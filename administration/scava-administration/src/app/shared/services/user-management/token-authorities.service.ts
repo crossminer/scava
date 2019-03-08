@@ -4,6 +4,7 @@ import { LocalStorageService } from '../authentication/local-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenAuthorities } from '../../../layout/profile/token-authorities.model';
+import { RoleAuthorities } from '../authentication/role-authorities';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,12 @@ export class TokenAuthoritiesService {
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private roleAuthorities: RoleAuthorities
   ) { }
 
   generateTokenAuthorities(tokenAuthorites: TokenAuthorities): Observable<Object> {
-    if(this.jwtToken == null) {
+    if(this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.tokenAuthorities}/${this.generateToken}`, tokenAuthorites, { 
@@ -33,7 +35,7 @@ export class TokenAuthoritiesService {
   }
 
   getAllTokenAuthorities(): Observable<Object> {
-    if(this.jwtToken == null) {
+    if(this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.tokenAuthorities}`, { 
@@ -44,7 +46,7 @@ export class TokenAuthoritiesService {
   }
 
   getTokenAuthoritiesByLabel(label: string): Observable<Object> {
-    if(this.jwtToken == null) {
+    if(this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.tokenAuthorities}/${label}`, { 
@@ -56,7 +58,7 @@ export class TokenAuthoritiesService {
 
 
   deleteTokenAuthorities(label: string): Observable<Object> {
-    if(this.jwtToken == null) {
+    if(this.jwtToken == null || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.delete(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.tokenAuthorities}/${label}`, { 

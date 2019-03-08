@@ -10,7 +10,7 @@
                 <div class="col-md-4 form-group">
                     <label class="form-control-label">Label name</label>
                     <input type="text" class="form-control" name="label" [(ngModel)]="executionTask.label" #labelInput="ngModel" required minlength="1"
-                        maxlength="50" pattern="^\w+(\s\w+)*$">
+                        maxlength="50" pattern="[a-z|A-z|0-9|\s]{1,50}">
                     <div *ngIf="labelInput.dirty && labelInput.invalid">
                         <small class="form-text text-danger" *ngIf="labelInput.errors.required">
                             This field is required.
@@ -29,11 +29,12 @@
                     <label class="form-control-label" for="type">Task type</label>
                     <select class="form-control" id="type" name="type" placeholder="Type Name" [(ngModel)]="executionTask.type">
                         <option value="SINGLE_EXECUTION">Single Execution</option>
-                        <option value="DAILY_EXECUTION">Daily Execution</option>
+                        <option value="CONTINUOUS_MONITORING">Continuous Monitoring</option>
                     </select>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="form-control-label">Start date</label>
+                    <label class="form-control-label">Start date</label><br>
+                    <small>* Starting time range of the project's analysis process</small>
                     <mat-form-field>
                         <input matInput name="startDate" [(ngModel)]="startDate" [max]="maxStartDate" [matDatepicker]="startDateInput" required>
                         <mat-datepicker-toggle matSuffix [for]="startDateInput"></mat-datepicker-toggle>
@@ -41,9 +42,10 @@
                     </mat-form-field>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="form-control-label">End date</label>
+                    <label class="form-control-label">End date</label><br>
+                    <small>* Ending time range of the project's analysis process</small>
                     <mat-form-field>
-                        <input matInput [disabled]="executionTask.type=='DAILY_EXECUTION'" name="startDateInput" [(ngModel)]="endDate" 
+                        <input matInput [disabled]="executionTask.type=='CONTINUOUS_MONITORING'" name="startDateInput" [(ngModel)]="endDate" 
                             [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDateInput" required>
                         <mat-datepicker-toggle matSuffix [for]="endDateInput"></mat-datepicker-toggle>
                         <mat-datepicker #endDateInput></mat-datepicker>
@@ -86,26 +88,26 @@
                                 <ng-container matColumnDef="kind">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Kind </th>
                                     <td mat-cell *matCellDef="let element"> {{element.kind}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="label">
+                                  </ng-container>
+                            
+                                  <ng-container matColumnDef="label">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Label </th>
                                     <td mat-cell *matCellDef="let element"> {{element.label}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="description">
+                                  </ng-container>
+                            
+                                  <ng-container matColumnDef="description">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
                                     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="dependOf">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Depend Of </th>
-                                    <td mat-cell *matCellDef="let element">
-                                        <mat-list>
-                                            <mat-list-item *ngFor="let d of element.dependOf">{{d.label}}</mat-list-item>
-                                        </mat-list>
-                                    </td>
-                                </ng-container>
+                                  </ng-container>
+                            
+                                  <ng-container matColumnDef="dependOf">
+                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Depend Of </th>
+                                      <td mat-cell *matCellDef="let element">
+                                          <mat-list>
+                                              <mat-list-item *ngFor="let d of element.dependOf">{{d.label}}</mat-list-item>
+                                          </mat-list>
+                                      </td>
+                                  </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

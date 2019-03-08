@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './shared';
+import { AuthGuard, JwtTokenGuard } from './shared';
 
 const routes: Routes = [
-    { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [AuthGuard] },
+    { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [AuthGuard, JwtTokenGuard] },
     { path: 'login', loadChildren: './account/login/login.module#LoginModule' },
     { path: 'signup', loadChildren: './account/signup/signup.module#SignupModule' },
     { path: 'activate', loadChildren: './account/activate/activate.module#ActivateModule' },
@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { useHash: true })],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}

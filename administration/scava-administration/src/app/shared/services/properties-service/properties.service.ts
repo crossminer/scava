@@ -4,6 +4,7 @@ import { LocalStorageService } from '../authentication/local-storage.service';
 import { ConfigService } from '../configuration/configuration-service';
 import { Properties } from '../../../layout/properties/properties.model';
 import { Observable } from 'rxjs';
+import { RoleAuthorities } from '../authentication/role-authorities';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,12 @@ export class PropertiesService {
   constructor(
     public httpClient: HttpClient,
     private localStorageService: LocalStorageService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private roleAuthorities: RoleAuthorities
   ) { }
 
   createProperties(properties: Properties): Observable<Properties>{
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.platform}/${this.properties}/${this.create}`, properties,
@@ -33,7 +35,7 @@ export class PropertiesService {
   }
 
   updateProperties(properties: Properties): Observable<Properties>{
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.put(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.platform}/${this.properties}/${this.update}`, properties,
@@ -41,7 +43,7 @@ export class PropertiesService {
   }
 
   getProperties(): Observable<Properties>{
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.platform}/${this.properties}`,
@@ -49,7 +51,7 @@ export class PropertiesService {
   }
 
   getPropertiesByKey(key: string): Observable<Properties>{
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.get(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.platform}/${this.properties}/${key}`,
@@ -57,7 +59,7 @@ export class PropertiesService {
   }
 
   deleteProperties(key: String): Observable<Properties>{
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.delete(`${this.configService.getSavedServerPath() + this.resourceUrl}/${this.platform}/${this.properties}/${this.delete}/${key}`,

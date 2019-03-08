@@ -44,7 +44,6 @@ public class ProjectAnalyser {
 	private Platform platform;
 	private int analysisThreadNumber;
 	private Logger logger;
-
 	
 	public ProjectAnalyser(Platform platform) {
 		this.analysisThreadNumber = Runtime.getRuntime().availableProcessors();		
@@ -52,14 +51,19 @@ public class ProjectAnalyser {
 	}
 
 	public boolean executeAnalyse(String analysisTaskId, String workerId) {
-		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");	
-
+		long startTime = System.currentTimeMillis();
+		
+		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");
+		
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);	
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(task.getProject().getProjectId());
-
+				
 		logger.info("Beginning execution.");
+		//Initialize the project local storage
 		initialiseProjectLocalStorage(project);
 		
+		this.logger.info("ProjectAnalyser( Project '" + project.getShortName() +"' Worker '" + workerId + "' AnalysisTask : " + analysisTaskId +")");
+	
 		// Clear any open flags
 		project.getExecutionInformation().setInErrorState(false);
 		platform.getProjectRepositoryManager().getProjectRepository().sync();
@@ -69,32 +73,28 @@ public class ProjectAnalyser {
 		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
 		
-		logger.info("Creating metric branches.");
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
-		logger.info("Created metric branches.");
-		
 
 		Date enecutionDate = new Date(task.getScheduling().getCurrentDate());
 		Date endDate = null;
-		if(task.getType().equals(AnalysisExecutionMode.DAILY_EXECUTION.name())){
+		if(task.getType().equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())){
 			endDate = new Date().addDays(-1);
 		}else {
 			endDate = new Date(task.getEndDate());
 		}		
 		
 		Date[] dates = Date.range(enecutionDate,endDate);
-		logger.info("Dates: " + dates.length);
+		this.logger.info("Dates: " + dates.length);
 		
 		long estimatedDuration = 0;
 		
-		ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
 		
 		for (Date date : dates) {
+			long startTimeDate = System.currentTimeMillis();
+			this.logger.info("Project " + project.getShortName() + "Task execution ( " + analysisTaskId + " : Date " + date + " )");
 			java.util.Date dailyExecution = new java.util.Date();
-			
 			platform.getAnalysisRepositoryManager().getSchedulingService().newDailyTaskExecution(analysisTaskId,date.toJavaDate());
-	
-			logger.info("Date: " + date + ", project: " + project.getName());
+			this.logger.info("Date: " + date + ", project: " + project.getName());
 			
 			ProjectDelta delta = new ProjectDelta(project, date, platform);
 			
@@ -108,22 +108,29 @@ public class ProjectAnalyser {
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
 				
-				logger.error("Project delta creation failed. Aborting.");
+				this.logger.error("Project delta creation failed. Aborting.");
 				return false;
 			}
 			
+			ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadNumber);
+
 			for (List<IMetricProvider> branch : metricBranches) {
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
 			}
 			
-			// Now fun the factoids: 
-			// FIXME: Should factoids only run on the last date..? It depends on whether factoid results can 
-			// depend on other 0669...
-			// TODO: Should check if in error state before and after factoids
+			try {
+				executorService.shutdown();
+				executorService.awaitTermination(24, TimeUnit.HOURS);
+			} catch (InterruptedException e) {
+				this.logger.error("Exception thrown when shutting down executor service.", e);
+			}finally {
+				executorService = null;
+			}
+			
 			if (factoids.size() > 0) {
-				logger.info("Executing factoids.");
+				this.logger.info("Executing factoids.");
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(factoids);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
@@ -135,9 +142,9 @@ public class ProjectAnalyser {
 			if (project.getExecutionInformation().getInErrorState()) {
 				// TODO: what should we do? Is the act of not-updating the lastExecuted flag enough?
 				// If it continues to loop, it simply tries tomorrow. We need to stop this happening.
-				logger.warn("Project in error state. Resuming execution.");
+				this.logger.warn("Project in error state. Resuming execution.");
 			} else {
-				logger.info("Updating last executed date."); 
+				this.logger.info("Updating last executed date."); 
 				project.getExecutionInformation().setLastExecuted(date.toString());
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 			}		
@@ -156,7 +163,7 @@ public class ProjectAnalyser {
 			
 			
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				this.logger.info("Analysis Task Execution  '" + analysisTaskId + "' STOPED at [ "+ date + " ]");
 				return false;
 			}
 			
@@ -164,24 +171,21 @@ public class ProjectAnalyser {
 				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
 				task.getScheduling().setWorkerId(null);	
 				platform.getAnalysisRepositoryManager().getRepository().sync();
-				logger.info("Analysis Task Execution  '" +analysisTaskId +"'STOPED at [ "+ date + " ]");
+				this.logger.info("Analysis Task Execution  '" +analysisTaskId +"' STOPED at [ "+ date + " ]");
 				return false;
 			}
+			this.logger.info("Date " + date + " Task Execution ( " + analysisTaskId + " completed in " + (System.currentTimeMillis() - startTimeDate) + " ms )");
 		}
 		
-		try {
-			executorService.shutdown();
-			executorService.awaitTermination(24, TimeUnit.HOURS);
-		} catch (InterruptedException e) {
-			logger.error("Exception thrown when shutting down executor service.", e);
-		}
-		
-		logger.info("Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"'");
+
+		this.logger.info("Project " + project.getShortName() + " Analysis Task Execution complete  '" +analysisTaskId +"' by worker '" + workerId +"' in " + (System.currentTimeMillis() - startTime) + " ms");
 		return true;
 	}
 
 
 	private List<IMetricProvider> filterMetricProvider(List<IMetricProvider> metricProviders, String analysisTaskId) {
+		long startTime = System.currentTimeMillis();
+		this.logger.info("Loading all metricProviders");
 		List<IMetricProvider> filtredProviders = new ArrayList<>();
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);		
 		
@@ -195,11 +199,13 @@ public class ProjectAnalyser {
 				filtredProviders.add(platformProvider);
 			}
 		}
-		
+		this.logger.info("Loading all metricProviders is done in " + (System.currentTimeMillis() - startTime) + " ms");
+		System.out.println(filtredProviders.toString());
 		return filtredProviders;
 	}
 
 	protected List<IMetricProvider> extractFactoidProviders(List<IMetricProvider> allProviders) {
+		this.logger.info("Extracting Factoid metrics of all metricProviders");
 		List<IMetricProvider> factoids = new ArrayList<>();
 		
 		for (IMetricProvider imp : allProviders) {
@@ -207,9 +213,8 @@ public class ProjectAnalyser {
 				factoids.add(imp);
 			}
 		}
-		
 		allProviders.removeAll(factoids);
-		
+		this.logger.info("Extracting Factoid metricProviders is done.");
 		return factoids;
 	}
 	
@@ -221,6 +226,8 @@ public class ProjectAnalyser {
 	 * @return
 	 */
 	public List<List<IMetricProvider>> splitIntoBranches(List<IMetricProvider> metrics) {
+		long startTime = System.currentTimeMillis();
+		this.logger.info("Creating metric branches.");
 		List<Set<IMetricProvider>> branches = new ArrayList<Set<IMetricProvider>>();
 		
 		for (IMetricProvider m : metrics) {
@@ -261,7 +268,7 @@ public class ProjectAnalyser {
 		for (Set<IMetricProvider> b : branches) {
 			sortedBranches.add(sortMetricProviders(new ArrayList<IMetricProvider>(b)));
 		}
-		
+		this.logger.info("Creating metric branches is done in " + (System.currentTimeMillis() - startTime) + " ms");
 		return sortedBranches;
 	}
 	
@@ -276,7 +283,7 @@ public class ProjectAnalyser {
 		
 
 	
-	public List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
+	private List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
 		List<IMetricProvider> sorted = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> marked = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> temporarilyMarked = new ArrayList<IMetricProvider>();
@@ -330,5 +337,7 @@ public class ProjectAnalyser {
 			e.printStackTrace();
 		}
 	}
+	
 
+	
 }

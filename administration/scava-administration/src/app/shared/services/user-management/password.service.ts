@@ -3,6 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from '../authentication/local-storage.service';
 import { ConfigService } from '../configuration/configuration-service';
+import { RoleAuthorities } from '../authentication/role-authorities';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,12 @@ export class PasswordService {
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private roleAuthorities: RoleAuthorities
   ) { }
 
   change(currentLogin: string, currentPassword: string, newPassword: string) {
-    if (this.jwtToken == null) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
     return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.account}/${this.password}`,

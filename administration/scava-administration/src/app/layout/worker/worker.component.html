@@ -65,8 +65,14 @@
               <span title="{{worker.currentTask.scheduling[0].currentMetric}}">
                   {{worker.currentTask.scheduling[0].currentMetric?.split(".")[worker.currentTask.scheduling[0].currentMetric?.split(".").length - 1]}}
               </span>
-              <br>
-              <small>({{worker.heartbeat.$date | date: 'dd/MM/yyyy HH:mm:ss'}})</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-5">
+              <b>Worker's Heartbeat</b>
+            </div>
+            <div class="col-7">
+              {{worker.heartbeat.$date | date: 'dd/MM/yyyy HH:mm:ss'}}
             </div>
           </div>
           <div class="row">

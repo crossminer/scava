@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform.osgi,
  org.restlet,
  org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0",
- org.eclipse.scava.repository.model.importer;bundle-version="1.0.0"
+ org.eclipse.scava.repository.model.importer;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.gitlab.importer;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.client.api

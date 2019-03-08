@@ -1,21 +1,13 @@
 package org.eclipse.scava.platform;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.scava.platform.analysis.AnalysisSchedulingService;
 import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.MetricProviderService;
 import org.eclipse.scava.platform.analysis.WorkerService;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
-import org.eclipse.scava.repository.model.Project;
-import org.eclipse.scava.repository.model.ProjectRepository;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
 
 public class AnalysisRepositoryManager {
 	

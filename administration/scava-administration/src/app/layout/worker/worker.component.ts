@@ -3,10 +3,9 @@ import { ListWorkerService } from '../../shared/services/worker-service/list-wor
 import { AnalysisTaskService } from '../../shared/services/analysis-task/analysis-task.service';
 import { ExecutionTask } from '../project/components/configure-project/execution-task.model';
 import { Worker } from './worker.model';
-import { ResponseWrapper } from '../../shared/models/response-wrapper.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetricInfoComponent } from './metrics-infos/metric-info.component';
-
+import { RoleAuthorities } from '../../shared/services/authentication/role-authorities';
 
 @Component({
   selector: 'app-worker',
@@ -23,6 +22,7 @@ export class WorkerComponent implements OnInit,OnDestroy {
   constructor(
     private listWorkerService: ListWorkerService,
     private analysisTaskService : AnalysisTaskService,
+    private roleAuthorities: RoleAuthorities,
     public modalService: NgbModal
   ) { }
 
@@ -30,23 +30,25 @@ export class WorkerComponent implements OnInit,OnDestroy {
     this.refreshData();
     this.interval = setInterval(() => { 
       this.refreshData(); 
-    }, 1500);
+    }, 3000);
 
   }
 
   refreshData(){
-    this.listWorkerService.getWorkers().subscribe((resp) => {
-      this.workerList = resp as Worker[];
-    });
-    this.analysisTaskService.getTasks().subscribe((resp) => {
-      let allTasks = resp as ExecutionTask[];
-      this.taskList = [];
-      for(let task of allTasks){
-        if(task.scheduling.status == 'PENDING_EXECUTION'){
-          this.taskList.push(task);
-        }    
-      }
-    });
+    if (!this.roleAuthorities.isCurrentTokenExpired()) {
+      this.listWorkerService.getWorkers().subscribe((resp) => {
+        this.workerList = resp as Worker[];
+      });
+      this.analysisTaskService.getTasks().subscribe((resp) => {
+        let allTasks = resp as ExecutionTask[];
+        this.taskList = [];
+        for(let task of allTasks){
+          if(task.scheduling.status == 'PENDING_EXECUTION'){
+            this.taskList.push(task);
+          }    
+        }
+      });
+    }
   }
 
   setProgressStyles(worker:any){
