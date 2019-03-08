@@ -16,6 +16,18 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		return workflow;
 	}
 	
+	[%for (p in t.parameters) { %]
+	protected [%=p.type%] [%=p.name%];
+	
+	public void set[%=p.name.ftuc()%]([%=p.type%] [%=p.name%]) {
+		this.[%=p.name%] = [%=p.name%];
+	}
+	
+	public [%=p.type%] get[%=p.name.ftuc()%]() {
+		return [%=p.name%];
+	}
+	[%}%]
+	
 	public String getId(){
 		return "[%=t.name%]:"+workflow.getName();
 	}
@@ -48,8 +60,30 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	[%}%]
 	
 	[%for (s in t.input) { %]
+[%=s.createStartOfConsumeMethod()%]
+		[%if(not t.multipleOutputs and t.output.size==1) {%]
+				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
+				if(result != null){
+					result.setTransactional(false);
+					sendTo[%=t.output.first.name%](result);
+				}
+		[%}else {%]
+				consume[%=s.name%]([%=s.type.name.ftlc()%]);
+[%=s.sendConfirmationMessage()%]
+		[%}%]
+[%=s.createEndOfConsumeMethod()%]
+	[%}%]
+	
+	[%if (t.isKindOf(Source)){%]
+	public abstract void produce() throws Exception;
+	[%}%]
+	
+}
+
+[%
+operation Stream createStartOfConsumeMethod() {%]
 	@Override
-	public final void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) {
+	public [%if(t.isTypeOf(Task)){%]final[%}else{%][%=out.chop(1)%][%}%] void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.type.name.ftlc()%]) {
 		
 		[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
 		try {
@@ -68,36 +102,18 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		[%}%]
 			try {
 				workflow.setTaskInProgess(this);
-		[%if(not t.multipleOutputs and t.output.size==1) {%]
-				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				if(result != null){
-					result.setTransactional(false);
-					sendTo[%=t.output.first.name%](result);
-				}
-		[%}else {%]
-				consume[%=s.name%]([%=s.type.name.ftlc()%]);
-		[%if(t.output.size>0) {%]
-				[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
-				conf.setCorrelationId([%=s.type.name.ftlc()%].getId());
-				conf.setIsTransactionSuccessMessage(true);
-				conf.setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
-				[%for (ss in t.output) { %]
-				if (hasSentTo[%=ss.name%]) {
-					sendTo[%=ss.name%](conf);
-				}
-				[%}%]
-		[%}%]
-		[%}%]
-			}
-			catch (Exception ex) {
+[%}%]
+[%
+operation Stream createEndOfConsumeMethod() {%]
+
+			} catch (Exception ex) {
 				try {
-					[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures()+1);
-					workflow.getFailedJobsQueue().send(new FailedJob([%=s.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
+					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
+					workflow.getFailedJobsQueue().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
 				} catch (Exception e) {
 					workflow.reportInternalException(e);
 				}
-			}
-			finally {
+			} finally {
 				try {
 					[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
 					workflow.get[%=t.name%]s().getSemaphore().release();
@@ -115,14 +131,25 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	}
 	
 	[%if(t.multipleOutputs or t.output.size<>1) {%]
-	public abstract void consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
+	public abstract void consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
 	[%}else {%]
-	public abstract [%=t.output.first.type.name%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
-	[%}%]
-	[%}%]
-	
-	[%if (t.isKindOf(Source)){%]
-	public abstract void produce() throws Exception;
+	public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
 	[%}%]
 	
-}
+[%}%]
+[%
+operation Stream sendConfirmationMessage() {%]
+
+		[%if(t.output.size>0) {%]
+				[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
+				conf.setCorrelationId([%=self.type.name.ftlc()%].getId());
+				conf.setIsTransactionSuccessMessage(true);
+				conf.setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
+				[%for (ss in t.output) { %]
+				if (hasSentTo[%=ss.name%]) {
+					sendTo[%=ss.name%](conf);
+				}
+				[%}%]
+		[%}%]
+		
+[%}%]

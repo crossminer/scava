@@ -41,6 +41,28 @@ rule CsvSink2Sink
 }
 
 @greedy
+rule CommitmentTask2BaseClass 
+	transform t : CommitmentTask {
+	
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "commitmenttask2baseclass.egl"
+	
+	target : t.getPath() + "Commitment" + t.name + "Base.java"	
+}
+
+@greedy
+rule OpinionatedTask2BaseClass 
+	transform t : OpinionatedTask {
+	
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "opinionatedtask2baseclass.egl"
+	
+	target : t.getPath() + "Opinionated" + t.name + "Base.java"	
+}
+
+@greedy
 rule Task2BaseClass 
 	transform t : Task {
 	

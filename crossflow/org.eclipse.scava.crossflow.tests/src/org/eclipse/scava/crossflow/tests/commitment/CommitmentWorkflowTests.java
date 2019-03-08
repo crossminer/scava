@@ -1,6 +1,7 @@
 package org.eclipse.scava.crossflow.tests.commitment;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +23,7 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 
 		waitFor(workflow);
 
-		assertEquals(12, workflow.getAnimalCounter().getExecutions());
-		assertEquals(6, workflow.getAnimalCounter().getOccurences());
+		assertEquals(6, workflow.getAnimalCounter().getOccurences() + workflow.getAnimalCounter().getCommitmentSize());
 		assertEquals(6, workflow.getAnimalCounter().getRejections());
 
 	}
@@ -57,10 +57,16 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 
 		waitFor(master);
 
-		assertEquals(6, workers.stream().mapToInt(w -> w.getAnimalCounter().getOccurences()).sum());
-		assertEquals(workers.stream().mapToInt(w -> w.getAnimalCounter().getExecutions()).sum(),
-				workers.stream().mapToInt(w -> w.getAnimalCounter().getOccurences()).sum()
-						+ workers.stream().mapToInt(w -> w.getAnimalCounter().getRejections()).sum());
+		// System.out.println(workers.stream().mapToInt(w ->
+		// w.getAnimalCounter().getOccurences()).sum());
+		// System.out.println(workers.stream().mapToInt(w ->
+		// w.getAnimalCounter().getComittmentSize()).sum());
+		// System.out.println(workers.stream().mapToInt(w ->
+		// w.getAnimalCounter().getRejections()).sum());
+
+		assertEquals(6, workers.stream().mapToInt(w -> w.getAnimalCounter().getOccurences()).sum()
+				+ workers.stream().mapToInt(w -> w.getAnimalCounter().getCommitmentSize()).sum());
+		assertTrue(workers.stream().mapToInt(w -> w.getAnimalCounter().getRejections()).sum() >= 3);
 
 	}
 

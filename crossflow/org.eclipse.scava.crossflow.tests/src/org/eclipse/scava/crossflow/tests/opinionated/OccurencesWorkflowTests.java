@@ -18,11 +18,11 @@ public class OccurencesWorkflowTests extends WorkflowTests {
 
 		OpinionatedWorkflow master = new OpinionatedWorkflow();
 		master.createBroker(createBroker);
-		master.setFavouriteWord("Apple");
+		master.getOccurencesMonitor().setFavouriteWord("Apple");
 		master.getWordSource().setWordMap(wordMap);
 
 		OpinionatedWorkflow worker = master.createWorker();
-		worker.setFavouriteWord("Banana");
+		worker.getOccurencesMonitor().setFavouriteWord("Banana");
 
 		master.run();
 		worker.run();

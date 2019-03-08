@@ -4,11 +4,11 @@
 
 	<!-- Example where participants can choose which word to count instances of -->
 	<workflow name="OpinionatedWorkflow" package="org.eclipse.scava.crossflow.tests.opinionated">
-		<param name="favouriteWord" type="String"/>
 		<source name="WordSource" out="Words"/>
 		<queue name="Words" type="Word"/>
-		<task name="OccurencesMonitor" in="Words"/>
-		
+		<opinionatedtask name="OccurencesMonitor" in="Words">
+			<param name="favouriteWord" type="String"/>
+		</opinionatedtask>
 		<type name="Word">
 			<field name="w" type="String"/>
 		</type>

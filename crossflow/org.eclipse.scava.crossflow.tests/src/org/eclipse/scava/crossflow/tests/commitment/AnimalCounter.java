@@ -1,47 +1,10 @@
 package org.eclipse.scava.crossflow.tests.commitment;
 
-import java.util.HashSet;
-import java.util.Set;
+public class AnimalCounter extends CommitmentAnimalCounterBase {
 
-public class AnimalCounter extends AnimalCounterBase {
-	
-	protected int executions = 0;
-	protected int rejections = 0;
-	protected int occurences = 0;
-	
-	protected Set<String> seen = new HashSet<>();
-	protected Set<String> committments = new HashSet<>();
-	
 	@Override
-	public Animal consumeAnimals(Animal animal) {
-		
-		executions ++;
-		
-		if (committments.contains(animal.getName())) {
-			occurences ++;
-		}
-		else if (seen.contains(animal.getId())) {
-			committments.add(animal.getName());
-			occurences++;
-		}
-		else {
-			seen.add(animal.getId());
-			rejections++;
-			return animal;
-		}
+	public Animal consumeAnimals(Animal animal) throws Exception {
 		return null;
 	}
 
-	public int getExecutions() {
-		return executions;
-	}
-	
-	public int getRejections() {
-		return rejections;
-	}
-	
-	public int getOccurences() {
-		return occurences;
-	}
-	
 }

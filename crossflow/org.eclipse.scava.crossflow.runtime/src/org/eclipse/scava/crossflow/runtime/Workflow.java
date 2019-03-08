@@ -59,12 +59,20 @@ public abstract class Workflow {
 			"-parallelization" }, description = "The parallelization of the workflow (for non-singleton tasks), defaults to 1")
 	protected int parallelization = 1;// Runtime.getRuntime().availableProcessors();
 
-	protected boolean cacheEnabled = true;
 	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
 
+	@Parameter(names = {
+			"-cacheEnabled" }, description = "Whether this workflow caches intermediary results or not.", arity = 1)
+	protected boolean cacheEnabled = true;
+
+	@Parameter(names = {
+			"-inputDirectory" }, description = "The input directory of the workflow.", converter = DirectoryConverter.class)
 	protected File inputDirectory = new File("").getAbsoluteFile();
+	@Parameter(names = {
+			"-outputDirectory" }, description = "The output directory of the workflow.", converter = DirectoryConverter.class)
 	protected File outputDirectory = new File("").getParentFile();
+
 	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
 
@@ -645,11 +653,11 @@ public abstract class Workflow {
 	public void setOutputDirectory(File outputDirectory) {
 		this.outputDirectory = outputDirectory;
 	}
-	
+
 	public void setRuntimeModel(File runtimeModel) {
 		this.runtimeModel = runtimeModel;
 	}
-	
+
 	public File getRuntimeModel() {
 		return runtimeModel;
 	}
