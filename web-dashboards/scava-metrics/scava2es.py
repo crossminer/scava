@@ -29,7 +29,6 @@ import hashlib
 import logging
 import statistics
 
-from dateutil import parser
 from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC)
@@ -326,7 +325,25 @@ def enrich_factoids(scava_factoids):
     :return:
     """
     for scava_factoid in scava_factoids:
-        yield scava_factoid
+        factoid_data = scava_factoid['data']
+        eitem = factoid_data
+        eitem['datetime'] = str_to_datetime(factoid_data['updated']).isoformat()
+        eitem['uuid'] = uuid(factoid_data['id'], factoid_data['project'], factoid_data['updated'])
+
+        if 'stars' in factoid_data:
+            stars_id = 'stars_' + factoid_data['stars']
+            eitem[stars_id] = 1
+
+            if factoid_data['stars'] == 'ONE':
+                eitem['stars_num'] = 1
+            elif factoid_data['stars'] == 'TWO':
+                eitem['stars_num'] = 2
+            elif factoid_data['stars'] == 'THREE':
+                eitem['stars_num'] = 3
+            elif factoid_data['stars'] == 'FOUR':
+                eitem['stars_num'] = 4
+
+        yield eitem
 
 
 def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
