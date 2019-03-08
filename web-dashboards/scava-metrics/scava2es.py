@@ -39,6 +39,7 @@ from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
 
 UUIDS = {}
+DUPLICATED_UUIDS = 0
 
 
 class Mapping(BaseMapping):
@@ -115,7 +116,9 @@ def uuid(*args):
     if uuid_sha1 not in UUIDS:
         UUIDS[uuid_sha1] = args
     else:
-        logging.warning("Detected duplicated scava metric value %s" % str(args))
+        logging.warning("Detected scava item value %s" % str(args))
+        global DUPLICATED_UUIDS
+        DUPLICATED_UUIDS += 1
 
     return uuid_sha1
 
@@ -304,17 +307,45 @@ def enrich_metrics(scava_metrics):
     :param scava_metrics: metrics generator
     :return:
     """
+    processed = 0
+    empty = 0
+    enriched = 0
+    enriched_error = 0
+    enriched_zero = 0
+
     for scava_metric in scava_metrics:
 
+        processed += 1
+
         if not scava_metric['data']['datatable']:
+            empty += 1
             logging.warning("Missing datable for item %s, skipping it", scava_metric)
             continue
 
         enriched_items = extract_metrics(scava_metric)
         for eitem in enriched_items:
+            enriched += 1
+
             eitem['datetime'] = str_to_datetime(eitem['datetime']).isoformat()
             eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+            if isinstance(eitem['metric_es_value'], str):
+                enriched_error += 1
+                logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", eitem)
+                continue
+
+            if eitem['metric_es_value'] == 0:
+                enriched_zero += 1
+                logging.warning("Metric_es_value is 0 for %s", eitem)
+
             yield eitem
+
+    logging.info("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
+                 processed, empty, DUPLICATED_UUIDS)
+
+    logging.info("Metric enrichment summary (enriched metrics in output) - "
+                 "total: %s, enriched: %s, failed: %s, zero: %s",
+                 enriched + enriched_error, enriched, enriched_error, enriched_zero)
 
 
 def enrich_factoids(scava_factoids):
@@ -324,7 +355,11 @@ def enrich_factoids(scava_factoids):
     :param scava_factoids: factoid generator
     :return:
     """
+    processed = 0
+
     for scava_factoid in scava_factoids:
+        processed += 1
+
         factoid_data = scava_factoid['data']
         eitem = factoid_data
         eitem['datetime'] = str_to_datetime(factoid_data['updated']).isoformat()
@@ -345,6 +380,8 @@ def enrich_factoids(scava_factoids):
 
         yield eitem
 
+    logging.info("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+
 
 def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
     """
@@ -360,33 +397,40 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
+            global DUPLICATED_UUIDS
+            DUPLICATED_UUIDS = 0
 
             scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
-            logging.info("Getting metrics for %s" % project_scava['data']['shortName'])
 
             if category == CATEGORY_METRIC:
-                for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC)):
-                    if isinstance(enriched_metric['metric_es_value'], str):
-                        logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
-                        continue
+                logging.info("Start fetch metrics for %s" % project_scava['data']['shortName'])
 
+                for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC)):
                     yield enriched_metric
 
+                logging.info("End fetch metrics for %s" % project_scava['data']['shortName'])
             else:
+                logging.info("Start fetch factoids for %s" % project_scava['data']['shortName'])
+
                 for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID)):
                     yield enriched_factoid
+
+                logging.info("End fetch factoids for %s" % project_scava['data']['shortName'])
     else:
         if category == CATEGORY_METRIC:
-            # Get the metrics directly
-            for enriched_metric in enrich_metrics(scava.fetch(CATEGORY_METRIC)):
-                if isinstance(enriched_metric['metric_es_value'], str):
-                    logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", enriched_metric)
-                    continue
+            logging.info("Start fetch metrics for %s" % project)
 
+            for enriched_metric in enrich_metrics(scava.fetch(CATEGORY_METRIC)):
                 yield enriched_metric
+
+            logging.info("End fetch metrics for %s" % project)
         else:
+            logging.info("Start fetch factoids for %s" % project)
+
             for enriched_factoid in enrich_factoids(scava.fetch(CATEGORY_FACTOID)):
                 yield enriched_factoid
+
+            logging.info("End fetch factoids for %s" % project)
 
 
 if __name__ == '__main__':
