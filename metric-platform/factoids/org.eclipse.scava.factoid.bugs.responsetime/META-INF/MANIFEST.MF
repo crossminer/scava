@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
- org.eclipse.scava.metricprovider.historic.bugs.responsetime
+ org.eclipse.scava.metricprovider.historic.bugs.responsetime,
+ org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
