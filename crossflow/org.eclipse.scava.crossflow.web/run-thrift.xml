@@ -1,54 +1,66 @@
-<project default="main">
-	
-	<!-- Copies all jars from o.e.s.c.runtime.dependencies here, builds o.e.s.c.tests.jar and runs Thrift -->
-	
-	<condition property="is-mac">
-		<os family="mac" />
-	</condition>
-	
-	<condition property="is-windows">
-		<os family="windows" />
-	</condition>
-	
+  <project default="main">
+
+<!-- Copies all jars from o.e.s.c.runtime.dependencies here, builds o.e.s.c.tests.jar and runs Thrift -->
+
+<condition property="is-mac">
+<os family="mac" />
+</condition>
+
+<condition property="is-windows">
+<os family="windows" />
+</condition>
+
     <target name="mac-init" if="is-mac">
          <property name="thrift" value="/usr/local/bin/thrift"/>
     </target>
 
     <target name="windows-init" if="is-windows">
-		<property name="thrift" value="c:\tools\thrift\thrift"/>
-	</target>
+<property name="thrift" value="c:\tools\thrift\thrift"/>
+</target>
 
     <target name="main" depends="mac-init, windows-init">
     	
-    	<mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
+    <copy todir="WebContent/WEB-INF/lib/">
+    <fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies/lib" includes="*.jar"/>
+    </copy>
     	
-    	<exec executable="${thrift}">
-			<arg value="--gen"/>
-			<arg value="java"/>
-			<arg value="-out"/>
-			<arg value="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
-			<arg value="crossflow.thrift"/>
-		</exec>
-		
-    	<exec executable="${thrift}">
-			<arg value="--gen"/>
-			<arg value="java"/>
-			<arg value="-out"/>
-			<arg value="src-gen"/>
-			<arg value="crossflow.thrift"/>
-		</exec>
+    <mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
     	
-		<exec executable="${thrift}">
-			<arg value="--gen"/>
-			<arg value="js"/>
-			<arg value="-out"/>
-			<arg value="WebContent/js/gen"/>
-			<arg value="crossflow.thrift"/>
-		</exec>
+    <exec executable="${thrift}">
+<arg value="--gen"/>
+<arg value="java"/>
+<arg value="-out"/>
+<arg value="../org.eclipse.scava.crossflow.web.tests/src-gen"/>
+<arg value="crossflow.thrift"/>
+</exec>
+
+    <exec executable="${thrift}">
+<arg value="--gen"/>
+<arg value="java"/>
+<arg value="-out"/>
+<arg value="src-gen"/>
+<arg value="crossflow.thrift"/>
+</exec>
     	
-		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1"/>
-		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1"/>
-	
+<exec executable="${thrift}">
+<arg value="--gen"/>
+<arg value="js"/>
+<arg value="-out"/>
+<arg value="WebContent/js/gen"/>
+<arg value="crossflow.thrift"/>
+</exec>
+    	
+    <jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.runtime.jar">
+            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+        </jar>
+    	
+        <jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar">
+            <fileset dir="../org.eclipse.scava.crossflow.tests/bin"/>
+        </jar>
+    	
+<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1"/>
+<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1"/>
+
     </target>
     
 </project>
