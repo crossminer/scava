@@ -9,6 +9,8 @@ aspectRatio: 0.6
 edgeRouting: SPLINES
 spacing.nodeNodeBetweenLayers: 20.0
 
+label experimentId: "calculator"
+
 node T_CalculationSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"

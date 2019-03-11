@@ -9,6 +9,8 @@ aspectRatio: 0.6
 edgeRouting: SPLINES
 spacing.nodeNodeBetweenLayers: 20.0
 
+label experimentId: "wordcount"
+    
 node T_LineSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
