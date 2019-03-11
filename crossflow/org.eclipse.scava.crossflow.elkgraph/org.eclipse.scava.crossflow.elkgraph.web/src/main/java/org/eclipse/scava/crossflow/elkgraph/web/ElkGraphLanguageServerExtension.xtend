@@ -29,7 +29,7 @@ class ElkGraphLanguageServerExtension extends DiagramLanguageServerExtension {
 	override findDiagramServersByUri(String uri) {
 		System.out.println("calling findDiagramServersByUri with uri = " + uri)
 		languageAwareDiagramServer = getDiagramServer('sprotty') as LanguageAwareDiagramServer
-		new ElkGraphDiagramUpdater(languageAwareDiagramServer, 2000, 3000);
+		new ElkGraphDiagramUpdater(languageAwareDiagramServer);
 		#[languageAwareDiagramServer]
 	}
 
