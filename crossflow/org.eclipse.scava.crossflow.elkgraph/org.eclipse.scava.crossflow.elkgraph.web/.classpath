@@ -19,5 +19,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.scava.crossflow.runtime"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.scava.crossflow.runtime.dependencies"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>
