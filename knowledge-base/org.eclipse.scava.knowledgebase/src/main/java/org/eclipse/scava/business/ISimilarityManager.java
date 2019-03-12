@@ -36,7 +36,7 @@ public interface ISimilarityManager {
 	Table<String, String, Double> getDistanceMatrix(ISimilarityCalculator simCalculator);
 	Set<Relation> getSimilarProjectsRelations(Artifact p1, ISimilarityCalculator similarityCalculator);
 	Relation getRelation(Artifact prj1, Artifact prj2, ISimilarityCalculator simCalculator);
-	List<Artifact> appliableProjects(ISimilarityCalculator simCalculator, List<Artifact> corpus);
+	List<Artifact> appliableProjects(ISimilarityCalculator simCalculator);
 	void storeDistanceMatrix(Table<String, String, Double> distanceMatrix, ISimilarityCalculator similarityCalculator);
 	void deleteRelations(ISimilarityCalculator simCalculator);
 	List<Relation> getRelations(ISimilarityCalculator simCalculator);

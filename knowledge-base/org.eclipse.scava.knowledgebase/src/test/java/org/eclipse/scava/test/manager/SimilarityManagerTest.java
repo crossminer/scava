@@ -200,11 +200,11 @@ public class SimilarityManagerTest {
 //
 	@Test
 	public void testAppliableProjects() {
-		assertEquals(similarityManager.appliableProjects(simReadmeCalculator, artifacts).size(),artifacts.size());
-		assertEquals(similarityManager.appliableProjects(repoPalStarSimilarityCalculator, artifacts).size(),artifacts.size());
-		assertEquals(similarityManager.appliableProjects(simCompoundCalculator, artifacts).size(),artifacts.size());
-		assertEquals(similarityManager.appliableProjects(repoPalCompoundSimilarityCalculator, artifacts).size(),artifacts.size());
-		assertEquals(similarityManager.appliableProjects(repoPalCompoundSimilarityCalculatorV2, artifacts).size(),artifacts.size());
+		assertEquals(similarityManager.appliableProjects(simReadmeCalculator).size(),artifacts.size());
+		assertEquals(similarityManager.appliableProjects(repoPalStarSimilarityCalculator).size(),artifacts.size());
+		assertEquals(similarityManager.appliableProjects(simCompoundCalculator).size(),artifacts.size());
+		assertEquals(similarityManager.appliableProjects(repoPalCompoundSimilarityCalculator).size(),artifacts.size());
+		assertEquals(similarityManager.appliableProjects(repoPalCompoundSimilarityCalculatorV2).size(),artifacts.size());
 		
 	}
 	@Test

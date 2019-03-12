@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.business.dto;
 
+import java.util.Map;
+
 import org.eclipse.scava.business.model.Artifact;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,6 +31,7 @@ public class RecommendationItem {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Object relatedTo;
 	private String recommendationType;
+	private Map<String, Float> apiFunctionCallFOCUS;
 	public String getRecommendationType() {
 		return recommendationType;
 	}
@@ -70,6 +73,12 @@ public class RecommendationItem {
 	}
 	public void setApiDocumentationLink(String apiDocumentationRecommendation) {
 		this.apiDocumentationLink = apiDocumentationRecommendation;
+	}
+	public Map<String, Float> getApiFunctionCallFOCUS() {
+		return apiFunctionCallFOCUS;
+	}
+	public void setApiFunctionCallFOCUS(Map<String, Float> apiFunctionCallFOCUS) {
+		this.apiFunctionCallFOCUS = apiFunctionCallFOCUS;
 	}
 	
 }
