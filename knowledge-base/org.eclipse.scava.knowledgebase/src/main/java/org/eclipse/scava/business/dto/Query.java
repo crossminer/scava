@@ -29,6 +29,8 @@ public class Query {
 	private String refClassInvocation;
 	private boolean live;
 	private String similarityMethod;
+	private FocusInput focusInput;
+	
 	public String getCompilationUnit() {
 		return compilationUnit;
 	}
@@ -102,4 +104,12 @@ public class Query {
 	public void setSimilarityMethod(String similarityMethod) {
 		this.similarityMethod = similarityMethod;
 	}
+	public FocusInput getFocusInput() {
+		return focusInput;
+	}
+	public void setFocusInput(FocusInput focusInput) {
+		this.focusInput = focusInput;
+	}
+	
+	
 }

@@ -28,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,17 +70,33 @@ public class ArtifactsRestController {
 								  + "Multiple sort criteria are supported.")
 	})
 	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
-	@RequestMapping(value="artifacts", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value="artifacts", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
     public @ResponseBody Page<Artifact> getArtifacts(Pageable pageable) {
 		return artifactRepository.findAll(pageable);
     }
 	
+	@ApiImplicitParams({	//FIXME
+		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+						  value = "Results page you want to retrieve (0..N)"),
+		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+						  value = "Number of records per page."),
+		@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+						  value = "Sorting criteria in the format: property(,asc|desc). "
+								  + "Default sort order is ascending. "
+								  + "Multiple sort criteria are supported.")
+	})
+	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER (XML)", response = Iterable.class)
+	@RequestMapping(value="artifacts.xml", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+    public @ResponseBody Page<Artifact> getArtifactsXML(Pageable pageable) {
+		return artifactRepository.findAll(pageable);
+    }
+	
 	@ApiOperation(value = "Get artifact by id", response = Iterable.class)
-	@RequestMapping(value="/{artifact_id}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value="/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
     public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
     }
-	
+		
 	
 //	@ApiOperation(value = "Search artifact to KB")
 //	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
@@ -87,15 +104,15 @@ public class ArtifactsRestController {
 //		return recommenderManager.getArtifactsByQuery(projectQuery);
 //    }
 	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "page",
+		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
 						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "size",
+		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
 						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "sort",
+		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query",
 						  value = "Sorting criteria in the format: [asc|desc]")
 	})
 	@ApiOperation(value = "Search artifact to KB")
-	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value="search/{artifact_query}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
     public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
     		int page, int size, String sort) {
 		PageRequest pr = new PageRequest(page, size, new Sort(Arrays.asList(
@@ -104,7 +121,7 @@ public class ArtifactsRestController {
     }
 	
 	@ApiOperation(value = "Add github project to KB")
-	@RequestMapping(value="add/{project_name}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {
 		try {
 			Artifact art = importer.importProject(projectName.replace("--", "/").replace("%2E", "."));

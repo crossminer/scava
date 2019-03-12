@@ -58,14 +58,14 @@ public class RecommenderRestController {
 	private IRecommenderManager recommenderManager;
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderRestController.class);
 
-	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public List<Cluster> getClusters(
 			@ApiParam(value = "String value which can be Compound, CrossSim, Dependency, Readme, RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
 			@ApiParam(value = "String value which can be Clara, KMeans, or HCLibrary.", required = true) @PathVariable("cluster_algo") String clusterAlgo) {
 		return recommenderManager.getClusters(simFunction,clusterAlgo);
 	}
 	
-	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}/{artifact_id}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public Cluster getClusterByArtifact(
 			@ApiParam(value = "String value which can be Compound, CrossSim, Dependency, Readme, RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
 			@ApiParam(value = "String value which can be Clara, KMeans, or HCLibrary.", required = true) @PathVariable("cluster_algo") String clusterAlgo,
@@ -75,7 +75,7 @@ public class RecommenderRestController {
 	
 	
 	@ApiOperation(value ="This resource is used to retrieve recommended libraries.")
-	@RequestMapping(value = "recommended_library", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "recommended_library", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getRecommendedLibraries(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		Recommendation r =recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
@@ -130,20 +130,20 @@ org.slf4j:slf4j-log4j12:1.7.25
 	}
 	
 	@ApiOperation(value = "This resource is used to retrieve code patterns from code context.")
-	@RequestMapping(value = "recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getApiCallRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.API_CALL);
 	}
 	@ApiOperation(value = "This resource is used to retrieve documentation recommendation from code context. NOT YET IMPLEMENTED.")
-	@RequestMapping(value = "recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getApiDocumentationRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.API_DOCUMENTATION);
 	}
 
 	@ApiOperation(value = "This resource is used to retrieve projects that are similar to a given project.")
-	@RequestMapping(value = "similar/p/{id}/m/{sim_method}/n/{num}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "similar/p/{id}/m/{sim_method}/n/{num}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public @ResponseBody List<Artifact> getSimilarProject(
 			@ApiParam(value = "results are computed by using the similarity function specified as parameter.  "
 					+ "String value which can be Compound, CrossSim, Dependency, CrossRec, Readme, "
@@ -153,7 +153,14 @@ org.slf4j:slf4j-log4j12:1.7.25
 
 		return recommenderManager.getSimilarProjects(id, simFunction, num);
 	}
-
+	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.")
+	@RequestMapping(value = "focus/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getNextApiCallsRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
+	}
+	
 	@RequestMapping(value = "query", method = RequestMethod.GET)
 	public Query getQuery() {
 		Query q = new Query();
