@@ -91,7 +91,8 @@ public class FocusTest {
     public void testRecommendationWithMockito() throws Exception{
     	when(artifactRepository.findAll()).thenReturn(
         		trainings);
-    	Map<String, Float> res = car.recommends(trainings, testing, "oldapi/JoinRecordWithStationName/run(java.lang.String[])");
+    	String va = testing.getMethodDeclarations().stream().filter(z -> z.getMethodInvocations().size() >4).findFirst().get().getName();
+    	Map<String, Float> res = car.recommends(trainings, testing, va);
     	
     	assertNotNull(res);
     	int count = 0;
@@ -111,7 +112,7 @@ public class FocusTest {
     			simRes);
     	Query q = new Query();
     	q.setFocusInput(new FocusInput());
-    	String va = testing.getMethodDeclarations().stream().filter(z -> z.getMethodInvocations().size() >4).findFirst().get().getName();//.filter(z -> z.getMethodInvocations().size() > 4).findFirst().get().getName());
+    	String va = testing.getMethodDeclarations().stream().filter(z -> z.getMethodInvocations().size() >4).findFirst().get().getName();
     	q.getFocusInput().setActiveDeclaration(va);
     	q.getFocusInput().setMethodDeclarations(testing.getMethodDeclarations());
     	Recommendation res = car.getRecommendation(q); 
