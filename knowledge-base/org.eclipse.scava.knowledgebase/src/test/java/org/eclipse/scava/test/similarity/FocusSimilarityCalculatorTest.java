@@ -41,12 +41,13 @@ public class FocusSimilarityCalculatorTest {
 	private IAggregatedSimilarityCalculator focus;
 	@Autowired
 	private DataReader dr;
+	
+	
 	private static final Logger logger = LoggerFactory.getLogger(FocusSimilarityCalculatorTest.class);
 	List<Artifact> artifacts;
 	@Before
 	public void init(){
 		try {
-			
 			artifacts = dr.readArtifactsFromPath("FOCUS");
 		} catch (IOException e) {
 			logger.error("errore");
@@ -54,7 +55,7 @@ public class FocusSimilarityCalculatorTest {
 	}
 	
 	@Test
-	public void crossSimCommutativeTest() {
+	public void focusCommutativeTest() {
 		Map<String, String> parameters = new HashMap<>();
 		Table<String, String, Double> table = focus.calculateAggregatedSimilarityValues(artifacts, parameters);
 		double val1 = table.get(artifacts.get(0).getFullName(), artifacts.get(1).getFullName());
@@ -63,7 +64,7 @@ public class FocusSimilarityCalculatorTest {
 	}
 	
 	@Test
-	public void crossSimIdentityTest() {
+	public void focusSimIdentityTest() {
 		Map<String, String> parameters = new HashMap<>();
 		Table<String, String, Double> table = focus.calculateAggregatedSimilarityValues(artifacts, parameters);
 		double val1 = table.get(artifacts.get(0).getFullName(), artifacts.get(0).getFullName());

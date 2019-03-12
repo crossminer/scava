@@ -8,18 +8,28 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.eclipse.scava.business.IRecommendationProvider;
+import org.eclipse.scava.business.ISimilarityManager;
+import org.eclipse.scava.business.dto.Query;
+import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.MethodDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FocusContexAwareRecommender {
+@Qualifier("Focus")
+public class FocusContexAwareRecommender implements IRecommendationProvider {
+	private static int NUM_OF_NEIGHBOURS = 2;
 	@Autowired
 	private FOCUSSimilarityCalculator fsc;
-	private static int NUM_OF_NEIGHBOURS = 2;
+	@Autowired
+	private ISimilarityManager simManger;
+
 	private static final Logger log = LoggerFactory.getLogger(FocusContexAwareRecommender.class);
 	public FocusContexAwareRecommender() {
 	}
@@ -223,6 +233,23 @@ public class FocusContexAwareRecommender {
 			count++;
 		}
 		return results;
+	}
+
+	@Override
+	public Recommendation getRecommendation(Query query) throws Exception {
+		Artifact a = new Artifact();
+		a.setMethodDeclarations(query.getFocusInput().getMethodDeclarations());
+		a.setName("INPUTPROJECT");
+		List <Artifact> arts = simManger.appliableProjects(fsc);
+		Map<String, Float> ret = recommends(arts, a, query.getFocusInput().getActiveDeclaration());
+		Recommendation rec = new Recommendation();
+		rec.setRecommendationItems(new ArrayList<RecommendationItem>());
+		RecommendationItem recItm = new RecommendationItem();
+		recItm.setApiFunctionCallFOCUS(ret);
+		recItm.setRecommendationType("FOCUS");
+		rec.getRecommendationItems().add(recItm);
+		return rec;
+		
 	}
 
 }
