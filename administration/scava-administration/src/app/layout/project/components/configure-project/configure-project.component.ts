@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
@@ -8,6 +8,7 @@ import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete/an
 import { Project } from '../../project.model';
 import { MetricProvidersMgmtInfoDialogComponent } from './metrics-infos/metric-info.component';
 import { RoleAuthorities } from '../../../../shared/services/authentication/role-authorities';
+import { ProjectMgmtDeleteDialogComponent } from '../delete-project/delete-project-dialog.component';
 
 @Component({
     selector: 'app-configure-project',
@@ -28,7 +29,8 @@ export class ConfigureProjectComponent implements OnInit {
         private analysisTaskService: AnalysisTaskService,
         public modalService: NgbModal,
         public roleAuthorities: RoleAuthorities,
-    ) { 
+        private router: Router
+    ) {
     }
 
     ngOnInit() {
@@ -130,6 +132,27 @@ export class ConfigureProjectComponent implements OnInit {
             }
         );
         this.loadAll();
+    }
+
+    deleteProject(projectId: string) {
+        const modalRef = this.modalService.open(ProjectMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.projectId = projectId;
+        modalRef.result.then(
+            (result) => {
+                this.onShowMessage('delete success');
+                this.previousState();
+                this.loadAll();
+            },
+            (reason) => {
+                this.onShowMessage('delete failed');
+                this.previousState();
+                this.loadAll();
+            }
+        );
+    }
+
+    previousState() {
+        this.router.navigate(['project']);
     }
 
     ngOnDestroy() {

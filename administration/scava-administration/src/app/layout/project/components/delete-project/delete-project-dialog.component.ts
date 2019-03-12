@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteProjectService } from '../../../../shared/services/project-service/delete-project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-delete-dialog',
-  templateUrl: './project-delete-dialog.component.html'
+  templateUrl: './delete-project-dialog.component.html'
 })
 export class ProjectMgmtDeleteDialogComponent {
 
@@ -12,7 +13,8 @@ export class ProjectMgmtDeleteDialogComponent {
   
   constructor(
     public activeModal: NgbActiveModal,
-    private deleteProjectService: DeleteProjectService
+    private deleteProjectService: DeleteProjectService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -25,7 +27,12 @@ export class ProjectMgmtDeleteDialogComponent {
   confirmDelete(projectId: string) {
     this.deleteProjectService.deleteProject(projectId).subscribe((resp) => {
         this.activeModal.dismiss(true);
+        //this.previousState();
     });
+  }
+
+  previousState() {
+    this.router.navigate(['project']);
   }
 
 }

@@ -23,13 +23,13 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSortModule} from '@angular/material/sort';
 import { MetricProvidersMgmtInfoDialogComponent } from './components/configure-project/metrics-infos/metric-info.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { ProjectMgmtDeleteDialogComponent } from './components/project-delete/project-delete-dialog.component';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonToggleModule, MatCardModule, MatChipsModule, MatDialogModule, MatDividerModule, MatExpansionModule, MatGridListModule, MatMenuModule, MatProgressBarModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatStepperModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { EditProjectComponent } from './components/edit-project/edit-project.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
+import { ProjectMgmtDeleteDialogComponent } from './components/delete-project/delete-project-dialog.component';
 
 @NgModule({
   imports: [
@@ -87,8 +87,8 @@ import { CdkTreeModule } from '@angular/cdk/tree';
     AnalysisTaskUpdateComponent,
     AnalysisTaskMgmtDeleteDialogComponent,
     MetricProvidersMgmtInfoDialogComponent,
-    ProjectMgmtDeleteDialogComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    ProjectMgmtDeleteDialogComponent
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent,

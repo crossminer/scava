@@ -1,7 +1,11 @@
 <div style="padding-top:20px;">
     <div class="page-header">
         <h2>{{project?.name}}</h2>
-        <hr />
+        <div class="btn-group" role="group" style="float: right;margin-top: -40px;">
+            <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/edit/', project?.shortName]">Edit Project</button>
+            <button type="button" class="btn btn-outline-dark" (click)="deleteProject(project?.shortName)" >Delete Project</button>
+        </div>
+        <hr/>
     </div>
 
     <table class="table table-condensed table-responsive table-project-information">
@@ -68,10 +72,6 @@
             <tr *ngIf="project?.downloadsUrl">
                 <td>Download URL :</td>
                 <td><a href="{{project?.downloadsUrl}}" target="_blank">{{project?.downloadsUrl}}</a></td>
-            </tr>
-            <tr>
-                <td>Dashboard URL :</td>
-                <td><a href="http://scava-dev.ow2.org:8601/app/kibana#/dashboard/ScavaProject?_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-20y,mode:relative,to:now))&_a=(description:'Project%20Dashboard%20for%20a%20Scava%20analyzed%20project',filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:ea1313b0-8f29-11e8-a362-0d37aacd7dee,key:project,negate:!f,params:(query:{{project?.shortName}},type:phrase),type:phrase,value:{{project?.shortName}}),query:(match:(project:(query:{{project?.shortName}},type:phrase))))),fullScreenMode:!f,options:(darkTheme:!f,hidePanelTitles:!t,useMargins:!f),panels:!((embeddableConfig:(),gridData:(h:12,i:'2',w:13,x:11,y:11),id:f41d3180-8f36-11e8-a362-0d37aacd7dee,panelIndex:'2',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:12,i:'3',w:11,x:0,y:11),id:'8d57fd40-8f36-11e8-a362-0d37aacd7dee',panelIndex:'3',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:11,i:'4',w:24,x:24,y:0),id:b72e05a0-8f37-11e8-a362-0d37aacd7dee,panelIndex:'4',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:11,i:'5',w:13,x:11,y:0),id:'266c86e0-8f37-11e8-a362-0d37aacd7dee',panelIndex:'5',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:14,i:'6',w:24,x:24,y:23),id:bce095b0-ac7b-11e8-beb2-277ea76a535b,panelIndex:'6',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:12,i:'7',w:24,x:24,y:11),id:'1dc2b830-ac7d-11e8-beb2-277ea76a535b',panelIndex:'7',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:11,i:'8',w:11,x:0,y:0),id:'632e2030-acdc-11e8-beb2-277ea76a535b',panelIndex:'8',type:visualization,version:'6.3.1'),(embeddableConfig:(),gridData:(h:14,i:'9',w:24,x:0,y:23),id:'3279b950-ace0-11e8-beb2-277ea76a535b',panelIndex:'9',type:search,version:'6.3.1')),query:(language:lucene,query:''),timeRestore:!t,title:ScavaProject,viewMode:view)" target="_blank">URL</a></td>
             </tr>
             <tr *ngIf="project?.size">
                 <td>Project Size</td>

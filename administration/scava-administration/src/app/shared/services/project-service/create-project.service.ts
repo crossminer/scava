@@ -29,4 +29,12 @@ export class CreateProjectService {
     return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.projects}/${this.create}`, project,
     { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
+
+  editProject(project: IProject) {
+    if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
+      this.jwtToken = this.localStorageService.loadToken();
+    }
+    return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.projects}/${this.create}`, project,
+    { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
+  }
 }
