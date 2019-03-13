@@ -26,7 +26,12 @@ import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer;
 
 public class ElkGraphDiagramUpdater {
 
-	Timer timer;
+	private static final String IN_FLIGHT_LABEL_PRE = "inF: ";
+	private static final String STREAM_NAME_POST = "Post.";
+	private static final String QUEUE_ID_PRE = "Q_";
+	private static final String GRAPH_ID_PRE = "G_";
+	private static final String SUBSCRIBER_LABEL_PRE = "(Sub: ";
+	private static Timer updateTimer;
 	private LanguageAwareDiagramServer languageAwareDiagramServer;
 	private static String bareSubject = "StreamMetadataBroadcaster";
 	private String experimentId = "";
@@ -37,8 +42,8 @@ public class ElkGraphDiagramUpdater {
 
 	public ElkGraphDiagramUpdater(LanguageAwareDiagramServer languageAwareDiagramServer, int delay, int interval) {
 		this.languageAwareDiagramServer = languageAwareDiagramServer;
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new CrossflowDiagramUpdaterTask(), delay, interval);
+		updateTimer = new Timer();
+		updateTimer.scheduleAtFixedRate(new CrossflowDiagramUpdaterTask(), delay, interval);
 
 		SModelRoot sModelRoot = languageAwareDiagramServer.getModel();
 	}
@@ -68,7 +73,7 @@ public class ElkGraphDiagramUpdater {
 
 		// find label containing experimentId
 		if (sModelRoot != null && sModelRoot.getId() != "")
-			experimentId = sModelRoot.getId().substring("G_".length());
+			experimentId = sModelRoot.getId().substring(GRAPH_ID_PRE.length());
 
 		// Creating session for sending messages
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -93,7 +98,7 @@ public class ElkGraphDiagramUpdater {
 					// replace label text with data from Crossflow monitoring queue
 					for (SModelElement sModelElement : sModelRoot.getChildren()) {
 						if (sModelElement instanceof SNode
-								&& sModelElement.getId().startsWith("G_" + experimentId + "." + "Q_")) {
+								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + QUEUE_ID_PRE)) {
 
 							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
 								if (sModelElementChild instanceof SLabel) {
@@ -102,16 +107,16 @@ public class ElkGraphDiagramUpdater {
 									for (Stream stream : streamMetadata.getStreams()) {
 										// System.out.println("stream.getName() = " + stream.getName());
 										String sLabelText = sLabel.getText();
-										if (sLabelText.contains("(Subscribers: "))
-											sLabelText = sLabelText.substring(0, sLabelText.indexOf("(Subscribers: "));
+										if (sLabelText.contains(SUBSCRIBER_LABEL_PRE))
+											sLabelText = sLabelText.substring(0, sLabelText.indexOf(SUBSCRIBER_LABEL_PRE));
 
-										if (stream.getName().startsWith(sLabelText + "Post.")) {
+										if (stream.getName().startsWith(sLabelText + STREAM_NAME_POST)) {
 											// System.out.println("stream = " + stream);
 
 											// TODO: replace this by the use of nodes contained inside
 											// sModelElementChild and assign their labels instead
-											sLabel.setText(sLabelText + " (Subscribers: "
-													+ stream.getNumberOfSubscribers() + ")");
+											sLabel.setText(sLabelText + " " + SUBSCRIBER_LABEL_PRE
+													+ stream.getNumberOfSubscribers() + " | " + IN_FLIGHT_LABEL_PRE + stream.getInFlight() + ")");
 
 										} // if stream name equals label text
 
