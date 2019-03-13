@@ -1,4 +1,4 @@
-graph G1
+graph G_calculator
 algorithm: layered
 
 wrapping.additionalEdgeSpacing: 10.0
@@ -8,8 +8,6 @@ layered.wrapping.strategy: MULTI_EDGE
 aspectRatio: 0.6 
 edgeRouting: SPLINES
 spacing.nodeNodeBetweenLayers: 20.0
-
-label experimentId: "calculator"
 
 node T_CalculationSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
