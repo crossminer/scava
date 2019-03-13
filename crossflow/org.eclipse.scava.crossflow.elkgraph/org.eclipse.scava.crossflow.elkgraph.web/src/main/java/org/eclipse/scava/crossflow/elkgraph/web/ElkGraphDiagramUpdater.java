@@ -30,108 +30,116 @@ public class ElkGraphDiagramUpdater {
 	private LanguageAwareDiagramServer languageAwareDiagramServer;
 	private static String bareSubject = "StreamMetadataBroadcaster";
 	private String experimentId = "";
+	MessageConsumer messageConsumer = null;
 
 	// URL of the JMS server
-    private static String url = "tcp://localhost:61616";
-    
-    public ElkGraphDiagramUpdater(LanguageAwareDiagramServer languageAwareDiagramServer) {
-    	this.languageAwareDiagramServer = languageAwareDiagramServer;
-    	timer = new Timer();
-    	SModelRoot sModelRoot = languageAwareDiagramServer.getModel();
-    	
-    	MessageConsumer messageConsumer = null;
-    	
-    	System.out.println("sModelRoot=" + sModelRoot);
-    	
-    	if ( sModelRoot.getChildren() != null ) {
-    		try {
-    			messageConsumer = createConsumer(sModelRoot);
-    		} catch (JMSException e) {
-    			e.printStackTrace();
-    		}
-    	}
-    	
+	private static String url = "tcp://localhost:61616";
+
+	public ElkGraphDiagramUpdater(LanguageAwareDiagramServer languageAwareDiagramServer, int delay, int interval) {
+		this.languageAwareDiagramServer = languageAwareDiagramServer;
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new CrossflowDiagramUpdaterTask(), delay, interval);
+
+		SModelRoot sModelRoot = languageAwareDiagramServer.getModel();
 	}
-    
-    private MessageConsumer createConsumer(SModelRoot sModelRoot) throws JMSException {
-    	// Getting JMS connection from the server
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
-        Connection connection = connectionFactory.createConnection();
-        connection.start();
-        System.out.println("start");
-        
-        // find label containing experimentId
-        for ( SModelElement sModelElement : sModelRoot.getChildren() ) {
-        	if ( sModelElement instanceof SLabel && ((SLabel)sModelElement).getId().contentEquals("experiment") ) 
-        		experimentId = ((SLabel)sModelElement).getText();
-        		break;
-        }
- 
-        // Creating session for sending messages
-        Session session = connection.createSession(false,
-                Session.AUTO_ACKNOWLEDGE);
-        System.out.println("createSession");
-        
-     // Create the destination (Topic or Queue)
-        Destination destination = null;
-        	destination = session.createTopic(bareSubject + "." + experimentId);
-                
-      MessageConsumer messageConsumer = session.createConsumer(destination);
-      
-      messageConsumer.setMessageListener(new MessageListener() {
-	
+
+	class CrossflowDiagramUpdaterTask extends TimerTask {
+		public void run() {
+			SModelRoot sModelRoot = languageAwareDiagramServer.getModel();
+
+			if (sModelRoot.getChildren() != null) {
+				try {
+					messageConsumer = createConsumer(sModelRoot);
+				} catch (JMSException e) {
+					e.printStackTrace();
+				}
+			}
+
+			languageAwareDiagramServer.updateModel(sModelRoot);
+		}
+	}
+
+	private MessageConsumer createConsumer(SModelRoot sModelRoot) throws JMSException {
+
+		// Getting JMS connection from the server
+		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+		Connection connection = connectionFactory.createConnection();
+		connection.start();
+
+		// find label containing experimentId
+		if (sModelRoot != null && sModelRoot.getId() != "")
+			experimentId = sModelRoot.getId().substring("G_".length());
+
+		// Creating session for sending messages
+		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+		// Create the destination (Topic or Queue)
+		Destination destination = session.createTopic(bareSubject + "." + experimentId);
+
+		MessageConsumer messageConsumer = session.createConsumer(destination);
+
+		messageConsumer.setMessageListener(new MessageListener() {
+
 			@Override
 			public void onMessage(Message message) {
-				System.out.println("onMessage");
+				System.out.println("Received model update message .. ");
 				TextMessage textMessage = (TextMessage) message;
-				System.out.println("TextMessage casting");
 
 				try {
 					Serializer serializer = new Serializer();
 					StreamMetadata streamMetadata = (StreamMetadata) serializer.toObject(textMessage.getText());
-					System.out.println("streamMetadata = " + streamMetadata);
-					
-					 // replace label text with data from Crossflow monitoring queue
-					for ( SModelElement sModelElement : sModelRoot.getChildren() ) {
-						if ( sModelElement instanceof SNode ) {
-							
-							for ( SModelElement sModelElementChild : sModelElement.getChildren() ) {
-								if ( sModelElementChild instanceof SLabel && ((SLabel)sModelElementChild).getText().startsWith("Q_") ) {
+					// System.out.println("streamMetadata = " + streamMetadata);
+
+					// replace label text with data from Crossflow monitoring queue
+					for (SModelElement sModelElement : sModelRoot.getChildren()) {
+						if (sModelElement instanceof SNode
+								&& sModelElement.getId().startsWith("G_" + experimentId + "." + "Q_")) {
+
+							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
+								if (sModelElementChild instanceof SLabel) {
 									SLabel sLabel = (SLabel) sModelElementChild;
-									
-									for ( Stream stream : streamMetadata.getStreams() ) {
-										if ( stream.getName().contentEquals(bareSubject + "." + sLabel.getText().substring(2)) ) {
-											System.out.println("stream = " + stream);
-											
-											// TODO: replace this by the use of nodes contained inside sModelElementChild and assign their labels instead
-											sLabel.setText(sLabel.getText() + " (S: " + stream.getNumberOfSubscribers() + ")"); 
-											
-										}// if stream name equals label text
-										
-									}// stream metadata iteration
-									
-								}// if elk node element is a Crossflow queue
-								
-							}// elk node element iteration
-							
-						}// if elk model element is elk node
-												
-					}// elk root model element iteration
+
+									for (Stream stream : streamMetadata.getStreams()) {
+										// System.out.println("stream.getName() = " + stream.getName());
+										String sLabelText = sLabel.getText();
+										if (sLabelText.contains("(Subscribers: "))
+											sLabelText = sLabelText.substring(0, sLabelText.indexOf("(Subscribers: "));
+
+										if (stream.getName().startsWith(sLabelText + "Post.")) {
+											// System.out.println("stream = " + stream);
+
+											// TODO: replace this by the use of nodes contained inside
+											// sModelElementChild and assign their labels instead
+											sLabel.setText(sLabelText + " (Subscribers: "
+													+ stream.getNumberOfSubscribers() + ")");
+
+										} // if stream name equals label text
+
+									} // stream metadata iteration
+
+								} // if elk node element is a Crossflow queue
+
+							} // elk node element iteration
+
+						} // if elk model element is elk node
+
+					} // elk root model element iteration
 					
 					
+
 				} catch (Exception ex) {
 					System.err.println(ex);
-				} finally { 
+				} finally {
 					try {
 						message.acknowledge();
 					} catch (Exception ex) {
 						System.err.println(ex);
-					} 
+					}
 				}
-			}	
+			}
 		});
-		
+
 		return messageConsumer;
-    }
-    
+	}
+
 }

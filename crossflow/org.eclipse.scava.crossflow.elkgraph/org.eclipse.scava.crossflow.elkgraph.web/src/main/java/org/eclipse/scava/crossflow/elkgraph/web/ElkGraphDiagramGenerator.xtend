@@ -120,6 +120,7 @@ class ElkGraphDiagramGenerator implements IDiagramGenerator {
 			slabel.type = 'label'
 			slabel.id = elkLabel.id
 			slabel.text = elkLabel.text
+			// System.out.println(slabel.text)
 			transferBounds(elkLabel, slabel)
 			container.addChild(slabel)
 			processLabels(elkLabel, slabel)

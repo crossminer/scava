@@ -16,6 +16,7 @@ class ElkGraphLanguageServerExtension extends DiagramLanguageServerExtension {
 	LanguageAwareDiagramServer languageAwareDiagramServer
 			
 	override protected initializeDiagramServer(IDiagramServer server) {
+		// System.out.println("calling initializeDiagramServer")
 		super.initializeDiagramServer(server)
 		val languageAware = server as LanguageAwareDiagramServer
 		languageAware.needsClientLayout = false
@@ -27,10 +28,10 @@ class ElkGraphLanguageServerExtension extends DiagramLanguageServerExtension {
 	 * exactly one client for each instance of this class.
 	 */
 	override findDiagramServersByUri(String uri) {
-		System.out.println("calling findDiagramServersByUri with uri = " + uri)
+		// System.out.println("calling findDiagramServersByUri with uri = " + uri)
 		languageAwareDiagramServer = getDiagramServer('sprotty') as LanguageAwareDiagramServer
-		new ElkGraphDiagramUpdater(languageAwareDiagramServer);
+		new ElkGraphDiagramUpdater(languageAwareDiagramServer, 2000, 2000);
 		#[languageAwareDiagramServer]
 	}
-
+	
 }
