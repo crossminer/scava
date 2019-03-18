@@ -23,7 +23,10 @@ import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
+import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
@@ -80,10 +83,15 @@ public abstract class Workflow {
 	protected BuiltinStream<Result> resultsTopic = null;
 	protected BuiltinStream<StreamMetadata> streamMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
+
+	protected BuiltinStream<LogMessage> logTopic = null;
+	protected CrossflowLogger logger = new CrossflowLogger(this);
+
 	protected BuiltinStream<FailedJob> failedJobsQueue = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
 
 	protected List<FailedJob> failedJobs = null;
+
 	protected List<InternalException> internalExceptions = null;
 
 	// for master to keep track of active and terminated workers
@@ -145,6 +153,7 @@ public abstract class Workflow {
 		resultsTopic = new BuiltinStream<Result>(this, "ResultsBroadcaster");
 		streamMetadataTopic = new BuiltinStream<StreamMetadata>(this, "StreamMetadataBroadcaster");
 		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
+		logTopic = new BuiltinStream<LogMessage>(this, "LogTopic");
 		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
 		internalExceptionsQueue = new BuiltinStream<InternalException>(this, "InternalExceptions", false);
 
@@ -160,6 +169,7 @@ public abstract class Workflow {
 		resultsTopic.init();
 		streamMetadataTopic.init();
 		controlTopic.init();
+		logTopic.init();
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
 
@@ -245,6 +255,16 @@ public abstract class Workflow {
 				public void consume(FailedJob failedJob) {
 					failedJob.getException().printStackTrace();
 					failedJobs.add(failedJob);
+				}
+			});
+
+			logTopic.addConsumer(new BuiltinStreamConsumer<LogMessage>() {
+
+				@Override
+				public void consume(LogMessage message) {
+					// TODO do we need to persist log?
+					System.out.println(message.toString());
+					//
 				}
 			});
 
@@ -556,7 +576,14 @@ public abstract class Workflow {
 				// Ignore any exception
 			}
 
+			try {
+				logTopic.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+			}
+
 			activeStreams.remove(resultsTopic);
+			activeStreams.remove(logTopic);
 
 			//
 			// stop all remaining stream connections
@@ -600,6 +627,10 @@ public abstract class Workflow {
 
 	public BuiltinStream<FailedJob> getFailedJobsQueue() {
 		return failedJobsQueue;
+	}
+
+	public BuiltinStream<LogMessage> getLogTopic() {
+		return logTopic;
 	}
 
 	public List<FailedJob> getFailedJobs() {
@@ -760,6 +791,10 @@ public abstract class Workflow {
 	 */
 	public void setEnableTermination(boolean enableTermination) {
 		terminationEnabled = enableTermination;
+	}
+
+	public void log(SEVERITY level, String message) {
+		logger.log(level, message);
 	}
 
 }

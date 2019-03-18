@@ -26,6 +26,7 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata.Stream;
@@ -227,7 +228,6 @@ public class MinimalWorkflowTests extends WorkflowTests {
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
 		workflow.createBroker(createBroker);
-
 		//
 		workflow.setInstanceId("testStreamMetadataTopicWorkflow");
 		//
@@ -261,15 +261,19 @@ public class MinimalWorkflowTests extends WorkflowTests {
 						streamSize = t.getStream(OUTPUT_STREAM_ID).getSize();
 						streamInFlight = t.getStream(OUTPUT_STREAM_ID).getInFlight();
 					} catch (Exception e) {
-						System.out.println("stream: " + OUTPUT_STREAM_ID + " not found!");
+						// ?
+						// logger.log(Level.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
+						// logger.log(this.getClass().getName(), "testStreamMetadataTopicActual",
+						// Level.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
+						workflow.log(SEVERITY.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
 					}
 					statusBasedSize = (long) con.outputQueueSize;
 
 					//
-					System.out.println(streamSize + " (" + streamInFlight + ") | " + statusBasedSize);
+					workflow.log(SEVERITY.INFO, streamSize + " (" + streamInFlight + ") | " + statusBasedSize);
 					if (!updated && streamSize < statusBasedSize) {
 						// mbean has not yet updated
-						System.out.println("mbean not up to date yet");
+						workflow.log(SEVERITY.INFO, "mbean not up to date yet");
 						return;
 					}
 					// mbean has updated
@@ -293,10 +297,10 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		//
 		waitFor(workflow);
 
-		System.out.println(workflow.getMinimalSink().getNumbers());
+		workflow.log(SEVERITY.INFO, "" + workflow.getMinimalSink().getNumbers());
 
-		System.out
-				.println("need: " + con2.failures.size() + " < " + con2.nonZeroMatches + " maxQ: " + con2.maxQueueSize);
+		workflow.log(SEVERITY.INFO,
+				"need: " + con2.failures.size() + " < " + con2.nonZeroMatches + " maxQ: " + con2.maxQueueSize);
 
 		assertTrue(con2.failures.size() == 0 || con2.failures.size() + 1 < con2.nonZeroMatches);
 
@@ -309,6 +313,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 	public void testStreamMetadataTopicMultiConsumer() throws Exception {
 		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		//
 		workflow.createBroker(createBroker);
 		workflow.setInstanceId("testStreamMetadataTopicWorkflowMC");
 		workflow.setName("master");
@@ -316,6 +321,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		workflow.setStreamMetadataPeriod(500);
 		workflow.getMinimalSource().setNumbers(numbers);
 		workflow.getMinimalSink().setDelay(100);
+
+		workflow.getCopierTask().setVerbose(true);
 
 		StreamMetadataBuiltinStreamConsumer con = new StreamMetadataBuiltinStreamConsumer() {
 			public static final String INPUT_STREAM_ID = "InputPost.CopierTask.testStreamMetadataTopicWorkflowMC";
@@ -330,7 +337,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 				try {
 					Stream stream = t.getStream(INPUT_STREAM_ID);
 					subs = stream.getNumberOfSubscribers();
-					System.out.println(subs + " == " + "2");
+					workflow.log(SEVERITY.INFO, subs + " == " + "2");
 					assertEquals(t.getStream(INPUT_STREAM_ID).getNumberOfSubscribers(), 2);
 				} catch (Throwable e) {
 					if (failures == null)
