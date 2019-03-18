@@ -1,5 +1,6 @@
 package org.eclipse.scava.plugin.librarysearch;
 
+import org.eclipse.scava.plugin.librarysearch.details.ILibraryDetailsView;
 import org.eclipse.scava.plugin.librarysearch.list.ILibraryListView;
 import org.eclipse.scava.plugin.librarysearch.tabs.finish.ILibrarySearchFinishView;
 import org.eclipse.scava.plugin.librarysearch.tabs.recommendedlibs.ILibrarySearchRecommendedLibsView;
@@ -8,6 +9,10 @@ import org.eclipse.scava.plugin.mvc.IView;
 import org.eclipse.scava.plugin.mvc.event.AbstractEvent;
 
 public interface ILibrarySearchView extends IView {
+	
+	void showProjectName(String projectName);
+	
+	void showDetails(String label, ILibraryDetailsView view);
 	
 	void showToBeInstalled(ILibraryListView view);
 	

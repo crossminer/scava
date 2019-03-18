@@ -45,7 +45,7 @@ public class LibrarySearchFinishView extends SWTCompositeView implements ILibrar
 		lblMaybeWeCan.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		lblMaybeWeCan.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblMaybeWeCan.setText(
-				"Maybe, we can offer you some additional libraries, that you might find useful in your project.");
+				"Maybe, we can offer you some additional libraries, based on your Maven pom file, that you might find useful in your project.");
 		new Label(composite, SWT.NONE);
 
 		new Label(composite, SWT.NONE);

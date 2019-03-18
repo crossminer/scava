@@ -37,6 +37,7 @@ public class WindowEventListener implements IEventListener, IWindowListener {
 
 	@Override
 	public void windowClosed(IWorkbenchWindow window) {
+
 		Activator.getDefault().getMainController().getEventBus().post(new WindowEvent(window, WindowEventType.CLOSED));
 
 	}

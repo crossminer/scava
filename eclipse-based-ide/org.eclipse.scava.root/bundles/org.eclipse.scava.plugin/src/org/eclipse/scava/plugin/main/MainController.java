@@ -74,12 +74,13 @@ public class MainController extends AbstractModelController<IMainModel> implemen
 			return;
 		}
 
-		IPath pathToPOM = activeProject.getLocation();
-		pathToPOM = pathToPOM.addTrailingSeparator();
-		pathToPOM = pathToPOM.append("pom.xml");
+		
 
-		ILibrarySearchModel librarySearchModel = new LibrarySearchModel(pathToPOM.toOSString());
+		//ILibrarySearchModel librarySearchModel = new LibrarySearchModel(pathToPOM.toOSString());
 		ILibrarySearchView librarySearchView = new LibrarySearchView(getModel().getShell());
+		ILibrarySearchModel librarySearchModel = new LibrarySearchModel(activeProject);
+		
+		
 
 		ILibrarySearchController librarySearchController = new LibrarySearchController(this, librarySearchModel, librarySearchView);
 		librarySearchController.init();

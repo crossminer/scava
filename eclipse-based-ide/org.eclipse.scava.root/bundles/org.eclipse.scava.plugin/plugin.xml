@@ -55,7 +55,7 @@
             </command>
             <command
                   commandId="org.eclipse.scava.plugin.popups.scava.command.apidocumentation"
-                  label="Request API documentation or Q&amp;A posts"
+                  label="Request API documentation and QnA posts"
                   mnemonic="d">
             </command>
          </menu>
@@ -181,7 +181,7 @@
            allowMultiple="false"
            class="org.eclipse.scava.plugin.apidocumentation.ApiDocumentationView"
            id="org.eclipse.scava.plugin.apidocumentation.ApiDocumentationView"
-           name="API documentation and Q&amp;A posts"
+           name="API documentation and QnA posts"
            restorable="false">
      </view>
      <view

@@ -9,15 +9,23 @@ public interface ILibrarySearchFinishController extends IController {
 
 	static class RecommendedSearchRequestEvent extends AbstractEvent<ILibrarySearchFinishController> {
 		private final List<String> selectedLibraries;
+		private final List<String> currentlyUsedLibraries;
 
-		public RecommendedSearchRequestEvent(ILibrarySearchFinishController sender, List<String> selectedLibraries) {
+		public RecommendedSearchRequestEvent(ILibrarySearchFinishController sender, List<String> selectedLibraries,
+				List<String> currentlyUsedLibraries) {
 			super(sender);
 			this.selectedLibraries = selectedLibraries;
+			this.currentlyUsedLibraries = currentlyUsedLibraries;
 		};
 
 		public List<String> getSelectedLibraries() {
 			return selectedLibraries;
 		}
+
+		public List<String> getCurrentlyUsedLibraries() {
+			return currentlyUsedLibraries;
+		}
+
 	}
 
 	static class InstallRequestEvent extends AbstractEvent<ILibrarySearchFinishController> {
