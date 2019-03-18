@@ -1,0 +1,30 @@
+pipeline {
+	agent any
+        options {
+            buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
+        }
+	stages {
+		stage('Build Authentication Service') {
+			steps {
+				dir(path: 'api-gateway/org.eclipse.scava.authservice') {
+					sh 'mvn clean package -DskipTests'
+				}
+			}
+		}
+		stage('Test Authentication Service') {
+			steps {
+				dir(path: 'api-gateway/org.eclipse.scava.authservice') {
+					sh 'mvn test integration-test'
+				}
+
+				junit(testResults: 'api-gateway/org.eclipse.scava.authservice/target/surefire-reports/*.xml', allowEmptyResults: true)
+			}
+			post {
+				success {
+					archiveArtifacts 'api-gateway/org.eclipse.scava.authservice/target/*.jar'
+				}
+			}
+		}
+	}
+}
+

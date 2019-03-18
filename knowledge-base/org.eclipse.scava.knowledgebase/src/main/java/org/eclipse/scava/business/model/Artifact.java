@@ -39,7 +39,7 @@ public class Artifact {
 	String description;
 	@TextIndexed(weight=4)
 	String fullName;
-	
+	private List<MethodDeclaration> methodDeclarations = new ArrayList<>();;
 	private int year;
 	private boolean active = true;
 	private String homePage;
@@ -296,6 +296,16 @@ public class Artifact {
 
 	public void setWebDashboardId(String webDashboardId) {
 		this.webDashboardId = webDashboardId;
+	}
+
+
+	public List<MethodDeclaration> getMethodDeclarations() {
+		return methodDeclarations;
+	}
+
+
+	public void setMethodDeclarations(List<MethodDeclaration> methodDeclarations) {
+		this.methodDeclarations = methodDeclarations;
 	}
 	
 	

@@ -9,9 +9,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime,
- org.eclipse.jgit,
  org.eclipse.scava.repository.model.vcs.git,
- com.jcraft.jsch
+ com.jcraft.jsch,
+ org.eclipse.jgit;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.vcs.git

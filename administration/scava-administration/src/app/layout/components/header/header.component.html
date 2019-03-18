@@ -11,7 +11,7 @@
                     <i class="fa fa-user"></i> Hello, {{username}} <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu-right" ngbDropdownMenu>
-                    <a class="dropdown-item" [routerLink]="['/profile', username, 'edit']" *ngIf="!roleAuthorities.hasAdminRoleOnly()">
+                    <a class="dropdown-item" [routerLink]="['/profile', username]" *ngIf="!roleAuthorities.hasAdminRoleOnly()">
                         <i class="fa fa-fw fa-user"></i> {{ 'Profile'}}
                     </a>
                     <a class="dropdown-item" [routerLink]="['/password', username, 'edit']" *ngIf="!roleAuthorities.hasAdminRoleOnly()">

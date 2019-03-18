@@ -14,7 +14,7 @@ export class RoleGuard implements CanActivate {
     private localStorageService: LocalStorageService
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean { 
     const authorities = route.data['authorities'];
     let roles: Array<string> = this.localStorageService.getUserRoles();
     if (roles != null && authorities.some(role => roles.includes(role))) {

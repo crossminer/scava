@@ -20,7 +20,10 @@ import java.util.List;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
+import org.eclipse.scava.business.impl.ClaraClulsterCalulator;
 import org.eclipse.scava.business.impl.ClusterManager;
+import org.eclipse.scava.business.impl.HierarchicalClulsterCalulator;
+import org.eclipse.scava.business.impl.KmeansClulsterCalulator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.ClusterRepository;
@@ -58,21 +61,21 @@ public class ClusterManagerTest {
 	
 	@Autowired
 	private RelationRepository relationRepository;
-	@Autowired
-	@Qualifier("CrossSim")
-	private IAggregatedSimilarityCalculator aggregateSimilarityCalculator;
-	
-	@Autowired
-	@Qualifier ("Readme")
-	private ISimilarityCalculator simReadmeCalculator;
 	
 	@Autowired
 	@Qualifier ("Dependency")
 	private ISimilarityCalculator simDependencyCalculator;
 	
+
+	
 	@Autowired
-	@Qualifier ("RepoPalCompound")
-	private ISimilarityCalculator repoPalCompoundSimilarityCalculator;
+	private HierarchicalClulsterCalulator hierchical;
+	
+	@Autowired
+	private KmeansClulsterCalulator kmedoids;
+	
+	@Autowired
+	private ClaraClulsterCalulator clara;
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;
@@ -110,25 +113,10 @@ public class ClusterManagerTest {
 			} 
 			resourceInputStream.close();
 			
-			similarityManager.createAndStoreDistanceMatrix(aggregateSimilarityCalculator);
-			assertEquals(((artifacts.size() * (artifacts.size() -1))/2), 
-					relationRepository.findAllByTypeName(aggregateSimilarityCalculator.getSimilarityName()).size());
-			clusterManager.calculateAndStoreClusterization(aggregateSimilarityCalculator);
-			
-			similarityManager.createAndStoreDistanceMatrix(simReadmeCalculator);
-			assertEquals(((artifacts.size() * (artifacts.size() -1))/2), 
-					relationRepository.findAllByTypeName(simReadmeCalculator.getSimilarityName()).size());
-			clusterManager.calculateAndStoreClusterization(simReadmeCalculator);
-			
 			similarityManager.createAndStoreDistanceMatrix(simDependencyCalculator);
 			assertEquals(((artifacts.size() * (artifacts.size() -1))/2), 
 					relationRepository.findAllByTypeName(simDependencyCalculator.getSimilarityName()).size());
-			clusterManager.calculateAndStoreClusterization(simDependencyCalculator);
-			
-			similarityManager.createAndStoreDistanceMatrix(repoPalCompoundSimilarityCalculator);
-			assertEquals(((artifacts.size() * (artifacts.size() -1))/2), 
-					relationRepository.findAllByTypeName(repoPalCompoundSimilarityCalculator.getSimilarityName()).size());
-			clusterManager.calculateAndStoreClusterization(repoPalCompoundSimilarityCalculator);
+			clusterManager.calculateAndStoreClusterization(simDependencyCalculator, clara);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
@@ -145,51 +133,38 @@ public class ClusterManagerTest {
 	
 	@Test
 	public void testGetClusters() throws Exception {
-		List<Cluster> clusters = clusterManager.getClusters(repoPalCompoundSimilarityCalculator);
+		List<Cluster> clusters = clusterManager.getClusters(simDependencyCalculator, clara);
 		assertNotNull(clusters);
-		assertNotEquals(clusters.size(), 0);
-		
-		clusters = clusterManager.getClusters(simDependencyCalculator);
-		assertNotNull(clusters);
-		assertNotEquals(clusters.size(), 0);
-		
-		clusters = clusterManager.getClusters(simReadmeCalculator);
-		assertNotNull(clusters);
-		assertNotEquals(clusters.size(), 0);
-		
-		clusters = clusterManager.getClusters(aggregateSimilarityCalculator);
-		assertNotNull(clusters);
-		assertNotEquals(clusters.size(), 0);
-		
+		assertNotEquals(clusters.size(), 0);		
 	}
 
 	@Test
 	public void testGetClusterFromArtifact() {
-		Cluster cluster = clusterManager.getClusterFromArtifact(artifacts.get(0), simDependencyCalculator);
+		Cluster cluster = clusterManager.getClusterFromArtifact(artifacts.get(0), simDependencyCalculator, clara);
 		assertNotNull(cluster);
 	}
 
 	@Test
 	public void testDeleteClusterization() {
-		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simReadmeCalculator);
+		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simDependencyCalculator, clara);
 		clusterManager.deleteClusterization(clusterization);
 	}
 
 	@Test
 	public void testGetOneByArtifactsName() {
-		Cluster cluster = clusterManager.getOneByArtifactsName("AlipayOrdersSupervisor-GUI", simDependencyCalculator);
+		Cluster cluster = clusterManager.getOneByArtifactsName("AlipayOrdersSupervisor-GUI", simDependencyCalculator, clara);
 		assertNotNull(cluster);
 	}
 
 	@Test
 	public void testGetClusterizationBySimilarityMethodLastDate() {
-		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simReadmeCalculator);
+		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simDependencyCalculator, clara);
 		assertNotNull(clusterization);
 	}
 
 	@Test
 	public void testGetClusterByArtifactsIdAndClusterizationId() {
-		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simReadmeCalculator);
+		Clusterization clusterization = clusterManager.getClusterizationBySimilarityMethodLastDate(simDependencyCalculator, clara);
 		Cluster cluster = clusterManager.getClusterByArtifactsIdAndClusterizationId(artifacts.get(0).getId(),
 				clusterization.getId());
 		assertNotNull(cluster);

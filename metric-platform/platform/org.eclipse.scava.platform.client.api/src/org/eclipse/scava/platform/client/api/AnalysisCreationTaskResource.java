@@ -57,8 +57,8 @@ public class AnalysisCreationTaskResource extends ServerResource {
 					Date taskEndDate = new SimpleDateFormat("dd/MM/yyyy")
 							.parse(jsonNode.get("endDate").toString().replace("\"", ""));
 					task.setEndDate(taskEndDate);
-				} else if (taskType.equals(AnalysisExecutionMode.DAILY_EXECUTION.name())) {
-					task.setType(AnalysisExecutionMode.DAILY_EXECUTION.name());
+				} else if (taskType.equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())) {
+					task.setType(AnalysisExecutionMode.CONTINUOUS_MONITORING.name());
 				}
 
 				List<String> metricsProviders = new ArrayList<>();

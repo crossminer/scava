@@ -59,9 +59,10 @@ public class EclipseImporterTest {
 	@Test
 	public void testImportProjectByUrl() throws WrongUrlException, ProjectUnknownException
 	{
-		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/modeling.mdt.modisco", platform);
+		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/modeling.epsilon", platform);
 		assertNotNull(project);
 	}
+	
 	@Test
 	public void eclipseValidInput() throws WrongUrlException, ProjectUnknownException {
 		// Prints " API rate limit exceeded." message.

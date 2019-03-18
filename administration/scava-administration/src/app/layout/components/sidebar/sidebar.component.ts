@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
-import { RoleAuthorities } from '../../../shared/guard/role-authorities';
+import { RoleAuthorities } from '../../../shared/services/authentication/role-authorities';
 
 @Component({
     selector: 'app-sidebar',
@@ -16,7 +16,8 @@ export class SidebarComponent {
 
     constructor(
         public router: Router,
-        public roleAuthorities: RoleAuthorities
+        public roleAuthorities: RoleAuthorities,
+        private localStorageService: LocalStorageService
     ) {
         this.router.events.subscribe(val => {
             if (
@@ -57,6 +58,6 @@ export class SidebarComponent {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
+        this.localStorageService.logOut();
     }
 }

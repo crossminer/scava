@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.bson.types.ObjectId;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
@@ -29,6 +27,8 @@ import org.eclipse.scava.business.integration.RelationTypeRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Relation;
 import org.eclipse.scava.business.model.RelationType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -105,7 +105,7 @@ public class SimilarityManager implements ISimilarityManager {
 	 */
 	@Override
 	public void createAndStoreDistanceMatrix(ISimilarityCalculator simCalculator) {
-		List<Artifact> artifacts = appliableProjects(simCalculator, artifactRepository.findAll());
+		List<Artifact> artifacts = appliableProjects(simCalculator);
 		if (simCalculator instanceof ISingleSimilarityCalculator) {
 			ISingleSimilarityCalculator singleCalculator = (ISingleSimilarityCalculator) simCalculator;
 			Artifact[] artifactsArray = new Artifact[artifacts.size()];
@@ -143,7 +143,7 @@ public class SimilarityManager implements ISimilarityManager {
 
 	
 	public void storeDistanceMatrix(Table<String, String, Double> distanceMatrix, ISimilarityCalculator simCalculator) {
-		List<Artifact> artifacts = appliableProjects(simCalculator, artifactRepository.findAll());
+		List<Artifact> artifacts = appliableProjects(simCalculator);
 		Artifact[] artifactsArray = new Artifact[artifacts.size()];
 		artifactsArray = artifacts.toArray(artifactsArray);
 		for (int i = 0; i < artifactsArray.length - 1; i++) {
@@ -169,12 +169,19 @@ public class SimilarityManager implements ISimilarityManager {
 
 	@Override
 	public Table<String, String, Double> getDistanceMatrix(ISimilarityCalculator simCalculator) {
-		List<Relation> relList = relationRepository.findAllByTypeName(simCalculator.getSimilarityName());
+		List<Artifact> arts = artifactRepository.findAll();
 		Table<String, String, Double> result = HashBasedTable.create();
-		for (Relation relation : relList) {
-			result.put(relation.getFromProject().getId(), relation.getToProject().getId(), relation.getValue());
+		int count = 1;
+		for (Artifact artifact : arts) {
+			
+			List<Relation> relList = relationRepository.findByToArtifactIdAndTypeName(new ObjectId(artifact.getId()), simCalculator.getSimilarityName());
+			logger.info("Relations are extracted: " + count);
+			count++;
+			for (Relation relation : relList) {
+				result.put(relation.getFromProject().getId(), relation.getToProject().getId(), relation.getValue());
+			}
+			artifactRepository.findAll().forEach(z -> result.put(z.getId(), z.getId(), 1.0));
 		}
-		artifactRepository.findAll().forEach(z -> result.put(z.getId(), z.getId(), 1.0));
 		return result;
 	}
 
@@ -243,9 +250,9 @@ public class SimilarityManager implements ISimilarityManager {
 	}
 
 	@Override
-	public List<Artifact> appliableProjects(ISimilarityCalculator simCalculator, List<Artifact> corpus) {
+	public List<Artifact> appliableProjects(ISimilarityCalculator simCalculator) {
 		List<Artifact> result = new ArrayList<>();
-		corpus.stream().filter(z -> simCalculator.appliesTo(z)).forEach(z -> result.add(z));
+		artifactRepository.findAll().stream().filter(z -> simCalculator.appliesTo(z)).forEach(z -> result.add(z));
 		return result;
 	}
 

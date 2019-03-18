@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.scava.business.IClusterCalculator;
 import org.eclipse.scava.business.IClusterManager;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.IRecommenderManager;
@@ -30,10 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Juri Di Rocco
@@ -52,8 +56,10 @@ public class RecommenderManager implements IRecommenderManager {
 	@Autowired
 	@Qualifier("APIDocumentation")
 	private IRecommendationProvider apiDocumentationRecommendationProvider;
-	
-	
+	@Autowired
+	@Qualifier("Focus")
+	private IRecommendationProvider focusRecomenderProvider;
+		
 	@Autowired
 	@Qualifier("ApiCallRecommendation")
 	private IRecommendationProvider apiCallRecommendationProvider;
@@ -63,6 +69,10 @@ public class RecommenderManager implements IRecommenderManager {
 
 	@Autowired
 	List<ISimilarityCalculator> similarityFunction;
+	@Autowired
+	List<IClusterCalculator> clustercalculators;
+	
+	
 	@Autowired
 	private IClusterManager clusterManager;
 	@Autowired
@@ -80,6 +90,8 @@ public class RecommenderManager implements IRecommenderManager {
 			return apiCallRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_DOCUMENTATION))
 			return apiDocumentationRecommendationProvider.getRecommendation(query);
+		if(rt.equals(RecommendationType.FOCUS))
+			return focusRecomenderProvider.getRecommendation(query);
 		else {
 			logger.error("Recommendation not supported");
 			return null;
@@ -87,9 +99,19 @@ public class RecommenderManager implements IRecommenderManager {
 	}
 
 	@Override
-	public List<Cluster> getClusters(String similarityName) {
+	public List<Cluster> getClusters(String similarityName, String algorithmName) {
 		try {
-			return clusterManager.getClusters(similarityFunction.get(0));
+			ISimilarityCalculator currentSimilarityCalculator = null;
+			for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
+				if(similarityName.equals(iSimilarityCalculator.getSimilarityName()))
+					currentSimilarityCalculator = iSimilarityCalculator;
+			}
+			IClusterCalculator currentClusterCalculator = null;
+			for (IClusterCalculator iClusterSimilarityCalculator : clustercalculators) {
+				if(algorithmName.equals(iClusterSimilarityCalculator.getClusterName()))
+					currentClusterCalculator = iClusterSimilarityCalculator;
+			}
+			return clusterManager.getClusters(currentSimilarityCalculator, currentClusterCalculator);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ArrayList<>();
@@ -132,7 +154,27 @@ public class RecommenderManager implements IRecommenderManager {
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(page);
+		
 		List<Artifact> recipes = template.find(query, Artifact.class);
+		if(page.getSort().getOrderFor("temp").getDirection() == Direction.ASC)
+			return Lists.reverse(recipes);
 		return recipes;
+	}
+
+	@Override
+	public Cluster getClusterByArtifact(String artId, String simCalculator,
+			String clusterAlgorithm) {
+		ISimilarityCalculator currentSimilarityCalculator = null;
+		for (ISimilarityCalculator iSimilarityCalculator : similarityFunction) {
+			if(simCalculator.equals(iSimilarityCalculator.getSimilarityName()))
+				currentSimilarityCalculator = iSimilarityCalculator;
+		}
+		IClusterCalculator currentClusterCalculator = null;
+		for (IClusterCalculator iClusterSimilarityCalculator : clustercalculators) {
+			if(clusterAlgorithm.equals(iClusterSimilarityCalculator.getClusterName()))
+				currentClusterCalculator = iClusterSimilarityCalculator;
+		}
+		Artifact art = artifactRepository.findOne(artId);
+		return clusterManager.getClusterFromArtifact(art, currentSimilarityCalculator, currentClusterCalculator);
 	}
 }

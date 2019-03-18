@@ -1,22 +1,30 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build API Gateway') {
-      steps {
-        dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
-          sh 'mvn validate'
-          sh 'mvn compile'
-        }
-      }
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
     }
-    stage('Test API Gateway') {
-      steps {
-        dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
-          sh 'mvn test'
+    stages {
+        stage('Build API Gateway') {
+            steps {
+                dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
         }
-            
-        junit(testResults: 'api-gateway/org.eclipse.scava.apigateway/target/surefire-reports/*.xml', allowEmptyResults: true)
-      }
+        stage('Test API Gateway') {
+            steps {
+                dir(path: 'api-gateway/org.eclipse.scava.apigateway') {
+                    sh 'mvn test integration-test'
+                }
+
+                junit(testResults: 'api-gateway/org.eclipse.scava.apigateway/target/surefire-reports/*.xml', allowEmptyResults: true)
+            }
+            post {
+                success {
+                    archiveArtifacts 'api-gateway/org.eclipse.scava.apigateway/target/*.jar'
+                }
+            }
+        }
     }
-  }
 }
+

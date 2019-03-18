@@ -36,6 +36,36 @@
                         </div>
                     </div>
                     <div class="form-group">
+                            <input type="text" name="firstName" [(ngModel)]="firstName" class="form-control input-underline input-lg" id="firstName"
+                                placeholder="First Name"  #firstNameInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
+                            <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
+                                <small class="form-text text-danger" *ngIf="firstNameInput.errors.required">
+                                    This field is required.
+                                </small>
+                                <small class="form-text text-danger" *ngIf="firstNameInput.errors.maxlength">
+                                    This field cannot be longer than 50 characters.
+                                </small>
+                                <small class="form-text text-danger" *ngIf="firstNameInput.errors.pattern">
+                                    This field can only contain letters, digits and e-mail addresses.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="lastName" [(ngModel)]="lastName" class="form-control input-underline input-lg" id="lastName"
+                                    placeholder="Last Name"  #lastNameInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
+                                <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
+                                    <small class="form-text text-danger" *ngIf="lastNameInput.errors.required">
+                                        This field is required.
+                                    </small>
+                                    <small class="form-text text-danger" *ngIf="lastNameInput.errors.maxlength">
+                                        This field cannot be longer than 50 characters.
+                                    </small>
+                                    <small class="form-text text-danger" *ngIf="lastNameInput.errors.pattern">
+                                        This field can only contain letters, digits and e-mail addresses.
+                                    </small>
+                                </div>
+                            </div>
+                    <div class="form-group">
                         <input type="text" name="email" [(ngModel)]="email" class="form-control input-underline input-lg" id="email"
                             placeholder="Email" #emailInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
                         <div *ngIf="emailInput.dirty && emailInput.invalid">
@@ -58,7 +88,7 @@
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" [(ngModel)]="password" class="form-control input-underline input-lg"
-                            id="password" placeholder="Password" #passwordInput="ngModel" required minlength="1" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
+                            id="password" placeholder="Password" #passwordInput="ngModel" required minlength="4" maxlength="50" pattern="^[_.A-Za-z0-9-]*$">
                         <div *ngIf="passwordInput.dirty && passwordInput.invalid">
                             <small class="form-text text-danger" *ngIf="passwordInput.errors.required">
                                 Your password is required.

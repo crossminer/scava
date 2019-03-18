@@ -57,9 +57,9 @@ export class AnalysisTaskUpdateComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.sort = this.sort;
+  // }
 
   loadAll() {
     this.isSaving = false;

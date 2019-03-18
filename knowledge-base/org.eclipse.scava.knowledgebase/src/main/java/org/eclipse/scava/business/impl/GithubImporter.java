@@ -64,6 +64,7 @@ import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
+import org.eclipse.scava.business.model.Tag;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.RepositoryId;
@@ -103,11 +104,11 @@ public class GithubImporter implements IImporter {
 	public Artifact importProject(String artId) throws IOException  {
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
 		if (checkRepo != null){
-			logger.debug("\t" + artId + " already in DB");
+			logger.info("\t" + artId + " already in DB");
 			return checkRepo;
 			
 		}
-		logger.debug("Importing project: " + artId);
+		logger.info("Importing project: " + artId);
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(token);
 		RepositoryService repoService = new RepositoryService(client);
@@ -124,14 +125,7 @@ public class GithubImporter implements IImporter {
 		p.setHomePage(rep.getHomepage());
 		p.setName(rep.getName());
 		p.setShortName(p.getShortName());
-			try {
-				p.setStarred(getStargazers(rep));
-				
-			} catch (MalformedURLException e) {
-				logger.error(e.getMessage());
-			} catch (Exception e) {
-				logger.error("Error getting stars" + e.getMessage());
-			}
+			
 			try {
 				p.setCommitteers(getCommitters(rep));
 			} catch (MalformedURLException e) {
@@ -140,20 +134,32 @@ public class GithubImporter implements IImporter {
 				logger.error("Error getting committers" + e.getMessage());
 			}
 			try {
+				p.setDependencies(getDependencies(client, rep));
+			} catch (IOException | XmlPullParserException | InterruptedException e) {
+				logger.error("Error getting dependencies: "  + e.getMessage());
+			}
+			try {
 				p.setReadmeText(getReadmeContent(client, rep));
 			} catch (Exception e) {
 				logger.error("Error getting readmefile" + e.getMessage());
 			}
 			try {
-				p.setDependencies(getDependencies(client, rep));
-			} catch (IOException | XmlPullParserException | InterruptedException e) {
-				logger.error("Error getting dependencies: "  + e.getMessage());
+				p.setStarred(getStargazers(rep));
+				
+			} catch (MalformedURLException e) {
+				logger.error(e.getMessage());
+			} catch (Exception e) {
+				logger.error("Error getting stars" + e.getMessage());
 			}
+			p.setTags(getTags(artId.split("/")[0],artId.split("/")[1]));
 			
-			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
-			storeGithubUser(p.getStarred(), p.getFullName());
-			projectRepository.save(p);
-		logger.debug("Imported project: " + artId);
+//			if(p.getDependencies() != null && p.getDependencies().size()>8) {
+				storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
+				storeGithubUser(p.getStarred(), p.getFullName());
+				projectRepository.save(p);
+				logger.debug("Imported project: " + artId);
+//			}
+
 		return p;
 	}
 	@Override
@@ -181,6 +187,29 @@ public class GithubImporter implements IImporter {
 		}
 	}
 
+	public List<Tag> getTags(String owner, String repo) throws IOException {
+		List<Tag> results = new ArrayList<>();
+		if (getRemainingResource("core") == 0)
+			waitApiCoreRate();
+		URL url = new URL("https://api.github.com/repos/" +
+						owner + "/" +
+						repo + "/topics?access_token=" + token);
+		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setRequestProperty("Accept", "application/vnd.github.mercy-preview+json");	
+		connection.connect();
+		InputStream is = connection.getInputStream();
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
+		String jsonText = readAll(bufferReader);
+		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
+		JSONArray topics = (JSONArray) obj.get("names"); 
+		for (Object object : topics) {
+			Tag tag = new Tag();
+			tag.setTag(object.toString());
+			results.add(tag);
+		}
+		return results;
+	}
+	
 	private List<Stargazers> getStargazers(Repository rep) throws IOException {
 		List<Stargazers> results = new ArrayList<>();
 		int page = 1;
@@ -527,13 +556,14 @@ public class GithubImporter implements IImporter {
 				if (model.getParent() != null) {
 					String parent = model.getParent().getGroupId() + ":" + model.getParent().getArtifactId() + ":"
 							+ model.getParent().getVersion();
-					try {
-						List<String> deps;
-						deps = getMavenParentDependencies(parent);
-						result.addAll(deps);
-					} catch (DependencyResolutionException | ArtifactDescriptorException e) {
-						logger.error(e.getMessage());
-					}
+					result.add(parent);
+//					try {
+//						List<String> deps;
+//						deps = getMavenParentDependencies(parent);
+//						result.addAll(deps);
+//					} catch (DependencyResolutionException | ArtifactDescriptorException e) {
+//						logger.error(e.getMessage());
+//					}
 				}
 			} catch (XmlPullParserException | IOException e) {
 				logger.error(e.getMessage());

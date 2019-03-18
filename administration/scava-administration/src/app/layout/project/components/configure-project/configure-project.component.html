@@ -1,7 +1,11 @@
 <div style="padding-top:20px;">
     <div class="page-header">
         <h2>{{project?.name}}</h2>
-        <hr />
+        <div class="btn-group" role="group" style="float: right;margin-top: -40px;">
+            <button type="button" class="btn btn-outline-dark" [routerLink]="['/project/edit/', project?.shortName]">Edit Project</button>
+            <button type="button" class="btn btn-outline-dark" (click)="deleteProject(project?.shortName)" >Delete Project</button>
+        </div>
+        <hr/>
     </div>
 
     <table class="table table-condensed table-responsive table-project-information">
@@ -188,4 +192,5 @@
             </table>
         </div>
     </div>
+    
 </div>

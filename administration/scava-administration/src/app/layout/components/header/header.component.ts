@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { LocalStorageService } from '../../../shared/services/authentication/local-storage.service';
-import { RoleAuthorities } from '../../../shared/guard/role-authorities';
+import { RoleAuthorities } from '../../../shared/services/authentication/role-authorities';
 
 @Component({
     selector: 'app-header',
@@ -51,7 +51,6 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem("isLoggedin");
-        localStorage.removeItem("jwtToken")
+        this.localStorageService.logOut();
     }
 }

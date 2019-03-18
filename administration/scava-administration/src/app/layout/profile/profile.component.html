@@ -1,8 +1,31 @@
 <div class="row">
     <div class="col-8">
+        <h2>Profile</h2>
+        <hr>
+        <div class="text-right btn-profile">
+            <button type="button" class="btn btn-outline-dark btn-sm" (click)="onEdit()">
+                <i class="fa fa-pencil"></i>&nbsp;
+                <span>Edit</span>
+            </button>&nbsp;
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>First name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> <span>{{ account?.firstName }}</span> </td>
+                    <td> <span>{{ account?.lastName }}</span> </td>
+                    <td> <span>{{ account?.email }}</span> </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #profileForm="ngForm" *ngIf="settingsAccount">
-            <h2>Edit your profile</h2>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #profileForm="ngForm" *ngIf="showEdit && settingsAccount">
             <div class="form-group">
                 <label class="form-control-label" for="firstName">First Name</label>
                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Your first name"
@@ -55,9 +78,9 @@
                 </div>
             </div>
             <div>
-                <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
-                    <i class="fa fa-arrow-left"></i>&nbsp;
-                    <span>Go Back</span>
+                <button type="button" class="btn btn-outline-dark btn-sm" (click)="onCancel()">
+                    <i class="fa fa-ban"></i>&nbsp;
+                    <span>Cancel</span>
                 </button>&nbsp;
                 <button type="submit" [disabled]="profileForm.form.invalid" class="btn btn-outline-dark btn-sm">
                     <i class="fa fa-save"></i>&nbsp;
@@ -65,6 +88,84 @@
                 </button>
             </div>
         </form>
+        <br><br>
 
+        <h2>Token Authorities</h2>
+        <hr>
+        <div class="text-right btn-profile">
+            <button type="submit" class="btn btn-outline-dark btn-sm" (click)="onNew()">
+                <i class="fa fa-plus"></i>&nbsp;
+                <span>Generate new token</span>
+            </button>
+        </div>
+        <div class="alert alert-success" *ngIf="successToken">
+            <span> Make sure to copy your new token authorities now. You won’t be able to see it again! </span><br>
+            <i class="fa fa-check"></i>&nbsp;<span>{{ newTokenAuthorities?.accessToken }}</span>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Token description</th>
+                    <th>Right Accesses</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tokenAuthorities of listTokenAuthorities;">
+                    <td><span>{{ tokenAuthorities?.label }}</span></td>
+                    <td><span *ngIf="tokenAuthorities?.monitoringAuthorities" class="badge badge-info">Monitoring
+                            Authorities</span></td>
+                    <td>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-outline-dark btn-sm" title="Delete Token Authorities"
+                                (click)="onDelete(tokenAuthorities.label)">
+                                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form name="editForm" role="form" novalidate (ngSubmit)="save2()" #tokenAuthoritiesForm="ngForm" *ngIf="generateNew && tokenAuthorities">
+            <div class="form-group">
+                <label class="form-control-label" for="label">Description</label>
+                <input type="text" class="form-control" id="label" name="label" placeholder="Your token description"
+                    [(ngModel)]="tokenAuthorities.label" (keyup)="isTokenExists()" minlength=1 maxlength=50 #labelInput="ngModel"
+                    required>
+                <div *ngIf="labelInput.dirty && labelInput.invalid">
+                    <small class="form-text text-danger" *ngIf="labelInput.errors.required">
+                        Your token description is required.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="labelInput.errors.minlength">
+                        Your token description is required to be at least 1 character.
+                    </small>
+                    <small class="form-text text-danger" *ngIf="labelInput.errors.maxlength">
+                        Your token description cannot be longer than 50 characters.
+                    </small>
+                </div>
+                <div>
+                    <small class="form-text text-danger" *ngIf="errorTokenExists">
+                        Your token description already registered! Please choose another one.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Authorities</label>
+                <select class="form-control" multiple name="right" [(ngModel)]="selectedAuthorities">
+                    <option *ngFor="let right of rightAccesses" [value]="right">{{right}}</option>
+                </select>
+            </div>
+            <div>
+                <button type="button" class="btn btn-outline-dark btn-sm" (click)="onCancel2()">
+                    <i class="fa fa-ban"></i>&nbsp;
+                    <span>Cancel</span>
+                </button>&nbsp;
+                <button type="submit" [disabled]="tokenAuthoritiesForm.form.invalid || errorTokenExists" class="btn btn-outline-dark btn-sm">
+                    <i class="fa fa-save"></i>&nbsp;
+                    <span>Save</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>

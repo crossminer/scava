@@ -35,9 +35,9 @@ from ...client import HttpClient
 
 CATEGORY_METRIC = 'metric'
 CATEGORY_PROJECT = 'project'
+CATEGORY_FACTOID = 'factoid'
 
 logger = logging.getLogger(__name__)
-
 
 
 class Scava(Backend):
@@ -54,9 +54,9 @@ class Scava(Backend):
     :param tag: label used to mark the data
     :param archive: archive to store/retrieve items
     """
-    version = '0.0.1'
+    version = '0.1.0'
 
-    CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT]
+    CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID]
 
     def __init__(self, url, project=None, tag=None, archive=None):
         origin = url
@@ -98,7 +98,7 @@ class Scava(Backend):
         if category == CATEGORY_PROJECT:
             logger.info("Looking for projects at url '%s'", self.url)
         else:
-            logger.info("Looking for '%s' project metrics at url '%s'", project, self.url)
+            logger.info("Looking for '%s' project %ss at url '%s'", project, category, self.url)
 
         nitems = 0  # number of items processed
 
@@ -106,7 +106,11 @@ class Scava(Backend):
             items = json.loads(raw_items)
             items = [items] if isinstance(items, dict) else items
             for item in items:
-                if category == CATEGORY_METRIC:
+                if 'executionInformation' in item and 'lastExecuted' not in item['executionInformation']:
+                    logger.warning("Item filtered due to missing lastExecuted info: %s", str(item))
+                    continue
+
+                if category in [CATEGORY_FACTOID, CATEGORY_METRIC]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -126,7 +130,7 @@ class Scava(Backend):
         if 'name' in item:
             category = CATEGORY_PROJECT
         elif '_id' in item:
-            mid = CATEGORY_METRIC
+            category = CATEGORY_METRIC
         else:
             raise RuntimeError("Can not detect category for", item)
 
@@ -175,10 +179,10 @@ class Scava(Backend):
         :returns: a UNIX timestamp
         """
 
-        if 'executionInformation' in item:
-            updated = item['executionInformation']['lastExecuted']
-        elif 'id' in item:
+        if 'updated' in item:
             updated = item['updated']
+        elif 'executionInformation' in item:
+            updated = item['executionInformation']['lastExecuted']
         else:
             raise TypeError("Can not extract metadata_updated_on from", item)
 
@@ -196,6 +200,8 @@ class Scava(Backend):
             category = CATEGORY_METRIC
         elif 'parent' in item:
             category = CATEGORY_PROJECT
+        elif 'factoid' in item:
+            category = CATEGORY_FACTOID
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -232,6 +238,7 @@ class ScavaClient(HttpClient):
         super().__init__(url, archive=archive, from_archive=from_archive)
         self.project = project
         self.api_metrics_url = urijoin(self.base_url, "metrics")
+        self.api_factoids_url = urijoin(self.base_url, "factoids")
         self.api_projects_url = urijoin(self.base_url, "projects")
 
     def get_project_update(self, project_name=None):
@@ -253,29 +260,46 @@ class ScavaClient(HttpClient):
     def get_items(self, category=CATEGORY_METRIC, project=None):
         """Retrieve all items for category """
 
-        metrics = None  # Metrics available in CROSSMINER platform
-
         if category == CATEGORY_PROJECT:
             # Return the the list of projects
             api = self.api_projects_url
+            logger.debug("Scava client calls APIv1: %s", api)
+            projects = self.fetch(api)
+            yield projects
+
         elif category == CATEGORY_METRIC:
             # Get all metrics definitions and then find the values for the current project
             api_metrics = self.api_metrics_url
             metrics = json.loads(self.fetch(api_metrics))
-        else:
-            raise ValueError(category + ' not supported in Scava')
 
-        if category == CATEGORY_PROJECT:
-            logger.debug("Scava client calls APIv1: %s", api)
-            projects = self.fetch(api)
-            yield projects
-        else:
             for metric in metrics:
                 metric_id = metric['id']
                 api = urijoin(self.api_projects_url, "/p/%s/m/%s" % (project, metric_id))
                 logger.debug("Scava client calls API: %s", api)
                 project_metric = self.fetch(api)
                 yield project_metric
+
+        elif category == CATEGORY_FACTOID:
+            # Get all factoids definitions and then find the values for the current project
+            api_factoids = self.api_factoids_url
+            factoids = json.loads(self.fetch(api_factoids))
+
+            for factoid in factoids:
+                factoid_id = factoid['id']
+                api = urijoin(self.api_projects_url, "/p/%s/f/%s" % (project, factoid_id))
+                logger.debug("Scava client calls API: %s", api)
+                project_factoid = self.fetch(api)
+
+                project_factoid_json = json.loads(project_factoid)
+                if 'status' in project_factoid_json and project_factoid_json['status'] == 'error':
+                    logger.error("Something went wrong with '%s' for project %s: %s",
+                                 api, project, project_factoid_json['msg'])
+                    continue
+
+                yield project_factoid
+
+        else:
+            raise ValueError(category + ' not supported in Scava')
 
     def fetch(self, url, payload=None):
         """Return the textual content associated to the Response object"""

@@ -99,8 +99,8 @@ private map[str,str] setImportPackagesParams(ImportPackage impPackage) {
 }
 
 private map[str,str] getImpPackageVersionRange(UnrestrictedHybridVersion ver, map[str,str] params) {
-	vRange;
-	vSpec;
+	tuple[str, str] vRange;
+	str vSpec;
 	
 	if((UnrestrictedHybridVersion)`"<Version version>"` := ver || 
 	(UnrestrictedHybridVersion)`<Version version>` := ver) {

@@ -17,6 +17,7 @@ import java.util.Date;
 public class Clusterization {
 	private Date clusterizationDate;
 	private String similarityMethod;
+	private String clusterAlgorithm;
 	private String id;
 	
 	public Date getClusterizationDate() {
@@ -41,5 +42,13 @@ public class Clusterization {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getClusterAlgorithm() {
+		return clusterAlgorithm;
+	}
+
+	public void setClusterAlgorithm(String clusterAlgorithm) {
+		this.clusterAlgorithm = clusterAlgorithm;
 	}
 }

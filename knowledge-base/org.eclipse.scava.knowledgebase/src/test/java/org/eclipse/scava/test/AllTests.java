@@ -11,14 +11,17 @@ package org.eclipse.scava.test;
 
 import org.eclipse.scava.test.codeclone.CodeCloneTest;
 import org.eclipse.scava.test.crossrec.CROSSRECTest;
+import org.eclipse.scava.test.focus.FocusTest;
 import org.eclipse.scava.test.importer.GithubImporterTest;
 import org.eclipse.scava.test.manager.ClusterManagerTest;
 import org.eclipse.scava.test.manager.SimilarityManagerTest;
 import org.eclipse.scava.test.recommendation.providers.AlternativeLibrariesRecommendationProviderTest;
+import org.eclipse.scava.test.rest.FocusRestTest;
 import org.eclipse.scava.test.rest.RecommenderRestTest;
 import org.eclipse.scava.test.similarity.CROSSSimSimilarityCalculatorTest;
 import org.eclipse.scava.test.similarity.CompoundSimilarityCalculatorTest;
 import org.eclipse.scava.test.similarity.DependencySimilarityCalculatorTest;
+import org.eclipse.scava.test.similarity.FocusSimilarityCalculatorTest;
 import org.eclipse.scava.test.similarity.ReadmeSimilarityCalculatorTest;
 import org.eclipse.scava.test.similarity.RepoPalCompoundSimilarityCalculatorTest;
 import org.eclipse.scava.test.similarity.RepoPalStarSimilarityCalculatorTest;
@@ -34,7 +37,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		RepoPalTimeSimilarityCalculatorTest.class, SimilarityManagerTest.class, GithubImporterTest.class,
 		ClusterManagerTest.class, DependencyServiceTest.class, RecommenderRestTest.class, CROSSRECTest.class,
 		AlternativeLibrariesRecommendationProviderTest.class, AlternativeLibrariesRecommendationProviderTest.class,
-		CodeCloneTest.class})
+		CodeCloneTest.class, FocusRestTest.class, FocusTest.class, FocusSimilarityCalculatorTest.class})
 public class AllTests {
 
 }

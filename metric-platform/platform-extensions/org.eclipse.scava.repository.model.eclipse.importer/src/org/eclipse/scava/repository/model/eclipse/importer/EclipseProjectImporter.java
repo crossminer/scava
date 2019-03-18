@@ -199,15 +199,15 @@ public class EclipseProjectImporter implements IImporter {
 			if ((isNotNull(currentProg, "description")))
 				project.setDescription(
 						((JSONObject) ((JSONArray) currentProg.get("description")).get(0)).get("value").toString());
-
-			if ((isNotNull(currentProg, "parent_project"))) {
-				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
-						.get("id").toString();
-				if (parentProjectName != null) {
-					project.setParent(importProject(parentProjectName, platform, false));
-					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
-				}
-			}
+			//The commented code enables to import the parent project
+//			if ((isNotNull(currentProg, "parent_project"))) {
+//				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
+//						.get("id").toString();
+//				if (parentProjectName != null) {
+//					project.setParent(importProject(parentProjectName, platform, false));
+//					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
+//				}
+//			}
 
 			if ((isNotNull(currentProg, "download_url")))
 				project.setDownloadsUrl(
@@ -365,19 +365,20 @@ public class EclipseProjectImporter implements IImporter {
 						if (((String) entry.get("type")).equals("github"))
 							repository.setUrl((String) entry.get("url"));
 						if (((String) entry.get("type")).equals("git")) {
-							String gitUrl = (String) entry.get("url");
-							int gitTest = getResponseCode(gitUrl);
-							if (gitTest != 200) {
-								gitUrl = "http://git.eclipse.org" + (String) entry.get("path");
-								gitUrl = gitUrl.replace("http", "https");
-								gitUrl = gitUrl.replace("gitroot", "r");
-								if (gitUrl.endsWith("git"))
-									gitUrl = gitUrl.substring(0, gitUrl.length() - 4);
-								gitTest = getResponseCode(gitUrl);
-								repository.setUrl(gitUrl);
-
-							} else
-								repository.setUrl(gitUrl);
+//							String gitUrl = (String) entry.get("url");
+//							int gitTest = getResponseCode(gitUrl);
+//							if (gitTest != 200) {
+//								gitUrl = "http://git.eclipse.org" + (String) entry.get("path");
+//								gitUrl = gitUrl.replace("http", "https");
+//								gitUrl = gitUrl.replace("gitroot", "r");
+//								if (gitUrl.endsWith("git"))
+//									gitUrl = gitUrl.substring(0, gitUrl.length() - 4);
+//								gitTest = getResponseCode(gitUrl);
+//								repository.setUrl(gitUrl);
+//
+//							} else
+//								repository.setUrl(gitUrl);
+							repository.setUrl("git://git.eclipse.org" +  entry.get("path").toString());
 
 						}
 					} else if (((String) entry.get("type")).equals("svn")

@@ -13,6 +13,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -53,7 +56,7 @@ public class GithubImporterTest {
 	}
 	@Test
 	public void importProjectTest() throws IOException {
-		importer.importProject("MDEGroup/MDEProfile");
+		importer.importProject("MDEGroup/totem");
 		assertEquals(artifactRepository.count(), 1);
 	}
 	@Test
@@ -61,5 +64,42 @@ public class GithubImporterTest {
 		Artifact art = importer.importProject("fasterxml/jackson-databind");
 		assertNotNull(art);
 		assertNotEquals(0, art.getDependencies());
+	}
+	@Ignore
+	@Test
+	public void importAllTest() {
+		String csvFile = "eggs.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+		try {
+
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+
+				// use comma as separator
+				String[] country = line.split(cvsSplitBy);
+				try {
+					importer.importProject(country[0]);
+				} catch (Exception e) {
+					logger.error("ERR: importing " + country[0] + e.getMessage());
+				}
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 }

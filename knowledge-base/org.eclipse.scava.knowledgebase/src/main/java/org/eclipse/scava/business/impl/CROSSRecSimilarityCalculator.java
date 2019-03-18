@@ -46,7 +46,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	
 	@Override
 	public boolean appliesTo(Artifact art) {
-		return (!art.getStarred().isEmpty() &&	!art.getDependencies().isEmpty())? true : false;
+		return (!art.getDependencies().isEmpty());
 	}
 
 	@Override

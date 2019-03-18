@@ -18,7 +18,7 @@ import com.mongodb.Mongo;
 public class AnalysisDeleteTaskResource extends ServerResource {
 
 	@Delete
-	public Representation deleteAnalysisTask(Representation entity) {
+	public Representation deleteAnalysisTask() {
 		Mongo mongo = null;
 		Platform platform = null;
 		try {
@@ -26,7 +26,7 @@ public class AnalysisDeleteTaskResource extends ServerResource {
 			platform = new Platform(mongo);				
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			
-			String analysisTaskId = (String) getRequest().getAttributes().get("analysisTaskId");
+			String analysisTaskId = getQueryValue("analysisTaskId");
 
 			AnalysisTask task = service.deleteAnalysisTask(analysisTaskId);
 

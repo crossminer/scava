@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GitLab Importer
+Bundle-SymbolicName: org.eclipse.scava.repository.model.gitlab.importer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.scava.repository.model.gitlab,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model.importerdependencies,
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.vcs.svn,
+ org.eclipse.scava.repository.model,
+ org.apache.log4j,
+ org.eclipse.scava.repository.model.importer,
+ org.eclipse.scava.repository.model.importer.exception
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.repository.model.gitlab.importer
+

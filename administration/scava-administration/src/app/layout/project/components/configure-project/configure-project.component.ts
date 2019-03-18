@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
@@ -7,7 +7,8 @@ import { ExecutionTask, MetricExecutions } from './execution-task.model';
 import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete/analysis-task-delete-dialog.component';
 import { Project } from '../../project.model';
 import { MetricProvidersMgmtInfoDialogComponent } from './metrics-infos/metric-info.component';
-import { RoleAuthorities } from '../../../../shared/guard/role-authorities';
+import { RoleAuthorities } from '../../../../shared/services/authentication/role-authorities';
+import { ProjectMgmtDeleteDialogComponent } from '../delete-project/delete-project-dialog.component';
 
 @Component({
     selector: 'app-configure-project',
@@ -27,35 +28,39 @@ export class ConfigureProjectComponent implements OnInit {
         private listProjectService: ListProjectService,
         private analysisTaskService: AnalysisTaskService,
         public modalService: NgbModal,
-        public roleAuthorities: RoleAuthorities
-    ) { }
+        public roleAuthorities: RoleAuthorities,
+        private router: Router
+    ) {
+    }
 
     ngOnInit() {
         this.loadAll();
         this.interval = setInterval(() => {
             this.loadAll();
-        }, 2000);
+        }, 3000);
     }
 
     loadAll() {
-        this.route.paramMap.subscribe(data => {
-            this.listProjectService.getProject(data.get('id')).subscribe(
-                (data) => {
-                    this.project = data;
-                    this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
-                        (resp) => {
-                            this.executionTasks = resp as ExecutionTask[];
-                        },
-                        (error) => {
-                            this.onShowMessage(error);
-                        });
-                    this.getGlobalStatus(this.project.shortName);
-                    this.hasAuthorities = this.roleAuthorities.showCommands();
-                },
-                (error) => {
-                    this.onShowMessage(error);
-                });
-        });
+        if (!this.roleAuthorities.isCurrentTokenExpired()) {
+            this.route.paramMap.subscribe(data => {
+                this.listProjectService.getProject(data.get('id')).subscribe(
+                    (data) => {
+                        this.project = data;
+                        this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
+                            (resp) => {
+                                this.executionTasks = resp as ExecutionTask[];
+                            },
+                            (error) => {
+                                this.onShowMessage(error);
+                            });
+                        this.getGlobalStatus(this.project.shortName);
+                        this.hasAuthorities = this.roleAuthorities.showCommands();
+                    },
+                    (error) => {
+                        this.onShowMessage(error);
+                    });
+            });
+        }
     }
 
     getGlobalStatus(projectId: string) {
@@ -127,6 +132,27 @@ export class ConfigureProjectComponent implements OnInit {
             }
         );
         this.loadAll();
+    }
+
+    deleteProject(projectId: string) {
+        const modalRef = this.modalService.open(ProjectMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.projectId = projectId;
+        modalRef.result.then(
+            (result) => {
+                this.onShowMessage('delete success');
+                this.previousState();
+                this.loadAll();
+            },
+            (reason) => {
+                this.onShowMessage('delete failed');
+                this.previousState();
+                this.loadAll();
+            }
+        );
+    }
+
+    previousState() {
+        this.router.navigate(['project']);
     }
 
     ngOnDestroy() {

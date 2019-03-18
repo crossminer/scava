@@ -22,6 +22,7 @@ import org::eclipse::scava::dependency::model::osgi::model::resolvers::PackageRe
 
 
 public str MANIFEST_FILE = "MANIFEST.MF";
+public str PLUGIN_FILE = "plugin.xml";
 
 OSGiModel createOSGiModelFromWorkingCopy(loc workingCopy) {
 	manifestFiles = manifestLocations(workingCopy,{});
@@ -32,17 +33,22 @@ OSGiModel createOSGiModelFromWorkingCopy(loc workingCopy) {
 OSGiModel createOSGimodel(loc id, loc manifest) {
 	OSGiModel model = osgiModel(id);
 	
-	// Set location and manifest headers
-	manifest = parseManifest(manifest);
-	model.locations += getBundleLocation(model);
-	logical = getOneFrom(model.locations).logical;
-	model.headers = {<logical, {h | /Header h := manifest}>};
-	
-	// Set dependencies
-	model.requiredBundles += getRequiredBundles(logical, model);
-	model.importedPackages += getImportPackages(logical, model);
-	model.dynamicImportedPackages += getDynamicImportPackages(logical, model);
-	model.exportedPackages += getExportPackages(logical, model);
+	try {
+		// Set location and manifest headers
+		manifest = parseManifest(manifest);
+		model.locations += getBundleLocation(model);
+		logical = getOneFrom(model.locations).logical;
+		model.headers = {<logical, {h | /Header h := manifest}>};
+		model.pluginFiles = {<logical, findPluginFiles(id, {})>};
+
+		// Set dependencies
+		model.requiredBundles += getRequiredBundles(logical, model);
+		model.importedPackages += getImportPackages(logical, model);
+		model.dynamicImportedPackages += getDynamicImportPackages(logical, model);
+		model.exportedPackages += getExportPackages(logical, model);
+	} catch ParseError(e): {
+		println(e);
+	}
 	
 	return model;
 }
@@ -73,4 +79,20 @@ private set[loc] manifestLocations(loc workingCopy, set[loc] manifestFiles) {
 		}
 	}
 	return manifestFiles;
+}
+
+private set[loc] findPluginFiles(loc workingCopy, set[loc] pluginFiles) {
+	list[loc] files = workingCopy.ls;
+	if(files == []) {
+		return pluginFiles;
+	}
+	for(f <- files) {
+		if(isFile(f) && endsWith(f.path, "/<PLUGIN_FILE>")) {
+			pluginFiles += f;
+		}
+		if(isDirectory(f)){
+			pluginFiles += findPluginFiles(f, pluginFiles);
+		}
+	}
+	return pluginFiles;
 }
