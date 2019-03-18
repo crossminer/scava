@@ -9,8 +9,20 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_172]"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=org.eclipse.scava.crossflow.web&amp;ivyXmlPath=ivy.xml&amp;confs=*&amp;acceptedTypes=jar%2Cbundle%2Cejb%2Cmaven-plugin&amp;alphaOrder=false&amp;resolveInWorkspace=false&amp;transitiveResolve=true&amp;readOSGiMetadata=false&amp;retrievedClasspath=true&amp;retrievedClasspathPattern=WebContent%2FWEB-INF%2Flib%2F%5Bartifact%5D-%5Brevision%5D.%5Bext%5D&amp;retrievedClasspathSync=false&amp;retrievedClasspathTypes=jar"/>
 	<classpathentry kind="src" path="/org.eclipse.scava.crossflow.runtime"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.layered-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.graph.text.ide-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.common-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.common.compaction-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.disco-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.force-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.mrtree-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.radial-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.alg.spore-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.core-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.graph-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/jars/org.eclipse.elk.graph.text-0.4.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

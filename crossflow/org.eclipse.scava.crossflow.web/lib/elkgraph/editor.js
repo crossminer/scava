@@ -47,7 +47,7 @@ url_parameters_1.setupModelLink(editor, function (event) {
 });
 // Create the web socket
 // const socketUrl = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/elkgraph`
-var socketUrl = (location.protocol === 'https:' ? 'wss' : 'ws') + "://localhost:9090/elkgraph";
+var socketUrl = (location.protocol === 'https:' ? 'wss' : 'ws') + "://localhost:8080/org.eclipse.scava.crossflow.web/elkgraph";
 var socketOptions = {
     maxReconnectionDelay: 10000,
     minReconnectionDelay: 1000,

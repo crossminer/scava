@@ -1,4 +1,4 @@
-graph G_wordcount
+graph G1
 algorithm: layered
 
 wrapping.additionalEdgeSpacing: 10.0
@@ -8,7 +8,7 @@ layered.wrapping.strategy: MULTI_EDGE
 aspectRatio: 0.6 
 edgeRouting: SPLINES
 spacing.nodeNodeBetweenLayers: 20.0
-    
+
 node T_LineSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"

@@ -1,16 +1,32 @@
 <ivy-module version="2.0">
 	<info organisation="org.eclipse.scava" module="crossflow.web" status="integration"/>
 	<dependencies>
-		<!-- 
-			(!) Eclipse / Ivy plugin BUG:
-			Apache Thrift dependency not being recognized in Eclipse causes compile errors,
-				e.g. in src-gen class Crossflow, and can be resolved by switching 'libthrift' 
-				rev version from '0.11.0' to '0.12.0' or vice-versa. -->
-		<dependency org="org.apache.thrift" name="libthrift" rev="0.11.0"/>
+		<dependency org="org.apache.thrift" name="libthrift" rev="0.12.0"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.6"/>
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+		
+		<!-- elkgraph-related dependencies -->
+		<dependency org="io.typefox.sprotty" name="diagram-server" rev="0.2.0"/>
+		<dependency org="io.typefox.sprotty" name="diagram-layout-engine" rev="0.2.0"/>
+		<dependency org="io.typefox.sprotty" name="xtext-diagram" rev="0.2.0"/>
+		<dependency org="org.eclipse.xtext" name="org.eclipse.xtext.ide" rev="2.13.0"/>
+		<dependency org="org.eclipse.lsp4j" name="org.eclipse.lsp4j" rev="0.3.0"/>
+ 	
+ 			<dependency org="org.eclipse.jetty.websocket" name="websocket-common" rev="9.4.15.v20190215"/>
+ 			<dependency org="org.eclipse.jetty" name="jetty-http" rev="9.4.15.v20190215"/>
+ 			
+ 	<!--  	<dependency org="org.eclipse.jetty" name="jetty-http" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="javax-websocket-server-impl" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="javax-websocket-client-impl" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-common" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-servlet" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-server" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-client" rev="9.4.15.v20190215"/>
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-api" rev="9.4.15.v20190215"/> -->
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.24"/>
+		
 	</dependencies>
 </ivy-module>
