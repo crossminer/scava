@@ -26,6 +26,7 @@ public class CodeRecommendationView extends JFaceTitleAreaDialogView implements 
 	private Composite resultListComposite;
 	private Text previewText;
 	private ApiCallResult selectedRecommendation;
+	private Button button;
 
 	/**
 	 * Create the dialog.
@@ -34,7 +35,7 @@ public class CodeRecommendationView extends JFaceTitleAreaDialogView implements 
 	 */
 	public CodeRecommendationView(Shell parentShell) {
 		super(parentShell);
-		setShellStyle(SWT.CLOSE | SWT.RESIZE | SWT.TITLE);
+		setShellStyle(SWT.CLOSE | SWT.RESIZE | SWT.TITLE | SWT.APPLICATION_MODAL);
 		setBlockOnOpen(false);
 	}
 
@@ -90,8 +91,9 @@ public class CodeRecommendationView extends JFaceTitleAreaDialogView implements 
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		Button button = createButton(parent, IDialogConstants.OK_ID, "Insert at cursor", true);
+		button = createButton(parent, IDialogConstants.OK_ID, "Insert at cursor", true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		button.setEnabled(false);
 	}
 
 	/**
@@ -111,6 +113,7 @@ public class CodeRecommendationView extends JFaceTitleAreaDialogView implements 
 	@Override
 	public void showRecommendations(List<ApiCallResult> recommendations) {
 		if( !recommendations.isEmpty() ) {
+			button.setEnabled(true);
 			for(Control child : resultListComposite.getChildren()) {
 				child.dispose();
 			}
@@ -118,6 +121,8 @@ public class CodeRecommendationView extends JFaceTitleAreaDialogView implements 
 			recommendations.forEach(recommendation -> listRecommendation(recommendation));
 			
 			resultListComposite.requestLayout();
+		}else {
+			
 		}
 	}
 

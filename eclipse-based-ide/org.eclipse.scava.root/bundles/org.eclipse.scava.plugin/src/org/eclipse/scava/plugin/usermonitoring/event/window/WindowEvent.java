@@ -32,7 +32,7 @@ public class WindowEvent extends Event {
 	public WindowEvent(IWorkbenchWindow window, WindowEventType type) {
 		this.window = window;
 		this.type = type;
-		title = window.getActivePage().getLabel();
+		this.title = "Workspace";
 	}
 
 	public final WindowEventType getType() {

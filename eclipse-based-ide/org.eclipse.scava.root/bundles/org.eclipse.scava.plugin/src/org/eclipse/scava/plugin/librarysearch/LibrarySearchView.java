@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.scava.plugin.librarysearch.details.ILibraryDetailsController;
+import org.eclipse.scava.plugin.librarysearch.details.ILibraryDetailsView;
 import org.eclipse.scava.plugin.librarysearch.list.ILibraryListView;
 import org.eclipse.scava.plugin.librarysearch.tabs.finish.ILibrarySearchFinishView;
 import org.eclipse.scava.plugin.librarysearch.tabs.recommendedlibs.ILibrarySearchRecommendedLibsView;
 import org.eclipse.scava.plugin.librarysearch.tabs.results.ILibrarySearchResultView;
+import org.eclipse.scava.plugin.librarysearch.tabs.results.ILibrarySearchResultController;
+import org.eclipse.scava.plugin.librarysearch.tabs.results.ILibrarySearchResultController.SimilarsRequestedEvent;
 import org.eclipse.scava.plugin.mvc.implementation.CloseEventRaiser;
 import org.eclipse.scava.plugin.mvc.implementation.jface.JFaceTitleAreaDialogView;
 import org.eclipse.scava.plugin.mvc.implementation.swt.IHasComposite;
@@ -19,9 +23,12 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -34,13 +41,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.google.common.eventbus.Subscribe;
 
 public class LibrarySearchView extends JFaceTitleAreaDialogView implements ILibrarySearchView {
 	private ScrolledComposite toBeInstalledScrolledComposite;
 	private CTabFolder searchTabFolder;
 	private Text textQueryString;
 	private Composite toBeInstalledListComposite;
+	// private ScrolledComposite detailsScrolledComposite;
+	//private Composite parent;
 
 	private List<TabData> hiddenTabs;
 	private Button okButton;
@@ -53,10 +65,11 @@ public class LibrarySearchView extends JFaceTitleAreaDialogView implements ILibr
 	 */
 	public LibrarySearchView(Shell parentShell) {
 		super(parentShell);
-		setShellStyle(SWT.SHELL_TRIM);
+		setShellStyle(SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
 		setBlockOnOpen(false);
 
 		hiddenTabs = new ArrayList<>();
+
 	}
 
 	/**
@@ -66,6 +79,9 @@ public class LibrarySearchView extends JFaceTitleAreaDialogView implements ILibr
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+
+		//this.parent = parent;
+
 		setMessage("Search for a library to use it in your project");
 		setTitle("Library search");
 		setTitleImage(ResourceManager.getPluginImage("org.eclipse.scava.plugin", "bin/logo-titleimage-titlearedialog.png"));
@@ -85,6 +101,7 @@ public class LibrarySearchView extends JFaceTitleAreaDialogView implements ILibr
 		lblSearch.setText("Search for a library:");
 
 		textQueryString = new Text(composite, SWT.BORDER);
+		textQueryString.setTextLimit(64);
 
 		textQueryString.setText("");
 
@@ -270,6 +287,37 @@ public class LibrarySearchView extends JFaceTitleAreaDialogView implements ILibr
 		public Control getControl() {
 			return control;
 		}
+
+	}
+
+	@Override
+	public void showProjectName(String projectName) {
+		setMessage("Search for a library to use it in " + projectName);
+	}
+
+	@Override
+	public void showDetails(String label, ILibraryDetailsView view) {
+
+		ControlAdapter updateScrolledCompositeOnResize = new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				ScrolledComposites.updateOnlyVerticalScrollableComposite((ScrolledComposite) e.getSource());
+			}
+		};
+
+		ScrolledComposite detailsScrolledComposite = new ScrolledComposite(searchTabFolder, SWT.BORDER | SWT.V_SCROLL);
+		detailsScrolledComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		detailsScrolledComposite.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		detailsScrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		detailsScrolledComposite.setExpandHorizontal(true);
+		detailsScrolledComposite.setExpandVertical(true);
+		detailsScrolledComposite.addControlListener(updateScrolledCompositeOnResize);
+
+		Composite composite = ((IHasComposite) view).getComposite();
+		composite.setParent(detailsScrolledComposite);
+		detailsScrolledComposite.setContent(composite);
+		ScrolledComposites.updateOnlyVerticalScrollableComposite(detailsScrolledComposite);
+		showTabWithContent(label, detailsScrolledComposite);
 
 	}
 

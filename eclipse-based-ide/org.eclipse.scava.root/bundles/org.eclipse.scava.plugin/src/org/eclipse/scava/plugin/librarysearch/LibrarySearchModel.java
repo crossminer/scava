@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
 import org.eclipse.scava.plugin.mvc.implementation.AbstractModel;
@@ -23,10 +25,17 @@ public class LibrarySearchModel extends AbstractModel implements ILibrarySearchM
 	private final List<Artifact> toBeInstalledLibraries;
 	private final String pom;
 	private final KnowledgeBaseAccess knowledgeBaseAccess;
+	private final IProject activeProject;
 
-	public LibrarySearchModel(String pom) {
+	public LibrarySearchModel(IProject activeProject) {
+
+		IPath pathToPOM = activeProject.getLocation();
+		pathToPOM = pathToPOM.addTrailingSeparator();
+		pathToPOM = pathToPOM.append("pom.xml");
+
 		toBeInstalledLibraries = new ArrayList<>();
-		this.pom = pom;
+		this.pom = pathToPOM.toOSString();
+		this.activeProject = activeProject;
 		knowledgeBaseAccess = new KnowledgeBaseAccess();
 	}
 
@@ -48,48 +57,52 @@ public class LibrarySearchModel extends AbstractModel implements ILibrarySearchM
 	}
 
 	@Override
-	public List<Artifact> getLibrariesByQueryString(String query) {		
+	public List<Artifact> getLibrariesByQueryString(String query) {
 		ArtifactsRestControllerApi artifactsRestControllerApi = knowledgeBaseAccess.getArtifactRestControllerApi();
-		
+
 		List<Artifact> artifactList = new ArrayList<>();
 		try {
 			artifactList = artifactsRestControllerApi.getProjectUsingGET(query, null, null, null);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}
-		
+
 		return artifactList;
 	}
 
 	@Override
 	public List<Artifact> getSimilarLibrariesTo(Artifact artifact, SimilarityMethod simMethod, int numberOfResults) {
 		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
-		
+
 		List<Artifact> artifactList = new ArrayList<>();
 		try {
-			artifactList = recommenderRestController.getSimilarProjectUsingGET(simMethod.name(), artifact.getId(), numberOfResults);
+			artifactList = recommenderRestController.getSimilarProjectUsingGET(simMethod.name(), artifact.getId(),
+					numberOfResults);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}
-		
+
 		return artifactList;
 	}
-	
-	/* PREPARED METHOD FOR THE RECOMMENDED_LIBS REQUEST :)
-	public void getRecommendedAdditionalLibraries(List<Artifact> baseLibraries) {
-		ApiRecommendationRecommended_libraryClientResource resource = knowledgeBaseAccess.apiRecommendationRecommended_library();
-		Query query = new Query();
-		
-		Recommendation recommendation = resource.getRecommendedLibrariesUsingPOST(query);
-		recommendation.getRecommendationItems().stream().map(item -> item.get)
-	}*/
-	
+
+	/*
+	 * PREPARED METHOD FOR THE RECOMMENDED_LIBS REQUEST :) public void
+	 * getRecommendedAdditionalLibraries(List<Artifact> baseLibraries) {
+	 * ApiRecommendationRecommended_libraryClientResource resource =
+	 * knowledgeBaseAccess.apiRecommendationRecommended_library(); Query query = new
+	 * Query();
+	 * 
+	 * Recommendation recommendation =
+	 * resource.getRecommendedLibrariesUsingPOST(query);
+	 * recommendation.getRecommendationItems().stream().map(item -> item.get) }
+	 */
+
 	@Override
 	public List<RecommendedLibrary> getRecommendedLibraries(List<String> basedOn) {
 		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
 
 		Query query = new Query();
-		
+
 		List<Dependency> dependencies = basedOn.stream().map(base -> {
 			Dependency dependency = new Dependency();
 			dependency.setArtifactID("UNKNOW");
@@ -97,24 +110,30 @@ public class LibrarySearchModel extends AbstractModel implements ILibrarySearchM
 			dependency.setVersion("1");
 			return dependency;
 		}).collect(Collectors.toList());
-		
+
 		query.setProjectDependencies(dependencies);
-		
+
 		List<RecommendedLibrary> recommendedLibraries = new ArrayList<>();
 		try {
 			Recommendation recommendation = recommenderRestController.getRecommendedLibrariesUsingPOST(query);
 			List<RecommendationItem> recommendationItems = recommendation.getRecommendationItems();
-			recommendedLibraries = recommendationItems.stream().map(r -> r.getRecommendedLibrary()).collect(Collectors.toList());
+			recommendedLibraries = recommendationItems.stream().map(r -> r.getRecommendedLibrary())
+					.collect(Collectors.toList());
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}
-		
+
 		return recommendedLibraries;
 	}
-	
+
 	@Override
 	public String getPom() {
 		return pom;
+	}
+
+	@Override
+	public String getActiveProjectName() {
+		return activeProject.getName();
 	}
 
 }
