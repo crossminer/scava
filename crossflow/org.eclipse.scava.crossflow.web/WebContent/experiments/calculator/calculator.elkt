@@ -1,4 +1,4 @@
-graph G1
+graph G_calculator
 algorithm: layered
 
 wrapping.additionalEdgeSpacing: 10.0
