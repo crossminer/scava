@@ -20,6 +20,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
 import org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker;
 import org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
@@ -138,6 +139,13 @@ public class ProjectCreationResource extends ServerResource {
 						red.setProject(bts.get("project").asText());
 						red.setName(bts.get("name").asText());
 						buggy = red;
+						break;
+					case "jira":
+						JiraBugTrackingSystem jira = new JiraBugTrackingSystem();
+						jira.setProject(bts.get("project").asText());
+						jira.setLogin(bts.get("login").asText());
+						jira.setPassword(bts.get("password").asText());
+						buggy = jira;
 						break;
 					default:
 						continue;

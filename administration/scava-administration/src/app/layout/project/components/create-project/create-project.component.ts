@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Project,IProject } from '../../project.model';
+import { Project, IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
 import { Router } from '@angular/router';
 
@@ -41,7 +41,7 @@ export class CreateProjectComponent implements OnInit {
     });
   }
 
-  addControlProject(){
+  addControlProject() {
     return ['', Validators.required];
   }
 
@@ -111,6 +111,14 @@ export class CreateProjectComponent implements OnInit {
           'project': ['', Validators.required],
           'url': ['', Validators.required]
         });
+      case 'jira':
+        return this.formBuilder.group({
+          'type': [type],
+          'login': ['', Validators.required],
+          'password': ['', Validators.required],
+          'project': ['', Validators.required],
+          'url': ['', Validators.required]
+        });
       default:
         break;
     }
@@ -120,21 +128,21 @@ export class CreateProjectComponent implements OnInit {
     const formArray = <FormArray>this.form.get(sourceName);
     formArray.removeAt(index);
     const formValue = this.form.value;
-    if(formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0){
+    if (formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0) {
       this.infosSouceExist = false;
     }
   }
 
   save() {
     this.isSaving = true;
-    this.project.name= this.saveControlProject('name');
-    this.project.description= this.saveControlProject('description');
-    this.project.homePage= this.saveControlProject('homePage');
+    this.project.name = this.saveControlProject('name');
+    this.project.description = this.saveControlProject('description');
+    this.project.homePage = this.saveControlProject('homePage');
     this.project.vcsRepositories = this.saveInformationSources('vcs');
     this.project.bts = this.saveInformationSources('bts');
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
-      let project : IProject = resp as IProject;
+      let project: IProject = resp as IProject;
       this.onShowMessage(project)
       this.router.navigate(['/project']);
     }, error => {
@@ -157,7 +165,7 @@ export class CreateProjectComponent implements OnInit {
     this.router.navigate(['project']);
   }
 
-  onShowMessage(msg: any){
+  onShowMessage(msg: any) {
     console.log(msg);
   }
 
