@@ -14,7 +14,6 @@
   </parent>
   <modules>
     <module>../migration/third-party/com.googlecode.pongo.runtime</module>
-    <module>../migration/third-party/com.googlecode.pongo.runtime.dependencies</module>
     <module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
     <module>../migration/third-party/com.j2bugzilla</module>
     <module>../migration/third-party/com.mashape.unirest</module>

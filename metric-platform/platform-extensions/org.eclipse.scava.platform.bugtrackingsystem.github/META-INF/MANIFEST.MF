@@ -14,8 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform.bugtrackingsystem,
  org.apache.log4j,
  org.apache.commons.lang3,
- com.googlecode.pongo.runtime.dependencies,
- com.google.gson
+ com.google.gson,
+ com.googlecode.pongo.runtime;bundle-version="0.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.github

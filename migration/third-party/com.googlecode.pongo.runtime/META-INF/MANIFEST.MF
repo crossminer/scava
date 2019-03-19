@@ -4,7 +4,8 @@ Bundle-Name: Runtime
 Bundle-SymbolicName: com.googlecode.pongo.runtime
 Bundle-Version: 0.5.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- com.googlecode.pongo.runtime.dependencies;visibility:=reexport
+ org.eclipse.orbit.mongodb;bundle-version="2.10.1";visibility:=reexport,
+ org.apache.commons.collections;bundle-version="3.2.2"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.googlecode.pongo.runtime,
