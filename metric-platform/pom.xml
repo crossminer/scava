@@ -18,7 +18,6 @@
     <module>../migration/third-party/com.j2bugzilla</module>
     <module>../migration/third-party/com.mashape.unirest</module>
     <module>../migration/third-party/org.carrot2.api</module>
-    <module>../migration/third-party/org.carrot2.dependencies</module>
     <module>../migration/third-party/org.eclipse.egit.github.core</module>
     <module>../migration/third-party/org.joda.time</module>
     <module>../migration/third-party/org.mapdb</module>
