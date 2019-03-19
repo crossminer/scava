@@ -2,7 +2,7 @@ pipeline {
   agent any
   options {
     disableConcurrentBuilds()  //each branch has 1 job running at a time
-    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
+    buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '1'))
   }
   stages {
     stage('Build Knowledge Base') {
