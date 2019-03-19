@@ -17,7 +17,6 @@
     <module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
     <module>../migration/third-party/com.j2bugzilla</module>
     <module>../migration/third-party/com.mashape.unirest</module>
-    <module>../migration/third-party/org.apache.ws.commons</module>
     <module>../migration/third-party/org.carrot2.api</module>
     <module>../migration/third-party/org.carrot2.dependencies</module>
     <module>../migration/third-party/org.eclipse.egit.github.core</module>
