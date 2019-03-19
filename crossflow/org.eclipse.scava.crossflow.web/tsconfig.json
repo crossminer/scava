@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "outDir": "lib",
+        "outDir": "WebContent/lib",
         "lib": [ "es2016", "dom" ],
         "types": [ "node", "reflect-metadata" ],
         "moduleResolution": "node",
