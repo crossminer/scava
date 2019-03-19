@@ -12,5 +12,17 @@
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+		
+		<!-- elkgraph-related dependencies -->
+		<dependency org="io.typefox.sprotty" name="diagram-server" rev="0.2.0"/>
+		<dependency org="io.typefox.sprotty" name="diagram-layout-engine" rev="0.2.0"/>
+		<dependency org="io.typefox.sprotty" name="xtext-diagram" rev="0.2.0"/>
+		<dependency org="org.eclipse.xtext" name="org.eclipse.xtext.ide" rev="2.13.0"/>
+		<dependency org="org.eclipse.lsp4j" name="org.eclipse.lsp4j" rev="0.3.0"/>
+ 	
+ 			<dependency org="org.eclipse.jetty.websocket" name="websocket-common" rev="9.3.6.v20151106"/>
+ 			<dependency org="org.eclipse.jetty" name="jetty-http" rev="9.3.6.v20151106"/> 			
+ 	
+		
 	</dependencies>
 </ivy-module>
