@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="49">
+<?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="50">
     <locations>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
             <unit id="rascal-feature.feature.group" version="0.12.0.201903171227"/>
@@ -16,10 +16,6 @@
             <unit id="org.restlet.ext.jetty.feature.group" version="2.3.2.v20150501-1520"/>
             <unit id="org.restlet.feature.group" version="2.3.2.v20150501-1520"/>
             <repository location="http://p2.restlet.com/2.3/"/>
-        </location>
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-            <unit id="org.eclipse.jgit.feature.group" version="5.2.0.201812061821-r"/>
-            <repository location="http://download.eclipse.org/egit/updates/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
             <unit id="org.apache.xmlrpc" version="3.0.0.v20100427-1100"/>
@@ -42,6 +38,10 @@
             <unit id="org.apache.ws.commons.util" version="1.0.1.v20100518-1140"/>
             <unit id="org.eclipse.orbit.mongodb" version="2.10.1.v20130422-1135"/>
             <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository"/>
+        </location>
+        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
+            <unit id="org.eclipse.jgit.feature.group" version="5.3.0.201903130848-r"/>
+            <repository location="http://download.eclipse.org/egit/updates/"/>
         </location>
     </locations>
     <environment>
