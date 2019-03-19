@@ -2,8 +2,6 @@ package org.eclipse.scava.crossflow.web.elkgraph;
 
 import java.util.HashMap;
 
-import javax.websocket.Endpoint;
-
 import org.apache.thrift.TException;
 import org.eclipse.elk.alg.common.compaction.options.PolyominoOptions;
 import org.eclipse.elk.alg.disco.options.DisCoMetaDataProvider;
@@ -19,48 +17,20 @@ import org.eclipse.elk.graph.text.ElkGraphRuntimeModule;
 import org.eclipse.elk.graph.text.ide.ElkGraphIdeModule;
 import org.eclipse.elk.graph.text.ide.ElkGraphIdeSetup;
 import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.xtext.ide.server.ServerModule;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.util.Modules2;
-
-import com.google.inject.Binder;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
-
-import io.typefox.sprotty.server.xtext.websocket.LanguageServerEndpoint;
 
 public class ElkgraphServiceHandler implements ElkgraphService.Iface {
 	
-	 @Inject
-	  private Provider<Endpoint> endpointProvider;
-
 	protected HashMap<String, Workflow> workflows = new HashMap<>();
 	protected ElkgraphServiceServlet servlet;
 	
 	public ElkgraphServiceHandler(ElkgraphServiceServlet servlet) {
+		System.out.println("ElkgraphServiceHandler");
 		this.servlet = servlet;
 		
-		// transcribed from ServerLauncher.main(..)
-//	    ServerModule _serverModule = new ServerModule();
-//	    final com.google.inject.Module _function = (Binder it) -> {
-//	      it.<Endpoint>bind(Endpoint.class).to(LanguageServerEndpoint.class);
-//	      it.<IResourceServiceProvider.Registry>bind(IResourceServiceProvider.Registry.class).toProvider(IResourceServiceProvider.Registry.RegistryProvider.class);
-//	    };
-//	    final Injector injector = Guice.createInjector(Modules2.mixin(_serverModule, _function));
-//	    final ServerLauncher launcher = injector.<ServerLauncher>getInstance(ServerLauncher.class);
-////	    launcher.initialize();
-//	    String _xifexpression = null;
-//	    int _length = 0;//args.length;
-//	    boolean _greaterEqualsThan = (_length >= 1);
-//	    if (_greaterEqualsThan) {
-//	      _xifexpression = "";//args[0];
-//	    } else {
-//	      _xifexpression = "../..";
-//	    }
-//	    final String rootPath = _xifexpression;
-//	    launcher.start(rootPath);
+		initialize();
 		
 	}
 	
@@ -85,6 +55,7 @@ public class ElkgraphServiceHandler implements ElkgraphService.Iface {
 	        return Guice.createInjector(Modules2.mixin(_elkGraphRuntimeModule, _elkGraphIdeModule, _elkGraphDiagramModule));
 	      }
 	    }.createInjectorAndDoEMFRegistration();
+	    System.out.println("ElkgraphServiceHandler.initialize() completed.");
 	  }
 	
 	protected ClassLoader getClassLoader() throws Exception {
@@ -95,38 +66,26 @@ public class ElkgraphServiceHandler implements ElkgraphService.Iface {
 	public ElkgraphServiceDiagnostics getDiagnostics() throws TException {
 		ElkgraphServiceDiagnostics diagnostics = new ElkgraphServiceDiagnostics();
 		diagnostics.setLanguageServerRunning(isLanguageServerRunning());
-		diagnostics.setRootDirectory(servlet.getServletContext().getRealPath(""));
 		return diagnostics;
 	}
 
 	@Override
 	public void startLanguageServer() throws TException {
+		System.out.println("startLanguageServer()");
 		
-//	      final WebAppContext webAppContext = ObjectExtensions.<WebAppContext>operator_doubleArrow(_webAppContext, _function);
-	      //server.setHandler(webAppContext);
-//	      final ServerContainer container = WebSocketServerContainerInitializer.configureContext(webAppContext);
-//	      final ServerEndpointConfig.Builder endpointConfigBuilder = ServerEndpointConfig.Builder.create(LanguageServerEndpoint.class, "/elkgraph");
-//	      endpointConfigBuilder.configurator(new ServerEndpointConfig.Configurator() {
-//	        @Override
-//	        public <T extends Object> T getEndpointInstance(final Class<T> endpointClass) throws InstantiationException {
-//	          Endpoint _get = ElkgraphServiceHandler.this.endpointProvider.get();
-//	          return ((T) _get);
-//	        }
-//	      });
-//	      container.addEndpoint(endpointConfigBuilder.build());
 	} 
 
 	@Override
 	public void stopLanguageServer() throws TException {
-		// TODO Auto-generated method stub
+		System.out.println("stopLanguageServer()");
 		
 	}
 
 	@Override
 	public boolean isLanguageServerRunning() throws TException {
-		// TODO Auto-generated method stub
+		System.out.println("isLanguageServerRunning()");
+
 		return false;
 	}
 	
-
 }
