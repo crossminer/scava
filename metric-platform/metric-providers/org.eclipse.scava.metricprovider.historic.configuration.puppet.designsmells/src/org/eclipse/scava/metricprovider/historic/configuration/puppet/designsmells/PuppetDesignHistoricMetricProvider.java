@@ -23,13 +23,16 @@ public class PuppetDesignHistoricMetricProvider extends AbstractHistoricalMetric
 	
 	private final OssmeterLogger logger;
 	
+	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells";
+	
 	public PuppetDesignHistoricMetricProvider() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.historic.configuration.puppet.PuppetTransMetricProvider");
 	}
     
     @Override
     public String getIdentifier() {
-    	return PuppetDesignHistoricMetricProvider.class.getCanonicalName();
+    	//return PuppetDesignHistoricMetricProvider.class.getCanonicalName();
+    	return IDENTIFIER;
     }
     
     @Override
