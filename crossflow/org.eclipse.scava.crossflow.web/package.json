@@ -26,7 +26,7 @@
   },
   "scripts": {
     "compile": "tsc",
-    "clean": "rimraf lib WebContent/bootstrap WebContent/jquery WebContent/sprotty WebContent/vs WebContent/*.bundle.js WebContent/*.bundle.js.map",
+    "clean": "rimraf WebContent/lib WebContent/bootstrap WebContent/jquery WebContent/sprotty WebContent/vs WebContent/*.bundle.js WebContent/*.bundle.js.map",
     "build": "yarn compile && webpack --env.uglify",
     "watch": "tsc-watch --onSuccess webpack"
   }
