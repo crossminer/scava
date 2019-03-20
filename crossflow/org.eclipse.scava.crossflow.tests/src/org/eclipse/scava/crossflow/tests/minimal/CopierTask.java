@@ -2,16 +2,20 @@ package org.eclipse.scava.crossflow.tests.minimal;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+
 public class CopierTask extends CopierTaskBase {
 
 	protected int executions;
 	private long delay = 0;
+	private boolean verbose = false;
 
 	@Override
 	public Number consumeInput(Number number) {
 
-		// System.err.println("CopierTask:"+workflow.getCopierTasks().lastIndexOf(this)+" consuming: "+number);
-		
+		if (verbose)
+			log(SEVERITY.INFO, "CopierTask:" + workflow.getCopierTasks().lastIndexOf(this) + " consuming: " + number);
+
 		if (delay > 0)
 			try {
 				int sleep = ThreadLocalRandom.current().nextInt((int) delay / 2, (int) delay * 3 / 2);
@@ -40,6 +44,14 @@ public class CopierTask extends CopierTaskBase {
 
 	public void setDelay(long delay) {
 		this.delay = delay;
+	}
+
+	public boolean isVerbose() {
+		return verbose;
+	}
+
+	public void setVerbose(boolean verbose) {
+		this.verbose = verbose;
 	}
 
 }
