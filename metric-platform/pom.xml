@@ -180,7 +180,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.readability</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.requestreplyclassification</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.severityclassification</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.threads</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.threads</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.threadsrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.topics</module>
     <module>metric-providers/org.eclipse.scava.opennlp</module>
