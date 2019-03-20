@@ -164,6 +164,17 @@ public class AnalysisTaskService {
 	public List<AnalysisTask> getAnalysisTasks() {
 		List<AnalysisTask> tasks = new ArrayList<>();
 		for (AnalysisTask task : this.repository.getAnalysisTasks()) {
+			Iterable<MetricExecution> providers = this.repository.getMetricExecutions().findByProjectId(task.getProject().getProjectId());
+			
+			while (providers.iterator().hasNext()) {
+				MetricExecution provider = providers.iterator().next();
+				for (MetricExecution metricExecution : task.getMetricExecutions()) {
+					if(provider.getMetricProviderId().equals(metricExecution.getMetricProviderId())) {
+						metricExecution.setLastExecutionDate(provider.getLastExecutionDate());
+						break;
+					}
+				}
+			}
 			tasks.add(task);
 		}
 
