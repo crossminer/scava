@@ -4,8 +4,8 @@ COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 COPY tomcat-manager-web.xml /usr/local/tomcat/webapps/manager/WEB-INF/web.xml
 COPY context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 COPY org.eclipse.scava.crossflow.web.war /usr/local/tomcat/webapps/
-# ADD https://dist.apache.org/repos/dist/release/activemq/5.15.8/apache-activemq-5.15.8-bin.tar.gz activemq.tar.gz
-COPY apache-activemq-5.15.8-bin.tar.gz activemq.tar.gz
+ADD https://archive.apache.org/dist/activemq/5.15.8/apache-activemq-5.15.8-bin.tar.gz activemq.tar.gz
+CMD mv apache-activemq-5.15.8-bin.tar.gz activemq.tar.gz
 
 RUN set -x \
 	&& tar -zxf activemq.tar.gz \
