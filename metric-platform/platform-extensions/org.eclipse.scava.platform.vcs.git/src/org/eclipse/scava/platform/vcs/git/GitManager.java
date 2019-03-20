@@ -282,11 +282,10 @@ public class GitManager extends AbstractVcsManager {
 		RevWalk walk = new RevWalk(repo);
 		
 		Iterator<RevCommit> iterator = git.log().call().iterator();
-		walk.parseCommit(iterator.next());
 		
 		boolean foundDate = false;
 		while(iterator.hasNext()) { 
-			RevCommit commit = iterator.next();
+			RevCommit commit = walk.parseCommit(iterator.next());
 			
 //			System.out.println(Long.valueOf(commit.getCommitTime())*1000 + " == " + epoch); 
 //			System.err.println("comparing " +new Date(Long.valueOf(commit.getCommitTime())*1000) + " with date " + date + " and epoch " + epoch);
