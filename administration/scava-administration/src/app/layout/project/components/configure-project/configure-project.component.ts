@@ -140,13 +140,9 @@ export class ConfigureProjectComponent implements OnInit {
         modalRef.result.then(
             (result) => {
                 this.onShowMessage('delete success');
-                this.previousState();
-                this.loadAll();
             },
             (reason) => {
                 this.onShowMessage('delete failed');
-                this.previousState();
-                this.loadAll();
             }
         );
     }
