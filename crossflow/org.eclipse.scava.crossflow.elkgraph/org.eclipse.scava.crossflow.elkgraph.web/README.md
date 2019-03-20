@@ -1,24 +1,7 @@
-# RUNNING THE CROSSFLOW ELKGRAPH SERVER 
+# Running the Crossflow elkgraph web app in Docker
 
-### Run as foreground process in console (will terminate on any keyboard input):
-
-$ java -jar org.eclipse.scava.crossflow.elkgraph.web.jar
-
-
-### Run as 'screen' process in console (allows screen disconnect and console logout):
-
-$ apt-get install screen
-
-$ screen
-
-$ java -jar org.eclipse.scava.crossflow.elkgraph.web.jar
- 
-Disconnect from running screen:
-
-$ CTRL+A
-
-$ CTRL+D
-
-Logout from console:
-
-$ exit
+- Run the following commands to build and run a Docker image 
+	- `docker build -t elkgraph .` 
+	- `docker run -it --rm -d -p 9090:9090 elkgraph:latest`
+- You should now be able to access the runtime model view in the experiments page accessible from the crossflow web app though http://localhost/org.eclipse.scava.crossflow.web
+	

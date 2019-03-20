@@ -102,13 +102,7 @@ class ServerLauncher {
 		// Start the server
 		try {
 			server.start()
-			log.info('Press enter to stop the server...')
-			new Thread[
-		    	val key = System.in.read()
-		    	server.stop()
-		    	if (key == -1)
-		    		log.warn('The standard input stream is empty')
-		    ].start()
+			log.info('Sever successfully started...')
 			server.join()
 		} catch (Exception exception) {
 			log.warn('Shutting down due to exception', exception)
