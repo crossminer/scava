@@ -146,6 +146,18 @@ public class AnalysisTaskService {
 	
 	public AnalysisTask getTaskByAnalysisTaskId(String analysisTaskId) {
 		AnalysisTask analysisTask = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
+		Iterable<MetricExecution> providers = this.repository.getMetricExecutions().findByProjectId(analysisTask.getProject().getProjectId());
+		
+		while (providers.iterator().hasNext()) {
+			MetricExecution provider = providers.iterator().next();
+			for (MetricExecution metricExecution : analysisTask.getMetricExecutions()) {
+				if(provider.getMetricProviderId().equals(metricExecution.getMetricProviderId())) {
+					metricExecution.setLastExecutionDate(provider.getLastExecutionDate());
+					break;
+				}
+			}
+		}
+		
 		return analysisTask;
 	}
 
