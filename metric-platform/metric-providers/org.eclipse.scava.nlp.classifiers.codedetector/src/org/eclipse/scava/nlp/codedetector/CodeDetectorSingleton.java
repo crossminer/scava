@@ -21,7 +21,7 @@ class CodeDetectorSingleton
 {
 	private static CodeDetectorSingleton singleton = new CodeDetectorSingleton();
 
-	private static FastText codeDetector;
+	private FastText codeDetector;
 	
 	private CodeDetectorSingleton()
 	{

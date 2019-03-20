@@ -22,7 +22,7 @@ class EmotionClassifierSingleton
 {
 	private static EmotionClassifierSingleton singleton = new EmotionClassifierSingleton();
 	
-	private static Vasttext emotionClassifier;
+	private Vasttext emotionClassifier;
 	
 	private EmotionClassifierSingleton()
 	{

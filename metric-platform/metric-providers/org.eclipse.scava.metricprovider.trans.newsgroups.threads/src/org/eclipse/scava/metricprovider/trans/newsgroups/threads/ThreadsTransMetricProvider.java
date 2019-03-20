@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Edge Hill University
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -11,6 +11,7 @@
 package org.eclipse.scava.metricprovider.trans.newsgroups.threads;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +21,9 @@ import java.util.Set;
 
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.ClassificationInstance;
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.Classifier;
+import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
+import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.CurrentDate;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupData;
@@ -44,6 +48,9 @@ import com.mongodb.DB;
 public class ThreadsTransMetricProvider implements ITransientMetricProvider<NewsgroupsThreadsTransMetric>{
 
 	protected PlatformCommunicationChannelManager communicationChannelManager;
+	
+	protected List<IMetricProvider> uses;
+	protected MetricProviderContext context;
 
 	@Override
 	public String getIdentifier() {
@@ -61,16 +68,17 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		// DO NOTHING -- we don't use anything
+		this.uses = uses;
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
+		this.context = context;
 		this.communicationChannelManager = context.getPlatformCommunicationChannelManager();
 	}
 
@@ -82,6 +90,15 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsThreadsTransMetric db) {
 
+		if (uses.size()!=getIdentifiersOfUses().size())
+		{
+			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
+								"the transient metrics it needs!");
+			System.exit(-1);
+		}
+		
+		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
 		Iterable<CurrentDate> currentDateIt = db.getDate();
 		CurrentDate currentDate = null;
 		for (CurrentDate cd:  currentDateIt)
@@ -145,7 +162,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					if (!articleExists) {
 						articles.add(prepareArticle(deltaArticle));
 						ClassificationInstance instance = 
-								prepareClassificationInstance(communicationChannelName, deltaArticle);
+								prepareClassificationInstance(communicationChannelName, deltaArticle, detectingCodeMetric);
 						instanceIndex.put(instance.getArticleNumber(), instance);
 					}
 				}
@@ -215,18 +232,32 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		}
 		db.sync();
 	}
+	
+	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db)
+	{
+		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
+		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
+				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
+			newsgroupArticleInDetectionCode = nadc;
+		}
+		if(newsgroupArticleInDetectionCode.getNaturalLanguage() != null)
+			return newsgroupArticleInDetectionCode.getNaturalLanguage();
+		else
+			return "";
+	}
 
-	private ClassificationInstance prepareClassificationInstance(
-			String communicationChannelName, CommunicationChannelArticle deltaArticle) {
+	private ClassificationInstance prepareClassificationInstance(String communicationChannelName, CommunicationChannelArticle article, DetectingCodeTransMetric db)
+	{
 		ClassificationInstance instance = new ClassificationInstance(); 
-		instance.setArticleNumber(deltaArticle.getArticleNumber());
+		instance.setArticleNumber(article.getArticleNumber());
 		instance.setNewsgroupName(communicationChannelName);
-		instance.setSubject(deltaArticle.getSubject());
-		instance.setText(deltaArticle.getText());
+		instance.setSubject(article.getSubject());
+		instance.setText(getNaturalLanguage(article, db));
 		return instance;
 	}
 
-	
 	private Article prepareArticle(CommunicationChannelArticle deltaArticle) {
 		Article article = new Article();
 		article.setArticleId(deltaArticle.getArticleId());
@@ -236,11 +267,9 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		article.setSubject(deltaArticle.getSubject());
 		for (String reference: deltaArticle.getReferences())
 			article.addReference(reference);
-//		printArticle(article, "|2| ");
 		return article;
 	}
 
-	
 	private ArticleData prepareArticleData(Article article, 
 					String communicationChannelName, Classifier classifier, 
 					Map<Long, String> previousClassAssignments, Map<Long, ClassificationInstance> instanceIndex) {
@@ -262,11 +291,9 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			articleData.setContentClass(
 					classifier.getClassificationResult(instanceIndex.get(article.getArticleNumberLong())));
 		}
-//		printArticle(article, "|3| ");
 		return articleData;
 	}
 
-	
 	private Article prepareArticle(ArticleData articleData) {
 		Article article = new Article();
 		article.setArticleId(articleData.getArticleId());
@@ -276,19 +303,8 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		article.setSubject(articleData.getSubject());
 		for (String reference: articleData.getReferences().split(" "))
 			article.addReference(reference);
-//		printArticle(article, "|1| ");
 		return article;
 	}
-
-//	private void printArticle(Article article, String message) {
-//		System.out.println(message + 
-//				article.getArticleId() + "\t" +
-//				article.getArticleNumber() + "\t" +
-//				article.getDate() + "\t" +
-//				article.getFrom() + "\t" +
-//				article.getSubject() + "\t|" +
-//				article.getReferences() + "|");
-//	}
 
 	@Override
 	public String getShortIdentifier() {
@@ -305,7 +321,6 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		return "This metric holds information for assigning newsgroup articles to threads. " +
 				"The threading algorithm is executed from scratch everytime.";
 	}
-	
 	
 	public static List<List<Article>> zeroLevelCall(Article article) {
 //		Article root = article;
@@ -334,23 +349,9 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		return threadList;
 	}
 
-//	private static void printThreadList(Article root, List<List<Article>> threadList) {
-//		for (List<Article>list: threadList) {
-//			System.out.print(" [ ");
-//			for (Article art: list)
-//				System.out.print(art.getArticleNumber() + " ");
-//			System.out.print("] ");
-//		}
-//		System.out.println();
-//		System.out.println("-=-=-=-=-=-=-=-");
-//		Article.printThread(root, 0);
-//		System.out.println("-=-=-=-=-=-=-=-");
-//	}
-
-	@SuppressWarnings("deprecation")
 	public static List<Article> higherLevelCall(Article article) {
 		List<Article> articleNumbers = new ArrayList<Article>();
-		if (article.getArticleNumber()>0)
+		if (article.getArticleNumberLong()>0)
 			articleNumbers.add(article);
 		if (article.kid != null)
 			articleNumbers.addAll(higherLevelCall(article.kid));

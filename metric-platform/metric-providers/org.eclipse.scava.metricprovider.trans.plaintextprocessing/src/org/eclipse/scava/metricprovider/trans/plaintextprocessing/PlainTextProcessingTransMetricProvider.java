@@ -123,9 +123,9 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				{
 					case "gitlab":
 					case "bitbucket":
+					case "jira":
 					case "github": plainTextObject=PlainTextMarkdownBased.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
-					//case "jira":
 					//case "redmine":
 					//case "mantis":
 					default: plainTextObject=PlainTextBugTrackersOthers.process(comment.getText()); break;

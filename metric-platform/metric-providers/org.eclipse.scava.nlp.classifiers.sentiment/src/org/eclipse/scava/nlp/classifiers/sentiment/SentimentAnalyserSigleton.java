@@ -22,7 +22,7 @@ class SentimentAnalyserSigleton
 {
 	private static SentimentAnalyserSigleton singleton = new SentimentAnalyserSigleton();
 	
-	private static Vasttext sentimentAnalyzer;
+	private Vasttext sentimentAnalyzer;
 	
 	private SentimentAnalyserSigleton()
 	{	

@@ -86,7 +86,7 @@ public class Classifier {
 //										"generated features");
 
 //		String argumentString = "-b 1 " + path + "classifierFiles/Test-TfIdfFeatures-Clean-AllPoS.m";
-		svm_model model = svm_predict_nofiles.parse_args_and_load_model(getClass().getClassLoader(), "classifierFiles", "Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m", true );
+		svm_model model = ClassifierModelSingleton.getInstance().getModel();
 		
 		List<List<Double>> output_list = null;
 		try {

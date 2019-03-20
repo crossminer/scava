@@ -22,7 +22,7 @@ class RequestReplyClassifierSingleton
 {
 	private static RequestReplyClassifierSingleton singleton = new RequestReplyClassifierSingleton();
 	
-	private static Vasttext requestReplyClassifier;
+	private Vasttext requestReplyClassifier;
 	
 	private RequestReplyClassifierSingleton()
 	{

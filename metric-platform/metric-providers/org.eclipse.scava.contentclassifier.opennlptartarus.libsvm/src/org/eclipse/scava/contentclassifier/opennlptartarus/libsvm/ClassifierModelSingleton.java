@@ -1,6 +1,5 @@
 /*******************************************************************************
  * Copyright (c) 2019 Edge Hill University
- * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -8,12 +7,11 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.severityclassifier.opennlptartarus.libsvm;
+package org.eclipse.scava.contentclassifier.opennlptartarus.libsvm;
 
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
 
 import libsvm.svm_model;
-
 
 class ClassifierModelSingleton {
 
@@ -24,7 +22,7 @@ class ClassifierModelSingleton {
 	 * class from instantiating.
 	 */
 	private ClassifierModelSingleton(){
-		model = svm_predict_nofiles.parse_args_and_load_model(getClass().getClassLoader(), "classifierFiles", "Test-ThreadClustering-5.m", true);
+		model = svm_predict_nofiles.parse_args_and_load_model(getClass().getClassLoader(), "classifierFiles", "Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m", true);
 		System.err.println("Severity classification model loaded");
     }
 	   

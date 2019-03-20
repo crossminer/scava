@@ -6,7 +6,7 @@ import com.googlecode.pongo.runtime.*;
 import com.googlecode.pongo.runtime.querying.*;
 
 
-public class BugTrackerBugsData extends Pongo {
+public class ForumPostData extends Pongo {
 	
 	protected List<Integer> unigrams = null;
 	protected List<Integer> bigrams = null;
@@ -17,7 +17,7 @@ public class BugTrackerBugsData extends Pongo {
 	protected List<Integer> charFivegrams = null;
 	
 	
-	public BugTrackerBugsData() { 
+	public ForumPostData() { 
 		super();
 		dbObject.put("unigrams", new BasicDBList());
 		dbObject.put("bigrams", new BasicDBList());
@@ -26,20 +26,20 @@ public class BugTrackerBugsData extends Pongo {
 		dbObject.put("charTrigrams", new BasicDBList());
 		dbObject.put("charQuadgrams", new BasicDBList());
 		dbObject.put("charFivegrams", new BasicDBList());
-		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		BUGID.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		SEVERITY.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		UNIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		BIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		TRIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		QUADGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		CHARTRIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		CHARQUADGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
-		CHARFIVEGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData");
+		FORUMID.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		TOPICID.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		SEVERITY.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		UNIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		BIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		TRIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		QUADGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		CHARTRIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		CHARQUADGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
+		CHARFIVEGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData");
 	}
 	
-	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
-	public static StringQueryProducer BUGID = new StringQueryProducer("bugId"); 
+	public static StringQueryProducer FORUMID = new StringQueryProducer("forumId"); 
+	public static StringQueryProducer TOPICID = new StringQueryProducer("topicId"); 
 	public static StringQueryProducer SEVERITY = new StringQueryProducer("severity"); 
 	public static ArrayQueryProducer UNIGRAMS = new ArrayQueryProducer("unigrams");
 	public static ArrayQueryProducer BIGRAMS = new ArrayQueryProducer("bigrams");
@@ -50,21 +50,21 @@ public class BugTrackerBugsData extends Pongo {
 	public static ArrayQueryProducer CHARFIVEGRAMS = new ArrayQueryProducer("charFivegrams");
 	
 	
-	public String getBugTrackerId() {
-		return parseString(dbObject.get("bugTrackerId")+"", "");
+	public String getForumId() {
+		return parseString(dbObject.get("forumId")+"", "");
 	}
 	
-	public BugTrackerBugsData setBugTrackerId(String bugTrackerId) {
-		dbObject.put("bugTrackerId", bugTrackerId);
+	public ForumPostData setForumId(String forumId) {
+		dbObject.put("forumId", forumId);
 		notifyChanged();
 		return this;
 	}
-	public String getBugId() {
-		return parseString(dbObject.get("bugId")+"", "");
+	public String getTopicId() {
+		return parseString(dbObject.get("topicId")+"", "");
 	}
 	
-	public BugTrackerBugsData setBugId(String bugId) {
-		dbObject.put("bugId", bugId);
+	public ForumPostData setTopicId(String topicId) {
+		dbObject.put("topicId", topicId);
 		notifyChanged();
 		return this;
 	}
@@ -72,7 +72,7 @@ public class BugTrackerBugsData extends Pongo {
 		return parseString(dbObject.get("severity")+"", "");
 	}
 	
-	public BugTrackerBugsData setSeverity(String severity) {
+	public ForumPostData setSeverity(String severity) {
 		dbObject.put("severity", severity);
 		notifyChanged();
 		return this;
