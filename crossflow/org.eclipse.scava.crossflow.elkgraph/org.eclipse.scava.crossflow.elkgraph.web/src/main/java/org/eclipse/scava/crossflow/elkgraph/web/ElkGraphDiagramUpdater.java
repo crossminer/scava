@@ -108,13 +108,13 @@ public class ElkGraphDiagramUpdater {
 
 			@Override
 			public void onMessage(Message message) {
-				System.out.println("Received model update message .. ");
+//				System.out.println("Received model update message .. ");
 				TextMessage textMessage = (TextMessage) message;
 
 				try {
 					Serializer serializer = new Serializer();
 					StreamMetadata streamMetadata = (StreamMetadata) serializer.toObject(textMessage.getText());
-					System.out.println("streamMetadata = " + streamMetadata);
+//					System.out.println("streamMetadata = " + streamMetadata);
 
 					// replace label text with data from Crossflow monitoring queue
 					for (SModelElement sModelElement : sModelRoot.getChildren()) {
@@ -126,10 +126,10 @@ public class ElkGraphDiagramUpdater {
 							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
 
 								if (sModelElementChild instanceof SNode) {
-									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
+//									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
 									
 									for (SModelElement sModelElementChildChild : sModelElementChild.getChildren()) {
-										System.out.println("sModelElementChildChild.id = " + sModelElementChildChild.getId());										
+//										System.out.println("sModelElementChildChild.id = " + sModelElementChildChild.getId());										
 										
 										if (sModelElementChildChild instanceof SLabel) {
 											SLabel sLabel = (SLabel) sModelElementChildChild;
