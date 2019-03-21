@@ -27,11 +27,13 @@ import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer;
 
 public class ElkGraphDiagramUpdater {
 
-	private static final String IN_FLIGHT_LABEL_PRE = "inF: ";
-	private static final String STREAM_NAME_POST = "Post.";
+	private static final String IN_FLIGHT_COUNT = "_InFlightCount";
+	private static final String SUBSCRIBER_COUNT = "_SubscriberCount";
+	
+	private static final String IN_FLIGHT_LABEL_PRE = "InFlight: ";
+	private static final String SUBSCRIBER_LABEL_PRE = "Subscribers: ";
 	private static final String QUEUE_ID_PRE = "Q_";
 	private static final String GRAPH_ID_PRE = "G_";
-	private static final String SUBSCRIBER_LABEL_PRE = "(Sub: ";
 	private static Timer updateTimer;
 	private LanguageAwareDiagramServer languageAwareDiagramServer;
 	private static String bareSubject = "StreamMetadataBroadcaster";
@@ -57,16 +59,17 @@ public class ElkGraphDiagramUpdater {
 			if (sModelRoot.getChildren() != null) {
 				try {
 					messageConsumer = createConsumer(sModelRoot);
-					if ( running == false ) {
+					if (running == false) {
 						System.out.println("Successfully created CrossflowDiagramUpdater consumer.\n");
-						running=true;
+						running = true;
 					}
-					
+
 				} catch (JMSException e) {
-					running=false;
-					if ( e.getCause() instanceof ConnectException ) {
-						System.err.println("Unable to connect to ActiveMQ broker.\nIs it running (may require starting a Crossflow workflow)?.\n");
-					} else {						
+					running = false;
+					if (e.getCause() instanceof ConnectException) {
+						System.err.println(
+								"Unable to connect to ActiveMQ broker.\nIs it running (may require starting a Crossflow workflow)?.\n");
+					} else {
 						e.printStackTrace();
 					}
 				}
@@ -105,7 +108,7 @@ public class ElkGraphDiagramUpdater {
 				try {
 					Serializer serializer = new Serializer();
 					StreamMetadata streamMetadata = (StreamMetadata) serializer.toObject(textMessage.getText());
-					// System.out.println("streamMetadata = " + streamMetadata);
+					System.out.println("streamMetadata = " + streamMetadata);
 
 					// replace label text with data from Crossflow monitoring queue
 					for (SModelElement sModelElement : sModelRoot.getChildren()) {
@@ -113,36 +116,38 @@ public class ElkGraphDiagramUpdater {
 								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + QUEUE_ID_PRE)) {
 
 							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
-								if (sModelElementChild instanceof SLabel) {
-									SLabel sLabel = (SLabel) sModelElementChild;
 
-									for (Stream stream : streamMetadata.getStreams()) {
-										// System.out.println("stream.getName() = " + stream.getName());
-										String sLabelText = sLabel.getText();
-										if (sLabelText.contains(SUBSCRIBER_LABEL_PRE))
-											sLabelText = sLabelText.substring(0, sLabelText.indexOf(SUBSCRIBER_LABEL_PRE));
+								if (sModelElementChild instanceof SNode) {
+									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
 
-										if (stream.getName().startsWith(sLabelText + STREAM_NAME_POST)) {
-											// System.out.println("stream = " + stream);
+									for (SModelElement sModelElementChildChild : sModelElementChild.getChildren()) {
 
-											// TODO: replace this by the use of nodes contained inside
-											// sModelElementChild and assign their labels instead
-											sLabel.setText(sLabelText + " " + SUBSCRIBER_LABEL_PRE
-													+ stream.getNumberOfSubscribers() + " | " + IN_FLIGHT_LABEL_PRE + stream.getInFlight() + ")");
+										if (sModelElementChildChild instanceof SLabel) {
+											SLabel sLabel = (SLabel) sModelElementChildChild;
 
-										} // if stream name equals label text
+											for (Stream stream : streamMetadata.getStreams()) {
+												System.out.println("stream.getName() = " + stream.getName());
+												
+												if (sModelElementChild.getId().contains(IN_FLIGHT_COUNT)) {
+													sLabel.setText(IN_FLIGHT_LABEL_PRE + stream.getInFlight());
+												}
+												else if (sModelElementChild.getId().contains(SUBSCRIBER_COUNT)) {
+													sLabel.setText(SUBSCRIBER_LABEL_PRE + stream.getNumberOfSubscribers());
+												}
 
-									} // stream metadata iteration
+											} // stream metadata iteration
 
-								} // if elk node element is a Crossflow queue
+										} // if elk node element is a Crossflow queue
+
+									} // if elk node child element is elk node
+
+								} // elk node child element iteration
 
 							} // elk node element iteration
 
 						} // if elk model element is elk node
 
 					} // elk root model element iteration
-					
-					
 
 				} catch (Exception ex) {
 					System.err.println(ex);

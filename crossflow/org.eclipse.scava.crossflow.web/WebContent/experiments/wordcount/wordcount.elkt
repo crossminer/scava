@@ -13,16 +13,6 @@ node T_LineSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "LineSource"
-    node T_LineSource_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node T_LineSource_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }
 
 edge T_LineSource -> Q_Lines {
@@ -33,15 +23,15 @@ node Q_Lines {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "Lines"
-    node Q_Lines_StatusA {
+    node Q_Lines_SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "Subscribers: n/a"
     }
-    node Q_Lines_StatusB {
+    node Q_Lines_InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "InFlight: n/a"
     }
 }
 
@@ -53,16 +43,6 @@ node T_WordCounter {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "WordCounter"
-    node T_WordCounter_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node T_WordCounter_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }
 
 edge T_WordCounter -> Q_WordFrequencies {
@@ -73,15 +53,15 @@ node Q_WordFrequencies {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "WordFrequencies"
-    node Q_WordFrequencies_StatusA {
+    node Q_WordFrequencies_SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "Subscribers: n/a"
     }
-    node Q_WordFrequencies_StatusB {
+    node Q_WordFrequencies_InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "InFlight: n/a"
     }
 }
 
@@ -93,14 +73,4 @@ node T_WordFrequenciesSink {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "WordFrequenciesSink"
-    node T_WordFrequenciesSink_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node T_WordFrequenciesSink_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }

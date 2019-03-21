@@ -13,16 +13,6 @@ node T_CalculationSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[NODE_LABELS]"
 	label "CalculationSource"
-    node T_CalculationSource_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node T_CalculationSource_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }
 
 edge T_CalculationSource -> Q_Calculations {
@@ -33,15 +23,15 @@ node Q_Calculations {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "Calculations"
-    node Q_Calculations_StatusA {
+    node Q_Calculations_SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "Subscribers: n/a"
     }
-    node Q_Calculations_StatusB {
+    node Q_Calculations_InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "InFlight: n/a"
     }
 }
 
@@ -53,16 +43,6 @@ node T_Calculator {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "Calculator"
-    node T_Calculator_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node T_Calculator_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }
 
 edge T_Calculator -> Q_CalculationResults {
@@ -73,15 +53,15 @@ node Q_CalculationResults {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "CalculationResults"
-    node T_Calculator_StatusA {
+    node Q_CalculationResults_SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "Subscribers: n/a"
     }
-    node T_Calculator_StatusB {
+    node Q_CalculationResults_InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
+        label "InFlight: n/a"
     }
 }
 
@@ -93,14 +73,4 @@ node T_CalculationResultsSink {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "CalculationResultsSink"
-    node Q_Calculations_StatusA {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
-    node Q_Calculations_StatusB {
-        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-        nodeSize.constraints: "[NODE_LABELS]"
-        label "n/a"
-    }
 }
