@@ -3,6 +3,7 @@ package org.eclipse.scava.platform.analysis;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.DataStorage;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
@@ -45,11 +46,10 @@ public class MetricProviderService {
 	}
 	
 	
-	public List<MetricProvider> getMetricProviders() {
-		List<MetricProvider> providers = new ArrayList<>();
-		for (MetricProvider provider : this.repository.getMetricProviders()) {
-			providers.add(provider);
-		}
+	public List<MetricProvider> getMetricProviders(Platform platform) {
+		List<MetricProvider> providers = new ArrayList<MetricProvider>();
+		MetricProviderInitialiser initialiser = new MetricProviderInitialiser(platform);
+		providers = initialiser.loadMetricProviders();
 		return providers;
 	}
 

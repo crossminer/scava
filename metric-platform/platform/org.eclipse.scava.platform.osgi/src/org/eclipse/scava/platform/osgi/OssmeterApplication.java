@@ -21,7 +21,6 @@ import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
-import org.eclipse.scava.platform.osgi.services.MetricProviderInitialiser;
 import org.eclipse.scava.platform.osgi.services.TaskCheckExecutor;
 import org.eclipse.scava.platform.osgi.services.WorkerExecutor;
 
@@ -75,9 +74,9 @@ public class OssmeterApplication implements IApplication{
 		
 		// Start web servers
 		if (apiServer) {
-			// Update MetricProvidrList
-			MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
-			init.initialiseMetricProviderRepository();
+//			// Update MetricProvidrList
+//			MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
+//			init.initialiseMetricProviderRepository();
 		
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}

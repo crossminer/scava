@@ -30,7 +30,7 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 			org.eclipse.scava.platform.analysis.MetricProviderService service = platform.getAnalysisRepositoryManager()
 					.getMetricProviderService();
 
-			List<MetricProvider> metricProviders = service.getMetricProviders();
+			List<MetricProvider> metricProviders = service.getMetricProviders(platform);
 
 			ArrayNode listMetricProviders = mapper.createArrayNode();
 			for (MetricProvider metric : metricProviders) {

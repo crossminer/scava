@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.platform.osgi.services;
+package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,6 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
 
-@Deprecated
 public class MetricProviderInitialiser {
 
 	private Platform platform;
@@ -30,14 +29,8 @@ public class MetricProviderInitialiser {
 		this.platform = platform;
 	}
 
-	public void initialiseMetricProviderRepository() {
+	public List<MetricProvider> loadMetricProviders() {
 		Map<String, MetricProvider> metricsProviders = new HashMap<>();
-
-		// Clean Repository
-		for (MetricProvider oldMp : this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders()) {
-			this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders().remove(oldMp);
-		}
-		this.platform.getAnalysisRepositoryManager().getRepository().sync();
 
 		List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 
@@ -56,24 +49,25 @@ public class MetricProviderInitialiser {
 				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.TRANSIENT.name(), provider.getSummaryInformation(), new ArrayList<String>());
 			}
-
 			metricsProviders.put(provider.getIdentifier(), providerData);
 		}
 
-		// Resolve Dependencys
+		// Resolve Dependencies
+		List<MetricProvider> metricProviders = new ArrayList<MetricProvider>();
 		for (IMetricProvider provider : platformProvider) {
-			List<MetricProvider> dependencys = new ArrayList<>();
+			MetricProvider metricProvider = metricsProviders.get(provider.getIdentifier());
 			if (provider.getIdentifiersOfUses() != null) {
 				for (String dependencyId : provider.getIdentifiersOfUses()) {
 					MetricProvider metricDependency = metricsProviders.get(dependencyId);
 					if (metricDependency != null) {
-						dependencys.add(metricDependency);
+						metricProvider.getDependOf().add(metricDependency);
 					}
 				}
 			}
-
-			this.platform.getAnalysisRepositoryManager().getMetricProviderService().addMetricProviderDependency(metricsProviders.get(provider.getIdentifier()), dependencys);
+			metricProviders.add(metricProvider);
+			metricProvider = null;
 		}
+		return metricProviders;
 	}
 
 }
