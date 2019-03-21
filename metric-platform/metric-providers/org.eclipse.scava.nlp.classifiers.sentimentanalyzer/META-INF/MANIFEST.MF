@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Sentimentanalyser
-Bundle-SymbolicName: org.eclipse.scava.nlp.classifiers.sentiment;singleton:=true
+Bundle-SymbolicName: org.eclipse.scava.nlp.classifiers.sentimentanalyzer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.nlp.classifiers.sentimentanalyzer.Activator
 Require-Bundle: org.eclipse.core.runtime,
