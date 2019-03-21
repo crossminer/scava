@@ -135,7 +135,7 @@ public class ElkGraphDiagramUpdater {
 											SLabel sLabel = (SLabel) sModelElementChildChild;
 
 											for (Stream stream : streamMetadata.getStreams()) {
-												System.out.println("stream.getName() = " + stream.getName());
+//												System.out.println("stream.getName() = " + stream.getName());
 												
 												// update workflow data
 												if (sModelElementChild.getId().contains(IN_FLIGHT_COUNT)) {
