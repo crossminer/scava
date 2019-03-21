@@ -117,6 +117,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		List<BugTrackerBugsData> bugDataToDelete = new ArrayList<BugTrackerBugsData>();
 		List<ForumPostData> forumDatatoDelete = new ArrayList<ForumPostData>();
 		
+		//Elements that have neither comments or severity but that were created on that day
+		Set<String> idsWithData;
+		
 		Classifier classifier = new Classifier();
     	DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
     	
@@ -124,6 +127,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		
     	BugTrackingSystemProjectDelta btspDelta = projectDelta.getBugTrackingSystemDelta();
 		for (BugTrackingSystemDelta bugTrackingSystemDelta : btspDelta.getBugTrackingSystemDeltas()) {
+			idsWithData = new HashSet<String>();
 			BugTrackingSystem bugTracker = bugTrackingSystemDelta.getBugTrackingSystem();
 			Map<String, String> bugIdsNoSeverity2Subject = new HashMap<String, String>();
 			for (BugTrackingSystemBug bug: bugTrackingSystemDelta.getNewBugs()) {
@@ -171,7 +175,24 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 					if(bugTrackerBugsInSeverity!= null)
 						bugDataToDelete.add(bugTrackerBugsInSeverity);
 					ClassifierMessage classifierMessage = prepareBugTrackerClassifierMessage(comment, subject, detectingCodeMetric);
-					classifier.add(classifierMessage, featureIdCollection);	
+					classifier.add(classifierMessage, featureIdCollection);
+					idsWithData.add(comment.getBugId());
+				}
+			}
+			//Solve problem of bugs neither with comments or severity
+			for(String id : bugIdsNoSeverity2Subject.keySet())
+			{
+				if(!idsWithData.contains(id))
+				{
+					BugTrackerBugsData bugData = findBugTrackerBug(db, bugTracker, id);
+					if (bugData == null) {
+						bugData = new BugTrackerBugsData();
+						bugData.setBugTrackerId(bugTracker.getOSSMeterId());
+						bugData.setBugId(id);
+						bugData.setSeverity("unknown");
+						db.getBugTrackerBugs().add(bugData);
+						db.sync();
+					}
 				}
 			}
 			db.sync();
@@ -180,6 +201,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(), "prepared bug comments");
 		
 		NewsgroupsThreadsTransMetric usedClassifier = ((ThreadsTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
 		
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
@@ -248,83 +270,82 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
 										"prepared newsgroup articles");
 
-		classifier.classify();
-
-		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
-										"classifier.classify() finished");
-
-//		take classifier results put them in the db - for bugzilla
-		
-		for (BugTrackingSystemDelta bugTrackingSystemDelta : btspDelta.getBugTrackingSystemDeltas()) {
-			
-			Set<String> bugIdSet = new HashSet<String>(); 
-			for (BugTrackingSystemComment comment: bugTrackingSystemDelta.getComments()) {
-				bugIdSet.add(comment.getBugId());
-			}
-				
-			for (BugTrackingSystemBug bug: bugTrackingSystemDelta.getNewBugs()) {
-				if (bugIdSet.contains(bug.getBugId())) {
-					if ( (bug.getSeverity()==null) || (bug.getSeverity().equals("")) ) {
-						BugTrackerBugsData bugTrackerBugsData = prepareBugTrackerBugsData(classifier, bug);
-						db.getBugTrackerBugs().add(bugTrackerBugsData);
-						db.sync();
-					}
-				}
-			}
-			
-			for (BugTrackingSystemBug bug: bugTrackingSystemDelta.getUpdatedBugs()) {
-				if (bugIdSet.contains(bug.getBugId())) {
-					if ( (bug.getSeverity()==null) || (bug.getSeverity().equals("")) ) {
-						BugTrackerBugsData bugTrackerBugsData = prepareBugTrackerBugsData(classifier, bug);
-						db.getBugTrackerBugs().add(bugTrackerBugsData);
-						db.sync();
-					}
-				}
-			}
-			//Data that has been used for loading the features can be deleted without problem
-			for(BugTrackerBugsData toDelete : bugDataToDelete)
-			{
-				db.getBugTrackerBugs().remove(toDelete);
-				db.sync();
-			}
-			db.sync();
-		}
-
-		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
-				"stored classified bugs");
-		
-		for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
+		if (classifier.instanceCollectionSize()>0)
 		{
-			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			if(communicationChannel instanceof EclipseForum)
-			{
-				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-				{
-					ForumPostData forumPostData = prepareForumPostData(classifier, post);
-					db.getForumPosts().add(forumPostData);
-					db.sync();
+		
+			classifier.classify();
+	
+			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
+											"classifier.classify() finished");
+	
+	//		take classifier results put them in the db - for bugzilla
+			
+			for (BugTrackingSystemDelta bugTrackingSystemDelta : btspDelta.getBugTrackingSystemDeltas()) {
+				
+				Set<String> bugIdSet = new HashSet<String>(); 
+				for (BugTrackingSystemComment comment: bugTrackingSystemDelta.getComments()) {
+					bugIdSet.add(comment.getBugId());
+				}
+					
+				for (BugTrackingSystemBug bug: bugTrackingSystemDelta.getNewBugs()) {
+					if (bugIdSet.contains(bug.getBugId())) {
+						if ( (bug.getSeverity()==null) || (bug.getSeverity().equals("")) ) {
+							BugTrackerBugsData bugTrackerBugsData = prepareBugTrackerBugsData(classifier, bug);
+							db.getBugTrackerBugs().add(bugTrackerBugsData);
+							db.sync();
+						}
+					}
+				}
+				
+				for (BugTrackingSystemBug bug: bugTrackingSystemDelta.getUpdatedBugs()) {
+					if (bugIdSet.contains(bug.getBugId())) {
+						if ( (bug.getSeverity()==null) || (bug.getSeverity().equals("")) ) {
+							BugTrackerBugsData bugTrackerBugsData = prepareBugTrackerBugsData(classifier, bug);
+							db.getBugTrackerBugs().add(bugTrackerBugsData);
+							db.sync();
+						}
+					}
 				}
 				//Data that has been used for loading the features can be deleted without problem
-				for(ForumPostData toDelete : forumDatatoDelete)
+				for(BugTrackerBugsData toDelete : bugDataToDelete)
 				{
-					db.getForumPosts().remove(toDelete);
+					db.getBugTrackerBugs().remove(toDelete);
 					db.sync();
 				}
+				db.sync();
 			}
-			else
-				continue;
-		}
-		
-		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
-				"stored classified forums posts");
-		
-
-//		take classifier results put them in the db - for newsgroups
-		
-//		do not do anything if nothing has changed
-		
-		if (classifier.instanceCollectionSize()>0) {
-
+	
+			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
+					"stored classified bugs");
+			
+			for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
+			{
+				CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
+				if(communicationChannel instanceof EclipseForum)
+				{
+					for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
+					{
+						ForumPostData forumPostData = prepareForumPostData(classifier, post);
+						db.getForumPosts().add(forumPostData);
+						db.sync();
+					}
+					//Data that has been used for loading the features can be deleted without problem
+					for(ForumPostData toDelete : forumDatatoDelete)
+					{
+						db.getForumPosts().remove(toDelete);
+						db.sync();
+					}
+				}
+				else
+					continue;
+			}
+			
+			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
+					"stored classified forums posts");
+			
+	
+	//		take classifier results put them in the db - for newsgroups
+			
 			db.getNewsgroupThreads().getDbCollection().drop();
 			
 			for (ThreadData threadData: usedClassifier.getThreads()) {
@@ -342,11 +363,17 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				
 				db.sync();
 			}
+			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
+					"stored classified newsgroup articles");
+		}
+		else
+		{
+			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
+					"nothing to classify");
 		}
 		
 
-		previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
-										"stored classified newsgroup articles");
+		
  	}
 	
 	private ForumPostData prepareForumPostData(Classifier classifier, CommunicationChannelForumPost post)
