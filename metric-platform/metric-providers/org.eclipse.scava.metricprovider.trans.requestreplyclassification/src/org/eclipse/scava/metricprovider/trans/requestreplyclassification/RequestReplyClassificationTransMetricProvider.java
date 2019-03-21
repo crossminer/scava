@@ -29,8 +29,8 @@ import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.B
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.ForumsPosts;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.RequestReplyClassificationTransMetric;
-import org.eclipse.scava.nlp.requestreply.RequestReplyClassifier;
-import org.eclipse.scava.nlp.requestreply.RequestReplyExternalExtraFeatures;
+import org.eclipse.scava.nlp.classifiers.requestreplydetector.RequestReplyClassifier;
+import org.eclipse.scava.nlp.classifiers.requestreplydetector.RequestReplyExternalExtraFeatures;
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextNewsgroupsSubject;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;

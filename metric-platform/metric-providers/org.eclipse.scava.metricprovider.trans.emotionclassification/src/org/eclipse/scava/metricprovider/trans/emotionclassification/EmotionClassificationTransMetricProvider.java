@@ -23,7 +23,7 @@ import org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTra
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.ForumPostEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification;
-import org.eclipse.scava.nlp.emotion.EmotionClassifier;
+import org.eclipse.scava.nlp.classifiers.emotionclassifier.EmotionClassifier;
 import org.eclipse.scava.nlp.tools.predictions.multilabel.MultiLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;

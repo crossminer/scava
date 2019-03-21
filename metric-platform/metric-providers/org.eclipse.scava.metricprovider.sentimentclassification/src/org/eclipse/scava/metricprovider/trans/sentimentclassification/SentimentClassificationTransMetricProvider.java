@@ -24,7 +24,7 @@ import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.BugT
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.ForumPostSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.SentimentClassificationTransMetric;
-import org.eclipse.scava.nlp.classifiers.sentiment.SentimentAnalyzer;
+import org.eclipse.scava.nlp.classifiers.sentimentanalyzer.SentimentAnalyzer;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
