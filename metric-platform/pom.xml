@@ -259,15 +259,9 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
     </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.emotion
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreply
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.sentiment
-    </module>
+    
+    
+    
     <module>
     	metric-providers/org.eclipse.scava.nlp.libraries.fasttext
     </module>
@@ -314,6 +308,15 @@
     </module>
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.mantis
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.emotionclassifier
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreplydetector
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer
     </module>
   </modules>
   <build>
