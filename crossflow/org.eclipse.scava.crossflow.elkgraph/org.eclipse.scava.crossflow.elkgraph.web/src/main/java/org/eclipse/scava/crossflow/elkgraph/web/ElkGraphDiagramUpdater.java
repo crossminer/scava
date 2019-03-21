@@ -27,19 +27,24 @@ import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer;
 
 public class ElkGraphDiagramUpdater {
 
-	private static final String IN_FLIGHT_COUNT = "_InFlightCount";
-	private static final String SUBSCRIBER_COUNT = "_SubscriberCount";
-	private static final String FAILED_JOBS_COUNT = "_FailedJobs";
-	private static final String INTERNAL_EXCEPTION_COUNT = "_InternalExceptions";
+	private static final String INTERNAL_EXCEPTIONS_STREAM_ID = "InternalExceptions";
+	private static final String IN_FLIGHT_COUNT = "InFlightCount";
+	private static final String SUBSCRIBER_COUNT = "SubscriberCount";
+	private static final String FAILED_JOBS_COUNT = "FailedJobs";
+	private static final String INTERNAL_EXCEPTION_COUNT = "InternalExceptions";
+	private static final String SIZE_COUNT = "Size";
+	private static final String STREAM_POST = "Post";
 	
 	private static final String IN_FLIGHT_LABEL_PRE = "InFlight: ";
 	private static final String SUBSCRIBER_LABEL_PRE = "Subscribers: ";
 	private static final String FAILED_JOBS_LABEL_PRE = "Failed Jobs: ";
 	private static final String INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
-	
+	private static final String SIZE_LABEL_PRE = "Size: ";
+
 	private static final String METADATA_STREAM_ID = "StreamMetadataBroadcaster";
 	private static final String QUEUE_ID_PRE = "Q_";
 	private static final String GRAPH_ID_PRE = "G_";
+
 	private static Timer updateTimer;
 	private LanguageAwareDiagramServer languageAwareDiagramServer;
 	private static String bareSubject = "StreamMetadataBroadcaster";
@@ -120,22 +125,21 @@ public class ElkGraphDiagramUpdater {
 					for (SModelElement sModelElement : sModelRoot.getChildren()) {
 
 						if (sModelElement instanceof SNode
-								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + QUEUE_ID_PRE)
-								|| sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + METADATA_STREAM_ID)) {
+								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId)) {
 		
 							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
 
 								if (sModelElementChild instanceof SNode) {
-//									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
+									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
 									
 									for (SModelElement sModelElementChildChild : sModelElementChild.getChildren()) {
-//										System.out.println("sModelElementChildChild.id = " + sModelElementChildChild.getId());										
+										System.out.println("sModelElementChildChild.id = " + sModelElementChildChild.getId());										
 										
 										if (sModelElementChildChild instanceof SLabel) {
 											SLabel sLabel = (SLabel) sModelElementChildChild;
 
 											for (Stream stream : streamMetadata.getStreams()) {
-//												System.out.println("stream.getName() = " + stream.getName());
+//												System.out.println("stream.getName() = " + stream.getName() + " (size: " + stream.getSize() +")");
 												
 												// update workflow data
 												if (sModelElementChild.getId().contains(IN_FLIGHT_COUNT)) {
@@ -144,12 +148,14 @@ public class ElkGraphDiagramUpdater {
 												else if (sModelElementChild.getId().contains(SUBSCRIBER_COUNT)) {
 													sLabel.setText(SUBSCRIBER_LABEL_PRE + stream.getNumberOfSubscribers());
 												}
-												// update workflow meta data
-												else if (sModelElementChildChild.getId().contains(FAILED_JOBS_COUNT)) {
+												else if (sModelElementChildChild.getId().contains(FAILED_JOBS_COUNT) && stream.getName().startsWith(FAILED_JOBS_COUNT) ) {
 													sLabel.setText(FAILED_JOBS_LABEL_PRE + stream.getSize());
 												}
-												else if (sModelElementChildChild.getId().contains(INTERNAL_EXCEPTION_COUNT)) {
+												else if (sModelElementChildChild.getId().contains(INTERNAL_EXCEPTION_COUNT) && stream.getName().startsWith(INTERNAL_EXCEPTIONS_STREAM_ID) ) {
 													sLabel.setText(INTERNAL_EXCEPTION_LABEL_PRE + stream.getSize());
+												}
+												else if ( stream.getName().contains(STREAM_POST) && sModelElementChild.getId().endsWith( "_" + stream.getName().substring(0, stream.getName().indexOf(STREAM_POST)) + "." + SIZE_COUNT) ) {
+													sLabel.setText(SIZE_LABEL_PRE + stream.getSize());
 												}
 												
 											} // stream metadata iteration

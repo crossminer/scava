@@ -13,12 +13,12 @@ node StreamMetadataBroadcaster {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "Stream Metadata Broadcaster"
-    node StreamMetadataBroadcaster_FailedJobs {
+    node FailedJobs {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "Failed Jobs: n/a"
     }
-    node StreamMetadataBroadcaster_InternalExceptions {
+    node InternalExceptions {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "Exceptions: n/a"
@@ -39,15 +39,20 @@ node Q_Lines {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "Lines"
-    node Q_Lines_SubscriberCount {
+    node SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "Subscribers: n/a"
     }
-    node Q_Lines_InFlightCount {
+    node InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "InFlight: n/a"
+    }
+    node Size {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "Size: n/a"
     }
 }
 
@@ -69,15 +74,20 @@ node Q_WordFrequencies {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "WordFrequencies"
-    node Q_WordFrequencies_SubscriberCount {
+    node SubscriberCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "Subscribers: n/a"
     }
-    node Q_WordFrequencies_InFlightCount {
+    node InFlightCount {
         nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
         nodeSize.constraints: "[NODE_LABELS]"
         label "InFlight: n/a"
+    }
+    node Size {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "Size: n/a"
     }
 }
 
