@@ -1,18 +1,28 @@
 graph G_calculator
 algorithm: layered
 
-wrapping.additionalEdgeSpacing: 10.0
-wrapping.correctionFactor: 8.0
-layered.nodePlacement.strategy: NETWORK_SIMPLEX
 layered.wrapping.strategy: MULTI_EDGE
-aspectRatio: 0.6 
+layered.nodePlacement.strategy: NETWORK_SIMPLEX
+aspectRatio: 0.4 
+wrapping.correctionFactor: 4.0
+wrapping.additionalEdgeSpacing: 8.0
 edgeRouting: SPLINES
-spacing.nodeNodeBetweenLayers: 20.0
+spacing.nodeNodeBetweenLayers: 6.5 
 
 node T_CalculationSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
-    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+    nodeSize.constraints: "[NODE_LABELS]"
 	label "CalculationSource"
+    node T_CalculationSource_StatusA {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
+    node T_CalculationSource_StatusB {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
 }
 
 edge T_CalculationSource -> Q_Calculations {
@@ -23,6 +33,16 @@ node Q_Calculations {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "Calculations"
+    node Q_Calculations_StatusA {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
+    node Q_Calculations_StatusB {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
 }
 
 edge Q_Calculations -> T_Calculator {
@@ -33,6 +53,16 @@ node T_Calculator {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "Calculator"
+    node T_Calculator_StatusA {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
+    node T_Calculator_StatusB {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
 }
 
 edge T_Calculator -> Q_CalculationResults {
@@ -43,6 +73,16 @@ node Q_CalculationResults {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
     label "CalculationResults"
+    node T_Calculator_StatusA {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
+    node T_Calculator_StatusB {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
 }
 
 edge Q_CalculationResults -> T_CalculationResultsSink {
@@ -53,4 +93,14 @@ node T_CalculationResultsSink {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
 	label "CalculationResultsSink"
+    node Q_Calculations_StatusA {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
+    node Q_Calculations_StatusB {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "n/a"
+    }
 }
