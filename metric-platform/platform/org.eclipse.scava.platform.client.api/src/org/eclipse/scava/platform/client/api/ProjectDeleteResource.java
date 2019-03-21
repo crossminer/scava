@@ -50,7 +50,10 @@ public class ProjectDeleteResource extends ServerResource {
 			for (Project project : projectToDelete) {
 				if (project.getShortName().equals(projectId)) {
 					// Drop project analysis database
-					platform.getMetricsRepository(project).getDb().dropDatabase();
+					int db = mongo.getDatabaseNames().indexOf(project.getName());
+					if (db != -1) {
+						platform.getMetricsRepository(project).getDb().dropDatabase();
+					}
 					// Remove project's source and models
 					Path pathStorage = Paths.get(platform.getLocalStorageHomeDirectory().toString(), project.getShortName());
 					if (pathStorage.toString() != null) {
