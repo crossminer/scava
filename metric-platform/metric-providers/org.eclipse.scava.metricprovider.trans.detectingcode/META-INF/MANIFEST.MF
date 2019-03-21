@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DetectingCode
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.detectingcode;singleton:=true
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.emf.ecore,
  com.googlecode.pongo.runtime,
  org.eclipse.osgi,
