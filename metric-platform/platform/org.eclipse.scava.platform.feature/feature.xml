@@ -221,7 +221,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jsoup"
+         id="org.jsoup.jsoup"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -347,7 +347,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.nlp.classifiers.requestreply"
+         id="org.eclipse.scava.nlp.classifiers.requestreplydetector"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
