@@ -9,6 +9,22 @@ wrapping.additionalEdgeSpacing: 8.0
 edgeRouting: SPLINES
 spacing.nodeNodeBetweenLayers: 6.5 
 
+node StreamMetadataBroadcaster {
+    nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+    nodeSize.constraints: "[MINIMUM_SIZE, NODE_LABELS]"
+	label "Stream Metadata Broadcaster"
+    node StreamMetadataBroadcaster_FailedJobs {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "Failed Jobs: n/a"
+    }
+    node StreamMetadataBroadcaster_InternalExceptions {
+        nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
+        nodeSize.constraints: "[NODE_LABELS]"
+        label "Exceptions: n/a"
+    }
+}
+
 node T_CalculationSource {
     nodeLabels.placement: "[H_CENTER, V_TOP, INSIDE]"
     nodeSize.constraints: "[NODE_LABELS]"

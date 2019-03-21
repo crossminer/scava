@@ -29,9 +29,15 @@ public class ElkGraphDiagramUpdater {
 
 	private static final String IN_FLIGHT_COUNT = "_InFlightCount";
 	private static final String SUBSCRIBER_COUNT = "_SubscriberCount";
+	private static final String FAILED_JOBS_COUNT = "_FailedJobs";
+	private static final String INTERNAL_EXCEPTION_COUNT = "_InternalExceptions";
 	
 	private static final String IN_FLIGHT_LABEL_PRE = "InFlight: ";
 	private static final String SUBSCRIBER_LABEL_PRE = "Subscribers: ";
+	private static final String FAILED_JOBS_LABEL_PRE = "Failed Jobs: ";
+	private static final String INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
+	
+	private static final String METADATA_STREAM_ID = "StreamMetadataBroadcaster";
 	private static final String QUEUE_ID_PRE = "Q_";
 	private static final String GRAPH_ID_PRE = "G_";
 	private static Timer updateTimer;
@@ -112,29 +118,40 @@ public class ElkGraphDiagramUpdater {
 
 					// replace label text with data from Crossflow monitoring queue
 					for (SModelElement sModelElement : sModelRoot.getChildren()) {
-						if (sModelElement instanceof SNode
-								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + QUEUE_ID_PRE)) {
 
+						if (sModelElement instanceof SNode
+								&& sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + QUEUE_ID_PRE)
+								|| sModelElement.getId().startsWith(GRAPH_ID_PRE + experimentId + "." + METADATA_STREAM_ID)) {
+		
 							for (SModelElement sModelElementChild : sModelElement.getChildren()) {
 
 								if (sModelElementChild instanceof SNode) {
 									System.out.println("sModelElementChild.id = " + sModelElementChild.getId());
-
+									
 									for (SModelElement sModelElementChildChild : sModelElementChild.getChildren()) {
-
+										System.out.println("sModelElementChildChild.id = " + sModelElementChildChild.getId());										
+										
 										if (sModelElementChildChild instanceof SLabel) {
 											SLabel sLabel = (SLabel) sModelElementChildChild;
 
 											for (Stream stream : streamMetadata.getStreams()) {
 												System.out.println("stream.getName() = " + stream.getName());
 												
+												// update workflow data
 												if (sModelElementChild.getId().contains(IN_FLIGHT_COUNT)) {
 													sLabel.setText(IN_FLIGHT_LABEL_PRE + stream.getInFlight());
 												}
 												else if (sModelElementChild.getId().contains(SUBSCRIBER_COUNT)) {
 													sLabel.setText(SUBSCRIBER_LABEL_PRE + stream.getNumberOfSubscribers());
 												}
-
+												// update workflow meta data
+												else if (sModelElementChildChild.getId().contains(FAILED_JOBS_COUNT)) {
+													sLabel.setText(FAILED_JOBS_LABEL_PRE + stream.getSize());
+												}
+												else if (sModelElementChildChild.getId().contains(INTERNAL_EXCEPTION_COUNT)) {
+													sLabel.setText(INTERNAL_EXCEPTION_LABEL_PRE + stream.getSize());
+												}
+												
 											} // stream metadata iteration
 
 										} // if elk node element is a Crossflow queue
