@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.elkgraph.web;
 
+import java.net.ConnectException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +37,7 @@ public class ElkGraphDiagramUpdater {
 	private static String bareSubject = "StreamMetadataBroadcaster";
 	private String experimentId = "";
 	MessageConsumer messageConsumer = null;
+	private boolean running = false;
 
 	// URL of the JMS server
 	private static String url = "tcp://localhost:61616";
@@ -55,8 +57,18 @@ public class ElkGraphDiagramUpdater {
 			if (sModelRoot.getChildren() != null) {
 				try {
 					messageConsumer = createConsumer(sModelRoot);
+					if ( running == false ) {
+						System.out.println("Successfully created CrossflowDiagramUpdater consumer.\n");
+						running=true;
+					}
+					
 				} catch (JMSException e) {
-					e.printStackTrace();
+					running=false;
+					if ( e.getCause() instanceof ConnectException ) {
+						System.err.println("Unable to connect to ActiveMQ broker.\nIs it running (may require starting a Crossflow workflow)?.\n");
+					} else {						
+						e.printStackTrace();
+					}
 				}
 			}
 
