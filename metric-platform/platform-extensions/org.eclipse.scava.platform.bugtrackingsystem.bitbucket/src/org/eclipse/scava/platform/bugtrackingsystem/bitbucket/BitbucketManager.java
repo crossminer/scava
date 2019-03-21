@@ -301,7 +301,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 						comment.setBugTrackingSystem(bitbucketTracker);
 						comment.setCreationTime(creationTime.toJavaDate());
 						comment.setCreator(username);
-						comment.setText(content.get("html").toString());
+						comment.setText(content.get("html").asText());
 						comment.setBugId(issue_id);
 						comment.setCommentId(commentId);
 
