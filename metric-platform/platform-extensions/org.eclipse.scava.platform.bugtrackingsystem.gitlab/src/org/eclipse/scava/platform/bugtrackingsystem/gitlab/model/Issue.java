@@ -10,15 +10,6 @@
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab.model;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Issue {
 	

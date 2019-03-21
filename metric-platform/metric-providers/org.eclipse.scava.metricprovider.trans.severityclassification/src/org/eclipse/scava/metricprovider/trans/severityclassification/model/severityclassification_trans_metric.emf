@@ -44,6 +44,7 @@ class NewsgroupThreadData {
 }
 
 class ForumPostData {
+	@searchable
 	attr String forumId;
 	attr String topicId;
    	attr String severity;

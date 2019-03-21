@@ -8,7 +8,6 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
-//Adrián was here
 package org.eclipse.scava.metricprovider.trans.sentimentclassification;
 
 import java.io.IOException;

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.communicationchannel.eclipseforums;
 
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 
 

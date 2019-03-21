@@ -9,3 +9,4 @@ Export-Package: org.eclipse.scava.nlp.tools.predictions.externalExtra,
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.nlp.tools.predictions.Activator
 Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

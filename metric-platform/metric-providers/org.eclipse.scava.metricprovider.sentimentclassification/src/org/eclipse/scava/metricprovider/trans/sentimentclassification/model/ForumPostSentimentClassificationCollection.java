@@ -8,12 +8,29 @@ public class ForumPostSentimentClassificationCollection extends PongoCollection<
 	
 	public ForumPostSentimentClassificationCollection(DBCollection dbCollection) {
 		super(dbCollection);
+		createIndex("forumId");
 	}
 	
 	public Iterable<ForumPostSentimentClassification> findById(String id) {
 		return new IteratorIterable<ForumPostSentimentClassification>(new PongoCursorIterator<ForumPostSentimentClassification>(this, dbCollection.find(new BasicDBObject("_id", id))));
 	}
 	
+	public Iterable<ForumPostSentimentClassification> findByForumId(String q) {
+		return new IteratorIterable<ForumPostSentimentClassification>(new PongoCursorIterator<ForumPostSentimentClassification>(this, dbCollection.find(new BasicDBObject("forumId", q + ""))));
+	}
+	
+	public ForumPostSentimentClassification findOneByForumId(String q) {
+		ForumPostSentimentClassification forumPostSentimentClassification = (ForumPostSentimentClassification) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("forumId", q + "")));
+		if (forumPostSentimentClassification != null) {
+			forumPostSentimentClassification.setPongoCollection(this);
+		}
+		return forumPostSentimentClassification;
+	}
+	
+
+	public long countByForumId(String q) {
+		return dbCollection.count(new BasicDBObject("forumId", q + ""));
+	}
 	
 	@Override
 	public Iterator<ForumPostSentimentClassification> iterator() {
