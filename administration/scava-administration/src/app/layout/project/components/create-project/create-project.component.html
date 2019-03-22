@@ -54,6 +54,11 @@
                             <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'redmine')">
                                 <span>Redmine</span>
                             </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'jira')">
+                                <span>Jira</span>
+                            </button>
                         </li>
                     </ul>
                     <small>Communication Channels</small>
@@ -127,6 +132,23 @@
                                             <label for="name">Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 formControlName="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="project">Project</label>
+                                            <input type="text" class="form-control" id="project" name="project"
+                                                formControlName="project">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.get('bts').value[i].type === 'jira'">
+                                        <div class="form-group">
+                                            <label for="login">Login</label>
+                                            <input type="text" class="form-control" id="login" name="login"
+                                                formControlName="login">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="text" class="form-control" id="password" name="password"
+                                                formControlName="password">
                                         </div>
                                         <div class="form-group">
                                             <label for="project">Project</label>

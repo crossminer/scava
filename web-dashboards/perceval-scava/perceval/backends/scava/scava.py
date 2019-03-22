@@ -22,9 +22,8 @@
 
 import json
 import logging
-import urllib.parse
 
-from grimoirelab_toolkit.datetime import str_to_datetime
+from grimoirelab_toolkit.datetime import str_to_datetime, datetime_utcnow
 from grimoirelab_toolkit.uris import urijoin
 
 from ...backend import (Backend,
@@ -106,9 +105,12 @@ class Scava(Backend):
             items = json.loads(raw_items)
             items = [items] if isinstance(items, dict) else items
             for item in items:
+                # projects without last execution information get the lastExecuted value to the day
+                # of the import to the dashboard. Issue: https://github.com/crossminer/scava/issues/134
                 if 'executionInformation' in item and 'lastExecuted' not in item['executionInformation']:
-                    logger.warning("Item filtered due to missing lastExecuted info: %s", str(item))
-                    continue
+                    logger.warning("%s is missing lastExecuted info, the current time will be set: %s",
+                                   category, str(item))
+                    item['executionInformation']['lastExecuted'] = datetime_utcnow().strftime("%Y%m%d")
 
                 if category in [CATEGORY_FACTOID, CATEGORY_METRIC]:
                     item['updated'] = self.project_updated
@@ -117,24 +119,6 @@ class Scava(Backend):
                 nitems += 1
 
         logger.info("Total number of items: %i (%s)", nitems, category)
-
-    @staticmethod
-    def metadata_category(item):
-        """Extracts the category from a Mattermost item.
-
-        This backend only generates one type of item which is
-        'post'.
-        """
-        category = None
-
-        if 'name' in item:
-            category = CATEGORY_PROJECT
-        elif '_id' in item:
-            category = CATEGORY_METRIC
-        else:
-            raise RuntimeError("Can not detect category for", item)
-
-        return category
 
     @classmethod
     def has_archiving(cls):
@@ -184,7 +168,7 @@ class Scava(Backend):
         elif 'executionInformation' in item:
             updated = item['executionInformation']['lastExecuted']
         else:
-            raise TypeError("Can not extract metadata_updated_on from", item)
+            raise TypeError("Cannot extract metadata_updated_on from", item)
 
         return float(str_to_datetime(updated).timestamp())
 
@@ -253,7 +237,10 @@ class ScavaClient(HttpClient):
         for project in json.loads(projects):
             if project_name in [project['name'], project['shortName']]:
                 # project['shortName'] is used for building the API URLs so it is the one used in general
-                updated = project['executionInformation']['lastExecuted']
+                if 'lastExecuted' in project['executionInformation']:
+                    updated = project['executionInformation']['lastExecuted']
+                else:
+                    updated = datetime_utcnow().strftime("%Y%m%d")
 
         return updated
 

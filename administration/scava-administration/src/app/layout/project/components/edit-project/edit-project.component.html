@@ -1,6 +1,7 @@
 <div>
     <div class="page-header">
         <h2>Edit Project <b>{{project?.name}}</b></h2>
+        <h3>(Work in progress)</h3>
         <hr />
     </div>
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
@@ -112,7 +113,7 @@
                     </td>
                 </tr>
             </tbody>
-            <tr *ngIf="project?.bugTrackingSystems.length>0">
+            <!-- <tr *ngIf="project?.bugTrackingSystems.length>0">
                 <td><strong>Bug Tracking Systems</strong></td>
             </tr>
             <tbody *ngFor="let bts of project?.bugTrackingSystems;let i=index;">
@@ -171,7 +172,7 @@
                         <input type="text" class="form-control" name="cc.url" [(ngModel)]="cc.url">
                     </td>
                 </tr>
-            </tbody>
+            </tbody> -->
         </table>
         <div>
             <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">

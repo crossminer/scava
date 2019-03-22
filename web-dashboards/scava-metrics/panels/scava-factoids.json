@@ -1,0 +1,96 @@
+{
+    "dashboard": {
+        "id": "e2388d20-4002-11e9-b12b-cbc482cac791",
+        "value": {
+            "description": "",
+            "hits": 0,
+            "kibanaSavedObjectMeta": {
+                "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
+            },
+            "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
+            "panelsJSON": "[{\"panelIndex\":\"2\",\"gridData\":{\"x\":35,\"y\":0,\"w\":13,\"h\":15,\"i\":\"2\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"id\":\"32b78bc0-4003-11e9-b12b-cbc482cac791\",\"title\":\"Factoids per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":21,\"y\":0,\"w\":14,\"h\":15,\"i\":\"3\"},\"embeddableConfig\":{},\"id\":\"2fb8fc50-4004-11e9-b12b-cbc482cac791\",\"title\":\"Factoids stars\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":35,\"w\":48,\"h\":14,\"i\":\"4\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":1,\"direction\":\"asc\"}}}},\"id\":\"4aa7e160-4023-11e9-b12b-cbc482cac791\",\"title\":\"Last factoids\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":0,\"y\":0,\"w\":21,\"h\":15,\"i\":\"5\"},\"embeddableConfig\":{},\"id\":\"6326c190-4026-11e9-b12b-cbc482cac791\",\"title\":\"Factoids radar\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"title\":\"Factoids heat map\",\"panelIndex\":\"6\",\"gridData\":{\"x\":0,\"y\":15,\"w\":48,\"h\":20,\"i\":\"6\"},\"embeddableConfig\":{},\"id\":\"c699a010-4032-11e9-b12b-cbc482cac791\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
+            "release_date": "2019-03-06T17:13:50.340042",
+            "timeRestore": false,
+            "title": "ScavaFactoids",
+            "version": 1
+        }
+    },
+    "index_patterns": [
+        {
+            "id": "6159a6e0-401f-11e9-b12b-cbc482cac791",
+            "value": {
+                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"category\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"factoid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars_FOUR\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars_ONE\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars_THREE\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars_TWO\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"stars_num\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"updated\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
+                "timeFieldName": "datetime",
+                "title": "scava-factoids"
+            }
+        }
+    ],
+    "searches": [],
+    "visualizations": [
+        {
+            "id": "32b78bc0-4003-11e9-b12b-cbc482cac791",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"6159a6e0-401f-11e9-b12b-cbc482cac791\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "ScavaFactoidsProject",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"ScavaFactoidsProject\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "2fb8fc50-4004-11e9-b12b-cbc482cac791",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"6159a6e0-401f-11e9-b12b-cbc482cac791\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "Factoid stars",
+                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":1,\"direction\":\"asc\"}}}}",
+                "version": 1,
+                "visState": "{\"title\":\"Factoid stars\",\"type\":\"table\",\"params\":{\"perPage\":5,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":1,\"direction\":\"asc\"},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"stars\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Stars\"}}]}"
+            }
+        },
+        {
+            "id": "4aa7e160-4023-11e9-b12b-cbc482cac791",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"6159a6e0-401f-11e9-b12b-cbc482cac791\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "LastFactoids",
+                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
+                "version": 1,
+                "visState": "{\"title\":\"LastFactoids\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"top_hits\",\"schema\":\"metric\",\"params\":{\"field\":\"factoid\",\"aggregate\":\"concat\",\"size\":1,\"sortField\":\"datetime\",\"sortOrder\":\"desc\",\"customLabel\":\"Last factoids\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Name\"}}]}"
+            }
+        },
+        {
+            "id": "6326c190-4026-11e9-b12b-cbc482cac791",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"6159a6e0-401f-11e9-b12b-cbc482cac791\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "StarsRadar",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"StarsRadar\",\"type\":\"radar\",\"params\":{\"normalize\":false,\"vertexScale\":{\"from\":0,\"to\":5}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"vertex\",\"params\":{\"field\":\"stars_ONE\",\"customLabel\":\"one\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"field\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"vertex\",\"params\":{\"field\":\"stars_TWO\",\"customLabel\":\"two\"}},{\"id\":\"5\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"vertex\",\"params\":{\"field\":\"stars_THREE\",\"customLabel\":\"three\"}},{\"id\":\"6\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"vertex\",\"params\":{\"field\":\"stars_FOUR\",\"customLabel\":\"four\"}}]}"
+            }
+        },
+        {
+            "id": "c699a010-4032-11e9-b12b-cbc482cac791",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"6159a6e0-401f-11e9-b12b-cbc482cac791\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "FactoidsHeatMap",
+                "uiStateJSON": "{\"vis\":{\"defaultColors\":{\"0 - 1\":\"rgb(247,251,255)\",\"1 - 2\":\"rgb(198,219,239)\",\"2 - 3\":\"rgb(107,174,214)\",\"3 - 4\":\"rgb(33,113,181)\"}}}",
+                "version": 1,
+                "visState": "{\"title\":\"FactoidsHeatMap\",\"type\":\"heatmap\",\"params\":{\"type\":\"heatmap\",\"addTooltip\":true,\"addLegend\":true,\"enableHover\":false,\"legendPosition\":\"right\",\"times\":[],\"colorsNumber\":4,\"colorSchema\":\"Blues\",\"setColorRange\":false,\"colorsRange\":[],\"invertColors\":false,\"percentageMode\":false,\"valueAxes\":[{\"show\":false,\"id\":\"ValueAxis-1\",\"type\":\"value\",\"scale\":{\"type\":\"linear\",\"defaultYExtents\":false},\"labels\":{\"show\":false,\"rotate\":0,\"overwriteColor\":false,\"color\":\"#555\"}}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"stars_num\",\"percents\":[50],\"customLabel\":\"\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Project\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Factoid name\"}}]}"
+            }
+        }
+    ]
+}
