@@ -2,7 +2,7 @@
 <?pde version="3.8"?><target includeMode="feature" name="scava" sequenceNumber="50">
     <locations>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-            <unit id="rascal-feature.feature.group" version="0.12.0.201903171227"/>
+            <unit id="rascal-feature.feature.group" version="0.0.0"/>
             <repository location="http://update.rascal-mpl.org/unstable/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
