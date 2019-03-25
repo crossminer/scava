@@ -10,7 +10,6 @@
 package org.eclipse.scava.business.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
@@ -59,8 +56,10 @@ public class RecommenderManager implements IRecommenderManager {
 	@Autowired
 	@Qualifier("APIDocumentation")
 	private IRecommendationProvider apiDocumentationRecommendationProvider;
-	
-	
+	@Autowired
+	@Qualifier("Focus")
+	private IRecommendationProvider focusRecomenderProvider;
+		
 	@Autowired
 	@Qualifier("ApiCallRecommendation")
 	private IRecommendationProvider apiCallRecommendationProvider;
@@ -91,6 +90,8 @@ public class RecommenderManager implements IRecommenderManager {
 			return apiCallRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_DOCUMENTATION))
 			return apiDocumentationRecommendationProvider.getRecommendation(query);
+		if(rt.equals(RecommendationType.FOCUS))
+			return focusRecomenderProvider.getRecommendation(query);
 		else {
 			logger.error("Recommendation not supported");
 			return null;

@@ -24,8 +24,6 @@ import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendedLibrary;
 import org.eclipse.scava.business.integration.ArtifactRepository;
-import org.eclipse.scava.business.integration.ArtifactTypeRepository;
-import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

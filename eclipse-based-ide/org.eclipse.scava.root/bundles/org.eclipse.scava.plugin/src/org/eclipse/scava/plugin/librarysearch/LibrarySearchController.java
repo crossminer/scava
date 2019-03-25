@@ -10,6 +10,12 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
+import org.eclipse.scava.plugin.librarysearch.details.ILibraryDetailsController;
+import org.eclipse.scava.plugin.librarysearch.details.LibraryDetailsController;
+import org.eclipse.scava.plugin.librarysearch.details.LibraryDetailsModel;
+import org.eclipse.scava.plugin.librarysearch.details.LibraryDetailsView;
+import org.eclipse.scava.plugin.librarysearch.list.ILibraryListController;
 import org.eclipse.scava.plugin.librarysearch.list.ILibraryListModel;
 import org.eclipse.scava.plugin.librarysearch.list.ILibraryListView;
 import org.eclipse.scava.plugin.librarysearch.list.LibraryListController;
@@ -34,6 +40,7 @@ import org.eclipse.scava.plugin.librarysearch.tabs.results.ILibrarySearchResultV
 import org.eclipse.scava.plugin.librarysearch.tabs.results.LibrarySearchResultController;
 import org.eclipse.scava.plugin.librarysearch.tabs.results.LibrarySearchResultModel;
 import org.eclipse.scava.plugin.librarysearch.tabs.results.LibrarySearchResultView;
+import org.eclipse.scava.plugin.librarysearch.tabs.results.ILibrarySearchResultController.SimilarsRequestedEvent;
 import org.eclipse.scava.plugin.mvc.IController;
 import org.eclipse.scava.plugin.mvc.implementation.AbstractModelViewController;
 import org.eclipse.scava.plugin.usermonitoring.event.scava.ScavaSearchUsageEvent;
@@ -43,10 +50,11 @@ import com.google.common.eventbus.Subscribe;
 import io.swagger.client.model.Artifact;
 import io.swagger.client.model.RecommendedLibrary;
 
-public class LibrarySearchController extends AbstractModelViewController<ILibrarySearchModel, ILibrarySearchView> implements ILibrarySearchController {
+public class LibrarySearchController extends AbstractModelViewController<ILibrarySearchModel, ILibrarySearchView>
+		implements ILibrarySearchController, ILibrarySearchResultController{
 
 	private LibraryListController toBeInstalledLibraryListController;
-
+	private LibraryDetailsController libraryDetailsController;
 	private boolean isFinishedCurrentlyShown;
 
 	public LibrarySearchController(IController parent, ILibrarySearchModel model, ILibrarySearchView view) {
@@ -56,8 +64,31 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 	@Override
 	public void init() {
 		getView().init();
-
+		getView().showProjectName(getModel().getActiveProjectName());
 		showToBeInstalledLibraries();
+	}
+
+	@Subscribe
+	public void onLibrarySelected(ILibraryListController.LibrarySelectionEvent e) {
+		if (e.getSender() == toBeInstalledLibraryListController) {
+			showDetailsOf(e.getLibrary());
+		}
+	}
+	
+	private void showDetailsOf(Artifact library) {
+		
+		List<Artifact> similarLibraries = getModel().getSimilarLibrariesTo(library, SimilarityMethod.CrossSim, 6);
+
+		List<LibraryListInfo> similarsInfos = similarLibraries.stream().map(lib -> {
+			return new LibraryListInfo(lib);
+		}).collect(Collectors.toList());
+
+		LibraryDetailsModel libraryDetailsModel = new LibraryDetailsModel(library, similarsInfos);
+		LibraryDetailsView libraryDetailsView = new LibraryDetailsView();
+		libraryDetailsController = new LibraryDetailsController(this, libraryDetailsModel, libraryDetailsView);
+		libraryDetailsController.init();
+		getView().showDetails("Details of "+library.getFullName(), libraryDetailsView);
+		
 	}
 
 	private void showToBeInstalledLibraries() {
@@ -98,16 +129,36 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 		if (e.getSender() == getView()) {
 			String queryString = e.getQueryString();
 			List<Artifact> queriedLibraries = getModel().getLibrariesByQueryString(queryString);
-			showSearchResults("Search for \"" + queryString + "\"", "Search result of \"" + queryString + "\"", queriedLibraries);
+			showSearchResults("Search for \"" + queryString + "\"", "Search result of \"" + queryString + "\"",
+					queriedLibraries);
 			getEventBus().post(new ScavaSearchUsageEvent());
 		}
 	}
 
+	
+	
+	@Subscribe
+	public void onSimilarsRequested(ILibraryDetailsController.SimilarsRequestEvent e) {
+		
+		if (e.getSender() == libraryDetailsController) {
+			SimilarsRequestedEvent event = new SimilarsRequestedEvent(this, e.getSimilarsTo(), e.getSimilarityMethod());
+			List<Artifact> similiarLibraries = getModel().getSimilarLibrariesTo(event.getLibrary(), event.getSimilarityMethod(),
+					10);
+
+			String description = "Similar libraries to \"" + event.getLibrary().getFullName() + "\"";
+			showSearchResults(description, description, similiarLibraries);
+			getEventBus().post(new ScavaSearchUsageEvent());
+			
+		}
+	}
+	
+	
 	@Subscribe
 	public void onSimilarsRequested(ILibrarySearchResultController.SimilarsRequestedEvent e) {
 		if (isSubController(e.getSender())) {
 
-			List<Artifact> similiarLibraries = getModel().getSimilarLibrariesTo(e.getLibrary(), e.getSimilarityMethod(), 10);
+			List<Artifact> similiarLibraries = getModel().getSimilarLibrariesTo(e.getLibrary(), e.getSimilarityMethod(),
+					10);
 
 			String description = "Similar libraries to \"" + e.getLibrary().getFullName() + "\"";
 			showSearchResults(description, description, similiarLibraries);
@@ -130,7 +181,8 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 		ILibrarySearchResultModel librarySearchResultModel = new LibrarySearchResultModel(description, libraryInfos);
 		ILibrarySearchResultView librarySearchResultView = new LibrarySearchResultView();
 
-		LibrarySearchResultController librarySearchResultController = new LibrarySearchResultController(this, librarySearchResultModel, librarySearchResultView);
+		LibrarySearchResultController librarySearchResultController = new LibrarySearchResultController(this,
+				librarySearchResultModel, librarySearchResultView);
 		librarySearchResultController.init();
 		librarySearchResultController.excludeLibrariesFromResults(getModel().getToBeInstalledLibraries());
 
@@ -145,7 +197,9 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 				MavenXpp3Reader reader = new MavenXpp3Reader();
 				Model model = reader.read(new FileReader(getModel().getPom()));
 				List<Dependency> dependencies = model.getDependencies();
-				currentlyUsedLibraries = dependencies.stream().map(dependency -> dependency.getGroupId() + ":" + dependency.getArtifactId()).collect(Collectors.toList());
+				currentlyUsedLibraries = dependencies.stream()
+						.map(dependency -> dependency.getGroupId() + ":" + dependency.getArtifactId())
+						.collect(Collectors.toList());
 			} catch (IOException | XmlPullParserException e1) {
 				currentlyUsedLibraries = null;
 			}
@@ -153,7 +207,8 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 			ILibrarySearchFinishModel librarySearchFinishModel = new LibrarySearchFinishModel(currentlyUsedLibraries);
 			ILibrarySearchFinishView librarySearchFinishView = new LibrarySearchFinishView();
 
-			ILibrarySearchFinishController librarySearchFinishController = new LibrarySearchFinishController(this, librarySearchFinishModel, librarySearchFinishView);
+			ILibrarySearchFinishController librarySearchFinishController = new LibrarySearchFinishController(this,
+					librarySearchFinishModel, librarySearchFinishView);
 			librarySearchFinishController.init();
 
 			getView().showFinish(librarySearchFinishView);
@@ -166,18 +221,23 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 	@Subscribe
 	public void onSearchRecommendedLibraries(ILibrarySearchFinishController.RecommendedSearchRequestEvent e) {
 		if (isSubController(e.getSender())) {
-			List<RecommendedLibrary> recommendedLibraries = getModel().getRecommendedLibraries(e.getSelectedLibraries());
-
-			ILibrarySearchRecommendedLibsModel librarySearchRecommendedLibsModel = new LibrarySearchRecommendedLibsModel(recommendedLibraries, getModel().getPom());
+			List<RecommendedLibrary> recommendedLibraries = getModel()
+					.getRecommendedLibraries(e.getSelectedLibraries());
+			
+			recommendedLibraries = recommendedLibraries.stream().filter(lib -> !e.getCurrentlyUsedLibraries().stream().anyMatch(used -> lib.getLibraryName().startsWith(used))).collect(Collectors.toList());
+			
+			ILibrarySearchRecommendedLibsModel librarySearchRecommendedLibsModel = new LibrarySearchRecommendedLibsModel(
+					recommendedLibraries, getModel().getPom());
 
 			ILibrarySearchRecommendedLibsView librarySearchRecommendedLibsView = new LibrarySearchRecommendedLibsView();
 
-			ILibrarySearchRecommendedLibsController librarySearchRecommendedLibsController = new LibrarySearchRecommendedLibsController(this, librarySearchRecommendedLibsModel,
-					librarySearchRecommendedLibsView);
+			ILibrarySearchRecommendedLibsController librarySearchRecommendedLibsController = new LibrarySearchRecommendedLibsController(
+					this, librarySearchRecommendedLibsModel, librarySearchRecommendedLibsView);
 			librarySearchRecommendedLibsController.init();
 			getView().showSuggestedLibraries("Suggested libraries", librarySearchRecommendedLibsView);
 
-			Arrays.stream(getSubControllers()).filter(c -> c instanceof ILibrarySearchFinishController).forEach(c -> c.dispose());
+			Arrays.stream(getSubControllers()).filter(c -> c instanceof ILibrarySearchFinishController)
+					.forEach(c -> c.dispose());
 
 		}
 	}
@@ -186,6 +246,13 @@ public class LibrarySearchController extends AbstractModelViewController<ILibrar
 	public void onFinishClosed(ILibrarySearchFinishController.Close e) {
 		isFinishedCurrentlyShown = false;
 		showToBeInstalledLibraries();
+	}
+
+	
+	@Override
+	public void excludeLibrariesFromResults(List<Artifact> excludedLibraries) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

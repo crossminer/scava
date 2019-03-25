@@ -1,15 +1,17 @@
 #!/bin/bash
 
-java -jar "./developmentTools/modules/openApiClientBuilding/swagger-codegen-cli-2.3.1.jar" generate -i "./developmentTools/modules/openApiClientBuilding/openapi.json" -l java -o "./developmentTools/modules/openApiClientBuilding/client" -c "./developmentTools/modules/openApiClientBuilding/codegen-java-config.json"
+WORKDIR="./developmentTools/modules/openApiClientBuilding"
+CLIENTDIR="$WORKDIR/client"
 
-cd "./developmentTools/modules/openApiClientBuilding/client/"
+java -jar "$WORKDIR/swagger-codegen-cli-2.3.1.jar" generate -i "$WORKDIR/openapi.json" -l java -o "$CLIENTDIR" -c "$WORKDIR/codegen-java-config.json"
 
-mvn clean install
+if pushd "$CLIENTDIR" ; then
+    mvn clean install
+    popd
+    rm -rf "$CLIENTDIR"
+fi
 
-cd "../../../.."
-
-rm -rf "./developmentTools/modules/openApiClientBuilding/client"
-
-cd "./org.eclipse.scava.root"
-
-mvn clean verify
+if pushd "./org.eclipse.scava.root" ; then
+    mvn clean verify
+    popd
+fi

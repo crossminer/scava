@@ -8,6 +8,7 @@ import { AnalysisTaskMgmtDeleteDialogComponent } from './analysis-task-delete/an
 import { Project } from '../../project.model';
 import { MetricProvidersMgmtInfoDialogComponent } from './metrics-infos/metric-info.component';
 import { RoleAuthorities } from '../../../../shared/services/authentication/role-authorities';
+import { ProjectMgmtDeleteDialogComponent } from '../delete-project/delete-project-dialog.component';
 
 @Component({
     selector: 'app-configure-project',
@@ -27,8 +28,8 @@ export class ConfigureProjectComponent implements OnInit {
         private listProjectService: ListProjectService,
         private analysisTaskService: AnalysisTaskService,
         public modalService: NgbModal,
-        public roleAuthorities: RoleAuthorities,
-    ) { 
+        public roleAuthorities: RoleAuthorities
+    ) {
     }
 
     ngOnInit() {
@@ -130,6 +131,19 @@ export class ConfigureProjectComponent implements OnInit {
             }
         );
         this.loadAll();
+    }
+
+    deleteProject(projectId: string) {
+        const modalRef = this.modalService.open(ProjectMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.projectId = projectId;
+        modalRef.result.then(
+            (result) => {
+                this.onShowMessage('delete success');
+            },
+            (reason) => {
+                this.onShowMessage('delete failed');
+            }
+        );
     }
 
     ngOnDestroy() {

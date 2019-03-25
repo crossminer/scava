@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Unirest
 Bundle-SymbolicName: com.mashape.unirest
 Bundle-Version: 1.3.21
-Bundle-ClassPath: unirest-java-1.3.21.jar
+Bundle-ClassPath: unirest-java-1.3.21.jar,
+ httpclient-4.3.4.jar
 Export-Package: com.mashape.unirest.http,
  com.mashape.unirest.http.async,
  com.mashape.unirest.http.exceptions,
@@ -28,6 +29,7 @@ Import-Package: org.apache.http,
  org.apache.http.entity,
  org.apache.http.impl,
  org.apache.http.impl.client,
+ org.apache.http.impl.conn,
  org.apache.http.impl.entity,
  org.apache.http.impl.io,
  org.apache.http.impl.nio,

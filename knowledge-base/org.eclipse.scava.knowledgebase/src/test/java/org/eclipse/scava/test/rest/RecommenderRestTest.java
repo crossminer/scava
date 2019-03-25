@@ -10,9 +10,9 @@
 package org.eclipse.scava.test.rest;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -48,8 +48,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -116,8 +114,6 @@ public class RecommenderRestTest {
         Page<Artifact> foundPage = new PageImpl<>(artifacts);
         when(artifactRepository.findAll(any(Pageable.class)))
         	.thenReturn(foundPage);
-        ResultActions v = artifactMockMvc.perform(get("/api/artifacts/artifacts"));
-        MvcResult r = v.andReturn();
         artifactMockMvc.perform(get("/api/artifacts/artifacts"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))

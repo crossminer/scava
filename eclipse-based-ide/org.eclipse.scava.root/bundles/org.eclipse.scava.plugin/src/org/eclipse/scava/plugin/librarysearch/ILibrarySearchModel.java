@@ -2,6 +2,7 @@ package org.eclipse.scava.plugin.librarysearch;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
 import org.eclipse.scava.plugin.mvc.IModel;
 
@@ -22,4 +23,6 @@ public interface ILibrarySearchModel extends IModel {
 	List<RecommendedLibrary> getRecommendedLibraries(List<String> basedOn);
 	
 	String getPom();
+	
+	String getActiveProjectName();
 }

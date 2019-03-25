@@ -1,7 +1,7 @@
 pipeline {
     agent any
     options {
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '1'))
     }
     stages {
         stage('Build API Gateway') {
@@ -24,6 +24,11 @@ pipeline {
                     archiveArtifacts 'api-gateway/org.eclipse.scava.apigateway/target/*.jar'
                 }
             }
+        }
+    }
+    post {
+        always {
+            deleteDir()
         }
     }
 }

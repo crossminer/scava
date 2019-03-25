@@ -19,26 +19,28 @@ public class LibrarySearchFinishController
 	@Override
 	public void init() {
 		getView().init();
-		
+
 		List<String> currentlyUsedLibraries = getModel().getCurrentlyUsedLibraries();
-		
-		if( currentlyUsedLibraries != null  ) {
+
+		if (currentlyUsedLibraries != null) {
 			getView().showCurrentlyUsedLibrares(currentlyUsedLibraries);
 		}
 	}
-	
+
 	@Subscribe
 	public void onAdditionalSearchRequest(ILibrarySearchFinishView.RecommendedSearchRequestEvent e) {
-		if( e.getSender() == getView() ) {
-			ILibrarySearchFinishController.RecommendedSearchRequestEvent event = new ILibrarySearchFinishController.RecommendedSearchRequestEvent(this, e.getSelectedLibraries());
+		if (e.getSender() == getView()) {
+			ILibrarySearchFinishController.RecommendedSearchRequestEvent event = new ILibrarySearchFinishController.RecommendedSearchRequestEvent(
+					this, e.getSelectedLibraries(), getModel().getCurrentlyUsedLibraries());
 			getEventBus().post(event);
 		}
 	}
-	
+
 	@Subscribe
 	public void onInstallRequest(ILibrarySearchFinishView.InstallRequestEvent e) {
-		if( e.getSender() == getView() ) {
-			ILibrarySearchFinishController.InstallRequestEvent event = new ILibrarySearchFinishController.InstallRequestEvent(this);
+		if (e.getSender() == getView()) {
+			ILibrarySearchFinishController.InstallRequestEvent event = new ILibrarySearchFinishController.InstallRequestEvent(
+					this);
 			getEventBus().post(event);
 		}
 	}

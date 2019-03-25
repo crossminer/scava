@@ -160,7 +160,6 @@ public class LibraryDetailsView extends SWTCompositeView implements ILibraryDeta
 	private void searchSimilars() {
 		int selectionIndex = comboSimilarityMethod.getSelectionIndex();
 		SimilarityMethod similarityMethod = SimilarityMethod.values()[selectionIndex];
-		
 		SimilarsRequestEvent event = new SimilarsRequestEvent(this, library, similarityMethod);
 		getEventBus().post(event);
 	}
@@ -221,7 +220,9 @@ public class LibraryDetailsView extends SWTCompositeView implements ILibraryDeta
 	@Override
 	public void showSimilars(List<LibraryListInfo> similarLibraries) {
 		StringBuilder sb = new StringBuilder();
-
+		
+		
+		
 		similarLibraries.forEach(lib -> {
 			sb.append(lib.getLibrary().getFullName());
 			sb.append('\n');
