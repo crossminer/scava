@@ -7,11 +7,7 @@ Bundle-Activator: org.eclipse.scava.metricprovider.historic.bugs.responsetime.Ac
 Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,
- org.eclipse.scava.platform.client.api,
- com.googlecode.pongo.runtime.osgi,
- org.eclipse.scava.platform.visualisation,
  org.apache.commons.lang,
- org.eclipse.scava.repository.model.bts.bugzilla,
  org.eclipse.scava.metricprovider.trans.bugs.requestsreplies,
  org.eclipse.scava.platform.communicationchannel.nntp,
  org.eclipse.scava.repository.model

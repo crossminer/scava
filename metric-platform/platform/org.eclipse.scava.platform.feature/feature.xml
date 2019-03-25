@@ -221,7 +221,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jsoup"
+         id="org.jsoup.jsoup"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -347,7 +347,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm"
+         id="org.eclipse.scava.nlp.classifiers.requestreplydetector"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -707,7 +707,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm"
+         id="org.eclipse.scava.nlp.classifiers.sentimentanalyzer"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1675,4 +1675,156 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.eclipse.scava.nlp.classifiers.codedetector"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.classifiers.emotionclassifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.libraries.fasttext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.resources.sentinet5"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.other"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.plaintext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.predictions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.preprocessor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.vasttext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.bugtrackingsystem.gitlab"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.gitlab"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.gitlab.importer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.bugtrackingsystem.mantis"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.mantis"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.communicationchannel.eclipseforums"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.cc.eclipseforums"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.emotionclassification"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.plaintextprocessing"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.detectingcode"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.squareup.okhttp3"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.squareup.okio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 </feature>

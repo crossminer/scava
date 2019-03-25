@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of L'Aquila
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ * Copyright (c) 2019  Centrum Wiskunde & Informatica and Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.repository.model.gitlab.importer;
 
 import java.io.BufferedReader;
@@ -24,6 +24,7 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.gitlab.GitLabRepository;
+import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
 import org.eclipse.scava.repository.model.importer.IImporter;
 import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
@@ -36,6 +37,7 @@ import org.json.simple.JSONValue;
 public class GitLabImporter implements IImporter {
 
 	protected OssmeterLogger logger;
+	private String personalAccessToken;
 
 	public GitLabImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.gitLab");
@@ -77,6 +79,17 @@ public class GitLabImporter implements IImporter {
 			GitRepository git = new GitRepository();
 			git.setUrl(json.get("http_url_to_repo").toString());
 			repo.getVcsRepositories().add(git);
+			
+			//Add GitLab Issue Tacker Reader
+			if(path.split("/").length==2)
+			{
+				GitLabTracker gitLabTracker = new GitLabTracker();
+				gitLabTracker.setUrl("https://" + host + "/api/v4/projects/" + path.replace("/", "%2F") + "/issues");
+				gitLabTracker.setProject_id(path.replace("/", "%2F"));
+				if(personalAccessToken!=null)
+					gitLabTracker.setPersonal_access_token(personalAccessToken);
+				repo.getBugTrackingSystems().add(gitLabTracker);
+			}
 
 			repo.setShortName(platform.getProjectRepositoryManager().generateUniqueId(repo));
 			platform.getProjectRepositoryManager().getProjectRepository().getProjects().add(repo);
@@ -122,7 +135,8 @@ public class GitLabImporter implements IImporter {
 
 	@Override
 	public void setCredentials(Credentials credentials) {
-		throw new UnsupportedOperationException();
+		if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+			personalAccessToken=credentials.getAuthToken();
 	}
 
 	private static String readAll(Reader rd) throws IOException {

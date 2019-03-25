@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of L'Aquila
+ * Copyright (c) 2018 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -7,21 +7,115 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
+
 package org.eclipse.scava.repository.model.github;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 // protected region custom-imports on begin
 // protected region custom-imports end
 
 public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrackingSystem {
 	
-	protected List<GitHubIssue> issues = null;
+	private static StringQueryProducer REPOSITORY = new StringQueryProducer("repository"); 
+	private static StringQueryProducer LOGIN = new StringQueryProducer("login"); 
+	private static StringQueryProducer PASSWORD = new StringQueryProducer("password");
+	private static StringQueryProducer TOKEN = new StringQueryProducer("token"); 
+	private static StringQueryProducer OWNER = new StringQueryProducer("owner");
 	
-	// protected region custom-fields-and-methods on begin
+	
+	public GitHubBugTracker() { 
+		super();
+		dbObject.put("issues", new BasicDBList());
+		super.setSuperTypes("org.eclipse.scava.repository.model.github.BugTrackingSystem");
+	}
+	
+	public void setProject(String userLogin, String password, String repositoryOwner, String repository)
+	{
+		try {
+			setLogin(userLogin);
+			setPassword(password);
+			setRepository(repository);
+			setOwner(repositoryOwner);
+		} catch (GitHubBugTrackerException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+	}
+	
+	public void setProject(String accessToken, String repositoryOwner, String repository)
+	{
+		try {
+			setToken(accessToken);
+			setRepository(repository);
+			setOwner(repositoryOwner);
+		} catch (GitHubBugTrackerException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+	}
+	
+	public void setProject(String repositoryOwner, String repository)
+	{
+		try {
+			setRepository(repository);
+			setOwner(repositoryOwner);
+		} catch (GitHubBugTrackerException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+	}
+	
+	private String validateEntry(String entry, String nameEntry) throws GitHubBugTrackerException
+	{
+		entry=entry.trim();
+		if(entry.isEmpty())
+		{
+			throw new GitHubBugTrackerException("Error: "+nameEntry+" is empty.");
+		}
+		return entry;
+	}
+	
+	public Map<String, String> getAuthenticationData()
+	{
+		Map<String, String> authenticationData = new HashMap<String,String>();
+		if(getLogin()==null)
+		{
+			if(getToken()==null)
+			{
+				authenticationData.put("SECURITY_TYPE","none");	
+			}
+			else
+			{
+				authenticationData.put("SECURITY_TYPE","token");
+				authenticationData.put("TOKEN",getToken());
+			}
+		}
+		else
+		{
+			if(getPassword()==null)
+			{
+				authenticationData.put("SECURITY_TYPE","none");
+			}
+			else
+			{
+				authenticationData.put("SECURITY_TYPE","password");
+				authenticationData.put("LOGIN",getLogin());
+				authenticationData.put("PASSWORD",getPassword());
+			}
+			
+		}
+		return authenticationData;
+	}
+	
+	//protected region custom-fields-and-methods on begin
     @Override
     public String getBugTrackerType() {
         return "github";
@@ -29,71 +123,78 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 
     @Override
     public String getInstanceId() {
-        return getUser() + '/' + getRepository();
+        return getOwner() + '/' + getRepository();
     }
-
-    // protected region custom-fields-and-methods end
-	
-	public GitHubBugTracker() { 
-		super();
-		dbObject.put("issues", new BasicDBList());
-		super.setSuperTypes("org.eclipse.scava.repository.model.github.BugTrackingSystem");
-		USER.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
+    //protected region custom-fields-and-methods end
+		
+	private void setRepository(String repository) throws GitHubBugTrackerException{
+		repository=validateEntry(repository, "repository");
 		REPOSITORY.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
-		LOGIN.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
-		PASSWORD.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
-	}
-	
-	public static StringQueryProducer USER = new StringQueryProducer("user"); 
-	public static StringQueryProducer REPOSITORY = new StringQueryProducer("repository"); 
-	public static StringQueryProducer LOGIN = new StringQueryProducer("login"); 
-	public static StringQueryProducer PASSWORD = new StringQueryProducer("password"); 
-	
-	
-	public String getUser() {
-		return parseString(dbObject.get("user")+"", "");
-	}
-	
-	public GitHubBugTracker setUser(String user) {
-		dbObject.put("user", user);
+		dbObject.put("repository", repository);
 		notifyChanged();
-		return this;
+		
 	}
-	public String getRepository() {
+	
+	public String getRepository(){
 		return parseString(dbObject.get("repository")+"", "");
 	}
 	
-	public GitHubBugTracker setRepository(String repository) {
-		dbObject.put("repository", repository);
+	private void setLogin(String login) throws GitHubBugTrackerException{
+		login=validateEntry(login, "login");
+		LOGIN.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
+		dbObject.put("login", login);
 		notifyChanged();
-		return this;
 	}
-	public String getLogin() {
+	
+	private String getLogin() {
+		if(dbObject.get("login") == null)
+		{
+			return null;
+		}
 		return parseString(dbObject.get("login")+"", "");
 	}
 	
-	public GitHubBugTracker setLogin(String login) {
-		dbObject.put("login", login);
+	private void setPassword(String password) throws GitHubBugTrackerException{
+		password=validateEntry(password, "password");
+		PASSWORD.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
+		dbObject.put("password", password);
 		notifyChanged();
-		return this;
 	}
-	public String getPassword() {
+	
+	private String getPassword() {
+		if(dbObject.get("password") == null)
+		{
+			return null;
+		}
 		return parseString(dbObject.get("password")+"", "");
 	}
 	
-	public GitHubBugTracker setPassword(String password) {
-		dbObject.put("password", password);
+	private void setToken(String token) throws GitHubBugTrackerException{
+		token=validateEntry(token, "token");
+		TOKEN.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
+		dbObject.put("token", token);
 		notifyChanged();
-		return this;
+		
 	}
 	
-	
-	public List<GitHubIssue> getIssues() {
-		if (issues == null) {
-			issues = new PongoList<GitHubIssue>(this, "issues", true);
+	private String getToken() {
+		if(dbObject.get("token") == null)
+		{
+			return null;
 		}
-		return issues;
+		return parseString(dbObject.get("token")+"", "");
 	}
 	
+	private void setOwner(String owner) throws GitHubBugTrackerException{
+		owner=validateEntry(owner, "owner");
+		OWNER.setOwningType("org.eclipse.scava.repository.model.github.GitHubBugTracker");
+		dbObject.put("owner", owner);
+		notifyChanged();
+		
+	}
+	
+	public String getOwner() {
+		return parseString(dbObject.get("owner")+"", "");
+	}
 	
 }

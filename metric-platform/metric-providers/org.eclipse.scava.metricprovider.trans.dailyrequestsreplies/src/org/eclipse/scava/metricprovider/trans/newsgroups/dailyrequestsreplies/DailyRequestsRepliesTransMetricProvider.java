@@ -124,9 +124,9 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 				dayArticles.setNumberOfArticles(dayArticles.getNumberOfArticles()+1);
 				String requestReplyClass = 
 						getRequestReplyClass(usedClassifier, communicationChannelName, article);
-				if (requestReplyClass.equals("Request"))
+				if (requestReplyClass.equals("__label__Request"))
 					dayArticles.setNumberOfRequests(dayArticles.getNumberOfRequests()+1);
-				else if (requestReplyClass.equals("Reply"))
+				else if (requestReplyClass.equals("__label__Reply"))
 					dayArticles.setNumberOfReplies(dayArticles.getNumberOfReplies()+1);
 				db.sync();
 			}

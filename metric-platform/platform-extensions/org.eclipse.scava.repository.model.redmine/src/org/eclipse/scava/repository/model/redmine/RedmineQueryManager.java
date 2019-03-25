@@ -36,5 +36,15 @@ public class RedmineQueryManager extends org.eclipse.scava.repository.model.Comm
 		return queries;
 	}
 	
+	@Override
+	public String getCommunicationChannelType() {
+		return "RedmineQueryManager";
+	}
+
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}
 	
 }

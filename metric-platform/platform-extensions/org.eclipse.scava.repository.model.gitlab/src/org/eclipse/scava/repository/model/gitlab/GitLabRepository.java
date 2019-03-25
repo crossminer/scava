@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of L'Aquila
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ * Copyright (c) 2019  Centrum Wiskunde & Informatica
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.repository.model.gitlab;
 
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
@@ -14,12 +14,14 @@ import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 public class GitLabRepository extends org.eclipse.scava.repository.model.Project {
 	
+	
+	
 	public GitLabRepository() { 
 		super();
-		super.setSuperTypes("org.eclipse.scava.repository.model.github.Project");
-		FULL_NAME.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
-		CLONE_URL.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
-		GIT_URL.setOwningType("org.eclipse.scava.repository.model.github.GitHubRepository");
+		super.setSuperTypes("org.eclipse.scava.repository.model.gitlab.Project");
+		FULL_NAME.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
+		CLONE_URL.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
+		GIT_URL.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
 	}
 	
 	public static StringQueryProducer FULL_NAME = new StringQueryProducer("full_name"); 
@@ -36,7 +38,6 @@ public class GitLabRepository extends org.eclipse.scava.repository.model.Project
 		notifyChanged();
 		return this;
 	}
-
 	public String getClone_url() {
 		return parseString(dbObject.get("clone_url")+"", "");
 	}
@@ -55,4 +56,8 @@ public class GitLabRepository extends org.eclipse.scava.repository.model.Project
 		notifyChanged();
 		return this;
 	}
+	
+	
+	
+	
 }

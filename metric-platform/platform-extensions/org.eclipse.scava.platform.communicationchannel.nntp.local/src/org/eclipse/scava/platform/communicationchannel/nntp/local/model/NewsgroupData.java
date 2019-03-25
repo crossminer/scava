@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.communicationchannel.nntp.local.model;
 
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
 public class NewsgroupData extends Pongo {

@@ -1,22 +1,17 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.libsvm;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import org.eclipse.core.runtime.FileLocator;
 
 import libsvm.svm;
 import libsvm.svm_model;
@@ -26,7 +21,7 @@ import libsvm.svm_print_interface;
 
 public class svm_predict_nofiles {
 	
-	private static int predict_probability;
+	private static boolean predict_probability;
 	private static String model_filename;
 
 	private static svm_print_interface svm_print_null = new svm_print_interface()
@@ -71,7 +66,7 @@ public class svm_predict_nofiles {
 		int nr_class=svm.svm_get_nr_class(model);
 		double[] prob_estimates=null;
 
-		if(predict_probability == 1)
+		if(predict_probability)
 		{
 			if(svm_type == svm_parameter.EPSILON_SVR ||
 			   svm_type == svm_parameter.NU_SVR)
@@ -98,7 +93,7 @@ public class svm_predict_nofiles {
 			
 			double v;
 			List<Double> output_line;
-			if (predict_probability==1 && (svm_type==svm_parameter.C_SVC || svm_type==svm_parameter.NU_SVC))
+			if (predict_probability && (svm_type==svm_parameter.C_SVC || svm_type==svm_parameter.NU_SVC))
 			{
 				v = svm.svm_predict_probability(model,node,prob_estimates);
 				output_line = new ArrayList<Double>(nr_class+1);
@@ -148,40 +143,23 @@ public class svm_predict_nofiles {
 		System.exit(1);
 	}
 
-	public static svm_model parse_args_and_load_model(String argv[], ClassLoader cl) {
+	public static svm_model parse_args_and_load_model(ClassLoader cl, String folderModel, String modelName, boolean predictProb) {
 		int i;
-		predict_probability=0;
+		predict_probability=predictProb;
 		svm_print_string = svm_print_stdout;
 
-		// parse options
-		for(i=0;i<argv.length;i++)
-		{
-			if(argv[i].charAt(0) != '-') break;
-			++i;
-			switch(argv[i-1].charAt(1))
-			{
-			case 'b':
-				predict_probability = atoi(argv[i]);
-				break;
-			case 'q':
-				svm_print_string = svm_print_null;
-				i--;
-				break;
-			default:
-				System.err.print("Unknown option: " + argv[i-1] + "\n");
-				exit_with_help();
-			}
-		}
-		if(i>=argv.length)
-			exit_with_help();
-		model_filename = argv[i];
+		model_filename = folderModel+"/"+modelName;
 		
 		svm_model model = null;
 		try {
 			URL resource = cl.getResource("/" + model_filename);
-			BufferedReader in = new BufferedReader(new InputStreamReader(resource.openStream()));
-			model = svm.svm_load_model(in);
-		} catch (IOException e) {
+			if(resource==null)
+			{
+				unzipModel(cl.getResource("/" + model_filename +".zip"));
+				resource = cl.getResource("/" + model_filename);
+			}
+			model = svm.svm_load_model(FileLocator.toFileURL(resource).getPath());
+		} catch (IOException | URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -191,7 +169,7 @@ public class svm_predict_nofiles {
 			System.err.print("can't open model file "+model_filename+"\n");
 			System.exit(1);
 		}
-		if(predict_probability == 1)
+		if(predict_probability)
 		{
 			if(svm.svm_check_probability_model(model)==0)
 			{
@@ -207,5 +185,32 @@ public class svm_predict_nofiles {
 			}
 		}
 		return model;
+	}
+	
+	private static void unzipModel(URL zipModelURL) throws IOException, URISyntaxException
+	{
+		File zipmodelFile = new File(FileLocator.toFileURL(zipModelURL).getPath());
+		String unzipModel = zipmodelFile.toString();
+		unzipModel=(String) unzipModel.subSequence(0, unzipModel.length()-4);
+		FileInputStream fis = new FileInputStream(zipmodelFile);
+        ZipInputStream zis = new ZipInputStream(fis);
+        ZipEntry entry = zis.getNextEntry();
+        
+        if(entry != null)
+        {
+        	byte[] buffer = new byte[1024];
+        	int len;
+            File newFile = new File(unzipModel);
+            System.out.println("Unzipping to "+newFile.getAbsolutePath());
+            FileOutputStream fos = new FileOutputStream(newFile);
+            while ((len = zis.read(buffer)) > 0)
+            {
+           		fos.write(buffer, 0, len);
+            }
+            fos.close();
+        }
+        zis.closeEntry();
+        zis.close();
+        fis.close();
 	}
 }

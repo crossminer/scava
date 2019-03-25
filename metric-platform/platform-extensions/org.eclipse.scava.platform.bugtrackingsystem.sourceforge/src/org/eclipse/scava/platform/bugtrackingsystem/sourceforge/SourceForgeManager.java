@@ -75,7 +75,6 @@ public class SourceForgeManager implements
 			item.setDescription(null); // remove content field
 			for (BugTrackingSystemComment comment : item.getComments()) {
 				comment.setBugTrackingSystem(bugTracker); // Is this needed?
-				comment.setText(null); // remove content field
 			}
 		}
 	}

@@ -11,6 +11,8 @@ package org.eclipse.scava.platform.bugtrackingsystem.github;
 
 import java.io.Serializable;
 
+import org.eclipse.scava.crossflow.restmule.client.github.model.PullRequest;
+
 public class GitHubPullRequestMarker implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,44 +23,72 @@ public class GitHubPullRequestMarker implements Serializable {
     private String sha;
     private String user;
 
+    
+    
+	// ----------------------------------------------------------------------------------
+	// Setters
+	// ----------------------------------------------------------------------------------
+	    public void setRepository(PullRequest pullRequest) {
+	    	
+	    	try{
+	    		
+	    		this.repository = pullRequest.getHead().getRepo().getId().longValue();
+	    	}catch(NullPointerException np){
+	    		
+	    		
+	    	}
+	        
+	    }
+	    
+	     public void setLabel(String label) {
+	        this.label = label;
+	    }
+	    
+	     public void setRef(String ref) {
+	        this.ref = ref;
+	    }
+	    
+	     public void setSha(String sha) {
+	        this.sha = sha;
+	    }
+	    
+	     public void setUser(String user) {
+	         this.user = user;
+	     }
+    
+
+	// ----------------------------------------------------------------------------------
+	// Getters
+	// ----------------------------------------------------------------------------------
+
     public Long getRepository() {
         return repository;
     }
 
-    public void setRepository(Long id) {
-        this.repository = id;
-    }
+   
 
     public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+   
 
     public String getRef() {
         return ref;
     }
 
-    public void setRef(String ref) {
-        this.ref = ref;
-    }
+   
 
     public String getSha() {
         return sha;
     }
 
-    public void setSha(String sha) {
-        this.sha = sha;
-    }
+   
 
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+
 
 }

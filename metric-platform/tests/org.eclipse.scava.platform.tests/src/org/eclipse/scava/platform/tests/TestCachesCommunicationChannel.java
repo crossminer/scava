@@ -58,7 +58,7 @@ public class TestCachesCommunicationChannel {
 		CommunicationChannelArticle article = mock(CommunicationChannelArticle.class);
 		when(article.getCommunicationChannel()).thenReturn(newsgroup);
 
-		when(article.getArticleNumber()).thenReturn(117);
+		when(article.getArticleNumber()).thenReturn((long) 117);
 		
 		String contents = "The quick brown fox jumped over the lazy dog.";		
 		
