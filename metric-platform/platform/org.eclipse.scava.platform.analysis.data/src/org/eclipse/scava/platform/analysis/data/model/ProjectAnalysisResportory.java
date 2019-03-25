@@ -12,11 +12,11 @@ package org.eclipse.scava.platform.analysis.data.model;
 import com.googlecode.pongo.runtime.*;
 import com.mongodb.*;
 
-public class ProjectAnalysisRepository extends PongoDB {
+public class ProjectAnalysisResportory extends PongoDB {
 	
-	public ProjectAnalysisRepository() {}
+	public ProjectAnalysisResportory() {}
 	
-	public ProjectAnalysisRepository(DB db) {
+	public ProjectAnalysisResportory(DB db) {
 		setDb(db);
 	}
 	
@@ -58,8 +58,8 @@ public class ProjectAnalysisRepository extends PongoDB {
 		pongoCollections.add(analysisTasks);
 		metricExecutions = new MetricExecutionCollection(db.getCollection("metricExecutions"));
 		pongoCollections.add(metricExecutions);
-		//metricProviders = new MetricProviderCollection(db.getCollection("metricProviders"));
-		//pongoCollections.add(metricProviders);
+		metricProviders = new MetricProviderCollection(db.getCollection("metricProviders"));
+		pongoCollections.add(metricProviders);
 		workers = new WorkerCollection(db.getCollection("workers"));
 		pongoCollections.add(workers);
 	}
