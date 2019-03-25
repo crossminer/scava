@@ -1,5 +1,5 @@
 function loadStencils() {
-	var req = mxUtils.load('flowchart.xml');
+	var req = mxUtils.load('src/js/flowchart.xml');
 	var root = req.getDocumentElement();
 	var shape = root.firstChild;
 	
