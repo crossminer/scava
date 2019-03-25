@@ -26,7 +26,7 @@
         
   </head>
 
-  <body>
+  <body onload="main(document.getElementById('graphContainer'))">
 
     <header>
       <div class="collapse bg-dark" id="navbarHeader">

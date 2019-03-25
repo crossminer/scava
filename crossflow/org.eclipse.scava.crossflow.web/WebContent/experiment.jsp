@@ -127,8 +127,11 @@
 					</div>
 					<div class="tab-pane fade show" id="model" role="tabpanel"
 						aria-labelledby="model-tab">
-						<p>
-						</p>
+						<!-- Creates a container for the graph with a grid wallpaper -->
+						<div id="graphContainer"
+							style="position: relative; overflow: scroll; width: 100%; height: 100%; background: url('../examples/editors/images/grid.gif'); cursor: default;">
+						</div>
+						<p></p>
 					</div>
 				</div>
 			</div>
@@ -165,7 +168,7 @@
 			}
 		}
 	})
-	
+
 	var transport = new Thrift.TXHRTransport(
 			"/org.eclipse.scava.crossflow.web/crossflow");
 	var protocol = new Thrift.TJSONProtocol(transport);
