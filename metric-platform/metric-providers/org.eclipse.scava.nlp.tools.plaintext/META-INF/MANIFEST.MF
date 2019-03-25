@@ -7,8 +7,7 @@ Export-Package: org.eclipse.scava.nlp.tools.plaintext,
  org.eclipse.scava.nlp.tools.plaintext.bugtrackers,
  org.eclipse.scava.nlp.tools.plaintext.communicationchannels
 Require-Bundle: org.eclipse.scava.nlp.tools.preprocessor,
- org.eclipse.core.runtime,
- javax.mail
+ org.eclipse.core.runtime
 Bundle-Activator: org.eclipse.scava.nlp.tools.preprocessor.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
