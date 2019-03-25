@@ -14,6 +14,14 @@
     <script src="js/gen/crossflow_types.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link href="css/album.css" rel="stylesheet">
+    
+	<!-- mxGraph JS imports -->
+	<script type="text/javascript">
+		mxBasePath = 'src';
+	</script>
+
+	<script type="text/javascript" src="src/js/mxClient.js"></script>
+	<script type="text/javascript" src="src/js/crossflow.js"></script>
         
   </head>
 
