@@ -22,6 +22,7 @@
 
 	<script type="text/javascript" src="src/js/mxClient.js"></script>
 	<script type="text/javascript" src="src/js/crossflow.js"></script>
+	<script type="text/javascript" src="src/js/mxClient-crossflow-main.js"></script>
         
   </head>
 
