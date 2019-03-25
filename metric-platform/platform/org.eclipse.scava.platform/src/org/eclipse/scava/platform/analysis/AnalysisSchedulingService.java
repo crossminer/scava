@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
@@ -15,9 +15,9 @@ public class AnalysisSchedulingService {
 	
 	private static final long MILISECOND_IN_DAY = 86400000;
 	protected Logger loggerOssmeter;
-	private ProjectAnalysisResportory repository;
+	private ProjectAnalysisRepository repository;
 	
-	public AnalysisSchedulingService(ProjectAnalysisResportory repository) {
+	public AnalysisSchedulingService(ProjectAnalysisRepository repository) {
 		this.repository = repository;
 		this.loggerOssmeter = (OssmeterLogger) OssmeterLogger.getLogger("AnalysisSchedulingService");
 	}

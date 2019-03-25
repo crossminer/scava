@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -14,14 +14,14 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 public class WorkerService {
 	
 	private Logger loggerOssmeter;
-	private ProjectAnalysisResportory repository;
+	private ProjectAnalysisRepository repository;
 
-	public WorkerService(ProjectAnalysisResportory repository){
+	public WorkerService(ProjectAnalysisRepository repository){
 		this.repository = repository;
 		this.loggerOssmeter = (OssmeterLogger) OssmeterLogger.getLogger("WorkerService");
 	}
 	
-	public synchronized ProjectAnalysisResportory getRepository() {	
+	public synchronized ProjectAnalysisRepository getRepository() {	
 		return this.repository;
 	}
 	

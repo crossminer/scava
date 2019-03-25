@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
@@ -14,7 +14,7 @@ public class MonitorTaskStatus {
 	
 	public static void main(String[] params) {
 		try {		
-			ProjectAnalysisResportory repository = new ProjectAnalysisResportory(getMongoConnection().getDB("scava-analysis"));
+			ProjectAnalysisRepository repository = new ProjectAnalysisRepository(getMongoConnection().getDB("scava-analysis"));
 
 	    	while(true) {
 	    		AnalysisTask task = repository.getAnalysisTasks().findOneByAnalysisTaskId("QualityGuardAnalysis:Analysis1");

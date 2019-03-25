@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisExecutionMode;
 
 import com.mongodb.Mongo;
@@ -18,7 +18,7 @@ public class AddTask {
 	public static void main(String[] params) {
 		try {
 			
-			AnalysisTaskService service = new AnalysisTaskService(new ProjectAnalysisResportory(getMongoConnection().getDB("scava-analysis")),getMongoConnection());
+			AnalysisTaskService service = new AnalysisTaskService(new ProjectAnalysisRepository(getMongoConnection().getDB("scava-analysis")),getMongoConnection());
 			
 			AnalysisTask task1 = new AnalysisTask();
 			task1.setAnalysisTaskId("QualityGuardAnalysis:Analysis1");

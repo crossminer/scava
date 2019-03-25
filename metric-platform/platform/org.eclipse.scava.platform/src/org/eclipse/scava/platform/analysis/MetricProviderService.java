@@ -6,17 +6,17 @@ import java.util.List;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.DataStorage;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 
 public class MetricProviderService {
 	
-	private ProjectAnalysisResportory repository;
+	private ProjectAnalysisRepository repository;
 
-	public MetricProviderService(ProjectAnalysisResportory repository){
+	public MetricProviderService(ProjectAnalysisRepository repository){
 		this.repository = repository;
 	}
 	
-	public ProjectAnalysisResportory getRepository() {
+	public ProjectAnalysisRepository getRepository() {
 		return this.repository;
 	}
 	
@@ -35,16 +35,7 @@ public class MetricProviderService {
 		}
 		this.repository.sync();
 		return provider;
-	}
-
-	
-	public void addMetricProviderDependency(MetricProvider provider, List<MetricProvider> dependsOn) {
-		for (MetricProvider dependency : dependsOn) {
-			provider.getDependOf().add(dependency);
-		}
-		this.repository.sync();
-	}
-	
+	}	
 	
 	public List<MetricProvider> getMetricProviders(Platform platform) {
 		List<MetricProvider> providers = new ArrayList<MetricProvider>();

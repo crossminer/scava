@@ -11,7 +11,7 @@ import org.eclipse.scava.platform.analysis.data.model.DataStorage;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis;
-import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisRepository;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
@@ -20,10 +20,10 @@ import com.mongodb.DB;
 import com.mongodb.Mongo;
 
 public class AnalysisTaskService {
-	private ProjectAnalysisResportory repository;
+	private ProjectAnalysisRepository repository;
 	private Mongo mongo;
 
-	public AnalysisTaskService(ProjectAnalysisResportory repository, Mongo mongo) {
+	public AnalysisTaskService(ProjectAnalysisRepository repository, Mongo mongo) {
 		this.repository = repository;
 		this.mongo = mongo;
 	}
