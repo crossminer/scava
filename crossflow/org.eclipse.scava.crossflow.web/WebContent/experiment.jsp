@@ -128,23 +128,6 @@
 					<div class="tab-pane fade show" id="model" role="tabpanel"
 						aria-labelledby="model-tab">
 						<p>
-						<table class="table table-striped table-bordered">
-							<tr>
-								<td>
-
-									<div class="container">
-										<div class="row" class="runtime-viewer">
-											<div class="sprotty-hidden">
-												<div id="monaco-editor" data-input-type="elkt"></div>
-											</div>
-											<div id="sprotty" class="runtime-viewer"></div>
-										</div>
-									</div>
-								</td>
-							</tr>
-						</table>
-
-
 						</p>
 					</div>
 				</div>
@@ -190,14 +173,7 @@
 
 	var url = new URL(window.location.href);
 	app.experimentId = url.searchParams.get("id");
-	
-	var runtimeModel = crossflow.getExperiment(app.experimentId).runtimeModel;
-	var runtimeModelEncoded = encodeURIComponent(runtimeModel);
-	
-	if ( window.location.href.includes("initialContent") == false ) {
-		window.location.href = window.location + "&initialContent=" + runtimeModelEncoded;
-	}
-	
+
 	refresh();
 
 	setInterval(function() {

@@ -14,22 +14,7 @@
     <script src="js/gen/crossflow_types.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link href="css/album.css" rel="stylesheet">
-
-	<script src="elkgraph.bundle.js"></script>
-	<script src="jquery/jquery.slim.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="vs/loader.js"></script>
-    
-    <style>
-		.content-widget {
-			border: 1px solid #888;
-		}
-		svg {
-			overflow: hidden; position: relative; width: 100%; height: 100%;
-			min-height: 500px;
-		}
-	</style>
-    
+        
   </head>
 
   <body>
