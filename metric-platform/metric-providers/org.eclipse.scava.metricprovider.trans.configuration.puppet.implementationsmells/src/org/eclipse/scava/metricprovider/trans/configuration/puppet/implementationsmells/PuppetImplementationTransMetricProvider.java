@@ -122,6 +122,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 								smell.setLine(rest[rest.length - 1]);
 								smell.setReason("ensure found on line but it's not the first attribute");
 								smell.setFileName(f);
+								smell.setSmellName("Misplaced attribute");
 								db.getSmells().add(smell);
 								db.sync();
 		                	}
@@ -131,6 +132,52 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 								smell.setLine(rest[1]);
 								smell.setReason(rest[0]);
 								smell.setFileName(f);
+								
+								if(rest[0].contains("case statement without a default case"))
+									smell.setSmellName("Missing default case");
+								if(rest[0].contains("name containing a dash"))
+									smell.setSmellName("Inconsistent naming convention");
+								if(rest[0].contains("contains a dash"))
+									smell.setSmellName("Inconsistent naming convention");
+								if(rest[0].contains("not in autoload module layout"))
+									smell.setSmellName("Inconsistent naming convention");
+								if(rest[0].contains("duplicate parameter found in resource"))
+									smell.setSmellName("Duplicate entity");
+								if(rest[0].contains("optional parameter listed before required parameter"))
+									smell.setSmellName("Misplaced attribute");
+								if(rest[0].contains("=> is not properly aligned"))
+									smell.setSmellName("Improper alignment");
+								if(rest[0].contains("tab character found"))
+									smell.setSmellName("Improper alignment");
+								if(rest[0].contains("two-space soft tabs not used"))
+									smell.setSmellName("Improper alignment");
+								if(rest[0].contains("right-to-left (<-) relationship"))
+									smell.setSmellName("Improper alignment");
+								if(rest[0].contains("mode should be represented as a 4 digit octal value"))
+									smell.setSmellName("Invalid property value");
+								if(rest[0].contains("symlink target specified in ensure attr"))
+									smell.setSmellName("Invalid property value");
+								if(rest[0].contains("puppet:// URL without modules/ found"))
+									smell.setSmellName("Invalid property value");
+								if(rest[0].contains("double quoted string containing no variables"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("unquoted file mode"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("quoted boolean value found"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("string containing only a variable"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("unquoted resource title"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("single quoted string containing a variable"))
+									smell.setSmellName("Improper quote usage");
+								if(rest[0].contains("line has more than 80 characters"))
+									smell.setSmellName("Long statements");
+								if(rest[0].contains("variable not enclosed in {}"))
+									smell.setSmellName("Unguarded variable");
+								if(rest[0].contains("class not documented"))
+									smell.setSmellName("Missing Documentation");
+								
 								db.getSmells().add(smell);
 								db.sync();
 		                	}
@@ -143,6 +190,9 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 							smell.setLine(rest[1]);
 							smell.setReason(rest[0]);
 							smell.setFileName(f);
+							
+							//TODO: Add the rest filenames
+							
 							db.getSmells().add(smell);
 							db.sync();
 		                }
