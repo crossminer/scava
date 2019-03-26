@@ -1,5 +1,5 @@
 /* (!) filePath must specify a location accessible by the web server */
-function loadModel(filePath) {
+function loadFile(filePath) {
 	  var result = null;
 	  var xmlhttp = new XMLHttpRequest();
 	  xmlhttp.open("GET", filePath, false);
@@ -8,7 +8,7 @@ function loadModel(filePath) {
 	    result = xmlhttp.responseText;
 	  }
 	  return result;
-	}
+}
 
 function main(container, experimentId) {
 
@@ -17,36 +17,40 @@ function main(container, experimentId) {
 	 * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
 	 * monitor.html
 	 */
+	var codec = new mxCodec();
 
 	mxEvent.disableContextMenu(container);
+	window.runtimeModelContainer = container;
 
-	var graph = new mxGraph(container);
-	graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
-	graph.setTooltips(true);
-	graph.getTooltipForCell = function(cell) {
+	window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
+	window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
+	window.runtimeModelGraph.setTooltips(true);
+	window.runtimeModelGraph.getTooltipForCell = function(cell) {
 		return "<table border=1><tr><td>Stuff</td><td>More stuff</td></tr></table>";
 	}
 
-	var parent = graph.getDefaultParent();
-	graph.enabled = false;
+	window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
+	window.runtimeModelGraph.enabled = false;
 
-	graph.getModel().beginUpdate();
+	window.runtimeModelGraph.getModel().beginUpdate();
 	try {
 
 		loadStencils();
-
-		var experimentName = experimentId; 
-		var xmlModel = loadModel("experiments/" + experimentName + "/graph.xml")
-		var doc = mxUtils.parseXml(xmlModel);
-		var codec = new mxCodec(doc);
-		codec.decode(doc.documentElement, graph.getModel());
 		
-		var layout = new mxCompactTreeLayout(graph, true);
-		layout.execute(parent, graph.getModel());
-		
+		$.getScript('experiments/' + experimentId + '/graph.abstract', function()
+		{
+			var model = window.runtimeModelGraph.getModel();
+			
+			var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
+			layout.execute(window.runtimeModelParent, model.cells[2]);
+			
+			var nodeEnc = codec.encode(model);
+			var xml = mxUtils.getXml(nodeEnc);
+		});
+	
 	} finally {
 		// Updates the display
-		graph.getModel().endUpdate();
+		window.runtimeModelGraph.getModel().endUpdate();
 	}
 
 };
