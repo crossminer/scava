@@ -20,6 +20,9 @@
 	<script type="text/javascript" src="src/js/mxClient.js"></script>
 	<script type="text/javascript" src="src/js/crossflow.js"></script>
 	<script type="text/javascript" src="src/js/graphUpdate.js"></script>
+	
+	<!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         
   </head>
   
