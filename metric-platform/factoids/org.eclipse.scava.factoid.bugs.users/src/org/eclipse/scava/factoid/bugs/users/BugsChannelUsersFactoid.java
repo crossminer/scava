@@ -104,7 +104,9 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 		
 		int currentUsers = getCurrentNumberOfUsers(usersMonthList),
 			currentActiveUsers = getCurrentNumberOfActiveUsers(usersMonthList);
-		float currentActivePercentage = ( (float) 100 * currentActiveUsers ) / currentUsers; 
+		float currentActivePercentage = 0;
+		if(currentUsers>0)
+			currentActivePercentage=( (float) 100 * currentActiveUsers ) / currentUsers; 
 
 		stringBuffer.append("Over the lifetime of the project ");
 		stringBuffer.append(currentUsers);
