@@ -19,11 +19,11 @@
 
 	<script type="text/javascript" src="src/js/mxClient.js"></script>
 	<script type="text/javascript" src="src/js/crossflow.js"></script>
-	<script type="text/javascript" src="src/js/mxClient-crossflow-main.js"></script>
+	<script type="text/javascript" src="src/js/graphUpdate.js"></script>
         
   </head>
-
-  <body onload="main(document.getElementById('graphContainer'))">
+  
+  <body onload="main(document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))">
 
     <header>
       <div class="collapse bg-dark" id="navbarHeader">

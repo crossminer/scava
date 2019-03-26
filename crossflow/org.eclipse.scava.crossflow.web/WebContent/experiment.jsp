@@ -127,7 +127,6 @@
 					</div>
 					<div class="tab-pane fade show" id="model" role="tabpanel"
 						aria-labelledby="model-tab">
-						<!-- Creates a container for the graph with a grid wallpaper -->
 						<div id="graphContainer"
 							style="position: relative; overflow: scroll; width: 100%; height: 100%; cursor: default;">
 						</div>
