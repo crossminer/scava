@@ -40,8 +40,6 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
-	protected List<IMetricProvider> uses;
-	
 	@Override
 	public String getIdentifier() {
 		return PlainTextProcessingTransMetricProvider.class.getCanonicalName();
@@ -75,7 +73,6 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		this.uses=uses;
 	}
 
 	@Override
