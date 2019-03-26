@@ -5,5 +5,6 @@ public enum RecommendationType {
 	ALTERNATIVE_LIBRARY,
 	API_CALL,
 	API_DOCUMENTATION,
-	FOCUS
+	FOCUS,
+	SO
 }
