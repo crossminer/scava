@@ -61,82 +61,80 @@ public class PuppetImplementationHistoricMetricProvider extends AbstractHistoric
 			System.exit(-1);
 		}
     	
-    	ImplementationSmells designSmells = 
+    	ImplementationSmells implementationSmells = 
 				((PuppetImplementationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
     	
-    	PuppetImplementationSmellsHistoricMetric designHistoricSmells = new PuppetImplementationSmellsHistoricMetric();
+    	PuppetImplementationSmellsHistoricMetric implementationHistoricSmells = new PuppetImplementationSmellsHistoricMetric();
     	
-    	ImplementationSmellCollection col = designSmells.getSmells();
+    	ImplementationSmellCollection col = implementationSmells.getSmells();
     	
-    	int multifaceted = 0;
-    	int unnecessary = 0;
-    	int imperative = 0;
-    	int missingab = 0;
-    	int insufficient = 0;
-    	int unstructured = 0;
-    	int tight = 0;
-    	int broken = 0;
-    	int missingdep = 0;
-    	int hairball = 0;
-    	int deficient = 0;
-    	int weaken = 0;
+    	int missingDefaultCase = 0;
+    	int inconsistentNaming = 0;
+    	int duplicateEntity = 0;
+    	int misplacedAttribute = 0;
+    	int improperAlignment = 0;
+    	int invalidProperty = 0;
+    	int improperQuote = 0;
+    	int longStatements = 0;
+    	int unguardedVariable = 0;
+    	int missingDoc = 0;
+    	int deprecatedStatements = 0;
+    	int incompleteTasks = 0;
+    	int complexExpression = 0;
+    	int missingElse = 0;
     	
     	for (Smell smell: col) {
     		switch (smell.getSmellName()) {
-	            case "Multifaceted Abstraction - Form 1":  multifaceted++;
+	            case "Missing default case":  missingDefaultCase++;
 	            	break;
-	            case "Multifaceted Abstraction - Form 2":  multifaceted++;
+	            case "Inconsistent naming convention":  inconsistentNaming++;
             		break;
-	            case "Unnecessary Abstraction":  unnecessary++;
+	            case "Duplicate entity":  duplicateEntity++;
 	        		break;
-	            case "Imperative Abstraction":  imperative++;
+	            case "Misplaced attribute":  misplacedAttribute++;
 	    			break;
-	            case "Missing Abstraction":  missingab++;
+	            case "Improper alignment":  improperAlignment++;
 	    			break;
-	            case "Insufficient Modularization - Form 1":  insufficient++;
+	            case "Invalid property value":  invalidProperty++;
 					break;
-	            case "Insufficient Modularization - Form 2":  insufficient++;
+	            case "Improper quote usage":  improperQuote++;
 					break;
-	            case "Insufficient Modularization - Form 3":  insufficient++;
+	            case "Long statements":  longStatements++;
 					break;
-	            case "Unstructured Module - Form 1":  unstructured++;
+	            case "Unguarded variable":  unguardedVariable++;
 					break;
-	            case "Unstructured Module - Form 2":  unstructured++;
+	            case "Missing Documentation":  missingDoc++;
 					break;
-	            case "Unstructured Module - Form 3":  unstructured++;
+	            case "Deprecated Statements":  deprecatedStatements++;
 					break;
-	            case "Tightly-coupled Module":  tight++;
+	            case "Incomplete tasks":  incompleteTasks++;
 					break;
-	            case "Broken Hierarchy":  broken++;
+	            case "Complex Expression":  complexExpression++;
 					break;
-	            case "Missing Dependency":  missingdep++;
-					break;
-	            case "Hairball Structure":  hairball++;
-					break;
-	            case "Deficient Encapsulation":  deficient++;
-					break;
-	            case "Weakend Modularity":  weaken++;
+	            case "Missing Else":  missingElse++;
 					break;
 					
     		}
     		
     	}
     	
-    	designHistoricSmells.setCumulativeNumberOfDesignUsers((int)col.size());
-    	designHistoricSmells.setNumberOfMultifacetedSmells(multifaceted);
-    	designHistoricSmells.setNumberOfUnnecessarySmells(unnecessary);
-    	designHistoricSmells.setNumberOfImperativeSmells(imperative);
-    	designHistoricSmells.setNumberOfMissAbSmells(missingab);
-    	designHistoricSmells.setNumberOfInsufficientSmells(insufficient);
-    	designHistoricSmells.setNumberOfUnstructuredSmells(unstructured);
-    	designHistoricSmells.setNumberOfTightSmells(tight);
-    	designHistoricSmells.setNumberOfBrokenSmells(broken);
-    	designHistoricSmells.setNumberOfMissingDepSmells(missingdep);
-    	designHistoricSmells.setNumberOfHairballSmells(hairball);
-    	designHistoricSmells.setNumberOfDeficientSmells(deficient);
-    	designHistoricSmells.setNumberOfWeakenSmells(weaken);
+    	implementationHistoricSmells.setCumulativeNumberOfImplementationUsers((int)col.size());
+    	implementationHistoricSmells.setNumberOfMissingDefaultCaseSmells(missingDefaultCase);
+    	implementationHistoricSmells.setNumberOfInconsistentNamingSmells(inconsistentNaming);
+    	implementationHistoricSmells.setNumberOfDuplicateEntitySmells(duplicateEntity);
+    	implementationHistoricSmells.setNumberOfMisplacedAttributeSmells(misplacedAttribute);
+    	implementationHistoricSmells.setNumberOfImproperAlignment(improperAlignment);
+    	implementationHistoricSmells.setNumberOfInvalidPropertySmells(invalidProperty);
+    	implementationHistoricSmells.setNumberOfImproperQuoteSmells(improperQuote);
+    	implementationHistoricSmells.setNumberOfLongStatementsSmells(longStatements);
+    	implementationHistoricSmells.setNumberOfUnguardedVariableSmells(unguardedVariable);
+    	implementationHistoricSmells.setNumberOfMissingDocSmells(missingDoc);
+    	implementationHistoricSmells.setNumberOfDeprecatedStatementsSmells(deprecatedStatements);
+    	implementationHistoricSmells.setNumberOfIncompleteTasksSmells(incompleteTasks);
+    	implementationHistoricSmells.setNumberOfComplexExpressionSmells(complexExpression);
+    	implementationHistoricSmells.setNumberOfMissingElseSmells(missingElse);
     	
-    	return designHistoricSmells;
+    	return implementationHistoricSmells;
     }
     
     @Override

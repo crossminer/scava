@@ -1,0 +1,190 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells",
+	"vis" : [ 
+		{
+			"id" : "implementation.smells",
+			"name" : "Sum of Implementation Smells",
+			"description" : "The number of implementation smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "ImplementationSmells", "field" : "$cumulativeNumberOfImplementationSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImplementationSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.missingDefaultCaseSmells",
+			"name" : "Missing Default Case Smells",
+			"description" : "The number of Missing Default Case smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Smells", "field" : "$numberOfMissingDefaultCaseSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MissingDefaultCaseSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.inconsistentNamingSmells",
+			"name" : "Inconsistent Naming Smells",
+			"description" : "The number of Inconsistent Naming smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfInconsistentNamingSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "InconsistentNamingSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.duplicateEntitySmells",
+			"name" : "Duplicate Entity Smells",
+			"description" : "The number of DuplicateEntity smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfDuplicateEntitySmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DuplicateEntitySmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.misplacedAttributeSmells",
+			"name" : "Misplaced Attribute Smells",
+			"description" : "The number of Misplaced Attribute smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfMisplacedAttributeSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MisplacedAttributeSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.improperAlignmentSmells",
+			"name" : "Improper Alignment Smells",
+			"description" : "The number of ImproperAlignment smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfImproperAlignmentSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperAlignmentSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.invalidPropertySmells",
+			"name" : "Invalid Property Smells",
+			"description" : "The number of Invalid Property smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfInvalidPropertySmells" } ]
+			},
+			"x" : "Date",
+			"y" : "InvalidPropertySmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.improperQuoteSmells",
+			"name" : "Improper Quote Smells",
+			"description" : "The number of Improper Quote smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfImproperQuoteSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperQuoteSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.longStatementsSmells",
+			"name" : "Long Statements Smells",
+			"description" : "The number of Long Statements smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfLongStatementsSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "LongStatementsSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.unguardedVariableSmells",
+			"name" : "Unguarded Variable Smells",
+			"description" : "The number of Unguarded Variable smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfUnguardedVariableSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "UnguardedVariableSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.missingDocSmells",
+			"name" : "Missing Documentation Smells",
+			"description" : "The number of Missing Documentation smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfMissingDocSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MissingDocSmells",
+			"timeSeries" : true
+		},{
+			"id" : "implementation.deprecatedStatementsSmells",
+			"name" : "Deprecated Statements Smells",
+			"description" : "The number of Deprecated Statements smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfDeprecatedStatementsSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DeprecatedStatementsSmells",
+			"timeSeries" : true
+		}
+		,{
+			"id" : "implementation.incompleteTasksSmells",
+			"name" : "Incomplete Tasks Smells",
+			"description" : "The number of Incomplete Tasks smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfIncompleteTasksSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "IncompleteTasksSmells",
+			"timeSeries" : true
+		}
+		,{
+			"id" : "implementation.complexExpressionSmells",
+			"name" : "Complex Expression Smells",
+			"description" : "The number of Complex Expression smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfComplexExpressionSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ComplexExpressionSmells",
+			"timeSeries" : true
+		}
+		,{
+			"id" : "implementation.missingElseSmells",
+			"name" : "Missing Else Smells",
+			"description" : "The number of Incomplete Tasks smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Smells", "field" : "$numberOfMissingElseSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MissingElseSmells",
+			"timeSeries" : true
+		}
+	]
+
+}

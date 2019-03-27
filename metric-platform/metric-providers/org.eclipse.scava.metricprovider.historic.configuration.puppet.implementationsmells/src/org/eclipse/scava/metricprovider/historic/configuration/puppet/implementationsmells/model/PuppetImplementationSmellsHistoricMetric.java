@@ -5,163 +5,192 @@ import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 
 public class PuppetImplementationSmellsHistoricMetric extends Pongo {
 	
-	public static NumericalQueryProducer NUMBEROFMULTIFACETEDSMELLS = new NumericalQueryProducer("numberOfMultifacetedSmells");
-	public static NumericalQueryProducer NUMBEROFUNNECESSARYSMELLS = new NumericalQueryProducer("numberOfUnnecessarySmells");
-	public static NumericalQueryProducer NUMBEROFIMPERATIVESMELLS = new NumericalQueryProducer("numberOfImperativeSmells");
-	public static NumericalQueryProducer NUMBEROFMISSABSMELLS = new NumericalQueryProducer("numberOfMissAbSmells");
-	public static NumericalQueryProducer NUMBEROFINSUFFICIENTSMELLS = new NumericalQueryProducer("numberOfInsufficientSmells");
-	public static NumericalQueryProducer NUMBEROFUNSTRUCTUREDSMELLS = new NumericalQueryProducer("numberOfUnstructuredSmells");
-	public static NumericalQueryProducer NUMBEROFTIGHTSMELLS = new NumericalQueryProducer("numberOfTightSmells");
-	public static NumericalQueryProducer NUMBEROFBROKENSMELLS = new NumericalQueryProducer("numberOfBrokenSmells");
-	public static NumericalQueryProducer NUMBEROFMISSINGDEPSMELLS = new NumericalQueryProducer("numberOfMissingDepSmells");
-	public static NumericalQueryProducer NUMBEROFHAIRBALLSMELLS = new NumericalQueryProducer("numberOfHairballSmells");
-	public static NumericalQueryProducer NUMBEROFDEFICIENTSMELLS = new NumericalQueryProducer("numberOfDeficientSmells");
-	public static NumericalQueryProducer NUMBEROFWEAKENSMELLS = new NumericalQueryProducer("numberOfWeakenSmells");
-	public static NumericalQueryProducer CUMULATIVENUMBEROFDESIGNSMELLS = new NumericalQueryProducer("cumulativeNumberOfDesignSmells");
+	public static NumericalQueryProducer NUMBEROFMISSINGDEFAULTCASE = new NumericalQueryProducer("numberOfMissingDefaultCaseSmells");
+	public static NumericalQueryProducer NUMBEROFINCOSISTENAMINGSmells = new NumericalQueryProducer("numberOfInconsistentNamingSmells");
+	public static NumericalQueryProducer NUMBEROFBUPLICATEENTITYMELLS = new NumericalQueryProducer("numberOfDuplicateEntitySmells");
+	public static NumericalQueryProducer NUMBEROFMISPLACEDATTRIBUTESSMELLS = new NumericalQueryProducer("numberOfMisplacedAttributeSmells");
+	public static NumericalQueryProducer NUMBEROFIMPROPERALIGNMENTSMELLS = new NumericalQueryProducer("numberOfImproperAlignmentSmells");
+	public static NumericalQueryProducer NUMBEROFINVALIDPROPERTYSMELLS = new NumericalQueryProducer("numberOfInvalidPropertySmells");
+	public static NumericalQueryProducer NUMBEROFIMPROPERQUOTESMELLS = new NumericalQueryProducer("numberOfImproperQuoteSmells");
+	public static NumericalQueryProducer NUMBEROFLONGSTATEMENTSSMELLS = new NumericalQueryProducer("numberOfLongStatementsSmells");
+	public static NumericalQueryProducer NUMBEROFUNGUARDEDVARIABLESMELLS = new NumericalQueryProducer("numberOfUnguardedVariableSmells");
+	public static NumericalQueryProducer NUMBEROFMISSINGDOCSMELLS = new NumericalQueryProducer("numberOfMissingDocSmells");
+	public static NumericalQueryProducer NUMBEROFDEPRECATEDSTATEMENTSSMELLS = new NumericalQueryProducer("numberOfDeprecatedStatementsSmells");
+	public static NumericalQueryProducer NUMBEROFINCOMPLETETASKSSMELLS = new NumericalQueryProducer("numberOfIncompleteTasksSmells");
+	public static NumericalQueryProducer NUMBEROFINCOMPLEXEXPRESSIONSMELLS = new NumericalQueryProducer("numberOfComplexExpressionSmells");
+	public static NumericalQueryProducer NUMBEROFMISSINGELSESMELLS = new NumericalQueryProducer("numberOfMissingElseSmells");
+	
+	public static NumericalQueryProducer CUMULATIVENUMBEROFIMPLEMENTATIONSMELLS = new NumericalQueryProducer("cumulativeNumberOfImplementationSmells");
 	
 	public PuppetImplementationSmellsHistoricMetric() {
 		super();
-		NUMBEROFMULTIFACETEDSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFUNNECESSARYSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFIMPERATIVESMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFMISSABSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFINSUFFICIENTSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFUNSTRUCTUREDSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFTIGHTSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFBROKENSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFMISSINGDEPSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFHAIRBALLSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFDEFICIENTSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		NUMBEROFWEAKENSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
-		CUMULATIVENUMBEROFDESIGNSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFMISSINGDEFAULTCASE.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFINCOSISTENAMINGSmells.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFBUPLICATEENTITYMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFMISPLACEDATTRIBUTESSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFIMPROPERALIGNMENTSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFINVALIDPROPERTYSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFIMPROPERQUOTESMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFLONGSTATEMENTSSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFUNGUARDEDVARIABLESMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFMISSINGDOCSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFDEPRECATEDSTATEMENTSSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFINCOMPLETETASKSSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		NUMBEROFINCOMPLEXEXPRESSIONSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		
+		NUMBEROFMISSINGELSESMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
+		
+		CUMULATIVENUMBEROFIMPLEMENTATIONSMELLS.setOwningType("org.eclipse.scava.metricprovider.historic.configuration.puppet.model.PuppetSmellsHistoricMetric");
 	}
 	
-	public int getNumberOfMultifacetedSmells() {
-		return parseInteger(dbObject.get("numberOfMultifacetedSmells")+"", 0);
+	public int getNumberOfMissingDefaultCaseSmells() {
+		return parseInteger(dbObject.get("numberOfMissingDefaultCaseSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfMultifacetedSmells(int numberOfMultifacetedSmells) {
-		dbObject.put("numberOfMultifacetedSmells", numberOfMultifacetedSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfMissingDefaultCaseSmells(int numberOfMissingDefaultCaseSmells) {
+		dbObject.put("numberOfMissingDefaultCaseSmells", numberOfMissingDefaultCaseSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfUnnecessarySmells() {
-		return parseInteger(dbObject.get("numberOfUnnecessarySmells")+"", 0);
+	public int getNumberOInconsistentNamingSmells() {
+		return parseInteger(dbObject.get("numberOfInconsistentNamingSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfUnnecessarySmells(int numberOfUnnecessarySmells) {
-		dbObject.put("numberOfUnnecessarySmells", numberOfUnnecessarySmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfInconsistentNamingSmells(int numberOfInconsistentNamingSmells) {
+		dbObject.put("numberOfInconsistentNamingSmells", numberOfInconsistentNamingSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfImperativeSmells() {
-		return parseInteger(dbObject.get("numberOfImperativeSmells")+"", 0);
+	public int getNumberOfDuplicateEntitySmells() {
+		return parseInteger(dbObject.get("numberOfDuplicateEntitySmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfImperativeSmells(int numberOfImperativeSmells) {
-		dbObject.put("numberOfImperativeSmells", numberOfImperativeSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfDuplicateEntitySmells(int numberOfDuplicateEntitySmells) {
+		dbObject.put("numberOfDuplicateEntitySmells", numberOfDuplicateEntitySmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfMissAbSmells() {
-		return parseInteger(dbObject.get("numberOfMissAbSmells")+"", 0);
+	public int getNumberOfMisplacedAttributeSmells() {
+		return parseInteger(dbObject.get("numberOfMisplacedAttributeSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfMissAbSmells(int numberOfMissAbSmells) {
-		dbObject.put("numberOfMissAbSmells", numberOfMissAbSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfMisplacedAttributeSmells(int numberOfMisplacedAttributeSmells) {
+		dbObject.put("numberOfMisplacedAttributeSmells", numberOfMisplacedAttributeSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfInsufficientSmells() {
-		return parseInteger(dbObject.get("numberOfInsufficientSmells")+"", 0);
+	public int getNumberOfImproperAlignment() {
+		return parseInteger(dbObject.get("numberOfImproperAlignment")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfInsufficientSmells(int numberOfInsufficientSmells) {
-		dbObject.put("numberOfInsufficientSmells", numberOfInsufficientSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfImproperAlignment(int numberOfImproperAlignment) {
+		dbObject.put("numberOfImproperAlignment", numberOfImproperAlignment);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfUnstructuredSmells() {
-		return parseInteger(dbObject.get("numberOfUnstructuredSmells")+"", 0);
+	public int getNumberOfInvalidPropertySmells() {
+		return parseInteger(dbObject.get("numberOfInvalidPropertySmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfUnstructuredSmells(int numberOfUnstructuredSmells) {
-		dbObject.put("numberOfUnstructuredSmells", numberOfUnstructuredSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfInvalidPropertySmells(int numberOfInvalidPropertySmells) {
+		dbObject.put("numberOfInvalidPropertySmells", numberOfInvalidPropertySmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfTightSmells() {
-		return parseInteger(dbObject.get("numberOfTightSmells")+"", 0);
+	public int getNumberOfImproperQuoteSmells() {
+		return parseInteger(dbObject.get("numberOfImproperQuoteSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfTightSmells(int numberOfTightSmells) {
-		dbObject.put("numberOfTightSmells", numberOfTightSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfImproperQuoteSmells(int numberOfImproperQuoteSmells) {
+		dbObject.put("numberOfImproperQuoteSmells", numberOfImproperQuoteSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfBrokenSmells() {
-		return parseInteger(dbObject.get("numberOfBrokenSmells")+"", 0);
+	public int getNumberOfLongStatementsSmells() {
+		return parseInteger(dbObject.get("numberOfLongStatementsSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfBrokenSmells(int numberOfBrokenSmells) {
-		dbObject.put("numberOfBrokenSmells", numberOfBrokenSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfLongStatementsSmells(int numberOfLongStatementsSmells) {
+		dbObject.put("numberOfLongStatementsSmells", numberOfLongStatementsSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfMissingDepSmells() {
-		return parseInteger(dbObject.get("numberOfMissingDepSmells")+"", 0);
+	public int getNumberOfUnguardedVariableSmells() {
+		return parseInteger(dbObject.get("numberOfUnguardedVariableSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfMissingDepSmells(int numberOfMissingDepSmells) {
-		dbObject.put("numberOfMissingDepSmells", numberOfMissingDepSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfUnguardedVariableSmells(int numberOfUnguardedVariableSmells) {
+		dbObject.put("numberOfUnguardedVariableSmells", numberOfUnguardedVariableSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfHairballSmells() {
-		return parseInteger(dbObject.get("numberOfHairballSmells")+"", 0);
+	public int getNumberOfMissingDocSmells() {
+		return parseInteger(dbObject.get("numberOfMissingDocSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfHairballSmells(int numberOfHairballSmells) {
-		dbObject.put("numberOfHairballSmells", numberOfHairballSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfMissingDocSmells(int numberOfMissingDocSmells) {
+		dbObject.put("numberOfMissingDocSmells", numberOfMissingDocSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfDeficientSmells() {
-		return parseInteger(dbObject.get("numberOfDeficientSmells")+"", 0);
+	public int getNumberOfDeprecatedStatementsSmells() {
+		return parseInteger(dbObject.get("numberOfDeprecatedStatementsSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfDeficientSmells(int numberOfDeficientSmells) {
-		dbObject.put("numberOfDeficientSmells", numberOfDeficientSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfDeprecatedStatementsSmells(int numberOfDeprecatedStatementsSmells) {
+		dbObject.put("numberOfDeprecatedStatementsSmells", numberOfDeprecatedStatementsSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getNumberOfWeakenSmells() {
-		return parseInteger(dbObject.get("numberOfWeakenSmells")+"", 0);
+	public int getNumberOfIncompleteTasksSmells() {
+		return parseInteger(dbObject.get("numberOfIncompleteTasksSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setNumberOfWeakenSmells(int numberOfWeakenSmells) {
-		dbObject.put("numberOfWeakenSmells", numberOfWeakenSmells);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfIncompleteTasksSmells(int numberOfIncompleteTasksSmells) {
+		dbObject.put("numberOfIncompleteTasksSmells", numberOfIncompleteTasksSmells);
 		notifyChanged();
 		return this;
 	}
 	
-	public int getCumulativeNumberOfDesignUsers() {
-		return parseInteger(dbObject.get("cumulativeNumberOfDesignSmells")+"", 0);
+	public int getNumberOfComplexExpressionSmells() {
+		return parseInteger(dbObject.get("numberOfComplexExpressionSmells")+"", 0);
 	}
 	
-	public PuppetImplementationSmellsHistoricMetric setCumulativeNumberOfDesignUsers(int cumulativeNumberOfDesignUsers) {
-		dbObject.put("cumulativeNumberOfDesignSmells", cumulativeNumberOfDesignUsers);
+	public PuppetImplementationSmellsHistoricMetric setNumberOfComplexExpressionSmells(int numberOfComplexExpressionSmells) {
+		dbObject.put("numberOfComplexExpressionSmells", numberOfComplexExpressionSmells);
+		notifyChanged();
+		return this;
+	}
+	
+	
+	public int getNumberOfMissingElseSmells() {
+		return parseInteger(dbObject.get("numberOfMissingElseSmells")+"", 0);
+	}
+	
+	public PuppetImplementationSmellsHistoricMetric setNumberOfMissingElseSmells(int numberOfMissingElseSmells) {
+		dbObject.put("numberOfMissingElseSmells", numberOfMissingElseSmells);
+		notifyChanged();
+		return this;
+	}
+	
+	
+	public int getCumulativeNumberOfImplementationUsers() {
+		return parseInteger(dbObject.get("cumulativeNumberOfImplementationSmells")+"", 0);
+	}
+	
+	public PuppetImplementationSmellsHistoricMetric setCumulativeNumberOfImplementationUsers(int cumulativeNumberOfImplementationUsers) {
+		dbObject.put("cumulativeNumberOfImplementationSmells", cumulativeNumberOfImplementationUsers);
 		notifyChanged();
 		return this;
 	}
