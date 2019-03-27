@@ -120,6 +120,7 @@ public class [%=w.name%] extends Workflow {
 				brokerService = new BrokerService();
 				brokerService.setUseJmx(true);
 				brokerService.addConnector(getBroker());
+				brokerService.addConnector(getBrokerWs());
 				brokerService.start();
 			}
 		}

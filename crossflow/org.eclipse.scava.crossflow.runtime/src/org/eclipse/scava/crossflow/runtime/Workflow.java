@@ -45,6 +45,9 @@ public abstract class Workflow {
 
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
+	
+	@Parameter(names = { "-wsPort" }, description = "WebService Port of the master")
+	protected int wsPort = 61614;
 
 	protected BrokerService brokerService;
 
@@ -428,6 +431,10 @@ public abstract class Workflow {
 	public String getBroker() {
 		// adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
+	}
+	
+	public String getBrokerWs() {
+		return "ws://" + master + ":" + wsPort + "";
 	}
 
 	public void stopBroker() throws Exception {
