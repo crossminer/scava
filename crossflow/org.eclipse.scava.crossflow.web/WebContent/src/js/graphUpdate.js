@@ -11,6 +11,26 @@ function loadFile(filePath) {
 }
 
 function main(container, experimentId) {
+	
+	const ws = new WebSocket('ws://localhost:61614', 'stomp');
+	 
+	ws.onopen = () => {
+	  ws.send('CONNECT\n\n\0');
+	  console.log('connect');
+	 
+	  ws.send('SUBSCRIBE\ndestination:/topic/StreamMetadataBroadcaster.' + experimentId + '\n\nack:auto\n\n\0');
+	  console.log('subscribe');
+	 
+	  //ws.send('DISCONNECT\n\n\0');
+	  //console.log('disconnect');
+	};
+	 
+	ws.onmessage = (e) => {
+	 
+	  if (e.data.startsWith('MESSAGE'))
+	    console.log(e.data);
+	 
+	};
 
 	/*
 	 * TODO Animation: examples/animation.html / thread.html Markers:
