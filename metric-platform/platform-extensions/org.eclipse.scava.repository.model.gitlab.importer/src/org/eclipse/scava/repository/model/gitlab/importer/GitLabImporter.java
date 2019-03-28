@@ -81,14 +81,20 @@ public class GitLabImporter implements IImporter {
 			repo.getVcsRepositories().add(git);
 			
 			//Add GitLab Issue Tacker Reader
-			if(path.split("/").length==2)
+			//This reader needs a personal token to work
+			if(path.split("/").length==2 && (personalAccessToken!=null || !personalAccessToken.isEmpty()))
 			{
+				logger.info("GitLab issue tracker reader is being defined");
 				GitLabTracker gitLabTracker = new GitLabTracker();
 				gitLabTracker.setUrl("https://" + host + "/api/v4/projects/" + path.replace("/", "%2F") + "/issues");
 				gitLabTracker.setProject_id(path.replace("/", "%2F"));
-				if(personalAccessToken!=null)
-					gitLabTracker.setPersonal_access_token(personalAccessToken);
+				gitLabTracker.setPersonal_access_token(personalAccessToken);
 				repo.getBugTrackingSystems().add(gitLabTracker);
+			}
+			else
+			{
+				logger.info("GitLab issue tracker reader do not have a personal access token.");
+				throw new UnsupportedOperationException("The GitLab issue tracker reader needs a personal access token. Please set this before adding a project");
 			}
 
 			repo.setShortName(platform.getProjectRepositoryManager().generateUniqueId(repo));
