@@ -16,19 +16,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 import vasttext.Vasttext;
 
 class EmotionClassifierSingleton
 {
 	private static EmotionClassifierSingleton singleton = new EmotionClassifierSingleton();
-	
+	protected OssmeterLogger logger;
 	private Vasttext emotionClassifier;
 	
 	private EmotionClassifierSingleton()
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.emotionclassifier");
 		emotionClassifier=new Vasttext();
 		try {
 			loadModel();
+			logger.info("Model has been sucessfully loaded");
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,6 +41,7 @@ class EmotionClassifierSingleton
 	
 	private void checkModelFile(Path path) throws FileNotFoundException
 	{
+		logger.info("Searching the model at " + path.toString());
 		if(!Files.exists(path))
         {
         	throw new FileNotFoundException("The file "+path+" has not been found"); 

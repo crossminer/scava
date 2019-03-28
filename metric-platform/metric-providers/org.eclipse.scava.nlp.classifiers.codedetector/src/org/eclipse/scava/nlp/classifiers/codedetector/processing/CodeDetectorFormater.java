@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.nlp.codedetector.processing;
+package org.eclipse.scava.nlp.classifiers.codedetector.processing;
 
 import java.util.Locale;
 import java.util.regex.Pattern;

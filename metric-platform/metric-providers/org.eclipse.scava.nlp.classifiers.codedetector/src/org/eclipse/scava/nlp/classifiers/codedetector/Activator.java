@@ -1,4 +1,4 @@
-package org.eclipse.scava.nlp.codedetector;
+package org.eclipse.scava.nlp.classifiers.codedetector;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

@@ -7,8 +7,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.scava.nlp.libraries.fasttext,
  org.eclipse.scava.nlp.tools.preprocessor,
  org.eclipse.scava.nlp.tools.predictions,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.apache.log4j
 Automatic-Module-Name: org.eclipse.scava.nlp.codedetector
-Export-Package: org.eclipse.scava.nlp.codedetector
-Bundle-Activator: org.eclipse.scava.nlp.codedetector.Activator
+Export-Package: org.eclipse.scava.nlp.classifiers.codedetector
+Bundle-Activator: org.eclipse.scava.nlp.classifiers.codedetector.Activator
 Bundle-ActivationPolicy: lazy

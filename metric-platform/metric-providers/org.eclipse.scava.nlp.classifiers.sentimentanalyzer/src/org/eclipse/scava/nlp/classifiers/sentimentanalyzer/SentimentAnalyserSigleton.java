@@ -16,20 +16,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 import vasttext.Vasttext;
 
 class SentimentAnalyserSigleton
 {
 	private static SentimentAnalyserSigleton singleton = new SentimentAnalyserSigleton();
-	
+	protected OssmeterLogger logger;
 	private Vasttext sentimentAnalyzer;
 	
 	private SentimentAnalyserSigleton()
 	{	
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.requestreplydetector");
 		sentimentAnalyzer=new Vasttext();
 		try
 		{
 			loadModel();
+			logger.info("Model has been sucessfully loaded");
 		}
 		catch (ClassNotFoundException | IOException e)
 		{
@@ -39,6 +43,7 @@ class SentimentAnalyserSigleton
 	
 	private void checkModelFile(Path path) throws FileNotFoundException
 	{
+		logger.info("Searching the model at " + path.toString());
 		if(!Files.exists(path))
         {
         	throw new FileNotFoundException("The file "+path+" has not been found"); 
@@ -50,6 +55,8 @@ class SentimentAnalyserSigleton
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 		if (path.endsWith("bin/"))
 			path = path.substring(0, path.lastIndexOf("bin/"));
+		if (path.endsWith("target/classes/"))
+			path = path.substring(0, path.lastIndexOf("target/classes/"));
 		File file= new File(path+"model/Sentic_lemma_Vasttext_model.zip");
 		checkModelFile(file.toPath());
 		sentimentAnalyzer.loadModel(file);

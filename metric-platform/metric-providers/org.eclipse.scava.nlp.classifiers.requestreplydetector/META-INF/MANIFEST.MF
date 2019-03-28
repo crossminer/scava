@@ -10,7 +10,9 @@ Require-Bundle: org.eclipse.scava.nlp.tools.preprocessor,
  org.eclipse.core.runtime,
  org.eclipse.scava.nlp.tools.predictions,
  org.eclipse.scava.nlp.tools.core,
- org.eclipse.scava.nlp.tools.vasttext
+ org.eclipse.scava.nlp.tools.vasttext,
+ org.eclipse.scava.platform,
+ org.apache.log4j
 Export-Package: org.eclipse.scava.nlp.classifiers.requestreplydetector
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.nlp.classifiers.requestreplydetector.Activator

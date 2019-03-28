@@ -12,6 +12,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import libsvm.svm;
 import libsvm.svm_model;
@@ -144,6 +145,7 @@ public class svm_predict_nofiles {
 	}
 
 	public static svm_model parse_args_and_load_model(ClassLoader cl, String folderModel, String modelName, boolean predictProb) {
+		OssmeterLogger logger = (OssmeterLogger) OssmeterLogger.getLogger("libsvm");
 		int i;
 		predict_probability=predictProb;
 		svm_print_string = svm_print_stdout;
@@ -158,6 +160,7 @@ public class svm_predict_nofiles {
 				unzipModel(cl.getResource("/" + model_filename +".zip"));
 				resource = cl.getResource("/" + model_filename);
 			}
+			logger.info("Searching the model at " + FileLocator.toFileURL(resource).getPath());
 			model = svm.svm_load_model(FileLocator.toFileURL(resource).getPath());
 		} catch (IOException | URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -166,9 +169,10 @@ public class svm_predict_nofiles {
 		
 		if (model == null)
 		{
-			System.err.print("can't open model file "+model_filename+"\n");
-			System.exit(1);
+			logger.info("Model hasn't been found");
 		}
+		else
+			logger.info("Model has been sucessfully loaded");
 		if(predict_probability)
 		{
 			if(svm.svm_check_probability_model(model)==0)

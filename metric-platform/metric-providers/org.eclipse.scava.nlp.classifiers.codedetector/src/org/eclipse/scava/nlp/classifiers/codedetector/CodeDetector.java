@@ -7,12 +7,12 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.nlp.codedetector;
+package org.eclipse.scava.nlp.classifiers.codedetector;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.scava.nlp.codedetector.processing.CodeDetectorFormater;
+import org.eclipse.scava.nlp.classifiers.codedetector.processing.CodeDetectorFormater;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.nlp.tools.preprocessor.normalizer.Normalizer;

@@ -21,7 +21,7 @@ import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrack
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTextProcessingTransMetric;
-import org.eclipse.scava.nlp.codedetector.CodeDetector;
+import org.eclipse.scava.nlp.classifiers.codedetector.CodeDetector;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
