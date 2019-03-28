@@ -43,7 +43,6 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 			setOwner(repositoryOwner);
 		} catch (GitHubBugTrackerException e) {
 			e.printStackTrace();
-			System.exit(1);
 		}
 		
 	}
@@ -56,7 +55,6 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 			setOwner(repositoryOwner);
 		} catch (GitHubBugTrackerException e) {
 			e.printStackTrace();
-			System.exit(1);
 		}
 		
 	}
@@ -68,7 +66,6 @@ public class GitHubBugTracker extends org.eclipse.scava.repository.model.BugTrac
 			setOwner(repositoryOwner);
 		} catch (GitHubBugTrackerException e) {
 			e.printStackTrace();
-			System.exit(1);
 		}
 		
 	}
