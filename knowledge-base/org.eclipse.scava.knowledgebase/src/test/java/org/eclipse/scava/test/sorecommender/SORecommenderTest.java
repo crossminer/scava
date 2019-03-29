@@ -10,10 +10,14 @@
 package org.eclipse.scava.test.sorecommender;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 
+import org.eclipse.scava.business.dto.Query;
+import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.impl.SORecommender;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,6 +39,7 @@ public class SORecommenderTest {
 	private SORecommender soRecommender;
 	
 	@Test
+	@Ignore
 	public void queryBuilderTest() throws IOException {
 		String query = "/*******************************************************************************\n" + 
 		" * Copyright (C) 2017 University of L'Aquila\n" + 
@@ -107,6 +112,7 @@ public class SORecommenderTest {
 		assertNotEquals("", v);
 	}
 	@Test
+	@Ignore
 	public void queryBuilderTestNoHeaderInfo() throws IOException {
 		String query = 
 		"public class ReadmeSimilarityCalculator implements ISingleSimilarityCalculator {\n" + 
@@ -154,7 +160,9 @@ public class SORecommenderTest {
 
 		assertNotEquals("", v);
 	}
+
 	@Test
+	@Ignore
 	public void queryBuilderTestWrongCode() throws IOException {
 		String query = 
 		"else if (analyzer.equals(\"bm25\") && !stopwords && stemmer) \n" + 
@@ -169,6 +177,58 @@ public class SORecommenderTest {
 		logger.info(v);
 
 		assertNotEquals("", v);
+	}
+	@Test
+	public void soRecomendationTest() {
+		String query = 
+		"package com.mkyong.core;\n" + 
+		"\n" + 
+		"import java.net.UnknownHostException;\n" + 
+		"import java.util.Date;\n" + 
+		"import com.mongodb.BasicDBObject;\n" + 
+		"import com.mongodb.DB;\n" + 
+		"import com.mongodb.DBCollection;\n" + 
+		"import com.mongodb.DBCursor;\n" + 
+		"import com.mongodb.MongoClient;\n" + 
+		"import com.mongodb.MongoException;\n" + 
+		"\n" + 
+		"/**\n" + 
+		" * Java + MongoDB Hello world Example\n" + 
+		" * \n" + 
+		" */\n" + 
+		"public class App {\n" + 
+		"  public static void main(String[] args) {\n" + 
+		"\n" + 
+		"    try {\n" + 
+		"\n" + 
+		"	/**** Connect to MongoDB ****/\n" + 
+		"	// Since 2.10.0, uses MongoClient\n" + 
+		"	MongoClient mongo = new MongoClient(\"localhost\", 27017);\n" + 
+		"\n" + 
+		"	/**** Get database ****/\n" + 
+		"	// if database doesn't exists, MongoDB will create it for you\n" + 
+		"	DB db = mongo.getDB(\"testdb\");\n" + 
+		"\n" + 
+		"	/**** Get collection / table from 'testdb' ****/\n" + 
+		"	// if collection doesn't exists, MongoDB will create it for you\n" + 
+		"	DBCollection table = db.getCollection(\"user\");\n" + 
+		"\n" + 
+		"	/**** Insert ****/\n" + 
+		"	// create a document to store key and value\n" + 
+		"	BasicDBObject document = new BasicDBObject();\n" + 
+		"	document.put(\"name\", \"mkyong\");\n" + 
+		"	document.put(\"age\", 30);\n" + 
+		"	document.put(\"createdDate\", new Date());\n" + 
+		"	table.insert(document);\n" + 
+		"\n" + 
+		"	/**** Find and display ****/\n" + 
+		"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
+		"}}}";
+		Query q = new Query();
+		q.setCompilationUnit(query);
+		Recommendation va = soRecommender.getRecommendation(q);
+		assertNotEquals(0, va.getRecommendationItems().size());
+		va.getRecommendationItems().forEach(z -> logger.info("https://stackoverflow.com/questions/" + z.getApiDocumentationLink()));
 	}
 	
 }

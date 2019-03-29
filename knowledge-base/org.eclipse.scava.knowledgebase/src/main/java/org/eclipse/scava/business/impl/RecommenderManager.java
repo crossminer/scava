@@ -65,6 +65,10 @@ public class RecommenderManager implements IRecommenderManager {
 	private IRecommendationProvider apiCallRecommendationProvider;
 	
 	@Autowired
+	@Qualifier("SO")
+	private IRecommendationProvider soRecommender;
+	
+	@Autowired
 	private ArtifactRepository artifactRepository;
 
 	@Autowired
@@ -88,10 +92,10 @@ public class RecommenderManager implements IRecommenderManager {
 			return apiRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_CALL))
 			return apiCallRecommendationProvider.getRecommendation(query);
-		if(rt.equals(RecommendationType.API_DOCUMENTATION))
-			return apiDocumentationRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.FOCUS))
 			return focusRecomenderProvider.getRecommendation(query);
+		if(rt.equals(RecommendationType.API_DOCUMENTATION))
+			return soRecommender.getRecommendation(query);
 		else {
 			logger.error("Recommendation not supported");
 			return null;

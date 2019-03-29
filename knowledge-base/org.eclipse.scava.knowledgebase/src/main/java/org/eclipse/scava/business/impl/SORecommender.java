@@ -5,15 +5,33 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.Explanation;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -30,6 +48,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,13 +63,21 @@ public class SORecommender implements IRecommendationProvider {
 
 	@Value("${sorecommender.titleBoostValue}")
 	private double titleBoostValue;
+	@Value("${sorecommender.hitsPerPage}")
+	private int hitsPerPage;
+	@Value("${sorecommender.bm25}")
+	private boolean isBm25;
 	@Value("${sorecommender.answerBoostValue}")
 	private double answerBoostValue;
 	@Value("${sorecommender.questionBoostValue}")
 	private double questionBoostValue;
-
+	@Value("${sorecommender.luceneTreshold}")
+	private double luceneTreshold;
+	
 	@Value("${sorecommender.importerBoostLibrariesPath}")
 	private String importerBoostValue;
+	@Value("${sorecommender.INDEX_DIRECTORY}")
+	private String INDEX_DIRECTORY;
 	private static final Logger logger = LoggerFactory.getLogger(SORecommender.class);
 
 	private ArrayList<HashMap<String, String>> extractTokensFromCode(String soSnippet) throws IOException {
@@ -225,25 +252,64 @@ public class SORecommender implements IRecommendationProvider {
 	}
 
 	@Override
-	public Recommendation getRecommendation(Query query) throws Exception {
-		String compUnit = "";
-		if(query.getSoRecommendationSelection() == null || query.getSoRecommendationSelection().isEmpty()) {
-			Map<String, String> param = new HashMap<String, String>();
-			param.put("ImportDeclaration", "AND");
-			param.put("MethodDeclaration", "AND");
-			param.put("MethodInvocation", "AND");
-			param.put("VariableDeclaration", "AND");
-			param.put("ClassInstance", "AND");
-			param.put("VariableDeclarationType", "AND");
-			compUnit = makeBoostedQuery(query.getCompilationUnit(), param);
-		}
-		else 
-			compUnit = makeBoostedQuery(query.getCompilationUnit(), query.getSoRecommendationSelection());
+	public Recommendation getRecommendation(Query rec_query)  {
+		Recommendation rec = new Recommendation();
+		try {
+			
 		
-		return null;
+		String compUnit = "";
+		if (rec_query.getSoRecommendationSelection() == null || rec_query.getSoRecommendationSelection().isEmpty()) {
+			Map<String, String> param = new HashMap<String, String>();
+			param.put("ImportDeclaration", "OR");
+			param.put("MethodDeclaration", "OR");
+			param.put("MethodInvocation", "OR");
+			param.put("VariableDeclaration", "OR");
+			param.put("ClassInstance", "OR");
+			param.put("VariableDeclarationType", "OR");
+			compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), param);
+		} else
+			compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), rec_query.getSoRecommendationSelection());
+		logger.info(compUnit);
+		File indexDirectory = new File(INDEX_DIRECTORY);
+		Directory indexDir = FSDirectory.open(Paths.get(indexDirectory.getAbsolutePath()));
+		IndexReader reader = DirectoryReader.open(indexDir);
+    	IndexSearcher searcher = new IndexSearcher(reader);
+    	List<String> fields2 = getAllIndexTags(INDEX_DIRECTORY);
+		String[] fields = new String[fields2.size()];
+		int i = 0;
+		for (String string : fields2) 
+		{
+			fields[i] = string;
+			i++;
+		}
+		Analyzer analzer = new StandardAnalyzer();
+    	MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, analzer);
+		org.apache.lucene.search.Query q = qp.parse(compUnit);
+		TopDocs results = executeQuery(q);
+		if (results != null) {
+			int counter = 0;
+			ArrayList<Explanation> expls = new ArrayList<Explanation>();
+			ArrayList<String> Ids = new ArrayList<String>();
+			for (ScoreDoc result : results.scoreDocs) {
+				if (counter < luceneTreshold) {
+					RecommendationItem ri = new RecommendationItem();
+					org.apache.lucene.document.Document d = searcher.doc(result.doc);
+					ri.setApiDocumentationLink(d.get("ID_POST"));
+					expls.add(searcher.explain(q, result.doc));
+					ri.setSignificance(result.score);
+					Ids.add(d.get("ID_POST"));
+					counter += 1;
+					rec.getRecommendationItems().add(ri);
+				}
+			}
+		}
+		}catch (IOException | ParseException e) {
+			logger.error(e.getMessage());
+		}
+		return rec;
 	}
 
-	public String makeBoostedQuery(String snippet, Map<String,String> param) throws IOException {
+	public String makeBoostedQuery(String snippet, Map<String, String> param) throws IOException {
 
 		ArrayList<HashMap<String, String>> tokens = extractTokensFromCode(snippet);
 		tokens = cleanDuplicates(tokens);
@@ -253,11 +319,12 @@ public class SORecommender implements IRecommendationProvider {
 		return result;
 
 	}
+
 	public String makeBoostedQuery(String snippet) throws IOException {
 		Map<String, String> param = new HashMap<String, String>();
-		param.put("ImportDeclaration", "AND");
-		param.put("MethodDeclaration", "AND");
-		param.put("MethodInvocation", "AND");
+		param.put("ImportDeclaration", "OR");
+		param.put("MethodDeclaration", "OR");
+		param.put("MethodInvocation", "OR");
 		param.put("VariableDeclaration", "AND");
 		param.put("ClassInstance", "AND");
 		param.put("VariableDeclarationType", "AND");
@@ -269,47 +336,88 @@ public class SORecommender implements IRecommendationProvider {
 		return result;
 
 	}
-	
-	
+
+	private List<String> getAllIndexTags(String INDEX_DIRECTORY) {
+		Collection<String> result = new HashSet<String>();
+		try {
+			IndexReader luceneIndexReader = DirectoryReader.open(FSDirectory.open(Paths.get(INDEX_DIRECTORY)));
+			result = MultiFields.getIndexedFields(luceneIndexReader);
+		} catch (IOException e) {
+			System.out.println();
+		}
+
+		List<String> sortedList = new ArrayList<String>(result);
+		Collections.sort(sortedList);
+
+		return sortedList;
+	}
+
+	public TopDocs executeQuery(org.apache.lucene.search.Query query) throws IOException, ParseException {
+		Directory indexDir = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
+		try {
+			IndexReader reader = DirectoryReader.open(indexDir);
+			IndexSearcher searcher = new IndexSearcher(reader);
+			if (isBm25 == false) {
+				ClassicSimilarity CS = new ClassicSimilarity();
+				searcher.setSimilarity(CS);
+			}
+			TopDocs docs = searcher.search(query, hitsPerPage);
+			return docs;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return null;
+		}
+	}
+
 	private String makeBoostedQuery(ArrayList<HashMap<String, String>> tokens, ArrayList<String> imports,
 			HashMap<String, Double> entropies, Map<String, String> parameter) throws IOException {
 		String query = "";
 		ArrayList<String> varDeclTypeFix = getImportList(tokens);
 		for (HashMap<String, String> token : tokens) {
-			if(parameter.containsKey("ImportDeclaration")) {
-				if (!query.isEmpty())
-					query = query + " ";
+			if (parameter.containsKey("ImportDeclaration")) {
+				String value = getTokenBoosted(token, "ImportDeclaration", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
 				query = query + getTokenBoosted(token, "ImportDeclaration", entropies);
 			}
-			if(parameter.containsKey("MethodDeclaration")) {	
-				if (!query.isEmpty())
-					query = query + " ";
+			if (parameter.containsKey("MethodDeclaration")) {
+				String value = getTokenBoosted(token, "MethodDeclaration", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
 				query = query + getTokenBoosted(token, "MethodDeclaration", entropies);
 			}
-			if(parameter.containsKey("MethodInvocation")) {
-				if (!query.isEmpty())
-					query = query + " ";
-				query = query + getTokenBoosted(token, "MethodInvocation", entropies);
+			if (parameter.containsKey("MethodInvocation")) {
+				String value = getTokenBoosted(token, "MethodInvocation", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
+				query = query + value;
 			}
-			if(parameter.containsKey("VariableDeclaration")) {
-				if (!query.isEmpty())
-					query = query + " ";
-				query = query + getTokenBoosted(token, "VariableDeclaration", entropies);
+			if (parameter.containsKey("VariableDeclaration")) {
+				String value = getTokenBoosted(token, "VariableDeclaration", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
+				query = query + value;
 			}
-			if(parameter.containsKey("ClassInstance")) {
-				if (!query.isEmpty())
-					query = query + " ";
-				query = query + getTokenBoosted(token, "ClassInstance", entropies);
+			if (parameter.containsKey("ClassInstance")) {
+				String value = getTokenBoosted(token, "ClassInstance", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
+				query = query + value;
 			}
-			if(parameter.containsKey("VariableDeclarationType")) {
-				if (!query.isEmpty())
-					query = query + " ";
-				query = query + getVariableDeclarationTypeBoosted(token, varDeclTypeFix, entropies);
+			if (parameter.containsKey("VariableDeclarationType")) {
+				String value = getVariableDeclarationTypeBoosted(token, varDeclTypeFix, entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR";
+				query = query + value;
 			}
 		}
+		query = query.substring(0,query.length()  -3);
 		ArrayList<String> vars = getBoostImport(tokens);
+		query = query.isEmpty()?"":query + " OR ";
 		query = getAnswer(vars, query, true);
+		query = query.isEmpty()?"":query + " OR ";
 		query = getQuestion(vars, query, true);
+		query = query.isEmpty()?"":query + " OR ";
 		query = getTitle(vars, query, true);
 		return query;
 	}
@@ -334,7 +442,7 @@ public class SORecommender implements IRecommendationProvider {
 		Resource resource = new ClassPathResource(importerBoostValue);
 		ArrayList<String> importedTokens = new ArrayList<String>();
 		try {
-			File source= resource.getFile(); 
+			File source = resource.getFile();
 			BufferedReader reader;
 			reader = new BufferedReader(new FileReader(source));
 			String text = null;
@@ -367,7 +475,7 @@ public class SORecommender implements IRecommendationProvider {
 		String query = "";
 		String value = (String) token.get(tokenType);
 		if (value != null && entropies.get(token.get(tokenType)) != null)
-			query += String.format(" %s: %s^%f", tokenType, value, entropies.get(token.get(tokenType)));
+			query += String.format(Locale.US, " %s:%s^%.2f", tokenType, value, entropies.get(token.get(tokenType)));
 		return query;
 
 	}
@@ -383,7 +491,7 @@ public class SORecommender implements IRecommendationProvider {
 				imp = imports.get(i);
 				if ((imp != null && imp.contains(value)) || (imp != null && value.contains(imp)))
 					if (entropies.get(token.get("VariableDeclarationType")) != null)
-						query = String.format("VariableDeclarationType: %s^%f", value,
+						query = String.format("VariableDeclarationType:%s^%.2f", value,
 								entropies.get(token.get("VariableDeclarationType")));
 			}
 		}
@@ -394,7 +502,8 @@ public class SORecommender implements IRecommendationProvider {
 		if (overallGuard == true)
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
-					query += String.format(" Title: %s^%f", var, titleBoostValue);
+					query += String.format(Locale.US, " Title:%s^%.2f OR", var, titleBoostValue);
+		query = query.substring(0,query.length()-3);
 		return query;
 	}
 
@@ -402,7 +511,8 @@ public class SORecommender implements IRecommendationProvider {
 		if (overallGuard == true)
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
-					query += String.format(" Answer: %s^%f", var, answerBoostValue);
+					query += String.format(Locale.US, " Answer:%s^%.2f OR", var, answerBoostValue);
+		query = query.substring(0,query.length()-3);
 		return query;
 	}
 
@@ -410,7 +520,8 @@ public class SORecommender implements IRecommendationProvider {
 		if (overallGuard == true)
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
-					query += String.format(" Question: %s^%f", var, questionBoostValue);
+					query += String.format(Locale.US, " Question:%s^%.2f OR", var, questionBoostValue);
+		query = query.substring(0,query.length()-3);
 		return query;
 	}
 

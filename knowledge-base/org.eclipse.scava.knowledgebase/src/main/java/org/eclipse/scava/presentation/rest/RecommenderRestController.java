@@ -165,26 +165,49 @@ org.slf4j:slf4j-log4j12:1.7.25
 	public Query getQuery() {
 		Query q = new Query();
 		q.setCurrentMethodCode(
-				"public static KnowledgeBase readKnowledgeBase(List<RuleResource> resources) {\r\n" + 
-			    " KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();\r\n" + 
-			    " for (RuleResource res: resources) {\r\n" + 
-			    "  try {\r\n" + 
-			    "   kbuilder.add(ResourceFactory.newClassPathResource(res.getRuleResourceFile()), res.getResType());\r\n" + 
-			    "  } catch (Exception ex) {\r\n" + 
-			    "   kbuilder.add(ResourceFactory.newFileResource(res.getRuleResourceFile()), res.getResType());\r\n" + 
-			    "  }\r\n" + 
-			    " }\r\n" + 
-			    " KnowledgeBuilderErrors errors = kbuilder.getErrors();\r\n" + 
-			    " if (errors.size() > 0) {\r\n" + 
-			    "  for (KnowledgeBuilderError error: errors) {\r\n" + 
-			    "   System.err.println(error);\r\n" + 
-			    "  }\r\n" + 
-			    "  throw new IllegalArgumentException(\"Could not parse knowledge.\");\r\n" + 
-			    " }\r\n" + 
-			    " KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();\r\n" + 
-			    " kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());\r\n" + 
-			    " return kbase;\r\n" + 
-			    "}");
+				"package com.mkyong.core;\n" + 
+				"\n" + 
+				"import java.net.UnknownHostException;\n" + 
+				"import java.util.Date;\n" + 
+				"import com.mongodb.BasicDBObject;\n" + 
+				"import com.mongodb.DB;\n" + 
+				"import com.mongodb.DBCollection;\n" + 
+				"import com.mongodb.DBCursor;\n" + 
+				"import com.mongodb.MongoClient;\n" + 
+				"import com.mongodb.MongoException;\n" + 
+				"\n" + 
+				"/**\n" + 
+				" * Java + MongoDB Hello world Example\n" + 
+				" * \n" + 
+				" */\n" + 
+				"public class App {\n" + 
+				"  public static void main(String[] args) {\n" + 
+				"\n" + 
+				"    try {\n" + 
+				"\n" + 
+				"	/**** Connect to MongoDB ****/\n" + 
+				"	// Since 2.10.0, uses MongoClient\n" + 
+				"	MongoClient mongo = new MongoClient(\"localhost\", 27017);\n" + 
+				"\n" + 
+				"	/**** Get database ****/\n" + 
+				"	// if database doesn't exists, MongoDB will create it for you\n" + 
+				"	DB db = mongo.getDB(\"testdb\");\n" + 
+				"\n" + 
+				"	/**** Get collection / table from 'testdb' ****/\n" + 
+				"	// if collection doesn't exists, MongoDB will create it for you\n" + 
+				"	DBCollection table = db.getCollection(\"user\");\n" + 
+				"\n" + 
+				"	/**** Insert ****/\n" + 
+				"	// create a document to store key and value\n" + 
+				"	BasicDBObject document = new BasicDBObject();\n" + 
+				"	document.put(\"name\", \"mkyong\");\n" + 
+				"	document.put(\"age\", 30);\n" + 
+				"	document.put(\"createdDate\", new Date());\n" + 
+				"	table.insert(document);\n" + 
+				"\n" + 
+				"	/**** Find and display ****/\n" + 
+				"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
+				"}}}");
 		return q;
 	}
 
