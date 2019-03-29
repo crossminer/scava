@@ -24,7 +24,9 @@ import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendedLibrary;
 import org.eclipse.scava.business.integration.ArtifactRepository;
+import org.eclipse.scava.business.integration.MavenLibraryRepository;
 import org.eclipse.scava.business.model.Artifact;
+import org.eclipse.scava.business.model.MavenLibrary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 class ValueComparator implements Comparator<String> {
-
 	Map<String, Double> base;
 
 	public ValueComparator(Map<String, Double> base) {
@@ -56,6 +57,8 @@ public class CROSSRecServiceImpl {
 	
 	@Value("${crossrec.numberOfRecommendedLibs}")
 	private int numberOfRecommendedLibs;
+	@Autowired
+	private MavenLibraryRepository mvnRepository;
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;
@@ -83,6 +86,13 @@ public class CROSSRecServiceImpl {
 				RecommendationItem ri = new RecommendationItem();
 				
 				RecommendedLibrary rl = new RecommendedLibrary();
+				
+				String[] libArray = lib.split(":");
+				if(libArray.length == 2) {
+					MavenLibrary mvn = mvnRepository.findOneByGroupidAndArtifactidOrderByReleasedateDesc(libArray[0], libArray[1]);
+					if(mvn != null)
+						lib = lib + ":" + mvn.getVersion();
+				}				
 				rl.setLibraryName(lib);
 				rl.setUrl("https://mvnrepository.com/artifact/"+ lib.replaceAll(":", "/"));
 				ri.setRecommendedLibrary(rl);
