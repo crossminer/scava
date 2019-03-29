@@ -18,5 +18,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface MavenLibraryRepository extends MongoRepository<MavenLibrary, String> {
 	public MavenLibrary findOneByArtifactid(String name);
-	public MavenLibrary findOneByArtifactidOrderByReleasedateDesc(String name);
+	public MavenLibrary findOneByGroupidAndArtifactidOrderByReleasedateDesc(String groupId, String artifactId);
 }

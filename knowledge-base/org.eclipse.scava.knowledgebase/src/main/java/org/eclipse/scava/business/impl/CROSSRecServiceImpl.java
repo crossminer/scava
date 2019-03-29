@@ -89,7 +89,7 @@ public class CROSSRecServiceImpl {
 				
 				String[] libArray = lib.split(":");
 				if(libArray.length == 2) {
-					MavenLibrary mvn = mvnRepository.findOneByArtifactidOrderByReleasedateDesc(libArray[0]);
+					MavenLibrary mvn = mvnRepository.findOneByGroupidAndArtifactidOrderByReleasedateDesc(libArray[0], libArray[1]);
 					if(mvn != null)
 						lib = lib + ":" + mvn.getVersion();
 				}				
