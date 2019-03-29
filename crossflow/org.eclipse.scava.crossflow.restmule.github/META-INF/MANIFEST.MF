@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: restmule.github
 Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.client.github
 Bundle-Version: 1.0.0
-Require-Bundle: org.eclipse.scava.crossflow.runtime.dependencies;bundle-version="1.0.0",
- org.eclipse.scava.crossflow.restmule.core;bundle-version="0.0.1"
+Require-Bundle: org.eclipse.scava.crossflow.runtime.dependencies,
+ org.eclipse.scava.crossflow.restmule.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.scava.crossflow.restmule.client.github.api,

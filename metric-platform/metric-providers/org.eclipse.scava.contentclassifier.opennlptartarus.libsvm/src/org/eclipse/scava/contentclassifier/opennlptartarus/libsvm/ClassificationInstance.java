@@ -21,7 +21,7 @@ public class ClassificationInstance {
 	private String commentId;
 	
 	private String newsgroupName;
-	private int articleNumber;
+	private long articleNumber;
 	private int threadId;
 	private int positionFromThreadBeginning;
 //	private int positionFromThreadEnd;
@@ -90,11 +90,11 @@ public class ClassificationInstance {
 	}
 
 
-	public int getArticleNumber() {
+	public long getArticleNumber() {
 		return articleNumber;
 	}
 	
-	public void setArticleNumber(int articleNumber) {
+	public void setArticleNumber(long articleNumber) {
 		this.articleNumber = articleNumber;
 		if (composedId!=null) setComposedId();
 	}

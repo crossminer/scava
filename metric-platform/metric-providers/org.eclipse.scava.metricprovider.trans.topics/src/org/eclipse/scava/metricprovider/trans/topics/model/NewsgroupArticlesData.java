@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -43,11 +43,11 @@ public class NewsgroupArticlesData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getArticleNumber() {
-		return parseInteger(dbObject.get("articleNumber")+"", 0);
+	public long getArticleNumber() {
+		return parseLong(dbObject.get("articleNumber")+"", 0);
 	}
 	
-	public NewsgroupArticlesData setArticleNumber(int articleNumber) {
+	public NewsgroupArticlesData setArticleNumber(long articleNumber) {
 		dbObject.put("articleNumber", articleNumber);
 		notifyChanged();
 		return this;

@@ -31,7 +31,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment";
+	public final static String IDENTIFIER = SeveritySentimentHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	
@@ -124,37 +124,13 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 	}
 	
 	private int transformSentimentToInteger(String sentimentString) {
-		 if (sentimentString.equals("Negative"))
+		 if (sentimentString.equals("__label__negative"))
 			 return -1;
-		 else if (sentimentString.equals("Positive"))
+		 else if (sentimentString.equals("__label__positive"))
 			 return 1;
 		 else
 			 return 0;
 	}
-
-//	private Map<String, Integer> retrieveOrAdd(
-//			 Map<String, Map<String, Integer>> map, String trackerId) {
-//		Map<String, Integer> component;
-//		if (map.containsKey(trackerId))
-//			component = map.get(trackerId);
-//		else {
-//			component = new HashMap<String, Integer>();
-//			map.put(trackerId, component);
-//		}
-//		return component;
-//	}
-	
-//	private Map<String, Float> retrieveOrAddFloat(
-//			 Map<String, Map<String, Float>> map, String trackerId) {
-//		Map<String, Float> component;
-//		if (map.containsKey(trackerId))
-//			component = map.get(trackerId);
-//		else {
-//			component = new HashMap<String, Float>();
-//			map.put(trackerId, component);
-//		}
-//		return component;
-//	}
 	
 	private void addOrIncrease(Map<String, Integer> map, String item, int increment) {
 		if (map.containsKey(item))

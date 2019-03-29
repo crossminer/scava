@@ -19,7 +19,15 @@ public class Discussion extends org.eclipse.scava.repository.model.Communication
 		super.setSuperTypes("org.eclipse.scava.repository.model.sourceforge.CommunicationChannel");
 	}
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "SourceForgeDiscussion";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}
 	
 	
 	
