@@ -91,7 +91,7 @@ public class CROSSRecServiceImpl {
 				if(libArray.length == 2) {
 					MavenLibrary mvn = mvnRepository.findOneByArtifactidOrderByReleasedateDesc(libArray[0]);
 					if(mvn != null)
-						lib = lib + ":" + mvn.getReleasedate();
+						lib = lib + ":" + mvn.getVersion();
 				}				
 				rl.setLibraryName(lib);
 				rl.setUrl("https://mvnrepository.com/artifact/"+ lib.replaceAll(":", "/"));
