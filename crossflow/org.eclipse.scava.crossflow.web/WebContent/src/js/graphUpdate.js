@@ -15,6 +15,7 @@ function main(container, experimentId) {
 	let ws = null;
 	const wsUri = 'ws://localhost:61614';
 	const protocol = 'stomp';
+	const mdBroadcaster = '/topic/StreamMetadataBroadcaster';
 	
 	try {
 		ws = new WebSocket(wsUri, protocol);
@@ -38,19 +39,23 @@ function main(container, experimentId) {
 	
 	ws.onopen = () => {
 	  ws.send('CONNECT\n\n\0');
-	  console.log('connect');
+	  console.log('connected to ' + wsUri + ' over ' + protocol + ' protocol');
 	 
-	  ws.send('SUBSCRIBE\ndestination:/topic/StreamMetadataBroadcaster.' + experimentId + '\n\nack:auto\n\n\0');
-	  console.log('subscribe');
+	  ws.send('SUBSCRIBE\ndestination:' + mdBroadcaster + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  console.log('subscribed to ' + mdBroadcaster);
 	 
 	  //ws.send('DISCONNECT\n\n\0');
 	  //console.log('disconnect');
 	};
 	 
 	ws.onmessage = (e) => {
-	 
-	  if (e.data.startsWith('MESSAGE'))
-	    console.log(e.data);
+	 console.log('onmessage: ' + e);
+	  if (e.data.startsWith('MESSAGE')) {
+		  console.log(e.data);
+		  window.runtimeModelGraph.getTooltipForCell = function(cell) {
+				return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
+			}
+	  }
 	 
 	};
 
@@ -68,7 +73,7 @@ function main(container, experimentId) {
 	window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
 	window.runtimeModelGraph.setTooltips(true);
 	window.runtimeModelGraph.getTooltipForCell = function(cell) {
-		return "<table border=1><tr><td>Stuff</td><td>More stuff</td></tr></table>";
+		return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
 	}
 
 	window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
