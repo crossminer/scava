@@ -12,8 +12,30 @@ function loadFile(filePath) {
 
 function main(container, experimentId) {
 	
-	const ws = new WebSocket('ws://localhost:61614', 'stomp');
-	 
+	let ws = null;
+	const wsUri = 'ws://localhost:61614';
+	const protocol = 'stomp';
+	
+	try {
+		ws = new WebSocket(wsUri, protocol);
+	} catch(err) {
+		console.warn('failed to connect to ' + wsUri + ' over ' + protocol + ' protocol.');
+	}
+	
+	if ( ws == null ) {
+		console.warn('failed to connect to ' + wsUri + ' over ' + protocol + ' protocol.');
+		console.warn('make sure ActiveMQ broker is running')
+		return; // do not proceed 
+	}
+	
+	ws.onerror = (evt) => {
+	      if (ws.readyState == 1) {
+	        console.warn('ws normal error: ' + evt.type);
+	      } else {
+	    	  console.warn('ws error');
+	      }
+	};
+	
 	ws.onopen = () => {
 	  ws.send('CONNECT\n\n\0');
 	  console.log('connect');
