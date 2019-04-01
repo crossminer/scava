@@ -51,6 +51,15 @@ function main(container, experimentId) {
 	ws.onmessage = (e) => {
 	 console.log('onmessage: ' + e);
 	  if (e.data.startsWith('MESSAGE')) {
+		  // extract plain XML
+		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadata>'), e.data.length);
+		  
+		  // parse plain XML
+		  parser = new DOMParser();
+		  xmlDoc = parser.parseFromString(text,"text/xml");
+		  
+		  // extract queue information
+		  // similar to as in: https://github.com/crossminer/scava/blob/crossflow/crossflow/org.eclipse.scava.crossflow.elkgraph/org.eclipse.scava.crossflow.elkgraph.web/src/main/java/org/eclipse/scava/crossflow/elkgraph/web/ElkGraphDiagramUpdater.java
 		  console.log(e.data);
 		  window.runtimeModelGraph.getTooltipForCell = function(cell) {
 				return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
