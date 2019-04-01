@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.scava.platform.metricprovider">
+         <metricProvider provider="org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider">
+   		</metricProvider>
+   </extension>
+   <extension
+         point="com.googlecode.pongo.runtime.osgi">
+         <class name="org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric"/>
+         <class name="org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode"/>
+         <class name="org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode"/>
+         <class name="org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode"/>
+   </extension>
+
+</plugin>
