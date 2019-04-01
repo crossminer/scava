@@ -282,7 +282,7 @@ public class AnalysisTaskService {
 
 		if (task != null) {
 			// Clean Project DB Repository for historic metrics
-			cleanMetricDatabase(task);
+			//cleanMetricDatabase(task);
 
 			task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
 			task.getScheduling().setCurrentDate(task.getStartDate());
@@ -295,20 +295,21 @@ public class AnalysisTaskService {
 		return task;
 	}
 
-	private void cleanMetricDatabase(AnalysisTask task) {
-		DB projectDb = mongo.getDB(task.getProject().getProjectId());
-		for (MetricExecution executionData : task.getMetricExecutions()) {
-			Iterable<MetricProvider> providers = this.repository.getMetricProviders()
-					.findByMetricProviderId(executionData.getMetricProviderId());
-			if (providers.iterator().hasNext()) {
-				MetricProvider provider = providers.iterator().next();
-				if (MetricProviderKind.HISTORIC.name().equals(provider.getKind())) {
-					for (DataStorage storage : provider.getStorages()) {
-						projectDb.getCollection(storage.getStorage()).drop();
-					}
-				}
-			}
-		}
-	}
+	//FIXME
+//	private void cleanMetricDatabase(AnalysisTask task) {
+//		DB projectDb = mongo.getDB(task.getProject().getProjectId());
+//		for (MetricExecution executionData : task.getMetricExecutions()) {
+//			Iterable<MetricProvider> providers = this.repository.getMetricProviders()
+//					.findByMetricProviderId(executionData.getMetricProviderId());
+//			if (providers.iterator().hasNext()) {
+//				MetricProvider provider = providers.iterator().next();
+//				if (MetricProviderKind.HISTORIC.name().equals(provider.getKind())) {
+//					for (DataStorage storage : provider.getStorages()) {
+//						projectDb.getCollection(storage.getStorage()).drop();
+//					}
+//				}
+//			}
+//		}
+//	}
 
 }

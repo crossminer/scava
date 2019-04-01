@@ -77,7 +77,7 @@ public class MetricProvider extends Pongo {
 	
 	public List<MetricProvider> getDependOf() {
 		if (dependOf == null) {
-			dependOf = new PongoList<MetricProvider>(this, "dependOf", false);
+			dependOf = new PongoList<MetricProvider>(this, "dependOf", true);
 		}
 		return dependOf;
 	}

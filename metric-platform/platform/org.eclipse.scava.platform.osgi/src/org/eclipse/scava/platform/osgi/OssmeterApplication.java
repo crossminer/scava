@@ -73,11 +73,7 @@ public class OssmeterApplication implements IApplication{
 		}
 		
 		// Start web servers
-		if (apiServer) {
-//			// Update MetricProvidrList
-//			MetricProviderInitialiser init = new MetricProviderInitialiser(platform);
-//			init.initialiseMetricProviderRepository();
-		
+		if (apiServer) {		
 			Activator.getContext().registerService(ApiStartServiceToken.class, new ApiStartServiceToken(), null);
 		}
 		
