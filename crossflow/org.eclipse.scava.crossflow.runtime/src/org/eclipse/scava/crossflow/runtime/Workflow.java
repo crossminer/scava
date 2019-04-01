@@ -45,11 +45,11 @@ public abstract class Workflow {
 
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
-	
-	@Parameter(names = { "-wsPort" }, description = "WebService Port of the master")
-	protected int wsPort = 61614;
 
 	protected BrokerService brokerService;
+	
+	@Parameter(names = {"-activeMqConfig"}, description = "Location of ActiveMQ configuration file")
+	protected String activeMqConfig;
 
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
 	protected String instanceId;
@@ -110,6 +110,14 @@ public abstract class Workflow {
 	 * of processing one already
 	 */
 	protected boolean enablePrefetch = false;
+	
+	public void setActiveMqConfig(String activeMqConfig) {
+		this.activeMqConfig = activeMqConfig;
+	}
+	
+	public String getActiveMqConfig() {
+		return activeMqConfig;
+	}
 
 	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
@@ -433,10 +441,6 @@ public abstract class Workflow {
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
 	
-	public String getBrokerWs() {
-		return "ws://" + master + ":" + wsPort + "";
-	}
-
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);
