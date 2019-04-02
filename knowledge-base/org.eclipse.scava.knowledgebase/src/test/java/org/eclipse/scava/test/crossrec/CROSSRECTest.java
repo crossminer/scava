@@ -115,6 +115,7 @@ public class CROSSRECTest {
 			queryDeps.add(d);
 		}
 		Recommendation res = crossRecService.run(queryDeps);
+		res.getRecommendationItems().forEach(z -> logger.info(z.getRecommendedLibrary().getLibraryName()));
 		assertNotNull(res);
 	}
 }

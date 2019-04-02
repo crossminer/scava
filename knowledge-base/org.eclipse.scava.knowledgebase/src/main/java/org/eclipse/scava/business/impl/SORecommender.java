@@ -15,6 +15,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,15 +74,15 @@ public class SORecommender implements IRecommendationProvider {
 	private double questionBoostValue;
 	@Value("${sorecommender.luceneTreshold}")
 	private double luceneTreshold;
-	
+
 	@Value("${sorecommender.importerBoostLibrariesPath}")
 	private String importerBoostValue;
 	@Value("${sorecommender.INDEX_DIRECTORY}")
 	private String INDEX_DIRECTORY;
 	private static final Logger logger = LoggerFactory.getLogger(SORecommender.class);
 
-	private ArrayList<HashMap<String, String>> extractTokensFromCode(String soSnippet) throws IOException {
-		ArrayList<HashMap<String, String>> postTokens = new ArrayList<HashMap<String, String>>();
+	private HashMap<String, HashSet<String>> extractTokensFromCode(String soSnippet) throws IOException {
+		HashMap<String, HashSet<String>> postTokens = new HashMap<String, HashSet<String>>();
 		postTokens = parseKCUnit(soSnippet);
 		if (postTokens.size() < 1)
 			postTokens = parseKStatements(soSnippet);
@@ -94,8 +95,8 @@ public class SORecommender implements IRecommendationProvider {
 		return postTokens;
 	}
 
-	private ArrayList<HashMap<String, String>> parseKCUnit(String snippet) throws IOException {
-		final ArrayList<HashMap<String, String>> tokens = new ArrayList<HashMap<String, String>>();
+	private HashMap<String, HashSet<String>> parseKCUnit(String snippet) throws IOException {
+		HashMap<String, HashSet<String>> tokens = new HashMap<String, HashSet<String>>();
 		ASTParser parser = ASTParser.newParser(AST.JLS9);
 		parser.setResolveBindings(true);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -106,61 +107,17 @@ public class SORecommender implements IRecommendationProvider {
 		parser.setCompilerOptions(options);
 		try {
 			CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-			cu.accept(new ASTVisitor() {
-				public boolean visit(final LineComment commentNode) {
-					return false;
-				}
-
-				public boolean visit(ImportDeclaration node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("ImportDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(MethodDeclaration node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("MethodDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(MethodInvocation node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("MethodInvocation", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(VariableDeclarationStatement node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("VariableDeclarationType", node.getType().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(VariableDeclarationFragment node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("VariableDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(ClassInstanceCreation node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("ClassInstance", node.getType().toString());
-					tokens.add(token);
-					return true;
-				}
-			});
+			MyASTVisitor myVisitor = new MyASTVisitor();
+			cu.accept(myVisitor);
+			tokens = myVisitor.getTokens();
 		} catch (Exception exc) {
-			System.out.println("JDT parsing error");
+			logger.error("JDT parsing error");
 		}
 		return tokens;
 	}
 
-	private ArrayList<HashMap<String, String>> parseKStatements(String snippet) throws IOException {
-		final ArrayList<HashMap<String, String>> tokens = new ArrayList<HashMap<String, String>>();
+	private HashMap<String, HashSet<String>> parseKStatements(String snippet) throws IOException {
+		HashMap<String, HashSet<String>> tokens = new HashMap<String, HashSet<String>>();
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setResolveBindings(true);
 		parser.setKind(ASTParser.K_STATEMENTS);
@@ -173,75 +130,15 @@ public class SORecommender implements IRecommendationProvider {
 		String[] classpath = { "/usr/lib/jvm/java-8-openjdk-amd64" };
 		parser.setEnvironment(classpath, sources, new String[] {}, true);
 		parser.setSource(src.toCharArray());
-
 		try {
-
-			final Block block = (Block) parser.createAST(null);
-
-			block.accept(new ASTVisitor() {
-				public boolean visit(final LineComment commentNode) {
-
-					return false;
-				}
-
-				public boolean visit(ImportDeclaration node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("ImportDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(MethodDeclaration node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("MethodDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(MethodInvocation node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("MethodInvocation", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(VariableDeclarationStatement node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("VariableDeclarationType", node.getType().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(VariableDeclarationFragment node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("VariableDeclaration", node.getName().toString());
-					tokens.add(token);
-					return true;
-				}
-
-				public boolean visit(ClassInstanceCreation node) {
-					final HashMap<String, String> token = new HashMap<String, String>();
-					token.put("ClassInstance", node.getType().toString());
-					tokens.add(token);
-					return true;
-				}
-
-			});
+			Block block = (Block) parser.createAST(null);
+			MyASTVisitor myVisitor = new MyASTVisitor();
+			block.accept(myVisitor);
+			tokens = myVisitor.getTokens();
 		}
-
 		catch (Exception exc) {
-			System.out.println("JDT parsing error");
+			logger.error("JDT parsing error");
 		}
-
-		return tokens;
-
-	}
-
-	private ArrayList<HashMap<String, String>> cleanDuplicates(ArrayList<HashMap<String, String>> tokens) {
-		Set<HashMap<String, String>> set = new HashSet<HashMap<String, String>>();
-		set.addAll(tokens);
-		tokens.clear();
-		tokens.addAll(set);
 		return tokens;
 	}
 
@@ -252,58 +149,57 @@ public class SORecommender implements IRecommendationProvider {
 	}
 
 	@Override
-	public Recommendation getRecommendation(Query rec_query)  {
+	public Recommendation getRecommendation(Query rec_query) {
 		Recommendation rec = new Recommendation();
 		try {
-			
-		
-		String compUnit = "";
-		if (rec_query.getSoRecommendationSelection() == null || rec_query.getSoRecommendationSelection().isEmpty()) {
-			Map<String, String> param = new HashMap<String, String>();
-			param.put("ImportDeclaration", "OR");
-			param.put("MethodDeclaration", "OR");
-			param.put("MethodInvocation", "OR");
-			param.put("VariableDeclaration", "OR");
-			param.put("ClassInstance", "OR");
-			param.put("VariableDeclarationType", "OR");
-			compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), param);
-		} else
-			compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), rec_query.getSoRecommendationSelection());
-		logger.info(compUnit);
-		File indexDirectory = new File(INDEX_DIRECTORY);
-		Directory indexDir = FSDirectory.open(Paths.get(indexDirectory.getAbsolutePath()));
-		IndexReader reader = DirectoryReader.open(indexDir);
-    	IndexSearcher searcher = new IndexSearcher(reader);
-    	List<String> fields2 = getAllIndexTags(INDEX_DIRECTORY);
-		String[] fields = new String[fields2.size()];
-		int i = 0;
-		for (String string : fields2) 
-		{
-			fields[i] = string;
-			i++;
-		}
-		Analyzer analzer = new StandardAnalyzer();
-    	MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, analzer);
-		org.apache.lucene.search.Query q = qp.parse(compUnit);
-		TopDocs results = executeQuery(q);
-		if (results != null) {
-			int counter = 0;
-			ArrayList<Explanation> expls = new ArrayList<Explanation>();
-			ArrayList<String> Ids = new ArrayList<String>();
-			for (ScoreDoc result : results.scoreDocs) {
-				if (counter < luceneTreshold) {
-					RecommendationItem ri = new RecommendationItem();
-					org.apache.lucene.document.Document d = searcher.doc(result.doc);
-					ri.setApiDocumentationLink(d.get("ID_POST"));
-					expls.add(searcher.explain(q, result.doc));
-					ri.setSignificance(result.score);
-					Ids.add(d.get("ID_POST"));
-					counter += 1;
-					rec.getRecommendationItems().add(ri);
+
+			String compUnit = "";
+			if (rec_query.getSoRecommendationSelection() == null
+					|| rec_query.getSoRecommendationSelection().isEmpty()) {
+				Map<String, String> param = new HashMap<String, String>();
+				param.put("ImportDeclaration", "OR");
+				param.put("MethodDeclaration", "OR");
+				param.put("MethodInvocation", "OR");
+				param.put("VariableDeclaration", "OR");
+				param.put("ClassInstance", "OR");
+				param.put("VariableDeclarationType", "OR");
+				compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), param);
+			} else
+				compUnit = makeBoostedQuery(rec_query.getCompilationUnit(), rec_query.getSoRecommendationSelection());
+
+			File indexDirectory = new File(INDEX_DIRECTORY);
+			Directory indexDir = FSDirectory.open(Paths.get(indexDirectory.getAbsolutePath()));
+			IndexReader reader = DirectoryReader.open(indexDir);
+			IndexSearcher searcher = new IndexSearcher(reader);
+			List<String> fields2 = getAllIndexTags(INDEX_DIRECTORY);
+			String[] fields = new String[fields2.size()];
+			int i = 0;
+			for (String string : fields2) {
+				fields[i] = string;
+				i++;
+			}
+			Analyzer analzer = new StandardAnalyzer();
+			MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, analzer);
+			org.apache.lucene.search.Query q = qp.parse(compUnit);
+			TopDocs results = executeQuery(q);
+			if (results != null) {
+				int counter = 0;
+				ArrayList<Explanation> expls = new ArrayList<Explanation>();
+				ArrayList<String> Ids = new ArrayList<String>();
+				for (ScoreDoc result : results.scoreDocs) {
+					if (counter < luceneTreshold) {
+						RecommendationItem ri = new RecommendationItem();
+						org.apache.lucene.document.Document d = searcher.doc(result.doc);
+						ri.setApiDocumentationLink(d.get("ID_POST"));
+						expls.add(searcher.explain(q, result.doc));
+						ri.setSignificance(result.score);
+						Ids.add(d.get("ID_POST"));
+						counter += 1;
+						rec.getRecommendationItems().add(ri);
+					}
 				}
 			}
-		}
-		}catch (IOException | ParseException e) {
+		} catch (IOException | ParseException e) {
 			logger.error(e.getMessage());
 		}
 		return rec;
@@ -311,25 +207,7 @@ public class SORecommender implements IRecommendationProvider {
 
 	public String makeBoostedQuery(String snippet, Map<String, String> param) throws IOException {
 
-		ArrayList<HashMap<String, String>> tokens = extractTokensFromCode(snippet);
-		tokens = cleanDuplicates(tokens);
-		HashMap<String, Double> entropies = getEntropy(snippet, tokens);
-		ArrayList<String> imports = getImportList(tokens);
-		String result = makeBoostedQuery(tokens, imports, entropies, param);
-		return result;
-
-	}
-
-	public String makeBoostedQuery(String snippet) throws IOException {
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("ImportDeclaration", "OR");
-		param.put("MethodDeclaration", "OR");
-		param.put("MethodInvocation", "OR");
-		param.put("VariableDeclaration", "AND");
-		param.put("ClassInstance", "AND");
-		param.put("VariableDeclarationType", "AND");
-		ArrayList<HashMap<String, String>> tokens = extractTokensFromCode(snippet);
-		tokens = cleanDuplicates(tokens);
+		HashMap<String, HashSet<String>> tokens = extractTokensFromCode(snippet);
 		HashMap<String, Double> entropies = getEntropy(snippet, tokens);
 		ArrayList<String> imports = getImportList(tokens);
 		String result = makeBoostedQuery(tokens, imports, entropies, param);
@@ -343,7 +221,7 @@ public class SORecommender implements IRecommendationProvider {
 			IndexReader luceneIndexReader = DirectoryReader.open(FSDirectory.open(Paths.get(INDEX_DIRECTORY)));
 			result = MultiFields.getIndexedFields(luceneIndexReader);
 		} catch (IOException e) {
-			System.out.println();
+			logger.error(e.getMessage());
 		}
 
 		List<String> sortedList = new ArrayList<String>(result);
@@ -369,76 +247,72 @@ public class SORecommender implements IRecommendationProvider {
 		}
 	}
 
-	private String makeBoostedQuery(ArrayList<HashMap<String, String>> tokens, ArrayList<String> imports,
+	private String makeBoostedQuery(HashMap<String, HashSet<String>> tokens, ArrayList<String> imports,
 			HashMap<String, Double> entropies, Map<String, String> parameter) throws IOException {
 		String query = "";
 		ArrayList<String> varDeclTypeFix = getImportList(tokens);
-		for (HashMap<String, String> token : tokens) {
-			if (parameter.containsKey("ImportDeclaration")) {
-				String value = getTokenBoosted(token, "ImportDeclaration", entropies);
+		for (Entry<String, HashSet<String>> token : tokens.entrySet()) {
+			if (parameter.containsKey("ImportDeclaration") && token.getKey().equals("ImportDeclaration")) {
+				String value = getTokenBoosted(token.getValue(), "ImportDeclaration", entropies);
 				if (!query.isEmpty() && !value.isEmpty())
 					query = query + " OR ";
-				query = query + getTokenBoosted(token, "ImportDeclaration", entropies);
+				query = query + getTokenBoosted(token.getValue(), "ImportDeclaration", entropies);
 			}
-			if (parameter.containsKey("MethodDeclaration")) {
-				String value = getTokenBoosted(token, "MethodDeclaration", entropies);
+			if (parameter.containsKey("MethodDeclaration") && token.getKey().equals("MethodDeclaration")) {
+				String value = getTokenBoosted(token.getValue(), "MethodDeclaration", entropies);
 				if (!query.isEmpty() && !value.isEmpty())
 					query = query + " OR ";
-				query = query + getTokenBoosted(token, "MethodDeclaration", entropies);
+				query = query + getTokenBoosted(token.getValue(), "MethodDeclaration", entropies);
 			}
-			if (parameter.containsKey("MethodInvocation")) {
-				String value = getTokenBoosted(token, "MethodInvocation", entropies);
-				if (!query.isEmpty() && !value.isEmpty())
-					query = query + " OR ";
-				query = query + value;
-			}
-			if (parameter.containsKey("VariableDeclaration")) {
-				String value = getTokenBoosted(token, "VariableDeclaration", entropies);
+			if (parameter.containsKey("MethodInvocation") && token.getKey().equals("MethodInvocation")) {
+				String value = getTokenBoosted(token.getValue(), "MethodInvocation", entropies);
 				if (!query.isEmpty() && !value.isEmpty())
 					query = query + " OR ";
 				query = query + value;
 			}
-			if (parameter.containsKey("ClassInstance")) {
-				String value = getTokenBoosted(token, "ClassInstance", entropies);
+			if (parameter.containsKey("VariableDeclaration") && token.getKey().equals("VariableDeclaration")) {
+				String value = getTokenBoosted(token.getValue(), "VariableDeclaration", entropies);
 				if (!query.isEmpty() && !value.isEmpty())
 					query = query + " OR ";
 				query = query + value;
 			}
-			if (parameter.containsKey("VariableDeclarationType")) {
+			if (parameter.containsKey("ClassInstance") && token.getKey().equals("ClassInstance")) {
+				String value = getTokenBoosted(token.getValue(), "ClassInstance", entropies);
+				if (!query.isEmpty() && !value.isEmpty())
+					query = query + " OR ";
+				query = query + value;
+			}
+			if (parameter.containsKey("VariableDeclarationType") && token.getKey().equals("VariableDeclarationType")) {
 				String value = getVariableDeclarationTypeBoosted(token, varDeclTypeFix, entropies);
 				if (!query.isEmpty() && !value.isEmpty())
 					query = query + " OR";
 				query = query + value;
 			}
 		}
-		query = query.substring(0,query.length()  -3);
+		query = query.substring(0, query.length() - 3);
 		ArrayList<String> vars = getBoostImport(tokens);
-		query = query.isEmpty()?"":query + " OR ";
+		query = query.isEmpty() ? "" : query + " OR ";
 		query = getAnswer(vars, query, true);
-		query = query.isEmpty()?"":query + " OR ";
+		query = query.isEmpty() ? "" : query + " OR ";
 		query = getQuestion(vars, query, true);
-		query = query.isEmpty()?"":query + " OR ";
+		query = query.isEmpty() ? "" : query + " OR ";
 		query = getTitle(vars, query, true);
 		return query;
 	}
 
-	private ArrayList<String> getImportList(ArrayList<HashMap<String, String>> tokens) {
+	private ArrayList<String> getImportList(HashMap<String, HashSet<String>> tokens) {
 		/*
 		 * vardecltype fix
 		 */
 		ArrayList<String> imports = new ArrayList<String>();
-		for (HashMap<String, String> token : tokens) {
-			if (token.get("ImportDeclaration") != null) {
-				String imp = (String) token.get("ImportDeclaration");
-				imp = imp.substring(imp.lastIndexOf(".") + 1);
-				imports.add(imp);
-			}
+		for (String token : tokens.get("ImportDeclaration")) {
+			String imp = token.substring(token.lastIndexOf(".") + 1);
+			imports.add(imp);
 		}
-
 		return imports;
 	}
 
-	private ArrayList<String> getBoostImport(ArrayList<HashMap<String, String>> tokens) {
+	private ArrayList<String> getBoostImport(HashMap<String, HashSet<String>> tokens) {
 		Resource resource = new ClassPathResource(importerBoostValue);
 		ArrayList<String> importedTokens = new ArrayList<String>();
 		try {
@@ -450,13 +324,10 @@ public class SORecommender implements IRecommendationProvider {
 			while ((text = reader.readLine()) != null)
 				if (text.length() >= 5) {
 					text = text.substring(0, text.length() - 1);
-					for (HashMap<String, String> token : tokens) {
-						String t = token.get("ImportDeclaration");
-						if (t != null && t.toLowerCase().contains(text.toLowerCase()))
-							importedTokens.add(text);
-					}
+					for ( String txt : tokens.get("ImportDeclaration")) 
+						if (txt.toLowerCase().contains(text.toLowerCase()))
+							importedTokens.add(txt);
 				}
-
 			Set<String> set = new HashSet<String>();
 			set.addAll(importedTokens);
 			importedTokens.clear();
@@ -471,28 +342,29 @@ public class SORecommender implements IRecommendationProvider {
 
 	}
 
-	private String getTokenBoosted(HashMap<String, String> token, String tokenType, HashMap<String, Double> entropies) {
+	private String getTokenBoosted(HashSet<String> tokens, String tokenType,
+			HashMap<String, Double> entropies) {
 		String query = "";
-		String value = (String) token.get(tokenType);
-		if (value != null && entropies.get(token.get(tokenType)) != null)
-			query += String.format(Locale.US, " %s:%s^%.2f", tokenType, value, entropies.get(token.get(tokenType)));
+		for (String token : tokens) {
+			if (token != null && (!token.isEmpty()) && entropies.containsKey(token))
+				query += String.format(Locale.US, " %s:%s^%.2f", tokenType, token, entropies.get(token));
+			
+		}
 		return query;
 
 	}
 
-	private String getVariableDeclarationTypeBoosted(HashMap<String, String> token, ArrayList<String> imports,
-			HashMap<String, Double> entropies) {
+	private String getVariableDeclarationTypeBoosted(Map.Entry<String, HashSet<String>> token,
+			ArrayList<String> imports, HashMap<String, Double> entropies) {
 		String query = "";
-		String value = (String) token.get("VariableDeclarationType");
-
-		if (value != null) {
+		String value = (String) token.getKey();
+		if (token.getValue().contains("VariableDeclarationType")) {
 			String imp = "";
 			for (int i = 0; i < imports.size(); i++) {
 				imp = imports.get(i);
 				if ((imp != null && imp.contains(value)) || (imp != null && value.contains(imp)))
-					if (entropies.get(token.get("VariableDeclarationType")) != null)
-						query = String.format("VariableDeclarationType:%s^%.2f", value,
-								entropies.get(token.get("VariableDeclarationType")));
+					if (entropies.get(value) != null)
+						query = String.format("VariableDeclarationType:%s^%.2f", value, entropies.get(value));
 			}
 		}
 		return query;
@@ -503,7 +375,7 @@ public class SORecommender implements IRecommendationProvider {
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
 					query += String.format(Locale.US, " Title:%s^%.2f OR", var, titleBoostValue);
-		query = query.substring(0,query.length()-3);
+		query = query.substring(0, query.length() - 3);
 		return query;
 	}
 
@@ -512,7 +384,7 @@ public class SORecommender implements IRecommendationProvider {
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
 					query += String.format(Locale.US, " Answer:%s^%.2f OR", var, answerBoostValue);
-		query = query.substring(0,query.length()-3);
+		query = query.substring(0, query.length() - 3);
 		return query;
 	}
 
@@ -521,17 +393,21 @@ public class SORecommender implements IRecommendationProvider {
 			for (String var : vars)
 				if (var.equalsIgnoreCase("Java") != true)
 					query += String.format(Locale.US, " Question:%s^%.2f OR", var, questionBoostValue);
-		query = query.substring(0,query.length()-3);
+		query = query.substring(0, query.length() - 3);
 		return query;
 	}
 
-	private HashMap<String, Double> getEntropy(String snippet, ArrayList<HashMap<String, String>> tokens)
+	private HashMap<String, Double> getEntropy(String snippet, HashMap<String, HashSet<String>> tokens)
 			throws IOException {
 		HashMap<String, Double> entropies = new HashMap<String, Double>();
-		for (HashMap<String, String> token : tokens) {
-			Collection<String> coll = token.values();
-			if (coll.toArray()[0].toString().length() > 1)
-				entropies = getEntropy(coll.toArray()[0].toString(), snippet, entropies, true, tokens.size());
+		// TODO check it!
+		int tokenSize = tokens.values().stream().mapToInt(i -> i.size()).sum();
+		logger.info(tokenSize + "");
+		for (Entry<String, HashSet<String>> token : tokens.entrySet()) {
+			HashSet<String> values = token.getValue();
+			for (String coll : values) 				
+				if (coll.length() > 1)
+					entropies = getEntropy(coll, snippet, entropies, true, tokenSize);
 		}
 		return entropies;
 	}
@@ -563,5 +439,100 @@ public class SORecommender implements IRecommendationProvider {
 			entropies.put(target, ent);
 		}
 		return entropies;
+	}
+}
+
+class MyASTVisitor extends ASTVisitor {
+	private HashMap<String, HashSet<String>> tokens = new HashMap<String, HashSet<String>>();
+
+	public boolean visit(final LineComment commentNode) {
+		return false;
+	}
+
+	public boolean visit(ImportDeclaration node) {
+		if (tokens.containsKey("ImportDeclaration")) {
+			HashSet<String> i = tokens.get("ImportDeclaration");
+			i.add(node.getName().toString());
+			tokens.put("ImportDeclaration", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getName().toString());
+			tokens.put("ImportDeclaration", i);
+		}
+		return true;
+	}
+
+	public boolean visit(MethodDeclaration node) {
+		if (tokens.containsKey("MethodDeclaration")) {
+			HashSet<String> i = tokens.get("MethodDeclaration");
+			i.add(node.getName().toString());
+			tokens.put("MethodDeclaration", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getName().toString());
+			tokens.put("MethodDeclaration", i);
+		}
+		return true;
+	}
+
+	public boolean visit(MethodInvocation node) {
+		if (tokens.containsKey("MethodInvocation")) {
+			HashSet<String> i = tokens.get("MethodInvocation");
+			i.add(node.getName().toString());
+			tokens.put("MethodInvocation", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getName().toString());
+			tokens.put("MethodInvocation", i);
+		}
+		return true;
+	}
+
+	public boolean visit(VariableDeclarationStatement node) {
+		if (tokens.containsKey("VariableDeclarationType")) {
+			HashSet<String> i = tokens.get("VariableDeclarationType");
+			i.add(node.getType().toString());
+			tokens.put("VariableDeclarationType", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getType().toString());
+			tokens.put("VariableDeclarationType", i);
+		}
+		return true;
+	}
+
+	public boolean visit(VariableDeclarationFragment node) {
+		if (tokens.containsKey("VariableDeclaration")) {
+			HashSet<String> i = tokens.get("VariableDeclaration");
+			i.add(node.getName().toString());
+			tokens.put("VariableDeclaration", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getName().toString());
+			tokens.put("VariableDeclaration", i);
+		}
+		return true;
+	}
+
+	public boolean visit(ClassInstanceCreation node) {
+
+		if (tokens.containsKey("VariableDeclarationType")) {
+			HashSet<String> i = tokens.get("VariableDeclarationType");
+			i.add(node.getType().toString());
+			tokens.put("VariableDeclarationType", i);
+		} else {
+			HashSet<String> i = new HashSet<String>();
+			i.add(node.getType().toString());
+			tokens.put("VariableDeclarationType", i);
+		}
+		return true;
+	}
+
+	public HashMap<String, HashSet<String>> getTokens() {
+		return tokens;
+	}
+
+	public void setTokens(HashMap<String, HashSet<String>> tokens) {
+		this.tokens = tokens;
 	}
 }
