@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
-public class GhTopSearchRepoAuthorCountCsvSink extends GhTopSearchRepoAuthorCountCsvSinkBase {
+public class SearchRepoAuthorCountCsvSink extends SearchRepoAuthorCountCsvSinkBase {
 	// CSV file writer(s)
 	protected CsvWriter writer1;
 	

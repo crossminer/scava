@@ -3,7 +3,7 @@ package org.eclipse.scava.crossflow.examples.github.topsearch;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
-public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
+public class SearchCsvSource extends SearchCsvSourceBase {
 	
 	protected Iterable<OwnerRepoTuple> ownerRepoTupleRecords;
 	
@@ -16,7 +16,7 @@ public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
 				OwnerRepoTuple ownerRepoTuple = new OwnerRepoTuple();
 				ownerRepoTuple.setRepoOwner(record.get(0));
 				ownerRepoTuple.setRepoRemote(record.get(1));
-				sendToGhTopSearchRepos( ownerRepoTuple);
+				sendToSearchRepos( ownerRepoTuple);
 	
 			}
 		} catch (Exception e) {

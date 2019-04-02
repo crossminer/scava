@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.examples.github.topsearch;
 
 import java.io.File;
 
-public class GhTopSearchRepoProperties {
+public class SearchRepoProperties {
 
 	final static File CLONE_PARENT_DESTINATION = new File(
 	"tmp" + File.separator + "clones");

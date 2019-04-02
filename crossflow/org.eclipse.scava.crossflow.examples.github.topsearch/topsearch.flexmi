@@ -1,30 +1,30 @@
 <?nsuri org.eclipse.scava.crossflow?>
-<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<?render-graphviz-dot ../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
 <_>
 	
 	<!-- Example counting the committer count of the most popular Java projects on Github -->
-	<workflow name="GhTopSearchWorkflow" package="org.eclipse.scava.crossflow.examples.github.topsearch">
+	<workflow name="SearchWorkflow" package="org.eclipse.scava.crossflow.examples.github.topsearch">
 	
 		<!-- csv source of Github top search result projects (owner/repo) -->
-		<csvsource name="GhTopSearchCsvSource" out="GhTopSearchRepos" path="data/repos.csv"/>
+		<csvsource name="SearchCsvSource" out="SearchRepos" path="data/repos.csv"/>
 		
 		<!-- queue of Github top search repos -->
-		<queue name="GhTopSearchRepos" type="OwnerRepoTuple"/> 
+		<queue name="SearchRepos" type="OwnerRepoTuple"/> 
 				
 	 	<!-- task for cloning repositories retrieved from GitHub API -->
-		<task name="GhTopSearchRepoCloner" in="GhTopSearchRepos" out="GhTopSearchClonedRepoEntries"/> 
+		<task name="SearchRepoCloner" in="SearchRepos" out="SearchClonedRepoEntries"/> 
 				
 		<!-- queues of repositories cloned from GitHub -->
-		<queue name="GhTopSearchClonedRepoEntries" type="OwnerRepoUrlTuple"/>
+		<queue name="SearchClonedRepoEntries" type="OwnerRepoUrlTuple"/>
 		
 		<!-- tasks for counting unique authors of repositories cloned from GitHub -->
-		<task name="GhTopSearchRepoAuthorCounter" in="GhTopSearchClonedRepoEntries" out="OwnerRepoAuthorCountEntries"/>
+		<task name="SearchRepoAuthorCounter" in="SearchClonedRepoEntries" out="OwnerRepoAuthorCountEntries"/>
 		
 		<!-- queues of unique author count of repositories cloned from GitHub  -->
 		<queue name="OwnerRepoAuthorCountEntries" type="OwnerRepoAuthorCountTuple"/> 
 		
 		<!-- csv sink for printing unique author count of repositories cloned from GitHub -->
-		<csvsink name="GhTopSearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="data/repos-authorCount.csv"/>
+		<csvsink name="SearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="data/repos-authorCount.csv"/>
 				
 		<!-- Github JavaProjects: github owner/repo -->
 		<type name="OwnerRepoTuple">
@@ -32,7 +32,7 @@
 			<field name="repoRemote" type="String"/>
 		</type>
 		
-		<!-- GhTopSearchClonedRepoEntries: github owner/repo, repo remote URL, repo local path -->
+		<!-- SearchClonedRepoEntries: github owner/repo, repo remote URL, repo local path -->
 		<type name="OwnerRepoUrlTuple">
 			<field name="repoOwner" type="String"/>
 			<field name="repoRemote" type="String"/>

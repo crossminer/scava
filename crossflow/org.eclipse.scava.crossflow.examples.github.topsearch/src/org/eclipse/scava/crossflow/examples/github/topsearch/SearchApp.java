@@ -5,19 +5,19 @@ import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
-public class GhTopSearchApp {
+public class SearchApp {
 
 	public static void main(String[] args) throws Exception {
 		
-		CloneUtils.removeRepoClones(GhTopSearchRepoProperties.CLONE_PARENT_DESTINATION); 
+		CloneUtils.removeRepoClones(SearchRepoProperties.CLONE_PARENT_DESTINATION); 
 		
-		GhTopSearchWorkflow master = new GhTopSearchWorkflow(Mode.MASTER);
+		SearchWorkflow master = new SearchWorkflow(Mode.MASTER);
 		master.setName("Master");
 		
-		GhTopSearchWorkflow worker1 = new GhTopSearchWorkflow(Mode.WORKER);
+		SearchWorkflow worker1 = new SearchWorkflow(Mode.WORKER);
 		worker1.setName("Worker1");
 		
-		GhTopSearchWorkflow worker2 = new GhTopSearchWorkflow(Mode.WORKER);
+		SearchWorkflow worker2 = new SearchWorkflow(Mode.WORKER);
 		worker2.setName("Worker2");
 		
 		master.run();

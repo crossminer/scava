@@ -17,7 +17,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
-public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBase {
+public class SearchRepoAuthorCounter extends SearchRepoAuthorCounterBase {
 
 	
 	protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
@@ -30,7 +30,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	/**
 	 * 
 	 */
-	public GhTopSearchRepoAuthorCounter() {
+	public SearchRepoAuthorCounter() {
 		// do nothing
 	}
 
@@ -78,7 +78,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	}
 	
 	public static void main(String args[]) throws IOException {
-		GhTopSearchRepoAuthorCounter counter = new GhTopSearchRepoAuthorCounter();
+		SearchRepoAuthorCounter counter = new SearchRepoAuthorCounter();
 		String repoLocation = "/Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava/crossflow/org.eclipse.scava.crossflow.examples/../../../CLONED-REPOS/javascript-8213ab1e4140c89a1d7ee5a5efcfd343312de521";
 		System.out.println(new File(repoLocation).getCanonicalPath());
 		int count = counter.count(repoLocation);
@@ -86,14 +86,14 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 	}
 
 	@Override
-	public OwnerRepoAuthorCountTuple consumeGhTopSearchClonedRepoEntries(OwnerRepoUrlTuple ownerRepoUrlTuple)
+	public OwnerRepoAuthorCountTuple consumeSearchClonedRepoEntries(OwnerRepoUrlTuple ownerRepoUrlTuple)
 			throws Exception {
 
 		OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple = null;
 		
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getGhTopSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
+			workflow.getSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -105,7 +105,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( ownerRepoUrlTuple.getId() );
-				workflow.getGhTopSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
+				workflow.getSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
 			}
 			
 			if ( committedRepoMap.containsKey( ownerRepoUrlTuple.getRepoRemote() ) ) {

@@ -14,7 +14,7 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
-public class GhTopSearchRepoCloner extends GhTopSearchRepoClonerBase {
+public class SearchRepoCloner extends SearchRepoClonerBase {
 	
 protected Set<String> alreadySeenJobs = new HashSet<String>();
 	
@@ -24,7 +24,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 	/**
 	 * 
 	 */
-	public GhTopSearchRepoCloner() {
+	public SearchRepoCloner() {
 		// do nothing
 	}
 
@@ -46,7 +46,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 		String ghRepoUrl = "https://github.com/" + owner + "/" + repo;
 		final String cloneSource = ghRepoUrl + ".git";
 		
-		final File cloneRepoDestination = new File(GhTopSearchRepoProperties.CLONE_PARENT_DESTINATION + File.separator
+		final File cloneRepoDestination = new File(SearchRepoProperties.CLONE_PARENT_DESTINATION + File.separator
 				+ CloneUtils.getUniqueRepoFolderName(ghRepoUrl));
 		
 		System.out.print("\n" + "[" + workflow.getName() + "] " + "Cloning Git repository " + cloneSource + " to " + cloneRepoDestination + " ... ");
@@ -93,13 +93,13 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 	}
 	
 	@Override
-	public OwnerRepoUrlTuple consumeGhTopSearchRepos(OwnerRepoTuple ownerRepoTuple) throws Exception {
+	public OwnerRepoUrlTuple consumeSearchRepos(OwnerRepoTuple ownerRepoTuple) throws Exception {
 		OwnerRepoUrlTuple ownerRepoUrlTuple = null;
 		
-		System.out.println("GhTopSearchRepoCloner.consumeGhTopSearchRepos( " + ownerRepoTuple + " )");
-		if ( committedRepoMap.size() == GhTopSearchRepoProperties.MAX_NUMBER_OF_COMMITMENTS ) {
+		System.out.println("SearchRepoCloner.consumeSearchRepos( " + ownerRepoTuple + " )");
+		if ( committedRepoMap.size() == SearchRepoProperties.MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getGhTopSearchRepos().send( ownerRepoTuple, this.getClass().getName() );
+			workflow.getSearchRepos().send( ownerRepoTuple, this.getClass().getName() );
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -111,7 +111,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( ownerRepoTuple.getId() );
-				workflow.getGhTopSearchRepos().send( ownerRepoTuple, this.getClass().getName() );
+				workflow.getSearchRepos().send( ownerRepoTuple, this.getClass().getName() );
 			}
 			
 			if ( committedRepoMap.containsKey( ownerRepoTuple.getRepoRemote() ) ) {
@@ -125,7 +125,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 				ownerRepoUrlTuple.setRepoRemote(ownerRepoTuple.getRepoRemote()); // github repo
 				ownerRepoUrlTuple.setRepoLocal(clonedRepoLocation); // cloned repository local path
 
-				sendToGhTopSearchClonedRepoEntries(ownerRepoUrlTuple);
+				sendToSearchClonedRepoEntries(ownerRepoUrlTuple);
 
 			}
 			
