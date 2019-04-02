@@ -3,7 +3,6 @@ package org.eclipse.scava.crossflow.examples.github.topsearch;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -106,7 +105,7 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 			// We still have space left for repositories to commit to - considering it
 			if ( alreadySeenJobs.contains( ownerRepoTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( ownerRepoTuple.getField1(), 0 );
+				committedRepoMap.put( ownerRepoTuple.getRepoRemote(), 0 );
 			
 			} else {
 				// We haven't seen this job before
@@ -115,16 +114,16 @@ protected Set<String> alreadySeenJobs = new HashSet<String>();
 				workflow.getGhTopSearchRepos().send( ownerRepoTuple, this.getClass().getName() );
 			}
 			
-			if ( committedRepoMap.containsKey( ownerRepoTuple.getField1() ) ) {
-				committedRepoMap.replace( ownerRepoTuple.getField1(), committedRepoMap.get( ownerRepoTuple.getField1()) + 1 );
+			if ( committedRepoMap.containsKey( ownerRepoTuple.getRepoRemote() ) ) {
+				committedRepoMap.replace( ownerRepoTuple.getRepoRemote(), committedRepoMap.get( ownerRepoTuple.getRepoRemote()) + 1 );
 //				System.out.println("[" + workflow.getName() + "] " + committedRepoMap.get( ownerRepoTuple.getField1() ) + " occurrences of " + ownerRepoTuple.getField1() );
 								
-				String clonedRepoLocation = cloneRepo(ownerRepoTuple.getField0(), ownerRepoTuple.getField1(), false);
+				String clonedRepoLocation = cloneRepo(ownerRepoTuple.getRepoOwner(), ownerRepoTuple.getRepoRemote(), false);
 				
 				ownerRepoUrlTuple = new OwnerRepoUrlTuple();
-				ownerRepoUrlTuple.setField0(ownerRepoTuple.field0); // github owner
-				ownerRepoUrlTuple.setField1(ownerRepoTuple.field1); // github repo
-				ownerRepoUrlTuple.setField2(clonedRepoLocation); // cloned repository local path
+				ownerRepoUrlTuple.setRepoOwner(ownerRepoTuple.getRepoOwner()); // github owner
+				ownerRepoUrlTuple.setRepoRemote(ownerRepoTuple.getRepoRemote()); // github repo
+				ownerRepoUrlTuple.setRepoLocal(clonedRepoLocation); // cloned repository local path
 
 				sendToGhTopSearchClonedRepoEntries(ownerRepoUrlTuple);
 

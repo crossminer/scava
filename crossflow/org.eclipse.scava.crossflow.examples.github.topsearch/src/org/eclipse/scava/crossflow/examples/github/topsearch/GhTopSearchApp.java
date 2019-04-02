@@ -1,7 +1,5 @@
 package org.eclipse.scava.crossflow.examples.github.topsearch;
 
-import java.io.File;
-
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;

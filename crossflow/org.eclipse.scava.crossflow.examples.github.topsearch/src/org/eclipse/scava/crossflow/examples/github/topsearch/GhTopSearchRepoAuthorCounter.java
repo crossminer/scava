@@ -99,7 +99,7 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 			// We still have space left for repositories to commit to - considering it
 			if ( alreadySeenJobs.contains( ownerRepoUrlTuple.getId() ) ) { 
 				// We've seen this job before - assume no-one else wants it
-				committedRepoMap.put( ownerRepoUrlTuple.getField1(), 0 );
+				committedRepoMap.put( ownerRepoUrlTuple.getRepoRemote(), 0 );
 			
 			} else {
 				// We haven't seen this job before
@@ -108,16 +108,16 @@ public class GhTopSearchRepoAuthorCounter extends GhTopSearchRepoAuthorCounterBa
 				workflow.getGhTopSearchClonedRepoEntries().send( ownerRepoUrlTuple ,this.getClass().getName());
 			}
 			
-			if ( committedRepoMap.containsKey( ownerRepoUrlTuple.getField1() ) ) {
+			if ( committedRepoMap.containsKey( ownerRepoUrlTuple.getRepoRemote() ) ) {
 				
-				committedRepoMap.replace( ownerRepoUrlTuple.getField1(), committedRepoMap.get( ownerRepoUrlTuple.getField1()) + 1 );
+				committedRepoMap.replace( ownerRepoUrlTuple.getRepoRemote(), committedRepoMap.get( ownerRepoUrlTuple.getRepoRemote()) + 1 );
 				
-				int authorCount = count(ownerRepoUrlTuple.getField2());
+				int authorCount = count(ownerRepoUrlTuple.getRepoLocal());
 				
 				ownerRepoAuthorCountTuple = new OwnerRepoAuthorCountTuple();
-				ownerRepoAuthorCountTuple.setField0(ownerRepoUrlTuple.field0); // GitHub owner (user name or organisation)
-				ownerRepoAuthorCountTuple.setField1(ownerRepoUrlTuple.field1); // GitHub repository name
-				ownerRepoAuthorCountTuple.setField2(authorCount); // repository unique author count
+				ownerRepoAuthorCountTuple.setRepoOwner(ownerRepoUrlTuple.getRepoOwner()); // GitHub owner (user name or organisation)
+				ownerRepoAuthorCountTuple.setRepoRemote(ownerRepoUrlTuple.getRepoRemote()); // GitHub repository name
+				ownerRepoAuthorCountTuple.setAuthorCount(authorCount); // repository unique author count
 				
 			}
 			

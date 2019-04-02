@@ -4,7 +4,6 @@ import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
 	
@@ -19,8 +18,8 @@ public class GhTopSearchCsvSource extends GhTopSearchCsvSourceBase {
 		
 			for (CSVRecord record : records) {
 				OwnerRepoTuple ownerRepoTuple = new OwnerRepoTuple();
-				ownerRepoTuple.setField0(record.get(0));
-				ownerRepoTuple.setField1(record.get(1));
+				ownerRepoTuple.setRepoOwner(record.get(0));
+				ownerRepoTuple.setRepoRemote(record.get(1));
 				sendToGhTopSearchRepos( ownerRepoTuple);
 	
 			}

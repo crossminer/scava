@@ -16,7 +16,7 @@ public class GhTopSearchRepoAuthorCountCsvSink extends GhTopSearchRepoAuthorCoun
 				writer1 = new CsvWriter(output.getAbsolutePath(), "owner", "repo", "authorCount",  "cached");
 			}
 		
-			writer1.writeRecord( ownerRepoAuthorCountTuple.getField0(), ownerRepoAuthorCountTuple.getField1(), ownerRepoAuthorCountTuple.getField2(),  ownerRepoAuthorCountTuple.isCached() );
+			writer1.writeRecord( ownerRepoAuthorCountTuple.getRepoOwner(), ownerRepoAuthorCountTuple.getRepoRemote(), ownerRepoAuthorCountTuple.getAuthorCount(),  ownerRepoAuthorCountTuple.isCached() );
 			writer1.flush();
 
 	}

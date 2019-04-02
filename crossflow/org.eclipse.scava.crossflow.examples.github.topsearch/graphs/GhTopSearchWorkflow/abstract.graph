@@ -1,0 +1,14 @@
+var v_GhTopSearchCsvSource = createTask("GhTopSearchCsvSource", window.runtimeModelGraph, window.runtimeModelParent);
+var s_GhTopSearchRepos = createStream("GhTopSearchRepos", window.runtimeModelGraph, window.runtimeModelParent);
+var v_GhTopSearchRepoCloner = createTask("GhTopSearchRepoCloner", window.runtimeModelGraph, window.runtimeModelParent);
+var s_GhTopSearchClonedRepoEntries = createStream("GhTopSearchClonedRepoEntries", window.runtimeModelGraph, window.runtimeModelParent);
+var v_GhTopSearchRepoAuthorCounter = createTask("GhTopSearchRepoAuthorCounter", window.runtimeModelGraph, window.runtimeModelParent);
+var s_OwnerRepoAuthorCountEntries = createStream("OwnerRepoAuthorCountEntries", window.runtimeModelGraph, window.runtimeModelParent);
+var v_GhTopSearchRepoAuthorCountCsvSink = createTask("GhTopSearchRepoAuthorCountCsvSink", window.runtimeModelGraph, window.runtimeModelParent);
+
+link(v_GhTopSearchRepoAuthorCounter, s_OwnerRepoAuthorCountEntries, window.runtimeModelGraph, window.runtimeModelParent);
+link(s_GhTopSearchClonedRepoEntries, v_GhTopSearchRepoAuthorCounter, window.runtimeModelGraph, window.runtimeModelParent);
+link(v_GhTopSearchCsvSource, s_GhTopSearchRepos, window.runtimeModelGraph, window.runtimeModelParent);
+link(s_GhTopSearchRepos, v_GhTopSearchRepoCloner, window.runtimeModelGraph, window.runtimeModelParent);
+link(s_OwnerRepoAuthorCountEntries, v_GhTopSearchRepoAuthorCountCsvSink, window.runtimeModelGraph, window.runtimeModelParent);
+link(v_GhTopSearchRepoCloner, s_GhTopSearchClonedRepoEntries, window.runtimeModelGraph, window.runtimeModelParent);
