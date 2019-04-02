@@ -149,6 +149,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.maven</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>
