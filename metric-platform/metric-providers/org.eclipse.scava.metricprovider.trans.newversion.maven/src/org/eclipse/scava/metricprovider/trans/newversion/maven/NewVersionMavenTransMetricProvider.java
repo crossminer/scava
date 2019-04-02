@@ -1,11 +1,7 @@
 package org.eclipse.scava.metricprovider.trans.newversion.maven;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
