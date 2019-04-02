@@ -10,6 +10,7 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.metricprovider.rascal.trans.model.*;
+import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersions;
 import org.eclipse.scava.metricprovider.rascal.RascalMetricProvider;
 
@@ -60,14 +61,24 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     	for (IMetricProvider used : uses) {
 
     		RascalMetrics metrics =  ((RascalMetricProvider)used).adapt(context.getProjectDB(project));
+    		
+    		System.out.println("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
+			logger.info("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
+			logger.error("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
 
-    		for (Measurement mes : metrics.getMeasurements().findURIMeasurementsByUri("maven.allMavenDependencies")) {
+    		for (Measurement mes : metrics.getMeasurements().findURIMeasurementsByUri("trans.rascal.dependency.maven.allMavenDependencies")) {
 
     			URIMeasurement dep = (URIMeasurement)mes;
     			
     			System.out.println("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
     			logger.info("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
     			logger.error("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
+    			
+    			NewMavenVersion n = new NewMavenVersion();
+    			n.setPackageName(dep.getValue());
+    			n.setVersion("4434");
+    			db.getNewVersions().add(n);
+				db.sync();
 
     		}
 
