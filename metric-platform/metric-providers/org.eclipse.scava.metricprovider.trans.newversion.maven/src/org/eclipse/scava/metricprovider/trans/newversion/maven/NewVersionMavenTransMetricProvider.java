@@ -58,6 +58,18 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     
     @Override
 	public void measure(Project project, ProjectDelta delta, NewMavenVersions db) {
+    	
+    	System.out.println("\n\n\n\n" + "test1" + "\n\n\n\n");
+		logger.info("\n\n\n\n" + "test1" + "\n\n\n\n");
+		logger.error("\n\n\n\n" + "test1" + "\n\n\n\n");
+		
+		NewMavenVersion n = new NewMavenVersion();
+		n.setPackageName("test1");
+		n.setVersion("8008");
+		db.getNewVersions().add(n);
+		db.sync();
+		
+		
     	for (IMetricProvider used : uses) {
 
     		RascalMetrics metrics =  ((RascalMetricProvider)used).adapt(context.getProjectDB(project));
@@ -65,6 +77,12 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     		System.out.println("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
 			logger.info("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
 			logger.error("\n\n\n\n" + used.getIdentifier() + "\n\n\n\n");
+			
+			NewMavenVersion n2 = new NewMavenVersion();
+			n2.setPackageName("test");
+			n2.setVersion("4434");
+			db.getNewVersions().add(n);
+			db.sync();
 
     		for (Measurement mes : metrics.getMeasurements().findURIMeasurementsByUri("trans.rascal.dependency.maven.allMavenDependencies")) {
 
@@ -74,9 +92,9 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     			logger.info("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
     			logger.error("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
     			
-    			NewMavenVersion n = new NewMavenVersion();
-    			n.setPackageName(dep.getValue());
-    			n.setVersion("4434");
+    			NewMavenVersion n3 = new NewMavenVersion();
+    			n3.setPackageName(dep.getValue());
+    			n3.setVersion("4434");
     			db.getNewVersions().add(n);
 				db.sync();
 
