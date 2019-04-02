@@ -66,6 +66,8 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     			URIMeasurement dep = (URIMeasurement)mes;
     			
     			System.out.println("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
+    			logger.info("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
+    			logger.error("\n\n\n\n" + dep.getValue() + "\n\n\n\n");
 
     		}
 
