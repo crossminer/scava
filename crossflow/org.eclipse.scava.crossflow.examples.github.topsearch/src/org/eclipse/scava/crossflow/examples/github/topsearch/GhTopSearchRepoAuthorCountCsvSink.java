@@ -12,7 +12,7 @@ public class GhTopSearchRepoAuthorCountCsvSink extends GhTopSearchRepoAuthorCoun
 	public synchronized void consumeOwnerRepoAuthorCountEntries(OwnerRepoAuthorCountTuple ownerRepoAuthorCountTuple) throws Exception {
 
 			if ( writer1 == null ) {
-				File output = new File(workflow.getOutputDirectory(), "output.csv");
+				File output = new File(workflow.getOutputDirectory(), "data/repos-authorCount.csv");
 				writer1 = new CsvWriter(output.getAbsolutePath(), "owner", "repo", "authorCount",  "cached");
 			}
 		
