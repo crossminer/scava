@@ -44,10 +44,10 @@ operation Field getTypeLabel() {
 }
 
 operation Task getShape() {  
-	if (self.isTypeOf(Source)) {
+	if (self.isKindOf(Source)) {
 		return "cds";
 	}
-	else if (self.isTypeOf(Sink)) {
+	else if (self.isKindOf(Sink)) {
 		return "invhouse";
 	}
 	else {
