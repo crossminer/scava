@@ -80,6 +80,7 @@ public class MetricVisualisation {
 		ArrayNode datatable = chart.createDatatable(vis.get("datatable"), collection, query);
 		
 		visualisation.put("id", vis.path("id").textValue());
+		visualisation.put("projectId", db.toString());
 		visualisation.put("name", vis.path("name").textValue());
 		visualisation.put("description", vis.path("description").textValue());
 		visualisation.put("type", vis.path("type").textValue());
