@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -55,14 +56,12 @@ public class ClassificationInstanceCollection {
 		}
 	}
 	
-	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId) {
+	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId, ClassificationInstance classificationInstance) {
 		String composedId = getComposedId(url, threadId);
-		ClassificationInstance classificationInstance;
 		if (instanceMap.containsKey(composedId)) {
 				classificationInstance = instanceMap.get(composedId);
 				classificationInstance.update(deltaArticle);
 		} else {
-			classificationInstance = new ClassificationInstance(url, deltaArticle, threadId);
 			instanceMap.put(composedId, classificationInstance);
 			instanceList.add(classificationInstance);
 		}

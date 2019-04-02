@@ -1,0 +1,27 @@
+package org.eclipse.scava.repository.model.gitlab;
+
+@stub(javaClass="org.eclipse.scava.repository.model.BugTrackingSystem")
+abstract class BugTrackingSystem {
+
+}
+
+
+@customize
+class GitLabTracker extends BugTrackingSystem {
+	@searchable
+	attr String personal_access_token;
+	attr String client_id;
+	attr String client_secret;
+	attr String project_id;
+}
+
+@stub(javaClass="org.eclipse.scava.repository.model.Project")
+class Project {  
+}
+
+class GitLabRepository extends Project {
+	@searchable
+	attr String full_name;
+	attr String clone_url;
+	attr String git_url;
+}

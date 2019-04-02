@@ -124,9 +124,9 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 					user.setLastActivityDate(article.getDate().toString());
 					user.setArticles(1);
 					String requestReplyClass = getRequestReplyClass(usedClassifier, communicationChannelName, article);
-					if (requestReplyClass.equals("Reply"))
+					if (requestReplyClass.equals("__label__Reply"))
 						user.setReplies(1);
-					else if (requestReplyClass.equals("Request"))
+					else if (requestReplyClass.equals("__label__Request"))
 						user.setRequests(1);
 					db.getUsers().add(user);
 				} else {
@@ -137,9 +137,9 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 						user.setLastActivityDate(article.getDate().toString());
 					user.setArticles(user.getArticles()+1);
 					String requestReplyClass = getRequestReplyClass(usedClassifier, communicationChannelName, article);
-					if (requestReplyClass.equals("Reply"))
+					if (requestReplyClass.equals("__label__Reply"))
 						user.setReplies(user.getReplies()+1);
-					else if (requestReplyClass.equals("Request"))
+					else if (requestReplyClass.equals("__label__Request"))
 						user.setRequests(user.getRequests()+1);
 				}
 				db.sync();

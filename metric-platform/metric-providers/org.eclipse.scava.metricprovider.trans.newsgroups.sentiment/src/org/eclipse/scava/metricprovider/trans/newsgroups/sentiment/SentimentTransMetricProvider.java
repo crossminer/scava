@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2018 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -87,16 +87,14 @@ public class SentimentTransMetricProvider  implements
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, 
 						NewsgroupsSentimentTransMetric db) {
-//		final long startTime = System.currentTimeMillis();
-		
-		db.getThreads().getDbCollection().drop();
-		db.sync();
 
 		if (uses.size()!=2) {
 			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
-								"the three transient metrics it needs!");
+								"the two transient metrics it needs!");
 			System.exit(-1);
 		}
+		
+		clearDB(db);
 
 		NewsgroupsThreadsTransMetric usedThreads = 
 				((ThreadsTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
@@ -105,16 +103,10 @@ public class SentimentTransMetricProvider  implements
 				((SentimentClassificationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 		Map<String, String> articleSentiment = new HashMap<String, String>();
-		for (org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesData 
+		for (org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification 
 				article: sentimentClassifier.getNewsgroupArticles())
 			articleSentiment.put(article.getNewsGroupName()+article.getArticleNumber(), 
-										article.getClassificationResult());
-
-		Map<String, String> articleEmotionalDimensions = new HashMap<String, String>();
-		for (org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesData 
-				article: sentimentClassifier.getNewsgroupArticles())
-			articleEmotionalDimensions.put(article.getNewsGroupName()+article.getArticleNumber(), 
-										article.getEmotionalDimensions());
+										article.getPolarity());
 
 		for (ThreadData thread: usedThreads.getThreads()) {
 
@@ -139,20 +131,21 @@ public class SentimentTransMetricProvider  implements
 					first=false;
 				}
 				threadStats.setEndSentiment(sentiment);
-				if (sentiment.equals("Positive")) 
+				if (sentiment.equals("__label_positive")) 
 					totalSentiment += 1;
-				else if(sentiment.equals("Negative")) 
+				else if(sentiment.equals("__label__negative")) 
 					totalSentiment -= 1;
-//				String emotionalDimensions = articleEmotionalDimensions.get(article.getUrl_name()+article.getArticleNumber());
-
-//				System.err.println("threadId: " + thread.getThreadId() + "\t" +
-//								   "firstMessageTime: " + firstMessageTime + "\t" +
-//								   "firstResponseTime: " + article.getDate());
 			}
 			threadStats.setAverageSentiment(((float)totalSentiment)/sortedArticleSet.size());
 		}
 		db.sync();
 		
+	}
+	
+	public void clearDB(NewsgroupsSentimentTransMetric db)
+	{
+		db.getThreads().getDbCollection().drop();
+		db.sync();
 	}
 
 	@Override
@@ -167,7 +160,7 @@ public class SentimentTransMetricProvider  implements
 
 	@Override
 	public String getSummaryInformation() {
-		return "The metric computes sentiment at the beggining of each thread, at its end, and on average.";
+		return "The metric computes sentiment at the beginning of each thread, at its end, and on average.";
 	}
 
 }

@@ -131,8 +131,8 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 				String responseReply = articleReplyRequest.get(article.getNewsgroupName() + article.getArticleNumber());
 				if (first)
 					firstMessageTime = article.getDate();
-				if ((first)&&(responseReply.equals("Reply"))) isFirstRequest=false;
-				if ((!first)&&(noReplyFound)&&(responseReply.equals("Reply"))) {
+				if ((first)&&(responseReply.equals("__label__Reply"))) isFirstRequest=false;
+				if ((!first)&&(noReplyFound)&&(responseReply.equals("__label__Reply"))) {
 					
 					threadStats.setNewsgroupName(lastNewsgroupName);
 					threadStats.setFirstRequest(isFirstRequest);
@@ -148,7 +148,7 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 //							"firstResponseTime: " + article.getDate() + "\t" + 
 //							"duration: " + duration);
 				}
-				if (responseReply.equals("Reply")) noReplyFound=false;
+				if (responseReply.equals("__label__Reply")) noReplyFound=false;
 				first=false;
 			}
 			if (noReplyFound&&(!first)) {

@@ -374,11 +374,29 @@ public class GitHubImporter implements IImporter {
 				GitHubBugTracker bt;
 				bt = new GitHubBugTracker();
 				bt.setUrl("https://api.github.com/repos/" + projectId + "/issues");
-				String user = projectId.split("/")[0];
+				String owner = projectId.split("/")[0];
 				String repo = projectId.split("/")[1];
-				bt.setUser(user);
-				bt.setRepository(repo);
-				repository.getBugTrackingSystems().add(bt);
+				if(owner.isEmpty() || owner==null || repo.isEmpty() || repo==null )
+				{
+					logger.info("Impossible to create a GitHub Bug Tracker Reader. Missing owner and/or repository.");
+					throw new AssertionError("Repository and/or owner couldn't be parsed correctly from "+ projectId +
+							". Owner: "+owner + ". Repository: "+repo);
+				}
+				else
+				{
+					logger.info("Creating a GitHub Bug Tracker Reader. Owner: "+owner+" Repository: "+repo);
+					if(authString!=null)
+					{
+						logger.info("Creating a GitHub Bug Tracker with authentication.");
+						bt.setProject(authString.substring(14), owner, repo); //Get the pure token
+					}
+					else
+					{
+						logger.info("Creating a GitHub Bug Tracker with no authentication.");
+						bt.setProject(owner, repo);
+					}
+					repository.getBugTrackingSystems().add(bt);
+				}
 			}
 
 			/*

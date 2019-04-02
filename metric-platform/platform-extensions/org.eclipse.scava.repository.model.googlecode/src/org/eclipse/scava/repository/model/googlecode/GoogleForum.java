@@ -19,7 +19,15 @@ public class GoogleForum extends org.eclipse.scava.repository.model.Communicatio
 		super.setSuperTypes("org.eclipse.scava.repository.model.googlecode.CommunicationChannel");
 	}
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "GoogleForum";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}
 	
 	
 	

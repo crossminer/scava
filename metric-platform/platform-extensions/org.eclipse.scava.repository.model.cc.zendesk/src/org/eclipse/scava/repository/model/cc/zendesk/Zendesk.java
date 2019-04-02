@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.repository.model.cc.zendesk;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
 public class Zendesk extends org.eclipse.scava.repository.model.CommunicationChannel {
@@ -126,7 +124,15 @@ public class Zendesk extends org.eclipse.scava.repository.model.CommunicationCha
 		return this;
 	}
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "Zendesk";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return getName();
+	}	
 	
 	
 }

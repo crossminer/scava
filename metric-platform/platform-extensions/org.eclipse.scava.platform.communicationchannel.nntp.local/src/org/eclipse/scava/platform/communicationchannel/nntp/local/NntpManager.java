@@ -47,15 +47,15 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 			return null;
 		}
 
-		int lastArticleChecked = Integer.parseInt(newsgroup.getLastArticleChecked());
+		long lastArticleChecked = Long.parseLong(newsgroup.getLastArticleChecked());
 		if (lastArticleChecked<0) 
-			lastArticleChecked = Integer.parseInt(newsgroupData.getFirstArticle());
-		int lastArticle = Integer.parseInt(newsgroupData.getLastArticleChecked());
+			lastArticleChecked = Long.parseLong(newsgroupData.getFirstArticle());
+		long lastArticle = Long.parseLong(newsgroupData.getLastArticleChecked());
 		
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
 		delta.setNewsgroup(newsgroup);
 
-		int retrievalStep = RETRIEVAL_STEP;
+		long retrievalStep = RETRIEVAL_STEP;
 		Boolean dayCompleted = false;
 		while (!dayCompleted) {
 			if (lastArticleChecked + retrievalStep > lastArticle) {
@@ -68,7 +68,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 			ArrayList<ArticleData> articleDataArrayList;
 			// The following loop discards messages for days earlier than the required one.
 			do {
-				articleDataArrayList = new ArrayList<ArticleData>(retrievalStep);
+				articleDataArrayList = new ArrayList<ArticleData>((int) retrievalStep);
 				articleDataIterable = dbMessages.getArticles().find(
 						ArticleData.ARTICLENUMBER.greaterThan(lastArticleChecked),
 						ArticleData.ARTICLENUMBER.lessThanOrEqualTo(lastArticleChecked + retrievalStep));

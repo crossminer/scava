@@ -128,9 +128,9 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 
 				hourComments.setNumberOfComments(hourComments.getNumberOfComments()+1);
 				String requestReplyClass = getRequestReplyClass(usedClassifier, bugTrackingSystem, comment);
-				if (requestReplyClass.equals("Request"))
+				if (requestReplyClass.equals("__label__Request"))
 					hourComments.setNumberOfRequests(hourComments.getNumberOfRequests()+1);
-				else if (requestReplyClass.equals("Reply"))
+				else if (requestReplyClass.equals("__label__Reply"))
 					hourComments.setNumberOfReplies(hourComments.getNumberOfReplies()+1);
 				db.sync();
 			}
