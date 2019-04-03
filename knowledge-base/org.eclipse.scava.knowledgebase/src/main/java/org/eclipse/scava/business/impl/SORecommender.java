@@ -59,7 +59,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
-@Qualifier("SO")
+@Qualifier("SORecommender")
 public class SORecommender implements IRecommendationProvider {
 
 	@Value("${sorecommender.titleBoostValue}")
@@ -305,10 +305,11 @@ public class SORecommender implements IRecommendationProvider {
 		 * vardecltype fix
 		 */
 		ArrayList<String> imports = new ArrayList<String>();
-		for (String token : tokens.get("ImportDeclaration")) {
-			String imp = token.substring(token.lastIndexOf(".") + 1);
-			imports.add(imp);
-		}
+		if(tokens.containsKey("ImportDeclaration"))
+			for (String token : tokens.get("ImportDeclaration")) {
+				String imp = token.substring(token.lastIndexOf(".") + 1);
+				imports.add(imp);
+			}
 		return imports;
 	}
 
@@ -324,6 +325,7 @@ public class SORecommender implements IRecommendationProvider {
 			while ((text = reader.readLine()) != null)
 				if (text.length() >= 5) {
 					text = text.substring(0, text.length() - 1);
+					if(tokens.containsKey("ImportDeclaration"))
 					for ( String txt : tokens.get("ImportDeclaration")) 
 						if (txt.toLowerCase().contains(text.toLowerCase()))
 							importedTokens.add(txt);

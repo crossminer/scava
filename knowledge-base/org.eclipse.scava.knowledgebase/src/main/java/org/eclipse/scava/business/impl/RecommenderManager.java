@@ -54,19 +54,18 @@ public class RecommenderManager implements IRecommenderManager {
 	@Qualifier("AlternativeLibraries")
 	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
 	@Autowired
-	@Qualifier("APIDocumentation")
-	private IRecommendationProvider apiDocumentationRecommendationProvider;
-	@Autowired
 	@Qualifier("Focus")
 	private IRecommendationProvider focusRecomenderProvider;
-		
+	
 	@Autowired
 	@Qualifier("ApiCallRecommendation")
 	private IRecommendationProvider apiCallRecommendationProvider;
 	
 	@Autowired
-	@Qualifier("SO")
-	private IRecommendationProvider soRecommender;
+	@Qualifier("SORecommender")
+	private SORecommender soRecommender;
+	@Autowired
+	private VersionsRecServiceImpl versionRecommender;
 	
 	@Autowired
 	private ArtifactRepository artifactRepository;
@@ -96,6 +95,8 @@ public class RecommenderManager implements IRecommenderManager {
 			return focusRecomenderProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_DOCUMENTATION))
 			return soRecommender.getRecommendation(query);
+		if(rt.equals(RecommendationType.VERSION))
+			return versionRecommender.getRecommendation(query);
 		else {
 			logger.error("Recommendation not supported");
 			return null;
@@ -153,6 +154,7 @@ public class RecommenderManager implements IRecommenderManager {
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		return recipes;
 	}
+	
 	@Override
 	public List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page) {
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);

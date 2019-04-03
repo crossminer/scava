@@ -18,7 +18,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.scava.business.IRecommenderManager;
-import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
@@ -28,7 +27,6 @@ import org.eclipse.scava.business.model.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,12 +46,6 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/api/recommendation")
 
 public class RecommenderRestController {
-	@Autowired
-	@Qualifier("Dependency")
-	private ISimilarityCalculator dependency;
-	@Autowired
-	@Qualifier("Readme")
-	private ISimilarityCalculator readme;
 	@Autowired
 	private IRecommenderManager recommenderManager;
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderRestController.class);
@@ -79,53 +71,6 @@ public class RecommenderRestController {
 	public @ResponseBody Recommendation getRecommendedLibraries(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		Recommendation r =recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
-		for (RecommendationItem ri : r.getRecommendationItems()) {
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.xerial.snappy:snappy-java")){
-				ri.getRecommendedLibrary().setLibraryName("org.xerial.snappy:snappy-java:1.1.7.2");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-api")){
-				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-api:1.8.0-beta2");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("joda-time:joda-time")){
-				ri.getRecommendedLibrary().setLibraryName("joda-time:joda-time:2.10");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("com.google.code.gson:gson")){
-				ri.getRecommendedLibrary().setLibraryName("com.google.code.gson:gson:2.8.5");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.zookeeper:zookeeper")){
-				ri.getRecommendedLibrary().setLibraryName("org.apache.zookeeper:zookeeper:3.4.13");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.httpcomponents:httpclient")){
-				ri.getRecommendedLibrary().setLibraryName("org.apache.httpcomponents:httpclient:4.5.6");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.elasticsearch:elasticsearch")){
-				ri.getRecommendedLibrary().setLibraryName("org.elasticsearch:elasticsearch:6.4.0");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.codehaus.jackson:jackson-mapper-asl")){
-				ri.getRecommendedLibrary().setLibraryName("org.codehaus.jackson:jackson-mapper-asl:1.9.13");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("log4j:log4j")){
-				ri.getRecommendedLibrary().setLibraryName("log4j:log4j:1.2.17");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-log4j12")){
-				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-log4j12:1.7.25");
-			}
-			/*
-			 * 
-org.xerial.snappy:snappy-java:1.1.7.2
-org.slf4j:slf4j-api:1.8.0-beta2
-joda-time:joda-time:2.10
-com.google.code.gson:gson:2.8.5
-org.apache.zookeeper:zookeeper:3.4.13
-org.apache.httpcomponents:httpclient:4.5.6
-org.elasticsearch:elasticsearch:6.4.0
-org.codehaus.jackson:jackson-mapper-asl:1.9.13
-log4j:log4j:1.2.17
-org.slf4j:slf4j-log4j12:1.7.25
-			 */
-
-			
-		}
 		return r;
 	}
 	
@@ -159,6 +104,13 @@ org.slf4j:slf4j-log4j12:1.7.25
 	public @ResponseBody Recommendation getNextApiCallsRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
+	}
+	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.")
+	@RequestMapping(value = "focus/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getVersions(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
 	}
 	
 	@RequestMapping(value = "query", method = RequestMethod.GET)

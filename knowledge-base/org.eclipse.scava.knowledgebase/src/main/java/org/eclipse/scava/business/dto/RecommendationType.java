@@ -6,5 +6,6 @@ public enum RecommendationType {
 	API_CALL,
 	API_DOCUMENTATION,
 	FOCUS,
-	SO
+	SO,
+	VERSION
 }

@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Build Knowledge Base') {
       steps {
-        configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
+        configFileProvider([configFile(fileId: '791f3c57-627b-46c3-a386-a88597aa92fa', variable: 'MY_KB_APP_PROP')]) {
           dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
             sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn validate'
@@ -20,7 +20,7 @@ pipeline {
     stage('Test Knowledge Base') {
       steps {
         lock('knowledge-base-test-lock') {
-            configFileProvider([configFile(fileId: 'd003cc26-bf21-4793-98e4-3c1f00fdcf5e', variable: 'MY_KB_APP_PROP')]) {
+            configFileProvider([configFile(fileId: '791f3c57-627b-46c3-a386-a88597aa92fa', variable: 'MY_KB_APP_PROP')]) {
                 dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
                     sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
                     sh 'mvn test'
