@@ -22,6 +22,7 @@ pipeline {
         lock('knowledge-base-test-lock') {
             configFileProvider([configFile(fileId: '791f3c57-627b-46c3-a386-a88597aa92fa', variable: 'MY_KB_APP_PROP')]) {
                 dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
+                	sh 'rm -rf /tmp/scava_lucene/'
                     sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
                     sh 'mvn test'
                 }
