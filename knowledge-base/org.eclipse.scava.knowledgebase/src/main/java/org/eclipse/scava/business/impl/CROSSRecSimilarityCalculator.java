@@ -65,7 +65,6 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 					Dependency dep = new Dependency();
 					dep.setGroupID(value[0]);
 					dep.setArtifactID(value[1]);
-					dep.setArtifactID(artifact.getName());
 					deps.add(dep);
 				}
 			}
