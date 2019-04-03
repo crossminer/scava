@@ -193,4 +193,60 @@
 	}
 </script>
 
+<script type="text/javascript">
+loadStencils();
+
+container = document.getElementById('graphContainer');
+experimentId = new URL(document.location).searchParams.get('id');
+
+/* mxEvent.disableContextMenu(container); */
+window.runtimeModelContainer = container;
+
+window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
+window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
+window.runtimeModelGraph.setTooltips(true);
+var oldGetPreferredSizeForCell = window.runtimeModelGraph.getPreferredSizeForCell;
+window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
+{
+	var result = oldGetPreferredSizeForCell.apply(this, arguments);
+	if (result != null)
+	{
+		result.width = result.width + 20;
+		result.height = 40;
+
+	}
+	return result;
+};
+
+window.runtimeModelGraph.getTooltipForCell = function(cell) {
+	return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
+}
+
+window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
+window.runtimeModelGraph.enabled = false;
+
+window.runtimeModelGraph.getModel().beginUpdate();
+
+
+<%
+String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstract";
+//new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
+//graphFile=/Users/blizzfire/WORKSPACES/ECLIPSE/ECLIPSE-PHOTON-EPSILON-WORKSPACE/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/wtpwebapps/org.eclipse.scava.crossflow.web/experiments/calculator/graph.abstract
+
+%>
+try {
+<jsp:include page="<%= graphPath %>" flush="true" />
+
+ var model = window.runtimeModelGraph.getModel();
+
+var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
+layout.execute(window.runtimeModelParent, model.cells[2]);
+
+} finally {
+	// Updates the display
+	window.runtimeModelGraph.getModel().endUpdate();
+}
+
+</script>
+
 <jsp:include page="footer.jsp" />

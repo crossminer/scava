@@ -1,3 +1,22 @@
+// constants
+const INTERNAL_EXCEPTIONS_STREAM_ID = "InternalExceptions";
+const IN_FLIGHT_COUNT = "InFlightCount";
+const SUBSCRIBER_COUNT = "SubscriberCount";
+const FAILED_JOBS_COUNT = "FailedJobs";
+const INTERNAL_EXCEPTION_COUNT = "InternalExceptions";
+const SIZE_COUNT = "Size";
+const STREAM_POST = "Post";
+
+const IN_FLIGHT_LABEL_PRE = "InFlight: ";
+const SUBSCRIBER_LABEL_PRE = "Subscribers: ";
+const FAILED_JOBS_LABEL_PRE = "Failed Jobs: ";
+const INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
+const SIZE_LABEL_PRE = "Size: ";
+
+const METADATA_STREAM_ID = "StreamMetadataBroadcaster";
+const QUEUE_ID_PRE = "Q_";
+const GRAPH_ID_PRE = "G_";
+
 /* (!) filePath must specify a location accessible by the web server */
 function loadFile(filePath) {
 	  var result = null;
@@ -8,7 +27,7 @@ function loadFile(filePath) {
 	    result = xmlhttp.responseText;
 	  }
 	  return result;
-}
+}// loadFile
 
 function main(container, experimentId) {
 	
@@ -60,6 +79,13 @@ function main(container, experimentId) {
 		  
 		  // extract queue information
 		  // similar to as in: https://github.com/crossminer/scava/blob/crossflow/crossflow/org.eclipse.scava.crossflow.elkgraph/org.eclipse.scava.crossflow.elkgraph.web/src/main/java/org/eclipse/scava/crossflow/elkgraph/web/ElkGraphDiagramUpdater.java
+//		  xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+//	        <name>LinesPost.WordCounter.wordcount</name>
+/*
+* 
+*/
+	  
+
 		  console.log(e.data);
 		  window.runtimeModelGraph.getTooltipForCell = function(cell) {
 				return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
@@ -91,23 +117,23 @@ function main(container, experimentId) {
 	window.runtimeModelGraph.getModel().beginUpdate();
 	try {
 
-		loadStencils();
-		
-		$.getScript('experiments/' + experimentId + '/graph.abstract', function()
-		{
-			var model = window.runtimeModelGraph.getModel();
-			
-			var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
-			layout.execute(window.runtimeModelParent, model.cells[2]);
-			
-			var nodeEnc = codec.encode(model);
-			var xml = mxUtils.getXml(nodeEnc);
-		});
+//		$.getScript('experiments/' + experimentId + '/graph.abstract', function()
+//		{
+//			loadStencils();
+//
+//			var model = window.runtimeModelGraph.getModel();
+//			
+//			var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
+//			layout.execute(window.runtimeModelParent, model.cells[2]);
+//			
+//			var nodeEnc = codec.encode(model);
+//			var xml = mxUtils.getXml(nodeEnc);
+//		});
 	
 	} finally {
 		// Updates the display
 		window.runtimeModelGraph.getModel().endUpdate();
 	}
 
-};
+};// main
 
