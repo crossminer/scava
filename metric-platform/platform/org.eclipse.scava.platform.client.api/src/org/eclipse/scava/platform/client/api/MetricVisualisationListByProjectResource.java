@@ -53,7 +53,7 @@ public class MetricVisualisationListByProjectResource extends AbstractApiResourc
 			MetricVisualisation vis = manager.findVisualisationById(mv.getVis().path("id").textValue());
 			if (vis != null) {
 				DB db = platform.getMetricsRepository(project).getDb();
-				JsonNode visualisation = vis.visualise(db, query);
+				JsonNode visualisation = vis.visualiseMetric(db, query);
 				metricVisualisation.add(visualisation);
 			}			
 		}

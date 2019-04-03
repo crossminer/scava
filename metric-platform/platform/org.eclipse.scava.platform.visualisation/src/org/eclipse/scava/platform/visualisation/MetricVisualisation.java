@@ -94,6 +94,20 @@ public class MetricVisualisation {
 		return visualisation;
 	}
 	
+	public JsonNode visualiseMetric(DB db, BasicDBObject query) {
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode visualisation = mapper.createObjectNode();
+				
+		visualisation.put("id", vis.path("id").textValue());
+		visualisation.put("projectId", db.toString());
+		visualisation.put("metricId", metricId);
+		visualisation.put("name", vis.path("name").textValue());
+		visualisation.put("description", vis.path("description").textValue());
+		visualisation.put("type", vis.path("type").textValue());
+		
+		return visualisation;
+	}
+	
 	public byte[] getSparky(DB db, BasicDBObject query) throws IOException, ParseException, UnsparkableVisualisationException {
 		
 		if (vis.get("timeSeries") == null || !vis.get("timeSeries").asBoolean()) {
