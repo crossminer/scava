@@ -43,7 +43,7 @@ public class UploadExperiment extends HttpServlet {
 			
 			// serialize
 		    serialize(request, "xmlFile", experimentPath + "/experiment.xml");
-		    serialize(request, "runtimeModelFile", experimentPath + "/runtimeModel.flexmi");
+		    serialize(request, "runtimeModelFile", experimentPath + "/graph.abstract");
 	    	serialize(request, "jarFile", experimentJarPath + "/" + experimentName + ".jar");
 	    	serialize(request, "inputDataZipFile", experimentPath + "/in.zip");
 	
