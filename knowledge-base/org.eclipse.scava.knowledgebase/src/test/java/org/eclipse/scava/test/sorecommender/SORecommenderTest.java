@@ -150,6 +150,7 @@ public class SORecommenderTest {
 	}
 
 	@Test
+	@Ignore
 	public void soRecomendationTest() {
 		String query = "package com.mkyong.core;\n" + "\n" + "import java.net.UnknownHostException;\n"
 				+ "import java.util.Date;\n" + "import com.mongodb.BasicDBObject;\n" + "import com.mongodb.DB;\n"
