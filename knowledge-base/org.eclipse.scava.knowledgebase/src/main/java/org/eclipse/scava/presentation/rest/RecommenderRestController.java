@@ -106,8 +106,8 @@ public class RecommenderRestController {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
-	@ApiOperation(value = "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.")
-	@RequestMapping(value = "focus/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	@ApiOperation(value = "This resource get list of versions foreach dependecies")
+	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
