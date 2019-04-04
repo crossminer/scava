@@ -10,7 +10,7 @@ function loadStencils() {
 		{
 			mxStencilRegistry.addStencil(shape.getAttribute('name'), new mxStencil(shape));
 			//graph.getStylesheet().putCellStyle(shape.getAttribute('name'), new mxStencil(shape));
-			console.log(shape.getAttribute('name'));
+//			console.log(shape.getAttribute('name'));
 		}
 		
 		shape = shape.nextSibling;
@@ -32,5 +32,5 @@ function createStream(name, graph, parent) {
 }
 
 function link(source, target, graph, parent) {
-	return graph.insertEdge(parent, null, '', source, target);
+	return graph.insertEdge(parent, null, '', source, target, "strokeColor=black");
 }
