@@ -6,7 +6,7 @@
 	<workflow name="SearchWorkflow" package="org.eclipse.scava.crossflow.examples.github.topsearch">
 	
 		<!-- csv source of Github top search result projects (owner/repo) -->
-		<csvsource name="SearchCsvSource" out="SearchRepos" path="data/repos.csv"/>
+		<csvsource name="SearchCsvSource" out="SearchRepos" path="repos.csv"/>
 		
 		<!-- queue of Github top search repos -->
 		<queue name="SearchRepos" type="OwnerRepoTuple"/> 
@@ -24,7 +24,7 @@
 		<queue name="OwnerRepoAuthorCountEntries" type="OwnerRepoAuthorCountTuple"/> 
 		
 		<!-- csv sink for printing unique author count of repositories cloned from GitHub -->
-		<csvsink name="SearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="data/repos-authorCount.csv"/>
+		<csvsink name="SearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" path="reposAuthorCount.csv"/>
 				
 		<!-- Github JavaProjects: github owner/repo -->
 		<type name="OwnerRepoTuple">

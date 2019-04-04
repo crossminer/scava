@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.examples.github.topsearch;
 
+import java.io.File;
+
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
@@ -10,7 +12,7 @@ public class SearchCsvSource extends SearchCsvSourceBase {
 	@Override
 	public void produce() {
 		try {
-			final CsvParser parser = new CsvParser("data/repos.csv");
+			CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "repos.csv").getAbsolutePath());
 		
 			for (CSVRecord record : parser.getRecordsIterable()) {
 				OwnerRepoTuple ownerRepoTuple = new OwnerRepoTuple();
