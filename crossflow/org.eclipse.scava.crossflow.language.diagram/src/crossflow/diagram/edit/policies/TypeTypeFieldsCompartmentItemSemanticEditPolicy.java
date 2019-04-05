@@ -18,7 +18,7 @@ public class TypeTypeFieldsCompartmentItemSemanticEditPolicy extends CrossflowBa
 	* @generated
 	*/
 	public TypeTypeFieldsCompartmentItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Type_2007);
+		super(CrossflowElementTypes.Type_2011);
 	}
 
 	/**

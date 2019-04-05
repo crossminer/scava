@@ -62,6 +62,7 @@ public class FieldItemProvider
 
 			addNamePropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
+			addManyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -111,7 +112,29 @@ public class FieldItemProvider
 	}
 
 	/**
-	 * This returns Field.gif.
+	 * This adds a property descriptor for the Many feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addManyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Field_many_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Field_many_feature", "_UI_Field_type"),
+				 CrossflowPackage.Literals.FIELD__MANY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This returns field.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -134,7 +157,7 @@ public class FieldItemProvider
 			getString("_UI_Field_type") :
 			getString("_UI_Field_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -150,6 +173,7 @@ public class FieldItemProvider
 		switch (notification.getFeatureID(Field.class)) {
 			case CrossflowPackage.FIELD__NAME:
 			case CrossflowPackage.FIELD__TYPE:
+			case CrossflowPackage.FIELD__MANY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

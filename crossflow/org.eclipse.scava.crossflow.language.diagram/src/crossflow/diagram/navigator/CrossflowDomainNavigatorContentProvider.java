@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.navigator;
 
 import java.util.ArrayList;
@@ -29,38 +29,38 @@ import crossflow.diagram.part.CrossflowDiagramEditorPlugin;
 public class CrossflowDomainNavigatorContentProvider implements ICommonContentProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private AdapterFactoryContentProvider myAdapterFctoryContentProvier;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static final Object[] EMPTY_ARRAY = new Object[0];
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Viewer myViewer;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private AdapterFactoryEditingDomain myEditingDomain;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private WorkspaceSynchronizer myWorkspaceSynchronizer;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Runnable myViewerRefreshRunnable;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public CrossflowDomainNavigatorContentProvider() {
 		myAdapterFctoryContentProvier = new AdapterFactoryContentProvider(
 				CrossflowDiagramEditorPlugin.getInstance().getItemProvidersAdapterFactory());
@@ -106,8 +106,8 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void dispose() {
 		myWorkspaceSynchronizer.dispose();
 		myWorkspaceSynchronizer = null;
@@ -119,15 +119,15 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		myViewer = viewer;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	void unloadAllResources() {
 		for (Resource nextResource : myEditingDomain.getResourceSet().getResources()) {
 			nextResource.unload();
@@ -135,8 +135,8 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	void asyncRefresh() {
 		if (myViewer != null && !myViewer.getControl().isDisposed()) {
 			myViewer.getControl().getDisplay().asyncExec(myViewerRefreshRunnable);
@@ -144,15 +144,15 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void restoreState(IMemento aMemento) {
 	}
 
@@ -163,14 +163,14 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void init(ICommonContentExtensionSite aConfig) {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof IFile) {
 			IFile file = (IFile) parentElement;
@@ -187,8 +187,8 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Object[] wrapEObjects(Object[] objects, Object parentElement) {
 		Collection result = new ArrayList();
 		for (int i = 0; i < objects.length; i++) {
@@ -201,8 +201,8 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Object getParent(Object element) {
 		if (element instanceof CrossflowAbstractNavigatorItem) {
 			CrossflowAbstractNavigatorItem abstractNavigatorItem = (CrossflowAbstractNavigatorItem) element;
@@ -212,8 +212,8 @@ public class CrossflowDomainNavigatorContentProvider implements ICommonContentPr
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean hasChildren(Object element) {
 		return element instanceof IFile || getChildren(element).length > 0;
 	}

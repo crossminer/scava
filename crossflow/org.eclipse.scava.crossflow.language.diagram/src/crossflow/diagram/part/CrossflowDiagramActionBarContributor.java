@@ -21,22 +21,22 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class CrossflowDiagramActionBarContributor extends DiagramActionBarContributor {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Class getEditorClass() {
 		return CrossflowDiagramEditor.class;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected String getEditorId() {
 		return CrossflowDiagramEditor.ID;
 	}
 
 	/**
-	 * @generated NOT
-	 */
+	* @generated NOT
+	*/
 	public void init(IActionBars bars, IWorkbenchPage page) {
 
 		//create generation button
@@ -48,20 +48,6 @@ public class CrossflowDiagramActionBarContributor extends DiagramActionBarContri
 				.imageDescriptorFromPlugin("org.eclipse.scava.crossflow.diagram", "icons/Comp-small.png")));
 		a.setText("Generate");
 		a.setDescription("Generate the workflow java code.");
-
-		addAction(a);
-		bars.getToolBarManager().add(a);
-		//
-
-		//create run button
-		a = new RunAction(page);
-
-		a.setId("crossflow-execution");
-		a.setEnabled(true);
-		a.setImageDescriptor(ExtendedImageRegistry.getInstance().getImageDescriptor(AbstractUIPlugin
-				.imageDescriptorFromPlugin("org.eclipse.scava.crossflow.diagram", "icons/Go-small.png")));
-		a.setText("Execute");
-		a.setDescription("Execute the workflow.");
 
 		addAction(a);
 		bars.getToolBarManager().add(a);
@@ -80,6 +66,5 @@ public class CrossflowDiagramActionBarContributor extends DiagramActionBarContri
 		}
 		IAction validateAction = new ValidateAction(page);
 		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
-
 	}
 }

@@ -4,7 +4,6 @@ package crossflow.provider;
 
 
 import crossflow.Configuration;
-import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 
 import java.util.Collection;
@@ -14,8 +13,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -160,14 +157,14 @@ public class ConfigurationItemProvider
 	}
 
 	/**
-	 * This returns Configuration.gif.
+	 * This returns config.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/config.gif"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/config"));
 	}
 
 	/**
@@ -183,7 +180,7 @@ public class ConfigurationItemProvider
 			getString("_UI_Configuration_type") :
 			getString("_UI_Configuration_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

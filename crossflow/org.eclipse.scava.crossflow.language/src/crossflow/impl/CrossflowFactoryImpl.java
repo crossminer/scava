@@ -64,6 +64,8 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.CSV_SOURCE: return createCsvSource();
 			case CrossflowPackage.SINK: return createSink();
 			case CrossflowPackage.CSV_SINK: return createCsvSink();
+			case CrossflowPackage.COMMITMENT_TASK: return createCommitmentTask();
+			case CrossflowPackage.OPINIONATED_TASK: return createOpinionatedTask();
 			case CrossflowPackage.TYPE: return createType();
 			case CrossflowPackage.FIELD: return createField();
 			case CrossflowPackage.CONFIGURATION: return createConfiguration();
@@ -150,6 +152,26 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	public CsvSink createCsvSink() {
 		CsvSinkImpl csvSink = new CsvSinkImpl();
 		return csvSink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CommitmentTask createCommitmentTask() {
+		CommitmentTaskImpl commitmentTask = new CommitmentTaskImpl();
+		return commitmentTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public OpinionatedTask createOpinionatedTask() {
+		OpinionatedTaskImpl opinionatedTask = new OpinionatedTaskImpl();
+		return opinionatedTask;
 	}
 
 	/**

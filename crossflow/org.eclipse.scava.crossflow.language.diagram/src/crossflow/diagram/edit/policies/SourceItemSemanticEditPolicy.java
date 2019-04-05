@@ -36,7 +36,7 @@ public class SourceItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditP
 	* @generated
 	*/
 	public SourceItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Source_2003);
+		super(CrossflowElementTypes.Source_2005);
 	}
 
 	/**

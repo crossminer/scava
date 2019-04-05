@@ -11,346 +11,366 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	static {
 		NLS.initializeMessages("messages", Messages.class); //$NON-NLS-1$
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Messages() {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizardTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizard_DiagramModelFilePageTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizard_DiagramModelFilePageDescription;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizardOpenEditorError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizardCreationError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowCreationWizardPageExtensionError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditorUtil_OpenModelResourceErrorDialogTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditorUtil_OpenModelResourceErrorDialogMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditorUtil_CreateDiagramProgressTask;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditorUtil_CreateDiagramCommandLabel;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_isModifiable;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_handleElementContentChanged;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_IncorrectInputError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_NoDiagramInResourceError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_DiagramLoadingError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_UnsynchronizedFileSaveError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_SaveDiagramTask;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_SaveNextResourceTask;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDocumentProvider_SaveAsOperation;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String InitDiagramFile_ResourceErrorDialogTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String InitDiagramFile_ResourceErrorDialogMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String InitDiagramFile_WizardTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String InitDiagramFile_OpenModelFileDialogTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_CreationPageName;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_CreationPageTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_CreationPageDescription;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageName;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageDescription;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageSelectionTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageNoSelectionMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_RootSelectionPageInvalidSelectionMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_InitDiagramCommand;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowNewDiagramFileWizard_IncorrectRootError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditor_SavingDeletedFile;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditor_SaveAsErrorTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditor_SaveAsErrorMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditor_SaveErrorTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowDiagramEditor_SaveErrorMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowElementChooserDialog_SelectModelElementTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String ModelElementSelectionPageMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String ValidateActionMessage;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String Objects1Group_title;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String Connections2Group_title;
 
 	/**
-	 * @generated
-	 */
-	public static String Configuration1CreationTool_title;
-
-	/**
-	 * @generated
-	 */
-	public static String Configuration1CreationTool_desc;
+	* @generated
+	*/
+	public static String CommitmentTask1CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink2CreationTool_title;
+	public static String CommitmentTask1CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink2CreationTool_desc;
+	public static String Configuration2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSource3CreationTool_title;
+	public static String Configuration2CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSource3CreationTool_desc;
+	public static String CsvSink3CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Field4CreationTool_title;
+	public static String CsvSink3CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Field4CreationTool_desc;
+	public static String CsvSource4CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Queue5CreationTool_title;
+	public static String CsvSource4CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Queue5CreationTool_desc;
+	public static String Field5CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink6CreationTool_title;
+	public static String Field5CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Sink6CreationTool_desc;
+	public static String OpinionatedTask6CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source7CreationTool_title;
+	public static String OpinionatedTask6CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source7CreationTool_desc;
+	public static String Queue7CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task8CreationTool_title;
+	public static String Queue7CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task8CreationTool_desc;
+	public static String Sink8CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic9CreationTool_title;
+	public static String Sink8CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic9CreationTool_desc;
+	public static String Source9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type10CreationTool_title;
+	public static String Source9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type10CreationTool_desc;
+	public static String Task10CreationTool_title;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
+	public static String Task10CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Topic11CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Topic11CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type12CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type12CreationTool_desc;
+
+	/**
+	* @generated
+	*/
 	public static String Extending1CreationTool_title;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String Extending1CreationTool_desc;
 
 	/**
@@ -389,69 +409,79 @@ public class Messages extends NLS {
 	public static String TypeTypeFieldsCompartmentEditPart_title;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CommandName_OpenDiagram;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String NavigatorGroupName_Workflow_1000_links;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Topic_2001_outgoinglinks;
+	public static String NavigatorGroupName_CsvSource_2001_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Topic_2001_incominglinks;
+	public static String NavigatorGroupName_CsvSink_2002_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Queue_2002_outgoinglinks;
+	public static String NavigatorGroupName_Topic_2003_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Queue_2002_incominglinks;
+	public static String NavigatorGroupName_Topic_2003_incominglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Source_2003_outgoinglinks;
+	public static String NavigatorGroupName_Queue_2004_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Sink_2004_outgoinglinks;
+	public static String NavigatorGroupName_Queue_2004_incominglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Task_2006_outgoinglinks;
+	public static String NavigatorGroupName_Source_2005_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Type_2007_incominglinks;
+	public static String NavigatorGroupName_Sink_2006_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_Type_2007_outgoinglinks;
+	public static String NavigatorGroupName_CommitmentTask_2007_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_CsvSource_2009_outgoinglinks;
+	public static String NavigatorGroupName_OpinionatedTask_2008_outgoinglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_CsvSink_2010_outgoinglinks;
+	public static String NavigatorGroupName_Task_2010_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Type_2011_incominglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Type_2011_outgoinglinks;
 
 	/**
 	* @generated
@@ -494,23 +524,23 @@ public class Messages extends NLS {
 	public static String NavigatorGroupName_TypeExtending_4004_source;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String NavigatorActionProvider_OpenDiagramActionName;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String MessageFormatParser_InvalidInputError;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowModelingAssistantProviderTitle;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String CrossflowModelingAssistantProviderMessage;
 
 	//TODO: put accessor fields manually	

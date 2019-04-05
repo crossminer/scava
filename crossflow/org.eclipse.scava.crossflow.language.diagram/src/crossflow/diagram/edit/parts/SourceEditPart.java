@@ -3,14 +3,10 @@
  */
 package crossflow.diagram.edit.parts;
 
-import org.eclipse.draw2d.GridData;
-import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gef.EditPart;
@@ -27,6 +23,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
+import org.eclipse.gmf.runtime.lite.svg.SVGFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
@@ -41,7 +38,7 @@ public class SourceEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2003;
+	public static final int VISUAL_ID = 2005;
 
 	/**
 	* @generated
@@ -266,7 +263,7 @@ public class SourceEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class SourceFigure extends RoundedRectangle {
+	public class SourceFigure extends SVGFigure {
 
 		/**
 		 * @generated
@@ -277,13 +274,7 @@ public class SourceEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public SourceFigure() {
-
-			GridLayout layoutThis = new GridLayout();
-			layoutThis.numColumns = 1;
-			layoutThis.makeColumnsEqualWidth = true;
-			this.setLayoutManager(layoutThis);
-
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setURI("platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg");
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -298,15 +289,7 @@ public class SourceEditPart extends ShapeNodeEditPart {
 
 			fFigureSourceLabelFigure.setText("Source");
 
-			GridData constraintFFigureSourceLabelFigure = new GridData();
-			constraintFFigureSourceLabelFigure.verticalAlignment = GridData.CENTER;
-			constraintFFigureSourceLabelFigure.horizontalAlignment = GridData.CENTER;
-			constraintFFigureSourceLabelFigure.horizontalIndent = 0;
-			constraintFFigureSourceLabelFigure.horizontalSpan = 1;
-			constraintFFigureSourceLabelFigure.verticalSpan = 1;
-			constraintFFigureSourceLabelFigure.grabExcessHorizontalSpace = true;
-			constraintFFigureSourceLabelFigure.grabExcessVerticalSpace = true;
-			this.add(fFigureSourceLabelFigure, constraintFFigureSourceLabelFigure);
+			this.add(fFigureSourceLabelFigure);
 
 		}
 

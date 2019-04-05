@@ -171,7 +171,7 @@ public class WorkflowItemProvider
 			getString("_UI_Workflow_type") :
 			getString("_UI_Workflow_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -250,6 +250,16 @@ public class WorkflowItemProvider
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__TASKS,
 				 CrossflowFactory.eINSTANCE.createCsvSink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCommitmentTask()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createOpinionatedTask()));
 
 		newChildDescriptors.add
 			(createChildParameter

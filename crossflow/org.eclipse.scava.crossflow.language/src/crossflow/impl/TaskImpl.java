@@ -3,6 +3,7 @@
 package crossflow.impl;
 
 import crossflow.CrossflowPackage;
+import crossflow.Field;
 import crossflow.Stream;
 import crossflow.Task;
 
@@ -19,6 +20,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -36,6 +38,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.TaskImpl#getMasterOnly <em>Master Only</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getCached <em>Cached</em>}</li>
+ *   <li>{@link crossflow.impl.TaskImpl#getMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflow.impl.TaskImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
@@ -140,6 +144,36 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @ordered
 	 */
 	protected Boolean cached = CACHED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMultipleOutputs() <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultipleOutputs()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean MULTIPLE_OUTPUTS_EDEFAULT = Boolean.FALSE;
+
+	/**
+	 * The cached value of the '{@link #getMultipleOutputs() <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultipleOutputs()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean multipleOutputs = MULTIPLE_OUTPUTS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> parameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -273,6 +307,39 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Boolean getMultipleOutputs() {
+		return multipleOutputs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMultipleOutputs(Boolean newMultipleOutputs) {
+		Boolean oldMultipleOutputs = multipleOutputs;
+		multipleOutputs = newMultipleOutputs;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TASK__MULTIPLE_OUTPUTS, oldMultipleOutputs, multipleOutputs));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Field> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectResolvingEList<Field>(Field.class, this, CrossflowPackage.TASK__PARAMETERS);
+		}
+		return parameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -321,6 +388,10 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getParallel();
 			case CrossflowPackage.TASK__CACHED:
 				return getCached();
+			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
+				return getMultipleOutputs();
+			case CrossflowPackage.TASK__PARAMETERS:
+				return getParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -354,6 +425,13 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case CrossflowPackage.TASK__CACHED:
 				setCached((Boolean)newValue);
 				return;
+			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
+				setMultipleOutputs((Boolean)newValue);
+				return;
+			case CrossflowPackage.TASK__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Field>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -384,6 +462,12 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case CrossflowPackage.TASK__CACHED:
 				setCached(CACHED_EDEFAULT);
 				return;
+			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
+				setMultipleOutputs(MULTIPLE_OUTPUTS_EDEFAULT);
+				return;
+			case CrossflowPackage.TASK__PARAMETERS:
+				getParameters().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -408,6 +492,10 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return PARALLEL_EDEFAULT == null ? parallel != null : !PARALLEL_EDEFAULT.equals(parallel);
 			case CrossflowPackage.TASK__CACHED:
 				return CACHED_EDEFAULT == null ? cached != null : !CACHED_EDEFAULT.equals(cached);
+			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
+				return MULTIPLE_OUTPUTS_EDEFAULT == null ? multipleOutputs != null : !MULTIPLE_OUTPUTS_EDEFAULT.equals(multipleOutputs);
+			case CrossflowPackage.TASK__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -430,6 +518,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 		result.append(parallel);
 		result.append(", cached: ");
 		result.append(cached);
+		result.append(", multipleOutputs: ");
+		result.append(multipleOutputs);
 		result.append(')');
 		return result.toString();
 	}

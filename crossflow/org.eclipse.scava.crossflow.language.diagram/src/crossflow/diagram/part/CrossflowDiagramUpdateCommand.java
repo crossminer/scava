@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.part;
 
 import java.util.Iterator;
@@ -24,20 +24,20 @@ import org.eclipse.ui.PlatformUI;
 public class CrossflowDiagramUpdateCommand implements IHandler {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void addHandlerListener(IHandlerListener handlerListener) {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void dispose() {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
 				.getSelection();
@@ -62,22 +62,22 @@ public class CrossflowDiagramUpdateCommand implements IHandler {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isEnabled() {
 		return true;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isHandled() {
 		return true;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void removeHandlerListener(IHandlerListener handlerListener) {
 	}
 

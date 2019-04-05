@@ -367,13 +367,31 @@ public interface CrossflowPackage extends EPackage {
 	int TASK__CACHED = 5;
 
 	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__MULTIPLE_OUTPUTS = 6;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__PARAMETERS = 7;
+
+	/**
 	 * The number of structural features of the '<em>Task</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK_FEATURE_COUNT = 6;
+	int TASK_FEATURE_COUNT = 8;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -438,6 +456,24 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__PARAMETERS = TASK__PARAMETERS;
 
 	/**
 	 * The number of structural features of the '<em>Source</em>' class.
@@ -511,6 +547,24 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SOURCE__CACHED = SOURCE__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__MULTIPLE_OUTPUTS = SOURCE__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__PARAMETERS = SOURCE__PARAMETERS;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' attribute.
@@ -595,6 +649,24 @@ public interface CrossflowPackage extends EPackage {
 	int SINK__CACHED = TASK__CACHED;
 
 	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__PARAMETERS = TASK__PARAMETERS;
+
+	/**
 	 * The number of structural features of the '<em>Sink</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -668,6 +740,24 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SINK__CACHED = SINK__CACHED;
 
 	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__MULTIPLE_OUTPUTS = SINK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__PARAMETERS = SINK__PARAMETERS;
+
+	/**
 	 * The feature id for the '<em><b>Path</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -686,6 +776,197 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SINK_FEATURE_COUNT = SINK_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.CommitmentTaskImpl <em>Commitment Task</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.CommitmentTaskImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getCommitmentTask()
+	 * @generated
+	 */
+	int COMMITMENT_TASK = 9;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__NAME = TASK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__INPUT = TASK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__PARALLEL = TASK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Commit After</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__COMMIT_AFTER = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Commitment Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.OpinionatedTaskImpl <em>Opinionated Task</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.OpinionatedTaskImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getOpinionatedTask()
+	 * @generated
+	 */
+	int OPINIONATED_TASK = 10;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__NAME = TASK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__INPUT = TASK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__PARALLEL = TASK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The number of structural features of the '<em>Opinionated Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -693,7 +974,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 9;
+	int TYPE = 11;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -757,7 +1038,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getField()
 	 * @generated
 	 */
-	int FIELD = 10;
+	int FIELD = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -778,13 +1059,22 @@ public interface CrossflowPackage extends EPackage {
 	int FIELD__TYPE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__MANY = 2;
+
+	/**
 	 * The number of structural features of the '<em>Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = 2;
+	int FIELD_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.ConfigurationImpl <em>Configuration</em>}' class.
@@ -794,7 +1084,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getConfiguration()
 	 * @generated
 	 */
-	int CONFIGURATION = 11;
+	int CONFIGURATION = 13;
 
 	/**
 	 * The feature id for the '<em><b>Number Of Workers</b></em>' attribute.
@@ -1080,6 +1370,28 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getTask_Cached();
 
 	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Multiple Outputs</em>'.
+	 * @see crossflow.Task#getMultipleOutputs()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EAttribute getTask_MultipleOutputs();
+
+	/**
+	 * Returns the meta object for the reference list '{@link crossflow.Task#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Parameters</em>'.
+	 * @see crossflow.Task#getParameters()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EReference getTask_Parameters();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Source <em>Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1140,6 +1452,37 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getCsvSink_Path();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.CommitmentTask <em>Commitment Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Commitment Task</em>'.
+	 * @see crossflow.CommitmentTask
+	 * @generated
+	 */
+	EClass getCommitmentTask();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.CommitmentTask#getCommitAfter <em>Commit After</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Commit After</em>'.
+	 * @see crossflow.CommitmentTask#getCommitAfter()
+	 * @see #getCommitmentTask()
+	 * @generated
+	 */
+	EAttribute getCommitmentTask_CommitAfter();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.OpinionatedTask <em>Opinionated Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Opinionated Task</em>'.
+	 * @see crossflow.OpinionatedTask
+	 * @generated
+	 */
+	EClass getOpinionatedTask();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Type <em>Type</em>}'.
@@ -1237,6 +1580,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getField_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Field#isMany <em>Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Many</em>'.
+	 * @see crossflow.Field#isMany()
+	 * @see #getField()
+	 * @generated
+	 */
+	EAttribute getField_Many();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Configuration <em>Configuration</em>}'.
@@ -1501,6 +1855,22 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute TASK__CACHED = eINSTANCE.getTask_Cached();
 
 		/**
+		 * The meta object literal for the '<em><b>Multiple Outputs</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TASK__MULTIPLE_OUTPUTS = eINSTANCE.getTask_MultipleOutputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK__PARAMETERS = eINSTANCE.getTask_Parameters();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1555,6 +1925,34 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CSV_SINK__PATH = eINSTANCE.getCsvSink_Path();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.CommitmentTaskImpl <em>Commitment Task</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.CommitmentTaskImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getCommitmentTask()
+		 * @generated
+		 */
+		EClass COMMITMENT_TASK = eINSTANCE.getCommitmentTask();
+
+		/**
+		 * The meta object literal for the '<em><b>Commit After</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMMITMENT_TASK__COMMIT_AFTER = eINSTANCE.getCommitmentTask_CommitAfter();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.OpinionatedTaskImpl <em>Opinionated Task</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.OpinionatedTaskImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getOpinionatedTask()
+		 * @generated
+		 */
+		EClass OPINIONATED_TASK = eINSTANCE.getOpinionatedTask();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
@@ -1631,6 +2029,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FIELD__TYPE = eINSTANCE.getField_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.ConfigurationImpl <em>Configuration</em>}' class.

@@ -256,6 +256,52 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CommitmentTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CommitmentTaskItemProvider commitmentTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CommitmentTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCommitmentTaskAdapter() {
+		if (commitmentTaskItemProvider == null) {
+			commitmentTaskItemProvider = new CommitmentTaskItemProvider(this);
+		}
+
+		return commitmentTaskItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.OpinionatedTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected OpinionatedTaskItemProvider opinionatedTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.OpinionatedTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createOpinionatedTaskAdapter() {
+		if (opinionatedTaskItemProvider == null) {
+			opinionatedTaskItemProvider = new OpinionatedTaskItemProvider(this);
+		}
+
+		return opinionatedTaskItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link crossflow.Type} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -431,6 +477,8 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (csvSourceItemProvider != null) csvSourceItemProvider.dispose();
 		if (sinkItemProvider != null) sinkItemProvider.dispose();
 		if (csvSinkItemProvider != null) csvSinkItemProvider.dispose();
+		if (commitmentTaskItemProvider != null) commitmentTaskItemProvider.dispose();
+		if (opinionatedTaskItemProvider != null) opinionatedTaskItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
 		if (configurationItemProvider != null) configurationItemProvider.dispose();

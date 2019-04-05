@@ -12,8 +12,8 @@ import org.eclipse.gmf.tooling.runtime.providers.DefaultElementTypeIconProvider;
 public class CrossflowIconProvider extends DefaultElementTypeIconProvider implements IIconProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public CrossflowIconProvider() {
 		super(CrossflowElementTypes.TYPED_INSTANCE);
 	}

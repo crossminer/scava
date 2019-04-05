@@ -60,7 +60,7 @@ public class FieldName2EditPart extends CompartmentEditPart implements ITextAwar
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5005;
+	public static final int VISUAL_ID = 5011;
 
 	/**
 	* @generated
@@ -195,11 +195,7 @@ public class FieldName2EditPart extends CompartmentEditPart implements ITextAwar
 	* @generated
 	*/
 	protected Image getLabelIcon() {
-		EObject parserElement = getParserElement();
-		if (parserElement == null) {
-			return null;
-		}
-		return CrossflowElementTypes.getImage(parserElement.eClass());
+		return null;
 	}
 
 	/**

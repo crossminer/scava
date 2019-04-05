@@ -60,7 +60,7 @@ public class TaskNameEditPart extends CompartmentEditPart implements ITextAwareE
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5004;
+	public static final int VISUAL_ID = 5010;
 
 	/**
 	* @generated
@@ -195,11 +195,7 @@ public class TaskNameEditPart extends CompartmentEditPart implements ITextAwareE
 	* @generated
 	*/
 	protected Image getLabelIcon() {
-		EObject parserElement = getParserElement();
-		if (parserElement == null) {
-			return null;
-		}
-		return CrossflowElementTypes.getImage(parserElement.eClass());
+		return null;
 	}
 
 	/**
@@ -295,7 +291,7 @@ public class TaskNameEditPart extends CompartmentEditPart implements ITextAwareE
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Task_2006, getParserElement(),
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Task_2010, getParserElement(),
 					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.TaskNameEditPart.VISUAL_ID));
 		}
 		return parser;

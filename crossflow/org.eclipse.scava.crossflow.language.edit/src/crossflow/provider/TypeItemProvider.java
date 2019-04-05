@@ -190,7 +190,7 @@ public class TypeItemProvider
 	}
 
 	/**
-	 * This returns Type.gif.
+	 * This returns struct.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -213,7 +213,7 @@ public class TypeItemProvider
 			getString("_UI_Type_type") :
 			getString("_UI_Type_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

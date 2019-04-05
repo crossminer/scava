@@ -60,7 +60,7 @@ public class ConfigurationNumberOfWorkersIsMasterEditPart extends CompartmentEdi
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5003;
+	public static final int VISUAL_ID = 5009;
 
 	/**
 	* @generated
@@ -295,7 +295,7 @@ public class ConfigurationNumberOfWorkersIsMasterEditPart extends CompartmentEdi
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Configuration_2005, getParserElement(),
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Configuration_2009, getParserElement(),
 					CrossflowVisualIDRegistry.getType(
 							crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID));
 		}

@@ -60,7 +60,7 @@ public class CsvSourceNameEditPart extends CompartmentEditPart implements ITextA
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5008;
+	public static final int VISUAL_ID = 5001;
 
 	/**
 	* @generated
@@ -195,11 +195,7 @@ public class CsvSourceNameEditPart extends CompartmentEditPart implements ITextA
 	* @generated
 	*/
 	protected Image getLabelIcon() {
-		EObject parserElement = getParserElement();
-		if (parserElement == null) {
-			return null;
-		}
-		return CrossflowElementTypes.getImage(parserElement.eClass());
+		return null;
 	}
 
 	/**
@@ -295,7 +291,7 @@ public class CsvSourceNameEditPart extends CompartmentEditPart implements ITextA
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.CsvSource_2009, getParserElement(),
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.CsvSource_2001, getParserElement(),
 					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.CsvSourceNameEditPart.VISUAL_ID));
 		}
 		return parser;

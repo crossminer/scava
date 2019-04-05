@@ -17,13 +17,13 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 public class CrossflowCreationWizardPage extends WizardNewFileCreationPage {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private final String fileExtension;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public CrossflowCreationWizardPage(String pageName, IStructuredSelection selection, String fileExtension) {
 		super(pageName, selection);
 		this.fileExtension = fileExtension;
@@ -39,15 +39,15 @@ public class CrossflowCreationWizardPage extends WizardNewFileCreationPage {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public URI getURI() {
 		return URI.createPlatformResourceURI(getFilePath().toString(), false);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IPath getFilePath() {
 		IPath path = getContainerFullPath();
 		if (path == null) {
@@ -61,8 +61,8 @@ public class CrossflowCreationWizardPage extends WizardNewFileCreationPage {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		setFileName(
@@ -71,8 +71,8 @@ public class CrossflowCreationWizardPage extends WizardNewFileCreationPage {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean validatePage() {
 		if (!super.validatePage()) {
 			return false;

@@ -18,11 +18,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import crossflow.CrossflowPackage;
+import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.ConfigurationEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -42,116 +44,112 @@ import crossflow.diagram.part.CrossflowDiagramEditorPlugin;
 public class CrossflowElementTypes {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private CrossflowElementTypes() {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static Map<IElementType, ENamedElement> elements;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static DiagramElementTypeImages elementTypeImages = new DiagramElementTypeImages(
 			CrossflowDiagramEditorPlugin.getInstance().getItemProvidersAdapterFactory());
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static Set<IElementType> KNOWN_ELEMENT_TYPES;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final IElementType Workflow_1000 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Workflow_1000"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType CsvSource_2009 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.CsvSource_2009"); //$NON-NLS-1$
-
+	public static final IElementType CsvSource_2001 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.CsvSource_2001"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType CsvSink_2010 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.CsvSink_2010"); //$NON-NLS-1$
-
+	public static final IElementType CsvSink_2002 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.CsvSink_2002"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Topic_2001 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Topic_2001"); //$NON-NLS-1$
-
+	public static final IElementType Topic_2003 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Topic_2003"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Queue_2002 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Queue_2002"); //$NON-NLS-1$
-
+	public static final IElementType Queue_2004 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Queue_2004"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Source_2003 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Source_2003"); //$NON-NLS-1$
-
+	public static final IElementType Source_2005 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Source_2005"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Sink_2004 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Sink_2004"); //$NON-NLS-1$
-
+	public static final IElementType Sink_2006 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Sink_2006"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Configuration_2005 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Configuration_2005"); //$NON-NLS-1$
-
+	public static final IElementType CommitmentTask_2007 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.CommitmentTask_2007"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Task_2006 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Task_2006"); //$NON-NLS-1$
-
+	public static final IElementType OpinionatedTask_2008 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.OpinionatedTask_2008"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Type_2007 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Type_2007"); //$NON-NLS-1$
-
+	public static final IElementType Configuration_2009 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Configuration_2009"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
-	public static final IElementType Field_2008 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Field_2008"); //$NON-NLS-1$
-
+	public static final IElementType Task_2010 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Task_2010"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType Type_2011 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Type_2011"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType Field_2012 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Field_2012"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
 	public static final IElementType Field_3001 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Field_3001"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
 	public static final IElementType StreamType_4001 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.StreamType_4001"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
 	public static final IElementType TaskInput_4002 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.TaskInput_4002"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
 	public static final IElementType TaskOutput_4003 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.TaskOutput_4003"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
@@ -159,38 +157,38 @@ public class CrossflowElementTypes {
 			"org.eclipse.scava.crossflow.language.diagram.TypeExtending_4004"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static ImageDescriptor getImageDescriptor(ENamedElement element) {
 		return elementTypeImages.getImageDescriptor(element);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static Image getImage(ENamedElement element) {
 		return elementTypeImages.getImage(element);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static ImageDescriptor getImageDescriptor(IAdaptable hint) {
 		return getImageDescriptor(getElement(hint));
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static Image getImage(IAdaptable hint) {
 		return getImage(getElement(hint));
 	}
 
 	/**
-	 * Returns 'type' of the ecore object associated with the hint.
-	 * 
-	 * @generated
-	 */
+	* Returns 'type' of the ecore object associated with the hint.
+	* 
+	* @generated
+	*/
 	public static ENamedElement getElement(IAdaptable hint) {
 		Object type = hint.getAdapter(IElementType.class);
 		if (elements == null) {
@@ -198,25 +196,29 @@ public class CrossflowElementTypes {
 
 			elements.put(Workflow_1000, CrossflowPackage.eINSTANCE.getWorkflow());
 
-			elements.put(CsvSource_2009, CrossflowPackage.eINSTANCE.getCsvSource());
+			elements.put(CsvSource_2001, CrossflowPackage.eINSTANCE.getCsvSource());
 
-			elements.put(CsvSink_2010, CrossflowPackage.eINSTANCE.getCsvSink());
+			elements.put(CsvSink_2002, CrossflowPackage.eINSTANCE.getCsvSink());
 
-			elements.put(Topic_2001, CrossflowPackage.eINSTANCE.getTopic());
+			elements.put(Topic_2003, CrossflowPackage.eINSTANCE.getTopic());
 
-			elements.put(Queue_2002, CrossflowPackage.eINSTANCE.getQueue());
+			elements.put(Queue_2004, CrossflowPackage.eINSTANCE.getQueue());
 
-			elements.put(Source_2003, CrossflowPackage.eINSTANCE.getSource());
+			elements.put(Source_2005, CrossflowPackage.eINSTANCE.getSource());
 
-			elements.put(Sink_2004, CrossflowPackage.eINSTANCE.getSink());
+			elements.put(Sink_2006, CrossflowPackage.eINSTANCE.getSink());
 
-			elements.put(Configuration_2005, CrossflowPackage.eINSTANCE.getConfiguration());
+			elements.put(CommitmentTask_2007, CrossflowPackage.eINSTANCE.getCommitmentTask());
 
-			elements.put(Task_2006, CrossflowPackage.eINSTANCE.getTask());
+			elements.put(OpinionatedTask_2008, CrossflowPackage.eINSTANCE.getOpinionatedTask());
 
-			elements.put(Type_2007, CrossflowPackage.eINSTANCE.getType());
+			elements.put(Configuration_2009, CrossflowPackage.eINSTANCE.getConfiguration());
 
-			elements.put(Field_2008, CrossflowPackage.eINSTANCE.getField());
+			elements.put(Task_2010, CrossflowPackage.eINSTANCE.getTask());
+
+			elements.put(Type_2011, CrossflowPackage.eINSTANCE.getType());
+
+			elements.put(Field_2012, CrossflowPackage.eINSTANCE.getField());
 
 			elements.put(Field_3001, CrossflowPackage.eINSTANCE.getField());
 
@@ -232,29 +234,31 @@ public class CrossflowElementTypes {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static IElementType getElementType(String id) {
 		return ElementTypeRegistry.getInstance().getType(id);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static boolean isKnownElementType(IElementType elementType) {
 		if (KNOWN_ELEMENT_TYPES == null) {
 			KNOWN_ELEMENT_TYPES = new HashSet<IElementType>();
 			KNOWN_ELEMENT_TYPES.add(Workflow_1000);
-			KNOWN_ELEMENT_TYPES.add(CsvSource_2009);
-			KNOWN_ELEMENT_TYPES.add(CsvSink_2010);
-			KNOWN_ELEMENT_TYPES.add(Topic_2001);
-			KNOWN_ELEMENT_TYPES.add(Queue_2002);
-			KNOWN_ELEMENT_TYPES.add(Source_2003);
-			KNOWN_ELEMENT_TYPES.add(Sink_2004);
-			KNOWN_ELEMENT_TYPES.add(Configuration_2005);
-			KNOWN_ELEMENT_TYPES.add(Task_2006);
-			KNOWN_ELEMENT_TYPES.add(Type_2007);
-			KNOWN_ELEMENT_TYPES.add(Field_2008);
+			KNOWN_ELEMENT_TYPES.add(CsvSource_2001);
+			KNOWN_ELEMENT_TYPES.add(CsvSink_2002);
+			KNOWN_ELEMENT_TYPES.add(Topic_2003);
+			KNOWN_ELEMENT_TYPES.add(Queue_2004);
+			KNOWN_ELEMENT_TYPES.add(Source_2005);
+			KNOWN_ELEMENT_TYPES.add(Sink_2006);
+			KNOWN_ELEMENT_TYPES.add(CommitmentTask_2007);
+			KNOWN_ELEMENT_TYPES.add(OpinionatedTask_2008);
+			KNOWN_ELEMENT_TYPES.add(Configuration_2009);
+			KNOWN_ELEMENT_TYPES.add(Task_2010);
+			KNOWN_ELEMENT_TYPES.add(Type_2011);
+			KNOWN_ELEMENT_TYPES.add(Field_2012);
 			KNOWN_ELEMENT_TYPES.add(Field_3001);
 			KNOWN_ELEMENT_TYPES.add(StreamType_4001);
 			KNOWN_ELEMENT_TYPES.add(TaskInput_4002);
@@ -265,32 +269,36 @@ public class CrossflowElementTypes {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static IElementType getElementType(int visualID) {
 		switch (visualID) {
 		case WorkflowEditPart.VISUAL_ID:
 			return Workflow_1000;
 		case CsvSourceEditPart.VISUAL_ID:
-			return CsvSource_2009;
+			return CsvSource_2001;
 		case CsvSinkEditPart.VISUAL_ID:
-			return CsvSink_2010;
+			return CsvSink_2002;
 		case TopicEditPart.VISUAL_ID:
-			return Topic_2001;
+			return Topic_2003;
 		case QueueEditPart.VISUAL_ID:
-			return Queue_2002;
+			return Queue_2004;
 		case SourceEditPart.VISUAL_ID:
-			return Source_2003;
+			return Source_2005;
 		case SinkEditPart.VISUAL_ID:
-			return Sink_2004;
+			return Sink_2006;
+		case CommitmentTaskEditPart.VISUAL_ID:
+			return CommitmentTask_2007;
+		case OpinionatedTaskEditPart.VISUAL_ID:
+			return OpinionatedTask_2008;
 		case ConfigurationEditPart.VISUAL_ID:
-			return Configuration_2005;
+			return Configuration_2009;
 		case TaskEditPart.VISUAL_ID:
-			return Task_2006;
+			return Task_2010;
 		case TypeEditPart.VISUAL_ID:
-			return Type_2007;
+			return Type_2011;
 		case FieldEditPart.VISUAL_ID:
-			return Field_2008;
+			return Field_2012;
 		case Field2EditPart.VISUAL_ID:
 			return Field_3001;
 		case StreamTypeEditPart.VISUAL_ID:
@@ -306,8 +314,8 @@ public class CrossflowElementTypes {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final DiagramElementTypes TYPED_INSTANCE = new DiagramElementTypes(elementTypeImages) {
 
 		/**

@@ -18,21 +18,24 @@ import crossflow.diagram.providers.CrossflowModelingAssistantProvider;
 public class CrossflowModelingAssistantProviderOfWorkflowEditPart extends CrossflowModelingAssistantProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	@Override
+
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(10);
-		types.add(CrossflowElementTypes.CsvSource_2009);
-		types.add(CrossflowElementTypes.CsvSink_2010);
-		types.add(CrossflowElementTypes.Topic_2001);
-		types.add(CrossflowElementTypes.Queue_2002);
-		types.add(CrossflowElementTypes.Source_2003);
-		types.add(CrossflowElementTypes.Sink_2004);
-		types.add(CrossflowElementTypes.Configuration_2005);
-		types.add(CrossflowElementTypes.Task_2006);
-		types.add(CrossflowElementTypes.Type_2007);
-		types.add(CrossflowElementTypes.Field_2008);
+		List<IElementType> types = new ArrayList<IElementType>(12);
+		types.add(CrossflowElementTypes.CsvSource_2001);
+		types.add(CrossflowElementTypes.CsvSink_2002);
+		types.add(CrossflowElementTypes.Topic_2003);
+		types.add(CrossflowElementTypes.Queue_2004);
+		types.add(CrossflowElementTypes.Source_2005);
+		types.add(CrossflowElementTypes.Sink_2006);
+		types.add(CrossflowElementTypes.CommitmentTask_2007);
+		types.add(CrossflowElementTypes.OpinionatedTask_2008);
+		types.add(CrossflowElementTypes.Configuration_2009);
+		types.add(CrossflowElementTypes.Task_2010);
+		types.add(CrossflowElementTypes.Type_2011);
+		types.add(CrossflowElementTypes.Field_2012);
 		return types;
 	}
 

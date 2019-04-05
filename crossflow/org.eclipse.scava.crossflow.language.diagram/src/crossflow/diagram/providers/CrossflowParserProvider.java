@@ -17,14 +17,18 @@ import org.eclipse.gmf.runtime.emf.ui.services.parser.ParserHintAdapter;
 import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
+import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
 import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
 import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
 import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.QueueNameEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
+import crossflow.diagram.edit.parts.TopicNameEditPart;
 import crossflow.diagram.edit.parts.TypeNameEditPart;
 import crossflow.diagram.parsers.MessageFormatParser;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
@@ -37,204 +41,280 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
-	private IParser csvSourceName_5008Parser;
+	private IParser csvSourceName_5001Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getCsvSourceName_5008Parser() {
-		if (csvSourceName_5008Parser == null) {
+	private IParser getCsvSourceName_5001Parser() {
+		if (csvSourceName_5001Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			csvSourceName_5008Parser = parser;
+			csvSourceName_5001Parser = parser;
 		}
-		return csvSourceName_5008Parser;
+		return csvSourceName_5001Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser csvSinkName_5009Parser;
+	private IParser csvSinkName_5002Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getCsvSinkName_5009Parser() {
-		if (csvSinkName_5009Parser == null) {
+	private IParser getCsvSinkName_5002Parser() {
+		if (csvSinkName_5002Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			csvSinkName_5009Parser = parser;
+			csvSinkName_5002Parser = parser;
 		}
-		return csvSinkName_5009Parser;
+		return csvSinkName_5002Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser sourceName_5001Parser;
+	private IParser topicName_5003Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getSourceName_5001Parser() {
-		if (sourceName_5001Parser == null) {
-			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+	private IParser getTopicName_5003Parser() {
+		if (topicName_5003Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getStream_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			sourceName_5001Parser = parser;
+			topicName_5003Parser = parser;
 		}
-		return sourceName_5001Parser;
+		return topicName_5003Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser sinkName_5002Parser;
+	private IParser queueName_5004Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getSinkName_5002Parser() {
-		if (sinkName_5002Parser == null) {
-			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+	private IParser getQueueName_5004Parser() {
+		if (queueName_5004Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getStream_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			sinkName_5002Parser = parser;
+			queueName_5004Parser = parser;
 		}
-		return sinkName_5002Parser;
+		return queueName_5004Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser configurationNumberOfWorkersIsMasterAlsoWorker_5003Parser;
+	private IParser sourceName_5005Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getConfigurationNumberOfWorkersIsMasterAlsoWorker_5003Parser() {
-		if (configurationNumberOfWorkersIsMasterAlsoWorker_5003Parser == null) {
+	private IParser getSourceName_5005Parser() {
+		if (sourceName_5005Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			sourceName_5005Parser = parser;
+		}
+		return sourceName_5005Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser sinkName_5006Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSinkName_5006Parser() {
+		if (sinkName_5006Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			sinkName_5006Parser = parser;
+		}
+		return sinkName_5006Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser commitmentTaskName_5007Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getCommitmentTaskName_5007Parser() {
+		if (commitmentTaskName_5007Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			commitmentTaskName_5007Parser = parser;
+		}
+		return commitmentTaskName_5007Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser opinionatedTaskName_5008Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getOpinionatedTaskName_5008Parser() {
+		if (opinionatedTaskName_5008Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			opinionatedTaskName_5008Parser = parser;
+		}
+		return opinionatedTaskName_5008Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getConfigurationNumberOfWorkersIsMasterAlsoWorker_5009Parser() {
+		if (configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getConfiguration_NumberOfWorkers(),
 					CrossflowPackage.eINSTANCE.getConfiguration_IsMasterAlsoWorker() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
 			parser.setEditorPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
 			parser.setEditPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
-			configurationNumberOfWorkersIsMasterAlsoWorker_5003Parser = parser;
+			configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser = parser;
 		}
-		return configurationNumberOfWorkersIsMasterAlsoWorker_5003Parser;
+		return configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser taskName_5004Parser;
+	private IParser taskName_5010Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getTaskName_5004Parser() {
-		if (taskName_5004Parser == null) {
+	private IParser getTaskName_5010Parser() {
+		if (taskName_5010Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			taskName_5004Parser = parser;
+			taskName_5010Parser = parser;
 		}
-		return taskName_5004Parser;
+		return taskName_5010Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser typeName_5006Parser;
+	private IParser typeName_5012Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getTypeName_5006Parser() {
-		if (typeName_5006Parser == null) {
+	private IParser getTypeName_5012Parser() {
+		if (typeName_5012Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getType_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			typeName_5006Parser = parser;
+			typeName_5012Parser = parser;
 		}
-		return typeName_5006Parser;
+		return typeName_5012Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser fieldName_5007Parser;
+	private IParser fieldName_5013Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getFieldName_5007Parser() {
-		if (fieldName_5007Parser == null) {
+	private IParser getFieldName_5013Parser() {
+		if (fieldName_5013Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}"); //$NON-NLS-1$
 			parser.setEditorPattern("{0}"); //$NON-NLS-1$
 			parser.setEditPattern("{0}"); //$NON-NLS-1$
-			fieldName_5007Parser = parser;
+			fieldName_5013Parser = parser;
 		}
-		return fieldName_5007Parser;
+		return fieldName_5013Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser fieldName_5005Parser;
+	private IParser fieldName_5011Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getFieldName_5005Parser() {
-		if (fieldName_5005Parser == null) {
+	private IParser getFieldName_5011Parser() {
+		if (fieldName_5011Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}"); //$NON-NLS-1$
 			parser.setEditorPattern("{0}"); //$NON-NLS-1$
 			parser.setEditPattern("{0}"); //$NON-NLS-1$
-			fieldName_5005Parser = parser;
+			fieldName_5011Parser = parser;
 		}
-		return fieldName_5005Parser;
+		return fieldName_5011Parser;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
 		case CsvSourceNameEditPart.VISUAL_ID:
-			return getCsvSourceName_5008Parser();
+			return getCsvSourceName_5001Parser();
 		case CsvSinkNameEditPart.VISUAL_ID:
-			return getCsvSinkName_5009Parser();
+			return getCsvSinkName_5002Parser();
+		case TopicNameEditPart.VISUAL_ID:
+			return getTopicName_5003Parser();
+		case QueueNameEditPart.VISUAL_ID:
+			return getQueueName_5004Parser();
 		case SourceNameEditPart.VISUAL_ID:
-			return getSourceName_5001Parser();
+			return getSourceName_5005Parser();
 		case SinkNameEditPart.VISUAL_ID:
-			return getSinkName_5002Parser();
+			return getSinkName_5006Parser();
+		case CommitmentTaskNameEditPart.VISUAL_ID:
+			return getCommitmentTaskName_5007Parser();
+		case OpinionatedTaskNameEditPart.VISUAL_ID:
+			return getOpinionatedTaskName_5008Parser();
 		case ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID:
-			return getConfigurationNumberOfWorkersIsMasterAlsoWorker_5003Parser();
+			return getConfigurationNumberOfWorkersIsMasterAlsoWorker_5009Parser();
 		case TaskNameEditPart.VISUAL_ID:
-			return getTaskName_5004Parser();
+			return getTaskName_5010Parser();
 		case TypeNameEditPart.VISUAL_ID:
-			return getTypeName_5006Parser();
+			return getTypeName_5012Parser();
 		case FieldNameEditPart.VISUAL_ID:
-			return getFieldName_5007Parser();
+			return getFieldName_5013Parser();
 		case FieldName2EditPart.VISUAL_ID:
-			return getFieldName_5005Parser();
+			return getFieldName_5011Parser();
 		}
 		return null;
 	}
 
 	/**
-	 * Utility method that consults ParserService
-	 * @generated
-	 */
+	* Utility method that consults ParserService
+	* @generated
+	*/
 	public static IParser getParser(IElementType type, EObject object, String parserHint) {
 		return ParserService.getInstance().getParser(new HintAdapter(type, object, parserHint));
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IParser getParser(IAdaptable hint) {
 		String vid = (String) hint.getAdapter(String.class);
 		if (vid != null) {
@@ -248,8 +328,8 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean provides(IOperation operation) {
 		if (operation instanceof GetParserOperation) {
 			IAdaptable hint = ((GetParserOperation) operation).getHint();
@@ -262,18 +342,18 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static class HintAdapter extends ParserHintAdapter {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private final IElementType elementType;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public HintAdapter(IElementType type, EObject object, String parserHint) {
 			super(object, parserHint);
 			assert type != null;
@@ -281,8 +361,8 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public Object getAdapter(Class adapter) {
 			if (IElementType.class.equals(adapter)) {
 				return elementType;

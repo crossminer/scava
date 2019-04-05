@@ -4,6 +4,7 @@
 package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
@@ -18,14 +19,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import crossflow.diagram.edit.policies.QueueItemSemanticEditPolicy;
+import crossflow.diagram.part.CrossflowVisualIDRegistry;
 
 /**
  * @generated
@@ -35,7 +40,7 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2002;
+	public static final int VISUAL_ID = 2004;
 
 	/**
 	* @generated
@@ -107,6 +112,54 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
+	protected boolean addFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof QueueNameEditPart) {
+			((QueueNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureQueueLabelFigure());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* @generated
+	*/
+	protected boolean removeFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof QueueNameEditPart) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* @generated
+	*/
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
+	/**
+	* @generated
+	*/
+	protected void removeChildVisual(EditPart childEditPart) {
+		if (removeFixedChild(childEditPart)) {
+			return;
+		}
+		super.removeChildVisual(childEditPart);
+	}
+
+	/**
+	* @generated
+	*/
+	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
+		return getContentPane();
+	}
+
+	/**
+	* @generated
+	*/
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
 		return result;
@@ -136,6 +189,11 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure setupContentPane(IFigure nodeShape) {
+		if (nodeShape.getLayoutManager() == null) {
+			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
+			layout.setSpacing(5);
+			nodeShape.setLayoutManager(layout);
+		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
@@ -188,6 +246,13 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
+	public EditPart getPrimaryChildEditPart() {
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(QueueNameEditPart.VISUAL_ID));
+	}
+
+	/**
+	* @generated
+	*/
 	protected void handleNotificationEvent(Notification event) {
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
@@ -205,6 +270,11 @@ public class QueueEditPart extends ShapeNodeEditPart {
 		/**
 		 * @generated
 		 */
+		private WrappingLabel fFigureQueueLabelFigure;
+
+		/**
+		 * @generated
+		 */
 		public QueueFigure() {
 
 			GridLayout layoutThis = new GridLayout();
@@ -214,6 +284,35 @@ public class QueueEditPart extends ShapeNodeEditPart {
 
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
+			createContents();
+		}
+
+		/**
+		 * @generated
+		 */
+		private void createContents() {
+
+			fFigureQueueLabelFigure = new WrappingLabel();
+
+			fFigureQueueLabelFigure.setText("Queue");
+
+			GridData constraintFFigureQueueLabelFigure = new GridData();
+			constraintFFigureQueueLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureQueueLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureQueueLabelFigure.horizontalIndent = 0;
+			constraintFFigureQueueLabelFigure.horizontalSpan = 1;
+			constraintFFigureQueueLabelFigure.verticalSpan = 1;
+			constraintFFigureQueueLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureQueueLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureQueueLabelFigure, constraintFFigureQueueLabelFigure);
+
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureQueueLabelFigure() {
+			return fFigureQueueLabelFigure;
 		}
 
 	}

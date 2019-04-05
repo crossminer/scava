@@ -21,10 +21,12 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getMasterOnly <em>Master Only</em>}</li>
  *   <li>{@link crossflow.Task#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
+ *   <li>{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflow.Task#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getTask()
- * @model annotation="gmf.node label='name'"
+ * @model annotation="gmf.node label='name' label.icon='false'"
  * @generated
  */
 public interface Task extends EObject {
@@ -68,6 +70,7 @@ public interface Task extends EObject {
 	 * @see crossflow.CrossflowPackage#getTask_Input()
 	 * @see crossflow.Stream#getInputOf
 	 * @model opposite="inputOf"
+	 *        annotation="gmf.link source.decoration='filledclosedarrow'"
 	 * @generated
 	 */
 	EList<Stream> getInput();
@@ -86,6 +89,7 @@ public interface Task extends EObject {
 	 * @see crossflow.CrossflowPackage#getTask_Output()
 	 * @see crossflow.Stream#getOutputOf
 	 * @model opposite="outputOf"
+	 *        annotation="gmf.link target.decoration='filledclosedarrow'"
 	 * @generated
 	 */
 	EList<Stream> getOutput();
@@ -168,5 +172,48 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	void setCached(Boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multiple Outputs</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #setMultipleOutputs(Boolean)
+	 * @see crossflow.CrossflowPackage#getTask_MultipleOutputs()
+	 * @model default="false"
+	 * @generated
+	 */
+	Boolean getMultipleOutputs();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #getMultipleOutputs()
+	 * @generated
+	 */
+	void setMultipleOutputs(Boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Field}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameters</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Parameters()
+	 * @model
+	 * @generated
+	 */
+	EList<Field> getParameters();
 
 } // Task

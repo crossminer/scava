@@ -36,7 +36,7 @@ public class TaskItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	* @generated
 	*/
 	public TaskItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Task_2006);
+		super(CrossflowElementTypes.Task_2010);
 	}
 
 	/**

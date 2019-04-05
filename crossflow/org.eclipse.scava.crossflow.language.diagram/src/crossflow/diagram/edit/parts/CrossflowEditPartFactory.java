@@ -18,8 +18,8 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class CrossflowEditPartFactory implements EditPartFactory {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public EditPart createEditPart(EditPart context, Object model) {
 		if (model instanceof View) {
 			View view = (View) model;
@@ -43,8 +43,14 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case TopicEditPart.VISUAL_ID:
 				return new TopicEditPart(view);
 
+			case TopicNameEditPart.VISUAL_ID:
+				return new TopicNameEditPart(view);
+
 			case QueueEditPart.VISUAL_ID:
 				return new QueueEditPart(view);
+
+			case QueueNameEditPart.VISUAL_ID:
+				return new QueueNameEditPart(view);
 
 			case SourceEditPart.VISUAL_ID:
 				return new SourceEditPart(view);
@@ -57,6 +63,18 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 
 			case SinkNameEditPart.VISUAL_ID:
 				return new SinkNameEditPart(view);
+
+			case CommitmentTaskEditPart.VISUAL_ID:
+				return new CommitmentTaskEditPart(view);
+
+			case CommitmentTaskNameEditPart.VISUAL_ID:
+				return new CommitmentTaskNameEditPart(view);
+
+			case OpinionatedTaskEditPart.VISUAL_ID:
+				return new OpinionatedTaskEditPart(view);
+
+			case OpinionatedTaskNameEditPart.VISUAL_ID:
+				return new OpinionatedTaskNameEditPart(view);
 
 			case ConfigurationEditPart.VISUAL_ID:
 				return new ConfigurationEditPart(view);
@@ -121,16 +139,16 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private EditPart createUnrecognizedEditPart(EditPart context, Object model) {
 		// Handle creation of unrecognized child node EditParts here
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static CellEditorLocator getTextCellEditorLocator(ITextAwareEditPart source) {
 		return CellEditorLocatorAccess.INSTANCE.getTextCellEditorLocator(source);
 	}

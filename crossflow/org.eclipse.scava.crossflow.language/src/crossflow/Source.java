@@ -10,7 +10,7 @@ package crossflow;
  *
  *
  * @see crossflow.CrossflowPackage#getSource()
- * @model
+ * @model annotation="gmf.node label='name' label.icon='false' figure='svg' svg.uri='platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg'"
  * @generated
  */
 public interface Source extends Task {

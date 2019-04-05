@@ -94,6 +94,24 @@ public interface CrossflowFactory extends EFactory {
 	CsvSink createCsvSink();
 
 	/**
+	 * Returns a new object of class '<em>Commitment Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Commitment Task</em>'.
+	 * @generated
+	 */
+	CommitmentTask createCommitmentTask();
+
+	/**
+	 * Returns a new object of class '<em>Opinionated Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Opinionated Task</em>'.
+	 * @generated
+	 */
+	OpinionatedTask createOpinionatedTask();
+
+	/**
 	 * Returns a new object of class '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

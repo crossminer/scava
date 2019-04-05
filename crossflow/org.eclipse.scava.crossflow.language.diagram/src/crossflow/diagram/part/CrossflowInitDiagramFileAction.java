@@ -30,25 +30,25 @@ import crossflow.diagram.edit.parts.WorkflowEditPart;
 public class CrossflowInitDiagramFileAction implements IObjectActionDelegate {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private IWorkbenchPart targetPart;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private URI domainModelURI;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		this.targetPart = targetPart;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void selectionChanged(IAction action, ISelection selection) {
 		domainModelURI = null;
 		action.setEnabled(false);
@@ -61,15 +61,15 @@ public class CrossflowInitDiagramFileAction implements IObjectActionDelegate {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Shell getShell() {
 		return targetPart.getSite().getShell();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void run(IAction action) {
 		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE.createEditingDomain();
 		ResourceSet resourceSet = new ResourceSetImpl();

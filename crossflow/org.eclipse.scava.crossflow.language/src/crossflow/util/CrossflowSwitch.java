@@ -128,6 +128,20 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CrossflowPackage.COMMITMENT_TASK: {
+				CommitmentTask commitmentTask = (CommitmentTask)theEObject;
+				T result = caseCommitmentTask(commitmentTask);
+				if (result == null) result = caseTask(commitmentTask);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.OPINIONATED_TASK: {
+				OpinionatedTask opinionatedTask = (OpinionatedTask)theEObject;
+				T result = caseOpinionatedTask(opinionatedTask);
+				if (result == null) result = caseTask(opinionatedTask);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CrossflowPackage.TYPE: {
 				Type type = (Type)theEObject;
 				T result = caseType(type);
@@ -282,6 +296,36 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseCsvSink(CsvSink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Commitment Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Commitment Task</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCommitmentTask(CommitmentTask object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Opinionated Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Opinionated Task</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOpinionatedTask(OpinionatedTask object) {
 		return null;
 	}
 

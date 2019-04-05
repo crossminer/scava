@@ -3,7 +3,6 @@
 package crossflow.provider;
 
 
-import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 import crossflow.Task;
 
@@ -14,8 +13,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -69,6 +66,8 @@ public class TaskItemProvider
 			addMasterOnlyPropertyDescriptor(object);
 			addParallelPropertyDescriptor(object);
 			addCachedPropertyDescriptor(object);
+			addMultipleOutputsPropertyDescriptor(object);
+			addParametersPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -206,16 +205,60 @@ public class TaskItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Multiple Outputs feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMultipleOutputsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Task_multipleOutputs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_multipleOutputs_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__MULTIPLE_OUTPUTS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Parameters feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addParametersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Task_parameters_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_parameters_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__PARAMETERS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Task.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/empty"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Task"));
 	}
-	
+
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
@@ -229,7 +272,7 @@ public class TaskItemProvider
 			getString("_UI_Task_type") :
 			getString("_UI_Task_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -247,6 +290,7 @@ public class TaskItemProvider
 			case CrossflowPackage.TASK__MASTER_ONLY:
 			case CrossflowPackage.TASK__PARALLEL:
 			case CrossflowPackage.TASK__CACHED:
+			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

@@ -4,6 +4,9 @@
 package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.RotatableDecoration;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ITreeBranchEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
@@ -45,15 +48,47 @@ public class TaskInputEditPart extends ConnectionNodeEditPart implements ITreeBr
 	* 
 	* @generated
 	*/
+
 	protected Connection createConnectionFigure() {
-		return new PolylineConnectionEx();
+		return new TaskInputFigure();
 	}
 
 	/**
 	* @generated
 	*/
-	public PolylineConnectionEx getPrimaryShape() {
-		return (PolylineConnectionEx) getFigure();
+	public TaskInputFigure getPrimaryShape() {
+		return (TaskInputFigure) getFigure();
+	}
+
+	/**
+	 * @generated
+	 */
+	public class TaskInputFigure extends PolylineConnectionEx {
+
+		/**
+		 * @generated
+		 */
+		public TaskInputFigure() {
+
+			setSourceDecoration(createSourceDecoration());
+		}
+
+		/**
+		 * @generated
+		 */
+		private RotatableDecoration createSourceDecoration() {
+			PolygonDecoration df = new PolygonDecoration();
+			df.setFill(true);
+			PointList pl = new PointList();
+			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+			pl.addPoint(getMapMode().DPtoLP(-2), getMapMode().DPtoLP(2));
+			pl.addPoint(getMapMode().DPtoLP(-2), getMapMode().DPtoLP(-2));
+			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+			df.setTemplate(pl);
+			df.setScale(getMapMode().DPtoLP(7), getMapMode().DPtoLP(3));
+			return df;
+		}
+
 	}
 
 }

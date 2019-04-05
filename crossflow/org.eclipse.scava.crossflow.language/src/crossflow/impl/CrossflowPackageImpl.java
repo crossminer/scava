@@ -2,12 +2,14 @@
  */
 package crossflow.impl;
 
+import crossflow.CommitmentTask;
 import crossflow.Configuration;
 import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 import crossflow.CsvSink;
 import crossflow.CsvSource;
 import crossflow.Field;
+import crossflow.OpinionatedTask;
 import crossflow.Queue;
 import crossflow.Sink;
 import crossflow.Source;
@@ -93,6 +95,20 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	private EClass csvSinkEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass commitmentTaskEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass opinionatedTaskEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -379,6 +395,24 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getTask_MultipleOutputs() {
+		return (EAttribute)taskEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTask_Parameters() {
+		return (EReference)taskEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getSource() {
 		return sourceEClass;
 	}
@@ -426,6 +460,33 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 */
 	public EAttribute getCsvSink_Path() {
 		return (EAttribute)csvSinkEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCommitmentTask() {
+		return commitmentTaskEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCommitmentTask_CommitAfter() {
+		return (EAttribute)commitmentTaskEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getOpinionatedTask() {
+		return opinionatedTaskEClass;
 	}
 
 	/**
@@ -507,6 +568,15 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 */
 	public EAttribute getField_Type() {
 		return (EAttribute)fieldEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getField_Many() {
+		return (EAttribute)fieldEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -608,6 +678,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEAttribute(taskEClass, TASK__MASTER_ONLY);
 		createEAttribute(taskEClass, TASK__PARALLEL);
 		createEAttribute(taskEClass, TASK__CACHED);
+		createEAttribute(taskEClass, TASK__MULTIPLE_OUTPUTS);
+		createEReference(taskEClass, TASK__PARAMETERS);
 
 		sourceEClass = createEClass(SOURCE);
 
@@ -619,6 +691,11 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		csvSinkEClass = createEClass(CSV_SINK);
 		createEAttribute(csvSinkEClass, CSV_SINK__PATH);
 
+		commitmentTaskEClass = createEClass(COMMITMENT_TASK);
+		createEAttribute(commitmentTaskEClass, COMMITMENT_TASK__COMMIT_AFTER);
+
+		opinionatedTaskEClass = createEClass(OPINIONATED_TASK);
+
 		typeEClass = createEClass(TYPE);
 		createEAttribute(typeEClass, TYPE__NAME);
 		createEAttribute(typeEClass, TYPE__IMPL);
@@ -629,6 +706,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		fieldEClass = createEClass(FIELD);
 		createEAttribute(fieldEClass, FIELD__NAME);
 		createEAttribute(fieldEClass, FIELD__TYPE);
+		createEAttribute(fieldEClass, FIELD__MANY);
 
 		configurationEClass = createEClass(CONFIGURATION);
 		createEAttribute(configurationEClass, CONFIGURATION__NUMBER_OF_WORKERS);
@@ -671,6 +749,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		csvSourceEClass.getESuperTypes().add(this.getSource());
 		sinkEClass.getESuperTypes().add(this.getTask());
 		csvSinkEClass.getESuperTypes().add(this.getSink());
+		commitmentTaskEClass.getESuperTypes().add(this.getTask());
+		opinionatedTaskEClass.getESuperTypes().add(this.getTask());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(workflowEClass, Workflow.class, "Workflow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -699,6 +779,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEAttribute(getTask_MasterOnly(), ecorePackage.getEBooleanObject(), "masterOnly", "false", 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_Parallel(), ecorePackage.getEBooleanObject(), "parallel", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_Cached(), ecorePackage.getEBooleanObject(), "cached", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTask_MultipleOutputs(), ecorePackage.getEBooleanObject(), "multipleOutputs", "false", 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTask_Parameters(), this.getField(), null, "parameters", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sourceEClass, Source.class, "Source", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -710,6 +792,11 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEClass(csvSinkEClass, CsvSink.class, "CsvSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCsvSink_Path(), ecorePackage.getEString(), "path", null, 0, 1, CsvSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(commitmentTaskEClass, CommitmentTask.class, "CommitmentTask", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCommitmentTask_CommitAfter(), ecorePackage.getEInt(), "commitAfter", "1", 0, 1, CommitmentTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(opinionatedTaskEClass, OpinionatedTask.class, "OpinionatedTask", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getType_Impl(), ecorePackage.getEString(), "impl", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -719,7 +806,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 
 		initEClass(fieldEClass, Field.class, "Field", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getField_Name(), ecorePackage.getEString(), "name", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(configurationEClass, Configuration.class, "Configuration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConfiguration_NumberOfWorkers(), ecorePackage.getEIntegerObject(), "numberOfWorkers", null, 0, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -786,11 +874,43 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		  (streamEClass,
 		   source,
 		   new String[] {
-			   "label.placement", "none",
-			   "figure", "ellipse"
+			   "figure", "ellipse",
+			   "label", "name",
+			   "label.icon", "false"
 		   });
 		addAnnotation
 		  (taskEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "label.icon", "false"
+		   });
+		addAnnotation
+		  (sourceEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "label.icon", "false",
+			   "figure", "svg",
+			   "svg.uri", "platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg"
+		   });
+		addAnnotation
+		  (sinkEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "label.icon", "false",
+			   "figure", "svg",
+			   "svg.uri", "platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg"
+		   });
+		addAnnotation
+		  (commitmentTaskEClass,
+		   source,
+		   new String[] {
+			   "label", "name"
+		   });
+		addAnnotation
+		  (opinionatedTaskEClass,
 		   source,
 		   new String[] {
 			   "label", "name"
@@ -806,7 +926,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   source,
 		   new String[] {
 			   "label", "name",
-			   "label.pattern", "{0}"
+			   "label.pattern", "{0}",
+			   "label.icon", "false"
 		   });
 		addAnnotation
 		  (configurationEClass,
@@ -834,11 +955,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		  (getTask_Input(),
 		   source,
 		   new String[] {
+			   "source.decoration", "filledclosedarrow"
 		   });
 		addAnnotation
 		  (getTask_Output(),
 		   source,
 		   new String[] {
+			   "target.decoration", "filledclosedarrow"
 		   });
 		addAnnotation
 		  (getType_Extending(),

@@ -39,7 +39,7 @@ public class QueueItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPo
 	* @generated
 	*/
 	public QueueItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Queue_2002);
+		super(CrossflowElementTypes.Queue_2004);
 	}
 
 	/**

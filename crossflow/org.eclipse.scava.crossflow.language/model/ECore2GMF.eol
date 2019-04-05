@@ -3,9 +3,15 @@
 var elementsToCenter = new List;
 elementsToCenter.add('TopicFigure');
 elementsToCenter.add('QueueFigure');
+
 elementsToCenter.add('TaskFigure');
-elementsToCenter.add('SourceFigure');
-elementsToCenter.add('SinkFigure');
+//elementsToCenter.add('SourceFigure');
+//elementsToCenter.add('SinkFigure');
+elementsToCenter.add('CommitmentTaskFigure');
+elementsToCenter.add('OpinionatedTaskFigure');
+//elementsToCenter.add('CsvSourceFigure');
+//elementsToCenter.add('CsvSinkFigure');
+
 elementsToCenter.add('TypeFigure');
 elementsToCenter.add('FieldFigure');
 elementsToCenter.add('ConfigurationFigure');

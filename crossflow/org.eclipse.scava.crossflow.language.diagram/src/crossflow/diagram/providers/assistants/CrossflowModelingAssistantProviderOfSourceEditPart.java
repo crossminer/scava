@@ -89,11 +89,11 @@ public class CrossflowModelingAssistantProviderOfSourceEditPart extends Crossflo
 	public List<IElementType> doGetTypesForTarget(SourceEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.TaskInput_4002) {
-			types.add(CrossflowElementTypes.Topic_2001);
-			types.add(CrossflowElementTypes.Queue_2002);
+			types.add(CrossflowElementTypes.Topic_2003);
+			types.add(CrossflowElementTypes.Queue_2004);
 		} else if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
-			types.add(CrossflowElementTypes.Topic_2001);
-			types.add(CrossflowElementTypes.Queue_2002);
+			types.add(CrossflowElementTypes.Topic_2003);
+			types.add(CrossflowElementTypes.Queue_2004);
 		}
 		return types;
 	}

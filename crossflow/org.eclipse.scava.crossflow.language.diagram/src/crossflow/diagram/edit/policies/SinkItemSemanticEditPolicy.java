@@ -36,7 +36,7 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	* @generated
 	*/
 	public SinkItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Sink_2004);
+		super(CrossflowElementTypes.Sink_2006);
 	}
 
 	/**

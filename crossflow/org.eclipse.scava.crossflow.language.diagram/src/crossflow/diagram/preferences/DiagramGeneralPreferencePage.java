@@ -13,8 +13,8 @@ import crossflow.diagram.part.CrossflowDiagramEditorPlugin;
 public class DiagramGeneralPreferencePage extends DiagramsPreferencePage {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public DiagramGeneralPreferencePage() {
 		setPreferenceStore(CrossflowDiagramEditorPlugin.getInstance().getPreferenceStore());
 	}

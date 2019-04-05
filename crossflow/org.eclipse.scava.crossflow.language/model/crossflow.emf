@@ -13,7 +13,7 @@ class Workflow {
   val Field[*] parameters;
 }
 
-@gmf.node(label.placement="none", figure="ellipse")
+@gmf.node(figure="ellipse", label="name", label.icon="false")
 abstract class Stream {
   attr String name;
 
@@ -29,20 +29,25 @@ class Topic extends Stream {
 class Queue extends Stream {
 }
 
-@gmf.node(label="name")
+@gmf.node(label="name", label.icon="false")
 class Task {
   attr String name;
 
-  @gmf.link
+  @gmf.link(source.decoration="filledclosedarrow")
   ref Stream[*]#inputOf input;
 
-  @gmf.link
+  @gmf.link(target.decoration="filledclosedarrow")
   ref Stream[*]#outputOf output;
+  
   attr Boolean masterOnly = "false";
   attr Boolean parallel;
   attr Boolean cached;
+  attr Boolean multipleOutputs = "false";
+  
+  ref Field[*] parameters;  
 }
 
+@gmf.node(label="name", label.icon="false", figure="svg", svg.uri="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg")
 class Source extends Task {
 }
 
@@ -50,11 +55,21 @@ class CsvSource extends Source {
   attr String path;
 }
 
+@gmf.node(label="name", label.icon="false", figure="svg", svg.uri="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg")
 class Sink extends Task {
 }
 
 class CsvSink extends Sink {
   attr String path;
+}
+
+@gmf.node(label="name")
+class CommitmentTask extends Task {
+	attr int commitAfter = 1; 
+}
+
+@gmf.node(label="name")
+class OpinionatedTask extends Task {
 }
 
 @gmf.node(label="name")
@@ -70,7 +85,7 @@ class Type {
   val Field[*] fields;
 }
 
-@gmf.node(label="name", label.pattern="{0}")
+@gmf.node(label="name", label.pattern="{0}", label.icon="false")
 class Field {
   attr String name;
   attr String type = "String";

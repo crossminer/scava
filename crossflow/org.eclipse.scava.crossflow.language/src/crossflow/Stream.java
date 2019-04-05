@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see crossflow.CrossflowPackage#getStream()
  * @model abstract="true"
- *        annotation="gmf.node label.placement='none' figure='ellipse'"
+ *        annotation="gmf.node figure='ellipse' label='name' label.icon='false'"
  * @generated
  */
 public interface Stream extends EObject {

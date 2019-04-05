@@ -3,7 +3,6 @@
 package crossflow.provider;
 
 
-import crossflow.CrossflowPackage;
 import crossflow.Source;
 
 import java.util.Collection;
@@ -12,10 +11,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a {@link crossflow.Source} object.
@@ -53,11 +49,11 @@ public class SourceItemProvider extends TaskItemProvider {
 	 * This returns Source.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/empty"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Source"));
 	}
 
 	/**
@@ -73,7 +69,7 @@ public class SourceItemProvider extends TaskItemProvider {
 			getString("_UI_Source_type") :
 			getString("_UI_Source_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

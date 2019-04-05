@@ -3,14 +3,10 @@
  */
 package crossflow.diagram.edit.parts;
 
-import org.eclipse.draw2d.GridData;
-import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gef.EditPart;
@@ -27,6 +23,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
+import org.eclipse.gmf.runtime.lite.svg.SVGFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
@@ -41,7 +38,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2004;
+	public static final int VISUAL_ID = 2006;
 
 	/**
 	* @generated
@@ -266,7 +263,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class SinkFigure extends RoundedRectangle {
+	public class SinkFigure extends SVGFigure {
 
 		/**
 		 * @generated
@@ -277,13 +274,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public SinkFigure() {
-
-			GridLayout layoutThis = new GridLayout();
-			layoutThis.numColumns = 1;
-			layoutThis.makeColumnsEqualWidth = true;
-			this.setLayoutManager(layoutThis);
-
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setURI("platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg");
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -298,15 +289,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 
 			fFigureSinkLabelFigure.setText("Sink");
 
-			GridData constraintFFigureSinkLabelFigure = new GridData();
-			constraintFFigureSinkLabelFigure.verticalAlignment = GridData.CENTER;
-			constraintFFigureSinkLabelFigure.horizontalAlignment = GridData.CENTER;
-			constraintFFigureSinkLabelFigure.horizontalIndent = 0;
-			constraintFFigureSinkLabelFigure.horizontalSpan = 1;
-			constraintFFigureSinkLabelFigure.verticalSpan = 1;
-			constraintFFigureSinkLabelFigure.grabExcessHorizontalSpace = true;
-			constraintFFigureSinkLabelFigure.grabExcessVerticalSpace = true;
-			this.add(fFigureSinkLabelFigure, constraintFFigureSinkLabelFigure);
+			this.add(fFigureSinkLabelFigure);
 
 		}
 

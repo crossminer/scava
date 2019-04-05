@@ -78,7 +78,7 @@ public class CrossflowModelingAssistantProviderOfTopicEditPart extends Crossflow
 	public List<IElementType> doGetTypesForTarget(TopicEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.StreamType_4001) {
-			types.add(CrossflowElementTypes.Type_2007);
+			types.add(CrossflowElementTypes.Type_2011);
 		}
 		return types;
 	}
@@ -119,17 +119,21 @@ public class CrossflowModelingAssistantProviderOfTopicEditPart extends Crossflow
 	public List<IElementType> doGetTypesForSource(TopicEditPart target, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.TaskInput_4002) {
-			types.add(CrossflowElementTypes.CsvSource_2009);
-			types.add(CrossflowElementTypes.CsvSink_2010);
-			types.add(CrossflowElementTypes.Source_2003);
-			types.add(CrossflowElementTypes.Sink_2004);
-			types.add(CrossflowElementTypes.Task_2006);
+			types.add(CrossflowElementTypes.CsvSource_2001);
+			types.add(CrossflowElementTypes.CsvSink_2002);
+			types.add(CrossflowElementTypes.Source_2005);
+			types.add(CrossflowElementTypes.Sink_2006);
+			types.add(CrossflowElementTypes.CommitmentTask_2007);
+			types.add(CrossflowElementTypes.OpinionatedTask_2008);
+			types.add(CrossflowElementTypes.Task_2010);
 		} else if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
-			types.add(CrossflowElementTypes.CsvSource_2009);
-			types.add(CrossflowElementTypes.CsvSink_2010);
-			types.add(CrossflowElementTypes.Source_2003);
-			types.add(CrossflowElementTypes.Sink_2004);
-			types.add(CrossflowElementTypes.Task_2006);
+			types.add(CrossflowElementTypes.CsvSource_2001);
+			types.add(CrossflowElementTypes.CsvSink_2002);
+			types.add(CrossflowElementTypes.Source_2005);
+			types.add(CrossflowElementTypes.Sink_2006);
+			types.add(CrossflowElementTypes.CommitmentTask_2007);
+			types.add(CrossflowElementTypes.OpinionatedTask_2008);
+			types.add(CrossflowElementTypes.Task_2010);
 		}
 		return types;
 	}

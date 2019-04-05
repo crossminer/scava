@@ -5,10 +5,8 @@ package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gef.EditPart;
@@ -25,6 +23,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
+import org.eclipse.gmf.runtime.lite.svg.SVGFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
@@ -39,7 +38,7 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2009;
+	public static final int VISUAL_ID = 2001;
 
 	/**
 	* @generated
@@ -264,7 +263,7 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class CsvSourceFigure extends RoundedRectangle {
+	public class CsvSourceFigure extends SVGFigure {
 
 		/**
 		 * @generated
@@ -275,7 +274,7 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public CsvSourceFigure() {
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setURI("platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg");
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
