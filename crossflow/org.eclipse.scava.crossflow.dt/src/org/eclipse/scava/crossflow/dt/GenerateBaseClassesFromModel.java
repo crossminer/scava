@@ -67,7 +67,7 @@ public class GenerateBaseClassesFromModel extends EpsilonStandaloneExample {
 
 	@Override
 	public String getSource() throws Exception {
-		return "epsilon/crossflowOrchestrator.egx";
+		return "epsilon/crossflow.egx";
 	}
 
 }

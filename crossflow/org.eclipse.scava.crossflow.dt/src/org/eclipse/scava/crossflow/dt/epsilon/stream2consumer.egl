@@ -1,0 +1,9 @@
+package [%=s.eContainer().package%];
+
+import javax.jms.Message;
+
+public interface [%=s.name%]Consumer {
+	
+	void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;
+	
+}
