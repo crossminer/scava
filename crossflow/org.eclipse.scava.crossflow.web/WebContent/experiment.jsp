@@ -220,36 +220,37 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 
 window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	
-	modelElement = cell.value; // LineSource
+	sBXmlDoc = window.streamBroadcasterXmlDoc;
+	modelElement = cell.id;
 	//console.log("modelElement = " + modelElement);
 	size = "n/a";
 	inFlight = "n/a";
 	subscribers = "n/a";
 	
-	for ( i=0; i <= window.streamBroadcasterXmlDoc.childNodes[0].children.length; i++ ) {
-		if ( window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].nodeName=="streams" ) {
+	for ( i=0; i <= sBXmlDoc.childNodes[0].children.length; i++ ) {
+		if ( sBXmlDoc.childNodes[0].childNodes[i].nodeName=="streams" ) {
 			//console.log("streams encountered");
-			for ( j=0; j <= window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
+			for ( j=0; j <= sBXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
 				//console.log("i="+i+";  j="+j);
-				if ( window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j] != null &&
-						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1] != null &&
-						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].outerHTML != null &&
-						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].outerHTML.includes("." + modelElement + ".") ) {
+				if ( sBXmlDoc.childNodes[0].childNodes[i].childNodes[j] != null &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].hasChildNodes() &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML != null &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML.includes(modelElement) ) {
 				
 					//console.log("i="+i+";  j="+j);
-					name = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML;
+					name = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML;
 					//console.log('name='+name);
 					
 					// size
-					size = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
+					size = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
 					//console.log('size='+size);
 
 					// inFlight
-					inFlight = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
+					inFlight = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
 					//console.log('inFlight='+inFlight);
 
 					// numberOfSubscribers
-					subscribers = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[9].innerHTML;
+					subscribers = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[9].innerHTML;
 					//console.log('subscribers='+subscribers);
 				}
 				

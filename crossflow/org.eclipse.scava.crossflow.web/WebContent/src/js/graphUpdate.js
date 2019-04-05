@@ -70,7 +70,7 @@ function main(container, experimentId) {
 	ws.onmessage = (e) => {
 	 //console.log('onmessage: ' + e);
 	  if (e.data.startsWith('MESSAGE')) {
-		  console.log("e.data="+e.data);
+		  //console.log("e.data="+e.data);
 		  
 		  // extract plain XML
 		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadata>'), e.data.length);
