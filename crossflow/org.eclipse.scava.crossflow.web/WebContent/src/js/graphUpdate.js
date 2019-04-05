@@ -68,72 +68,32 @@ function main(container, experimentId) {
 	};
 	 
 	ws.onmessage = (e) => {
-	 console.log('onmessage: ' + e);
+	 //console.log('onmessage: ' + e);
 	  if (e.data.startsWith('MESSAGE')) {
+		  console.log("e.data="+e.data);
+		  
 		  // extract plain XML
 		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadata>'), e.data.length);
 		  
 		  // parse plain XML
 		  parser = new DOMParser();
-		  xmlDoc = parser.parseFromString(text,"text/xml");
+		  window.streamBroadcasterXmlDoc = parser.parseFromString(text,"text/xml");
 		  
-		  // extract queue information
-		  // similar to as in: https://github.com/crossminer/scava/blob/crossflow/crossflow/org.eclipse.scava.crossflow.elkgraph/org.eclipse.scava.crossflow.elkgraph.web/src/main/java/org/eclipse/scava/crossflow/elkgraph/web/ElkGraphDiagramUpdater.java
-//		  xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-//	        <name>LinesPost.WordCounter.wordcount</name>
-/*
-* 
-*/
-	  
-
-		  console.log(e.data);
+		  //console.log(e.data);
 		  window.runtimeModelGraph.getTooltipForCell = function(cell) {
+				console.log("window.runtimeModelGraph.getTooltipForCell cell = " + cell);
 				return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
 			}
 	  }
 	 
 	};
-
+	
 	/*
 	 * TODO Animation: examples/animation.html / thread.html Markers:
 	 * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
 	 * monitor.html
 	 */
-	var codec = new mxCodec();
-
-	mxEvent.disableContextMenu(container);
-	window.runtimeModelContainer = container;
-
 	window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
-	window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
-	window.runtimeModelGraph.setTooltips(true);
-	window.runtimeModelGraph.getTooltipForCell = function(cell) {
-		return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
-	}
-
-	window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
-	window.runtimeModelGraph.enabled = false;
-
-	window.runtimeModelGraph.getModel().beginUpdate();
-	try {
-
-//		$.getScript('experiments/' + experimentId + '/graph.abstract', function()
-//		{
-//			loadStencils();
-//
-//			var model = window.runtimeModelGraph.getModel();
-//			
-//			var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
-//			layout.execute(window.runtimeModelParent, model.cells[2]);
-//			
-//			var nodeEnc = codec.encode(model);
-//			var xml = mxUtils.getXml(nodeEnc);
-//		});
 	
-	} finally {
-		// Updates the display
-		window.runtimeModelGraph.getModel().endUpdate();
-	}
-
 };// main
 

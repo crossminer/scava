@@ -219,7 +219,44 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 };
 
 window.runtimeModelGraph.getTooltipForCell = function(cell) {
-	return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
+	
+	modelElement = cell.value; // LineSource
+	//console.log("modelElement = " + modelElement);
+	size = "n/a";
+	inFlight = "n/a";
+	subscribers = "n/a";
+	
+	for ( i=0; i <= window.streamBroadcasterXmlDoc.childNodes[0].children.length; i++ ) {
+		if ( window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].nodeName=="streams" ) {
+			//console.log("streams encountered");
+			for ( j=0; j <= window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
+				//console.log("i="+i+";  j="+j);
+				if ( window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j] != null &&
+						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1] != null &&
+						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].outerHTML != null &&
+						window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].outerHTML.includes("." + modelElement + ".") ) {
+				
+					//console.log("i="+i+";  j="+j);
+					name = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML;
+					//console.log('name='+name);
+					
+					// size
+					size = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
+					//console.log('size='+size);
+
+					// inFlight
+					inFlight = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
+					//console.log('inFlight='+inFlight);
+
+					// numberOfSubscribers
+					subscribers = window.streamBroadcasterXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[9].innerHTML;
+					//console.log('subscribers='+subscribers);
+				}
+				
+		}
+	}
+	
+	return "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
 }
 
 window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
@@ -231,7 +268,6 @@ window.runtimeModelGraph.getModel().beginUpdate();
 <%
 String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstract";
 //new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
-//graphFile=/Users/blizzfire/WORKSPACES/ECLIPSE/ECLIPSE-PHOTON-EPSILON-WORKSPACE/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/wtpwebapps/org.eclipse.scava.crossflow.web/experiments/calculator/graph.abstract
 
 %>
 try {
@@ -246,6 +282,7 @@ layout.execute(window.runtimeModelParent, model.cells[2]);
 	// Updates the display
 	window.runtimeModelGraph.getModel().endUpdate();
 }
+
 
 </script>
 
