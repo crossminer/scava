@@ -2,9 +2,13 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +69,8 @@ public class DirectoryCache implements Cache {
 	}
 
 	public boolean hasCachedOutputs(Job input) {
+		if (input == null)
+			return !jobFolderMap.isEmpty();
 		return jobFolderMap.containsKey(input.getHash());
 	}
 
@@ -203,6 +209,51 @@ public class DirectoryCache implements Cache {
 			}
 		}
 
+	}
+
+	/**
+	 * Clears the entire cache
+	 */
+	public boolean clear() {
+		return clear("");
+	}
+
+	/**
+	 * Clears the cache for a specific queue (use the empty string for a global
+	 * cache clear, or use the 0 parameter method clear())
+	 */
+	public boolean clear(String stream) {
+		// System.out.println(jobFolderMap);
+		File streamFolder = stream.trim().length() == 0 ? directory : new File(directory, stream);
+		if (!streamFolder.exists())
+			return false;
+		try {
+			// clear cache either for a specific queue or globally
+			if (stream.trim().length() == 0) {
+				deleteDirectoryStream(streamFolder.toPath());
+				jobFolderMap.clear();
+			} else {
+				File[] children = streamFolder.listFiles();
+				List<File> childrenList = Arrays.asList(children);
+				//
+				deleteDirectoryStream(streamFolder.toPath());
+				//
+				jobFolderMap.values().removeAll(childrenList);
+			}
+			// re-make root directory if a global cache clear was called
+			if (stream.trim().length() == 0)
+				directory.mkdirs();
+			//
+			// System.out.println(jobFolderMap);
+			return true;
+		} catch (IOException e) {
+			// e.printStackTrace();
+			return false;
+		}
+	}
+
+	void deleteDirectoryStream(Path path) throws IOException {
+		Files.walk(path).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 	}
 
 }

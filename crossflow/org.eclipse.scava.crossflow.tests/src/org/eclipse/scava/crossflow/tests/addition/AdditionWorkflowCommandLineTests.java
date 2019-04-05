@@ -50,11 +50,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 		String[] noBroker = new String[] { "-createBroker", "false", "-parallelization", "" + p, "-instance", "aw1",
 				"-name", "m1" };
 
-		AdditionWorkflow master;
-		if (!createBroker)
-			master = AdditionWorkflow.run(noBroker);
-		else
-			master = AdditionWorkflow.run(broker);
+		AdditionWorkflow master = AdditionWorkflow.run(createBroker ? broker : noBroker);
 
 		AdditionWorkflow worker = AdditionWorkflow
 				.run(new String[] { "-parallelization", "" + p, "-mode", "worker", "-instance", "aw1", "-name", "w1" });
@@ -80,7 +76,8 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 		System.out.println("" + master.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())));
 		System.out.println("" + worker.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())));
 
-		assertTrue(master.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())) < 5 * master.getParallelization());
+		assertTrue(master.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())) < 5
+				* master.getParallelization());
 		assertTrue(worker.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())) > 0);
 
 	}

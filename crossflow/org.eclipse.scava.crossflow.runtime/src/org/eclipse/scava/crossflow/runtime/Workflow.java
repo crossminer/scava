@@ -67,7 +67,11 @@ public abstract class Workflow {
 
 	@Parameter(names = {
 			"-cacheEnabled" }, description = "Whether this workflow caches intermediary results or not.", arity = 1)
-	protected boolean cacheEnabled = true;
+	protected boolean cacheEnabled = false;
+
+	@Parameter(names = {
+			"-deleteCache" }, description = "Before starting this workflow, delete the contents of the cache by queue name (use empty string to delete entire cache).")
+	protected String deleteCache;
 
 	@Parameter(names = {
 			"-inputDirectory" }, description = "The input directory of the workflow.", converter = DirectoryConverter.class)
@@ -393,8 +397,14 @@ public abstract class Workflow {
 	}
 
 	public void setCache(Cache cache) {
+		//
+		cacheEnabled = cache != null;
+		//
 		this.cache = cache;
-		cache.setWorkflow(this);
+		//
+		if (cache != null)
+			cache.setWorkflow(this);
+		//
 	}
 
 	public boolean isMaster() {
@@ -437,6 +447,16 @@ public abstract class Workflow {
 	}
 
 	public void run() throws Exception {
+		//
+		if (cacheEnabled && cache == null) {
+			logger.log(SEVERITY.INFO,
+					"cacheEnabled==true but no cache was defined, creating a default DirectoryCache in the temp folder of the machine.");
+			DirectoryCache c = new DirectoryCache();
+			setCache(c);
+		}
+		if (deleteCache != null)
+			cache.clear(deleteCache);
+		//
 		run(0);
 	}
 

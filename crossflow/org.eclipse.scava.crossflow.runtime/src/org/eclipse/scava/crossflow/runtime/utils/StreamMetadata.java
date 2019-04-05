@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class StreamMetadata implements Serializable {
 
-	public class Stream {
+	public class Stream  implements Serializable{
 		private String name;
 		private long size;
 		private long inFlight;
@@ -44,6 +44,12 @@ public class StreamMetadata implements Serializable {
 
 		public void setNumberOfSubscribers(int numberOfSubscribers) {
 			this.numberOfSubscribers = numberOfSubscribers;
+		}
+
+		@Override
+		public String toString() {
+			return "name: " + name + " | size: " + size + " | inFlight: " + inFlight + " | isTopic: " + isTopic
+					+ " | numberOfSubscribers: " + numberOfSubscribers;
 		}
 	}
 

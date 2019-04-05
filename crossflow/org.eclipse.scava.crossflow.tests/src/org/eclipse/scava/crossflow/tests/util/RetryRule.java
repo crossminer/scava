@@ -32,7 +32,7 @@ public class RetryRule implements TestRule {
 							System.err.println(description.getDisplayName() + ": Failed, " + retryCount.toString()
 									+ " retries remain");
 						} else {
-							throw caughtThrowable == null ? new Throwable("null throwable") : caughtThrowable;
+							throw caughtThrowable == null ? t : caughtThrowable;
 						}
 					}
 				}
