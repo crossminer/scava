@@ -20,8 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
+import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
 import org.slf4j.Logger;
@@ -111,6 +113,19 @@ public class RecommenderRestController {
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
+	}
+	@Autowired
+	private RecommendationFeedbackRepository recFedRepo;
+	@ApiOperation(value = "This resource stores the recommendation feedback")
+	@RequestMapping(value = "recommendation-feedback/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody boolean storeRecommendationFeedback(
+			@ApiParam(value = "Query object", required = true) @RequestBody RecommendationFeedback recFed) throws Exception {
+		try {
+			recFed.equals(recFed);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	@RequestMapping(value = "query", method = RequestMethod.GET)
