@@ -194,6 +194,8 @@
 </script>
 
 <script type="text/javascript">
+var cellTooltips = {};
+
 loadStencils();
 
 container = document.getElementById('graphContainer');
@@ -221,6 +223,7 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	
 	sBXmlDoc = window.streamBroadcasterXmlDoc;
+	//console.log(sBXmlDoc);
 	modelElement = cell.id;
 	//console.log("modelElement = " + modelElement);
 	size = "n/a";
@@ -257,7 +260,16 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 		}
 	}
 	
-	return "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+		
+	if ( cellTooltip.includes("n/a") ) {
+		// return latest known status
+		return cellTooltips[modelElement];
+	} 
+	
+	cellTooltips[modelElement] = cellTooltip;
+	
+	return cellTooltip;
 }
 
 window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
