@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jsoup.jsoup
 Bundle-Activator: org.eclipse.scava.nlp.tools.preprocessor.Activator
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lib/commonmark-0.12.1.jar,
+Bundle-ClassPath: .,
+ lib/commonmark-0.12.1.jar,
  lib/commonmark-ext-gfm-strikethrough-0.12.1.jar,
- lib/commonmark-ext-gfm-tables-0.12.1.jar,
- .
+ lib/commonmark-ext-gfm-tables-0.12.1.jar
