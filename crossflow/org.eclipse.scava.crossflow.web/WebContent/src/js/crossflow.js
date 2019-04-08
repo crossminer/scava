@@ -24,7 +24,8 @@ function createTask(name, graph, parent) {
 }
 
 function createStream(name, graph, parent) {
-	var v = graph.insertVertex(parent, name, "", 30, 40, 30, 40);
+
+	var v = graph.insertVertex(parent, name, "", 30, 40, 80, 40);
 	v.style = "shape=Direct Data;fillColor=#ffffff;fontColor=black;strokeColor=black";
 	v.setAttribute("tooltip", name);
 	//graph.updateCellSize(v, true);

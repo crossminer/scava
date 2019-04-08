@@ -79,11 +79,6 @@ function main(container, experimentId) {
 		  parser = new DOMParser();
 		  window.streamBroadcasterXmlDoc = parser.parseFromString(text,"text/xml");
 		  
-		  //console.log(e.data);
-		  window.runtimeModelGraph.getTooltipForCell = function(cell) {
-				console.log("window.runtimeModelGraph.getTooltipForCell cell = " + cell);
-				return "<table border=1><tr><td>Size: n/a</td><td>InFlight: n/a</td><td>Subscribers: n/a</td></tr></table>";
-			}
 	  }
 	 
 	};
