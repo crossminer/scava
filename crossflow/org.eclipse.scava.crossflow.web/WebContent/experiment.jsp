@@ -247,6 +247,17 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 					// size
 					size = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
 					//console.log('size='+size);
+					sizeUnit = "";
+					if ( size >= 1000 && size <= 999999 ) {
+						sizeUnit = "K";
+						size = size / 1000;
+					} else if ( size >= 1000000 ) {
+						sizeUnit = "M";
+						size = size / 1000000;
+					}
+					//console.log('size='+size);
+					
+					window.runtimeModelGraph.model.setValue(cell, size + sizeUnit); // WIP, see: https://bit.ly/2smlV9o
 
 					// inFlight
 					inFlight = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
@@ -260,7 +271,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 		}
 	}
 	
-	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
 		
 	if ( cellTooltip.includes("n/a") ) {
 		// return latest known status
