@@ -47,7 +47,7 @@ class Task {
   ref Field[*] parameters;  
 }
 
-@gmf.node(label="name", label.icon="false", figure="svg", svg.uri="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg")
+@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 11 10 0",polygon.y="0 0 2 4 4")
 class Source extends Task {
 }
 
@@ -55,7 +55,7 @@ class CsvSource extends Source {
   attr String path;
 }
 
-@gmf.node(label="name", label.icon="false", figure="svg", svg.uri="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg")
+@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 10 5 0",polygon.y="0 0 4 6 4")
 class Sink extends Task {
 }
 
@@ -72,7 +72,7 @@ class CommitmentTask extends Task {
 class OpinionatedTask extends Task {
 }
 
-@gmf.node(label="name")
+@gmf.node(label="name", figure ="rectangle")
 class Type {
   attr String name;
   attr String impl;
@@ -81,11 +81,11 @@ class Type {
   @gmf.link
   ref Type[*] extending;
 
-  @gmf.compartment
+  @gmf.compartment(layout="list",collapsible="false")
   val Field[*] fields;
 }
 
-@gmf.node(label="name", label.pattern="{0}", label.icon="false")
+@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
 class Field {
   attr String name;
   attr String type = "String";

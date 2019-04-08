@@ -25,6 +25,17 @@ public class CrossflowModelingAssistantProviderOfTypeEditPart extends CrossflowM
 	*/
 	@Override
 
+	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
+		List<IElementType> types = new ArrayList<IElementType>(1);
+		types.add(CrossflowElementTypes.Field_3001);
+		return types;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+
 	public List<IElementType> getRelTypesOnSource(IAdaptable source) {
 		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source.getAdapter(IGraphicalEditPart.class);
 		return doGetRelTypesOnSource((TypeEditPart) sourceEditPart);

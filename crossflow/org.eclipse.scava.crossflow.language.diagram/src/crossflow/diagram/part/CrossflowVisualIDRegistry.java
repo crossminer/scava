@@ -24,6 +24,8 @@ import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
 import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
@@ -313,12 +315,12 @@ public class CrossflowVisualIDRegistry {
 			}
 			break;
 		case FieldEditPart.VISUAL_ID:
-			if (FieldNameEditPart.VISUAL_ID == nodeVisualID) {
+			if (FieldNameTypeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case Field2EditPart.VISUAL_ID:
-			if (FieldName2EditPart.VISUAL_ID == nodeVisualID) {
+			if (FieldNameType2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;

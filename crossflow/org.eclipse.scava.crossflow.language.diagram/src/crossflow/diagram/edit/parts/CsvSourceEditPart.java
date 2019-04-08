@@ -3,10 +3,14 @@
  */
 package crossflow.diagram.edit.parts;
 
+import org.eclipse.draw2d.GridData;
+import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ScalablePolygonShape;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gef.EditPart;
@@ -263,7 +267,7 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class CsvSourceFigure extends SVGFigure {
+	public class CsvSourceFigure extends ScalablePolygonShape {
 
 		/**
 		 * @generated
@@ -274,7 +278,18 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public CsvSourceFigure() {
-			this.setURI("platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg");
+
+			GridLayout layoutThis = new GridLayout();
+			layoutThis.numColumns = 1;
+			layoutThis.makeColumnsEqualWidth = true;
+			this.setLayoutManager(layoutThis);
+
+			this.addPoint(new Point(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0)));
+			this.addPoint(new Point(getMapMode().DPtoLP(10), getMapMode().DPtoLP(0)));
+			this.addPoint(new Point(getMapMode().DPtoLP(11), getMapMode().DPtoLP(2)));
+			this.addPoint(new Point(getMapMode().DPtoLP(10), getMapMode().DPtoLP(4)));
+			this.addPoint(new Point(getMapMode().DPtoLP(0), getMapMode().DPtoLP(4)));
+			this.setFill(true);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -289,7 +304,15 @@ public class CsvSourceEditPart extends ShapeNodeEditPart {
 
 			fFigureCsvSourceLabelFigure.setText("CsvSource");
 
-			this.add(fFigureCsvSourceLabelFigure);
+			GridData constraintFFigureCsvSourceLabelFigure = new GridData();
+			constraintFFigureCsvSourceLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureCsvSourceLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureCsvSourceLabelFigure.horizontalIndent = 0;
+			constraintFFigureCsvSourceLabelFigure.horizontalSpan = 1;
+			constraintFFigureCsvSourceLabelFigure.verticalSpan = 1;
+			constraintFFigureCsvSourceLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureCsvSourceLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureCsvSourceLabelFigure, constraintFFigureCsvSourceLabelFigure);
 
 		}
 

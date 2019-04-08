@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getType()
- * @model annotation="gmf.node label='name'"
+ * @model annotation="gmf.node label='name' figure='rectangle'"
  * @generated
  */
 public interface Type extends EObject {
@@ -133,6 +133,7 @@ public interface Type extends EObject {
 	 * @return the value of the '<em>Fields</em>' containment reference list.
 	 * @see crossflow.CrossflowPackage#getType_Fields()
 	 * @model containment="true"
+	 *        annotation="gmf.compartment layout='list' collapsible='false'"
 	 * @generated
 	 */
 	EList<Field> getFields();

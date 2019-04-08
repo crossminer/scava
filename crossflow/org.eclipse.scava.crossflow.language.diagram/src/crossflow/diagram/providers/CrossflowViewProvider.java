@@ -58,6 +58,8 @@ import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
 import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
@@ -701,8 +703,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
 		Node label5012 = createLabel(node, CrossflowVisualIDRegistry.getType(TypeNameEditPart.VISUAL_ID));
-		createCompartment(node, CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID), true,
-				false, false, false);
+		createCompartment(node, CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID), false,
+				false, true, true);
 		return node;
 	}
 
@@ -739,7 +741,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5013 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameEditPart.VISUAL_ID));
+		Node label5013 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameTypeEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -775,7 +777,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5011 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldName2EditPart.VISUAL_ID));
+		Node label5011 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameType2EditPart.VISUAL_ID));
 		return node;
 	}
 

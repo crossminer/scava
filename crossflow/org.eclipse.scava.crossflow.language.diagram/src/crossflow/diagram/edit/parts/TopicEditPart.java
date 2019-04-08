@@ -96,17 +96,17 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
+	* @generated NOT
 	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new TopicFigure();
+		return primaryShape = new StreamFigure(getMapMode(), true);
 	}
 
 	/**
-	* @generated
+	* @generated NOT
 	*/
-	public TopicFigure getPrimaryShape() {
-		return (TopicFigure) primaryShape;
+	public StreamFigure getPrimaryShape() {
+		return (StreamFigure) primaryShape;
 	}
 
 	/**
@@ -263,8 +263,8 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public class TopicFigure extends Ellipse {
 
 		/**

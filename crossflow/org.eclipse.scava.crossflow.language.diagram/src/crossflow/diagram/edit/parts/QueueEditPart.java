@@ -38,30 +38,30 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class QueueEditPart extends ShapeNodeEditPart {
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static final int VISUAL_ID = 2004;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected IFigure contentPane;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected IFigure primaryShape;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public QueueEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new QueueItemSemanticEditPolicy());
@@ -71,8 +71,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected LayoutEditPolicy createLayoutEditPolicy() {
 		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
@@ -96,22 +96,22 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated NOT
+	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new QueueFigure();
+		return primaryShape = new StreamFigure(getMapMode(), false);
 	}
 
 	/**
-	* @generated
-	*/
-	public QueueFigure getPrimaryShape() {
-		return (QueueFigure) primaryShape;
+	 * @generated NOT
+	 */
+	public StreamFigure getPrimaryShape() {
+		return (StreamFigure) primaryShape;
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof QueueNameEditPart) {
 			((QueueNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureQueueLabelFigure());
@@ -121,8 +121,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected boolean removeFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof QueueNameEditPart) {
 			return true;
@@ -131,8 +131,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		if (addFixedChild(childEditPart)) {
 			return;
@@ -141,8 +141,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void removeChildVisual(EditPart childEditPart) {
 		if (removeFixedChild(childEditPart)) {
 			return;
@@ -151,28 +151,28 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
 		return getContentPane();
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
 		return result;
 	}
 
 	/**
-	* Creates figure for this edit part.
-	* 
-	* Body of this method does not depend on settings in generation model
-	* so you may safely remove <i>generated</i> tag and modify it.
-	* 
-	* @generated
-	*/
+	 * Creates figure for this edit part.
+	 * 
+	 * Body of this method does not depend on settings in generation model so you
+	 * may safely remove <i>generated</i> tag and modify it.
+	 * 
+	 * @generated
+	 */
 	protected NodeFigure createNodeFigure() {
 		NodeFigure figure = createNodePlate();
 		figure.setLayoutManager(new StackLayout());
@@ -183,11 +183,12 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* Default implementation treats passed figure as content pane.
-	* Respects layout one may have set for generated figure.
-	* @param nodeShape instance of generated figure class
-	* @generated
-	*/
+	 * Default implementation treats passed figure as content pane. Respects layout
+	 * one may have set for generated figure.
+	 * 
+	 * @param nodeShape instance of generated figure class
+	 * @generated
+	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
 		if (nodeShape.getLayoutManager() == null) {
 			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
@@ -198,8 +199,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public IFigure getContentPane() {
 		if (contentPane != null) {
 			return contentPane;
@@ -208,8 +209,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setForegroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setForegroundColor(color);
@@ -217,8 +218,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setBackgroundColor(color);
@@ -226,8 +227,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setLineWidth(int width) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineWidth(width);
@@ -235,8 +236,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setLineType(int style) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
@@ -244,15 +245,15 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public EditPart getPrimaryChildEditPart() {
 		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(QueueNameEditPart.VISUAL_ID));
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void handleNotificationEvent(Notification event) {
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
@@ -263,8 +264,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public class QueueFigure extends Ellipse {
 
 		/**
