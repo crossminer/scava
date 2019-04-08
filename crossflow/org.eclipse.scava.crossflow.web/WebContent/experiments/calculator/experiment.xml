@@ -1,10 +1,9 @@
-<experiment 
-	title="Calculator" 
-	class="org.eclipse.scava.crossflow.tests.calculator.CalculatorWorkflow" 
-	jar="org.eclipse.scava.crossflow.tests.jar" 
-	input="in" 
-	output="out" 
-	runtimeModel="calculator.elkt"
+<experiment
+	title="Calculator"
+	class="org.eclipse.scava.crossflow.tests.calculator.CalculatorWorkflow"
+	jar="org.eclipse.scava.crossflow.tests.jar"
+	input="in"
+	output="out"
 	summary="A minimal example that performs numerical operations defined in a comma-seprated values (CSV) file."
 	>
 	<input path="in/input.csv" title="Calculations"/>

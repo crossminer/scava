@@ -6,6 +6,14 @@ rule Workflow2Class
 	target : w.getPath() + w.name + ".java"
 }
 
+rule Workflow2AbstractGraph 
+	transform w : Workflow {
+	
+	template : "workflow2abstractGraph.egl"
+	
+	target : "graphs/" + w.name + "/abstract.graph"
+}
+
 rule Type2Class 
 	transform t : Type {
 	

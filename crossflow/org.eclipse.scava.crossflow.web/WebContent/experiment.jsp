@@ -127,25 +127,10 @@
 					</div>
 					<div class="tab-pane fade show" id="model" role="tabpanel"
 						aria-labelledby="model-tab">
-						<p>
-						<table class="table table-striped table-bordered">
-							<tr>
-								<td>
-
-									<div class="container">
-										<div class="row" class="runtime-viewer">
-											<div class="sprotty-hidden">
-												<div id="monaco-editor" data-input-type="elkt"></div>
-											</div>
-											<div id="sprotty" class="runtime-viewer"></div>
-										</div>
-									</div>
-								</td>
-							</tr>
-						</table>
-
-
-						</p>
+						<div id="graphContainer"
+							style="position: relative; overflow: scroll; width: 100%; height: 100%; cursor: default;">
+						</div>
+						<p></p>
 					</div>
 				</div>
 			</div>
@@ -182,7 +167,7 @@
 			}
 		}
 	})
-	
+
 	var transport = new Thrift.TXHRTransport(
 			"/org.eclipse.scava.crossflow.web/crossflow");
 	var protocol = new Thrift.TJSONProtocol(transport);
@@ -190,14 +175,7 @@
 
 	var url = new URL(window.location.href);
 	app.experimentId = url.searchParams.get("id");
-	
-	var runtimeModel = crossflow.getExperiment(app.experimentId).runtimeModel;
-	var runtimeModelEncoded = encodeURIComponent(runtimeModel);
-	
-	if ( window.location.href.includes("initialContent") == false ) {
-		window.location.href = window.location + "&initialContent=" + runtimeModelEncoded;
-	}
-	
+
 	refresh();
 
 	setInterval(function() {
@@ -213,6 +191,123 @@
 		});
 		app.diagnostics = crossflow.getDiagnostics();
 	}
+</script>
+
+<script type="text/javascript">
+var cellTooltips = {};
+
+loadStencils();
+
+container = document.getElementById('graphContainer');
+experimentId = new URL(document.location).searchParams.get('id');
+
+/* mxEvent.disableContextMenu(container); */
+window.runtimeModelContainer = container;
+
+window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
+window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
+window.runtimeModelGraph.setTooltips(true);
+var oldGetPreferredSizeForCell = window.runtimeModelGraph.getPreferredSizeForCell;
+window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
+{
+	var result = oldGetPreferredSizeForCell.apply(this, arguments);
+	if (result != null)
+	{
+		result.width = result.width + 20;
+		result.height = 40;
+
+	}
+	return result;
+};
+
+window.runtimeModelGraph.getTooltipForCell = function(cell) {
+	
+	sBXmlDoc = window.streamBroadcasterXmlDoc;
+	//console.log(sBXmlDoc);
+	modelElement = cell.id;
+	//console.log("modelElement = " + modelElement);
+	size = "n/a";
+	inFlight = "n/a";
+	subscribers = "n/a";
+	
+	for ( i=0; i <= sBXmlDoc.childNodes[0].children.length; i++ ) {
+		if ( sBXmlDoc.childNodes[0].childNodes[i].nodeName=="streams" ) {
+			//console.log("streams encountered");
+			for ( j=0; j <= sBXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
+				//console.log("i="+i+";  j="+j);
+				if ( sBXmlDoc.childNodes[0].childNodes[i].childNodes[j] != null &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].hasChildNodes() &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML != null &&
+						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML.includes(modelElement) ) {
+				
+					//console.log("i="+i+";  j="+j);
+					name = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML;
+					//console.log('name='+name);
+					
+					// size
+					size = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
+					//console.log('size='+size);
+					sizeUnit = "";
+					if ( size >= 1000 && size <= 999999 ) {
+						sizeUnit = "K";
+						size = size / 1000;
+					} else if ( size >= 1000000 ) {
+						sizeUnit = "M";
+						size = size / 1000000;
+					}
+					//console.log('size='+size);
+					
+					window.runtimeModelGraph.model.setValue(cell, size + sizeUnit); // WIP, see: https://bit.ly/2smlV9o
+
+					// inFlight
+					inFlight = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
+					//console.log('inFlight='+inFlight);
+
+					// numberOfSubscribers
+					subscribers = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[9].innerHTML;
+					//console.log('subscribers='+subscribers);
+				}
+				
+		}
+	}
+	
+	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+		
+	if ( cellTooltip.includes("n/a") ) {
+		// return latest known status
+		return cellTooltips[modelElement];
+	} 
+	
+	cellTooltips[modelElement] = cellTooltip;
+	
+	return cellTooltip;
+}
+
+window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
+window.runtimeModelGraph.enabled = false;
+
+window.runtimeModelGraph.getModel().beginUpdate();
+
+
+<%
+String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstract";
+//new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
+
+%>
+try {
+<jsp:include page="<%= graphPath %>" flush="true" />
+
+ var model = window.runtimeModelGraph.getModel();
+
+var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
+layout.execute(window.runtimeModelParent, model.cells[2]);
+
+} finally {
+	// Updates the display
+	window.runtimeModelGraph.getModel().endUpdate();
+}
+
+
 </script>
 
 <jsp:include page="footer.jsp" />

@@ -39,7 +39,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		this.[%=s.name.ftlc()%] = [%=s.name.ftlc()%];
 	}
 	
-	private [%=s.name%] get[%=s.name%]() {
+	protected [%=s.name%] get[%=s.name%]() {
 		return [%=s.name.ftlc()%];
 	}
 	

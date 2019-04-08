@@ -3,6 +3,8 @@ package org.eclipse.scava.crossflow.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -208,15 +210,6 @@ public class CrossflowHandler implements Crossflow.Iface {
 				experiment.addToFileDescriptors(fileDescriptor);
 			}
 
-			String runtimeModel = "";
-			try {
-				File runtimeModelFile = new File(experimentDirectory, experimentElement.getAttribute("runtimeModel"));
-				runtimeModel = new String(Files.readAllBytes(runtimeModelFile.toPath()));
-			} catch (Exception ex) {
-				System.err.println("Failed to read runtime model from location defined in experiment configuration: " + experimentElement.getAttribute("runtimeModel"));
-			}
-			experiment.setRuntimeModel(runtimeModel);
-
 			Workflow workflow = workflows.get(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
 				experiment.status = "running";
@@ -263,13 +256,19 @@ public class CrossflowHandler implements Crossflow.Iface {
 	
 	@Override
 	public boolean isBrokerRunning() throws TException {
-		try {
-			new ActiveMQConnectionFactory("tcp://localhost:61616").createConnection();
-			return true;
-		}
-		catch (Exception ex) {
-			return false;
-		}
+		if ( !available("localhost", 61616) ) {
+			return true; // port already used, broker is already running
+		} 
+		// port not used, broker not running
+		return false;
+	}
+	
+	private static boolean available(String host, int port) {
+	    try (Socket ignored = new Socket(host, port)) {
+	        return false;
+	    } catch (IOException ignored) {
+	        return true;
+	    }
 	}
 	
 	@Override

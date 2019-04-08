@@ -47,6 +47,9 @@ public abstract class Workflow {
 	protected int port = 61616;
 
 	protected BrokerService brokerService;
+	
+	@Parameter(names = {"-activeMqConfig"}, description = "Location of ActiveMQ configuration file")
+	protected String activeMqConfig;
 
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
 	protected String instanceId;
@@ -111,6 +114,14 @@ public abstract class Workflow {
 	 * of processing one already
 	 */
 	protected boolean enablePrefetch = false;
+	
+	public void setActiveMqConfig(String activeMqConfig) {
+		this.activeMqConfig = activeMqConfig;
+	}
+	
+	public String getActiveMqConfig() {
+		return activeMqConfig;
+	}
 
 	public void excludeTasks(Collection<String> tasks) {
 		tasksToExclude = tasks;
@@ -439,7 +450,7 @@ public abstract class Workflow {
 		// adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
-
+	
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);

@@ -1,0 +1,10 @@
+var v1 = createTask("CalculationSource", window.runtimeModelGraph, window.runtimeModelParent);
+var v2 = createStream("Calculations", window.runtimeModelGraph, window.runtimeModelParent);
+var v3 = createTask("Calculator", window.runtimeModelGraph, window.runtimeModelParent);
+var v4 = createStream("CalculationResults", window.runtimeModelGraph, window.runtimeModelParent);
+var v5 = createTask("CalculationResultsSink", window.runtimeModelGraph, window.runtimeModelParent);
+
+link(v1, v2, window.runtimeModelGraph, window.runtimeModelParent);
+link(v2, v3, window.runtimeModelGraph, window.runtimeModelParent);
+link(v3, v4, window.runtimeModelGraph, window.runtimeModelParent);
+link(v4, v5, window.runtimeModelGraph, window.runtimeModelParent);
