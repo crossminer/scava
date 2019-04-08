@@ -30,3 +30,7 @@ crossflow/org\.eclipse\.scava\.crossflow\.elkgraph/node_modules/\.yarn-integrity
 
 crossflow/org\.eclipse\.scava\.crossflow\.web/app/
 crossflow/org.eclipse.scava.crossflow.tests/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.techrank/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/tmp
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/activemq-data
