@@ -73,7 +73,7 @@ function main(container, experimentId) {
 		  //console.log("e.data="+e.data);
 		  
 		  // extract plain XML
-		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>'), e.data.length);
+		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>'), e.data.length-1);
 		  
 		  // parse plain XML
 		  parser = new DOMParser();
