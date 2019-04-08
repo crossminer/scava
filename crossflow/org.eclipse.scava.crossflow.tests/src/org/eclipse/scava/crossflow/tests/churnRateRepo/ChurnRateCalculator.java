@@ -98,7 +98,7 @@ public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 
 			this.setDiffsAll();
 			// this.setDiffsToBranch(this.remoteBranches.get(1));
-			this.getChurnRates();
+			this.obtainChurnRates();
 		}
 
 	}//consumeURLs
@@ -420,7 +420,7 @@ public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 	}
 
 	// returns the churnRate for every branch of the project
-	public void getChurnRates () {
+	public void obtainChurnRates () {
 		
 		//for every branch
 		for (int i=0; i<this.remoteBranches.size();i++) {
