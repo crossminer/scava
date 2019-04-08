@@ -32,7 +32,7 @@ function loadFile(filePath) {
 function main(container, experimentId) {
 	
 	let ws = null;
-	const wsUri = 'ws://localhost:61614';
+	const wsUri = 'ws://' + window.location.hostname + ':61614';
 	const protocol = 'stomp';
 	const mdBroadcaster = '/topic/StreamMetadataBroadcaster';
 	
@@ -73,7 +73,7 @@ function main(container, experimentId) {
 		  //console.log("e.data="+e.data);
 		  
 		  // extract plain XML
-		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadata>'), e.data.length);
+		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>'), e.data.length);
 		  
 		  // parse plain XML
 		  parser = new DOMParser();
