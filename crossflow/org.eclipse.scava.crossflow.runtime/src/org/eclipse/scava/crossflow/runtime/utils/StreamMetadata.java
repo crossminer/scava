@@ -1,92 +1,53 @@
 package org.eclipse.scava.crossflow.runtime.utils;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-public class StreamMetadata implements Serializable {
+public class StreamMetadata  implements Serializable{
+	private String name;
+	private long size;
+	private long inFlight;
+	private boolean isTopic;
+	private long numberOfSubscribers;
 
-	public class Stream  implements Serializable{
-		private String name;
-		private long size;
-		private long inFlight;
-		private boolean isTopic;
-		private long numberOfSubscribers;
+	public StreamMetadata(String name, long size, long inFlight, boolean isTopic, long numberOfSubscribers) {
+		this.name = name;
+		this.size = size;
+		this.inFlight = inFlight;
+		this.isTopic = isTopic;
+		this.numberOfSubscribers = numberOfSubscribers;
+	};
 
-		public Stream(String name, long size, long inFlight, boolean isTopic, long numberOfSubscribers) {
-			this.name = name;
-			this.size = size;
-			this.inFlight = inFlight;
-			this.isTopic = isTopic;
-			this.numberOfSubscribers = numberOfSubscribers;
-		};
-
-		public String getName() {
-			return name;
-		}
-
-		public long getSize() {
-			return size;
-		}
-
-		public long getInFlight() {
-			return inFlight;
-		}
-
-		public boolean isTopic() {
-			return isTopic;
-		}
-
-		public long getNumberOfSubscribers() {
-			return numberOfSubscribers;
-		}
-
-		public void setNumberOfSubscribers(int numberOfSubscribers) {
-			this.numberOfSubscribers = numberOfSubscribers;
-		}
-
-		@Override
-		public String toString() {
-			return "name: " + name + " | size: " + size + " | inFlight: " + inFlight + " | isTopic: " + isTopic
-					+ " | numberOfSubscribers: " + numberOfSubscribers;
-		}
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	private Set<Stream> streams = new HashSet<Stream>();
-
-	//
-
-	public boolean addStream(String name, long size, long inFlight, boolean isTopic, long l) {
-		return streams.add(new Stream(name, size, inFlight, isTopic, l));
+	public long getSize() {
+		return size;
 	}
 
-	public Set<Stream> getStreams() {
-		return streams;
+	public long getInFlight() {
+		return inFlight;
 	}
 
-	public Stream getStream(String name) {
-		try {
-			return streams.stream().filter(s -> s.name.equals(name)).collect(Collectors.toList()).get(0);
-		} catch (Exception e) {
-			return null;
-		}
+	public boolean isTopic() {
+		return isTopic;
 	}
 
-	public void pruneNames(int length) {
-		for (Stream s : streams)
-			if (s.name.length() >= length)
-				s.name = s.name.substring(0, length);
-			else if (s.name.length() < length)
-				s.name = String.format("%-" + length + "s", s.name);
+	public long getNumberOfSubscribers() {
+		return numberOfSubscribers;
+	}
+
+	public void setNumberOfSubscribers(int numberOfSubscribers) {
+		this.numberOfSubscribers = numberOfSubscribers;
 	}
 
 	@Override
 	public String toString() {
-		String ret = "Stream Metadata at epoch: " + System.currentTimeMillis() + "\r\n";
-		for (Stream s : streams)
-			ret = ret + s.name + "\tsize: " + s.size + "\tinFlight: " + s.inFlight + "\tisTopic: " + s.isTopic
-					+ "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n";
-		return ret;
+		return "name: " + name + " | size: " + size + " | inFlight: " + inFlight + " | isTopic: " + isTopic
+				+ " | numberOfSubscribers: " + numberOfSubscribers;
 	}
 }

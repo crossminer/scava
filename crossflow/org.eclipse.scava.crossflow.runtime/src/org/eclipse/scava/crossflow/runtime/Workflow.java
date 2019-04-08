@@ -28,7 +28,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 
@@ -88,7 +88,7 @@ public abstract class Workflow {
 
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
 	protected BuiltinStream<Result> resultsTopic = null;
-	protected BuiltinStream<StreamMetadata> streamMetadataTopic = null;
+	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 
 	protected BuiltinStream<LogMessage> logTopic = null;
@@ -166,7 +166,7 @@ public abstract class Workflow {
 	public Workflow() {
 		taskStatusTopic = new BuiltinStream<TaskStatus>(this, "TaskStatusPublisher");
 		resultsTopic = new BuiltinStream<Result>(this, "ResultsBroadcaster");
-		streamMetadataTopic = new BuiltinStream<StreamMetadata>(this, "StreamMetadataBroadcaster");
+		streamMetadataTopic = new BuiltinStream<StreamMetadataSnapshot>(this, "StreamMetadataBroadcaster");
 		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
 		logTopic = new BuiltinStream<LogMessage>(this, "LogTopic");
 		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
@@ -326,7 +326,7 @@ public abstract class Workflow {
 
 				@Override
 				public void run() {
-					StreamMetadata sm = new StreamMetadata();
+					StreamMetadataSnapshot sm = new StreamMetadataSnapshot();
 					//
 					for (Stream c : new ArrayList<>(activeStreams)) {
 
@@ -648,7 +648,7 @@ public abstract class Workflow {
 		return resultsTopic;
 	}
 
-	public BuiltinStream<StreamMetadata> getStreamMetadataTopic() {
+	public BuiltinStream<StreamMetadataSnapshot> getStreamMetadataTopic() {
 		return streamMetadataTopic;
 	}
 

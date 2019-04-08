@@ -19,7 +19,7 @@ import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata.Stream;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
@@ -79,7 +79,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			boolean done = false;
 
 			@Override
-			public void consume(StreamMetadata t) {
+			public void consume(StreamMetadataSnapshot t) {
 
 				if (initialt == 0)
 					initialt = System.currentTimeMillis();
@@ -210,7 +210,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		}
 	}
 
-	private abstract class StreamMetadataBuiltinStreamConsumer implements BuiltinStreamConsumer<StreamMetadata> {
+	private abstract class StreamMetadataBuiltinStreamConsumer implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
 		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();
 		public boolean updated = false;
 		public long maxQueueSize = 0;
@@ -254,7 +254,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			public static final String OUTPUT_STREAM_ID = "OutputPost.MinimalSink.testStreamMetadataTopicWorkflow";
 
 			@Override
-			public void consume(StreamMetadata t) {
+			public void consume(StreamMetadataSnapshot t) {
 
 				// t.pruneNames(OUTPUT_STREAM_ID.length());
 				// System.out.println(t);
@@ -331,14 +331,14 @@ public class ParallelWorkflowTests extends WorkflowTests {
 			public static final String INPUT_STREAM_ID = "InputPost.CopierTask.testStreamMetadataTopicWorkflowMC";
 
 			@Override
-			public void consume(StreamMetadata t) {
+			public void consume(StreamMetadataSnapshot t) {
 
 				// t.pruneNames(INPUT_STREAM_ID.length());
 				// System.out.println(t);
 
 				long subs = -1;
 				try {
-					Stream stream = t.getStream(INPUT_STREAM_ID);
+					StreamMetadata stream = t.getStream(INPUT_STREAM_ID);
 					subs = stream.getNumberOfSubscribers();
 					System.out.println(subs + " == " + (1 + workflow.getParallelization()));
 					assertEquals(subs, 1 + workflow.getParallelization());
