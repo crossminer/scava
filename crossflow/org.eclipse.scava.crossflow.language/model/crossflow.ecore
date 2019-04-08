@@ -67,8 +67,9 @@
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="label.icon" value="false"/>
-      <details key="figure" value="svg"/>
-      <details key="svg.uri" value="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg"/>
+      <details key="figure" value="polygon"/>
+      <details key="polygon.x" value="0 10 11 10 0"/>
+      <details key="polygon.y" value="0 0 2 4 4"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CsvSource" eSuperTypes="#//Source">
@@ -78,8 +79,9 @@
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="label.icon" value="false"/>
-      <details key="figure" value="svg"/>
-      <details key="svg.uri" value="platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg"/>
+      <details key="figure" value="polygon"/>
+      <details key="polygon.x" value="0 10 10 5 0"/>
+      <details key="polygon.y" value="0 0 4 6 4"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CsvSink" eSuperTypes="#//Sink">
@@ -100,6 +102,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Type">
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
+      <details key="figure" value="rectangle"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="impl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -111,13 +114,17 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//Field" containment="true">
-      <eAnnotations source="gmf.compartment"/>
+      <eAnnotations source="gmf.compartment">
+        <details key="layout" value="list"/>
+        <details key="collapsible" value="false"/>
+      </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Field">
     <eAnnotations source="gmf.node">
-      <details key="label" value="name"/>
-      <details key="label.pattern" value="{0}"/>
+      <details key="label" value="name,type"/>
+      <details key="figure" value="rectangle"/>
+      <details key="label.pattern" value="{0}:{1}"/>
       <details key="label.icon" value="false"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

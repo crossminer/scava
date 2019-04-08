@@ -4,10 +4,12 @@
 package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
@@ -29,7 +31,7 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 /**
  * @generated
  */
-public class TypeTypeFieldsCompartmentEditPart extends ShapeCompartmentEditPart {
+public class TypeTypeFieldsCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
 	* @generated
@@ -41,6 +43,13 @@ public class TypeTypeFieldsCompartmentEditPart extends ShapeCompartmentEditPart 
 	*/
 	public TypeTypeFieldsCompartmentEditPart(View view) {
 		super(view);
+	}
+
+	/**
+	* @generated
+	*/
+	protected boolean hasModelChildrenChanged(Notification evt) {
+		return false;
 	}
 
 	/**
@@ -64,7 +73,6 @@ public class TypeTypeFieldsCompartmentEditPart extends ShapeCompartmentEditPart 
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ResizableCompartmentEditPolicy());
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new TypeTypeFieldsCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(CrossflowVisualIDRegistry.TYPED_INSTANCE));

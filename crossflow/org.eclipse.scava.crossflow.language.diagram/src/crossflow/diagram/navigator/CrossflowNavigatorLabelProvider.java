@@ -34,6 +34,8 @@ import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldName2EditPart;
 import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
@@ -462,7 +464,7 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 	private String getField_2012Text(View view) {
 		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_2012,
 				view.getElement() != null ? view.getElement() : view,
-				CrossflowVisualIDRegistry.getType(FieldNameEditPart.VISUAL_ID));
+				CrossflowVisualIDRegistry.getType(FieldNameTypeEditPart.VISUAL_ID));
 		if (parser != null) {
 			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
 					ParserOptions.NONE.intValue());
@@ -478,7 +480,7 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 	private String getField_3001Text(View view) {
 		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_3001,
 				view.getElement() != null ? view.getElement() : view,
-				CrossflowVisualIDRegistry.getType(FieldName2EditPart.VISUAL_ID));
+				CrossflowVisualIDRegistry.getType(FieldNameType2EditPart.VISUAL_ID));
 		if (parser != null) {
 			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
 					ParserOptions.NONE.intValue());

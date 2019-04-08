@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getField()
- * @model annotation="gmf.node label='name' label.pattern='{0}' label.icon='false'"
+ * @model annotation="gmf.node label='name,type' figure='rectangle' label.pattern='{0}:{1}' label.icon='false'"
  * @generated
  */
 public interface Field extends EObject {

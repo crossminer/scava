@@ -33,7 +33,6 @@ public class DirectoryCacheCommandLineTests extends WorkflowTests {
 				.run(createBroker ? (deleteCache ? (deleteQueue ? brokerDeleteCacheQueue : brokerDeleteCache) : broker)
 						: (deleteCache ? (deleteQueue ? noBrokerDeleteCacheQueue : noBrokerDeleteCache) : noBroker));
 
-		master.getAdder().setCaching(true);
 		DirectoryCache cache = (DirectoryCache) master.getCache();
 
 		waitFor(master);

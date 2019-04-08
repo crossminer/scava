@@ -35,7 +35,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.createBroker(createBroker);
-		workflow.getAdder().setCaching(true);
+		workflow.getAdder().setCacheable(true);
 		workflow.setCache(new DirectoryCache());
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		workflow.run();
@@ -43,7 +43,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
 		fresh.createBroker(createBroker);
-		fresh.getAdder().setCaching(true);
+		fresh.getAdder().setCacheable(true);
 		fresh.setCache(new DirectoryCache(((DirectoryCache) workflow.getCache()).getDirectory()));
 		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
 		fresh.run();
@@ -57,7 +57,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	public void testUncacheable() throws Exception {
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.createBroker(createBroker);
-		workflow.getAdder().setCaching(true);
 		workflow.setCache(new DirectoryCache());
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		workflow.getAdder().setCacheable(false);
@@ -66,7 +65,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
 		fresh.createBroker(createBroker);
-		fresh.getAdder().setCaching(true);
 		fresh.getAdder().setCacheable(false);
 		fresh.setCache(new DirectoryCache(((DirectoryCache) workflow.getCache()).getDirectory()));
 		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
@@ -81,14 +79,12 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 		AdditionWorkflow workflow = new AdditionWorkflow();
 		workflow.createBroker(createBroker);
-		workflow.getAdder().setCaching(true);
 		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 		workflow.run();
 		waitFor(workflow);
 
 		AdditionWorkflow fresh = new AdditionWorkflow();
 		fresh.createBroker(createBroker);
-		fresh.getAdder().setCaching(true);
 		fresh.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3));
 		fresh.run();
 		waitFor(fresh);

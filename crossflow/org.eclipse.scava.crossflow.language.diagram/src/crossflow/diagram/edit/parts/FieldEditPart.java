@@ -7,6 +7,7 @@ import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
@@ -114,8 +115,8 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FieldNameEditPart) {
-			((FieldNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureFieldLabelFigure());
+		if (childEditPart instanceof FieldNameTypeEditPart) {
+			((FieldNameTypeEditPart) childEditPart).setLabel(getPrimaryShape().getFigureFieldLabelFigure());
 			return true;
 		}
 		return false;
@@ -125,7 +126,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FieldNameEditPart) {
+		if (childEditPart instanceof FieldNameTypeEditPart) {
 			return true;
 		}
 		return false;
@@ -162,7 +163,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 16);
 		return result;
 	}
 
@@ -248,7 +249,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(FieldNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(FieldNameTypeEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -266,7 +267,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class FieldFigure extends RoundedRectangle {
+	public class FieldFigure extends RectangleFigure {
 
 		/**
 		 * @generated
@@ -277,15 +278,8 @@ public class FieldEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public FieldFigure() {
-
-			GridLayout layoutThis = new GridLayout();
-			layoutThis.numColumns = 1;
-			layoutThis.makeColumnsEqualWidth = true;
-			this.setLayoutManager(layoutThis);
-
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
-			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setOutline(false);
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(16)));
 			createContents();
 		}
 
@@ -298,15 +292,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 
 			fFigureFieldLabelFigure.setText("Field");
 
-			GridData constraintFFigureFieldLabelFigure = new GridData();
-			constraintFFigureFieldLabelFigure.verticalAlignment = GridData.CENTER;
-			constraintFFigureFieldLabelFigure.horizontalAlignment = GridData.CENTER;
-			constraintFFigureFieldLabelFigure.horizontalIndent = 0;
-			constraintFFigureFieldLabelFigure.horizontalSpan = 1;
-			constraintFFigureFieldLabelFigure.verticalSpan = 1;
-			constraintFFigureFieldLabelFigure.grabExcessHorizontalSpace = true;
-			constraintFFigureFieldLabelFigure.grabExcessVerticalSpace = true;
-			this.add(fFigureFieldLabelFigure, constraintFFigureFieldLabelFigure);
+			this.add(fFigureFieldLabelFigure);
 
 		}
 

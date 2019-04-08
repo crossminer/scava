@@ -10,7 +10,7 @@ package crossflow;
  *
  *
  * @see crossflow.CrossflowPackage#getSink()
- * @model annotation="gmf.node label='name' label.icon='false' figure='svg' svg.uri='platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg'"
+ * @model annotation="gmf.node label='name' label.icon='false' figure='polygon' polygon.x='0 10 10 5 0' polygon.y='0 0 4 6 4'"
  * @generated
  */
 public interface Sink extends Task {

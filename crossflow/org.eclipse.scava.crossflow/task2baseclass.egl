@@ -64,6 +64,8 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		[%if(not t.multipleOutputs and t.output.size==1) {%]
 				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				if(result != null){
+					if(isCacheable())
+						result.setCorrelationId([%=s.type.name.ftlc()%].getId());				
 					result.setTransactional(false);
 					sendTo[%=t.output.first.name%](result);
 				}

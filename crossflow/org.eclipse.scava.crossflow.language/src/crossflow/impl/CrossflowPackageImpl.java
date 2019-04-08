@@ -891,8 +891,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   new String[] {
 			   "label", "name",
 			   "label.icon", "false",
-			   "figure", "svg",
-			   "svg.uri", "platform:/plugin/org.eclipse.scava.crossflow.language/svgs/source.svg"
+			   "figure", "polygon",
+			   "polygon.x", "0 10 11 10 0",
+			   "polygon.y", "0 0 2 4 4"
 		   });
 		addAnnotation
 		  (sinkEClass,
@@ -900,8 +901,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   new String[] {
 			   "label", "name",
 			   "label.icon", "false",
-			   "figure", "svg",
-			   "svg.uri", "platform:/plugin/org.eclipse.scava.crossflow.language/svgs/sink.svg"
+			   "figure", "polygon",
+			   "polygon.x", "0 10 10 5 0",
+			   "polygon.y", "0 0 4 6 4"
 		   });
 		addAnnotation
 		  (commitmentTaskEClass,
@@ -919,14 +921,16 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		  (typeEClass,
 		   source,
 		   new String[] {
-			   "label", "name"
+			   "label", "name",
+			   "figure", "rectangle"
 		   });
 		addAnnotation
 		  (fieldEClass,
 		   source,
 		   new String[] {
-			   "label", "name",
-			   "label.pattern", "{0}",
+			   "label", "name,type",
+			   "figure", "rectangle",
+			   "label.pattern", "{0}:{1}",
 			   "label.icon", "false"
 		   });
 		addAnnotation
@@ -982,6 +986,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		  (getType_Fields(),
 		   source,
 		   new String[] {
+			   "layout", "list",
+			   "collapsible", "false"
 		   });
 	}
 
