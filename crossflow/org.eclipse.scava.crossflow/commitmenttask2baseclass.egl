@@ -5,15 +5,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 
 public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base{
-
-	protected int rejections = 0;
-	protected int occurences = 0;
-	protected Map<String,Integer> seen = new HashMap<>();
-	protected Set<String> commitments = new HashSet<>();
+	
+	protected volatile int rejections = 0;
+	protected volatile int occurences = 0;
+	protected Map<String,Integer> seen = new ConcurrentHashMap<>();
+	protected Set<String> commitments = ConcurrentHashMap.newKeySet();	
 	
 	[%for (s in t.input) { %]
 [%=s.createStartOfConsumeMethod()%]
