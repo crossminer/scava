@@ -1,21 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Softeam
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
-import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
-import org.restlet.data.MediaType;
-import org.restlet.data.Status;
+import org.eclipse.scava.platform.analysis.MetricProviderService;
+import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
 import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.Mongo;
 
 public class AnalysisMetricProvidersResource extends AbstractApiResource {
@@ -24,54 +28,36 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 	public Representation doRepresent() {
 		Mongo mongo = null;
 		Platform platform = null;
+		ArrayNode listMetricProviders = mapper.createArrayNode();
 		try {
 			mongo = Configuration.getInstance().getMongoConnection();
 			platform = new Platform(mongo);
-			org.eclipse.scava.platform.analysis.MetricProviderService service = platform.getAnalysisRepositoryManager()
-					.getMetricProviderService();
+			MetricProviderService service = platform.getAnalysisRepositoryManager().getMetricProviderService();
 
-			List<MetricProvider> metricProviders = service.getMetricProviders();
-
-			ArrayNode listMetricProviders = mapper.createArrayNode();
-			for (MetricProvider metric : metricProviders) {
-				try {
-					metric.getDbObject().removeField("_id");
-					metric.getDbObject().removeField("_type");
-					metric.getDbObject().removeField("storages");
-
-					List<Object> dependingMetrics = new ArrayList<Object>();
-					for (MetricProvider mp : metric.getDependOf()) {
-						if (mp != null && mp.getDbObject() != null
-								&& mp.getDbObject().get("metricProviderId") != null) {
-							Map<String, String> newMetric = new HashMap<>();
-							newMetric.put("metricProviderId", mp.getDbObject().get("metricProviderId").toString());
-							newMetric.put("label", mp.getDbObject().get("label").toString());
-							dependingMetrics.add(newMetric);
-						}
+			List<MetricProviderDTO> metricProviders = service.getMetricProviders(platform);
+			for (MetricProviderDTO metric : metricProviders) {
+				ObjectNode newMetric = mapper.createObjectNode();
+				ArrayNode dependOf = mapper.createArrayNode();
+				for (MetricProviderDTO mp : metric.getDependOf()) {
+					if (mp != null) {
+						ObjectNode dependency = mapper.createObjectNode();
+						dependency.put("metricProviderId", mp.getMetricProviderId());
+						dependency.put("label", mp.getLabel());
+						dependOf.add(dependency);
 					}
-					metric.getDbObject().put("dependOf", dependingMetrics);
-					listMetricProviders.add(mapper.readTree(metric.getDbObject().toString()));
-				} catch (IOException e) {
-					e.printStackTrace();
-					StringRepresentation rep = new StringRepresentation("");
-					rep.setMediaType(MediaType.APPLICATION_JSON);
-					getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-					return rep;
 				}
+				newMetric.put("dependOf", dependOf);
+				newMetric.put("metricProviderId", metric.getMetricProviderId());
+				newMetric.put("label", metric.getLabel());
+				newMetric.put("kind", metric.getKind());
+				newMetric.put("description", metric.getDescription());
+				listMetricProviders.add(newMetric);
 			}
 
-			StringRepresentation rep = new StringRepresentation(listMetricProviders.toString());
-			rep.setMediaType(MediaType.APPLICATION_JSON);
-			getResponse().setStatus(Status.SUCCESS_OK);
+			return Util.createJsonRepresentation(listMetricProviders);
 
-			return rep;
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			StringRepresentation rep = new StringRepresentation("");
-			rep.setMediaType(MediaType.APPLICATION_JSON);
-			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-			return rep;
+		} catch (IOException e) {
+			return Util.generateErrorMessageRepresentation(listMetricProviders, e.getMessage());
 		} finally {
 			if (mongo != null)
 				mongo.close();

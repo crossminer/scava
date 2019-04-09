@@ -31,7 +31,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
   endDate : Date;
   maxStartDate: Date;
   maxEndDate: Date;
-
+  showSpinner: boolean;
   mpoption : string;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
@@ -63,6 +63,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
 
   loadAll() {
     this.isSaving = false;
+    this.showSpinner = true;
     this.maxStartDate = new Date();
     this.maxEndDate = this.maxStartDate;
     this.route.paramMap.subscribe(
@@ -79,6 +80,7 @@ export class AnalysisTaskUpdateComponent implements OnInit {
               (resp) => {
                 this.metricProviders = resp as MetricProvider[];
                 this.dataSource = new MatTableDataSource<MetricProvider>(this.metricProviders);
+                this.showSpinner = false;
                 this.selection = new SelectionModel<MetricProvider>(true, []);
                 this.executionTask.metricExecutions.forEach((me) => this.selection.select(this.metricProviders.find((mp) => mp.metricProviderId == me.metricProviderId)));
                 this.dataSource.sort = this.sort;

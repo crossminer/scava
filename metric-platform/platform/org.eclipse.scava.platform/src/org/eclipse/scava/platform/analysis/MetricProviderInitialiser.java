@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.platform.osgi.services;
+package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
+import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
 
 public class MetricProviderInitialiser {
@@ -29,20 +30,14 @@ public class MetricProviderInitialiser {
 		this.platform = platform;
 	}
 
-	public void initialiseMetricProviderRepository() {
-		Map<String, MetricProvider> metricsProviders = new HashMap<>();
-
-		// Clean Repository
-		for (MetricProvider oldMp : this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders()) {
-			this.platform.getAnalysisRepositoryManager().getRepository().getMetricProviders().remove(oldMp);
-		}
-		this.platform.getAnalysisRepositoryManager().getRepository().sync();
+	public List<MetricProviderDTO> loadMetricProviders() {
+		Map<String, MetricProviderDTO> metricsProviders = new HashMap<String, MetricProviderDTO>();
 
 		List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 
 		// Create metric providers
 		for (IMetricProvider provider : platformProvider) {
-			MetricProvider providerData = null;
+			MetricProviderDTO providerData = new MetricProviderDTO();
 			if (provider instanceof AbstractFactoidMetricProvider) {
 				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.FACTOID.name() ,provider.getSummaryInformation(), new ArrayList<String>());
@@ -55,24 +50,25 @@ public class MetricProviderInitialiser {
 				providerData = this.platform.getAnalysisRepositoryManager().getMetricProviderService().registreMetricProvider(provider.getIdentifier(),
 						provider.getFriendlyName(),MetricProviderKind.TRANSIENT.name(), provider.getSummaryInformation(), new ArrayList<String>());
 			}
-
 			metricsProviders.put(provider.getIdentifier(), providerData);
 		}
 
-		// Resolve Dependencys
+		// Resolve Dependencies
+		List<MetricProviderDTO> metricProviders = new ArrayList<MetricProviderDTO>();
 		for (IMetricProvider provider : platformProvider) {
-			List<MetricProvider> dependencys = new ArrayList<>();
+			MetricProviderDTO metricProvider = metricsProviders.get(provider.getIdentifier());
 			if (provider.getIdentifiersOfUses() != null) {
 				for (String dependencyId : provider.getIdentifiersOfUses()) {
-					MetricProvider metricDependency = metricsProviders.get(dependencyId);
+					MetricProviderDTO metricDependency = metricsProviders.get(dependencyId);
 					if (metricDependency != null) {
-						dependencys.add(metricDependency);
+						metricProvider.getDependOf().add(metricDependency);
 					}
 				}
 			}
-
-			this.platform.getAnalysisRepositoryManager().getMetricProviderService().addMetricProviderDependency(metricsProviders.get(provider.getIdentifier()), dependencys);
+			metricProviders.add(metricProvider);
+			metricProvider = null;
 		}
+		return metricProviders;
 	}
 
 }

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.emotions",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.emotions.EmotionsHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.emotions.comments",

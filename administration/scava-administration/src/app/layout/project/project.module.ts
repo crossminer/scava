@@ -77,6 +77,7 @@ import { ProjectMgmtDeleteDialogComponent } from './components/delete-project/de
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     ProjectComponent, 

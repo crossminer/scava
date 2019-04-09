@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.severity.averageResponseTime",

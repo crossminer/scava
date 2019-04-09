@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.dependency.maven.ratioUnusedOSGiImportedPackages.historic",
+	"metricid" : "trans.rascal.dependency.osgi.ratioUnusedOSGiImportedPackages",
 	"vis" : [ 
 		{
 			"id" : "ratioUnusedOSGiImportedPackages",

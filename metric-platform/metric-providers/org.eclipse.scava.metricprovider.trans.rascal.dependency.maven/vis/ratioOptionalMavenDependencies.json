@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.dependency.maven.ratioOptionalMavenDependencies.historic",
+	"metricid" : "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
 	"vis" : [ 
 		{
 			"id" : "ratioOptionalMavenDependenciesTimeLine",

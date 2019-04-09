@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.comments.commentedOutCodePerLanguage.historic",
+	"metricid" : "trans.rascal.comments.commentedOutCodePerLanguage.historic",
 	"vis" : [ 
 		{
 			"id" : "commentedOutCodePerLanguageTimeLine",
