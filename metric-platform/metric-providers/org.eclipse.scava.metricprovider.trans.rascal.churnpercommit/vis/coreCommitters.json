@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.rascal.generic.churn.coreCommittersChurn",
+	"metricid" : "rascal.generic.churn.coreCommittersChurn",
 	"vis" : [ 
 		{
 			"id" : "coreCommittersChurnBar",

@@ -94,7 +94,7 @@ public class MetricVisualisation {
 		return visualisation;
 	}
 	
-	public JsonNode visualiseMetric(DB db, BasicDBObject query) {
+	public JsonNode getVisualisation(DB db, BasicDBObject query) {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode visualisation = mapper.createObjectNode();
 				

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.SeverityBugStatusHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.severity.resolvedClosedBugs",

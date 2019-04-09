@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.LOC.genericLOCoverFiles.historic",
+	"metricid" : "trans.rascal.LOC.genericLOCoverFiles.historic",
 	"vis" : [ 
 		{
 			"id" : "LOCoverfilesovertime",

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.commitsPerDeveloper.historic",
+	"metricid" : "trans.rascal.activecommitters.commitsPerDeveloper.historic",
 	"vis" : [ 
 		{
 			"id" : "commitsPerDeveloperTimeLine",

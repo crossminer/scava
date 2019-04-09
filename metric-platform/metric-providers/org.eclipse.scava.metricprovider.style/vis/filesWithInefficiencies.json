@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.filesWithInefficiencies.historic",
+	"metricid" : "style.filesWithInefficiencies.historic",
 	"vis" : [ 
 		{
 			"id" : "filesWithInefficienciesTimeLine",

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.severity.averageResponseTime",
