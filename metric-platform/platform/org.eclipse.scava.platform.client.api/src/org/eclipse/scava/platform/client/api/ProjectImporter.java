@@ -90,6 +90,13 @@ public class ProjectImporter {
 		} else if (url.contains("gitlab")) { // FIXME: ...
 			GitLabImporter importer = new GitLabImporter();
 			try {
+				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+				Properties properties = projectRepo.getProperties().findOneByKey("gitlabToken");
+				if (properties != null) {
+					importer.setCredentials(new Credentials(properties.getValue(), "", ""));
+				} else {
+					importer.setCredentials(new Credentials("", "", ""));
+				}
 				p = importer.importProject(url, platform);
 			} catch (Exception e) {
 				e.printStackTrace();
