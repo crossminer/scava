@@ -35,11 +35,11 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 	public [%if(not t.multipleOutputs and t.output.size==1) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 		
 		[%/*for single output tasks*/if(not t.multipleOutputs and t.output.size==1) {%]
-		[%=s.type.name%] [%=s.type.name.ftlc()%]1 = new [%=s.type.name%]();
-		[%for (f in s.type.fields) { %]
-		//	[%=s.type.name.ftlc()%]1.set[%=f.name.ftuc()%]( [%=f.type%] );
+		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%] = new [%=t.output.first.type.name%]();
+		[%for (f in t.output.first.type.fields) { %]
+		//	[%=t.output.first.type.name.ftlc()%].set[%=f.name.ftuc()%]( [%=f.type%] );
 		[%}%]
-		return [%=s.type.name.ftlc()%]1;
+		return [%=t.output.first.type.name.ftlc()%];
 		[%} else /*for all other tasks*/{%]
 		// TODO: Add implementation that instantiates, sets, and submits result objects (example below)
 		[%for (s in t.output) { %]

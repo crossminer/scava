@@ -117,6 +117,7 @@ rule Steam2Consumer
 operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+
 	return "src-gen/" + workflow.package.replaceAll("\\.", "/") + "/";
 }
 

@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            class="org.eclipse.scava.crossflow.dt.views.CrossflowExecutionView"
-            id="org.eclipse.scava.crossflow.dt.views.CrossflowExecutionView"
-            name="Crossflow Execution">
-      </view>
+
+	<extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.crossflow_diagram"
+            id="CROSSFLOWBaseClassGeneration.contribution">
+         <menu
+               icon="icons/running.gif"
+               id="CROSSFLOWBaseClassGeneration.menu"
+               label="CROSSFLOW Base Class Generation"
+               path="additions">
+            <separator
+                  name="group">
+            </separator>
+         </menu>
+         <action
+               class="org.eclipse.scava.crossflow.dt.GenerateAction"
+               enablesFor="1"
+               icon="icons/busy.gif"
+               id="CROSSFLOWBaseClassGenerationAction"
+               label="Generate CROSSFLOW Base Classes"
+               menubarPath="CROSSFLOWBaseClassGeneration.menu/group">
+         </action>
+
+      </objectContribution>
    </extension>
+
 </plugin>

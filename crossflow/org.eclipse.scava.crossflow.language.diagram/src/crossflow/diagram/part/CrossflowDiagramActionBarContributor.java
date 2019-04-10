@@ -35,23 +35,9 @@ public class CrossflowDiagramActionBarContributor extends DiagramActionBarContri
 	}
 
 	/**
-	* @generated NOT
+	* @generated
 	*/
 	public void init(IActionBars bars, IWorkbenchPage page) {
-
-		//create generation button
-		IAction a = new GenerateAction(page);
-
-		a.setId("crossflow-generation");
-		a.setEnabled(true);
-		a.setImageDescriptor(ExtendedImageRegistry.getInstance().getImageDescriptor(AbstractUIPlugin
-				.imageDescriptorFromPlugin("org.eclipse.scava.crossflow.diagram", "icons/Comp-small.png")));
-		a.setText("Generate");
-		a.setDescription("Generate the workflow java code.");
-
-		addAction(a);
-		bars.getToolBarManager().add(a);
-		//
 
 		super.init(bars, page);
 		// print preview
