@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.rascal.generic.churn.churnPerCommitInTwoWeeks.historic",
+	"metricid" : "rascal.generic.churn.churnPerCommitInTwoWeeks.historic",
 	"vis" : [ 
 		{
 			"id" : "churnPerCommitInTwoWeeksTimeLine",

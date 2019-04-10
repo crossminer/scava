@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.emotions",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.emotions.articles",

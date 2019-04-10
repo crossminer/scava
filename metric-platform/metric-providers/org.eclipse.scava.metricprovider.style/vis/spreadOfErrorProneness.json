@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.spreadOfErrorProneness.historic",
+	"metricid" : "style.spreadOfErrorProneness.historic",
 	"vis" : [ 
 		{
 			"id" : "spreadOfErrorPronenessTimeLine",

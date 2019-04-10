@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.committersAge",
+	"metricid" : "trans.rascal.activecommitters.committersAge",
 	"vis" : [ 
 		{
 			"id" : "committersAgeBar",

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.patches",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.patches.PatchesHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.patches",

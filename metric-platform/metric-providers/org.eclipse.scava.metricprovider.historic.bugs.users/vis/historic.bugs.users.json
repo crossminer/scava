@@ -1,6 +1,6 @@
 
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.users",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.users.UsersHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.activeinactiveusers",

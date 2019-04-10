@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.readability.fileReadabilityQuartiles.historic",
+	"metricid" : "trans.rascal.readability.fileReadabilityQuartiles.historic",
 	"vis" : [ 
 		{
 			"id" : "fileReadabilityQuartilesHistoric",

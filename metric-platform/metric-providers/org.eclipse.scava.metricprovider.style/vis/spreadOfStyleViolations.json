@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.spreadOfStyleViolations.historic",
+	"metricid" : "style.spreadOfStyleViolations.historic",
 	"vis" : [ 
 		{
 			"id" : "spreadOfStyleViolationsTimeLine",

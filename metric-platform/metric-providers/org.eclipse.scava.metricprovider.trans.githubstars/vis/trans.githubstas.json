@@ -1,5 +1,5 @@
 {
-	"metricid" : "Stars.stargazers",
+	"metricid" : "org.eclipse.scava.metricprovider.trans.githubstars.StarsTransientMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "stars",
