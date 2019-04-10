@@ -8,7 +8,7 @@
 			<fileset dir="models" excludes="graphviz.egl"></fileset>
 			<epsilon.emf.loadModel name="M" modelfile="models/${it}"
 				metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
-			<epsilon.egl src="../org.eclipse.scava.crossflow/crossflow.egx" outputroot=".">
+			<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/crossflow.egx" outputroot=".">
 				<model ref="M"/>
 			</epsilon.egl>
 			<epsilon.disposeModel model="M"/>
