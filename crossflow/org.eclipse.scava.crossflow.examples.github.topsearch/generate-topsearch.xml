@@ -6,7 +6,7 @@
 		<epsilon.emf.loadModel name="M" modelfile="topsearch.flexmi"
 			metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
 		
-		<epsilon.egl src="../org.eclipse.scava.crossflow/crossflow.egx" outputroot=".">
+		<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/crossflow.egx" outputroot=".">
 			<model ref="M"/>
 		</epsilon.egl>
 
