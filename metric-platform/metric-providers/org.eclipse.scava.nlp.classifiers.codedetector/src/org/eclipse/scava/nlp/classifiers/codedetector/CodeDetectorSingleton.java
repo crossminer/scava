@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.classifiers.codedetector;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
@@ -24,40 +22,28 @@ class CodeDetectorSingleton
 	private static CodeDetectorSingleton singleton = new CodeDetectorSingleton();
 	protected OssmeterLogger logger;
 	private FastText codeDetector;
+	private String modelPath="/model/model_Mixed_sentences_all.bin";
 	
 	private CodeDetectorSingleton()
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.codedetector");
-		try
-		{
+		try {
 			codeDetector = getModelBin();
 			logger.info("Model has been sucessfully loaded");
-		} catch (IllegalArgumentException | IOException e)
-		{
+		} catch (IllegalArgumentException | IOException e) {
+			logger.error("Error while loading the model:", e);
 			e.printStackTrace();
 		}
-	}
-	
-	private void checkModelFile(Path path) throws FileNotFoundException
-	{
-		logger.info("Searching the model at " + path.toString());
-		if(!Files.exists(path))
-        {
-        	throw new FileNotFoundException("The file "+path+" has not been found"); 
-        }
 	}
 	
 	private FastText getModelBin() throws IllegalArgumentException, IOException
 	{
 		FastText.Factory factory = FastText.DEFAULT_FACTORY;
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		if (path.endsWith("target/classes/"))
-			path = path.substring(0, path.lastIndexOf("target/classes/"));
-		File file= new File(path+"model/model_Mixed_sentences_all.bin");
-		checkModelFile(file.toPath());
-		return factory.load(file.toString());
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(modelPath);
+		if(resource==null)
+			throw new FileNotFoundException("The file "+modelPath+" has not been found");
+		return factory.load(resource);
 	}
 	
 	public static CodeDetectorSingleton getInstance()
