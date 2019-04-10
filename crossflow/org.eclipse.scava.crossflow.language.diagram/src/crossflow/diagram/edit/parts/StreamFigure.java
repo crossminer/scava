@@ -57,30 +57,42 @@ public class StreamFigure extends Shape {
 	}
 
 	protected void fillShape(Graphics graphics) {
-		graphics.fillOval(getOptimizedBounds().x + getOptimizedBounds().width * 4 / 5, getOptimizedBounds().y,
-				getOptimizedBounds().width / 5, getOptimizedBounds().height);
+		graphics.fillOval(getOptimizedBounds().x + getOptimizedBounds().width * 4 / 5, 
+						  getOptimizedBounds().y,
+						  getOptimizedBounds().width / 5, 
+						  getOptimizedBounds().height);
 		//
-		graphics.fillArc(getOptimizedBounds().x, getOptimizedBounds().y, getOptimizedBounds().width / 5,
-				getOptimizedBounds().height, 90, 180);
+		graphics.fillArc(getOptimizedBounds().x, 
+						 getOptimizedBounds().y, 
+						 getOptimizedBounds().width / 5,
+						 getOptimizedBounds().height, 90, 180);
 		//
+		graphics.fillRectangle(getOptimizedBounds().x + getOptimizedBounds().width * 1 / 10, 
+							   getOptimizedBounds().y,
+							   getOptimizedBounds().width * 8 / 10, 
+							   getOptimizedBounds().height);
 	}
 
 	protected void outlineShape(Graphics graphics) {
-		graphics.drawOval(getOptimizedBounds().x + getOptimizedBounds().width * 4 / 5, getOptimizedBounds().y,
-				getOptimizedBounds().width / 5, getOptimizedBounds().height);
+		graphics.drawOval(getOptimizedBounds().x + getOptimizedBounds().width * 4 / 5, 
+						  getOptimizedBounds().y,
+						  getOptimizedBounds().width / 5, 
+						  getOptimizedBounds().height);
 		//
-		graphics.drawArc(getOptimizedBounds().x, getOptimizedBounds().y, getOptimizedBounds().width / 5,
-				getOptimizedBounds().height, 90, 180);
+		graphics.drawArc(getOptimizedBounds().x, 
+						 getOptimizedBounds().y, 
+						 getOptimizedBounds().width / 5,
+						 getOptimizedBounds().height, 90, 180);
 		//
 		graphics.drawLine(getOptimizedBounds().x + getOptimizedBounds().width * 9 / 10, 
-				          getOptimizedBounds().y,
-				          getOptimizedBounds().x + getOptimizedBounds().width * 1 / 10, 
+						  getOptimizedBounds().y,
+						  getOptimizedBounds().x + getOptimizedBounds().width * 1 / 10, 
 						  getOptimizedBounds().y);
-		
-		graphics.drawLine(getOptimizedBounds().x + getOptimizedBounds().width * 1 / 10, 
-		          getOptimizedBounds().y + getOptimizedBounds().height,
-		          getOptimizedBounds().x + getOptimizedBounds().width * 9 / 10, 
-				  getOptimizedBounds().y + getOptimizedBounds().height);
+
+		graphics.drawLine(getOptimizedBounds().x + getOptimizedBounds().width * 1 / 10,
+						  getOptimizedBounds().y + getOptimizedBounds().height,
+						  getOptimizedBounds().x + getOptimizedBounds().width * 9 / 10,
+						  getOptimizedBounds().y + getOptimizedBounds().height);
 	}
 
 	private Rectangle getOptimizedBounds() {
