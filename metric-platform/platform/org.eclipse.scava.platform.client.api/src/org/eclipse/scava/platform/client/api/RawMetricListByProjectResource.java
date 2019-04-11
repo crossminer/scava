@@ -51,7 +51,7 @@ public class RawMetricListByProjectResource extends AbstractApiResource {
 		}
 		
 		this.db = mongo.getDB(ANALYSIS_SCHEDULING_DATABASE);
-		ProjectAnalysisResportory repository = new ProjectAnalysisResportory(db);
+		ProjectAnalysisResportory repository = new ProjectAnalysisResportory(this.db);
 		Iterable<MetricExecution> providers = repository.getMetricExecutions().findByProjectId(projectId);
 		
 		List<String> metricExecutions = new ArrayList<>();
@@ -59,13 +59,12 @@ public class RawMetricListByProjectResource extends AbstractApiResource {
 			metricExecutions.add(metricExecution.getMetricProviderId());
 		}
 
-		// TODO: do we want to return the list of all metrics, or the list of metrics that can be visualised?
 		while (it.hasNext()) {
 			IMetricProvider iprovider = it.next();
 			if (metricExecutions.contains(iprovider.getIdentifier())) {
 				ObjectNode metric = mapper.createObjectNode();
-				metric.put("name", iprovider.getFriendlyName());
-				metric.put("type", iprovider.getIdentifier());
+				metric.put("metricProviderId", iprovider.getIdentifier());
+				metric.put("label", iprovider.getFriendlyName());
 				metric.put("description", iprovider.getSummaryInformation());
 				metrics.add(metric);
 			}
