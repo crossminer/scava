@@ -24,6 +24,7 @@ import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -67,6 +68,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 			
 			workflow.run();
+			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " started.");
 			workflows.put(experimentId, workflow);
 			return workflow.getInstanceId();
 		} catch (Exception e) {
@@ -79,6 +81,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 	public void stopExperiment(String experimentId) throws TException {
 		Workflow workflow = workflows.get(experimentId);
 		if (workflow != null) {
+			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " termination requested.");
 			workflow.terminate();
 			workflows.remove(experimentId);
 		}
