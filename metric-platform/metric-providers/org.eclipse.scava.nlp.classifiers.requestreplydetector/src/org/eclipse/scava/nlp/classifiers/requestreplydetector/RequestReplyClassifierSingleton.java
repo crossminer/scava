@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.classifiers.requestreplydetector;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.util.zip.ZipException;
 
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -25,6 +23,7 @@ class RequestReplyClassifierSingleton
 	private static RequestReplyClassifierSingleton singleton = new RequestReplyClassifierSingleton();
 	protected OssmeterLogger logger;
 	private Vasttext requestReplyClassifier;
+	private String modelPath="model/VastText_Code_no_lemma_model.zip";
 	
 	private RequestReplyClassifierSingleton()
 	{
@@ -37,30 +36,19 @@ class RequestReplyClassifierSingleton
 		}
 		catch (ClassNotFoundException | IOException e)
 		{
+			logger.error("Error while loading the model:", e);
 			e.printStackTrace();
 		}
 		
 	}
 	
-	private void checkModelFile(Path path) throws FileNotFoundException
+	private void loadModel() throws ClassNotFoundException, IOException
 	{
-		logger.info("Searching the model at " + path.toString());
-		if(!Files.exists(path))
-        {
-        	throw new FileNotFoundException("The file "+path+" has not been found"); 
-        }
-	}
-	
-	private void loadModel() throws ZipException, ClassNotFoundException, IOException
-	{
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		if (path.endsWith("target/classes/"))
-			path = path.substring(0, path.lastIndexOf("target/classes/"));
-		File file= new File(path+"model/VastText_Code_no_lemma_model.zip");
-		checkModelFile(file.toPath());
-		requestReplyClassifier.loadModel(file);
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(modelPath);
+		if(resource==null)
+			throw new FileNotFoundException("The file "+modelPath+" has not been found");
+		requestReplyClassifier.loadModel(resource);
 	}
 	
 	public static RequestReplyClassifierSingleton getInstance()
