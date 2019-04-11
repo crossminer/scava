@@ -34,21 +34,39 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-md-12 py-12">
+			
+				<!-- TAB SPECS -->
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				
+					<!-- CUSTOM FILE DESCRIPTOR TABS -->
 					<li class="nav-item"
 						v-for="(fileDescriptor,index) in experiment.fileDescriptors">
 						<a class="nav-link" :id="'tab' + index" data-toggle="tab"
 						:href="'#file' + index" role="tab" :aria-controls="'file'+index"
 						aria-selected="true">{{ fileDescriptor.title }}</a>
 					</li>
+					
+					<!-- ADVANCED TAB -->
 					<li class="nav-item"><a class="nav-link active"
 						id="advanced-tab" data-toggle="tab" href="#advanced" role="tab"
 						aria-controls="advanced" aria-selected="false">Advanced</a></li>
+						
+					<!-- MODEL TAB -->
 					<li class="nav-item"><a class="nav-link" id="model-tab"
 						data-toggle="tab" href="#model" role="tab" aria-controls="model"
 						aria-selected="false">Model</a></li>
+						
+					<!-- LOG TAB -->
+					<li class="nav-item"><a class="nav-link" id="log-tab"
+						data-toggle="tab" href="#log" role="tab" aria-controls="log"
+						aria-selected="false">Log</a></li>
+				
 				</ul>
+				
+				<!-- TAB CONTENTS -->
 				<div class="tab-content" id="myTabContent">
+				
+					<!-- CUSTOM FILE DESCRIPTORS -->
 					<div class="tab-pane fade show"
 						v-for="(fileDescriptor,index) in experiment.fileDescriptors"
 						:id="'file'+index" role="tabpanel"
@@ -80,6 +98,8 @@
 							The experiment produced no data here.</div>
 
 					</div>
+					
+					<!-- ADVANCED -->
 					<div class="tab-pane fade show active" id="advanced"
 						role="tabpanel" aria-labelledby="advanced-tab">
 						<p>
@@ -125,6 +145,8 @@
 						</table>
 						</p>
 					</div>
+					
+					<!-- MODEL -->
 					<div class="tab-pane fade show" id="model" role="tabpanel"
 						aria-labelledby="model-tab">
 						<div id="graphContainer"
@@ -132,6 +154,31 @@
 						</div>
 						<p></p>
 					</div>
+					
+					<!-- LOG -->
+					<div class="tab-pane fade show" id="log" role="tabpanel"
+						aria-labelledby="log-tab">
+						<!-- TODO: LOG TAB CONTENT -->
+						<div id="log0" role="tabpanel" aria-labelledby="log0-tab" class="tab-pane fade active show">
+						   <p></p>
+						   <table class="table table-striped table-bordered" id="log-table">
+						      <thead class="thead-dark">
+						         <tr>
+						            <th>Creation</th>
+						            <th><span class="badge badge-secondary">Severity</span></th>
+						            <th>Message</th>
+						         </tr>
+						      </thead>
+						      <tbody id="log-table-body">
+						      </tbody>
+						   </table>
+						   <!----> <!---->
+						</div>
+						
+						
+						<p></p>
+					</div>
+					
 				</div>
 			</div>
 		</div>
