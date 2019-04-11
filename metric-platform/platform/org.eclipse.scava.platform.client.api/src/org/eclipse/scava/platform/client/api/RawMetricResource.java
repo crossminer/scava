@@ -10,9 +10,24 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
+import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
+import org.eclipse.scava.platform.IHistoricalMetricProvider;
+import org.eclipse.scava.platform.IMetricProvider;
+import org.eclipse.scava.platform.ITransientMetricProvider;
+import org.eclipse.scava.platform.MetricProviderContext;
+import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
+import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
+import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
+import org.eclipse.scava.platform.logging.OssmeterLoggerFactory;
 import org.eclipse.scava.platform.visualisation.MetricVisualisation;
 import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 import org.eclipse.scava.repository.model.Project;
@@ -20,35 +35,41 @@ import org.eclipse.scava.repository.model.ProjectRepository;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PongoCollection;
+import com.googlecode.pongo.runtime.PongoDB;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
 import com.mongodb.QueryBuilder;
+import com.mongodb.util.JSON;
 
 public class RawMetricResource extends AbstractApiResource {
 
-	/**
-	 * TODO: Incomplete. [12th Sept, 2013]
-	 * @return
-	 */
+	private static final String ANALYSIS_SCHEDULING_DATABASE = "scava-analysis";
+	private DB db;
+	
 	public Representation doRepresent() {
+		
+		/**
+		 * Fetch data metrics for both HistoricalMetricProvider & TransientMetricProvider
+		 */
 		String projectId = (String) getRequest().getAttributes().get("projectid");
 		String metricId = (String) getRequest().getAttributes().get("metricid");
 		
-		// FIXME: This and MetricVisualisationResource.java are EXACTLY the same.
-		String agg = getQueryValue("agg");
 		String start = getQueryValue("startDate");
 		String end = getQueryValue("endDate");
 		
 		QueryBuilder builder = QueryBuilder.start();
-		if (agg != null && agg != "") {
-//			builder.... // TODO
-		}
 		try {
 			if (start != null && start != "") {
 				builder.and("__datetime").greaterThanEquals(new Date(start).toJavaDate());
@@ -57,52 +78,87 @@ public class RawMetricResource extends AbstractApiResource {
 				builder.and("__datetime").lessThanEquals(new Date(end).toJavaDate());
 			}
 		} catch (ParseException e) {
-			return Util.generateErrorMessageRepresentation(generateRequestJson(projectId, metricId), "Invalid date. Format must be YYYYMMDD.");
+			e.getStackTrace();
 		}
 		
 		BasicDBObject query = (BasicDBObject) builder.get(); 
 		
-		ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
-		
-		Project project = projectRepo.getProjects().findOneByShortName(projectId);
-		if (project == null) {
-			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-			return Util.generateErrorMessageRepresentation(generateRequestJson(projectId, metricId), "No project was found with the requested name.");
-		}
-
-		// Get collection from DB
-		DB projectDB = platform.getMetricsRepository(project).getDb();
-		
-		MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
-		manager.getRegisteredVisualisations();
-		MetricVisualisation vis = manager.findVisualisationById(metricId);
-		
-		if (vis == null) {
-			return Util.generateErrorMessageRepresentation(generateRequestJson(projectId, metricId), "No visualiser found with specified ID.");
-		}
-		
-		// TODO: okay, so we only allow people to get raw HISTORIC metrics? How would we
-		// 		 return multiple collections???
-		// TODO: Can we stream it? Page it? Filter and agg?
-		
-		DBCursor cursor = projectDB.getCollection(vis.getMetricId()).find(query);
 		ArrayNode results = mapper.createArrayNode();
+				
+		if (projectId != null && metricId != null) {
 		
-		while (cursor.hasNext()) {
+			Mongo mongo;
 			try {
-				results.add(mapper.readTree(cursor.next().toString()));
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				mongo = Configuration.getInstance().getMongoConnection();
+			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
+				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
+				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
 			}
-		}
+			
+			this.db = mongo.getDB(ANALYSIS_SCHEDULING_DATABASE);
+			ProjectAnalysisResportory repository = new ProjectAnalysisResportory(this.db);
+			Iterable<MetricExecution> listMetricExecutions = repository.getMetricExecutions().findByProjectId(projectId);
+			
+			List<String> metricExecutions = new ArrayList<>();
+			for (MetricExecution metricExecution : listMetricExecutions) {
+				metricExecutions.add(metricExecution.getMetricProviderId());
+			}
+	
+			if (metricExecutions.contains(metricId)) {
+				List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
+				for (IMetricProvider iMetricProvider : platformProvider) {
+					if (iMetricProvider.getIdentifier().equals(metricId)) {
+						Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName(projectId);
+						if(iMetricProvider instanceof IHistoricalMetricProvider) {
+							results.addAll(getHistoricDocuments(platform.getMetricsRepository(project).getDb().getCollection(((IHistoricalMetricProvider) iMetricProvider).getCollectionName()), query));
+						} else if (iMetricProvider instanceof ITransientMetricProvider) {
+							results.addAll(getTransientDocuments(((ITransientMetricProvider) iMetricProvider).adapt(platform.getMetricsRepository(project).getDb()).getPongoCollections()));
+						}
+						break;
+					}
+				}
+	
+			}
 		
-		cursor.close();
+		}
 		
 		return Util.createJsonRepresentation(results);
 	}
 	
+	private ArrayNode getTransientDocuments(List<PongoCollection> list) {
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode nodeArray = mapper.createArrayNode();
+		for (PongoCollection pongoCollection : list) {
+			for (DBObject dbObject : pongoCollection.getDbCollection().find()) {
+				JsonNode jsonObj;
+				try {
+					jsonObj = mapper.readTree(dbObject.toString());
+					nodeArray.add(jsonObj);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return nodeArray;
+	}
+	
+	private ArrayNode getHistoricDocuments(DBCollection dbCollection, DBObject query) {
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode nodeArray = mapper.createArrayNode();		
+		DBCursor cursor = dbCollection.find(query);
+		while(cursor.hasNext()) {
+			DBObject obj = cursor.next();
+			JsonNode json;
+			try {
+				json = mapper.readTree(obj.toString());
+				nodeArray.add(json);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return nodeArray;
+	}
 	
 	private JsonNode generateRequestJson(String projectName, String metricId) {
 		ObjectMapper mapper = new ObjectMapper();
