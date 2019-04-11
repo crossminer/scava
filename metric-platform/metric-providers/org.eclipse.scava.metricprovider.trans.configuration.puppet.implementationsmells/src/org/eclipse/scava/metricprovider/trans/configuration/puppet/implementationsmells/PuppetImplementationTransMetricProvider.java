@@ -109,7 +109,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 					db.sync();
 					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
-					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppet-lint") + " " + workingCopyFolders.get(repoUrl) + "/");
+					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppet-lint") + " " + workingCopyFolders.get(repoUrl) + "/ " + prop.getProperty("puppet-lint-bin"));
 					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					String ins = in.readLine();
 					while(ins != null){
