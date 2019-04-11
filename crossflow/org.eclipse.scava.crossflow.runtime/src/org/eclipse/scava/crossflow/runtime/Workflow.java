@@ -146,6 +146,7 @@ public abstract class Workflow {
 	 * quickly to be registered using the control topic when on the same machine
 	 */
 	public void addActiveWorkerId(String id) {
+		logger.log(SEVERITY.INFO, "Adding worker " + id);
 		activeWorkerIds.add(id);
 	}
 
@@ -455,6 +456,7 @@ public abstract class Workflow {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);
 		System.out.println("terminated broker (" + getName() + ")");
+		logger.log(SEVERITY.INFO, "terminated broker (" + getName() + ")");
 	}
 
 	public void run() throws Exception {
@@ -547,6 +549,7 @@ public abstract class Workflow {
 			if (isMaster()) {
 
 				// ask all workers to terminate
+				logger.log(SEVERITY.INFO, "Asking all workers to terminate.");
 				controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
 
 				long startTime = System.currentTimeMillis();
@@ -555,12 +558,14 @@ public abstract class Workflow {
 					// System.out.println(terminatedWorkerIds);
 					// System.out.println(activeWorkerIds);
 					if (terminatedWorkerIds.equals(activeWorkerIds)) {
+						logger.log(SEVERITY.INFO, "All workers terminated, terminating master.");
 						System.out.println("all workers terminated, terminating master...");
 						break;
 					}
 					Thread.sleep(100);
 				}
 				System.out.println("terminating master...");
+				logger.log(SEVERITY.INFO, "Terminating master...");
 
 			}
 
