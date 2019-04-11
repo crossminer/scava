@@ -13,9 +13,14 @@ const FAILED_JOBS_LABEL_PRE = "Failed Jobs: ";
 const INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
 const SIZE_LABEL_PRE = "Size: ";
 
-const METADATA_STREAM_ID = "StreamMetadataBroadcaster";
-const QUEUE_ID_PRE = "Q_";
-const GRAPH_ID_PRE = "G_";
+const STREAM_TOPIC = "/topic/StreamMetadataBroadcaster";
+const TASK_TOPIC = "/topic/TaskStatusPublisher";
+const LOG_TOPIC = "/topic/LogTopic";
+
+const STREAM_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>';
+const TASK_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.TaskStatus>';
+const LOG_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.LogMessage>';
+
 
 /* (!) filePath must specify a location accessible by the web server */
 function loadFile(filePath) {
@@ -60,8 +65,14 @@ function main(container, experimentId) {
 	  ws.send('CONNECT\n\n\0');
 	  console.log('connected to ' + wsUri + ' over ' + protocol + ' protocol');
 	 
-	  ws.send('SUBSCRIBE\ndestination:' + mdBroadcaster + '.' + experimentId + '\n\nack:auto\n\n\0');
-	  console.log('subscribed to ' + mdBroadcaster);
+	  ws.send('SUBSCRIBE\ndestination:' + STREAM_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  console.log('subscribed to ' + STREAM_TOPIC);
+	  
+	  ws.send('SUBSCRIBE\ndestination:' + TASK_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  console.log('subscribed to ' + TASK_TOPIC);
+	  
+	  ws.send('SUBSCRIBE\ndestination:' + LOG_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  console.log('subscribed to ' + LOG_TOPIC);
 	 
 	  //ws.send('DISCONNECT\n\n\0');
 	  //console.log('disconnect');
