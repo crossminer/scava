@@ -32,7 +32,8 @@ class MetricExecution{
 	attr String metricProviderId;
 	@searchable
 	attr String projectId;	
-	attr Date lastExecutionDate; 
+	attr Date lastExecutionDate;
+	attr Boolean hasVisualisation; 
 }
 
 

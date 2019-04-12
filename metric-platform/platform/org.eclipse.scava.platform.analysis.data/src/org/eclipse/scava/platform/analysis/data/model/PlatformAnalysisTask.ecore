@@ -47,6 +47,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastExecutionDate">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasVisualisation">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SchedulingInformation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="status">

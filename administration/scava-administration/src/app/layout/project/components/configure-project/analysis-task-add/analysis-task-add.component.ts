@@ -7,8 +7,6 @@ import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 import { MatSort } from '@angular/material';
-import { debug } from 'util';
-
 
 @Component({
   selector: 'app-analysis-task-add',

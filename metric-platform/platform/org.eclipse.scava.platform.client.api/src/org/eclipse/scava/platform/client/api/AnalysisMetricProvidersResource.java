@@ -51,6 +51,7 @@ public class AnalysisMetricProvidersResource extends AbstractApiResource {
 				newMetric.put("label", metric.getLabel());
 				newMetric.put("kind", metric.getKind());
 				newMetric.put("description", metric.getDescription());
+				newMetric.put("hasVisualisation", metric.isHasVisualisation());
 				listMetricProviders.add(newMetric);
 			}
 

@@ -5,18 +5,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
-import org.eclipse.scava.platform.analysis.data.model.DataStorage;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
-import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
-import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
+import org.eclipse.scava.platform.visualisation.MetricVisualisation;
+import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 
-import com.mongodb.DB;
 import com.mongodb.Mongo;
 
 public class AnalysisTaskService {
@@ -54,6 +53,22 @@ public class AnalysisTaskService {
 				provider.setProjectId(projectId);
 				provider.setMetricProviderId(metricProviderId);
 				provider.setLastExecutionDate(new Date(0));
+				
+				// Check if metricsProvider has visualization
+				MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
+				Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
+				boolean found = false;
+				for (MetricVisualisation mv : mvs.values()) {
+					if (metricProviderId.equals(mv.getMetricId())) {
+						provider.setHasVisualisation(true);
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					provider.setHasVisualisation(false);
+				}
+				
 				this.repository.getMetricExecutions().add(provider);
 			}
 			task.getMetricExecutions().add(provider);
@@ -170,6 +185,20 @@ public class AnalysisTaskService {
 				MetricExecution provider = providers.iterator().next();
 				for (MetricExecution metricExecution : task.getMetricExecutions()) {
 					if(provider.getMetricProviderId().equals(metricExecution.getMetricProviderId())) {
+						// Check if metricsProvider has visualization
+						MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
+						Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
+						boolean found = false;
+						for (MetricVisualisation mv : mvs.values()) {
+							if (metricExecution.getMetricProviderId().equals(mv.getMetricId())) {
+								provider.setHasVisualisation(true);
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							provider.setHasVisualisation(false);
+						}
 						metricExecution.setLastExecutionDate(provider.getLastExecutionDate());
 						break;
 					}

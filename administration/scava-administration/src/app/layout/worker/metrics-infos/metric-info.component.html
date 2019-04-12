@@ -1,6 +1,6 @@
 <form name="metricsForm">
     <div class="modal-header">
-        <h4 class="modal-title">Metrics Providers</h4>
+        <h4 class="modal-title">Metric Providers With Visualisation</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
@@ -11,7 +11,7 @@
 
                 <ng-container matColumnDef="metricProviderId">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Metric Provider Id </th>
-                    <td mat-cell *matCellDef="let element" title="{{element.metricProviderId}}"> {{element.metricProviderId.split(".")[element.metricProviderId.split(".").length - 1]}} </td>
+                    <td mat-cell *matCellDef="let element" title="{{element.metricProviderId}}"> {{element.metricProviderId.split(".")[element.metricProviderId.split(".").length - 2] + "." + element.metricProviderId.split(".")[element.metricProviderId.split(".").length - 1]}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="lastExecutionDate">
