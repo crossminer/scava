@@ -6,9 +6,13 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.tartarus.parser.posstemmer.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.opennlp,
- org.apache.commons.lang3
+ org.apache.commons.lang3,
+ org.eclipse.scava.platform,
+ org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.tartarus.snowball,
  org.tartarus.snowball.ext,
  uk.ac.nactem.posstemmer
+Bundle-ClassPath: lib/org.apache.commons.io_2.2.0.v201405211200.jar,
+ .
