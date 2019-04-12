@@ -39,7 +39,7 @@ function main(container, experimentId) {
 	let ws = null;
 	const wsUri = 'ws://' + window.location.hostname + ':61614';
 	const protocol = 'stomp';
-	const mdBroadcaster = '/topic/StreamMetadataBroadcaster';
+	parser = new DOMParser();
 	
 	try {
 		ws = new WebSocket(wsUri, protocol);
@@ -83,14 +83,52 @@ function main(container, experimentId) {
 	  if (e.data.startsWith('MESSAGE')) {
 		  //console.log("e.data="+e.data);
 		  
-		  // extract plain XML
-		  text = e.data.substring(e.data.indexOf('<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>'), e.data.length-1);
+		  if ( e.data.includes(STREAM_TOPIC_ROOT) ) {
+			  text = e.data.substring(e.data.indexOf(STREAM_TOPIC_ROOT), e.data.length-1);
+			  window.streamTopicXmlDoc = parser.parseFromString(text,"text/xml");
+			  streamTopicXmlDoc = window.streamTopicXmlDoc;
+			  // console.log('streamTopicXmlDoc: ' + text);
+			  
+			  
+		  }// if STREAM_TOPIC_ROOT
 		  
-		  // parse plain XML
-		  parser = new DOMParser();
-		  window.streamBroadcasterXmlDoc = parser.parseFromString(text,"text/xml");
+		  else if ( e.data.includes(TASK_TOPIC_ROOT) ) {
+			  text = e.data.substring(e.data.indexOf(TASK_TOPIC_ROOT), e.data.length-1);
+			  window.taskTopicXmlDoc = parser.parseFromString(text,"text/xml");
+			  // console.log('taskTopicXmlDoc: ' + text);
+			
+			  
+		  }// if TASK_TOPIC_ROOT
 		  
-	  }
+		  else if ( e.data.includes(LOG_TOPIC_ROOT) ) {
+			  text = e.data.substring(e.data.indexOf(LOG_TOPIC_ROOT), e.data.length-1);
+			  window.logTopicXmlDoc = parser.parseFromString(text,"text/xml");
+//			  console.log('received log message: ' + window.logTopicXmlDoc);
+			  
+			  timestamp = window.logTopicXmlDoc.children[0].children[1].innerHTML;
+			  msg = window.logTopicXmlDoc.children[0].children[2].innerHTML
+			  severity = window.logTopicXmlDoc.children[0].children[0].innerHTML;
+			  
+			  // unix timestamp to human readable
+			  var newTimestampDate = new Date();
+			  newTimestampDate.setTime(timestamp);
+			  timestampHumanReadable = newTimestampDate.toUTCString();
+			  
+			  let row = document.getElementById('log-table-body').insertRow(-1);
+			  
+			  let spanElem = document.createElement('span');
+			  spanElem.textContent = severity;
+			  spanElem.classList.add('badge');
+			  spanElem.classList.add('badge-secondary');
+	
+			  row.insertCell(0).appendChild(document.createTextNode(timestampHumanReadable));
+			  row.insertCell(1).appendChild(spanElem);
+			  row.insertCell(2).appendChild(document.createTextNode(msg));
+			  
+		  }
+		  
+		  
+	  }// if MESSAGE
 	 
 	};
 	

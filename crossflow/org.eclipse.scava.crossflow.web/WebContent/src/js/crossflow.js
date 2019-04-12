@@ -19,13 +19,14 @@ function loadStencils() {
 }
 
 function createTask(name, graph, parent) {
-    var v = graph.insertVertex(parent, null, name, 20, 20, 80, 30, 'fontSize=16;labelBackgroundColor=#ffffff;fillColor=#ffffff;fontColor=black;strokeColor=black');	graph.updateCellSize(v, true);
+	var id = 'task_' + name;
+    var v = graph.insertVertex(parent, id, name, 20, 20, 80, 30, 'fontSize=16;labelBackgroundColor=#ffffff;fillColor=#ffffff;fontColor=black;strokeColor=black');	graph.updateCellSize(v, true);
 	return v;
 }
 
 function createStream(name, graph, parent) {
-
-	var v = graph.insertVertex(parent, name, "", 30, 40, 80, 40);
+	var id = 'stream_' + name;
+	var v = graph.insertVertex(parent, id, "", 30, 40, 80, 40);
 	v.style = "shape=Direct Data;fillColor=#ffffff;fontColor=black;strokeColor=black";
 	v.setAttribute("tooltip", name);
 	//graph.updateCellSize(v, true);

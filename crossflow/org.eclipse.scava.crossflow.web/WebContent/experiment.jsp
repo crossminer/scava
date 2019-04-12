@@ -269,16 +269,29 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 
 window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	
-	sBXmlDoc = window.streamBroadcasterXmlDoc;
-	//console.log(sBXmlDoc);
-	modelElement = cell.id;
+	streamTopicXmlDoc = window.streamTopicXmlDoc;
+	if ( streamTopicXmlDoc == null ) {
+		return;
+	}
+	//console.log(streamTopicXmlDoc);
+	if ( cell.id.includes('task_') ) {
+		modelElement = cell.id.substr('task_'.length);
+	} else if ( cell.id.includes('stream_') ) {
+		modelElement = cell.id.substr('stream_'.length);
+	} else {
+		// unknown cell
+		return;
+	}
+	
 	//console.log("modelElement = " + modelElement);
 	size = "n/a";
+	sizeUnit = "";
 	inFlight = "n/a";
 	subscribers = "n/a";
+	taskStatus = "n/a";
 	
-	for ( i=0; i <= sBXmlDoc.childNodes[0].children.length; i++ ) {
-		if ( sBXmlDoc.childNodes[0].childNodes[i].nodeName=="streams" ) {
+	for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
+		if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
 			//console.log("streams encountered");
 			for ( j=0; j <= sBXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
 				//console.log("i="+i+";  j="+j);
@@ -294,7 +307,6 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 					// size
 					size = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
 					//console.log('size='+size);
-					sizeUnit = "";
 					if ( size >= 1000 && size <= 999999 ) {
 						sizeUnit = "K";
 						size = size / 1000;
@@ -316,7 +328,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 				}
 				
 		}
-	}
+	}// for streamTopicXmlDoc
 	
 	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
 		
@@ -328,7 +340,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	cellTooltips[modelElement] = cellTooltip;
 	
 	return cellTooltip;
-}
+}// window.runtimeModelGraph.getTooltipForCell
 
 window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
 window.runtimeModelGraph.enabled = false;
