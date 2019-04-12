@@ -2,10 +2,13 @@ package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
+import org.eclipse.scava.platform.visualisation.MetricVisualisation;
+import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 
 public class MetricProviderService {
 	
