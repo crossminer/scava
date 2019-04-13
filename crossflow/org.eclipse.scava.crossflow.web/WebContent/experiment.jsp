@@ -293,19 +293,18 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
 		if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
 			//console.log("streams encountered");
-			for ( j=0; j <= sBXmlDoc.childNodes[0].childNodes[i].children.length; j++ )
+			for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ )
 				//console.log("i="+i+";  j="+j);
-				if ( sBXmlDoc.childNodes[0].childNodes[i].childNodes[j] != null &&
-						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].hasChildNodes() &&
-						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML != null &&
-						sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML.includes(modelElement) ) {
+				if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
+						streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
+						streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
 				
 					//console.log("i="+i+";  j="+j);
-					name = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[1].innerHTML;
+					name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
 					//console.log('name='+name);
 					
 					// size
-					size = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[3].innerHTML;
+					size = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
 					//console.log('size='+size);
 					if ( size >= 1000 && size <= 999999 ) {
 						sizeUnit = "K";
@@ -319,11 +318,11 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 					window.runtimeModelGraph.model.setValue(cell, size + sizeUnit); // WIP, see: https://bit.ly/2smlV9o
 
 					// inFlight
-					inFlight = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[5].innerHTML;
+					inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 					//console.log('inFlight='+inFlight);
 
 					// numberOfSubscribers
-					subscribers = sBXmlDoc.childNodes[0].childNodes[i].childNodes[j].childNodes[9].innerHTML;
+					subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
 					//console.log('subscribers='+subscribers);
 				}
 				
@@ -356,10 +355,8 @@ String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstrac
 try {
 <jsp:include page="<%= graphPath %>" flush="true" />
 
- var model = window.runtimeModelGraph.getModel();
-
 var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
-layout.execute(window.runtimeModelParent, model.cells[2]);
+layout.execute(window.runtimeModelGraph.getDefaultParent());
 
 } finally {
 	// Updates the display

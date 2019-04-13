@@ -89,6 +89,58 @@ function main(container, experimentId) {
 			  streamTopicXmlDoc = window.streamTopicXmlDoc;
 			  // console.log('streamTopicXmlDoc: ' + text);
 			  
+				if ( streamTopicXmlDoc.childNodes[0].children[0] != null ) {
+					//console.log("streams encountered");
+					for ( i=0; i < streamTopicXmlDoc.childNodes[0].children[0].children.length; i++ )
+						if ( streamTopicXmlDoc.childNodes[0].children[0].children[i] != null &&
+								streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML != null ) {
+					
+							streamId = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML.substring(0, streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML.indexOf('.'));
+					
+							if ( !streamId.includes('Post') ) {
+								return; // not a queue stream
+								
+							} else {
+								// queue stream encountered
+								streamId = streamId.substring(0, streamId.indexOf('Post'));
+								//console.log('streamId='+streamId);
+								
+								for (var j = 0, l = window.runtimeModelParent.children.length; j < l; j++) {
+									modelElement = window.runtimeModelParent.children[j].id;
+									//console.log('modelElement='+modelElement);
+									if ( modelElement.includes('stream_' + streamId) ) {
+										//console.log("i="+i+";  j="+j);
+										name = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML;
+										//console.log('name='+name);
+										
+										// size
+										size = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[1].innerHTML;
+										sizeUnit = '';
+										//console.log('size='+size);
+										if ( size >= 1000 && size <= 999999 ) {
+											sizeUnit = "K";
+											size = size / 1000;
+										} else if ( size >= 1000000 ) {
+											sizeUnit = "M";
+											size = size / 1000000;
+										}
+										//console.log('size='+size);
+										
+										window.runtimeModelGraph.getModel().beginUpdate();
+										try {
+											window.runtimeModelGraph.model.setValue(window.runtimeModelParent.children[j], size + sizeUnit); 
+									 	} finally {
+											// Updates the display	
+											window.runtimeModelGraph.getModel().endUpdate();
+											window.runtimeModelGraph.refresh();
+											//console.log('STREAM_TOPIC: graphUpdate.main.onMessage.endUpdate');
+										}
+										 	
+									}
+								}// for window.runtimeModelParent.children
+							}	
+						}		
+				}
 			  
 		  }// if STREAM_TOPIC_ROOT
 		  
