@@ -149,6 +149,26 @@ function main(container, experimentId) {
 			  window.taskTopicXmlDoc = parser.parseFromString(text,"text/xml");
 			  // console.log('taskTopicXmlDoc: ' + text);
 			
+			  //window.runtimeModelGraph.model.beginUpdate();
+			  console.log('beginUpdate(B)');
+			  try {
+				  taskId = window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.substring(0, window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.indexOf(':'));
+				  for (var i = 0, l = window.runtimeModelParent.children.length; i < l; i++) {
+					    if ( window.runtimeModelParent.children[i].id == 'task_' + taskId ) {
+					    	taskStatus = window.taskTopicXmlDoc.childNodes[0].children[0].innerHTML;
+					    	// STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
+					    	window.runtimeModelGraph.model.setValue(window.runtimeModelParent.children[i], taskId + ' (' + taskStatus + ')');
+					    	//console.log(taskId + ' (' + taskStatus + ')');
+					    }
+					}// for window.runtimeModelParent.children
+				  
+			  	} finally {
+					// Updates the display
+					//window.runtimeModelGraph.model.endUpdate();
+					console.log("endUpdate(B)");
+					window.runtimeModelGraph.refresh();
+					//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');
+				}
 			  
 		  }// if TASK_TOPIC_ROOT
 		  
