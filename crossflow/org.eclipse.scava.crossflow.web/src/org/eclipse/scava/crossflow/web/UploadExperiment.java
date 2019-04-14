@@ -1,6 +1,7 @@
 package org.eclipse.scava.crossflow.web;
 
 import java.io.BufferedOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -21,6 +23,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.*;
+import java.io.*;
 
 @WebServlet("/uploadExperiment")
 @MultipartConfig
@@ -35,21 +43,41 @@ public class UploadExperiment extends HttpServlet {
 	 
 		// prepare target locations
 		String experimentName = request.getParameter("inputName");
-		Path experimentPath = Paths.get(getServletContext().getRealPath("/experiments/"), experimentName);
-		Path experimentJarPath= Paths.get(getServletContext().getRealPath("/jars/"));
+		Path experimentPath = Paths.get(getServletContext().getRealPath("experiments/"), experimentName);
+		Path experimentJarPath= Paths.get(getServletContext().getRealPath("WEB-INF/lib/"));
 		
 		try {
 			Files.createDirectories(experimentPath);
 			
 			// serialize
-		    serialize(request, "xmlFile", experimentPath + "/experiment.xml");
-		    serialize(request, "runtimeModelFile", experimentPath + "/graph.abstract");
-	    	serialize(request, "jarFile", experimentJarPath + "/" + experimentName + ".jar"); // TODO: make this not depend on experimentName but the name of the uploaded file
-	    	serialize(request, "inputDataZipFile", experimentPath + "/in.zip");
+			serialize(request, "experimentZip", experimentPath + "/experiment.zip");
+			
+			// unzip experiment
+		    unzip(Paths.get(experimentPath.toString(), "experiment.zip"), Paths.get(experimentPath.toString(), "/"));
+		    Files.deleteIfExists(Paths.get(experimentPath.toString(), "/experiment.zip"));
+			
+	    	// parse required information from experiment.xml
+	    	String inPath = "in";
+	    	String jarName = "";
+	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    	try {
+	    		DocumentBuilder builder = factory.newDocumentBuilder();
+				Document document = builder.parse(new File( experimentPath + "/experiment.xml" ));
+				Element experimentElem = document.getDocumentElement();
+				inPath = experimentElem.getAttribute("input");
+				jarName = experimentElem.getAttribute("jar");
+			} catch (SAXException e) {
+				System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
+			} catch (ParserConfigurationException e) {
+				System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
+			}
 	
-		    // unzip  to "in"
-		    unzip(Paths.get(experimentPath.toString(), "in.zip"), experimentPath);
-		    Files.deleteIfExists(Paths.get(experimentPath + "in.zip"));
+		    // unzip to input path
+		    unzip(Paths.get(experimentPath.toString(), "in.zip"), Paths.get(experimentPath.toString(), inPath, "/"));
+		    Files.deleteIfExists(Paths.get(experimentPath + "/in.zip"));
+		    
+		    // move experment jar to web app container lib directory
+		    Files.move(Paths.get(experimentPath.toString(), jarName), Paths.get(experimentJarPath.toString(), "/", jarName), StandardCopyOption.REPLACE_EXISTING);
 		    
 		    // submit successful upload notification
 		    String inputEmail = request.getParameter("inputEmail"); 

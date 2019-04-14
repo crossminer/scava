@@ -24,35 +24,15 @@
 				<input type="text" class="form-control" id="inputName" name="inputName"
 					aria-describedby="textHelp" placeholder="Enter experiment name (unique internal identifier)"/> 
 			</div>
-		<br /> <br />
+		
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="jarFile" name="jarFile" @change="updateJarFileState"/>
-				<label class="custom-file-label" for="jarFile" id="jarFileLabel">
-				Choose experiment JAR file
+				<input type="file" class="custom-file-input" id="experimentZip" name="experimentZip" @change="updateExperimentZipState"/>
+				<label class="custom-file-label" for="experimentZip" id="experimentZipLabel">
+				Choose experiment ZIP file
 				</label>
 			</div>
 			<br /> <br />
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="xmlFile" name="xmlFile" @change="updateXmlFileState"/>
-				<label class="custom-file-label" for="xmlFile" id="xmlFileLabel">
-				Choose experiment descriptor XML file
-				</label>
-			</div>
-			<br /> <br />
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="runtimeModelFile" name="runtimeModelFile" @change="updateRuntimeModelFileState"/>
-				<label class="custom-file-label" for="runtimeModelFile" id="runtimeModelFileLabel">
-				Choose experiment runtime model file
-				</label>
-			</div>
-			<br /> <br />
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="inputDataZipFile" name="inputDataZipFile" @change="updateZipFileState"/>
-				<label class="custom-file-label" for="inputDataZipFile" id="inputDataZipFileLabel">
-				Choose experiment input data ZIP file
-				</label>
-			</div>
-			<br /> <br />
+			
 			<div class="form-group">
 				<input type="email" class="form-control" id="inputEmail" name="inputEmail"
 					aria-describedby="emailHelp" placeholder="Enter email"/> <small
@@ -77,21 +57,9 @@
 var app = new Vue({
 	el: '#app',
 	methods: {
-		updateJarFileState : function(event) {
-			let jarFileName = document.getElementById("jarFile").value;
-			document.getElementById("jarFileLabel").innerHTML = jarFileName.replace(/^.*\\/, "");
-		},
-		updateXmlFileState : function(event) {
-			let xmlFileName = document.getElementById("xmlFile").value;
-			document.getElementById("xmlFileLabel").innerHTML = xmlFileName.replace(/^.*\\/, "");
-		},
-		updateRuntimeModelFileState : function(event) {
-			let runtimeModelFileName = document.getElementById("runtimeModelFile").value;
-			document.getElementById("runtimeModelFileLabel").innerHTML = runtimeModelFileName.replace(/^.*\\/, "");
-		},
-		updateZipFileState : function(event) {
-			let inputDataZipFileName = document.getElementById("inputDataZipFile").value;
-			document.getElementById("inputDataZipFileLabel").innerHTML = inputDataZipFileName.replace(/^.*\\/, "");
+		updateExperimentZipState : function(event) {
+			let experimentZipName = document.getElementById("experimentZip").value;
+			document.getElementById("experimentZipLabel").innerHTML = experimentZipName.replace(/^.*\\/, "");
 		},
 
 		uploadSelectedFile : function(event) {

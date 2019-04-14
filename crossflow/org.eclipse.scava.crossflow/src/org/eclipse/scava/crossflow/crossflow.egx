@@ -14,6 +14,14 @@ rule Workflow2AbstractGraph
 	target : "graphs/" + w.name + "/abstract.graph"
 }
 
+rule Workflow2ExperimentAnt
+	transform w : Workflow {
+	
+	template : "workflow2experimentAnt.egl"
+	
+	target : "build-experiment-zip.xml"
+}
+
 rule Type2Class 
 	transform t : Type {
 	
