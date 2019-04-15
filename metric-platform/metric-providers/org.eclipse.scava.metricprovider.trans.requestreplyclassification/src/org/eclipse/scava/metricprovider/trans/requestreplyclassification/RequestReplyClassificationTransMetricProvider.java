@@ -199,13 +199,20 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 			}
 			else
 			{
+				String communicationChannelName;
+				if (!(communicationChannel instanceof NntpNewsGroup))
+					communicationChannelName = communicationChannel.getUrl();
+				else {
+					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
+					communicationChannelName = newsgroup.getNewsGroupName();
+				}
 				for (CommunicationChannelArticle article: communicationChannelDelta.getArticles())
 				{
-					NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article);
+					NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article,communicationChannelName);
 					if(articleInRequestReply == null)
 					{
 						articleInRequestReply = new NewsgroupArticles();
-						articleInRequestReply.setNewsgroupName(communicationChannel.getOSSMeterId());
+						articleInRequestReply.setNewsgroupName(communicationChannelName);
 						articleInRequestReply.setArticleNumber(article.getArticleNumber());
 						articleInRequestReply.setDate(new Date(article.getDate()).toString());
 						db.getNewsgroupArticles().add(articleInRequestReply);
@@ -225,7 +232,7 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 					predictions=classify(instancesCollection);
 					for (CommunicationChannelArticle article: communicationChannelDelta.getArticles())
 					{
-						NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article);
+						NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article,communicationChannelName);
 						articleInRequestReply.setClassificationResult(predictions.get(getNewsgroupArticleId(articleInRequestReply)));
 						db.sync();
 					}
@@ -359,12 +366,12 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 		return bugTrackerCommentsData;
 	}
 	
-	private NewsgroupArticles findNewsgroupArticle(RequestReplyClassificationTransMetric db, CommunicationChannelArticle article) {
+	private NewsgroupArticles findNewsgroupArticle(RequestReplyClassificationTransMetric db, CommunicationChannelArticle article, String communicationChannelName) {
 		
 		NewsgroupArticles newsgroupArticles = null;
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = 
 				db.getNewsgroupArticles().
-						find(NewsgroupArticles.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()), 
+						find(NewsgroupArticles.NEWSGROUPNAME.eq(communicationChannelName), 
 								NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticles narr:  newsgroupArticlesIt)
 		{

@@ -36,6 +36,8 @@ import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.bugtrackingsystem.bugzilla.BugzillaBug;
 import org.eclipse.scava.platform.bugtrackingsystem.github.GitHubIssue;
+import org.eclipse.scava.platform.bugtrackingsystem.gitlab.GitLabIssue;
+import org.eclipse.scava.platform.bugtrackingsystem.jira.api.JiraIssue;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
@@ -215,8 +217,17 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			GitHubIssue issue = (GitHubIssue) bug; 
 			if (issue.getClosedTime()!=null)
 				bugData.setLastClosedTime(issue.getClosedTime().toString());
-		} else {
-			System.err.println("Error! Bug is not covered!");
+		} else if(bug instanceof GitLabIssue) {
+			GitLabIssue issue = (GitLabIssue) bug;
+			if(issue.getClosed_at()!=null)
+				bugData.setLastClosedTime(issue.getClosed_at().toString());
+		} else if(bug instanceof JiraIssue)	{
+			JiraIssue issue = (JiraIssue) bug;
+			if(issue.getResolutionDate()!=null)
+				bugData.setLastClosedTime(issue.getResolutionDate().toString());
+		}
+		else {
+			System.err.println("Issue tracker do not provide a closing date.");
 		}
 		updateSentimentPerThread(sentimentClassifier, db, bugData);
 		return bugData;

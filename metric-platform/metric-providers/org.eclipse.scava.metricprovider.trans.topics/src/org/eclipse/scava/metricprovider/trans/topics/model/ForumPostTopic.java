@@ -14,28 +14,28 @@ import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
-public class NewsgroupTopic extends Pongo {
+public class ForumPostTopic extends Pongo {
 	
 	
 	
-	public NewsgroupTopic() { 
+	public ForumPostTopic() { 
 		super();
-		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
-		LABEL.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
-		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
+		FORUMID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.ForumPostTopic");
+		LABEL.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.ForumPostTopic");
+		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.ForumPostTopic");
 	}
 	
-	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
+	public static StringQueryProducer FORUMID = new StringQueryProducer("forumId"); 
 	public static StringQueryProducer LABEL = new StringQueryProducer("label"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
 	
 	
-	public String getNewsgroupName() {
-		return parseString(dbObject.get("newsgroupName")+"", "");
+	public String getForumId() {
+		return parseString(dbObject.get("forumId")+"", "");
 	}
 	
-	public NewsgroupTopic setNewsgroupName(String newsgroupName) {
-		dbObject.put("newsgroupName", newsgroupName);
+	public ForumPostTopic setForumId(String forumId) {
+		dbObject.put("forumId", forumId);
 		notifyChanged();
 		return this;
 	}
@@ -43,7 +43,7 @@ public class NewsgroupTopic extends Pongo {
 		return parseString(dbObject.get("label")+"", "");
 	}
 	
-	public NewsgroupTopic setLabel(String label) {
+	public ForumPostTopic setLabel(String label) {
 		dbObject.put("label", label);
 		notifyChanged();
 		return this;
@@ -52,7 +52,7 @@ public class NewsgroupTopic extends Pongo {
 		return parseInteger(dbObject.get("numberOfDocuments")+"", 0);
 	}
 	
-	public NewsgroupTopic setNumberOfDocuments(int numberOfDocuments) {
+	public ForumPostTopic setNumberOfDocuments(int numberOfDocuments) {
 		dbObject.put("numberOfDocuments", numberOfDocuments);
 		notifyChanged();
 		return this;
