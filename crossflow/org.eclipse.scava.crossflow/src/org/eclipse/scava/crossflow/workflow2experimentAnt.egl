@@ -8,6 +8,16 @@
         </jar>
 	</target>
 	
+   	<!-- Running this will create a JAR of this project in the project directory -->
+    <target name="create_run_with_dependencies_jar">
+        <jar destfile="experiment/[%=w.name%]-with-dependencies.jar" filesetmanifest="mergewithoutmain">
+        	<fileset dir="bin"/>
+        	<!-- ADD FURTHER DEPENDENCIES HERE (workflow2experiementAnt.egl) --> 
+        	<!-- EXAMPLE (see below) -->
+        	<!-- <zipfileset excludes="META-INF/*.SF" src="path/to/jcommander-1.72.jar"/> -->
+        </jar>
+	</target>
+	
 	<!-- Running this will create a ZIP file of the project input directory -->
     <target name="create_in_zip">
         <zip
@@ -28,6 +38,6 @@
     </target>
     
     <target name="run_all"
-   		depends="create_run_jar,create_in_zip,assemble_single_experiment_zip" />
+   		depends="create_run_jar,create_in_zip,assemble_single_experiment_zip,create_run_with_dependencies_jar" />
     
 </project>
