@@ -10,7 +10,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public class ConfigurationImpl extends EObjectImpl implements Configuration {
+public class ConfigurationImpl extends MinimalEObjectImpl.Container implements Configuration {
 	/**
 	 * The default value of the '{@link #getNumberOfWorkers() <em>Number Of Workers</em>}' attribute.
 	 * <!-- begin-user-doc -->

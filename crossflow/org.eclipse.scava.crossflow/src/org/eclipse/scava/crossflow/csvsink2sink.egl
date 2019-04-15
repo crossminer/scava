@@ -14,7 +14,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 		try {
 			[% for (s in t.input) {%]
 			if ( writer[%=loopCount%] == null ) {
-				writer[%=loopCount%] = new CsvWriter("[%=t.path%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+				writer[%=loopCount%] = new CsvWriter("[%=t.filename%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
 			}
 			[%}%]
 		

@@ -138,6 +138,15 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW_FEATURE_COUNT = 7;
 
 	/**
+	 * The number of operations of the '<em>Workflow</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -191,6 +200,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int STREAM_FEATURE_COUNT = 4;
+
+	/**
+	 * The number of operations of the '<em>Stream</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
@@ -248,6 +266,15 @@ public interface CrossflowPackage extends EPackage {
 	int TOPIC_FEATURE_COUNT = STREAM_FEATURE_COUNT + 0;
 
 	/**
+	 * The number of operations of the '<em>Topic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TOPIC_OPERATION_COUNT = STREAM_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.QueueImpl <em>Queue</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -301,6 +328,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int QUEUE_FEATURE_COUNT = STREAM_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Queue</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUEUE_OPERATION_COUNT = STREAM_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TaskImpl <em>Task</em>}' class.
@@ -394,6 +430,15 @@ public interface CrossflowPackage extends EPackage {
 	int TASK_FEATURE_COUNT = 8;
 
 	/**
+	 * The number of operations of the '<em>Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -483,6 +528,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Source</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.CsvSourceImpl <em>Csv Source</em>}' class.
@@ -585,6 +639,15 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SOURCE_FEATURE_COUNT = SOURCE_FEATURE_COUNT + 1;
 
 	/**
+	 * The number of operations of the '<em>Csv Source</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE_OPERATION_COUNT = SOURCE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.SinkImpl <em>Sink</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -674,6 +737,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SINK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Sink</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.CsvSinkImpl <em>Csv Sink</em>}' class.
@@ -776,6 +848,15 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SINK_FEATURE_COUNT = SINK_FEATURE_COUNT + 1;
 
 	/**
+	 * The number of operations of the '<em>Csv Sink</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK_OPERATION_COUNT = SINK_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.CommitmentTaskImpl <em>Commitment Task</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -876,6 +957,15 @@ public interface CrossflowPackage extends EPackage {
 	int COMMITMENT_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 1;
 
 	/**
+	 * The number of operations of the '<em>Commitment Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.OpinionatedTaskImpl <em>Opinionated Task</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -967,6 +1057,15 @@ public interface CrossflowPackage extends EPackage {
 	int OPINIONATED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
+	 * The number of operations of the '<em>Opinionated Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1031,6 +1130,15 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE_FEATURE_COUNT = 5;
 
 	/**
+	 * The number of operations of the '<em>Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.FieldImpl <em>Field</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1075,6 +1183,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD_FEATURE_COUNT = 3;
+
+	/**
+	 * The number of operations of the '<em>Field</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.ConfigurationImpl <em>Configuration</em>}' class.
@@ -1130,6 +1247,16 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONFIGURATION_FEATURE_COUNT = 4;
+
+
+	/**
+	 * The number of operations of the '<em>Configuration</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_OPERATION_COUNT = 0;
 
 
 	/**

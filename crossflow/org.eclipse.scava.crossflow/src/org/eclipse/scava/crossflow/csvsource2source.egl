@@ -10,7 +10,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 	@Override
 	public void produce() {
 		try {
-			final CsvParser parser = new CsvParser("[%=t.path%]");
+			final CsvParser parser = new CsvParser("[%=t.filename%]");
 			records = parser.getRecordsIterable();
 		
 			for (CSVRecord record : records) {
