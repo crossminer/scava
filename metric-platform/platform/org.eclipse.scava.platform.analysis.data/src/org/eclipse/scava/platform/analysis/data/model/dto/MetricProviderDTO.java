@@ -9,6 +9,7 @@ public class MetricProviderDTO {
 	private String label;
 	private String kind;
 	private String description;
+	private boolean hasVisualisation;
 	private List<MetricProviderDTO> dependOf = new ArrayList<MetricProviderDTO>();
 	private List<DataStorageDTO> storages = new ArrayList<DataStorageDTO>();
 	
@@ -69,6 +70,14 @@ public class MetricProviderDTO {
 
 	public void setStorages(List<DataStorageDTO> storages) {
 		this.storages = storages;
+	}
+
+	public boolean isHasVisualisation() {
+		return hasVisualisation;
+	}
+
+	public void setHasVisualisation(boolean hasVisualisation) {
+		this.hasVisualisation = hasVisualisation;
 	}
 	
 }

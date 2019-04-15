@@ -21,6 +21,8 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
+import org.eclipse.scava.platform.visualisation.MetricVisualisation;
+import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 
 public class MetricProviderInitialiser {
 
@@ -57,6 +59,21 @@ public class MetricProviderInitialiser {
 		List<MetricProviderDTO> metricProviders = new ArrayList<MetricProviderDTO>();
 		for (IMetricProvider provider : platformProvider) {
 			MetricProviderDTO metricProvider = metricsProviders.get(provider.getIdentifier());
+			// Check if metricsProvider has visualization
+			MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
+			Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
+			boolean found = false;
+			for (MetricVisualisation mv : mvs.values()) {
+				if (provider.getIdentifier().equals(mv.getMetricId())) {
+					metricProvider.setHasVisualisation(true);
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				metricProvider.setHasVisualisation(false);
+			}
+			// Fetch metric-provider dependencies
 			if (provider.getIdentifiersOfUses() != null) {
 				for (String dependencyId : provider.getIdentifiersOfUses()) {
 					MetricProviderDTO metricDependency = metricsProviders.get(dependencyId);
