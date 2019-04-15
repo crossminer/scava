@@ -152,7 +152,24 @@ public class AnalysisTaskService {
 		List<AnalysisTask> tasks = new ArrayList<>();
 		for (ProjectAnalysis project : this.repository.getProjects().findByProjectId(projectId)) {
 			for (AnalysisTask taskRef : project.getAnalysisTasks()) {
-				tasks.add(this.repository.getAnalysisTasks().findById(taskRef.getId()).iterator().next());
+				AnalysisTask analysisTask = this.repository.getAnalysisTasks().findById(taskRef.getId()).iterator().next();
+				for (MetricExecution metricExecution : analysisTask.getMetricExecutions()) {
+					// Check if metricExecution has visualization
+					MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
+					Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
+					boolean found = false;
+					for (MetricVisualisation mv : mvs.values()) {
+						if (metricExecution.getMetricProviderId().equals(mv.getMetricId())) {
+							metricExecution.setHasVisualisation(true);
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						metricExecution.setHasVisualisation(false);
+					}
+				}
+				tasks.add(analysisTask);
 			}
 			return tasks;
 		}
@@ -185,20 +202,21 @@ public class AnalysisTaskService {
 				MetricExecution provider = providers.iterator().next();
 				for (MetricExecution metricExecution : task.getMetricExecutions()) {
 					if(provider.getMetricProviderId().equals(metricExecution.getMetricProviderId())) {
-						// Check if metricsProvider has visualization
+						// Check if metricExecution has visualization
 						MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
 						Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
 						boolean found = false;
 						for (MetricVisualisation mv : mvs.values()) {
 							if (metricExecution.getMetricProviderId().equals(mv.getMetricId())) {
-								provider.setHasVisualisation(true);
+								metricExecution.setHasVisualisation(true);
 								found = true;
 								break;
 							}
 						}
 						if (!found) {
-							provider.setHasVisualisation(false);
+							metricExecution.setHasVisualisation(false);
 						}
+						// Update metricExecution lastExecutionDate
 						metricExecution.setLastExecutionDate(provider.getLastExecutionDate());
 						break;
 					}
