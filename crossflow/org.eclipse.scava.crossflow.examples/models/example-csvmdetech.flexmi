@@ -6,7 +6,7 @@
 	<workflow name="MdeTechnologyCsvExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.csvmdetech">
 		
 		<!-- csv source of MDE technologies -->
-		<csvsource name="MdeTechnologyCsvSource" out="MdeTechnologies" path="csvs/MDE.csv"/>
+		<csvsource name="MdeTechnologyCsvSource" out="MdeTechnologies" filename="csvs/MDE.csv"/>
 		
 		<!-- queue of MDE technologies -->
 		<queue name="MdeTechnologies" type="ExtensionKeywordTuple"/> 
@@ -36,9 +36,9 @@
 		<queue name="MdeTechnologyRepoOwnerPopularityCountEntries" type="ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple"/> 
 		
 		<!-- csv sinks for printing unique author count, file count, and owner follower count of repositories cloned from GitHub -->
-		<csvsink name="MdeTechnologyRepoAuthorCountCsvSink" in="MdeTechnologyRepoAuthorCountEntries" path="csvs/MDE-authors.csv"/>
-		<csvsink name="MdeTechnologyRepoFileCountCsvSink" in="MdeTechnologyRepoFileCountEntries" path="csvs/MDE-files.csv"/>
-		<csvsink name="MdeTechnologyRepoOwnerPopularityCountCsvSink" in="MdeTechnologyRepoOwnerPopularityCountEntries" path="csvs/MDE-ownerPopularity.csv"/>
+		<csvsink name="MdeTechnologyRepoAuthorCountCsvSink" in="MdeTechnologyRepoAuthorCountEntries" filename="csvs/MDE-authors.csv"/>
+		<csvsink name="MdeTechnologyRepoFileCountCsvSink" in="MdeTechnologyRepoFileCountEntries" filename="csvs/MDE-files.csv"/>
+		<csvsink name="MdeTechnologyRepoOwnerPopularityCountCsvSink" in="MdeTechnologyRepoOwnerPopularityCountEntries" filename="csvs/MDE-ownerPopularity.csv"/>
 				
 		<!-- MdeTechnologies: extension (= technology), keyword -->
 		<type name="ExtensionKeywordTuple">
