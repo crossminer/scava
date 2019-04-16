@@ -12,7 +12,6 @@ class GitLabTracker extends BugTrackingSystem {
 	attr String personal_access_token;
 	attr String client_id;
 	attr String client_secret;
-	attr String project_id;
 }
 
 @stub(javaClass="org.eclipse.scava.repository.model.Project")

@@ -86,8 +86,7 @@ public class GitLabImporter implements IImporter {
 			{
 				logger.info("GitLab issue tracker reader is being defined");
 				GitLabTracker gitLabTracker = new GitLabTracker();
-				gitLabTracker.setUrl("https://" + host + "/api/v4/projects/" + path.replace("/", "%2F") + "/issues");
-				gitLabTracker.setProject_id(path.replace("/", "%2F"));
+				gitLabTracker.setUrl(apiURI);
 				gitLabTracker.setPersonal_access_token(personalAccessToken);
 				repo.getBugTrackingSystems().add(gitLabTracker);
 			}
