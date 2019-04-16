@@ -142,6 +142,10 @@ public class CrossflowHandler implements Crossflow.Iface {
 	public void clearQueue(String experimentId, String queueName) throws TException {
 		Workflow w = workflows.get(experimentId);	
 		w.getCache().clear(queueName);
+		if ( queueName != "" )
+			System.out.println("Cache for queue " + queueName + " cleared.");
+		else
+			System.out.println("Entire cache cleared.");
 	}
 	
 	public void delete(File file) {
