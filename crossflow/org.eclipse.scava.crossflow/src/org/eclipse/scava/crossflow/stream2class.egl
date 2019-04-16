@@ -13,6 +13,8 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.JobStream;
+import org.apache.activemq.command.ActiveMQTextMessage;
+import org.apache.activemq.command.ActiveMQBytesMessage;
 
 public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
@@ -44,7 +46,17 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 							workflow.cancelTermination();
 							[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
 							[%if (isCached){%]
-							Job job = (Job) workflow.getSerializer().toObject(((TextMessage) message).getText());
+							String messageText = "";
+							if (message instanceof ActiveMQTextMessage) {
+    							ActiveMQTextMessage amqMessage = (ActiveMQTextMessage) message;
+    							messageText = amqMessage.getText();
+							} else {
+    							ActiveMQBytesMessage bm = (ActiveMQBytesMessage) message;
+    							byte data[] = new byte[(int) bm.getBodyLength()];
+    							bm.readBytes(data);
+    							messageText = new String(data);
+							}
+							Job job = (Job) workflow.getSerializer().toObject(messageText);
 							
 							if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 								
@@ -91,8 +103,18 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 					public void onMessage(Message message) {
 						try {
 							workflow.cancelTermination();
-							TextMessage textMessage = (TextMessage) message;
-							Job job = (Job) workflow.getSerializer().toObject(textMessage.getText());
+							String messageText = "";
+							if (message instanceof ActiveMQTextMessage) {
+    							ActiveMQTextMessage amqMessage = (ActiveMQTextMessage) message;
+    							messageText = amqMessage.getText();
+							} else {
+    							ActiveMQBytesMessage bm = (ActiveMQBytesMessage) message;
+    							byte data[] = new byte[(int) bm.getBodyLength()];
+    							bm.readBytes(data);
+    							messageText = new String(data);
+							}
+							
+							Job job = (Job) workflow.getSerializer().toObject(messageText);
 							if (workflow.getCache() != null && !job.isCached())
 								if(job.isTransactional())
 									workflow.getCache().cacheTransactionally(job);
@@ -133,9 +155,18 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
 				@Override
 				public void onMessage(Message message) {
-					TextMessage textMessage = (TextMessage) message;
+					String messageText = "";
 					try {
-						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) workflow.getSerializer().toObject(textMessage.getText());
+						if (message instanceof ActiveMQTextMessage) {
+							ActiveMQTextMessage amqMessage = (ActiveMQTextMessage) message;
+							messageText = amqMessage.getText();
+						} else {
+							ActiveMQBytesMessage bm = (ActiveMQBytesMessage) message;
+							byte data[] = new byte[(int) bm.getBodyLength()];
+							bm.readBytes(data);
+							messageText = new String(data);
+						}
+						[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) workflow.getSerializer().toObject(messageText);
 						consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
 					} catch (Exception ex) {
 						workflow.reportInternalException(ex);

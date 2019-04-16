@@ -1,0 +1,193 @@
+from org.eclipse.scava.crossflow.runtime import ControlSignal
+from org.eclipse.scava.crossflow.runtime import ControlSignals
+from org.eclipse.scava.crossflow.runtime import Workflow
+from org.eclipse.scava.crossflow.runtime import Mode
+
+[%for (t in w.getMasterTasks()){%]
+from [%=w.package%].[%=t.name%] import [%=t.name%]
+[%}%]
+[%for (t in w.getWorkerTasks()){%]
+from [%=w.package%].[%=t.name%] import [%=t.name%]
+[%}%]
+[%for (s in w.streams) { %]
+from [%=w.package%].[%=s.name%] import [%=s.name%]
+[%}%]
+
+import argparse
+import time
+import threading
+import sys
+import traceback
+
+class [%=w.name%](Workflow):
+
+	def __init__(self, mode=Mode.MASTER, createBroker=True):
+		super().__init__(None, mode, createBroker, None)
+			
+		self.createBroker = createBroker	
+		self.enablePrefetch = False
+			
+		self.name = "[%=w.name%]"
+		self.mode = mode
+		[%for (p in w.parameters) { %]
+		#@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
+		self.[%=p.name%] = None
+		[%}%]
+		
+		# streams
+		[%for (s in w.streams) { %]
+		self.[%=s.name.ftlc()%] = None
+		[%}%]
+
+		# tasks
+		[%for (t in w.tasks) {%]
+		self.[%=t.name.ftlc()%] = None
+		[%}%]
+	
+		if (self.isMaster()):
+			[%for (t in w.getMasterTasks()){%]
+			self.[%=t.name.ftlc()%] = [%=t.name%]()
+			self.[%=t.name.ftlc()%].setWorkflow(self)
+			[%}%]
+		
+		if (self.isWorker()):
+		[%for (t in w.getWorkerTasks()){%]
+			if (not '[%=t.name%]' in self.tasksToExclude):
+				self.[%=t.name.ftlc()%] = [%=t.name%]()
+				self.[%=t.name.ftlc()%].setWorkflow(self)
+		[%}%]
+	
+	def createWorker(self):
+		worker = [%=w.name%](Mode.WORKER)
+		worker.setInstanceId(self.instanceId)
+		return worker
+	
+	[%for (p in w.parameters) { %]
+	def set[%=p.name.ftuc()%](self, [%=p.name%]):
+		self.[%=p.name%] = [%=p.name%]
+	
+	def get[%=p.name.ftuc()%](self):
+		return self.[%=p.name%]
+		
+	[%}%]
+	
+	
+	
+	"""
+	 * Run with initial delay in ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param delay
+	"""
+	def run(self, delay=0):
+		self.delay=delay
+
+		try:
+			"""
+			# Can't create broker yet
+			if (self.isMaster()) {
+				if (self.createBroker) {
+					brokerService = BrokerService()
+					brokerService.setUseJmx(true);
+					brokerService.addConnector(getBroker());
+					brokerService.start();
+				}
+			"""
+	
+			self.connect()
+	
+			time.sleep(delay)
+			
+			[%for (s in w.streams) { %]
+			self.[%=s.name.ftlc()%] = [%=s.name%](self, self.enablePrefetch)
+			self.activeStreams.append(self.[%=s.name.ftlc()%])
+			[%}%]
+			
+			if (self.isMaster()):
+			[%for (t in w.getMasterTasks()){%]
+				[%=t.setup()%]
+			[%}%]
+			
+			if (self.isWorker()):
+			[%for (t in w.getWorkerTasks()){%]
+				if (not '[%=t.name%]' in self.tasksToExclude):
+					[%=t.setup()%]
+			[%}%]
+			
+			if (self.isMaster()):
+			[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
+				# run all sources in parallel threads
+				def runTask():
+					try:
+						self.setTaskInProgess(self.[%=t.name.ftlc()%])
+						self.[%=t.name.ftlc()%].produce()
+						self.setTaskWaiting(self.[%=t.name.ftlc()%])
+					except Exception as ex:
+						traceback.print_exc()
+						exc_type, exc_value, exc_traceback = sys.exc_info()
+						stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
+						self.reportInternalException(ex, '', stack)
+						self.terminate()
+				thread = threading.Thread(target=runTask, args={})
+				thread.start()  
+			[%}%]
+				
+			# delay non-master connections to allow master to create the relevant listeners
+			# (in a multi-threaded parallel execution) to facilitate termination, by
+			# re-sending worker_added message
+			if (not self.isMaster()):
+				time.sleep(1)
+				self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
+		except Exception as e:
+			traceback.print_exc()
+			print(e)
+	
+	[%for (s in w.streams) { %]
+	def get[%=s.name%](self):
+		return self.[%=s.name.ftlc()%]
+	[%}%]
+	
+	[%for (t in w.tasks) {%]
+	def get[%=t.name%](self):
+		return self.[%=t.name.ftlc()%]
+	[%}%]
+
+	"""
+	* Sets whether tasks are able to obtain more jobs while they are in the middle of processing one already
+	"""
+	def isEnablePrefetch(self):
+		return self.enablePrefetch
+
+	def setEnablePrefetch(self, enablePrefetch):
+		self.enablePrefetch = enablePrefetch
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-mode', help='Must be master_bare, master or worker')
+	parser.add_argument('-createBroker', help='Whether this workflow creates a broker or not.')
+	
+	parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
+	
+	app = [%=w.name%](parsedArgs.mode, parsedArgs.createBroker)
+	app.run();
+	
+[%
+operation Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
+}
+
+operation Workflow getWorkerTasks() {
+	return self.tasks.excludingAll(self.getMasterTasks());
+}
+
+@template
+operation Task setup() {%]
+	self.[%=self.name.ftlc()%].setResultsTopic(self.resultsTopic);
+	[%for (i in self.input) { %]
+	self.[%=i.name.ftlc()%].addConsumer(self.[%=self.name.ftlc()%], "[%=self.name%]");			
+	[%}%]
+	[%for (o in self.output) { %]
+	self.[%=self.name.ftlc()%].set[%=o.name%](self.[%=o.name.ftlc%]);
+	[%}%]
+[%}
+%]

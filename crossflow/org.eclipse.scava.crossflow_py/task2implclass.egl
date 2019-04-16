@@ -1,0 +1,51 @@
+[%if (t.isTypeOf(Source)){%]
+import threading
+[%}%]
+from [%=w.package%].[%=t.name%]Base import [%=t.name%]Base
+[%for (s in t.output) { %]
+from [%=w.package%].[%=s.type.name%] import [%=s.type.name%]
+[% } %]
+
+class [%=t.name%]([%=t.name%]Base):
+
+	def __init__(self):
+		super().__init__()
+	
+	[%if (t.isTypeOf(Source)){%]
+	def produce(self):
+		def run():
+			# TODO: Add implementation that instantiates, sets, and submits source objects (example below)
+			[%for (s in t.output) { %]
+			[%var number = loopCount;%]
+			[%=s.type.name.ftlc()%][%=number%] = [%=s.type.name%]()
+			[%for (f in s.type.fields) { %]
+			#	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] )
+			[%}%]		
+			self.sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%])
+			
+			[% } %]
+			threading.Timer(100, run).start()
+		run()			
+	[%} else {%]
+	[% for (s in t.input) { %]
+	def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
+		# TODO: Add implementation that instantiates, sets, and submits result objects (example below)
+		[%for (s in t.output) { %]
+		[%var number= loopCount;%]
+		[%=s.type.name.ftlc()%][%=number%] = [%=s.type.name%]()
+		[%for (f in s.type.fields) { %]
+		#	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
+		[%}%]
+		self.sendTo[%=s.name%]([%=s.type.name.ftlc()%][%=number%])
+		
+		[% } %]
+		[% if (t.output.notEmpty()==false) { %]
+		print('[' + self.workflow.getName() + '] Result is ' + str([%=s.type.name.ftlc()%]) + ' (cached=' + [%=s.type.name.ftlc()%].isCached() + ')')
+		[% } %]
+	
+	def consume[%=s.name%]External(self, [%=s.type.name.ftlc()%], owner):
+		pass
+		
+	[%}}%]
+
+
