@@ -11,15 +11,15 @@ rule Workflow2AbstractGraph
 	
 	template : "workflow2abstractGraph.egl"
 	
-	target : "graphs/" + w.name + "/abstract.graph"
+	target : "experiment/abstract.graph"
 }
 
-rule Workflow2ExperimentAnt
+rule GenerateExperimentXML
 	transform w : Workflow {
 	
-	template : "workflow2experimentAnt.egl"
+	template : "generateExperimentXML.egl"
 	
-	target : "build-experiment-zip.xml"
+	target : "experiment/experiment.xml"
 }
 
 rule Type2Class 

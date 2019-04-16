@@ -27,8 +27,10 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
+import org.eclipse.epsilon.eol.types.EolPrimitiveType;
+import org.eclipse.epsilon.eol.types.EolType;
 
-public class GenerateBaseClasses {
+public class GenerateExecutables {
 
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
@@ -37,12 +39,14 @@ public class GenerateBaseClasses {
 
 	String projectLocation;
 	String modelRelativePath;
+	String dependenciesLocation;
 	String packageName;
 
-	public void run(String projectLocation, String modelRelativePath) throws Exception {
+	public void run(String projectLocation, String modelRelativePath, String dependenciesLocation) throws Exception {
 
 		this.projectLocation = projectLocation;
 		this.modelRelativePath = modelRelativePath;
+		this.dependenciesLocation = dependenciesLocation;
 
 		execute();
 	}
@@ -50,7 +54,13 @@ public class GenerateBaseClasses {
 	public void execute() throws Exception {
 
 		module = createModule();
-		module.parse(getFileURI("crossflow.egx"));
+		module.parse(getFileURI("generateExecutables.egx"));
+
+		Variable dependenciesPath = new Variable();
+		dependenciesPath.setName("dependenciesPath");
+		dependenciesPath.setType(EolPrimitiveType.String);
+		dependenciesPath.setValue(dependenciesLocation, module.getContext());
+		parameters.add(dependenciesPath);
 
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -79,7 +89,7 @@ public class GenerateBaseClasses {
 
 	protected URI getFileURI(String fileName) throws URISyntaxException {
 
-		URI binUri = GenerateBaseClasses.class.getResource(fileName).toURI();
+		URI binUri = GenerateExecutables.class.getResource(fileName).toURI();
 		URI uri = null;
 
 		if (binUri.toString().indexOf("bin") > -1) {
@@ -103,9 +113,8 @@ public class GenerateBaseClasses {
 
 	public List<IModel> getModels() throws Exception {
 		List<IModel> models = new ArrayList<IModel>();
-		models.add(createAndLoadAnEmfModel("org.eclipse.scava.crossflow",
-				modelRelativePath, "Model", true,
-				false, false));
+		models.add(
+				createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false, false));
 
 		return models;
 	}

@@ -1,0 +1,14 @@
+<experiment
+	title="[%=w.name%]"
+	class="[%=w.package%].[%=w.name%]"
+	jar="[%=w.package%].jar"
+	input="in"
+	output="out"
+	summary="Optional summary of the Experiment goes here."
+>
+	<input path="in/input.csv" title="Input"/>
+	<output path="out/output.csv" title="Output"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
+</experiment>

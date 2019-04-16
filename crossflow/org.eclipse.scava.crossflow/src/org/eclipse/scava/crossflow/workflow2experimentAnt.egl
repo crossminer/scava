@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="run_all" name="Assemble Single Experiment ZIP for project">
-    	
-   	<!-- Running this will create a JAR of this project in the project directory -->
+
+[%
+//	<property name="deps" value="[ %=dependenciesPath% ]"/>
+%]
+	
+   	<!-- Running this will create a JAR of this project in the experiment directory -->
     <target name="create_run_jar">
         <jar destfile="experiment/[%=w.name%].jar" filesetmanifest="mergewithoutmain">
         	<fileset dir="bin"/>
-        </jar>
-	</target>
-	
-   	<!-- Running this will create a JAR of this project in the project directory -->
-    <target name="create_run_with_dependencies_jar">
-        <jar destfile="experiment/[%=w.name%]-with-dependencies.jar" filesetmanifest="mergewithoutmain">
-        	<fileset dir="bin"/>
-        	<!-- ADD FURTHER DEPENDENCIES HERE (workflow2experiementAnt.egl) --> 
-        	<!-- EXAMPLE (see below) -->
-        	<!-- <zipfileset excludes="META-INF/*.SF" src="path/to/jcommander-1.72.jar"/> -->
         </jar>
 	</target>
 	
@@ -30,7 +24,7 @@
 	<!-- Running this will create a ZIP file containing all required artifacts for uploading this project as a new workflow in the Crossflow web application -->
     <target name="assemble_single_experiment_zip">
         <zip
-        	destfile="[%=w.name%].zip"
+        	destfile="experiment/[%=w.name%].zip"
 			basedir="experiment" 
 			excludes="in/"
 			update="true"
@@ -38,6 +32,6 @@
     </target>
     
     <target name="run_all"
-   		depends="create_run_jar,create_in_zip,assemble_single_experiment_zip,create_run_with_dependencies_jar" />
+   		depends="create_run_jar,create_in_zip,assemble_single_experiment_zip" />
     
 </project>

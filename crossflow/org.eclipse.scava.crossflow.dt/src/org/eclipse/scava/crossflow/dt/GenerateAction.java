@@ -31,24 +31,38 @@ public class GenerateAction implements IObjectActionDelegate {
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
 		String projectFolderLocation = projectFolder.getPath();
 		try {
-			
+
+			// create experiment folder and initial contents
+			File experimentFolder = new File(projectFolder,"experiment");
+			experimentFolder.mkdirs();
+
+			File inFolder = new File(experimentFolder, "in");
+			inFolder.mkdirs();
+
+			File outFolder = new File(experimentFolder, "out");
+			outFolder.mkdirs();
+
+			File inFile = new File(inFolder, "in.csv");
+			inFile.createNewFile();
+
+			File outFile = new File(outFolder, "out.csv");
+			outFile.createNewFile();
+
 			// generate base classes
-			new GenerateBaseClasses().run(projectFolderLocation, selectedFile.getName());
-			
+			new GenerateBaseClasses().run(projectFolderLocation,
+					selectedFile.getFullPath().toString().replaceFirst("\\" + projectFolder.getName(), ""));
+
 			// update classpath
 			File classpath = getClasspathFile(projectFolder);
 			if (classpath != null && classpath.exists()) {
 				new UpdateClasspath().run(classpath);
 			}
-			
+
 			// update manifest with dependencies
 			File manifest = getManifestFile(projectFolder);
 			if (manifest != null && manifest.exists()) {
 				updateManifest(manifest);
 			}
-
-			// run ant builds for master and worker jars
-			//FIXME
 
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());
@@ -73,11 +87,21 @@ public class GenerateAction implements IObjectActionDelegate {
 			String dependencies = "Require-Bundle: org.eclipse.scava.crossflow.runtime";
 
 			BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true));
-			w.append(dependencies + "\r\n");
+			w.append(dependencies + "\n");
 			w.close();
 
 		}
+		
+		if (!contents.stream().anyMatch(s -> s.contains("Bundle-RequiredExecutionEnvironment"))) {
 
+			String jre = "Bundle-RequiredExecutionEnvironment: JavaSE-1.8";
+
+			BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true));
+			w.append(jre + "\n");
+			w.close();
+
+		}		
+		
 	}
 
 	@Override
