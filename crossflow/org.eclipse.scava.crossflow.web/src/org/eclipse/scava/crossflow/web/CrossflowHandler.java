@@ -138,6 +138,12 @@ public class CrossflowHandler implements Crossflow.Iface {
 		
 	}
 	
+	@Override
+	public void clearQueue(String experimentId, String queueName) throws TException {
+		Workflow w = workflows.get(experimentId);	
+		w.getCache().clear(queueName);
+	}
+	
 	public void delete(File file) {
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
