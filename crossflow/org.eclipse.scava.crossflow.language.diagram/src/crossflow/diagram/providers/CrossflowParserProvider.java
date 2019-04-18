@@ -18,11 +18,8 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
-import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
 import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
-import crossflow.diagram.edit.parts.FieldName2EditPart;
-import crossflow.diagram.edit.parts.FieldNameEditPart;
 import crossflow.diagram.edit.parts.FieldNameType2EditPart;
 import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
@@ -179,27 +176,6 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
-	private IParser configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getConfigurationNumberOfWorkersIsMasterAlsoWorker_5009Parser() {
-		if (configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser == null) {
-			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getConfiguration_NumberOfWorkers(),
-					CrossflowPackage.eINSTANCE.getConfiguration_IsMasterAlsoWorker() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			parser.setViewPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
-			parser.setEditorPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
-			parser.setEditPattern("Config: NoW:{0}, iMaW:{1}"); //$NON-NLS-1$
-			configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser = parser;
-		}
-		return configurationNumberOfWorkersIsMasterAlsoWorker_5009Parser;
-	}
-
-	/**
-	* @generated
-	*/
 	private IParser taskName_5010Parser;
 
 	/**
@@ -294,8 +270,6 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 			return getCommitmentTaskName_5007Parser();
 		case OpinionatedTaskNameEditPart.VISUAL_ID:
 			return getOpinionatedTaskName_5008Parser();
-		case ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID:
-			return getConfigurationNumberOfWorkersIsMasterAlsoWorker_5009Parser();
 		case TaskNameEditPart.VISUAL_ID:
 			return getTaskName_5010Parser();
 		case TypeNameEditPart.VISUAL_ID:

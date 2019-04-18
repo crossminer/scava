@@ -154,12 +154,6 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CrossflowPackage.CONFIGURATION: {
-				Configuration configuration = (Configuration)theEObject;
-				T result = caseConfiguration(configuration);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -356,21 +350,6 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseField(Field object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Configuration</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Configuration</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseConfiguration(Configuration object) {
 		return null;
 	}
 

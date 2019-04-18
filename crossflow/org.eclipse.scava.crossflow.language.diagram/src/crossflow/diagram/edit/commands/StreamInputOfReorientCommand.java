@@ -19,7 +19,7 @@ import crossflow.diagram.edit.policies.CrossflowBaseItemSemanticEditPolicy;
 /**
  * @generated
  */
-public class TaskInputReorientCommand extends EditElementCommand {
+public class StreamInputOfReorientCommand extends EditElementCommand {
 
 	/**
 	* @generated
@@ -44,7 +44,7 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	public TaskInputReorientCommand(ReorientReferenceRelationshipRequest request) {
+	public StreamInputOfReorientCommand(ReorientReferenceRelationshipRequest request) {
 		super(request.getLabel(), null, request);
 		reorientDirection = request.getDirection();
 		referenceOwner = request.getReferenceOwner();
@@ -56,7 +56,7 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	public boolean canExecute() {
-		if (false == referenceOwner instanceof Task) {
+		if (false == referenceOwner instanceof Stream) {
 			return false;
 		}
 		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
@@ -72,10 +72,10 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected boolean canReorientSource() {
-		if (!(oldEnd instanceof Stream && newEnd instanceof Task)) {
+		if (!(oldEnd instanceof Task && newEnd instanceof Stream)) {
 			return false;
 		}
-		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canExistTaskInput_4002(getNewSource(),
+		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canExistStreamInputOf_4005(getNewSource(),
 				getOldTarget());
 	}
 
@@ -83,10 +83,10 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected boolean canReorientTarget() {
-		if (!(oldEnd instanceof Stream && newEnd instanceof Stream)) {
+		if (!(oldEnd instanceof Task && newEnd instanceof Task)) {
 			return false;
 		}
-		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canExistTaskInput_4002(getOldSource(),
+		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canExistStreamInputOf_4005(getOldSource(),
 				getNewTarget());
 	}
 
@@ -110,8 +110,8 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult reorientSource() throws ExecutionException {
-		getOldSource().getInput().remove(getOldTarget());
-		getNewSource().getInput().add(getOldTarget());
+		getOldSource().getInputOf().remove(getOldTarget());
+		getNewSource().getInputOf().add(getOldTarget());
 		return CommandResult.newOKCommandResult(referenceOwner);
 	}
 
@@ -119,36 +119,36 @@ public class TaskInputReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult reorientTarget() throws ExecutionException {
-		getOldSource().getInput().remove(getOldTarget());
-		getOldSource().getInput().add(getNewTarget());
+		getOldSource().getInputOf().remove(getOldTarget());
+		getOldSource().getInputOf().add(getNewTarget());
 		return CommandResult.newOKCommandResult(referenceOwner);
 	}
 
 	/**
 	* @generated
 	*/
-	protected Task getOldSource() {
-		return (Task) referenceOwner;
+	protected Stream getOldSource() {
+		return (Stream) referenceOwner;
 	}
 
 	/**
 	* @generated
 	*/
-	protected Task getNewSource() {
-		return (Task) newEnd;
-	}
-
-	/**
-	* @generated
-	*/
-	protected Stream getOldTarget() {
-		return (Stream) oldEnd;
-	}
-
-	/**
-	* @generated
-	*/
-	protected Stream getNewTarget() {
+	protected Stream getNewSource() {
 		return (Stream) newEnd;
+	}
+
+	/**
+	* @generated
+	*/
+	protected Task getOldTarget() {
+		return (Task) oldEnd;
+	}
+
+	/**
+	* @generated
+	*/
+	protected Task getNewTarget() {
+		return (Task) newEnd;
 	}
 }

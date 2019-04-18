@@ -93,6 +93,7 @@ public interface Stream extends EObject {
 	 * @see crossflow.CrossflowPackage#getStream_InputOf()
 	 * @see crossflow.Task#getInput
 	 * @model opposite="input"
+	 *        annotation="gmf.link target.decoration='filledclosedarrow'"
 	 * @generated
 	 */
 	EList<Task> getInputOf();

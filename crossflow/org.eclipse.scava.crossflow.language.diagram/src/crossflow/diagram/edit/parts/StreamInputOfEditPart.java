@@ -13,22 +13,22 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx;
 import org.eclipse.gmf.runtime.notation.View;
 
-import crossflow.diagram.edit.policies.TaskInputItemSemanticEditPolicy;
+import crossflow.diagram.edit.policies.StreamInputOfItemSemanticEditPolicy;
 
 /**
  * @generated
  */
-public class TaskInputEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
+public class StreamInputOfEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 4002;
+	public static final int VISUAL_ID = 4005;
 
 	/**
 	* @generated
 	*/
-	public TaskInputEditPart(View view) {
+	public StreamInputOfEditPart(View view) {
 		super(view);
 	}
 
@@ -37,7 +37,7 @@ public class TaskInputEditPart extends ConnectionNodeEditPart implements ITreeBr
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new TaskInputItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new StreamInputOfItemSemanticEditPolicy());
 	}
 
 	/**
@@ -50,33 +50,33 @@ public class TaskInputEditPart extends ConnectionNodeEditPart implements ITreeBr
 	*/
 
 	protected Connection createConnectionFigure() {
-		return new TaskInputFigure();
+		return new StreamInputOfFigure();
 	}
 
 	/**
 	* @generated
 	*/
-	public TaskInputFigure getPrimaryShape() {
-		return (TaskInputFigure) getFigure();
+	public StreamInputOfFigure getPrimaryShape() {
+		return (StreamInputOfFigure) getFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public class TaskInputFigure extends PolylineConnectionEx {
+	public class StreamInputOfFigure extends PolylineConnectionEx {
 
 		/**
 		 * @generated
 		 */
-		public TaskInputFigure() {
+		public StreamInputOfFigure() {
 
-			setSourceDecoration(createSourceDecoration());
+			setTargetDecoration(createTargetDecoration());
 		}
 
 		/**
-		 * @generated
-		 */
-		private RotatableDecoration createSourceDecoration() {
+		* @generated
+		*/
+		private RotatableDecoration createTargetDecoration() {
 			PolygonDecoration df = new PolygonDecoration();
 			df.setFill(true);
 			PointList pl = new PointList();

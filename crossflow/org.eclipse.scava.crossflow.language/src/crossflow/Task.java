@@ -70,7 +70,6 @@ public interface Task extends EObject {
 	 * @see crossflow.CrossflowPackage#getTask_Input()
 	 * @see crossflow.Stream#getInputOf
 	 * @model opposite="inputOf"
-	 *        annotation="gmf.link source.decoration='filledclosedarrow'"
 	 * @generated
 	 */
 	EList<Stream> getInput();

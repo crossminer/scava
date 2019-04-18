@@ -325,17 +325,17 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		 * @generated
 		 */
-		public boolean canCreateTaskInput_4002(Task source, Stream target) {
+		public boolean canCreateStreamInputOf_4005(Stream source, Task target) {
 			if (source != null) {
-				if (source.getInput().contains(target)) {
+				if (source.getInputOf().contains(target)) {
 					return false;
 				}
 			}
-			if (target != null && (target.getInputOf().contains(target))) {
+			if (target != null && (target.getInput().contains(target))) {
 				return false;
 			}
 
-			return canExistTaskInput_4002(source, target);
+			return canExistStreamInputOf_4005(source, target);
 		}
 
 		/**
@@ -377,7 +377,7 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		* @generated
 		*/
-		public boolean canExistTaskInput_4002(Task source, Stream target) {
+		public boolean canExistStreamInputOf_4005(Stream source, Task target) {
 			return true;
 		}
 

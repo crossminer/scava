@@ -48,16 +48,12 @@ import org.eclipse.swt.graphics.FontData;
 
 import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
-import crossflow.diagram.edit.parts.ConfigurationEditPart;
-import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
-import crossflow.diagram.edit.parts.FieldName2EditPart;
-import crossflow.diagram.edit.parts.FieldNameEditPart;
 import crossflow.diagram.edit.parts.FieldNameType2EditPart;
 import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
@@ -68,9 +64,9 @@ import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
+import crossflow.diagram.edit.parts.StreamInputOfEditPart;
 import crossflow.diagram.edit.parts.StreamTypeEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
-import crossflow.diagram.edit.parts.TaskInputEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
 import crossflow.diagram.edit.parts.TaskOutputEditPart;
 import crossflow.diagram.edit.parts.TopicEditPart;
@@ -175,7 +171,6 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				case SinkEditPart.VISUAL_ID:
 				case CommitmentTaskEditPart.VISUAL_ID:
 				case OpinionatedTaskEditPart.VISUAL_ID:
-				case ConfigurationEditPart.VISUAL_ID:
 				case TaskEditPart.VISUAL_ID:
 				case TypeEditPart.VISUAL_ID:
 				case Field2EditPart.VISUAL_ID:
@@ -194,9 +189,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				|| TopicEditPart.VISUAL_ID == visualID || QueueEditPart.VISUAL_ID == visualID
 				|| SourceEditPart.VISUAL_ID == visualID || SinkEditPart.VISUAL_ID == visualID
 				|| CommitmentTaskEditPart.VISUAL_ID == visualID || OpinionatedTaskEditPart.VISUAL_ID == visualID
-				|| ConfigurationEditPart.VISUAL_ID == visualID || TaskEditPart.VISUAL_ID == visualID
-				|| TypeEditPart.VISUAL_ID == visualID || FieldEditPart.VISUAL_ID == visualID
-				|| Field2EditPart.VISUAL_ID == visualID;
+				|| TaskEditPart.VISUAL_ID == visualID || TypeEditPart.VISUAL_ID == visualID
+				|| FieldEditPart.VISUAL_ID == visualID || Field2EditPart.VISUAL_ID == visualID;
 	}
 
 	/**
@@ -261,8 +255,6 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 			return createCommitmentTask_2007(domainElement, containerView, index, persisted, preferencesHint);
 		case OpinionatedTaskEditPart.VISUAL_ID:
 			return createOpinionatedTask_2008(domainElement, containerView, index, persisted, preferencesHint);
-		case ConfigurationEditPart.VISUAL_ID:
-			return createConfiguration_2009(domainElement, containerView, index, persisted, preferencesHint);
 		case TaskEditPart.VISUAL_ID:
 			return createTask_2010(domainElement, containerView, index, persisted, preferencesHint);
 		case TypeEditPart.VISUAL_ID:
@@ -286,8 +278,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		switch (CrossflowVisualIDRegistry.getVisualID(elementTypeHint)) {
 		case StreamTypeEditPart.VISUAL_ID:
 			return createStreamType_4001(containerView, index, persisted, preferencesHint);
-		case TaskInputEditPart.VISUAL_ID:
-			return createTaskInput_4002(containerView, index, persisted, preferencesHint);
+		case StreamInputOfEditPart.VISUAL_ID:
+			return createStreamInputOf_4005(containerView, index, persisted, preferencesHint);
 		case TaskOutputEditPart.VISUAL_ID:
 			return createTaskOutput_4003(containerView, index, persisted, preferencesHint);
 		case TypeExtendingEditPart.VISUAL_ID:
@@ -596,44 +588,6 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	/**
 	* @generated
 	*/
-	public Node createConfiguration_2009(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Shape node = NotationFactory.eINSTANCE.createShape();
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(CrossflowVisualIDRegistry.getType(ConfigurationEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		stampShortcut(containerView, node);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_FILL_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
-				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5009 = createLabel(node,
-				CrossflowVisualIDRegistry.getType(ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	* @generated
-	*/
 	public Node createTask_2010(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
@@ -831,7 +785,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	/**
 	* @generated
 	*/
-	public Edge createTaskInput_4002(View containerView, int index, boolean persisted,
+	public Edge createStreamInputOf_4005(View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Connector edge = NotationFactory.eINSTANCE.createConnector();
 		edge.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
@@ -842,7 +796,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		bendpoints.setPoints(points);
 		edge.setBendpoints(bendpoints);
 		ViewUtil.insertChildView(containerView, edge, index, persisted);
-		edge.setType(CrossflowVisualIDRegistry.getType(TaskInputEditPart.VISUAL_ID));
+		edge.setType(CrossflowVisualIDRegistry.getType(StreamInputOfEditPart.VISUAL_ID));
 		edge.setElement(null);
 		// initializePreferences
 		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
@@ -866,12 +820,12 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		if (routing != null) {
 			ViewUtil.setStructuralFeatureValue(edge, NotationPackage.eINSTANCE.getRoutingStyle_Routing(), routing);
 		}
-		Node label6002 = createLabel(edge, CrossflowVisualIDRegistry.getType(WrappingLabel2EditPart.VISUAL_ID));
-		label6002.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		label6002.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
-		Location location6002 = (Location) label6002.getLayoutConstraint();
-		location6002.setX(0);
-		location6002.setY(40);
+		Node label6005 = createLabel(edge, CrossflowVisualIDRegistry.getType(WrappingLabel2EditPart.VISUAL_ID));
+		label6005.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
+		label6005.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
+		Location location6005 = (Location) label6005.getLayoutConstraint();
+		location6005.setX(0);
+		location6005.setY(40);
 		return edge;
 	}
 

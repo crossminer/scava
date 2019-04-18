@@ -36,8 +36,7 @@ public class CrossflowModelingAssistantProviderOfCsvSinkEditPart extends Crossfl
 	* @generated
 	*/
 	public List<IElementType> doGetRelTypesOnSource(CsvSinkEditPart source) {
-		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(CrossflowElementTypes.TaskInput_4002);
+		List<IElementType> types = new ArrayList<IElementType>(1);
 		types.add(CrossflowElementTypes.TaskOutput_4003);
 		return types;
 	}
@@ -59,12 +58,6 @@ public class CrossflowModelingAssistantProviderOfCsvSinkEditPart extends Crossfl
 	public List<IElementType> doGetRelTypesOnSourceAndTarget(CsvSinkEditPart source,
 			IGraphicalEditPart targetEditPart) {
 		List<IElementType> types = new LinkedList<IElementType>();
-		if (targetEditPart instanceof TopicEditPart) {
-			types.add(CrossflowElementTypes.TaskInput_4002);
-		}
-		if (targetEditPart instanceof QueueEditPart) {
-			types.add(CrossflowElementTypes.TaskInput_4002);
-		}
 		if (targetEditPart instanceof TopicEditPart) {
 			types.add(CrossflowElementTypes.TaskOutput_4003);
 		}
@@ -89,10 +82,48 @@ public class CrossflowModelingAssistantProviderOfCsvSinkEditPart extends Crossfl
 	*/
 	public List<IElementType> doGetTypesForTarget(CsvSinkEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
-		if (relationshipType == CrossflowElementTypes.TaskInput_4002) {
+		if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
 			types.add(CrossflowElementTypes.Topic_2003);
 			types.add(CrossflowElementTypes.Queue_2004);
-		} else if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
+		}
+		return types;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+
+	public List<IElementType> getRelTypesOnTarget(IAdaptable target) {
+		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target.getAdapter(IGraphicalEditPart.class);
+		return doGetRelTypesOnTarget((CsvSinkEditPart) targetEditPart);
+	}
+
+	/**
+	* @generated
+	*/
+	public List<IElementType> doGetRelTypesOnTarget(CsvSinkEditPart target) {
+		List<IElementType> types = new ArrayList<IElementType>(1);
+		types.add(CrossflowElementTypes.StreamInputOf_4005);
+		return types;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+
+	public List<IElementType> getTypesForSource(IAdaptable target, IElementType relationshipType) {
+		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target.getAdapter(IGraphicalEditPart.class);
+		return doGetTypesForSource((CsvSinkEditPart) targetEditPart, relationshipType);
+	}
+
+	/**
+	* @generated
+	*/
+	public List<IElementType> doGetTypesForSource(CsvSinkEditPart target, IElementType relationshipType) {
+		List<IElementType> types = new ArrayList<IElementType>();
+		if (relationshipType == CrossflowElementTypes.StreamInputOf_4005) {
 			types.add(CrossflowElementTypes.Topic_2003);
 			types.add(CrossflowElementTypes.Queue_2004);
 		}

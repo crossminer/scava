@@ -11,7 +11,6 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.DuplicateElementsRequest;
 
 import crossflow.diagram.edit.commands.CommitmentTaskCreateCommand;
-import crossflow.diagram.edit.commands.ConfigurationCreateCommand;
 import crossflow.diagram.edit.commands.CsvSinkCreateCommand;
 import crossflow.diagram.edit.commands.CsvSourceCreateCommand;
 import crossflow.diagram.edit.commands.FieldCreateCommand;
@@ -63,9 +62,6 @@ public class WorkflowItemSemanticEditPolicy extends CrossflowBaseItemSemanticEdi
 		}
 		if (CrossflowElementTypes.OpinionatedTask_2008 == req.getElementType()) {
 			return getGEFWrapper(new OpinionatedTaskCreateCommand(req));
-		}
-		if (CrossflowElementTypes.Configuration_2009 == req.getElementType()) {
-			return getGEFWrapper(new ConfigurationCreateCommand(req));
 		}
 		if (CrossflowElementTypes.Task_2010 == req.getElementType()) {
 			return getGEFWrapper(new TaskCreateCommand(req));

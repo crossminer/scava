@@ -15,7 +15,7 @@ elementsToCenter.add('CsvSinkFigure');
 //elementsToCenter.add('TypeFigure');
 //elementsToCenter.add('FieldFigure');
 
-elementsToCenter.add('ConfigurationFigure');
+//elementsToCenter.add('ConfigurationFigure');
 
 for(element in elementsToCenter)
 	center(findShape(element));

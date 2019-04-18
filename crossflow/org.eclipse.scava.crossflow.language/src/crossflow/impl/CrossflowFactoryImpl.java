@@ -68,7 +68,6 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.OPINIONATED_TASK: return createOpinionatedTask();
 			case CrossflowPackage.TYPE: return createType();
 			case CrossflowPackage.FIELD: return createField();
-			case CrossflowPackage.CONFIGURATION: return createConfiguration();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -192,16 +191,6 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	public Field createField() {
 		FieldImpl field = new FieldImpl();
 		return field;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Configuration createConfiguration() {
-		ConfigurationImpl configuration = new ConfigurationImpl();
-		return configuration;
 	}
 
 	/**

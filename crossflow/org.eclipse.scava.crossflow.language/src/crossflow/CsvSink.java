@@ -12,7 +12,7 @@ package crossflow;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link crossflow.CsvSink#getPath <em>Path</em>}</li>
+ *   <li>{@link crossflow.CsvSink#getFileName <em>File Name</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getCsvSink()
@@ -21,29 +21,29 @@ package crossflow;
  */
 public interface CsvSink extends Sink {
 	/**
-	 * Returns the value of the '<em><b>Path</b></em>' attribute.
+	 * Returns the value of the '<em><b>File Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Path</em>' attribute isn't clear,
+	 * If the meaning of the '<em>File Name</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Path</em>' attribute.
-	 * @see #setPath(String)
-	 * @see crossflow.CrossflowPackage#getCsvSink_Path()
+	 * @return the value of the '<em>File Name</em>' attribute.
+	 * @see #setFileName(String)
+	 * @see crossflow.CrossflowPackage#getCsvSink_FileName()
 	 * @model
 	 * @generated
 	 */
-	String getPath();
+	String getFileName();
 
 	/**
-	 * Sets the value of the '{@link crossflow.CsvSink#getPath <em>Path</em>}' attribute.
+	 * Sets the value of the '{@link crossflow.CsvSink#getFileName <em>File Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Path</em>' attribute.
-	 * @see #getPath()
+	 * @param value the new value of the '<em>File Name</em>' attribute.
+	 * @see #getFileName()
 	 * @generated
 	 */
-	void setPath(String value);
+	void setFileName(String value);
 
 } // CsvSink

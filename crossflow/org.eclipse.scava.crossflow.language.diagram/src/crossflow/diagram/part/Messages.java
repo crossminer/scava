@@ -256,112 +256,102 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Configuration2CreationTool_title;
+	public static String CsvSink2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Configuration2CreationTool_desc;
+	public static String CsvSink2CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink3CreationTool_title;
+	public static String CsvSource3CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink3CreationTool_desc;
+	public static String CsvSource3CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSource4CreationTool_title;
+	public static String Field4CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSource4CreationTool_desc;
+	public static String Field4CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Field5CreationTool_title;
+	public static String OpinionatedTask5CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Field5CreationTool_desc;
+	public static String OpinionatedTask5CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String OpinionatedTask6CreationTool_title;
+	public static String Queue6CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String OpinionatedTask6CreationTool_desc;
+	public static String Queue6CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Queue7CreationTool_title;
+	public static String Sink7CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Queue7CreationTool_desc;
+	public static String Sink7CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Sink8CreationTool_title;
+	public static String Source8CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink8CreationTool_desc;
+	public static String Source8CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source9CreationTool_title;
+	public static String Task9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source9CreationTool_desc;
+	public static String Task9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task10CreationTool_title;
+	public static String Topic10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task10CreationTool_desc;
+	public static String Topic10CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic11CreationTool_title;
+	public static String Type11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic11CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Type12CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Type12CreationTool_desc;
+	public static String Type11CreationTool_desc;
 
 	/**
 	* @generated
@@ -376,12 +366,12 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Input2CreationTool_title;
+	public static String InputOf2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Input2CreationTool_desc;
+	public static String InputOf2CreationTool_desc;
 
 	/**
 	* @generated
@@ -421,7 +411,17 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String NavigatorGroupName_CsvSource_2001_incominglinks;
+
+	/**
+	* @generated
+	*/
 	public static String NavigatorGroupName_CsvSource_2001_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_CsvSink_2002_incominglinks;
 
 	/**
 	* @generated
@@ -451,7 +451,17 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String NavigatorGroupName_Source_2005_incominglinks;
+
+	/**
+	* @generated
+	*/
 	public static String NavigatorGroupName_Source_2005_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Sink_2006_incominglinks;
 
 	/**
 	* @generated
@@ -461,12 +471,27 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String NavigatorGroupName_CommitmentTask_2007_incominglinks;
+
+	/**
+	* @generated
+	*/
 	public static String NavigatorGroupName_CommitmentTask_2007_outgoinglinks;
 
 	/**
 	* @generated
 	*/
+	public static String NavigatorGroupName_OpinionatedTask_2008_incominglinks;
+
+	/**
+	* @generated
+	*/
 	public static String NavigatorGroupName_OpinionatedTask_2008_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Task_2010_incominglinks;
 
 	/**
 	* @generated
@@ -496,16 +521,6 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_TaskInput_4002_target;
-
-	/**
-	* @generated
-	*/
-	public static String NavigatorGroupName_TaskInput_4002_source;
-
-	/**
-	* @generated
-	*/
 	public static String NavigatorGroupName_TaskOutput_4003_target;
 
 	/**
@@ -522,6 +537,16 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String NavigatorGroupName_TypeExtending_4004_source;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_StreamInputOf_4005_target;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_StreamInputOf_4005_source;
 
 	/**
 	* @generated

@@ -12,13 +12,13 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 /**
  * @generated
  */
-public class TaskInputItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
+public class StreamInputOfItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public TaskInputItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.TaskInput_4002);
+	public StreamInputOfItemSemanticEditPolicy() {
+		super(CrossflowElementTypes.StreamInputOf_4005);
 	}
 
 	/**

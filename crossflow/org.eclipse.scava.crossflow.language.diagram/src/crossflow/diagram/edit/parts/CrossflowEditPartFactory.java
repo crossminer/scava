@@ -76,12 +76,6 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case OpinionatedTaskNameEditPart.VISUAL_ID:
 				return new OpinionatedTaskNameEditPart(view);
 
-			case ConfigurationEditPart.VISUAL_ID:
-				return new ConfigurationEditPart(view);
-
-			case ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID:
-				return new ConfigurationNumberOfWorkersIsMasterEditPart(view);
-
 			case TaskEditPart.VISUAL_ID:
 				return new TaskEditPart(view);
 
@@ -115,8 +109,8 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case WrappingLabelEditPart.VISUAL_ID:
 				return new WrappingLabelEditPart(view);
 
-			case TaskInputEditPart.VISUAL_ID:
-				return new TaskInputEditPart(view);
+			case StreamInputOfEditPart.VISUAL_ID:
+				return new StreamInputOfEditPart(view);
 
 			case WrappingLabel2EditPart.VISUAL_ID:
 				return new WrappingLabel2EditPart(view);

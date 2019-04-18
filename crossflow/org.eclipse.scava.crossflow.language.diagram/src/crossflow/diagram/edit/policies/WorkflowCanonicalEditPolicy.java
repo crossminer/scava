@@ -36,7 +36,6 @@ import org.eclipse.gmf.tooling.runtime.update.UpdaterLinkDescriptor;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
-import crossflow.diagram.edit.parts.ConfigurationEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
@@ -84,7 +83,6 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			myFeaturesToSynchronize = new HashSet<EStructuralFeature>();
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Tasks());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
-			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Configuration());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
 		}
@@ -131,7 +129,6 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case SinkEditPart.VISUAL_ID:
 		case CommitmentTaskEditPart.VISUAL_ID:
 		case OpinionatedTaskEditPart.VISUAL_ID:
-		case ConfigurationEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
@@ -346,13 +343,6 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case OpinionatedTaskEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getOpinionatedTask_2008ContainedLinks(view));
-			}
-			domain2NotationMap.putView(view.getElement(), view);
-			break;
-		}
-		case ConfigurationEditPart.VISUAL_ID: {
-			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getConfiguration_2009ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

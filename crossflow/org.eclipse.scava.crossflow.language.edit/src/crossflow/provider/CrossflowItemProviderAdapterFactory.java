@@ -348,29 +348,6 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Configuration} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ConfigurationItemProvider configurationItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link crossflow.Configuration}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createConfigurationAdapter() {
-		if (configurationItemProvider == null) {
-			configurationItemProvider = new ConfigurationItemProvider(this);
-		}
-
-		return configurationItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -481,7 +458,6 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (opinionatedTaskItemProvider != null) opinionatedTaskItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
-		if (configurationItemProvider != null) configurationItemProvider.dispose();
 	}
 
 }

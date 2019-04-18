@@ -18,7 +18,7 @@ import crossflow.diagram.edit.policies.CrossflowBaseItemSemanticEditPolicy;
 /**
  * @generated
  */
-public class TaskInputCreateCommand extends EditElementCommand {
+public class StreamInputOfCreateCommand extends EditElementCommand {
 
 	/**
 	* @generated
@@ -33,7 +33,7 @@ public class TaskInputCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	public TaskInputCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
+	public StreamInputOfCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
 		super(request.getLabel(), null, request);
 		this.source = source;
 		this.target = target;
@@ -46,17 +46,17 @@ public class TaskInputCreateCommand extends EditElementCommand {
 		if (source == null && target == null) {
 			return false;
 		}
-		if (source != null && false == source instanceof Task) {
+		if (source != null && false == source instanceof Stream) {
 			return false;
 		}
-		if (target != null && false == target instanceof Stream) {
+		if (target != null && false == target instanceof Task) {
 			return false;
 		}
 		if (getSource() == null) {
 			return true; // link creation is in progress; source is not defined yet
 		}
 		// target may be null here but it's possible to check constraint
-		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canCreateTaskInput_4002(getSource(),
+		return CrossflowBaseItemSemanticEditPolicy.getLinkConstraints().canCreateStreamInputOf_4005(getSource(),
 				getTarget());
 	}
 
@@ -69,7 +69,7 @@ public class TaskInputCreateCommand extends EditElementCommand {
 		}
 
 		if (getSource() != null && getTarget() != null) {
-			getSource().getInput().add(getTarget());
+			getSource().getInputOf().add(getTarget());
 		}
 		return CommandResult.newOKCommandResult();
 
@@ -85,14 +85,14 @@ public class TaskInputCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected Task getSource() {
-		return (Task) source;
+	protected Stream getSource() {
+		return (Stream) source;
 	}
 
 	/**
 	* @generated
 	*/
-	protected Stream getTarget() {
-		return (Stream) target;
+	protected Task getTarget() {
+		return (Task) target;
 	}
 }

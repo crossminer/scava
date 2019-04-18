@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link crossflow.Workflow#getConfiguration <em>Configuration</em>}</li>
  *   <li>{@link crossflow.Workflow#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.Workflow#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.Workflow#getStreams <em>Streams</em>}</li>
@@ -29,32 +28,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Workflow extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Configuration</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Configuration</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Configuration</em>' containment reference.
-	 * @see #setConfiguration(Configuration)
-	 * @see crossflow.CrossflowPackage#getWorkflow_Configuration()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	Configuration getConfiguration();
-
-	/**
-	 * Sets the value of the '{@link crossflow.Workflow#getConfiguration <em>Configuration</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Configuration</em>' containment reference.
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	void setConfiguration(Configuration value);
-
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

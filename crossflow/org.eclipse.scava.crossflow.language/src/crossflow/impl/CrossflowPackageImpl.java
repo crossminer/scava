@@ -3,7 +3,6 @@
 package crossflow.impl;
 
 import crossflow.CommitmentTask;
-import crossflow.Configuration;
 import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 import crossflow.CsvSink;
@@ -125,13 +124,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	private EClass fieldEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass configurationEClass = null;
-
-	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -206,17 +198,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getWorkflow_Configuration() {
-		return (EReference)workflowEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getWorkflow_Name() {
-		return (EAttribute)workflowEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)workflowEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -225,7 +208,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	public EAttribute getWorkflow_Package() {
-		return (EAttribute)workflowEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)workflowEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -234,7 +217,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	public EReference getWorkflow_Streams() {
-		return (EReference)workflowEClass.getEStructuralFeatures().get(3);
+		return (EReference)workflowEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -243,7 +226,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	public EReference getWorkflow_Tasks() {
-		return (EReference)workflowEClass.getEStructuralFeatures().get(4);
+		return (EReference)workflowEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -252,7 +235,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	public EReference getWorkflow_Types() {
-		return (EReference)workflowEClass.getEStructuralFeatures().get(5);
+		return (EReference)workflowEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -261,7 +244,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	public EReference getWorkflow_Parameters() {
-		return (EReference)workflowEClass.getEStructuralFeatures().get(6);
+		return (EReference)workflowEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -431,7 +414,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCsvSource_Path() {
+	public EAttribute getCsvSource_FileName() {
 		return (EAttribute)csvSourceEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -458,7 +441,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCsvSink_Path() {
+	public EAttribute getCsvSink_FileName() {
 		return (EAttribute)csvSinkEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -584,51 +567,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getConfiguration() {
-		return configurationEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfiguration_NumberOfWorkers() {
-		return (EAttribute)configurationEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfiguration_IsMasterAlsoWorker() {
-		return (EAttribute)configurationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfiguration_RootPackageName() {
-		return (EAttribute)configurationEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfiguration_ProjectName() {
-		return (EAttribute)configurationEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public CrossflowFactory getCrossflowFactory() {
 		return (CrossflowFactory)getEFactoryInstance();
 	}
@@ -653,7 +591,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 
 		// Create classes and their features
 		workflowEClass = createEClass(WORKFLOW);
-		createEReference(workflowEClass, WORKFLOW__CONFIGURATION);
 		createEAttribute(workflowEClass, WORKFLOW__NAME);
 		createEAttribute(workflowEClass, WORKFLOW__PACKAGE);
 		createEReference(workflowEClass, WORKFLOW__STREAMS);
@@ -684,12 +621,12 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		sourceEClass = createEClass(SOURCE);
 
 		csvSourceEClass = createEClass(CSV_SOURCE);
-		createEAttribute(csvSourceEClass, CSV_SOURCE__PATH);
+		createEAttribute(csvSourceEClass, CSV_SOURCE__FILE_NAME);
 
 		sinkEClass = createEClass(SINK);
 
 		csvSinkEClass = createEClass(CSV_SINK);
-		createEAttribute(csvSinkEClass, CSV_SINK__PATH);
+		createEAttribute(csvSinkEClass, CSV_SINK__FILE_NAME);
 
 		commitmentTaskEClass = createEClass(COMMITMENT_TASK);
 		createEAttribute(commitmentTaskEClass, COMMITMENT_TASK__COMMIT_AFTER);
@@ -707,12 +644,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEAttribute(fieldEClass, FIELD__NAME);
 		createEAttribute(fieldEClass, FIELD__TYPE);
 		createEAttribute(fieldEClass, FIELD__MANY);
-
-		configurationEClass = createEClass(CONFIGURATION);
-		createEAttribute(configurationEClass, CONFIGURATION__NUMBER_OF_WORKERS);
-		createEAttribute(configurationEClass, CONFIGURATION__IS_MASTER_ALSO_WORKER);
-		createEAttribute(configurationEClass, CONFIGURATION__ROOT_PACKAGE_NAME);
-		createEAttribute(configurationEClass, CONFIGURATION__PROJECT_NAME);
 	}
 
 	/**
@@ -752,9 +683,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		commitmentTaskEClass.getESuperTypes().add(this.getTask());
 		opinionatedTaskEClass.getESuperTypes().add(this.getTask());
 
-		// Initialize classes, features, and operations; add parameters
+		// Initialize classes and features; add operations and parameters
 		initEClass(workflowEClass, Workflow.class, "Workflow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getWorkflow_Configuration(), this.getConfiguration(), null, "configuration", null, 1, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorkflow_Name(), ecorePackage.getEString(), "name", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorkflow_Package(), ecorePackage.getEString(), "package", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Streams(), this.getStream(), null, "streams", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -785,12 +715,12 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEClass(sourceEClass, Source.class, "Source", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(csvSourceEClass, CsvSource.class, "CsvSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCsvSource_Path(), ecorePackage.getEString(), "path", null, 0, 1, CsvSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCsvSource_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, CsvSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sinkEClass, Sink.class, "Sink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(csvSinkEClass, CsvSink.class, "CsvSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCsvSink_Path(), ecorePackage.getEString(), "path", null, 0, 1, CsvSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCsvSink_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, CsvSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(commitmentTaskEClass, CommitmentTask.class, "CommitmentTask", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCommitmentTask_CommitAfter(), ecorePackage.getEInt(), "commitAfter", "1", 0, 1, CommitmentTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -808,12 +738,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEAttribute(getField_Name(), ecorePackage.getEString(), "name", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(configurationEClass, Configuration.class, "Configuration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getConfiguration_NumberOfWorkers(), ecorePackage.getEIntegerObject(), "numberOfWorkers", null, 0, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfiguration_IsMasterAlsoWorker(), ecorePackage.getEBooleanObject(), "isMasterAlsoWorker", null, 0, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfiguration_RootPackageName(), ecorePackage.getEString(), "rootPackageName", null, 1, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfiguration_ProjectName(), ecorePackage.getEString(), "projectName", null, 1, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -933,13 +857,6 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label.pattern", "{0}:{1}",
 			   "label.icon", "false"
 		   });
-		addAnnotation
-		  (configurationEClass,
-		   source,
-		   new String[] {
-			   "label", "numberOfWorkers,isMasterAlsoWorker",
-			   "label.pattern", "Config: NoW:{0}, iMaW:{1}"
-		   });
 	}
 
 	/**
@@ -956,10 +873,10 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   new String[] {
 		   });
 		addAnnotation
-		  (getTask_Input(),
+		  (getStream_InputOf(),
 		   source,
 		   new String[] {
-			   "source.decoration", "filledclosedarrow"
+			   "target.decoration", "filledclosedarrow"
 		   });
 		addAnnotation
 		  (getTask_Output(),

@@ -45,25 +45,25 @@ public class CsvSinkItemProvider extends SinkItemProvider {
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addPathPropertyDescriptor(object);
+			addFileNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Path feature.
+	 * This adds a property descriptor for the File Name feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addPathPropertyDescriptor(Object object) {
+	protected void addFileNamePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_CsvSink_path_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_CsvSink_path_feature", "_UI_CsvSink_type"),
-				 CrossflowPackage.Literals.CSV_SINK__PATH,
+				 getString("_UI_CsvSink_fileName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CsvSink_fileName_feature", "_UI_CsvSink_type"),
+				 CrossflowPackage.Literals.CSV_SINK__FILE_NAME,
 				 true,
 				 false,
 				 false,
@@ -110,7 +110,7 @@ public class CsvSinkItemProvider extends SinkItemProvider {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(CsvSink.class)) {
-			case CrossflowPackage.CSV_SINK__PATH:
+			case CrossflowPackage.CSV_SINK__FILE_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

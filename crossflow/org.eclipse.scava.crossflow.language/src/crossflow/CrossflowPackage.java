@@ -66,22 +66,13 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW = 0;
 
 	/**
-	 * The feature id for the '<em><b>Configuration</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORKFLOW__CONFIGURATION = 0;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__NAME = 1;
+	int WORKFLOW__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Package</b></em>' attribute.
@@ -90,7 +81,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__PACKAGE = 2;
+	int WORKFLOW__PACKAGE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Streams</b></em>' containment reference list.
@@ -99,7 +90,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__STREAMS = 3;
+	int WORKFLOW__STREAMS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Tasks</b></em>' containment reference list.
@@ -108,7 +99,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__TASKS = 4;
+	int WORKFLOW__TASKS = 3;
 
 	/**
 	 * The feature id for the '<em><b>Types</b></em>' containment reference list.
@@ -117,7 +108,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__TYPES = 5;
+	int WORKFLOW__TYPES = 4;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -126,7 +117,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__PARAMETERS = 6;
+	int WORKFLOW__PARAMETERS = 5;
 
 	/**
 	 * The number of structural features of the '<em>Workflow</em>' class.
@@ -135,16 +126,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_FEATURE_COUNT = 7;
-
-	/**
-	 * The number of operations of the '<em>Workflow</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORKFLOW_OPERATION_COUNT = 0;
+	int WORKFLOW_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -202,15 +184,6 @@ public interface CrossflowPackage extends EPackage {
 	int STREAM_FEATURE_COUNT = 4;
 
 	/**
-	 * The number of operations of the '<em>Stream</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int STREAM_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -266,15 +239,6 @@ public interface CrossflowPackage extends EPackage {
 	int TOPIC_FEATURE_COUNT = STREAM_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Topic</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TOPIC_OPERATION_COUNT = STREAM_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.QueueImpl <em>Queue</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -328,15 +292,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int QUEUE_FEATURE_COUNT = STREAM_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Queue</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int QUEUE_OPERATION_COUNT = STREAM_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TaskImpl <em>Task</em>}' class.
@@ -430,15 +385,6 @@ public interface CrossflowPackage extends EPackage {
 	int TASK_FEATURE_COUNT = 8;
 
 	/**
-	 * The number of operations of the '<em>Task</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TASK_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -530,15 +476,6 @@ public interface CrossflowPackage extends EPackage {
 	int SOURCE_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Source</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SOURCE_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.CsvSourceImpl <em>Csv Source</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -621,13 +558,13 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SOURCE__PARAMETERS = SOURCE__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * The feature id for the '<em><b>File Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CSV_SOURCE__PATH = SOURCE_FEATURE_COUNT + 0;
+	int CSV_SOURCE__FILE_NAME = SOURCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Csv Source</em>' class.
@@ -637,15 +574,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SOURCE_FEATURE_COUNT = SOURCE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Csv Source</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CSV_SOURCE_OPERATION_COUNT = SOURCE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SinkImpl <em>Sink</em>}' class.
@@ -739,15 +667,6 @@ public interface CrossflowPackage extends EPackage {
 	int SINK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Sink</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SINK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.CsvSinkImpl <em>Csv Sink</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -830,13 +749,13 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SINK__PARAMETERS = SINK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * The feature id for the '<em><b>File Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CSV_SINK__PATH = SINK_FEATURE_COUNT + 0;
+	int CSV_SINK__FILE_NAME = SINK_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Csv Sink</em>' class.
@@ -846,15 +765,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SINK_FEATURE_COUNT = SINK_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Csv Sink</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CSV_SINK_OPERATION_COUNT = SINK_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.CommitmentTaskImpl <em>Commitment Task</em>}' class.
@@ -957,15 +867,6 @@ public interface CrossflowPackage extends EPackage {
 	int COMMITMENT_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Commitment Task</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMMITMENT_TASK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.OpinionatedTaskImpl <em>Opinionated Task</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1057,15 +958,6 @@ public interface CrossflowPackage extends EPackage {
 	int OPINIONATED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Opinionated Task</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int OPINIONATED_TASK_OPERATION_COUNT = TASK_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1130,15 +1022,6 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE_FEATURE_COUNT = 5;
 
 	/**
-	 * The number of operations of the '<em>Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link crossflow.impl.FieldImpl <em>Field</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1184,80 +1067,6 @@ public interface CrossflowPackage extends EPackage {
 	 */
 	int FIELD_FEATURE_COUNT = 3;
 
-	/**
-	 * The number of operations of the '<em>Field</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FIELD_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link crossflow.impl.ConfigurationImpl <em>Configuration</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see crossflow.impl.ConfigurationImpl
-	 * @see crossflow.impl.CrossflowPackageImpl#getConfiguration()
-	 * @generated
-	 */
-	int CONFIGURATION = 13;
-
-	/**
-	 * The feature id for the '<em><b>Number Of Workers</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION__NUMBER_OF_WORKERS = 0;
-
-	/**
-	 * The feature id for the '<em><b>Is Master Also Worker</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION__IS_MASTER_ALSO_WORKER = 1;
-
-	/**
-	 * The feature id for the '<em><b>Root Package Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION__ROOT_PACKAGE_NAME = 2;
-
-	/**
-	 * The feature id for the '<em><b>Project Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION__PROJECT_NAME = 3;
-
-	/**
-	 * The number of structural features of the '<em>Configuration</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_FEATURE_COUNT = 4;
-
-
-	/**
-	 * The number of operations of the '<em>Configuration</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_OPERATION_COUNT = 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Workflow <em>Workflow</em>}'.
@@ -1268,17 +1077,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getWorkflow();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link crossflow.Workflow#getConfiguration <em>Configuration</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Configuration</em>'.
-	 * @see crossflow.Workflow#getConfiguration()
-	 * @see #getWorkflow()
-	 * @generated
-	 */
-	EReference getWorkflow_Configuration();
 
 	/**
 	 * Returns the meta object for the attribute '{@link crossflow.Workflow#getName <em>Name</em>}'.
@@ -1539,15 +1337,15 @@ public interface CrossflowPackage extends EPackage {
 	EClass getCsvSource();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.CsvSource#getPath <em>Path</em>}'.
+	 * Returns the meta object for the attribute '{@link crossflow.CsvSource#getFileName <em>File Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Path</em>'.
-	 * @see crossflow.CsvSource#getPath()
+	 * @return the meta object for the attribute '<em>File Name</em>'.
+	 * @see crossflow.CsvSource#getFileName()
 	 * @see #getCsvSource()
 	 * @generated
 	 */
-	EAttribute getCsvSource_Path();
+	EAttribute getCsvSource_FileName();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Sink <em>Sink</em>}'.
@@ -1570,15 +1368,15 @@ public interface CrossflowPackage extends EPackage {
 	EClass getCsvSink();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.CsvSink#getPath <em>Path</em>}'.
+	 * Returns the meta object for the attribute '{@link crossflow.CsvSink#getFileName <em>File Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Path</em>'.
-	 * @see crossflow.CsvSink#getPath()
+	 * @return the meta object for the attribute '<em>File Name</em>'.
+	 * @see crossflow.CsvSink#getFileName()
 	 * @see #getCsvSink()
 	 * @generated
 	 */
-	EAttribute getCsvSink_Path();
+	EAttribute getCsvSink_FileName();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.CommitmentTask <em>Commitment Task</em>}'.
@@ -1720,60 +1518,6 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getField_Many();
 
 	/**
-	 * Returns the meta object for class '{@link crossflow.Configuration <em>Configuration</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Configuration</em>'.
-	 * @see crossflow.Configuration
-	 * @generated
-	 */
-	EClass getConfiguration();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Configuration#getNumberOfWorkers <em>Number Of Workers</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Number Of Workers</em>'.
-	 * @see crossflow.Configuration#getNumberOfWorkers()
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	EAttribute getConfiguration_NumberOfWorkers();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Configuration#getIsMasterAlsoWorker <em>Is Master Also Worker</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Master Also Worker</em>'.
-	 * @see crossflow.Configuration#getIsMasterAlsoWorker()
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	EAttribute getConfiguration_IsMasterAlsoWorker();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Configuration#getRootPackageName <em>Root Package Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Root Package Name</em>'.
-	 * @see crossflow.Configuration#getRootPackageName()
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	EAttribute getConfiguration_RootPackageName();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Configuration#getProjectName <em>Project Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Project Name</em>'.
-	 * @see crossflow.Configuration#getProjectName()
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	EAttribute getConfiguration_ProjectName();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1804,14 +1548,6 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EClass WORKFLOW = eINSTANCE.getWorkflow();
-
-		/**
-		 * The meta object literal for the '<em><b>Configuration</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference WORKFLOW__CONFIGURATION = eINSTANCE.getWorkflow_Configuration();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2018,12 +1754,12 @@ public interface CrossflowPackage extends EPackage {
 		EClass CSV_SOURCE = eINSTANCE.getCsvSource();
 
 		/**
-		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CSV_SOURCE__PATH = eINSTANCE.getCsvSource_Path();
+		EAttribute CSV_SOURCE__FILE_NAME = eINSTANCE.getCsvSource_FileName();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.SinkImpl <em>Sink</em>}' class.
@@ -2046,12 +1782,12 @@ public interface CrossflowPackage extends EPackage {
 		EClass CSV_SINK = eINSTANCE.getCsvSink();
 
 		/**
-		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CSV_SINK__PATH = eINSTANCE.getCsvSink_Path();
+		EAttribute CSV_SINK__FILE_NAME = eINSTANCE.getCsvSink_FileName();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.CommitmentTaskImpl <em>Commitment Task</em>}' class.
@@ -2164,48 +1900,6 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
-
-		/**
-		 * The meta object literal for the '{@link crossflow.impl.ConfigurationImpl <em>Configuration</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see crossflow.impl.ConfigurationImpl
-		 * @see crossflow.impl.CrossflowPackageImpl#getConfiguration()
-		 * @generated
-		 */
-		EClass CONFIGURATION = eINSTANCE.getConfiguration();
-
-		/**
-		 * The meta object literal for the '<em><b>Number Of Workers</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION__NUMBER_OF_WORKERS = eINSTANCE.getConfiguration_NumberOfWorkers();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Master Also Worker</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION__IS_MASTER_ALSO_WORKER = eINSTANCE.getConfiguration_IsMasterAlsoWorker();
-
-		/**
-		 * The meta object literal for the '<em><b>Root Package Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION__ROOT_PACKAGE_NAME = eINSTANCE.getConfiguration_RootPackageName();
-
-		/**
-		 * The meta object literal for the '<em><b>Project Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION__PROJECT_NAME = eINSTANCE.getConfiguration_ProjectName();
 
 	}
 

@@ -2,7 +2,6 @@
  */
 package crossflow.impl;
 
-import crossflow.Configuration;
 import crossflow.CrossflowPackage;
 import crossflow.Field;
 import crossflow.Stream;
@@ -21,7 +20,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -33,7 +33,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link crossflow.impl.WorkflowImpl#getConfiguration <em>Configuration</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getStreams <em>Streams</em>}</li>
@@ -44,17 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workflow {
-	/**
-	 * The cached value of the '{@link #getConfiguration() <em>Configuration</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConfiguration()
-	 * @generated
-	 * @ordered
-	 */
-	protected Configuration configuration;
-
+public class WorkflowImpl extends EObjectImpl implements Workflow {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -159,49 +148,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetConfiguration(Configuration newConfiguration, NotificationChain msgs) {
-		Configuration oldConfiguration = configuration;
-		configuration = newConfiguration;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__CONFIGURATION, oldConfiguration, newConfiguration);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setConfiguration(Configuration newConfiguration) {
-		if (newConfiguration != configuration) {
-			NotificationChain msgs = null;
-			if (configuration != null)
-				msgs = ((InternalEObject)configuration).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__CONFIGURATION, null, msgs);
-			if (newConfiguration != null)
-				msgs = ((InternalEObject)newConfiguration).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__CONFIGURATION, null, msgs);
-			msgs = basicSetConfiguration(newConfiguration, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__CONFIGURATION, newConfiguration, newConfiguration));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
 		return name;
 	}
@@ -295,8 +241,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return basicSetConfiguration(null, msgs);
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return ((InternalEList<?>)getStreams()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -317,8 +261,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return getConfiguration();
 			case CrossflowPackage.WORKFLOW__NAME:
 				return getName();
 			case CrossflowPackage.WORKFLOW__PACKAGE:
@@ -344,9 +286,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				setConfiguration((Configuration)newValue);
-				return;
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName((String)newValue);
 				return;
@@ -381,9 +320,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				setConfiguration((Configuration)null);
-				return;
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -414,8 +350,6 @@ public class WorkflowImpl extends MinimalEObjectImpl.Container implements Workfl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return configuration != null;
 			case CrossflowPackage.WORKFLOW__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case CrossflowPackage.WORKFLOW__PACKAGE:

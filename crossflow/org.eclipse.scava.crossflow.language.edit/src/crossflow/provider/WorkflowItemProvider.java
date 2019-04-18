@@ -125,7 +125,6 @@ public class WorkflowItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__CONFIGURATION);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__STREAMS);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TASKS);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TYPES);
@@ -189,7 +188,6 @@ public class WorkflowItemProvider
 			case CrossflowPackage.WORKFLOW__PACKAGE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
 			case CrossflowPackage.WORKFLOW__STREAMS:
 			case CrossflowPackage.WORKFLOW__TASKS:
 			case CrossflowPackage.WORKFLOW__TYPES:
@@ -210,11 +208,6 @@ public class WorkflowItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__CONFIGURATION,
-				 CrossflowFactory.eINSTANCE.createConfiguration()));
 
 		newChildDescriptors.add
 			(createChildParameter

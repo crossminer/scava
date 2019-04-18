@@ -19,31 +19,31 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link crossflow.impl.CsvSourceImpl#getPath <em>Path</em>}</li>
+ *   <li>{@link crossflow.impl.CsvSourceImpl#getFileName <em>File Name</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	/**
-	 * The default value of the '{@link #getPath() <em>Path</em>}' attribute.
+	 * The default value of the '{@link #getFileName() <em>File Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPath()
+	 * @see #getFileName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String PATH_EDEFAULT = null;
+	protected static final String FILE_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getPath() <em>Path</em>}' attribute.
+	 * The cached value of the '{@link #getFileName() <em>File Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPath()
+	 * @see #getFileName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String path = PATH_EDEFAULT;
+	protected String fileName = FILE_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -69,8 +69,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getPath() {
-		return path;
+	public String getFileName() {
+		return fileName;
 	}
 
 	/**
@@ -78,11 +78,11 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setPath(String newPath) {
-		String oldPath = path;
-		path = newPath;
+	public void setFileName(String newFileName) {
+		String oldFileName = fileName;
+		fileName = newFileName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.CSV_SOURCE__PATH, oldPath, path));
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.CSV_SOURCE__FILE_NAME, oldFileName, fileName));
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CrossflowPackage.CSV_SOURCE__PATH:
-				return getPath();
+			case CrossflowPackage.CSV_SOURCE__FILE_NAME:
+				return getFileName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -107,8 +107,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CrossflowPackage.CSV_SOURCE__PATH:
-				setPath((String)newValue);
+			case CrossflowPackage.CSV_SOURCE__FILE_NAME:
+				setFileName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -122,8 +122,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.CSV_SOURCE__PATH:
-				setPath(PATH_EDEFAULT);
+			case CrossflowPackage.CSV_SOURCE__FILE_NAME:
+				setFileName(FILE_NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -137,8 +137,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.CSV_SOURCE__PATH:
-				return PATH_EDEFAULT == null ? path != null : !PATH_EDEFAULT.equals(path);
+			case CrossflowPackage.CSV_SOURCE__FILE_NAME:
+				return FILE_NAME_EDEFAULT == null ? fileName != null : !FILE_NAME_EDEFAULT.equals(fileName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -153,8 +153,8 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (path: ");
-		result.append(path);
+		result.append(" (fileName: ");
+		result.append(fileName);
 		result.append(')');
 		return result.toString();
 	}

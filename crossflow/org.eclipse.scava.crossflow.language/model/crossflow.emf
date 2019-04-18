@@ -4,7 +4,6 @@ package crossflow;
 
 @gmf.diagram(onefile="true")
 class Workflow {
-  val Configuration[1] configuration;
   attr String name;
   attr String ~package;
   val Stream[*] streams;
@@ -19,7 +18,10 @@ abstract class Stream {
 
   @gmf.link
   ref Type type;
+  
+  @gmf.link(target.decoration="filledclosedarrow")
   ref Task[*]#input inputOf;
+  
   ref Task[*]#output outputOf;
 }
 
@@ -33,7 +35,6 @@ class Queue extends Stream {
 class Task {
   attr String name;
 
-  @gmf.link(source.decoration="filledclosedarrow")
   ref Stream[*]#inputOf input;
 
   @gmf.link(target.decoration="filledclosedarrow")
@@ -52,7 +53,7 @@ class Source extends Task {
 }
 
 class CsvSource extends Source {
-  attr String path;
+  attr String fileName;
 }
 
 @gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 10 5 0",polygon.y="0 0 4 6 4")
@@ -60,7 +61,7 @@ class Sink extends Task {
 }
 
 class CsvSink extends Sink {
-  attr String path;
+  attr String fileName;
 }
 
 @gmf.node(label="name")
@@ -91,12 +92,3 @@ class Field {
   attr String type = "String";
   attr boolean many = false;
 }
-
-@gmf.node(label="numberOfWorkers,isMasterAlsoWorker", label.pattern="Config: NoW:{0}, iMaW:{1}")
-class Configuration {
-  attr Integer numberOfWorkers;
-  attr Boolean isMasterAlsoWorker;
-  attr String[1] rootPackageName;
-  attr String[1] projectName;
-}
-
