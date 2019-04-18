@@ -32,7 +32,7 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 
 			// generate ant script
 			new GenerateExecutables().run(projectFolderLocation,
-					selectedFile.getFullPath().toString().replaceFirst("\\" + projectFolder.getName(), ""),
+					selectedFile.getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""),
 					"unknown_deps_location");
 
 			// use ant script to generate experiment jars and zip

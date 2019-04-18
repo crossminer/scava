@@ -24,7 +24,8 @@
                icon="icons/busy.gif"
                id="CROSSFLOWExecutableGenerationAction"
                label="Generate CROSSFLOW Executables"
-               menubarPath="CROSSFLOWGeneration.menu/group">
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Generates the necessary artefacts for executing the workflow.">
          </action>
 
          <action
@@ -33,9 +34,42 @@
                icon="icons/busy.gif"
                id="CROSSFLOWBaseClassGenerationAction"
                label="Generate CROSSFLOW Base Classes"
-               menubarPath="CROSSFLOWGeneration.menu/group">
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Generates the source code for this workflow, adapt the classes in the src folder to perform your task logic.">
          </action>
 
+      </objectContribution>
+      <objectContribution
+            id="CROSSFLOWBaseClassGeneration.contribution"
+            nameFilter="*.flexmi"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               icon="icons/running.gif"
+               id="CROSSFLOWGeneration.menu"
+               label="CROSSFLOW Artefact Generation"
+               path="additions">
+            <separator
+                  name="group">
+            </separator>
+         </menu>
+         <action
+               class="org.eclipse.scava.crossflow.dt.CreateExecutablesAction"
+               enablesFor="1"
+               icon="icons/busy.gif"
+               id="CROSSFLOWExecutableGenerationAction"
+               label="Generate CROSSFLOW Executables"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Generates the necessary artefacts for executing the workflow.">
+         </action>
+         <action
+               class="org.eclipse.scava.crossflow.dt.GenerateAction"
+               enablesFor="1"
+               icon="icons/busy.gif"
+               id="CROSSFLOWBaseClassGenerationAction"
+               label="Generate CROSSFLOW Base Classes"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Generates the source code for this workflow, adapt the classes in the src folder to perform your task logic.">
+         </action>
       </objectContribution>
    </extension>
 
