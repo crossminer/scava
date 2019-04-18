@@ -339,7 +339,48 @@ window.runtimeModelGraph.getTooltipForCell = function(cell) {
 	cellTooltips[modelElement] = cellTooltip;
 	
 	return cellTooltip;
-}// window.runtimeModelGraph.getTooltipForCell
+}// CELL TOOLTIPS
+
+//---------------
+
+// CONTEXT MENU
+window.runtimeModelGraph.popupMenuHandler.factoryMethod = function(menu, cell, evt)
+{
+	return createPopupMenu(window.runtimeModelGraph, menu, cell, evt);
+}
+
+function createPopupMenu(graph, menu, cell, evt) {
+	if (cell != null)
+	{
+		if (cell.id.startsWith('stream_')) {
+			menu.addItem('Clear cache of queue \"' + cell.id.substr('stream_'.length) + '\"?', 'src/images/warning.gif', function()
+			{
+				res = mxUtils.confirm('Are you sure about clearing the cache of queue \"'+ cell.id.substr('stream_'.length) + '\"?', false);
+				if ( res ) {
+					// trigger cache clearing of queue cell.id
+					crossflow.clearQueue(experimentId, cell.id);
+					mxUtils.alert('Cache of queue \"' + cell.id.substr('stream_'.length) + '\" has been cleared.');
+					
+				}
+			})
+		}
+	} else {
+		menu.addItem('Clear cache of all queues?', 'src/images/warning.gif', function()
+		{
+			res = mxUtils.confirm('Are you sure about clearing the cache of all queues?', false);
+			if ( res ) {
+				// trigger cache clearing of all queues
+				crossflow.clearQueue(experimentId, "");
+				mxUtils.alert('Cache of all queues has been cleared.');
+				<%
+
+				%>
+			}
+		});	
+	}
+}// CONTEXT MENU
+
+// ---------------
 
 window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
 window.runtimeModelGraph.enabled = false;

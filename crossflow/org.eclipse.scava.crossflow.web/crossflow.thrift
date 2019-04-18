@@ -14,6 +14,7 @@ service Crossflow {
 	bool isExperimentRunning(1:string experimentId);
 	void stopExperiment(1:string experimentId);
 	void resetExperiment(1:string experimentId);
+	void clearQueue(1:string experimentId, 2:string queueName);
 	Table getContent(1:FileDescriptor fileDescriptor);
 	
 	list<Experiment> getExperiments();
