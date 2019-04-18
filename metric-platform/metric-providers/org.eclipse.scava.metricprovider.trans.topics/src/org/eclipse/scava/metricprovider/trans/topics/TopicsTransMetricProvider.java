@@ -320,7 +320,7 @@ public class TopicsTransMetricProvider  implements ITransientMetricProvider<Topi
 		for (BugTrackingSystemBug bug: btspDelta.getNewBugs())
 			if (bug.getBugId().equals(bugId))
 				return bug.getSummary();
-		for (BugTrackingSystemBug bug: btspDelta.getNewBugs())
+		for (BugTrackingSystemBug bug: btspDelta.getUpdatedBugs())
 			if (bug.getBugId().equals(bugId))
 				return bug.getSummary();
 		return "";
