@@ -1,22 +1,26 @@
 package org.eclipse.scava.crossflow.dt;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.ui.jarpackager.IJarExportRunnable;
+import org.eclipse.jdt.ui.jarpackager.JarPackageData;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.scava.crossflow.GenerateExecutables;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-
-import org.eclipse.jdt.ui.jarpackager.*;
 
 public class CreateExecutablesAction implements IObjectActionDelegate {
 
@@ -36,14 +40,14 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 					"unknown_deps_location");
 
 			// use ant script to generate experiment jars and zip
-			generateAll();
+			generateAll(true);
 
 			// remove ant script
 			File ant = new File(projectFolder, "build-experiment-zip.xml");
 			ant.delete();
 
 			// create client jar
-			createClientJar(projectFolderLocation);
+			createClientJar(true, projectFolderLocation);
 
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());
@@ -52,40 +56,56 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 		}
 	}
 
-	private void createClientJar(String path) {
+	private void createClientJar(boolean replace, String path) throws Exception {
 
-		// TODO if we want to help user not have to use eclipse export as jar
+		//FIXME WiP
+		
+		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
+		IProject project = selectedFile.getProject();
 
-//IType mainType, IFile[] filestoExport
+		StructuredSelection fSelection = new StructuredSelection(project);
 
-//		Shell parentShell = shell;
-//		JarPackageData description = new JarPackageData();
-//		IPath location = new Path(path);
-//		description.setJarLocation(location);
-//		description.setSaveManifest(true);
-//		description.setManifestMainClass(IType);
-//		description.setElements(filestoExport);
-//		IJarExportRunnable runnable = description.createJarExportRunnable(parentShell);
-//		try {
-//			new ProgressMonitorDialog(parentShell).run(true, true, runnable);
-//		} catch (InvocationTargetException e) {
-//			// An error has occurred while executing the operation
-//		} catch (InterruptedException e) {
-//			// operation has been canceled.
-//		}
+		JarPackageData fJarPackage = new JarPackageData();
+		fJarPackage.setIncludeDirectoryEntries(true);
+
+		Object[] elems = { project };
+
+		fJarPackage.setElements(elems);
+
+		fJarPackage.setExportJavaFiles(true);
+
+		fJarPackage.setJarLocation(ResourcesPlugin.getWorkspace().getRoot().getLocation()
+				.append(project.getFullPath().append("/worker.jar")));
+
+		fJarPackage.setOverwrite(true);
+		
+		IJarExportRunnable r = fJarPackage.createJarExportRunnable(shell);
+
+		if (replace || !new File(project.getLocation().toFile(), "worker.jar").exists())
+			r.run(null);
 
 	}
 
-	private void generateAll() throws Exception {
+	private void generateAll(boolean replace) throws Exception {
 
 		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
+		File expFolder = new File(projectFolder, "experiment");
 
-		AntRunner runner = new AntRunner();
-		runner.setBuildFileLocation(new File(projectFolder, "build-experiment-zip.xml").getPath());
-		runner.setArguments("-Dmessage=Building -verbose");
+		if (replace || (expFolder.exists()
+				&& !Arrays.asList(expFolder.listFiles()).stream().anyMatch(f -> f.getName().endsWith(".zip")))) {
 
-		runner.run(null);
+			if (replace)
+				Arrays.asList(expFolder.listFiles()).stream().filter(f -> f.getName().endsWith(".zip"))
+						.forEach(f -> f.delete());
+
+			AntRunner runner = new AntRunner();
+			runner.setBuildFileLocation(new File(projectFolder, "build-experiment-zip.xml").getPath());
+			runner.setArguments("-Dmessage=Building -verbose");
+
+			runner.run(null);
+
+		}
 
 	}
 
