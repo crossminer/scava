@@ -50,7 +50,7 @@ public class GenerateAction implements IObjectActionDelegate {
 
 			// generate base classes
 			new GenerateBaseClasses().run(projectFolderLocation,
-					selectedFile.getFullPath().toString().replaceFirst("\\" + projectFolder.getName(), ""));
+					selectedFile.getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""));
 
 			// update classpath
 			File classpath = getClasspathFile(projectFolder);
