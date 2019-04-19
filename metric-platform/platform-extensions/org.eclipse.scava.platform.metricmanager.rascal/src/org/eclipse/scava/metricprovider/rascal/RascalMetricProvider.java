@@ -376,7 +376,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 		try {
 	//		mongo = new Mongo();
 			mongo = Configuration.getInstance().getMongoConnection();
-			DB db = mongo.getDB(project.getName());
+			DB db = mongo.getDB(project.getShortName());
 			RascalMetrics rascalMetrics = new RascalMetrics(db, provider.getIdentifier());
 			return PongoToRascal.toValue(rascalMetrics, type, provider instanceof RascalMetricHistoryWrapper);
 		} catch (UnknownHostException e) {
