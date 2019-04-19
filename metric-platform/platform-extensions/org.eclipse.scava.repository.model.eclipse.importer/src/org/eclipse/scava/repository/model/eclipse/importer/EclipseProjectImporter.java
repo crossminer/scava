@@ -298,7 +298,7 @@ public class EclipseProjectImporter implements IImporter {
 					String lastUrl = lastUrlSplit[lastUrlSplit.length - 1];
 					if (projectEffective.toLowerCase().contains(lastUrl.toLowerCase())
 							|| lastUrl.toLowerCase().contains(projectEffective.toLowerCase())) {
-						project.getCommunicationChannels().add(NNTPuRL);
+//						project.getCommunicationChannels().add(NNTPuRL);
 						nntpflag = true;
 					} else
 						tempNntp.add(NNTPuRL);
