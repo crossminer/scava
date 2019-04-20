@@ -104,7 +104,8 @@ public class ProjectAnalysisTests {
 		String projectId = "asm";
 
 		// Set token
-		Response res = helper.setProperty("gitlabToken", "ZxsWNuQtXxCX41mmAzso");
+		// TODO: Valid GitLab token here
+		Response res = helper.setProperty("gitlabToken", "-----------------");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Import project
@@ -144,7 +145,8 @@ public class ProjectAnalysisTests {
 		String projectId = "javadesignpatterns";
 
 		// Set token
-		Response res = helper.setProperty("githubToken", "c68f1bc1f1297c380409d32bc60cf9e5a0af91fe");
+		// TODO: Valid githubToken here
+		Response res = helper.setProperty("githubToken", "-------------------------");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Import project
