@@ -16,7 +16,7 @@
    <extension
          point="org.eclipse.scava.platform.visualisation.metric">
       <visualisation
-            json="vis/ratioOptionalMavenDependencies.json">
+            json="vis/numberMavenDependencies.json">
       </visualisation>
    </extension>
 </plugin>
