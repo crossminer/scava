@@ -107,6 +107,7 @@ public class ProjectImporter {
 		// Post-processing: remove any special character in the project's name
 		// to avoid possible conflicts, e.g. with MongoDB collection name restrictions
 		p.setShortName(p.getShortName().replaceAll("[^A-Za-z0-9]", ""));
+		platform.getProjectRepositoryManager().getProjectRepository().sync();
 
 		return p;
 	}
