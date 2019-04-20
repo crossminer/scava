@@ -86,6 +86,7 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	private final String shortMetricId;
 	private final String metricId;
 	private final String bundleId;
+	private final boolean hasHistoric;
 	private final AbstractFunction function;
 	private final OssmeterLogger logger;
 	private MetricProviderContext context;
@@ -100,12 +101,13 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	private static IConstructor rascalDelta;
 
 
-	public RascalMetricProvider(String bundleId, String metricName, String shortMetricId, String friendlyName, String description, AbstractFunction function, Map<String,String> uses) {
+	public RascalMetricProvider(String bundleId, String metricName, String shortMetricId, String friendlyName, String description, boolean hasHistoric, AbstractFunction function, Map<String,String> uses) {
 		this.bundleId = trimIdForMongo(bundleId);
 		this.metricId = this.bundleId + "." + metricName;
 		this.shortMetricId =  shortMetricId;
 		this.friendlyName = friendlyName;
 		this.description = description;
+		this.hasHistoric = hasHistoric;
 		this.function = function;
 		this.uses = qualifyNames(this.bundleId, uses);
 		this.providers = new HashMap<String,IMetricProvider>();
@@ -210,7 +212,9 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 	public void measure(Project project, ProjectDelta delta, RascalMetrics db) {
 		IValue result = compute(project, delta);
 
-		if (result != null) {
+		// We still need to store null values if the transient metric
+		// has an historic metric associated to reset the values
+		if (result != null || hasHistoric) {
 			//logger.info("storing metric result");
 			storeResult(delta, db, result);
 		}

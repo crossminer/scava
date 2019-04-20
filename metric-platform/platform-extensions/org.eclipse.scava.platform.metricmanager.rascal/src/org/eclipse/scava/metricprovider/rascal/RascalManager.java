@@ -361,7 +361,7 @@ public class RascalManager {
 							providers.add(new RascalFactoidProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f, uses));
 						}
 						else { 
-							RascalMetricProvider m = new RascalMetricProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f, uses); 
+							RascalMetricProvider m = new RascalMetricProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f.hasTag("historic"), f, uses); 
 							providers.add(m);
 							if (f.hasTag("historic")) {
 								providers.add(new RascalMetricHistoryWrapper(m));
