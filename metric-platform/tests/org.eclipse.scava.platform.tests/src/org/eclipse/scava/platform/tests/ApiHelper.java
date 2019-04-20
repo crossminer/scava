@@ -88,7 +88,6 @@ public class ApiHelper {
 		Response res = client.handle(request);
 
 		String json = res.getEntityAsText();
-		System.out.println("json=" + json);
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
