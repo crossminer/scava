@@ -35,7 +35,7 @@ public class RascalFactoidProvider extends AbstractFactoidMetricProvider {
 			String friendlyName, String description, AbstractFunction f,
 			Map<String, String> uses) {
 
-		metric = new RascalMetricProvider(bundleId, metricName, funcName, friendlyName, description, f, uses);
+		metric = new RascalMetricProvider(bundleId, metricName, funcName, friendlyName, description, false, f, uses);
 	}
 
 	@Override
