@@ -349,6 +349,7 @@ public class RascalManager {
 						String metricName = getTag(f, "metric");
 						String friendlyName = getTag(f, "friendlyName");
 						String description = getTag(f, "doc");
+						boolean resetOnEmptyDelta = f.hasTag("resetOnEmptyDelta");
 						IValue language = f.getTag("appliesTo");
 						Map<String,String> uses = getUses(f);
 
@@ -361,7 +362,7 @@ public class RascalManager {
 							providers.add(new RascalFactoidProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f, uses));
 						}
 						else { 
-							RascalMetricProvider m = new RascalMetricProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, f.hasTag("historic"), f, uses); 
+							RascalMetricProvider m = new RascalMetricProvider(bundle.getSymbolicName(), metricName, funcName, friendlyName, description, resetOnEmptyDelta, f, uses); 
 							providers.add(m);
 							if (f.hasTag("historic")) {
 								providers.add(new RascalMetricHistoryWrapper(m));
