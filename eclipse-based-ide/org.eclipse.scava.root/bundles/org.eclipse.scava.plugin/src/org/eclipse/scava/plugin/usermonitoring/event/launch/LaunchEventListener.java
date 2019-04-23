@@ -15,7 +15,7 @@ public class LaunchEventListener implements ILaunchListener {
 	@Override
 	public void launchAdded(ILaunch launch) {
 
-		Activator.getDefault().getMainController().getEventBus().post(new LaunchEvent(launch));
+		Activator.getDefault().getEventBus().post(new LaunchEvent(launch));
 
 	}
 

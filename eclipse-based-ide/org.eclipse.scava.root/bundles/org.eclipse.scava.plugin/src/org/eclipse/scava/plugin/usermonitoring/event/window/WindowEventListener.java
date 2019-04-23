@@ -25,20 +25,19 @@ public class WindowEventListener implements IEventListener, IWindowListener {
 
 	@Override
 	public void windowActivated(IWorkbenchWindow window) {
-		Activator.getDefault().getMainController().getEventBus().post(new WindowEvent(window, WindowEventType.ACTIVATED));
+		Activator.getDefault().getEventBus().post(new WindowEvent(window, WindowEventType.ACTIVATED));
 
 	}
 
 	@Override
 	public void windowDeactivated(IWorkbenchWindow window) {
-		Activator.getDefault().getMainController().getEventBus().post(new WindowEvent(window, WindowEventType.DEACTIVATED));
+		Activator.getDefault().getEventBus().post(new WindowEvent(window, WindowEventType.DEACTIVATED));
 
 	}
 
 	@Override
 	public void windowClosed(IWorkbenchWindow window) {
-
-		Activator.getDefault().getMainController().getEventBus().post(new WindowEvent(window, WindowEventType.CLOSED));
+		Activator.getDefault().getEventBus().post(new WindowEvent(window, WindowEventType.CLOSED));
 
 	}
 
@@ -50,7 +49,7 @@ public class WindowEventListener implements IEventListener, IWindowListener {
 		if (activePart != null) {
 			listener.partOpened(activePart);
 		}
-		Activator.getDefault().getMainController().getEventBus().post(new WindowEvent(window, WindowEventType.OPENED));
+		Activator.getDefault().getEventBus().post(new WindowEvent(window, WindowEventType.OPENED));
 	}
 
 }

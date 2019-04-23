@@ -13,12 +13,9 @@ package org.eclipse.scava.plugin;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.eclipse.scava.plugin.main.IMainController;
-import org.eclipse.scava.plugin.main.IMainModel;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.scava.plugin.main.MainController;
 import org.eclipse.scava.plugin.main.MainModel;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -30,16 +27,23 @@ import com.google.common.eventbus.EventBus;
 public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.eclipse.scava.plugin";
-	public static final String IMAGE_SCAVA_ICON_32 = "icons/SCAVA-icon-32.png";
 
 	private static Activator plugin;
 
-	private IMainController mainController;
+	private MainController mainController;
+	private EventBus eventBus;
 
 	/**
 	 * The constructor
 	 */
 	public Activator() {
+		
+		eventBus = new EventBus((exception, context) -> {
+			System.out.println("EventBusSubscriberException: " + exception + " | " + "BUS:" + context.getEventBus()
+					+ " EVENT: " + context.getEvent() + " SUBSRIBER: " + context.getSubscriber() + " METHOD: "
+					+ context.getSubscriberMethod());
+			exception.printStackTrace();
+		});
 		
 		setLookAndFeel();
 	}
@@ -53,68 +57,36 @@ public class Activator extends AbstractUIPlugin {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
-	 * BundleContext)
-	 */
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 
 		plugin = this;
 
-		initMainMVC();
+		startMainMVC();
 	}
 
-	private class ShellRequester implements Runnable {
-		private Shell shell;
-
-		@Override
-		public void run() {
-			shell = Display.getDefault().getActiveShell();
-		}
-
-		public Shell getShell() {
-			return shell;
-		}
-
+	private void startMainMVC() {
+		MainModel model = new MainModel();
+		mainController = new MainController(
+				null, model, eventBus);
+		mainController.init();
 	}
 
-	private void initMainMVC() {
-		ShellRequester shellRequester = new ShellRequester();
-		Display.getDefault().syncExec(shellRequester);
-		Shell activeShell = shellRequester.getShell();
-
-		EventBus eventBus = new EventBus((exception, context) -> {
-			System.out.println("EvenBusSubscriberException: " + exception + " | " + "BUS:" + context.getEventBus()
-					+ " EVENT: " + context.getEvent() + " SUBSRIBER: " + context.getSubscriber() + " METHOD: "
-					+ context.getSubscriberMethod());
-			exception.printStackTrace();
-		});
-
-		IMainModel mainModel = new MainModel(activeShell, eventBus);
-
-		mainController = new MainController(mainModel);
-		mainController.startUserMonitoring();
-	}
-
-	public IMainController getMainController() {
-		return mainController;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
-	 * BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 
 		mainController.dispose();
 
 		super.stop(context);
+	}
+
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+
 	}
 
 	/**

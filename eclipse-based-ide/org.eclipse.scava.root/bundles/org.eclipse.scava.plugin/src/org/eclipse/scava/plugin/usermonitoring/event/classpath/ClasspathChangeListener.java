@@ -36,13 +36,13 @@ public class ClasspathChangeListener implements IElementChangedListener {
 
 						int flags = iJavaElementDelta.getFlags();
 						if (isRemove(flags)) {
-							Activator.getDefault().getMainController().getEventBus().post(new ClasspathChangeEvent(
+							Activator.getDefault().getEventBus().post(new ClasspathChangeEvent(
 									iJavaElementDelta.getElement().getElementName(), ClasspathChangeEventType.DELETED));
 							
 						}
 
 						if (isAdd(flags)) {
-							Activator.getDefault().getMainController().getEventBus().post(new ClasspathChangeEvent(
+							Activator.getDefault().getEventBus().post(new ClasspathChangeEvent(
 									iJavaElementDelta.getElement().getElementName(), ClasspathChangeEventType.ADDED));
 						}
 
