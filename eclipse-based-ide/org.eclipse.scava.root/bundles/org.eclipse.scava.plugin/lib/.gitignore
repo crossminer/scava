@@ -1,2 +1,0 @@
-# include *.jars again, because we use them as static includes
-!swing2swt.jar
