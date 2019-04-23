@@ -943,6 +943,7 @@ class Job(object):
         # denotes that self job is a simple message denoting success of a transaction
         # (with self correlationId)
         self.isTransactionSuccessMessage = False
+        self.totalOutputs = 0
 
     def __str__(self, *args, **kwargs):
         return self.id + " " + self.correlationId + " " + self.destination + " " + self.cacheable + " " + self.failures
