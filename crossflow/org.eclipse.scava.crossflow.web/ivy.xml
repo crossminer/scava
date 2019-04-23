@@ -6,7 +6,7 @@
 			Apache Thrift dependency not being recognized in Eclipse causes compile errors,
 				e.g. in src-gen class Crossflow, and can be resolved by switching 'libthrift' 
 				rev version from '0.11.0' to '0.12.0' or vice-versa. -->
-		<dependency org="org.apache.thrift" name="libthrift" rev="0.11.0"/>
+		<dependency org="org.apache.thrift" name="libthrift" rev="0.12.0"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.6"/>
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
