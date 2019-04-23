@@ -452,6 +452,11 @@ public abstract class Workflow {
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
 	
+	// TODO: Fix this to allow dynamic port
+	public String getStompBroker() {
+		return "stomp://" + master + ":" + 61613;
+	}
+	
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
 		brokerService.stopGracefully("", "", 1000, 1000);

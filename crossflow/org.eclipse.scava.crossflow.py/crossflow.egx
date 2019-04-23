@@ -94,15 +94,22 @@ rule Steam2Consumer
 	target : s.getPath() + s.name + "Consumer.py"
 }
 
+@cached
 operation Any getPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-	return "src-gen-py/" + workflow.package.replaceAll("\\.", "/") + "/";
+	return "src-gen-py/" + self.getWorkflow().package.toPath();
 }
 
+@cached
 operation Any getImplPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-	
-	return "src_py/" + workflow.package.replaceAll("\\.", "/") + "/";
+	return "src-py/" + self.getWorkflow().package.toPath();
+}
+
+@cached
+operation Any getWorkflow() : Workflow {
+	if (self.isTypeOf(Workflow)) return self;
+	return self.eContainer();
+}
+
+operation String toPath() : String {
+	return self.replaceAll("\\.", "/") + "/";
 }
