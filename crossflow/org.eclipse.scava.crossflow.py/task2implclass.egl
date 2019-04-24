@@ -41,11 +41,5 @@ class [%=t.name%]([%=t.name%]Base):
 		[% } %]
 		[% if (t.output.notEmpty()==false) { %]
 		print('[' + self.workflow.getName() + '] Result is ' + str([%=s.type.name.ftlc()%]) + ' (cached=' + [%=s.type.name.ftlc()%].isCached() + ')')
-		[% } %]
-	
-	def consume[%=s.name%]External(self, [%=s.type.name.ftlc()%], owner):
-		pass
-		
+		[% } %]	
 	[%}}%]
-
-

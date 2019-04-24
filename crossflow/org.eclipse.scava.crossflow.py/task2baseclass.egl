@@ -1,23 +1,13 @@
+import traceback
+import sys
+
 from org.eclipse.scava.crossflow.utils.basic_xstream import getSimpleClassName
 from org.eclipse.scava.crossflow.runtime import FailedJob
 from org.eclipse.scava.crossflow.runtime import Task
 
-[%for (s in t.input) { %]
-[%if(t.output.size>0) {%]
-from [%=w.package%].[%=t.output.first.type.name%] import [%=t.output.first.type.name%]
-[%}%]
-[%}%]
-
-import traceback
-import sys
 
 class [%=t.name%]Base(Task):
 
-	[%for (s in t.input) { %]
-	delegate[%=s.name%]Consumer = None
-	[%}%]
-
-		
 	def __init__(self):
 		super().__init__()
 		self.workflow = None
@@ -32,7 +22,7 @@ class [%=t.name%]Base(Task):
 		return self.workflow
 	
 	def getId(self):
-		return "[%=t.name%]:"+self.workflow.getName()
+		return "[%=t.name%]:" + self.workflow.getName()
 	
 	[%for (s in t.output) { %]
 	def set[%=s.name%](self, [%=s.name.ftlc()%]):
@@ -49,16 +39,17 @@ class [%=t.name%]Base(Task):
 		self.get[%=s.name%]().send([%=s.type.name.ftlc()%], getSimpleClassName(self))
 	
 	[%}%]
-	
 	[%for (s in t.input) { %]
 	def consume[%=s.name%]WithNotifications(self, [%=s.type.name.ftlc()%]):
 		try:
 			self.workflow.setTaskInProgessWithReason(self, [%=s.type.name.ftlc()%].getId())
 	[%if(not t.multipleOutputs and t.output.size==1) {%]
-			if([%=t.name%]Base.delegate[%=s.name%]Consumer == None):
-				self.consume[%=s.name%]([%=s.type.name.ftlc()%]);
-			else:
-				[%=t.name%]Base.delegate[%=s.name%]Consumer.consume[%=s.name%]External([%=s.type.name.ftlc()%], self)
+			result = self.consume[%=s.name%]([%=s.type.name.ftlc()%]);
+			if result is not None:
+				if self.cacheable:
+					result.setCorrelationId([%=s.type.name.ftlc()%].getId())
+				result.setTransactional(False)
+				self.sendTo[%=t.output.first.name%](result)
 	[%}else {%]
 			self.consume[%=s.name%]([%=s.type.name.ftlc()%])
 	[%if(t.output.size>0) {%]
@@ -71,7 +62,7 @@ class [%=t.name%]Base(Task):
 		except Exception as ex:
 			traceback.print_exc()
 			try:
-				[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures()+1)
+				[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures() + 1)
 				self.workflow.getFailedJobsQueue().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
 			except Exception as e:
 				traceback.print_exc()
