@@ -139,35 +139,46 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			//Process for forums
-			if(communicationChannel instanceof EclipseForum)
-			{
-				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-				{
-					ForumPostPlainTextProcessing forumPostsData = findForumPost(db, post);
-					if(forumPostsData == null)
-					{
-						forumPostsData = new ForumPostPlainTextProcessing();
-						forumPostsData.setForumId(communicationChannel.getOSSMeterId());
-						forumPostsData.setTopicId(post.getTopicId());
-						forumPostsData.setPostId(post.getPostId());
-						db.getForumPosts().add(forumPostsData);
-					}
-					plainTextObject = PlainTextEclipseForums.process(post.getText());
-					forumPostsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
-					forumPostsData.setHadReplies(plainTextObject.hadReplies());
-					db.sync();
-				}
-			}
-			else
-			{
+			//Process for forums - this will need changing/removing from HERE --
+//			if(communicationChannel instanceof EclipseForum)
+//			{
+//				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
+//				{
+//					ForumPostPlainTextProcessing forumPostsData = findForumPost(db, post);
+//					if(forumPostsData == null)
+//					{
+//						forumPostsData = new ForumPostPlainTextProcessing();
+//						forumPostsData.setForumId(communicationChannel.getOSSMeterId());
+//						forumPostsData.setTopicId(post.getTopicId());
+//						forumPostsData.setPostId(post.getPostId());
+//						db.getForumPosts().add(forumPostsData);
+//					}
+//					plainTextObject = PlainTextEclipseForums.process(post.getText());
+//					forumPostsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
+//					forumPostsData.setHadReplies(plainTextObject.hadReplies());
+//					db.sync();
+//				}
+//			}
+//			
+//			else
+//			{
+				//-- TO HERE
+			
 				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup))
+				if (!(communicationChannel instanceof NntpNewsGroup)) { 
+					
 					communicationChannelName = communicationChannel.getUrl();
-				else {
+				
+				}else if (communicationChannel instanceof EclipseForum) {
+					
+					EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+					communicationChannelName = eclipseForum.getForum_name();	
+				
+				}else {
 					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 					communicationChannelName = newsgroup.getNewsGroupName();
 				}
+				
 				for (CommunicationChannelArticle article: communicationChannelDelta.getArticles()) {
 					NewsgroupArticlePlainTextProcessing newsgroupArticlesData = 
 							findNewsgroupArticle(db, article);
@@ -182,7 +193,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					newsgroupArticlesData.setHadReplies(plainTextObject.hadReplies());
 					db.sync();
 				}
-			}
+			
 		}
 		
 	}
@@ -210,9 +221,21 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 	private NewsgroupArticlePlainTextProcessing findNewsgroupArticle(PlainTextProcessingTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticlePlainTextProcessing newsgroupArticlesData = null;
+		
+		
+		String communicationChannelName = null;
+		
+		if(article.getCommunicationChannel() instanceof NntpNewsGroup) {
+			NntpNewsGroup newsgroup = (NntpNewsGroup) article.getCommunicationChannel();
+			communicationChannelName = newsgroup.getNewsGroupName();
+		}else if(article.getCommunicationChannel() instanceof EclipseForum) {
+			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
+			communicationChannelName = eclipseForum.getForum_name();
+		}
+		
 		Iterable<NewsgroupArticlePlainTextProcessing> newsgroupArticlesDataIt = 
 				db.getNewsgroupArticles().
-						find(NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()), 
+						find(NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(communicationChannelName), 
 								NewsgroupArticlePlainTextProcessing.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlePlainTextProcessing nad:  newsgroupArticlesDataIt) {
 			newsgroupArticlesData = nad;
@@ -220,6 +243,8 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 		return newsgroupArticlesData;
 	}
 	
+	
+	//this is potentially not needed any more
 	private ForumPostPlainTextProcessing findForumPost(PlainTextProcessingTransMetric db, CommunicationChannelForumPost post) {
 		ForumPostPlainTextProcessing forumPostsData = null;
 		Iterable<ForumPostPlainTextProcessing> forumPostsDataIt = 
