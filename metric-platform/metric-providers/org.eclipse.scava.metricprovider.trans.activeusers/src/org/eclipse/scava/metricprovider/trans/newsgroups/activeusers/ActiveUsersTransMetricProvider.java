@@ -92,12 +92,24 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			String communicationChannelName;
-			if (!(communicationChannel instanceof NntpNewsGroup))
+			
+			if (communicationChannel instanceof Discussion) {
+				
 				communicationChannelName = communicationChannel.getUrl();
-			else {
+			
+			}else if (communicationChannel instanceof NntpNewsGroup) {
+			
 				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
+				
 				communicationChannelName = newsgroup.getNewsGroupName();
+			
+			}else {
+				
+				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+				communicationChannelName = eclipseForum.getForum_name();
+				
 			}
+			
 			NewsgroupData newsgroupData = db.getNewsgroups().findOneByNewsgroupName(communicationChannelName);
 			if (newsgroupData == null) {
 				newsgroupData = new NewsgroupData();
