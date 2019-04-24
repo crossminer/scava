@@ -45,6 +45,9 @@ public abstract class Workflow {
 
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
+	
+	@Parameter(names = { "-stomp"}, description = "Port to use for STOMP based messages")
+	protected int stompPort = 61613;
 
 	protected BrokerService brokerService;
 	
@@ -454,7 +457,7 @@ public abstract class Workflow {
 	
 	// TODO: Fix this to allow dynamic port
 	public String getStompBroker() {
-		return "stomp://" + master + ":" + 61613;
+		return "stomp://" + master + ":" + stompPort;
 	}
 	
 	public void stopBroker() throws Exception {
