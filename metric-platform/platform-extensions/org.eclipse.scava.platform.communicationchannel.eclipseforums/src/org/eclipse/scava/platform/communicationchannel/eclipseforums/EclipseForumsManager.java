@@ -52,9 +52,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		this.current_page = 0;
 		this.last_page = 0;
 		this.next_request_url = "";
-		this.lastPagePattern = Pattern.compile("\\d>; rel=\"last\"");
-		this.currentPagePattern = Pattern.compile("\\d>; rel=\"self\"");
-		this.nextPageUrlPattern = Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
 		this.client = new OkHttpClient();
 		this.temporalFlag=false;
 	}
@@ -64,12 +61,12 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	private int callsRemaning;
 	private int timeToReset;
 	private int rateLimit;
-	private static String host = "https://api.eclipse.org/";
+	private final static String host = "https://api.eclipse.org/";
 	private final static String PAGE_SIZE = "100";
 	private List<EclipseForumsTopic> temporal_topic_data;
-	private static Pattern lastPagePattern;
-	private static Pattern currentPagePattern;
-	private static Pattern nextPageUrlPattern;
+	private final static Pattern lastPagePattern 	= Pattern.compile("\\d>; rel=\"last\"");
+	private final static Pattern currentPagePattern = Pattern.compile("\\d>; rel=\"self\"");
+	private final static Pattern nextPageUrlPattern	= Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
 	private String next_request_url;
 	private int current_page;
 	private int last_page;
@@ -257,11 +254,13 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		for (EclipseForumsTopic topic : temporal_topic_data) {
 
-			if ((topic.getFirst_post_date().compareTo(date.toJavaDate())) == 0){ 
-				
-				delta.getTopics().add(topic);// adds topic to delta, by assuming the first post is the creation date
-							
-			}
+			
+// REMOVED AS THEY ARE NOT USED IN THE DELTA ANALYSIS			
+//			if ((topic.getFirst_post_date().compareTo(date.toJavaDate())) == 0){ 
+//				
+//				delta.getTopics().add(topic);// adds topic to delta, by assuming the first post is the creation date
+//							
+//			}
 			
 			List<EclipseForumsPost> posts = getPosts(forum, topic);
 			
@@ -271,7 +270,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 					
 						if (post.getDate().compareTo(date.toJavaDate()) == 0) { // if post date is equal to the 'current processing date' add to delta
 							
-							delta.getPosts().add(post);
+							delta.getArticles().add(post);
 						}
 					
 				}
@@ -368,9 +367,10 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		EclipseForumsPost eclipseForumsPost = new EclipseForumsPost();
 		eclipseForumsPost.setCommunicationChannel(forum);
-		eclipseForumsPost.setPostId(EclipseForumUtils.fixString(jsonNode.findValue("id").toString()));
-		eclipseForumsPost.setForumId(forum.getForum_id());// May remove this from suoer
-		eclipseForumsPost.setTopicId(topic.getTopic_id());
+		eclipseForumsPost.setArticleId(EclipseForumUtils.fixString(jsonNode.findValue("id").toString()));
+		eclipseForumsPost.setArticleNumber(Long.parseLong(EclipseForumUtils.fixString(jsonNode.findValue("id").toString())));
+		//eclipseForumsPost.setForumId(forum.getForum_id());
+		eclipseForumsPost.setMessageThreadId(topic.getTopic_id());
 		eclipseForumsPost.setUser(EclipseForumUtils.fixString(jsonNode.findValue("poster_id").toString()));
 		eclipseForumsPost.setDate(EclipseForumUtils
 				.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValue("created_date").toString())).toJavaDate());
