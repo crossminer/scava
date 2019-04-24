@@ -84,14 +84,14 @@
                         "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "type": "ref"
+                        "type": "Object"
                     },
                     {
                         "name": "size",
                         "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "type": "ref"
+                        "type": "Object"
                     },
                     {
                         "name": "sort",
@@ -785,7 +785,7 @@
             "type": "object",
             "title": "Iterable"
         },
-        "Page«Artifact»": {
+        "PageOfArtifacts": {
             "type": "object",
             "properties": {
                 "content": {
@@ -824,7 +824,7 @@
                     "format": "int32"
                 }
             },
-            "title": "Page«Artifact»"
+            "title": "PageOfArtifacts"
         },
         "Parameter": {
             "type": "object",
