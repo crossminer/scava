@@ -6,7 +6,7 @@ Crossflow is a distributed data processing framework that supports dispensation 
 
 Startup container:
 
-`docker run -it --rm -d --name crossflow -p 80:8080 -p 61616:61616 -p 61614:61614 -p 8161:8161 -p 1099:1099 crossminer/crossflow:latest`
+`docker run -it --rm -d --name crossflow -p 80:8080 -p 61616:61616 -p 61614:61614 -p 5672:5672 -p 61613:61613 -p 1883:1883 -p 8161:8161 -p 1099:1099 crossminer/crossflow:latest`
 
 Access web application:
 http://localhost/org.eclipse.scava.crossflow.web/
