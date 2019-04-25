@@ -2,6 +2,21 @@
 
 Crossflow is a distributed data processing framework that supports dispensation of work across multiple opinionated and low-commitment workers.
 
+## Docker Quick Start
+
+Pull container image from Docker Hub:
+
+`docker pull crossminer/crossflow`
+
+Startup container:
+
+`docker run -it --rm -d --name crossflow -p 80:8080 -p 61616:61616 -p 61614:61614 -p 5672:5672 -p 61613:61613 -p 1883:1883 -p 8161:8161 -p 1099:1099 crossminer/crossflow:latest`
+
+Access Crossflow web application:
+http://localhost/org.eclipse.scava.crossflow.web/
+
+More details on running Crossflow with Docker are available [here](https://github.com/crossminer/scava/tree/crossflow/crossflow/org.eclipse.scava.crossflow.web.docker/README.md).
+
 ## Running from source
 To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thrift. Brief instructions are provided below.
 
