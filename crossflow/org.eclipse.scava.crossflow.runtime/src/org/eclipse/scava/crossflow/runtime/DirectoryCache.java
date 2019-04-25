@@ -229,7 +229,7 @@ public class DirectoryCache implements Cache {
 			return false;
 		try {
 			// clear cache either for a specific queue or globally
-			if (stream.trim().length() == 0) {
+			if (stream.trim().length() == 0 && streamFolder.list().length > 0) {
 				deleteDirectoryStream(streamFolder.toPath());
 				jobFolderMap.clear();
 			} else {
