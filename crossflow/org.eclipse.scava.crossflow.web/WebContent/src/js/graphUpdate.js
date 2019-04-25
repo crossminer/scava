@@ -34,7 +34,7 @@ function loadFile(filePath) {
 	  return result;
 }// loadFile
 
-function main(container, experimentId) {
+function main(crossflow, container, experimentId) {
 	
 	let ws = null;
 	const wsUri = 'ws://' + window.location.hostname + ':61614';
@@ -79,8 +79,9 @@ function main(container, experimentId) {
 	};
 	 
 	ws.onmessage = (e) => {
+	
 	 //console.log('onmessage: ' + e);
-	  if (e.data.startsWith('MESSAGE')) {
+	  if ( e.data.startsWith('MESSAGE') ) {
 		  //console.log("e.data="+e.data);
 		  
 		  if ( e.data.includes(STREAM_TOPIC_ROOT) ) {
@@ -105,39 +106,52 @@ function main(container, experimentId) {
 								streamId = streamId.substring(0, streamId.indexOf('Post'));
 								//console.log('streamId='+streamId);
 								
-								for (var j = 0, l = window.runtimeModelParent.children.length; j < l; j++) {
-									modelElement = window.runtimeModelParent.children[j].id;
-									//console.log('modelElement='+modelElement);
-									if ( modelElement.includes('stream_' + streamId) ) {
-										//console.log("i="+i+";  j="+j);
-										name = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML;
-										//console.log('name='+name);
-										
-										// size
-										size = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[1].innerHTML;
-										sizeUnit = '';
-										//console.log('size='+size);
-										if ( size >= 1000 && size <= 999999 ) {
-											sizeUnit = "K";
-											size = size / 1000;
-										} else if ( size >= 1000000 ) {
-											sizeUnit = "M";
-											size = size / 1000000;
+								if ( window.runtimeModelGraph.getDefaultParent().children != null ) { 
+								
+									for (var j = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; j < l; j++) {
+										modelElement = window.runtimeModelGraph.getDefaultParent().children[j].id;
+										//console.log('modelElement='+modelElement);
+										if ( modelElement.includes('stream_' + streamId) ) {
+											//console.log("i="+i+";  j="+j);
+											name = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[0].innerHTML;
+											//console.log('name='+name);
+											
+											// size
+											size = streamTopicXmlDoc.childNodes[0].children[0].children[i].children[1].innerHTML;
+											sizeUnit = '';
+											//console.log('size='+size);
+											if ( size >= 1000 && size <= 999999 ) {
+												sizeUnit = "K";
+												size = size / 1000;
+											} else if ( size >= 1000000 ) {
+												sizeUnit = "M";
+												size = size / 1000000;
+											}
+											// rounding size
+											size = Math.round(size);
+											
+											//console.log('size='+size);
+											
+											//window.runtimeModelGraph.getModel().beginUpdate();
+											try {
+												
+										    	var id = window.runtimeModelGraph.getDefaultParent().children[j].id;
+										    	var cell = window.runtimeModelGraph.model.getCell(id);
+										    	var cellValue = size + sizeUnit;
+										    	cell.setValue(cellValue);
+										    	//console.log('cellValue = ' + cellValue);
+												
+										 	} finally {
+												// Updates the display	
+												//window.runtimeModelGraph.getModel().endUpdate();
+												window.runtimeModelGraph.refresh();
+												//console.log('STREAM_TOPIC: graphUpdate.main.onMessage.endUpdate');
+											}
+											 	
 										}
-										//console.log('size='+size);
-										
-										window.runtimeModelGraph.getModel().beginUpdate();
-										try {
-											window.runtimeModelGraph.model.setValue(window.runtimeModelParent.children[j], size + sizeUnit); 
-									 	} finally {
-											// Updates the display	
-											window.runtimeModelGraph.getModel().endUpdate();
-											window.runtimeModelGraph.refresh();
-											//console.log('STREAM_TOPIC: graphUpdate.main.onMessage.endUpdate');
-										}
-										 	
-									}
-								}// for window.runtimeModelParent.children
+									}// for window.runtimeModelGraph.getDefaultParent().children
+									
+								}
 							}	
 						}		
 				}
