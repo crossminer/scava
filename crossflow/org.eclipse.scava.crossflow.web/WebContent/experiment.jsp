@@ -237,21 +237,20 @@
 			fileDescriptor.table = crossflow.getContent(fileDescriptor);
 		});
 		app.diagnostics = crossflow.getDiagnostics();
+		
 	}
-</script>
-
-<script type="text/javascript">
+	
 var cellTooltips = {};
 
 loadStencils();
 
-container = document.getElementById('graphContainer');
+//container = document.getElementById('graphContainer');
 experimentId = new URL(document.location).searchParams.get('id');
 
-/* mxEvent.disableContextMenu(container); */
-window.runtimeModelContainer = container;
+mxEvent.disableContextMenu(document.getElementById('graphContainer'));
+//window.runtimeModelContainer = container;
 
-window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
+window.runtimeModelGraph = new mxGraph(document.getElementById('graphContainer'));
 window.runtimeModelGraph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
 window.runtimeModelGraph.setTooltips(true);
 var oldGetPreferredSizeForCell = window.runtimeModelGraph.getPreferredSizeForCell;
@@ -267,87 +266,122 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 	return result;
 };
 
-window.runtimeModelGraph.getTooltipForCell = function(cell) {
+window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
+	
+	//console.log('getTooltipForCell triggered');
 	
 	streamTopicXmlDoc = window.streamTopicXmlDoc;
-	if ( streamTopicXmlDoc == null ) {
-		return;
-	}
-	//console.log(streamTopicXmlDoc);
-	if ( cell.id.includes('task_') ) {
-		modelElement = cell.id.substr('task_'.length);
-	} else if ( cell.id.includes('stream_') ) {
-		modelElement = cell.id.substr('stream_'.length);
-	} else {
-		// unknown cell
-		return;
-	}
+	taskTopicXmlDoc = window.taskTopicXmlDoc;
 	
-	//console.log("modelElement = " + modelElement);
 	size = "n/a";
 	sizeUnit = "";
 	inFlight = "n/a";
 	subscribers = "n/a";
 	taskStatus = "n/a";
-	
-	for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
-		if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
-			//console.log("streams encountered");
-			for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ )
-				//console.log("i="+i+";  j="+j);
-				if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
-						streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
-						streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
-				
-					//console.log("i="+i+";  j="+j);
-					name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
-					//console.log('name='+name);
-					
-					// size
-					size = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
-					//console.log('size='+size);
-					if ( size >= 1000 && size <= 999999 ) {
-						sizeUnit = "K";
-						size = size / 1000;
-					} else if ( size >= 1000000 ) {
-						sizeUnit = "M";
-						size = size / 1000000;
-					}
-					//console.log('size='+size);
-					
-					window.runtimeModelGraph.model.setValue(cell, size + sizeUnit); // WIP, see: https://bit.ly/2smlV9o
 
-					// inFlight
-					inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
-					//console.log('inFlight='+inFlight);
-
-					// numberOfSubscribers
-					subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
-					//console.log('subscribers='+subscribers);
-				}
-				
-		}
-	}// for streamTopicXmlDoc
-	
-	cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+	//console.log(streamTopicXmlDoc);
+	if ( cell.id.includes('task_') ) {
+		modelElement = cell.id.substr('task_'.length);
+		/* if ( taskTopicXmlDoc == null ) {
+			return;
+		} */
+		// derive status from current cell style for consistency
+		cellStyle = cell.getStyle().substring(cell.getStyle().indexOf('fillColor='), cell.getStyle().length);
+		taskStatusCellTooltip = "<table border=1><tr><td>";
 		
-	if ( cellTooltip.includes("n/a") ) {
-		// return latest known status
-		return cellTooltips[modelElement];
-	} 
+		if ( cellStyle.includes('lightcyan') )
+			taskStatusCellTooltip += "STARTED";
+		
+		else if ( cellStyle.includes('skyblue') )
+			taskStatusCellTooltip += "WAITING";
+		
+		else if ( cellStyle.includes('palegreen') )
+			taskStatusCellTooltip += "INPROGRESS";
+		
+		else if ( cellStyle.includes('salmon') )
+			taskStatusCellTooltip += "BLOCKED";
+		
+		else if ( cellStyle.includes('slategray') )
+			taskStatusCellTooltip += "FINISHED";
+		
+		else if ( cellStyle.includes('#fffff') )
+			taskStatusCellTooltip += "N/A";
+			
+		taskStatusCellTooltip += "</td></tr></table>";
+		return taskStatusCellTooltip;
+	}// if task tooltip 
 	
-	cellTooltips[modelElement] = cellTooltip;
+	else if ( cell.id.includes('stream_') ) {
+		modelElement = cell.id.substr('stream_'.length);
+		if ( streamTopicXmlDoc == null ) {
+			return;
+		}
+		
+		for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
+			if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
+				//console.log("streams encountered");
+				for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ )
+					//console.log("i="+i+";  j="+j);
+					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
+					
+						//console.log("i="+i+";  j="+j);
+						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
+						//console.log('name='+name);
+						
+						// size
+						size = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
+						//console.log('size='+size);
+						if ( size >= 1000 && size <= 999999 ) {
+							sizeUnit = "K";
+							size = size / 1000;
+						} else if ( size >= 1000000 ) {
+							sizeUnit = "M";
+							size = size / 1000000;
+						}
+						//console.log('size='+size);
+						
+						// inFlight
+						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						//console.log('inFlight='+inFlight);
+
+						// numberOfSubscribers
+						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
+						//console.log('subscribers='+subscribers);
+						
+						// also visible queue size for consistency
+						cell.value = Math.round(size) + sizeUnit;
+					}
+					
+			}
+		}// for streamTopicXmlDoc
+		
+		cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+			
+		if ( cellTooltip.includes("n/a") ) {
+			// return latest known status
+			return cellTooltips[modelElement];
+		} 
+		
+		cellTooltips[modelElement] = cellTooltip;
+		
+		return cellTooltip;
+		
+	}// if stream tooltip
+	else {
+		// unknown cell
+		return;
+	}
 	
-	return cellTooltip;
-}// CELL TOOLTIPS
+};// CELL TOOLTIPS
 
 //---------------
-
 // CONTEXT MENU
 window.runtimeModelGraph.popupMenuHandler.factoryMethod = function(menu, cell, evt)
 {
 	return createPopupMenu(window.runtimeModelGraph, menu, cell, evt);
-}
+};
 
 function createPopupMenu(graph, menu, cell, evt) {
 	if (cell != null)
@@ -382,32 +416,26 @@ function createPopupMenu(graph, menu, cell, evt) {
 			}
 		});	
 	}
-}// CONTEXT MENU
+};// CONTEXT MENU
 
 // ---------------
-
-window.runtimeModelParent = window.runtimeModelGraph.getDefaultParent();
-window.runtimeModelGraph.enabled = false;
-
-window.runtimeModelGraph.getModel().beginUpdate();
-
-
 <%
 String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstract";
 //new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 
 %>
 try {
+window.runtimeModelGraph.getModel().beginUpdate();
 <jsp:include page="<%= graphPath %>" flush="true" />
 
 var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
 layout.execute(window.runtimeModelGraph.getDefaultParent());
+window.runtimeModelGraph.enabled = false; // de-activate graph editing
 
 } finally {
 	// Updates the display
 	window.runtimeModelGraph.getModel().endUpdate();
 }
-
 
 </script>
 
