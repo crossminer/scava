@@ -163,27 +163,53 @@ function main(crossflow, container, experimentId) {
 			  window.taskTopicXmlDoc = parser.parseFromString(text,"text/xml");
 			  // console.log('taskTopicXmlDoc: ' + text);
 			
-			  //window.runtimeModelGraph.model.beginUpdate();
-			  console.log('beginUpdate(B)');
-			  try {
-				  taskId = window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.substring(0, window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.indexOf(':'));
-				  for (var i = 0, l = window.runtimeModelParent.children.length; i < l; i++) {
-					    if ( window.runtimeModelParent.children[i].id == 'task_' + taskId ) {
-					    	taskStatus = window.taskTopicXmlDoc.childNodes[0].children[0].innerHTML;
-					    	// STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
-					    	window.runtimeModelGraph.model.setValue(window.runtimeModelParent.children[i], taskId + ' (' + taskStatus + ')');
-					    	//console.log(taskId + ' (' + taskStatus + ')');
-					    }
-					}// for window.runtimeModelParent.children
-				  
-			  	} finally {
-					// Updates the display
-					//window.runtimeModelGraph.model.endUpdate();
-					console.log("endUpdate(B)");
-					window.runtimeModelGraph.refresh();
-					//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');
-				}
-			  
+			  //console.log('beginUpdate(B)');
+			  	  taskId = window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.substring(0, window.taskTopicXmlDoc.childNodes[0].children[1].innerHTML.indexOf(':'));
+				  if ( window.runtimeModelGraph.getDefaultParent().children != null ) {
+					  for (var i = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; i < l; i++) {
+						    if ( window.runtimeModelGraph.getDefaultParent().children[i].id == 'task_' + taskId ) {
+						    	taskStatus = window.taskTopicXmlDoc.childNodes[0].children[0].innerHTML;
+						    	
+						    	var id = window.runtimeModelGraph.getDefaultParent().children[i].id;
+						    	var cell = window.runtimeModelGraph.model.getCell(id);
+						    	// fontSize=16;labelBackgroundColor=#ffffff;fillColor=#ffffff;fontColor=black;strokeColor=black
+						    	var cellStylePre = cell.getStyle();
+						    	var cellStyle = cellStylePre.substring(cellStylePre.indexOf('fillColor='), cellStylePre.length-1);
+						    	cellStylePre = cellStylePre.substring(0, cellStylePre.indexOf('fillColor='));
+						    	
+						    	// STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
+						    	if ( taskStatus == 'STARTED' )
+						    		cellStyle = 'fillColor=lightcyan';
+						    		
+						    	else if ( taskStatus == 'WAITING' )
+						    		cellStyle = 'fillColor=skyblue';
+						    		
+						    	else if ( taskStatus == 'INPROGRESS' )
+						    		cellStyle = 'fillColor=palegreen';
+						    		
+						    	else if ( taskStatus == 'BLOCKED' )
+						    		cellStyle = 'fillColor=salmon';
+						    		
+						    	else if ( taskStatus == 'FINISHED' )
+						    		cellStyle = 'fillColor=slategray';
+					
+						    	try {
+									window.runtimeModelGraph.model.beginUpdate();
+							    	cell.setStyle(cellStylePre + cellStyle);
+							       	//console.log(taskId + ' (' + taskStatus + ')');
+						    	} finally {
+									// Updates the display
+									window.runtimeModelGraph.model.endUpdate();
+									//console.log("endUpdate(B)");
+									window.runtimeModelGraph.refresh();
+									//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');
+								}
+						    	
+						    }
+						}// for window.runtimeModelGraph.getDefaultParent().children
+				  }
+			  	
+		  	  
 		  }// if TASK_TOPIC_ROOT
 		  
 		  else if ( e.data.includes(LOG_TOPIC_ROOT) ) {
@@ -213,17 +239,19 @@ function main(crossflow, container, experimentId) {
 			  
 		  }
 		  
-		  
-	  }// if MESSAGE
-	 
-	};
+	  }// startsWith MESSAGE
+	  
+	};// onMessage
 	
 	/*
 	 * TODO Animation: examples/animation.html / thread.html Markers:
 	 * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
 	 * monitor.html
 	 */
-	window.runtimeModelGraph = new mxGraph(window.runtimeModelContainer);
+	
+	function sleep(delay) {
+	    var start = new Date().getTime();
+	    while (new Date().getTime() < start + delay);
+	}
 	
 };// main
-

@@ -39,7 +39,7 @@
         
   </head>
   
-  <body onload="main(document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))">
+  <body onload="main(crossflow, document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))">
 
     <header>
       <div class="collapse bg-dark" id="navbarHeader">
