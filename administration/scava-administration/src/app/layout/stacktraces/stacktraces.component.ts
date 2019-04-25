@@ -29,6 +29,9 @@ export class StacktracesComponent implements OnInit {
     this.stacktracesService.getStackTraces().subscribe(
       (resp) => {
         this.dataSource = new MatTableDataSource(resp as Array<Stacktraces>);
+        this.dataSource.filterPredicate = function(data, filter: string): boolean {
+          return data.projectName.toLowerCase().includes(filter);
+        };
         this.dataSource.sort = this.sort;
       },
       (error) => {
