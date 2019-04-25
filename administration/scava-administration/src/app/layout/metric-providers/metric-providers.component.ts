@@ -36,13 +36,17 @@ export class MetricProvidersComponent implements OnInit {
         this.showSpinner=false;
       },
       (error) => {
-
+        this.onShowMessage(error);
       }
     )
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onShowMessage(msg: any) {
+    console.log(msg);
   }
 
 }

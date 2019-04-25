@@ -90,14 +90,12 @@ export class AnalysisTaskAddComponent implements OnInit {
     //console.log("event !!!!!!")
     if (data.added.length !== 0) {
       console.log('selected');
-      console.log(data);
       for (let mp of data.added) {
         this.onRowSelect(mp);
       } 
     }
     if (data.removed.length !== 0) {
       console.log('unselected');
-      console.log(data);
       for (let mp of data.removed) {
         this.onRowUnselect(mp);
       }
@@ -116,7 +114,6 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
-      console.log(this.dataSource.filteredData)
   }
 
   onRowSelect(row) {
@@ -181,7 +178,6 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
     let metrics: string[] = [];
-    console.log(this.selection.selected);
     this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));
     this.executionTask.metricProviders = metrics;
     this.analysisTaskService.createTask(this.executionTask).subscribe(

@@ -18,5 +18,8 @@
         <a routerLink="/properties" class="list-group-item" *ngIf="roleAuthorities.hasRole('ROLE_ADMIN')">
             <i class="fa fa-lg fa-wrench"></i>&nbsp;{{ 'Properties' }}
         </a>
+        <a routerLink="/stacktraces" class="list-group-item">
+            <i class="fa fa-lg fa-bug"></i>&nbsp;{{ 'Stack Traces' }}
+        </a>
     </div>
 </nav>
