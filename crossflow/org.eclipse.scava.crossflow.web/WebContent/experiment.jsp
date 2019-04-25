@@ -358,9 +358,12 @@ function createPopupMenu(graph, menu, cell, evt) {
 				res = mxUtils.confirm('Are you sure about clearing the cache of queue \"'+ cell.id.substr('stream_'.length) + '\"?', false);
 				if ( res ) {
 					// trigger cache clearing of queue cell.id
-					crossflow.clearQueue(experimentId, cell.id);
-					mxUtils.alert('Cache of queue \"' + cell.id.substr('stream_'.length) + '\" has been cleared.');
-					
+					clearSuccess = crossflow.clearQueue(experimentId, cell.id);
+					if ( clearSuccess ) {
+						mxUtils.alert('Cache of queue \"' + cell.id.substr('stream_'.length) + '\" has been cleared.');						
+					} else {
+						mxUtils.alert('Failed to clear cache of queue \"' + cell.id.substr('stream_'.length) + '\". Has the experiment been started yet?');		
+					}
 				}
 			})
 		}
@@ -370,11 +373,12 @@ function createPopupMenu(graph, menu, cell, evt) {
 			res = mxUtils.confirm('Are you sure about clearing the cache of all queues?', false);
 			if ( res ) {
 				// trigger cache clearing of all queues
-				crossflow.clearQueue(experimentId, "");
-				mxUtils.alert('Cache of all queues has been cleared.');
-				<%
-
-				%>
+				clearSuccess = crossflow.clearQueue(experimentId, "");
+				if ( clearSuccess ) {
+					mxUtils.alert('Cache of all queues has been cleared.');
+				} else {
+					mxUtils.alert('Failed to clear cache of all queues. Has the experiment been started yet?');		
+				}
 			}
 		});	
 	}

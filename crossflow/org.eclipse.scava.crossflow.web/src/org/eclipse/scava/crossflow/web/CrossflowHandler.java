@@ -24,6 +24,7 @@ import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -139,13 +140,19 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 	
 	@Override
-	public void clearQueue(String experimentId, String queueName) throws TException {
+	public boolean clearQueue(String experimentId, String queueName) throws TException {
 		Workflow w = workflows.get(experimentId);	
-		w.getCache().clear(queueName);
-		if ( queueName != "" )
-			System.out.println("Cache for queue " + queueName + " cleared.");
-		else
-			System.out.println("Entire cache cleared.");
+		if ( w == null ) {
+			System.err.println("Failed to clear queue. Unable to obtain running workflow from experimentId \'" + experimentId + "\'. Has this experiment been started yet?");
+			return false;
+		} else {
+			w.getCache().clear(queueName);
+			if ( queueName != "" )
+				w.log(CrossflowLogger.SEVERITY.INFO, "Cache for queue " + queueName + " cleared.");
+			else
+				w.log(CrossflowLogger.SEVERITY.INFO, "Entire cache cleared.");
+			return true;
+		}
 	}
 	
 	public void delete(File file) {
