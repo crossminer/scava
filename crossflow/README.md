@@ -73,7 +73,7 @@ You will need to run the ANT build-files below to generate stuff after you impor
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model before execution.
 
 ![Screenshot](https://i.imgur.com/7Yllj4N.png)
-**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution visualizing task status and queue size by means of color and rounded number, respectively. Task status (color): STARTED (lightcyan), WAITING (skyblue), INPROGRESS (palegreen), BLOCKED (salmon), and FINISHED (slategrey).  
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution visualizing task status and queue size by means of color and rounded number, respectively. **Task status (color)**: STARTED (lightcyan), WAITING (skyblue), INPROGRESS (palegreen), BLOCKED (salmon), and FINISHED (slategrey).  
 
 ![Screenshot](https://i.imgur.com/8RAeDDl.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse hovering over initial queue depicting (queue) size, in-flight count, and subscriber count.
@@ -83,5 +83,8 @@ You will need to run the ANT build-files below to generate stuff after you impor
 
  ![Screenshot](https://i.imgur.com/wjbiQn0.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse click inside boundaries of *WordFrequencies* queue displaying context menu popup to clear the cache of all queues involved in the Word Count workflow.
+
+ ![Screenshot](https://i.imgur.com/MCqT43z.png)
+**Figure**: Upload New Workflow page allowing the upload and deployment of new experiments.
 
  
