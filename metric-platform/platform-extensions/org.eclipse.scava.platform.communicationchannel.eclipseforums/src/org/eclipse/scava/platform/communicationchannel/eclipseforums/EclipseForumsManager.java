@@ -43,7 +43,7 @@ import okhttp3.Response;
 public class EclipseForumsManager implements ICommunicationChannelManager<EclipseForum> {
 
 	public EclipseForumsManager() {
-		this.temporal_topic_data = new ArrayList<>();
+		
 		this.forum = new EclipseForumsForum();
 		this.open_id = "";
 		this.callsRemaning = 0;
@@ -53,7 +53,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		this.last_page = 0;
 		this.next_request_url = "";
 		this.client = new OkHttpClient();
-		this.temporalFlag=false;
+		this.temporalFlag = false;
 	}
 
 	private boolean temporalFlag;
@@ -63,10 +63,9 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	private int rateLimit;
 	private final static String host = "https://api.eclipse.org/";
 	private final static String PAGE_SIZE = "100";
-	private List<EclipseForumsTopic> temporal_topic_data;
-	private final static Pattern lastPagePattern 	= Pattern.compile("\\d>; rel=\"last\"");
+	private final static Pattern lastPagePattern = Pattern.compile("\\d>; rel=\"last\"");
 	private final static Pattern currentPagePattern = Pattern.compile("\\d>; rel=\"self\"");
-	private final static Pattern nextPageUrlPattern	= Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
+	private final static Pattern nextPageUrlPattern = Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
 	private String next_request_url;
 	private int current_page;
 	private int last_page;
@@ -136,7 +135,8 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			JsonNode jsonNode = new ObjectMapper().readTree(getForumResponse.body().string());
 			this.forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
 			this.forum.setCreation_date(EclipseForumUtils
-					.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValues("created_date").toString())).toJavaDate());
+					.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValues("created_date").toString()))
+					.toJavaDate());
 			this.forum.setDescription(EclipseForumUtils.fixString(jsonNode.findValues("description").toString()));
 			this.forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
 			this.forum.setName(EclipseForumUtils.fixString(jsonNode.findValues("name").toString()));
@@ -154,44 +154,11 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		// GETS ALL TOPICS WITHIN FORUM
 		// ----------------------------------------------------------------------------------------------------------------------
 		System.out.println("\t- Getting Topics");
-		HttpUrl.Builder getTopicBuilder = HttpUrl.parse(host).newBuilder();
-		getTopicBuilder.addEncodedPathSegment("forums");
-		getTopicBuilder.addEncodedPathSegment("topic");
-		getTopicBuilder.addQueryParameter("forum_id", eclipseForum.getForum_id());
-		getTopicBuilder.addQueryParameter("pagesize", PAGE_SIZE);
-		getTopicBuilder.addQueryParameter("order_by", "ASC");
-
-		// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
-		if (this.callsRemaning == 0) {
-			waitUntilCallReset(this.timeToReset);
-		}
-
-		Request getTopicsRequest = new Request.Builder().url(getTopicBuilder.build().toString())
-				.header("Authorization", String.format("Bearer %s", this.open_id)).build();
-
-		Response getTopicResponse = this.client.newCall(getTopicsRequest).execute();
-		checkHeader(getTopicResponse.headers(), eclipseForum);
-		// first
-		for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
-			this.temporal_topic_data.add(topic);
-		}
-
-		// pagination
-		while (this.current_page != this.last_page) {
-			System.out.println("\t\t-page " + this.current_page);
-			getTopicResponse = getNextPage(this.next_request_url, eclipseForum);
-
-			for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
-				this.temporal_topic_data.add(topic);
-			}
-		}
-
-		System.out.println("\t- Total topics : " + temporal_topic_data.size());
-		getTopicResponse.close();
+		
 
 		System.out.println("\t- Getting Root Post for each topic (this may take some time)");
-
-		for (EclipseForumsTopic topic : temporal_topic_data) {
+		List<EclipseForumsTopic> topics = getTopics(eclipseForum);
+		for (EclipseForumsTopic topic : topics ) {
 
 			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
 			getPostsBuilder.addEncodedPathSegment("forums");
@@ -210,8 +177,10 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
 			if (!(postsJsonNode == null)) {
 				if (!postsJsonNode.isArray()) {
-					topic.setFirst_post_date(EclipseForumUtils.convertStringToDate(
-							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString())).toJavaDate());
+					topic.setFirst_post_date(EclipseForumUtils
+							.convertStringToDate(
+									EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
+							.toJavaDate());
 					topic.setFirst_post_unix_timestamp(
 							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
 				}
@@ -221,7 +190,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		}
 		System.out.println("\t- Calculating first date");
 		List<java.util.Date> dates = new ArrayList<>();
-		for (EclipseForumsTopic topic_information : temporal_topic_data) {
+		for (EclipseForumsTopic topic_information : topics) {
 			if (!(topic_information.getFirst_post_date() == null)) {
 				dates.add(topic_information.getFirst_post_date());
 			}
@@ -240,49 +209,32 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	@Override
 	public CommunicationChannelDelta getDelta(DB db, EclipseForum forum, Date date) throws Exception {
 
-		if(temporalFlag==false)
-		{
+		if (temporalFlag == false) {
 			getFirstDate(db, forum);
-			temporalFlag=true;
+			temporalFlag = true;
 		}
-		
+
 		System.out.println("[Eclipse Forum] - getDelta() Calls remaining" + callsRemaning);
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
-		
+
 		delta.setCommunicationChannel(forum);
 
-		for (EclipseForumsTopic topic : temporal_topic_data) {
+		for (EclipseForumsTopic topic : getTopics(forum)) {
 
-			
-// REMOVED AS THEY ARE NOT USED IN THE DELTA ANALYSIS			
-//			if ((topic.getFirst_post_date().compareTo(date.toJavaDate())) == 0){ 
-//				
-//				delta.getTopics().add(topic);// adds topic to delta, by assuming the first post is the creation date
-//							
-//			}
-			
-			List<EclipseForumsPost> posts = getPosts(forum, topic);
-			
-			//The is checks if the 'current processing date' is within range of the posts in the forum 
+			// The is checks if the 'current processing date' is within range of the posts
+			// in the forum
 			if (compareDate(topic.getFirst_post_date(), topic.getLast_post_date(), date) == true) {
 				for (EclipseForumsPost post : getPosts(forum, topic)) {
-					
-						if (post.getDate().compareTo(date.toJavaDate()) == 0) { // if post date is equal to the 'current processing date' add to delta
-							
-							delta.getArticles().add(post);
-						}
-					
+
+					if (post.getDate().compareTo(date.toJavaDate()) == 0) { // if post date is equal to the 'current
+																			// processing date' add to delta
+						delta.getArticles().add(post);
+					}
 				}
-				
-				
 			}
 		}
-		
-		if (delta.getPosts().size() > 0) {System.out.println("Posts  = " + delta.getPosts().size()); }
-		if (delta.getTopics().size() > 0) {System.out.println("Topics  = " + delta.getTopics().size()); }
-		
-		
+
 		return delta;
 	}
 
@@ -327,7 +279,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		getPostsBuilder.addQueryParameter("pagesize", PAGE_SIZE);
 
-
 		// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
 		if (this.callsRemaning == 0) {
 			waitUntilCallReset(this.timeToReset);
@@ -368,12 +319,14 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		EclipseForumsPost eclipseForumsPost = new EclipseForumsPost();
 		eclipseForumsPost.setCommunicationChannel(forum);
 		eclipseForumsPost.setArticleId(EclipseForumUtils.fixString(jsonNode.findValue("id").toString()));
-		eclipseForumsPost.setArticleNumber(Long.parseLong(EclipseForumUtils.fixString(jsonNode.findValue("id").toString())));
-		//eclipseForumsPost.setForumId(forum.getForum_id());
+		eclipseForumsPost
+				.setArticleNumber(Long.parseLong(EclipseForumUtils.fixString(jsonNode.findValue("id").toString())));
+		// eclipseForumsPost.setForumId(forum.getForum_id());
 		eclipseForumsPost.setMessageThreadId(topic.getTopic_id());
 		eclipseForumsPost.setUser(EclipseForumUtils.fixString(jsonNode.findValue("poster_id").toString()));
 		eclipseForumsPost.setDate(EclipseForumUtils
-				.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValue("created_date").toString())).toJavaDate());
+				.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValue("created_date").toString()))
+				.toJavaDate());
 		eclipseForumsPost.setHtml_url(EclipseForumUtils.fixString(jsonNode.findValue("html_url").toString()));
 		eclipseForumsPost.setSubject(EclipseForumUtils.fixString(jsonNode.findValue("subject").toString()));
 		eclipseForumsPost.setText(EclipseForumUtils.fixString(jsonNode.findValue("body").toString()));
@@ -503,7 +456,8 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	 * @throws JsonProcessingException
 	 * @throws IOException
 	 */
-	private List<EclipseForumsTopic> mapTopic(Response response, EclipseForum eclipseForum) throws JsonProcessingException, IOException {
+	private List<EclipseForumsTopic> mapTopic(Response response, EclipseForum eclipseForum)
+			throws JsonProcessingException, IOException {
 
 		List<EclipseForumsTopic> topicList = new ArrayList<EclipseForumsTopic>();
 		JsonNode topicJsonNode = new ObjectMapper().readTree(response.body().string()).get("result");
@@ -511,7 +465,8 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		if (topicJsonNode.isArray()) {
 			for (JsonNode node : topicJsonNode) {
 				EclipseForumsTopic topic = new EclipseForumsTopic();
-				topic.setLast_post_unix_timestamp(EclipseForumUtils.fixString(node.findValue("last_post_date").toString()));
+				topic.setLast_post_unix_timestamp(
+						EclipseForumUtils.fixString(node.findValue("last_post_date").toString()));
 				topic.setViews(Integer.parseInt(EclipseForumUtils.fixString(node.findValue("views").toString())));
 				topic.setTopic_subject(EclipseForumUtils.fixString(node.findValue("subject").toString()));
 				topic.setUrl(EclipseForumUtils.fixString(node.findValue("html_url").toString()));
@@ -519,8 +474,10 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 				topic.setRoot_post_id(EclipseForumUtils.fixString(node.findValue("root_post_id").toString()));
 				topic.setTopic_id(EclipseForumUtils.fixString(node.findValue("id").toString()));
 				if (!(node.findValue("last_post_date").toString().isEmpty())) {
-					topic.setLast_post_date(EclipseForumUtils.convertStringToDate(
-							EclipseForumUtils.fixString(node.findValue("last_post_date").toString())).toJavaDate());
+					topic.setLast_post_date(EclipseForumUtils
+							.convertStringToDate(
+									EclipseForumUtils.fixString(node.findValue("last_post_date").toString()))
+							.toJavaDate());
 					topicList.add(topic);
 				}
 			}
@@ -533,8 +490,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
 		System.out.println("[Eclipse Forum] - setClient()");
 		// If it has a client_id and Client_secert add an interceptor
-		if (eclipseForum.getClient_id().isEmpty() && eclipseForum.getClient_secret().isEmpty())
-		{
+		if (eclipseForum.getClient_id().isEmpty() && eclipseForum.getClient_secret().isEmpty()) {
 
 			System.out.println("[Eclipse Forum] - Using authenticated Client");
 			// This is triggered every hour!
@@ -605,7 +561,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
 		String open_id = EclipseForumUtils.fixString(jsonNode.get("access_token").toString());
-	
+
 		this.open_id = open_id;
 	}
 
@@ -619,27 +575,68 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		return this.open_id;
 	}
 
+	private List<EclipseForumsTopic> getTopics(EclipseForum eclipseForum) throws IOException {
+
+		List<EclipseForumsTopic> topics = new ArrayList<EclipseForumsTopic>();
+
+		HttpUrl.Builder getTopicBuilder = HttpUrl.parse(host).newBuilder();
+		getTopicBuilder.addEncodedPathSegment("forums");
+		getTopicBuilder.addEncodedPathSegment("topic");
+		getTopicBuilder.addQueryParameter("forum_id", eclipseForum.getForum_id());
+		getTopicBuilder.addQueryParameter("pagesize", PAGE_SIZE);
+		getTopicBuilder.addQueryParameter("order_by", "ASC");
+
+		// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
+		if (this.callsRemaning == 0) {
+			waitUntilCallReset(this.timeToReset);
+		}
+
+		Request getTopicsRequest = new Request.Builder().url(getTopicBuilder.build().toString())
+				.header("Authorization", String.format("Bearer %s", this.open_id)).build();
+
+		Response getTopicResponse = this.client.newCall(getTopicsRequest).execute();
+		checkHeader(getTopicResponse.headers(), eclipseForum);
+		// first
+		for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
+			topics.add(topic);
+		}
+
+		// pagination
+		while (this.current_page != this.last_page) {
+			System.out.println("\t\t-page " + this.current_page);
+			getTopicResponse = getNextPage(this.next_request_url, eclipseForum);
+
+			for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
+				topics.add(topic);
+			}
+		}
+		getTopicResponse.close();
+
+		return topics;
+	}
+
 	/**
-	 * Method used to determine if a day is between two dates.
-	 * false = date is out of the scope
-	 * true = date is within the scope
+	 * Method used to determine if a day is between two dates. false = date is out
+	 * of the scope true = date is within the scope
 	 * 
-	 * @param min start date
-	 * @param max end date
-	 * @param date date in question 
+	 * @param min
+	 *            start date
+	 * @param max
+	 *            end date
+	 * @param date
+	 *            date in question
 	 * @return result
+	 * 
 	 */
-			
-			
 	private Boolean compareDate(java.util.Date min, java.util.Date max, Date date) {
-		
+
 		Boolean result = false;
 
-		if ((date.compareTo(min) >=0) && (date.compareTo(max) <=0)) {
+		if ((date.compareTo(min) >= 0) && (date.compareTo(max) <= 0)) {
 			result = true;
 		}
-		
+
 		return result;
 	}
-	
+
 }
