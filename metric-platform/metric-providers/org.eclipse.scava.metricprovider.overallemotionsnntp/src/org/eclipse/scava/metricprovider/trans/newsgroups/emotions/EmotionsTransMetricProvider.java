@@ -13,6 +13,7 @@ package org.eclipse.scava.metricprovider.trans.newsgroups.emotions;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification;
@@ -29,6 +30,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
@@ -87,9 +89,14 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		for (CommunicationChannelDelta communicationChannelSystemDelta : delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelSystemDelta.getCommunicationChannel();
 			String communicationChannelName;
-			if (!(communicationChannel instanceof NntpNewsGroup))
+			if (communicationChannel instanceof Discussion) {
 				communicationChannelName = communicationChannel.getUrl();
-			else {
+			}else if (communicationChannel instanceof EclipseForum){
+				
+				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+				communicationChannelName = eclipseForum.getForum_name();
+				
+			}else {
 				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 				communicationChannelName = newsgroup.getNewsGroupName();
 			}
@@ -116,7 +123,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 			for (CommunicationChannelArticle article: communicationChannelSystemDelta.getArticles()) {
 				
-				List<String> emotionalDimensions = getEmotions(emotionClassificationMetric, article);
+				List<String> emotionalDimensions = getEmotions(emotionClassificationMetric, article, communicationChannelName);
 				
 				for (String dimension: emotionalDimensions)
 				{
@@ -176,11 +183,12 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		return "Emotional Dimensions in Newsgroup Articles";
 	}
 	
-	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article)
+	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article, String newsGroupName)
 	{
 		NewsgroupArticlesEmotionClassification newsgroupArticleInEmotionClassification = null;
+		
 		Iterable<NewsgroupArticlesEmotionClassification> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(newsGroupName),
 						NewsgroupArticlesEmotionClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlesEmotionClassification naec:  newsgroupArticleIt) {
 			newsgroupArticleInEmotionClassification = naec;
