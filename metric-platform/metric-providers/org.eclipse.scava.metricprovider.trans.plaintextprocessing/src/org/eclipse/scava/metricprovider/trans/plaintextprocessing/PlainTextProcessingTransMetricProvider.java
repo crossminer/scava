@@ -165,7 +165,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				//-- TO HERE
 			
 				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup)) { 
+				if (communicationChannel instanceof Discussion) { 
 					
 					communicationChannelName = communicationChannel.getUrl();
 				
