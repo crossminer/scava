@@ -22,6 +22,7 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
@@ -49,6 +50,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 		for (CommunicationChannel communicationchannel: project.getCommunicationChannels()) {
 			if (communicationchannel instanceof NntpNewsGroup) return true;
 			if (communicationchannel instanceof Discussion) return true;
+			if (communicationchannel instanceof EclipseForum) return true;
 		}
 		return false;
 	}
