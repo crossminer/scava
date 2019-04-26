@@ -127,22 +127,22 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 			instancesCollection.addText(getNewsgroupArticleId(article), article.getNaturalLanguage());
 		}
 		
-		Iterable<ForumPostDetectingCode> postsIt = detectingCodeMetric.getForumPosts();
-		
-		for(ForumPostDetectingCode post : postsIt)
-		{
-			ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
-			if(postInSentiment == null)
-			{
-				postInSentiment = new ForumPostSentimentClassification();
-				postInSentiment.setForumId(post.getForumId());
-				postInSentiment.setTopicId(post.getTopicId());
-				postInSentiment.setPostId(post.getPostId());
-				db.getForumPosts().add(postInSentiment);
-			}
-			db.sync();
-			instancesCollection.addText(getForumPostId(post), post.getNaturalLanguage());
-		}
+//		Iterable<ForumPostDetectingCode> postsIt = detectingCodeMetric.getForumPosts();
+//		
+//		for(ForumPostDetectingCode post : postsIt)
+//		{
+//			ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
+//			if(postInSentiment == null)
+//			{
+//				postInSentiment = new ForumPostSentimentClassification();
+//				postInSentiment.setForumId(post.getForumId());
+//				postInSentiment.setTopicId(post.getTopicId());
+//				postInSentiment.setPostId(post.getPostId());
+//				db.getForumPosts().add(postInSentiment);
+//			}
+//			db.sync();
+//			instancesCollection.addText(getForumPostId(post), post.getNaturalLanguage());
+//		}
 		
 		if(instancesCollection.size()!=0)
 		{
@@ -169,12 +169,12 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 				db.sync();
 			}
 			
-			for(ForumPostDetectingCode post : postsIt)
-			{
-				ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
-				postInSentiment.setPolarity(predictions.get(getForumPostId(post)));
-				db.sync();
-			}
+//			for(ForumPostDetectingCode post : postsIt)
+//			{
+//				ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
+//				postInSentiment.setPolarity(predictions.get(getForumPostId(post)));
+//				db.sync();
+//			}
 		}
 
  	}
@@ -189,10 +189,10 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleNumber();
 	}
 	
-	private String getForumPostId(ForumPostDetectingCode post)
-	{
-		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
-	}
+//	private String getForumPostId(ForumPostDetectingCode post)
+//	{
+//		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
+//	}
 	
 	private BugTrackerCommentsSentimentClassification findBugTrackerComment(SentimentClassificationTransMetric db, BugTrackerCommentDetectingCode comment)
 	{
@@ -222,19 +222,19 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		return newsgroupArticlesData;
 	}
 	
-	private ForumPostSentimentClassification findForumPost(SentimentClassificationTransMetric db,
-			ForumPostDetectingCode post) {
-		ForumPostSentimentClassification forumPostData = null;
-		Iterable<ForumPostSentimentClassification> forumPostsDataIt = 
-				db.getForumPosts().
-						find(ForumPostSentimentClassification.FORUMID.eq(post.getForumId()),
-								ForumPostSentimentClassification.TOPICID.eq(post.getTopicId()), 
-								ForumPostSentimentClassification.POSTID.eq(post.getPostId()));
-		for (ForumPostSentimentClassification nad:  forumPostsDataIt) {
-			forumPostData = nad;
-		}
-		return forumPostData;
-	}
+//	private ForumPostSentimentClassification findForumPost(SentimentClassificationTransMetric db,
+//			ForumPostDetectingCode post) {
+//		ForumPostSentimentClassification forumPostData = null;
+//		Iterable<ForumPostSentimentClassification> forumPostsDataIt = 
+//				db.getForumPosts().
+//						find(ForumPostSentimentClassification.FORUMID.eq(post.getForumId()),
+//								ForumPostSentimentClassification.TOPICID.eq(post.getTopicId()), 
+//								ForumPostSentimentClassification.POSTID.eq(post.getPostId()));
+//		for (ForumPostSentimentClassification nad:  forumPostsDataIt) {
+//			forumPostData = nad;
+//		}
+//		return forumPostData;
+//	}
 
 	//TODO: Check if this is valid
 	//Do not delete the articles database, it is used in other metrics
