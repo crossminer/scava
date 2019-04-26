@@ -18,15 +18,15 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
-import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
+//import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrackerCommentPlainTextProcessing;
-import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
+//import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTextProcessingTransMetric;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.BugTrackerComments;
-import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.ForumsPosts;
+//import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.ForumsPosts;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.RequestReplyClassificationTransMetric;
 import org.eclipse.scava.nlp.classifiers.requestreplydetector.RequestReplyClassifier;
@@ -45,7 +45,7 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemProje
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
-import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
+//import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
@@ -163,46 +163,50 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			String plainText;
 			String subject;
-			//Process for forums
-			if(communicationChannel instanceof EclipseForum)
-			{
-				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-				{
-					ForumsPosts postsInRequestReply = findForumPost(db, post);
-					if(postsInRequestReply == null)
-					{
-						postsInRequestReply = new ForumsPosts();
-						postsInRequestReply.setForumId(communicationChannel.getOSSMeterId());
-						postsInRequestReply.setTopicId(post.getTopicId());
-						postsInRequestReply.setPostId(post.getPostId());
-						db.getForumPosts().add(postsInRequestReply);
-					}
-					db.sync();
-					
-					plainTextObject=getPlainTextObject(plainTextMetric, postsInRequestReply);
-					hasCode=hasCode(detectingCodeMetric, postsInRequestReply);
-					classifierExtraFeatures = new RequestReplyExternalExtraFeatures(hasCode, plainTextObject.hadReplies());
-					plainText=plainTextObject.getPlainTextAsString();
-					subject=PlainTextNewsgroupsSubject.process(post.getSubject());
-					instancesCollection.addText(getForumPostId(postsInRequestReply), subject + " " + plainText , classifierExtraFeatures);
-				}
-				if(instancesCollection.size()>0)
-				{
-					predictions=classify(instancesCollection);
-					for (CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-					{
-						ForumsPosts postsInRequestReply = findForumPost(db, post);
-						postsInRequestReply.setClassificationResult(predictions.get(getForumPostId(postsInRequestReply)));
-						db.sync();
-					}
-				}
-			}
-			else
-			{
+//			//Process for forums
+//			if(communicationChannel instanceof EclipseForum)
+//			{
+//				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
+//				{
+//					ForumsPosts postsInRequestReply = findForumPost(db, post);
+//					if(postsInRequestReply == null)
+//					{
+//						postsInRequestReply = new ForumsPosts();
+//						postsInRequestReply.setForumId(communicationChannel.getOSSMeterId());
+//						postsInRequestReply.setTopicId(post.getTopicId());
+//						postsInRequestReply.setPostId(post.getPostId());
+//						db.getForumPosts().add(postsInRequestReply);
+//					}
+//					db.sync();
+//					
+//					plainTextObject=getPlainTextObject(plainTextMetric, postsInRequestReply);
+//					hasCode=hasCode(detectingCodeMetric, postsInRequestReply);
+//					classifierExtraFeatures = new RequestReplyExternalExtraFeatures(hasCode, plainTextObject.hadReplies());
+//					plainText=plainTextObject.getPlainTextAsString();
+//					subject=PlainTextNewsgroupsSubject.process(post.getSubject());
+//					instancesCollection.addText(getForumPostId(postsInRequestReply), subject + " " + plainText , classifierExtraFeatures);
+//				}
+//				if(instancesCollection.size()>0)
+//				{
+//					predictions=classify(instancesCollection);
+//					for (CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
+//					{
+//						ForumsPosts postsInRequestReply = findForumPost(db, post);
+//						postsInRequestReply.setClassificationResult(predictions.get(getForumPostId(postsInRequestReply)));
+//						db.sync();
+//					}
+//				}
+//			}
+//			else
+//			{
 				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup))
-					communicationChannelName = communicationChannel.getUrl();
-				else {
+				if (communicationChannel instanceof Discussion) {
+						communicationChannelName = communicationChannel.getUrl();
+				}else if (communicationChannel instanceof EclipseForum) {
+					EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+					communicationChannelName = eclipseForum.getForum_name();
+					
+				}else {
 					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 					communicationChannelName = newsgroup.getNewsGroupName();
 				}
@@ -237,7 +241,7 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 						db.sync();
 					}
 				}
-			}
+//			}
 		}
 		
  	}
@@ -318,38 +322,38 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 			return true;
 	}
 	
-	private String getForumPostId(ForumsPosts post)
-	{
-		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
-	}
+//	private String getForumPostId(ForumsPosts post)
+//	{
+//		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
+//	}
 	
 	
-	private PlainTextObject getPlainTextObject(PlainTextProcessingTransMetric db, ForumsPosts post) {
-		ForumPostPlainTextProcessing forumPostInPlainText = null;
-		Iterable<ForumPostPlainTextProcessing> forumPostIt = db.getForumPosts().
-				find(ForumPostPlainTextProcessing.FORUMID.eq(post.getForumId()),
-						ForumPostPlainTextProcessing.TOPICID.eq(post.getTopicId()),
-						ForumPostPlainTextProcessing.POSTID.eq(post.getPostId()));
-		for (ForumPostPlainTextProcessing fpptp:  forumPostIt) {
-			forumPostInPlainText = fpptp;
-		}
-		return new PlainTextObject(forumPostInPlainText.getPlainText(), forumPostInPlainText.getHadReplies());
-	}
+//	private PlainTextObject getPlainTextObject(PlainTextProcessingTransMetric db, ForumsPosts post) {
+//		ForumPostPlainTextProcessing forumPostInPlainText = null;
+//		Iterable<ForumPostPlainTextProcessing> forumPostIt = db.getForumPosts().
+//				find(ForumPostPlainTextProcessing.FORUMID.eq(post.getForumId()),
+//						ForumPostPlainTextProcessing.TOPICID.eq(post.getTopicId()),
+//						ForumPostPlainTextProcessing.POSTID.eq(post.getPostId()));
+//		for (ForumPostPlainTextProcessing fpptp:  forumPostIt) {
+//			forumPostInPlainText = fpptp;
+//		}
+//		return new PlainTextObject(forumPostInPlainText.getPlainText(), forumPostInPlainText.getHadReplies());
+//	}
 	
-	private boolean hasCode(DetectingCodeTransMetric db, ForumsPosts post) {
-		ForumPostDetectingCode forumPostInDetectionCode = null;
-		Iterable<ForumPostDetectingCode> forumPostIt = db.getForumPosts().
-				find(ForumPostDetectingCode.FORUMID.eq(post.getForumId()),
-						ForumPostDetectingCode.TOPICID.eq(post.getTopicId()),
-						ForumPostDetectingCode.POSTID.eq(post.getPostId()));
-		for (ForumPostDetectingCode fpdc:  forumPostIt) {
-			forumPostInDetectionCode = fpdc;
-		}
-		if(forumPostInDetectionCode.getCode() == null)
-			return false;
-		else
-			return true;
-	}
+//	private boolean hasCode(DetectingCodeTransMetric db, ForumsPosts post) {
+//		ForumPostDetectingCode forumPostInDetectionCode = null;
+//		Iterable<ForumPostDetectingCode> forumPostIt = db.getForumPosts().
+//				find(ForumPostDetectingCode.FORUMID.eq(post.getForumId()),
+//						ForumPostDetectingCode.TOPICID.eq(post.getTopicId()),
+//						ForumPostDetectingCode.POSTID.eq(post.getPostId()));
+//		for (ForumPostDetectingCode fpdc:  forumPostIt) {
+//			forumPostInDetectionCode = fpdc;
+//		}
+//		if(forumPostInDetectionCode.getCode() == null)
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	
 	private BugTrackerComments findBugTrackerComment(RequestReplyClassificationTransMetric db, BugTrackingSystemComment comment)
@@ -380,19 +384,19 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 		return newsgroupArticles;
 	}
 	
-	private ForumsPosts findForumPost(RequestReplyClassificationTransMetric db, CommunicationChannelForumPost post) {
-		ForumsPosts forumPosts = null;
-		Iterable<ForumsPosts> forumPostsIt = 
-				db.getForumPosts().
-						find(ForumsPosts.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
-								ForumsPosts.TOPICID.eq(post.getTopicId()), 
-								ForumsPosts.POSTID.eq(post.getPostId()));
-		for (ForumsPosts fprr:  forumPostsIt)
-		{
-			forumPosts = fprr;
-		}
-		return forumPosts;
-	}
+//	private ForumsPosts findForumPost(RequestReplyClassificationTransMetric db, CommunicationChannelForumPost post) {
+//		ForumsPosts forumPosts = null;
+//		Iterable<ForumsPosts> forumPostsIt = 
+//				db.getForumPosts().
+//						find(ForumsPosts.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
+//								ForumsPosts.TOPICID.eq(post.getTopicId()), 
+//								ForumsPosts.POSTID.eq(post.getPostId()));
+//		for (ForumsPosts fprr:  forumPostsIt)
+//		{
+//			forumPosts = fprr;
+//		}
+//		return forumPosts;
+//	}
 
 	private void clearDB(RequestReplyClassificationTransMetric db) {
 		db.getBugTrackerComments().getDbCollection().drop();
