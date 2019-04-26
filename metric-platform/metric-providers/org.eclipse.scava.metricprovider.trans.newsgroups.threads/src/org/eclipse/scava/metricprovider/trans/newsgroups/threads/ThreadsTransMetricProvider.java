@@ -40,6 +40,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
@@ -62,6 +63,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
 		}
 		return false;
 	}
@@ -124,8 +126,15 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			
 			if (communicationChannelDelta.getArticles().size() > 0) {
 				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup))
+				if (communicationChannel instanceof Discussion)
 					communicationChannelName = communicationChannel.getUrl();
+				
+				else if (communicationChannel instanceof EclipseForum) {
+					
+					EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+					communicationChannelName = eclipseForum.getForum_name();
+					
+				}
 				else {
 					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 					communicationChannelName = newsgroup.getNewsGroupName();
@@ -233,11 +242,11 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		db.sync();
 	}
 	
-	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db)
+	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db, String newsgroupName)
 	{
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(newsgroupName),
 						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
@@ -254,7 +263,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		instance.setArticleNumber(article.getArticleNumber());
 		instance.setNewsgroupName(communicationChannelName);
 		instance.setSubject(article.getSubject());
-		instance.setText(getNaturalLanguage(article, db));
+		instance.setText(getNaturalLanguage(article, db, communicationChannelName));
 		return instance;
 	}
 
