@@ -598,8 +598,24 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	
 	private String naturalLanguageNewsgroupArticle(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
+		
+		String newsGroupName = null;
+		
+		if (article.getCommunicationChannel() instanceof NntpNewsGroup) {
+			
+			NntpNewsGroup newsgroup = (NntpNewsGroup) article.getCommunicationChannel();
+			newsGroupName = newsgroup.getName();
+			
+		}else {
+
+			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
+			newsGroupName = eclipseForum.getForum_name();
+
+		}
+		
+		
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(newsGroupName),
 						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
