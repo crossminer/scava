@@ -208,7 +208,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		{
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			if(communicationChannel instanceof EclipseForum)
-			{
+			{	//DC :  this may not be required
 				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
 				{
 					//Find posts previously analyzed, if null, we haven't analyzed that topic/thread
@@ -375,7 +375,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 		
  	}
-	
+	//DC :  this method is no required
 	private ForumPostData prepareForumPostData(Classifier classifier, CommunicationChannelForumPost post)
 	{
 		ClassifierMessage classifierMessage = prepareForumPostClassifierMessage(post);
@@ -519,6 +519,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
         return classifierMessage;
 	}
 	
+	//DC :  this method is no required
 	private ClassifierMessage prepareForumPostClassifierMessage(CommunicationChannelForumPost post, DetectingCodeTransMetric db) {
 		ClassifierMessage classifierMessage = prepareForumPostClassifierMessage(post);
 		classifierMessage.setForumId(post.getCommunicationChannel().getOSSMeterId());
@@ -531,7 +532,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		}
 		return classifierMessage;
 	}
-	
+	//DC :  this method is no required
 	private ClassifierMessage prepareForumPostClassifierMessage(CommunicationChannelForumPost post) {
 		ClassifierMessage classifierMessage = new ClassifierMessage();
 		classifierMessage.setForumId(post.getCommunicationChannel().getOSSMeterId());
@@ -559,6 +560,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return bugTrackerBugsData;
 	}
 	
+	//DC :  this method is no required
 	private ForumPostData findForumPost(SeverityClassificationTransMetric db, CommunicationChannelForumPost post) {
 		ForumPostData forumPostsData = null;
 		Iterable<ForumPostData> forumPostsDataIt = 
@@ -571,6 +573,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return forumPostsData;
 	}
 	
+	//DC :  this method is no required
 	private String naturalLanguageForumPost(DetectingCodeTransMetric db, CommunicationChannelForumPost post) {
 		ForumPostDetectingCode forumPostInDetectionCode = null;
 		
