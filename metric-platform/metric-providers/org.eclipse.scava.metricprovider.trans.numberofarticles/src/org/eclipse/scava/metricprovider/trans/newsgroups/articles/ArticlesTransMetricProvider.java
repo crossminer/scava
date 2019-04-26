@@ -23,6 +23,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
@@ -56,6 +57,7 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof Discussion) return true;
 		}
 		return false;
@@ -88,9 +90,16 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			String communicationChannelName;
-			if (!(communicationChannel instanceof NntpNewsGroup))
+			if (communicationChannel instanceof Discussion)
+			
 				communicationChannelName = communicationChannel.getUrl();
-			else {
+			
+			else if (communicationChannel instanceof EclipseForum) {
+				
+				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+				communicationChannelName = eclipseForum.getForum_name();
+			
+			}else {
 				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 				communicationChannelName = newsgroup.getNewsGroupName();
 			}
