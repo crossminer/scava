@@ -213,7 +213,11 @@ public class GitHubImporter implements IImporter {
 			try {
 				if (getRemainingResource() == 0)
 					waitApiRate();
-				URL obj2 = new URL("https://api.github.com/repositories?since=" + lastImportedId + authString);
+				URL obj2;
+				if(authString!=null)
+					obj2 = new URL("https://api.github.com/repositories?since=" + lastImportedId + authString);
+				else
+					obj2 = new URL("https://api.github.com/repositories?since=" + lastImportedId);
 				URLConnection conn = obj2.openConnection();
 				String sorry = conn.getHeaderField("STATUS");
 				if (sorry.startsWith("404"))
@@ -274,7 +278,11 @@ public class GitHubImporter implements IImporter {
 			JSONObject currentRepo = null;
 			Boolean projectToBeUpdated = false;
 			logger.info("---> processing repository " + projectId);
-			URL obj = new URL("https://api.github.com/repos/" + projectId + authString);
+			URL obj;
+			if(authString!=null)
+				obj = new URL("https://api.github.com/repos/" + projectId + authString);
+			else
+				obj = new URL("https://api.github.com/repos/" + projectId);
 			URLConnection conn = obj.openConnection();
 			String sorry = conn.getHeaderField("STATUS");
 			if (sorry.startsWith("404"))
