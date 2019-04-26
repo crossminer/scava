@@ -17,11 +17,11 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
-import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
+//import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTrackerCommentsEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
-import org.eclipse.scava.metricprovider.trans.emotionclassification.model.ForumPostEmotionClassification;
+//import org.eclipse.scava.metricprovider.trans.emotionclassification.model.ForumPostEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification;
 import org.eclipse.scava.nlp.classifiers.emotionclassifier.EmotionClassifier;
 import org.eclipse.scava.nlp.tools.predictions.multilabel.MultiLabelPredictionCollection;
@@ -142,23 +142,23 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 			instancesCollection.addText(getNewsgroupArticleId(article), article.getNaturalLanguage());
 		}
 		
-		Iterable<ForumPostDetectingCode> postsIt = detectingCodeMetric.getForumPosts();
+//		Iterable<ForumPostDetectingCode> postsIt = detectingCodeMetric.getForumPosts();
 		
-		for(ForumPostDetectingCode post : postsIt)
-		{
-			ForumPostEmotionClassification postInEmotion = findForumPost(db, post);
-			if(postInEmotion == null)
-			{
-				postInEmotion = new ForumPostEmotionClassification();
-				postInEmotion.setForumId(post.getForumId());
-				postInEmotion.setTopicId(post.getTopicId());
-				postInEmotion.setPostId(post.getPostId());
-				db.getForumPosts().add(postInEmotion);
-			}
-			db.sync();
-			instancesCollection.addText(getForumPostId(post), post.getNaturalLanguage());
-		}
-		
+//		for(ForumPostDetectingCode post : postsIt)
+//		{
+//			ForumPostEmotionClassification postInEmotion = findForumPost(db, post);
+//			if(postInEmotion == null)
+//			{
+//				postInEmotion = new ForumPostEmotionClassification();
+//				postInEmotion.setForumId(post.getForumId());
+//				postInEmotion.setTopicId(post.getTopicId());
+//				postInEmotion.setPostId(post.getPostId());
+//				db.getForumPosts().add(postInEmotion);
+//			}
+//			db.sync();
+//			instancesCollection.addText(getForumPostId(post), post.getNaturalLanguage());
+//		}
+//		
 		
 		if(instancesCollection.size()!=0)
 		{
@@ -184,12 +184,12 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 				db.sync();
 			}
 			
-			for(ForumPostDetectingCode post : postsIt)
-			{
-				ForumPostEmotionClassification postInSentiment = findForumPost(db, post);
-				postInSentiment.getEmotions().addAll(predictions.get(getForumPostId(post)));
-				db.sync();
-			}
+//			for(ForumPostDetectingCode post : postsIt)
+//			{
+//				ForumPostEmotionClassification postInSentiment = findForumPost(db, post);
+//				postInSentiment.getEmotions().addAll(predictions.get(getForumPostId(post)));
+//				db.sync();
+//			}
 		}
 		
 	}
@@ -204,10 +204,10 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleNumber();
 	}
 	
-	private String getForumPostId(ForumPostDetectingCode post)
-	{
-		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
-	}
+//	private String getForumPostId(ForumPostDetectingCode post)
+//	{
+//		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
+//	}
 	
 	private BugTrackerCommentsEmotionClassification findBugTrackerComment(EmotionClassificationTransMetric db, BugTrackerCommentDetectingCode comment)
 	{
@@ -236,18 +236,18 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 		return newsgroupArticlesData;
 	}
 	
-	private ForumPostEmotionClassification findForumPost(EmotionClassificationTransMetric db, ForumPostDetectingCode post) {
-		ForumPostEmotionClassification forumPostData = null;
-		Iterable<ForumPostEmotionClassification> forumPostsDataIt = 
-				db.getForumPosts().
-						find(ForumPostEmotionClassification.FORUMID.eq(post.getForumId()),
-								ForumPostEmotionClassification.TOPICID.eq(post.getTopicId()), 
-								ForumPostEmotionClassification.POSTID.eq(post.getPostId()));
-		for (ForumPostEmotionClassification nad:  forumPostsDataIt) {
-			forumPostData = nad;
-		}
-		return forumPostData;
-	}
+//	private ForumPostEmotionClassification findForumPost(EmotionClassificationTransMetric db, ForumPostDetectingCode post) {
+//		ForumPostEmotionClassification forumPostData = null;
+//		Iterable<ForumPostEmotionClassification> forumPostsDataIt = 
+//				db.getForumPosts().
+//						find(ForumPostEmotionClassification.FORUMID.eq(post.getForumId()),
+//								ForumPostEmotionClassification.TOPICID.eq(post.getTopicId()), 
+//								ForumPostEmotionClassification.POSTID.eq(post.getPostId()));
+//		for (ForumPostEmotionClassification nad:  forumPostsDataIt) {
+//			forumPostData = nad;
+//		}
+//		return forumPostData;
+//	}
 
 	//TODO: Check if this is valid
 	//Do not delete the articles database, it is used in other metrics
