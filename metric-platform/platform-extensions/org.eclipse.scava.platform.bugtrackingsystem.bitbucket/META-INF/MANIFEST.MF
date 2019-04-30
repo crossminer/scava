@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.joda.time,
  com.fasterxml.jackson,
  com.squareup.okhttp3,
- org.eclipse.scava.platform.bugtrackingsystem
+ org.eclipse.scava.platform.bugtrackingsystem,
+ org.apache.log4j;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.bitbucket,

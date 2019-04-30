@@ -10,11 +10,15 @@
 package org.eclipse.scava.platform.bugtrackingsystem.bitbucket;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.model.issue.Issue;
@@ -23,6 +27,7 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem;
 import org.joda.time.DateTime;
@@ -51,8 +56,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private int timeToReset;
 	@SuppressWarnings("unused")
 	private int rateLimit;
-	private static String host = "https://api.bitbucket.org/";
-	private static String exthost = "2.0/repositories/";
+	private static String exthost = "/2.0/repositories/";
 	private final static String PAGE_SIZE = "10";
 	private int current_page;
 	private int next_page;
@@ -80,8 +84,10 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
 		delta.setBugTrackingSystem(bitbucketTracker);
-
-		for (Issue issue : getIssues(bitbucketTracker)) {
+		
+		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
+		
+		for (Issue issue : getIssues(processedURL)) {
 
 			Date created_on = new Date(convertStringToDate(issue.getCreatedOn()));
 
@@ -103,7 +109,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 			}
 
-			for (BitbucketComment comment : getComments(bitbucketTracker, issue.getId())) {
+			for (BitbucketComment comment : getComments(bitbucketTracker, processedURL, issue.getId())) {
 				
 				Date created = new Date(comment.getCreationTime());
 		
@@ -126,9 +132,11 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
+		
+		HttpUrl.Builder builder = HttpUrl.parse(processedURL.getHost() + exthost).newBuilder();
+		builder.addEncodedPathSegment(processedURL.getOwner());
+		builder.addEncodedPathSegment(processedURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
 		builder.addEncodedQueryParameter("pagelen", PAGE_SIZE); // page size
@@ -153,21 +161,73 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		return firstDate;
 
 	}
+	
+	// ----------------------------------------------------------------------------------------
+	// URL manager
+	// ----------------------------------------------------------------------------------------
+	
+	private class ProcessedBitBucketURL
+	{
+		private String host=null;
+		private String owner=null;
+		private String repository=null;
+		private Pattern protocolRegex=Pattern.compile("^https?://");
+		private Pattern ownerRepositoryRegex=Pattern.compile("^/([^/]+)/([^/]+)/");
+		private OssmeterLogger logger;
+		
+		public ProcessedBitBucketURL(BitbucketBugTrackingSystem bitbucketTracker)
+		{
+			logger = (OssmeterLogger) OssmeterLogger.getLogger("bitbucket.urlprocessor");
+			String url = bitbucketTracker.getUrl();
+			if(!protocolRegex.matcher(url).find())
+				url = "https://"+url;
+			try {
+				URI projectURI = new URI(url);
+				host = "https://api."+projectURI.getHost();
+				Matcher m = ownerRepositoryRegex.matcher(projectURI.getPath());
+				if(m.find())
+				{
+					owner=m.group(1);
+					repository=m.group(2);
+				}
+				else
+					throw new UnsupportedOperationException("No project owner or repository could be found in "+projectURI.getPath());
+				
+			} catch (URISyntaxException | UnsupportedOperationException e) {
+				logger.error("Error while parsing the URL:"+e);
+				e.printStackTrace();
+			}
+		}
+
+		public String getHost() {
+			return host;
+		}
+
+		public String getOwner() {
+			return owner;
+		}
+
+		public String getRepository() {
+			return repository;
+		}
+		
+		
+	}
 
 	// ----------------------------------------------------------------------------------------
 	// REQUEST METHODS
 	// ----------------------------------------------------------------------------------------
-	private List<Issue> getIssues(BitbucketBugTrackingSystem bitbucketTracker) throws IOException {
+	private List<Issue> getIssues(ProcessedBitBucketURL processedBitBucketURL) throws IOException {
 
 		List<Issue> issues = new ArrayList<>();
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
+		HttpUrl.Builder builder = HttpUrl.parse(processedBitBucketURL.getHost() + exthost).newBuilder();
 		// builder.addEncodedPathSegment(bitbucketTracker.getLogin());
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		builder.addEncodedPathSegment(processedBitBucketURL.getOwner());
+		builder.addEncodedPathSegment(processedBitBucketURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
 		// Add date range
@@ -248,7 +308,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 	}
 
-	private List<BitbucketComment> getComments(BitbucketBugTrackingSystem bitbucketTracker, String issue_id)
+	private List<BitbucketComment> getComments(BitbucketBugTrackingSystem bitbucketTracker, ProcessedBitBucketURL processedBitBucketURL, String issue_id)
 			throws IOException {
 
 		List<BitbucketComment> comments = new ArrayList<>();
@@ -256,9 +316,9 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		HttpUrl.Builder builder = HttpUrl.parse(processedBitBucketURL.getHost() + exthost).newBuilder();
+		builder.addEncodedPathSegment(processedBitBucketURL.getOwner());
+		builder.addEncodedPathSegment(processedBitBucketURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedPathSegment(issue_id);
 		builder.addEncodedPathSegment("comments");
