@@ -173,7 +173,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.PHP</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.activecommitters</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.bugheadermetadata</module>
+    
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.churnpercommit</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.clones</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.comments</module>
@@ -317,6 +317,9 @@
     </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata
     </module>
   </modules>
   <build>
