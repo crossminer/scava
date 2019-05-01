@@ -50,8 +50,6 @@ import okhttp3.Response;
 
 public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugTrackingSystem> {
 	
-	
-
 	private int callsRemaning;
 	private int timeToReset;
 	@SuppressWarnings("unused")
@@ -64,12 +62,12 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private String open_id;
 	private String builder;
 	private OkHttpClient client;
+	private boolean temporalFlag;
 
 	public BitbucketManager() {
 
 		this.open_id = "";
 		this.builder = "";
-
 		this.client = new OkHttpClient();
 	}
 
@@ -81,8 +79,18 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	@Override
 	public BugTrackingSystemDelta getDelta(DB db, BitbucketBugTrackingSystem bitbucketTracker, Date date)
 			throws Exception {
-
+		
+		
+		if(temporalFlag==false){
+		
+			getFirstDate(db, bitbucketTracker);
+			temporalFlag=true;
+		
+		}
+		
+		
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
+		
 		delta.setBugTrackingSystem(bitbucketTracker);
 		
 		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
@@ -127,9 +135,13 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 	@Override
 	public Date getFirstDate(DB db, BitbucketBugTrackingSystem bitbucketTracker) throws Exception {
-
+		
+		setClient(bitbucketTracker);
+		
 		Date firstDate = null;
+		
 		ObjectMapper mapper = new ObjectMapper();
+		
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
@@ -346,9 +358,12 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 				if (!(element.get("user") == null)) {
 
 					JsonNode user = new ObjectMapper().readTree(element.get("user").toString());
-
-					username = user.get("username").toString();
-
+					
+						username = user.get("username").toString();
+					
+				}else {
+					
+					username = "Former User";
 				}
 
 				if (!(rootNode == null)) {
@@ -488,11 +503,14 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 					Request request = chain.request();
 					Request.Builder newRequest = null;
 
-					if (!((bitbucket.getLogin() == null) && (bitbucket.getPassword() == null))) {
+					if (!((bitbucket.getLogin().equals("null") && (bitbucket.getPassword().equals("null"))))) {
 
 						newRequest = request.newBuilder().addHeader("authorization",
 								Credentials.basic(bitbucket.getLogin(), bitbucket.getPassword()));
 
+					}else {
+						
+						newRequest = request.newBuilder();
 					}
 					
 					//FIXME: OAuth authentication - reader currently defaults to unauthenticated client
@@ -530,34 +548,34 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		this.client = newClient.build();
 	}
 
-	// TODO - Modify to generate Token using GitLabs requirements
-	private void generateOAuth2Token(BitbucketBugTrackingSystem bitbucket) throws IOException {
-
-		System.out.println("Generating OAuth token");
-		OkHttpClient genClient = new OkHttpClient();
-		// HttpUrl.Builder httpurlBuilder =
-		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
-
-		FormBody.Builder formBodyBuilder = new FormBody.Builder();
-		formBodyBuilder.add("grant_type", "client_credentials");
-		// formBodyBuilder.add("client_id", bitbucket.getClient_id());
-		// formBodyBuilder.add("client_secret", bitbucket.getClient_secret());
-
-		FormBody body = formBodyBuilder.build();
-
-		// Used for a POST request
-		Request.Builder builder = new Request.Builder();
-		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
-		builder = builder.post(body);
-		Request request = builder.build();
-		Response response = genClient.newCall(request).execute();
-		checkHeader(response.headers(), bitbucket);
-
-		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
-		String open_id = BitbucketUtils.fixString(jsonNode.get("access_token").toString());
-
-		this.open_id = open_id;
-	}
+	// TODO - Modify to generate Token using Bitbucket requirements
+//	private void generateOAuth2Token(BitbucketBugTrackingSystem bitbucket) throws IOException {
+//
+//		System.out.println("Generating OAuth token");
+//		OkHttpClient genClient = new OkHttpClient();
+//		// HttpUrl.Builder httpurlBuilder =
+//		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
+//
+//		FormBody.Builder formBodyBuilder = new FormBody.Builder();
+//		formBodyBuilder.add("grant_type", "client_credentials");
+//		// formBodyBuilder.add("client_id", bitbucket.getClient_id());
+//		// formBodyBuilder.add("client_secret", bitbucket.getClient_secret());
+//
+//		FormBody body = formBodyBuilder.build();
+//
+//		// Used for a POST request
+//		Request.Builder builder = new Request.Builder();
+//		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
+//		builder = builder.post(body);
+//		Request request = builder.build();
+//		Response response = genClient.newCall(request).execute();
+//		checkHeader(response.headers(), bitbucket);
+//
+//		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
+//		String open_id = BitbucketUtils.fixString(jsonNode.get("access_token").toString());
+//
+//		this.open_id = open_id;
+//	}
 
 	/**
 	 * This method checks the HTTP response headers for current values associated
@@ -616,7 +634,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		try {
 
-			System.err.println("[Git Lab Reader] The rate limit has been reached. This thread will be suspended for "
+			System.err.println("[Bitbucket Manager] The rate limit has been reached. This thread will be suspended for "
 					+ this.timeToReset + " seconds until the limit has been reset");
 			Thread.sleep((this.timeToReset * 1000l) + 2);
 
@@ -653,6 +671,5 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		return null;
 	}
-
 
 }
