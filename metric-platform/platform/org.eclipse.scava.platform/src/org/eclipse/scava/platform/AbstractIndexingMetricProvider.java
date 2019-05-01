@@ -47,5 +47,6 @@ public abstract class AbstractIndexingMetricProvider implements ITransientMetric
 	
 	@Override
 	abstract public void measure(Project project, ProjectDelta delta, Indexing db);
-		
+	
+	
 }

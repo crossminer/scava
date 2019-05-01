@@ -10,7 +10,6 @@ public class Index extends Pongo {
 	
 	protected List<String> metricDependencies = null;
 	
-	
 	public Index() { 
 		super();
 		dbObject.put("metricDependencies", new BasicDBList());

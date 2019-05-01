@@ -27,7 +27,6 @@ public class IndexCollection extends PongoCollection<Index> {
 		return index;
 	}
 	
-
 	public long countByMetricId(String q) {
 		return dbCollection.count(new BasicDBObject("metricId", q + ""));
 	}

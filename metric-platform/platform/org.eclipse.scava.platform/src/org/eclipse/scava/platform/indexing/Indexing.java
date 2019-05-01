@@ -18,7 +18,6 @@ public class Indexing extends PongoDB {
 		return indexs;
 	}
 	
-	
 	@Override
 	public void setDb(DB db) {
 		super.setDb(db);
