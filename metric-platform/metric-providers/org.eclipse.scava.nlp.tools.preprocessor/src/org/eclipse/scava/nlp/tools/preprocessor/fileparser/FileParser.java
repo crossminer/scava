@@ -22,7 +22,7 @@ public class FileParser
 	
 	static
 	{
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.preprocessor.pdfparser");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.preprocessor.fileparser");
 	}
 	
 	public static String extractTextAsString(File file)

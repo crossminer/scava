@@ -128,6 +128,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
 					case "redmine": plainTextObject=PlainTextRedmine.process(comment.getText()); break;
 					//case "mantis":
+					//case "sourceforge":
 					default: plainTextObject=PlainTextBugTrackersOthers.process(comment.getText()); break;
 				}
 				commentsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
