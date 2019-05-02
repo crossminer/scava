@@ -94,6 +94,9 @@ public class SourceForgeManager implements
 				.getItemsAfterDate(day);
 
 		SourceForgeTrackingSystemDelta delta = new SourceForgeTrackingSystemDelta();
+		
+		delta.setBugTrackingSystem(bugTracker);
+		
 		for (SourceForgeTicket ticket : tickets) {
 
 			if (DateUtils.isSameDay(ticket.getUpdateDate(), day)) {
