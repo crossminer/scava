@@ -27,7 +27,14 @@ public class BitbucketIssue extends BugTrackingSystemBug {
 	public BitbucketIssue(Issue issue, BitbucketBugTrackingSystem bitbucketTracker ) {
 		this.bugTrackingSystem = bitbucketTracker;
 		this.bugId = issue.getId();
-		this.creator = issue.getReporter().getUsername().replaceAll("\"", "");
+		try {
+			this.creator = issue.getReporter().getUsername().replaceAll("\"", "");
+		}catch(NullPointerException np) {
+			this.creator = "Former User";	
+		}	
+		
+		
+		
 		this.creationTime = convertStringToDate(issue.getCreatedOn());
 		this.status = issue.getState();
 		this.summary = issue.getTitle();
