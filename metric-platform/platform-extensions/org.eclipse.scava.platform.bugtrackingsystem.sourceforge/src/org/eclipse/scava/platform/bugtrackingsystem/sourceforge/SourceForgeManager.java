@@ -71,10 +71,9 @@ public class SourceForgeManager implements
 
 		@Override
 		public void process(SourceForgeTicket item, BugTrackingSystem bugTracker) {
-			item.setBugTrackingSystem(bugTracker); // Is this needed?
-			item.setDescription(null); // remove content field
+			item.setBugTrackingSystem(bugTracker);
 			for (BugTrackingSystemComment comment : item.getComments()) {
-				comment.setBugTrackingSystem(bugTracker); // Is this needed?
+				comment.setBugTrackingSystem(bugTracker);
 			}
 		}
 	}
