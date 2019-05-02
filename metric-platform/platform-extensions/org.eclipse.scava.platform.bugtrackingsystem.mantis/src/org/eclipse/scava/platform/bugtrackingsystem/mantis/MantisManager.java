@@ -34,17 +34,8 @@ import okhttp3.Response;
 
 public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackingSystem> {
 
-	
-
 	private final static String PAGE_SIZE = "100";
-	private List<MantisIssue> mantisIssueList;
 	
-	public MantisManager() {
-
-		this.mantisIssueList = new ArrayList<>();
-
-	}
-
 	@Override
 	public boolean appliesTo(BugTrackingSystem bugTrackingSystem) {
 		return bugTrackingSystem instanceof MantisBugTrackingSystem;
@@ -54,24 +45,29 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 	public BugTrackingSystemDelta getDelta(DB db, MantisBugTrackingSystem bugTrackingSystem, Date date)
 			throws Exception {
 		
-		
-
+	
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
+	
 		delta.setBugTrackingSystem(bugTrackingSystem);
-		for (MantisIssue issue : mantisIssueList) {
+		
+		for (MantisIssue issue : getIssues(bugTrackingSystem)) {
+		
 			if (issue.getCreationTime() == issue.getUpdated_at()){
+			
 				delta.getNewBugs().add(issue);
 				
 			}else if (DateUtils.isSameDay(issue.getCreationTime(), date.toJavaDate())) {
+				
 				delta.getNewBugs().add(issue);
+		
 			}
 			
 			if(issue.getNotes() != null){
 				
 				for(BugTrackingSystemComment note : issue.getNotes()){
+			
 					if (DateUtils.isSameDay(note.getCreationTime(), date.toJavaDate())){
-						
-											
+												
 						delta.getComments().add(note);
 
 					}
@@ -81,20 +77,20 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 			if (issue.getUpdated_at() != null) {
 				
 				if (DateUtils.isSameDay(issue.getUpdated_at(), date.toJavaDate())) {
+					
 					delta.getUpdatedBugs().add(issue);
+				
 				}
 			}
-			
-
-
 		}
 		return delta;
 	}
 
-	@Override
-	public Date getFirstDate(DB db, MantisBugTrackingSystem bugTrackingSystem)
-			throws IOException, NullPointerException {
-
+	
+	private List<MantisIssue> getIssues(MantisBugTrackingSystem bugTrackingSystem) {
+		
+		List<MantisIssue> issues = new ArrayList<>();
+		
 		OkHttpClient mantisClient = new OkHttpClient();
 
 		HttpUrl.Builder url = HttpUrl.parse(bugTrackingSystem.getHost()).newBuilder().addEncodedPathSegment("api")
@@ -104,6 +100,7 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 		Request request = new Request.Builder().get().url(url.toString())
 				.addHeader("Authorization", bugTrackingSystem.getToken()).build();
 
+		try {
 		Response response = mantisClient.newCall(request).execute();
 
 		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string()).get("issues");
@@ -137,12 +134,26 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 				issue.setOs_build(MantisReaderUtils.setAttribute(node, "os_build"));
 				issue.setNotes(MantisReaderUtils.setNotes(issue, node));
 				
-				mantisIssueList.add(issue);
+				issues.add(issue);
 
 			}
 		}
+		}catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		
+		return issues;
+	}
+	
+	
+	@Override
+	public Date getFirstDate(DB db, MantisBugTrackingSystem bugTrackingSystem)
+			throws IOException, NullPointerException {
 
-		Date firstDate = new Date((mantisIssueList.get(mantisIssueList.size() - 1).getCreationTime()));
+		List<MantisIssue> issues = getIssues(bugTrackingSystem);
+
+		Date firstDate = new Date((issues.get(issues.size() - 1).getCreationTime()));
 
 		return firstDate;
 
