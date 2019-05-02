@@ -321,6 +321,12 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.references
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.references
+    </module>
   </modules>
   <build>
     <plugins>

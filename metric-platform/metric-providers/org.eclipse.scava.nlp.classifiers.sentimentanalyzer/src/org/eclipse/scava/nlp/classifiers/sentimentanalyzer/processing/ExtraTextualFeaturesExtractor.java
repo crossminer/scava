@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.eclipse.scava.nlp.tools.other.featuresextractor.RegexFeaturesExtractor;
+import org.eclipse.scava.nlp.tools.other.regexdataextractor.RegexDataExtractor;
 
 
 class ExtraTextualFeaturesExtractor
@@ -72,38 +72,38 @@ class ExtraTextualFeaturesExtractor
 		String[] textSplit = text.split("\\h+");
 		List<Double> counters = new ArrayList<Double>();
 		
-		counters.add((double) RegexFeaturesExtractor.findPattern(consecutivePositiveEmoticons, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(consecutiveNegativeEmoticons, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(exclamation_repeatition, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(question_repetition, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(ellipsis, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(question, text));
-		counters.add((double) RegexFeaturesExtractor.findPattern(exclamation, text));
-		counters.add((double) (RegexFeaturesExtractor.findPattern(mixed_repetition1, text)+RegexFeaturesExtractor.findPattern(mixed_repetition2, text)));
+		counters.add((double) RegexDataExtractor.countPattern(consecutivePositiveEmoticons, text));
+		counters.add((double) RegexDataExtractor.countPattern(consecutiveNegativeEmoticons, text));
+		counters.add((double) RegexDataExtractor.countPattern(exclamation_repeatition, text));
+		counters.add((double) RegexDataExtractor.countPattern(question_repetition, text));
+		counters.add((double) RegexDataExtractor.countPattern(ellipsis, text));
+		counters.add((double) RegexDataExtractor.countPattern(question, text));
+		counters.add((double) RegexDataExtractor.countPattern(exclamation, text));
+		counters.add((double) (RegexDataExtractor.countPattern(mixed_repetition1, text)+RegexDataExtractor.countPattern(mixed_repetition2, text)));
 		
 		
-		counters.add((double) RegexFeaturesExtractor.findPattern(questionWords, textSplit));
-		counters.add((double) RegexFeaturesExtractor.findPattern(positiveEmoticons, textSplit));
-		counters.add((double) RegexFeaturesExtractor.findPattern(negativeEmoticons, textSplit));
-		counters.add((double) RegexFeaturesExtractor.findPattern(uppercase_wods, textSplit));
-		counters.add((double) RegexFeaturesExtractor.findPattern(elongated_words, textSplit));
-		counters.add((double) (RegexFeaturesExtractor.findPattern(negation1, textSplit)+RegexFeaturesExtractor.findPattern(negation2, textSplit)));
+		counters.add((double) RegexDataExtractor.countTokenPattern(questionWords, textSplit));
+		counters.add((double) RegexDataExtractor.countTokenPattern(positiveEmoticons, textSplit));
+		counters.add((double) RegexDataExtractor.countTokenPattern(negativeEmoticons, textSplit));
+		counters.add((double) RegexDataExtractor.countTokenPattern(uppercase_wods, textSplit));
+		counters.add((double) RegexDataExtractor.countTokenPattern(elongated_words, textSplit));
+		counters.add((double) (RegexDataExtractor.countTokenPattern(negation1, textSplit)+RegexDataExtractor.countTokenPattern(negation2, textSplit)));
 		
 		
 		//First token contains
-		counters.add((double) RegexFeaturesExtractor.findPattern(positiveEmoticons, textSplit[0]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(negativeEmoticons, textSplit[0]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(exclamation, textSplit[0]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(question, textSplit[0]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(ellipsis, textSplit[0]));
+		counters.add((double) RegexDataExtractor.countPattern(positiveEmoticons, textSplit[0]));
+		counters.add((double) RegexDataExtractor.countPattern(negativeEmoticons, textSplit[0]));
+		counters.add((double) RegexDataExtractor.countPattern(exclamation, textSplit[0]));
+		counters.add((double) RegexDataExtractor.countPattern(question, textSplit[0]));
+		counters.add((double) RegexDataExtractor.countPattern(ellipsis, textSplit[0]));
 		
 		//Last token contains
-		counters.add((double) RegexFeaturesExtractor.findPattern(positiveEmoticons, textSplit[textSplit.length-1]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(negativeEmoticons, textSplit[textSplit.length-1]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(exclamation, textSplit[textSplit.length-1]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(question, textSplit[textSplit.length-1]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(fullStop, textSplit[textSplit.length-1]));
-		counters.add((double) RegexFeaturesExtractor.findPattern(ellipsis, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(positiveEmoticons, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(negativeEmoticons, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(exclamation, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(question, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(fullStop, textSplit[textSplit.length-1]));
+		counters.add((double) RegexDataExtractor.countPattern(ellipsis, textSplit[textSplit.length-1]));
 		return counters;
 	}
 }
