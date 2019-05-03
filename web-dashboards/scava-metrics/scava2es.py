@@ -126,7 +126,7 @@ def uuid(*args):
     if uuid_sha1 not in UUIDS:
         UUIDS[uuid_sha1] = args
     else:
-        logging.warning("Detected scava item value %s" % str(args))
+        logging.debug("Detected scava item value %s" % str(args))
         global DUPLICATED_UUIDS
         DUPLICATED_UUIDS += 1
 
@@ -135,7 +135,7 @@ def uuid(*args):
 
 def create_item_metrics_from_barchart(mdata, mupdated):
     if not isinstance(mdata['y'], str):
-        logging.warning("Barchart metric, Y axis not handled %s", mdata)
+        logging.debug("Barchart metric, Y axis not handled %s", mdata)
         return []
 
     values = [bar[mdata['y']] for bar in mdata['datatable']]
@@ -222,7 +222,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
                 metric['metric_es_value'] = sample['Smells']
 
             if metric['metric_es_value'] is None:
-                logging.warning("Linechart metric not handled %s", sample)
+                logging.debug("Linechart metric not handled %s", sample)
 
             if 'Date' in sample:
                 metric['metric_es_compute'] = 'sample'
@@ -251,7 +251,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
 
                 metrics.append(metric)
     else:
-        logging.warning("Linechart metric, Y axis not handled %s", mdata)
+        logging.debug("Linechart metric, Y axis not handled %s", mdata)
 
     return metrics
 
@@ -283,7 +283,7 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
 
             metrics.append(metric)
         else:
-            logging.warning("Linechart series metric, Y axis not handled %s", mdata)
+            logging.debug("Linechart series metric, Y axis not handled %s", mdata)
     return metrics
 
 
@@ -329,7 +329,7 @@ def extract_metrics(scava_metric):
         for item_metric in create_item_metrics_from_linechart_series(mdata, mupdated):
             item_metrics.append(item_metric)
     else:
-        logging.warning("Metric type %s not handled, skipping item %s", mdata['type'], scava_metric)
+        logging.debug("Metric type %s not handled, skipping item %s", mdata['type'], scava_metric)
 
     logging.debug("Metrics found: %s", item_metrics)
     return item_metrics
@@ -362,8 +362,8 @@ def enrich_metrics(scava_metrics, meta_info):
         # and https://github.com/crossminer/scava/issues/138
         if not scava_metric['data']['datatable']:
             empty += 1
-            logging.warning("Faking datable for item %s", scava_metric)
-            # logging.warning("Skipping item due to missing datable for item %s", scava_metric)
+            logging.debug("Faking datable for item %s", scava_metric)
+            # logging.debug("Skipping item due to missing datable for item %s", scava_metric)
             # continue
 
         enriched_items = extract_metrics(scava_metric)
@@ -380,27 +380,28 @@ def enrich_metrics(scava_metrics, meta_info):
 
             if isinstance(eitem['metric_es_value'], str):
                 enriched_error += 1
-                logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", eitem)
+                logging.debug("Skipping metric since 'metric_es_value' is not numeric, %s", eitem)
                 continue
 
+            eitem['metric_es_value'] = float(eitem['metric_es_value'])
             if eitem['metric_es_value'] == 0:
                 enriched_zero += 1
                 # FAKE DATA: replace empty data maximize the amount of data to create dashboards.
                 # This is related to https://github.com/crossminer/scava/issues/139
                 # and https://github.com/crossminer/scava/issues/138
-                eitem['metric_es_value'] = random.randint(MIN_VALUE, MAX_VALUE)
-                logging.warning("Faking Metric_es_value is 0 for %s", eitem)
-                # logging.warning("Metric_es_value is 0 for %s", eitem)
+                eitem['metric_es_value'] = float(random.randint(MIN_VALUE, MAX_VALUE))
+                logging.debug("Faking Metric_es_value is 0 for %s", eitem)
+                # logging.debug("Metric_es_value is 0 for %s", eitem)
 
             eitem['meta'] = meta_info
             yield eitem
 
-    logging.info("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
-                 processed, empty, DUPLICATED_UUIDS)
+    logging.debug("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
+                  processed, empty, DUPLICATED_UUIDS)
 
-    logging.info("Metric enrichment summary (enriched metrics in output) - "
-                 "total: %s, enriched: %s, failed: %s, zero: %s",
-                 enriched + enriched_error, enriched, enriched_error, enriched_zero)
+    logging.debug("Metric enrichment summary (enriched metrics in output) - "
+                  "total: %s, enriched: %s, failed: %s, zero: %s",
+                  enriched + enriched_error, enriched, enriched_error, enriched_zero)
 
     # FAKE DATA: avoid duplicates maximize the amount of data to create dashboards.
     # This is related to https://github.com/crossminer/scava/issues/139
@@ -451,7 +452,7 @@ def enrich_factoids(scava_factoids, meta_info):
         eitem['meta'] = meta_info
         yield eitem
 
-    logging.info("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+    logging.debug("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
     # FAKE DATA: avoid duplicates maximize the amount of data to create dashboards.
     # This is related to https://github.com/crossminer/scava/issues/139
     # and https://github.com/crossminer/scava/issues/138
@@ -484,7 +485,7 @@ def extract_meta(description, project_name):
     try:
         meta = json.loads(meta_raw)
     except:
-        logging.error("Failed to load meta info from %s for project %s."
+        logging.debug("Failed to load meta info from %s for project %s."
                       "Default meta is applied" % (description, project_name))
 
     return meta
@@ -513,34 +514,34 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
             meta = extract_meta(project_scava['data']['description'], project_shortname)
 
             if category == CATEGORY_METRIC:
-                logging.info("Start fetch metrics for %s" % project_scava['data']['shortName'])
+                logging.debug("Start fetch metrics for %s" % project_scava['data']['shortName'])
 
                 for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC), meta):
                     yield enriched_metric
 
-                logging.info("End fetch metrics for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch metrics for %s" % project_scava['data']['shortName'])
             else:
-                logging.info("Start fetch factoids for %s" % project_scava['data']['shortName'])
+                logging.debug("Start fetch factoids for %s" % project_scava['data']['shortName'])
 
                 for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID), meta):
                     yield enriched_factoid
 
-                logging.info("End fetch factoids for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
     else:
         if category == CATEGORY_METRIC:
-            logging.info("Start fetch metrics for %s" % project)
+            logging.debug("Start fetch metrics for %s" % project)
 
             for enriched_metric in enrich_metrics(scava.fetch(CATEGORY_METRIC)):
                 yield enriched_metric
 
-            logging.info("End fetch metrics for %s" % project)
+            logging.debug("End fetch metrics for %s" % project)
         else:
-            logging.info("Start fetch factoids for %s" % project)
+            logging.debug("Start fetch factoids for %s" % project)
 
             for enriched_factoid in enrich_factoids(scava.fetch(CATEGORY_FACTOID)):
                 yield enriched_factoid
 
-            logging.info("End fetch factoids for %s" % project)
+            logging.debug("End fetch factoids for %s" % project)
 
 
 if __name__ == '__main__':
