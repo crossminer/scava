@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.bugs.references;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -38,6 +36,7 @@ import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
+
 import com.mongodb.DB;
 
 public class BugsReferenceTransMetricProvider implements ITransientMetricProvider<BugsReferenceTransMetric> {
