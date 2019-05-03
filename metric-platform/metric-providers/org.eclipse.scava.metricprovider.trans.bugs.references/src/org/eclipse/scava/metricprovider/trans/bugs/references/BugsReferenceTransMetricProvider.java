@@ -125,16 +125,16 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 						references=ReferencesInBitBucket.findReferences(comment.getText());
 						break;
 					case "jira":
-						references=ReferencesInJira.findReferences(comment.getText(), btsParsedData.getHost(), btsParsedData.getRepository());
+						references=ReferencesInJira.findReferences(comment.getText(), btsParsedData.getUrl(), btsParsedData.getRepository());
 						break;
 					case "bugzilla":
-						references=ReferencesInBugzilla.findReferences(comment.getText(), btsParsedData.getHost());
+						references=ReferencesInBugzilla.findReferences(comment.getText(), btsParsedData.getUrl());
 						break;
 					case "gitlab":
-						references=ReferencesInGitLab.findReferences(comment.getText());
+						references=ReferencesInGitLab.findReferences(comment.getText(), btsParsedData.getUrl());
 						break;
 					case "redmine":
-						references=ReferencesInRedmine.findReferences(comment.getText(), btsParsedData.getHost());
+						references=ReferencesInRedmine.findReferences(comment.getText(), btsParsedData.getUrl());
 						break;
 					case "sourceforge":
 						references=ReferencesInSourceforge.findReferences(comment.getText());
@@ -174,6 +174,7 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 		private String host;
 		private String owner;
 		private String repository;
+		private String url;
 		
 		
 		public BTSParsedData(BugTrackingSystem bugTracker)
@@ -189,12 +190,15 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 					repository=((JiraBugTrackingSystem) bugTracker).getProject();
 				case "bugzilla":
 				case "redmine":
-				try {
-					URI projectURI = new URI(bugTracker.getUrl());
-					host = projectURI.getScheme()+projectURI.getHost();
-				} catch (URISyntaxException | UnsupportedOperationException e) {
-					e.printStackTrace();
-				}
+					url=bugTracker.getUrl();
+				break;
+				case "gitlab":
+					Pattern correctURL = Pattern.compile("^(.+)/api/v4/projects/(.+)$");
+					Matcher m = correctURL.matcher(bugTracker.getUrl());
+					if(m.find())
+					{
+						url=m.group(0)+"/"+m.group(1);
+					}
 				break;
 			}
 		}
@@ -209,6 +213,10 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 
 		public String getRepository() {
 			return repository;
+		}
+		
+		public String getUrl() {
+			return url;
 		}
 		
 	}

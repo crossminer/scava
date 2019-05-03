@@ -24,7 +24,7 @@ public class ReferencesInJira {
 	private static String jiraIssuePatternLeft="(";			
 	private static String jiraIssuePatternRight="-\\d+)";			
 	
-	public static NormalizedReferences findReferences(String text, String jiraHost, String repositoryName)
+	public static NormalizedReferences findReferences(String text, String url, String repositoryName)
 	{
 		NormalizedReferences normalizedReferences = new NormalizedReferences();
 		List<List<String>> referencesFound;
@@ -33,17 +33,17 @@ public class ReferencesInJira {
 		
 		//Issues
 		referencesFound = RegexDataExtractor.capturePatterns(jiraIssue, text);
-		processSelfReferences(referencesFound, jiraHost, normalizedReferences.getNormalizedBugsReferences());
+		processSelfReferences(referencesFound, url, normalizedReferences.getNormalizedBugsReferences());
 		
 		return normalizedReferences;
 	}
 	
-	private static void processSelfReferences(List<List<String>> references, String jiraHost, Set<String> normalizedReferences)
+	private static void processSelfReferences(List<List<String>> references, String url, Set<String> normalizedReferences)
 	{
 		if(references.size()==0)
 			return;
 		for(List<String> reference : references)
-			normalizedReferences.add(jiraHost+"/browse/"+reference.get(0));
+			normalizedReferences.add(url+"/browse/"+reference.get(0));
 	}
 	
 }

@@ -28,24 +28,24 @@ public class ReferencesInBugzilla {
 		bugzillaIssue=Pattern.compile(leftBoundary+"bug (\\d+)"+rightBoundary);
 	}
 	
-	public static NormalizedReferences findReferences(String text, String bugzillaHost)
+	public static NormalizedReferences findReferences(String text, String url)
 	{
 		NormalizedReferences normalizedReferences = new NormalizedReferences();
 		List<List<String>> referencesFound;
 
 		//Issues
 		referencesFound = RegexDataExtractor.capturePatterns(bugzillaIssue, text);
-		processSelfReferences(referencesFound, bugzillaHost, normalizedReferences.getNormalizedBugsReferences());
+		processSelfReferences(referencesFound, url, normalizedReferences.getNormalizedBugsReferences());
 		
 		return normalizedReferences;
 	}
 	
-	private static void processSelfReferences(List<List<String>> references, String bugzillaHost, Set<String> normalizedReferences)
+	private static void processSelfReferences(List<List<String>> references, String url, Set<String> normalizedReferences)
 	{
 		if(references.size()==0)
 			return;
 		for(List<String> reference : references)
-			normalizedReferences.add(bugzillaHost+"/show_bug.cgi?id="+reference.get(0));
+			normalizedReferences.add(url+"/show_bug.cgi?id="+reference.get(0));
 	}
 		
 }

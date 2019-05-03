@@ -13,6 +13,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.metricprovider.trans.commits.messagereferences.model.CommitMessageReferringTo;
 import org.eclipse.scava.metricprovider.trans.commits.messagereferences.model.CommitsMessageReferenceTransMetric;
@@ -135,16 +137,16 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 						references=ReferencesInBitBucket.findReferences(commit.getMessage());
 						break;
 					case "jira":
-						references=ReferencesInJira.findReferences(commit.getMessage(), btsParsedData.getHost(), btsParsedData.getRepository());
+						references=ReferencesInJira.findReferences(commit.getMessage(), btsParsedData.getUrl(), btsParsedData.getRepository());
 						break;
 					case "bugzilla":
-						references=ReferencesInBugzilla.findReferences(commit.getMessage(), btsParsedData.getHost());
+						references=ReferencesInBugzilla.findReferences(commit.getMessage(), btsParsedData.getUrl());
 						break;
 					case "gitlab":
-						references=ReferencesInGitLab.findReferences(commit.getMessage());
+						references=ReferencesInGitLab.findReferences(commit.getMessage(), btsParsedData.getUrl());
 						break;
 					case "redmine":
-						references=ReferencesInRedmine.findReferences(commit.getMessage(), btsParsedData.getHost());
+						references=ReferencesInRedmine.findReferences(commit.getMessage(), btsParsedData.getUrl());
 						break;
 					case "sourceforge":
 						references=ReferencesInSourceforge.findReferences(commit.getMessage());
@@ -185,6 +187,7 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 		private String host;
 		private String owner;
 		private String repository;
+		private String url;
 		
 		
 		public BTSParsedData(BugTrackingSystem bugTracker)
@@ -200,12 +203,15 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 					repository=((JiraBugTrackingSystem) bugTracker).getProject();
 				case "bugzilla":
 				case "redmine":
-				try {
-					URI projectURI = new URI(bugTracker.getUrl());
-					host = projectURI.getScheme()+projectURI.getHost();
-				} catch (URISyntaxException | UnsupportedOperationException e) {
-					e.printStackTrace();
-				}
+					url=bugTracker.getUrl();
+				break;
+				case "gitlab":
+					Pattern correctURL = Pattern.compile("^(.+)/api/v4/projects/(.+)$");
+					Matcher m = correctURL.matcher(bugTracker.getUrl());
+					if(m.find())
+					{
+						url=m.group(0)+"/"+m.group(1);
+					}
 				break;
 			}
 		}
@@ -220,6 +226,10 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 
 		public String getRepository() {
 			return repository;
+		}
+		
+		public String getUrl() {
+			return url;
 		}
 		
 	}

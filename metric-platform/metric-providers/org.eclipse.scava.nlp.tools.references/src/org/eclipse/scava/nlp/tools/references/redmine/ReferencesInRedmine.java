@@ -28,24 +28,24 @@ public class ReferencesInRedmine {
 		redmineIssue=Pattern.compile(leftBoundary+"#(\\d+)"+rightBoundary);
 	}
 	
-	public static NormalizedReferences findReferences(String text, String redmineHost)
+	public static NormalizedReferences findReferences(String text, String url)
 	{
 		NormalizedReferences normalizedReferences = new NormalizedReferences();
 		List<List<String>> referencesFound;
 
 		//Issues
 		referencesFound = RegexDataExtractor.capturePatterns(redmineIssue, text);
-		processSelfReferences(referencesFound, redmineHost, normalizedReferences.getNormalizedBugsReferences());
+		processSelfReferences(referencesFound, url, normalizedReferences.getNormalizedBugsReferences());
 		
 		return normalizedReferences;
 	}
 	
-	private static void processSelfReferences(List<List<String>> references, String redmineHost, Set<String> normalizedReferences)
+	private static void processSelfReferences(List<List<String>> references, String url, Set<String> normalizedReferences)
 	{
 		if(references.size()==0)
 			return;
 		for(List<String> reference : references)
-			normalizedReferences.add(redmineHost+"/issues/"+reference.get(0));
+			normalizedReferences.add(url+"/issues/"+reference.get(0));
 	}
 		
 }
