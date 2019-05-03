@@ -327,6 +327,9 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.references
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.messagereferences
+    </module>
   </modules>
   <build>
     <plugins>

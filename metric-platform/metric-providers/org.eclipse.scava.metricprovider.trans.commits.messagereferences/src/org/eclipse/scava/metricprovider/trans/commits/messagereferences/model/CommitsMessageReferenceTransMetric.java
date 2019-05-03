@@ -7,36 +7,36 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.metricprovider.trans.bugs.references.model;
+package org.eclipse.scava.metricprovider.trans.commits.messagereferences.model;
 
 import com.googlecode.pongo.runtime.*;
 import com.mongodb.*;
 // protected region custom-imports on begin
 // protected region custom-imports end
 
-public class BugsReferenceTransMetric extends PongoDB {
+public class CommitsMessageReferenceTransMetric extends PongoDB {
 	
-	public BugsReferenceTransMetric() {}
+	public CommitsMessageReferenceTransMetric() {}
 	
-	public BugsReferenceTransMetric(DB db) {
+	public CommitsMessageReferenceTransMetric(DB db) {
 		setDb(db);
 	}
 	
-	protected BugReferringToCollection bugsReferringTo = null;
+	protected CommitMessageReferringToCollection commitsMessagesReferringTo = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
 	
 	
-	public BugReferringToCollection getBugsReferringTo() {
-		return bugsReferringTo;
+	public CommitMessageReferringToCollection getCommitsMessagesReferringTo() {
+		return commitsMessagesReferringTo;
 	}
 	
 	
 	@Override
 	public void setDb(DB db) {
 		super.setDb(db);
-		bugsReferringTo = new BugReferringToCollection(db.getCollection("BugsReferenceTransMetric.bugsReferringTo"));
-		pongoCollections.add(bugsReferringTo);
+		commitsMessagesReferringTo = new CommitMessageReferringToCollection(db.getCollection("CommitsMessageReferenceTransMetric.commitsMessagesReferringTo"));
+		pongoCollections.add(commitsMessagesReferringTo);
 	}
 }
