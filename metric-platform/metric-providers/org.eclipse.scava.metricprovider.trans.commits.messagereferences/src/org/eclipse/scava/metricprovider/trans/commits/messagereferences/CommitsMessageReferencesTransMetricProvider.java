@@ -52,7 +52,7 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 
 	@Override
 	public String getShortIdentifier() {
-		return "commitsmessagesreferences";
+		return "trans.commits.messagereferences";
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 	public String getSummaryInformation() {
 		return "This metrics search for references of commits or bugs within the messages of commits. In order to work, it is necessary to "
 				+ "use at the same time one Bug Tracker, as the retrieval of references are based on patterns defined by bug trackers. "
-				+ "If multiple or none Bug Trackers are defined in the project, then this metric do not run.";
+				+ "If multiple or zero Bug Trackers are defined in the project, then this metric do not run.";
 	}
 
 	@Override

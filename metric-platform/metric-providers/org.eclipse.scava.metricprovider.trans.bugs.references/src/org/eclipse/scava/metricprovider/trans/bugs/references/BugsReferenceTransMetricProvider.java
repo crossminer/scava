@@ -51,7 +51,7 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugsreferences";
+		return "trans.bugs.references";
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metrics search for references of commits or bugs within comments comming from bugs";
+		return "This metrics search for references of commits or bugs within comments comming from bugs comments.";
 	}
 
 	@Override
