@@ -1,0 +1,7 @@
+package org.eclipse.scava.metricprovider.indexing.communicationchannels.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class CommunicationChannelsIndexingMetric {
+
+}
