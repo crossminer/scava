@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.scava</groupId>
   <artifactId>org.eclipse.scava.metricprovider.indexing.communicationchannels</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <parent>
   	<groupId>org.eclipse.scava</groupId>
