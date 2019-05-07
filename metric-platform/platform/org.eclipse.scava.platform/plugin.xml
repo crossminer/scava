@@ -9,5 +9,7 @@
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.platform.factoids.Factoids"/>
     <class name="org.eclipse.scava.platform.factoids.Factoid"/>
+    <class name="org.eclipse.scava.platform.indexing.Index"/>
+    <class name="org.eclipse.scava.platform.indexing.Indexing"/>
   </extension>
 </plugin>

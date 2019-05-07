@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Preparation
+Bundle-Name: IndexPreparation
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.indexing.preparation;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy

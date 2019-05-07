@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Communicationchannels
+Bundle-Name: CommunicationChannelIndexing
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.indexing.communicationchannels;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.metricprovider.indexing.communicationchannels,
