@@ -7,9 +7,10 @@ public class ForumPostDocument extends Document {
 	String post_id;
 	String forum_id;
 	String topic_id;
+	String forum_name;
 
 	public ForumPostDocument(String uid, String projectName, String messageBody, String creator, Date createdAt,
-			String forumID, String topicId, String articleId, String subject) {
+			String forumID, String topicId, String articleId, String subject, String forum_name) {
 
 		this.uid = uid;
 		this.post_id = articleId;
@@ -20,6 +21,21 @@ public class ForumPostDocument extends Document {
 		this.topic_id = topicId;
 		this.created_at = createdAt;
 		this.subject = subject;
+		this.forum_name = forum_name;
+		
+		
+		
+		
+		this.article_id = articleId; (postID)
+		this.project_name = projectName;(projectNAme)
+		this.message_body = messageBody;(same)
+		this.creator = creator;(same)
+		this.created_at = createdAt;(same)
+		this.newsgroup_name = newsgroupName;(now forumNAme)
+		this.subject = subject;(same)
+		this.message_thread_id = messageThreadID;(topic)
+		
+		
 	}
 
 	public String getPost_id() {
@@ -44,6 +60,14 @@ public class ForumPostDocument extends Document {
 
 	public void setTopic_id(String topic_id) {
 		this.topic_id = topic_id;
+	}
+
+	public String getForum_name() {
+		return forum_name;
+	}
+
+	public void setForum_name(String forum_name) {
+		this.forum_name = forum_name;
 	}
 
 }

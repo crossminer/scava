@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ArticleDocument;
+import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ForumPostDocument;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
@@ -193,11 +194,17 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			EnrichmentData enrichmentData = getEnrichmentData(article, project);
 
-			ArticleDocument enrichedDocument = enrichForumDocument(
-					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), forumName, article.getSubject(), article.getMessageThreadId(),
-							article.getArticleNumber(), article.getArticleId()),
-					enrichmentData);
+			ForumPostDocument enrichedDocument = 
+					enrichForumPostDocument(new ForumPostDocument(uniqueIdentifier,
+							project.getName(),
+							article.getText(),
+							article.getUser(),
+							article.getDate(),
+							eclipseForum.getForum_id(),
+							article.getMessageThreadId(),
+							article.getArticleId(),
+							article.getSubject(),
+							eclipseForum.getForum_name()), enrichmentData);
 
 			String document;
 
@@ -215,7 +222,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 	}
 	
-
+	
 	/**
 	 * Prepares a elements relating to NewsGroups
 	 * 
@@ -243,7 +250,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			EnrichmentData enrichmentData = getEnrichmentData(article, project);
 
-			ArticleDocument enrichedDocument = enrichForumDocument(
+			ArticleDocument enrichedDocument = enrichNewsGroupDocument(
 					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
 							article.getDate(), newsGroupName, article.getSubject(), article.getMessageThreadId(),
 							article.getArticleNumber(), article.getArticleId()),
@@ -451,8 +458,46 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 	}
 
+	
+	private ForumPostDocument enrichForumPostDocument(ForumPostDocument document, EnrichmentData enrichmentData) {
 
-	private ArticleDocument enrichForumDocument(ArticleDocument document, EnrichmentData enrichmentData) {
+		// emotions
+		if (!(enrichmentData.getEmotionalDimensions() == null)) {
+			for (String emotion : enrichmentData.getEmotionalDimensions()) {
+				document.getEmotional_dimension().add(emotion);
+			}
+		}
+
+		// plainText
+		if (!(enrichmentData.getPlain_text() == null)) {
+			document.setPlain_text(enrichmentData.getPlain_text());
+		}
+
+		// detecting Code
+		if (!(enrichmentData.getCode() == null)) {
+			document.setContains_code(enrichmentData.getCode());
+		}
+
+		// request Reply
+		if (!(enrichmentData.getCode() == null)) {
+			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
+		}
+
+		// content class
+		if (!(enrichmentData.getContent_class() == null)) {
+			document.setContent_class(enrichmentData.getContent_class());
+		}
+
+		// sentiment
+		if (!(enrichmentData.getSentiment() == null)) {
+			document.setSentiment(enrichmentData.getSentiment());
+		}
+		return document;
+	}
+	
+	
+
+	private ArticleDocument enrichNewsGroupDocument(ArticleDocument document, EnrichmentData enrichmentData) {
 
 		// emotions
 		if (!(enrichmentData.getEmotionalDimensions() == null)) {
