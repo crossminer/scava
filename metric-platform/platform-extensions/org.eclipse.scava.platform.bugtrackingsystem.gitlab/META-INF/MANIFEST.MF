@@ -10,8 +10,10 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.osgi,
  com.squareup.okhttp3,
  org.joda.time,
- com.fasterxml.jackson,
- com.googlecode.pongo.runtime.dependencies,
- org.eclipse.scava.repository.model.gitlab
+ org.eclipse.scava.repository.model.gitlab,
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.9.2",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0",
+ org.eclipse.orbit.mongodb;bundle-version="2.10.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

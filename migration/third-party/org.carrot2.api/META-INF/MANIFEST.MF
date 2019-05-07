@@ -7,8 +7,7 @@ Bundle-Activator: org.carrot2.api.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: carrot2-core-3.9.3.jar,
- .
+Bundle-ClassPath: carrot2-core-3.9.3.jar
 Export-Package: org.carrot2.clustering.kmeans,
  org.carrot2.clustering.lingo,
  org.carrot2.clustering.stc,

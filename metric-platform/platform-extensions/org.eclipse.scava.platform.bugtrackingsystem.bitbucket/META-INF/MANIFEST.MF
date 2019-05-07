@@ -12,10 +12,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.joda.time,
  com.mashape.unirest,
  org.eclipse.scava.jackson,
+ com.squareup.okhttp3,
  org.eclipse.scava.platform.bugtrackingsystem,
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.6.2"
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.6.2",
+ org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.commons.lang.time
+Export-Package: org.eclipse.scava.platform.bugtrackingsystem.bitbucket,
+ org.eclipse.scava.platform.bugtrackingsystem.bitbucket.utils
