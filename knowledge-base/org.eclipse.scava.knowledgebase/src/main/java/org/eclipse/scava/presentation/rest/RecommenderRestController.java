@@ -18,6 +18,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.scava.business.IRecommenderManager;
+import org.eclipse.scava.business.dto.APIMigrationRequest;
+import org.eclipse.scava.business.dto.APIMigrationResponse;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
@@ -108,7 +110,7 @@ public class RecommenderRestController {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
-	@ApiOperation(value = "This resource get list of versions foreach dependecies")
+	@ApiOperation(value = "This resource lists of versions for each dependecies")
 	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
@@ -128,7 +130,7 @@ public class RecommenderRestController {
 		return true;
 	}
 	
-	@RequestMapping(value = "query", method = RequestMethod.GET)
+	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)
 	public Query getQuery() {
 		Query q = new Query();
 		q.setCurrentMethodCode(
@@ -189,6 +191,14 @@ public class RecommenderRestController {
 			logger.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
 			throw new RuntimeException("IOError writing file to output stream");
 		}
-
 	}
+	
+	@ApiOperation(value = "API migration recommendations")
+    @RequestMapping(value = "/api-migration", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+    public @ResponseBody APIMigrationResponse getApiMigration(
+                    @ApiParam(value = "it should contains the list of method declarations and the cordinates of both old and new versions", required = true)
+                    @RequestBody APIMigrationRequest request) {
+            APIMigrationResponse result = new APIMigrationResponse();
+            return result;
+    }
 }
