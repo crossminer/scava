@@ -26,3 +26,31 @@ Export-Package: org.eclipse.scava.platform,
  org.eclipse.scava.platform.logging,
  org.eclipse.scava.platform.util
 
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Platform
+Bundle-SymbolicName: org.eclipse.scava.platform;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.mapdb,
+ org.eclipse.scava.repository.model,
+ org.eclipse.osgi,
+ org.eclipse.core.runtime,
+ org.eclipse.scava.repository.model.cc.nntp,
+ org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0",
+ org.apache.log4j;bundle-version="1.2.15"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.scava.platform,
+ org.eclipse.scava.platform.analysis,
+ org.eclipse.scava.platform.cache.bugtrackingsystem,
+ org.eclipse.scava.platform.cache.communicationchannel,
+ org.eclipse.scava.platform.cache.vcs,
+ org.eclipse.scava.platform.delta,
+ org.eclipse.scava.platform.delta.bugtrackingsystem,
+ org.eclipse.scava.platform.delta.communicationchannel,
+ org.eclipse.scava.platform.delta.vcs,
+ org.eclipse.scava.platform.factoids,
+ org.eclipse.scava.platform.logging,
+ org.eclipse.scava.platform.util
+

@@ -134,19 +134,17 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.PHP</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.activecommitters</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.bugheadermetadata</module>
+    
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.churnpercommit</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.clones</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.comments</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.readability</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.requestreplyclassification</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.severityclassification</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.threads</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.threads</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.threadsrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.topics</module>
     <module>metric-providers/org.eclipse.scava.opennlp</module>
-    <module>metric-providers/org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm</module>
-    <module>metric-providers/org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
     <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
 	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency</module>
@@ -219,6 +217,80 @@
     <module>tests/org.eclipse.scava.platform.visualisation.tests</module>
     <module>tests/org.eclipse.scava.rascal.test</module>-->
     <module>releng</module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
+    </module>
+    
+    
+    
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.libraries.fasttext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.resources.sentinet5
+    </module>
+    <module>metric-providers/org.eclipse.scava.nlp.tools.core</module>
+    <module>metric-providers/org.eclipse.scava.nlp.tools.other</module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.plaintext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.predictions
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.preprocessor
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.vasttext
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.gitlab
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.mantis
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.eclipseforums
+    </module>
+    <module>../migration/third-party/org.jsoup.jsoup</module>
+    <module>../migration/third-party/com.squareup.okhttp3</module>
+    <module>../migration/third-party/com.squareup.okio</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.detectingcode
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.emotionclassification
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.plaintextprocessing
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.eclipseforums
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.mantis
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.emotionclassifier
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreplydetector
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.references
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.references
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.messagereferences
+    </module>
   </modules>
   <build>
     <plugins>

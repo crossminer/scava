@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListWorkerService } from '../../shared/services/worker-service/list-worker.service';
 import { AnalysisTaskService } from '../../shared/services/analysis-task/analysis-task.service';
-import { ExecutionTask } from '../project/components/configure-project/execution-task.model';
+import { ExecutionTask, MetricExecutions } from '../project/components/configure-project/execution-task.model';
 import { Worker } from './worker.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetricInfoComponent } from './metrics-infos/metric-info.component';
@@ -13,101 +13,119 @@ import { RoleAuthorities } from '../../shared/services/authentication/role-autho
   styleUrls: ['./worker.component.scss']
 })
 
-export class WorkerComponent implements OnInit,OnDestroy {
+export class WorkerComponent implements OnInit, OnDestroy {
 
   workerList: Worker[];
-  interval : any;
-  taskList:ExecutionTask[];
- 
+  interval: any;
+  taskList: ExecutionTask[];
+
   constructor(
     private listWorkerService: ListWorkerService,
-    private analysisTaskService : AnalysisTaskService,
+    private analysisTaskService: AnalysisTaskService,
     private roleAuthorities: RoleAuthorities,
     public modalService: NgbModal
   ) { }
 
   ngOnInit() {
     this.refreshData();
-    this.interval = setInterval(() => { 
-      this.refreshData(); 
+    this.interval = setInterval(() => {
+      this.refreshData();
     }, 3000);
 
   }
 
-  refreshData(){
+  refreshData() {
     if (!this.roleAuthorities.isCurrentTokenExpired()) {
       this.listWorkerService.getWorkers().subscribe((resp) => {
         this.workerList = resp as Worker[];
+        this.workerList.forEach(worker => {
+          let filteredMetricExecutions: MetricExecutions[] = [];
+          if (worker.currentTask != null) {
+            worker.currentTask.metricExecutions.forEach(metricExecution => {
+              if (metricExecution.hasVisualisation == "true") {
+                filteredMetricExecutions.push(metricExecution);
+              }
+            });
+            worker.currentTask.metricExecutions = filteredMetricExecutions;
+          }
+        });
       });
       this.analysisTaskService.getTasks().subscribe((resp) => {
         let allTasks = resp as ExecutionTask[];
         this.taskList = [];
-        for(let task of allTasks){
-          if(task.scheduling.status == 'PENDING_EXECUTION'){
+        allTasks.forEach(task => {
+          if (task.scheduling.status == 'PENDING_EXECUTION') {
             this.taskList.push(task);
-          }    
-        }
+          }
+          let filteredMetricExecutions: MetricExecutions[] = [];
+          task.metricExecutions.forEach(metricExecution => {
+            if (metricExecution.hasVisualisation == "true") {
+              filteredMetricExecutions.push(metricExecution);
+            }
+          });
+          task.metricExecutions = filteredMetricExecutions;
+        });
       });
     }
   }
 
-  setProgressStyles(worker:any){
+  setProgressStyles(worker: any) {
     let styles = {
-      'width': worker.currentTask.scheduling[0].progress +'%',
+      'width': worker.currentTask.scheduling[0].progress + '%',
     };
 
     return styles;
-   }
+  }
 
-   computeTime(task:any){
-    let estimatedTime : number = task.scheduling[0].lastDailyExecutionDuration;
+  computeTime(task: any) {
+    let estimatedTime: number = task.scheduling[0].lastDailyExecutionDuration;
     return Math.round(estimatedTime / 1000) + 's';
-   }
+  }
 
-   stopTask(analysisTaskId: string) {
+  stopTask(analysisTaskId: string) {
     this.analysisTaskService.stopTask(analysisTaskId).subscribe(
-        (resp) => {
-            this.refreshData();
-        }, 
-        (error) => {
-            this.onShowMessage('stop failed')
-        })
-   }
+      (resp) => {
+        this.refreshData();
+      },
+      (error) => {
+        this.onShowMessage('stop failed')
+      })
+  }
 
-   promoteTask(analysisTaskId: string) {
+  promoteTask(analysisTaskId: string) {
     this.analysisTaskService.promoteTask(analysisTaskId).subscribe(
       (resp) => {
-          this.onShowMessage('promote successed !');
-          this.refreshData();
-      }, 
+        this.onShowMessage('promote successed !');
+        this.refreshData();
+      },
       (error) => {
-          this.onShowMessage('promote failed')
+        this.onShowMessage('promote failed')
       })
-   }
+  }
 
-   demoteTask(analysisTaskId: string) {
+  demoteTask(analysisTaskId: string) {
     this.analysisTaskService.demoteTask(analysisTaskId).subscribe(
       (resp) => {
-          this.onShowMessage('emote successed !');
-          this.refreshData();
-      }, 
+        this.onShowMessage('emote successed !');
+        this.refreshData();
+      },
       (error) => {
-          this.onShowMessage('emote failed')
+        this.onShowMessage('emote failed')
       })
-   }
+  }
 
-   pushOnWorker(analysisTaskId: string,wotkerId : string) {
-    this.analysisTaskService.pushOnWorker(analysisTaskId,wotkerId).subscribe(
+  pushOnWorker(analysisTaskId: string, wotkerId: string) {
+    this.analysisTaskService.pushOnWorker(analysisTaskId, wotkerId).subscribe(
       (resp) => {
-          this.onShowMessage('pushOnWorker successed !');
-          this.refreshData();
-      }, 
+        this.onShowMessage('pushOnWorker successed !');
+        this.refreshData();
+      },
       (error) => {
-          this.onShowMessage('pushOnWorker failed')
+        this.onShowMessage('pushOnWorker failed')
       })
-   }
+  }
 
-   showMetricProviderList(analysisTask: ExecutionTask) {
+  showMetricProviderList(analysisTask: ExecutionTask) {
     const modalRef = this.modalService.open(MetricInfoComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.analysisTask = analysisTask;
   }

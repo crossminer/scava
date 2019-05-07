@@ -29,6 +29,7 @@ import analysis::statistics::Inference;
 @doc{Who have been active today?}
 @friendlyName{Active committers}
 @appliesTo{generic()}
+@resetOnEmptyDelta{}
 set[str] committersToday(ProjectDelta delta = \empty()) {
   return {co.author | /VcsCommit co := delta};
 }
@@ -37,6 +38,7 @@ set[str] committersToday(ProjectDelta delta = \empty()) {
 @doc{Who have been active today?}
 @friendlyName{Active committers}
 @appliesTo{generic()}
+@resetOnEmptyDelta{}
 set[str] committersEmailsToday(ProjectDelta delta = \empty()) {
   return {co.email | /VcsCommit co := delta};
 }

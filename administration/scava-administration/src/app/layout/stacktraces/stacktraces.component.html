@@ -1,0 +1,47 @@
+<div>
+  <div class="page-header">
+    <h2>Stack Traces</h2>
+    <hr />
+  </div>
+  <div>
+      <mat-form-field class="example-header">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by project name">
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        
+          <ng-container matColumnDef="projectName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Project </th>
+            <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="clazz">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Class </th>
+            <td mat-cell *matCellDef="let element"> {{element.clazz}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="stackTrace">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Stack Trace </th>
+            <td mat-cell *matCellDef="let element"> {{element.stackTrace}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="workerIdentifier">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Worker </th>
+              <td mat-cell *matCellDef="let element"> {{element.workerIdentifier}} </td>
+            </ng-container>
+
+          <ng-container matColumnDef="executionErrorDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Execution Error </th>
+              <td mat-cell *matCellDef="let element"> {{element.executionErrorDate}} </td>
+            </ng-container>
+
+          <ng-container matColumnDef="analysisRangeErrorDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Analysis Error </th>
+              <td mat-cell *matCellDef="let element"> {{element.analysisRangeErrorDate}} </td>
+            </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+  </div>
+</div>

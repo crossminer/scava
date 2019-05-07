@@ -13,127 +13,171 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubReaderUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.model.Issues;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 
 public class GitHubIssue extends BugTrackingSystemBug {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String title; // TODO should this be in superclass?
+	
+	private Date closedTime;
+	private Date updatedTime;
+	private int numComments;
+	private List<Issues.Labels> labels = new ArrayList<Issues.Labels>();
+	private Integer milestone;
+	private String body;
+	private String url;
+	private String htmlUrl;
+	private String assignee;
+	private List<GitHubComment> githubComments = new ArrayList<>();
 
-    private Date closedTime;
-    private Date updatedTime;
-    private int numComments;
-    private List<GitHubLabel> labels = new ArrayList<GitHubLabel>();
-    private Integer milestone;
-    private String body;
-    private String bodyHtml;
-    private String bodyText;
-    private String url;
-    private String htmlUrl;
-    private String assignee;
+	
+	public GitHubIssue() {
+	}
 
-    public GitHubIssue() {
-    }
+	// ----------------------------------------------------------------------------------
+	// Setters
+	// ----------------------------------------------------------------------------------
+	public GitHubIssue(Issues issue) {
+		long id = Long.valueOf(issue.getNumber());
+		setBugId(Long.toString(id));
+	}
 
-    public GitHubIssue(long id) {
-        setBugId(Long.toString(id));
-    }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setClosedTime(Issues issue) {
+		
+		try{
+			
+			this.closedTime = GitHubReaderUtils.convertStringToDate(issue.getClosedAt().trim());
+			
+		}catch(NullPointerException np){
+			
+			this.closedTime = null;
+		}
+		
+	}
 
-    public Date getClosedTime() {
-        return closedTime;
-    }
+	public void setUpdatedTime(Issues issue) {
+		try{
+				this.updatedTime = GitHubReaderUtils.convertStringToDate(issue.getUpdatedAt().trim());
+				
+			}catch(NullPointerException np){
+				
+				this.updatedTime = null;
+			}
+	}
 
-    public void setClosedTime(Date closedTime) {
-        this.closedTime = closedTime;
-    }
+	public void setNumComments(Issues issue) {
+		
+		int IssueNumComments = issue.getComments();
+		this.numComments = IssueNumComments;
+	}
 
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
+	public void addLabel(Issues issue) {
+		issue.getLabels().forEach(e ->labels.add(e));
+	
+	}
 
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
+	public void setMilestone(Issues issue) {
+		
+		try{
+		
+			int issueMilestone = Integer.parseInt(issue.getMilestone().toString().trim());
+			this.milestone = issueMilestone;
+		}catch (NullPointerException np){
+			
+			this.milestone = null;
+			
+		}
+	
+	}
 
-    public int getNumComments() {
-        return numComments;
-    }
+	public void setBody(Issues issue) {
+		String issueBody = issue.getBody().trim();
+		this.body = issueBody;
+	}
 
-    public void setNumComments(int numComments) {
-        this.numComments = numComments;
-    }
+	public void setAssignee(Issues issue){
+		
+		try{
+			String issueAssignee = issue.getAssignee().toString().trim();
+			this.assignee = issueAssignee;
+		}catch (NullPointerException np){
+			this.assignee = null;
+		}
 
-    public List<GitHubLabel> getLabels() {
-        return labels;
-    }
+	}
 
-    public void addLabel(GitHubLabel label) {
-        labels.add(label);
-    }
+	public void setHtmlUrl(Issues issue) {
+		String issueHtmlUrl = issue.getHtmlUrl().trim();
+		this.htmlUrl = issueHtmlUrl;
+	}
 
-    public Integer getMilestone() {
-        return milestone;
-    }
+	public void setUrl(Issues issue) {
+		String issueUrl = issue.getUrl().trim();
+		this.url = issueUrl;
+	}
 
-    public void setMilestone(Integer milestone) {
-        this.milestone = milestone;
-    }
+	// ----------------------------------------------------------------------------------
+	// Getters
+	// ----------------------------------------------------------------------------------
 
-    public String getBody() {
-        return body;
-    }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
+	public Date getClosedTime() {
+		return closedTime;
+	}
 
-    public String getBodyHtml() {
-        return bodyHtml;
-    }
+	public Date getUpdatedTime() {
 
-    public void setBodyHtml(String bodyHtml) {
-        this.bodyHtml = bodyHtml;
-    }
+		return updatedTime;
+	}
 
-    public String getBodyText() {
-        return bodyText;
-    }
+	public int getNumComments() {
+		return numComments;
+	}
 
-    public void setBodyText(String bodyText) {
-        this.bodyText = bodyText;
-    }
+	public List<Issues.Labels> getLabels() {
+		return labels;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public Integer getMilestone() {
+		return milestone;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public String getBody() {
+		return body;
+	}
 
-    public String getHtmlUrl() {
-        return htmlUrl;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public void setHtmlUrl(String htmlUrl) {
-        this.htmlUrl = htmlUrl;
-    }
+	public String getHtmlUrl() {
+		return htmlUrl;
+	}
 
-    public String getAssignee() {
-        return assignee;
-    }
+	public String getAssignee() {
+		return assignee;
+	}
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
-    }
+	/**
+	 * @return the githubComments
+	 */
+	public List<GitHubComment> getGithubComments() {
+		return githubComments;
+	}
+
+	/**
+	 * @param githubComment
+	 */
+	public void addGithubComment(GitHubComment githubComment) {
+		this.githubComments.add(githubComment);
+	}
+
+
+	
 
 }

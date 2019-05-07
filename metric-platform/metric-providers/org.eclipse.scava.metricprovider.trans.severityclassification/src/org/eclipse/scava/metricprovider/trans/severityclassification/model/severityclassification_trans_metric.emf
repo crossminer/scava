@@ -6,6 +6,7 @@ class SeverityClassificationTransMetric {
 	val BugTrackerBugsData[*] bugTrackerBugs;
 	val NewsgroupArticleData[*] newsgroupArticles;
 	val NewsgroupThreadData[*] newsgroupThreads;
+	val ForumPostData[*] forumPosts;
 }
 
 class BugTrackerBugsData {
@@ -25,7 +26,7 @@ class BugTrackerBugsData {
 class NewsgroupArticleData {
 	@searchable
    	attr String NewsGroupName;
-   	attr int articleNumber;
+   	attr long articleNumber;
 	attr int[*] unigrams;
 	attr int[*] bigrams;
 	attr int[*] trigrams;
@@ -40,4 +41,18 @@ class NewsgroupThreadData {
    	attr String newsgroupName;
    	attr int threadId;
    	attr String severity;
+}
+
+class ForumPostData {
+	@searchable
+	attr String forumId;
+	attr String topicId;
+   	attr String severity;
+	attr int[*] unigrams;
+	attr int[*] bigrams;
+	attr int[*] trigrams;
+	attr int[*] quadgrams;
+	attr int[*] charTrigrams;
+	attr int[*] charQuadgrams;
+	attr int[*] charFivegrams;
 }

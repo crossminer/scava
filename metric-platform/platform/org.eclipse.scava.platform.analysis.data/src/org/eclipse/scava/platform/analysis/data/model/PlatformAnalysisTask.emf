@@ -5,7 +5,6 @@ class ProjectAnalysisResportory {
 	val ProjectAnalysis[*] projects;
 	val AnalysisTask[*] analysisTasks;
 	val MetricExecution[*] metricExecutions;
-	val MetricProvider[*] metricProviders;
 	val Worker[*] workers;
 }
 
@@ -33,7 +32,8 @@ class MetricExecution{
 	attr String metricProviderId;
 	@searchable
 	attr String projectId;	
-	attr Date lastExecutionDate; 
+	attr Date lastExecutionDate;
+	attr Boolean hasVisualisation; 
 }
 
 
@@ -49,12 +49,12 @@ class SchedulingInformation {
 
 class MetricProvider {	
     @searchable
-	attr String metricProviderId;
-	attr String label;
-	attr String description;
-	attr String kind;
-	ref MetricProvider[*] dependOf;
-	val DataStorage[*] storages;
+    attr String metricProviderId;
+    attr String label;
+    attr String description;
+    attr String kind;
+    val MetricProvider[*] dependOf;
+    val DataStorage[*] storages;
 }
 
 class DataStorage {
@@ -67,5 +67,6 @@ class Worker {
 	attr Date heartbeat;
 	ref AnalysisTask currentTask;
 }
+
 
 

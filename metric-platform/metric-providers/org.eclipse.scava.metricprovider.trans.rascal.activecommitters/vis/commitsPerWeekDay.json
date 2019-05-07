@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.commitsPerWeekDay",
+	"metricid" : "trans.rascal.activecommitters.commitsPerWeekDay",
 	"vis" : [ 
 		{
 			"id" : "commitsPerWeekDayBar",

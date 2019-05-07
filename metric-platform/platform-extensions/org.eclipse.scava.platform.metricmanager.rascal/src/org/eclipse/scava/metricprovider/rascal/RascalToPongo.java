@@ -45,6 +45,9 @@ public class RascalToPongo {
 	 * This creates the top-level table and adds uri entries where necessary.
 	 */
 	public static void toPongo(final MeasurementCollection measurements, IValue result) {
+		if (result == null)
+			return;
+
 		result.accept(new NullVisitor<Void,RuntimeException>() {
 			@Override
 			public Void visitInteger(IInteger o) throws RuntimeException {

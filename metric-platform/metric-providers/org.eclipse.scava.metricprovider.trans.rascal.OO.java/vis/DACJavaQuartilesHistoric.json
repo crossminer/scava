@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.java.DAC-Java-Quartiles.historic",
+	"metricid" : "trans.rascal.OO.java.DAC-Java-Quartiles.historic",
 	"vis" : [ 
 		{
 			"id" : "DACJavaQuartilesHistoric",

@@ -50,7 +50,8 @@ set[loc] allOptionalMavenDependencies (map[loc, loc] workingCopies = ()) {
 @doc{Retrieves the number of Maven dependencies.}
 @friendlyName{Number Maven dependencies}
 @appliesTo{java()}
-int numberMavenDependencies (map[loc, loc] workingCopies = ()) {
+@historic{}
+int numberMavenDependencies(map[loc, loc] workingCopies = ()) {
 	if(repo <- workingCopies) {
 		m = getMavenModelFromWorkingCopy(workingCopies[repo]);
 		return size(m.dependencies);

@@ -54,16 +54,16 @@ public class NNTPDownloader {
 		
 		NewsgroupInfo newsgroupInfo = NntpUtil.selectNewsgroup(nntpClient, newsgroup);
 		
-		int lastArticleChecked = newsgroupInfo.getFirstArticle();
+		long lastArticleChecked = newsgroupInfo.getFirstArticleLong();
 		previousTime = printTimeMessage(startTime, previousTime,
 				"First message in newsgroup:\t" + lastArticleChecked);
 		
-		int lastArticle = newsgroupInfo.getLastArticle();
+		long lastArticle = newsgroupInfo.getLastArticleLong();
 		previousTime = printTimeMessage(startTime, previousTime,
 				"Last message in newsgroup:\t" + lastArticle);
 		
 		previousTime = printTimeMessage(startTime, previousTime,
-				"Articles in newsgroup:\t" + newsgroupInfo.getArticleCount());
+				"Articles in newsgroup:\t" + newsgroupInfo.getArticleCountLong());
 		System.err.println();
 		
 		Mongo mongo = new Mongo();
@@ -91,7 +91,7 @@ public class NNTPDownloader {
 			dbMessages.getNewsgroup().add(newsgroupData);
 		}
 
-		int retrievalStep = RETRIEVAL_STEP;
+		long retrievalStep = RETRIEVAL_STEP;
 		while (lastArticleChecked < lastArticle) {
 			if (lastArticleChecked + retrievalStep > lastArticle) {
 				retrievalStep = lastArticle - lastArticleChecked;
@@ -100,7 +100,7 @@ public class NNTPDownloader {
 						lastArticleChecked + 1, lastArticleChecked + retrievalStep);
 			if (articles.length > 0) {
 				Article lastArticleRetrieved = articles[articles.length-1];
-				lastArticleChecked = lastArticleRetrieved.getArticleNumber();
+				lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
 				newsgroupData.setLastArticleChecked(lastArticleChecked+"");
 			}
 			previousTime = printTimeMessage(startTime, previousTime,
@@ -111,14 +111,14 @@ public class NNTPDownloader {
 			for (Article article: articles) {
 				ArticleData articleData = new ArticleData();
 				articleData.setUrl(newsgroup.getUrl());
-				articleData.setArticleNumber(article.getArticleNumber());
+				articleData.setArticleNumber(article.getArticleNumberLong());
 				articleData.setArticleId(article.getArticleId());
 				articleData.setDate(article.getDate());
 				articleData.setFrom(article.getFrom());
 				articleData.setSubject(article.getSubject());
 				for (String referenceId: article.getReferences())
 					articleData.getReferences().add(referenceId);
-				articleData.setBody(NntpUtil.getArticleBody(nntpClient, article.getArticleNumber()));
+				articleData.setBody(NntpUtil.getArticleBody(nntpClient, article.getArticleNumberLong()));
 				dbMessages.getArticles().add(articleData);
 			}
 			dbMessages.sync();

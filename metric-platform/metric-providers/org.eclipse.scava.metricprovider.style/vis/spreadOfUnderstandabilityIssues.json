@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.spreadOfUnderstandabilityIssues.historic",
+	"metricid" : "style.spreadOfUnderstandabilityIssues.historic",
 	"vis" : [ 
 		{
 			"id" : "spreadOfUnderstandabilityIssuesTimeLine",

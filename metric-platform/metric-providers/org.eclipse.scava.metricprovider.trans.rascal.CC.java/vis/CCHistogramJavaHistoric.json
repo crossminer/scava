@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.CC.java.CCHistogramJava.historic",
+	"metricid" : "trans.rascal.CC.java.CCHistogramJava.historic",
 	"vis" : [ 
 		{
 			"id" : "CCHistogramJavaTimeLine",

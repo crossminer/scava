@@ -16,6 +16,7 @@ import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPoin
 import org.restlet.representation.Representation;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class MetricListResource extends AbstractApiResource {
 
@@ -26,7 +27,10 @@ public class MetricListResource extends AbstractApiResource {
 		Map<String, MetricVisualisation> vizs = manager.getRegisteredVisualisations();
 		
 		for (MetricVisualisation vis : vizs.values()) {
-			metrics.add(vis.getVis());
+			ObjectNode mv = mapper.createObjectNode();
+			mv = (ObjectNode) vis.getVis();
+			mv.put("metricId", vis.getMetricId());
+			metrics.add(mv);
 		}
 		
 		return Util.createJsonRepresentation(metrics);

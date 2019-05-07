@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.filesWithStyleViolations.historic",
+	"metricid" : "style.filesWithStyleViolations.historic",
 	"vis" : [ 
 		{
 			"id" : "filesWithStyleViolationsTimeLine",

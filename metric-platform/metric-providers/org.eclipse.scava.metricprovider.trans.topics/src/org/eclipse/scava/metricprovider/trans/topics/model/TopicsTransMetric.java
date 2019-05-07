@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,6 +26,8 @@ public class TopicsTransMetric extends PongoDB {
 	protected BugTrackerTopicCollection bugTrackerTopics = null;
 	protected NewsgroupArticlesDataCollection newsgroupArticles = null;
 	protected NewsgroupTopicCollection newsgroupTopics = null;
+	protected ForumPostDataCollection forumPosts = null;
+	protected ForumPostTopicCollection forumTopics = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
@@ -47,6 +49,14 @@ public class TopicsTransMetric extends PongoDB {
 		return newsgroupTopics;
 	}
 	
+	public ForumPostDataCollection getForumPosts() {
+		return forumPosts;
+	}
+	
+	public ForumPostTopicCollection getForumTopics() {
+		return forumTopics;
+	}
+	
 	
 	@Override
 	public void setDb(DB db) {
@@ -59,5 +69,9 @@ public class TopicsTransMetric extends PongoDB {
 		pongoCollections.add(newsgroupArticles);
 		newsgroupTopics = new NewsgroupTopicCollection(db.getCollection("TopicsTransMetric.newsgroupTopics"));
 		pongoCollections.add(newsgroupTopics);
+		forumPosts = new ForumPostDataCollection(db.getCollection("TopicsTransMetric.forumPosts"));
+		pongoCollections.add(forumPosts);
+		forumTopics = new ForumPostTopicCollection(db.getCollection("TopicsTransMetric.forumTopics"));
+		pongoCollections.add(forumTopics);
 	}
 }

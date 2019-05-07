@@ -47,6 +47,7 @@ public class AnalysisTasksByProjectResource extends AbstractApiResource {
 						newMetric.put("projectId", metric.getDbObject().get("projectId").toString());
 						newMetric.put("metricProviderId", metric.getDbObject().get("metricProviderId").toString());
 						newMetric.put("lastExecutionDate", metric.getDbObject().get("lastExecutionDate").toString());
+						newMetric.put("hasVisualisation", metric.getDbObject().get("hasVisualisation").toString());
 						metricProviders.add(newMetric);
 					}
 					task.getDbObject().put("metricExecutions", metricProviders);

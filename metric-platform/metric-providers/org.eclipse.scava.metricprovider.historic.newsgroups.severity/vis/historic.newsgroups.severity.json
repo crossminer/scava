@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.severity",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.severity.SeverityHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.severity",

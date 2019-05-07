@@ -2,7 +2,7 @@ Write-Host "Open API Client Building module" -ForegroundColor Red;
 
 # Configuration
 
-$generatorFile = $PSScriptRoot + "/swagger-codegen-cli-2.3.1.jar";
+$generatorFile = $PSScriptRoot + "/swagger-codegen-cli-3.0.7.jar";
 $generatorConfigFile = $PSScriptRoot + "/codegen-java-config.json";
 $specificationFile = $PSScriptRoot + "/openapi.json";
 $generatedProjectDir = $PSScriptRoot + "/client";

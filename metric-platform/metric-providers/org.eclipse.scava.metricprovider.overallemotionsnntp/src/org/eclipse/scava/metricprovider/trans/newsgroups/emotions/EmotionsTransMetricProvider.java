@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -9,9 +10,12 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.newsgroups.emotions;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
+import org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.newsgroups.emotions.model.EmotionDimension;
 import org.eclipse.scava.metricprovider.trans.newsgroups.emotions.model.NewsgroupData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.emotions.model.NewsgroupsEmotionsTransMetric;
@@ -27,8 +31,6 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
-import org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm.ClassificationInstance;
-import org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm.EmotionalDimensions;
 
 import com.mongodb.DB;
 
@@ -56,12 +58,12 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		// DO NOTHING -- we don't use anything
+		this.uses = uses;
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(EmotionClassificationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -77,9 +79,11 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsEmotionsTransMetric db) {
+		
+		EmotionClassificationTransMetric emotionClassificationMetric = ((EmotionClassificationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
 		CommunicationChannelProjectDelta delta = projectDelta.getCommunicationChannelDelta();
 		
-
 		for (CommunicationChannelDelta communicationChannelSystemDelta : delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelSystemDelta.getCommunicationChannel();
 			String communicationChannelName;
@@ -89,8 +93,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 				communicationChannelName = newsgroup.getNewsGroupName();
 			}
-			Iterable<NewsgroupData> newsgroupDataIt = 
-					db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(communicationChannelName));
+			Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(communicationChannelName));
 			NewsgroupData newsgroupData = null;
 			for (NewsgroupData ngd:  newsgroupDataIt) 
 				newsgroupData = ngd;
@@ -107,59 +110,49 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 			db.sync();
 
-			Iterable<EmotionDimension> emotionIt = 
-					db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
-			for (EmotionDimension emotion:  emotionIt) {
+			Iterable<EmotionDimension> emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
+			for (EmotionDimension emotion:  emotionIt)
 				emotion.setNumberOfArticles(0);
-			}
 
 			for (CommunicationChannelArticle article: communicationChannelSystemDelta.getArticles()) {
-				ClassificationInstance instance = new ClassificationInstance();
-				instance.setArticleNumber(article.getArticleNumber());
-				instance.setNewsgroupName(communicationChannelName);
-				instance.setText(article.getText());
 				
-				String[] emotionalDimensions = 
-						EmotionalDimensions.getDimensions(instance).split(",");
+				List<String> emotionalDimensions = getEmotions(emotionClassificationMetric, article);
 				
-				for (String dimension: emotionalDimensions) {
-					dimension = dimension.trim();
-					if (dimension.length()>0) {
-						emotionIt = db.getDimensions().
-										find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName),
-											 EmotionDimension.EMOTIONLABEL.eq(dimension));
-						
-						EmotionDimension emotion = null;
-						for (EmotionDimension em: emotionIt) emotion = em;
-						if (emotion == null) {
-							emotion = new EmotionDimension();
-							emotion.setNewsgroupName(communicationChannelName);
-							emotion.setEmotionLabel(dimension);
-							emotion.setNumberOfArticles(0);
-							emotion.setCumulativeNumberOfArticles(0);
-							db.getDimensions().add(emotion);
-						}
-						emotion.setNumberOfArticles(emotion.getNumberOfArticles() + 1);
-						emotion.setCumulativeNumberOfArticles(emotion.getCumulativeNumberOfArticles() + 1);
-						db.sync();
+				for (String dimension: emotionalDimensions)
+				{
+					emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName),
+										 						EmotionDimension.EMOTIONLABEL.eq(dimension));
+					
+					EmotionDimension emotion = null;
+					for (EmotionDimension em: emotionIt)
+						emotion = em;
+					if (emotion == null)
+					{
+						emotion = new EmotionDimension();
+						emotion.setNewsgroupName(communicationChannelName);
+						emotion.setEmotionLabel(dimension);
+						emotion.setNumberOfArticles(0);
+						emotion.setCumulativeNumberOfArticles(0);
+						db.getDimensions().add(emotion);
 					}
+					emotion.setNumberOfArticles(emotion.getNumberOfArticles() + 1);
+					emotion.setCumulativeNumberOfArticles(emotion.getCumulativeNumberOfArticles() + 1);
+					db.sync();
 				}
 			}
 			
 			db.sync();
 
-			emotionIt = db.getDimensions().
-					find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
+			emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
 
-			for (EmotionDimension emotion: db.getDimensions()) {
+			for (EmotionDimension emotion: db.getDimensions())
+			{
 				if ( newsgroupData.getNumberOfArticles() > 0 )
-					emotion.setPercentage( 
-						((float)100*emotion.getNumberOfArticles()) / newsgroupData.getNumberOfArticles());
+					emotion.setPercentage(((float)100*emotion.getNumberOfArticles()) / newsgroupData.getNumberOfArticles());
 				else
 					emotion.setPercentage( (float) 0 );
 				if ( newsgroupData.getCumulativeNumberOfArticles() > 0 )
-					emotion.setCumulativePercentage( 
-						((float)100*emotion.getCumulativeNumberOfArticles()) / newsgroupData.getCumulativeNumberOfArticles());
+					emotion.setCumulativePercentage(((float)100*emotion.getCumulativeNumberOfArticles()) / newsgroupData.getCumulativeNumberOfArticles());
 				else
 					emotion.setCumulativePercentage( (float) 0 );
 			}
@@ -181,6 +174,18 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 	@Override
 	public String getSummaryInformation() {
 		return "Emotional Dimensions in Newsgroup Articles";
+	}
+	
+	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article)
+	{
+		NewsgroupArticlesEmotionClassification newsgroupArticleInEmotionClassification = null;
+		Iterable<NewsgroupArticlesEmotionClassification> newsgroupArticleIt = db.getNewsgroupArticles().
+				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+						NewsgroupArticlesEmotionClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
+		for (NewsgroupArticlesEmotionClassification naec:  newsgroupArticleIt) {
+			newsgroupArticleInEmotionClassification = naec;
+		}
+		return newsgroupArticleInEmotionClassification.getEmotions();
 	}
 
 }

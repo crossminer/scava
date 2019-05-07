@@ -77,7 +77,7 @@ public class NntpUtil {
 	}
 
 	public static Article[] getArticleInfo(NNTPClient nntpClient,
-			int startArticleNumber, int endArticleNumber) throws IOException {
+			long startArticleNumber, long endArticleNumber) throws IOException {
 		Reader reader = null;
 		Article[] articles = null;
 		reader = (DotTerminatedMessageReader) nntpClient.retrieveArticleInfo(
@@ -98,12 +98,13 @@ public class NntpUtil {
 			while (st.hasMoreTokens()) {
 				StringTokenizer stt = new StringTokenizer(st.nextToken(), "\t");
 				Article article = new Article();
-				article.setArticleNumber(Integer.parseInt(stt.nextToken()));
+				article.setArticleNumber(Long.parseLong(stt.nextToken()));
 				article.setSubject(decodeSubject(stt.nextToken()));
 				article.setFrom(stt.nextToken());
 				article.setDate(stt.nextToken());
 				article.setArticleId(stt.nextToken());
-				article.addHeaderField("References", stt.nextToken());
+				article.addReference(stt.nextToken());
+				//article.addHeaderField("References", stt.nextToken());
 				articles[index++] = article;
 			}
 		} else {
@@ -176,7 +177,7 @@ public class NntpUtil {
     		return subject;
     }
 
-	public  static String getArticleBody(NNTPClient client, int articleNumber)
+	public  static String getArticleBody(NNTPClient client, long articleNumber)
 			throws IOException {
 			String articleBody = null;
 			Reader reader = (DotTerminatedMessageReader) client.retrieveArticleBody(articleNumber);

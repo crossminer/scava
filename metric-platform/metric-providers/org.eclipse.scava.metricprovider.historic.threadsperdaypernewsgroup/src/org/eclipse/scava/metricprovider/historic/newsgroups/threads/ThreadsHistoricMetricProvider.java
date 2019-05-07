@@ -34,8 +34,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class ThreadsHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = 
-			"org.eclipse.scava.metricprovider.historic.newsgroups.threads";
+	public final static String IDENTIFIER = ThreadsHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

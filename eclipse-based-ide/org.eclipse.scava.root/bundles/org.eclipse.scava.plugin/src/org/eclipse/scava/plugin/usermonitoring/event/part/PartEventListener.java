@@ -36,49 +36,49 @@ public class PartEventListener implements IEventListener, IPartListener2 {
 
 	@Override
 	public void partActivated(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.ACTIVATED));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.ACTIVATED));
 
 	}
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.BROUGHT_TO_TOP));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.BROUGHT_TO_TOP));
 
 	}
 
 	@Override
 	public void partClosed(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.CLOSED));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.CLOSED));
 
 	}
 
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.DEACTIVATED));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.DEACTIVATED));
 
 	}
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
 		subscribeDocumentEventListener(partRef);
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.OPENED));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.OPENED));
 	}
 
 	@Override
 	public void partHidden(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.HIDDEN));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.HIDDEN));
 
 	}
 
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.VISIBLE));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.VISIBLE));
 
 	}
 
 	@Override
 	public void partInputChanged(IWorkbenchPartReference partRef) {
-		Activator.getDefault().getMainController().getEventBus().post(new PartEvent(partRef, PartEventType.INPUT_CHANGED));
+		Activator.getDefault().getEventBus().post(new PartEvent(partRef, PartEventType.INPUT_CHANGED));
 
 	}
 

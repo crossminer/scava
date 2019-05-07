@@ -1,249 +1,303 @@
 /*******************************************************************************
- * Copyright (c) 2018 University of Manchester
- * 
+ * Copyright (c) 2019 Edge Hill University.
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
  * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ *
+ * Contributors:
+ *    Daniel Campbell - Implementation.
+ * 	  Luis Adri�n Cabrera Diego - Implementation.
+ *******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.github;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+//Java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.apache.commons.lang3.time.DateUtils;
+import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
+import org.eclipse.scava.crossflow.restmule.client.github.model.Issues;
+import org.eclipse.scava.crossflow.restmule.client.github.model.IssuesComments;
+import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
+//OSSMETER
 import org.eclipse.scava.platform.Date;
-import org.eclipse.scava.platform.bugtrackingsystem.cache.Cache;
-import org.eclipse.scava.platform.bugtrackingsystem.cache.Caches;
-import org.eclipse.scava.platform.bugtrackingsystem.github.api.GitHubIssueQuery;
-import org.eclipse.scava.platform.bugtrackingsystem.github.api.GitHubSession;
+import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubReaderUtils;
+import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubSessionUtil;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemManager;
+//DB Model packages
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.github.GitHubBugTracker;
-import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.joda.time.DateTime;
 
+//Mongo DB package
 import com.mongodb.DB;
 
-public class GitHubManager implements
-		IBugTrackingSystemManager<GitHubBugTracker> {
+public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker> {
 
-	private final GitHubEntityManager entityManager = new GitHubEntityManager();
+	private Map<String, GitHubIssue> issuesMap = new HashMap<>();// Change to Map
 
-	private final Caches<GitHubIssue, String> issueCaches = new Caches<GitHubIssue, String>(
-			new IssueCacheProvider(entityManager));
+	private Map<String, IssueDateRange> issueRangeMap = new HashMap<>();; // this tracks the range of dates for the
+																			// every issue.
+	private Map<String, IssueDateRange> pullRequestRangeList = new HashMap<>(); // this tracks the range of dates for
+																				// the every Pull Request.
 
-	private final Caches<GitHubComment, String> commentCaches = new Caches<GitHubComment, String>(
-			new CommentCacheProvider(entityManager));
+	private List<GitHubComment> issueCommentsList = new ArrayList<>();
+	private List<GitHubComment> pullRequestCommentList = new ArrayList<>();
 
-	private final Caches<GitHubPullRequest, Integer> pullRequestCaches = new Caches<GitHubPullRequest, Integer>(
-			new PullRequestCacheProvider(entityManager));
+	private List<GitHubPullRequest> pullRequestsList = new ArrayList<>();// Change to Map
+	private List<Integer> issueIds = new ArrayList<>();// TODO Remove this and use date Range lists ( if a map is used
+														// this is not needed)
+
+	private List<Integer> pullRequestIdList = new ArrayList<>(); // TODO Remove this and use date Range lists
+																	// this list is necessary for addressing a
+																	// limitation
+																	// with the get all pull requests function
+																	// ( if a map is used this is not needed)
+
+	private static GitHubSessionUtil session = null;
 
 	@Override
 	public boolean appliesTo(BugTrackingSystem bugTrackingSystem) {
 		return bugTrackingSystem instanceof GitHubBugTracker;
 	}
 
+	/*
+	 * DELTAS
+	 */
 	@Override
-	public BugTrackingSystemDelta getDelta(DB db, GitHubBugTracker bts, Date date)
-			throws Exception {
+	public BugTrackingSystemDelta getDelta(DB db, GitHubBugTracker ghbt, Date analysisDate) throws Exception {
+
+		// This checks if a GitHub client is available
+		IGitHubApi gitHubApi;
+
+		if (session == null) {
+
+			gitHubApi = getSession(ghbt);
+
+		} else {
+
+			gitHubApi = this.session.getSession();
+
+		}
+
 		GitHubBugTrackingSystemDelta delta = new GitHubBugTrackingSystemDelta();
-		delta.setBugTrackingSystem(bts);
+		delta.setBugTrackingSystem(ghbt);
 
-		GitHubSession github = getSession(bts);
+		getAllIssues(ghbt, analysisDate); // This gets all the issues, this is mandatory for dramatically reducing the
+											// number of calls required.
 
-		getIssues(bts, date, github, delta);
-		getComments(bts, date, github, delta);
-		getPullRequests(bts, date, github, delta);
+		for (Entry<String, IssueDateRange> issueDateRange : issueRangeMap.entrySet()) {
+
+			String issueID = issueDateRange.getKey();
+			IssueDateRange idr = issueDateRange.getValue();
+
+			if (idr.getCreated().compareTo(analysisDate) == 0) {
+
+				delta.getNewBugs().add(issuesMap.get(issueID));
+
+			}
+			// Check if modified date is the same as the analysis 
+			if (idr.getModified().compareTo(analysisDate) == 0) {
+				
+				// This checks to see if the modified date is in the future compared to the creation date.
+				if ((idr.getModified().compareTo(idr.getCreated()) > 0)) {
+
+					delta.getUpdatedBugs().add(issuesMap.get(issueID));
+				}
+
+			}
+
+			//THis only requests comments for issues that are within the scope of the date range 
+			if ((idr.getCreated().compareTo(analysisDate) <= 0)
+					&& (idr.getModified().compareTo(analysisDate) >= 0)) {
+
+				// this should attempt to get comments for that particular issue and then add to a list
+				getIssueComments(ghbt, issueID);
+
+				for (GitHubComment comment : issueCommentsList) {
+
+					Date commentDate = new Date(comment.getCreationTime());
+					
+					if (commentDate.compareTo(analysisDate) == 0) {
+
+						delta.getComments().add(comment);
+
+					}
+
+				}
+
+				this.issueCommentsList.clear();// This prepares for the next series of comments
+
+			}
+
+		}
+		
+		this.issueCommentsList.clear();// This prepares for the next series of comments
+		this.issueRangeMap.clear();
+		this.issueIds.clear();
+		this.issuesMap.clear();
+		
+		this.pullRequestCommentList.clear();
+		this.pullRequestIdList.clear();
+		this.pullRequestRangeList.clear();
+		this.pullRequestsList.clear();
 
 		return delta;
 	}
 
 	@Override
-	public Date getFirstDate(DB db, GitHubBugTracker bts) throws Exception {
-		return getEarliestIssueDate(bts);
+	public Date getFirstDate(DB db, GitHubBugTracker ghbt) throws Exception {
+
+		 Date earliestDate = getEarliestIssueDate(ghbt);
+		//
+		// getAllData(ghbt, earliestDate); //TODO POTENTIALLY REMOVE
+
+		return earliestDate;
+	}
+
+	public Date getEarliestIssueDate(GitHubBugTracker ghbt) throws Exception {
+
+		IGitHubApi gitHubApi = getSession(ghbt);
+		IDataSet<Issues> repoIssues = gitHubApi.getReposIssues(ghbt.getOwner(), ghbt.getRepository(), "all", "all", "",
+				"created", "asc", null);
+		Issues firstIssue = repoIssues.observe().blockingFirst();
+		Date earliestDate = new Date(firstIssue.getCreatedAt().replace("-", "").substring(0, 8));
+		return earliestDate;
+
+	}
+
+	/**
+	 * Gets all issues from the repository from the earliest date
+	 * 
+	 * @param ghbt
+	 * @param earliestDate
+	 * @throws Exception
+	 */
+	private void getAllIssues(GitHubBugTracker ghbt, Date earliestDate) throws Exception {
+
+		IGitHubApi gitHubApi = getSession(ghbt);
+		IDataSet<Issues> repoIssues = gitHubApi.getReposIssues(ghbt.getOwner(), ghbt.getRepository(), "all", "all", "",
+				"created", "asc", earliestDate.toString());
+		repoIssues.observe().doOnNext(issue -> {
+
+			this.checkForPullRequest(issue, ghbt);// this checks if an issue is a pull request. if it is, then adds it
+													// to the
+			// pull request list, else the issue is added to the issue and issue id
+			// list.
+		}).doOnError(e -> System.out.println(e)).blockingSubscribe();
+	}
+
+	/**
+	 * Gets all comments from issues that have them
+	 * 
+	 * @param ghbt
+	 * @param issueID
+	 * @throws Exception
+	 */
+	private void getIssueComments(GitHubBugTracker ghbt, String issueID) throws Exception {
+
+		IGitHubApi gitHubApi = getSession(ghbt);
+		IDataSet<IssuesComments> repoComments = gitHubApi.getReposIssuesComments(ghbt.getOwner(), ghbt.getRepository(),
+				Integer.parseInt(issueID));
+		repoComments.observe().doOnNext(comment -> {
+			this.addIssueCommentToList(GitHubReaderUtils.convertToGitHubComment(comment, ghbt, issueID));
+		}).doOnError(e -> System.out.println(e)).blockingSubscribe();
+
+	}
+
+
+	private void addIssueCommentToList(GitHubComment gitHubComment) {
+
+		this.issueCommentsList.add(gitHubComment);
+
+	}
+
+
+	/**
+	 * This checks if an issue is a pull request and also populates a list with date
+	 * ranges for each issue and pull request respectively
+	 * 
+	 * 
+	 * 
+	 * @param issue
+	 */
+	private void checkForPullRequest(Issues issue, GitHubBugTracker ghbt) {
+
+		try {
+			if (!issue.getPullRequest().equals(null)) {
+
+				if (containsPullRequest(this.pullRequestsList, issue.getNumber().toString()) == false) {
+
+					this.pullRequestIdList.add(issue.getNumber());// TODO FIX THIS
+
+				}
+
+			}
+
+		} catch (NullPointerException np) {// If a null pointer is caught the issue must not be a pull request!
+
+			issuesMap.put(issue.getNumber().toString(), GitHubReaderUtils.convertToGitHubIssue(issue, ghbt));
+
+			// This checks if the issue is all ready present in the list, if it isnt it adds
+			// it performs the tasks below.
+			String id = issue.getNumber().toString();
+
+			Date creation = new Date(GitHubReaderUtils.convertStringToDate(issue.getCreatedAt()));
+			Date modified = new Date(GitHubReaderUtils.convertStringToDate(issue.getUpdatedAt()));
+
+			IssueDateRange idr = new IssueDateRange(id, creation, modified);
+			this.issueRangeMap.put(id, idr);
+
+			GitHubIssue ghissue = GitHubReaderUtils.convertToGitHubIssue(issue, ghbt);
+			this.issuesMap.put(id, ghissue);
+		}
+	}
+
+	/**
+	 * This checks if a specific issue (via its ID) is present in a list.
+	 * 
+	 * @param list
+	 * @param issueID
+	 * @return boolean
+	 */
+	public boolean containsPullRequest(List<GitHubPullRequest> list, final String issueID) {
+
+		return list.stream().filter(pr -> pr.getId().equals(issueID)).findFirst().isPresent();
+
+		// return list.stream().filter(issue ->
+		// issue.getBugId().equals(issueID)).findFirst().isPresent();
+	}
+
+	public static IGitHubApi getSession(GitHubBugTracker GitHubBugTracker) throws Exception {
+		if (session == null) {
+			session = new GitHubSessionUtil(GitHubBugTracker.getAuthenticationData());
+		}
+		return session.getSession();
+	}
+
+	/*----------------------------------------------------------------------------------
+	 *  TRASH CODE
+	 *  ----------------------------------------------------------------------------------
+	 *  The logic contained within these constructors maybe useless code 
+	 *  Keep logic in comments until its fate has been decided 
+	 *  ----------------------------------------------------------------------------------*/
+
+	@Override
+	public String getContents(DB db, GitHubBugTracker ghbt, BugTrackingSystemBug bug) throws Exception {
+
+		return null;
 	}
 
 	@Override
-	public String getContents(DB db, GitHubBugTracker bts, BugTrackingSystemBug bug) throws Exception {
-		GitHubSession github = getSession(bts);
-		Issue issue = github.getIssue(bts.getUser(), bts.getRepository(),
-				bug.getBugId());
-		if (null != issue) {
-			return issue.getBodyText();
-		}
-		return null;
-	}
-
-	@Override
-	public String getContents(DB db, GitHubBugTracker bts,
-			BugTrackingSystemComment comment) throws Exception {
-		GitHubSession github = getSession(bts);
-
-		long commentId = Long.parseLong(comment.getCommentId());
-		Comment ghComment = github.getComment(bts.getUser(),
-				bts.getRepository(), commentId);
-		if (null != ghComment) {
-			return ghComment.getBodyText();
-		}
-		return null;
-	}
-	
-	// Not sure if we should just include these in the deltas?
-	public GitHubMilestone getMilestone(int id) {
-		return entityManager.getMilestone(id);
-	}
-	
-	// Not sure if we should just include these in the deltas?
-	public GitHubUser getUser(String id) {
-		return entityManager.getUser(id);
-	}
-	
-	// Not sure if we should just include these in the deltas?
-	public GitHubRepository getRepository(long id) {
-		return entityManager.getRepository(id);
-	}
-
-	public static GitHubSession getSession(GitHubBugTracker bugTracker) {
-		GitHubSession session = new GitHubSession();
-		String login = bugTracker.getLogin();
-		if (login != null && login.trim().length() > 0 && !"null".equals(login)) {
-			session.setCredentials(login, bugTracker.getPassword());
-		}
-
-		return session;
-	}
-
-	private static Date getEarliestIssueDate(GitHubBugTracker bts)
-			throws IOException {
-		GitHubSession github = getSession(bts);
-		GitHubIssueQuery query = new GitHubIssueQuery(bts.getUser(),
-				bts.getRepository());
-		query.sortByCreated();
-		query.setAscendingDirection();
-		query.setPageSize(1);
-		PageIterator<Issue> pages = github.getIssues(query);
-		if (pages.hasNext()) {
-			Collection<Issue> issues = pages.next();
-			Iterator<Issue> it = issues.iterator();
-			if (it.hasNext()) {
-				return new Date(it.next().getCreatedAt());
-			}
-		}
+	public String getContents(DB db, GitHubBugTracker ghbt, BugTrackingSystemComment comment) throws Exception {
 
 		return null;
 	}
 
-	/**
-	 * 
-	 * Gets issues that have either been updated or created on the given date
-	 * 
-	 * @param bugTracker
-	 * @param since
-	 * @param github
-	 * @param delta
-	 * @throws Exception
-	 */
-	private void getIssues(GitHubBugTracker bugTracker, Date on,
-			GitHubSession github, GitHubBugTrackingSystemDelta delta)
-			throws Exception {
-
-		java.util.Date day = on.toJavaDate();
-
-		Cache<GitHubIssue, String> issuesCache = issueCaches
-				.getCache(bugTracker, true);
-		Iterable<GitHubIssue> issues = issuesCache.getItemsOnDate(day);
-
-		for (GitHubIssue issue : issues) {
-			if (DateUtils.isSameDay(issue.getCreationTime(), day)) {
-				delta.getNewBugs().add(issue);
-			} else {
-				delta.getUpdatedBugs().add(issue);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * Gets comments that have either been updated or created on the given date
-	 * 
-	 * @param bugTracker
-	 * @param since
-	 * @param github
-	 * @param delta
-	 * @throws Exception
-	 */
-
-	private void getComments(GitHubBugTracker bugTracker, Date on,
-			GitHubSession github, GitHubBugTrackingSystemDelta delta)
-			throws Exception {
-
-		java.util.Date day = on.toJavaDate();
-
-		Cache<GitHubComment, String> commentsCache = commentCaches
-				.getCache(bugTracker, true);
-		Iterable<GitHubComment> comments = commentsCache.getItemsOnDate(day);
-
-		for (GitHubComment comment : comments) {
-			delta.getComments().add(comment);
-		}
-	}
-
-	/**
-	 * Gets pull requests that have either been updated or created on the given
-	 * date
-	 * 
-	 * @param bts
-	 * @param since
-	 * @param github
-	 * @param delta
-	 * @throws Exception
-	 */
-	private void getPullRequests(GitHubBugTracker bugTracker, Date on,
-			GitHubSession github, GitHubBugTrackingSystemDelta delta)
-			throws Exception {
-
-		java.util.Date day = on.toJavaDate();
-
-		Cache<GitHubPullRequest, Integer> pullRequestsCache = pullRequestCaches
-				.getCache(bugTracker, true);
-		Iterable<GitHubPullRequest> pullRequests = pullRequestsCache
-				.getItemsOnDate(day);
-
-		for (GitHubPullRequest pullRequest : pullRequests) {
-			delta.getPullRequests().add(pullRequest);
-		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		GitHubBugTracker bugTracker = new GitHubBugTracker();
-		bugTracker.setUser("sampsyo");
-		bugTracker.setRepository("beets");
-		// bugTracker.setLogin("ossmetertest");
-		// bugTracker.setPassword("T35tAccount");
-
-		Date date = new Date(new DateTime(2014, 7, 14, 0, 0).toDate());
-
-		GitHubManager github = new GitHubManager();
-		GitHubBugTrackingSystemDelta delta = (GitHubBugTrackingSystemDelta) github
-				.getDelta(null, bugTracker, date);
-
-		System.out.println(delta.getNewBugs().size());
-		System.out.println(delta.getUpdatedBugs().size());
-
-		date = new Date(new DateTime(2014, 6, 20, 0, 0).toDate());
-
-		delta = (GitHubBugTrackingSystemDelta) github
-				.getDelta(null, bugTracker, date);
-		System.out.println(delta.getNewBugs().size());
-		System.out.println(delta.getUpdatedBugs().size());
-	}
 }

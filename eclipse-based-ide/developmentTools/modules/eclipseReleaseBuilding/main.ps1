@@ -18,7 +18,7 @@ $pathToReleaseDestination = $pathToReleases + "/" + $Version + "/";
 $pathToProjects = $PSScriptRoot + "/projects/";
 $pathToUpdatesite = $PSScriptRoot + "/../../../org.eclipse.scava.root/releng/org.eclipse.scava.update/target/repository/";
 $pathToUpdatesitePlugins = $pathToUpdatesite + "/plugins/";
-$pathToDocument = $PSScriptRoot + "/../../../doc/main.pdf";
+$pathToDocument = $PSScriptRoot + "/../../../doc/user-guide.pdf";
 $pathToTmp = $PSScriptRoot + "/tmp/";
 
 # Do not modify anything under this line
@@ -177,7 +177,7 @@ try{
             # copy document
             if ( $CopyDocument ) {
                 BuildStep "Copy document";
-                Copy-Item -Path "$($pathToDocument)" -Destination "$($pathToEclipse)main.pdf";
+                Copy-Item -Path "$($pathToDocument)" -Destination "$($pathToEclipse)user-guide.pdf";
             }
             
             # RELEASE!

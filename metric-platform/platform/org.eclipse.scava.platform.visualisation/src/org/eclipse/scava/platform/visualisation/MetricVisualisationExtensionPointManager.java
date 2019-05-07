@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 public class MetricVisualisationExtensionPointManager {
 
 	protected final String extensionPointId = "org.eclipse.scava.platform.visualisation.metric";
-	protected Map<String, MetricVisualisation> visMap;
+	public Map<String, MetricVisualisation> visMap;
 	
 	protected static MetricVisualisationExtensionPointManager instance;
 	
@@ -74,7 +74,7 @@ public class MetricVisualisationExtensionPointManager {
 						try {
 							json = loadJsonFile(url);
 						} catch (Exception e) {
-							e.printStackTrace(); // FIXME
+							//e.printStackTrace(); // FIXME
 							continue;
 						}
 						
