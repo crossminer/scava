@@ -23,19 +23,6 @@ public class ForumPostDocument extends Document {
 		this.subject = subject;
 		this.forum_name = forum_name;
 		
-		
-		
-		
-		this.article_id = articleId; (postID)
-		this.project_name = projectName;(projectNAme)
-		this.message_body = messageBody;(same)
-		this.creator = creator;(same)
-		this.created_at = createdAt;(same)
-		this.newsgroup_name = newsgroupName;(now forumNAme)
-		this.subject = subject;(same)
-		this.message_thread_id = messageThreadID;(topic)
-		
-		
 	}
 
 	public String getPost_id() {
