@@ -1,0 +1,7 @@
+package org.eclipse.scava.metricprovider.indexing.bugs.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class BugsIndexingMetric {
+
+}
