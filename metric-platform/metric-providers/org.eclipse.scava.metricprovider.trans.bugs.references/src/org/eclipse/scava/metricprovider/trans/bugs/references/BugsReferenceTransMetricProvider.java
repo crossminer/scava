@@ -98,7 +98,7 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 		{
 			BugTrackingSystem bugTracker = bugTrackingSystemDelta.getBugTrackingSystem();
 			
-			BTSParsedData btsParsedData= new BTSParsedData(bugTracker);
+			ProjectParsedData btsParsedData= new ProjectParsedData(bugTracker);
 			
 			for (BugTrackingSystemComment comment: bugTrackingSystemDelta.getComments())
 			{
@@ -168,15 +168,14 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 		return bugTrackerCommentsData;
 	}
 	
-	private class BTSParsedData
+	private class ProjectParsedData
 	{
-		private String host;
-		private String owner;
-		private String repository;
-		private String url;
+		private String owner=null;
+		private String repository=null;
+		private String url=null;
 		
 		
-		public BTSParsedData(BugTrackingSystem bugTracker)
+		public ProjectParsedData(BugTrackingSystem bugTracker)
 		{
 			switch(bugTracker.getBugTrackerType())
 			{
@@ -200,10 +199,6 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 					}
 				break;
 			}
-		}
-
-		public String getHost() {
-			return host;
 		}
 
 		public String getOwner() {
