@@ -2,9 +2,9 @@
 	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells",
 	"vis" : [ 
 		{
-			"id" : "implementation.smells",
-			"name" : "Sum of Implementation Smells",
-			"description" : "The number of implementation smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.smells",
+			"name" : "Sum of Puppet Implementation Smells",
+			"description" : "The number of Puppet implementation smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
@@ -14,9 +14,9 @@
 			"y" : "ImplementationSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.missingDefaultCaseSmells",
-			"name" : "Missing Default Case Smells",
-			"description" : "The number of Missing Default Case smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.missingDefaultCaseSmells",
+			"name" : "Missing Default Case Puppet Smells",
+			"description" : "The number of Missing Default Case Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
@@ -26,9 +26,9 @@
 			"y" : "MissingDefaultCaseSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.inconsistentNamingSmells",
-			"name" : "Inconsistent Naming Smells",
-			"description" : "The number of Inconsistent Naming smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.inconsistentNamingSmells",
+			"name" : "Inconsistent Naming Puppet Smells",
+			"description" : "The number of Inconsistent Naming Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -38,9 +38,9 @@
 			"y" : "InconsistentNamingSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.duplicateEntitySmells",
-			"name" : "Duplicate Entity Smells",
-			"description" : "The number of DuplicateEntity smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.duplicateEntitySmells",
+			"name" : "Duplicate Entity Puppet Smells",
+			"description" : "The number of DuplicateEntity Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -50,9 +50,9 @@
 			"y" : "DuplicateEntitySmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.misplacedAttributeSmells",
-			"name" : "Misplaced Attribute Smells",
-			"description" : "The number of Misplaced Attribute smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.misplacedAttributeSmells",
+			"name" : "Misplaced Attribute Puppet Smells",
+			"description" : "The number of Misplaced Attribute Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -62,9 +62,9 @@
 			"y" : "MisplacedAttributeSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.improperAlignmentSmells",
-			"name" : "Improper Alignment Smells",
-			"description" : "The number of ImproperAlignment smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.improperAlignmentSmells",
+			"name" : "Improper Alignment Puppet Smells",
+			"description" : "The number of ImproperAlignment Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -74,9 +74,9 @@
 			"y" : "ImproperAlignmentSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.invalidPropertySmells",
-			"name" : "Invalid Property Smells",
-			"description" : "The number of Invalid Property smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.invalidPropertySmells",
+			"name" : "Invalid Property Puppet Smells",
+			"description" : "The number of Invalid Property Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -86,9 +86,9 @@
 			"y" : "InvalidPropertySmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.improperQuoteSmells",
-			"name" : "Improper Quote Smells",
-			"description" : "The number of Improper Quote smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.improperQuoteSmells",
+			"name" : "Improper Quote Puppet Smells",
+			"description" : "The number of Improper Quote Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -98,9 +98,9 @@
 			"y" : "ImproperQuoteSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.longStatementsSmells",
-			"name" : "Long Statements Smells",
-			"description" : "The number of Long Statements smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.longStatementsSmells",
+			"name" : "Long Statements Puppet Smells",
+			"description" : "The number of Long Statements Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -110,9 +110,9 @@
 			"y" : "LongStatementsSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.unguardedVariableSmells",
-			"name" : "Unguarded Variable Smells",
-			"description" : "The number of Unguarded Variable smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.unguardedVariableSmells",
+			"name" : "Unguarded Variable Puppet Smells",
+			"description" : "The number of Unguarded Variable Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -122,9 +122,9 @@
 			"y" : "UnguardedVariableSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.missingDocSmells",
-			"name" : "Missing Documentation Smells",
-			"description" : "The number of Missing Documentation smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.missingDocSmells",
+			"name" : "Missing Documentation Puppet Smells",
+			"description" : "The number of Missing Documentation Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -134,9 +134,9 @@
 			"y" : "MissingDocSmells",
 			"timeSeries" : true
 		},{
-			"id" : "implementation.deprecatedStatementsSmells",
-			"name" : "Deprecated Statements Smells",
-			"description" : "The number of Deprecated Statements smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.deprecatedStatementsSmells",
+			"name" : "Deprecated Statements Puppet Smells",
+			"description" : "The number of Deprecated Statements Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -147,9 +147,9 @@
 			"timeSeries" : true
 		}
 		,{
-			"id" : "implementation.incompleteTasksSmells",
-			"name" : "Incomplete Tasks Smells",
-			"description" : "The number of Incomplete Tasks smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.incompleteTasksSmells",
+			"name" : "Incomplete Tasks Puppet Smells",
+			"description" : "The number of Incomplete Tasks Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -160,9 +160,9 @@
 			"timeSeries" : true
 		}
 		,{
-			"id" : "implementation.complexExpressionSmells",
-			"name" : "Complex Expression Smells",
-			"description" : "The number of Complex Expression smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.complexExpressionSmells",
+			"name" : "Complex Expression Puppet Smells",
+			"description" : "The number of Complex Expression Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -173,9 +173,9 @@
 			"timeSeries" : true
 		}
 		,{
-			"id" : "implementation.missingElseSmells",
-			"name" : "Missing Else Smells",
-			"description" : "The number of Incomplete Tasks smells per day, up to and including the current date." ,
+			"id" : "puppet.implementation.missingElseSmells",
+			"name" : "Missing Else Puppet Smells",
+			"description" : "The number of Incomplete Tasks Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
