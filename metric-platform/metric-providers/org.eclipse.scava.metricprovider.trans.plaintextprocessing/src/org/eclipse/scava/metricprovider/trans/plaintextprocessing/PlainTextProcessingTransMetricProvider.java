@@ -261,16 +261,16 @@ public class PlainTextProcessingTransMetricProvider
 	}
 
 	// this is potentially not needed any more
-	private ForumPostPlainTextProcessing findForumPost(PlainTextProcessingTransMetric db,
-			CommunicationChannelForumPost post) {
-		ForumPostPlainTextProcessing forumPostsData = null;
-		Iterable<ForumPostPlainTextProcessing> forumPostsDataIt = db.getForumPosts().find(
-				ForumPostPlainTextProcessing.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
-				ForumPostPlainTextProcessing.TOPICID.eq(post.getTopicId()),
-				ForumPostPlainTextProcessing.POSTID.eq(post.getPostId()));
-		for (ForumPostPlainTextProcessing fpd : forumPostsDataIt) {
-			forumPostsData = fpd;
-		}
-		return forumPostsData;
-	}
+//	private ForumPostPlainTextProcessing findForumPost(PlainTextProcessingTransMetric db,
+//			CommunicationChannelForumPost post) {
+//		ForumPostPlainTextProcessing forumPostsData = null;
+//		Iterable<ForumPostPlainTextProcessing> forumPostsDataIt = db.getForumPosts().find(
+//				ForumPostPlainTextProcessing.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
+//				ForumPostPlainTextProcessing.TOPICID.eq(post.getTopicId()),
+//				ForumPostPlainTextProcessing.POSTID.eq(post.getPostId()));
+//		for (ForumPostPlainTextProcessing fpd : forumPostsDataIt) {
+//			forumPostsData = fpd;
+//		}
+//		return forumPostsData;
+//	}
 }
