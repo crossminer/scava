@@ -1,0 +1,115 @@
+rule Workflow2Class 
+	transform w : Workflow {
+	
+	template : "workflow2class.egl"
+	
+	target : w.getPath() + w.name + ".py"
+}
+
+rule CompositeWorkflow2Class 
+	transform w : Workflow {
+	
+	template : "compositeworkflow2class.egl"
+	
+	target : w.getPath() + "Composite" + w.name + ".py"
+}
+
+rule Type2Class 
+	transform t : Type {
+	
+	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
+	
+	template : "type2class.egl"
+	
+	target : t.getPath() + t.name + ".py"
+}
+
+rule CsvSource2Source
+	transform t : CsvSource {
+
+	parameters : Map{"w" = t.eContainer()}
+
+	template : "csvsource2source.egl"
+	
+	target : t.getImplPath() + t.name + ".py"	
+	
+	overwrite : false
+}
+
+rule CsvSink2Sink
+	transform t : CsvSink {
+
+	parameters : Map{"w" = t.eContainer()}
+
+	template : "csvsink2sink.egl"
+	
+	target : t.getImplPath() + t.name + ".py"	
+	
+	overwrite : false
+}
+
+@greedy
+rule Task2BaseClass 
+	transform t : Task {
+	
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "task2baseclass.egl"
+	
+	target : t.getPath() + t.name + "Base.py"	
+}
+
+@greedy
+rule Task2ImplClass 
+	transform t : Task {
+		
+	parameters : Map{"w" = t.eContainer()}
+	
+	template : "task2implclass.egl"
+	
+	target : t.getImplPath() + t.name + ".py"
+	
+	overwrite : false
+}
+
+@greedy
+rule Steam2Class 
+	transform s : Stream {
+	
+	parameters : Map{"w" = s.eContainer()}
+	
+	template : "stream2class.egl"
+	
+	target : s.getPath() + s.name + ".py"
+}
+
+@greedy
+rule Steam2Consumer 
+	transform s : Stream {
+	
+	parameters : Map{"t" = Task}
+	
+	template : "stream2consumer.egl"
+	
+	target : s.getPath() + s.name + "Consumer.py"
+}
+
+@cached
+operation Any getPath() {
+	return "src-gen-py/" + self.getWorkflow().package.toPath();
+}
+
+@cached
+operation Any getImplPath() {
+	return "src-py/" + self.getWorkflow().package.toPath();
+}
+
+@cached
+operation Any getWorkflow() : Workflow {
+	if (self.isTypeOf(Workflow)) return self;
+	return self.eContainer();
+}
+
+operation String toPath() : String {
+	return self.replaceAll("\\.", "/") + "/";
+}

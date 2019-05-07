@@ -45,6 +45,9 @@ public abstract class Workflow {
 
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
+	
+	@Parameter(names = { "-stomp"}, description = "Port to use for STOMP based messages")
+	protected int stompPort = 61613;
 
 	protected BrokerService brokerService;
 	
@@ -450,6 +453,11 @@ public abstract class Workflow {
 	public String getBroker() {
 		// adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
+	}
+	
+	// TODO: Fix this to allow dynamic port
+	public String getStompBroker() {
+		return "stomp://" + master + ":" + stompPort;
 	}
 	
 	public void stopBroker() throws Exception {

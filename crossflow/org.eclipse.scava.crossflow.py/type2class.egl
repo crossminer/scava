@@ -1,0 +1,65 @@
+
+import uuid
+from org.eclipse.scava.crossflow.runtime import Job
+
+class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%] 
+	
+	def __init__(self[%=t.fields.collect(f|', '+f.name+' = None').concat(' ')%][%if (t.isJob()){%], correlation = None[%}%]):
+		super().__init__()
+		[%for (f in t.fields) { %]
+		self.[%=f.name%] = [%=f.name%]
+		[%}%]
+		[%if (t.isJob()){%]
+		if correlation == None:
+			self.correlationId = ''
+		else:
+			self.correlationId = correlation.getId()
+		[%}%]
+		[%for (f in t.fields) { %]
+		if self.[%=f.name%] == None:
+			self.[%=f.name%] = [%=f.getPythonInitialiser()%]
+		[%}%]
+		
+	[%for (f in t.fields) { %]
+	def set[%=f.name.ftuc()%](self, [%=f.name%]):
+		self.[%=f.name%] = [%=f.name%]
+	
+	def get[%=f.name.ftuc()%](self):
+		return self.[%=f.name%]
+	
+	[%}%]
+	
+	def toObjectArray(self):
+		ret = []
+	[%var i = 0; for (f in t.fields) { %]
+		ret.append(self.get[%=f.name.ftuc()%]())
+	[%i++;}%]
+		return ret
+	
+	
+	def __str__(self, *args, **kwargs):
+		[%
+		var fields = t.fields.name;
+		if (t.isJob()) fields = fields.includingAll(Sequence{"id", "correlationId", "destination"});
+		%]
+		return '[%=t.name%] (' + [%=fields.collect(f|'" ' + f + '=" + str(self.' + f).concat(') + ')%]) + ")"
+
+[%
+operation Type isJob() {
+	return Stream.all.exists(s|s.type=self);
+}
+
+operation Field getPythonInitialiser() {
+	if (self.many) {
+		return "[]";
+	}
+	else {
+		if (self.type == 'byte') return '0';
+		if (self.type == 'int') return '0';
+		if (self.type == 'long') return '0';
+		if (self.type == 'float') return '0.0';
+		if (self.type == 'double') return '0.0';
+		if (self.type == 'boolean') return 'False';
+		return '""';
+	}
+}%]

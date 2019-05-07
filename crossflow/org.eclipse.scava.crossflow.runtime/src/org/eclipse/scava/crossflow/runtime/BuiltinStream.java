@@ -18,7 +18,9 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.command.ActiveMQTextMessage;
 
 public class BuiltinStream<T extends Serializable> implements Stream {
 	
@@ -82,9 +84,18 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 
 			@Override
 			public void onMessage(Message message) {
-				TextMessage textMessage = (TextMessage) message;
+				String messageText = "";
 				try {
-					consumer.consume((T) workflow.getSerializer().toObject(textMessage.getText()));
+					if (message instanceof ActiveMQTextMessage) {
+						ActiveMQTextMessage amqMessage = (ActiveMQTextMessage) message;
+						messageText = amqMessage.getText();
+					} else {
+						ActiveMQBytesMessage bm = (ActiveMQBytesMessage) message;
+						byte data[] = new byte[(int) bm.getBodyLength()];
+						bm.readBytes(data);
+						messageText = new String(data);
+					}
+					consumer.consume((T) workflow.getSerializer().toObject(messageText));
 				} catch (JMSException e) {
 					workflow.reportInternalException(e);
 				}

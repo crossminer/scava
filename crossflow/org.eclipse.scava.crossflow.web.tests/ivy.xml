@@ -1,7 +1,7 @@
 <ivy-module version="2.0">
 	<info organisation="org.eclipse.scava" module="crossflow.web.tests" status="integration"/>
 	<dependencies>
-		<dependency org="org.apache.thrift" name="libthrift" rev="0.11.0"/>
+		<dependency org="org.apache.thrift" name="libthrift" rev="0.12.0"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>	
 	</dependencies>
