@@ -221,8 +221,6 @@ class ScavaClient(HttpClient):
     def __init__(self, url, project=None, archive=None, from_archive=False):
         super().__init__(url, archive=archive, from_archive=from_archive)
         self.project = project
-        self.api_metrics_url = urijoin(self.base_url, "metrics")
-        self.api_factoids_url = urijoin(self.base_url, "factoids")
         self.api_projects_url = urijoin(self.base_url, "projects")
 
     def get_project_update(self, project_name=None):
@@ -255,20 +253,21 @@ class ScavaClient(HttpClient):
             yield projects
 
         elif category == CATEGORY_METRIC:
-            # Get all metrics definitions and then find the values for the current project
-            api_metrics = self.api_metrics_url
-            metrics = json.loads(self.fetch(api_metrics))
+            api_metrics = urijoin(self.base_url, "metrics/p/%s" % project)
+            raw_metrics = self.fetch(api_metrics)
+            metrics = json.loads(raw_metrics)
 
             for metric in metrics:
                 metric_id = metric['id']
-                api = urijoin(self.api_projects_url, "/p/%s/m/%s" % (project, metric_id))
+                api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, metric_id))
                 logger.debug("Scava client calls API: %s", api)
+
                 project_metric = self.fetch(api)
                 yield project_metric
 
         elif category == CATEGORY_FACTOID:
             # Get all factoids definitions and then find the values for the current project
-            api_factoids = self.api_factoids_url
+            api_factoids = urijoin(self.base_url, "factoids")
             factoids = json.loads(self.fetch(api_factoids))
 
             for factoid in factoids:
@@ -279,7 +278,7 @@ class ScavaClient(HttpClient):
 
                 project_factoid_json = json.loads(project_factoid)
                 if 'status' in project_factoid_json and project_factoid_json['status'] == 'error':
-                    logger.error("Something went wrong with '%s' for project %s: %s",
+                    logger.debug("Something went wrong with '%s' for project %s: %s",
                                  api, project, project_factoid_json['msg'])
                     continue
 
