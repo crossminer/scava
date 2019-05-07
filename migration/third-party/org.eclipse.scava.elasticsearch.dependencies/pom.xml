@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.scava</groupId>
   <artifactId>org.elasticsearch.dependencies</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <parent>
   	<groupId>org.eclipse.scava</groupId>

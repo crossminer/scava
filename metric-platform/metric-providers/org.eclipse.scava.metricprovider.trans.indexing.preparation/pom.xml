@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.scava</groupId>
-  <artifactId>org.eclipse.scava.metricprovider.trans.indexing.preperation</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>org.eclipse.scava.metricprovider.trans.indexing.preparation</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -20,7 +20,7 @@
   <parent>
   	<groupId>org.eclipse.scava</groupId>
   	<artifactId>metric-platform</artifactId>
-  	<version>0.0.1-SNAPSHOT</version>
+  	<version>1.0.0-SNAPSHOT</version>
   	<relativePath>../../</relativePath>
   </parent>
 </project>

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Bugs
+Bundle-Name: IndexingBugs
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.indexing.bugs;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.metricprovider.indexing.bugs.Activator
