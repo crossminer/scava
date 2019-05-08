@@ -20,6 +20,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerComm
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.BugTrackerCommentsSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.ForumPostSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification;
@@ -70,7 +72,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(),IndexPreparationTransMetricProvider.class.getCanonicalName() );
 	}
 
 	@Override
@@ -91,6 +93,13 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		System.err.println("Started " + getIdentifier());
 		
 		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		
 		Iterable<BugTrackerCommentDetectingCode> commentsIt = detectingCodeMetric.getBugTrackerComments();
 		
 		SingleLabelPredictionCollection instancesCollection = new SingleLabelPredictionCollection();
