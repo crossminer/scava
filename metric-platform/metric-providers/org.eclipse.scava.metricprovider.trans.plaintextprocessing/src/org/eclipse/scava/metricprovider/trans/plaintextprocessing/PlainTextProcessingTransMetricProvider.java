@@ -1,8 +1,10 @@
 package org.eclipse.scava.metricprovider.trans.plaintextprocessing;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrackerCommentPlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
@@ -40,6 +42,8 @@ public class PlainTextProcessingTransMetricProvider
 
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
+	protected List<IMetricProvider> uses;
+	protected MetricProviderContext context;
 
 	@Override
 	public String getIdentifier() {
@@ -76,11 +80,12 @@ public class PlainTextProcessingTransMetricProvider
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
+		this.uses = uses;
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -98,6 +103,13 @@ public class PlainTextProcessingTransMetricProvider
 	public void measure(Project project, ProjectDelta projectDelta, PlainTextProcessingTransMetric db) {
 
 		clearDB(db);
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		
 		System.err.println("Started " + getIdentifier());
 
 		PlainTextObject plainTextObject;
