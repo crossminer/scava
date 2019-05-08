@@ -11,14 +11,16 @@ public class [%=t.name%] [%if(t.isJob()){%] extends Job [%}else{%] implements Se
 	
 	public [%=t.name%]() {}
 	
+	[%if (t.fields.size > 0) {%]
 	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%]) {
 		[%for (f in t.fields) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
 	}
+	[%}%]
 	
-	[%if (t.isJob()){%]
-	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%], Job correlation) {
+	[%if (t.isJob()) {%]
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.fields.size > 0) {%], [%}%]Job correlation) {
 		[%for (f in t.fields) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
