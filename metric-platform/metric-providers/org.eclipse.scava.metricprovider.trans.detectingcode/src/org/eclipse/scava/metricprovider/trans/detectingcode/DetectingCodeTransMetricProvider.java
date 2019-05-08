@@ -16,6 +16,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerComm
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 //import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrackerCommentPlainTextProcessing;
 //import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
@@ -83,7 +85,7 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(PlainTextProcessingTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(PlainTextProcessingTransMetricProvider.class.getCanonicalName(),  IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -104,6 +106,14 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 		clearDB(db);
 		
 		PlainTextProcessingTransMetric plainTextProcessor = ((PlainTextProcessingTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		//Then we add it back to the database
+		indexPrepTransMetric.sync();
+		
+		
 		
 		//We obtain all the comments preprocessed by the Textpreprocessing Trans Metric
 		Iterable<BugTrackerCommentPlainTextProcessing> commentsIt = plainTextProcessor.getBugTrackerComments();
