@@ -24,6 +24,8 @@ import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.Classifier;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.CurrentDate;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupData;
@@ -78,7 +80,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -100,6 +102,11 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					.println("Metric: " + getIdentifier() + " failed to retrieve " + "the transient metrics it needs!");
 			System.exit(-1);
 		}
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 
 		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider) uses.get(0))
 				.adapt(context.getProjectDB(project));
