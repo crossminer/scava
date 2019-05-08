@@ -147,6 +147,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.maven</module>
@@ -208,6 +209,7 @@
     <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk</module>
     <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk.dependency</module>
     <module>platform-extensions/org.eclipse.scava.platform.metricmanager.rascal</module>
+    <module>platform-extensions/org.eclipse.scava.platform.jadolint</module>
     <module>platform-extensions/org.eclipse.scava.platform.vcs.git</module>
     <module>platform-extensions/org.eclipse.scava.platform.vcs.svn</module>
     <module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.git</module>
