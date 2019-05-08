@@ -33,12 +33,12 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 
 	public final static String IDENTIFIER = IndexPreparationTransMetricProvider.class.getCanonicalName();
 	
-	public final static String SHORT_IDENTIFIER = "index preperation transmetric";
+	public final static String SHORT_IDENTIFIER = "index preparation transmetric";
 
-	public final static String FRIENDLY_NAME = "index preperation";
+	public final static String FRIENDLY_NAME = "index preparation";
 
 	public final static String DESCRIPTION = "this identifies the the metrics that have been chosen to be executed "
-			+ "by the user in preperation for indexing (note: This is required to enable the indexing capabilities "
+			+ "by the user in preparation for indexing (note: This is required to enable the indexing capabilities "
 			+ "of the platform to be dynamic";
 
 
