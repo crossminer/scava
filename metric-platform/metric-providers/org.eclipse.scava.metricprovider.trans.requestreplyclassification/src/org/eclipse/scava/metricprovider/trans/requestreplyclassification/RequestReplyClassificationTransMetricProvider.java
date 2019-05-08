@@ -20,6 +20,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerComm
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 //import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrackerCommentPlainTextProcessing;
 //import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
@@ -88,7 +90,8 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 	@Override
 	public List<String> getIdentifiersOfUses() {
 		return Arrays.asList(PlainTextProcessingTransMetricProvider.class.getCanonicalName(),
-								DetectingCodeTransMetricProvider.class.getCanonicalName());
+								DetectingCodeTransMetricProvider.class.getCanonicalName(), 
+								IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -109,6 +112,13 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 		
 		clearDB(db);
 		PlainTextProcessingTransMetric plainTextMetric = ((PlainTextProcessingTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(3)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		
 		
 		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
