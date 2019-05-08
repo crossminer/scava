@@ -58,7 +58,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(EmotionClassificationTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(EmotionClassificationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -76,13 +76,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 	public void measure(Project project, ProjectDelta projectDelta, BugsEmotionsTransMetric db) {
 		
 		EmotionClassificationTransMetric emotionClassificationMetric = ((EmotionClassificationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-		
-		//This is for the indexing
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
-		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
-		//Then we add it back to the database
-		indexPrepTransMetric.sync();
-		
+			
 		BugTrackingSystemProjectDelta delta = projectDelta.getBugTrackingSystemDelta();
 		
 		for (BugTrackingSystemDelta bugTrackingSystemDelta : delta.getBugTrackingSystemDeltas()) {
