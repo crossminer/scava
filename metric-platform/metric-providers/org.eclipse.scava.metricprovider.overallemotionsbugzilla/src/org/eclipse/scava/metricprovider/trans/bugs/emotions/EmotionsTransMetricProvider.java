@@ -19,6 +19,8 @@ import org.eclipse.scava.metricprovider.trans.bugs.emotions.model.EmotionDimensi
 import org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTrackerCommentsEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -56,7 +58,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(EmotionClassificationTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(EmotionClassificationTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -74,6 +76,12 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 	public void measure(Project project, ProjectDelta projectDelta, BugsEmotionsTransMetric db) {
 		
 		EmotionClassificationTransMetric emotionClassificationMetric = ((EmotionClassificationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		//Then we add it back to the database
+		indexPrepTransMetric.sync();
 		
 		BugTrackingSystemProjectDelta delta = projectDelta.getBugTrackingSystemDelta();
 		
