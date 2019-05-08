@@ -24,6 +24,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerComm
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 //import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
@@ -91,7 +93,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	@Override
 	public List<String> getIdentifiersOfUses() {
 		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName(),
-				DetectingCodeTransMetricProvider.class.getCanonicalName());
+				DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -112,6 +114,12 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		final long startTime = System.currentTimeMillis();
 		long previousTime = startTime;
 		previousTime = printTimeMessage(startTime, previousTime, -1, "Started " + getIdentifier());
+		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(3)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 		
 		//Elements from bugs or forums that should be deleted (for newsgroups is impossible, as these can have many threads)
 		List<BugTrackerBugsData> bugDataToDelete = new ArrayList<BugTrackerBugsData>();
