@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2018 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,8 @@ package org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
@@ -62,7 +64,7 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -84,6 +86,12 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 								"the transient metric it needs!");
 			System.exit(-1);
 		}
+		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 
 		NewsgroupsThreadsTransMetric usedThreads = 
 				((ThreadsTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
