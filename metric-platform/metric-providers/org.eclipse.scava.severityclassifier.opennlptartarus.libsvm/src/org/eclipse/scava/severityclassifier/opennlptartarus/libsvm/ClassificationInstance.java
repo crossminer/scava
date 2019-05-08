@@ -18,7 +18,6 @@ import java.util.TreeSet;
 
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
-import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 
 import uk.ac.nactem.posstemmer.OpenNlpTartarusSingleton;
 import uk.ac.nactem.posstemmer.Token;
@@ -79,11 +78,6 @@ public class ClassificationInstance {
 		addText(deltaArticle.getText());
 	}
 	
-	public ClassificationInstance(String forumId, CommunicationChannelForumPost deltaArticle, String topicId) {
-		initialiseNGrams();
-		initialiseMetadata(deltaArticle);
-		addText(deltaArticle.getText());
-	}
 
 
 	public void update(ClassifierMessage classifierMessage) {
@@ -128,18 +122,7 @@ public class ClassificationInstance {
 		}
 	}
 	
-	private void initialiseMetadata(CommunicationChannelForumPost deltaArticle)
-	{
-		setForumId(deltaArticle.getForumId());
-		setTopicId(deltaArticle.getTopicId());
-		if (deltaArticle.getSubject()!=null || !deltaArticle.getSubject().isEmpty())
-		{
-			System.err.println("deltaArticle.getSubject() : " + deltaArticle.getSubject());
-			setSubject(deltaArticle.getSubject());
-			} else {
-				setSubject("");
-		}
-	}
+
 	
 	
 
