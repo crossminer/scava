@@ -23,6 +23,8 @@ import org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTra
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
 //import org.eclipse.scava.metricprovider.trans.emotionclassification.model.ForumPostEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.classifiers.emotionclassifier.EmotionClassifier;
 import org.eclipse.scava.nlp.tools.predictions.multilabel.MultiLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -84,7 +86,7 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -103,6 +105,13 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 	public void measure(Project project, ProjectDelta delta, EmotionClassificationTransMetric db) {
 		clearDB(db);
 		System.err.println("Started " + getIdentifier());
+		
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		//Then we add it back to the database
+		indexPrepTransMetric.sync();
 		
 		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
 		Iterable<BugTrackerCommentDetectingCode> commentsIt = detectingCodeMetric.getBugTrackerComments();
