@@ -40,6 +40,7 @@ map[loc, int] churnPerCommit(ProjectDelta delta = \empty()) {
 @doc{Counts the number of commits made today.}
 @friendlyName{Number of commits today}
 @appliesTo{generic()}
+@resetOnEmptyDelta{}
 @historic{}
 int commitsToday(ProjectDelta delta = \empty()) 
   = (0 | it + 1 |/VcsCommit _ := delta)
@@ -49,6 +50,7 @@ int commitsToday(ProjectDelta delta = \empty())
 @doc{Counts the churn for today: the total number of lines of code added and deleted. This metric is used further downstream to analyze trends.}
 @friendlyName{Churn of today}
 @appliesTo{generic()}
+@resetOnEmptyDelta{}
 @historic{}
 int commitsToday(ProjectDelta delta = \empty()) 
   = churn(delta);

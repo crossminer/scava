@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.sentiment",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.sentiment",

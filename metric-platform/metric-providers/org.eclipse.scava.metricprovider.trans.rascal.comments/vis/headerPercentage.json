@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.comments.headerPercentage.historic",
+	"metricid" : "trans.rascal.comments.headerPercentage.historic",
 	"vis" : [ 
 		{
 			"id" : "headerPercentageTimeLine",

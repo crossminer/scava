@@ -54,7 +54,7 @@ public class ProjectRepositoryManager {
 	}
 	
 	public String generateUniqueId(Project project) {
-		String desired = project.getName().replaceAll("[^a-zA-Z]+","");
+		String desired = project.getName().replaceAll("[^A-Za-z0-9]", "");
 		
 		Iterator<Project> it = projectRepository.getProjects().findByName(project.getName()).iterator();
 		if (!it.hasNext()){

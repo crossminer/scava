@@ -7,8 +7,6 @@ import { SelectionModel, SelectionChange } from '@angular/cdk/collections';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 import { MatSort } from '@angular/material';
-import { debug } from 'util';
-
 
 @Component({
   selector: 'app-analysis-task-add',
@@ -27,10 +25,9 @@ export class AnalysisTaskAddComponent implements OnInit {
 
   isSaving: boolean;
   executionTask: ExecutionTask;
-  //projectId: string;
   maxStartDate: Date;
   maxEndDate: Date;
-
+  showSpinner: boolean;
   mpoption : string;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
@@ -57,6 +54,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   }
 
   loadAll() {
+    this.showSpinner = true;
     this.isSaving = false;
     this.maxStartDate = new Date();
     this.maxEndDate = this.maxStartDate;
@@ -67,7 +65,7 @@ export class AnalysisTaskAddComponent implements OnInit {
         //console.log(this.metricProviders)
 
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
-        console.log(this.dataSource);
+        this.showSpinner = false;
         this.selection = new SelectionModel<MetricProvider>(true, []);
         this.dataSource.sort = this.sort;
         
@@ -92,14 +90,12 @@ export class AnalysisTaskAddComponent implements OnInit {
     //console.log("event !!!!!!")
     if (data.added.length !== 0) {
       console.log('selected');
-      console.log(data);
       for (let mp of data.added) {
         this.onRowSelect(mp);
       } 
     }
     if (data.removed.length !== 0) {
       console.log('unselected');
-      console.log(data);
       for (let mp of data.removed) {
         this.onRowUnselect(mp);
       }
@@ -117,7 +113,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+      this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
 
   onRowSelect(row) {
@@ -182,7 +178,6 @@ export class AnalysisTaskAddComponent implements OnInit {
     this.executionTask.startDate = this.convertDate(this.executionTask.startDate);
     this.executionTask.endDate = this.convertDate(this.executionTask.endDate);
     let metrics: string[] = [];
-    console.log(this.selection.selected);
     this.selection.selected.forEach((mp) => metrics.push(mp.metricProviderId));
     this.executionTask.metricProviders = metrics;
     this.analysisTaskService.createTask(this.executionTask).subscribe(

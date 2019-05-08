@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.clones.cloneLOCPerLanguage.historic",
+	"metricid" : "trans.rascal.clones.cloneLOCPerLanguage.historic",
 	"vis" : [ 
 		{
 			"id" : "cloneLOCPerLanguageTimeLine",

@@ -16,7 +16,7 @@
    <extension
          point="org.eclipse.scava.platform.visualisation.metric">
       <visualisation
-            json="vis/ratioUnusedOSGiImportedPackages.json">
+            json="vis/numberOSGiBundleDependencies.json">
       </visualisation>
    </extension>
 </plugin>

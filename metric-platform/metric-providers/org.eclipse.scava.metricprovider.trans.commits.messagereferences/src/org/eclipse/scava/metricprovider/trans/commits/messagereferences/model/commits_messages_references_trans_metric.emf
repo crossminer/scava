@@ -1,0 +1,16 @@
+package org.eclipse.scava.metricprovider.trans.commits.messagereferences.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class CommitsMessageReferenceTransMetric {
+	@series
+	val CommitMessageReferringTo[*] commitsMessagesReferringTo;
+}
+
+class CommitMessageReferringTo {
+	@searchable
+	attr String repository;
+	attr String revision;
+	attr String[*] bugsReferred;
+	attr String[*] commitsReferred;
+}

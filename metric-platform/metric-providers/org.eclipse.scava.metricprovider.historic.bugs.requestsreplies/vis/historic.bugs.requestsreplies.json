@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.RequestsRepliesHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.requestsreplies",

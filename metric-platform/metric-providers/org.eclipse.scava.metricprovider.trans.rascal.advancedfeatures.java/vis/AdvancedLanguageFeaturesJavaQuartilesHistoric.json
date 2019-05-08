@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJavaQuartiles.historic",
+	"metricid" : "trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJavaQuartiles.historic",
 	"vis" : [ 
 		{
 			"id" : "AdvancedLanguageFeaturesJavaQuartilesHistoric",

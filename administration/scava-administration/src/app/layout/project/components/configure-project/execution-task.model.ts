@@ -54,14 +54,16 @@ export class SchedulingInformation implements ISchedulingInformation {
 export interface IMetricExecutions {
     metricProviderId?: string,
     projectId?: string,
-    lastExecutionDate?: string
+    lastExecutionDate?: string,
+    hasVisualisation?: string
 }
 
 export class MetricExecutions implements IMetricExecutions {
     constructor(
        public metricProviderId?: string,
        public projectId?: string,
-       public lastExecutionDate?: string
+       public lastExecutionDate?: string,
+       public hasVisualisation?: string
     ) {
     }
 }
@@ -71,6 +73,7 @@ export interface IMetricProvider {
     label?: string,
     kind?: string,
     description?: string,
+    hasVisualisation?: string,
     dependOf?: IMetricProvider[]
 }
 
@@ -80,6 +83,7 @@ export class MetricProvider implements IMetricProvider {
         public label?: string,
         public kind?: string,
         public description?: string,
+        public hasVisualisation?: string,
         public dependOf?: IMetricProvider[]
     ){
     }

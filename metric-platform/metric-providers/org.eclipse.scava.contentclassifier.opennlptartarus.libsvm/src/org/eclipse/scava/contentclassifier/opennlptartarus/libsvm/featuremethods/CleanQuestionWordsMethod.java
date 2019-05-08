@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -9,10 +10,11 @@
  ******************************************************************************/
 package org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.featuremethods;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -20,15 +22,25 @@ import java.util.regex.Pattern;
 
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.ClassificationInstance;
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.Classifier;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class CleanQuestionWordsMethod {
 
 	private static Set<String> questionWordList;
 	private static String questionWordsFileName = "classifierFiles/questionWords";
+	protected static OssmeterLogger logger;
 	
 	public static int predict(ClassificationInstance xmlResourceItem) {
 		if (questionWordList==null) {
-			questionWordList = loadSetFromFile(questionWordsFileName);
+			logger = (OssmeterLogger) OssmeterLogger.getLogger("contentclassifier.opennlptartarus.libsvm.featuremethods");
+			
+			try {
+				questionWordList = loadSetFromFile();
+				logger.info("Lexicon has been sucessfully loaded");
+			} catch (IOException e) {
+				logger.error("Error while loading the lexicon:", e);
+				e.printStackTrace();
+			}
 		}
 		if (containsQuestionWords(xmlResourceItem))
 			return 1;	//	"Request"
@@ -46,32 +58,21 @@ public class CleanQuestionWordsMethod {
 		return false;
 	}
 
-	private static Set<String> loadSetFromFile(String filename) {
-		String path = (new Classifier()).getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
+	private static Set<String> loadSetFromFile() throws IOException
+	{
+		ClassLoader cl = (new Classifier()).getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(questionWordsFileName);
+		if(resource==null)
+			throw new FileNotFoundException("The file "+questionWordsFileName+" has not been found");
+		BufferedReader model = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		String line;
 		HashSet<String> hashSet = new HashSet<String>();
-		File file = new File(path, filename);
-		String content = readFileAsString(file);
-		for (String stopword : content.split("\\n")) {
-			hashSet.add(stopword.trim());
+		while((line = model.readLine()) != null)
+		{
+			hashSet.add(line.trim());
 		}
 		return hashSet;
 	}
-
-	private static String readFileAsString(File afile) {
-	    byte[] buffer = new byte[(int) afile.length()];
-	    BufferedInputStream f = null;
-	    try {
-	        f = new BufferedInputStream(new FileInputStream(afile));
-	        f.read(buffer);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally { 
-	    	if (f != null) try { f.close(); } catch (IOException ignored) { }
-	    }
-	    return new String(buffer);
-	}
+	
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,6 @@ public class BugStatistics extends Pongo {
 		super();
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
 		BUGID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
-		FIRSTREQUEST.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
 		ANSWERED.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
 		RESPONSEDURATIONSEC.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
 		RESPONSEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.model.BugStatistics");
@@ -30,7 +29,6 @@ public class BugStatistics extends Pongo {
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
 	public static StringQueryProducer BUGID = new StringQueryProducer("bugId"); 
-	public static StringQueryProducer FIRSTREQUEST = new StringQueryProducer("firstRequest"); 
 	public static StringQueryProducer ANSWERED = new StringQueryProducer("answered"); 
 	public static NumericalQueryProducer RESPONSEDURATIONSEC = new NumericalQueryProducer("responseDurationSec");
 	public static StringQueryProducer RESPONSEDATE = new StringQueryProducer("responseDate"); 
@@ -51,15 +49,6 @@ public class BugStatistics extends Pongo {
 	
 	public BugStatistics setBugId(String bugId) {
 		dbObject.put("bugId", bugId);
-		notifyChanged();
-		return this;
-	}
-	public boolean getFirstRequest() {
-		return parseBoolean(dbObject.get("firstRequest")+"", false);
-	}
-	
-	public BugStatistics setFirstRequest(boolean firstRequest) {
-		dbObject.put("firstRequest", firstRequest);
 		notifyChanged();
 		return this;
 	}

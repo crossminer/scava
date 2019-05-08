@@ -35,7 +35,7 @@ public class RawMetricListResource extends AbstractApiResource {
 			IMetricProvider ip =  it.next();
 			
 			metric.put("name", ip.getFriendlyName());
-			metric.put("type", ip.getClass().getName());
+			metric.put("type", ip.getIdentifier());
 			metric.put("description", ip.getSummaryInformation());
 		}
 

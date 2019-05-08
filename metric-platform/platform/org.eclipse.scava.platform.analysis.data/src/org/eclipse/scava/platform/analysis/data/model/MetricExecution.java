@@ -24,11 +24,13 @@ public class MetricExecution extends Pongo {
 		METRICPROVIDERID.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
 		PROJECTID.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
 		LASTEXECUTIONDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
+		HASVISUALISATION.setOwningType("org.eclipse.scava.platform.analysis.data.model.MetricExecution");
 	}
 	
 	public static StringQueryProducer METRICPROVIDERID = new StringQueryProducer("metricProviderId"); 
 	public static StringQueryProducer PROJECTID = new StringQueryProducer("projectId"); 
 	public static StringQueryProducer LASTEXECUTIONDATE = new StringQueryProducer("lastExecutionDate"); 
+	public static StringQueryProducer HASVISUALISATION = new StringQueryProducer("hasVisualisation"); 
 	
 	
 	public String getMetricProviderId() {
@@ -55,6 +57,15 @@ public class MetricExecution extends Pongo {
 	
 	public MetricExecution setLastExecutionDate(Date lastExecutionDate) {
 		dbObject.put("lastExecutionDate", lastExecutionDate);
+		notifyChanged();
+		return this;
+	}
+	public boolean getHasVisualisation() {
+		return parseBoolean(dbObject.get("hasVisualisation")+"", false);
+	}
+	
+	public MetricExecution setHasVisualisation(boolean hasVisualisation) {
+		dbObject.put("hasVisualisation", hasVisualisation);
 		notifyChanged();
 		return this;
 	}

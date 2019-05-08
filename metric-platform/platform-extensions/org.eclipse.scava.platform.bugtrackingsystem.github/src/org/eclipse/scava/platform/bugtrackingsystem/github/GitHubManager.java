@@ -137,6 +137,16 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 			}
 
 		}
+		
+		this.issueCommentsList.clear();// This prepares for the next series of comments
+		this.issueRangeMap.clear();
+		this.issueIds.clear();
+		this.issuesMap.clear();
+		
+		this.pullRequestCommentList.clear();
+		this.pullRequestIdList.clear();
+		this.pullRequestRangeList.clear();
+		this.pullRequestsList.clear();
 
 		return delta;
 	}

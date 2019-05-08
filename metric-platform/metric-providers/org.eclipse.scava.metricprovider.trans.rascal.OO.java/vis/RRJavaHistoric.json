@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.OO.java.RR-Java.historic",
+	"metricid" : "trans.rascal.OO.java.RR-Java.historic",
 	"vis" : [ 
 		{
 			"id" : "RRJavaHistoric",

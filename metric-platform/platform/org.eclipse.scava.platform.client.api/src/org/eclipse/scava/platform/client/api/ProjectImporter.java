@@ -90,6 +90,13 @@ public class ProjectImporter {
 		} else if (url.contains("gitlab")) { // FIXME: ...
 			GitLabImporter importer = new GitLabImporter();
 			try {
+				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+				Properties properties = projectRepo.getProperties().findOneByKey("gitlabToken");
+				if (properties != null) {
+					importer.setCredentials(new Credentials(properties.getValue(), "", ""));
+				} else {
+					importer.setCredentials(new Credentials("", "", ""));
+				}
 				p = importer.importProject(url, platform);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -97,6 +104,11 @@ public class ProjectImporter {
 			}
 		}
 		
+		// Post-processing: remove any special character in the project's name
+		// to avoid possible conflicts, e.g. with MongoDB collection name restrictions
+		p.setShortName(p.getShortName().replaceAll("[^A-Za-z0-9]", ""));
+		platform.getProjectRepositoryManager().getProjectRepository().sync();
+
 		return p;
 	}
 

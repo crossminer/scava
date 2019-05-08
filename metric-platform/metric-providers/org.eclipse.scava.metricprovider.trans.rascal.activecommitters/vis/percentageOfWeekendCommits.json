@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.trans.rascal.activecommitters.percentageOfWeekendCommits.historic",
+	"metricid" : "trans.rascal.activecommitters.percentageOfWeekendCommits.historic",
 	"vis" : [ 
 		{
 			"id" : "percentageOfWeekendCommitsTimeLine",

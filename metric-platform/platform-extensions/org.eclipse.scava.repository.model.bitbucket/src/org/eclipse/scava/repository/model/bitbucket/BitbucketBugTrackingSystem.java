@@ -81,7 +81,7 @@ public class BitbucketBugTrackingSystem extends org.eclipse.scava.repository.mod
 
     @Override
     public String getInstanceId() {
-        return getUser() + '/' + getRepository();
+        return getUrl();
     }
 	
 }

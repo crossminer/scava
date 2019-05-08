@@ -12,7 +12,7 @@
 \author{FrontEndART Szoftver Kft.}
 \title{User's Guide of the CROSSMINER Advanced Integrated Development Environments Plug-in}
 
-\date{Version 1.0.80.rev3}
+\date{Version 1.2.0.rev0}
 
 \newcommand{\todoi}[1]{\todo[inline]{#1}}
 
@@ -136,6 +136,61 @@ There are several kind of suggestions and recommendation which could be helpful 
 
 Recommendation which subject are libraries are called \emph{library based recommendations.} This feature helps you to search libraries whiches fit in your development process.
 
+\subsection{Project search}
+
+To search for projects which can be installed into your system, select the Project Search feature under the CROSSMINER menu. After the dialog opened, you can type the desired search expression into the search field. After that, hit enter or click on the Search button. The results are going to show up in a new tab in the middle of the dialog. Every search is going to open a new tab and show up inside that.
+
+On the left part of this tab you can see the results list. By clicking on these items a couple of informations are shown in the right part of the search tab, like a description or the dependencies. You can navigate to the GitHub repository, to the official website of the project or to the related CROSSMINER Web-based Dashboard site. You can initiate a new search for similar projects to the given project by clicking on the similarity method buttons. These are the Compound, Crossim, Dependency, Crossrec, Readme, RepoPalCompound and RepoPalCompoundV2. Or you can select the given project result to be installed by clicking on the Add button in the result's box. The selected projects are shown on the right side of the dialog in a list. By clicking on these items you can view the details of them such like in the previous case. You can deselect these items by clicking on the Remove button. After you chose the wanted projects to be installed click on the Install button on the bottom of the dialog. The search dialog can be seen on the Figure~\ref{fig:projectSearchDialogSearch}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/project-search-search.png}
+	\caption{Project search dialog - search}
+	\label{fig:projectSearchDialogSearch}
+\end{figure}
+
+
+In the install dialog you can set the base path to the location where you want to install the projects by default. After updating this path all of the projects destination location is going to be updated. You can see this property of the projects on the bottom of the dialog, in the project list. All of the projects can be installed into different locations from the default by giving them a custom destination path. After setting all of the desired install paths, you can choose to install all the projects at once by clicking on the Install all button or you can install them one-by-one manually, by clicking on the Install buttons of the projects. The installation process can be canceled by clicking on the Cancel buttons. The install dialog can be seen on the Figure~\ref{fig:projectSearchDialogInstall}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/project-search-install.png}
+	\caption{Project search dialog - install}
+	\label{fig:projectSearchDialogInstall}
+\end{figure}
+
+\subsection{Searching additional libraries}
+
+To search for libraries that can be useful during the development of your project, open the Library search dialog. For this, first you have to select the project in the Package explorer view. This feature works only with Maven projects, that contains their pom.xml file in their root folder. Then navigate in the menu to the CROSSMINER menu and click on the Search libraries option. This will bring up the Library search dialog.
+
+This dialog is split into two parts. On the left side you can see the currently used libraries in your project and on the right side there are the suggested libraries. Both the left and the right side contains their libraries in two separate groups. On the left side, in the upper group there are the libraries that has been selected to be used as the base of the search. The suggested libraries may vary by the different  set of selected libraries. On the bottom there are the libraries that has not been selected yet. On the right side, in the lower group there are the libraries that the CROSSMINER suggested for you to use in your project. The dialog at this state can be seen in the Figure~\ref{fig:librarySearch:results}. These libraries can be selected to be installed, and if they are, then they move to the upper group which contains the libraries that has been selected to be installed. This can be seen on the Figure~\ref{fig:librarySearch:selected}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/library-search-results.png}
+	\caption{Library search dialog - results}
+	\label{fig:librarySearch:results}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{pic/library-search-selected.png}
+\caption{Library search dialog - selected to install}
+\label{fig:librarySearch:selected}
+\end{figure}
+
+Every time you change the search parameters, so the set of libraries that are used as the base of the search, the suggested libraries will be reloaded. If something goes wrong so the libraries cannot be retrieved from the CROSSMINER server, a Try again button will be shown and by clicking that you can initiate a new request to load them. This is shown in the Figure~\ref{fig:librarySearch:tryagain}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{pic/library-search-try-again.png}
+\caption{Library search dialog - try again}
+\label{fig:librarySearch:tryagain}
+\end{figure}
+
+After selecting the set of libraries that you want to use in your project, by clicking on the install button you can add them to your project. They will show up among the dependencies in the project's pom.xml.
+
+
 \req[N/A\todo{WEB Dashboard functionality}]{U4}{Able to warn about superfluous dependencies}{\SHOULD}
 \req[N/A\todo{WEB Dashboard functionality}]{U5}{Able to warn about overly precise dependencies}{\SHOULD}
 
@@ -147,24 +202,6 @@ Recommendation which subject are libraries are called \emph{library based recomm
 \req[\done]{D80}{The IDE shall provide an interface where known information from a single library is shown. This interface can help the user to check details of the library, and reach out for more information through links (e.g. to project home page).}{\SHALL}
 \req[\waitingForServer\todo{Not IDE! Needed for D78}]{D100}{The CROSSMINER REST API shall provide an interface that accepts a name and version description and returns the library that is described by them.}{\SHALL}
 \req[\done\todo{Not IDE! Needed for D78}]{D101}{The CROSSMINER REST API shall provide an interface that accepts a library and returns detailed information about it (including description, metric values, URLs).}{\SHALL}
-
-\subsection{Searching Additional Libraries}
-
-One sub-type of library based recommendation when the goal of the developer is to find new libraries based on some user specified search criteria.
-
-
-To use this feature select the Library Search item under the CROSSMINER tab in the toolbar. To search differenct libraries, which are needed for your project enter its name (or part of it) and click on the \textit{Search} button. After a succesful search a list of libraries will be shown under a new tab. A list of libraries which meet the requirement will be shown on the left side of the window. You can easily switch between them. You can run different searches which are open a new tab. To switch between them click on the tab header. You can close this result with the cross on the tab header if you no longer want to use it. 
-You can see on Figure~\ref{fig:librarySearchWindow} the user search for json library. The results are on the left side of the window and central panel holds information about the selected library.
-
-To get information about the libraries select the list item. After selection the central panel shows information about the libraries and provides weblinks to the library GitHub repository and the Crossminer WebDashboard. The link opens webpage in your default browser, if you did not set up default browser an error message will be shows up.  If you find the right library you can simply add it to the installer queue just by clicking on the \textit{Add} button under the library name. The libraries which are selected for the installation will appear on the right side of the window. To start the installation click on the \textit{OK} button.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{pic/librarySearchWindowOpen.png}
-	\caption{Library search window}
-	\label{fig:librarySearchWindow}
-\end{figure}
-
 
 \req[\waitingForServer\todo{Source code recommendation on the IDE side, ready.}]{U172}{CROSSMINER IDE provides developers code templates and example of codes related to the usage of the API of a specific project}{\SHALL}
 \req[\todom{} \waitingForServer\todo{On the IDE side, it is a free text search (with some pre-defined constraints, if needed.)}]{D77}{The IDE shall provide an interface, where recommendations against a new (to-be-used-in-the-project) library can be given. So the user can describe features and functionalities they wants to perform using an external library. The user can also give some constraints, e.g. minimal age or users of the library.}{\SHALL}
@@ -178,33 +215,7 @@ The details of the communication must be defined.}
 
 \req[\inprogress{} \waitingForServer\todo{Not IDE! Needed for D77.}]{D99}{The CROSSMINER REST API shall provide an interface that accepts a description and some filtering constraints and returns a list of libraries that match with the description and fulfil the constraints.}{\SHALL}
 
-\subsection{Searching Similar Libraries}
-
-There are usually some pre-existing selection of libraries which serve as a base to find more relevant API-s. We split these kind of recommendations into two major sub-categories: whether the pre-existing set of libraries are already installed or not.
-
 \req[\waitingForServer\todo{Not IDE! Needed for U174}]{D102}{The CROSSMINER REST API shall provide an interface that accepts a library, a description and some filtering constraints and returns a list of libraries that match with the description, fulfill the constraints, and can be used as a replacement to the given library.}{\SHALL}
-
-\subsubsection{Suggestion Based on Non-installed Libraries}
-
-If you want to search libraries not by its name but its funcionality use search similar libraries function. This function placed on the bottom of each library details. Select a library and scroll the description all the way down. On Figure~\ref{fig:librarySimilar} user select simple-json library by fangyidong which is a well-know json parser library. The user also searched library which are similars to this. To search similar libraries like the selected one click \textit{Search similars with method} link on the bottom of the information page. This method will open a new tab where you can browse among similar libraries.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{pic/librarySearchSimilars.png}
-	\caption{Similar libraries like the selected one}
-	\label{fig:librarySimilar}
-\end{figure}
-
-\subsubsection{Suggestion Based on Already Installed Libraries}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{pic/librarySearchFinish.png}
-	\caption{Library search finish}
-	\label{fig:libraryInstall}
-\end{figure}
-
-Before the plug-in requests recommendation about how to installs the selected libraries you can search for additional libraries based on third party APIs already present in you Maven settings. The interface offers a special list of libraries which is based on the previously installed ones. If your project isn't a Maven project, this feature is not work for you, the plugin process the Maven Pom file to detect installed libraries. You can select which libraries will be used during the search. To select relevant libraries use the checkboxes. On Figure~\ref{fig:librarySimilar} user have three installed libraries and select that all of them is relevant to similiarity search. To search additional libraries click on the \textit{Search for additional libraries} button. This action opens a new tab which is similar to the previous search results view, but this library list contains those libraries which are similiar to the currently installed ones. You can add libraries to the list the same way as you did it before. To finalize installation process select the \textit{OK} button and the plug-in will install the selected libraries.
 
 \req[\waitingForServer\todo{Not IDE! Needed for D81}]{U174}{CROSSMINER IDE provides suggested alternatives to the usage of third-party jar which offer the same range of services as a jar used in current project}{\SHOULD}
 \req[\todom{} \waitingForServer]{D81}{The IDE shall provide an interface to the user, where recommendations for replacing a library used in the current project with some alternative libraries can be given. The user can select the library currently used in the project to be replaced and can give further recommendations against the alternatives.}{\SHALL}
@@ -244,6 +255,30 @@ To help the developers adapt their project to these changes we defined an other 
 
 In this section we elaborate features related to those recommendation which subject entities are present in the source code of the project under development. They usually retrieve some code chunk, which could be annotated to ease further understanding.
 
+\subsection{Code recommendation}
+
+Code recommendations are used to retrieve code snippets which may be useful for you by showing an example implementation if a specific library or just presenting a pattern that can be followed. These snippets can be requested by selecting a chunk of code in an open Java source code editor and by clicking on the Request code recommendation option in the context menu's CROSSMINER submenu or by using the Ctrl+Shift+X C key combination. After the Code recommendation view has shown up the suggested patterns for this file will be displayed on the left side in a hierarchical representation. The results are grouped by the file, they are relevant to and by the query, which represents the request for the recommendations at a given time using a given part of the file. This can be seen in the Figure~\ref{fig:codeRecommendation:results}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/code-recommendation-results.png}
+	\caption{Code recommendation view - suggested patterns }
+	\label{fig:codeRecommendation:results}
+\end{figure}
+
+By selecting a pattern in the hierarchical tree view the recommended snippet will be shown in the preview view on the right side of the Code recommendation view. Here you can examine the given code, copy a part of it or by using the Insert snippet at cursor button you can paste it into the active editor at the cursor's position or replace the selected code chunk with it. This functionality is available only when there is an active editor opened. The preview view can be seen on the Figure~\ref{fig:codeRecommendation:preview}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/code-recommendation-preview.png}
+	\caption{Code recommendation view - preview snippet }
+	\label{fig:codeRecommendation:preview}
+\end{figure}
+
+You can also remove the recommended code snippets from the results by opening the context menu over them and choosing the right option for you. Basically there are 4 options that you can go with. If you select a file you have the option to drop all the recommendation that are related to that file. If you select the recommendation query, you can drop all results for that request. If you select the code recommendations you can drop the items one-by-one. Or in all cases there is an option to drop all the recommendations, and this will clear the results view.
+
+By double clicking on a file you can easily navigate to it and request the Eclipse to open it.
+
 \req[\inprogress\todo{Not IDE! Needed for U170-171...}]{U73}{Able to identify the part of the API that the developer is currently using to provide code snippets in relation with current development activity}{\SHALL}
 \req[\inprogress{} \waitingForServer\todo{no data for ``as suspicious''}]{U170}{CROSSMINER IDE provides the ability for the developer to ask recommendations for a code chunk previously marked by the CROSSMINER IDE as suspicious}{\SHOULD}
 \req[\done]{U171}{CROSSMINER IDE provides the ability for the developer to ask recommendation for an arbitrary code chunk or code element}{\SHOULD}
@@ -260,20 +295,6 @@ The content and form of it must be discussed.}
 
 \req[\waitingForServer\todo{Not IDE! Needed for U170-171, D91-94}]{D107}{The CROSSMINER REST API may provide an interface that accepts code snippets and library context, and returns recommendations on how to improve that part of the code.}{\MAY}
 
-\subsection{Retrieving Suggested Code Snippets}
-
-Based on the current development context, our plug-in is able to yield a set of source code snippets (code chunks), which could be useful to implement or to understand various features.
-This feature helps to improve your code quality based on your suggested code snippet. The plug-in able to give you a recommendation how to change your code to improve it. To use this feature select a code chunk and press the right mouse button. In the context menu select the \textit{Request Recommendation} under the CROSSMINER entry.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{pic/coderecommender.png}
-	\caption{Code recommendation view}
-	\label{fig:coderecommender}
-\end{figure}
-
-As shown on Figure~\ref{fig:coderecommender} the plugin (in this example) suggest two code improvements for your selected code chunk. You can browse them and inspect the source code. To insert the selected source code click on the \textit{Insert at cursor} button. This action will insert the code at your current cursor location and if there is a selected code chunk then it will be replaced. The recommended source code is a pattern, it only helps you to understand the logic but it is not guaranteed to be semantically (or in rare occasions, syntactical) correct.
-
 \req[\done\todo{done, up to date}]{D91}{The IDE may insert a recommendation in the code if the user accepts it and requested it on a code position.}{\MAY}
 \req[\inprogress{} \waitingForServer\todo{``IDE replaces ...'' will probably not be implemented, unless the server gives proper recommendations}]{D94}{The IDE may be able to process recommendations and perform code migration autonomously. So the user can point to a recommendation and the IDE replaces the old code to the new one.}{\MAY}
 \req[\waitingForServer\todo{Not IDE! Needed for U170-171, D91-94}]{D106}{The CROSSMINER REST API may provide an interface that accepts a list of libraries and a description and returns recommendations about how to implement the described functionality using the given libraries.}{\MAY}
@@ -281,6 +302,18 @@ As shown on Figure~\ref{fig:coderecommender} the plugin (in this example) sugges
 \section{Text Based Recommendations}
 
 Finally there are tons of documentation and discussion available for various topics, which could be useful for the developers. Those recommendations which yield some natural language documents (or reference to them) are called \emph{text based recommendations.}
+
+\subsection{API documentation and Q\&A posts}
+
+This feature is used to show the user some documentation or forum posts where she may find some useful information about the API calls that she is using in her code. To initiate a request for these recommendations you have to select a code chunk in an active editor and click on the Request API documentation and Q\&A posts options the context menu's CROSSMINER submenu. After this, the results are shown in a particular view, where you can examine these results, copy the link for them or by clicking on the title they can be opened in an external browser. This view can be seen on the Figure~\ref{fig:apiDocumentation:results}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/api-documentation-results.png}
+	\caption{API documentation and Q\&A posts view - results}
+	\label{fig:apiDocumentation:results}
+\end{figure}
+
 
 \subsection{API Usage}
 
@@ -296,17 +329,6 @@ There several forum threads and change reports, which could ease the migration b
 \req[\todom{} \waitingForServer]{U165}{CROSSMINER IDE offers a list of community discussion forums concerning the use of a changed third-party API element}{\SHOULD}
 \req[\todom{} \waitingForServer]{U166}{CROSSMINER IDE offers code examples for deprecated third-party API usage points}{\SHOULD}
 \req[\todom{} \waitingForServer]{D87}{The IDE shall provide an interface that explains the steps of how to upgrade a library used in the project to a new version.}{\SHALL}
-
-\subsection{Inspecting Code Chunk Related Q\&A Posts}
-
-Also there are some discussions about how to implement a function using a specific features or a set of libraries. The recommendations which present these documents (posts and blog entries) are represent an other subclass of text based recommendations. To get relevant posts about your code, select it and press the right mouse button and click on the \textit{Request API documentation or QA post} in the CROSSMINER sub-menu. One similar panel as Figure~\ref{fig:apidocumentation} will be showed at the bottom of Eclipse. This panel contains a list of available QA post for your selected code chunk. For further information you can open the listed links (by clicking on them) in your default browser.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{pic/apidocumentation.png}
-	\caption{Code recommendation view}
-	\label{fig:apidocumentation}
-\end{figure}
 
 \chapter{User Activity Monitoring}
 
@@ -351,7 +373,7 @@ The main components of this scenario is the recording of developer interactions 
 
 \section{Retrieving Process Metrics via \textsc{crossminer} Web-based Dashboard}
 
-You are able to inspect any computed process metrics for your project by using the relevant features of CROSSMINER Web-based Dashboard.
+You are able to inspect any computed process metrics for your project by using the relevant features of .
 
 \section{Plug-in Side Debugging Features}
 

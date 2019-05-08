@@ -1,6 +1,6 @@
 
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.unansweredthreads",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.unansweredthreads.UnansweredThreadsHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.unansweredThreads",

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.newusers",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.newusers.NewUsersHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.newUsers",

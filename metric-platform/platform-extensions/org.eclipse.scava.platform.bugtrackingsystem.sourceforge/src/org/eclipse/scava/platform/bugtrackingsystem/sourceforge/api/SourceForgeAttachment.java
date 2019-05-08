@@ -9,8 +9,15 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.sourceforge.api;
 
-public class SourceForgeAttachment {
-    private String url;
+import java.io.Serializable;
+
+public class SourceForgeAttachment implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4082845722976222497L;
+	
+	private String url;
     private long bytes;
     
     public String getUrl() {

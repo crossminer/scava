@@ -10,11 +10,15 @@
 package org.eclipse.scava.platform.bugtrackingsystem.bitbucket;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.model.issue.Issue;
@@ -23,6 +27,7 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem;
 import org.joda.time.DateTime;
@@ -45,14 +50,11 @@ import okhttp3.Response;
 
 public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugTrackingSystem> {
 	
-	
-
 	private int callsRemaning;
 	private int timeToReset;
 	@SuppressWarnings("unused")
 	private int rateLimit;
-	private static String host = "https://api.bitbucket.org/";
-	private static String exthost = "2.0/repositories/";
+	private static String exthost = "/2.0/repositories/";
 	private final static String PAGE_SIZE = "10";
 	private int current_page;
 	private int next_page;
@@ -60,12 +62,12 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private String open_id;
 	private String builder;
 	private OkHttpClient client;
+	private boolean temporalFlag;
 
 	public BitbucketManager() {
 
 		this.open_id = "";
 		this.builder = "";
-
 		this.client = new OkHttpClient();
 	}
 
@@ -77,11 +79,23 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	@Override
 	public BugTrackingSystemDelta getDelta(DB db, BitbucketBugTrackingSystem bitbucketTracker, Date date)
 			throws Exception {
-
+		
+		
+		if(temporalFlag==false){
+		
+			getFirstDate(db, bitbucketTracker);
+			temporalFlag=true;
+		
+		}
+		
+		
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
+		
 		delta.setBugTrackingSystem(bitbucketTracker);
-
-		for (Issue issue : getIssues(bitbucketTracker)) {
+		
+		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
+		
+		for (Issue issue : getIssues(processedURL)) {
 
 			Date created_on = new Date(convertStringToDate(issue.getCreatedOn()));
 
@@ -103,7 +117,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 			}
 
-			for (BitbucketComment comment : getComments(bitbucketTracker, issue.getId())) {
+			for (BitbucketComment comment : getComments(bitbucketTracker, processedURL, issue.getId())) {
 				
 				Date created = new Date(comment.getCreationTime());
 		
@@ -121,14 +135,20 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 	@Override
 	public Date getFirstDate(DB db, BitbucketBugTrackingSystem bitbucketTracker) throws Exception {
-
+		
+		setClient(bitbucketTracker);
+		
 		Date firstDate = null;
+		
 		ObjectMapper mapper = new ObjectMapper();
+		
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
+		
+		HttpUrl.Builder builder = HttpUrl.parse(processedURL.getHost() + exthost).newBuilder();
+		builder.addEncodedPathSegment(processedURL.getOwner());
+		builder.addEncodedPathSegment(processedURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
 		builder.addEncodedQueryParameter("pagelen", PAGE_SIZE); // page size
@@ -153,21 +173,73 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		return firstDate;
 
 	}
+	
+	// ----------------------------------------------------------------------------------------
+	// URL manager
+	// ----------------------------------------------------------------------------------------
+	
+	private class ProcessedBitBucketURL
+	{
+		private String host=null;
+		private String owner=null;
+		private String repository=null;
+		private Pattern protocolRegex=Pattern.compile("^https?://");
+		private Pattern ownerRepositoryRegex=Pattern.compile("^/([^/]+)/([^/]+)/");
+		private OssmeterLogger logger;
+		
+		public ProcessedBitBucketURL(BitbucketBugTrackingSystem bitbucketTracker)
+		{
+			logger = (OssmeterLogger) OssmeterLogger.getLogger("bitbucket.urlprocessor");
+			String url = bitbucketTracker.getUrl();
+			if(!protocolRegex.matcher(url).find())
+				url = "https://"+url;
+			try {
+				URI projectURI = new URI(url);
+				host = "https://api."+projectURI.getHost();
+				Matcher m = ownerRepositoryRegex.matcher(projectURI.getPath());
+				if(m.find())
+				{
+					owner=m.group(1);
+					repository=m.group(2);
+				}
+				else
+					throw new UnsupportedOperationException("No project owner or repository could be found in "+projectURI.getPath());
+				
+			} catch (URISyntaxException | UnsupportedOperationException e) {
+				logger.error("Error while parsing the URL:"+e);
+				e.printStackTrace();
+			}
+		}
+
+		public String getHost() {
+			return host;
+		}
+
+		public String getOwner() {
+			return owner;
+		}
+
+		public String getRepository() {
+			return repository;
+		}
+		
+		
+	}
 
 	// ----------------------------------------------------------------------------------------
 	// REQUEST METHODS
 	// ----------------------------------------------------------------------------------------
-	private List<Issue> getIssues(BitbucketBugTrackingSystem bitbucketTracker) throws IOException {
+	private List<Issue> getIssues(ProcessedBitBucketURL processedBitBucketURL) throws IOException {
 
 		List<Issue> issues = new ArrayList<>();
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
+		HttpUrl.Builder builder = HttpUrl.parse(processedBitBucketURL.getHost() + exthost).newBuilder();
 		// builder.addEncodedPathSegment(bitbucketTracker.getLogin());
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		builder.addEncodedPathSegment(processedBitBucketURL.getOwner());
+		builder.addEncodedPathSegment(processedBitBucketURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("sort", "created_on");
 		// Add date range
@@ -248,7 +320,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 	}
 
-	private List<BitbucketComment> getComments(BitbucketBugTrackingSystem bitbucketTracker, String issue_id)
+	private List<BitbucketComment> getComments(BitbucketBugTrackingSystem bitbucketTracker, ProcessedBitBucketURL processedBitBucketURL, String issue_id)
 			throws IOException {
 
 		List<BitbucketComment> comments = new ArrayList<>();
@@ -256,9 +328,9 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(bitbucketTracker.getOwner());
-		builder.addEncodedPathSegment(bitbucketTracker.getRepository());
+		HttpUrl.Builder builder = HttpUrl.parse(processedBitBucketURL.getHost() + exthost).newBuilder();
+		builder.addEncodedPathSegment(processedBitBucketURL.getOwner());
+		builder.addEncodedPathSegment(processedBitBucketURL.getRepository());
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedPathSegment(issue_id);
 		builder.addEncodedPathSegment("comments");
@@ -286,9 +358,12 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 				if (!(element.get("user") == null)) {
 
 					JsonNode user = new ObjectMapper().readTree(element.get("user").toString());
-
-					username = user.get("username").toString();
-
+					
+						username = user.get("username").toString();
+					
+				}else {
+					
+					username = "Former User";
 				}
 
 				if (!(rootNode == null)) {
@@ -428,11 +503,14 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 					Request request = chain.request();
 					Request.Builder newRequest = null;
 
-					if (!((bitbucket.getLogin() == null) && (bitbucket.getPassword() == null))) {
+					if (!((bitbucket.getLogin().equals("null") && (bitbucket.getPassword().equals("null"))))) {
 
 						newRequest = request.newBuilder().addHeader("authorization",
 								Credentials.basic(bitbucket.getLogin(), bitbucket.getPassword()));
 
+					}else {
+						
+						newRequest = request.newBuilder();
 					}
 					
 					//FIXME: OAuth authentication - reader currently defaults to unauthenticated client
@@ -470,34 +548,34 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		this.client = newClient.build();
 	}
 
-	// TODO - Modify to generate Token using GitLabs requirements
-	private void generateOAuth2Token(BitbucketBugTrackingSystem bitbucket) throws IOException {
-
-		System.out.println("Generating OAuth token");
-		OkHttpClient genClient = new OkHttpClient();
-		// HttpUrl.Builder httpurlBuilder =
-		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
-
-		FormBody.Builder formBodyBuilder = new FormBody.Builder();
-		formBodyBuilder.add("grant_type", "client_credentials");
-		// formBodyBuilder.add("client_id", bitbucket.getClient_id());
-		// formBodyBuilder.add("client_secret", bitbucket.getClient_secret());
-
-		FormBody body = formBodyBuilder.build();
-
-		// Used for a POST request
-		Request.Builder builder = new Request.Builder();
-		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
-		builder = builder.post(body);
-		Request request = builder.build();
-		Response response = genClient.newCall(request).execute();
-		checkHeader(response.headers(), bitbucket);
-
-		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
-		String open_id = BitbucketUtils.fixString(jsonNode.get("access_token").toString());
-
-		this.open_id = open_id;
-	}
+	// TODO - Modify to generate Token using Bitbucket requirements
+//	private void generateOAuth2Token(BitbucketBugTrackingSystem bitbucket) throws IOException {
+//
+//		System.out.println("Generating OAuth token");
+//		OkHttpClient genClient = new OkHttpClient();
+//		// HttpUrl.Builder httpurlBuilder =
+//		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
+//
+//		FormBody.Builder formBodyBuilder = new FormBody.Builder();
+//		formBodyBuilder.add("grant_type", "client_credentials");
+//		// formBodyBuilder.add("client_id", bitbucket.getClient_id());
+//		// formBodyBuilder.add("client_secret", bitbucket.getClient_secret());
+//
+//		FormBody body = formBodyBuilder.build();
+//
+//		// Used for a POST request
+//		Request.Builder builder = new Request.Builder();
+//		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
+//		builder = builder.post(body);
+//		Request request = builder.build();
+//		Response response = genClient.newCall(request).execute();
+//		checkHeader(response.headers(), bitbucket);
+//
+//		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
+//		String open_id = BitbucketUtils.fixString(jsonNode.get("access_token").toString());
+//
+//		this.open_id = open_id;
+//	}
 
 	/**
 	 * This method checks the HTTP response headers for current values associated
@@ -556,7 +634,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		try {
 
-			System.err.println("[Git Lab Reader] The rate limit has been reached. This thread will be suspended for "
+			System.err.println("[Bitbucket Manager] The rate limit has been reached. This thread will be suspended for "
 					+ this.timeToReset + " seconds until the limit has been reset");
 			Thread.sleep((this.timeToReset * 1000l) + 2);
 
@@ -593,6 +671,5 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		return null;
 	}
-
 
 }
