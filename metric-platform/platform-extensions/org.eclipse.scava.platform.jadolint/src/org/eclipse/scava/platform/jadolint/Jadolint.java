@@ -36,70 +36,8 @@ import java.util.logging.Logger;
  * @author blue
  */
 public class Jadolint {
-    
-    public static void main(String[] args){
-        try {
-            if(args.length < 1){
-                System.out.println("Please provide a Dockerfile");
-                return;
-            }
-            
-            String path = args[0];
-            
-            LineMerger l = new LineMerger();
-            Dockerfile doc = new Dockerfile();
-            
-            doc.setPath(path);
-            
-            l.mergeLines(doc, new File(path));
-            
-            List<Violation> violations = new ArrayList<>();
-            
-            for(Line line : doc.getLines()){
-                //System.out.println(line.getLine() + " " + line.getLineNumber() + " " + line.getInstruction());
-                if(line.getInstruction().equals("ADD")){
-                    AddRules addRules = new AddRules(new Add(line.getLine()));
-                    violations = addRules.runAddRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("CMD")){
-                    CmdRules cmdRules = new CmdRules(new Cmd(line.getLine()));
-                    violations = cmdRules.runCmdRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("COPY")){
-                    CopyRules copyRules = new CopyRules(new Copy(line.getLine()));
-                    violations = copyRules.runCopyRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("EXPOSE")){
-                    ExposeRules exposeRules = new ExposeRules(new Expose(line.getLine()));
-                    violations = exposeRules.runExposeRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("FROM")){
-                    FromRules fromRules = new FromRules(new From(line.getLine()));
-                    violations = fromRules.runFromRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("MAINTAINER")){
-                    MaintainerRules maintainerRules = new MaintainerRules(new Maintainer(line.getLine()));
-                    violations = maintainerRules.runMaintainerRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("RUN")){
-                    RunRules runRules = new RunRules(new Run(line.getLine()));
-                    violations = runRules.runRunRules(doc, line.getLineNumber());
-                }
-                if(line.getInstruction().equals("WORKDIR")){
-                    WorkdirRules workdirRules = new WorkdirRules(new Workdir(line.getLine()));
-                    violations = workdirRules.runWorkdirRules(doc, line.getLineNumber());
-                }
-                if(!violations.isEmpty())
-                    doc.addViolations(violations);
-            }
-            
-            for(Violation v : doc.getViolations())
-                System.out.println(v.getFileName() + " " + v.getLineNumber() + " " + v.getCode() + " " + v.getMessage());
-        } catch (IOException ex) {
-            Logger.getLogger(Jadolint.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
+	
+	private Dockerfile doc;
     
     public void run(String path){
         try {
@@ -150,13 +88,20 @@ public class Jadolint {
                 if(!violations.isEmpty())
                     doc.addViolations(violations);
             }
-            
-            for(Violation v : doc.getViolations())
-                System.out.println(v.getFileName() + " " + v.getLineNumber() + " " + v.getCode() + " " + v.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(Jadolint.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
+
+	public Dockerfile getDoc() {
+		return doc;
+	}
+
+	public void setDoc(Dockerfile doc) {
+		this.doc = doc;
+	}
+    
+    
     
 }
