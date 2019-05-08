@@ -26,6 +26,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerComm
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.ForumPostData;
@@ -88,7 +90,7 @@ public class TopicsTransMetricProvider  implements ITransientMetricProvider<Topi
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -106,6 +108,12 @@ public class TopicsTransMetricProvider  implements ITransientMetricProvider<Topi
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, TopicsTransMetric db) {
 		System.err.println("Started " + getIdentifier());
+		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 				
 		BugTrackingSystemProjectDelta bugTrackingSystemDelta = projectDelta.getBugTrackingSystemDelta();
 		if ( bugTrackingSystemDelta.getBugTrackingSystemDeltas().size() > 0 ) {
