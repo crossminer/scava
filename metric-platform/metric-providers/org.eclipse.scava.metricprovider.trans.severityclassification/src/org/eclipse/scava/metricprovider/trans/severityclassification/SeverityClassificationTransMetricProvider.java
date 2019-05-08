@@ -117,7 +117,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		
 		
 		//This is for indexing
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(3)).adapt(context.getProjectDB(project));	
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(2)).adapt(context.getProjectDB(project));	
 		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
 		indexPrepTransMetric.sync();
 		
