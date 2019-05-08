@@ -11,15 +11,12 @@ package org.eclipse.scava.business.integration;
 
 import java.util.List;
 
-import org.eclipse.scava.business.model.MavenLibrary;
+import org.eclipse.scava.business.dto.MetricsForProject;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  * @author Juri Di Rocco
  *
  */
-public interface MavenLibraryRepository extends MongoRepository<MavenLibrary, String> {
-	public MavenLibrary findOneByArtifactid(String name);
-	public MavenLibrary findOneByGroupidAndArtifactidOrderByReleasedateDesc(String groupId, String artifactId);
-	public List<MavenLibrary> findByGroupidAndArtifactidOrderByReleasedateDesc(String groupId, String artifactId);
+public interface RecommendationFeedbackRepository extends MongoRepository<RecommendationFeedbackRepository, String> {
 }
