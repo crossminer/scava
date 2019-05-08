@@ -20,12 +20,9 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.eclipse.scava.index.indexer.Indexer;
-import org.eclipse.scava.metricprovider.indexing.bugs.document.CommentDocument;
 import org.eclipse.scava.metricprovider.indexing.bugs.document.BugDocument;
+import org.eclipse.scava.metricprovider.indexing.bugs.document.CommentDocument;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugsBugMetadataTransMetric;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.CommentData;
@@ -61,6 +58,8 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSys
 import org.eclipse.scava.platform.indexing.Indexing;
 import org.eclipse.scava.repository.model.Project;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
 import com.googlecode.pongo.runtime.PongoCollection;
 import com.googlecode.pongo.runtime.PongoDB;
@@ -178,6 +177,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	private void prepareBugTrackingsystem(Project project, ProjectDelta projectDelta, BugTrackingSystemDelta delta) {
 
 		ObjectMapper mapper = new ObjectMapper();
+		
 
 		for (BugTrackingSystemBug bug : delta.getNewBugs()) // NEW BUGS
 		{
