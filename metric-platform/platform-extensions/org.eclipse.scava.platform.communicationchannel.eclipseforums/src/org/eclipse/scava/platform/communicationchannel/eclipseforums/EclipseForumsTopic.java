@@ -9,9 +9,13 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.communicationchannel.eclipseforums;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class EclipseForumsTopic{
+public class EclipseForumsTopic implements Serializable{
+	
+
+	private static final long serialVersionUID = 1L;
 	
 	private String forum_id;
 	private String topic_id;

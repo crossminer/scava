@@ -45,7 +45,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	public EclipseForumsManager() {
 		
 		this.open_id = "";
-		this.callsRemaning = 0;
+		this.callsRemaning = -1;
 		this.rateLimit = 0;
 		this.timeToReset = 0;
 		this.current_page = 0;
@@ -108,36 +108,36 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		System.out.println("\t- Getting Root Post for each topic (this may take some time)");
 		List<EclipseForumsTopic> topics = getTopics(eclipseForum);
-		for (EclipseForumsTopic topic : topics ) {
-
-			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
-			getPostsBuilder.addEncodedPathSegment("forums");
-			getPostsBuilder.addEncodedPathSegment("post");
-			getPostsBuilder.addQueryParameter("order_by", "ASC");
-			getPostsBuilder.addEncodedPathSegment(topic.getRoot_post_id());
-
-			// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
-			if (this.callsRemaning == 0) {
-				waitUntilCallReset(this.timeToReset);
-			}
-
-			Request getRootPost = new Request.Builder().url(getPostsBuilder.build().toString()).build();
-			Response getRootPostResponse = this.client.newCall(getRootPost).execute();
-			checkHeader(getRootPostResponse.headers(), eclipseForum);
-			JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
-			if (!(postsJsonNode == null)) {
-				if (!postsJsonNode.isArray()) {
-					topic.setFirst_post_date(EclipseForumUtils
-							.convertStringToDate(
-									EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
-							.toJavaDate());
-					topic.setFirst_post_unix_timestamp(
-							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
-				}
-			}
-			getRootPostResponse.close();
-
-		}
+//		for (EclipseForumsTopic topic : topics ) {
+//
+//			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
+//			getPostsBuilder.addEncodedPathSegment("forums");
+//			getPostsBuilder.addEncodedPathSegment("post");
+//			getPostsBuilder.addQueryParameter("order_by", "ASC");
+//			getPostsBuilder.addEncodedPathSegment(topic.getRoot_post_id());
+//
+//			// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
+//			if (this.callsRemaning == 0) {
+//				waitUntilCallReset(this.timeToReset);
+//			}
+//
+//			Request getRootPost = new Request.Builder().url(getPostsBuilder.build().toString()).build();
+//			Response getRootPostResponse = this.client.newCall(getRootPost).execute();
+//			checkHeader(getRootPostResponse.headers(), eclipseForum);
+//			JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
+//			if (!(postsJsonNode == null)) {
+//				if (!postsJsonNode.isArray()) {
+//					topic.setFirst_post_date(EclipseForumUtils
+//							.convertStringToDate(
+//									EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
+//							.toJavaDate());
+//					topic.setFirst_post_unix_timestamp(
+//							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
+//				}
+//			}
+//			getRootPostResponse.close();
+//
+//		}
 		System.out.println("\t- Calculating first date");
 		List<java.util.Date> dates = new ArrayList<>();
 		for (EclipseForumsTopic topic_information : topics) {
@@ -591,6 +591,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 				.header("Authorization", String.format("Bearer %s", this.open_id)).build();
 
 		Response getTopicResponse = this.client.newCall(getTopicsRequest).execute();
+		
 		checkHeader(getTopicResponse.headers(), eclipseForum);
 		// first
 		for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
@@ -607,7 +608,39 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			}
 		}
 		getTopicResponse.close();
+		
+		
+		for (EclipseForumsTopic topic : topics ) {
 
+			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
+			getPostsBuilder.addEncodedPathSegment("forums");
+			getPostsBuilder.addEncodedPathSegment("post");
+			getPostsBuilder.addQueryParameter("order_by", "ASC");
+			getPostsBuilder.addEncodedPathSegment(topic.getRoot_post_id());
+
+			// A SIMPLE MECHANISIM FOR HANDLING CALL LIMITS/RESETS WITHOUT LOOSING DATA
+			if (this.callsRemaning == 0) {
+				waitUntilCallReset(this.timeToReset);
+			}
+
+			Request getRootPost = new Request.Builder().url(getPostsBuilder.build().toString()).build();
+			Response getRootPostResponse = this.client.newCall(getRootPost).execute();
+			checkHeader(getRootPostResponse.headers(), eclipseForum);
+			JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
+			if (!(postsJsonNode == null)) {
+				if (!postsJsonNode.isArray()) {
+					topic.setFirst_post_date(EclipseForumUtils
+							.convertStringToDate(
+									EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
+							.toJavaDate());
+					topic.setFirst_post_unix_timestamp(
+							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
+				}
+			}
+			getRootPostResponse.close();
+
+		}
+		
 		return topics;
 	}
 
@@ -624,6 +657,8 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	 * @return result
 	 * 
 	 */
+	
+	//FIXME - data Null pointer This needs to be fixed
 	private Boolean compareDate(java.util.Date min, java.util.Date max, Date date) {
 
 		Boolean result = false;

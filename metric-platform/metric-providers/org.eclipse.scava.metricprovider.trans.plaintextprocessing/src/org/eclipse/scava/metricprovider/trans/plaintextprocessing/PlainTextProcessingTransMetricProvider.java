@@ -88,6 +88,7 @@ public class PlainTextProcessingTransMetricProvider
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
+		this.context = context;
 		this.platformBugTrackingSystemManager = context.getPlatformBugTrackingSystemManager();
 		this.communicationChannelManager = context.getPlatformCommunicationChannelManager();
 	}
