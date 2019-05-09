@@ -529,7 +529,10 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		} else {
 			System.out.println("[Eclipse Forum] - Using unauthenticated Client");
-
+			// creates a single threaded service with a fixed rate that will generate a
+						// newClient every hour.
+						ScheduledExecutorService newClientService = Executors.newSingleThreadScheduledExecutor();
+						newClientService.scheduleAtFixedRate(runnable, 1, 1, TimeUnit.HOURS);
 		}
 
 		// sets client to a new client (with or without an interceptor)
