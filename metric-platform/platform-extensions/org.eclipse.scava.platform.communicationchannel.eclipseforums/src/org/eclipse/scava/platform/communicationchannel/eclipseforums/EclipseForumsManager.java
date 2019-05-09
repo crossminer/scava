@@ -486,21 +486,24 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
 		System.out.println("[Eclipse Forum] - setClient()");
 		// If it has a client_id and Client_secert add an interceptor
-		if (eclipseForum.getClient_id().isEmpty() && eclipseForum.getClient_secret().isEmpty()) {
+		
+		Runnable runnable = new Runnable() {
+			public void run() {
+				// task to run goes here
+				try {
+					setClient(eclipseForum);
+				} catch (IOException e) {
+				
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		if (!((eclipseForum.getClient_id().equals("null")) && (eclipseForum.getClient_secret().equals("null")))) {
 
 			System.out.println("[Eclipse Forum] - Using authenticated Client");
 			// This is triggered every hour!
-			Runnable runnable = new Runnable() {
-				public void run() {
-					// task to run goes here
-					try {
-						setClient(eclipseForum);
-					} catch (IOException e) {
-					
-						e.printStackTrace();
-					}
-				}
-			};
+		
 
 			// creates a single threaded service with a fixed rate that will generate a
 			// newClient every hour.
