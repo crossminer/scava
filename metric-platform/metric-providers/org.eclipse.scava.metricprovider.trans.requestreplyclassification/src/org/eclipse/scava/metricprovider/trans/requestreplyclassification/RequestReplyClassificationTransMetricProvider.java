@@ -114,7 +114,7 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 		PlainTextProcessingTransMetric plainTextMetric = ((PlainTextProcessingTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
 		
 		//This is for indexing
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(3)).adapt(context.getProjectDB(project));	
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(2)).adapt(context.getProjectDB(project));	
 		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
 		indexPrepTransMetric.sync();
 		
