@@ -43,7 +43,7 @@ public class Jadolint {
         try {
             
             LineMerger l = new LineMerger();
-            Dockerfile doc = new Dockerfile();
+            doc = new Dockerfile();
             
             doc.setPath(path);
             
@@ -88,6 +88,10 @@ public class Jadolint {
                 if(!violations.isEmpty())
                     doc.addViolations(violations);
             }
+            
+            /*for(Violation v : doc.getViolations())
+                System.out.println(v.getFileName() + " " + v.getLineNumber() + " " + v.getCode() + " " + v.getMessage());*/
+            
         } catch (IOException ex) {
             Logger.getLogger(Jadolint.class.getName()).log(Level.SEVERE, null, ex);
         }

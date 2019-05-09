@@ -46,10 +46,14 @@ public class Cmd implements Instruction{
                 blockBody = blockBody + " " + s.substring(1, s.length() - 1);
             }
             
-            String[] splitLine = blockBody.trim().split(" ", 2);
-        
-            executable = splitLine[0].trim();
-            params = splitLine[1].trim();
+            if(blockBody.trim().contains(" ")) {
+	            String[] splitLine = blockBody.trim().split(" ", 2);
+	        
+	            executable = splitLine[0].trim();
+	            params = splitLine[1].trim();
+            } else {
+            	executable = blockBody.trim();
+            }
             
             execForm = true;
             

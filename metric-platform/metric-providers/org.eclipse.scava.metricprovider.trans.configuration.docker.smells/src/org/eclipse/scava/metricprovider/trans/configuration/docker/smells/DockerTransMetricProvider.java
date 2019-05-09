@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,8 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.jadolint.Jadolint;
+import org.eclipse.scava.platform.jadolint.model.Dockerfile;
+import org.eclipse.scava.platform.jadolint.violations.Violation;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutException;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
@@ -100,20 +104,86 @@ public class DockerTransMetricProvider implements ITransientMetricProvider<Docke
 					
 					Jadolint j = new Jadolint();
 					
-					j.run("/Users/blue/Downloads/dockerfile_tests/3020");
+					Files.walk(Paths.get(workingCopyFolders.get(repoUrl).getPath()))
+                    .filter(Files::isRegularFile)
+                    .filter(f -> f.getFileName().toString().equals("Dockerfile"))
+                    .forEach(s -> {
 					
-					Smell smell = new Smell();
-					smell.setSmellName("yeah");
-					smell.setReason("yeah");
-					smell.setFileName("yeah");
-					db.getSmells().add(smell);
-					db.sync();
+						j.run(s.toString());
+						
+						Dockerfile dockerfile = j.getDoc();
+						
+						List<Violation> violations = dockerfile.getViolations();
+						
+						for(Violation v : violations) {
+							
+							Smell smell = new Smell();
+							
+							if(v.getCode().equals("DL3005") || v.getCode().equals("DL3009") || v.getCode().equals("DL3014") || v.getCode().equals("DL3015") || v.getCode().equals("DL3017") || v.getCode().equals("DL3019")) {
+								smell.setSmellName("Improper Upgrade");
+							}
+							
+							if(v.getCode().equals("DL3007") || v.getCode().equals("DL3008") || v.getCode().equals("DL3013") || v.getCode().equals("DL3016") || v.getCode().equals("DL3018")) {
+								smell.setSmellName("Unknown Package Version");
+							}
+							
+							if(v.getCode().equals("DL3006")) {
+								smell.setSmellName("Untagged Image");
+							}
+							
+							if(v.getCode().equals("DL3002") || v.getCode().equals("DL3004")) {
+								smell.setSmellName("Improper sudo Use");
+							}
+							
+							if(v.getCode().equals("DL3010") || v.getCode().equals("DL3020") || v.getCode().equals("DL3021") || v.getCode().equals("DL3022") || v.getCode().equals("DL3023")) {
+								smell.setSmellName("Improper COPY Use");
+							}
+							
+							if(v.getCode().equals("DL3024")) {
+								smell.setSmellName("Improper FROM Use");
+							}
+							
+							if(v.getCode().equals("DL3025") || v.getCode().equals("DL4003")) {
+								smell.setSmellName("Improper CMD Use");
+							}
+							
+							if(v.getCode().equals("DL3001") || v.getCode().equals("DL4001")) {
+								smell.setSmellName("Meaningless Commands");
+							}
+							
+							if(v.getCode().equals("DL3011")) {
+								smell.setSmellName("Invalid Ports");
+							}
+							
+							if(v.getCode().equals("DL4005") || v.getCode().equals("DL4006")) {
+								smell.setSmellName("Improper SHELL Use");
+							}
+							
+							if(v.getCode().equals("DL4004")) {
+								smell.setSmellName("Improper ENTRYPOINT Use");
+							}
+							
+							if(v.getCode().equals("DL4000")) {
+								smell.setSmellName("Deprecated Instructions");
+							}
+							
+							smell.setReason(v.getMessage());
+							smell.setFileName(v.getFileName());
+							smell.setLine(String.valueOf(v.getLineNumber()));
+							db.getSmells().add(smell);
+							db.sync();
+						}
+					
+                    });
 					
 	    		}
 	    	}
 	    	catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 	    		logger.error("unexpected exception while measuring", e);
 				throw new RuntimeException("Metric failed due to missing working copy", e);
+			} catch (IOException e) {
+				logger.error("unexpected exception while measuring", e);
+				throw new RuntimeException("Metric failed due to IO problem", e);
 			}
     }
     
