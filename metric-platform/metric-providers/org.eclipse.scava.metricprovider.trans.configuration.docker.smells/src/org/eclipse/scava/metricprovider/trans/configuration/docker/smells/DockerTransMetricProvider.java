@@ -164,10 +164,11 @@ public class DockerTransMetricProvider implements ITransientMetricProvider<Docke
 							}
 							
 							if(v.getCode().equals("DL4000")) {
-								smell.setSmellName("Deprecated Instructions");
+								smell.setSmellName("Deprecated Instruction");
 							}
 							
 							smell.setReason(v.getMessage());
+							smell.setCode(v.getCode());
 							smell.setFileName(v.getFileName());
 							smell.setLine(String.valueOf(v.getLineNumber()));
 							db.getSmells().add(smell);

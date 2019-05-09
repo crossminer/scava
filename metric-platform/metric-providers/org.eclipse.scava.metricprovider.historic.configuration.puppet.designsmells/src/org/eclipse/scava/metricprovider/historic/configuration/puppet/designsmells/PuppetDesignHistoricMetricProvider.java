@@ -26,7 +26,7 @@ public class PuppetDesignHistoricMetricProvider extends AbstractHistoricalMetric
 	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells";
 	
 	public PuppetDesignHistoricMetricProvider() {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.historic.configuration.puppet.PuppetTransMetricProvider");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.historic.configuration.puppet.PuppetDesignHistoricMetricProvider");
 	}
     
     @Override
@@ -123,7 +123,7 @@ public class PuppetDesignHistoricMetricProvider extends AbstractHistoricalMetric
     		
     	}
     	
-    	designHistoricSmells.setCumulativeNumberOfDesignUsers((int)col.size());
+    	designHistoricSmells.setCumulativeNumberOfDesignSmells((int)col.size());
     	designHistoricSmells.setNumberOfMultifacetedSmells(multifaceted);
     	designHistoricSmells.setNumberOfUnnecessarySmells(unnecessary);
     	designHistoricSmells.setNumberOfImperativeSmells(imperative);

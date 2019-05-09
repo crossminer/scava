@@ -9,12 +9,14 @@ public class Smell extends Pongo {
 		super();
 		SMELLNAME.setOwningType("org.eclipse.scava.metricprovider.trans.configuration.docker.smells.model.Smell");
 		REASON.setOwningType("org.eclipse.scava.metricprovider.trans.configuration.docker.smells.model.Smell");
+		CODE.setOwningType("org.eclipse.scava.metricprovider.trans.configuration.docker.smells.model.Smell");
 		FILENAME.setOwningType("org.eclipse.scava.metricprovider.trans.configuration.docker.smells.model.Smell");
 		LINE.setOwningType("org.eclipse.scava.metricprovider.trans.configuration.docker.smells.model.Smell");
 	}
 	
 	public static StringQueryProducer SMELLNAME = new StringQueryProducer("smellName"); 
 	public static StringQueryProducer REASON = new StringQueryProducer("reason");
+	public static StringQueryProducer CODE = new StringQueryProducer("code");
 	public static StringQueryProducer FILENAME = new StringQueryProducer("fileName");
 	public static StringQueryProducer LINE = new StringQueryProducer("line");
 	
@@ -37,6 +39,16 @@ public class Smell extends Pongo {
 	
 	public Smell setReason(String reason) {
 		dbObject.put("reason", reason);
+		notifyChanged();
+		return this;
+	}
+	
+	public String getCode() {
+		return parseString(dbObject.get("code")+"", "");
+	}
+	
+	public Smell setCode(String code) {
+		dbObject.put("code", code);
 		notifyChanged();
 		return this;
 	}

@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension point="com.googlecode.pongo.runtime.osgi">
-      <class name="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.model.PuppetDesignHistoricMetricMetric"/>
+      <class name="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.model.PuppetDesignSmellsHistoricMetric"/>
    </extension>
    <extension point="org.eclipse.scava.platform.visualisation.metric">
      <visualisation json="vis/historic.configuration.puppet.designsmells.json"/>
