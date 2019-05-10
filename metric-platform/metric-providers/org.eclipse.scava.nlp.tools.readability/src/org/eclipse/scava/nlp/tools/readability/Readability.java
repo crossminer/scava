@@ -1,5 +1,6 @@
 package org.eclipse.scava.nlp.tools.readability;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -43,8 +44,16 @@ public class Readability {
 			return (0.1579*difficultWords)+(0.0496*words)+3.6365;
 		else
 			return (0.1579*difficultWords)+(0.0496*words);
-		
-		
+	}
+	
+	public static List<Double> calculateDaleChall(List<String> texts)
+	{
+		List<Double> results = new ArrayList<Double>(texts.size());
+		for(String text : texts)
+		{
+			results.add(calculateDaleChall(text));
+		}
+		return results;
 	}
 
 }
