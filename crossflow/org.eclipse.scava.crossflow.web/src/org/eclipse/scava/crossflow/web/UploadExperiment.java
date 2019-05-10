@@ -40,9 +40,9 @@ public class UploadExperiment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	 
+	 		
 		// prepare target locations
-		String experimentName = request.getParameter("inputName");
+ 		String experimentName = request.getParameter("inputName");
 		Path experimentPath = Paths.get(getServletContext().getRealPath("experiments/"), experimentName);
 		Path experimentJarPath= Paths.get(getServletContext().getRealPath("WEB-INF/lib/"));
 		
@@ -75,9 +75,10 @@ public class UploadExperiment extends HttpServlet {
 		    // unzip to input path
 		    unzip(Paths.get(experimentPath.toString(), "in.zip"), Paths.get(experimentPath.toString(), inPath, "/"));
 		    Files.deleteIfExists(Paths.get(experimentPath + "/in.zip"));
-		    
+
 		    // move experment jar to web app container lib directory
-		    Files.move(Paths.get(experimentPath.toString(), jarName), Paths.get(experimentJarPath.toString(), "/", jarName), StandardCopyOption.REPLACE_EXISTING);
+		    File experimentJarFile = new File(experimentJarPath.toString() + "/" + jarName);
+		    Files.copy(Paths.get(experimentPath.toString(), jarName), experimentJarFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		    
 		} catch (IOException e) {
 			System.err.println("Failed to upload experiment. Make sure no experiment with the same name has already been deployed.");

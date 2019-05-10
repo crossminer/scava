@@ -420,7 +420,7 @@ function createPopupMenu(graph, menu, cell, evt) {
 
 // ---------------
 <%
-String graphPath = "experiments/" + request.getParameter("id") + "/graph.abstract";
+String graphPath = "experiments/" + request.getParameter("id") + "/abstract.graph";
 //new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 
 %>

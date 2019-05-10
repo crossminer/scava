@@ -7,7 +7,7 @@
 	
    	<!-- Running this will create a JAR of this project in the experiment directory -->
     <target name="create_run_jar">
-        <jar destfile="experiment/[%=w.name%].jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="experiment/[%=w.package%].jar" filesetmanifest="mergewithoutmain">
         	<fileset dir="bin"/>
         </jar>
 	</target>
