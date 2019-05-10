@@ -1,14 +1,13 @@
 <experiment
-	title="SearchWorkflow"
+	title="Search Workflow"
 	class="org.eclipse.scava.crossflow.examples.github.topsearch.SearchWorkflow"
-	jar="SearchWorkflow.jar"
+	jar="org.eclipse.scava.crossflow.examples.github.topsearch.jar"
 	input="in"
 	output="out"
-	runtimeModel="graph.abstract"
 	summary="Clones a set of Git Repositories and computes their Unique Committer Count."
-	>
-	<input path="in/repos.csv" title="Git Repositories"/>
-	<output path="out/reposAuthorCount.csv" title="Unique Committer Count"/>
+>
+	<input path="in/input.csv" title="Input"/>
+	<output path="out/output.csv" title="Output"/>
 	<description>
 		To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
 	</description>
