@@ -152,17 +152,17 @@ public class SentimentTransMetricProvider  implements
 
 	@Override
 	public String getShortIdentifier() {
-		return "threadssentiment";
+		return "trans.newsgroups.sentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Thread Sentiment";
+		return "Average sentiment in newsgroup threads";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "The metric computes sentiment at the beginning of each thread, at its end, and on average.";
+		return "The metric computes the average sentiment, including sentiment at the beginning and end of each thread, per newsgroup.";
 	}
 
 }

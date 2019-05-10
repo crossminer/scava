@@ -143,16 +143,17 @@ public class SeverityHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupseveritylevels";
+		return "historic.newsgroups.severity";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Newsgroup Thread Severity Levels Per Day";
+		return "Number of each severity level in newsgroup threads per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of newsgroup severity levels in threads submitted every day.";
+		return "This metric computes the number of each severity levels in threads submitted every day, "
+				+ "per newsgroup. There are 7 severity  levels (blocker, critical, major, minor, enhancement,  normal, trivial).";
 	}
 }

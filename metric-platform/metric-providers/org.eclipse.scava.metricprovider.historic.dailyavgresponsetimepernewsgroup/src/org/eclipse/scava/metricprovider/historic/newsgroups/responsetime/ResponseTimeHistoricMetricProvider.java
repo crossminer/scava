@@ -158,12 +158,12 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 
 	@Override
 	public String getShortIdentifier() {
-		return "avgresponsetimepernewsgroup";
+		return "historic.newsgroups.responsetime";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Average Thread Response Time Per Day Per Newsgroup";
+		return "Average response time to threads per day per newsgroup";
 	}
 
 	@Override

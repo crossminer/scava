@@ -29,13 +29,17 @@ import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.CurrentDa
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadDataCollection;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
+import org.eclipse.scava.platform.communicationchannel.eclipseforums.EclipseForumsForum;
+import org.eclipse.scava.platform.communicationchannel.eclipseforums.EclipseForumsPost;
 import org.eclipse.scava.platform.communicationchannel.nntp.Article;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
@@ -125,19 +129,46 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		Map<String, Set<Integer>> threadsPerNewsgroup = new HashMap<String, Set<Integer>>();
 
 		// Threading preparation end
-
+		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for (CommunicationChannelDelta communicationChannelDelta : delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
+			
+			//Process for forums
+			if (communicationChannel instanceof EclipseForum) {
+				
+				String communicationChannelName;
+				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
+				communicationChannelName = eclipseForum.getForum_name();
+				
+				// first thread data
+				for (CommunicationChannelArticle deltaArticle : communicationChannelDelta.getArticles()) {
+					EclipseForumsPost post = (EclipseForumsPost) deltaArticle;
+					
+					ThreadDataCollection threadDataCollection = db.getThreads();
+					
+					Iterable<ThreadData> threadDataIt = threadDataCollection.findByThreadId(Integer.valueOf(post.getTopic().getTopic_id()));
+					
+					if(threadDataIt!=null) {
 
-			boolean forumCheck = true;
+								
+					}
+					
 
-			if (!(communicationChannel instanceof EclipseForum)) {// Trigger for Eclipse Forums
+							
+//							ThreadData threadData = new ThreadData();
+//							threadData.setThreadId(Integer.valueOf(post.getTopic().getTopic_id()));
+//							db.getThreads().add(threadData);
+//						}
+//						db.sync();
 
-				forumCheck = false;
+						// then update existing thread in db
 
-			}
+						
+						// db.sync();
+							
+			}}
 
-			if (forumCheck == false) {// This prevents Eclipse Forum data from being passed into the threader
+			else  {// This prevents Eclipse Forum data from being passed into the threader
 
 				if (communicationChannelDelta.getArticles().size() > 0) {
 					String communicationChannelName;
@@ -151,6 +182,9 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 					Map<Long, String> previousClassAssignments = new HashMap<Long, String>();
 
+							
+					
+					
 					List<Article> articles = new ArrayList<Article>();
 					for (ThreadData threadData : db.getThreads()) {
 						for (ArticleData articleData : threadData.getArticles()) {
@@ -212,6 +246,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 					for (List<Article> list : articleList) {// Thread data
 						index++;
 
+
 						ThreadData threadData = new ThreadData();
 						threadData.setThreadId(index);
 						for (Article article : list) {
@@ -235,8 +270,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 				// updates existing threads with new data
 				for (String newsgroupName : threadsPerNewsgroup.keySet()) {
-					Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups()
-							.find(NewsgroupData.NEWSGROUPNAME.eq(newsgroupName));
+					Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(newsgroupName));
 					NewsgroupData newsgroupData = null;
 					for (NewsgroupData ngd : newsgroupDataIt)
 						newsgroupData = ngd;
@@ -252,17 +286,14 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 				}
 				db.sync();
 
-			} else {
-				// Handle Eclipse Forums threading here!
-				// first thread data
-				// then update existing thread in db
-				// db.sync();
+			} 
 			}
+			
 
 		}
-	}
+	
 
-	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db,
+	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db, 
 			String newsgroupName) {
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().find(
@@ -332,15 +363,16 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			article.addReference(reference);
 		return article;
 	}
+	
 
 	@Override
 	public String getShortIdentifier() {
-		return "threads";
+		return "trans.newsgroups.threads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Threads";
+		return "Assigns newsgroup articles to threads";
 	}
 
 	@Override

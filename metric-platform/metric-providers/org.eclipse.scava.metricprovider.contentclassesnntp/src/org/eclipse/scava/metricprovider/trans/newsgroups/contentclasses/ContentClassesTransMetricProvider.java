@@ -138,17 +138,17 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupcontentClasses";
+		return "trans.newsgroups.contentclasses";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Content Classes in Newgroup Articles";
+		return "Content classes in newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Content Classes in Newgroup Articles";
+		return "This metric computes the content classes in newgroup articles, per newsgroup";
 	}
 
 }

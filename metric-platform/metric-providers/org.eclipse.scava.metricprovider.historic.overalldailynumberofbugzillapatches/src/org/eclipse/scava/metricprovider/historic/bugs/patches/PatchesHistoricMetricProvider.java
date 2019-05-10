@@ -87,16 +87,16 @@ public class PatchesHistoricMetricProvider extends AbstractHistoricalMetricProvi
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugpatches";
+		return "historic.bugs.patches";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Bug Patches Per Day";
+		return "Number of bug patches per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This class computes the number of bug patches per day.";
+		return "This class computes the number of bug patches per day, for each bug tracker seperately.";
 	}
 }

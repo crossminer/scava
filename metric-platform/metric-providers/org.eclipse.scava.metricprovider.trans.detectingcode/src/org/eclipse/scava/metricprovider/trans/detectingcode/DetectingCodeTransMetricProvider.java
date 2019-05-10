@@ -52,17 +52,17 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public String getShortIdentifier() {
-		return "codedetection";
+		return "trans.detectingcode";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Code Detection";
+		return "Distinguishes between code and natural language";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric determines which parts of a bug comment or a newsgroup article are code and which natural language";
+		return "This metric determines the parts of a bug comment or a newsgroup article that contains code or natural language";
 	}
 
 	@Override

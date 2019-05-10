@@ -21,3 +21,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.trans.newsgroups.threads,
  org.eclipse.scava.metricprovider.trans.newsgroups.threads.model
+Import-Package: org.eclipse.scava.platform.communicationchannel.eclipseforums,
+ org.eclipse.scava.platform.communicationchannel.nntp.local.model

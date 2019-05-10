@@ -40,17 +40,17 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgrouparticles";
+		return "trans.newsgroups.articles";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of articles";
+		return "Number of articles per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Holds the number of articles";
+		return "This metric computes the number of articles, per newsgroup";
 	}
 	
 	@Override

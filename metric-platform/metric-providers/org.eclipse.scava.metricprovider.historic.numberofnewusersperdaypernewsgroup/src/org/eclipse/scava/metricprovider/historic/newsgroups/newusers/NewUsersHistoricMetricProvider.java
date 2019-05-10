@@ -98,12 +98,12 @@ public class NewUsersHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "newuserspernewsgroup";
+		return "historic.newsgroups.newusers";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of New Users Per Day Per Newsgroup Provider";
+		return "Number of new users per day per newsgroup";
 	}
 
 	@Override

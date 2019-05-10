@@ -404,18 +404,17 @@ public class RequestReplyClassificationTransMetricProvider  implements ITransien
 
 	@Override
 	public String getShortIdentifier() {
-		return "requestreplyclassification";
+		return "trans.requestreplyclassification";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Request Reply Classification";
+		return "Request/Reply Classification";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes if each bug comment or newsgroup article is a " +
-				"request of a reply.";
+		return "This metric computes if a bug comment, newsgroup article or forum post is a request of a reply.";
 	}
 
 }

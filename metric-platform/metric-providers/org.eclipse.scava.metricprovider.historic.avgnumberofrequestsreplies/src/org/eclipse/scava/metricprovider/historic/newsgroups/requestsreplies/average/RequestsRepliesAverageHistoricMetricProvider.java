@@ -114,18 +114,18 @@ public class RequestsRepliesAverageHistoricMetricProvider extends AbstractHistor
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupsrequestsreplies";
+		return "historic.newsgroups.requestsreplies.average";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Average Number of Articles, Requests and Replies Per Day";
+		return "Average number of articles, requests and replies per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This class computes the average number of articles, " +
-				"request and reply newsgroup articles per day.";
+		return "This metric computes the average number of newsgroup articles, including the number of "
+				+ "requests and replies within the newsgroup articles per day.";
 	}
 
 }

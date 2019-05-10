@@ -120,12 +120,12 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "unansweredthreadspernewsgroup";
+		return "historic.newsgroups.unansweredthreads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Unanswered Threads Per Day Per Newsgroup";
+		return "Number of unanswered threads per day per newsgroup";
 	}
 
 	@Override

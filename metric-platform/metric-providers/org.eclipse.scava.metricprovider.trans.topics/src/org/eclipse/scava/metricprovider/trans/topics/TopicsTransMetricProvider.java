@@ -437,7 +437,7 @@ public class TopicsTransMetricProvider  implements ITransientMetricProvider<Topi
 	@Override
 	public String getShortIdentifier() {
 		// TODO Auto-generated method stub
-		return "topicclustering";
+		return "trans.topics";
 	}
 
 	@Override

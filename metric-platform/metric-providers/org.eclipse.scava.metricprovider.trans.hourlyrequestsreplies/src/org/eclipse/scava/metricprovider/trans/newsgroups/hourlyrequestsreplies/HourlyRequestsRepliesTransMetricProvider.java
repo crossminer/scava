@@ -191,18 +191,18 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 
 	@Override
 	public String getShortIdentifier() {
-		return "hourlyrequestsreplies";
+		return "trans.newsgroups.hourlyrequestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of Articles, Requests and Replies per Hour of the Day";
+		return "Number of articles, requests and replies per hour";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric stores the number of articles, " +
-				"requests and replies for each hour of the day.";
+		return "This metric computes the number of articles, including those regarded "
+				+ "as requests and replies for each hour of the day, per newsgroup.";
 	}
 
 }

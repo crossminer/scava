@@ -152,16 +152,18 @@ public class ThreadsHistoricMetricProvider extends AbstractHistoricalMetricProvi
 
 	@Override
 	public String getShortIdentifier() {
-		return "threadspernewsgroup";
+		return "historic.newsgroups.threads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Threads Per Day Per Newsgroup";
+		return "Number of threads per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of threads per day for each newsgroup separately.";
+		return "This metric computes the number of threads per day for each newsgroup separately. "
+				+ "The metric also computes average values for articles per thread, requests per thread, "
+				+ "replies per thread, articles per user, requests per user and replies per user.";
 	}
 }

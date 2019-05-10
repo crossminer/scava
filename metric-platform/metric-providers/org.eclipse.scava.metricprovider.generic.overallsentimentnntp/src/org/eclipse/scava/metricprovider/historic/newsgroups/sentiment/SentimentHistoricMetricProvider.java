@@ -116,18 +116,18 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupsentiment";
+		return "historic.newsgroups.sentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Overall Sentiment of Newsgroup Articles";
+		return "Overall sentiment of newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
 		return "This metric computes the overall sentiment per repository up to the processing date." +
-				"The overall sentiment score ranges from -1 (negative sentiment) to +1 (positive sentiment)." +
+				"The overall sentiment score could be -1 (negative sentiment), 0 (neutral sentiment) or +1 (positive sentiment)." +
 				"In the computation, the sentiment score of each thread contributes equally, independently of its size.";
 	}
 }

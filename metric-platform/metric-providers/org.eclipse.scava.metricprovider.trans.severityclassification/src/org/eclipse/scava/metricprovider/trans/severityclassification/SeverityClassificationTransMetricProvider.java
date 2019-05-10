@@ -693,7 +693,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 	@Override
 	public String getShortIdentifier() {
-		return "severityclassification";
+		return "trans.severityclassification";
 	}
 
 	@Override
@@ -703,7 +703,11 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the severity of each bug or thread.";
+		return "This metric computes the severity of each bug comment, newsgroup article or forum post. "
+				+ "Severity could be blocker, critical, major, minor, enhancement,  normal). For bug comments, "
+				+ "there is an additional severity level called `unknown`. A bug severity is considered `unknown` "
+				+ "if there is not enough information for the classifier to make a decision. For example, an "
+				+ "unanswered bug with no user comment to analyse.";
 	}
 
 }

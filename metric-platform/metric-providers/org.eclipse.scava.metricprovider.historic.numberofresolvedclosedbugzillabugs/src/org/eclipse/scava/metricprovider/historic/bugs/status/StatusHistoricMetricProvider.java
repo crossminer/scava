@@ -110,16 +110,18 @@ public class StatusHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugstatus";
+		return "historic.bugs.status";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Bugs Per Status";
+		return "Number of bugs per bug status per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of bugs that correspond to a status value.";
+		return "This metric computes the total number of bugs that corresponds to each bug "
+				+ "status, in bugs submitted every day, per bug tracker. There are 7 bug status "
+				+ "(ResolvedClosed, WontFix, WorksForMe, NonResolvedClosed, Invalid, Fixed, Duplicate).";
 	}
 }

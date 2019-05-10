@@ -201,18 +201,18 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 
 	@Override
 	public String getShortIdentifier() {
-		return "dailyrequestsreplies";
+		return "trans.newsgroups.dailyrequestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of Articles, Requests and Replies per Day of the Week";
+		return "Number of articles, requests and replies per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric stores the number of articles, " +
-				"requests and replies for each day of the week.";
+		return "This metric computes the number of articles, including those regarded "
+				+ "as requests and replies for each day of the week, per newsgroup.";
 	}
 
 }

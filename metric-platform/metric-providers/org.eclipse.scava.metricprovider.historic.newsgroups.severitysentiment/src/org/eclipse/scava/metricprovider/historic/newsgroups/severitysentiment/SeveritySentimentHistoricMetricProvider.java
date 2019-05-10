@@ -167,18 +167,20 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupseveritysentiment";
+		return "historic.newsgroups.severitysentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Sentiment Per Thread Severity Levels Per Day";
+		return "Average sentiment in threads per severity level per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in newsgroup threads submitted every day.";
+		return "This metric computes the average sentiment, the sentiment at the beginning of threads "
+				+ "and the sentiment at the end of threads; for each severity level in newsgroup threads "
+				+ "submitted every day. Sentiment can be -1 (negative sentiment), 0 (neutral sentiment) "
+				+ "or +1 (positive sentiment). Note: there are 7 severity  levels (blocker, critical, major, "
+				+ "minor, enhancement, normal, trivial).";
 	}
 }

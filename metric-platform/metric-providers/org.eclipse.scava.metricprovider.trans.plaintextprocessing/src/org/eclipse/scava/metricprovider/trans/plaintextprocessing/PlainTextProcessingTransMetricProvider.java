@@ -47,7 +47,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 	@Override
 	public String getShortIdentifier() {
-		return "plaintextprocessing";
+		return "trans.plaintextprocessing";
 	}
 
 	@Override
@@ -57,8 +57,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric preprocess each bug comment or newsgroup article into a split " +
-				"plain text format.";
+		return "This metric preprocess each bug comment, newsgroup article or forum post into a split plain text format.";
 	}
 
 	@Override
