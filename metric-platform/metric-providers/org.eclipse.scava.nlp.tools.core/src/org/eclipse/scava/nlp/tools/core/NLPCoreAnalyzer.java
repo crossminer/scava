@@ -134,6 +134,7 @@ public class NLPCoreAnalyzer
 			List<String> tokensAsString = new ArrayList<String>(tokens.size());
 			for(Token token: tokens)
 				tokensAsString.add(token.getWordForm());
+			sentencesAsString.add(tokensAsString);
 		}
 		return sentencesAsString;
 	}
@@ -146,9 +147,9 @@ public class NLPCoreAnalyzer
 			return null;
 		if(stats != null)
 			return stats;
-		Pattern punctuation=Pattern.compile("(\\$|:|,|\\.|````|''|-LRB-|-RRB-)");
+		Pattern punctuation=Pattern.compile("(\\$|:|,|\\.|``|''|-LRB-|-RRB-)");
 		Pattern numbers=Pattern.compile("CD");
-		Pattern others=Pattern.compile("(ADD|SYM|XX|LS)");;
+		Pattern others=Pattern.compile("(ADD|SYM|XX|LS)");
 		stats = new HashMap<String, Integer>(4);
 		String pos;
 		int punctuationCounter=0;

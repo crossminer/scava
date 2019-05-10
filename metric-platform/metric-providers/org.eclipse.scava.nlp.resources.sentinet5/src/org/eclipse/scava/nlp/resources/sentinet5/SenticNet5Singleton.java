@@ -10,11 +10,14 @@
 package org.eclipse.scava.nlp.resources.sentinet5;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -30,18 +33,18 @@ class SenticNet5Singleton
 	private List<String> listNeg;
 	
 	protected OssmeterLogger logger;
-	private String modelPath="/lexicon/SenticNet5Lexicon.txt";
+	private String lexiconPath="/lexicon/SenticNet5Lexicon.txt";
 	
 	private SenticNet5Singleton()
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.resources.sentinet5");
-		BufferedReader model;
+		BufferedReader lexicon;
 		try
 		{
-			model = loadFile();
+			lexicon = loadFile();
 			listPos=new ArrayList<String>();
 			listNeg=new ArrayList<String>();
-			readModel(model);
+			readLexicon(lexicon);
 			logger.info("Lexicon has been sucessfully loaded");
 		}
 		catch (IOException  e) 
@@ -51,13 +54,13 @@ class SenticNet5Singleton
 		}		
 	}
 	
-	private void readModel(BufferedReader model) throws IOException, InputMismatchException
+	private void readLexicon(BufferedReader lexicon) throws IOException, InputMismatchException
 	{
 		String line;
 		String[] entry;
 		double score;
 		HashMap<String, Double> values;
-		while((line = model.readLine()) != null)
+		while((line = lexicon.readLine()) != null)
 		{
 			if (!line.trim().startsWith("#"))
 			{
@@ -65,7 +68,7 @@ class SenticNet5Singleton
 				entry=line.split("\\t");
 				if(entry.length!=8)
 				{
-					throw new InputMismatchException("The lexicon "+ modelPath+" has errors in its format in line: "+line); 
+					throw new InputMismatchException("The lexicon "+ lexiconPath+" has errors in its format in line: "+line); 
 				}
 				score = Double.valueOf(entry[7]);
 				if(score>0)
@@ -90,9 +93,19 @@ class SenticNet5Singleton
 	private BufferedReader loadFile() throws UnsupportedEncodingException, FileNotFoundException 
 	{
 		ClassLoader cl = getClass().getClassLoader();
-		InputStream resource = cl.getResourceAsStream(modelPath);
+		InputStream resource = cl.getResourceAsStream(lexiconPath);
+		//Method to read inside Eclipse
 		if(resource==null)
-			throw new FileNotFoundException("The file "+modelPath+" has not been found");
+		{
+			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			File file= new File(path+lexiconPath);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+lexiconPath+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
 		return new BufferedReader(new InputStreamReader(resource, "UTF-8"));
 	}
 	

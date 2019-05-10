@@ -72,7 +72,7 @@ public class SenticNet5
 		return summaryScores(analyzeText(coreAnalyzedText));
 	}
 	
-	public static HashMap<String,Double> summaryScores(List<Map.Entry<String, HashMap<String,Double>>> senticnetAnalyzedText)
+	private static HashMap<String,Double> summaryScores(List<Map.Entry<String, HashMap<String,Double>>> senticnetAnalyzedText)
 	{
 		HashMap<String,Double> globalScore = new HashMap<String,Double>(29);
 		double currentPolarity;
