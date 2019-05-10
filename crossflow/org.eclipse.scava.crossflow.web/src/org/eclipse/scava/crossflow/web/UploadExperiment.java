@@ -79,11 +79,6 @@ public class UploadExperiment extends HttpServlet {
 		    // move experment jar to web app container lib directory
 		    Files.move(Paths.get(experimentPath.toString(), jarName), Paths.get(experimentJarPath.toString(), "/", jarName), StandardCopyOption.REPLACE_EXISTING);
 		    
-		    // submit successful upload notification
-		    String inputEmail = request.getParameter("inputEmail"); 
-		    // TODO: submit successful upload notification
-		    
-		    
 		} catch (IOException e) {
 			System.err.println("Failed to upload experiment. Make sure no experiment with the same name has already been deployed.");
 			System.err.println(e.getMessage());
