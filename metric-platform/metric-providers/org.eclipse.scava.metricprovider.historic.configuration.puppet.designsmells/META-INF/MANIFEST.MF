@@ -19,5 +19,4 @@ Export-Package: org.eclipse.scava.metricprovider.historic.configuration.puppet.d
  org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.model
 Import-Package: org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells,
  org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells.model,
- org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.model,
  org.eclipse.scava.metricprovider.trans.configuration.puppet.model
