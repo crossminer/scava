@@ -266,8 +266,7 @@ class ScavaClient(HttpClient):
                 yield project_metric
 
         elif category == CATEGORY_FACTOID:
-            # Get all factoids definitions and then find the values for the current project
-            api_factoids = urijoin(self.base_url, "factoids")
+            api_factoids = urijoin(self.base_url, "/projects/p/%s/f" % project)
             factoids = json.loads(self.fetch(api_factoids))
 
             for factoid in factoids:
