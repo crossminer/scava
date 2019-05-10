@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.nlp.tools.core.analyzer.NLPCoreAnalyzer;
+import org.eclipse.scava.nlp.tools.core.NLPCoreAnalyzer;
 import org.eclipse.scava.nlp.tools.other.ngrams.NgramsGenerator;
 
 public class SenticNet5

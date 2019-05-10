@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Readability
+Bundle-SymbolicName: org.eclipse.scava.nlp.tools.readability
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.nlp.tools.readability
+Require-Bundle: org.eclipse.core.runtime
