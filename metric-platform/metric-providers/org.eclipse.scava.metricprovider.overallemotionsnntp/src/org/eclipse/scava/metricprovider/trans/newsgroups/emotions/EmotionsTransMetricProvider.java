@@ -54,6 +54,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
 		}
 		return false;
 	}
