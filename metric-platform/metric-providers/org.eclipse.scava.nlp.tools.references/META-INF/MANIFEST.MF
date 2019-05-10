@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.nlp.tools.references,
  org.eclipse.scava.nlp.tools.references.bitbucket,
  org.eclipse.scava.nlp.tools.references.bugzilla,
+ org.eclipse.scava.nlp.tools.references.git,
  org.eclipse.scava.nlp.tools.references.github,
  org.eclipse.scava.nlp.tools.references.gitlab,
  org.eclipse.scava.nlp.tools.references.jira,

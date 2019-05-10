@@ -151,18 +151,13 @@ public class ProjectCreationResource extends ServerResource {
 						break;
 					case "mantis":
 						MantisBugTrackingSystem mantis = new MantisBugTrackingSystem();
-						mantis.setProject_id(bts.get("project_id").asText());
 						mantis.setToken(bts.get("token").asText());
-						mantis.setHost(bts.get("host").asText());
 						buggy = mantis;
 						break;
 					case "bitbucket":
 						BitbucketBugTrackingSystem bitbucket = new BitbucketBugTrackingSystem();
-						bitbucket.setUser(bts.get("user").asText());
-						bitbucket.setRepository(bts.get("repository").asText());
 						bitbucket.setLogin(bts.get("login").asText());
 						bitbucket.setPassword(bts.get("password").asText());
-						bitbucket.setOwner(bts.get("owner").asText());
 						buggy = bitbucket;
 						break;
 					default:

@@ -19,9 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.eclipse.scava.Application;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
@@ -30,20 +27,19 @@ import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.CROSSRecGraph;
-import org.eclipse.scava.config.SwaggerConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -177,9 +173,13 @@ public class CROSSRecSimilarityCalculatorTest {
 		Artifact query = arts.get(0);
 		List<Dependency> queryDeps = new ArrayList<>();
 		for (String dep : query.getDependencies()) {
-			Dependency d = new Dependency();
-			d.setName(dep);
-			queryDeps.add(d);
+			String[] value = dep.split(":");
+			if(value.length == 2) {
+				Dependency d = new Dependency();
+				d.setGroupID(value[0]);
+				d.setArtifactID(value[1]);
+				queryDeps.add(d);
+			}
 		}
 		Map<String, Double> res = crossRec.computeWeightCosineSimilarity(queryDeps);
 		assertNotNull(res);

@@ -60,10 +60,13 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		for (Artifact artifact : artifacts) {
 			List<Dependency> deps = new ArrayList<>();
 			for (String dependency : artifact.getDependencies()) {
-				Dependency dep = new Dependency();
-				dep.setName(dependency);
-				dep.setArtifactID(artifact.getName());
-				deps.add(dep);
+				String [] value = dependency.split(":");
+				if(value.length == 2) {
+					Dependency dep = new Dependency();
+					dep.setGroupID(value[0]);
+					dep.setArtifactID(value[1]);
+					deps.add(dep);
+				}
 			}
 			try {
 				Map<String, Double> map = computeWeightCosineSimilarity(deps);
@@ -262,7 +265,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		art.setName("currentProject");
 		art.setId("currentProject");
 		for (Dependency dependency : dependencies) {
-			art.getDependencies().add(dependency.getName());
+			art.getDependencies().add(dependency.getGroupID() + ":" + dependency.getArtifactID());
 		}
 		return createGraphFromArtifact(art);
 	}

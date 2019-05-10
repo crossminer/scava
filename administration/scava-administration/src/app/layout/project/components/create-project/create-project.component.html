@@ -168,46 +168,18 @@
                                     </div>
                                     <div *ngIf="form.get('bts').value[i].type === 'mantis'">
                                         <div class="form-group">
-                                            <label for="projectId">ProjectId</label>
-                                            <input type="text" class="form-control" id="projectId" name="project_id"
-                                                formControlName="project_id">
-                                        </div>
-                                        <div class="form-group">
                                             <label for="token">Token</label>
-                                            <input type="text" class="form-control" id="token" name="token"
-                                                formControlName="token">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="host">Host</label>
-                                            <input type="text" class="form-control" id="host" name="host"
-                                                formControlName="host">
+                                            <input type="text" class="form-control" id="token" name="token" formControlName="token">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('bts').value[i].type === 'bitbucket'">
                                         <div class="form-group">
-                                            <label for="user">User</label>
-                                            <input type="text" class="form-control" id="user" name="user"
-                                                formControlName="user">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="repository">Repository</label>
-                                            <input type="text" class="form-control" id="repository" name="repository"
-                                                formControlName="repository">
-                                        </div>
-                                        <div class="form-group">
                                             <label for="login">Login</label>
-                                            <input type="text" class="form-control" id="login" name="login"
-                                                formControlName="login">
+                                            <input type="text" class="form-control" id="login" name="login" formControlName="login">
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="text" class="form-control" id="password" name="password"
-                                                formControlName="password">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="owner">Owner</label>
-                                            <input type="text" class="form-control" id="owner" name="owner"
-                                                formControlName="owner">
+                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
                                         </div>
                                     </div>
                                 </div>

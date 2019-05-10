@@ -18,17 +18,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.scava.business.IRecommenderManager;
-import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
+import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,12 +48,6 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/api/recommendation")
 
 public class RecommenderRestController {
-	@Autowired
-	@Qualifier("Dependency")
-	private ISimilarityCalculator dependency;
-	@Autowired
-	@Qualifier("Readme")
-	private ISimilarityCalculator readme;
 	@Autowired
 	private IRecommenderManager recommenderManager;
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderRestController.class);
@@ -79,53 +73,6 @@ public class RecommenderRestController {
 	public @ResponseBody Recommendation getRecommendedLibraries(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		Recommendation r =recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
-		for (RecommendationItem ri : r.getRecommendationItems()) {
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.xerial.snappy:snappy-java")){
-				ri.getRecommendedLibrary().setLibraryName("org.xerial.snappy:snappy-java:1.1.7.2");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-api")){
-				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-api:1.8.0-beta2");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("joda-time:joda-time")){
-				ri.getRecommendedLibrary().setLibraryName("joda-time:joda-time:2.10");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("com.google.code.gson:gson")){
-				ri.getRecommendedLibrary().setLibraryName("com.google.code.gson:gson:2.8.5");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.zookeeper:zookeeper")){
-				ri.getRecommendedLibrary().setLibraryName("org.apache.zookeeper:zookeeper:3.4.13");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.apache.httpcomponents:httpclient")){
-				ri.getRecommendedLibrary().setLibraryName("org.apache.httpcomponents:httpclient:4.5.6");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.elasticsearch:elasticsearch")){
-				ri.getRecommendedLibrary().setLibraryName("org.elasticsearch:elasticsearch:6.4.0");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.codehaus.jackson:jackson-mapper-asl")){
-				ri.getRecommendedLibrary().setLibraryName("org.codehaus.jackson:jackson-mapper-asl:1.9.13");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("log4j:log4j")){
-				ri.getRecommendedLibrary().setLibraryName("log4j:log4j:1.2.17");
-			}
-			if(ri.getRecommendedLibrary().getLibraryName().equals("org.slf4j:slf4j-log4j12")){
-				ri.getRecommendedLibrary().setLibraryName("org.slf4j:slf4j-log4j12:1.7.25");
-			}
-			/*
-			 * 
-org.xerial.snappy:snappy-java:1.1.7.2
-org.slf4j:slf4j-api:1.8.0-beta2
-joda-time:joda-time:2.10
-com.google.code.gson:gson:2.8.5
-org.apache.zookeeper:zookeeper:3.4.13
-org.apache.httpcomponents:httpclient:4.5.6
-org.elasticsearch:elasticsearch:6.4.0
-org.codehaus.jackson:jackson-mapper-asl:1.9.13
-log4j:log4j:1.2.17
-org.slf4j:slf4j-log4j12:1.7.25
-			 */
-
-			
-		}
 		return r;
 	}
 	
@@ -161,30 +108,73 @@ org.slf4j:slf4j-log4j12:1.7.25
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
+	@ApiOperation(value = "This resource get list of versions foreach dependecies")
+	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getVersions(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
+	}
+	@Autowired
+	private RecommendationFeedbackRepository recFedRepo;
+	@ApiOperation(value = "This resource stores the recommendation feedback")
+	@RequestMapping(value = "recommendation-feedback/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody boolean storeRecommendationFeedback(
+			@ApiParam(value = "Query object", required = true) @RequestBody RecommendationFeedback recFed) throws Exception {
+		try {
+			recFed.equals(recFed);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
 	@RequestMapping(value = "query", method = RequestMethod.GET)
 	public Query getQuery() {
 		Query q = new Query();
 		q.setCurrentMethodCode(
-				"public static KnowledgeBase readKnowledgeBase(List<RuleResource> resources) {\r\n" + 
-			    " KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();\r\n" + 
-			    " for (RuleResource res: resources) {\r\n" + 
-			    "  try {\r\n" + 
-			    "   kbuilder.add(ResourceFactory.newClassPathResource(res.getRuleResourceFile()), res.getResType());\r\n" + 
-			    "  } catch (Exception ex) {\r\n" + 
-			    "   kbuilder.add(ResourceFactory.newFileResource(res.getRuleResourceFile()), res.getResType());\r\n" + 
-			    "  }\r\n" + 
-			    " }\r\n" + 
-			    " KnowledgeBuilderErrors errors = kbuilder.getErrors();\r\n" + 
-			    " if (errors.size() > 0) {\r\n" + 
-			    "  for (KnowledgeBuilderError error: errors) {\r\n" + 
-			    "   System.err.println(error);\r\n" + 
-			    "  }\r\n" + 
-			    "  throw new IllegalArgumentException(\"Could not parse knowledge.\");\r\n" + 
-			    " }\r\n" + 
-			    " KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();\r\n" + 
-			    " kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());\r\n" + 
-			    " return kbase;\r\n" + 
-			    "}");
+				"package com.mkyong.core;\n" + 
+				"\n" + 
+				"import java.net.UnknownHostException;\n" + 
+				"import java.util.Date;\n" + 
+				"import com.mongodb.BasicDBObject;\n" + 
+				"import com.mongodb.DB;\n" + 
+				"import com.mongodb.DBCollection;\n" + 
+				"import com.mongodb.DBCursor;\n" + 
+				"import com.mongodb.MongoClient;\n" + 
+				"import com.mongodb.MongoException;\n" + 
+				"\n" + 
+				"/**\n" + 
+				" * Java + MongoDB Hello world Example\n" + 
+				" * \n" + 
+				" */\n" + 
+				"public class App {\n" + 
+				"  public static void main(String[] args) {\n" + 
+				"\n" + 
+				"    try {\n" + 
+				"\n" + 
+				"	/**** Connect to MongoDB ****/\n" + 
+				"	// Since 2.10.0, uses MongoClient\n" + 
+				"	MongoClient mongo = new MongoClient(\"localhost\", 27017);\n" + 
+				"\n" + 
+				"	/**** Get database ****/\n" + 
+				"	// if database doesn't exists, MongoDB will create it for you\n" + 
+				"	DB db = mongo.getDB(\"testdb\");\n" + 
+				"\n" + 
+				"	/**** Get collection / table from 'testdb' ****/\n" + 
+				"	// if collection doesn't exists, MongoDB will create it for you\n" + 
+				"	DBCollection table = db.getCollection(\"user\");\n" + 
+				"\n" + 
+				"	/**** Insert ****/\n" + 
+				"	// create a document to store key and value\n" + 
+				"	BasicDBObject document = new BasicDBObject();\n" + 
+				"	document.put(\"name\", \"mkyong\");\n" + 
+				"	document.put(\"age\", 30);\n" + 
+				"	document.put(\"createdDate\", new Date());\n" + 
+				"	table.insert(document);\n" + 
+				"\n" + 
+				"	/**** Find and display ****/\n" + 
+				"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
+				"}}}");
 		return q;
 	}
 

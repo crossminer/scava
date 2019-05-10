@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.commits.messagereferences;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,6 +19,7 @@ import org.eclipse.scava.metricprovider.trans.commits.messagereferences.model.Co
 import org.eclipse.scava.nlp.tools.references.NormalizedReferences;
 import org.eclipse.scava.nlp.tools.references.bitbucket.ReferencesInBitBucket;
 import org.eclipse.scava.nlp.tools.references.bugzilla.ReferencesInBugzilla;
+import org.eclipse.scava.nlp.tools.references.git.ReferencesInGitSVN;
 import org.eclipse.scava.nlp.tools.references.github.ReferencesInGitHub;
 import org.eclipse.scava.nlp.tools.references.gitlab.ReferencesInGitLab;
 import org.eclipse.scava.nlp.tools.references.jira.ReferencesInJira;
@@ -64,14 +63,14 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metrics search for references of commits or bugs within the messages of commits. In order to work, it is necessary to "
+		return "This metrics search for references of commits or bugs within the messages of commits. In order to detect bugs references, it is necessary to "
 				+ "use at the same time one Bug Tracker, as the retrieval of references are based on patterns defined by bug trackers. "
-				+ "If multiple or zero Bug Trackers are defined in the project, then this metric do not run.";
+				+ "If multiple or zero Bug Trackers are defined in the project, the metric will only search for commits (Strings of 40 characters).";
 	}
 
 	@Override
 	public boolean appliesTo(Project project) {
-		return project.getVcsRepositories().size() > 0 && project.getBugTrackingSystems().size()==1;
+		return project.getVcsRepositories().size() >0 ;
 	}
 
 	@Override
@@ -98,20 +97,27 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 	@Override
 	public void measure(Project project, ProjectDelta delta, CommitsMessageReferenceTransMetric db)
 	{
-		if(project.getBugTrackingSystems().size()!=1)
-			return;
 		
 		clearDB(db);
 		
 		VcsProjectDelta vcsd = delta.getVcsDelta();
-				
-		BugTrackingSystem bugTracker = project.getBugTrackingSystems().get(0);
-		BTSParsedData btsParsedData= new BTSParsedData(bugTracker);
+		
+		BugTrackingSystem bugTracker=null;
+		ProjectParsedData projectParsedData=null;
+		if(project.getBugTrackingSystems().size()!=1)
+		{
+			bugTracker = project.getBugTrackingSystems().get(0);
+			projectParsedData= new ProjectParsedData(bugTracker);
+		}
 		
 		for (VcsRepositoryDelta vcsRepositoryDelta : vcsd.getRepoDeltas())
 		{
 			
 			VcsRepository repository = vcsRepositoryDelta.getRepository();
+			if(bugTracker==null)
+			{
+				projectParsedData= new ProjectParsedData(repository);
+			}
 			
 			for (VcsCommit commit : vcsRepositoryDelta.getCommits())
 			{
@@ -127,31 +133,37 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 				
 				NormalizedReferences references = new NormalizedReferences();
 				
-				
-				switch(bugTracker.getBugTrackerType())
+				if(bugTracker!=null)
 				{
-					case "github":
-						references=ReferencesInGitHub.findReferences(commit.getMessage(), btsParsedData.getOwner(), btsParsedData.getRepository());
-						break;
-					case "bitbucket":
-						references=ReferencesInBitBucket.findReferences(commit.getMessage());
-						break;
-					case "jira":
-						references=ReferencesInJira.findReferences(commit.getMessage(), btsParsedData.getUrl(), btsParsedData.getRepository());
-						break;
-					case "bugzilla":
-						references=ReferencesInBugzilla.findReferences(commit.getMessage(), btsParsedData.getUrl());
-						break;
-					case "gitlab":
-						references=ReferencesInGitLab.findReferences(commit.getMessage(), btsParsedData.getUrl());
-						break;
-					case "redmine":
-						references=ReferencesInRedmine.findReferences(commit.getMessage(), btsParsedData.getUrl());
-						break;
-					case "sourceforge":
-						references=ReferencesInSourceforge.findReferences(commit.getMessage());
-						break;
-					
+					switch(bugTracker.getBugTrackerType())
+					{
+						case "github":
+							references=ReferencesInGitHub.findReferences(commit.getMessage(), projectParsedData.getOwner(), projectParsedData.getRepository());
+							break;
+						case "bitbucket":
+							references=ReferencesInBitBucket.findReferences(commit.getMessage());
+							break;
+						case "jira":
+							references=ReferencesInJira.findReferences(commit.getMessage(), projectParsedData.getUrl(), projectParsedData.getRepository());
+							break;
+						case "bugzilla":
+							references=ReferencesInBugzilla.findReferences(commit.getMessage(), projectParsedData.getUrl());
+							break;
+						case "gitlab":
+							references=ReferencesInGitLab.findReferences(commit.getMessage(), projectParsedData.getUrl());
+							break;
+						case "redmine":
+							references=ReferencesInRedmine.findReferences(commit.getMessage(), projectParsedData.getUrl());
+							break;
+						case "sourceforge":
+							references=ReferencesInSourceforge.findReferences(commit.getMessage());
+							break;
+						
+					}
+				}
+				else if(projectParsedData.getUrl()!=null) //This is case we are just analyzing Git or SVN
+				{
+					references=ReferencesInGitSVN.findReferences(commit.getMessage(), projectParsedData.getUrl());
 				}
 				
 				commitMessageReferringTo.getBugsReferred().addAll(references.getNormalizedBugsReferences());
@@ -182,15 +194,14 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 		return commitMessageReferringTo;
 	}
 
-	private class BTSParsedData
+	private class ProjectParsedData
 	{
-		private String host;
-		private String owner;
-		private String repository;
-		private String url;
+		private String owner=null;
+		private String repository=null;
+		private String url=null;
 		
 		
-		public BTSParsedData(BugTrackingSystem bugTracker)
+		public ProjectParsedData(BugTrackingSystem bugTracker)
 		{
 			switch(bugTracker.getBugTrackerType())
 			{
@@ -215,10 +226,11 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 				break;
 			}
 		}
-
-		public String getHost() {
-			return host;
+		
+		public ProjectParsedData(VcsRepository repository) {
+			url=repository.getUrl();
 		}
+
 
 		public String getOwner() {
 			return owner;

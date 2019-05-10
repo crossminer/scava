@@ -147,6 +147,19 @@ public class AnalysisTaskService {
 		}
 		return task;
 	}
+	
+	public ProjectAnalysis deleteProjectAnalysis(String projectId) {
+		ProjectAnalysis project = this.repository.getProjects().findByProjectId(projectId).iterator().next();
+		
+		if (project != null) {
+			for (AnalysisTask task : project.getAnalysisTasks()) {
+				this.deleteAnalysisTask(task.getAnalysisTaskId());
+			}
+			this.repository.getProjects().remove(project);
+			this.repository.sync();
+		}
+		return project;
+	}
 
 	public List<AnalysisTask> getAnalysisTasksByProject(String projectId) {
 		List<AnalysisTask> tasks = new ArrayList<>();
