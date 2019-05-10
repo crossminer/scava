@@ -19,17 +19,11 @@
      </visualisation>
   </extension>
 
-
-
-
-
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.metricprovider.trans.topics.model.TopicsTransMetric"/>
     <class name="org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData"/>
     <class name="org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData"/>
     <class name="org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic"/>
     <class name="org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic"/>
-    <class name="org.eclipse.scava.metricprovider.trans.topics.model.ForumPostData"/>
-     <class name="org.eclipse.scava.metricprovider.trans.topics.model.ForumPostTopic"/>
   </extension>
 </plugin>
