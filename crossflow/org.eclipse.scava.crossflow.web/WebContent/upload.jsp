@@ -33,18 +33,6 @@
 			</div>
 			<br /> <br />
 			
-			<div class="form-group">
-				<input type="email" class="form-control" id="inputEmail" name="inputEmail"
-					aria-describedby="emailHelp" placeholder="Enter email"/> <small
-					id="emailHelp" class="form-text text-muted">We'll never
-					share your email with anyone else.</small>
-			</div>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="inputCheck" name="inputCheck">
-				<label class="form-check-label" for="exampleCheck1">I accept
-					to receive e-mails from this service.</label>
-			</div>
-			<br />
 			<button type="submit" class="btn btn-success">Upload</button>
 		</form>
 
