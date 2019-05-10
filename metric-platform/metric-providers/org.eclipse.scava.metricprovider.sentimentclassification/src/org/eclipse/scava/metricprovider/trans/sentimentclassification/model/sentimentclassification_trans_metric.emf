@@ -5,7 +5,6 @@ package org.eclipse.scava.metricprovider.trans.sentimentclassification.model;
 class SentimentClassificationTransMetric {
 	val BugTrackerCommentsSentimentClassification[*] bugTrackerComments;
 	val NewsgroupArticlesSentimentClassification[*] newsgroupArticles;
-	val ForumPostSentimentClassification[*] forumPosts;
 }
 
 class BugTrackerCommentsSentimentClassification {
@@ -21,12 +20,4 @@ class NewsgroupArticlesSentimentClassification {
    	attr String newsGroupName;
    	attr long articleNumber;
    	attr String polarity;
-}
-
-class ForumPostSentimentClassification {
-	@searchable
-	attr String forumId;
-	attr String topicId;
-	attr String postId;
-	attr String polarity;
 }
