@@ -29,8 +29,6 @@ import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparat
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic;
-import org.eclipse.scava.metricprovider.trans.topics.model.ForumPostData;
-import org.eclipse.scava.metricprovider.trans.topics.model.ForumPostTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.TopicsTransMetric;
@@ -112,8 +110,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		System.err.println("Started " + getIdentifier());
 
 		// This is for indexing
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(1))
-				.adapt(context.getProjectDB(project));
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(1)).adapt(context.getProjectDB(project));
 		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
 		indexPrepTransMetric.sync();
 
@@ -137,10 +134,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 				System.err.println("newsgroupTopics.size(): " + newsgroupTopics.size());
 				if (newsgroupTopics.size() > 0)
 					storeNewsgroupTopics(newsgroupTopics, ccpDelta, db);
-				List<Cluster> forumPostTopics = produceForumPostTopics(db);
-				System.err.println("forumPostTopics.size(): " + forumPostTopics.size());
-				if (forumPostTopics.size() > 0)
-					storeForumPostTopics(forumPostTopics, ccpDelta, db);
+				
 			}
 		}
 
@@ -167,19 +161,6 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		db.sync();
 	}
 
-	private void storeForumPostTopics(List<Cluster> forumPostTopics, CommunicationChannelDelta ccpDelta,
-			TopicsTransMetric db) {
-		db.getForumTopics().getDbCollection().drop();
-		for (Cluster cluster : forumPostTopics) {
-			ForumPostTopic forumPostTopic = new ForumPostTopic();
-			db.getForumTopics().add(forumPostTopic);
-			CommunicationChannel communicationChannel = ccpDelta.getCommunicationChannel();
-			forumPostTopic.setForumId(communicationChannel.getOSSMeterId());
-			forumPostTopic.setLabel(cluster.getLabel());
-			forumPostTopic.setNumberOfDocuments(cluster.getAllDocuments().size());
-		}
-		db.sync();
-	}
 
 	private void storeBugTrackerTopics(List<Cluster> bugTrackerTopics, BugTrackingSystemDelta btspDelta,
 			TopicsTransMetric db) {
@@ -212,21 +193,6 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 
 		db.sync();
 
-		Set<ForumPostData> toBeRemoved2 = new HashSet<ForumPostData>();
-
-		for (ForumPostData post : db.getForumPosts()) {
-			java.util.Date javaDate = NntpUtil.parseDate(post.getDate()); // why?
-			if (javaDate != null) {
-				Date date = new Date(javaDate);
-				if (projectDate.compareTo(date.addDays(STEP)) > 0)
-					toBeRemoved2.add(post);
-			}
-		}
-
-		for (ForumPostData post : toBeRemoved2)
-			db.getForumPosts().remove(post);
-
-		db.sync();
 	}
 
 	private void cleanBugTrackers(Date projectDate, TopicsTransMetric db) {
@@ -323,12 +289,6 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		return produceTopics(documents);
 	}
 
-	private List<Cluster> produceForumPostTopics(TopicsTransMetric db) {
-		final ArrayList<Document> documents = new ArrayList<Document>();
-		for (ForumPostData post : db.getForumPosts())
-			documents.add(new Document(post.getSubject(), post.getText()));
-		return produceTopics(documents);
-	}
 
 	private List<Cluster> produceBugTrackerTopics(TopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
