@@ -39,7 +39,7 @@ public class SenticNet5
 		List<Map.Entry<String,HashMap<String, Double>>> analyzedText = new ArrayList<Map.Entry<String,HashMap<String, Double>>>();
 		HashMap<String, Double> values=null;
 		Map.Entry<String, HashMap<String, Double>> token=null;
-		List<String> tokens = coreAnalyzedText.lemmatizeAsList();
+		List<String> tokens = coreAnalyzedText.getLemmas();
 		List<String> ngramsList = new ArrayList<String>(coreAnalyzedText.numberOfTokens()); //At least the size will be the number of tokens
 		ngramsList.addAll(tokens);
 		ngramsList.addAll(NgramsGenerator.ngramsGenerator(tokens, 5));

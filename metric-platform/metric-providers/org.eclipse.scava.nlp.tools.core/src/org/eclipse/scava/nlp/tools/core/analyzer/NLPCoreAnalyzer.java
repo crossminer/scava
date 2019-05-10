@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import edu.emory.mathcs.nlp.component.template.node.NLPNode;
+import edu.emory.mathcs.nlp.component.tokenizer.token.Token;
 import edu.emory.mathcs.nlp.decode.NLPDecoder;
 
 public class NLPCoreAnalyzer
@@ -30,7 +31,13 @@ public class NLPCoreAnalyzer
 		decodedText = decoder.decode(text);
 	}
 	
-	public List<String> tokens()
+	public int numberOfTokens()
+	{
+		return decodedText.length;
+	}
+	
+	
+	public List<String> getTokens()
 	{
 		List<String> tokens = new ArrayList<String>(decodedText.length);
 		for(int i=1; i<decodedText.length ; i++)
@@ -40,24 +47,12 @@ public class NLPCoreAnalyzer
 		return tokens;
 	}
 	
-	public String tokenizedText()
+	public String getTokenizedText()
 	{
-		return listAsText(tokens());
+		return listAsText(getTokens());
 	}
 	
-	private String listAsText(List<String> tokens)
-	{
-		String text = "";
-		for(int i=0; i<tokens.size() ; i++)
-		{
-			text=text.concat(tokens.get(i));
-			if(i<tokens.size()-1)
-				text=text.concat(" ");
-		}
-		return text;
-	}
-	
-	public List<String> posAsList()
+	public List<String> getPOS()
 	{
 		List<String> posText = new ArrayList<String>(decodedText.length);
 		//First element, i.e. 0, is the root
@@ -67,6 +62,83 @@ public class NLPCoreAnalyzer
 		}
 		return posText;
 	}
+	
+	public String getPOSText()
+	{
+		return listAsText(getPOS());
+	}
+	
+	public String getLemmatizedText()
+	{
+    	return listAsText(getLemmas());	
+	}
+	
+	public List<String> getLemmas()
+	{
+		List<String> tokens = new ArrayList<String>(decodedText.length);
+		for(int i=1; i<decodedText.length ; i++)
+		{
+			tokens.add(decodedText[i].getLemma());
+		}
+		return tokens;
+    	
+	}
+	
+	public List<String> getTokenizedSentencesAsText()
+	{
+		return doubleListToSingleList(getTokenizedSentences());
+	}
+	
+	public List<String> getLemmatizedSentencesAsText()
+	{
+		return doubleListToSingleList(getLemmatizedSentences());	
+	}
+	
+	public List<String> getPOSSentencesAsText()
+	{
+		return doubleListToSingleList(getPOSSentences());
+	}
+	
+	
+	
+	public List<List<String>> getTokenizedSentences()
+	{
+		List<Token> nodes = new ArrayList<Token>();
+		for(String token: getTokens())
+			nodes.add(new Token(token));
+		return sentencesToString(decoder.getTokenizer().segmentize(nodes));
+		
+	}
+	
+	public List<List<String>> getLemmatizedSentences()
+	{
+		List<Token> nodes = new ArrayList<Token>();
+		for(String token: getLemmas())
+			nodes.add(new Token(token));
+		return sentencesToString(decoder.getTokenizer().segmentize(nodes));
+	} 
+	
+	public List<List<String>> getPOSSentences()
+	{
+		List<Token> nodes = new ArrayList<Token>();
+		for(String token: getPOS())
+			nodes.add(new Token(token));
+		return sentencesToString(decoder.getTokenizer().segmentize(nodes));
+	}
+	
+	private List<List<String>> sentencesToString(List<List<Token>> sentences)
+	{
+		List<List<String>> sentencesAsString = new ArrayList<List<String>>(sentences.size());
+		for(List<Token> tokens : sentences)
+		{
+			List<String> tokensAsString = new ArrayList<String>(tokens.size());
+			for(Token token: tokens)
+				tokensAsString.add(token.getWordForm());
+		}
+		return sentencesAsString;
+	}
+	
+
 	
 	public HashMap<String,Integer> getStats()
 	{
@@ -104,35 +176,26 @@ public class NLPCoreAnalyzer
 		return stats;
 	}
 	
-	public int getTextLength()
+	private List<String> doubleListToSingleList(List<List<String>> unitList)
 	{
-		return decodedText.length;
-	}
-	
-	public String posAsText()
-	{
-		return listAsText(posAsList());
-	}
-	
-	public String lemmatizeAsText()
-	{
-    	return listAsText(lemmatizeAsList());	
-	}
-	
-	public List<String> lemmatizeAsList()
-	{
-		List<String> tokens = new ArrayList<String>(decodedText.length);
-		for(int i=1; i<decodedText.length ; i++)
+		List<String> output = new ArrayList<String>(unitList.size());
+		for(List<String> units : unitList)
 		{
-			tokens.add(decodedText[i].getLemma());
+			output.add(listAsText(units));
 		}
-		return tokens;
-    	
+		return output;
 	}
 	
-	public int numberOfTokens()
+	private String listAsText(List<String> units)
 	{
-		return decodedText.length;
+		String text = "";
+		for(int i=0; i<units.size() ; i++)
+		{
+			text=text.concat(units.get(i));
+			if(i<units.size()-1)
+				text=text.concat(" ");
+		}
+		return text;
 	}
 	
 }

@@ -36,7 +36,7 @@ public class TextProcessor
 		
 		extraFeatures.addAll(ExtraSenticNetFeatures.getFeatures(SenticNet5.analyzeTextAndSummaryScores(coreAnalyzedText)));
 		
-		processedText=TextPostProcessor.apply(coreAnalyzedText.tokenizedText());
+		processedText=TextPostProcessor.apply(coreAnalyzedText.getTokenizedText());
 	}
 	
 	public String getProcessedText()
