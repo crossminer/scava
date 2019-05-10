@@ -157,31 +157,6 @@ public class PlainTextProcessingTransMetricProvider
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for (CommunicationChannelDelta communicationChannelDelta : ccpDelta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			// Process for forums - this will need changing/removing from HERE --
-			// if(communicationChannel instanceof EclipseForum)
-			// {
-			// for(CommunicationChannelForumPost post :
-			// communicationChannelDelta.getPosts())
-			// {
-			// ForumPostPlainTextProcessing forumPostsData = findForumPost(db, post);
-			// if(forumPostsData == null)
-			// {
-			// forumPostsData = new ForumPostPlainTextProcessing();
-			// forumPostsData.setForumId(communicationChannel.getOSSMeterId());
-			// forumPostsData.setTopicId(post.getTopicId());
-			// forumPostsData.setPostId(post.getPostId());
-			// db.getForumPosts().add(forumPostsData);
-			// }
-			// plainTextObject = PlainTextEclipseForums.process(post.getText());
-			// forumPostsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
-			// forumPostsData.setHadReplies(plainTextObject.hadReplies());
-			// db.sync();
-			// }
-			// }
-			//
-			// else
-			// {
-			// -- TO HERE
 
 			String communicationChannelName;
 			if (communicationChannel instanceof Discussion) {
@@ -231,7 +206,6 @@ public class PlainTextProcessingTransMetricProvider
 	private void clearDB(PlainTextProcessingTransMetric db) {
 		db.getBugTrackerComments().getDbCollection().drop();
 		db.getNewsgroupArticles().getDbCollection().drop();
-		db.getForumPosts().getDbCollection().drop();
 		db.sync();
 	}
 
@@ -270,18 +244,4 @@ public class PlainTextProcessingTransMetricProvider
 		}
 		return newsgroupArticlesData;
 	}
-
-	// this is potentially not needed any more
-//	private ForumPostPlainTextProcessing findForumPost(PlainTextProcessingTransMetric db,
-//			CommunicationChannelForumPost post) {
-//		ForumPostPlainTextProcessing forumPostsData = null;
-//		Iterable<ForumPostPlainTextProcessing> forumPostsDataIt = db.getForumPosts().find(
-//				ForumPostPlainTextProcessing.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
-//				ForumPostPlainTextProcessing.TOPICID.eq(post.getTopicId()),
-//				ForumPostPlainTextProcessing.POSTID.eq(post.getPostId()));
-//		for (ForumPostPlainTextProcessing fpd : forumPostsDataIt) {
-//			forumPostsData = fpd;
-//		}
-//		return forumPostsData;
-//	}
 }
