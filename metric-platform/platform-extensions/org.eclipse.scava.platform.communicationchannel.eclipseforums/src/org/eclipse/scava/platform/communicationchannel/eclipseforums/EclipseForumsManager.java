@@ -53,6 +53,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		this.next_request_url = "";
 		this.client = new OkHttpClient();
 		this.temporalFlag = false;
+		this.clientSet = false;
 	}
 
 	private boolean temporalFlag;
@@ -69,6 +70,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	private int last_page;
 	private String open_id;
 	private OkHttpClient client;
+	private Boolean clientSet;
 
 	@Override
 	public boolean appliesTo(CommunicationChannel eclipseForum) {
@@ -76,20 +78,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		return eclipseForum instanceof EclipseForum;
 	}
 
-	/*
-	 * [ R E A D M E ]
-	 * 
-	 * 1. Expect the unexpected - Due to errors with Eclipse's REST API (during the
-	 * development of this reader May 2018) some requests return data (values) that
-	 * do not correspond with the Id that was requested. We don't know why. These
-	 * are handled as and when we experienced them.
-	 * 
-	 * 2. Due to the small rate limited of 1000 calls per hour. We have to make a
-	 * check before each call to see if we have calls remaining. If not we wait the
-	 * number of seconds from the previous response we received until they have been
-	 * reset. Also every response we take the header and modify the X values
-	 * associated with the call limit, calls remaining and time until reset.
-	 */
 
 	@Override
 	public Date getFirstDate(DB db, EclipseForum eclipseForum) throws JsonProcessingException, IOException {
@@ -97,8 +85,12 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		// Due to a bug with eclipse forum creation dates we have to estimate the forum
 		// creation time by finding the oldest post from all the topics
 
+		
+		
 		System.out.println("[Eclipse Forum] - getFirstDate()");
-		setClient(eclipseForum);
+		if (this.clientSet == false) {
+			setClient(eclipseForum);
+		}
 		
 
 		// GETS ALL TOPICS WITHIN FORUM
@@ -159,12 +151,11 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	@Override
 	public CommunicationChannelDelta getDelta(DB db, EclipseForum forum, Date date) throws Exception {
 
-		if (temporalFlag == false) {
-			getFirstDate(db, forum);
-			temporalFlag = true;
+	
+		if (this.clientSet == false) {
+			setClient(forum);
 		}
-
-		System.out.println("[Eclipse Forum] - getDelta() Calls remaining" + callsRemaning);
+		
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
 
@@ -183,6 +174,9 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 				}
 			}
 		}
+		
+
+		System.err.println("DELTA SIZE : " +  delta.getArticles().size() + " calls Remain : " + this.callsRemaning);
 
 		return delta;
 	}
@@ -485,7 +479,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
 		System.out.println("[Eclipse Forum] - setClient()");
-		// If it has a client_id and Client_secert add an interceptor
 		
 		Runnable runnable = new Runnable() {
 			public void run() {
@@ -526,13 +519,14 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 				});
 
 			}
-
+			this.clientSet = true;
 		} else {
-			System.out.println("[Eclipse Forum] - Using unauthenticated Client");
-			// creates a single threaded service with a fixed rate that will generate a
+						System.out.println("[Eclipse Forum] - Using unauthenticated Client");
+						// creates a single threaded service with a fixed rate that will generate a
 						// newClient every hour.
 						ScheduledExecutorService newClientService = Executors.newSingleThreadScheduledExecutor();
 						newClientService.scheduleAtFixedRate(runnable, 1, 1, TimeUnit.HOURS);
+						this.clientSet = true;
 		}
 
 		// sets client to a new client (with or without an interceptor)
@@ -560,6 +554,9 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		Request request = builder.build();
 		Response response = genClient.newCall(request).execute();
 		checkHeader(response.headers(), eclipseForum);
+		if (this.callsRemaning == 0) {
+			this.waitUntilCallReset(this.timeToReset);
+		}
 
 		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
 		String open_id = EclipseForumUtils.fixString(jsonNode.get("access_token").toString());
