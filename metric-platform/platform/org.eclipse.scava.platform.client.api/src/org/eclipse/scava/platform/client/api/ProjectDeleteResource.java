@@ -57,6 +57,8 @@ public class ProjectDeleteResource extends ServerResource {
 			Iterable<Project> projectToDelete = projectRepository.getProjects().findByShortName(projectId);
 			for (Project project : projectToDelete) {
 				if (project.getShortName().equals(projectId)) {
+					// Drop ProjectAnalysis					
+					service.deleteProjectAnalysis(projectId);
 					// Drop project analysis database
 					int db = mongo.getDatabaseNames().indexOf(project.getName());
 					if (db != -1) {

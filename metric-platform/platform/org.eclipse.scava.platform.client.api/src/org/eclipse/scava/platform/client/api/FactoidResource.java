@@ -69,7 +69,7 @@ public class FactoidResource extends AbstractApiResource {
 				// TODO: Inefficient as it looks up twice
 				arr.add(getFactoidById(factoids, f.getMetricId()));
 			}
-			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+			getResponse().setStatus(Status.SUCCESS_OK);
 			return Util.createJsonRepresentation(arr);
 		} else {// If an id (or a list of ids) was provided
 			String[] i = id.split("\\+");

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.googlecode.pongo.runtime.osgi">
+      <class name="org.eclipse.scava.metricprovider.historic.configuration.docker.smells.model.DockerSmellsHistoricMetric"/>
+   </extension>
+   <extension point="org.eclipse.scava.platform.visualisation.metric">
+     <visualisation json="vis/historic.configuration.docker.smells.json"/>
+  </extension>
+   <extension point="org.eclipse.scava.platform.metricprovider">
+         <metricProvider provider="org.eclipse.scava.metricprovider.historic.configuration.docker.smells.DockerHistoricMetricProvider">
+   </metricProvider>
+   </extension>
+
+</plugin>
