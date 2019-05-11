@@ -32,6 +32,7 @@ import random
 import statistics
 
 from perceval.backends.scava.scava import (Scava,
+                                           CATEGORY_DEPENDENCY,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -335,7 +336,7 @@ def extract_metrics(scava_metric):
     return item_metrics
 
 
-def enrich_metrics(scava_metrics, meta_info):
+def enrich_metrics(scava_metrics, meta_info=None):
     """
     Enrich metrics coming from Scava to use them in Kibana
 
@@ -393,7 +394,9 @@ def enrich_metrics(scava_metrics, meta_info):
                 logging.debug("Faking Metric_es_value is 0 for %s", eitem)
                 # logging.debug("Metric_es_value is 0 for %s", eitem)
 
-            eitem['meta'] = meta_info
+            if meta_info:
+                eitem['meta'] = meta_info
+
             yield eitem
 
     logging.debug("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
@@ -409,7 +412,7 @@ def enrich_metrics(scava_metrics, meta_info):
     GLOBAL_METRIC_COUNTER = 0
 
 
-def enrich_factoids(scava_factoids, meta_info):
+def enrich_factoids(scava_factoids, meta_info=None):
     """
     Enrich factoids coming from Scava to use them in Kibana
 
@@ -449,7 +452,9 @@ def enrich_factoids(scava_factoids, meta_info):
             elif factoid_data['stars'] == 'FOUR':
                 eitem['stars_num'] = 4
 
-        eitem['meta'] = meta_info
+        if meta_info:
+            eitem['meta'] = meta_info
+
         yield eitem
 
     logging.debug("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
@@ -459,7 +464,37 @@ def enrich_factoids(scava_factoids, meta_info):
     GLOBAL_FACTOID_COUNTER = 0
 
 
-def extract_meta(description, project_name):
+def enrich_dependencies(scava_dependencies, meta_info=None):
+    """
+    Enrich dependencies coming from Scava to use them in Kibana
+
+    :param scava_dependencies: dependency generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for scava_dep in scava_dependencies:
+        processed += 1
+
+        dependency_data = scava_dep['data']
+        eitem = dependency_data
+
+        eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
+        eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
+
+        dependency_raw = dependency_data['dependency']
+        eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
+        eitem['dependency_version'] = dependency_raw.split('/')[-1]
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.debug("Dependency enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+
+
+def extract_meta(project_name, description=None):
     """Extract the meta information defined in the project description. Meta information
     should appear at the very end of the description after the marker META_MARKER, for instance:
 
@@ -470,14 +505,14 @@ def extract_meta(description, project_name):
         "top_projects": ["eclipse"]
     }
 
-    :param description: text representing the project description
     :param project_name: short name of the project
+    :param description: text representing the project description
 
     :return: a JSON with meta information
     """
     meta = {"top_projects": [DEFAULT_TOP_PROJECT]}
 
-    if META_MARKER not in description:
+    if not description or META_MARKER not in description:
         return meta
 
     meta_raw = description.split(META_MARKER)[1]
@@ -511,7 +546,8 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
             project_shortname = project_scava['data']['shortName']
             scavaProject = Scava(url=url_api_rest, project=project_shortname)
 
-            meta = extract_meta(project_scava['data']['description'], project_shortname)
+            prj_descr = project_scava['data']['description'] if 'description' in project_scava['data'] else None
+            meta = extract_meta(prj_descr, project_shortname)
 
             if category == CATEGORY_METRIC:
                 logging.debug("Start fetch metrics for %s" % project_scava['data']['shortName'])
@@ -520,13 +556,25 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_metric
 
                 logging.debug("End fetch metrics for %s" % project_scava['data']['shortName'])
-            else:
+
+            elif category == CATEGORY_FACTOID:
                 logging.debug("Start fetch factoids for %s" % project_scava['data']['shortName'])
 
                 for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID), meta):
                     yield enriched_factoid
 
                 logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
+
+            elif category == CATEGORY_DEPENDENCY:
+                logging.debug("Start fetch dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEPENDENCY), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch dependencies for %s" % project_scava['data']['shortName'])
+            else:
+                msg = "category %s not handled" % category
+                raise Exception(msg)
     else:
         if category == CATEGORY_METRIC:
             logging.debug("Start fetch metrics for %s" % project)
@@ -535,13 +583,23 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_metric
 
             logging.debug("End fetch metrics for %s" % project)
-        else:
+        elif category == CATEGORY_FACTOID:
             logging.debug("Start fetch factoids for %s" % project)
 
             for enriched_factoid in enrich_factoids(scava.fetch(CATEGORY_FACTOID)):
                 yield enriched_factoid
 
             logging.debug("End fetch factoids for %s" % project)
+        elif category == CATEGORY_DEPENDENCY:
+            logging.debug("Start fetch dependencies for %s" % project)
+
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch dependencies for %s" % project)
+        else:
+            msg = "category %s not handled" % category
+            raise Exception(msg)
 
 
 if __name__ == '__main__':
