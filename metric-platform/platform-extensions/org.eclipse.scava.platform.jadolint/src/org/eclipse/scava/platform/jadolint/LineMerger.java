@@ -36,6 +36,8 @@ public class LineMerger {
         
         while ((line = reader.readLine()) != null) {
             lineCounter++;
+            if(line.trim().startsWith("#"))
+                continue;
             if (hasInstruction(line) && line.endsWith(" \\")) {
                 //newLine = "";
                 newLine += line;

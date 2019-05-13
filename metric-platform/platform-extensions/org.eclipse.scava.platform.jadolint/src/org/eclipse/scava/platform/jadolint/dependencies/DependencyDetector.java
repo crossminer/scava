@@ -41,14 +41,18 @@ public class DependencyDetector {
 
         for (RunBlock runblock : runBlocksInstall) {
             String[] splitLine = runblock.getParams().split(" ");
-            String packageInfo = splitLine[splitLine.length - 1];
-
-            if (packageInfo.contains("=")) {
-                String name = packageInfo.split("=", 2)[0];
-                String version = packageInfo.split("=", 2)[1];
-                dependencies.add(new RunDependency(name, version));
-            } else{
-                dependencies.add(new RunDependency(packageInfo, null));
+            //String packageInfo = splitLine[splitLine.length - 1];
+            
+            for(String s : splitLine) {
+            	if(!s.equals("install") && !s.startsWith("-")) {
+		            if (s.contains("=")) {
+		                String name = s.split("=", 2)[0];
+		                String version = s.split("=", 2)[1];
+		                dependencies.add(new RunDependency(name, version));
+		            } else{
+		                dependencies.add(new RunDependency(s, null));
+		            }
+            	}
             }
         }
     }
