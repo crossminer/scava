@@ -185,7 +185,7 @@ public class [%=w.name%] extends Workflow {
 			}	
 					
 		} catch (Exception e) {
-			e.printStackTrace();
+			workflow.log(SEVERITY.ERROR, e.getMessage());
 		}
 	}				
 	

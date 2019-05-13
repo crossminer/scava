@@ -24,7 +24,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 				[%}%]	
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			workflow.log(SEVERITY.ERROR, e.getMessage());
 		}
 	}
 	

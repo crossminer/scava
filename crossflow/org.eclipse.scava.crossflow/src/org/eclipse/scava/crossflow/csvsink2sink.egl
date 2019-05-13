@@ -21,7 +21,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 			writer[%=loopCount%].writeRecord( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].isCached() );
 			writer[%=loopCount%].flush();
 		} catch (Exception e) {
-			e.printStackTrace();
+			workflow.log(SEVERITY.ERROR, e.getMessage());
 		}
 	}
 	
