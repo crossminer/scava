@@ -19,5 +19,6 @@
     <class name="org.eclipse.scava.repository.model.github.GitHubIssue"/>
     <class name="org.eclipse.scava.repository.model.github.GitHubMilestone"/>
     <class name="org.eclipse.scava.repository.model.github.GitHubUser"/>
+    <class name="org.eclipse.scava.repository.model.github.GitHubWiki"/>
   </extension>
 </plugin>
