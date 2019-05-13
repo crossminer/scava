@@ -42,10 +42,10 @@ public class GenerateAction implements IObjectActionDelegate {
 			File outFolder = new File(experimentFolder, "out");
 			outFolder.mkdirs();
 
-			File inFile = new File(inFolder, "in.csv");
+			File inFile = new File(inFolder, "input.csv");
 			inFile.createNewFile();
 
-			File outFile = new File(outFolder, "out.csv");
+			File outFile = new File(outFolder, "output.csv");
 			outFile.createNewFile();
 
 			// generate base classes
