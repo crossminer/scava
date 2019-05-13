@@ -337,6 +337,20 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.readability
     </module>
+    <module>
+    	../migration/third-party/com.googlecode.javaewah.JavaEWAH
+    </module>
+    <module>../migration/third-party/com.jcraft.jzlib</module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcpg-jdk15on
+    </module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcpkix-jdk15on
+    </module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcprov-jdk15on
+    </module>
+    <module>../migration/third-party/org.slf4j.slf4j-api</module>
   </modules>
   <build>
     <plugins>

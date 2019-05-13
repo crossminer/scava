@@ -1241,7 +1241,7 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+
    <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells"
          download-size="0"
@@ -1894,5 +1894,42 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="com.googlecode.javaewah.JavaEWAH"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.jcraft.jzlib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.bouncycastle.bcpg-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.bouncycastle.bcpkix-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.bouncycastle.bcprov-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.slf4j.slf4j-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
