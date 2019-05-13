@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.classifiers.sentimentanalyzer;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
@@ -45,7 +48,16 @@ class SentimentAnalyserSigleton
 		ClassLoader cl = getClass().getClassLoader();
 		InputStream resource = cl.getResourceAsStream(modelPath);
 		if(resource==null)
-			throw new FileNotFoundException("The file "+modelPath+" has not been found");
+		{
+			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			File file= new File(path+modelPath);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+modelPath+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
 		sentimentAnalyzer.loadModel(resource);
 	}
 	

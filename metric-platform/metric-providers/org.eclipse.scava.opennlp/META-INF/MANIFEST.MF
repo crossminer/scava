@@ -3,6 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Opennlp
 Bundle-SymbolicName: org.eclipse.scava.opennlp
 Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: opennlp-tools-1.5.3-1.jar,
+ opennlp-maxent-3.0.3.jar
 Export-Package: opennlp.maxent,
  opennlp.maxent.io,
  opennlp.maxent.quasinewton,
@@ -53,6 +56,4 @@ Export-Package: opennlp.maxent,
  opennlp.tools.util.ext,
  opennlp.tools.util.featuregen,
  opennlp.tools.util.model
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: opennlp-tools-1.5.3-1.jar,
- opennlp-maxent-3.0.3.jar
+

@@ -295,6 +295,9 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.commits.messagereferences
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.readability
+    </module>
   </modules>
   <build>
     <plugins>

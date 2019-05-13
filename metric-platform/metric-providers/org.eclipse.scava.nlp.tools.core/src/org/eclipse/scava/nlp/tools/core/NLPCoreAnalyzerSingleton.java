@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.nlp.tools.core.analyzer;
+package org.eclipse.scava.nlp.tools.core;
 
 import edu.emory.mathcs.nlp.decode.DecodeConfig;
 import edu.emory.mathcs.nlp.decode.NLPDecoder;
