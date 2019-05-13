@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-public class [%=t.name%] [%if(t.isJob()){%] extends Job [%}else{%] implements Serializable [%}%] {
+public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]Job[%}else{%][%=t.extending.first.name%][%}}else{%] implements Serializable[%}%] {
 	
 	public [%=t.name%]() {}
 	

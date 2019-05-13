@@ -71,6 +71,31 @@ public class GenerateBaseClasses {
 		result = execute(module);
 
 		module.getContext().getModelRepository().dispose();
+		
+		//TODO is there a better way to add languages other than manually?
+		
+		module = createModule();
+		module.parse(getFileURI("python/crossflow-python.egx"));
+
+		if (module.getParseProblems().size() > 0) {
+			System.err.println("Parse errors occured...");
+			for (ParseProblem problem : module.getParseProblems()) {
+				System.err.println(problem.toString());
+			}
+			return;
+		}
+
+		for (IModel model : getModels()) {
+			module.getContext().getModelRepository().addModel(model);
+		}
+
+		for (Variable parameter : parameters) {
+			module.getContext().getFrameStack().put(parameter);
+		}
+
+		result = execute(module);
+
+		module.getContext().getModelRepository().dispose();
 	}
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {

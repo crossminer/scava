@@ -713,6 +713,10 @@ public abstract class Workflow {
 		taskStatusTopic.send(new TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""));
 	}
 
+	public void setTaskFinished(Task caller) throws Exception {
+		taskStatusTopic.send(new TaskStatus(TaskStatuses.FINISHED, caller.getId(), ""));
+	}
+		
 	public File getInputDirectory() {
 		return inputDirectory;
 	}
