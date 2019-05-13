@@ -58,31 +58,31 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 
 	private void createClientJar(boolean replace, String path) throws Exception {
 
-		//FIXME WiP
+		//FIXME WiP -- currently user uses eclipse export fat jar wizard
 		
-		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
-		IProject project = selectedFile.getProject();
-
-		StructuredSelection fSelection = new StructuredSelection(project);
-
-		JarPackageData fJarPackage = new JarPackageData();
-		fJarPackage.setIncludeDirectoryEntries(true);
-
-		Object[] elems = { project };
-
-		fJarPackage.setElements(elems);
-
-		fJarPackage.setExportJavaFiles(true);
-
-		fJarPackage.setJarLocation(ResourcesPlugin.getWorkspace().getRoot().getLocation()
-				.append(project.getFullPath().append("/worker.jar")));
-
-		fJarPackage.setOverwrite(true);
-		
-		IJarExportRunnable r = fJarPackage.createJarExportRunnable(shell);
-
-		if (replace || !new File(project.getLocation().toFile(), "worker.jar").exists())
-			r.run(null);
+//		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
+//		IProject project = selectedFile.getProject();
+//
+//		StructuredSelection fSelection = new StructuredSelection(project);
+//
+//		JarPackageData fJarPackage = new JarPackageData();
+//		fJarPackage.setIncludeDirectoryEntries(true);
+//
+//		Object[] elems = { project };
+//
+//		fJarPackage.setElements(elems);
+//
+//		fJarPackage.setExportJavaFiles(true);
+//
+//		fJarPackage.setJarLocation(ResourcesPlugin.getWorkspace().getRoot().getLocation()
+//				.append(project.getFullPath().append("/worker.jar")));
+//
+//		fJarPackage.setOverwrite(true);
+//		
+//		IJarExportRunnable r = fJarPackage.createJarExportRunnable(shell);
+//
+//		if (replace || !new File(project.getLocation().toFile(), "worker.jar").exists())
+//			r.run(null);
 
 	}
 
