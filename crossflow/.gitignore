@@ -9,3 +9,6 @@
 **/okhttp_cache/
 
 **/*\.rar
+
+**/src-gen
+**/src-gen-py
