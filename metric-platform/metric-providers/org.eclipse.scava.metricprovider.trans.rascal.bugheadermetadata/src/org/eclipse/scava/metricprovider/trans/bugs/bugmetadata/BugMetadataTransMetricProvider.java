@@ -25,6 +25,8 @@ import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.CommentData
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.BugTrackerComments;
 import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.RequestReplyClassificationTransMetric;
@@ -75,7 +77,8 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 	public List<String> getIdentifiersOfUses() {
 		return Arrays.asList(RequestReplyClassificationTransMetricProvider.class.getCanonicalName(),
 								SentimentClassificationTransMetricProvider.class.getCanonicalName(),
-								DetectingCodeTransMetricProvider.class.getCanonicalName());
+								DetectingCodeTransMetricProvider.class.getCanonicalName(),
+								IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -91,6 +94,12 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, BugsBugMetadataTransMetric db) {
+		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(3)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 		
 		
 		BugTrackingSystemProjectDelta systemDelta = projectDelta.getBugTrackingSystemDelta();

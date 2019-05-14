@@ -18,10 +18,10 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
-import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.BugTrackerCommentsSentimentClassification;
-import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.ForumPostSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.SentimentClassificationTransMetric;
 import org.eclipse.scava.nlp.classifiers.sentimentanalyzer.SentimentAnalyzer;
@@ -70,7 +70,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(),IndexPreparationTransMetricProvider.class.getCanonicalName() );
 	}
 
 	@Override
@@ -91,6 +91,13 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		System.err.println("Started " + getIdentifier());
 		
 		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		
 		Iterable<BugTrackerCommentDetectingCode> commentsIt = detectingCodeMetric.getBugTrackerComments();
 		
 		SingleLabelPredictionCollection instancesCollection = new SingleLabelPredictionCollection();
@@ -127,22 +134,6 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 			instancesCollection.addText(getNewsgroupArticleId(article), article.getNaturalLanguage());
 		}
 		
-//		Iterable<ForumPostDetectingCode> postsIt = detectingCodeMetric.getForumPosts();
-//		
-//		for(ForumPostDetectingCode post : postsIt)
-//		{
-//			ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
-//			if(postInSentiment == null)
-//			{
-//				postInSentiment = new ForumPostSentimentClassification();
-//				postInSentiment.setForumId(post.getForumId());
-//				postInSentiment.setTopicId(post.getTopicId());
-//				postInSentiment.setPostId(post.getPostId());
-//				db.getForumPosts().add(postInSentiment);
-//			}
-//			db.sync();
-//			instancesCollection.addText(getForumPostId(post), post.getNaturalLanguage());
-//		}
 		
 		if(instancesCollection.size()!=0)
 		{
@@ -169,12 +160,6 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 				db.sync();
 			}
 			
-//			for(ForumPostDetectingCode post : postsIt)
-//			{
-//				ForumPostSentimentClassification postInSentiment = findForumPost(db, post);
-//				postInSentiment.setPolarity(predictions.get(getForumPostId(post)));
-//				db.sync();
-//			}
 		}
 
  	}
@@ -189,10 +174,6 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleNumber();
 	}
 	
-//	private String getForumPostId(ForumPostDetectingCode post)
-//	{
-//		return "FORUM#"+post.getForumId() + "#" + post.getTopicId() + "#" + post.getPostId();
-//	}
 	
 	private BugTrackerCommentsSentimentClassification findBugTrackerComment(SentimentClassificationTransMetric db, BugTrackerCommentDetectingCode comment)
 	{
@@ -222,19 +203,6 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		return newsgroupArticlesData;
 	}
 	
-//	private ForumPostSentimentClassification findForumPost(SentimentClassificationTransMetric db,
-//			ForumPostDetectingCode post) {
-//		ForumPostSentimentClassification forumPostData = null;
-//		Iterable<ForumPostSentimentClassification> forumPostsDataIt = 
-//				db.getForumPosts().
-//						find(ForumPostSentimentClassification.FORUMID.eq(post.getForumId()),
-//								ForumPostSentimentClassification.TOPICID.eq(post.getTopicId()), 
-//								ForumPostSentimentClassification.POSTID.eq(post.getPostId()));
-//		for (ForumPostSentimentClassification nad:  forumPostsDataIt) {
-//			forumPostData = nad;
-//		}
-//		return forumPostData;
-//	}
 
 	//TODO: Check if this is valid
 	//Do not delete the articles database, it is used in other metrics

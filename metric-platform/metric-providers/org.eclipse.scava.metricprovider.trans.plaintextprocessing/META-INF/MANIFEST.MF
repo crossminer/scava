@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.repository.model.cc.eclipseforums,
  org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
- org.eclipse.scava.nlp.tools.plaintext
+ org.eclipse.scava.nlp.tools.plaintext,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.plaintextprocessing
 Bundle-ActivationPolicy: lazy

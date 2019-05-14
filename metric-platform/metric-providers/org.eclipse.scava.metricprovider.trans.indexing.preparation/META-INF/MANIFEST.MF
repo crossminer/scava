@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IndexPreparation
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.indexing.preparation;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.scava.metricprovider.trans.indexing.preparation.Activator
+Require-Bundle: org.eclipse.osgi,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.cc.nntp,
+ org.eclipse.scava.repository.model.sourceforge,
+ org.eclipse.scava.repository.model.cc.eclipseforums
+Export-Package: org.eclipse.scava.metricprovider.trans.indexing.preparation,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation.model

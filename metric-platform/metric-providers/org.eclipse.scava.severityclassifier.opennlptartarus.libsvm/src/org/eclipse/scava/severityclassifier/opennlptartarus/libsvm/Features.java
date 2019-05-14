@@ -101,7 +101,9 @@ public class Features {
 			e.printStackTrace();
 		}
 		if (content != null) {
-			for (String line: content.split("\\n")) {
+			for (String line: content.split("\\v+")) {
+				if(line.isEmpty())
+					continue;
 				String[] elements = line.split("\\t");
 				int order = Integer.parseInt(elements[0].trim());
 				String lemma = elements[1].trim();

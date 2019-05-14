@@ -318,6 +318,19 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer
     </module>
+    <module>metric-providers/org.eclipse.scava.index.indexer</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.bugs
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.communicationchannels
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.indexing.preparation
+    </module>
+    <module>
+    	../migration/third-party/org.eclipse.scava.elasticsearch.dependencies
+    </module>
   </modules>
   <build>
     <plugins>

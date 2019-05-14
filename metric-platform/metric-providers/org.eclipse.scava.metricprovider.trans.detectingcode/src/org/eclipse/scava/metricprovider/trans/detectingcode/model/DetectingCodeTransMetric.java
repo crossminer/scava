@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2019 Edge Hill Universityr
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.detectingcode.model;
 
 import com.googlecode.pongo.runtime.*;
@@ -24,7 +15,6 @@ public class DetectingCodeTransMetric extends PongoDB {
 	
 	protected BugTrackerCommentDetectingCodeCollection bugTrackerComments = null;
 	protected NewsgroupArticleDetectingCodeCollection newsgroupArticles = null;
-	protected ForumPostDetectingCodeCollection forumPosts = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
@@ -38,10 +28,6 @@ public class DetectingCodeTransMetric extends PongoDB {
 		return newsgroupArticles;
 	}
 	
-	public ForumPostDetectingCodeCollection getForumPosts() {
-		return forumPosts;
-	}
-	
 	
 	@Override
 	public void setDb(DB db) {
@@ -50,7 +36,5 @@ public class DetectingCodeTransMetric extends PongoDB {
 		pongoCollections.add(bugTrackerComments);
 		newsgroupArticles = new NewsgroupArticleDetectingCodeCollection(db.getCollection("DetectingCodeTransMetric.newsgroupArticles"));
 		pongoCollections.add(newsgroupArticles);
-		forumPosts = new ForumPostDetectingCodeCollection(db.getCollection("DetectingCodeTransMetric.forumPosts"));
-		pongoCollections.add(forumPosts);
 	}
 }
