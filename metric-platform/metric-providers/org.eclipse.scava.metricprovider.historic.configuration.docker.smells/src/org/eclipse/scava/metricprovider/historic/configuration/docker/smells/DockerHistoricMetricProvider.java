@@ -26,7 +26,7 @@ public class DockerHistoricMetricProvider extends AbstractHistoricalMetricProvid
 	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.configuration.docker.smells";
 	
 	public DockerHistoricMetricProvider() {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.historic.configuration.docker.DockerHistoricMetricProvider");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.historic.configuration.docker.smells.DockerHistoricMetricProvider");
 	}
     
     @Override

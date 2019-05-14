@@ -146,17 +146,17 @@ public class DockerDependenciesTransMetricProvider implements ITransientMetricPr
     
     @Override
     public String getShortIdentifier() {
-    	return "DockerDependencies";
+    	return "TransientDockerDependencies";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Docker Dependencies Metric";
+    	return "Transient Docker Dependencies Metric";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "This metric returns the dependencies (packages, images) that are deifnes in the Dockerfiles of a project";
+    	return "This metric returns the dependencies (packages, images) that are deifned in the Dockerfiles of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {
