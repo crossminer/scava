@@ -13,6 +13,7 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.utils.ParallelList;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
@@ -185,7 +186,7 @@ public class [%=w.name%] extends Workflow {
 			}	
 					
 		} catch (Exception e) {
-			workflow.log(SEVERITY.ERROR, e.getMessage());
+			log(SEVERITY.ERROR, e.getMessage());
 		}
 	}				
 	
