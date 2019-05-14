@@ -81,7 +81,7 @@ public class Run implements Instruction{
         
         for(RunBlock rb : runBlocks){
             String exec = rb.getExecutable();
-            if(exec.equals("apt-get")){
+            if(exec.equals("sudo apt-get") || exec.equals("apt-get")){
                 String params = rb.getParams();
                 
                 String[] paramsArray = params.split(" ");
@@ -102,7 +102,7 @@ public class Run implements Instruction{
         
         for(RunBlock rb : runBlocks){
             String exec = rb.getExecutable();
-            if(exec.equals("pip")){
+            if(exec.equals("sudo pip") || exec.equals("pip")){
                 String params = rb.getParams();
                 
                 String[] paramsArray = params.split(" ");
@@ -123,7 +123,7 @@ public class Run implements Instruction{
         
         for(RunBlock rb : runBlocks){
             String exec = rb.getExecutable();
-            if(exec.equals("apk")){
+            if(exec.equals("sudo apk") || exec.equals("apk")){
                 String params = rb.getParams();
                 
                 String[] paramsArray = params.split(" ");
@@ -144,7 +144,7 @@ public class Run implements Instruction{
         
         for(RunBlock rb : runBlocks){
             String exec = rb.getExecutable();
-            if(exec.equals("apk")){
+            if(exec.equals("sudo apk") || exec.equals("apk")){
                 String params = rb.getParams();
                 
                 String[] paramsArray = params.split(" ");

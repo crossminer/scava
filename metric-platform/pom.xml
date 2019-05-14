@@ -109,7 +109,9 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.smells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
@@ -297,6 +299,26 @@
     </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.readability
+    </module>
+    <module>
+    	../migration/third-party/com.googlecode.javaewah.JavaEWAH
+    </module>
+    <module>../migration/third-party/com.jcraft.jzlib</module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcpg-jdk15on
+    </module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcpkix-jdk15on
+    </module>
+    <module>
+    	../migration/third-party/org.bouncycastle.bcprov-jdk15on
+    </module>
+    <module>../migration/third-party/org.slf4j.slf4j-api</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.documentation.github
     </module>
   </modules>
   <build>

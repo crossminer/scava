@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.scava.nlp.tools.plaintext;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.nlp.tools.plaintext,
  org.eclipse.scava.nlp.tools.plaintext.bugtrackers,
- org.eclipse.scava.nlp.tools.plaintext.communicationchannels
+ org.eclipse.scava.nlp.tools.plaintext.communicationchannels,
+ org.eclipse.scava.nlp.tools.plaintext.documentation
 Require-Bundle: org.eclipse.scava.nlp.tools.preprocessor,
  org.eclipse.core.runtime
 Bundle-Activator: org.eclipse.scava.nlp.tools.plaintext.Activator

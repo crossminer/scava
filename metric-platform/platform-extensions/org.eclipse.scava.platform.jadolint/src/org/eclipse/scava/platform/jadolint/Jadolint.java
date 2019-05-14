@@ -5,6 +5,7 @@
  */
 package org.eclipse.scava.platform.jadolint;
 
+import org.eclipse.scava.platform.jadolint.dependencies.DependencyDetector;
 import org.eclipse.scava.platform.jadolint.model.Add;
 import org.eclipse.scava.platform.jadolint.model.Cmd;
 import org.eclipse.scava.platform.jadolint.model.Copy;
@@ -96,6 +97,27 @@ public class Jadolint {
             Logger.getLogger(Jadolint.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public void getDependencies(String path) {
+        try {
+            LineMerger l = new LineMerger();
+            doc = new Dockerfile();
+            
+            doc.setPath(path);
+            
+            l.mergeLines(doc, new File(path));
+            
+            DependencyDetector detector = new DependencyDetector();
+            
+            for(Line line : doc.getLines()){
+                detector.detectDependency(line.getLine());
+            }
+            
+            doc.addDependencies(detector.getDependencies());
+        } catch (IOException ex) {
+            Logger.getLogger(Jadolint.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 	public Dockerfile getDoc() {

@@ -2,19 +2,17 @@ package org.eclipse.scava.repository.model.mantis;
 
 @stub(javaClass="org.eclipse.scava.repository.model.BugTrackingSystem")
 abstract class BugTrackingSystem {
-   
+
 }
 
 @stub(javaClass="org.eclipse.scava.repository.model.Project")
-class Project {  
+class Project {
 }
 
 @customize
 class MantisBugTrackingSystem extends BugTrackingSystem {
-
-    attr String project_id;
     attr String token;
-    attr String host;
+    attr String project_identifier;
 }
 
 class MantisIssue{
