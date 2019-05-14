@@ -351,6 +351,9 @@
     	../migration/third-party/org.bouncycastle.bcprov-jdk15on
     </module>
     <module>../migration/third-party/org.slf4j.slf4j-api</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation
+    </module>
   </modules>
   <build>
     <plugins>
