@@ -12,13 +12,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MantisBugTrackingSystem" eSuperTypes="//BugTrackingSystem">
     <eAnnotations source="customize"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="project_id">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="token">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="host">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="project_identifier">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
   </eClassifiers>

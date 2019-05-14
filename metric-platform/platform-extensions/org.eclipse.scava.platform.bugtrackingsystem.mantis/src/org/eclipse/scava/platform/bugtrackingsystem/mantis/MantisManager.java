@@ -40,7 +40,8 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 	public boolean appliesTo(BugTrackingSystem bugTrackingSystem) {
 		return bugTrackingSystem instanceof MantisBugTrackingSystem;
 	}
-
+		
+	
 	@Override
 	public BugTrackingSystemDelta getDelta(DB db, MantisBugTrackingSystem bugTrackingSystem, Date date)
 			throws Exception {
@@ -93,9 +94,9 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 		
 		OkHttpClient mantisClient = new OkHttpClient();
 
-		HttpUrl.Builder url = HttpUrl.parse(bugTrackingSystem.getHost()).newBuilder().addEncodedPathSegment("api")
+		HttpUrl.Builder url = HttpUrl.parse(bugTrackingSystem.getUrl()).newBuilder().addEncodedPathSegment("api")
 				.addEncodedPathSegment("rest").addEncodedPathSegment("issues")
-				.addEncodedQueryParameter("project_id", bugTrackingSystem.getProject_id()).addEncodedQueryParameter("pagesize", PAGE_SIZE);
+				.addEncodedQueryParameter("project_id", bugTrackingSystem.getProject_identifier()).addEncodedQueryParameter("pagesize", PAGE_SIZE);
 
 		Request request = new Request.Builder().get().url(url.toString())
 				.addHeader("Authorization", bugTrackingSystem.getToken()).build();
