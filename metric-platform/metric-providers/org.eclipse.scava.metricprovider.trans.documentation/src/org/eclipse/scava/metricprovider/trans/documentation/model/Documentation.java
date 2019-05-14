@@ -9,19 +9,23 @@ import com.googlecode.pongo.runtime.querying.*;
 public class Documentation extends Pongo {
 	
 	protected List<String> entriesId = null;
+	protected List<String> removedEntriesId = null;
 	
 	
 	public Documentation() { 
 		super();
 		dbObject.put("entriesId", new BasicDBList());
+		dbObject.put("removedEntriesId", new BasicDBList());
 		DOCUMENTATIONID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		ENTRIESID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
-		REMOVEDENTRIESUPDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
+		REMOVEDENTRIESID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
+		LASTUPDATEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 	}
 	
 	public static StringQueryProducer DOCUMENTATIONID = new StringQueryProducer("documentationId"); 
-	public static StringQueryProducer REMOVEDENTRIESUPDATE = new StringQueryProducer("removedEntriesUpdate"); 
+	public static StringQueryProducer LASTUPDATEDATE = new StringQueryProducer("lastUpdateDate"); 
 	public static ArrayQueryProducer ENTRIESID = new ArrayQueryProducer("entriesId");
+	public static ArrayQueryProducer REMOVEDENTRIESID = new ArrayQueryProducer("removedEntriesId");
 	
 	
 	public String getDocumentationId() {
@@ -33,12 +37,12 @@ public class Documentation extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public boolean getRemovedEntriesUpdate() {
-		return parseBoolean(dbObject.get("removedEntriesUpdate")+"", false);
+	public String getLastUpdateDate() {
+		return parseString(dbObject.get("lastUpdateDate")+"", "");
 	}
 	
-	public Documentation setRemovedEntriesUpdate(boolean removedEntriesUpdate) {
-		dbObject.put("removedEntriesUpdate", removedEntriesUpdate);
+	public Documentation setLastUpdateDate(String lastUpdateDate) {
+		dbObject.put("lastUpdateDate", lastUpdateDate);
 		notifyChanged();
 		return this;
 	}
@@ -48,6 +52,12 @@ public class Documentation extends Pongo {
 			entriesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("entriesId"));
 		}
 		return entriesId;
+	}
+	public List<String> getRemovedEntriesId() {
+		if (removedEntriesId == null) {
+			removedEntriesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("removedEntriesId"));
+		}
+		return removedEntriesId;
 	}
 	
 	

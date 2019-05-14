@@ -18,6 +18,7 @@ class Documentation {
 	@searchable
 	attr String documentationId;
 	attr String[*] entriesId;
-	attr Boolean removedEntriesUpdate;
+	attr String[*] removedEntriesId;
+	attr String lastUpdateDate;
 }
 

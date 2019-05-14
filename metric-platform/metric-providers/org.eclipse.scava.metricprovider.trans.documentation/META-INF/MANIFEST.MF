@@ -18,3 +18,4 @@ Require-Bundle: org.eclipse.scava.platform,
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.documentation

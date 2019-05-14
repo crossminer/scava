@@ -12,3 +12,6 @@ class DocumentationEntryReadability {
 	attr String entryId;
 	attr double readability;
 }
+
+
+

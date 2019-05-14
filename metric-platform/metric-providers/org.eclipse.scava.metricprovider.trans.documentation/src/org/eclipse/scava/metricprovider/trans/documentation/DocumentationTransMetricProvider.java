@@ -128,76 +128,82 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 			}
 			
-			if(filesToProcess.size()>0)
+			if(filesToProcess.size()>0 || filesToDelete.size()>0)
 			{
-				
 				Documentation documentation = findDocumentation(db, repository.getUrl());
 				
-				if(documentation==null)
+				if(documentation==null && filesToProcess.size()>0)
 				{
 					documentation = new Documentation();
 					documentation.setDocumentationId(repository.getUrl());
-					documentation.setRemovedEntriesUpdate(false);
 					db.getDocumentation().add(documentation);
 				}
 				
-				
-				for(String relativePath : filesToDelete)
+				if(documentation!=null)
 				{
-					if(documentation.getEntriesId().contains(relativePath))
-					{
-						documentation.getEntriesId().remove(relativePath);
-						documentation.setRemovedEntriesUpdate(true);
-					}
+					documentation.getRemovedEntriesId().clear();
 					
-				}
-				
-				Map<String, File> workingCopyFolders = new HashMap<String, File>();				
-				Map<String, File> scratchFolders = new HashMap<String, File>();
-				
-				try {
-					WorkingCopyFactory.getInstance().checkout(project, lastRevision, workingCopyFolders, scratchFolders);
-					File file;
-					String fileContent;
-					for(String relativePath : filesToProcess)
+					for(String relativePath : filesToDelete)
 					{
-						try {
-								file = new File(workingCopyFolders.get(repository.getUrl())+"/"+relativePath);
-								if(!Files.exists(file.toPath()))
-									throw new FileNotFoundException("The file "+relativePath+" has not been found");
-								fileContent = FileParser.extractTextAsString(file);
-								DocumentationEntry documentationEntry = findDocumentationEntry(db, repository.getUrl(), relativePath);
-								if(documentationEntry==null)
-								{
-									documentationEntry = new DocumentationEntry();
-									documentationEntry.setDocumentationId(repository.getUrl());
-									documentationEntry.setEntryId(relativePath);
-									if(!documentation.getEntriesId().contains(relativePath))
-										documentation.getEntriesId().add(relativePath);
-								}
-								else
-									documentationEntry.getPlainText().clear();
-								documentationEntry.getPlainText().addAll(getPlainText(file.getName(), fileContent));
-								db.getDocumentationEntries().add(documentationEntry);
-						}
-						catch(InvalidPathException e)
+						if(documentation.getEntriesId().contains(relativePath))
 						{
-							logger.error("File: "+relativePath+" couldn't be read from the working copy. It contains an illegal character "
-									+ "i.e. \\ / : * ? \" < > |");
-						} catch (FileNotFoundException e) {
-							logger.error("File: "+relativePath+" couldn't be found in the working copy.", e);
-							e.printStackTrace();
+							documentation.getEntriesId().remove(relativePath);
+							documentation.getRemovedEntriesId().add(relativePath);
 						}
 					}
-					db.sync();
 					
-				} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
-					logger.error("Error while creating local copy of documentation:", e);
-					e.printStackTrace();
+					documentation.setLastUpdateDate(projectDelta.getDate().toString());
 				}
 				
+				
+				if(filesToProcess.size()>0)
+				{	
+					Map<String, File> workingCopyFolders = new HashMap<String, File>();				
+					Map<String, File> scratchFolders = new HashMap<String, File>();
+					
+					try {
+						WorkingCopyFactory.getInstance().checkout(project, lastRevision, workingCopyFolders, scratchFolders);
+						File file;
+						String fileContent;
+						for(String relativePath : filesToProcess)
+						{
+							try {
+									file = new File(workingCopyFolders.get(repository.getUrl())+"/"+relativePath);
+									if(!Files.exists(file.toPath()))
+										throw new FileNotFoundException("The file "+relativePath+" has not been found");
+									fileContent = FileParser.extractTextAsString(file);
+									DocumentationEntry documentationEntry = findDocumentationEntry(db, repository.getUrl(), relativePath);
+									if(documentationEntry==null)
+									{
+										documentationEntry = new DocumentationEntry();
+										documentationEntry.setDocumentationId(repository.getUrl());
+										documentationEntry.setEntryId(relativePath);
+										if(!documentation.getEntriesId().contains(relativePath))
+											documentation.getEntriesId().add(relativePath);
+									}
+									else
+										documentationEntry.getPlainText().clear();
+									documentationEntry.getPlainText().addAll(getPlainText(file.getName(), fileContent));
+									db.getDocumentationEntries().add(documentationEntry);
+							}
+							catch(InvalidPathException e)
+							{
+								logger.error("File: "+relativePath+" couldn't be read from the working copy. It contains an illegal character "
+										+ "i.e. \\ / : * ? \" < > |");
+							} catch (FileNotFoundException e) {
+								logger.error("File: "+relativePath+" couldn't be found in the working copy.", e);
+								e.printStackTrace();
+							}
+						}
+						db.sync();
+						
+					} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
+						logger.error("Error while creating local copy of documentation:", e);
+						e.printStackTrace();
+					}
+					
+				}
 			}
-			
 		}
 		
 	}
