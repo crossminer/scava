@@ -16,3 +16,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies,
+ org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies.model
