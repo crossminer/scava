@@ -537,8 +537,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		System.out.println("[Eclipse Forum] - generateOAuth2Token()");
 		OkHttpClient genClient = new OkHttpClient();
-		// HttpUrl.Builder httpurlBuilder =
-		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
 
 		FormBody.Builder formBodyBuilder = new FormBody.Builder();
 		formBodyBuilder.add("grant_type", "client_credentials");
