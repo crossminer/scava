@@ -6,6 +6,7 @@
     </eAnnotations>
     <eAnnotations source="customize"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="documentationEntries" upperBound="-1" eType="//DocumentationEntry" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="documentation" upperBound="-1" eType="//Documentation" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DocumentationEntry">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationId">
@@ -17,6 +18,18 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="plainText" upperBound="-1">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Documentation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationId">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="entryId" upperBound="-1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="removedEntriesUpdate">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
     </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

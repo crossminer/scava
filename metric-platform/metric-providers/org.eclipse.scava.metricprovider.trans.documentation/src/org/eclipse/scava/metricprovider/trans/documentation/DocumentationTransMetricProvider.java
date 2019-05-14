@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
@@ -100,11 +101,13 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	public void measure(Project project, ProjectDelta projectDelta, DocumentationTransMetric db) {
 
 		db.getDocumentationEntries().getDbCollection().drop();
+		db.sync();
 		
 		VcsProjectDelta vcsProjectDelta = projectDelta.getVcsDelta();
 		for(VcsRepositoryDelta vcsDelta : vcsProjectDelta.getRepoDeltas())
 		{
 			Set<String> filesToProcess = new HashSet<String>();
+			Set<String> filesToDelete = new HashSet<String>();
 			VcsRepository repository = vcsDelta.getRepository();
 			String lastRevision="";
 			
@@ -117,12 +120,38 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 					if(item.getChangeType()==VcsChangeType.ADDED || item.getChangeType()==VcsChangeType.UPDATED)
 						filesToProcess.add(item.getPath());
 					if(item.getChangeType()==VcsChangeType.DELETED)
+					{
 						filesToProcess.removeIf(file -> file.equals(item.getPath()));
+						filesToDelete.add(item.getPath());
+					}
+						
 				}
 			}
 			
 			if(filesToProcess.size()>0)
 			{
+				
+				Documentation documentation = findDocumentation(db, repository.getUrl());
+				
+				if(documentation==null)
+				{
+					documentation = new Documentation();
+					documentation.setDocumentationId(repository.getUrl());
+					documentation.setRemovedEntriesUpdate(false);
+					db.getDocumentation().add(documentation);
+				}
+				
+				
+				for(String relativePath : filesToDelete)
+				{
+					if(documentation.getEntryId().contains(relativePath))
+					{
+						documentation.getEntryId().remove(relativePath);
+						documentation.setRemovedEntriesUpdate(true);
+					}
+					
+				}
+				
 				Map<String, File> workingCopyFolders = new HashMap<String, File>();				
 				Map<String, File> scratchFolders = new HashMap<String, File>();
 				
@@ -143,6 +172,8 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 									documentationEntry = new DocumentationEntry();
 									documentationEntry.setDocumentationId(repository.getUrl());
 									documentationEntry.setEntryId(relativePath);
+									if(!documentation.getEntryId().contains(relativePath))
+										documentation.getEntryId().add(relativePath);
 								}
 								else
 									documentationEntry.getPlainText().clear();
@@ -192,6 +223,16 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 		for(DocumentationEntry de : documentationEntryIt)
 			documentationEntry=de;
 		return documentationEntry;
+	}
+	
+	private Documentation findDocumentation(DocumentationTransMetric db, String documentationId)
+	{
+		Documentation documentation = null;
+		Iterable<Documentation> documentationIt = db.getDocumentation().
+				find(Documentation.DOCUMENTATIONID.eq(documentationId));
+		for(Documentation d : documentationIt)
+			documentation=d;
+		return documentation;
 	}
 
 }

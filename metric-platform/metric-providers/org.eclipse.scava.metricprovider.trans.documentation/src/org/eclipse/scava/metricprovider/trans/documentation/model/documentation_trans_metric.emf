@@ -4,6 +4,7 @@ package org.eclipse.scava.metricprovider.trans.documentation.model;
 @customize
 class DocumentationTransMetric {
 	val DocumentationEntry[*] documentationEntries;
+	val Documentation[*] documentation;
 }
 
 class DocumentationEntry {
@@ -12,3 +13,11 @@ class DocumentationEntry {
 	attr String entryId;
 	attr String[*] plainText;
 }
+
+class Documentation {
+	@searchable
+	attr String documentationId;
+	attr String[*] entryId;
+	attr Boolean removedEntriesUpdate;
+}
+

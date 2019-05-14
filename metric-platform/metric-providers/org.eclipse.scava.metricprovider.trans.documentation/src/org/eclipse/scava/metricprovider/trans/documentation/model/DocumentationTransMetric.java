@@ -14,6 +14,7 @@ public class DocumentationTransMetric extends PongoDB {
 	}
 	
 	protected DocumentationEntryCollection documentationEntries = null;
+	protected DocumentationCollection documentation = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
@@ -23,11 +24,17 @@ public class DocumentationTransMetric extends PongoDB {
 		return documentationEntries;
 	}
 	
+	public DocumentationCollection getDocumentation() {
+		return documentation;
+	}
+	
 	
 	@Override
 	public void setDb(DB db) {
 		super.setDb(db);
 		documentationEntries = new DocumentationEntryCollection(db.getCollection("DocumentationTransMetric.documentationEntries"));
 		pongoCollections.add(documentationEntries);
+		documentation = new DocumentationCollection(db.getCollection("DocumentationTransMetric.documentation"));
+		pongoCollections.add(documentation);
 	}
 }
