@@ -2,7 +2,7 @@
     "dashboard": {
         "id": "018fa750-7625-11e9-b4c5-9f587aee34af",
         "value": {
-            "description": "",
+            "description": "Dependencies dashboard",
             "hits": 0,
             "kibanaSavedObjectMeta": {
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"

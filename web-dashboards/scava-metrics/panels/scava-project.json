@@ -17,7 +17,7 @@
             "timeFrom": "now-20y",
             "timeRestore": true,
             "timeTo": "now",
-            "title": "ScavaProject",
+            "title": "ScavaProject (Legacy)",
             "version": 1
         }
     },
