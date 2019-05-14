@@ -8,20 +8,20 @@ import com.googlecode.pongo.runtime.querying.*;
 
 public class Documentation extends Pongo {
 	
-	protected List<String> entryId = null;
+	protected List<String> entriesId = null;
 	
 	
 	public Documentation() { 
 		super();
-		dbObject.put("entryId", new BasicDBList());
+		dbObject.put("entriesId", new BasicDBList());
 		DOCUMENTATIONID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
-		ENTRYID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
+		ENTRIESID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		REMOVEDENTRIESUPDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 	}
 	
 	public static StringQueryProducer DOCUMENTATIONID = new StringQueryProducer("documentationId"); 
 	public static StringQueryProducer REMOVEDENTRIESUPDATE = new StringQueryProducer("removedEntriesUpdate"); 
-	public static ArrayQueryProducer ENTRYID = new ArrayQueryProducer("entryId");
+	public static ArrayQueryProducer ENTRIESID = new ArrayQueryProducer("entriesId");
 	
 	
 	public String getDocumentationId() {
@@ -43,11 +43,11 @@ public class Documentation extends Pongo {
 		return this;
 	}
 	
-	public List<String> getEntryId() {
-		if (entryId == null) {
-			entryId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("entryId"));
+	public List<String> getEntriesId() {
+		if (entriesId == null) {
+			entriesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("entriesId"));
 		}
-		return entryId;
+		return entriesId;
 	}
 	
 	

@@ -17,7 +17,7 @@ class DocumentationEntry {
 class Documentation {
 	@searchable
 	attr String documentationId;
-	attr String[*] entryId;
+	attr String[*] entriesId;
 	attr Boolean removedEntriesUpdate;
 }
 

@@ -144,9 +144,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				
 				for(String relativePath : filesToDelete)
 				{
-					if(documentation.getEntryId().contains(relativePath))
+					if(documentation.getEntriesId().contains(relativePath))
 					{
-						documentation.getEntryId().remove(relativePath);
+						documentation.getEntriesId().remove(relativePath);
 						documentation.setRemovedEntriesUpdate(true);
 					}
 					
@@ -172,8 +172,8 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 									documentationEntry = new DocumentationEntry();
 									documentationEntry.setDocumentationId(repository.getUrl());
 									documentationEntry.setEntryId(relativePath);
-									if(!documentation.getEntryId().contains(relativePath))
-										documentation.getEntryId().add(relativePath);
+									if(!documentation.getEntriesId().contains(relativePath))
+										documentation.getEntriesId().add(relativePath);
 								}
 								else
 									documentationEntry.getPlainText().clear();
