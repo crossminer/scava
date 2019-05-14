@@ -35,7 +35,6 @@ import org.eclipse.scava.repository.model.ProjectError;
 public class MetricListExecutor implements Runnable {
 	
 	protected FileWriter writer;
-
 	final private String projectId;
 	final private String taskId;
 	protected List<IMetricProvider> metrics;
@@ -43,6 +42,7 @@ public class MetricListExecutor implements Runnable {
 	protected Date date;
 	protected OssmeterLogger loggerOssmeter;
 	protected Platform platform;
+	private String workerId;
 	
 	// FIXME: The delta object already references a Project object. Rascal metrics seem to
 	public MetricListExecutor(Platform platform,String projectId,String taskId, ProjectDelta delta, Date date) {
@@ -113,7 +113,7 @@ public class MetricListExecutor implements Runnable {
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 				
 				// Log in DB
-				ProjectError error = ProjectError.create(date.toString(), "MetricListExecutor: " + m.getIdentifier(), projectId, project.getName(), e, Configuration.getInstance().getSlaveIdentifier());
+				ProjectError error = ProjectError.create(date.toString(), "MetricListExecutor: " + m.getIdentifier(), projectId, project.getName(), e, getWorkerId());
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
 				this.loggerOssmeter.error("Exception thrown during metric provider execution ("+m.getShortIdentifier()+").", e);
@@ -147,6 +147,14 @@ public class MetricListExecutor implements Runnable {
 		}
 		mp.setUses(uses);
 		this.loggerOssmeter.info("Added dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
+	}
+
+	public String getWorkerId() {
+		return workerId;
+	}
+
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
 	}
 
 }

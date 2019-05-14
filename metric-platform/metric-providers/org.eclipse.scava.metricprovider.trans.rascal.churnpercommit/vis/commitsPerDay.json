@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.rascal.generic.churn.commitsToday.historic",
+	"metricid" : "rascal.generic.churn.commitsToday.historic",
 	"vis" : [ 
 		{
 			"id" : "commitsPerDayTimeLine",

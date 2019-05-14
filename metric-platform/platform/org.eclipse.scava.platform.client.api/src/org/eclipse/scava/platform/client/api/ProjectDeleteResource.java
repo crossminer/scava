@@ -7,13 +7,16 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.List;
 
 import org.eclipse.scava.platform.Configuration;
+import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.ProjectError;
 import org.eclipse.scava.repository.model.ProjectRepository;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -22,7 +25,12 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ServerResource;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.QueryBuilder;
 
 public class ProjectDeleteResource extends ServerResource {
 	
@@ -49,8 +57,13 @@ public class ProjectDeleteResource extends ServerResource {
 			Iterable<Project> projectToDelete = projectRepository.getProjects().findByShortName(projectId);
 			for (Project project : projectToDelete) {
 				if (project.getShortName().equals(projectId)) {
+					// Drop ProjectAnalysis					
+					service.deleteProjectAnalysis(projectId);
 					// Drop project analysis database
-					platform.getMetricsRepository(project).getDb().dropDatabase();
+					int db = mongo.getDatabaseNames().indexOf(project.getName());
+					if (db != -1) {
+						platform.getMetricsRepository(project).getDb().dropDatabase();
+					}
 					// Remove project's source and models
 					Path pathStorage = Paths.get(platform.getLocalStorageHomeDirectory().toString(), project.getShortName());
 					if (pathStorage.toString() != null) {
@@ -63,6 +76,12 @@ public class ProjectDeleteResource extends ServerResource {
 					    if (md.exists()) {
 					    	deleteDirectoryRecursion(md.toPath());
 					    }
+					}
+					// Erase project's stack traces
+					for (ProjectError projectError : projectRepository.getErrors()) {
+						if (projectError.getProjectId().equals(project.getShortName())) {
+							projectRepository.getErrors().remove(projectError);
+						}
 					}
 					projectRepository.getProjects().remove(project);
 				}

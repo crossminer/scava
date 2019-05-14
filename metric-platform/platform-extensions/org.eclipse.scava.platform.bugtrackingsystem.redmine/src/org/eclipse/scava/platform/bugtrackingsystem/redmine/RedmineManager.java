@@ -70,11 +70,9 @@ public class RedmineManager implements
 
 		@Override
 		public void process(RedmineIssue item, BugTrackingSystem bugTracker) {
-			item.setBugTrackingSystem(bugTracker); // Is this needed?
-			item.setDescription(null); // remove content field
+			item.setBugTrackingSystem(bugTracker);
 			for (BugTrackingSystemComment comment : item.getComments()) {
-				comment.setBugTrackingSystem(bugTracker); // Is this needed?
-				comment.setText(null); // remove content field
+				comment.setBugTrackingSystem(bugTracker);
 			}
 		}
 

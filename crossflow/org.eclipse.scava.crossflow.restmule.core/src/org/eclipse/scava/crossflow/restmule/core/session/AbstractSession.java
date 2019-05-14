@@ -195,14 +195,14 @@ public abstract class AbstractSession implements ISession {
 	protected void setReceiverPort(int port) {
 		this.receiverPort = port;
 	}
-
+	
 	protected void setBasicAccessTokenInHeader(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
+		this.type = Auth.OAUTH;
 		this.token = token;
 	}
 
 	protected void setBasicAccessTokenInQuery(@Nonnull final String token) {
-		this.type = Auth.BASIC_AUTH;
+		this.type = Auth.OAUTH;
 		this.token = token;
 		this.isHeader = false;
 	}

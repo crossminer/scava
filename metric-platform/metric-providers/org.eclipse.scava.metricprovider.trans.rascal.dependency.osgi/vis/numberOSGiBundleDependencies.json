@@ -1,0 +1,21 @@
+{
+	"metricid" : "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
+	"vis" : [ 
+		{
+			"id" : "numberOSGiBundleDependenciesTimeLine",
+			"name" : "Number of OSGi bundle dependencies over time",
+			"description" : "This metric shows the number of OSGi bundle dependencies over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 			"field" : "$__date" }, 
+							{ "name" : "Number", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Number", 
+			"x-label" : "Date",		
+			"y-label" : "Number",
+			"timeSeries" : true
+		}
+	]
+}

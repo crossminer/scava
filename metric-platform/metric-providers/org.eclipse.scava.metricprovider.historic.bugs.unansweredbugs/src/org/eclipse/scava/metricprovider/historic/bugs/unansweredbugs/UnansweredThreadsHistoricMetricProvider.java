@@ -25,8 +25,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = 
-			"org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs";
+	public final static String IDENTIFIER = UnansweredThreadsHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	
@@ -65,7 +64,7 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 		
 		int sumOfUnansweredBugs = 0;
 		for (BugStatistics bug: usedRequestsReplies.getBugs()) {
-			if ((!bug.getAnswered())&&(bug.getFirstRequest()))
+			if (!bug.getAnswered())
 				sumOfUnansweredBugs++;
 		}
 		

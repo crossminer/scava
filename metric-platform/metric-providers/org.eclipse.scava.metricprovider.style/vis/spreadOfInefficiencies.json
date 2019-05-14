@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.style.spreadOfInefficiencies.historic",
+	"metricid" : "style.spreadOfInefficiencies.historic",
 	"vis" : [ 
 		{
 			"id" : "spreadOfInefficienciesTimeLine",

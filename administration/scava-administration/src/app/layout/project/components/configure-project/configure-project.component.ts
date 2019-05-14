@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ListProjectService } from '../../../../shared/services/project-service/list-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnalysisTaskService } from '../../../../shared/services/analysis-task/analysis-task.service';
@@ -18,7 +18,7 @@ import { ProjectMgmtDeleteDialogComponent } from '../delete-project/delete-proje
 export class ConfigureProjectComponent implements OnInit {
 
     project: Project = null;
-    executionTasks: ExecutionTask[] = null;
+    executionTasks: ExecutionTask[] = [];
     interval: any;
     globalStatus: string;
     hasAuthorities: boolean;
@@ -28,8 +28,7 @@ export class ConfigureProjectComponent implements OnInit {
         private listProjectService: ListProjectService,
         private analysisTaskService: AnalysisTaskService,
         public modalService: NgbModal,
-        public roleAuthorities: RoleAuthorities,
-        private router: Router
+        public roleAuthorities: RoleAuthorities
     ) {
     }
 
@@ -49,6 +48,15 @@ export class ConfigureProjectComponent implements OnInit {
                         this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                             (resp) => {
                                 this.executionTasks = resp as ExecutionTask[];
+                                this.executionTasks.forEach(analysisTask => {
+                                    let filteredMetricExecutions: MetricExecutions[] = [];
+                                    analysisTask.metricExecutions.forEach(metricExecution => {
+                                        if (metricExecution.hasVisualisation == "true") {
+                                            filteredMetricExecutions.push(metricExecution);
+                                        }
+                                    });
+                                    analysisTask.metricExecutions = filteredMetricExecutions;
+                                });                                
                             },
                             (error) => {
                                 this.onShowMessage(error);
@@ -140,19 +148,11 @@ export class ConfigureProjectComponent implements OnInit {
         modalRef.result.then(
             (result) => {
                 this.onShowMessage('delete success');
-                this.previousState();
-                this.loadAll();
             },
             (reason) => {
                 this.onShowMessage('delete failed');
-                this.previousState();
-                this.loadAll();
             }
         );
-    }
-
-    previousState() {
-        this.router.navigate(['project']);
     }
 
     ngOnDestroy() {

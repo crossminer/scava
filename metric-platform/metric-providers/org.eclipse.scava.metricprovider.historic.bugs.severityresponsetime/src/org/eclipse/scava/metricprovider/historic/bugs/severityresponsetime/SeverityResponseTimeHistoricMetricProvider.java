@@ -32,7 +32,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime";
+	public final static String IDENTIFIER = SeverityResponseTimeHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	

@@ -119,6 +119,19 @@ export class CreateProjectComponent implements OnInit {
           'project': ['', Validators.required],
           'url': ['', Validators.required]
         });
+      case 'mantis':
+        return this.formBuilder.group({
+          'type': [type],
+          'token': ['', Validators.required],
+          'url': ['', Validators.required]
+        });
+      case 'bitbucket':
+        return this.formBuilder.group({
+          'type': [type],
+          'login': ['', Validators.required],
+          'password': ['', Validators.required],
+          'url': ['', Validators.required]
+        });
       default:
         break;
     }

@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.rascal.testability.java.TestOverPublicMethods.historic",
+	"metricid" : "rascal.testability.java.TestOverPublicMethods.historic",
 	"vis" : [ 
 		{
 			"id" : "testCoveragePublicHistoric",

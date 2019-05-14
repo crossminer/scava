@@ -8,7 +8,6 @@ class BugsRequestsRepliesTransMetric {
 class BugStatistics {
    attr String bugTrackerId;
    attr String bugId;
-   attr boolean firstRequest;
    attr boolean answered;
    attr long responseDurationSec;
    attr String responseDate;

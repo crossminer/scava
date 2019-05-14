@@ -12,6 +12,8 @@ package org.eclipse.scava.platform.bugtrackingsystem.sourceforge;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.eclipse.scava.platform.Date;
@@ -37,6 +39,8 @@ public class SourceForgeManager implements
 
 	private Caches<SourceForgeTicket, String> ticketCaches = new Caches<SourceForgeTicket, String>(
 			new TicketCacheProvider());
+	
+	private Pattern replyComment=Pattern.compile("([a-z0-9]+)$");
 
 	private static class TicketCacheProvider extends
 			DateRangeCacheProvider<SourceForgeTicket, String> {
@@ -71,11 +75,9 @@ public class SourceForgeManager implements
 
 		@Override
 		public void process(SourceForgeTicket item, BugTrackingSystem bugTracker) {
-			item.setBugTrackingSystem(bugTracker); // Is this needed?
-			item.setDescription(null); // remove content field
+			item.setBugTrackingSystem(bugTracker);
 			for (BugTrackingSystemComment comment : item.getComments()) {
-				comment.setBugTrackingSystem(bugTracker); // Is this needed?
-				comment.setText(null); // remove content field
+				comment.setBugTrackingSystem(bugTracker);
 			}
 		}
 	}
@@ -96,6 +98,9 @@ public class SourceForgeManager implements
 				.getItemsAfterDate(day);
 
 		SourceForgeTrackingSystemDelta delta = new SourceForgeTrackingSystemDelta();
+		
+		delta.setBugTrackingSystem(bugTracker);
+		
 		for (SourceForgeTicket ticket : tickets) {
 
 			if (DateUtils.isSameDay(ticket.getUpdateDate(), day)) {
@@ -108,6 +113,24 @@ public class SourceForgeManager implements
 			for (BugTrackingSystemComment comment : ticket.getComments()) {
 				SourceForgeComment sfComment = (SourceForgeComment) comment;
 
+				if(sfComment.isHexId())
+				{
+					String commentHexId=sfComment.getCommentId();
+					
+					if(commentHexId.contains("/"))									//In Sourceforge the comments can reply a previous message, and the last number indicates the true ID
+					{
+						Matcher m = replyComment.matcher(commentHexId); 
+						if(m.find())
+						{
+							commentHexId=m.group(1);
+						}
+					}
+					
+					long commentLongId = Long.parseLong(commentHexId,16); 			//It seems to be in base 16
+					
+					sfComment.setCommentId(String.valueOf(commentLongId));
+					sfComment.setHexId(false);
+				}
 				java.util.Date updated = sfComment.getUpdateDate();
 				java.util.Date created = sfComment.getCreationTime();
 

@@ -10,13 +10,22 @@
 package org.eclipse.scava.presentation.rest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
+import org.eclipse.scava.business.dto.MetricBoundary;
+import org.eclipse.scava.business.dto.MetricDescriptor;
+import org.eclipse.scava.business.dto.MetricMilestoneSlice;
+import org.eclipse.scava.business.dto.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
+import org.eclipse.scava.business.integration.MetricForProjectRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +39,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,5 +141,45 @@ public class ArtifactsRestController {
 			return false;
 		}
     }
+	@Autowired
+	private MetricForProjectRepository m4pRepository;
+	@ApiOperation(value = "Store IDE metrics")
+	@RequestMapping(value="store-metrics}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
+    public @ResponseBody boolean storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
+		try {
+			m4pRepository.save(metricForProject);
+		} catch(Exception e){return false;}
+		return true;
+    }
+	
+	@RequestMapping(value="/gargo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+	public @ResponseBody MetricsForProject temp(){
+		MetricsForProject metric4project = new MetricsForProject();
+		metric4project.setProject("DEMO METRIC4PROJECT");
+		List<MetricMilestoneSlice> metricMilestoneSlices = new ArrayList<MetricMilestoneSlice>();
+		MetricMilestoneSlice metricMilestoneSlice = new MetricMilestoneSlice();
+		metricMilestoneSlice.setBounder("DEMO BOUNDER");
+		MetricBoundary metricBoundary = new MetricBoundary();
+		metricBoundary.setBeginDate(new Date());
+		metricBoundary.setEndDate(new Date());
+		List<MetricBoundary> mbs = new ArrayList<MetricBoundary>();
+		mbs.add(metricBoundary);
+		metricMilestoneSlice.setBoundary(mbs);
+		MetricDescriptor descriptor = new MetricDescriptor();
+		Map<String,Double> map = new HashMap<String,Double>();
+		map.put("name", 2.0);
+		descriptor.setItemValuePairs(map);
+		descriptor.setMetricName("DEMO METRICNAME");
+		ArrayList<MetricDescriptor> mds = new ArrayList<>();
+		mds.add(descriptor);
+		metricBoundary.setMetricValues(mds);
+		metricMilestoneSlices.add(metricMilestoneSlice);
+		
+		
+		
+		metric4project.setMetricMilestoneSlice(metricMilestoneSlices);
+			
+		return metric4project ;
+	}
 
 }

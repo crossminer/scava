@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.average",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.average.RequestsRepliesAverageHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "newsgroups.requestsreplies-averageperday",

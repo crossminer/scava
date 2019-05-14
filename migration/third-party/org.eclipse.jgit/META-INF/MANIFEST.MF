@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jgit
 Bundle-SymbolicName: org.eclipse.jgit
-Bundle-Version: 1.0.0
-Bundle-ClassPath: .
+Bundle-Version: 5.3.0.201903130848-r
+Bundle-ClassPath: org.eclipse.jgit-5.3.0.201903130848-r.jar
 Export-Package: org.eclipse.jgit.api,
  org.eclipse.jgit.api.errors,
  org.eclipse.jgit.blame,
@@ -36,4 +36,10 @@ Export-Package: org.eclipse.jgit.api,
  org.eclipse.jgit.util,
  org.eclipse.jgit.util.io
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: com.jcraft.jsch
+Require-Bundle: com.jcraft.jsch,
+ org.slf4j.slf4j-api,
+ com.googlecode.javaewah.JavaEWAH,
+ org.bouncycastle.bcprov-jdk15on,
+ org.bouncycastle.bcpkix-jdk15on,
+ org.bouncycastle.bcpg-jdk15on,
+ com.jcraft.jzlib

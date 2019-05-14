@@ -221,7 +221,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jsoup"
+         id="org.jsoup.jsoup"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -347,7 +347,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm"
+         id="org.eclipse.scava.nlp.classifiers.requestreplydetector"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -707,7 +707,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm"
+         id="org.eclipse.scava.nlp.classifiers.sentimentanalyzer"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1241,25 +1241,25 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+
    <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+
    <plugin
          id="org.eclipse.scava.metricprovider.trans.configuration.docker.smells"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
-    <plugin
+
+   <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.docker.smells"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-         
+  
    <plugin
          id="org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies"
          download-size="0"
@@ -1268,12 +1268,6 @@
          
    <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-         
-   <plugin
-         id="org.eclipse.scava.platform.jadolint"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1710,5 +1704,244 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.classifiers.codedetector"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.classifiers.emotionclassifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.libraries.fasttext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.resources.sentinet5"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.other"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.plaintext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.predictions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.preprocessor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.vasttext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.bugtrackingsystem.gitlab"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.gitlab"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.gitlab.importer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.bugtrackingsystem.mantis"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.mantis"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.communicationchannel.eclipseforums"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.cc.eclipseforums"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.emotionclassification"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.plaintextprocessing"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.detectingcode"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.squareup.okhttp3"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.squareup.okio"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.google.gson"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.slf4j.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tukaani.xz"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.bugs.references"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.references"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.commits.messagereferences"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.readability"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.googlecode.javaewah.JavaEWAH"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.jcraft.jzlib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.bouncycastle.bcpg-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.bouncycastle.bcpkix-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.bouncycastle.bcprov-jdk15on"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.slf4j.slf4j-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

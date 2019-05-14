@@ -34,7 +34,7 @@ import com.googlecode.pongo.runtime.Pongo;
 
 public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalMetricProvider{
 
-	public final static String IDENTIFIER = "org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment";
+	public final static String IDENTIFIER = SeveritySentimentHistoricMetricProvider.class.getCanonicalName();
 
 	protected MetricProviderContext context;
 	
@@ -127,9 +127,9 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 	}
 	
 	private int transformSentimentToInteger(String sentimentString) {
-		 if (sentimentString.equals("Negative"))
+		 if (sentimentString.equals("__label__negative"))
 			 return -1;
-		 else if (sentimentString.equals("Positive"))
+		 else if (sentimentString.equals("__label__positive"))
 			 return 1;
 		 else
 			 return 0;

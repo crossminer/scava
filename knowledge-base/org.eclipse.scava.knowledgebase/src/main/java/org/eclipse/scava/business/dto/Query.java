@@ -10,6 +10,7 @@
 package org.eclipse.scava.business.dto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juri Di Rocco
@@ -30,7 +31,7 @@ public class Query {
 	private boolean live;
 	private String similarityMethod;
 	private FocusInput focusInput;
-	
+	private Map<String, String> soRecommendationSelection;
 	public String getCompilationUnit() {
 		return compilationUnit;
 	}
@@ -109,6 +110,12 @@ public class Query {
 	}
 	public void setFocusInput(FocusInput focusInput) {
 		this.focusInput = focusInput;
+	}
+	public Map<String, String> getSoRecommendationSelection() {
+		return soRecommendationSelection;
+	}
+	public void setSoRecommendationSelection(Map<String, String> soRecommendationSelection) {
+		this.soRecommendationSelection = soRecommendationSelection;
 	}
 	
 	

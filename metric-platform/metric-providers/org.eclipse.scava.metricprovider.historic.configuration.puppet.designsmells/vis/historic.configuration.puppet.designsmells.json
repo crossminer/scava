@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.PuppetDesignHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "puppet.designsmells.smells",

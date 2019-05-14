@@ -72,8 +72,7 @@ public class JiraManager implements
 			item.setBugTrackingSystem(bugTracker); // Is this needed?
 			item.setDescription(null); // remove content field
 			for (BugTrackingSystemComment comment : item.getComments()) {
-				comment.setBugTrackingSystem(bugTracker); // Is this needed?
-				comment.setText(null); // remove content field
+				comment.setBugTrackingSystem(bugTracker);
 			}
 
 		}
@@ -95,6 +94,8 @@ public class JiraManager implements
 		Iterable<JiraIssue> issues = issueCache.getItemsAfterDate(day);
 
 		JiraBugTrackingSystemDelta delta = new JiraBugTrackingSystemDelta();
+		delta.setBugTrackingSystem(bugTracker);
+		
 		for (JiraIssue issue : issues) {
 
 			if (DateUtils.isSameDay(issue.getUpdateDate(), day)) {

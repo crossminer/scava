@@ -31,7 +31,7 @@ public class ResourceElementEventListener implements IElementStateListener, IEve
 	@Override
 	public void elementDirtyStateChanged(Object element, boolean isDirty) {
 		if (!isDirty && input.equals(element)) {
-			Activator.getDefault().getMainController().getEventBus().post(new ResourceElementEvent(input, ResourceElementStateType.SAVED));
+			Activator.getDefault().getEventBus().post(new ResourceElementEvent(input, ResourceElementStateType.SAVED));
 		}
 
 	}
@@ -39,7 +39,7 @@ public class ResourceElementEventListener implements IElementStateListener, IEve
 	@Override
 	public void elementDeleted(Object element) {
 		if (input.equals(element)) {
-			Activator.getDefault().getMainController().getEventBus().post(new ResourceElementEvent(input, ResourceElementStateType.DELETED));
+			Activator.getDefault().getEventBus().post(new ResourceElementEvent(input, ResourceElementStateType.DELETED));
 		}
 	}
 

@@ -5,7 +5,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="projects" upperBound="-1" eType="//ProjectAnalysis" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="analysisTasks" upperBound="-1" eType="//AnalysisTask" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metricExecutions" upperBound="-1" eType="//MetricExecution" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metricProviders" upperBound="-1" eType="//MetricProvider" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="workers" upperBound="-1" eType="//Worker" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProjectAnalysis">
@@ -48,6 +47,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastExecutionDate">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasVisualisation">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SchedulingInformation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="status">
@@ -86,7 +88,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dependOf" upperBound="-1" eType="//MetricProvider"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependOf" upperBound="-1" eType="//MetricProvider" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="storages" upperBound="-1" eType="//DataStorage" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataStorage">

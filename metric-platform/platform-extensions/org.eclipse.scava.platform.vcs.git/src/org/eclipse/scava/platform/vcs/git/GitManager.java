@@ -24,6 +24,7 @@ import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsCommitItem;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.repository.model.VcsRepository;
+import org.eclipse.scava.repository.model.github.GitHubWiki;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -44,7 +45,9 @@ public class GitManager extends AbstractVcsManager {
 	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
-		return repository instanceof GitRepository;
+		if(repository instanceof GitHubWiki)
+			return false;
+		return (repository instanceof GitRepository);
 	}
 
 	@Override
@@ -282,11 +285,10 @@ public class GitManager extends AbstractVcsManager {
 		RevWalk walk = new RevWalk(repo);
 		
 		Iterator<RevCommit> iterator = git.log().call().iterator();
-		walk.parseCommit(iterator.next());
 		
 		boolean foundDate = false;
 		while(iterator.hasNext()) { 
-			RevCommit commit = iterator.next();
+			RevCommit commit = walk.parseCommit(iterator.next());
 			
 //			System.out.println(Long.valueOf(commit.getCommitTime())*1000 + " == " + epoch); 
 //			System.err.println("comparing " +new Date(Long.valueOf(commit.getCommitTime())*1000) + " with date " + date + " and epoch " + epoch);

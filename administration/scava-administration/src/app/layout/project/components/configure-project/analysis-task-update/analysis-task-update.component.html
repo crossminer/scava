@@ -3,8 +3,10 @@
         <h2>Update Analysis Task</h2>
         <hr/>
     </div>
-
-    <div>
+    <div *ngIf="showSpinner; else other_case;" class="d-flex justify-content-center">
+        <mat-spinner></mat-spinner>
+    </div>
+    <ng-template #other_case>
         <form name="updateTaskForm" role="form" novalidate (ngSubmit)="save()" #updateTaskForm="ngForm">
             <div>
                 <div class="col-md-4 form-group">
@@ -129,5 +131,5 @@
                 </button>
             </div>
         </form>
-    </div>
+    </ng-template>
 </div>

@@ -29,7 +29,7 @@ public class EclipseCloseEventListener implements IEventListener, IWorkbenchList
 	@Override
 	public void postShutdown(IWorkbench workbench) {
 
-		Activator.getDefault().getMainController().getEventBus().post(new EclipseCloseEvent());
+		Activator.getDefault().getEventBus().post(new EclipseCloseEvent());
 
 	}
 

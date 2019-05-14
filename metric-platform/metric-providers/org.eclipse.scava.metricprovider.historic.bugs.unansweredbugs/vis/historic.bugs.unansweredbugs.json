@@ -1,6 +1,6 @@
 
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs.UnansweredThreadsHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.unansweredBugs",

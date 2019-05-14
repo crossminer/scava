@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -10,26 +11,23 @@
 package org.eclipse.scava.severityclassifier.opennlptartarus.libsvm;
 
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import libsvm.svm_model;
 
 
-public class ClassifierModelSingleton {
+class ClassifierModelSingleton {
 
 	private static ClassifierModelSingleton singleton = new ClassifierModelSingleton( );
-	private static svm_model model;
+	private svm_model model;
+	protected OssmeterLogger logger;
 	
 	/* A private Constructor prevents any other 
 	 * class from instantiating.
 	 */
 	private ClassifierModelSingleton(){
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-//		String argumentString = "-b 1 " + path + "classifierFiles/Test-ThreadClustering-5.m";
-		String argumentString = "-b 1 classifierFiles/Test-ThreadClustering-20.m";
-		model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "), getClass().getClassLoader());
-		System.err.println("Severity classification model loaded");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("severityclassifier.opennlptartarus.libsvm");
+		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-ThreadClustering-5.m", true, logger);
     }
 	   
 	/* Static 'instance' method */

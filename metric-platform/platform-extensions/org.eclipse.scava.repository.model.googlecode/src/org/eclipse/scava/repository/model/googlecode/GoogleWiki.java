@@ -20,7 +20,15 @@ public class GoogleWiki extends org.eclipse.scava.repository.model.Communication
 	}
 	
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "GoogleWiki";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}
 	
 	
 	

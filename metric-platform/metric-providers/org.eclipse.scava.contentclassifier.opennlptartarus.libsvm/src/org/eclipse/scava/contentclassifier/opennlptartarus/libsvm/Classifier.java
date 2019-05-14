@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import libsvm.svm_model;
-import libsvm.svm_node;
-
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+
+import libsvm.svm_model;
+import libsvm.svm_node;
 
 public class Classifier {
 
@@ -85,12 +85,8 @@ public class Classifier {
 //		previousTime = printTimeMessage(startTime, previousTime, instanceListSize(), 
 //										"generated features");
 
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		String argumentString = "-b 1 classifierFiles/Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m";
 //		String argumentString = "-b 1 " + path + "classifierFiles/Test-TfIdfFeatures-Clean-AllPoS.m";
-		svm_model model = svm_predict_nofiles.parse_args_and_load_model(argumentString.split(" "), getClass().getClassLoader());
+		svm_model model = ClassifierModelSingleton.getInstance().getModel();
 		
 		List<List<Double>> output_list = null;
 		try {

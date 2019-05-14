@@ -1,6 +1,6 @@
 
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.users",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.users.UsersHistoricMetricProvider",
 	"vis" : [ 
 {
 			"id" : "newsgroups.activeinactiveusers",

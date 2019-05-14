@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -77,7 +78,6 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, 
 						BugsRequestsRepliesTransMetric db) {
-//		final long startTime = System.currentTimeMillis();
 		db.getBugs().getDbCollection().drop();
 		db.sync();
 
@@ -90,9 +90,9 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 		BugsBugMetadataTransMetric usedBugMetadata = 
 				((BugMetadataTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
 		
-		for (BugData bugData: usedBugMetadata.getBugData()) {
+		for (BugData bugData: usedBugMetadata.getBugData())
+		{
 			
-//		System.err.println("usedBugMetadata.getBugTrackerData(): " + usedBugMetadata.getBugTrackerData().size());
 			Iterable<CommentData> commentDataIt = usedBugMetadata.getComments().
 					find(CommentData.BUGTRACKERID.eq(bugData.getBugTrackerId()),
 							CommentData.BUGID.eq(bugData.getBugId()));
@@ -104,59 +104,43 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 			SortedSet<String> sortedCommentSet = new TreeSet<String>(commentIdComment.keySet());
 			sortedCommentSet.addAll(commentIdComment.keySet());
 			
-//			System.err.println("sortedCommentSet: " + sortedCommentSet.size());
-			
-			String firstMessageTime = null;
-//		Iterator<CommentData> iterator = sortedCommentSet.iterator();
-			boolean first=true,
-					noReplyFound=true,
-					isFirstRequest=true;
-			
+			boolean replyFound=false;
+
 			String lastBugTrackerId = "";
-			for (String commentId: sortedCommentSet) {
+			//This part of the code considers that the body of the issue is per se a request, thus, we're expecting a reply
+			for (String commentId: sortedCommentSet)
+			{
 				CommentData comment = commentIdComment.get(commentId);
 				lastBugTrackerId = comment.getBugTrackerId();
 				String responseReply = comment.getRequestReplyPrediction();
-				if (first)
-					firstMessageTime = comment.getCreationTime();
-				if ((first)&&(responseReply.equals("Reply"))) isFirstRequest=false;
-				if ( ( !first ) && ( noReplyFound ) && ( responseReply.equals("Reply") ) ) {
+				if ( (!replyFound) && (responseReply.equals("__label__Reply")))
+				{
 					BugStatistics bugStats = new BugStatistics();
 					bugStats.setBugTrackerId(lastBugTrackerId);
-					bugStats.setFirstRequest(isFirstRequest);
 					bugStats.setBugId(comment.getBugId());
 					bugStats.setAnswered(true);
 					bugStats.setResponseDate(comment.getCreationTime());
-					long duration = computeDurationInSeconds(firstMessageTime, comment.getCreationTime());
+					long duration = computeDurationInSeconds(bugData.getCreationTime(), comment.getCreationTime());
 					bugStats.setResponseDurationSec(duration);
 					db.getBugs().add(bugStats);
 					db.sync();
-					
-//					System.err.println("bugData.getBugId(): " + bugData.getBugId() + "\t" +
-//							"firstMessageTime: " + firstMessageTime + "\t" +
-//							"firstResponseTime: " + comment.getCreationTime() + "\t" + 
-//							"duration: " + duration);
+					replyFound=true;
+					break;
 				}
-				if (responseReply.equals("Reply")) noReplyFound=false;
-				first=false;
 			}
-			
-			if (noReplyFound&&(!first)) {
+
+			if (!replyFound)
+			{
 				BugStatistics bugStats = new BugStatistics();
 				bugStats = new BugStatistics();
 				bugStats.setBugTrackerId(lastBugTrackerId);
-				bugStats.setFirstRequest(isFirstRequest);
 				bugStats.setBugId(bugData.getBugId());
 				bugStats.setAnswered(false);
 				db.getBugs().add(bugStats);
 				db.sync();
-				
-//				System.err.println("bugData.getBugId(): " + bugData.getBugId() + "\t" +
-//						"firstMessageTime: " + firstMessageTime + "\t" +
-//						"unanswered");
 			}
 		}
-		
+
 		db.sync();
 		
 	}
@@ -164,8 +148,6 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 	private long computeDurationInSeconds(String firstMessageTimeString, String firstResponseTimeString) {
 		java.util.Date javaFirstMessageTime = NntpUtil.parseDate(firstMessageTimeString);
 		java.util.Date javaFirstResponseTime = NntpUtil.parseDate(firstResponseTimeString);
-//		System.err.println(" --> firstMessageTime: "+ javaFirstMessageTime + "\t" + 
-//							"firstResponseTime: " + javaFirstResponseTime);
 		return Date.duration(javaFirstMessageTime, javaFirstResponseTime) / 1000;
 	}
 

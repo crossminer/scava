@@ -27,7 +27,7 @@ export class ProjectMgmtDeleteDialogComponent {
   confirmDelete(projectId: string) {
     this.deleteProjectService.deleteProject(projectId).subscribe((resp) => {
         this.activeModal.dismiss(true);
-        //this.previousState();
+        this.previousState();
     });
   }
 

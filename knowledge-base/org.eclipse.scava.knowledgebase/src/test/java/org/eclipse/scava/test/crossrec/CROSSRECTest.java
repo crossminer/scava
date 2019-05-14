@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.scava.business.dto.Dependency;
+import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.impl.CROSSRecServiceImpl;
 import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
@@ -90,9 +91,13 @@ public class CROSSRECTest {
 		Artifact query = arts.get(0);
 		List<Dependency> queryDeps = new ArrayList<>();
 		for (String dep : query.getDependencies()) {
-			Dependency d = new Dependency();
-			d.setName(dep);
-			queryDeps.add(d);
+			String[] value = dep.split(":");
+			if(value.length == 2) {
+				Dependency d = new Dependency();
+				d.setGroupID(value[0]);
+				d.setArtifactID(value[1]);
+				queryDeps.add(d);
+			}
 		}
 		Map<String, Double> simValues = crossRecSimilarity.computeWeightCosineSimilarity(queryDeps);
 		Map<String, Double> res = crossRecService.userBasedRecommendation(queryDeps, simValues);
@@ -110,11 +115,18 @@ public class CROSSRECTest {
 		Artifact query = arts.get(0);
 		List<Dependency> queryDeps = new ArrayList<>();
 		for (String dep : query.getDependencies()) {
-			Dependency d = new Dependency();
-			d.setName(dep);
-			queryDeps.add(d);
+			String[] value = dep.split(":");
+			if(value.length == 2) {
+				Dependency d = new Dependency();
+				d.setGroupID(value[0]);
+				d.setArtifactID(value[1]);
+				queryDeps.add(d);
+			}
 		}
-		Recommendation res = crossRecService.run(queryDeps);
+		Query q = new Query();
+		q.setProjectDependencies(queryDeps);
+		Recommendation res = crossRecService.getRecommendation(q);
+		res.getRecommendationItems().forEach(z -> logger.info(z.getRecommendedLibrary().getLibraryName()));
 		assertNotNull(res);
 	}
 }

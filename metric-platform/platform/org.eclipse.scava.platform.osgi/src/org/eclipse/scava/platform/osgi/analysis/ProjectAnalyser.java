@@ -104,7 +104,7 @@ public class ProjectAnalyser {
 				project.getExecutionInformation().setInErrorState(true);
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
 				
-				ProjectError error = ProjectError.create(date.toString(), "ProjectExecutor: Delta creation", project.getShortName(), project.getName(), e, Configuration.getInstance().getSlaveIdentifier());
+				ProjectError error = ProjectError.create(date.toString(), "ProjectAnalyser: Delta creation", project.getShortName(), project.getName(), e, workerId);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().add(error);
 				platform.getProjectRepositoryManager().getProjectRepository().getErrors().sync();
 				
@@ -116,6 +116,7 @@ public class ProjectAnalyser {
 
 			for (List<IMetricProvider> branch : metricBranches) {
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
+				mExe.setWorkerId(workerId);
 				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
 			}
@@ -132,6 +133,7 @@ public class ProjectAnalyser {
 			if (factoids.size() > 0) {
 				this.logger.info("Executing factoids.");
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
+				mExe.setWorkerId(workerId);
 				mExe.setMetricList(factoids);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
 			}

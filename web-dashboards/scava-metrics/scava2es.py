@@ -26,11 +26,13 @@
 
 import argparse
 import hashlib
+import json
 import logging
 import random
 import statistics
 
 from perceval.backends.scava.scava import (Scava,
+                                           CATEGORY_DEPENDENCY,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -41,6 +43,8 @@ from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
 UUIDS = {}
 DUPLICATED_UUIDS = 0
+META_MARKER = '--meta'
+DEFAULT_TOP_PROJECT = 'main'
 
 # FAKE DATA: create fake unique UUIDs in order to maximize the amount of data to create dashboards
 # This is related to https://github.com/crossminer/scava/issues/139 and https://github.com/crossminer/scava/issues/138
@@ -123,7 +127,7 @@ def uuid(*args):
     if uuid_sha1 not in UUIDS:
         UUIDS[uuid_sha1] = args
     else:
-        logging.warning("Detected scava item value %s" % str(args))
+        logging.debug("Detected scava item value %s" % str(args))
         global DUPLICATED_UUIDS
         DUPLICATED_UUIDS += 1
 
@@ -132,7 +136,7 @@ def uuid(*args):
 
 def create_item_metrics_from_barchart(mdata, mupdated):
     if not isinstance(mdata['y'], str):
-        logging.warning("Barchart metric, Y axis not handled %s", mdata)
+        logging.debug("Barchart metric, Y axis not handled %s", mdata)
         return []
 
     values = [bar[mdata['y']] for bar in mdata['datatable']]
@@ -200,19 +204,26 @@ def create_item_metrics_from_barchart(mdata, mupdated):
 def create_item_metrics_from_linechart(mdata, mupdated):
     metrics = []
     if isinstance(mdata['y'], str):
+        metric = {}
         for sample in mdata['datatable']:
-            metric = {
-                'project': mdata['project'],
-                'metric_class': mdata['id'].split(".")[0],
-                'metric_type': mdata['type'],
-                'metric_id': mdata['id'],
-                'metric_desc': mdata['description'],
-                'metric_name': mdata['name'],
-                'metric_es_value': sample[mdata['y']],
-                'metric_es_compute': 'cumulative',
-                'datetime': mupdated,
-                'scava': mdata
-            }
+            metric['project'] = mdata['project']
+            metric['metric_class'] = mdata['id'].split(".")[0]
+            metric['metric_type'] = mdata['type']
+            metric['metric_id'] = mdata['id']
+            metric['metric_desc'] = mdata['description']
+            metric['metric_name'] = mdata['name']
+            metric['metric_es_compute'] = 'cumulative'
+            metric['datetime'] = mupdated
+            metric['scava'] = mdata
+            metric['metric_es_value'] = None
+
+            if 'y' in mdata and mdata['y'] in sample:
+                metric['metric_es_value'] = sample[mdata['y']]
+            elif 'Smells' in sample:
+                metric['metric_es_value'] = sample['Smells']
+
+            if metric['metric_es_value'] is None:
+                logging.debug("Linechart metric not handled %s", sample)
 
             if 'Date' in sample:
                 metric['metric_es_compute'] = 'sample'
@@ -241,7 +252,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
 
                 metrics.append(metric)
     else:
-        logging.warning("Linechart metric, Y axis not handled %s", mdata)
+        logging.debug("Linechart metric, Y axis not handled %s", mdata)
 
     return metrics
 
@@ -273,7 +284,7 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
 
             metrics.append(metric)
         else:
-            logging.warning("Linechart series metric, Y axis not handled %s", mdata)
+            logging.debug("Linechart series metric, Y axis not handled %s", mdata)
     return metrics
 
 
@@ -319,18 +330,18 @@ def extract_metrics(scava_metric):
         for item_metric in create_item_metrics_from_linechart_series(mdata, mupdated):
             item_metrics.append(item_metric)
     else:
-        logging.warning("Metric type %s not handled, skipping item %s", mdata['type'], scava_metric)
+        logging.debug("Metric type %s not handled, skipping item %s", mdata['type'], scava_metric)
 
     logging.debug("Metrics found: %s", item_metrics)
     return item_metrics
 
 
-def enrich_metrics(scava_metrics):
+def enrich_metrics(scava_metrics, meta_info=None):
     """
     Enrich metrics coming from Scava to use them in Kibana
 
     :param scava_metrics: metrics generator
-    :return:
+    :param meta_info: meta project information retrieved from the project description
     """
     processed = 0
     empty = 0
@@ -352,8 +363,8 @@ def enrich_metrics(scava_metrics):
         # and https://github.com/crossminer/scava/issues/138
         if not scava_metric['data']['datatable']:
             empty += 1
-            logging.warning("Faking datable for item %s", scava_metric)
-            # logging.warning("Skipping item due to missing datable for item %s", scava_metric)
+            logging.debug("Faking datable for item %s", scava_metric)
+            # logging.debug("Skipping item due to missing datable for item %s", scava_metric)
             # continue
 
         enriched_items = extract_metrics(scava_metric)
@@ -370,26 +381,30 @@ def enrich_metrics(scava_metrics):
 
             if isinstance(eitem['metric_es_value'], str):
                 enriched_error += 1
-                logging.warning("Skipping metric since 'metric_es_value' is not numeric, %s", eitem)
+                logging.debug("Skipping metric since 'metric_es_value' is not numeric, %s", eitem)
                 continue
 
+            eitem['metric_es_value'] = float(eitem['metric_es_value'])
             if eitem['metric_es_value'] == 0:
                 enriched_zero += 1
                 # FAKE DATA: replace empty data maximize the amount of data to create dashboards.
                 # This is related to https://github.com/crossminer/scava/issues/139
                 # and https://github.com/crossminer/scava/issues/138
-                eitem['metric_es_value'] = random.randint(MIN_VALUE, MAX_VALUE)
-                logging.warning("Faking Metric_es_value is 0 for %s", eitem)
-                # logging.warning("Metric_es_value is 0 for %s", eitem)
+                eitem['metric_es_value'] = float(random.randint(MIN_VALUE, MAX_VALUE))
+                logging.debug("Faking Metric_es_value is 0 for %s", eitem)
+                # logging.debug("Metric_es_value is 0 for %s", eitem)
+
+            if meta_info:
+                eitem['meta'] = meta_info
 
             yield eitem
 
-    logging.info("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
-                 processed, empty, DUPLICATED_UUIDS)
+    logging.debug("Metric enrichment summary (metrics in input) - processed: %s, empty: %s, duplicated: %s",
+                  processed, empty, DUPLICATED_UUIDS)
 
-    logging.info("Metric enrichment summary (enriched metrics in output) - "
-                 "total: %s, enriched: %s, failed: %s, zero: %s",
-                 enriched + enriched_error, enriched, enriched_error, enriched_zero)
+    logging.debug("Metric enrichment summary (enriched metrics in output) - "
+                  "total: %s, enriched: %s, failed: %s, zero: %s",
+                  enriched + enriched_error, enriched, enriched_error, enriched_zero)
 
     # FAKE DATA: avoid duplicates maximize the amount of data to create dashboards.
     # This is related to https://github.com/crossminer/scava/issues/139
@@ -397,12 +412,12 @@ def enrich_metrics(scava_metrics):
     GLOBAL_METRIC_COUNTER = 0
 
 
-def enrich_factoids(scava_factoids):
+def enrich_factoids(scava_factoids, meta_info=None):
     """
     Enrich factoids coming from Scava to use them in Kibana
 
     :param scava_factoids: factoid generator
-    :return:
+    :param meta_info: meta project information retrieved from the project description
     """
     processed = 0
     # FAKE DATA: avoid duplicates maximize the amount of data to create dashboards.
@@ -437,13 +452,78 @@ def enrich_factoids(scava_factoids):
             elif factoid_data['stars'] == 'FOUR':
                 eitem['stars_num'] = 4
 
+        if meta_info:
+            eitem['meta'] = meta_info
+
         yield eitem
 
-    logging.info("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+    logging.debug("Factoid enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
     # FAKE DATA: avoid duplicates maximize the amount of data to create dashboards.
     # This is related to https://github.com/crossminer/scava/issues/139
     # and https://github.com/crossminer/scava/issues/138
     GLOBAL_FACTOID_COUNTER = 0
+
+
+def enrich_dependencies(scava_dependencies, meta_info=None):
+    """
+    Enrich dependencies coming from Scava to use them in Kibana
+
+    :param scava_dependencies: dependency generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for scava_dep in scava_dependencies:
+        processed += 1
+
+        dependency_data = scava_dep['data']
+        eitem = dependency_data
+
+        eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
+        eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
+
+        dependency_raw = dependency_data['dependency']
+        eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
+        eitem['dependency_version'] = dependency_raw.split('/')[-1]
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.debug("Dependency enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+
+
+def extract_meta(project_name, description=None):
+    """Extract the meta information defined in the project description. Meta information
+    should appear at the very end of the description after the marker META_MARKER, for instance:
+
+    EMF project repository (emf)
+
+    --meta
+    {
+        "top_projects": ["eclipse"]
+    }
+
+    :param project_name: short name of the project
+    :param description: text representing the project description
+
+    :return: a JSON with meta information
+    """
+    meta = {"top_projects": [DEFAULT_TOP_PROJECT]}
+
+    if not description or META_MARKER not in description:
+        return meta
+
+    meta_raw = description.split(META_MARKER)[1]
+
+    try:
+        meta = json.loads(meta_raw)
+    except:
+        logging.debug("Failed to load meta info from %s for project %s."
+                      "Default meta is applied" % (description, project_name))
+
+    return meta
 
 
 def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
@@ -463,37 +543,63 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
             global DUPLICATED_UUIDS
             DUPLICATED_UUIDS = 0
 
-            scavaProject = Scava(url=url_api_rest, project=project_scava['data']['shortName'])
+            project_shortname = project_scava['data']['shortName']
+            scavaProject = Scava(url=url_api_rest, project=project_shortname)
+
+            prj_descr = project_scava['data']['description'] if 'description' in project_scava['data'] else None
+            meta = extract_meta(prj_descr, project_shortname)
 
             if category == CATEGORY_METRIC:
-                logging.info("Start fetch metrics for %s" % project_scava['data']['shortName'])
+                logging.debug("Start fetch metrics for %s" % project_scava['data']['shortName'])
 
-                for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC)):
+                for enriched_metric in enrich_metrics(scavaProject.fetch(CATEGORY_METRIC), meta):
                     yield enriched_metric
 
-                logging.info("End fetch metrics for %s" % project_scava['data']['shortName'])
-            else:
-                logging.info("Start fetch factoids for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch metrics for %s" % project_scava['data']['shortName'])
 
-                for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID)):
+            elif category == CATEGORY_FACTOID:
+                logging.debug("Start fetch factoids for %s" % project_scava['data']['shortName'])
+
+                for enriched_factoid in enrich_factoids(scavaProject.fetch(CATEGORY_FACTOID), meta):
                     yield enriched_factoid
 
-                logging.info("End fetch factoids for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
+
+            elif category == CATEGORY_DEPENDENCY:
+                logging.debug("Start fetch dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEPENDENCY), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch dependencies for %s" % project_scava['data']['shortName'])
+            else:
+                msg = "category %s not handled" % category
+                raise Exception(msg)
     else:
         if category == CATEGORY_METRIC:
-            logging.info("Start fetch metrics for %s" % project)
+            logging.debug("Start fetch metrics for %s" % project)
 
             for enriched_metric in enrich_metrics(scava.fetch(CATEGORY_METRIC)):
                 yield enriched_metric
 
-            logging.info("End fetch metrics for %s" % project)
-        else:
-            logging.info("Start fetch factoids for %s" % project)
+            logging.debug("End fetch metrics for %s" % project)
+        elif category == CATEGORY_FACTOID:
+            logging.debug("Start fetch factoids for %s" % project)
 
             for enriched_factoid in enrich_factoids(scava.fetch(CATEGORY_FACTOID)):
                 yield enriched_factoid
 
-            logging.info("End fetch factoids for %s" % project)
+            logging.debug("End fetch factoids for %s" % project)
+        elif category == CATEGORY_DEPENDENCY:
+            logging.debug("Start fetch dependencies for %s" % project)
+
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch dependencies for %s" % project)
+        else:
+            msg = "category %s not handled" % category
+            raise Exception(msg)
 
 
 if __name__ == '__main__':

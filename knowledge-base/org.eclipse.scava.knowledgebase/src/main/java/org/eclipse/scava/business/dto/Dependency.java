@@ -21,12 +21,6 @@ public class Dependency {
 	private String url;
 	
 
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getUrl() {
 		return url;
 	}
@@ -38,6 +32,12 @@ public class Dependency {
 	}
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	public String getGroupID() {
+		return name;
+	}
+	public void setGroupID(String name) {
+		this.name = name;
 	}
 	public String getArtifactID() {
 		return artifactID;

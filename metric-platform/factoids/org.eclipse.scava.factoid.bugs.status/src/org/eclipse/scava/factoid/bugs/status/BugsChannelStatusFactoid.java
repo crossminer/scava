@@ -100,13 +100,24 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 			numberOfInvalidBugs = getNumberOfInvalidBugs(bugStatusList),
 			numberOfDuplicateBugs = getNumberOfDuplicateBugs(bugStatusList);
 
-		float percentageOfResolvedBugs = ( (float) 100 * numberOfResolvedBugs ) / numberOfBugs,
-			  percentageOfNonResolvedBugs = ( (float) 100 * numberOfNonResolvedBugs ) / numberOfBugs,
-			  percentageOfFixedBugs = ( (float) 100 * numberOfFixedBugs ) / numberOfBugs,
-			  percentageOfWorksForMeBugs = ( (float) 100 * numberOfWorksForMeBugs ) / numberOfBugs,
-			  percentageOfWontFixBugs = ( (float) 100 * numberOfWontFixBugs ) / numberOfBugs,
-			  percentageOfInvalidBugs = ( (float) 100 * numberOfInvalidBugs ) / numberOfBugs,
-			  percentageOfDuplicateBugs = ( (float) 100 * numberOfDuplicateBugs ) / numberOfBugs;
+		float percentageOfResolvedBugs=0;
+		float percentageOfNonResolvedBugs=0;
+		float percentageOfFixedBugs=0;
+		float percentageOfWorksForMeBugs=0;
+		float percentageOfWontFixBugs=0;
+		float percentageOfInvalidBugs=0;
+		float percentageOfDuplicateBugs=0;
+		
+		if(numberOfBugs>0)
+		{
+			percentageOfResolvedBugs = ( (float) 100 * numberOfResolvedBugs ) / numberOfBugs;
+			percentageOfNonResolvedBugs = ( (float) 100 * numberOfNonResolvedBugs ) / numberOfBugs;
+			percentageOfFixedBugs = ( (float) 100 * numberOfFixedBugs ) / numberOfBugs;
+			percentageOfWorksForMeBugs = ( (float) 100 * numberOfWorksForMeBugs ) / numberOfBugs;
+			percentageOfWontFixBugs = ( (float) 100 * numberOfWontFixBugs ) / numberOfBugs;
+			percentageOfInvalidBugs = ( (float) 100 * numberOfInvalidBugs ) / numberOfBugs;
+			percentageOfDuplicateBugs = ( (float) 100 * numberOfDuplicateBugs ) / numberOfBugs;
+		}
 		
 		if (percentageOfResolvedBugs > 75 ) {
 			stringBuffer.append("Nearly all");

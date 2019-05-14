@@ -41,11 +41,11 @@ public class ArticleDataCollection extends PongoCollection<ArticleData> {
 	public long countByUrl(String q) {
 		return dbCollection.count(new BasicDBObject("url", q + ""));
 	}
-	public Iterable<ArticleData> findByArticleNumber(int q) {
+	public Iterable<ArticleData> findByArticleNumber(long q) {
 		return new IteratorIterable<ArticleData>(new PongoCursorIterator<ArticleData>(this, dbCollection.find(new BasicDBObject("articleNumber", q + ""))));
 	}
 	
-	public ArticleData findOneByArticleNumber(int q) {
+	public ArticleData findOneByArticleNumber(long q) {
 		ArticleData articleData = (ArticleData) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("articleNumber", q + "")));
 		if (articleData != null) {
 			articleData.setPongoCollection(this);
@@ -54,7 +54,7 @@ public class ArticleDataCollection extends PongoCollection<ArticleData> {
 	}
 	
 
-	public long countByArticleNumber(int q) {
+	public long countByArticleNumber(long q) {
 		return dbCollection.count(new BasicDBObject("articleNumber", q + ""));
 	}
 	

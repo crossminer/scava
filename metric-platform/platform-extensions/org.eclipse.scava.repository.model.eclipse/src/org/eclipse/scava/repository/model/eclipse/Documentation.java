@@ -21,7 +21,15 @@ public class Documentation extends org.eclipse.scava.repository.model.Communicat
 	}
 	
 	
-	
+	@Override
+	public String getCommunicationChannelType() {
+		return "EclipseDocumentation";
+	}
+
+	@Override
+	public String getInstanceId() {
+		return "";
+	}	
 	
 	
 	

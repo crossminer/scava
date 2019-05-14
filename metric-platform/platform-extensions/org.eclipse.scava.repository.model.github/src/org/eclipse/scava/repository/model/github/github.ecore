@@ -15,6 +15,12 @@
       <details key="javaClass" value="org.eclipse.scava.repository.model.BugTrackingSystem"/>
     </eAnnotations>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GitRepository">
+    <eAnnotations source="stub">
+      <details key="javaClass" value="org.eclipse.scava.repository.model.vcs.git.GitRepository"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GitHubWiki" eSuperTypes="//GitRepository"/>
   <eClassifiers xsi:type="ecore:EClass" name="GitHubRepository" eSuperTypes="//Project">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="full_name">
       <eAnnotations source="key"/>
@@ -43,6 +49,9 @@
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mirror_url">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="token">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="languages" upperBound="-1" eType="//Language" containment="true"/>

@@ -58,7 +58,7 @@ public class DocumentEventListener implements IEventListener, IDocumentListener 
 	}
 
 	private void sendEvent() {
-		Activator.getDefault().getMainController().getEventBus().post(new org.eclipse.scava.plugin.usermonitoring.event.document.DocumentEvent(event, title));
+		Activator.getDefault().getEventBus().post(new org.eclipse.scava.plugin.usermonitoring.event.document.DocumentEvent(event, title));
 		timer.cancel();
 	}
 
