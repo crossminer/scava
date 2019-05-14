@@ -18,7 +18,14 @@ public class RunBlock {
     
     public RunBlock(String line){
         
-        if(line.trim().contains(" ")){
+        if(line.trim().split(" ", 2)[0].equals("sudo")){
+            String lineWithoutSudo = line.split(" ", 2)[1];
+            
+            String[] splitLine = lineWithoutSudo.split(" ", 2);
+
+            executable = "sudo " + splitLine[0].trim();
+            params = splitLine[1].trim();
+        } else if(line.trim().contains(" ")){
             String[] splitLine = line.split(" ", 2);
 
             executable = splitLine[0].trim();

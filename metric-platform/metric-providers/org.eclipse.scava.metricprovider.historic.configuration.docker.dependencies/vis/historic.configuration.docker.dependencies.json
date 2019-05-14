@@ -1,0 +1,43 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies",
+	"vis" : [ 
+		{
+			"id" : "docker.dependencies",
+			"name" : "Sum of Docker Dependencies",
+			"description" : "The number of Docker dependencies per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "DockerDependencies", "field" : "$numberOfDockerDependencies" } ]
+			},
+			"x" : "Date",
+			"y" : "DockerDependencies",
+			"timeSeries" : true
+		},{
+			"id" : "docker.packageDependencies",
+			"name" : "Sum of Docker Package Dependencies",
+			"description" : "The number of Docker Package dependencies per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "DockerPackageDependencies", "field" : "$numberOfDockerPackageDependencies" } ]
+			},
+			"x" : "Date",
+			"y" : "DockerPackageDependencies",
+			"timeSeries" : true
+		},{
+			"id" : "docker.imageDependencies",
+			"name" : "Sum of Docker Image Dependencies",
+			"description" : "The number of Docker Image dependencies per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "DockerImageDependencies", "field" : "$numberOfDockerImageDependencies" } ]
+			},
+			"x" : "Date",
+			"y" : "DockerImageDependencies",
+			"timeSeries" : true
+		}
+	]
+
+}
