@@ -7,15 +7,17 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.nlp.tools.plaintext.bugtrackers;
+package org.eclipse.scava.nlp.tools.plaintext.documentation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
+import org.eclipse.scava.nlp.tools.preprocessor.htmlparser.HtmlParser;
+import org.eclipse.scava.nlp.tools.preprocessor.markdown.MarkdownParser;
 
-public class PlainTextMarkdownBased
+public class PlainTextDocumentationMarkdownBased
 {
 	private static Pattern newlines;
 	
@@ -29,7 +31,8 @@ public class PlainTextMarkdownBased
 		if(text==null)
 			return new PlainTextObject(new ArrayList<String>(Arrays.asList("")));
 		text=newlines.matcher(text).replaceAll("\n");
-		return MarkdownToPlainText.process(text);
+		text= MarkdownParser.parse(text);
+		return new PlainTextObject(HtmlParser.parse(text));
 	}
 
 }

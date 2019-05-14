@@ -19,7 +19,7 @@ import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTex
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugTrackersOthers;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugzilla;
-import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextMarkdownBased;
+import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugTrackerMarkdownBased;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextRedmine;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextEclipseForums;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextNewsgroups;
@@ -134,7 +134,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					case "gitlab":
 					case "bitbucket":
 					case "jira":
-					case "github": plainTextObject=PlainTextMarkdownBased.process(comment.getText()); break;
+					case "github": plainTextObject=PlainTextBugTrackerMarkdownBased.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
 					case "redmine": plainTextObject=PlainTextRedmine.process(comment.getText()); break;
 					//case "mantis":
