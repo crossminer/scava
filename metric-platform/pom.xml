@@ -356,6 +356,9 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation
     </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.documentation.github
+    </module>
   </modules>
   <build>
     <plugins>
