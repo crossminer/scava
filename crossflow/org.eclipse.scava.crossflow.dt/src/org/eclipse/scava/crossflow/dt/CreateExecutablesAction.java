@@ -92,7 +92,7 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
 		File expFolder = new File(projectFolder, "experiment");
 
-		if (replace || (expFolder.exists()
+		if ((expFolder.exists()
 				&& !Arrays.asList(expFolder.listFiles()).stream().anyMatch(f -> f.getName().endsWith(".zip")))) {
 
 			if (replace)
