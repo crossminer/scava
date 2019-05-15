@@ -10,15 +10,11 @@
 package org.eclipse.scava.platform.vcs.git.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.vcs.git.GitManager;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
-import org.eclipse.scava.repository.model.vcs.svn.SvnRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,12 +30,6 @@ public class TestGitManager {
 	}
 
 	@Test
-	public void testAppliesTo() {
-		assertTrue(manager.appliesTo(mock(GitRepository.class)));
-		assertFalse(manager.appliesTo(mock(SvnRepository.class)));
-	}
-	
-	@Test 	
 	public void testGetDelta() throws Exception {
 		VcsRepositoryDelta delta;
 		

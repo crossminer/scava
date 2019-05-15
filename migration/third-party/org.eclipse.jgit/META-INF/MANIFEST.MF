@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jgit
 Bundle-SymbolicName: org.eclipse.jgit
-Bundle-Version: 5.3.0.201903130848-r
-Bundle-ClassPath: org.eclipse.jgit-5.3.0.201903130848-r.jar
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
 Export-Package: org.eclipse.jgit.api,
  org.eclipse.jgit.api.errors,
  org.eclipse.jgit.blame,

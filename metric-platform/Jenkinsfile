@@ -7,7 +7,7 @@ pipeline {
     stage('Build Metric Platform') {
       steps {
         dir(path: 'metric-platform/') {
-          sh 'mvn clean install -DskipTests'
+          sh 'mvn clean package -DskipTests'
         }
       }
     }

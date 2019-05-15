@@ -37,7 +37,6 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcRequest;
 import org.apache.xmlrpc.client.XmlRpcClientException;
 import org.apache.xmlrpc.client.XmlRpcHttpClientConfig;
-import org.apache.xmlrpc.client.XmlRpcHttpTransportException;
 import org.apache.xmlrpc.common.XmlRpcStreamRequestConfig;
 import org.apache.xmlrpc.util.HttpUtil;
 import org.xml.sax.SAXException;
@@ -103,7 +102,7 @@ public class XmlRpcSunHttpTransport extends XmlRpcHttpTransport {
 		        HttpURLConnection httpConnection = (HttpURLConnection) connection;
 		        int responseCode = httpConnection.getResponseCode();
 		        if (responseCode < 200  ||  responseCode > 299) {
-		            throw new XmlRpcHttpTransportException(responseCode, httpConnection.getResponseMessage());
+		            throw new XmlRpcException(responseCode, httpConnection.getResponseMessage());
 		        }
 		    }
 			return connection.getInputStream();

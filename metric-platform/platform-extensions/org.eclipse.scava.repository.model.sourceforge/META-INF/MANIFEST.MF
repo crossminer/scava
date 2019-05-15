@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.eclipse.scava.repository.model.sourceforge;singleton:=t
 Bundle-Version: 0.1.0
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.scava.repository.model,
- com.googlecode.pongo.runtime.dependencies,
  com.googlecode.pongo.runtime
 Export-Package: org.eclipse.scava.repository.model.sourceforge
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

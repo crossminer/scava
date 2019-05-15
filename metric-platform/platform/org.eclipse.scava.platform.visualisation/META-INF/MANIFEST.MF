@@ -4,8 +4,9 @@ Bundle-Name: Visualisation
 Bundle-SymbolicName: org.eclipse.scava.platform.visualisation;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: com.fasterxml.jackson,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  sparky,
- com.googlecode.pongo.runtime
+ com.googlecode.pongo.runtime,
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
 Export-Package: org.eclipse.scava.platform.visualisation

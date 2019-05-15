@@ -10,9 +10,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.platform,
  org.joda.time,
- com.fasterxml.jackson,
  org.apache.commons.lang3,
- com.squareup.okhttp3
+ com.squareup.okhttp3,
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.9.2",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.mantis
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.platform.bugtrackingsystem.mantis.Activator

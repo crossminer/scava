@@ -10,12 +10,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.sourceforge,
  com.google.guava,
- com.fasterxml.jackson,
  org.joda.time,
  com.mashape.unirest,
  org.eclipse.scava.jackson,
- org.apache.commons.lang
-Import-Package: com.mongodb
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
+Import-Package: com.mongodb,
+ org.apache.commons.lang.time
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.communicationchannel.sourceforge
