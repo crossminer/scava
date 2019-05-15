@@ -32,9 +32,12 @@ import random
 import statistics
 
 from perceval.backends.scava.scava import (Scava,
-                                           CATEGORY_DEPENDENCY,
+                                           CATEGORY_DEV_DEPENDENCY,
+                                           CATEGORY_CONF_DEPENDENCY,
                                            CATEGORY_FACTOID,
-                                           CATEGORY_METRIC)
+                                           CATEGORY_METRIC,
+                                           DEP_MAVEN,
+                                           DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
@@ -479,12 +482,15 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
         dependency_data = scava_dep['data']
         eitem = dependency_data
 
+        # common fields
         eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
         eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
 
-        dependency_raw = dependency_data['dependency']
-        eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
-        eitem['dependency_version'] = dependency_raw.split('/')[-1]
+        # maven and osgi dependencies require specific processing
+        if eitem['type'] in [DEP_MAVEN, DEP_OSGI]:
+            dependency_raw = dependency_data['dependency']
+            eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
+            eitem['dependency_version'] = dependency_raw.split('/')[-1]
 
         if meta_info:
             eitem['meta'] = meta_info
@@ -565,13 +571,22 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
 
                 logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
 
-            elif category == CATEGORY_DEPENDENCY:
-                logging.debug("Start fetch dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_DEV_DEPENDENCY:
+                logging.debug("Start fetch dev dependencies for %s" % project_scava['data']['shortName'])
 
-                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEPENDENCY), meta):
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEV_DEPENDENCY), meta):
                     yield enriched_dep
 
-                logging.debug("End fetch dependencies for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch dev dependencies for %s" % project_scava['data']['shortName'])
+
+            elif category == CATEGORY_CONF_DEPENDENCY:
+                logging.debug("Start fetch conf dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_CONF_DEPENDENCY), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch conf dependencies for %s" % project_scava['data']['shortName'])
+
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -590,13 +605,20 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_factoid
 
             logging.debug("End fetch factoids for %s" % project)
-        elif category == CATEGORY_DEPENDENCY:
-            logging.debug("Start fetch dependencies for %s" % project)
+        elif category == CATEGORY_DEV_DEPENDENCY:
+            logging.debug("Start fetch dev dependencies for %s" % project)
 
-            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEPENDENCY)):
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEV_DEPENDENCY)):
                 yield enriched_dep
 
-            logging.debug("End fetch dependencies for %s" % project)
+            logging.debug("End fetch dev dependencies for %s" % project)
+        elif category == CATEGORY_CONF_DEPENDENCY:
+            logging.debug("Start fetch conf dependencies for %s" % project)
+
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_CONF_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch conf dependencies for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
