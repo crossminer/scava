@@ -15,6 +15,7 @@ public class LineSource extends LineSourceBase {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
+			System.out.println("sending: "+line);
 			sendToLines(new Line(line));
 		}
 		reader.close();

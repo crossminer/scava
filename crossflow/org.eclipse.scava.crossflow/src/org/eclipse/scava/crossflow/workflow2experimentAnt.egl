@@ -1,3 +1,11 @@
+[%
+	var lang = w.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="run_all" name="Assemble Single Experiment ZIP for project">
 
@@ -7,7 +15,7 @@
 	
    	<!-- Running this will create a JAR of this project in the experiment directory -->
     <target name="create_run_jar">
-        <jar destfile="experiment/[%=w.package%].jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="experiment/[%=package%].jar" filesetmanifest="mergewithoutmain">
         	<fileset dir="bin"/>
         </jar>
 	</target>
