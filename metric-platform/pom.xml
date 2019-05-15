@@ -320,6 +320,15 @@
     <module>
     	platform-extensions/org.eclipse.scava.platform.documentation.github
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.detectingcode
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.readability
+    </module>
+    <module>
+    	../../org.eclipse.scava.metricprovider.historic.documentation.readability
+    </module>
   </modules>
   <build>
     <plugins>
