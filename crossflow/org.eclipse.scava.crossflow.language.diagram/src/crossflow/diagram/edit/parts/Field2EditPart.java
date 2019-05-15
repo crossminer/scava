@@ -157,7 +157,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 16);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 20);
 		return result;
 	}
 
@@ -261,7 +261,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 		 */
 		public FieldFigure() {
 			this.setOutline(false);
-			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(16)));
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(20)));
 			createContents();
 		}
 

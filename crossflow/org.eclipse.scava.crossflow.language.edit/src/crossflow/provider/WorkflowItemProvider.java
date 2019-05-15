@@ -129,6 +129,7 @@ public class WorkflowItemProvider
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TASKS);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TYPES);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__PARAMETERS);
+			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__LANGUAGES);
 		}
 		return childrenFeatures;
 	}
@@ -192,6 +193,7 @@ public class WorkflowItemProvider
 			case CrossflowPackage.WORKFLOW__TASKS:
 			case CrossflowPackage.WORKFLOW__TYPES:
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -263,6 +265,11 @@ public class WorkflowItemProvider
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__PARAMETERS,
 				 CrossflowFactory.eINSTANCE.createField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__LANGUAGES,
+				 CrossflowFactory.eINSTANCE.createLanguage()));
 	}
 
 	/**

@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
  *   <li>{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}</li>
  *   <li>{@link crossflow.Task#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.Task#getLanguage <em>Language</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getTask()
@@ -214,5 +215,31 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	EList<Field> getParameters();
+
+	/**
+	 * Returns the value of the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Language</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Language</em>' reference.
+	 * @see #setLanguage(Language)
+	 * @see crossflow.CrossflowPackage#getTask_Language()
+	 * @model
+	 * @generated
+	 */
+	Language getLanguage();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getLanguage <em>Language</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Language</em>' reference.
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	void setLanguage(Language value);
 
 } // Task

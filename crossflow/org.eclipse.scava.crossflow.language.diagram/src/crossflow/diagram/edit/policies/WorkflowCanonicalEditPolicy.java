@@ -40,7 +40,9 @@ import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
+import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
+import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -85,6 +87,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Languages());
 		}
 		return myFeaturesToSynchronize;
 	}
@@ -132,6 +135,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case TaskEditPart.VISUAL_ID:
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
+		case LanguageEditPart.VISUAL_ID:
 			return true;
 		}
 		return false;
@@ -363,7 +367,14 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case FieldEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getField_2012ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getField_2014ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case LanguageEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getLanguage_2013ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -371,6 +382,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case Field2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getField_3001ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case ParameterEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getParameter_3002ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

@@ -120,13 +120,22 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW__PARAMETERS = 5;
 
 	/**
+	 * The feature id for the '<em><b>Languages</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW__LANGUAGES = 6;
+
+	/**
 	 * The number of structural features of the '<em>Workflow</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_FEATURE_COUNT = 6;
+	int WORKFLOW_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -376,13 +385,22 @@ public interface CrossflowPackage extends EPackage {
 	int TASK__PARAMETERS = 7;
 
 	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__LANGUAGE = 8;
+
+	/**
 	 * The number of structural features of the '<em>Task</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK_FEATURE_COUNT = 8;
+	int TASK_FEATURE_COUNT = 9;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -465,6 +483,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__LANGUAGE = TASK__LANGUAGE;
 
 	/**
 	 * The number of structural features of the '<em>Source</em>' class.
@@ -556,6 +583,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SOURCE__PARAMETERS = SOURCE__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__LANGUAGE = SOURCE__LANGUAGE;
 
 	/**
 	 * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -658,6 +694,15 @@ public interface CrossflowPackage extends EPackage {
 	int SINK__PARAMETERS = TASK__PARAMETERS;
 
 	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__LANGUAGE = TASK__LANGUAGE;
+
+	/**
 	 * The number of structural features of the '<em>Sink</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -747,6 +792,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SINK__PARAMETERS = SINK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__LANGUAGE = SINK__LANGUAGE;
 
 	/**
 	 * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -849,6 +903,15 @@ public interface CrossflowPackage extends EPackage {
 	int COMMITMENT_TASK__PARAMETERS = TASK__PARAMETERS;
 
 	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__LANGUAGE = TASK__LANGUAGE;
+
+	/**
 	 * The feature id for the '<em><b>Commit After</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -947,6 +1010,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int OPINIONATED_TASK__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__LANGUAGE = TASK__LANGUAGE;
 
 	/**
 	 * The number of structural features of the '<em>Opinionated Task</em>' class.
@@ -1069,6 +1141,108 @@ public interface CrossflowPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.LanguageImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
+	 * @generated
+	 */
+	int LANGUAGE = 13;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE__PACKAGE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Output Folder</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE__OUTPUT_FOLDER = 2;
+
+	/**
+	 * The feature id for the '<em><b>Gen Output Folder</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE__GEN_OUTPUT_FOLDER = 3;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE__PARAMETERS = 4;
+
+	/**
+	 * The number of structural features of the '<em>Language</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LANGUAGE_FEATURE_COUNT = 5;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.ParameterImpl <em>Parameter</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.ParameterImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
+	 * @generated
+	 */
+	int PARAMETER = 14;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__VALUE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_FEATURE_COUNT = 2;
+
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Workflow <em>Workflow</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1143,6 +1317,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getWorkflow_Parameters();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link crossflow.Workflow#getLanguages <em>Languages</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Languages</em>'.
+	 * @see crossflow.Workflow#getLanguages()
+	 * @see #getWorkflow()
+	 * @generated
+	 */
+	EReference getWorkflow_Languages();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Stream <em>Stream</em>}'.
@@ -1315,6 +1500,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTask_Parameters();
+
+	/**
+	 * Returns the meta object for the reference '{@link crossflow.Task#getLanguage <em>Language</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Language</em>'.
+	 * @see crossflow.Task#getLanguage()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EReference getTask_Language();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Source <em>Source</em>}'.
@@ -1518,6 +1714,103 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getField_Many();
 
 	/**
+	 * Returns the meta object for class '{@link crossflow.Language <em>Language</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Language</em>'.
+	 * @see crossflow.Language
+	 * @generated
+	 */
+	EClass getLanguage();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Language#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see crossflow.Language#getName()
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	EAttribute getLanguage_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Language#getPackage <em>Package</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Package</em>'.
+	 * @see crossflow.Language#getPackage()
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	EAttribute getLanguage_Package();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Language#getOutputFolder <em>Output Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Output Folder</em>'.
+	 * @see crossflow.Language#getOutputFolder()
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	EAttribute getLanguage_OutputFolder();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Language#getGenOutputFolder <em>Gen Output Folder</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Gen Output Folder</em>'.
+	 * @see crossflow.Language#getGenOutputFolder()
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	EAttribute getLanguage_GenOutputFolder();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link crossflow.Language#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
+	 * @see crossflow.Language#getParameters()
+	 * @see #getLanguage()
+	 * @generated
+	 */
+	EReference getLanguage_Parameters();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.Parameter <em>Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Parameter</em>'.
+	 * @see crossflow.Parameter
+	 * @generated
+	 */
+	EClass getParameter();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Parameter#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see crossflow.Parameter#getName()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Parameter#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see crossflow.Parameter#getValue()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Value();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1596,6 +1889,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EReference WORKFLOW__PARAMETERS = eINSTANCE.getWorkflow_Parameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Languages</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WORKFLOW__LANGUAGES = eINSTANCE.getWorkflow_Languages();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -1732,6 +2033,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TASK__PARAMETERS = eINSTANCE.getTask_Parameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Language</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK__LANGUAGE = eINSTANCE.getTask_Language();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -1900,6 +2209,82 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.LanguageImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
+		 * @generated
+		 */
+		EClass LANGUAGE = eINSTANCE.getLanguage();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LANGUAGE__NAME = eINSTANCE.getLanguage_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Package</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LANGUAGE__PACKAGE = eINSTANCE.getLanguage_Package();
+
+		/**
+		 * The meta object literal for the '<em><b>Output Folder</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LANGUAGE__OUTPUT_FOLDER = eINSTANCE.getLanguage_OutputFolder();
+
+		/**
+		 * The meta object literal for the '<em><b>Gen Output Folder</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LANGUAGE__GEN_OUTPUT_FOLDER = eINSTANCE.getLanguage_GenOutputFolder();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LANGUAGE__PARAMETERS = eINSTANCE.getLanguage_Parameters();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.ParameterImpl <em>Parameter</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.ParameterImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
+		 * @generated
+		 */
+		EClass PARAMETER = eINSTANCE.getParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__NAME = eINSTANCE.getParameter_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__VALUE = eINSTANCE.getParameter_Value();
 
 	}
 

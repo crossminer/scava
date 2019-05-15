@@ -26,6 +26,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.part.CrossflowDiagramUpdater;
 import crossflow.diagram.part.CrossflowNodeDescriptor;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;

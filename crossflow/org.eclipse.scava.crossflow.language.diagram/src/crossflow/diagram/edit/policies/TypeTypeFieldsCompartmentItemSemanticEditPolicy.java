@@ -7,6 +7,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import crossflow.diagram.edit.commands.Field2CreateCommand;
+import crossflow.diagram.edit.commands.FieldCreateCommand;
 import crossflow.diagram.providers.CrossflowElementTypes;
 
 /**

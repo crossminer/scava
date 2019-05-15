@@ -9,7 +9,7 @@ import org.eclipse.scava.crossflow.examples.wordcount.WordFrequency;
 public class WordCounter extends WordCounterBase {
 	
 	@Override
-	public WordFrequency consumeLines(Line line) {
+	public void consumeLines(Line line) {
 		
 		String text = line.getText().replaceAll("[^A-Za-z]", " ");
 		HashMap<String, Integer> frequencies = new HashMap<String, Integer>();
@@ -29,7 +29,7 @@ public class WordCounter extends WordCounterBase {
 			frequency.setCorrelationId(line.getId());
 			sendToWordFrequencies(frequency);
 		}
-		return null;
+
 	}
 
 }

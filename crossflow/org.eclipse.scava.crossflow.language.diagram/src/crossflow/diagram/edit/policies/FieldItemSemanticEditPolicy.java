@@ -22,7 +22,7 @@ public class FieldItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPo
 	* @generated
 	*/
 	public FieldItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Field_2012);
+		super(CrossflowElementTypes.Field_2014);
 	}
 
 	/**

@@ -286,72 +286,92 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String OpinionatedTask5CreationTool_title;
+	public static String Language5CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String OpinionatedTask5CreationTool_desc;
+	public static String Language5CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Queue6CreationTool_title;
+	public static String OpinionatedTask6CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Queue6CreationTool_desc;
+	public static String OpinionatedTask6CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Sink7CreationTool_title;
+	public static String Parameter7CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink7CreationTool_desc;
+	public static String Parameter7CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source8CreationTool_title;
+	public static String Queue8CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source8CreationTool_desc;
+	public static String Queue8CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task9CreationTool_title;
+	public static String Sink9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task9CreationTool_desc;
+	public static String Sink9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic10CreationTool_title;
+	public static String Source10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic10CreationTool_desc;
+	public static String Source10CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type11CreationTool_title;
+	public static String Task11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type11CreationTool_desc;
+	public static String Task11CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Topic12CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Topic12CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type13CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type13CreationTool_desc;
 
 	/**
 	* @generated
@@ -397,6 +417,11 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String TypeTypeFieldsCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String LanguageLanguageParametersCompartmentEditPart_title;
 
 	/**
 	* @generated

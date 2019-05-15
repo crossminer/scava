@@ -4,6 +4,7 @@ package crossflow.impl;
 
 import crossflow.CrossflowPackage;
 import crossflow.Field;
+import crossflow.Language;
 import crossflow.Stream;
 import crossflow.Task;
 
@@ -40,6 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.TaskImpl#getCached <em>Cached</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getMultipleOutputs <em>Multiple Outputs</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.impl.TaskImpl#getLanguage <em>Language</em>}</li>
  * </ul>
  *
  * @generated
@@ -174,6 +176,16 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @ordered
 	 */
 	protected EList<Field> parameters;
+
+	/**
+	 * The cached value of the '{@link #getLanguage() <em>Language</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLanguage()
+	 * @generated
+	 * @ordered
+	 */
+	protected Language language;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -340,6 +352,44 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Language getLanguage() {
+		if (language != null && language.eIsProxy()) {
+			InternalEObject oldLanguage = (InternalEObject)language;
+			language = (Language)eResolveProxy(oldLanguage);
+			if (language != oldLanguage) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CrossflowPackage.TASK__LANGUAGE, oldLanguage, language));
+			}
+		}
+		return language;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Language basicGetLanguage() {
+		return language;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLanguage(Language newLanguage) {
+		Language oldLanguage = language;
+		language = newLanguage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TASK__LANGUAGE, oldLanguage, language));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -392,6 +442,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getMultipleOutputs();
 			case CrossflowPackage.TASK__PARAMETERS:
 				return getParameters();
+			case CrossflowPackage.TASK__LANGUAGE:
+				if (resolve) return getLanguage();
+				return basicGetLanguage();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -432,6 +485,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends Field>)newValue);
 				return;
+			case CrossflowPackage.TASK__LANGUAGE:
+				setLanguage((Language)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -468,6 +524,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case CrossflowPackage.TASK__PARAMETERS:
 				getParameters().clear();
 				return;
+			case CrossflowPackage.TASK__LANGUAGE:
+				setLanguage((Language)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -496,6 +555,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return MULTIPLE_OUTPUTS_EDEFAULT == null ? multipleOutputs != null : !MULTIPLE_OUTPUTS_EDEFAULT.equals(multipleOutputs);
 			case CrossflowPackage.TASK__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
+			case CrossflowPackage.TASK__LANGUAGE:
+				return language != null;
 		}
 		return super.eIsSet(featureID);
 	}

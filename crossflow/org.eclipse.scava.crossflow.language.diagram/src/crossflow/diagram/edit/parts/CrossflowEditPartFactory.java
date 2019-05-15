@@ -94,14 +94,29 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case FieldNameTypeEditPart.VISUAL_ID:
 				return new FieldNameTypeEditPart(view);
 
+			case LanguageEditPart.VISUAL_ID:
+				return new LanguageEditPart(view);
+
+			case LanguageNameEditPart.VISUAL_ID:
+				return new LanguageNameEditPart(view);
+
 			case Field2EditPart.VISUAL_ID:
 				return new Field2EditPart(view);
 
 			case FieldNameType2EditPart.VISUAL_ID:
 				return new FieldNameType2EditPart(view);
 
+			case ParameterEditPart.VISUAL_ID:
+				return new ParameterEditPart(view);
+
+			case ParameterNameValueEditPart.VISUAL_ID:
+				return new ParameterNameValueEditPart(view);
+
 			case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 				return new TypeTypeFieldsCompartmentEditPart(view);
+
+			case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
+				return new LanguageLanguageParametersCompartmentEditPart(view);
 
 			case StreamTypeEditPart.VISUAL_ID:
 				return new StreamTypeEditPart(view);

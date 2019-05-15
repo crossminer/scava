@@ -17,6 +17,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowFactory;
 import crossflow.Field;
+import crossflow.Type;
 import crossflow.Workflow;
 
 /**

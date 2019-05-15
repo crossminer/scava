@@ -10,6 +10,7 @@ class Workflow {
   val Task[*] tasks;
   val Type[*] types;
   val Field[*] parameters;
+  val Language[*] languages;
 }
 
 @gmf.node(figure="ellipse", label="name", label.icon="false")
@@ -45,7 +46,9 @@ class Task {
   attr Boolean cached;
   attr Boolean multipleOutputs = "false";
   
-  ref Field[*] parameters;  
+  ref Field[*] parameters;
+  
+  ref Language language;  
 }
 
 @gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 11 10 0",polygon.y="0 0 2 4 4")
@@ -91,4 +94,21 @@ class Field {
   attr String name;
   attr String type = "String";
   attr boolean many = false;
+}
+
+@gmf.node(label="name", figure ="rectangle")
+class Language {
+  attr String name;
+  attr String ~package;
+  attr String outputFolder;
+  attr String genOutputFolder;
+
+  @gmf.compartment(layout="list",collapsible="false")
+  val Parameter[*] parameters;
+}
+
+@gmf.node(label="name,value", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
+class Parameter {
+  attr String name;
+  attr String value;
 }

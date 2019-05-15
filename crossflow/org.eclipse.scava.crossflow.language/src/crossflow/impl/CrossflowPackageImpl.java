@@ -8,7 +8,9 @@ import crossflow.CrossflowPackage;
 import crossflow.CsvSink;
 import crossflow.CsvSource;
 import crossflow.Field;
+import crossflow.Language;
 import crossflow.OpinionatedTask;
+import crossflow.Parameter;
 import crossflow.Queue;
 import crossflow.Sink;
 import crossflow.Source;
@@ -122,6 +124,20 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	private EClass fieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass languageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass parameterEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -245,6 +261,15 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 */
 	public EReference getWorkflow_Parameters() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getWorkflow_Languages() {
+		return (EReference)workflowEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -389,6 +414,15 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 */
 	public EReference getTask_Parameters() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTask_Language() {
+		return (EReference)taskEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -567,6 +601,87 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getLanguage() {
+		return languageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getLanguage_Name() {
+		return (EAttribute)languageEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getLanguage_Package() {
+		return (EAttribute)languageEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getLanguage_OutputFolder() {
+		return (EAttribute)languageEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getLanguage_GenOutputFolder() {
+		return (EAttribute)languageEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getLanguage_Parameters() {
+		return (EReference)languageEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getParameter() {
+		return parameterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getParameter_Name() {
+		return (EAttribute)parameterEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getParameter_Value() {
+		return (EAttribute)parameterEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CrossflowFactory getCrossflowFactory() {
 		return (CrossflowFactory)getEFactoryInstance();
 	}
@@ -597,6 +712,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEReference(workflowEClass, WORKFLOW__TASKS);
 		createEReference(workflowEClass, WORKFLOW__TYPES);
 		createEReference(workflowEClass, WORKFLOW__PARAMETERS);
+		createEReference(workflowEClass, WORKFLOW__LANGUAGES);
 
 		streamEClass = createEClass(STREAM);
 		createEAttribute(streamEClass, STREAM__NAME);
@@ -617,6 +733,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEAttribute(taskEClass, TASK__CACHED);
 		createEAttribute(taskEClass, TASK__MULTIPLE_OUTPUTS);
 		createEReference(taskEClass, TASK__PARAMETERS);
+		createEReference(taskEClass, TASK__LANGUAGE);
 
 		sourceEClass = createEClass(SOURCE);
 
@@ -644,6 +761,17 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEAttribute(fieldEClass, FIELD__NAME);
 		createEAttribute(fieldEClass, FIELD__TYPE);
 		createEAttribute(fieldEClass, FIELD__MANY);
+
+		languageEClass = createEClass(LANGUAGE);
+		createEAttribute(languageEClass, LANGUAGE__NAME);
+		createEAttribute(languageEClass, LANGUAGE__PACKAGE);
+		createEAttribute(languageEClass, LANGUAGE__OUTPUT_FOLDER);
+		createEAttribute(languageEClass, LANGUAGE__GEN_OUTPUT_FOLDER);
+		createEReference(languageEClass, LANGUAGE__PARAMETERS);
+
+		parameterEClass = createEClass(PARAMETER);
+		createEAttribute(parameterEClass, PARAMETER__NAME);
+		createEAttribute(parameterEClass, PARAMETER__VALUE);
 	}
 
 	/**
@@ -691,6 +819,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEReference(getWorkflow_Tasks(), this.getTask(), null, "tasks", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Types(), this.getType(), null, "types", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Parameters(), this.getField(), null, "parameters", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorkflow_Languages(), this.getLanguage(), null, "languages", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamEClass, Stream.class, "Stream", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStream_Name(), ecorePackage.getEString(), "name", null, 0, 1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -711,6 +840,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEAttribute(getTask_Cached(), ecorePackage.getEBooleanObject(), "cached", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTask_MultipleOutputs(), ecorePackage.getEBooleanObject(), "multipleOutputs", "false", 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTask_Parameters(), this.getField(), null, "parameters", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTask_Language(), this.getLanguage(), null, "language", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sourceEClass, Source.class, "Source", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -738,6 +868,17 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEAttribute(getField_Name(), ecorePackage.getEString(), "name", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(languageEClass, Language.class, "Language", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLanguage_Name(), ecorePackage.getEString(), "name", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLanguage_Package(), ecorePackage.getEString(), "package", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLanguage_OutputFolder(), ecorePackage.getEString(), "outputFolder", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLanguage_GenOutputFolder(), ecorePackage.getEString(), "genOutputFolder", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLanguage_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getParameter_Value(), ecorePackage.getEString(), "value", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -857,6 +998,22 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label.pattern", "{0}:{1}",
 			   "label.icon", "false"
 		   });
+		addAnnotation
+		  (languageEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "figure", "rectangle"
+		   });
+		addAnnotation
+		  (parameterEClass,
+		   source,
+		   new String[] {
+			   "label", "name,value",
+			   "figure", "rectangle",
+			   "label.pattern", "{0}:{1}",
+			   "label.icon", "false"
+		   });
 	}
 
 	/**
@@ -901,6 +1058,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		String source = "gmf.compartment";
 		addAnnotation
 		  (getType_Fields(),
+		   source,
+		   new String[] {
+			   "layout", "list",
+			   "collapsible", "false"
+		   });
+		addAnnotation
+		  (getLanguage_Parameters(),
 		   source,
 		   new String[] {
 			   "layout", "list",

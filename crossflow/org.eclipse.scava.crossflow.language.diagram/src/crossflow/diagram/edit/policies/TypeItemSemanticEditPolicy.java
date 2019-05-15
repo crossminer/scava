@@ -25,6 +25,7 @@ import crossflow.diagram.edit.commands.StreamTypeReorientCommand;
 import crossflow.diagram.edit.commands.TypeExtendingCreateCommand;
 import crossflow.diagram.edit.commands.TypeExtendingReorientCommand;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.StreamTypeEditPart;
 import crossflow.diagram.edit.parts.TypeExtendingEditPart;
 import crossflow.diagram.edit.parts.TypeTypeFieldsCompartmentEditPart;

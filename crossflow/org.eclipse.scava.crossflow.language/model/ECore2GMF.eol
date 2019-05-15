@@ -15,8 +15,6 @@ elementsToCenter.add('CsvSinkFigure');
 //elementsToCenter.add('TypeFigure');
 //elementsToCenter.add('FieldFigure');
 
-//elementsToCenter.add('ConfigurationFigure');
-
 for(element in elementsToCenter)
 	center(findShape(element));
 
@@ -42,8 +40,23 @@ fieldFigure.outline = false;
 -- ... and add a preferred size to it
 var preferredSize = new GmfGraph!Dimension;
 preferredSize.dx = 100;
-preferredSize.dy = 16;
+preferredSize.dy = 20;
 fieldFigure.preferredSize = preferredSize;
+//parameterFigure.preferredSize = preferredSize;
+
+--
+
+var languageParametersCompartmentFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'LanguageParametersCompartmentFigure');
+languageParametersCompartmentFigure.layout = new GmfGraph!StackLayout;
+var parameterFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'ParameterFigure');
+delete parameterFigure.border;
+parameterFigure.outline = false;
+var preferredSize = new GmfGraph!Dimension;
+preferredSize.dx = 100;
+preferredSize.dy = 20;
+parameterFigure.preferredSize = preferredSize;
 
 --
 

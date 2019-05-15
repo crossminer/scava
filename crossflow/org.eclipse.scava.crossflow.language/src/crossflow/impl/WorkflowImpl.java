@@ -4,6 +4,7 @@ package crossflow.impl;
 
 import crossflow.CrossflowPackage;
 import crossflow.Field;
+import crossflow.Language;
 import crossflow.Stream;
 import crossflow.Task;
 import crossflow.Type;
@@ -39,6 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.WorkflowImpl#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.impl.WorkflowImpl#getLanguages <em>Languages</em>}</li>
  * </ul>
  *
  * @generated
@@ -123,6 +125,16 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * @ordered
 	 */
 	protected EList<Field> parameters;
+
+	/**
+	 * The cached value of the '{@link #getLanguages() <em>Languages</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLanguages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Language> languages;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -238,6 +250,18 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Language> getLanguages() {
+		if (languages == null) {
+			languages = new EObjectContainmentEList<Language>(Language.class, this, CrossflowPackage.WORKFLOW__LANGUAGES);
+		}
+		return languages;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -249,6 +273,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return ((InternalEList<?>)getLanguages()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -273,6 +299,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return getTypes();
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return getParameters();
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return getLanguages();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -308,6 +336,10 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends Field>)newValue);
 				return;
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				getLanguages().clear();
+				getLanguages().addAll((Collection<? extends Language>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -338,6 +370,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				getParameters().clear();
 				return;
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				getLanguages().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -362,6 +397,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return types != null && !types.isEmpty();
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return languages != null && !languages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

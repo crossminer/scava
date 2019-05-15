@@ -348,6 +348,52 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.Language} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected LanguageItemProvider languageItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.Language}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createLanguageAdapter() {
+		if (languageItemProvider == null) {
+			languageItemProvider = new LanguageItemProvider(this);
+		}
+
+		return languageItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.Parameter} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ParameterItemProvider parameterItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createParameterAdapter() {
+		if (parameterItemProvider == null) {
+			parameterItemProvider = new ParameterItemProvider(this);
+		}
+
+		return parameterItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -458,6 +504,8 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (opinionatedTaskItemProvider != null) opinionatedTaskItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
+		if (languageItemProvider != null) languageItemProvider.dispose();
+		if (parameterItemProvider != null) parameterItemProvider.dispose();
 	}
 
 }

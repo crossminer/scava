@@ -60,7 +60,7 @@ public class FieldNameTypeEditPart extends CompartmentEditPart implements ITextA
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5013;
+	public static final int VISUAL_ID = 5016;
 
 	/**
 	* @generated
@@ -291,7 +291,7 @@ public class FieldNameTypeEditPart extends CompartmentEditPart implements ITextA
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_2012, getParserElement(),
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_2014, getParserElement(),
 					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.FieldNameTypeEditPart.VISUAL_ID));
 		}
 		return parser;

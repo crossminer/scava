@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Workflow#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.Workflow#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.Workflow#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.Workflow#getLanguages <em>Languages</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getWorkflow()
@@ -143,5 +144,21 @@ public interface Workflow extends EObject {
 	 * @generated
 	 */
 	EList<Field> getParameters();
+
+	/**
+	 * Returns the value of the '<em><b>Languages</b></em>' containment reference list.
+	 * The list contents are of type {@link crossflow.Language}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Languages</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Languages</em>' containment reference list.
+	 * @see crossflow.CrossflowPackage#getWorkflow_Languages()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Language> getLanguages();
 
 } // Workflow

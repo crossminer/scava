@@ -38,7 +38,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2012;
+	public static final int VISUAL_ID = 2014;
 
 	/**
 	* @generated
@@ -159,7 +159,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 16);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 20);
 		return result;
 	}
 
@@ -275,7 +275,7 @@ public class FieldEditPart extends ShapeNodeEditPart {
 		 */
 		public FieldFigure() {
 			this.setOutline(false);
-			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(16)));
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(20)));
 			createContents();
 		}
 

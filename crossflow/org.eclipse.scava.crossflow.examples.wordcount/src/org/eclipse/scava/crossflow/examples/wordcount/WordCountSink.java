@@ -17,7 +17,7 @@ public class WordCountSink extends WordCountSinkBase {
 	protected long lastSaveTime = System.currentTimeMillis();
 	
 	@Override
-	public synchronized void consumeWordFrequencies(WordFrequency wordFrequency) {
+	public synchronized void consumeFiltered(WordFrequency wordFrequency) {
 		
 		
 		String word = wordFrequency.getWord();
