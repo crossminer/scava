@@ -365,8 +365,9 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.readability
     </module>
+    
     <module>
-    	../../org.eclipse.scava.metricprovider.historic.documentation.readability
+    	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.readability
     </module>
   </modules>
   <build>

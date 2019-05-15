@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Copyright (c) 2017 University of Manchester
+  
+  This program and the accompanying materials are made
+  available under the terms of the Eclipse Public License 2.0
+  which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+  SPDX-License-Identifier: EPL-2.0
+-->
+<plugin>
+  
+
+<extension point="com.googlecode.pongo.runtime.osgi">
+    <class name="org.eclipse.scava.metricprovider.historic.documentation.readability.model.DocumentationReadabilityHistoricMetric"/>
+    <class name="org.eclipse.scava.metricprovider.historic.documentation.readability.model.DocumentationEntryHistoricReadability"/>
+    <class name="org.eclipse.scava.metricprovider.historic.documentation.readability.model.DocumentationHistoricReadability"/>
+  </extension>
+<extension
+      point="org.eclipse.scava.platform.metricprovider">
+   <metricProvider
+         provider="org.eclipse.scava.metricprovider.historic.documentation.readability.DocumentationReadabilityHistoricMetricProvider">
+   </metricProvider>
+</extension>
+<extension
+      point="org.eclipse.scava.platform.visualisation.metric">
+   <visualisation
+         json="vis/historic.documentation.readability.json"></visualisation>
+</extension>
+</plugin>
