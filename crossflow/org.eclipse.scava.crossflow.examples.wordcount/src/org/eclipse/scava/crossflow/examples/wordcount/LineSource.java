@@ -11,7 +11,7 @@ public class LineSource extends LineSourceBase {
 	
 	@Override
 	public void produce() throws Exception {
-		File file = new File("a-tale-of-two-cities.txt").getAbsoluteFile();
+		File file = new File(workflow.getInputDirectory(), "a-tale-of-two-cities-short.txt").getAbsoluteFile();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
