@@ -15,7 +15,7 @@ class [%=t.name%]([%=t.name%]Base):
 		try:
 			[% for (s in t.input) {%]
 			if (self.writer_[%=loopCount%] == None ) {
-				self.writer_[%=loopCount%] = CSVWriter('[%=t.path%]', [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] 'cached')
+				self.writer_[%=loopCount%] = CSVWriter('[%=t.filename%]', [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] 'cached')
 			[%}%]
 		
 			self.writer_[%=loopCount%].write_record( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].is_cached() )
