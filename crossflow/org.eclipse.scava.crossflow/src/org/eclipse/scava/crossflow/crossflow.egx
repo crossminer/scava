@@ -1,6 +1,8 @@
 rule Workflow2Class 
 	transform w : Workflow {
 	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	
 	template : "workflow2class.egl"
 	
 	target : w.getPath() + w.name + ".java"
@@ -8,6 +10,8 @@ rule Workflow2Class
 
 rule Workflow2AbstractGraph 
 	transform w : Workflow {
+	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
 	
 	template : "workflow2abstractGraph.egl"
 	
@@ -17,6 +21,8 @@ rule Workflow2AbstractGraph
 rule GenerateExperimentXML
 	transform w : Workflow {
 	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	
 	template : "generateExperimentXML.egl"
 	
 	target : "experiment/experiment.xml"
@@ -24,8 +30,10 @@ rule GenerateExperimentXML
 
 rule Type2Class 
 	transform t : Type {
-	
+		
 	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
+	
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "type2class.egl"
 	
@@ -35,7 +43,7 @@ rule Type2Class
 rule CsvSource2Source
 	transform t : CsvSource {
 
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 
 	template : "csvsource2source.egl"
 	
@@ -47,7 +55,7 @@ rule CsvSource2Source
 rule CsvSink2Sink
 	transform t : CsvSink {
 
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 
 	template : "csvsink2sink.egl"
 	
@@ -62,7 +70,7 @@ rule CommitmentTask2BaseClass
 	
 	guard : not t.language.isDefined() or t.language.name=="Java"	
 	
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "commitmenttask2baseclass.egl"
 	
@@ -75,7 +83,7 @@ rule OpinionatedTask2BaseClass
 	
 	guard : not t.language.isDefined() or t.language.name=="Java"	
 	
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "opinionatedtask2baseclass.egl"
 	
@@ -88,7 +96,7 @@ rule Task2BaseClass
 	
 	guard : not t.language.isDefined() or t.language.name=="Java"	
 	
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "task2baseclass.egl"
 	
@@ -101,7 +109,7 @@ rule Task2ImplClass
 	
 	guard : not t.language.isDefined() or t.language.name=="Java"	
 		
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "task2implclass.egl"
 	
@@ -114,7 +122,7 @@ rule Task2ImplClass
 rule Steam2Class 
 	transform s : Stream {
 	
-	parameters : Map{"w" = s.eContainer()}
+	parameters : Map{"w" = s.eContainer(),"package" = s.eContainer().getPackageName()}
 	
 	template : "stream2class.egl"
 	
@@ -124,6 +132,8 @@ rule Steam2Class
 @greedy
 rule Steam2Consumer 
 	transform s : Stream {
+	
+	parameters : Map{"w" = s.eContainer(),"package" = s.eContainer().getPackageName()}
 	
 	template : "stream2consumer.egl"
 	
@@ -139,11 +149,10 @@ operation Any getPath() {
 
 	var path = "";
 	
-	if(langExists) path = lang.first.genOutputFolder+"/";
+	if(langExists) path = lang.first.genOutputFolder + "/";
 	else path = "src-gen/";
 	
-	if(langExists) path = path + lang.first.package.replaceAll("\\.", "/") + "/";
-	else path = path + workflow.name.ftlc.replaceAll("\\.", "/") + "/";
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
 
 	return path;
 }
@@ -154,14 +163,24 @@ operation Any getImplPath() {
 	
 	var lang = workflow.languages.select(l|l.name=="Java");
 	var langExists = not lang.isEmpty;
-
+		
 	var path = "";
-	
-	if(langExists) path = lang.first.outputFolder+"/";
+		
+	if(langExists) path = lang.first.outputFolder + "/";
 	else path = "src/";
 	
-	if(langExists) path = path + lang.first.package.replaceAll("\\.", "/") + "/";
-	else path = path + workflow.name.ftlc.replaceAll("\\.", "/") + "/";
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
 
 	return path;
+}
+
+operation Workflow getPackageName() {
+	var lang = self.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = self.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+	
+	return package;
 }

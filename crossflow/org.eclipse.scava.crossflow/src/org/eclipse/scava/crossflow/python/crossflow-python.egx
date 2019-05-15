@@ -1,6 +1,8 @@
 rule Workflow2Class 
 	transform w : Workflow {
 	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	
 	template : "workflow2class.egl"
 	
 	target : w.getPath() + w.name + ".py"
@@ -59,7 +61,7 @@ rule Task2ImplClass
 		
 	guard : t.language.isDefined() and t.language.name=="Python"		
 		
-	parameters : Map{"w" = t.eContainer()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "task2implclass.egl"
 	
@@ -100,11 +102,10 @@ operation Any getPath() {
 
 	var path = "";
 	
-	if(langExists) path = lang.first.genOutputFolder+"/";
+	if(langExists) path = lang.first.genOutputFolder + "/";
 	else path = "src-gen-py/";
 	
-	if(langExists) path = path + lang.first.package.toPath();
-	else path = path + workflow.name.ftlc.toPath();
+	path = path + workflow.getPackageName().toPath();
 
 	return path;
 }
@@ -119,11 +120,10 @@ operation Any getImplPath() {
 
 	var path = "";
 	
-	if(langExists) path = lang.first.outputFolder+"/";
+	if(langExists) path = lang.first.outputFolder + "/";
 	else path = "src-py/";
 	
-	if(langExists) path = path + lang.first.package.toPath();
-	else path = path + workflow.name.ftlc.toPath();
+	path = path + workflow.getPackageName().toPath();
 
 	return path;
 }
@@ -136,4 +136,15 @@ operation Any getWorkflow() : Workflow {
 
 operation String toPath() : String {
 	return self.replaceAll("\\.", "/") + "/";
+}
+
+operation Workflow getPackageName() {
+	var lang = self.languages.select(l|l.name=="Python");
+	var langExists = not lang.isEmpty;
+
+	var package = self.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+	
+	return package;
 }

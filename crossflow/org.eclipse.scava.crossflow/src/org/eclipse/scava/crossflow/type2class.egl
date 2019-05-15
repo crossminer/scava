@@ -1,11 +1,3 @@
-[%
-	var lang = t.eContainer().languages.select(l|l.name=="Java");
-	var langExists = not lang.isEmpty;
-
-	var package = t.eContainer().name.ftlc;
-	
-	if(langExists) package = lang.first.package;
-%]
 package [%=package%];
 
 import java.io.Serializable;

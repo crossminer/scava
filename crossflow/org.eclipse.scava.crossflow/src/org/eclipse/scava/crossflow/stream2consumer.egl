@@ -1,11 +1,3 @@
-[%
-	var lang = s.eContainer().languages.select(l|l.name=="Java");
-	var langExists = not lang.isEmpty;
-
-	var package = s.eContainer().name.ftlc;
-	
-	if(langExists) package = lang.first.package;
-%]
 package [%=package%];
 
 import javax.jms.Message;
