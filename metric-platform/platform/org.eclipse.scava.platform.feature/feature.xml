@@ -45,10 +45,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.jgit"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.platform"
          version="0.0.0"/>
 
@@ -1308,20 +1304,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.requestreplyclassifier.opennlptartarus.libsvm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.scava.sentimentclassifier.opennlptartarus.libsvm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.scava.severityclassifier.opennlptartarus.libsvm"
          download-size="0"
          install-size="0"
@@ -1533,6 +1515,13 @@
 
    <plugin
          id="org.eclipse.scava.platform.analysis.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jgit"
          download-size="0"
          install-size="0"
          version="0.0.0"
