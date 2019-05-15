@@ -3,14 +3,18 @@ package org.eclipse.scava.crossflow.examples.wordcount;
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
+
+import java.io.File;
+
 import org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow;
 
 public class WordCountApp {
-
-	public static void main(String[] args) throws Exception {
-		
+	
+	public WordCountApp() throws Exception {
 		WordCountWorkflow master = new WordCountWorkflow(Mode.MASTER);
+		master.createBroker(false);
+		master.setInputDirectory(new File("experiment/in"));
+		master.setOutputDirectory(new File("experiment/out"));
 		master.setName("Master");
 		
 		WordCountWorkflow worker1 = new WordCountWorkflow(Mode.WORKER);
@@ -21,7 +25,7 @@ public class WordCountApp {
 		
 		master.run();
 		worker1.run();
-//		worker2.run();
+		worker2.run();
 		
 		// master
 		while (!master.hasTerminated()) {
@@ -35,35 +39,13 @@ public class WordCountApp {
 		for (FailedJob failed : master.getFailedJobs()) {
 			failed.getException().printStackTrace();
 		}
-		
-		// worker1
-		while (!worker1.hasTerminated()) {
-			Thread.sleep(100);
-		}
-		
-		for (InternalException ex : worker1.getInternalExceptions()) {
-			ex.getException().printStackTrace();
-		}
-		
-		for (FailedJob failed : worker1.getFailedJobs()) {
-			failed.getException().printStackTrace();
-		}
-		
-		// worker2
-		while (!worker2.hasTerminated()) {
-			Thread.sleep(100);
-		}
-		
-		for (InternalException ex : worker2.getInternalExceptions()) {
-			ex.getException().printStackTrace();
-		}
-		
-		for (FailedJob failed : worker2.getFailedJobs()) {
-			failed.getException().printStackTrace();
-		}
-		
+	
 		System.out.println("Done");
-		
+	}
+
+	public static void main(String[] args) throws Exception {
+		// setup and launch experiment
+		WordCountApp app = new WordCountApp();
 	}
 	
 }
