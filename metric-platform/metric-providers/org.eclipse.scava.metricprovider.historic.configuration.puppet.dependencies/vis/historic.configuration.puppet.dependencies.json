@@ -1,0 +1,19 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies",
+	"vis" : [ 
+		{
+			"id" : "puppet.dependencies",
+			"name" : "Sum of Puppet Dependencies",
+			"description" : "The number of Puppet dependencies per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "PuppetDependencies", "field" : "$numberOfPuppetDependencies" } ]
+			},
+			"x" : "Date",
+			"y" : "PuppetDependencies",
+			"timeSeries" : true
+		}
+	]
+
+}

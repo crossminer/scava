@@ -11,8 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.platform.visualisation,
  org.eclipse.scava.platform.vcs.workingcopy.manager,
- org.apache.log4j,
- org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies
+ org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies
 Bundle-ActivationPolicy: lazy

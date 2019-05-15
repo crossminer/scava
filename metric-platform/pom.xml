@@ -152,6 +152,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.smells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
