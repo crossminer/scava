@@ -82,7 +82,8 @@ public class GenerateAction implements IObjectActionDelegate {
 		}
 		r.close();
 
-		if (!contents.stream().anyMatch(s -> s.equals("Require-Bundle: org.eclipse.scava.crossflow.runtime"))) {
+		//TODO make this smarter for manifests with multiple dependencies
+		if (!contents.stream().anyMatch(s -> s.contains("Require-Bundle: org.eclipse.scava.crossflow.runtime"))) {
 
 			String dependencies = "Require-Bundle: org.eclipse.scava.crossflow.runtime";
 

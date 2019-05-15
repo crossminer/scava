@@ -10,7 +10,7 @@ public class WordCounter extends WordCounterBase {
 	
 	@Override
 	public void consumeLines(Line line) {
-		System.out.println("consuming: "+line);
+		//System.out.println(workflow.getName()+" consuming: "+line);
 		String text = line.getText().replaceAll("[^A-Za-z]", " ");
 		HashMap<String, Integer> frequencies = new HashMap<String, Integer>();
 		for (String part : text.split(" ")) {

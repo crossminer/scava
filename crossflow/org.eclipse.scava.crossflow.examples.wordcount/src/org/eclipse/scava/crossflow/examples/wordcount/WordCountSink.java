@@ -18,7 +18,7 @@ public class WordCountSink extends WordCountSinkBase {
 	
 	@Override
 	public synchronized void consumeFiltered(WordFrequency wordFrequency) {
-		
+		System.out.println("sink consuming: "+wordFrequency);
 		
 		String word = wordFrequency.getWord();
 		int frequency = wordFrequency.getFrequency();
