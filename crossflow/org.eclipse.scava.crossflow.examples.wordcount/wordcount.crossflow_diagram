@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cf="org.eclipse.scava.crossflow" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
-  <cf:Workflow xmi:id="_ZMRzYHNoEemR4dUnJRQOBg" name="WordCountWorkflow" package="org.eclipse.scava.crossflow.examples.wordcount">
+  <cf:Workflow xmi:id="_ZMRzYHNoEemR4dUnJRQOBg" name="WordCountWorkflow">
     <streams xmi:type="cf:Queue" xmi:id="_yq47wHNoEemR4dUnJRQOBg" name="Lines" type="_HFU_oHNpEemR4dUnJRQOBg" inputOf="_wu8zgHNoEemR4dUnJRQOBg" outputOf="_vtMbkHNoEemR4dUnJRQOBg"/>
     <streams xmi:type="cf:Queue" xmi:id="_zltlQHNoEemR4dUnJRQOBg" name="WordFrequencies" type="_Pv6KIHNpEemR4dUnJRQOBg" inputOf="_gYdnYHcEEemqspYsNeYz4w" outputOf="_wu8zgHNoEemR4dUnJRQOBg"/>
     <streams xmi:type="cf:Queue" xmi:id="_h6eMsHcEEemqspYsNeYz4w" name="Filtered" type="_Pv6KIHNpEemR4dUnJRQOBg" inputOf="_wQeu0HNoEemR4dUnJRQOBg" outputOf="_gYdnYHcEEemqspYsNeYz4w"/>

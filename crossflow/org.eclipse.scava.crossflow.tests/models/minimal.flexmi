@@ -4,7 +4,7 @@
 <_>
 
 	<!-- Minimal example -->
-	<workflow name="MinimalWorkflow" package="org.eclipse.scava.crossflow.tests.minimal">
+	<workflow name="MinimalWorkflow">
 		<simple-source name="MinimalSource" produces="Number" to="Input"/>
 		<simple-task name="CopierTask" produces="Number" to="Output"/>
 		<simple-sink name="MinimalSink"/>
@@ -13,6 +13,7 @@
 			<field name="n" type="int"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.minimal" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

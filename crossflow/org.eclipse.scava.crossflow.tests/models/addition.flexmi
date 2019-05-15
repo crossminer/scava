@@ -5,7 +5,7 @@
 
 	<!-- Simple example that adds pairs of numbers and prints the results -->
 	<!-- Needs an interim version of Epsilon after 10/1/2019 as it makes use of templates -->
-	<workflow name="AdditionWorkflow" package="org.eclipse.scava.crossflow.tests.addition">
+	<workflow name="AdditionWorkflow">
 		<simple-source name="NumberPairSource" produces="NumberPair" to="Additions"/>
 		<simple-task name="Adder" produces="Number" to="AdditionResults"/>
 		<simple-sink name="AdditionResultsSink"/>
@@ -17,6 +17,8 @@
 		<type name="Number">
 			<field name="n" type="int"/> 
 		</type>
+
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.addition" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow> 
 	
 </_>

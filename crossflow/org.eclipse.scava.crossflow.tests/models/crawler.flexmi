@@ -3,7 +3,7 @@
 <_>
 
 	<!-- Example where participants can choose which word to count instances of -->
-	<workflow name="CrawlerWorkflow" package="org.eclipse.scava.crossflow.tests.crawler">
+	<workflow name="CrawlerWorkflow">
 		<source name="UrlSource" out="Urls"/>
 		<queue name="Urls" type="Url"/>
 		<task name="UrlCollector" in="Urls" out="UrlsToAnalyse" master="true"/>
@@ -13,6 +13,8 @@
 		<type name="Url">
 			<field name="location" type="String"/>
 		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.crawler" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

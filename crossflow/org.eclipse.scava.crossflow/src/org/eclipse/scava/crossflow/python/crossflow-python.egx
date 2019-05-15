@@ -6,14 +6,6 @@ rule Workflow2Class
 	target : w.getPath() + w.name + ".py"
 }
 
-rule CompositeWorkflow2Class 
-	transform w : Workflow {
-	
-	template : "compositeworkflow2class.egl"
-	
-	target : w.getPath() + "Composite" + w.name + ".py"
-}
-
 rule Type2Class 
 	transform t : Type {
 	
@@ -51,6 +43,8 @@ rule CsvSink2Sink
 @greedy
 rule Task2BaseClass 
 	transform t : Task {
+
+	guard : t.language.isDefined() and t.language.name=="Python"	
 	
 	parameters : Map{"w" = t.eContainer()}
 	
@@ -62,6 +56,8 @@ rule Task2BaseClass
 @greedy
 rule Task2ImplClass 
 	transform t : Task {
+		
+	guard : t.language.isDefined() and t.language.name=="Python"		
 		
 	parameters : Map{"w" = t.eContainer()}
 	
@@ -96,12 +92,40 @@ rule Steam2Consumer
 
 @cached
 operation Any getPath() {
-	return "src-gen-py/" + self.getWorkflow().package.toPath();
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.name=="Python");
+	var langExists = not lang.isEmpty;
+
+	var path = "";
+	
+	if(langExists) path = lang.first.genOutputFolder+"/";
+	else path = "src-gen-py/";
+	
+	if(langExists) path = path + lang.first.package.toPath();
+	else path = path + workflow.name.ftlc.toPath();
+
+	return path;
 }
 
 @cached
 operation Any getImplPath() {
-	return "src-py/" + self.getWorkflow().package.toPath();
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.name=="Python");
+	var langExists = not lang.isEmpty;
+
+	var path = "";
+	
+	if(langExists) path = lang.first.outputFolder+"/";
+	else path = "src-py/";
+	
+	if(langExists) path = path + lang.first.package.toPath();
+	else path = path + workflow.name.ftlc.toPath();
+
+	return path;
 }
 
 @cached

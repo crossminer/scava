@@ -4,7 +4,7 @@
 <_>
 
 	<!-- Minimal example -->
-	<workflow name="MinimalWorkflow" package="org.eclipse.scava.crossflow.tests.transactionalcaching">
+	<workflow name="MinimalWorkflow">
 		<simple-source name="MinimalSource" produces="Element" to="Input"/>
 		<simple-task multipleOutputs="true" name="ClonerTask" produces="Element" to="Output"/>
 		<simple-sink name="MinimalSink"/>
@@ -13,6 +13,7 @@
 			<field name="s" type="String"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.transactionalcaching" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

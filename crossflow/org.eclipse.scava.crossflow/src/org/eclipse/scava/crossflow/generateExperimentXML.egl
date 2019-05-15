@@ -1,7 +1,15 @@
+[%
+	var lang = w.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
 <experiment
 	title="[%=w.name%]"
-	class="[%=w.package%].[%=w.name%]"
-	jar="[%=w.package%].jar"
+	class="[%=package%].[%=w.name%]"
+	jar="[%=package%].jar"
 	input="in"
 	output="out"
 	summary="Optional summary of the Experiment goes here."

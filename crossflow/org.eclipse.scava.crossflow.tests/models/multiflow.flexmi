@@ -3,7 +3,7 @@
 <_>
 
 	<!-- Example with multiple input/output streams -->
-	<workflow name="Multiflow" package="org.eclipse.scava.crossflow.tests.multiflow">
+	<workflow name="Multiflow">
 		<source name="MultiSource" out="In1, In2"/>
 		
 		<task name="MultiTask" in="In1, In2" out="Out1, Out2"/>
@@ -18,8 +18,8 @@
 		<type name="Number">
 			<field name="n" type="int"/>
 		</type>
-		
-		
+				
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.multiflow" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

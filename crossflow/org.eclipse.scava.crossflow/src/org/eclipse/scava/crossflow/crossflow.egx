@@ -60,6 +60,8 @@ rule CsvSink2Sink
 rule CommitmentTask2BaseClass 
 	transform t : CommitmentTask {
 	
+	guard : not t.language.isDefined() or t.language.name=="Java"	
+	
 	parameters : Map{"w" = t.eContainer()}
 	
 	template : "commitmenttask2baseclass.egl"
@@ -70,6 +72,8 @@ rule CommitmentTask2BaseClass
 @greedy
 rule OpinionatedTask2BaseClass 
 	transform t : OpinionatedTask {
+	
+	guard : not t.language.isDefined() or t.language.name=="Java"	
 	
 	parameters : Map{"w" = t.eContainer()}
 	
@@ -82,6 +86,8 @@ rule OpinionatedTask2BaseClass
 rule Task2BaseClass 
 	transform t : Task {
 	
+	guard : not t.language.isDefined() or t.language.name=="Java"	
+	
 	parameters : Map{"w" = t.eContainer()}
 	
 	template : "task2baseclass.egl"
@@ -92,6 +98,8 @@ rule Task2BaseClass
 @greedy
 rule Task2ImplClass 
 	transform t : Task {
+	
+	guard : not t.language.isDefined() or t.language.name=="Java"	
 		
 	parameters : Map{"w" = t.eContainer()}
 	
@@ -125,13 +133,35 @@ rule Steam2Consumer
 operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
 
-	return "src-gen/" + workflow.package.replaceAll("\\.", "/") + "/";
+	var path = "";
+	
+	if(langExists) path = lang.first.genOutputFolder+"/";
+	else path = "src-gen/";
+	
+	if(langExists) path = path + lang.first.package.replaceAll("\\.", "/") + "/";
+	else path = path + workflow.name.ftlc.replaceAll("\\.", "/") + "/";
+
+	return path;
 }
 
 operation Any getImplPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	
-	return "src/" + workflow.package.replaceAll("\\.", "/") + "/";
+	var lang = workflow.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var path = "";
+	
+	if(langExists) path = lang.first.outputFolder+"/";
+	else path = "src/";
+	
+	if(langExists) path = path + lang.first.package.replaceAll("\\.", "/") + "/";
+	else path = path + workflow.name.ftlc.replaceAll("\\.", "/") + "/";
+
+	return path;
 }

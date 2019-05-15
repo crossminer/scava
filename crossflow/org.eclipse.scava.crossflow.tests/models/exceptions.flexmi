@@ -4,7 +4,7 @@
 <_>
 
 	<!-- Simple example that adds pairs of numbers and prints the results -->
-	<workflow name="ExceptionsWorkflow" package="org.eclipse.scava.crossflow.tests.exceptions">
+	<workflow name="ExceptionsWorkflow">
 		<parameter name="failOnNumber" type="int"/>
 		<simple-source name="NumberSource" produces="Number" to="Numbers"/>
 		<simple-task name="NumberCopier" produces="Number" to="Results"/>
@@ -13,6 +13,8 @@
 		<type name="Number">
 			<field name="n" type="int"/>
 		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.exceptions" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>

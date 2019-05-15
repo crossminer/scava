@@ -1,16 +1,24 @@
+[%
+	var lang = w.languages.select(l|l.name=="Python");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
 from org.eclipse.scava.crossflow.runtime import ControlSignal
 from org.eclipse.scava.crossflow.runtime import ControlSignals
 from org.eclipse.scava.crossflow.runtime import Workflow
 from org.eclipse.scava.crossflow.runtime import Mode
 
 [%for (t in w.getMasterTasks()){%]
-from [%=w.package%].[%=t.name%] import [%=t.name%]
+from [%=package%].[%=t.name%] import [%=t.name%]
 [%}%]
 [%for (t in w.getWorkerTasks()){%]
-from [%=w.package%].[%=t.name%] import [%=t.name%]
+from [%=package%].[%=t.name%] import [%=t.name%]
 [%}%]
 [%for (s in w.streams) { %]
-from [%=w.package%].[%=s.name%] import [%=s.name%]
+from [%=package%].[%=s.name%] import [%=s.name%]
 [%}%]
 
 import argparse

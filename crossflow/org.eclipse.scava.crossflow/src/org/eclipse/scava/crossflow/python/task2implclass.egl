@@ -1,9 +1,17 @@
+[%
+	var lang = w.languages.select(l|l.name=="Python");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
 [%if (t.isTypeOf(Source)){%]
 import threading
 [%}%]
-from [%=w.package%].[%=t.name%]Base import [%=t.name%]Base
+from [%=package%].[%=t.name%]Base import [%=t.name%]Base
 [%for (s in t.output) { %]
-from [%=w.package%].[%=s.type.name%] import [%=s.type.name%]
+from [%=package%].[%=s.type.name%] import [%=s.type.name%]
 [% } %]
 
 class [%=t.name%]([%=t.name%]Base):

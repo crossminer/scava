@@ -4,7 +4,7 @@
 <_>
 
 	<!-- Simple example that performs calculations from a CSV -->
-	<workflow name="CalculatorWorkflow" package="org.eclipse.scava.crossflow.tests.calculator">
+	<workflow name="CalculatorWorkflow">
 		<simple-source name="CalculationSource" produces="Calculation" to="Calculations"/>
 		<simple-task name="Calculator" produces="CalculationResult" to="CalculationResults"/>
 		<simple-sink name="CalculationResultsSink"/>
@@ -23,6 +23,7 @@
 			<field name="result" type="String"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.calculator" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>

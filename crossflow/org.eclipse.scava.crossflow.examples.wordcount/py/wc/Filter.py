@@ -1,5 +1,5 @@
-from org.eclipse.scava.crossflow.examples.wordcount.FilterBase import FilterBase
-from org.eclipse.scava.crossflow.examples.wordcount.WordFrequency import WordFrequency
+from wc.FilterBase import FilterBase
+from wc.WordFrequency import WordFrequency
 
 class Filter(FilterBase):
 

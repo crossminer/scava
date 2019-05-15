@@ -3,7 +3,7 @@
 <_>
 	
 	<!-- Example checking for manual commitments -->
-	<workflow name="AckWorkflow" package="org.eclipse.scava.crossflow.tests.ack">
+	<workflow name="AckWorkflow">
 	
 		<source name="Source" out="Numbers"/>
 	
@@ -23,6 +23,7 @@
 			<field name="value" type="String"/>
 		</type>
 	
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.ack" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>

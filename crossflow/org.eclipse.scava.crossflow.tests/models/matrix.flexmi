@@ -4,7 +4,7 @@
 <_>
 
 	<!-- Example where participants can choose which word to count instances of -->
-	<workflow name="MatrixWorkflow" package="org.eclipse.scava.crossflow.tests.matrix">
+	<workflow name="MatrixWorkflow">
 		<simple-source name="MatrixConfigurationSource" produces="MatrixConfiguration" to="MatrixConfigurations"/>
 		<simple-task name="MatrixConstructor" produces="Matrix" to="Matrices"/>
 		<simple-sink name="MatrixSink"/>
@@ -23,6 +23,7 @@
 			<field name="cells" type="Integer" many="true"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.matrix" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

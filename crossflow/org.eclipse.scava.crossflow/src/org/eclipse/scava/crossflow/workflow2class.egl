@@ -1,4 +1,12 @@
-package [%=w.package%];
+[%
+	var lang = w.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
+package [%=package%];
 
 import java.util.List;
 import java.net.URI;
@@ -197,6 +205,7 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	
 	[%for (t in w.tasks) {%]
+	[%if (t.isJavaTask()) {%]
 	public [%=t.name%] get[%=t.name%]() {
 	[%if(w.getSingletonTasks().contains(t)){%]
 		return [%=t.name.ftlc()%];
@@ -213,23 +222,28 @@ public class [%=w.name%] extends Workflow {
 	}	
 	[%}%]
 	[%}%]
+	[%}%]
 	
 }	
 [%
+operation Task isJavaTask(){
+	return not self.language.isDefined() or self.language.name=="Java";
+}
+
 operation Workflow getParallelizableTasks() {
-	return self.tasks.select(t | not (t.isKindOf(Source) or t.isKindOf(Sink)));
+	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(Source) or t.isKindOf(Sink)));
 }
 
 operation Workflow getSingletonTasks() {
-	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink));
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink)));
 }
 
 operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
 }
 
 operation Workflow getWorkerTasks() {
-	return self.tasks.excludingAll(self.getMasterTasks());
+	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isJavaTask());
 }
 
 @template

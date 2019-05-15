@@ -3,7 +3,7 @@
 <_>
 	
 	<!-- Example checking for parallel sources -->
-	<workflow name="MSWorkflow" package="org.eclipse.scava.crossflow.tests.multisource">
+	<workflow name="MSWorkflow">
 	
 		<source name="Source1" out="Results"/>
 		<source name="Source2" out="Results"/>
@@ -16,6 +16,7 @@
 			<field name="value" type="String"/>
 		</type>
 	
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.multisource" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>
