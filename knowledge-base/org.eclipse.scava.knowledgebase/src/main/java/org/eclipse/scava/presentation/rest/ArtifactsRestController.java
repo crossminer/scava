@@ -145,7 +145,7 @@ public class ArtifactsRestController {
     }
 	
 	@ApiOperation(value = "Store IDE metrics")
-	@RequestMapping(value="store-metrics}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
+	@RequestMapping(value="store-metrics", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
 		try {
 			m4pRepository.save(metricForProject);

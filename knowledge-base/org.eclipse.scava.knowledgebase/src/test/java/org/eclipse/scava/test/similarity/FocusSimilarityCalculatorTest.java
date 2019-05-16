@@ -11,7 +11,6 @@ package org.eclipse.scava.test.similarity;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,35 +33,32 @@ import com.google.common.collect.Table;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@TestPropertySource(locations="classpath:application.properties")
+@TestPropertySource(locations = "classpath:application.properties")
 public class FocusSimilarityCalculatorTest {
 	@Autowired
 	@Qualifier("Focus")
 	private IAggregatedSimilarityCalculator focus;
 	@Autowired
 	private DataReader dr;
-	
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(FocusSimilarityCalculatorTest.class);
 	List<Artifact> artifacts;
+
 	@Before
-	public void init(){
-		try {
-			artifacts = dr.readArtifactsFromPath("FOCUS");
-		} catch (IOException e) {
-			logger.error("errore");
-		}
+	public void init() {
+		artifacts = dr.readArtifactsFromPath("FOCUS");
+
 	}
-	
+
 	@Test
 	public void focusCommutativeTest() {
 		Map<String, String> parameters = new HashMap<>();
 		Table<String, String, Double> table = focus.calculateAggregatedSimilarityValues(artifacts, parameters);
 		double val1 = table.get(artifacts.get(0).getFullName(), artifacts.get(1).getFullName());
 		double val2 = table.get(artifacts.get(1).getFullName(), artifacts.get(0).getFullName());
-		assertEquals(val1,val2, 0.0);
+		assertEquals(val1, val2, 0.0);
 	}
-	
+
 	@Test
 	public void focusSimIdentityTest() {
 		Map<String, String> parameters = new HashMap<>();
