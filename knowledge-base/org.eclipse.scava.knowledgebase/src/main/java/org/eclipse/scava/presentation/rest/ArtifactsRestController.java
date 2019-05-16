@@ -156,7 +156,7 @@ public class ArtifactsRestController {
 	@RequestMapping(value="/gargo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public @ResponseBody MetricsForProject temp(){
 		MetricsForProject metric4project = new MetricsForProject();
-		metric4project.setProject("DEMO METRIC4PROJECT");
+		metric4project.setProjectId("DEMO METRIC4PROJECT");
 		List<MetricMilestoneSlice> metricMilestoneSlices = new ArrayList<MetricMilestoneSlice>();
 		MetricMilestoneSlice metricMilestoneSlice = new MetricMilestoneSlice();
 		metricMilestoneSlice.setBounder("DEMO BOUNDER");
@@ -175,11 +175,7 @@ public class ArtifactsRestController {
 		mds.add(descriptor);
 		metricBoundary.setMetricValues(mds);
 		metricMilestoneSlices.add(metricMilestoneSlice);
-		
-		
-		
 		metric4project.setMetricMilestoneSlice(metricMilestoneSlices);
-			
 		return metric4project ;
 	}
 
