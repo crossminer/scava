@@ -23,6 +23,7 @@ import java.util.List;
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.bugs.document.BugDocument;
 import org.eclipse.scava.metricprovider.indexing.bugs.document.CommentDocument;
+import org.eclipse.scava.metricprovider.indexing.bugs.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugsBugMetadataTransMetric;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.CommentData;
@@ -181,14 +182,14 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 		for (BugTrackingSystemBug bug : delta.getNewBugs()) // NEW BUGS
 		{
-			String documentType = "bug";
+			String documentType = "bug.post";
 			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
 					NLP);
 
 			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bug.getBugId(),
 					delta.getBugTrackingSystem().getBugTrackerType());
 
-			String mapping = loadMapping(documentType, NLP);
+			String mapping = Mapping.getMapping(documentType);
 
 			EnrichmentData enrichmentData = getEnrichmentData(bug, project);
 
@@ -211,14 +212,14 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 		for (BugTrackingSystemBug bug : delta.getUpdatedBugs()) // UPDATED BUGS
 		{
-			String documentType = "bug";
+			String documentType = "bug.post";
 			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
 					NLP);
 
 			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bug.getBugId(),
 					delta.getBugTrackingSystem().getBugTrackerType());
 
-			String mapping = loadMapping(documentType, NLP);
+			String mapping = Mapping.getMapping(documentType);
 
 			EnrichmentData enrichmentData = getEnrichmentData(bug, project);
 
@@ -241,14 +242,14 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 		for (BugTrackingSystemComment bugComment : delta.getComments()) { // COMMENTS
 
-			String documentType = "comment";
+			String documentType = "bug.comment";
 			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
 					NLP);
 
 			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bugComment.getCommentId(),
 					delta.getBugTrackingSystem().getBugTrackerType());
 
-			String mapping = loadMapping(documentType, NLP);
+			String mapping = Mapping.getMapping(documentType);
 
 			EnrichmentData enrichmentData = getEnrichmentData(bugComment, project);
 

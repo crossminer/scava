@@ -207,8 +207,6 @@ public class Indexer {
 	private void index(String indexName, String documentType, String uid, String document) {
 
 		try {
-			
-			
 			IndexRequest indexRequest = new IndexRequest();
 			indexRequest.index(indexName.toLowerCase()).type(documentType.toLowerCase()).id(uid).source(document,XContentType.JSON);
 			logger.info("Document (uid: " + uid + ") has been " + highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
@@ -308,5 +306,41 @@ public class Indexer {
 		}
 	
 		logger.info("Indexing Complete");
+	}
+	
+	public static void main(String[] args) {
+		Indexer indexer = new Indexer();
+		
+//		try {
+////			indexer.highLevelClient.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		System.out.println(indexer.highLevelClient);
+		
+		indexer.indexDocument("hello","","test", "01010101", "{\n" + 
+				"    \"glossary\": {\n" + 
+				"        \"title\": \"example glossary\",\n" + 
+				"		\"GlossDiv\": {\n" + 
+				"            \"title\": \"S\",\n" + 
+				"			\"GlossList\": {\n" + 
+				"                \"GlossEntry\": {\n" + 
+				"                    \"ID\": \"SGML\",\n" + 
+				"					\"SortAs\": \"SGML\",\n" + 
+				"					\"GlossTerm\": \"Standard Generalized Markup Language\",\n" + 
+				"					\"Acronym\": \"SGML\",\n" + 
+				"					\"Abbrev\": \"ISO 8879:1986\",\n" + 
+				"					\"GlossDef\": {\n" + 
+				"                        \"para\": \"A meta-markup language, used to create markup languages such as DocBook.\",\n" + 
+				"						\"GlossSeeAlso\": [\"GML\", \"XML\"]\n" + 
+				"                    },\n" + 
+				"					\"GlossSee\": \"markup\"\n" + 
+				"                }\n" + 
+				"            }\n" + 
+				"        }\n" + 
+				"    }\n" + 
+				"}");
 	}
 }

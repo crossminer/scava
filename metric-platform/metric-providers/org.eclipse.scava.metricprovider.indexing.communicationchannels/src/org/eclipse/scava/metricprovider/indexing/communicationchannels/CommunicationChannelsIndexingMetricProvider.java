@@ -23,6 +23,7 @@ import java.util.List;
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ArticleDocument;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ForumPostDocument;
+import org.eclipse.scava.metricprovider.indexing.communicationchannels.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
@@ -139,17 +140,21 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		for (CommunicationChannelDelta delta : communicationChannelProjectDelta.getCommunicationChannelSystemDeltas()) {
 
 			CommunicationChannel communicationChannel = delta.getCommunicationChannel();
-
+			
 			if (communicationChannel instanceof NntpNewsGroup) {
 				prepareNewsGroup(project, projectDelta, delta);
 
 			} else if (communicationChannel instanceof EclipseForum) {
 				prepareForum(project, projectDelta, delta);
 
-			} else if (communicationChannel instanceof Discussion) {
-				//FIXME - how do we handle these?
+			}else if (communicationChannel instanceof Discussion) {
+			//FIXME - how do we handle these?
 				//prepareDiscussion(project, projectDelta, delta);
-
+			//TODO add support for SYMPA, Mailbox and IRC
+//			}else if (communicationChannel instanceof Sympa) {
+				
+//			}else if (communicationChannel instanceof IRC) {
+	
 			} else {
 
 				System.out.println("this " + delta.getCommunicationChannel().getCommunicationChannelType()
@@ -181,9 +186,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			
 			String documentType = "forum.post";
 			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
-			String forumName = eclipseForum.getForum_name();
 			
-
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
 
@@ -246,7 +249,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			String uniqueIdentifier = generateUniqueDocumentId(projectDelta, article.getArticleId(),
 					delta.getCommunicationChannel().getCommunicationChannelType());
 
-			String mapping = loadMapping(documentType, NLP);
+			String mapping = Mapping.getMapping(documentType);
 
 			EnrichmentData enrichmentData = getEnrichmentData(article, project);
 
@@ -624,6 +627,8 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 */
+	
+	//TODO add support for IRC, Sympa, MailBox
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			CommunicationChannelArticle article) throws NoSuchFieldException, SecurityException,
 			IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -644,7 +649,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			Discussion discussion = (Discussion) communicationChannel;
 			//FIXME - How do we handle discussions?
 		
-		}
+		}//else if (communicationChannel instanceof ...) {
+//			
+//			
+//		}
 		
 		T output = null;
 

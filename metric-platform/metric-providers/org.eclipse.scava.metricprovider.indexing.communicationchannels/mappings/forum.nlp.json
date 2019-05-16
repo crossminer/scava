@@ -1,12 +1,27 @@
 {
   "properties" : {
-    "uiid" : {
+    "post_id" : {
+      "type" : "keyword"
+    },
+    "forum_id" : {
+      "type" : "keyword"
+    },
+    "topic_id" : {
+      "type" : "keyword"
+    },
+    "forum_name" : {
+      "type" : "text"
+    },
+    "uid" : {
       "type" : "text"
     },
     "project_name" : {
       "type" : "text"
     },
     "message_body" : {
+      "type" : "text"
+    },
+    "subject" : {
       "type" : "text"
     },
     "creator" : {
