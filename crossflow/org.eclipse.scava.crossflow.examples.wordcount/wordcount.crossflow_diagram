@@ -16,7 +16,7 @@
       <fields xmi:type="cf:Field" xmi:id="_TeJWcHNpEemR4dUnJRQOBg" name="frequency" type="int"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_mw7iIHcAEemkt6jvRKbpEA" name="Java" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="src" genOutputFolder="src-gen"/>
-    <languages xmi:type="cf:Language" xmi:id="_XOCUoHcDEemgQuyg8byS_w" name="Python" package="wc" outputFolder="py" genOutputFolder="py-gen">
+    <languages xmi:type="cf:Language" xmi:id="_XOCUoHcDEemgQuyg8byS_w" name="Python" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="py" genOutputFolder="py-gen">
       <parameters xmi:type="cf:Parameter" xmi:id="_bXF0sHcDEemgQuyg8byS_w" name="module" value="default"/>
     </languages>
   </cf:Workflow>
