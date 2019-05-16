@@ -20,7 +20,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
-					{ "name" : "Smells", "field" : "$numberOfMissingDefaultCaseSmells" } ]
+					{ "name" : "MissingDefaultCaseSmells", "field" : "$numberOfMissingDefaultCaseSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "MissingDefaultCaseSmells",
@@ -32,7 +32,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfInconsistentNamingSmells" } ]
+					{ "name" : "InconsistentNamingSmells", "field" : "$numberOfInconsistentNamingSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "InconsistentNamingSmells",
@@ -44,7 +44,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfDuplicateEntitySmells" } ]
+					{ "name" : "DuplicateEntitySmells", "field" : "$numberOfDuplicateEntitySmells" } ]
 			},
 			"x" : "Date",
 			"y" : "DuplicateEntitySmells",
@@ -56,7 +56,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfMisplacedAttributeSmells" } ]
+					{ "name" : "MisplacedAttributeSmells", "field" : "$numberOfMisplacedAttributeSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "MisplacedAttributeSmells",
@@ -68,7 +68,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfImproperAlignmentSmells" } ]
+					{ "name" : "ImproperAlignmentSmells", "field" : "$numberOfImproperAlignmentSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "ImproperAlignmentSmells",
@@ -80,7 +80,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfInvalidPropertySmells" } ]
+					{ "name" : "InvalidPropertySmells", "field" : "$numberOfInvalidPropertySmells" } ]
 			},
 			"x" : "Date",
 			"y" : "InvalidPropertySmells",
@@ -92,7 +92,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfImproperQuoteSmells" } ]
+					{ "name" : "ImproperQuoteSmells", "field" : "$numberOfImproperQuoteSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "ImproperQuoteSmells",
@@ -104,7 +104,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfLongStatementsSmells" } ]
+					{ "name" : "LongStatementsSmells", "field" : "$numberOfLongStatementsSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "LongStatementsSmells",
@@ -116,7 +116,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfUnguardedVariableSmells" } ]
+					{ "name" : "UnguardedVariableSmells", "field" : "$numberOfUnguardedVariableSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "UnguardedVariableSmells",
@@ -128,7 +128,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfMissingDocSmells" } ]
+					{ "name" : "MissingDocSmells", "field" : "$numberOfMissingDocSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "MissingDocSmells",
@@ -140,7 +140,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfDeprecatedStatementsSmells" } ]
+					{ "name" : "DeprecatedStatementsSmells", "field" : "$numberOfDeprecatedStatementsSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "DeprecatedStatementsSmells",
@@ -153,7 +153,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfIncompleteTasksSmells" } ]
+					{ "name" : "IncompleteTasksSmells", "field" : "$numberOfIncompleteTasksSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "IncompleteTasksSmells",
@@ -166,7 +166,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfComplexExpressionSmells" } ]
+					{ "name" : "ComplexExpressionSmells", "field" : "$numberOfComplexExpressionSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "ComplexExpressionSmells",
@@ -179,7 +179,7 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Smells", "field" : "$numberOfMissingElseSmells" } ]
+					{ "name" : "MissingElseSmells", "field" : "$numberOfMissingElseSmells" } ]
 			},
 			"x" : "Date",
 			"y" : "MissingElseSmells",
