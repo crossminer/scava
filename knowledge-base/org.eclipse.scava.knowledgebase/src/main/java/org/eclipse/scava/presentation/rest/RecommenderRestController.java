@@ -108,14 +108,13 @@ public class RecommenderRestController {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
-	@ApiOperation(value = "This resource get list of versions foreach dependecies")
+	@ApiOperation(value = "This resource lists plugin versions for each dependecies")
 	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
+		
 	}
-	@Autowired
-	private RecommendationFeedbackRepository recFedRepo;
 	@ApiOperation(value = "This resource stores the recommendation feedback")
 	@RequestMapping(value = "recommendation-feedback/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody boolean storeRecommendationFeedback(

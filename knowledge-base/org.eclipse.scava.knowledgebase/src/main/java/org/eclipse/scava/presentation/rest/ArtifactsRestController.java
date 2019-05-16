@@ -19,10 +19,10 @@ import java.util.Map;
 
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
-import org.eclipse.scava.business.dto.MetricBoundary;
-import org.eclipse.scava.business.dto.MetricDescriptor;
-import org.eclipse.scava.business.dto.MetricMilestoneSlice;
-import org.eclipse.scava.business.dto.MetricsForProject;
+import org.eclipse.scava.business.dto.metrics.MetricBoundary;
+import org.eclipse.scava.business.dto.metrics.MetricDescriptor;
+import org.eclipse.scava.business.dto.metrics.MetricMilestoneSlice;
+import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.MetricForProjectRepository;
@@ -66,6 +66,8 @@ public class ArtifactsRestController {
 	@Autowired
 	private ArtifactRepository artifactRepository;
 	private static final Logger logger = LoggerFactory.getLogger(ArtifactsRestController.class);
+	@Autowired
+	private MetricForProjectRepository m4pRepository;
 	
 	@Autowired
 	private GithubImporter importer;
@@ -141,8 +143,7 @@ public class ArtifactsRestController {
 			return false;
 		}
     }
-	@Autowired
-	private MetricForProjectRepository m4pRepository;
+	
 	@ApiOperation(value = "Store IDE metrics")
 	@RequestMapping(value="store-metrics}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
