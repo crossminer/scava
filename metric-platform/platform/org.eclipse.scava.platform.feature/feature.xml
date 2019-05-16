@@ -1054,6 +1054,54 @@
          version="0.0.0"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.docker.smells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+    <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.docker.smells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.scava.platform.jadolint"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.eclipse.scava.platform.communicationchannel.nntp"
          download-size="0"
          install-size="0"
@@ -1528,3 +1576,4 @@
          unpack="false"/>
 
 </feature>
+
