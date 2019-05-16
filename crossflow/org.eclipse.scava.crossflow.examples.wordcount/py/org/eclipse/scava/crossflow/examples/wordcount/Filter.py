@@ -4,8 +4,13 @@ class Filter(FilterBase):
 
 	def __init__(self):
 		super().__init__()
-	
+
 	def consumeWordFrequencies(self, wordFrequency):
-		self.sendToFiltered(wordFrequency)
+		
+		ignoredWords = [ "the", "and", "is", "or" ]
+	
+		if not wordFrequency.word in ignoredWords:
+			self.sendToFiltered(wordFrequency)
+	
 		
 	

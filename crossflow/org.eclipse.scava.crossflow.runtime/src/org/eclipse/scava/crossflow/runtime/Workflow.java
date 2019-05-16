@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -22,10 +23,11 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.eclipse.scava.crossflow.runtime.utils.CFThreadPoolExecutorServiceFactory;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
 import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
@@ -45,13 +47,13 @@ public abstract class Workflow {
 
 	@Parameter(names = { "-port" }, description = "Port of the master")
 	protected int port = 61616;
-	
-	@Parameter(names = { "-stomp"}, description = "Port to use for STOMP based messages")
+
+	@Parameter(names = { "-stomp" }, description = "Port to use for STOMP based messages")
 	protected int stompPort = 61613;
 
 	protected BrokerService brokerService;
-	
-	@Parameter(names = {"-activeMqConfig"}, description = "Location of ActiveMQ configuration file")
+
+	@Parameter(names = { "-activeMqConfig" }, description = "Location of ActiveMQ configuration file")
 	protected String activeMqConfig;
 
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
@@ -71,6 +73,8 @@ public abstract class Workflow {
 	private List<String> activeJobs = new ArrayList<String>();
 	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
 
+	protected HashSet<Task> tasks = new HashSet<Task>();
+	
 	@Parameter(names = {
 			"-cacheEnabled" }, description = "Whether this workflow caches intermediary results or not.", arity = 1)
 	protected boolean cacheEnabled = false;
@@ -117,11 +121,11 @@ public abstract class Workflow {
 	 * of processing one already
 	 */
 	protected boolean enablePrefetch = false;
-	
+
 	public void setActiveMqConfig(String activeMqConfig) {
 		this.activeMqConfig = activeMqConfig;
 	}
-	
+
 	public String getActiveMqConfig() {
 		return activeMqConfig;
 	}
@@ -157,7 +161,7 @@ public abstract class Workflow {
 	// from workers
 	private int terminationTimeout = 10000;
 	// time in milliseconds between stream metadata updates
-	private int streamMetadataPeriod = 3000;
+	private int streamMetadataPeriod = 100;
 
 	public void setTerminationTimeout(int timeout) {
 		terminationTimeout = timeout;
@@ -454,17 +458,18 @@ public abstract class Workflow {
 		// adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
 		return "tcp://" + master + ":" + port + "?wireFormat.maxInactivityDurationInitalDelay=60000";
 	}
-	
+
 	// TODO: Fix this to allow dynamic port
 	public String getStompBroker() {
 		return "stomp://" + master + ":" + stompPort;
 	}
-	
+
 	public void stopBroker() throws Exception {
 		brokerService.deleteAllMessages();
+		//brokerService.stopAllConnectors(new ServiceStopper());
 		brokerService.stopGracefully("", "", 1000, 1000);
 		System.out.println("terminated broker (" + getName() + ")");
-		logger.log(SEVERITY.INFO, "terminated broker (" + getName() + ")");
+		// logger.log(SEVERITY.INFO, "terminated broker (" + getName() + ")");
 	}
 
 	public void run() throws Exception {
@@ -552,6 +557,11 @@ public abstract class Workflow {
 		if (terminationTimer != null)
 			terminationTimer.cancel();
 
+		// close all tasks
+		
+		for(Task t : tasks)
+			t.close();
+		
 		try {
 			// master graceful termination logic
 			if (isMaster()) {
@@ -583,24 +593,28 @@ public abstract class Workflow {
 			if (isMaster()) {
 				//
 				streamMetadataTimer.cancel();
-				try {
-					streamMetadataTopic.stop();
-				} catch (Exception e) {
-					// Ignore any exception
-				}
-				activeStreams.remove(streamMetadataTopic);
-				//
+
+			}
+			
+			try {
+				streamMetadataTopic.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+				e.printStackTrace();
+			}
+			activeStreams.remove(streamMetadataTopic);
+			//
+			
+			if (isMaster()) {
+				
 				try {
 					controlTopic.stop();
 				} catch (Exception e) {
 					// Ignore any exception
+					e.printStackTrace();
 				}
 				activeStreams.remove(controlTopic);
-				//
-				System.out.println("createBroker: " + createBroker);
-				if (createBroker) {
-					stopBroker();
-				}
+
 			} else {
 				controlTopic.send(new ControlSignal(ControlSignals.ACKNOWLEDGEMENT, getName()));
 
@@ -608,22 +622,25 @@ public abstract class Workflow {
 					controlTopic.stop();
 				} catch (Exception e) {
 					// Ignore any exception
+					e.printStackTrace();
 				}
 				activeStreams.remove(controlTopic);
 			}
 
-			//
+			// stop all permanent streams
 
 			try {
 				resultsTopic.stop();
 			} catch (Exception e) {
 				// Ignore any exception
+				e.printStackTrace();
 			}
 
 			try {
 				logTopic.stop();
 			} catch (Exception e) {
 				// Ignore any exception
+				e.printStackTrace();
 			}
 
 			activeStreams.remove(resultsTopic);
@@ -636,6 +653,41 @@ public abstract class Workflow {
 					stream.stop();
 				} catch (Exception e) {
 					// Ignore any exception
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				taskStatusTopic.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+				e.printStackTrace();
+			}
+			try {
+				failedJobsQueue.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+				e.printStackTrace();
+			}
+			try {
+				internalExceptionsQueue.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+				e.printStackTrace();
+			}
+
+			// destroy all thread pools used by tasks
+			for (ThreadPoolExecutor ex : CFThreadPoolExecutorServiceFactory.getPools()) {
+				List<Runnable> pending = ex.shutdownNow();
+				if (pending.size() > 0)
+					System.err.println("WARNING: there were pending tasks in the threadpool upon termination!");
+			}
+
+			if (isMaster()) {
+				//
+				System.out.println("createBroker: " + createBroker);
+				if (createBroker) {
+					stopBroker();
 				}
 			}
 
@@ -645,7 +697,7 @@ public abstract class Workflow {
 		} catch (Exception ex) {
 			// There is nothing to do at this stage -- print error for debugging purposes
 			// only
-			// ex.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 

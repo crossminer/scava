@@ -1459,7 +1459,6 @@ class Workflow(object):
                     self.stopBroker()
                 
             else:
-                self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
 
                 try: 
                     self.controlTopic.stop()
@@ -1486,8 +1485,10 @@ class Workflow(object):
                 except Exception as ex:
                     traceback.print_exc()
                     # Ignore any exception
-                
             
+            
+            if not self.isMaster():                 
+                self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
 
             self.terminated = True
             print("workflow " + self.getName() + " terminated.")

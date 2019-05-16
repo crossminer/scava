@@ -38,6 +38,14 @@ public abstract class Task {
 	}
 
 	/**
+	 * Gets called upon workflow termination -- implementers of task should
+	 * override this if they have any termination code to run
+	 */
+	public void close() {
+		// implement any termination-specific functionality here
+	};
+
+	/**
 	 * Call this within consumeXYZ() to denote task blocked due to some reason
 	 * 
 	 * @param reason

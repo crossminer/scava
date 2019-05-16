@@ -1,7 +1,7 @@
 rule Workflow2Class 
 	transform w : Workflow {
 	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	parameters : Map{"w" = w,"package" = w.getPackageName("Python")}
 	
 	template : "workflow2class.egl"
 	
@@ -61,7 +61,7 @@ rule Task2ImplClass
 		
 	guard : t.language.isDefined() and t.language.name=="Python"		
 		
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName("Python")}
 	
 	template : "task2implclass.egl"
 	
@@ -97,15 +97,11 @@ operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	
+	if(not workflow.appliesTo("Python")) return null;	
+	
 	var lang = workflow.languages.select(l|l.name=="Python");
-	var langExists = not lang.isEmpty;
-
-	var path = "";
 	
-	if(langExists) path = lang.first.genOutputFolder + "/";
-	else path = "src-gen-py/";
-	
-	path = path + workflow.getPackageName().toPath();
+	var path = lang.first.genOutputFolder + "/" + workflow.getPackageName("Python").toPath();
 
 	return path;
 }
@@ -115,15 +111,11 @@ operation Any getImplPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	
+	if(not workflow.appliesTo("Python")) return null;
+	
 	var lang = workflow.languages.select(l|l.name=="Python");
-	var langExists = not lang.isEmpty;
 
-	var path = "";
-	
-	if(langExists) path = lang.first.outputFolder + "/";
-	else path = "src-py/";
-	
-	path = path + workflow.getPackageName().toPath();
+	var path = lang.first.outputFolder + "/" + workflow.getPackageName("Python").toPath();
 
 	return path;
 }
@@ -138,13 +130,17 @@ operation String toPath() : String {
 	return self.replaceAll("\\.", "/") + "/";
 }
 
-operation Workflow getPackageName() {
-	var lang = self.languages.select(l|l.name=="Python");
-	var langExists = not lang.isEmpty;
+operation Workflow appliesTo(lang) {
+	return not self.languages.select(l|l.name==lang).isEmpty();
+}
+
+operation Workflow getPackageName(lang : String) {
+	var langs = self.languages.select(l | l.name == lang);
+	var langExists = not langs.isEmpty;
 
 	var package = self.name.ftlc;
 	
-	if(langExists) package = lang.first.package;
+	if(langExists) package = langs.first.package;
 	
 	return package;
 }

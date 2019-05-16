@@ -1,12 +1,4 @@
 [%import "task2baseclass.egl";%]
-[%
-	var lang = w.languages.select(l|l.name=="Java");
-	var langExists = not lang.isEmpty;
-
-	var package = w.name.ftlc;
-	
-	if(langExists) package = lang.first.package;
-%]
 package [%=package%];
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;

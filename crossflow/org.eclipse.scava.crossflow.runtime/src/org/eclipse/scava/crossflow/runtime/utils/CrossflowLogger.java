@@ -20,6 +20,7 @@ public class CrossflowLogger {
 			w.getLogTopic().send(m);
 		} catch (Exception e) {
 			System.err.println("Exception occurred while trying to send LogMessage to LogTopic: " + e.getMessage());
+			System.err.println("Message: " + message);
 		}
 	}
 
@@ -29,6 +30,7 @@ public class CrossflowLogger {
 			w.getLogTopic().send(m);
 		} catch (Exception e) {
 			System.err.println("Exception occurred while trying to send LogMessage to LogTopic: " + e.getMessage());
+			System.err.println("Message: " + message);
 		}
 	}
 

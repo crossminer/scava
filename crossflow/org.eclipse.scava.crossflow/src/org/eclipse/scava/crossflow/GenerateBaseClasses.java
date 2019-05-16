@@ -30,6 +30,9 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 
 public class GenerateBaseClasses {
 
+	//FIXME automate language-specific generator enabling
+	//enum Languages {put enums in}
+	
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
 
@@ -49,6 +52,8 @@ public class GenerateBaseClasses {
 
 	public void execute() throws Exception {
 
+		// 
+		
 		module = createModule();
 		module.parse(getFileURI("crossflow.egx"));
 

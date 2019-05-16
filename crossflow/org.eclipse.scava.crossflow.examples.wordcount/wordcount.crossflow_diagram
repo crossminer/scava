@@ -7,7 +7,7 @@
     <tasks xmi:type="cf:Source" xmi:id="_vtMbkHNoEemR4dUnJRQOBg" name="LineSource" output="_yq47wHNoEemR4dUnJRQOBg" language="_mw7iIHcAEemkt6jvRKbpEA"/>
     <tasks xmi:type="cf:Sink" xmi:id="_wQeu0HNoEemR4dUnJRQOBg" name="WordCountSink" input="_h6eMsHcEEemqspYsNeYz4w" language="_mw7iIHcAEemkt6jvRKbpEA"/>
     <tasks xmi:type="cf:Task" xmi:id="_wu8zgHNoEemR4dUnJRQOBg" name="WordCounter" input="_yq47wHNoEemR4dUnJRQOBg" output="_zltlQHNoEemR4dUnJRQOBg" multipleOutputs="true" language="_mw7iIHcAEemkt6jvRKbpEA"/>
-    <tasks xmi:type="cf:Task" xmi:id="_gYdnYHcEEemqspYsNeYz4w" name="Filter" input="_zltlQHNoEemR4dUnJRQOBg" output="_h6eMsHcEEemqspYsNeYz4w" language="_XOCUoHcDEemgQuyg8byS_w"/>
+    <tasks xmi:type="cf:Task" xmi:id="_gYdnYHcEEemqspYsNeYz4w" name="Filter" input="_zltlQHNoEemR4dUnJRQOBg" output="_h6eMsHcEEemqspYsNeYz4w" language="_PTFCoHfnEemgDr9JORHhZg"/>
     <types xmi:type="cf:Type" xmi:id="_HFU_oHNpEemR4dUnJRQOBg" name="Line">
       <fields xmi:type="cf:Field" xmi:id="_Jq1pUHNpEemR4dUnJRQOBg" name="text"/>
     </types>
@@ -16,8 +16,8 @@
       <fields xmi:type="cf:Field" xmi:id="_TeJWcHNpEemR4dUnJRQOBg" name="frequency" type="int"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_mw7iIHcAEemkt6jvRKbpEA" name="Java" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="src" genOutputFolder="src-gen"/>
-    <languages xmi:type="cf:Language" xmi:id="_XOCUoHcDEemgQuyg8byS_w" name="Python" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="py" genOutputFolder="py-gen">
-      <parameters xmi:type="cf:Parameter" xmi:id="_bXF0sHcDEemgQuyg8byS_w" name="module" value="default"/>
+    <languages xmi:type="cf:Language" xmi:id="_PTFCoHfnEemgDr9JORHhZg" name="Python" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="py" genOutputFolder="py-gen">
+      <parameters xmi:type="cf:Parameter" xmi:id="_TNIdYHfnEemgDr9JORHhZg" name="module" value="default"/>
     </languages>
   </cf:Workflow>
   <notation:Diagram xmi:id="_ZM1NAHNoEemR4dUnJRQOBg" type="Crossflow" element="_ZMRzYHNoEemR4dUnJRQOBg" name="wordcount.crossflow_diagram" measurementUnit="Pixel">
@@ -78,20 +78,7 @@
         <styles xmi:type="notation:FilteringStyle" xmi:id="_mxAao3cAEemkt6jvRKbpEA"/>
       </children>
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_mw_zkXcAEemkt6jvRKbpEA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mw_zkncAEemkt6jvRKbpEA" x="432" y="228"/>
-    </children>
-    <children xmi:type="notation:Shape" xmi:id="_XOF_AHcDEemgQuyg8byS_w" type="2013" element="_XOCUoHcDEemgQuyg8byS_w" fontName="Segoe UI">
-      <children xmi:type="notation:DecorationNode" xmi:id="_XOGmEHcDEemgQuyg8byS_w" type="5015"/>
-      <children xmi:type="notation:DecorationNode" xmi:id="_XOGmEXcDEemgQuyg8byS_w" type="7002">
-        <children xmi:type="notation:Shape" xmi:id="_bXHC0HcDEemgQuyg8byS_w" type="3002" element="_bXF0sHcDEemgQuyg8byS_w" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_bXHC0ncDEemgQuyg8byS_w" type="5014"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bXHC0XcDEemgQuyg8byS_w"/>
-        </children>
-        <styles xmi:type="notation:SortingStyle" xmi:id="_XOGmEncDEemgQuyg8byS_w"/>
-        <styles xmi:type="notation:FilteringStyle" xmi:id="_XOGmE3cDEemgQuyg8byS_w"/>
-      </children>
-      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_XOF_AXcDEemgQuyg8byS_w"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XOF_AncDEemgQuyg8byS_w" x="432" y="288"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mw_zkncAEemkt6jvRKbpEA" x="470" y="230"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_gYif4HcEEemqspYsNeYz4w" type="2010" element="_gYdnYHcEEemqspYsNeYz4w" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_gYjuAHcEEemqspYsNeYz4w" type="5010"/>
@@ -100,6 +87,19 @@
     <children xmi:type="notation:Shape" xmi:id="_h6ezwHcEEemqspYsNeYz4w" type="2004" element="_h6eMsHcEEemqspYsNeYz4w" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_h6ezwncEEemqspYsNeYz4w" type="5004"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_h6ezwXcEEemqspYsNeYz4w" x="234" y="414"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_PTRP4HfnEemgDr9JORHhZg" type="2013" element="_PTFCoHfnEemgDr9JORHhZg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_PTXWgHfnEemgDr9JORHhZg" type="5015"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_PTXWgXfnEemgDr9JORHhZg" type="7002">
+        <children xmi:type="notation:Shape" xmi:id="_TNOkAHfnEemgDr9JORHhZg" type="3002" element="_TNIdYHfnEemgDr9JORHhZg" fontName="Segoe UI">
+          <children xmi:type="notation:DecorationNode" xmi:id="_TNOkAnfnEemgDr9JORHhZg" type="5014"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TNOkAXfnEemgDr9JORHhZg"/>
+        </children>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_PTXWgnfnEemgDr9JORHhZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_PTXWg3fnEemgDr9JORHhZg"/>
+      </children>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_PTRP4XfnEemgDr9JORHhZg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PTRP4nfnEemgDr9JORHhZg" x="435" y="285"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_ZM1NAXNoEemR4dUnJRQOBg"/>
     <edges xmi:type="notation:Connector" xmi:id="_DtGfkHNpEemR4dUnJRQOBg" type="4005" source="_yq6J4HNoEemR4dUnJRQOBg" target="_wu9akHNoEemR4dUnJRQOBg">
