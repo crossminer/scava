@@ -14,7 +14,7 @@ const INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
 const SIZE_LABEL_PRE = "Size: ";
 
 const STREAM_TOPIC = "/topic/StreamMetadataBroadcaster";
-const TASK_TOPIC = "/topic/TaskStatusPublisher";
+const TASK_TOPIC = "/topic/TaskMetadataBroadcaster";
 const LOG_TOPIC = "/topic/LogTopic";
 
 const STREAM_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>';
