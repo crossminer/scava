@@ -21,8 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.httpcomponents.httpclient,
  org.slf4j.api,
  org.joda.time,
- org.tukaani.xz,
- org.apache.httpcomponents.httpmime
+ org.tukaani.xz
 Bundle-Activator: org.eclipse.scava.nlp.tools.preprocessor.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,

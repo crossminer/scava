@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Readability
+Bundle-SymbolicName: org.eclipse.scava.nlp.tools.readability;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.apache.log4j,
+ org.eclipse.scava.nlp.tools.core
+Bundle-Activator: org.eclipse.scava.nlp.tools.readability.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.scava.nlp.tools.readability

@@ -6,9 +6,6 @@ abstract class BugTrackingSystem {
 
 @customize
 class BitbucketBugTrackingSystem extends BugTrackingSystem {
-  attr String user;
-  attr String repository;
   attr String login;
   attr String password;
-  attr String owner;
 }

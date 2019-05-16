@@ -157,11 +157,11 @@ public class PuppetDesignSmellsHistoricMetric extends Pongo {
 		return this;
 	}
 	
-	public int getCumulativeNumberOfDesignUsers() {
+	public int getCumulativeNumberOfDesignSmells() {
 		return parseInteger(dbObject.get("cumulativeNumberOfDesignSmells")+"", 0);
 	}
 	
-	public PuppetDesignSmellsHistoricMetric setCumulativeNumberOfDesignUsers(int cumulativeNumberOfDesignUsers) {
+	public PuppetDesignSmellsHistoricMetric setCumulativeNumberOfDesignSmells(int cumulativeNumberOfDesignUsers) {
 		dbObject.put("cumulativeNumberOfDesignSmells", cumulativeNumberOfDesignUsers);
 		notifyChanged();
 		return this;

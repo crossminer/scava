@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JavaEWAH
+Bundle-SymbolicName: com.googlecode.javaewah.JavaEWAH
+Bundle-Version: 1.1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: JavaEWAH-1.1.6.jar
+Export-Package: com.googlecode.javaewah,
+ com.googlecode.javaewah.datastructure,
+ com.googlecode.javaewah.symmetric,
+ com.googlecode.javaewah32,
+ com.googlecode.javaewah32.symmetric

@@ -35,6 +35,22 @@ from ...client import HttpClient
 CATEGORY_METRIC = 'metric'
 CATEGORY_PROJECT = 'project'
 CATEGORY_FACTOID = 'factoid'
+CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
+CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
+
+DEP_MAVEN = 'maven'
+DEP_MAVEN_OPT = 'opt'
+DEP_OSGI = 'osgi'
+DEP_OSGI_PACKAGE = 'package'
+DEP_OSGI_BUNDLE = 'bundle'
+
+METRICPROVIDER_ID_MAVEN_DEP_ALL = 'trans.rascal.dependency.maven.allMavenDependencies'
+METRICPROVIDER_ID_MAVEN_DEP_OPT = 'trans.rascal.dependency.maven.allOptionalMavenDependencies'
+METRICPROVIDER_ID_OSGI_DEP_PKG_ALL = 'trans.rascal.dependency.osgi.allOSGiPackageDependencies'
+METRICPROVIDER_ID_OSGI_DEP_BNL_ALL = 'trans.rascal.dependency.osgi.allOSGiBundleDependencies'
+
+METRICPROVIDER_ID_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider'
+METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider'
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +71,8 @@ class Scava(Backend):
     """
     version = '0.1.0'
 
-    CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID]
+    CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
+                  CATEGORY_DEV_DEPENDENCY, CATEGORY_CONF_DEPENDENCY]
 
     def __init__(self, url, project=None, tag=None, archive=None):
         origin = url
@@ -112,7 +129,8 @@ class Scava(Backend):
                                    category, str(item))
                     item['executionInformation']['lastExecuted'] = datetime_utcnow().strftime("%Y%m%d")
 
-                if category in [CATEGORY_FACTOID, CATEGORY_METRIC]:
+                if category in [CATEGORY_FACTOID, CATEGORY_METRIC,
+                                CATEGORY_DEV_DEPENDENCY, CATEGORY_CONF_DEPENDENCY]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -147,7 +165,7 @@ class Scava(Backend):
             # the item is a project
             mid = item['name']
         else:
-            raise TypeError("Can not extract metadata_id from", item)
+            raise TypeError("Cannot extract metadata_id from", item)
 
         return mid
 
@@ -186,6 +204,10 @@ class Scava(Backend):
             category = CATEGORY_PROJECT
         elif 'factoid' in item:
             category = CATEGORY_FACTOID
+        elif 'dependency' in item:
+            category = CATEGORY_DEV_DEPENDENCY
+        elif 'dependencyName' in item:
+            category = CATEGORY_CONF_DEPENDENCY
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -266,8 +288,7 @@ class ScavaClient(HttpClient):
                 yield project_metric
 
         elif category == CATEGORY_FACTOID:
-            # Get all factoids definitions and then find the values for the current project
-            api_factoids = urijoin(self.base_url, "factoids")
+            api_factoids = urijoin(self.base_url, "/projects/p/%s/f" % project)
             factoids = json.loads(self.fetch(api_factoids))
 
             for factoid in factoids:
@@ -284,6 +305,34 @@ class ScavaClient(HttpClient):
 
                 yield project_factoid
 
+        elif category == CATEGORY_DEV_DEPENDENCY:
+            maven_all_deps = self.__fetch_dev_dependencies(project, METRICPROVIDER_ID_MAVEN_DEP_ALL,
+                                                           dep_type=DEP_MAVEN)
+
+            maven_opt_deps = self.__fetch_dev_dependencies(project, METRICPROVIDER_ID_MAVEN_DEP_OPT,
+                                                           dep_type=DEP_MAVEN, dep_sub_type=DEP_MAVEN_OPT)
+
+            osgi_all_pkg_deps = self.__fetch_dev_dependencies(project, METRICPROVIDER_ID_OSGI_DEP_PKG_ALL,
+                                                              dep_type=DEP_OSGI, dep_sub_type=DEP_OSGI_PACKAGE)
+            osgi_all_bnl_deps = self.__fetch_dev_dependencies(project, METRICPROVIDER_ID_OSGI_DEP_BNL_ALL,
+                                                              dep_type=DEP_OSGI, dep_sub_type=DEP_OSGI_BUNDLE)
+
+            group_deps = [maven_all_deps, maven_opt_deps, osgi_all_bnl_deps, osgi_all_pkg_deps]
+
+            for deps in group_deps:
+                for dep in deps:
+                    yield dep
+
+        elif category == CATEGORY_CONF_DEPENDENCY:
+            docker_deps = self.__fetch_conf_dependencies(project, METRICPROVIDER_ID_DOCKER_DEPS)
+            puppet_deps = self.__fetch_conf_dependencies(project, METRICPROVIDER_ID_PUPPET_DEPS)
+
+            group_deps = [docker_deps, puppet_deps]
+
+            for deps in group_deps:
+                for dep in deps:
+                    yield dep
+
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -293,6 +342,51 @@ class ScavaClient(HttpClient):
         response = super().fetch(url, payload)
 
         return response.text
+
+    def __fetch_dev_dependencies(self, project, dep_metric, dep_type=None, dep_sub_type=None):
+        api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        dependencies = json.loads(self.fetch(api_dependencies))
+
+        if not dependencies:
+            yield '[]'
+
+        for dep in dependencies:
+            if 'value' not in dep or not dep['value']:
+                logger.debug("No value for dependency %s for project %s", str(dep), project)
+                continue
+
+            project_dep = {
+                "dependency": dep['value'],
+                "scava_metric_provider": dep_metric,
+                "type": dep_type,
+                "sub_type": dep_sub_type,
+                "id": dep['_id']
+            }
+
+            yield json.dumps(project_dep)
+
+    def __fetch_conf_dependencies(self, project, dep_metric):
+        api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        dependencies = json.loads(self.fetch(api_dependencies))
+
+        if not dependencies:
+            yield '[]'
+
+        for dep in dependencies:
+            if 'dependencyName' not in dep or not dep['dependencyName']:
+                logger.debug("No dependency name %s for project %s", str(dep), project)
+                continue
+
+            project_dep = {
+                "dependency": dep['dependencyName'],
+                "dependency_version": dep['dependencyVersion'],
+                "scava_metric_provider": dep_metric,
+                "type": dep['type'],
+                "sub_type": dep['subType'] if 'subType' in dep else None,
+                "id": dep['_id']
+            }
+
+            yield json.dumps(project_dep)
 
 
 class ScavaCommand(BackendCommand):

@@ -7,7 +7,6 @@ Bundle-Activator: org.eclipse.scava.platform.vcs.svn.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform.vcs.svn,
  org.junit,
- org.mockito,
  org.eclipse.scava.repository.model.vcs.svn,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime.osgi,

@@ -16,6 +16,7 @@
    <windowImages/>
 
    <launcher>
+      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
@@ -28,7 +29,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.scava.platform.feature"/>
+      <feature id="org.eclipse.scava.platform.feature" version="1.0.0.qualifier"/>
    </features>
 
    <configurations>
@@ -38,5 +39,12 @@
       <plugin id="org.restlet" autoStart="true" startLevel="0" />
       <plugin id="org.restlet.ext.jetty" autoStart="true" startLevel="0" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

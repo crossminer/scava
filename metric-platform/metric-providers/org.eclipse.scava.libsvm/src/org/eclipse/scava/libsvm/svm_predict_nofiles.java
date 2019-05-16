@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -146,7 +147,7 @@ public class svm_predict_nofiles {
 		System.exit(1);
 	}
 
-	public static svm_model parse_args_and_load_model(ClassLoader cl, String folderModel, String modelName, boolean predictProb, OssmeterLogger logger) {
+	public static svm_model parse_args_and_load_model(Class cl, String folderModel, String modelName, boolean predictProb, OssmeterLogger logger) {
 		predict_probability=predictProb;
 		svm_print_string = svm_print_stdout;
 
@@ -155,10 +156,10 @@ public class svm_predict_nofiles {
 		svm_model model = null;
 		try {
 			File modelFile;
-			InputStream resource = cl.getResourceAsStream("/" + model_filename);
+			InputStream resource = cl.getClassLoader().getResourceAsStream("/" + model_filename);
 			if(resource==null)
 			{
-				resource=cl.getResourceAsStream("/" + model_filename +".zip");
+				resource=cl.getClassLoader().getResourceAsStream("/" + model_filename +".zip");
 				if(resource==null)
 					throw new FileNotFoundException("The file "+model_filename+" .m or .m.zip has not been found");
 				modelFile=unzipModel(resource);
@@ -166,8 +167,16 @@ public class svm_predict_nofiles {
 			else
 				modelFile=createTempFile(resource, "m");
 			if(modelFile==null)
-				throw new FileNotFoundException("The file "+model_filename+" has not been found");
-			
+			{
+				String path = cl.getProtectionDomain().getCodeSource().getLocation().getFile();
+				if (path.endsWith("bin/"))
+					path = path.substring(0, path.lastIndexOf("bin/"));
+				File file= new File(path+model_filename);
+				if(!Files.exists(file.toPath()))
+					throw new FileNotFoundException("The file "+model_filename+" has not been found");
+				else
+					resource=new FileInputStream(file);
+			}
 			model = svm.svm_load_model(modelFile.getPath());
 			modelFile.delete();
 			

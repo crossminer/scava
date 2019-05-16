@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.nlp.tools.core.analyzer.NLPCoreAnalyzer;
+import org.eclipse.scava.nlp.tools.core.NLPCoreAnalyzer;
 import org.eclipse.scava.nlp.tools.other.ngrams.NgramsGenerator;
 
 public class SenticNet5
@@ -39,7 +39,7 @@ public class SenticNet5
 		List<Map.Entry<String,HashMap<String, Double>>> analyzedText = new ArrayList<Map.Entry<String,HashMap<String, Double>>>();
 		HashMap<String, Double> values=null;
 		Map.Entry<String, HashMap<String, Double>> token=null;
-		List<String> tokens = coreAnalyzedText.lemmatizeAsList();
+		List<String> tokens = coreAnalyzedText.getLemmas();
 		List<String> ngramsList = new ArrayList<String>(coreAnalyzedText.numberOfTokens()); //At least the size will be the number of tokens
 		ngramsList.addAll(tokens);
 		ngramsList.addAll(NgramsGenerator.ngramsGenerator(tokens, 5));
@@ -72,7 +72,7 @@ public class SenticNet5
 		return summaryScores(analyzeText(coreAnalyzedText));
 	}
 	
-	public static HashMap<String,Double> summaryScores(List<Map.Entry<String, HashMap<String,Double>>> senticnetAnalyzedText)
+	private static HashMap<String,Double> summaryScores(List<Map.Entry<String, HashMap<String,Double>>> senticnetAnalyzedText)
 	{
 		HashMap<String,Double> globalScore = new HashMap<String,Double>(29);
 		double currentPolarity;

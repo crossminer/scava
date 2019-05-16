@@ -4,8 +4,7 @@ Bundle-Name: Git
 Bundle-SymbolicName: org.eclipse.scava.repository.model.vcs.git;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.repository.model.vcs.git
-Require-Bundle: com.googlecode.pongo.runtime.dependencies,
- com.googlecode.pongo.runtime,
+Require-Bundle: com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 
