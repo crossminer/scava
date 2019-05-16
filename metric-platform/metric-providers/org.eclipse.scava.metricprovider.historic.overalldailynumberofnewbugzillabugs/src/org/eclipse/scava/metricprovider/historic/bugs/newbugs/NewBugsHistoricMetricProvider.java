@@ -43,19 +43,19 @@ public class NewBugsHistoricMetricProvider extends AbstractHistoricalMetricProvi
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugs";
+		return "historic.bugs.newbugs";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Daily Number Of New Bugs";
+		return "Number of new bugs per day per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "The number of new bugs reported per day during the period of interest. " +
-				"A small number of bug reports can indicate either a bug-free, robust project " +
-				"or a project with a small/inactive user community.";
+		return "This metric computes the number of new bugs reported by the community (users) per day"
+				+ " for each bug tracker. A small number of bug reports can indicate either a bug-free, "
+				+ "robust project or a project with a small/inactive user community.";
 	}
 	
 	@Override

@@ -153,7 +153,7 @@ public class BugsHistoricMetricProvider extends AbstractHistoricalMetricProvider
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugsperbugtracker";
+		return "historic.bugs.bugs";
 	}
 
 	@Override
@@ -163,6 +163,8 @@ public class BugsHistoricMetricProvider extends AbstractHistoricalMetricProvider
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of bugs per day for each bug tracker separately.";
+		return "This metric computes the number of bugs per day for each bug tracker separately. "
+				+ "It also computes additional information such as average comments per bug, "
+				+ "average comments per user, average requests and/or replies per user and bug.";
 	}
 }

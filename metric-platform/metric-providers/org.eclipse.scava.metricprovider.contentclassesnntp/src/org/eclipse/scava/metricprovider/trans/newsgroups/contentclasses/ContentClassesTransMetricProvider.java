@@ -81,7 +81,7 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsContentClassesTransMetric db) {
 
-		if (uses.size()!=1) {
+		if (uses.size()!=2) {
 			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
 								"the transient metric it needs!");
 			System.exit(-1);
@@ -146,17 +146,17 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupcontentClasses";
+		return "trans.newsgroups.contentclasses";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Content Classes in Newgroup Articles";
+		return "Content classes in newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Content Classes in Newgroup Articles";
+		return "This metric computes the content classes in newgroup articles, per newsgroup";
 	}
 
 }

@@ -88,16 +88,17 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgrouptopics";
+		return "historic.newsgroups.topics";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Labels Of Newsgroup Topics Per Day";
+		return "Labels of newsgroup topics per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematci clusters) in articles submitted every day.";
+		return "This metric computes the labels of topics (thematic clusters) in articles submitted "
+				+ "by the community (users) per day, for each newsgroup seperately.";
 	}
 }

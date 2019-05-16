@@ -205,18 +205,17 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 
 	@Override
 	public String getShortIdentifier() {
-		return "activeusers";
+		return "trans.newsgroups.activeusers";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Active Users";
+		return "Number of users with new comment in the last 15 days";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric keeps track of the users that submitted news comments " +
-				"in the last 15 days.";
+		return "This metric computes the number of users that submitted news comments in the last 15 days, per newsgroup.";
 	}
 
 }

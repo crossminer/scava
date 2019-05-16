@@ -37,7 +37,7 @@ public class CommentsTransMetricProvider implements ITransientMetricProvider<Bug
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugcomments";
+		return "trans.bugs.comments";
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class CommentsTransMetricProvider implements ITransientMetricProvider<Bug
 
 	@Override
 	public String getSummaryInformation() {
-		return "The number of bug comments over time. Lorum ipsum.";
+		return "This metric computes the number of bug comments, per bug tracker.";
 	}
 	
 	@Override

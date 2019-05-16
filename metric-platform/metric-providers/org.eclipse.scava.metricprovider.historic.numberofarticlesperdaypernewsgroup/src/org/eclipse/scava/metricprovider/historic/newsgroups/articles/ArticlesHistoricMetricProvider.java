@@ -99,16 +99,17 @@ public class ArticlesHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "articlespernewsgroup";
+		return "historic.newsgroups.articles";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Articles Per Day Per Newsgroup";
+		return "Number of articles per day per news group";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of articles per day for each newsgroup separately.";
+		return "This metric computes the number of articles submitted by the "
+				+ "community (users) per day for each newsgroup separately.";
 	}
 }

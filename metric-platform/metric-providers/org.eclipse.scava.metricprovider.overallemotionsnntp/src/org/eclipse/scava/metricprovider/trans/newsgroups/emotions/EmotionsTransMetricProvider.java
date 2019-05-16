@@ -171,17 +171,18 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupemotions";
+		return "trans.newsgroups.emotions";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Emotional Dimensions in Newsgroup Articles";
+		return "Emotions in newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Emotional Dimensions in Newsgroup Articles";
+		return "This metric computes the emotional dimensions in newsgroup articles, per newsgroup. "
+				+ "There are 6 emotion labels (anger, fear, joy, sadness, love, surprise)";
 	}
 	
 	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article, String newsGroupName)

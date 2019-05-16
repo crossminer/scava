@@ -176,7 +176,7 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupseveritysentiment";
+		return "historic.newsgroups.severityresponsetime";
 	}
 
 	@Override
@@ -186,8 +186,9 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in newsgroup threads submitted every day.";
+		return "This metric computes the average time in which the community (users) responds to open "
+				+ "threads per severity level per day for each bug tracker. Format: dd:HH:mm:ss:SS, "
+				+ "where dd=days, HH:hours, mm=minutes, ss:seconds, SS=milliseconds. Note: there are 7 "
+				+ "severity  levels (blocker, critical, major, minor, enhancement, normal, trivial).";
 	}
 }

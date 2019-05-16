@@ -202,18 +202,18 @@ BugsDailyRequestsRepliesTransMetric>{
 
 	@Override
 	public String getShortIdentifier() {
-		return "dailyrequestsreplies";
+		return "trans.bugs.dailyrequestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of Comments, Requests and Replies per Day of the Week";
+		return "Number of bug comments, requests and replies per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric stores the number of comments, " +
-				"requests and replies for each day of the week.";
+		return "This metric computes the number of bug comments, including those regarded "
+				+ "as requests and replies each day, per bug tracker.";
 	}
 
 }

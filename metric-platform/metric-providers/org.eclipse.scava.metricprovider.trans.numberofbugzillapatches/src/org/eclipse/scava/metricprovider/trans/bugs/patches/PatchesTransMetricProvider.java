@@ -99,17 +99,17 @@ public class PatchesTransMetricProvider implements ITransientMetricProvider<Bugs
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugpatches";
+		return "trans.bugs.patches";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Patches";
+		return "Number of patches per bug";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric keeps the number of patches submitted for each bug.";
+		return "This metric computes the number of patches submitted by the community (users) for each bug.";
 	}
 
 }

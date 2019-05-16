@@ -180,18 +180,17 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 
 	@Override
 	public String getShortIdentifier() {
-		return "threadsrequestsreplies";
+		return "trans.newsgroups.threadsrequestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Thread Statistics (answered?, answeredDuration)";
+		return "Thread statistics (answered?, response time)";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "The metric computed for each thread whether it is answered." +
-				"If yes, it also computes the response time";
+		return "The metric computes for each thread whether it is answered. If so, it computes the response time.";
 	}
 
 }

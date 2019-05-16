@@ -164,18 +164,22 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugseveritysentiment";
+		return "historic.bugs.severitysentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Sentiment Per Bug Severity Levels Per Day";
+		return "Average sentiment per bugs severity level per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in bugs submitted every day.";
+		return "This metric computes for each bug severity level, the average sentiment, sentiment at "
+				+ "the begining and end of bug comments posted by the community (users) every day for "
+				+ "each bug tracker. Sentiment score could be closer to -1 (negative sentiment), 0 (neutral sentiment) "
+				+ "or +1 (positive sentiment). There are 8 severity levels (blocker, critical, major, "
+				+ "minor, enhancement, normal, trivial, unknown). A bug severity is considered `unknown` "
+				+ "if there is not enough information for the classifier to make a decision. For example, "
+				+ "an unanswered bug with no user comment to analyse..";
 	}
 }

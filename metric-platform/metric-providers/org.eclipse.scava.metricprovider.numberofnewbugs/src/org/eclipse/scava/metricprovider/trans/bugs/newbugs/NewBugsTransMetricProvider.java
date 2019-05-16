@@ -94,17 +94,17 @@ public class NewBugsTransMetricProvider implements ITransientMetricProvider<Bugs
 
 	@Override
 	public String getShortIdentifier() {
-		return "newbugs";
+		return "trans.bugs.newbugs";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of bugs";
+		return "Number of new bugs";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "The number of bugs over time. Lorum ipsum.";
+		return "This metric computes the number of new bugs over time, per bug tracker.";
 	}
 
   

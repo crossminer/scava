@@ -79,16 +79,17 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugtopics";
+		return "historic.bugs.topics";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Labels Of Bug Topics Per Day";
+		return "Labels of topics in bug comments per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematci clusters) in comments submitted every day.";
+		return "This metric computes the labels of topics (thematic clusters) in bug comments "
+				+ "submitted by the community (users) every day, per bug tracker..";
 	}
 }

@@ -35,8 +35,7 @@ import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
 
-public class PlainTextProcessingTransMetricProvider
-		implements ITransientMetricProvider<PlainTextProcessingTransMetric> {
+public class PlainTextProcessingTransMetricProvider implements ITransientMetricProvider<PlainTextProcessingTransMetric> {
 
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
@@ -50,7 +49,7 @@ public class PlainTextProcessingTransMetricProvider
 
 	@Override
 	public String getShortIdentifier() {
-		return "plaintextprocessing";
+		return "trans.plaintextprocessing";
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class PlainTextProcessingTransMetricProvider
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric preprocess each bug comment or newsgroup article into a split " + "plain text format.";
+		return "This metric preprocess each bug comment, newsgroup article or forum post into a split plain text format.";
 	}
 
 	@Override

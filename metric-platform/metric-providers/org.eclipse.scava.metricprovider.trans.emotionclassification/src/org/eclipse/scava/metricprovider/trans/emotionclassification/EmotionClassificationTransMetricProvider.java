@@ -54,7 +54,7 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 
 	@Override
 	public String getShortIdentifier() {
-		return "emotionclassifier";
+		return "trans.emotionclassification";
 	}
 
 	@Override
@@ -64,7 +64,8 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the emotions present in each bug comment, newsgroup article or forum post";
+		return "This metric computes the emotions present in each bug comment, newsgroup article or forum post. "
+				+ "There are 6 emotion labels (anger, fear, joy, sadness, love, surprise).";
 	}
 
 	@Override

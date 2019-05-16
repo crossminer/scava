@@ -319,18 +319,19 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugheadermetadata";
+		return "trans.bugs.bugmetadata";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Bug Header Metadata";
+		return "Bug header metadata";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric keeps various metadata of bug header, " +
-				"i.e. priority, status, operation system and resolution.";
+		return "This metric computes various metadata in bug header, i.e. priority, "
+				+ "status, operation system and resolution. Other values computed by "
+				+ "this metric includes average sentiment, content class and requests/replies..";
 	}
 
 }

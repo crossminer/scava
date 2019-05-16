@@ -213,7 +213,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 
 	@Override
 	public String getShortIdentifier() {
-		return "sentimentclassification";
+		return "trans.sentimentclassification";
 	}
 
 	@Override
@@ -223,7 +223,8 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the sentiment of each bug comment, newsgroup article or forum post";
+		return "This metric computes the sentiment of each bug comment, newsgroup article or forum post. "
+				+ "Sentiment can be -1 (negative sentiment), 0 (neutral sentiment) or 1 (positive sentiment)";
 	}
 
 }

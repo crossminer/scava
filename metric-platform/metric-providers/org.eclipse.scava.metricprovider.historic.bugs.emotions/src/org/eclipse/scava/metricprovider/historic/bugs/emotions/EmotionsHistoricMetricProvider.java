@@ -92,16 +92,17 @@ public class EmotionsHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugemotions";
+		return "historic.bugs.emotions";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Bug Emotions Per Day";
+		return "Number of emotions per day per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of emotional dimensions in comments submitted every day.";
+		return "This metric computes the emotional dimensions present in bug comments submitted "
+				+ "by the community (users) per day for each bug tracker.";
 	}
 }

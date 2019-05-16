@@ -179,18 +179,18 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 
 	@Override
 	public String getShortIdentifier() {
-		return "activeusers";
+		return "trans.bugs.activeusers";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Active Users";
+		return "Number of users with new bug comment in the last 15 days";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric keeps track of the users that submitted news comments " +
-				"in the last 15 days.";
+		return "This metric computes the number of users that submitted new "
+				+ "bug comments in the last 15 days, for each bug tracker.";
 	}
 
 }

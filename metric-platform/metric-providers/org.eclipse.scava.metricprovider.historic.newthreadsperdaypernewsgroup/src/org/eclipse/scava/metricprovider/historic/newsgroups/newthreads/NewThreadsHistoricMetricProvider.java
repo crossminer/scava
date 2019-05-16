@@ -107,16 +107,17 @@ public class NewThreadsHistoricMetricProvider extends AbstractHistoricalMetricPr
 
 	@Override
 	public String getShortIdentifier() {
-		return "newthreadspernewsgroup";
+		return "historic.newsgroups.newthreads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of New Threads Per Day Per Newsgroup";
+		return "Number of new threads per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of new threads per day for each newsgroup separately.";
+		return "This metric computes the number of new threads submitted by the community (users) "
+				+ "per day for each newsgroup separately.";
 	}
 }
