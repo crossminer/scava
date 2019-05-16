@@ -19,8 +19,8 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.client.api.ApiStartServiceToken;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.platform.osgi.api.ApiStartServiceToken;
 import org.eclipse.scava.platform.osgi.services.TaskCheckExecutor;
 import org.eclipse.scava.platform.osgi.services.WorkerExecutor;
 
