@@ -41,14 +41,18 @@ class [%=w.name%](Workflow):
 
 		# tasks
 		[%for (t in w.tasks) {%]
+		[%if (t.isPythonTask()) {%]
 		self.[%=t.name.ftlc()%] = None
 		[%}%]
+		[%}%]
 	
-		if (self.isMaster()):
+		[%if(not w.getMasterTasks().isEmpty()){%]
+		if (self.isMaster()):				
 			[%for (t in w.getMasterTasks()){%]
 			self.[%=t.name.ftlc()%] = [%=t.name%]()
 			self.[%=t.name.ftlc()%].setWorkflow(self)
 			[%}%]
+		[%}%]	
 		
 		if (self.isWorker()):
 		[%for (t in w.getWorkerTasks()){%]
@@ -103,9 +107,11 @@ class [%=w.name%](Workflow):
 			self.activeStreams.append(self.[%=s.name.ftlc()%])
 			[%}%]
 			
+			[%if(not w.getMasterTasks().isEmpty()){%]
 			if (self.isMaster()):
 			[%for (t in w.getMasterTasks()){%]
 				[%=t.setup()%]
+			[%}%]
 			[%}%]
 			
 			if (self.isWorker()):
@@ -172,12 +178,16 @@ if __name__ == '__main__':
 	app.run();
 	
 [%
+operation Task isPythonTask(){
+	return not self.language.isDefined() or self.language.name=="Python";
+}
+
 operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly);
+	return self.tasks.select(t | t.isPythonTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
 }
 
 operation Workflow getWorkerTasks() {
-	return self.tasks.excludingAll(self.getMasterTasks());
+	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isPythonTask());
 }
 
 @template
