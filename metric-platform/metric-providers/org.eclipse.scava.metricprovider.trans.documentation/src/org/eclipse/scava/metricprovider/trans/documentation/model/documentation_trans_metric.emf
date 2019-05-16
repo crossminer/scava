@@ -20,5 +20,6 @@ class Documentation {
 	attr String[*] entriesId;
 	attr String[*] removedEntriesId;
 	attr String lastUpdateDate;
+	attr String lastRevisionAnalyzed;
 }
 

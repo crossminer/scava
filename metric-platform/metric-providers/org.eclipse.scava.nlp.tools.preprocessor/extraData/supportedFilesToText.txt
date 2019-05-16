@@ -1,0 +1,29 @@
+#Application
+AbiWord document	application/x-abiword
+Amazon Kindle eBook format	application/vnd.amazon.ebook
+Microsoft Word	application/msword
+Microsoft Word (OpenXML)	application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Electronic publication (EPUB)	application/epub+zip
+OpenDocument presentation document	application/vnd.oasis.opendocument.presentation
+OpenDocument spreadsheet document	application/vnd.oasis.opendocument.spreadsheet
+OpenDocument text document	application/vnd.oasis.opendocument.text
+Portable Document Format (PDF)	application/pdf
+Microsoft PowerPoint	application/vnd.ms-powerpoint
+Microsoft PowerPoint (OpenXML)	application/vnd.openxmlformats-officedocument.presentationml.presentation
+Rich Text Format (RTF)	application/rtf
+XHTML	application/xhtml+xml
+Microsoft Excel	application/vnd.ms-excel
+Microsoft Excel (OpenXML)	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+Wordperfect	application/vnd.wordperfect
+Microsoft Works	application/vnd.ms-works
+#Images
+DJVU	image/vnd.djvu
+#
+#
+#Text
+Comma-separated values (CSV)	text/csv
+HyperText Markup Language (HTML)	text/html
+Text	text/plain
+Markdown	text/markdown
+Rich Text Format (RTF)	text/rtf
+Tab-separated-values	text/tab-separated-values

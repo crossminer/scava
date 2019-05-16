@@ -65,8 +65,7 @@ public class DocumentationReadabilityHistoricMetricProvider extends AbstractHist
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
-		this.context = context;
-		
+		this.context = context;		
 	}
 	
 	@Override

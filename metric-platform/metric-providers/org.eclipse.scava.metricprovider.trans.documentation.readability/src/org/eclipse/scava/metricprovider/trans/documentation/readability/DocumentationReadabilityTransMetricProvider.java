@@ -61,7 +61,6 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
 		this.uses=uses;
-		
 	}
 
 	@Override
@@ -97,7 +96,6 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 					documentationEntryReadability = findDocumentationEntryReadability(db, documentation.getDocumentationId(), entryId);
 					db.getDocumentationEntriesReadability().remove(documentationEntryReadability);
 				}
-				db.sync();
 			}
 		}
 		
@@ -106,30 +104,27 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 			
 		for(DocumentationEntryDetectingCode documentationEntry : documentationEntriesDetectingCode)
 		{
-			documentationEntryReadability = findDocumentationEntryReadability(db, documentationEntry);
-			if(documentationEntryReadability==null)
+			if(!documentationEntry.getNaturalLanguage().isEmpty())
 			{
-				documentationEntryReadability= new DocumentationEntryReadability();
-				documentationEntryReadability.setEntryId(documentationEntry.getEntryId());
-				documentationEntryReadability.setDocumentationId(documentationEntry.getDocumentationId());
-				db.getDocumentationEntriesReadability().add(documentationEntryReadability);
+				documentationEntryReadability = findDocumentationEntryReadability(db, documentationEntry);
+				if(documentationEntryReadability==null)
+				{
+					documentationEntryReadability= new DocumentationEntryReadability();
+					documentationEntryReadability.setEntryId(documentationEntry.getEntryId());
+					documentationEntryReadability.setDocumentationId(documentationEntry.getDocumentationId());
+					db.getDocumentationEntriesReadability().add(documentationEntryReadability);
+				}
+				documentationEntryReadability.setReadability(Readability.calculateDaleChall(documentationEntry.getNaturalLanguage()));
 			}
-			documentationEntryReadability.setReadability(Readability.calculateDaleChall(documentationEntry.getNaturalLanguage()));
-			db.sync();
 		}
+		db.sync();
 		
 
 	}
 	
 	private DocumentationEntryReadability findDocumentationEntryReadability (DocumentationReadabilityTransMetric db, DocumentationEntryDetectingCode documentationEntry)
 	{
-		DocumentationEntryReadability documentationEntryReadability = null;
-		Iterable<DocumentationEntryReadability> documentationEntryRIt = db.getDocumentationEntriesReadability().
-				find(DocumentationEntryReadability.DOCUMENTATIONID.eq(documentationEntry.getDocumentationId()),
-						DocumentationEntryReadability.ENTRYID.eq(documentationEntry.getEntryId()));
-		for(DocumentationEntryReadability der : documentationEntryRIt)
-			documentationEntryReadability=der;
-		return documentationEntryReadability;
+		return findDocumentationEntryReadability(db, documentationEntry.getDocumentationId(), documentationEntry.getEntryId());
 	}
 	
 	private DocumentationEntryReadability findDocumentationEntryReadability (DocumentationReadabilityTransMetric db, String documentationId, String entryId)

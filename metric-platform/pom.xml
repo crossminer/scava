@@ -369,6 +369,12 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.readability
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.sentiment
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.sentiment
+    </module>
   </modules>
   <build>
     <plugins>

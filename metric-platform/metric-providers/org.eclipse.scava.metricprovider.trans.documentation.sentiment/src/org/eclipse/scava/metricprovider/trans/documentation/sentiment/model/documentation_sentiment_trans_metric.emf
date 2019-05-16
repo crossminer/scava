@@ -1,0 +1,17 @@
+package org.eclipse.scava.metricprovider.trans.documentation.sentiment.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationSentimentTransMetric {
+	val DocumentationEntrySentiment[*] documentationEntriesSentiment;
+}
+
+class DocumentationEntrySentiment {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr String polarity;
+}
+
+
+

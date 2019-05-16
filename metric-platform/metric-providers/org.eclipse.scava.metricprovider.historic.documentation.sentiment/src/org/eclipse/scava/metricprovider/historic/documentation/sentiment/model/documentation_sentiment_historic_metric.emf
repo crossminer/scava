@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.historic.documentation.sentiment.model;
+
+class DocumentationSentimentHistoricMetric {
+	val DocumentationHistoricSentiment[*] documentationSentiment;
+	val DocumentationEntryHistoricSentiment[*] documentationEntriesSentiment;
+}
+
+class DocumentationHistoricSentiment {
+	attr String documentationId;
+	attr int numberOfDocumentationEntries;
+	attr double averageDocumentationSentiment;
+}
+
+class DocumentationEntryHistoricSentiment {
+	attr String documentationId;
+	attr String entryId;
+	attr String polarity;
+}
+
