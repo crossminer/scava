@@ -9,8 +9,14 @@
             },
             "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
             "panelsJSON": "[{\"panelIndex\":\"2\",\"gridData\":{\"x\":22,\"y\":0,\"w\":13,\"h\":15,\"i\":\"2\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"id\":\"32b78bc0-4003-11e9-b12b-cbc482cac791\",\"title\":\"Factoids per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":0,\"w\":22,\"h\":15,\"i\":\"3\"},\"embeddableConfig\":{},\"id\":\"2fb8fc50-4004-11e9-b12b-cbc482cac791\",\"title\":\"Factoids stars\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":22,\"y\":15,\"w\":26,\"h\":15,\"i\":\"4\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":1,\"direction\":\"asc\"}}}},\"id\":\"4aa7e160-4023-11e9-b12b-cbc482cac791\",\"title\":\"Last factoids\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":1,\"y\":15,\"w\":21,\"h\":15,\"i\":\"5\"},\"embeddableConfig\":{},\"id\":\"6326c190-4026-11e9-b12b-cbc482cac791\",\"title\":\"Factoids radar\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":0,\"y\":30,\"w\":48,\"h\":20,\"i\":\"6\"},\"embeddableConfig\":{},\"id\":\"c699a010-4032-11e9-b12b-cbc482cac791\",\"title\":\"Factoids heat map\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":35,\"y\":0,\"w\":13,\"h\":15,\"i\":\"7\"},\"title\":\"Factoids per top project\",\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"712026e0-6512-11e9-babf-e374148441fd\",\"embeddableConfig\":{}}]",
-            "release_date": "2019-04-22T15:25:05.766432",
-            "timeRestore": false,
+            "refreshInterval": {
+                "display": "Off",
+                "pause": false,
+                "value": 0
+            },
+            "timeFrom": "now-10y",
+            "timeRestore": true,
+            "timeTo": "now",
             "title": "scava-facts",
             "version": 1
         }
