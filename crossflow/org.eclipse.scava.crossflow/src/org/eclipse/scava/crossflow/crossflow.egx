@@ -68,7 +68,7 @@ rule CsvSink2Sink
 rule CommitmentTask2BaseClass 
 	transform t : CommitmentTask {
 	
-	guard : not t.language.isDefined() or t.language.name=="Java"	
+	guard : not t.language.isDefined() or t.language.isJava()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -81,7 +81,7 @@ rule CommitmentTask2BaseClass
 rule OpinionatedTask2BaseClass 
 	transform t : OpinionatedTask {
 	
-	guard : not t.language.isDefined() or t.language.name=="Java"	
+	guard : not t.language.isDefined() or t.language.isJava()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -94,7 +94,7 @@ rule OpinionatedTask2BaseClass
 rule Task2BaseClass 
 	transform t : Task {
 	
-	guard : not t.language.isDefined() or t.language.name=="Java"	
+	guard : not t.language.isDefined() or t.language.isJava()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -107,7 +107,7 @@ rule Task2BaseClass
 rule Task2ImplClass 
 	transform t : Task {
 	
-	guard : not t.language.isDefined() or t.language.name=="Java"	
+	guard : not t.language.isDefined() or t.language.isJava()	
 		
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -144,7 +144,7 @@ operation Any getPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	
-	var lang = workflow.languages.select(l|l.name=="Java");
+	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
 
 	var path = "";
@@ -161,7 +161,7 @@ operation Any getImplPath() {
 	var workflow = self;
 	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
 	
-	var lang = workflow.languages.select(l|l.name=="Java");
+	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
 		
 	var path = "";
@@ -175,7 +175,7 @@ operation Any getImplPath() {
 }
 
 operation Workflow getPackageName() {
-	var lang = self.languages.select(l|l.name=="Java");
+	var lang = self.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
 
 	var package = self.name.ftlc;
@@ -183,4 +183,8 @@ operation Workflow getPackageName() {
 	if(langExists) package = lang.first.package;
 	
 	return package;
+}
+
+operation Language isJava() : Boolean {
+	return self.name.toLowerCase()=="java";
 }

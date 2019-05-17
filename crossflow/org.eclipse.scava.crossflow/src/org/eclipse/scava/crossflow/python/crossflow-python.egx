@@ -1,6 +1,8 @@
 rule Workflow2Class 
 	transform w : Workflow {
 	
+	guard: w.appliesTo()
+	
 	parameters : Map{"w" = w,"package" = w.getPackageName("Python")}
 	
 	template : "workflow2class.egl"
@@ -11,7 +13,7 @@ rule Workflow2Class
 rule Type2Class 
 	transform t : Type {
 	
-	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
+	guard : t.appliesTo() and t.impl.isUndefined() //and s.csvFile.isUndefined()
 	
 	template : "type2class.egl"
 	
@@ -20,6 +22,8 @@ rule Type2Class
 
 rule CsvSource2Source
 	transform t : CsvSource {
+
+	guard: t.appliesTo()
 
 	parameters : Map{"w" = t.eContainer()}
 
@@ -32,6 +36,8 @@ rule CsvSource2Source
 
 rule CsvSink2Sink
 	transform t : CsvSink {
+
+	guard: t.appliesTo()
 
 	parameters : Map{"w" = t.eContainer()}
 
@@ -46,7 +52,7 @@ rule CsvSink2Sink
 rule Task2BaseClass 
 	transform t : Task {
 
-	guard : t.language.isDefined() and t.language.name=="Python"	
+	guard : t.appliesTo()
 	
 	parameters : Map{"w" = t.eContainer()}
 	
@@ -59,7 +65,7 @@ rule Task2BaseClass
 rule Task2ImplClass 
 	transform t : Task {
 		
-	guard : t.language.isDefined() and t.language.name=="Python"		
+	guard : t.appliesTo()
 		
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName("Python")}
 	
@@ -74,6 +80,8 @@ rule Task2ImplClass
 rule Steam2Class 
 	transform s : Stream {
 	
+	guard: s.appliesTo()
+	
 	parameters : Map{"w" = s.eContainer()}
 	
 	template : "stream2class.egl"
@@ -85,6 +93,8 @@ rule Steam2Class
 rule Steam2Consumer 
 	transform s : Stream {
 	
+	guard: s.appliesTo()
+	
 	parameters : Map{"t" = Task}
 	
 	template : "stream2consumer.egl"
@@ -94,44 +104,43 @@ rule Steam2Consumer
 
 @cached
 operation Any getPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	var workflow = self.getWorkflow();
+	var lang = workflow.languages.select(l|l.isPython());
 	
-	if(not workflow.appliesTo("Python")) return null;	
-	
-	var lang = workflow.languages.select(l|l.name=="Python");
-	
-	var path = lang.first.genOutputFolder + "/" + workflow.getPackageName("Python").toPath();
+	if (lang.isEmpty()) {
+		return "python/src-gen" + "/" + workflow.package.toPath();
+	} 
 
-	return path;
+	return lang.first.genOutputFolder + "/" + lang.first.package.toPath();
 }
 
 @cached
 operation Any getImplPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	var workflow = self.getWorkflow();
+	var lang = workflow.languages.select(l|l.isPython());
 	
-	if(not workflow.appliesTo("Python")) return null;
-	
-	var lang = workflow.languages.select(l|l.name=="Python");
+	if (lang.isEmpty()) {
+		return "python/src" + "/" + workflow.package.toPath();
+	} 
 
-	var path = lang.first.outputFolder + "/" + workflow.getPackageName("Python").toPath();
-
-	return path;
+	return lang.first.outputFolder + "/" + lang.first.package.toPath();
 }
 
 @cached
 operation Any getWorkflow() : Workflow {
 	if (self.isTypeOf(Workflow)) return self;
-	return self.eContainer();
+	return self.eContainer().getWorkflow();
 }
 
 operation String toPath() : String {
 	return self.replaceAll("\\.", "/") + "/";
 }
 
-operation Workflow appliesTo(lang) {
-	return not self.languages.select(l|l.name==lang).isEmpty();
+operation Any appliesTo() : Boolean {
+	if (self.isKindOf(Task)) {
+		return self.language.isDefined() and self.language.isPython();
+	}
+	return not self.getWorkflow().languages.select(l|l.isPython()).isEmpty();
 }
 
 operation Workflow getPackageName(lang : String) {
@@ -143,4 +152,8 @@ operation Workflow getPackageName(lang : String) {
 	if(langExists) package = langs.first.package;
 	
 	return package;
+}
+
+operation Language isPython() : Boolean {
+	return self.name.toLowerCase=="python";
 }
