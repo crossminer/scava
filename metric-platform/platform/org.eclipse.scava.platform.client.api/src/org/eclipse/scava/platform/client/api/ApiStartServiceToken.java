@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.platform.osgi.api;
+package org.eclipse.scava.platform.client.api;
 
 
 public class ApiStartServiceToken {
