@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Sympa
+Bundle-Name: SympaReader
 Bundle-SymbolicName: org.eclipse.scava.platform.communicationchannel.sympa;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.platform.communicationchannel.sympa,
  org.eclipse.scava.platform.communicationchannel.sympa.downloader,
- org.eclipse.scava.platform.communicationchannel.sympa.parser
+ org.eclipse.scava.platform.communicationchannel.sympa.parser,
+ org.eclipse.scava.platform.communicationchannel.sympa.utils
 Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,

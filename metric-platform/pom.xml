@@ -331,6 +331,15 @@
     <module>
     	../migration/third-party/org.eclipse.scava.elasticsearch.dependencies
     </module>
+    <module>
+    	../migration/third-party/org.apache.commons.compress
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.sympa
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.sympa
+    </module>
   </modules>
   <build>
     <plugins>

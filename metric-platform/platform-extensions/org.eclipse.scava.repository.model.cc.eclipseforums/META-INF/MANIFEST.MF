@@ -4,8 +4,7 @@ Bundle-Name: EclipseForums
 Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.eclipseforums;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.scava.repository.model,
+Require-Bundle: org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model.cc.forum
 Export-Package: org.eclipse.scava.repository.model.cc.eclipseforums
