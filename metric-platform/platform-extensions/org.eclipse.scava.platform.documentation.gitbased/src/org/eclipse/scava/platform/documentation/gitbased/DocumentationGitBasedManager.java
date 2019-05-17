@@ -1,10 +1,8 @@
 package org.eclipse.scava.platform.documentation.gitbased;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
@@ -19,9 +17,6 @@ import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 
 public class DocumentationGitBasedManager extends GitManager {
 
-	Set<VcsRepository> firstCommitSeen = new HashSet<VcsRepository>();
-	
-	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
 		return repository instanceof DocumentationGitBased;
