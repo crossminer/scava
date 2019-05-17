@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,15 +19,14 @@ import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
-import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
-import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
+import org.eclipse.scava.business.integration.PatternRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.eclipse.scava.business.model.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -175,19 +172,5 @@ public class RecommenderRestController {
 				"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
 				"}}}");
 		return q;
-	}
-
-	@RequestMapping(value = "/pattern/{file_name:.+}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
-		try {
-			File file = new ClassPathResource("CLAMS_PATTERN/" + fileName).getFile();
-			InputStream is = new FileInputStream(file);
-			org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-			response.flushBuffer();
-		} catch (IOException ex) {
-			logger.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-			throw new RuntimeException("IOError writing file to output stream");
-		}
-
 	}
 }
