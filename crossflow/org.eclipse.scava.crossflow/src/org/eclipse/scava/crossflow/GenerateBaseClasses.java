@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
@@ -27,20 +28,43 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
+import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
 
 public class GenerateBaseClasses {
 
-	//FIXME automate language-specific generator enabling
-	//enum Languages {put enums in}
-	
+	// FIXME automate language-specific generator enabling
+	// enum Languages {put enums in}
+
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
 
 	protected Object result;
 
+	boolean useFileMetamodel;
+	String metamodelUri;
 	String projectLocation;
 	String modelRelativePath;
 	String packageName;
+
+	/**
+	 * Default constructor - Crossflow metamodel is already in package registry
+	 */
+	public GenerateBaseClasses() {
+		this.useFileMetamodel = false;
+		this.metamodelUri = "org.eclipse.scava.crossflow";
+	}
+
+	/**
+	 * Constructor allowing specification of alternate location of Crossflow
+	 * metamodel.
+	 * 
+	 * @param crossflowMetamodelLocation Location of crossflow metamodel as a URI
+	 *                                   path
+	 */
+	public GenerateBaseClasses(String crossflowMetamodelLocation) {
+		this.useFileMetamodel = true;
+		this.metamodelUri = crossflowMetamodelLocation;
+	}
 
 	public void run(String projectLocation, String modelRelativePath) throws Exception {
 
@@ -52,8 +76,8 @@ public class GenerateBaseClasses {
 
 	public void execute() throws Exception {
 
-		// 
-		
+		//
+
 		module = createModule();
 		module.parse(getFileURI("crossflow.egx"));
 
@@ -76,9 +100,9 @@ public class GenerateBaseClasses {
 		result = execute(module);
 
 		module.getContext().getModelRepository().dispose();
-		
-		//TODO is there a better way to add languages other than manually?
-		
+
+		// TODO is there a better way to add languages other than manually?
+
 		module = createModule();
 		module.parse(getFileURI("python/crossflow-python.egx"));
 
@@ -133,18 +157,25 @@ public class GenerateBaseClasses {
 
 	public List<IModel> getModels() throws Exception {
 		List<IModel> models = new ArrayList<IModel>();
-		models.add(createAndLoadAnEmfModel("org.eclipse.scava.crossflow",
-				modelRelativePath, "Model", true,
-				false, false));
+		models.add(createAndLoadAnEmfModel(metamodelUri, modelRelativePath, "Model", true, false, false));
 
 		return models;
 	}
 
 	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
 			boolean readOnLoad, boolean storeOnDisposal, boolean isCached) throws EolModelLoadingException {
-		EmfModel theModel = new EmfModel();
+		final EmfModel theModel = new EmfModel() {
+			@Override
+			protected ResourceSet createResourceSet() {
+				final ResourceSet resourceSet = super.createResourceSet();
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("flexmi",
+						new FlexmiResourceFactory());
+				return resourceSet;
+			}
+		};
 		StringProperties properties = new StringProperties();
-		properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
+		properties.put(useFileMetamodel ? EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI : EmfModel.PROPERTY_METAMODEL_URI,
+				metamodelURI);
 		properties.put(EmfModel.PROPERTY_MODEL_FILE, modelFile);
 		properties.put(EmfModel.PROPERTY_NAME, modelName);
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
