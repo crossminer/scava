@@ -1,10 +1,13 @@
 package org.eclipse.scava.platform.communicationchannel.sympa;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,7 +29,9 @@ import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import com.mongodb.DB;
 
 public class SympaManager implements ICommunicationChannelManager<SympaMailingList> {
-	
+
+	Path rootPath;
+	Boolean deltaFlag = false;
 
 	@Override
 	public boolean appliesTo(CommunicationChannel communicationChannel) {
@@ -47,94 +52,102 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 
 		delta.setCommunicationChannel(sympa);
 
-		for (SympaEmail sympaEmail : getAnalysisDataMail(sympa, date)) {
+ 		for (SympaEmail sympaEmail : getAnalysisDateMail(sympa, date)) {
 
 			delta.getArticles().add(sympaEmail);
 		}
 
-		
-		
 		return delta;
 	}
 
 	private List<Email> getMailingList(SympaMailingList sympa, Date date) {
-		
-		String path = "";
-		
+
+		List<Email> emails;
 		LocalDate localDate = date.toJavaDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		
+
 		int year = localDate.getYear();
 		String month = SympaUtils.checkDateValue(localDate.getMonthValue());
 		String day = SympaUtils.checkDateValue(localDate.getDayOfMonth());
 		String ext = SympaUtils.checkExtension(sympa.getCompressedFileExtension());
-		
 
 		String downloadLink = "";
-		
-		if (!sympa.getUrl().endsWith("/")) 
-		{
-			downloadLink = sympa.getUrl() + "/" + sympa.getMailingListName() + "_" + year+ "_" + month + "_" + day + ext;
-		
-		}else {
-			
-			downloadLink = sympa.getUrl() + sympa.getMailingListName() + "_" + year+ "_" + month + "_" + day + ext;
-		}
 
-		
-		if (sympa.getUsername().equals("null") || sympa.getPassword().equals("null")) {
-
-			path = downloadMailingList(downloadLink, ext);
+		if (!sympa.getUrl().endsWith("/")) {
+			downloadLink = sympa.getUrl() + "/" + sympa.getMailingListName() + "-" + year + "-" + month + "-" + day
+					+ ext;
 
 		} else {
 
-			path = downloadMailingList(downloadLink, sympa.getUsername(), sympa.getPassword(), ext);
+			downloadLink = sympa.getUrl() + sympa.getMailingListName() + "-" + year + "-" + month + "-" + day + ext;
+		}
+
+		if (sympa.getUsername().equals("null") || sympa.getPassword().equals("null")) {
+
+			downloadMailingList(downloadLink, ext);
+
+		} else {
+
+			downloadMailingList(downloadLink, sympa.getUsername(), sympa.getPassword(), ext);
 
 		}
 
-		
-	
-		
+		if (deltaFlag == false) {
 
-		return SympaPlainTextFileReader.parseFolder(path+"/");
+			 
+			return SympaPlainTextFileReader.parseFolder(rootPath);
+		}
+
+		return emails = new ArrayList<Email>();
 	}
-	
-
-
 
 	/**
 	 * Download Data from URL using no authentication
 	 * 
 	 * @param downloadURL
 	 */
-	private String downloadMailingList(String downloadURL, String ext ) {
+	private void downloadMailingList(String downloadURL, String ext) {
 
-		String rootPath = "";
-
-
+		deltaFlag = false;
 		URL url = null;
 
 		try {
 
 			url = new URL(downloadURL);
-
-		} catch (MalformedURLException e) {
-
-			e.printStackTrace();
-		}
-
-		try {
-
 			InputStream is = url.openStream();
 			rootPath = TgzExtractor.extract(is, ext);
 			is.close();
 
-		} catch (IOException e) {
+		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
 
+		} catch (FileNotFoundException e) {
+
+			// Wait for specified tmie and try again
+			try {
+
+				url = new URL(downloadURL);
+				InputStream is = url.openStream();
+				rootPath = TgzExtractor.extract(is, ext);
+				is.close();
+
+			} catch (MalformedURLException e1) {
+
+				e.printStackTrace();
+
+			} catch (FileNotFoundException e1) {
+
+				deltaFlag = true;
+
+			} catch (IOException e1) {
+
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
 		}
-		
-		return rootPath;
 
 	}
 
@@ -145,38 +158,51 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 	 * @param username
 	 * @param password
 	 */
-	private String downloadMailingList(String downloadURL, String username, String password, String ext) {
+	private void downloadMailingList(String downloadURL, String username, String password, String ext) {
 
 		MyAuthenticator.setPasswordAuthentication(username, password);
 		Authenticator.setDefault(new MyAuthenticator());
-		String rootPath = "";
+		deltaFlag = false;
 		URL url = null;
 
 		try {
 
 			url = new URL(downloadURL);
+			InputStream is = url.openStream();
+			rootPath = TgzExtractor.extract(is, ext);
+			is.close();
 
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
-		}
 
-		try {
+		} catch (FileNotFoundException e) {
 
-			InputStream is = url.openStream();
-			//here handle unzip
-			 rootPath = TgzExtractor.extract(is, ext);
-			//Files.copy(is, Paths.get(downloadPath), StandardCopyOption.REPLACE_EXISTING);// DL (on the downlow)
-			is.close();
+			// Wait for specified tmie and try again
+			try {
+
+				url = new URL(downloadURL);
+				InputStream is = url.openStream();
+				rootPath = TgzExtractor.extract(is, ext);
+				is.close();
+
+			} catch (MalformedURLException e1) {
+
+				e.printStackTrace();
+
+			} catch (FileNotFoundException e1) {
+				deltaFlag = true;
+				System.err.println("no archive found at :" + downloadURL);
+			} catch (IOException e1) {
+
+				e.printStackTrace();
+			}
 
 		} catch (IOException e) {
 
 			e.printStackTrace();
 		}
 
-		
-		
-		return rootPath;
 	}
 
 	/**
@@ -186,13 +212,12 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 	 * @param date
 	 * @return analysisDateMail
 	 */
-	private List<SympaEmail> getAnalysisDataMail(SympaMailingList sympa, Date date) {
+	private List<SympaEmail> getAnalysisDateMail(SympaMailingList sympa, Date date) {
 
 		List<SympaEmail> analysisDateMail = new ArrayList<>();
-
 		for (Email mail : getMailingList(sympa, date)) {
 
-			if ((date.compareTo(mail.getDate()) == 0) == true) {
+			if (date.compareTo(new Date(mail.getDate())) == 0) {
 
 				SympaEmail sympaEmail = new SympaEmail(mail, sympa);
 				analysisDateMail.add(sympaEmail);
@@ -238,8 +263,6 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 		return null;
 	}
 
-	
-
 	// T E S T I N G
 	public static void main(String[] args) throws Exception {
 
@@ -251,22 +274,22 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 		sympa.setMailingListDescription("testing Y'all");
 		sympa.setMailingListName("lemonldap-ng-dev");
 		sympa.setCompressedFileExtension("tar.gz");
-//		sympa.setUsername("crossminer");
-		//sympa.setPassword("U4QRh7H9SFy4AZxa");
+		// sympa.setUsername("crossminer");
+		// sympa.setPassword("U4QRh7H9SFy4AZxa");
 
 		// this simulates the delta creation process
 		Date today = new Date();
-		//Date date = new Date(manager.getFirstDate(null, sympa).toString());
+		// Date date = new Date(manager.getFirstDate(null, sympa).toString());
 		Date date = new Date(java.util.Date.parse("05/19/2008"));
 		Date date1 = new Date(java.util.Date.parse("06/01/2008"));
-		
+
 		System.out.println(date);
 		int count = 0;
 		System.out.println("Analysis Date: " + date);
 
 		do {
 			if (date == date1) {
-				
+
 				System.out.println("hello");
 			}
 			CommunicationChannelDelta delta = new CommunicationChannelDelta();

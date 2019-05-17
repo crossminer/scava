@@ -25,7 +25,7 @@ public class TgzExtractor {
 
 	private final static int BUFFER_SIZE = 2048;
 
-public static String extract(InputStream inputStream, String ext) throws IOException {
+public static Path extract(InputStream inputStream, String ext) throws IOException {
         
 	
 		String rootCreated="";
@@ -58,7 +58,7 @@ public static String extract(InputStream inputStream, String ext) throws IOExcep
             
             while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
                 /** If the entry is a directory, create the directory. **/
-                if (!entry.isDirectory()) {
+                if (!entry.isDirectory() && !entry.getName().contains("/.")) {
                     List<String> parsedPath = pathParser(entry.getName());
                     pathUntilNow="";
                     for(int i=0; i<parsedPath.size()-1; i++)
@@ -102,7 +102,7 @@ public static String extract(InputStream inputStream, String ext) throws IOExcep
             e.printStackTrace();
         }
         
-        return rootCreated;
+        return Paths.get(rootCreated);
 
     }
 

@@ -31,6 +31,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -71,6 +72,9 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				return true;
 			if (communicationChannel instanceof EclipseForum)
 				return true;
+			if (communicationChannel instanceof SympaMailingList)
+				return true;
+			
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	}
@@ -166,7 +170,9 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
 				communicationChannelName = eclipseForum.getForum_name();
-
+			} else if (communicationChannel instanceof SympaMailingList) {
+				SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
+				communicationChannelName = sympaMailingList.getMailingListName();
 			} else {
 				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
 				communicationChannelName = newsgroup.getNewsGroupName();
@@ -233,6 +239,10 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 		} else if (article.getCommunicationChannel() instanceof EclipseForum) {
 			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
 			communicationChannelName = eclipseForum.getForum_name();
+		}else if (article.getCommunicationChannel() instanceof SympaMailingList) {
+			SympaMailingList sympaMailingList = (SympaMailingList) article.getCommunicationChannel();
+			communicationChannelName = sympaMailingList.getMailingListName();
+			
 		}
 
 		Iterable<NewsgroupArticlePlainTextProcessing> newsgroupArticlesDataIt = db.getNewsgroupArticles().find(

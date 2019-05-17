@@ -103,12 +103,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	@Override
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel : project.getCommunicationChannels()) {
-			if (communicationChannel instanceof NntpNewsGroup)
-				return true;
-			if (communicationChannel instanceof Discussion)
-				return true;
-			if (communicationChannel instanceof EclipseForum)
-				return true;
+			return true;
 		}
 		return false;
 	}
@@ -143,6 +138,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			CommunicationChannel communicationChannel = delta.getCommunicationChannel();
 			
 			if (communicationChannel instanceof NntpNewsGroup) {
+				
 				
 				NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
 				String newsgroupName = newsGroup.getNewsGroupName();
@@ -342,7 +338,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 					e.printStackTrace();
 				}
-
+				break;
 				// EMOTION
 			case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
 

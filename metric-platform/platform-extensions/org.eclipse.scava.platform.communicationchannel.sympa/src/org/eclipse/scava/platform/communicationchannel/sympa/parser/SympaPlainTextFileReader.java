@@ -14,7 +14,7 @@ public class SympaPlainTextFileReader {
 
 	static Pattern pattern = Pattern.compile("\\/arctxt[^\\/]+\\/\\d{1,2}_");
 
-	public static List<Email> parseFolder(String inputFolder) {
+	public static List<Email> parseFolder(Path inputFolder) {
 
 		List<Email> emails = new ArrayList<Email>();
 
@@ -22,7 +22,7 @@ public class SympaPlainTextFileReader {
 
 		try {
 
-			filePaths = Files.walk(Paths.get(inputFolder));
+			filePaths = Files.walk(inputFolder);
 
 			for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
 
@@ -42,9 +42,9 @@ public class SympaPlainTextFileReader {
 				}
 			}
 			
-			// This reader clears up after it's self...
-			File root = Paths.get(inputFolder).toFile();
-			root.delete();
+//			// This reader clears up after it's self...
+//			File root = Paths.get(inputFolder).toFile();
+//			root.delete();
 			
 
 		} catch (IOException e) {
