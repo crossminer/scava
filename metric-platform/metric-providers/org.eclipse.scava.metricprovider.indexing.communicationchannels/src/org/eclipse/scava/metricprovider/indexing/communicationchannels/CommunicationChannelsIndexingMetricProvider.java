@@ -57,6 +57,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -142,19 +143,39 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			CommunicationChannel communicationChannel = delta.getCommunicationChannel();
 			
 			if (communicationChannel instanceof NntpNewsGroup) {
-				prepareNewsGroup(project, projectDelta, delta);
+				
+				NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
+				String newsgroupName = newsGroup.getNewsGroupName();
+				prepareArticle(project, projectDelta, delta, "newsgroup.article", newsgroupName);
 
 			} else if (communicationChannel instanceof EclipseForum) {
+				
+				//forums are handled in a unquie way due to the way we want them stored in ES
 				prepareForum(project, projectDelta, delta);
 
 			}else if (communicationChannel instanceof Discussion) {
-			//FIXME - how do we handle these?
-				//prepareDiscussion(project, projectDelta, delta);
-			//TODO add support for SYMPA, Mailbox and IRC
-//			}else if (communicationChannel instanceof Sympa) {
+				//FIXME - how do we handle these? As they do not have a name defined in the Discussion object
+				String discussionName = projectDelta.getProject().getName();
+				prepareArticle(project, projectDelta, delta, "discussion.post", discussionName);
+			
+			}else if (communicationChannel instanceof SympaMailingList) {
 				
+				SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
+				String mailinglistName = sympaMailingList.getMailingListName();
+				prepareArticle(project, projectDelta, delta, "sympa.mail", mailinglistName);
+				
+				
+//			TODO add support for Mailbox and IRC
 //			}else if (communicationChannel instanceof IRC) {
+				//IRC ircChat = (IRC) communicationChannel;
+				//String chatName = ircChat.getName();
+				//prepareArticle(project, projectDelta, delta, "irc.message", chatName);
 	
+//			}else if (communicationChannel instanceof MailingList) {
+				//MailingList mailingList = (MailingList) communicationChannel;
+				//String mailinglistName = mailingList.getMailingListName();
+				//prepareArticle(project, projectDelta, delta, "mbox.mail", mailinglistName);
+			
 			} else {
 
 				System.out.println("this " + delta.getCommunicationChannel().getCommunicationChannelType()
@@ -233,15 +254,15 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @param communicationChannelDelta
 	 * @param projectDelta
 	 */
-	private void prepareNewsGroup(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta) {
+	private void prepareArticle(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta, String docType, String collectionName) {
 
 		ObjectMapper mapper = new ObjectMapper();
 
 		for (CommunicationChannelArticle article : delta.getArticles()) { // Articles
 
-			String documentType = "newsgroup.article";
-			NntpNewsGroup newsGroup = (NntpNewsGroup) article.getCommunicationChannel();
-			String newsGroupName = newsGroup.getNewsGroupName();
+			String documentType = docType;
+			
+			String name = collectionName; 
 
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
@@ -255,7 +276,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			ArticleDocument enrichedDocument = enrichNewsGroupDocument(
 					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), newsGroupName, article.getSubject(), article.getMessageThreadId(),
+							article.getDate(), name, article.getSubject(), article.getMessageThreadId(),
 							article.getArticleNumber(), article.getArticleId()),
 					enrichmentData);
 
@@ -649,10 +670,22 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			Discussion discussion = (Discussion) communicationChannel;
 			//FIXME - How do we handle discussions?
 		
-		}//else if (communicationChannel instanceof ...) {
-//			
-//			
-//		}
+		}else if (communicationChannel instanceof SympaMailingList) {
+			SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
+			collectionName = sympaMailingList.getMailingListName();
+			
+//		TODO add support for Mailbox and IRC
+//		}else if (communicationChannel instanceof IRC) {
+			//IRC ircChat = (IRC) communicationChannel;
+			//String chatName = ircChat.getName();
+			//prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+
+//		}else if (communicationChannel instanceof MailingList) {
+			//MailingList mailingList = (MailingList) communicationChannel;
+			//String mailinglistName = mailingList.getMailingListName();
+			//prepareArticle(project, projectDelta, delta, "mbox.email", mailinglistName);
+		
+		}
 		
 		T output = null;
 

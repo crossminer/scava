@@ -22,6 +22,7 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.metricprovider.trans.detectingcode,
  org.eclipse.scava.metricprovider.trans.sentimentclassification,
  org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses,
- org.elasticsearch.dependencies
+ org.elasticsearch.dependencies,
+ org.eclipse.scava.repository.model.cc.sympa
 Bundle-Activator: org.eclipse.scava.metricprovider.indexing.communicationchannels.Activator
 Import-Package: org.eclipse.scava.metricprovider.indexing.communicationchannels.document
