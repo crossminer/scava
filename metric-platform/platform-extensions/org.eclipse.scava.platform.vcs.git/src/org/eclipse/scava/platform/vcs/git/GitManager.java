@@ -45,6 +45,7 @@ public class GitManager extends AbstractVcsManager {
 	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
+		//DocumentationGitBased extends GitManager, we need to use that Manager instead of this one.
 		if(repository instanceof DocumentationGitBased)
 			return false;
 		return (repository instanceof GitRepository);
