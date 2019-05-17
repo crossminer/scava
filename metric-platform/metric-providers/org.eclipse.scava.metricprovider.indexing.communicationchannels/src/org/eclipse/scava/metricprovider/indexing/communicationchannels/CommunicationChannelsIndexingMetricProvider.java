@@ -103,7 +103,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	@Override
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel : project.getCommunicationChannels()) {
-			return true;
+			if (communicationChannel instanceof NntpNewsGroup) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
 		}
 		return false;
 	}

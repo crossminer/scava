@@ -14,10 +14,17 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 class IndexerSingleton {
 
 	private static IndexerSingleton singleton = null;
-	//private  Properties indexProperties = new Properties();
-	private  static String hostname = "localhost";//"elasticsearch";
+	
+//	When running the platform locally using a different elasticsearch instance
+//	private  static String hostname = "localhost";//"elasticsearch";
+//	private  static String clustername = "elasticsearch";//"bitergia_elasticsearch";
+
+//	When running inside CROSSMINER  
+	private  static String hostname = "elasticsearch";
+	private  static String clustername = "bitergia_elasticsearch";
+
+// Ports  and Scheme are the same in both
 	private  static String scheme = "http";
-	private  static String clustername = "elasticsearch";//"bitergia_elasticsearch";
 	private  static int port = 9200;
 	private  static int clusterport = 9300;
 	private  RestHighLevelClient highLevelclient;
@@ -27,14 +34,6 @@ class IndexerSingleton {
 	private IndexerSingleton() {
 
 		try {
-			//setProperites();
-			//indexProperties.entrySet();
-			//indexProperties = loadIndexProperties();
-//			hostname = "elasticsearch"; //loadIndexProperties().get("hostname").toString();// hostname
-//			port = 9200;//Integer.valueOf(loadIndexProperties().getProperty("port").toString());
-//			scheme = "http";//loadIndexProperties().getProperty("scheme").toString();
-//			clusterName = "bitergia_elasticsearch"; //loadIndexProperties().getProperty("cluster-name").toString(); // name given to the cluster
-//			clusterport = 9300; //Integer.valueOf(loadIndexProperties().getProperty("cluster-port").toString()); // //this is a different value to the 'port' check cluster settings
 			highLevelclient = createHighLevelClient(); // This client handles 'High Level requests' such as indexing docs
 			adminClient = createAdminClient(); // this client is used to perform administration tasks on ES
 			
