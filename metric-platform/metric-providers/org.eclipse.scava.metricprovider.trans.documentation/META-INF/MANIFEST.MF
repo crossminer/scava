@@ -8,13 +8,13 @@ Export-Package: org.eclipse.scava.metricprovider.trans.documentation,
 Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime,
- org.eclipse.scava.repository.model.github,
  org.eclipse.scava.platform.vcs.workingcopy.manager,
- org.eclipse.scava.repository.model.vcs.git,
  org.eclipse.core.runtime,
  org.apache.log4j,
  org.eclipse.scava.nlp.tools.preprocessor,
- org.eclipse.scava.nlp.tools.plaintext
+ org.eclipse.scava.nlp.tools.plaintext,
+ org.eclipse.scava.repository.model.documentation.gitbased,
+ org.eclipse.scava.repository.model.vcs.git
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

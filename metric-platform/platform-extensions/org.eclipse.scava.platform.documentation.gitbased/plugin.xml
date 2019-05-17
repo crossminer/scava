@@ -13,7 +13,7 @@
  <extension
          point="org.eclipse.scava.platform.managers.vcs">
       <vcsManager
-            manager="org.eclipse.scava.platform.documentation.github.GithubDocumentationManager">
+            manager="org.eclipse.scava.platform.documentation.gitbased.DocumentationGitBasedManager">
       </vcsManager>
    </extension>
 </plugin>

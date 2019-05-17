@@ -24,7 +24,7 @@ import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsCommitItem;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.scava.repository.model.github.GitHubWiki;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -45,7 +45,7 @@ public class GitManager extends AbstractVcsManager {
 	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
-		if(repository instanceof GitHubWiki)
+		if(repository instanceof DocumentationGitBased)
 			return false;
 		return (repository instanceof GitRepository);
 	}

@@ -19,7 +19,7 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.scava.repository.model.github.GitHubWiki;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 
 import com.mongodb.DB;
 
@@ -54,7 +54,7 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 	@Override
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
-			if(repository instanceof GitHubWiki) return true;
+			if(repository instanceof DocumentationGitBased) return true;
 		return false;
 	}
 

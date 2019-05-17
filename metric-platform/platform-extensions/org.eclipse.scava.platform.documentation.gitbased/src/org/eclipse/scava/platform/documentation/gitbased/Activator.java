@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.platform.documentation.github;
+package org.eclipse.scava.platform.documentation.gitbased;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

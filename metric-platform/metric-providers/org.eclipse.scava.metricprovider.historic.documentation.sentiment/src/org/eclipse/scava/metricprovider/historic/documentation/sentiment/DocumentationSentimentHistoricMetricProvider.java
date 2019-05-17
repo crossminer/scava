@@ -15,7 +15,7 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.scava.repository.model.github.GitHubWiki;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 
 import com.googlecode.pongo.runtime.Pongo;
 
@@ -49,7 +49,7 @@ public class DocumentationSentimentHistoricMetricProvider extends AbstractHistor
 	@Override
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
-			if(repository instanceof GitHubWiki) return true;
+			if(repository instanceof DocumentationGitBased) return true;
 		return false;
 	}
 

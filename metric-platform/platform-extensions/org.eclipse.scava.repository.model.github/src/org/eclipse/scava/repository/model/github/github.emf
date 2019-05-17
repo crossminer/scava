@@ -14,15 +14,6 @@ class BugTrackingSystem {
    
 }
 
-@stub(javaClass="org.eclipse.scava.repository.model.vcs.git.GitRepository")
-class GitRepository {
-   
-}
-
-class GitHubWiki extends GitRepository {
-
-}
-
 //class GitHubProject extends Project {
 //}
 

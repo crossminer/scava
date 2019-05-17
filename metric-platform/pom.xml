@@ -356,9 +356,7 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation
     </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.documentation.github
-    </module>
+    
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.detectingcode
     </module>
@@ -374,6 +372,12 @@
     </module>
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.sentiment
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.documentation.gitbased
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.documentation.gitbased
     </module>
   </modules>
   <build>

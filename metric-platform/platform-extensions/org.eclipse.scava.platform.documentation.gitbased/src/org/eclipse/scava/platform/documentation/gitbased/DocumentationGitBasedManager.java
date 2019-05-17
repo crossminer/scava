@@ -1,4 +1,4 @@
-package org.eclipse.scava.platform.documentation.github;
+package org.eclipse.scava.platform.documentation.gitbased;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,17 +14,17 @@ import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.vcs.git.GitManager;
 import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.scava.repository.model.github.GitHubWiki;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 
-public class GithubDocumentationManager extends GitManager {
+public class DocumentationGitBasedManager extends GitManager {
 
 	Set<VcsRepository> firstCommitSeen = new HashSet<VcsRepository>();
 	
 	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
-		return repository instanceof GitHubWiki;
+		return repository instanceof DocumentationGitBased;
 	}
 	
 	@Override
@@ -77,6 +77,7 @@ public class GithubDocumentationManager extends GitManager {
 			}
 		}
 		
+		walk.close();
 		repo.close();
 		git.close();
 		

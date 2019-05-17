@@ -1,0 +1,13 @@
+package org.eclipse.scava.repository.model.documentation.gitbased;
+
+
+
+@stub(javaClass="org.eclipse.scava.repository.model.vcs.git.GitRepository")
+class GitRepository {
+   
+}
+
+class DocumentationGitBased extends GitRepository {
+
+}
+
