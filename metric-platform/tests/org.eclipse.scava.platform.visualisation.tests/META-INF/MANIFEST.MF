@@ -8,9 +8,8 @@ Require-Bundle: org.eclipse.scava.platform.visualisation,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  org.junit,
+ com.fasterxml.jackson,
  org.eclipse.scava.metricprovider.historic.commitsovertime,
  org.eclipse.scava.metricprovider.rascal,
  org.apache.log4j,
- com.googlecode.pongo.runtime,
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
+ com.googlecode.pongo.runtime

@@ -15,6 +15,5 @@
 
   <modules>
       <module>org.eclipse.scava.product</module>
-	  <module>org.eclipse.scava.target</module>
   </modules>
 </project>

@@ -18,6 +18,7 @@ import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
 import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
 import org.eclipse.scava.platform.visualisation.MetricVisualisation;

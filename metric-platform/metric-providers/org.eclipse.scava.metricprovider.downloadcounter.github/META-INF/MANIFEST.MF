@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.github,
  org.eclipse.scava.metricprovider.downloadcounter,
  org.eclipse.scava.repository.model,
+ org.eclipse.egit,
  org.eclipse.scava.repository.model.vcs.git
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

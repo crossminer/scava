@@ -9,5 +9,9 @@
 ##############################################################################
 output.. = .
 bin.includes = META-INF/,\
-               opennlp-tools-1.5.3-1.jar,\
-               opennlp-maxent-3.0.3.jar
+<<<<<<< HEAD
+               opennlp/
+=======
+               opennlp/,\
+               .
+>>>>>>> c30289b... Solve errors maven and manifest

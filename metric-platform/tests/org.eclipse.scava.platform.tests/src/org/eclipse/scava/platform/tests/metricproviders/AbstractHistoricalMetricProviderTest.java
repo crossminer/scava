@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-/*package org.eclipse.scava.platform.tests.metricproviders;
+package org.eclipse.scava.platform.tests.metricproviders;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -123,4 +123,4 @@ public class AbstractHistoricalMetricProviderTest {
 		}
 	}
 }
-*/
+

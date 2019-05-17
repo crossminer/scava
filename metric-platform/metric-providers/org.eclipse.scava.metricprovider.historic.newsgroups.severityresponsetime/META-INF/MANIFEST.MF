@@ -13,10 +13,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.metricprovider.trans.severityclassification,
  org.eclipse.scava.repository.model.cc.nntp,
  org.eclipse.scava.metricprovider.trans.newsgroups.threadsrequestsreplies,
+ org.apache.commons.lang,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.sourceforge
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime,
  org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.model
-Import-Package: org.apache.commons.lang.time

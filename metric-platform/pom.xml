@@ -13,14 +13,53 @@
       <relativePath>./releng/org.eclipse.scava.configuration</relativePath>
   </parent>
   <modules>
+    <module>../migration/third-party/com.fasterxml.jackson</module>
+    <module>../migration/third-party/com.google.code.gson</module>
+    <module>../migration/third-party/com.google.guava</module>
     <module>../migration/third-party/com.googlecode.pongo.runtime</module>
+    <module>../migration/third-party/com.googlecode.pongo.runtime.dependencies</module>
     <module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
     <module>../migration/third-party/com.j2bugzilla</module>
+    <module>../migration/third-party/com.jcraft.jsch</module>
     <module>../migration/third-party/com.mashape.unirest</module>
+    <module>../migration/third-party/javax.mail</module>
+    <module>../migration/third-party/org.apache.commons.codec</module>
+    <module>../migration/third-party/org.apache.commons.lang</module>
+    <module>../migration/third-party/org.apache.commons.logging</module>
+    <module>../migration/third-party/org.apache.commons.math</module>
+    <module>../migration/third-party/org.apache.commons.net</module>
+    <module>../migration/third-party/org.apache.httpcomponents.httpasyncclient</module>
+    <module>../migration/third-party/org.apache.httpcomponents.httpclient</module>
+    <module>../migration/third-party/org.apache.httpcomponents.httpcore</module>
+    <module>../migration/third-party/org.apache.httpcomponents.httpcorenio</module>
+    <module>../migration/third-party/org.apache.httpcomponents.httpmime</module>
+    <module>../migration/third-party/org.apache.log4j</module>
+    <module>../migration/third-party/org.apache.ws.commons</module>
+    <module>../migration/third-party/org.apache.xmlrpc</module>
+    <module>../migration/third-party/org.apache.xmlrpc.common</module>
     <module>../migration/third-party/org.carrot2.api</module>
+    <module>../migration/third-party/org.carrot2.dependencies</module>
+    <module>../migration/third-party/org.eclipse.egit.github.core</module>
+    <module>../migration/third-party/org.eclipse.jetty.client</module>
+    <module>../migration/third-party/org.eclipse.jetty.http</module>
+    <module>../migration/third-party/org.eclipse.jetty.io</module>
+    <module>../migration/third-party/org.eclipse.jetty.server</module>
+    <module>../migration/third-party/org.eclipse.jetty.spdy.client</module>
+    <module>../migration/third-party/org.eclipse.jetty.spdy.core</module>
+    <module>../migration/third-party/org.eclipse.jetty.spdy.http.common</module>
+    <module>../migration/third-party/org.eclipse.jetty.spdy.http.server</module>
+    <module>../migration/third-party/org.eclipse.jetty.spdy.server</module>
+    <module>../migration/third-party/org.eclipse.jetty.util</module>
+    <module>../migration/third-party/org.eclipse.jgit</module>
     <module>../migration/third-party/org.joda.time</module>
+    <module>../migration/third-party/org.json</module>
     <module>../migration/third-party/org.mapdb</module>
-	<module>../migration/third-party/org.svnkit</module>
+    <module>../migration/third-party/org.mockito</module>
+    <module>../migration/third-party/org.restlet</module>
+    <module>../migration/third-party/org.restlet.ext.jetty</module>
+    <module>../migration/third-party/org.restlet.ext.osgi</module>
+    <module>../migration/third-party/org.restlet.ext.servlet</module>
+    <module>../migration/third-party/org.svnkit</module>
     <module>../migration/third-party/sparky</module>
     <module>factoids/org.eclipse.scava.factoid.bugs.channelusage.bugschannelusage</module>
     <module>factoids/org.eclipse.scava.factoid.bugs.emotion</module>
@@ -338,7 +377,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
-        <version>1.2.0</version>
+        <version>1.1.0</version>
         <extensions>true</extensions>
       </plugin>
     </plugins>

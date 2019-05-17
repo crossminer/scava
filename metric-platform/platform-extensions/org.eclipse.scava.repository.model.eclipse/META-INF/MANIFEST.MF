@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.scava.repository.model.eclipse;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
-Require-Bundle: com.googlecode.pongo.runtime,
+Require-Bundle: com.googlecode.pongo.runtime.dependencies,
+ com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.cc.nntp
 Bundle-ActivationPolicy: lazy

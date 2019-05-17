@@ -7,9 +7,6 @@ Bundle-Activator: org.eclipse.scava.metricprovider.trans.requestreplyclassificat
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model.cc.nntp,
- org.eclipse.scava.repository.model.bts.bugzilla,
- com.googlecode.pongo.runtime.osgi,
- org.eclipse.scava.platform.visualisation,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.sourceforge,
@@ -23,4 +20,3 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.metricprovider.trans.requestreplyclassification,
  org.eclipse.scava.metricprovider.trans.requestreplyclassification.model
-Import-Package: org.apache.commons.lang.time

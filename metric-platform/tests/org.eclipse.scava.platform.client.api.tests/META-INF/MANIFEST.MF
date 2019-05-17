@@ -10,6 +10,6 @@ Require-Bundle: org.eclipse.scava.platform.client.api,
  org.eclipse.scava.repository.model,
  org.junit,
  org.restlet,
+ com.fasterxml.jackson,
  org.eclipse.scava.repository.model.importer;bundle-version="1.0.0",
- org.eclipse.scava.repository.model.importer.exception;bundle-version="1.0.0",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
+ org.eclipse.scava.repository.model.importer.exception;bundle-version="1.0.0"

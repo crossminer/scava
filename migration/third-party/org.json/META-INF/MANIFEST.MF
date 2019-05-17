@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Json
+Bundle-SymbolicName: org.json
+Bundle-Version: 2014.01.07
+Bundle-ClassPath: json-20140107.jar
+Export-Package: org.json,
+ org.json.zip
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

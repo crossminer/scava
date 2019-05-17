@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.github,
  org.joda.time,
  org.apache.log4j,
- org.eclipse.orbit.mongodb;bundle-version="2.10.1"
+ com.googlecode.pongo.runtime.dependencies
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem.github

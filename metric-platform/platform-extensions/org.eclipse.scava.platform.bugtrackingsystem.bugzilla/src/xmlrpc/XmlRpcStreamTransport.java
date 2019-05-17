@@ -245,18 +245,17 @@ public abstract class XmlRpcStreamTransport extends XmlRpcTransportImpl {
 		if (xp.isSuccess()) {
 			return xp.getResult();
 		}
-//		Throwable t = xp.getErrorCause();
-//        if (t == null) {
-//            throw new XmlRpcException(xp.getErrorCode(), xp.getErrorMessage());
-//        }
-//        if (t instanceof XmlRpcException) {
-//            throw (XmlRpcException) t;
-//        }
-//        if (t instanceof RuntimeException) {
-//            throw (RuntimeException) t;
-//        }
-//        throw new XmlRpcException(xp.getErrorCode(), xp.getErrorMessage(), t);
-		throw new XmlRpcException(xp.getErrorCode(), xp.getErrorMessage());
+		Throwable t = xp.getErrorCause();
+        if (t == null) {
+            throw new XmlRpcException(xp.getErrorCode(), xp.getErrorMessage());
+        }
+        if (t instanceof XmlRpcException) {
+            throw (XmlRpcException) t;
+        }
+        if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        }
+        throw new XmlRpcException(xp.getErrorCode(), xp.getErrorMessage(), t);
 	}
 
 }

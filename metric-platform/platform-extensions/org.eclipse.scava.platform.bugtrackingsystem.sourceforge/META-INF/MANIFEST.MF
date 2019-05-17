@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.eclipse.scava.platform.bugtrackingsystem.sourceforge;si
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.platform.bugtrackingsystem.sourceforge.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.apache.commons.lang.time,
- org.eclipse.scava.platform.delta.bugtrackingsystem,
+Import-Package: org.eclipse.scava.platform.delta.bugtrackingsystem,
  org.osgi.framework
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.scava.platform,
@@ -14,10 +13,9 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.repository.model.sourceforge,
  org.eclipse.scava.repository.model,
  com.google.guava,
+ com.fasterxml.jackson,
  org.joda.time,
  com.mashape.unirest,
  org.eclipse.scava.jackson,
- org.eclipse.scava.platform.bugtrackingsystem,
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.6.2",
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0"
+ org.apache.commons.lang,
+ org.eclipse.scava.platform.bugtrackingsystem

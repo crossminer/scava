@@ -6,10 +6,10 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
- org.joda.time
+ org.joda.time,
+ org.apache.commons.lang
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.communicationchannel,
  org.eclipse.scava.platform.communicationchannel.cache,
  org.eclipse.scava.platform.communicationchannel.cache.provider
-Import-Package: org.apache.commons.lang.time

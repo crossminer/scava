@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HttpMime
+Bundle-SymbolicName: org.apache.httpcomponents.httpmime
+Bundle-Version: 4.3.4
+Export-Package: org.apache.http.entity.mime,
+ org.apache.http.entity.mime.content
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: httpmime-4.3.4.jar
+Require-Bundle: org.apache.httpcomponents.httpclient
