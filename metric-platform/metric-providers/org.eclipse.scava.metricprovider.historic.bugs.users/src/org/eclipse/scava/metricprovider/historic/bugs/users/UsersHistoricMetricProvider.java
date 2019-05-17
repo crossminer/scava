@@ -58,26 +58,21 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 				if ((bug.getUsers() > 0) || (bug.getActiveUsers() > 0) || (bug.getInactiveUsers() > 0)) {
 					DailyBugTrackingData dailyNewsgroupData = new DailyBugTrackingData();
 					dailyNewsgroupData.setBugTrackerId(bug.getBugTrackerId());
-					if (bug.getUsers() > 0) {
-						dailyNewsgroupData.setNumberOfUsers(bug.getUsers());
+					if (bug.getUsers() > 0)
 						numberOfUsers += bug.getUsers();
-					}
-					if (bug.getActiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfActiveUsers(bug.getActiveUsers());
+					if (bug.getActiveUsers() > 0)
 						numberOfActiveUsers += bug.getActiveUsers();
-					}
-					if (bug.getInactiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfInactiveUsers(bug.getInactiveUsers());
+					if (bug.getInactiveUsers() > 0)
 						numberOfInactiveUsers += bug.getInactiveUsers();
-					}
+					dailyNewsgroupData.setNumberOfUsers(bug.getUsers());
+					dailyNewsgroupData.setNumberOfActiveUsers(bug.getActiveUsers());
+					dailyNewsgroupData.setNumberOfInactiveUsers(bug.getInactiveUsers());
 					users.getBugTrackers().add(dailyNewsgroupData);
 				}
 			}
 			if (numberOfUsers > 0)
 				users.setNumberOfUsers(numberOfUsers);
-			if (numberOfActiveUsers > 0)
 				users.setNumberOfActiveUsers(numberOfActiveUsers);
-			if (numberOfInactiveUsers > 0)
 				users.setNumberOfInactiveUsers(numberOfInactiveUsers);
 		}
 		return users;
