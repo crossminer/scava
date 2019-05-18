@@ -379,6 +379,7 @@
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.documentation.gitbased
     </module>
+    <module>../migration/third-party/org.apache.tika</module>
   </modules>
   <build>
     <plugins>

@@ -23,8 +23,16 @@ public class CommunicationChannelDelta  implements Serializable {
 	protected List<CommunicationChannelArticle> articles = new ArrayList<CommunicationChannelArticle>();
 	protected List<CommunicationChannelForumPost> posts = new ArrayList<CommunicationChannelForumPost>();
 	protected List<CommunicationChannelTopic> topics = new ArrayList<CommunicationChannelTopic>();
-
+	protected List<CommunicationChannelDocumentation> documentation = new ArrayList<CommunicationChannelDocumentation>();
 	
+	public List<CommunicationChannelDocumentation> getDocumentation() {
+		return documentation;
+	}
+
+	public void setDocumentation(List<CommunicationChannelDocumentation> documentation) {
+		this.documentation = documentation;
+	}
+
 	public CommunicationChannel getCommunicationChannel() {
 		return communicationChannel;
 	}

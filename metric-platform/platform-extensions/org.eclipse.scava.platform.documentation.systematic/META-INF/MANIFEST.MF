@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Systematic
+Bundle-SymbolicName: org.eclipse.scava.platform.documentation.systematic;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.platform.documentation.systematic
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.repository.model.documentation.systematic,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime.dependencies
+Bundle-Activator: org.eclipse.scava.platform.documentation.systematic.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

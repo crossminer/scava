@@ -1,0 +1,15 @@
+package org.eclipse.scava.repository.model.documentation.systematic;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+
+}
+
+
+class DocumentationSystematic extends CommunicationChannel {
+	@searchable
+	attr String url;
+	attr int executionFrequency;
+  	attr String password;
+  	attr String login;
+}
