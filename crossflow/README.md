@@ -62,8 +62,6 @@ You will need to run the ANT build-files below to generate stuff after you impor
 - JUnit tests can be ran through the CrossflowTests class in org.eclipse.scava.crossflow.tests
 
 ### Web application
-- To build the runtime model web application, run `./build-runtime-model-webapp.sh` from directory  org.eclipse.scava.crossflow.web
-- To run the runtime model updater application (port: 9090) run `java -jar org.eclipse.scava.crossflow.elkgraph.web.jar` from directory org.eclipse.scava.crossflow.elkgraph.web
 - To run the web application (port: 8080) right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
 - The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
 
@@ -101,5 +99,3 @@ You will need to run the ANT build-files below to generate stuff after you impor
 
  ![Screenshot](https://i.imgur.com/MCqT43z.png)
 **Figure**: Upload New Workflow page allowing the upload and deployment of new experiments.
-
- 
