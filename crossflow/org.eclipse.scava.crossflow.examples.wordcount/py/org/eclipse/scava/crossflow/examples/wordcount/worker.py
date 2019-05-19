@@ -4,7 +4,7 @@ import time
 
 worker = WordCountWorkflow(mode=Mode.WORKER)
 worker.setMaster('localhost')
-worker.setInstanceId('wc')
+worker.setInstanceId('WordCountWorkflow')
 worker.setName('workerPY')
 worker.run()
 while (not worker.hasTerminated()):
