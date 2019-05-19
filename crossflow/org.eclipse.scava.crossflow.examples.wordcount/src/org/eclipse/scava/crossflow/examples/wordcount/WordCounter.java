@@ -12,7 +12,7 @@ public class WordCounter extends WordCounterBase {
 	public void consumeLines(Line line) {
 		//System.out.println(workflow.getName()+" consuming: "+line);
 		
-		String text = line.getText().replaceAll("[^A-Za-z]", " ");
+		String text = line.getText().replaceAll("[^A-Za-z]", " "); // replace all characters that are not letters with a single-space
 		HashMap<String, Integer> frequencies = new HashMap<String, Integer>();
 		for (String part : text.split(" ")) {
 			part = part.trim().toLowerCase();
