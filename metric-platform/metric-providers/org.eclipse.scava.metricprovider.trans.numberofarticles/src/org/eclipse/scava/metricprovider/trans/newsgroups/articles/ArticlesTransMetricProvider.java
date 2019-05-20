@@ -25,6 +25,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -59,6 +60,8 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -89,24 +92,12 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 		CommunicationChannelProjectDelta delta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			String communicationChannelName;
-			if (communicationChannel instanceof Discussion)
+			String ossmeterID =  communicationChannel.getOSSMeterId();
 			
-				communicationChannelName = communicationChannel.getUrl();
-			
-			else if (communicationChannel instanceof EclipseForum) {
-				
-				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-				communicationChannelName = eclipseForum.getForum_name();
-			
-			}else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
-			NewsgroupData newsgroupData = db.getNewsgroups().findOneByNewsgroupName(communicationChannelName);
+			NewsgroupData newsgroupData = db.getNewsgroups().findOneByNewsgroupName(ossmeterID);
 			if (newsgroupData == null) {
 				newsgroupData = new NewsgroupData();
-				newsgroupData.setNewsgroupName(communicationChannelName);
+				newsgroupData.setNewsgroupName(ossmeterID);
 				db.getNewsgroups().add(newsgroupData);
 			} 
 			int articles = communicationChannelDelta.getArticles().size();

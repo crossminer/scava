@@ -80,6 +80,7 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
+			//if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	

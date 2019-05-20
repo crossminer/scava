@@ -24,6 +24,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -51,6 +52,8 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 			if (communicationchannel instanceof NntpNewsGroup) return true;
 			if (communicationchannel instanceof Discussion) return true;
 			if (communicationchannel instanceof EclipseForum) return true;
+			if (communicationchannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -63,7 +66,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 			 for (NewsgroupTopic newsgroupTopic: usedTopics.getNewsgroupTopics()) {
 				 NewsgrpTopic topic = new NewsgrpTopic();
 				 topics.getNewsgrpTopics().add(topic);
-				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());
+				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());//uses ossmeterID
 				 topic.setLabel(newsgroupTopic.getLabel());
 				 topic.setNumberOfDocuments(newsgroupTopic.getNumberOfDocuments());
 			 }

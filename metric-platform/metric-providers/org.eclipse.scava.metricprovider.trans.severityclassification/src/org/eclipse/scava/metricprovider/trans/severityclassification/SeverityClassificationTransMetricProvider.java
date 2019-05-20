@@ -51,6 +51,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 import org.eclipse.scava.severityclassifier.opennlptartarus.libsvm.ClassificationInstance;
 import org.eclipse.scava.severityclassifier.opennlptartarus.libsvm.Classifier;
@@ -78,6 +79,8 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();	   
 	}
@@ -211,28 +214,12 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
 		{
-			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-
-				String communicationChannelName;
-				if (communicationChannel instanceof Discussion) {
-				
-					communicationChannelName = communicationChannel.getUrl();
-				
-				}else if (communicationChannel instanceof EclipseForum){
-
-					EclipseForum eclipseForum =  (EclipseForum) communicationChannel;
-					communicationChannelName = eclipseForum.getForum_name();
-				
-				}else{
-					
-					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-					communicationChannelName = newsgroup.getNewsGroupName();
-				}
+			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();		
 				
 				if (communicationChannelDelta.getArticles().size()==0) continue;
 
 				//Load all stored articles for this newsgroup
-				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannelName);
+				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannel.getOSSMeterId());
 				System.err.println("articlesFeatureIdCollections.size(): " + articlesFeatureIdCollections.size());
 
 				Map<Long, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<Long, CommunicationChannelArticle>();
@@ -255,7 +242,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 							//We need to match here the thread article with the code detector article
 							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleNumber());
 							deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
-							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannelName, deltaArticle, threadId);
+							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
 							db.getNewsgroupArticles().add(newsgroupArticleData);
 						}
 					}
@@ -389,14 +376,14 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return bugTrackerBugsData;
 	}
 
-	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String communicationChannelName, CommunicationChannelArticle deltaArticle, int threadId)
+	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String ossmeterID, CommunicationChannelArticle deltaArticle, int threadId)
 	{
-		ClassificationInstance instanceToStore = new ClassificationInstance(communicationChannelName, deltaArticle, threadId);
+		ClassificationInstance instanceToStore = new ClassificationInstance(ossmeterID, deltaArticle, threadId);
 		
-		classifier.add(communicationChannelName, deltaArticle, threadId, instanceToStore);
+		classifier.add(ossmeterID, deltaArticle, threadId, instanceToStore);
 		
 		NewsgroupArticleData newsgroupArticleData = new NewsgroupArticleData();
-		newsgroupArticleData.setNewsGroupName(communicationChannelName);
+		newsgroupArticleData.setNewsGroupName(ossmeterID);
 		newsgroupArticleData.setArticleNumber(deltaArticle.getArticleNumber());
 
 		for (int unigramId: classifier.getUnigramOrders(instanceToStore.getUnigrams()))
@@ -496,24 +483,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	
 	private String naturalLanguageNewsgroupArticle(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
-		
-		String newsGroupName = null;
-		
-		if (article.getCommunicationChannel() instanceof NntpNewsGroup) {
-			
-			NntpNewsGroup newsgroup = (NntpNewsGroup) article.getCommunicationChannel();
-			newsGroupName = newsgroup.getName();
-			
-		}else {
-
-			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
-			newsGroupName = eclipseForum.getForum_name();
-
-		}
-		
-		
+				
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(newsGroupName),
+				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
@@ -537,10 +509,10 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return featureIdCollection;
 	}
 
-	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String communicationChannelName)
+	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String ossmeterID)
 	{
 		Map<Long, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<Long, FeatureIdCollection>();
-		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(communicationChannelName));
+		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(ossmeterID));
 		for (NewsgroupArticleData newsgroupArticleData:  newsgroupArticleDataIt)
 		{
 			FeatureIdCollection featureIdCollection = new FeatureIdCollection();

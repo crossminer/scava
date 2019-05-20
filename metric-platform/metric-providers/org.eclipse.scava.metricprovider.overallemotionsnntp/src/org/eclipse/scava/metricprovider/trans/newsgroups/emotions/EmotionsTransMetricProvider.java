@@ -32,6 +32,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -55,6 +56,8 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -89,25 +92,15 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		
 		for (CommunicationChannelDelta communicationChannelSystemDelta : delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelSystemDelta.getCommunicationChannel();
-			String communicationChannelName;
-			if (communicationChannel instanceof Discussion) {
-				communicationChannelName = communicationChannel.getUrl();
-			}else if (communicationChannel instanceof EclipseForum){
-				
-				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-				communicationChannelName = eclipseForum.getForum_name();
-				
-			}else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
-			Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(communicationChannelName));
+			String ossmeterID = communicationChannel.getOSSMeterId();
+			
+			Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(ossmeterID));
 			NewsgroupData newsgroupData = null;
 			for (NewsgroupData ngd:  newsgroupDataIt) 
 				newsgroupData = ngd;
 			if (newsgroupData == null) {
 				newsgroupData = new NewsgroupData();
-				newsgroupData.setNewsgroupName(communicationChannelName);
+				newsgroupData.setNewsgroupName(ossmeterID);
 				newsgroupData.setNumberOfArticles(0);
 				newsgroupData.setCumulativeNumberOfArticles(0);
 				db.getNewsgroups().add(newsgroupData);
@@ -118,17 +111,17 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 
 			db.sync();
 
-			Iterable<EmotionDimension> emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
+			Iterable<EmotionDimension> emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(ossmeterID));
 			for (EmotionDimension emotion:  emotionIt)
 				emotion.setNumberOfArticles(0);
 
 			for (CommunicationChannelArticle article: communicationChannelSystemDelta.getArticles()) {
 				
-				List<String> emotionalDimensions = getEmotions(emotionClassificationMetric, article, communicationChannelName);
+				List<String> emotionalDimensions = getEmotions(emotionClassificationMetric, article, ossmeterID);
 				
 				for (String dimension: emotionalDimensions)
 				{
-					emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName),
+					emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(ossmeterID),
 										 						EmotionDimension.EMOTIONLABEL.eq(dimension));
 					
 					EmotionDimension emotion = null;
@@ -137,7 +130,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 					if (emotion == null)
 					{
 						emotion = new EmotionDimension();
-						emotion.setNewsgroupName(communicationChannelName);
+						emotion.setNewsgroupName(ossmeterID);
 						emotion.setEmotionLabel(dimension);
 						emotion.setNumberOfArticles(0);
 						emotion.setCumulativeNumberOfArticles(0);
@@ -151,7 +144,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 			
 			db.sync();
 
-			emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(communicationChannelName));
+			emotionIt = db.getDimensions().find(EmotionDimension.NEWSGROUPNAME.eq(ossmeterID));
 
 			for (EmotionDimension emotion: db.getDimensions())
 			{
@@ -185,12 +178,12 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 				+ "There are 6 emotion labels (anger, fear, joy, sadness, love, surprise)";
 	}
 	
-	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article, String newsGroupName)
+	private List<String> getEmotions(EmotionClassificationTransMetric db, CommunicationChannelArticle article, String ossmeterID)
 	{
 		NewsgroupArticlesEmotionClassification newsgroupArticleInEmotionClassification = null;
 		
 		Iterable<NewsgroupArticlesEmotionClassification> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(newsGroupName),
+				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(ossmeterID),
 						NewsgroupArticlesEmotionClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlesEmotionClassification naec:  newsgroupArticleIt) {
 			newsgroupArticleInEmotionClassification = naec;

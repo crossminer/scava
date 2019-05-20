@@ -51,6 +51,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -78,6 +79,8 @@ public class RequestReplyClassificationTransMetricProvider
 				return true;
 			if (communicationChannel instanceof EclipseForum)
 				return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	}
@@ -167,22 +170,13 @@ public class RequestReplyClassificationTransMetricProvider
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			String plainText;
 			String subject;
-			String communicationChannelName;
-			if (communicationChannel instanceof Discussion) {
-				communicationChannelName = communicationChannel.getUrl();
-			} else if (communicationChannel instanceof EclipseForum) {
-				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-				communicationChannelName = eclipseForum.getForum_name();
-
-			} else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
+			
+			
 			for (CommunicationChannelArticle article : communicationChannelDelta.getArticles()) {
-				NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article, communicationChannelName);
+				NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article, communicationChannel.getOSSMeterId());
 				if (articleInRequestReply == null) {
 					articleInRequestReply = new NewsgroupArticles();
-					articleInRequestReply.setNewsgroupName(communicationChannelName);
+					articleInRequestReply.setNewsgroupName(communicationChannel.getOSSMeterId());
 					articleInRequestReply.setArticleNumber(article.getArticleNumber());
 					articleInRequestReply.setDate(new Date(article.getDate()).toString());
 					db.getNewsgroupArticles().add(articleInRequestReply);
@@ -202,7 +196,7 @@ public class RequestReplyClassificationTransMetricProvider
 				predictions = classify(instancesCollection);
 				for (CommunicationChannelArticle article : communicationChannelDelta.getArticles()) {
 					NewsgroupArticles articleInRequestReply = findNewsgroupArticle(db, article,
-							communicationChannelName);
+							communicationChannel.getOSSMeterId());
 					articleInRequestReply
 							.setClassificationResult(predictions.get(getNewsgroupArticleId(articleInRequestReply)));
 					db.sync();
@@ -297,11 +291,11 @@ public class RequestReplyClassificationTransMetricProvider
 	}
 
 	private NewsgroupArticles findNewsgroupArticle(RequestReplyClassificationTransMetric db,
-			CommunicationChannelArticle article, String communicationChannelName) {
+			CommunicationChannelArticle article, String ossmeterID) {
 
 		NewsgroupArticles newsgroupArticles = null;
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = db.getNewsgroupArticles().find(
-				NewsgroupArticles.NEWSGROUPNAME.eq(communicationChannelName),
+				NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterID),
 				NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticles narr : newsgroupArticlesIt) {
 			newsgroupArticles = narr;

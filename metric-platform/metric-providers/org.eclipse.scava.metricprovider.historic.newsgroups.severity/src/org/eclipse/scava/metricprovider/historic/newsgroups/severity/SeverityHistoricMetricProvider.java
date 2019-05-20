@@ -27,6 +27,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -54,6 +55,8 @@ public class SeverityHistoricMetricProvider extends AbstractHistoricalMetricProv
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -72,20 +75,20 @@ public class SeverityHistoricMetricProvider extends AbstractHistoricalMetricProv
 			 
 			 for (NewsgroupThreadData newsgroupThreadData: severityClassifier.getNewsgroupThreads()) {
 				 
-				 String newsgroupName = newsgroupThreadData.getNewsgroupName();
+				 String ossmeterID = newsgroupThreadData.getNewsgroupName();
 				 
-				 if (threadsPerNewsgroup.containsKey(newsgroupName))
-					 threadsPerNewsgroup.put(newsgroupName, threadsPerNewsgroup.get(newsgroupName) + 1);
+				 if (threadsPerNewsgroup.containsKey(ossmeterID))
+					 threadsPerNewsgroup.put(ossmeterID, threadsPerNewsgroup.get(ossmeterID) + 1);
 				 else 
-					 threadsPerNewsgroup.put(newsgroupName, 1);
+					 threadsPerNewsgroup.put(ossmeterID, 1);
 				 
 				 String severity = newsgroupThreadData.getSeverity();
 				  Map<String, Integer> severityMap;
-				 if (severitiesPerNewsgroup.containsKey(newsgroupName))
-					 severityMap = severitiesPerNewsgroup.get(newsgroupName);
+				 if (severitiesPerNewsgroup.containsKey(ossmeterID))
+					 severityMap = severitiesPerNewsgroup.get(ossmeterID);
 				 else {
 					 severityMap = new HashMap<String, Integer>();
-					 severitiesPerNewsgroup.put(newsgroupName, severityMap);
+					 severitiesPerNewsgroup.put(ossmeterID, severityMap);
 				 }
 				 
 				 if (severityMap.containsKey(severity))
@@ -95,19 +98,19 @@ public class SeverityHistoricMetricProvider extends AbstractHistoricalMetricProv
 			 
 			 }
 			 
-			 for (String newsgroupName: threadsPerNewsgroup.keySet()) {
+			 for (String ossmeterID: threadsPerNewsgroup.keySet()) {
 				 NewsgroupData newsgroupData = new NewsgroupData();
-				 int numberOfThreads = threadsPerNewsgroup.get(newsgroupName);
-				 newsgroupData.setNewsgroupName(newsgroupName);
+				 int numberOfThreads = threadsPerNewsgroup.get(ossmeterID);
+				 newsgroupData.setNewsgroupName(ossmeterID);
 				 newsgroupData.setNumberOfThreads(numberOfThreads);
 				 metric.getNewsgroupData().add(newsgroupData);
 			 
-				 Map<String, Integer> severityMap = severitiesPerNewsgroup.get(newsgroupName);
+				 Map<String, Integer> severityMap = severitiesPerNewsgroup.get(ossmeterID);
 				 
 				 for (String severity: severityMap.keySet()) {
 					 int numberOfSeverityThreads = severityMap.get(severity);
 					 SeverityLevel severityLevel = new SeverityLevel();
-					 severityLevel.setNewsgroupName(newsgroupName);
+					 severityLevel.setNewsgroupName(ossmeterID);
 					 severityLevel.setSeverityLevel(severity);
 					 severityLevel.setNumberOfThreads(numberOfSeverityThreads);
 					 if ( numberOfThreads > 0 )

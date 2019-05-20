@@ -27,7 +27,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -54,6 +56,9 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -86,7 +91,7 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 			 
 				 ThreadStatistics threadData = null;
 				 Iterable<ThreadStatistics> threadDataIt = threadsRequestReplies.getThreads().
-						 						find(ThreadStatistics.NEWSGROUPNAME.eq(newsgroupThreadData.getNewsgroupName()),
+						 						find(ThreadStatistics.NEWSGROUPNAME.eq(newsgroupThreadData.getNewsgroupName()),//uses ossmeterID
 						 							 ThreadStatistics.THREADID.eq(newsgroupThreadData.getThreadId()));
 				 for (ThreadStatistics ts: threadDataIt) threadData = ts;
 		 

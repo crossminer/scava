@@ -74,6 +74,8 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				return true;
 			if (communicationChannel instanceof SympaMailingList)
 				return true;
+//			if (communicationChannel instanceof IRC)
+//				return true;
 			
 		}
 		return !project.getBugTrackingSystems().isEmpty();
@@ -161,22 +163,6 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 		for (CommunicationChannelDelta communicationChannelDelta : ccpDelta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 
-			String communicationChannelName;
-			if (communicationChannel instanceof Discussion) {
-
-				communicationChannelName = communicationChannel.getUrl();
-
-			} else if (communicationChannel instanceof EclipseForum) {
-
-				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-				communicationChannelName = eclipseForum.getForum_name();
-			} else if (communicationChannel instanceof SympaMailingList) {
-				SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
-				communicationChannelName = sympaMailingList.getMailingListName();
-			} else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
 
 			for (CommunicationChannelArticle article : communicationChannelDelta.getArticles()) {
 
@@ -184,7 +170,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 				if (newsgroupArticlesData == null) {
 					newsgroupArticlesData = new NewsgroupArticlePlainTextProcessing();
-					newsgroupArticlesData.setNewsGroupName(communicationChannelName);
+					newsgroupArticlesData.setNewsGroupName(communicationChannel.getOSSMeterId());
 					newsgroupArticlesData.setArticleNumber(article.getArticleNumber());
 					db.getNewsgroupArticles().add(newsgroupArticlesData);
 				}
@@ -198,7 +184,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					plainTextObject = PlainTextNewsgroups.process(article.getText());
 
 				}
-
+				
 				newsgroupArticlesData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
 				newsgroupArticlesData.setHadReplies(plainTextObject.hadReplies());
 				db.sync();
@@ -229,24 +215,10 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 
 	private NewsgroupArticlePlainTextProcessing findNewsgroupArticle(PlainTextProcessingTransMetric db,
 			CommunicationChannelArticle article) {
+		
 		NewsgroupArticlePlainTextProcessing newsgroupArticlesData = null;
-
-		String communicationChannelName = null;
-
-		if (article.getCommunicationChannel() instanceof NntpNewsGroup) {
-			NntpNewsGroup newsgroup = (NntpNewsGroup) article.getCommunicationChannel();
-			communicationChannelName = newsgroup.getNewsGroupName();
-		} else if (article.getCommunicationChannel() instanceof EclipseForum) {
-			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
-			communicationChannelName = eclipseForum.getForum_name();
-		}else if (article.getCommunicationChannel() instanceof SympaMailingList) {
-			SympaMailingList sympaMailingList = (SympaMailingList) article.getCommunicationChannel();
-			communicationChannelName = sympaMailingList.getMailingListName();
-			
-		}
-
 		Iterable<NewsgroupArticlePlainTextProcessing> newsgroupArticlesDataIt = db.getNewsgroupArticles().find(
-				NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(communicationChannelName),
+				NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 				NewsgroupArticlePlainTextProcessing.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlePlainTextProcessing nad : newsgroupArticlesDataIt) {
 			newsgroupArticlesData = nad;

@@ -29,6 +29,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -52,6 +53,8 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -101,18 +104,8 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			String communicationChannelName;
-			if (communicationChannel instanceof Discussion)
-				communicationChannelName = communicationChannel.getUrl();
-			else if (communicationChannel instanceof EclipseForum) {
 			
-				EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-				communicationChannelName = eclipseForum.getForum_name();
-				
-			}else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
+			String ossmeterID = communicationChannel.getOSSMeterId();
 			
 			List<CommunicationChannelArticle> articles = communicationChannelDelta.getArticles();
 			for (CommunicationChannelArticle article: articles) {
@@ -122,7 +115,7 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 				HourArticles hourArticles = db.getHourArticles().findOneByHour(hourNumber + ":00");
 				hourArticles.setNumberOfArticles(hourArticles.getNumberOfArticles()+1);
 				String requestReplyClass = 
-						getRequestReplyClass(usedClassifier, communicationChannelName, article);
+						getRequestReplyClass(usedClassifier, ossmeterID, article);
 				if (requestReplyClass.equals("__label__Request"))
 					hourArticles.setNumberOfRequests(hourArticles.getNumberOfRequests()+1);
 				else if (requestReplyClass.equals("__label__Reply"))
@@ -170,9 +163,9 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 	}
 
 	private String getRequestReplyClass(RequestReplyClassificationTransMetric usedClassifier, 
-			String communicationChannelName, CommunicationChannelArticle article) {
+			String ossmeterID, CommunicationChannelArticle article) {
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = usedClassifier.getNewsgroupArticles().
-				find(NewsgroupArticles.NEWSGROUPNAME.eq(communicationChannelName), 
+				find(NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterID), 
 						NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
 		NewsgroupArticles newsgroupArticle = null;
 		for (NewsgroupArticles art:  newsgroupArticlesIt) {
@@ -181,7 +174,7 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 		if (newsgroupArticle == null) {
 			System.err.println("Newsgroups - Hourly Requests Replies -\t" + 
 					"there is no classification for article: " + article.getArticleNumber() +
-					"\t of newsgroup: " + communicationChannelName);
+					"\t belonging too: " + article.getCommunicationChannel().getUrl());
 //			System.exit(-1);
 		} else{
 			return newsgroupArticle.getClassificationResult();
