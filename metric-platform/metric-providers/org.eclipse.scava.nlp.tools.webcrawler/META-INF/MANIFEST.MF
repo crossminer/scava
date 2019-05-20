@@ -7,7 +7,5 @@ Export-Package: org.eclipse.scava.nlp.tools.webcrawler
 Bundle-Activator: org.eclipse.scava.nlp.tools.webcrawler.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.runtime
-Bundle-ClassPath: lib/crawler4j-4.4.0.jar,
- lib/je-5.0.84.jar,
- .
+Require-Bundle: org.eclipse.core.runtime,
+ edu.uci.ics.crawler4j

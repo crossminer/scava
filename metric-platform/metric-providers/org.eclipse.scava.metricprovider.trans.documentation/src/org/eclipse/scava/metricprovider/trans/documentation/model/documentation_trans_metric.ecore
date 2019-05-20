@@ -37,5 +37,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastRevisionAnalyzed">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nextUpdateDate">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

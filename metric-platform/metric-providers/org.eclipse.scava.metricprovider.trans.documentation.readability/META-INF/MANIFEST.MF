@@ -16,5 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.nlp.tools.readability,
  org.eclipse.scava.metricprovider.trans.documentation,
  org.eclipse.scava.repository.model.documentation.gitbased,
- org.eclipse.scava.repository.model.vcs.git
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.documentation.systematic
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.documentation.readability

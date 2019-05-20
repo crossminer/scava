@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Error_prone_annotations
+Bundle-SymbolicName: com.google.errorprone.error_prone_annotations
+Bundle-Version: 2.1.3
+Bundle-ClassPath: error_prone_annotations-2.1.3.jar
+Export-Package: com.google.errorprone.annotations,
+ com.google.errorprone.annotations.concurrent

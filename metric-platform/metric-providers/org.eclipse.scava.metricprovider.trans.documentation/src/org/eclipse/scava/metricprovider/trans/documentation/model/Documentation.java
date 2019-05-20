@@ -21,11 +21,13 @@ public class Documentation extends Pongo {
 		REMOVEDENTRIESID.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		LASTUPDATEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		LASTREVISIONANALYZED.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
+		NEXTUPDATEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 	}
 	
 	public static StringQueryProducer DOCUMENTATIONID = new StringQueryProducer("documentationId"); 
 	public static StringQueryProducer LASTUPDATEDATE = new StringQueryProducer("lastUpdateDate"); 
 	public static StringQueryProducer LASTREVISIONANALYZED = new StringQueryProducer("lastRevisionAnalyzed"); 
+	public static StringQueryProducer NEXTUPDATEDATE = new StringQueryProducer("nextUpdateDate"); 
 	public static ArrayQueryProducer ENTRIESID = new ArrayQueryProducer("entriesId");
 	public static ArrayQueryProducer REMOVEDENTRIESID = new ArrayQueryProducer("removedEntriesId");
 	
@@ -54,6 +56,15 @@ public class Documentation extends Pongo {
 	
 	public Documentation setLastRevisionAnalyzed(String lastRevisionAnalyzed) {
 		dbObject.put("lastRevisionAnalyzed", lastRevisionAnalyzed);
+		notifyChanged();
+		return this;
+	}
+	public String getNextUpdateDate() {
+		return parseString(dbObject.get("nextUpdateDate")+"", "");
+	}
+	
+	public Documentation setNextUpdateDate(String nextUpdateDate) {
+		dbObject.put("nextUpdateDate", nextUpdateDate);
 		notifyChanged();
 		return this;
 	}

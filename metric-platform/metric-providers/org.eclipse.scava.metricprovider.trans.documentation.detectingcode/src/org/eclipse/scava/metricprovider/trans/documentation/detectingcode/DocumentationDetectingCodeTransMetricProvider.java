@@ -12,9 +12,11 @@ import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
+import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 
@@ -54,6 +56,8 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
 			if(repository instanceof DocumentationGitBased) return true;
+		for (CommunicationChannel communicationChannel: project.getCommunicationChannels())
+			if (communicationChannel instanceof DocumentationSystematic) return true;
 		return false;
 	}
 

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,10 +23,14 @@ import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationMarkdownBased;
 import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationOthers;
 import org.eclipse.scava.nlp.tools.preprocessor.fileparser.FileParser;
+import org.eclipse.scava.nlp.tools.webcrawler.Crawler;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDocumentation;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.platform.delta.vcs.VcsChangeType;
 import org.eclipse.scava.platform.delta.vcs.VcsCommit;
@@ -36,9 +41,11 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutException;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyManagerUnavailable;
+import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
 import com.mongodb.DB;
 
@@ -76,6 +83,8 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
 			if(repository instanceof DocumentationGitBased) return true;
+		for (CommunicationChannel communicationChannel: project.getCommunicationChannels())
+			if (communicationChannel instanceof DocumentationSystematic) return true;
 		return false;
 	}
 
@@ -106,6 +115,73 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 
 		db.getDocumentationEntries().getDbCollection().drop();
 		db.sync();
+		
+		CommunicationChannelProjectDelta ccProjectDelta = projectDelta.getCommunicationChannelDelta();
+		
+		for( CommunicationChannelDelta ccDelta : ccProjectDelta.getCommunicationChannelSystemDeltas())
+		{
+			//In theory it should always return at maximum one entry
+			List<CommunicationChannelDocumentation> documentationList = ccDelta.getDocumentation();
+			
+			if(documentationList.size()==0)
+				return;
+			
+			String nextDateDelta = documentationList.get(0).getNextExecutionDate().toString();
+			String url = documentationList.get(0).getUrl();
+			
+			String documentationId= ccDelta.getCommunicationChannel().getOSSMeterId();
+			
+			Documentation documentation = findDocumentation(db, documentationId);
+			
+			if(documentation==null)
+			{
+				documentation = new Documentation();
+				documentation.setDocumentationId(documentationId);
+				documentation.setNextUpdateDate("");
+				db.getDocumentation().add(documentation);
+				db.sync();
+			}
+			
+			boolean needToReadAll=false;
+			
+			if(documentation.getNextUpdateDate().isEmpty() || documentation.getNextUpdateDate().equals(nextDateDelta))
+				needToReadAll=true;
+			
+			if(needToReadAll)
+			{
+				documentation.setNextUpdateDate(nextDateDelta);
+				File documentationStorage = createSystematicDocumentationStorage(project);
+				Crawler crawler = new Crawler(documentationStorage, Arrays.asList(url));
+				crawler.start();
+				HashMap<String, String> mappings = crawler.getMappingPaths();
+				
+				try (Stream<Path> filePaths = Files.walk(documentationStorage.toPath()))
+		        {
+					
+					for(Path file : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
+					{
+						String fileUniqueName=file.getName(file.getNameCount()-1).toString();
+						if(mappings.containsKey(fileUniqueName))
+						{
+					 		String relativePath=mappings.get(fileUniqueName);
+					 		
+					 		if(!relativePath.equals(""))
+					 			relativePath=relativePath.replaceAll("\\\\", "/");		
+					 		System.err.println(relativePath);
+					 		processFile(file.toFile(), db, documentation, documentationId, relativePath);
+						}
+						file.toFile().delete();
+					}
+					db.sync();
+					
+		        
+		        } catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+			
+		}
 		
 		VcsProjectDelta vcsProjectDelta = projectDelta.getVcsDelta();
 		
@@ -183,7 +259,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 					 			continue;
 					 		
 					 		System.err.println(relativePath);
-					 		processFile(file.toFile(), db, documentation, repository.getUrl(), relativePath, fileName);
+					 		processFile(file.toFile(), db, documentation, repository.getUrl(), relativePath);
 						}
 						db.sync();
 						
@@ -249,7 +325,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 									if(!Files.exists(file.toPath()))
 										throw new FileNotFoundException("The file "+relativePath+" has not been found");
 									
-									processFile(file, db, documentation, repository.getUrl(), relativePath, file.getName());
+									processFile(file, db, documentation, repository.getUrl(), relativePath);
 									
 								}
 								catch(InvalidPathException e)
@@ -278,7 +354,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 		
 	}
 	
-	private void processFile(File file, DocumentationTransMetric db, Documentation documentation, String documentId, String entryId, String fileName)
+	private void processFile(File file, DocumentationTransMetric db, Documentation documentation, String documentId, String entryId)
 	{
 		try {
 			String fileContent = FileParser.extractTextAsString(file);
@@ -297,7 +373,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 				else
 					documentationEntry.getPlainText().clear();
-				documentationEntry.getPlainText().addAll(getPlainText(fileName, fileContent));
+				documentationEntry.getPlainText().addAll(getPlainText(entryId, fileContent));
 	 		}
 			
 		} catch (UnsupportedOperationException e) {
@@ -341,6 +417,15 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 		for(Documentation d : documentationIt)
 			documentation=d;
 		return documentation;
+	}
+	
+	private File createSystematicDocumentationStorage(Project project)
+	{
+		File projectStorage = new File(project.getExecutionInformation().getStorage().getPath());
+		File documentationStorage = new File(projectStorage, "documenationData");
+		if(!documentationStorage.exists())
+			documentationStorage.mkdirs();
+		return documentationStorage;
 	}
 
 }

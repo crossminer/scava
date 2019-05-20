@@ -13,7 +13,7 @@
  <extension
          point="org.eclipse.scava.platform.managers.communicationchannel">
       <communicationChannel
-            manager="org.eclipse.scava.platform.communicationchannel.eclipseforums.EclipseForumsManager">
+            manager="org.eclipse.scava.platform.documentation.systematic.DocumentationSystematicManager">
       </communicationChannel>
    </extension>
 </plugin>

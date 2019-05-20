@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Animal-sniffer-annotations
+Bundle-SymbolicName: org.codehaus.mojo.animal-sniffer-annotations
+Bundle-Version: 1.14.0
+Bundle-ClassPath: animal-sniffer-annotations-1.14.jar
+Export-Package: org.codehaus.mojo.animal_sniffer

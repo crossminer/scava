@@ -2,14 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HttpCore
 Bundle-SymbolicName: org.apache.httpcomponents.httpcore
-Bundle-Version: 4.3.2
-Bundle-ClassPath: httpcore-4.3.2.jar
+Bundle-Version: 4.4.11
+Bundle-ClassPath: httpcore-4.4.11.jar
 Export-Package: org.apache.http,
  org.apache.http.annotation,
  org.apache.http.concurrent,
  org.apache.http.config,
  org.apache.http.entity,
  org.apache.http.impl,
+ org.apache.http.impl.bootstrap,
  org.apache.http.impl.entity,
  org.apache.http.impl.io,
  org.apache.http.impl.pool,
@@ -18,5 +19,6 @@ Export-Package: org.apache.http,
  org.apache.http.params,
  org.apache.http.pool,
  org.apache.http.protocol,
+ org.apache.http.ssl,
  org.apache.http.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

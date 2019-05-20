@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.core.runtime,
  com.fasterxml.jackson,
  org.eclipse.scava.platform.communicationchannel.zendesk.dependency;bundle-version="1.0.0",
  org.junit,
- org.apache.log4j;bundle-version="1.0.0"
+ org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.communicationchannel.zendesk

@@ -114,7 +114,7 @@ public class FileParser
 	 */
 	public static String extractTextAsString(BufferedInputStream stream) throws Exception
 	{
-		BodyContentHandler handler = new BodyContentHandler();
+		BodyContentHandler handler = new BodyContentHandler(-1);
 	    try {
 	    	if(isSupported(stream))
 	    	{

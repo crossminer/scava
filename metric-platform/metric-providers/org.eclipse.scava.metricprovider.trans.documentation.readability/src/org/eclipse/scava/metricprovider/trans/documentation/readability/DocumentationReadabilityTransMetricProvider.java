@@ -17,9 +17,11 @@ import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
+import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
 import com.mongodb.DB;
 
@@ -55,6 +57,8 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
 			if(repository instanceof DocumentationGitBased) return true;
+		for (CommunicationChannel communicationChannel: project.getCommunicationChannels())
+			if (communicationChannel instanceof DocumentationSystematic) return true;
 		return false;
 	}
 

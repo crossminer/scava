@@ -32,11 +32,14 @@ public class DocumentationSystematicManager implements ICommunicationChannelMana
 		documentation.setDateDelta(date.toJavaDate());
 		documentation.setNextExecutionDate(getNextDateExecution(date, documentationSystematic.getExecutionFrequency()));
 		
-		if(!documentation.getLogin().isEmpty())
-		{
-			documentation.setLogin(documentationSystematic.getLogin());
-			documentation.setPassword(documentationSystematic.getPassword());
-		}
+		//if(!documentationSystematic.getLogin().isEmpty()|| !documentationSystematic.getLogin().equals("null"))
+		//{
+		//	documentation.setLogin(documentationSystematic.getLogin());
+		//	documentation.setPassword(documentationSystematic.getPassword());
+		//}
+		
+		documentation.setLogin("");
+		documentation.setPassword("");
 		
 		delta.getDocumentation().add(documentation);
 		
@@ -59,10 +62,18 @@ public class DocumentationSystematicManager implements ICommunicationChannelMana
 		if(executionFrequency==0)
 			return date.toJavaDate();
 		Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date.toJavaDate());
-        calendar.add(Calendar.DATE, executionFrequency);
-        
-        return calendar.getTime();
+		calendar.add(Calendar.DATE, -1);
+		//Unless the day of analysis is yesterday, the next execution will be the same of the delta
+		//The metric thus will avoid the download of data that happened in the past
+		if(date.toJavaDate().compareTo(calendar.getTime())==0)
+		{	
+	        calendar.setTime(date.toJavaDate());
+	        calendar.add(Calendar.DATE, executionFrequency);
+	        
+	        return calendar.getTime();
+		}
+		else
+			return date.toJavaDate();
 	}
 	
 

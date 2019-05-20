@@ -16,6 +16,7 @@ Microsoft Excel	application/vnd.ms-excel
 Microsoft Excel (OpenXML)	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 Wordperfect	application/vnd.wordperfect
 Microsoft Works	application/vnd.ms-works
+Tika Word	application/x-tika-ooxml
 #Images
 DJVU	image/vnd.djvu
 #
