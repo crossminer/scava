@@ -49,6 +49,8 @@ DUPLICATED_UUIDS = 0
 META_MARKER = '--meta'
 DEFAULT_TOP_PROJECT = 'main'
 
+DEFAULT_BULK_SIZE = 100
+
 # FAKE DATA: create fake unique UUIDs in order to maximize the amount of data to create dashboards
 # This is related to https://github.com/crossminer/scava/issues/139 and https://github.com/crossminer/scava/issues/138
 GLOBAL_METRIC_COUNTER = 0
@@ -88,6 +90,7 @@ def get_params():
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
+    parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, help="Number of items uploaded per bulk")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
                         help="URL for Scava API REST (default: http://localhost:8182)")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
@@ -641,5 +644,21 @@ if __name__ == '__main__':
     scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
 
     if scava_data:
-        logging.info("Loading Scava metrics/factoids in Elasticsearch")
-        elastic.bulk_upload(scava_data, "uuid")
+        logging.info("Uploading Scava data to Elasticsearch")
+
+        counter = 0
+        to_upload = []
+        for item in scava_data:
+
+            to_upload.append(item)
+
+            if len(to_upload) == ARGS.bulk_size:
+                elastic.bulk_upload(to_upload, "uuid")
+                counter += len(to_upload)
+                # logging.info("Added %s items to %s", counter, ARGS.index)
+                to_upload = []
+
+        if len(to_upload) > 0:
+            counter += len(to_upload)
+            elastic.bulk_upload(to_upload, "uuid")
+            # logging.info("Added %s items to %s", counter, ARGS.index)
