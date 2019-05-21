@@ -93,8 +93,8 @@ def get_params():
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
-    parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, help="Number of items uploaded per bulk")
-    parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, help="Seconds to wait in case ES is not ready")
+    parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, type=int, help="Number of items uploaded per bulk")
+    parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int, help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
                         help="URL for Scava API REST (default: http://localhost:8182)")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
@@ -714,6 +714,7 @@ def __init_index(elastic_url, index, wait_time):
 if __name__ == '__main__':
 
     ARGS = get_params()
+
     if ARGS.debug:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
         logging.debug("Debug mode activated")
@@ -723,6 +724,7 @@ if __name__ == '__main__':
     logging.info("Importing items from %s to %s/%s", ARGS.url, ARGS.elastic_url, ARGS.index)
 
     elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
+    elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
 
