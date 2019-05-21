@@ -37,6 +37,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_CONF_DEPENDENCY,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC,
+                                           CATEGORY_USER,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -506,6 +507,56 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
     logging.debug("Dependency enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
 
 
+def enrich_users(scava_users, meta_info=None):
+    """
+    Enrich user data coming from Scava to use them in Kibana.
+    The current enriched items contain the user name, the date (i.e., `date` and `datetime`) when
+    the metric was calculated, the churn value (i.e., `churn` and `value`), the scava metric from
+    where the data was fetched, project and meta project information.
+
+          "user" : "Winnie the pooh",
+          "date" : "20100523",
+          "churn" : 22218,
+          "scava_metric" : "churnPerCommitterTimeLine",
+          "project" : "Honey tree",
+          "datetime" : "2010-05-23T00:00:00+00:00",
+          "uuid" : "1b7cea97ba3e6a9e1dd98385dce4abe7943f7b6e",
+          "value" : 22218,
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_users: user data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for scava_user in scava_users:
+        processed += 1
+
+        user_data = scava_user['data']
+        eitem = user_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        eitem['uuid'] = uuid(eitem['user'], eitem['project'], eitem['date'])
+
+        # move the churn value to a different attribute to ease aggregations
+        eitem['value'] = eitem['churn']
+
+        # remove updated field (which is the time when the project analysis was executed)
+        eitem.pop('updated', None)
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.debug("User enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+
+
 def extract_meta(project_name, description=None):
     """Extract the meta information defined in the project description. Meta information
     should appear at the very end of the description after the marker META_MARKER, for instance:
@@ -592,6 +643,13 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_dep
 
                 logging.debug("End fetch conf dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_USER:
+                logging.debug("Start fetch user data for %s" % project)
+
+                for enriched_user in enrich_users(scavaProject.fetch(CATEGORY_USER), meta):
+                    yield enriched_user
+
+                logging.debug("End fetch user data for %s" % project)
 
             else:
                 msg = "category %s not handled" % category
@@ -625,6 +683,15 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_dep
 
             logging.debug("End fetch conf dependencies for %s" % project)
+
+        elif category == CATEGORY_USER:
+            logging.debug("Start fetch user data for %s" % project)
+
+            for enriched_user in enrich_users(scava.fetch(CATEGORY_USER)):
+                yield enriched_user
+
+            logging.debug("End fetch user data for %s" % project)
+
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
