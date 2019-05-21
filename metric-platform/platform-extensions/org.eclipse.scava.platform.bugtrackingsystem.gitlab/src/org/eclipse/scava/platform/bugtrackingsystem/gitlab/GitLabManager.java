@@ -64,9 +64,9 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 
 		this.open_id = "";
 		this.builder = "";
-		this.callsRemaning = 0;
-		this.rateLimit = 0;
-		this.timeToReset = 0;
+		this.callsRemaning = -1;
+		this.rateLimit = -1;
+		this.timeToReset = -1;
 		this.current_page = 0;
 		this.last_page = 0;
 		this.next_page = 0;
@@ -243,15 +243,9 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 					for (JsonNode e : rootNode) {
 						
 						Issue issue = mapper.treeToValue(e, Issue.class);
-						
-						Date created = new Date(convertStringToDate(issue.getCreated_at().toString()));
-						Date updated = new Date(convertStringToDate(issue.getUpdated_at().toString()));
-						
-						if((created.toJavaDate().before(updated.toJavaDate())) && (updated.toJavaDate().compareTo(date.toJavaDate()) == 0)) {
 							
-							issues.add(issue);
+						issues.add(issue);
 						
-						}
 					}
 				}
 			}
@@ -437,9 +431,12 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 			this.next_page = Integer.parseInt(responseHeader.get("X-Next-Page"));
 		}
 
-		this.rateLimit = Integer.parseInt(responseHeader.get("RateLimit-Limit"));
-		this.callsRemaning = Integer.parseInt(responseHeader.get("RateLimit-Remaining"));
-		this.timeToReset = Integer.parseInt(responseHeader.get("RateLimit-Reset"));
+		if(responseHeader.get("RateLimit-Limit")!=null)
+		{
+			this.rateLimit = Integer.parseInt(responseHeader.get("RateLimit-Limit"));
+			this.callsRemaning = Integer.parseInt(responseHeader.get("RateLimit-Remaining"));
+			this.timeToReset = Integer.parseInt(responseHeader.get("RateLimit-Reset"));
+		}
 	}
 
 	/**
@@ -483,6 +480,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	 */
 	private void waitUntilCallReset(int timeToReset) {
 
+		if(timeToReset==-1)
+			return;
 		try {
 			
 			System.err.println("[Git Lab Reader] The rate limit has been reached. This thread will be suspended for "
