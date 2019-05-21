@@ -19,7 +19,6 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersions;
-import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVersionCollection;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -80,12 +79,6 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 			if (repoDeltas.isEmpty()) {
 				return;
 			}
-			
-			/*NewVersionCollection dc = db.getNewVersions();
-			for (NewMavenVersion d : dc) {
-				dc.remove(d);
-			}
-			db.sync();*/
 			
 			db.getNewVersions().getDbCollection().drop();
 			db.sync();
