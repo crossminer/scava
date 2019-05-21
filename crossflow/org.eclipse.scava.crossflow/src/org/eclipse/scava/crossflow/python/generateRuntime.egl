@@ -18,10 +18,7 @@ import sys
 from enum import Enum
 from pathlib import Path
 
-
-from org.eclipse.scava.crossflow.utils.thread_sync import synchronized
 import org.eclipse.scava.crossflow.utils.basic_xstream as bxstream
-
 
 illegal_chars = [ 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
             18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47 ].sort()
@@ -30,19 +27,16 @@ currentTimeMillis = lambda: int(round(time.time() * 1000))
 
 DEBUG = False
 
+
 def debug(debugStr):
     if DEBUG:
         print(debugStr)
-
-
 
 '''
 Created on 22 Feb 2019
 
 @author: stevet
 '''
-
-
             
 
 class CloneUtils(object):
@@ -88,6 +82,7 @@ class CloneUtils(object):
      * @param repoUrl in format "https://github.com/repoOwner/repoName"
      * @return String repoName
     '''
+
     def extractGhRepoName(self, repoUrl):
         repoNameStartIndex = repoUrl.find("/", 19) + 1;
         return repoUrl[repoNameStartIndex:len(repoUrl)]            
@@ -97,6 +92,7 @@ class CloneUtils(object):
      * @param repoUrl in format "https://github.com/repoOwner/repoName"
      * @return String repoOwner
     '''
+
     def extractGhRepoOwner(self, repoUrl):
         repoNameStartIndex = repoUrl.find("/", 19) + 1;    
         return repoUrl[19:repoNameStartIndex - 1]
@@ -107,7 +103,6 @@ class CloneUtils(object):
             shutil.rmtree(repoLocationFile)
             print("Successfully cleaned repo clone parent: " + repoLocationFile)
             os.makedirs(repoLocationFile)
-        
     
 '''    
 if __name__ == '__main__':
@@ -116,7 +111,6 @@ if __name__ == '__main__':
     print(cl.extractGhRepoName(url))
     print(cl.extractGhRepoOwner(url))
 ''' 
-    
     
 '''
 Created on 22 Feb 2019
@@ -144,6 +138,7 @@ class ControlSignals(Enum):
             return ControlSignals.WORKER_ADDED
         else:
             return ControlSignals.WORKER_REMOVED
+
     
 class ControlSignal(object):
     '''
@@ -156,13 +151,13 @@ class ControlSignal(object):
         '''
         self.signal = controlSignal
         self.senderId = senderId
-    
 
 '''
 Created on 23 Feb 2019
 
 @author: stevet
 '''
+
 
 class CSVParser(object):
     '''
@@ -181,12 +176,12 @@ class CSVParser(object):
     def getRecordsList(self):
         return list(self.parser)
 
-
 '''
 Created on 23 Feb 2019
 
 @author: stevet
 '''
+
 
 class CSVWriter(object):
     '''
@@ -198,7 +193,7 @@ class CSVWriter(object):
         Constructor
         '''
         if (not os.path.isfile(filePath)): 
-            parent = filePath[0:filePath.rfind("/")-1]
+            parent = filePath[0:filePath.rfind("/") - 1]
             os.mkdir(parent)
         self.writer = csv.writer(filePath)
         self.writer.writerow(headers)
@@ -211,13 +206,13 @@ class CSVWriter(object):
         
     def close(self):
         self.writer.close()
-        
 
 '''
 Created on 27 Feb 2019
 
 @author: stevet
 '''
+
     
 class QueueType(Enum):
     QUEUE = 1 
@@ -238,6 +233,7 @@ def str2QueueType(qTypeStr):
     if qTypeStr.upper() == 'QUEUE':
         return QueueType.QUEUE
     return QueueType.TOPIC
+
 
 class QueueInfo(object):
     '''
@@ -260,9 +256,9 @@ class QueueInfo(object):
     
     def getStompDestinationName(self):
         if self.isQueue():
-            return '/queue/'+self.queueName
+            return '/queue/' + self.queueName
         else:
-            return '/topic/'+self.queueName
+            return '/topic/' + self.queueName
         
     def getPrefetchSize(self):
         return self.prefetchSize
@@ -273,7 +269,9 @@ Created on 23 Feb 2019
 @author: stevet
 '''
 
+
 class Stream(object):
+
     def __init__(self, name, size, inFlight, isTopic, numberOfSubscribers):
         '''
         Constructor
@@ -283,7 +281,6 @@ class Stream(object):
         self.inFlight = inFlight
         self.isTopic = isTopic
         self.numberOfSubscribers = numberOfSubscribers
-
     
     def getName(self):
         return self.name
@@ -302,6 +299,7 @@ class Stream(object):
     
     def setNumberOfSubscribers(self, numberOfSubscribers):
         self.numberOfSubscribers = numberOfSubscribers
+
      
 class StreamMetadata(object):
     '''
@@ -338,7 +336,6 @@ class StreamMetadata(object):
             ret = ret + s.name + "\tsize: " + s.size + "\t: " + s.inFlight + "\tisTopic: " + s.isTopic + \
                     "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n"
         return ret
-
 
 '''
 Created on 23 Feb 2019
@@ -383,7 +380,6 @@ class TaskStatus(object):
         self.status = status
         self.caller = caller
         self.reason = reason
-        
 
     def getStatus(self):
         return self.status
@@ -395,7 +391,7 @@ class TaskStatus(object):
         return self.reason
     
     def __str__(self, *args, **kwargs):
-        return str(self.status)+" | caller: "+str(self.caller)+" reason: "+str(self.reason)
+        return str(self.status) + " | caller: " + str(self.caller) + " reason: " + str(self.reason)
 
 '''    
 if __name__ == '__main__':
@@ -403,7 +399,6 @@ if __name__ == '__main__':
     
     print('stat='+str(testVal))
 '''
-
 
 '''
 Created on 13 Mar 2019
@@ -429,6 +424,7 @@ class Mode(Enum):
         else:
             return Mode.WORKER
 
+
 def convert(modeString):
     if('master' == modeString): 
         return Mode.MASTER
@@ -437,13 +433,12 @@ def convert(modeString):
     if('master_bare' == Mode.MASTER_BARE):
         raise Exception("Mode must be 'master_bare', 'master' or 'worker' but was '" + modeString + "'")
 
-
-
 '''
 Created on 27 Feb 2019
 
 @author: stevet
 '''
+
 
 class Task(object):
     '''
@@ -486,6 +481,7 @@ class Task(object):
      * Call this within consumeXYZ() to denote task blocked due to some reason
      * @param reason
     """
+
     def taskBlocked(self, reason):
         self.getWorkflow().setTaskBlocked(reason)
     
@@ -493,12 +489,9 @@ class Task(object):
      * Call this within consumeXYZ() to denote task is now unblocked
      * @param reason
     """
+
     def taskUnblocked(self):
         self.getWorkflow().setTaskUnblocked(self)
-    
-
-
-
 
 
 class BuiltinStreamConsumer(object):
@@ -535,7 +528,9 @@ http://activemq.apache.org/stomp.html
     
 import uuid
 
+
 class MessageListener(stomp.ConnectionListener):
+
     def __init__(self, conn, consumer, workflow, destName, convertToObject=False, clientAcks=False):
         self.conn = conn
         self.consumer = consumer
@@ -545,7 +540,7 @@ class MessageListener(stomp.ConnectionListener):
         self.listenerId = str(self.listenerIdUuid)
         self.convertToObject = convertToObject
         self.clientAcks = clientAcks
-        debug('Created listener for '+destName)
+        debug('Created listener for ' + destName)
 
     def on_error(self, headers, message):
         if headers['destination'] == self.destName:
@@ -553,14 +548,16 @@ class MessageListener(stomp.ConnectionListener):
 
     def on_message(self, headers, message):
         if headers['destination'] == self.destName:
-            debug("Rx fm "+self.destName)
+            debug("Rx fm " + self.destName)
             debug('received a message "%s"' % message)
             ackFunc = None
             if self.clientAcks:
+
                 def doClientAck():
                     messageId = headers['message-id']
                     subscription = headers['subscription']
                     self.conn.ack(messageId, subscription)
+
                 ackFunc = doClientAck
             try:
                 if self.convertToObject:
@@ -576,7 +573,7 @@ class MessageListener(stomp.ConnectionListener):
                 else:
                     raise inst
         else:
-            print('Discarded message('+self.destName+') from '+headers['destination'])
+            print('Discarded message(' + self.destName + ') from ' + headers['destination'])
 
     def on_disconnected(self):
         debug('disconnected')
@@ -598,7 +595,7 @@ class BuiltinStream(object):
         Constructor
         '''
         self.broadcast = True
-        if(len(args)>0):
+        if(len(args) > 0):
             self.broadcast = args[0]
         self.workflow = workflow
         self.name = name
@@ -623,7 +620,7 @@ class BuiltinStream(object):
     def init(self):
         self.connection = stomp.Connection(self.workflow.getBroker())
         self.connection.start()
-        self.connection.connect(wait=True) # add credentials?
+        self.connection.connect(wait=True)  # add credentials?
 
         self.sessionCreated = True
         # session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -635,9 +632,9 @@ class BuiltinStream(object):
         
     def updateDestination(self):
         if (self.broadcast):
-            self.destination = '/topic/'+self.getDestinationName()
+            self.destination = '/topic/' + self.getDestinationName()
         else: 
-            self.destination = '/queue/'+self.getDestinationName()
+            self.destination = '/queue/' + self.getDestinationName()
     
     def send(self, t):
         self.updateDestination()
@@ -689,6 +686,8 @@ Created on 25 Feb 2019
 '''
 
 '''@synchronized'''
+
+
 class DirectoryCache(object):
     
     def __init__(self, directory=None):
@@ -735,7 +734,6 @@ class DirectoryCache(object):
     def hasCachedOutputs(self, inputJob):
         return inputJob.getHash() in self.jobFolderMap.keys()
     
-    
     def cache(self, outputJob):
         if (not outputJob.isCacheable()):
             return
@@ -755,8 +753,7 @@ class DirectoryCache(object):
                 traceback.print_exc()
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                self.workflow.reportInternalException(ex, "Error caching job "+outputJob.name, stack)
-
+                self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name, stack)
     
     def getDirectory(self):
         return self.directory
@@ -767,7 +764,6 @@ class DirectoryCache(object):
     
     def setWorkflow(self, workflow):
         self.workflow = workflow;
-    
     
     def cacheTransactionally(self, outputJob):
 
@@ -792,7 +788,6 @@ class DirectoryCache(object):
 
         self.pendingTransactions[outputJob.getCorrelationId()] = currentPending
 
-
     def cachePendingTransactions(self, correlationId):
         inputJob = self.jobMap[correlationId]
 
@@ -813,15 +808,14 @@ class DirectoryCache(object):
                 traceback.print_exc()
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                self.workflow.reportInternalException(ex, 'Error caching pending transaction for correlation id'+correlationId, stack);
-
-
+                self.workflow.reportInternalException(ex, 'Error caching pending transaction for correlation id' + correlationId, stack);
 
 '''
 Created on 27 Feb 2019
 
 @author: stevet
 '''
+
 
 class FailedJob(object):
     '''
@@ -864,13 +858,12 @@ class FailedJob(object):
     def __str__(self, *args, **kwargs):
         return self.job + " | " + self.exception + " " + self.worker + " " + self.task
 
-
-
 '''
 Created on 27 Feb 2019
 
 @author: stevet
 '''
+
 
 class InternalException(Exception):
     '''
@@ -897,12 +890,12 @@ class InternalException(Exception):
     def setWorker(self, worker):
         self.worker = worker;
 
-
 '''
 Created on 27 Feb 2019
 
 @author: stevet
 '''
+
 
 class CacheManagerTask(Task):
     
@@ -921,11 +914,11 @@ Created on 27 Feb 2019
 @author: stevet
 '''
 
+
 class Job(object):
     '''
     classdocs
     '''
-
 
     def __init__(self):
         '''
@@ -947,7 +940,6 @@ class Job(object):
 
     def __str__(self, *args, **kwargs):
         return self.id + " " + self.correlationId + " " + self.destination + " " + self.cacheable + " " + self.failures
-
 
     def isTransactional(self):
         return self.transactional
@@ -972,31 +964,24 @@ class Job(object):
     
     def getDestination(self):
         return self.destination
-    
 
     def isCached(self):
         return self.cached
-    
 
     def setCached(self, cached):
         self.cached = cached
-    
 
     def isCacheable(self):
         return self.cacheable
-    
 
     def setCacheable(self, cacheable):
         self.cacheable = cacheable
-    
 
     def getFailures(self):
         return self.failures
-    
 
     def setFailures(self, failures):
         self.failures = failures
-    
 
     def getPickleBytes(self):
         id = self.id
@@ -1033,7 +1018,6 @@ class Job(object):
     
     def setIsTransactionSuccessMessage(self, isTransactionSuccessMessage):
         self.isTransactionSuccessMessage = isTransactionSuccessMessage
-    
 
         
 class JobStream(Job):
@@ -1046,19 +1030,19 @@ class JobStream(Job):
         Constructor
         '''
         self.workflow = workflow
-        self.destination = {} #taskId : QueueInfo
-        self.preQueue = {} #taskId : QueueInfo
-        self.postQueue = {} #taskId : QueueInfo
+        self.destination = {}  # taskId : QueueInfo
+        self.preQueue = {}  # taskId : QueueInfo
+        self.postQueue = {}  # taskId : QueueInfo
         self.rxConnections = {}
         self.txConnection = stomp.Connection(self.workflow.getBroker())
         self.txConnection.start()
-        self.txConnection.connect(wait=True) # add credentials?
+        self.txConnection.connect(wait=True)  # add credentials?
         self.consumers = []
         self.cacheManagerTask = CacheManagerTask(workflow)
     
-    #TODO should probably make this thread safe
+    # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-        debug('Tx to '+dest)
+        debug('Tx to ' + dest)
         self.txConnection.send(body=msg, destination=dest)
         
     def getRxConnection(self, dest):
@@ -1066,7 +1050,7 @@ class JobStream(Job):
             return self.rxConnections[dest]
         connection = stomp.Connection(self.workflow.getBroker())
         connection.start()
-        connection.connect(wait=True) # add credentials?
+        connection.connect(wait=True)  # add credentials?
         self.rxConnections[dest] = connection
         return connection
     
@@ -1077,10 +1061,10 @@ class JobStream(Job):
         if queueInfo.getPrefetchSize() > 0:
             stompHeaders['activemq.prefetchSize'] = queueInfo.getPrefetchSize()
             ackMode = 'client'
-        print('Subscribe '+self.workflow.getName()+' to '+stompDestName)
+        print('Subscribe ' + self.workflow.getName() + ' to ' + stompDestName)
         consumer = BuiltinStreamConsumer(msgCallbackFunc)
         connection = self.getRxConnection(stompDestName)
-        listener = MessageListener(connection, consumer, self.workflow, stompDestName, False, ackMode=='client')
+        listener = MessageListener(connection, consumer, self.workflow, stompDestName, False, ackMode == 'client')
         connection.set_listener(listener.getListenerId(), listener)
         connection.subscribe(stompDestName, consumer.getSubscriptionId(), ack=ackMode, headers=stompHeaders)
         self.consumers.append(consumer)
@@ -1094,7 +1078,7 @@ class JobStream(Job):
             msgBody = bxstream.bxToString(job)
             dest = self.preQueue.get(taskId, None)
             if (dest != None):
-                #producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); - stomp is NON_PERSISTENT by default
+                # producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); - stomp is NON_PERSISTENT by default
                 stompDest = dest.getStompDestinationName()
                 self.sendMessage(msgBody, stompDest)
             else:
@@ -1126,15 +1110,15 @@ class JobStream(Job):
         ret.extend(map(lambda x : x.queueName, self.destination.values()))
         return ret
 
-
 '''
 Created on 13 Mar 2019
 
 @author: stevet
 '''
 
-
 '''@synchronized'''
+
+
 class Workflow(object):
     '''
     classdocs
@@ -1219,7 +1203,6 @@ class Workflow(object):
         self.terminationTimeout = 10000
         
         print("Workflow initialised.")
-
     
     def excludeTasks(self, tasks):
         self.tasksToExclude = tasks
@@ -1234,6 +1217,7 @@ class Workflow(object):
      * used to manually add local workers to master as they may be enabled too
      * quickly to be registered using the control topic when on the same machine
     """
+
     def addActiveWorkerId(self, workerId):
         self.activeWorkerIds.add(workerId)
 
@@ -1299,7 +1283,7 @@ class Workflow(object):
         # activeStreams.add(streamMetadataTopic);
         self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal)) 
         # XXX if the worker sends this before the master is listening to this topic
-        #/ this information is lost which affects termination
+        # / this information is lost which affects termination
 
         if self.isMaster(): 
             self.taskStatusTopic.addConsumer(BuiltinStreamConsumer(self.consumeTaskStatus)) 
@@ -1308,80 +1292,62 @@ class Workflow(object):
             self.internalExceptions = []
             self.internalExceptionsQueue.addConsumer(BuiltinStreamConsumer(self.consumeInternalException))
 
-            #terminationTimer = new Timer(); TODO
+            # terminationTimer = new Timer(); TODO
         else:
             self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
-            
 
     def cancelTermination(self): 
         self.aboutToTerminate = False
-    
 
     def getName(self):
         return self.name
-    
 
     def setName(self, name): 
         self.name = name
-    
 
     def getInstanceId(self): 
         return self.instanceId
-    
 
     def setInstanceId(self, instanceId):
         self.instanceId = instanceId
-    
 
     def getCache(self):
         return self.cache
-    
 
     def setCache(self, cache): 
         self.cache = cache
         cache.setWorkflow(self)
-    
 
     def isMaster(self):
         return self.mode == Mode.MASTER or self.mode == Mode.MASTER_BARE
-    
 
     def isWorker(self): 
         return self.mode == Mode.MASTER or self.mode == Mode.WORKER
-    
 
     def getMode(self): 
         return self.mode
-    
 
     def setMaster(self, master): 
         self.master = master
-    
 
     def getMaster(self): 
         return self.master
-    
 
     def getPort(self): 
         return self.port
-    
 
     def setPort(self, port): 
         self.port = port
-    
 
     def getBroker(self): 
         # adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
-        #return "tcp://" + self.master + ":" + str(self.port) + "?wireFormat.maxInactivityDurationInitalDelay=60000"
+        # return "tcp://" + self.master + ":" + str(self.port) + "?wireFormat.maxInactivityDurationInitalDelay=60000"
         return [(self.brokerHost, self.port)]
-    
 
     def stopBroker(self): 
         self.brokerService.deleteAllMessages()
         self.brokerService.stopGracefully("", "", 1000, 1000)
         print("terminated broker (" + self.getName() + ")")
-    
-
 
     """
      * delays the execution of sources for 'delay' milliseconds. Needs to set the
@@ -1390,6 +1356,7 @@ class Workflow(object):
      * @param delay
      * @throws Exception
      """
+
     def run(self, delay=0):
         pass
 
@@ -1402,8 +1369,6 @@ class Workflow(object):
         {noformat} 
         """
         return True
-
-    
 
     def terminate(self): 
         if self.terminated:
@@ -1428,11 +1393,9 @@ class Workflow(object):
                         print("all workers terminated, terminating master...");
                         break
                     
-                    #Thread.sleep(100);
+                    # Thread.sleep(100);
                 
                 print("terminating master...");
-
-            
 
             # termination logic
             print("terminating workflow... (" + self.getName() + ")");
@@ -1474,7 +1437,6 @@ class Workflow(object):
                 traceback.print_exc()
                 debug(ex) 
                 # Ignore any exception
-            
 
             self.activeStreams.remove(self.resultsTopic)
 
@@ -1485,7 +1447,6 @@ class Workflow(object):
                 except Exception as ex:
                     traceback.print_exc()
                     # Ignore any exception
-            
             
             if not self.isMaster():                 
                 self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
@@ -1498,40 +1459,30 @@ class Workflow(object):
             # There is nothing to do at this stage -- print error for debugging purposes
             # only
             # ex.printStackTrace();
-        
-    
 
     def hasTerminated(self): 
         return self.terminated
-    
 
     def getTaskStatusTopic(self):
         return self.taskStatusTopic
-    
 
     def getResultsTopic(self): 
         return self.resultsTopic
-    
 
     def getStreamMetadataTopic(self): 
         return self.streamMetadataTopic
-    
 
     def getControlTopic(self): 
         return self.controlTopic
-    
 
     def getFailedJobsQueue(self): 
         return self.failedJobsQueue
-    
 
     def getFailedJobs(self): 
         return self.failedJobs
-    
 
     def getInternalExceptions(self): 
         return self.internalExceptions
-    
 
     def reportInternalException(self, ex, message, stackTrace):
         try:
@@ -1545,62 +1496,48 @@ class Workflow(object):
         
     def unrecoverableException(self, ex): 
         print(ex)
-    
 
     def setTaskInProgess(self, caller): 
         self.setTaskInProgessWithReason(caller, 'reason')
 
     def setTaskInProgessWithReason(self, caller, reason): 
         self.taskStatusTopic.send(TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), reason))
-    
 
     def setTaskWaiting(self, caller): 
         self.taskStatusTopic.send(TaskStatus(TaskStatuses.WAITING, caller.getId(), ""))
-    
 
     def setTaskBlocked(self, caller, reason): 
         self.taskStatusTopic.send(TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason))
-    
 
     def setTaskUnblocked(self, caller): 
         self.taskStatusTopic.send(TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""))
-    
 
     def getInputDirectory(self):
         return self.inputDirectory
-    
 
     def setInputDirectory(self, inputDirectory): 
         self.inputDirectory = inputDirectory
-    
 
     def getOutputDirectory(self): 
         return self.outputDirectory
-    
 
     def setOutputDirectory(self, outputDirectory): 
         self.outputDirectory = outputDirectory
-    
 
     def getTempDirectory(self): 
         return self.tempDirectory
-    
 
     def setTempDirectory(self, tempDirectory): 
         self.tempDirectory = tempDirectory
-    
 
     def getSerializer(self): 
         return self.serializer
-    
 
     def setStreamMetadataPeriod(self, p): 
         self.streamMetadataPeriod = p
-    
 
     def getStreamMetadataPeriod(self): 
         return self.streamMetadataPeriod
-    
 
     '''
      * 
@@ -1613,6 +1550,4 @@ class Workflow(object):
                 .forEach(js -> ret.addAll(((JobStream<?>) js).getAllQueues()));
         return ret;
     '''
-
-
 

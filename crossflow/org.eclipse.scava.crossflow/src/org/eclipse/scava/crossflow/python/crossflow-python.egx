@@ -3,7 +3,7 @@ rule Workflow2Class
 	
 	guard: w.appliesTo()
 	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	parameters : Map{"w" = w,"package" = w.getPackage()}
 	
 	template : "workflow2class.egl"
 	
@@ -67,7 +67,10 @@ rule Task2ImplClass
 		
 	guard : t.appliesTo()
 		
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = t.getWorkflow(),
+		"package" = t.getPackage()
+	}
 	
 	template : "task2implclass.egl"
 	
@@ -102,28 +105,79 @@ rule Steam2Consumer
 	target : s.getPath() + s.name + "Consumer.py"
 }
 
-@cached
-operation Any getPath() {
-	var workflow = self.getWorkflow();
-	var lang = workflow.languages.select(l|l.isPython());
+rule GenerateRequirementsTxt
+	transform w : Workflow {
 	
-	if (lang.isEmpty()) {
-		return "python/src-gen" + "/" + workflow.package.toPath();
-	} 
+	guard: w.appliesTo()
+	
+	template: "generateRequirementsTxt.egl"
+	
+	target: w.getOutputFolder() + "/requirements.txt"
+}
 
-	return lang.first.genOutputFolder + "/" + lang.first.package.toPath();
+rule GenerateMain
+	transform w : Workflow {
+	
+	guard: w.appliesTo()
+	
+	parameters : Map{"w" = w,"package" = w.getPackage()}
+	
+	template: "generateMain.egl"
+	
+	target: w.getOutputFolder() + "/main.py"	
+}
+
+rule GenerateRuntime
+	transform w : Workflow {
+	
+	guard: w.appliesTo()
+	
+	template: "generateRuntime.egl"
+	
+	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow".toPath() + "/runtime.py"
+}
+
+rule GenerateBXStream
+	transform w : Workflow {
+	
+	guard: w.appliesTo()
+	
+	template: "generateBXStream.egl"
+	
+	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow.utils".toPath() + "/basic_xstream.py"
 }
 
 @cached
-operation Any getImplPath() {
-	var workflow = self.getWorkflow();
-	var lang = workflow.languages.select(l|l.isPython());
-	
-	if (lang.isEmpty()) {
-		return "python/src" + "/" + workflow.package.toPath();
-	} 
+operation Any getGenOutputFolder() : String {
+	if (self.getPython().isDefined() and self.getPython().genOutputFolder.isDefined()) {
+		return self.getPython().genOutputFolder;
+	}
+	return "py-gen";
+}
 
-	return lang.first.outputFolder + "/" + lang.first.package.toPath();
+@cached
+operation Any getOutputFolder() : String {
+	if (self.getPython().isDefined() and self.getPython().outputFolder.isDefined()) {
+		return self.getPython().outputFolder;
+	}
+	return "py";
+}
+
+@cached
+operation Any getPath() : String {
+	return self.getGenOutputFolder() + "/" + self.getPackage().toPath();
+}
+
+@cached
+operation Any getImplPath() : String {
+	return self.getOutputFolder() + "/" + self.getPackage().toPath();
+}
+
+/**
+ * Get a path for placing supporting files such as setup.py and requirements.py
+ */
+@cached
+operation Any getSupportPath() {
 }
 
 @cached
@@ -137,21 +191,33 @@ operation String toPath() : String {
 }
 
 operation Any appliesTo() : Boolean {
-	if (self.isKindOf(Task)) {
-		return self.language.isDefined() and self.language.isPython();
+	if (self.getPython().isDefined()) {
+		if (self.isKindOf(Task)) {
+			return self.language.isDefined() and self.language.isPython();
+		}
+		return true;
 	}
-	return not self.getWorkflow().languages.select(l|l.isPython()).isEmpty();
+	return false;
 }
 
-operation Workflow getPackageName() {
-	var lang = self.languages.select(l|l.isPython());
-	if (lang.isEmpty()) {
-		return self.name;
-	} else {
-		return lang.first.package;
+@cached
+operation Any getPackage() : String {
+	var python = self.getPython();
+	if (not python.isDefined() or not python.package.isDefined()) {
+		return self.getWorkflow().name.ftlc;
 	}
+	return python.package;
 }
 
 operation Language isPython() : Boolean {
 	return self.name.toLowerCase=="python";
+}
+
+@cached
+operation Any getPython() : Language {
+	var langs = self.getWorkflow().languages.select(l|l.isPython());
+	if (langs.isEmpty()) {
+		return null;
+	}
+	return langs.first;
 }

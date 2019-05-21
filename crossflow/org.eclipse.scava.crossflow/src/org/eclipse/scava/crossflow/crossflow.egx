@@ -147,13 +147,14 @@ operation Any getPath() {
 	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
 
-	var path = "";
+	var path = "src-gen/";
 	
-	if(langExists) path = lang.first.genOutputFolder + "/";
-	else path = "src-gen/";
+	if (langExists and lang.first.genOutputFolder.isDefined()) {
+		path = lang.first.genOutputFolder + "/";
+	}
 	
 	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-
+	
 	return path;
 }
 
@@ -164,10 +165,11 @@ operation Any getImplPath() {
 	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
 		
-	var path = "";
+	var path = "src/";
 		
-	if(langExists) path = lang.first.outputFolder + "/";
-	else path = "src/";
+	if (langExists and lang.first.outputFolder.isDefined()) {
+		path = lang.first.outputFolder + "/";
+	}
 	
 	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
 

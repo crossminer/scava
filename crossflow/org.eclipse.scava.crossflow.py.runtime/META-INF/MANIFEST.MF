@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Runtime
-Bundle-SymbolicName: org.eclipse.scava.crossflow.py.runtime
-Bundle-Version: 1.0.0.qualifier

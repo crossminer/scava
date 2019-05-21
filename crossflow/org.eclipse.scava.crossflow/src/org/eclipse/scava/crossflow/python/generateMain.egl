@@ -1,0 +1,14 @@
+import time
+
+from org.eclipse.scava.crossflow.runtime import Mode
+from [%=package%].[%=w.name%] import [%=w.name%]
+
+worker = [%=w.name%](mode=Mode.WORKER)
+worker.setMaster('localhost')
+worker.setInstanceId("instance")
+worker.setName("Worker")
+
+worker.run()
+while (not worker.hasTerminated()):
+    time.sleep(0.1)
+print("terminated")
