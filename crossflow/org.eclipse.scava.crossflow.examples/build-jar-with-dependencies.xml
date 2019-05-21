@@ -5,7 +5,7 @@
 	
     <target name="create_run_jar">
         <jar destfile="org.eclipse.scava.crossflow.examples-with-dependencies.jar" filesetmanifest="mergewithoutmain">
-            <zipfileset excludes="META-INF/*.SF" src="${deps}/activemq-all-5.15.6.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/activemq-all-5.15.8.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${deps}/commons-logging-1.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-jms_1.1_spec-1.1.1.jar"/>

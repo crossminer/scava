@@ -254,6 +254,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 			brokerService = new BrokerService();
 			brokerService.setUseJmx(true);
 			brokerService.addConnector("tcp://localhost:61616");
+			brokerService.addConnector("stomp://localhost:61613");
+			brokerService.addConnector("ws://localhost:61614");
 			brokerService.start();
 		}
 		catch (Exception ex) {
