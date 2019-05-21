@@ -17,6 +17,7 @@ import org.eclipse.scava.nlp.tools.plaintext.utils.PlainTextVerticalSplit;
 
 public class PlainTextDocumentationOthers
 {
+	
 	public static PlainTextObject process(String text)
 	{
 		if(text==null)

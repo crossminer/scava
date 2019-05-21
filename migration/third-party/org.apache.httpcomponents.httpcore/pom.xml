@@ -10,6 +10,6 @@
   </parent>
   <groupId>org.eclipse.scava</groupId>
   <artifactId>org.apache.httpcomponents.httpcore</artifactId>
-  <version>4.3.2</version>
+  <version>4.4.11</version>
   <packaging>eclipse-plugin</packaging>
 </project>

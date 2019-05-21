@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Je
 Bundle-SymbolicName: com.sleepycat.je
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 5.0.84
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: je-5.0.84.jar
 Export-Package: com.sleepycat.asm,

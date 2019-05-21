@@ -380,6 +380,37 @@
     	platform-extensions/org.eclipse.scava.repository.model.documentation.gitbased
     </module>
     <module>../migration/third-party/org.apache.tika</module>
+    <module>
+    	../migration/third-party/ch.qos.logback.logback-classic
+    </module>
+    <module>../../ch.qos.logback.logback-core</module>
+    <module>
+    	../migration/third-party/com.google.code.findbugs.jsr305
+    </module>
+    <module>
+    	../migration/third-party/com.google.errorprone.error_prone_annotations
+    </module>
+    <module>../migration/third-party/com.google.guava-jre</module>
+    <module>
+    	../migration/third-party/com.google.j2objc.j2objc-annotations
+    </module>
+    <module>../migration/third-party/com.sleepycat.je</module>
+    <module>../migration/third-party/edu.uci.ics.crawler4j</module>
+    <module>
+    	../migration/third-party/org.checkerframework.checker-compat-qual
+    </module>
+    <module>
+    	../migration/third-party/org.codehaus.mojo.animal-sniffer-annotations
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.documentation.systematic
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.documentation.systematic
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.webcrawler
+    </module>
   </modules>
   <build>
     <plugins>

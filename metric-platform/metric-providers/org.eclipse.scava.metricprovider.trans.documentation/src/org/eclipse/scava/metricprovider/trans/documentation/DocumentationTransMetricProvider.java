@@ -373,7 +373,12 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 				else
 					documentationEntry.getPlainText().clear();
-				documentationEntry.getPlainText().addAll(getPlainText(entryId, fileContent));
+				
+				//For a weird reason the addAll wasn't adding all the lines
+				for(String line : getPlainText(entryId, fileContent))
+					documentationEntry.getPlainText().add(line);
+					
+				db.sync();
 	 		}
 			
 		} catch (UnsupportedOperationException e) {

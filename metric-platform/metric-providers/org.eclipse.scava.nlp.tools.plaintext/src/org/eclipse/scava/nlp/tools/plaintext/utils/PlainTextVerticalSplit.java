@@ -9,22 +9,33 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.tools.plaintext.utils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class PlainTextVerticalSplit
 {
 	private static Pattern verticalSpacing;
+	private static Pattern emptyLines;
 	
 	static
 	{
+		emptyLines=Pattern.compile("^\\h*$");
 		verticalSpacing=Pattern.compile("\\v+");
 	}
 
 	public static List<String> process(String text)
 	{
-		return Arrays.asList(verticalSpacing.split(text));
+		String[] splitText =verticalSpacing.split(text);
+		List<String> finalSplitText = new ArrayList<String>(splitText.length);
+		for(String line : splitText)
+		{
+			if(emptyLines.matcher(line).matches())
+				continue;
+			finalSplitText.add(line);
+		}
+		
+		return finalSplitText;
 	}
 
 }

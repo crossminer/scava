@@ -48,7 +48,13 @@ public class FileParser
 	
 	public static boolean isSupported(File file) throws FileNotFoundException, IOException
 	{
-		return isSupported(fileToStream(file));
+		FileInputStream fis = fileToInputStream(file);
+		BufferedInputStream bif = new BufferedInputStream(fis);
+		boolean supported = isSupported(bif);
+		bif.close();
+		fis.close();
+		return supported;
+		
 	}
 	
 	public static boolean isSupported(BufferedInputStream stream) throws IOException
@@ -82,18 +88,18 @@ public class FileParser
 		return mediaTypePattern.matcher(mediaType.toString()).replaceAll("");
 	}
 	
-	private static BufferedInputStream fileToStream(File file) throws FileNotFoundException
+
+	private static FileInputStream fileToInputStream(File file) throws FileNotFoundException
 	{
 		try {
-			return new BufferedInputStream(new FileInputStream(file));
+			FileInputStream fis = new FileInputStream(file);
+			return fis;
 		}
 		catch (FileNotFoundException e) {
 			logger.error("File not found:", e);
 			throw e;
 		}
 	}
-	
-	
 	
 	/**
 	 * 
@@ -103,22 +109,27 @@ public class FileParser
 	 */
 	public static String extractTextAsString(File file) throws Exception
 	{
-		return extractTextAsString(fileToStream(file)); 
+		FileInputStream fis = fileToInputStream(file);
+		BufferedInputStream bif = new BufferedInputStream(fis);
+		String text = extractTextAsString(bif);
+		bif.close();
+		fis.close();
+		return text;
 	}
 	
 	/**
 	 * 
-	 * @param stream
+	 * @param bufferedStream
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String extractTextAsString(BufferedInputStream stream) throws Exception
+	public static String extractTextAsString(BufferedInputStream bufferedStream) throws Exception
 	{
 		BodyContentHandler handler = new BodyContentHandler(-1);
 	    try {
-	    	if(isSupported(stream))
+	    	if(isSupported(bufferedStream))
 	    	{
-	    		parser.parse(stream, handler, metadata);
+	    		parser.parse(bufferedStream, handler, metadata);
 	    		return handler.toString();
 	    	}
 	    	throw new UnsupportedOperationException("File is not supported: ");
