@@ -8,5 +8,6 @@
 		<dependency org="commons-codec" name="commons-codec" rev="1.11"/>
 		<dependency org="org.eclipse.jgit" name="org.eclipse.jgit" rev="5.2.0.201812061821-r"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
+		<dependency org="org.eclipse.jetty.aggregate" name="jetty-all" rev="9.4.15.v20190215"/>
 	</dependencies>
 </ivy-module>
