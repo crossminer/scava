@@ -7,12 +7,14 @@ public class NewMavenVersion extends Pongo {
 	
 	public NewMavenVersion() { 
 		super();
-		PACKAGENAME.setOwningType("org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVersion");
-		VERSION.setOwningType("org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVersion");
+		PACKAGENAME.setOwningType("org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion");
+		OLDVERSION.setOwningType("org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion");
+		NEWVERSION.setOwningType("org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion");
 	}
 	
 	public static StringQueryProducer PACKAGENAME = new StringQueryProducer("packageName"); 
-	public static StringQueryProducer VERSION = new StringQueryProducer("version");
+	public static StringQueryProducer OLDVERSION = new StringQueryProducer("oldVersion");
+	public static StringQueryProducer NEWVERSION = new StringQueryProducer("newVersion");
 	
 	
 	
@@ -27,12 +29,22 @@ public class NewMavenVersion extends Pongo {
 		return this;
 	}
 	
-	public String getVersion() {
-		return parseString(dbObject.get("version")+"", "");
+	public String getOldVersion() {
+		return parseString(dbObject.get("oldVersion")+"", "");
 	}
 	
-	public NewMavenVersion setVersion(String version) {
-		dbObject.put("version", version);
+	public NewMavenVersion setOldVersion(String oldVersion) {
+		dbObject.put("oldVersion", oldVersion);
+		notifyChanged();
+		return this;
+	}
+	
+	public String getNewVersion() {
+		return parseString(dbObject.get("newVersion")+"", "");
+	}
+	
+	public NewMavenVersion setNewVersion(String newVersion) {
+		dbObject.put("newVersion", newVersion);
 		notifyChanged();
 		return this;
 	}

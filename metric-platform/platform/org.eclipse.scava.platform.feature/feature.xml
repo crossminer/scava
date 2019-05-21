@@ -1273,6 +1273,18 @@
          version="0.0.0"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.trans.newversion.maven"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.jadolint"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.eclipse.scava.factoid.bugs.users"
          download-size="0"
          install-size="0"
@@ -2095,3 +2107,4 @@
          unpack="false"/>
 
 </feature>
+
