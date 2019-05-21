@@ -3,7 +3,7 @@ rule Workflow2Class
 	
 	guard: w.appliesTo()
 	
-	parameters : Map{"w" = w,"package" = w.getPackageName("Python")}
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
 	
 	template : "workflow2class.egl"
 	
@@ -67,7 +67,7 @@ rule Task2ImplClass
 		
 	guard : t.appliesTo()
 		
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName("Python")}
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
 	template : "task2implclass.egl"
 	
@@ -143,15 +143,13 @@ operation Any appliesTo() : Boolean {
 	return not self.getWorkflow().languages.select(l|l.isPython()).isEmpty();
 }
 
-operation Workflow getPackageName(lang : String) {
-	var langs = self.languages.select(l | l.name == lang);
-	var langExists = not langs.isEmpty;
-
-	var package = self.name.ftlc;
-	
-	if(langExists) package = langs.first.package;
-	
-	return package;
+operation Workflow getPackageName() {
+	var lang = self.languages.select(l|l.isPython());
+	if (lang.isEmpty()) {
+		return self.name;
+	} else {
+		return lang.first.package;
+	}
 }
 
 operation Language isPython() : Boolean {

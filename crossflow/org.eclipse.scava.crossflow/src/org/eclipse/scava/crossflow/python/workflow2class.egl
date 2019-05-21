@@ -179,7 +179,7 @@ if __name__ == '__main__':
 	
 [%
 operation Task isPythonTask(){
-	return not self.language.isDefined() or self.language.name=="Python";
+	return self.language.isDefined() and self.language.name.toLowerCase()=="python";
 }
 
 operation Workflow getMasterTasks() {
