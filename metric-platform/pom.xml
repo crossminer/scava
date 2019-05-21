@@ -385,7 +385,7 @@
     <module>
     	../migration/third-party/ch.qos.logback.logback-classic
     </module>
-    <module>../../ch.qos.logback.logback-core</module>
+    
     <module>
     	../migration/third-party/com.google.code.findbugs.jsr305
     </module>
@@ -412,6 +412,9 @@
     </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.webcrawler
+    </module>
+    <module>
+    	../migration/third-party/ch.qos.logback.logback-core
     </module>
   </modules>
   <build>
