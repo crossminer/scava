@@ -2,6 +2,13 @@ package org.eclipse.scava.index.indexer;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -9,6 +16,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.conn.ssl.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -86,27 +94,39 @@ class IndexerSingleton {
 	 * Builds an Elasticsearch HighLevel REST client
 	 * 
 	 * @return RestHighLevelClient
+	 * @throws KeyStoreException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyManagementException 
 	 */
-	private RestHighLevelClient createHighLevelClient() {
+	@SuppressWarnings("deprecation")
+	private RestHighLevelClient createHighLevelClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
+		RestHighLevelClient highLevelClient = null;
+		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+		credentialsProvider.setCredentials(AuthScope.ANY,new UsernamePasswordCredentials("admin", "admin"));
+
+	;
+		
+		SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
+			public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+				return true;
+			}
+		}).build();
 	
-		final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-		credentialsProvider.setCredentials(AuthScope.ANY,
-		        new UsernamePasswordCredentials("admin", "admin"));
-
-
+		
+		
 		RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200), new HttpHost(hostname, port+1, scheme))
 		        .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
 		            @Override
 		            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+		            	httpClientBuilder.setSSLContext(sslContext);
 		                return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
 		            }
 
 		        });
-		
-		
-		RestHighLevelClient highLevelClient = new RestHighLevelClient(builder);
 	
+		highLevelClient = new RestHighLevelClient(builder);
+
 				
 		return  highLevelClient;
 
@@ -125,7 +145,8 @@ class IndexerSingleton {
 
 		try {
 			client = new PreBuiltTransportClient(settings)
-					.addTransportAddress(new TransportAddress(InetAddress.getByName(hostname), clusterport));
+				.addTransportAddress(new TransportAddress(InetAddress.getByName(hostname), clusterport));
+		
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
