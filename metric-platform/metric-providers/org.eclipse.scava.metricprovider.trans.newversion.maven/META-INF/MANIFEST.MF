@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  com.googlecode.pongo.runtime.osgi,
  org.apache.log4j;bundle-version="1.0.0",
- org.eclipse.scava.metricprovider.rascal,
  com.google.code.gson,
  org.eclipse.scava.platform.vcs.workingcopy.manager
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

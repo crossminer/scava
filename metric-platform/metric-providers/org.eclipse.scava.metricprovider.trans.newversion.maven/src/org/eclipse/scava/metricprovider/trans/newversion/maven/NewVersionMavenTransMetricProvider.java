@@ -1,16 +1,12 @@
 package org.eclipse.scava.metricprovider.trans.newversion.maven;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -18,19 +14,12 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
-import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutException;
-import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
-import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyManagerUnavailable;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.scava.repository.model.VcsRepository;
-import org.eclipse.scava.metricprovider.rascal.trans.model.*;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersions;
 import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVersionCollection;
-import org.eclipse.scava.metricprovider.rascal.RascalMetricProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -42,9 +31,6 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 	protected MetricProviderContext context;
 	
 	private static String lastRevision = null;
-	
-	private static Map<String, File> workingCopyFolders = new HashMap<>();
-	private static Map<String, File> scratchFolders = new HashMap<>();
 	
 	private final OssmeterLogger logger;
 	
@@ -69,7 +55,7 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
         
     @Override
     public List<String> getIdentifiersOfUses() {
-    	return Arrays.asList(RascalMetricProvider.class.getCanonicalName());
+    	return Collections.emptyList();
     }
     
     public void setMetricProviderContext(MetricProviderContext context) {
@@ -94,63 +80,67 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 			if (repoDeltas.isEmpty()) {
 				return;
 			}
-
-			computeFolders(project, projectDelta, workingCopyFolders, scratchFolders);
 			
-			NewVersionCollection dc = db.getNewVersions();
+			/*NewVersionCollection dc = db.getNewVersions();
 			for (NewMavenVersion d : dc) {
 				dc.remove(d);
 			}
+			db.sync();*/
+			
+			db.getNewVersions().getDbCollection().drop();
 			db.sync();
 			
-			for (VcsRepository repo : project.getVcsRepositories()) {
-				
-				String repoUrl = repo.getUrl();
 			
-				url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
-				
-		        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		        con.setRequestMethod("GET");
-		        
-		        BufferedReader in = new BufferedReader(
-		                new InputStreamReader(con.getInputStream()));
-		        String inputLine;
-		        StringBuffer content = new StringBuffer();
-		        while ((inputLine = in.readLine()) != null) {
-		            content.append(inputLine);
-		        }
-		        in.close();
-		        
-		        JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
-		        
-		        for (int i = 0; i < jsonArray.size(); i++) {
-		            String value = jsonArray.get(i).getAsJsonObject().get("value").getAsString();
-		            String[] valueParts = value.split("/");
-		            
-		            String newVersion = testMaven(valueParts[0], valueParts[1]);
-		            
-		            if(newVersion.contains("none") || newVersion.contains("$"))
-		            		continue;
-		            
-		            if(testNewerVersion(valueParts[2], newVersion)) {
-		            	NewMavenVersion mv = new NewMavenVersion();
-		            	
-		            	mv.setPackageName(valueParts[1]);
-		            	mv.setVersion(valueParts[2]);
+			url = new URL("http://wacke.ow2.org:8182/raw/projects/p/docdokuplm/m/trans.rascal.dependency.maven.allMavenDependencies");
+			//url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+			
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	        con.setRequestMethod("GET");
+	        
+	        BufferedReader in = new BufferedReader(
+	                new InputStreamReader(con.getInputStream()));
+	        String inputLine;
+	        StringBuffer content = new StringBuffer();
+	        while ((inputLine = in.readLine()) != null) {
+	            content.append(inputLine);
+	        }
+	        in.close();
+	        
+	        System.out.println(content);
+	        
+	        JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
+	        
+	        for (int i = 0; i < jsonArray.size(); i++) {
+	            String value = jsonArray.get(i).getAsJsonObject().get("value").getAsString();
+	            String[] valueParts = value.split("bundle://maven/")[1].split("/");
+	            
+	            System.out.println("1 " + value);
+	            
+	            if(value.contains("none") || value.contains("$"))
+	            	continue;
+	            
+	            String newVersion = testMaven(valueParts[0], valueParts[1]);
+	            
+	            System.out.println("3 " + newVersion);
+	            
+	            if(newVersion == null)
+	            		continue;
+	            
+	            if(testNewerVersion(valueParts[2], newVersion)) {
+	            	NewMavenVersion mv = new NewMavenVersion();
+	            	
+	            	mv.setPackageName(valueParts[1]);
+	            	mv.setOldVersion(valueParts[2]);
+	            	mv.setNewVersion(newVersion);
+	            	
+	            	System.out.println("2 " + valueParts[1] + " " + valueParts[2]);
 
-						db.getNewVersions().add(mv);
-						db.sync();
-		            }
-		        }
-			}
+					db.getNewVersions().add(mv);
+					db.sync();
+	            }
+	        }
         
 	    } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (WorkingCopyManagerUnavailable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (WorkingCopyCheckoutException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -170,21 +160,6 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     public String getSummaryInformation() {
     	return "TODO";
     }
-    
-    private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {
-		WorkingCopyFactory.getInstance().checkout(project, getLastRevision(delta), wc, scratch);
-	}
-    
-    private String getLastRevision(ProjectDelta delta) {
-		List<VcsRepositoryDelta> repoDeltas = delta.getVcsDelta().getRepoDeltas();
-		if (repoDeltas.isEmpty()) {
-			return lastRevision;
-		}
-		VcsRepositoryDelta deltas = repoDeltas.get(repoDeltas.size() - 1);
-		List<VcsCommit> commits = deltas.getCommits();
-		String revision = commits.get(commits.size() - 1).getRevision();
-		return revision;
-	}
     
     public String testMaven(String group, String artifact){
         try {
@@ -215,11 +190,15 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
             
             JsonArray array = obj.getAsJsonObject("response").getAsJsonArray("docs");
             
-            JsonObject obj2 = array.get(0).getAsJsonObject();
+            if(array.size() > 0){
             
-            String version = obj2.get("v").getAsString();;
-            
-            return version;
+	            JsonObject obj2 = array.get(0).getAsJsonObject();
+	            
+	            String version = obj2.get("v").getAsString();
+	            
+	            return version;
+            } else
+            	return null;
 
         } catch (IOException e) {
         	e.printStackTrace();
