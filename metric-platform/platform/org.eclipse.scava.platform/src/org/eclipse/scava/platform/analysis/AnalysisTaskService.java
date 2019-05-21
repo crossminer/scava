@@ -149,16 +149,20 @@ public class AnalysisTaskService {
 	}
 	
 	public ProjectAnalysis deleteProjectAnalysis(String projectId) {
-		ProjectAnalysis project = this.repository.getProjects().findByProjectId(projectId).iterator().next();
+		Iterable<ProjectAnalysis> iterable = this.repository.getProjects().findByProjectId(projectId);
 		
-		if (project != null) {
-			for (AnalysisTask task : project.getAnalysisTasks()) {
-				this.deleteAnalysisTask(task.getAnalysisTaskId());
+		for (ProjectAnalysis projectAnalysis : iterable) {
+			if (projectAnalysis != null) {
+				for (AnalysisTask task : projectAnalysis.getAnalysisTasks()) {
+					this.deleteAnalysisTask(task.getAnalysisTaskId());
+				}
+				this.repository.getProjects().remove(projectAnalysis);
+				this.repository.sync();
 			}
-			this.repository.getProjects().remove(project);
-			this.repository.sync();
+			return projectAnalysis;
 		}
-		return project;
+		return null;
+		
 	}
 
 	public List<AnalysisTask> getAnalysisTasksByProject(String projectId) {

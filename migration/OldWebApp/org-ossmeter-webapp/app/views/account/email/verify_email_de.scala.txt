@@ -1,9 +1,0 @@
-@(verificationUrl: String, token: String, name: String, email: String)Hi!
-
-
-um deine E-Mail-Adresse zu bestätigen, folge einfach diesem Link:
-
-@verificationUrl
-
-Grüße,
-Das OSSMETER-Team

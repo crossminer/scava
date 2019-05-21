@@ -30,11 +30,16 @@ import json
 import logging
 import random
 import statistics
+import time
 
 from perceval.backends.scava.scava import (Scava,
-                                           CATEGORY_DEPENDENCY,
+                                           CATEGORY_DEV_DEPENDENCY,
+                                           CATEGORY_CONF_DEPENDENCY,
                                            CATEGORY_FACTOID,
-                                           CATEGORY_METRIC)
+                                           CATEGORY_METRIC,
+                                           CATEGORY_USER,
+                                           DEP_MAVEN,
+                                           DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
@@ -45,6 +50,9 @@ UUIDS = {}
 DUPLICATED_UUIDS = 0
 META_MARKER = '--meta'
 DEFAULT_TOP_PROJECT = 'main'
+
+DEFAULT_BULK_SIZE = 100
+DEFAULT_WAIT_TIME = 10
 
 # FAKE DATA: create fake unique UUIDs in order to maximize the amount of data to create dashboards
 # This is related to https://github.com/crossminer/scava/issues/139 and https://github.com/crossminer/scava/issues/138
@@ -85,6 +93,8 @@ def get_params():
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
+    parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, help="Number of items uploaded per bulk")
+    parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
                         help="URL for Scava API REST (default: http://localhost:8182)")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
@@ -479,12 +489,15 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
         dependency_data = scava_dep['data']
         eitem = dependency_data
 
+        # common fields
         eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
         eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
 
-        dependency_raw = dependency_data['dependency']
-        eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
-        eitem['dependency_version'] = dependency_raw.split('/')[-1]
+        # maven and osgi dependencies require specific processing
+        if eitem['type'] in [DEP_MAVEN, DEP_OSGI]:
+            dependency_raw = dependency_data['dependency']
+            eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
+            eitem['dependency_version'] = dependency_raw.split('/')[-1]
 
         if meta_info:
             eitem['meta'] = meta_info
@@ -492,6 +505,56 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
         yield eitem
 
     logging.debug("Dependency enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
+
+
+def enrich_users(scava_users, meta_info=None):
+    """
+    Enrich user data coming from Scava to use them in Kibana.
+    The current enriched items contain the user name, the date (i.e., `date` and `datetime`) when
+    the metric was calculated, the churn value (i.e., `churn` and `value`), the scava metric from
+    where the data was fetched, project and meta project information.
+
+          "user" : "Winnie the pooh",
+          "date" : "20100523",
+          "churn" : 22218,
+          "scava_metric" : "churnPerCommitterTimeLine",
+          "project" : "Honey tree",
+          "datetime" : "2010-05-23T00:00:00+00:00",
+          "uuid" : "1b7cea97ba3e6a9e1dd98385dce4abe7943f7b6e",
+          "value" : 22218,
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_users: user data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for scava_user in scava_users:
+        processed += 1
+
+        user_data = scava_user['data']
+        eitem = user_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        eitem['uuid'] = uuid(eitem['user'], eitem['project'], eitem['date'])
+
+        # move the churn value to a different attribute to ease aggregations
+        eitem['value'] = eitem['churn']
+
+        # remove updated field (which is the time when the project analysis was executed)
+        eitem.pop('updated', None)
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.debug("User enrichment summary - processed/enriched: %s, duplicated: %s", processed, DUPLICATED_UUIDS)
 
 
 def extract_meta(project_name, description=None):
@@ -565,13 +628,29 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
 
                 logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
 
-            elif category == CATEGORY_DEPENDENCY:
-                logging.debug("Start fetch dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_DEV_DEPENDENCY:
+                logging.debug("Start fetch dev dependencies for %s" % project_scava['data']['shortName'])
 
-                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEPENDENCY), meta):
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_DEV_DEPENDENCY), meta):
                     yield enriched_dep
 
-                logging.debug("End fetch dependencies for %s" % project_scava['data']['shortName'])
+                logging.debug("End fetch dev dependencies for %s" % project_scava['data']['shortName'])
+
+            elif category == CATEGORY_CONF_DEPENDENCY:
+                logging.debug("Start fetch conf dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_dependencies(scavaProject.fetch(CATEGORY_CONF_DEPENDENCY), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch conf dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_USER:
+                logging.debug("Start fetch user data for %s" % project)
+
+                for enriched_user in enrich_users(scavaProject.fetch(CATEGORY_USER), meta):
+                    yield enriched_user
+
+                logging.debug("End fetch user data for %s" % project)
+
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -590,16 +669,46 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_factoid
 
             logging.debug("End fetch factoids for %s" % project)
-        elif category == CATEGORY_DEPENDENCY:
-            logging.debug("Start fetch dependencies for %s" % project)
+        elif category == CATEGORY_DEV_DEPENDENCY:
+            logging.debug("Start fetch dev dependencies for %s" % project)
 
-            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEPENDENCY)):
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_DEV_DEPENDENCY)):
                 yield enriched_dep
 
-            logging.debug("End fetch dependencies for %s" % project)
+            logging.debug("End fetch dev dependencies for %s" % project)
+        elif category == CATEGORY_CONF_DEPENDENCY:
+            logging.debug("Start fetch conf dependencies for %s" % project)
+
+            for enriched_dep in enrich_dependencies(scava.fetch(CATEGORY_CONF_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch conf dependencies for %s" % project)
+
+        elif category == CATEGORY_USER:
+            logging.debug("Start fetch user data for %s" % project)
+
+            for enriched_user in enrich_users(scava.fetch(CATEGORY_USER)):
+                yield enriched_user
+
+            logging.debug("End fetch user data for %s" % project)
+
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
+
+
+def __init_index(elastic_url, index, wait_time):
+    mapping = Mapping
+
+    while True:
+        try:
+            elastic = ElasticSearch(elastic_url, index, mappings=mapping)
+            break
+        except Exception as e:
+            logging.info("Index %s not ready: %s", ARGS.index, str(e))
+            time.sleep(wait_time)
+
+    return elastic
 
 
 if __name__ == '__main__':
@@ -613,11 +722,26 @@ if __name__ == '__main__':
 
     logging.info("Importing items from %s to %s/%s", ARGS.url, ARGS.elastic_url, ARGS.index)
 
-    mapping = Mapping
-    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index, mappings=mapping)
+    elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
 
     scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
 
     if scava_data:
-        logging.info("Loading Scava metrics/factoids in Elasticsearch")
-        elastic.bulk_upload(scava_data, "uuid")
+        logging.info("Uploading Scava data to Elasticsearch")
+
+        counter = 0
+        to_upload = []
+        for item in scava_data:
+
+            to_upload.append(item)
+
+            if len(to_upload) == ARGS.bulk_size:
+                elastic.bulk_upload(to_upload, "uuid")
+                counter += len(to_upload)
+                # logging.info("Added %s items to %s", counter, ARGS.index)
+                to_upload = []
+
+        if len(to_upload) > 0:
+            counter += len(to_upload)
+            elastic.bulk_upload(to_upload, "uuid")
+            # logging.info("Added %s items to %s", counter, ARGS.index)

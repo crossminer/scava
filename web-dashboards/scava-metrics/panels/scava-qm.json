@@ -9,8 +9,14 @@
             },
             "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
             "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":23,\"x\":0,\"y\":0},\"id\":\"b70a3790-456e-11e9-a208-9748f08b9341\",\"panelIndex\":\"1\",\"title\":\"Total scores per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"2\",\"w\":48,\"x\":0,\"y\":15},\"id\":\"60f3d630-456f-11e9-a208-9748f08b9341\",\"panelIndex\":\"2\",\"title\":\"QM metrics  per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":48,\"x\":0,\"y\":29},\"id\":\"d9a50db0-456f-11e9-a208-9748f08b9341\",\"panelIndex\":\"3\",\"title\":\"QM attributes per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"4\",\"w\":48,\"x\":0,\"y\":44},\"id\":\"9f35aee0-4570-11e9-a208-9748f08b9341\",\"panelIndex\":\"4\",\"title\":\"QM goals per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{\"spy\":null},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":25,\"x\":23,\"y\":0},\"id\":\"433a0e50-4571-11e9-a208-9748f08b9341\",\"panelIndex\":\"5\",\"title\":\"QM projects\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
-            "release_date": "2019-03-13T16:55:39.375082",
-            "timeRestore": false,
+            "refreshInterval": {
+                "display": "Off",
+                "pause": false,
+                "value": 0
+            },
+            "timeFrom": "now-10y",
+            "timeRestore": true,
+            "timeTo": "now",
             "title": "scava-qm",
             "version": 1
         }
