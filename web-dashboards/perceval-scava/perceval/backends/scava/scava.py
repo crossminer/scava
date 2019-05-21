@@ -37,6 +37,7 @@ CATEGORY_PROJECT = 'project'
 CATEGORY_FACTOID = 'factoid'
 CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
 CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
+CATEGORY_USER = 'user'
 
 DEP_MAVEN = 'maven'
 DEP_MAVEN_OPT = 'opt'
@@ -51,6 +52,9 @@ METRICPROVIDER_ID_OSGI_DEP_BNL_ALL = 'trans.rascal.dependency.osgi.allOSGiBundle
 
 METRICPROVIDER_ID_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider'
 METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider'
+
+METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
+
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +76,8 @@ class Scava(Backend):
     version = '0.1.0'
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
-                  CATEGORY_DEV_DEPENDENCY, CATEGORY_CONF_DEPENDENCY]
+                  CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
+                  CATEGORY_CONF_DEPENDENCY]
 
     def __init__(self, url, project=None, tag=None, archive=None):
         origin = url
@@ -129,8 +134,11 @@ class Scava(Backend):
                                    category, str(item))
                     item['executionInformation']['lastExecuted'] = datetime_utcnow().strftime("%Y%m%d")
 
-                if category in [CATEGORY_FACTOID, CATEGORY_METRIC,
-                                CATEGORY_DEV_DEPENDENCY, CATEGORY_CONF_DEPENDENCY]:
+                if category in [CATEGORY_FACTOID,
+                                CATEGORY_METRIC,
+                                CATEGORY_USER,
+                                CATEGORY_DEV_DEPENDENCY,
+                                CATEGORY_CONF_DEPENDENCY]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -164,6 +172,8 @@ class Scava(Backend):
         elif 'name' in item:
             # the item is a project
             mid = item['name']
+        elif 'user' in item:
+            mid = item['user'] + item['updated'] + item['project']
         else:
             raise TypeError("Cannot extract metadata_id from", item)
 
@@ -208,6 +218,8 @@ class Scava(Backend):
             category = CATEGORY_DEV_DEPENDENCY
         elif 'dependencyName' in item:
             category = CATEGORY_CONF_DEPENDENCY
+        elif 'user' in item:
+            category = CATEGORY_USER
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -281,11 +293,31 @@ class ScavaClient(HttpClient):
 
             for metric in metrics:
                 metric_id = metric['id']
+
                 api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, metric_id))
                 logger.debug("Scava client calls API: %s", api)
 
                 project_metric = self.fetch(api)
                 yield project_metric
+
+        elif category == CATEGORY_USER:
+            api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, METRIC_CHURN_PER_COMMITTER))
+            project_metric = self.fetch(api)
+
+            json_metric = json.loads(project_metric)
+
+            if 'datatable' not in json_metric or not json_metric['datatable']:
+                return '[]'
+
+            for u in json_metric['datatable']:
+                project_user = {
+                    "user": u['Committer'],
+                    "date": u['Date'],
+                    "churn": u['Churn'],
+                    "scava_metric": METRIC_CHURN_PER_COMMITTER
+                }
+
+                yield json.dumps(project_user)
 
         elif category == CATEGORY_FACTOID:
             api_factoids = urijoin(self.base_url, "/projects/p/%s/f" % project)
