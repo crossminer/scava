@@ -30,6 +30,7 @@ import json
 import logging
 import random
 import statistics
+import time
 
 from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_DEV_DEPENDENCY,
@@ -50,6 +51,7 @@ META_MARKER = '--meta'
 DEFAULT_TOP_PROJECT = 'main'
 
 DEFAULT_BULK_SIZE = 100
+DEFAULT_WAIT_TIME = 10
 
 # FAKE DATA: create fake unique UUIDs in order to maximize the amount of data to create dashboards
 # This is related to https://github.com/crossminer/scava/issues/139 and https://github.com/crossminer/scava/issues/138
@@ -91,6 +93,7 @@ def get_params():
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
     parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, help="Number of items uploaded per bulk")
+    parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
                         help="URL for Scava API REST (default: http://localhost:8182)")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
@@ -627,6 +630,20 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
             raise Exception(msg)
 
 
+def __init_index(elastic_url, index, wait_time):
+    mapping = Mapping
+
+    while True:
+        try:
+            elastic = ElasticSearch(elastic_url, index, mappings=mapping)
+            break
+        except Exception as e:
+            logging.info("Index %s not ready: %s", ARGS.index, str(e))
+            time.sleep(wait_time)
+
+    return elastic
+
+
 if __name__ == '__main__':
 
     ARGS = get_params()
@@ -638,8 +655,7 @@ if __name__ == '__main__':
 
     logging.info("Importing items from %s to %s/%s", ARGS.url, ARGS.elastic_url, ARGS.index)
 
-    mapping = Mapping
-    elastic = ElasticSearch(ARGS.elastic_url, ARGS.index, mappings=mapping)
+    elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
 
     scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
 
