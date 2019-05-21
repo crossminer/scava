@@ -29,8 +29,6 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
 	
-	private static String lastRevision = null;
-	
 	private final OssmeterLogger logger;
 	
 	public NewVersionMavenTransMetricProvider() {
@@ -84,8 +82,7 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 			db.sync();
 			
 			
-			url = new URL("http://wacke.ow2.org:8182/raw/projects/p/docdokuplm/m/trans.rascal.dependency.maven.allMavenDependencies");
-			//url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+			url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
 			
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
@@ -194,8 +191,8 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
             	return null;
 
         } catch (IOException e) {
-        	e.printStackTrace();
-        	return null;
+        	logger.error("unexpected exception while measuring", e);
+			throw new RuntimeException(e);
         }
     }
     
