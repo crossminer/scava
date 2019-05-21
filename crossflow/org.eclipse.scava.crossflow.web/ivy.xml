@@ -12,6 +12,7 @@
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>
 		
 			
 	</dependencies>
