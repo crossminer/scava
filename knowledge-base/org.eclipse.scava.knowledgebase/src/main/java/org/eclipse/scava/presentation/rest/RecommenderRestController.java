@@ -9,23 +9,15 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.eclipse.scava.business.IRecommenderManager;
-import org.eclipse.scava.business.dto.APIMigrationRequest;
-import org.eclipse.scava.business.dto.APIMigrationResponse;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationType;
-import org.eclipse.scava.business.integration.PatternRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
-import org.eclipse.scava.business.model.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,29 +168,4 @@ public class RecommenderRestController {
 				"}}}");
 		return q;
 	}
-<<<<<<< HEAD
-
-	@RequestMapping(value = "/pattern/{file_name:.+}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
-		try {
-			File file = new ClassPathResource("CLAMS_PATTERN/" + fileName).getFile();
-			InputStream is = new FileInputStream(file);
-			org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-			response.flushBuffer();
-		} catch (IOException ex) {
-			logger.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-			throw new RuntimeException("IOError writing file to output stream");
-		}
-	}
-	
-	@ApiOperation(value = "API migration recommendations")
-    @RequestMapping(value = "/api-migration", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
-    public @ResponseBody APIMigrationResponse getApiMigration(
-                    @ApiParam(value = "it should contains the list of method declarations and the cordinates of both old and new versions", required = true)
-                    @RequestBody APIMigrationRequest request) {
-            APIMigrationResponse result = new APIMigrationResponse();
-            return result;
-    }
-=======
->>>>>>> issue161
 }
