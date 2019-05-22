@@ -97,11 +97,7 @@ public class ArtifactsRestController {
 								  + "Default sort order is ascending. "
 								  + "Multiple sort criteria are supported.")
 	})
-	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER (XML)", response = Iterable.class)
-	@RequestMapping(value="artifacts.xml", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Page<Artifact> getArtifactsXML(Pageable pageable) {
-		return artifactRepository.findAll(pageable);
-    }
+
 	
 	@ApiOperation(value = "Get artifact by id", response = Iterable.class)
 	@RequestMapping(value="/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
@@ -153,30 +149,30 @@ public class ArtifactsRestController {
 		return true;
     }
 	
-	@RequestMapping(value="/gargo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-	public @ResponseBody MetricsForProject temp(){
-		MetricsForProject metric4project = new MetricsForProject();
-		metric4project.setProjectId("DEMO METRIC4PROJECT");
-		List<MetricMilestoneSlice> metricMilestoneSlices = new ArrayList<MetricMilestoneSlice>();
-		MetricMilestoneSlice metricMilestoneSlice = new MetricMilestoneSlice();
-		metricMilestoneSlice.setBounder("DEMO BOUNDER");
-		MetricBoundary metricBoundary = new MetricBoundary();
-		metricBoundary.setBeginDate(new Date());
-		metricBoundary.setEndDate(new Date());
-		List<MetricBoundary> mbs = new ArrayList<MetricBoundary>();
-		mbs.add(metricBoundary);
-		metricMilestoneSlice.setBoundary(mbs);
-		MetricDescriptor descriptor = new MetricDescriptor();
-		Map<String,Double> map = new HashMap<String,Double>();
-		map.put("name", 2.0);
-		descriptor.setItemValuePairs(map);
-		descriptor.setMetricName("DEMO METRICNAME");
-		ArrayList<MetricDescriptor> mds = new ArrayList<>();
-		mds.add(descriptor);
-		metricBoundary.setMetricValues(mds);
-		metricMilestoneSlices.add(metricMilestoneSlice);
-		metric4project.setMetricMilestoneSlice(metricMilestoneSlices);
-		return metric4project ;
-	}
+//	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+//	public @ResponseBody MetricsForProject temp(){
+//		MetricsForProject metric4project = new MetricsForProject();
+//		metric4project.setProjectId("DEMO METRIC4PROJECT");
+//		List<MetricMilestoneSlice> metricMilestoneSlices = new ArrayList<MetricMilestoneSlice>();
+//		MetricMilestoneSlice metricMilestoneSlice = new MetricMilestoneSlice();
+//		metricMilestoneSlice.setBounder("DEMO BOUNDER");
+//		MetricBoundary metricBoundary = new MetricBoundary();
+//		metricBoundary.setBeginDate(new Date());
+//		metricBoundary.setEndDate(new Date());
+//		List<MetricBoundary> mbs = new ArrayList<MetricBoundary>();
+//		mbs.add(metricBoundary);
+//		metricMilestoneSlice.setBoundary(mbs);
+//		MetricDescriptor descriptor = new MetricDescriptor();
+//		Map<String,Double> map = new HashMap<String,Double>();
+//		map.put("name", 2.0);
+//		descriptor.setItemValuePairs(map);
+//		descriptor.setMetricName("DEMO METRICNAME");
+//		ArrayList<MetricDescriptor> mds = new ArrayList<>();
+//		mds.add(descriptor);
+//		metricBoundary.setMetricValues(mds);
+//		metricMilestoneSlices.add(metricMilestoneSlice);
+//		metric4project.setMetricMilestoneSlice(metricMilestoneSlices);
+//		return metric4project ;
+//	}
 
 }
