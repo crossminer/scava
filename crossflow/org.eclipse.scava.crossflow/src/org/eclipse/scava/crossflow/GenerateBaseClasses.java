@@ -8,6 +8,7 @@ package org.eclipse.scava.crossflow;
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
  *     Konstantinos Barmpis - adaption for CROSSFLOW
+ *     Jonathan Co - adaption for command line execution
  ******************************************************************************/
 
 import java.io.File;
@@ -32,39 +33,17 @@ import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
 
 public class GenerateBaseClasses {
 
-	// FIXME automate language-specific generator enabling
-	// enum Languages {put enums in}
-
+	//FIXME automate language-specific generator enabling
+	//enum Languages {put enums in}
+	
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
 
 	protected Object result;
 
-	boolean useFileMetamodel;
-	String metamodelUri;
 	String projectLocation;
 	String modelRelativePath;
 	String packageName;
-
-	/**
-	 * Default constructor - Crossflow metamodel is already in package registry
-	 */
-	public GenerateBaseClasses() {
-		this.useFileMetamodel = false;
-		this.metamodelUri = "org.eclipse.scava.crossflow";
-	}
-
-	/**
-	 * Constructor allowing specification of alternate location of Crossflow
-	 * metamodel.
-	 * 
-	 * @param crossflowMetamodelLocation Location of crossflow metamodel as a URI
-	 *                                   path
-	 */
-	public GenerateBaseClasses(String crossflowMetamodelLocation) {
-		this.useFileMetamodel = true;
-		this.metamodelUri = crossflowMetamodelLocation;
-	}
 
 	public void run(String projectLocation, String modelRelativePath) throws Exception {
 
@@ -76,8 +55,8 @@ public class GenerateBaseClasses {
 
 	public void execute() throws Exception {
 
-		//
-
+		// 
+		
 		module = createModule();
 		module.parse(getFileURI("crossflow.egx"));
 
@@ -100,9 +79,9 @@ public class GenerateBaseClasses {
 		result = execute(module);
 
 		module.getContext().getModelRepository().dispose();
-
-		// TODO is there a better way to add languages other than manually?
-
+		
+		//TODO is there a better way to add languages other than manually?
+		
 		module = createModule();
 		module.parse(getFileURI("python/crossflow-python.egx"));
 
@@ -157,7 +136,9 @@ public class GenerateBaseClasses {
 
 	public List<IModel> getModels() throws Exception {
 		List<IModel> models = new ArrayList<IModel>();
-		models.add(createAndLoadAnEmfModel(metamodelUri, modelRelativePath, "Model", true, false, false));
+		models.add(createAndLoadAnEmfModel("org.eclipse.scava.crossflow",
+				modelRelativePath, "Model", true,
+				false, false));
 
 		return models;
 	}
@@ -174,8 +155,7 @@ public class GenerateBaseClasses {
 			}
 		};
 		StringProperties properties = new StringProperties();
-		properties.put(useFileMetamodel ? EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI : EmfModel.PROPERTY_METAMODEL_URI,
-				metamodelURI);
+		properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
 		properties.put(EmfModel.PROPERTY_MODEL_FILE, modelFile);
 		properties.put(EmfModel.PROPERTY_NAME, modelName);
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
