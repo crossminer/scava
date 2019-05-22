@@ -163,6 +163,7 @@ public abstract class Workflow {
 	protected Timer streamMetadataTimer;
 	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
+	protected boolean terminating = false;
 	private boolean terminationEnabled = true;
 
 	/**
@@ -672,6 +673,8 @@ public abstract class Workflow {
 		if (terminated)
 			return;
 
+		terminating = true;
+		
 		if (terminationTimer != null)
 			terminationTimer.cancel();
 
@@ -835,6 +838,10 @@ public abstract class Workflow {
 		}
 	}
 
+	public boolean isTerminating() {
+		return terminating;
+	}
+	
 	public boolean hasTerminated() {
 		return terminated;
 	}
