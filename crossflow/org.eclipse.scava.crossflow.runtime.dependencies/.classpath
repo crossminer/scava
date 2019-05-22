@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/activemq-all-5.15.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/apiguardian-api-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-7.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-analysis-7.0.jar"/>
