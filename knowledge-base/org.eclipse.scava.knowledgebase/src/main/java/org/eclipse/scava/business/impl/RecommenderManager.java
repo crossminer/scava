@@ -49,7 +49,7 @@ public class RecommenderManager implements IRecommenderManager {
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderManager.class);
 	@Autowired
 	@Qualifier("ApiRecommendation")
-	private IRecommendationProvider apiRecommendationProvider;
+	private IRecommendationProvider libRecommendationProvider;
 	@Autowired
 	@Qualifier("AlternativeLibraries")
 	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
@@ -88,7 +88,7 @@ public class RecommenderManager implements IRecommenderManager {
 		if(rt.equals(RecommendationType.ALTERNATIVE_LIBRARY))
 			return alternativeLibrariesRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.RECOMMENDED_LIBRARY))
-			return apiRecommendationProvider.getRecommendation(query);
+			return libRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.API_CALL))
 			return apiCallRecommendationProvider.getRecommendation(query);
 		if(rt.equals(RecommendationType.FOCUS))

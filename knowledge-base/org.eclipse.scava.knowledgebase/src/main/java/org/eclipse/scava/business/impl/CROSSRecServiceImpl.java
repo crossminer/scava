@@ -85,20 +85,20 @@ public class CROSSRecServiceImpl implements IRecommendationProvider {
 		for (Map.Entry<String, Double> entry : sorted_map.entrySet()) {
 			if (guard < numberOfRecommendedLibs) {
 				Double value = entry.getValue();
-				String lib = entry.getKey();
+				String coordinate = entry.getKey();
 				RecommendationItem ri = new RecommendationItem();
 
 				RecommendedLibrary rl = new RecommendedLibrary();
 
-				String[] libArray = lib.split(":");
-				if (libArray.length == 2) {
-					MavenLibrary mvn = mvnRepository.findOneByGroupidAndArtifactidOrderByReleasedateDesc(libArray[0],
-							libArray[1]);
+				String[] coordinateArray = coordinate.split(":");
+				if (coordinateArray.length == 2) {
+					MavenLibrary mvn = mvnRepository.findOneByGroupidAndArtifactidOrderByReleasedateDesc(coordinateArray[0],
+							coordinateArray[1]);
 					if (mvn != null)
-						lib = lib + ":" + mvn.getVersion();
+						coordinate = coordinate + ":" + mvn.getVersion();
 				}
-				rl.setLibraryName(lib);
-				rl.setUrl("https://mvnrepository.com/artifact/" + lib.replaceAll(":", "/"));
+				rl.setLibraryName(coordinate);
+				rl.setUrl("https://mvnrepository.com/artifact/" + coordinate.replaceAll(":", "/"));
 				ri.setRecommendedLibrary(rl);
 				ri.setSignificance(value);
 				ri.setRecommendationType("RecommendedLibrary");
