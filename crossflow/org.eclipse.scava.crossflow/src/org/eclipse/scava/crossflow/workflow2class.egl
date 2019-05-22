@@ -129,8 +129,10 @@ public class [%=w.name%] extends Workflow {
 				//activeMqConfig
 				brokerService.setUseJmx(true);
 				brokerService.addConnector(getBroker());
-				brokerService.addConnector(getStompBroker());
-				brokerService.addConnector(getWSBroker());
+				if(enableStomp)
+					brokerService.addConnector(getStompBroker());
+				if(enableWS)	
+					brokerService.addConnector(getWSBroker());
 				brokerService.start();
 			}
 		}

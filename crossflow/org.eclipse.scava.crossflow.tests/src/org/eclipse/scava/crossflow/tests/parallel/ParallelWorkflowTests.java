@@ -88,10 +88,10 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 				if (!t.getStreams().stream().anyMatch(s -> s.getSize() > 0 || s.getInFlight() > 0))
 					done = true;
-				
+
 				//
-				//t.pruneNames(40);
-				//System.out.println(t);
+				// t.pruneNames(40);
+				// System.out.println(t);
 
 			}
 
@@ -210,7 +210,8 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		}
 	}
 
-	private abstract class StreamMetadataBuiltinStreamConsumer implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
+	private abstract class StreamMetadataBuiltinStreamConsumer
+			implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
 		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();
 		public boolean updated = false;
 		public long maxQueueSize = 0;
@@ -363,7 +364,7 @@ public class ParallelWorkflowTests extends WorkflowTests {
 
 		waitFor(workflow);
 
-		assertEquals(0, con.failures.size());
+		assertEquals("ParallelWorkflowTests failures: " + con.failures, 0, con.failures.size());
 	}
 
 }

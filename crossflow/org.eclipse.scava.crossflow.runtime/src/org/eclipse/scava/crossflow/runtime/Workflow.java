@@ -52,7 +52,12 @@ public abstract class Workflow {
 	@Parameter(names = { "-stomp" }, description = "Port to use for STOMP based messages")
 	protected int stompPort = 61613;
 
+	@Parameter(names = { "-ws" }, description = "Port to use for WS based messages")
 	protected int wsPort = 61614;
+
+	protected boolean enableStomp = true;
+
+	protected boolean enableWS = false;
 
 	protected BrokerService brokerService;
 
@@ -125,6 +130,14 @@ public abstract class Workflow {
 	 * of processing one already
 	 */
 	protected boolean enablePrefetch = false;
+
+	public void setEnableStomp(boolean enable) {
+		enableStomp = enable;
+	}
+
+	public void setEnableWS(boolean enable) {
+		enableWS = enable;
+	}
 
 	public void setActiveMqConfig(String activeMqConfig) {
 		this.activeMqConfig = activeMqConfig;
@@ -354,10 +367,10 @@ public abstract class Workflow {
 												e.printStackTrace();
 											}
 										} else {
-											//System.out.println("Delayed update did not update task:" + taskName);
-											//System.out.println(waitingTaskStatuses.containsKey(taskName)
-												//	? (delayedtime - waitingTaskStatuses.get(taskName))
-												//	: "n/a");
+											// System.out.println("Delayed update did not update task:" + taskName);
+											// System.out.println(waitingTaskStatuses.containsKey(taskName)
+											// ? (delayedtime - waitingTaskStatuses.get(taskName))
+											// : "n/a");
 										}
 									}
 								}, (long) (taskChangePeriod * 1.1));

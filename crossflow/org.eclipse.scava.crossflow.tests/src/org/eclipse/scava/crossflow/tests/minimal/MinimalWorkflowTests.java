@@ -210,7 +210,8 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		}
 	}
 
-	private abstract class StreamMetadataBuiltinStreamConsumer implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
+	private abstract class StreamMetadataBuiltinStreamConsumer
+			implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
 		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();
 		public boolean updated = false;
 		public long maxQueueSize = 0;
@@ -361,7 +362,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 
 		waitFor(workflow);
 
-		assertEquals(0, con.failures.size());
+		assertEquals("MinimalWorkflowTests failures: " + con.failures, 0, con.failures.size());
 	}
 
 }
