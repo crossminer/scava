@@ -11,7 +11,7 @@ package org.eclipse.scava.business.integration;
 
 import java.util.List;
 
-import org.eclipse.scava.business.dto.MetricsForProject;
+import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

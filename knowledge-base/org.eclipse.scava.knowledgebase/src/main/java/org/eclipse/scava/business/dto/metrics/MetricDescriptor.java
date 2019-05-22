@@ -1,4 +1,4 @@
-package org.eclipse.scava.business.dto;
+package org.eclipse.scava.business.dto.metrics;
 
 import java.util.Map;
 

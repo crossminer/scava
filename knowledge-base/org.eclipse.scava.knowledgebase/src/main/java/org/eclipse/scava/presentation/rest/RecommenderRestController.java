@@ -9,27 +9,18 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
-import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
-import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,14 +99,14 @@ public class RecommenderRestController {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
-	@ApiOperation(value = "This resource get list of versions foreach dependecies")
+
+	@ApiOperation(value = "This resource lists plugin versions for each dependecies")
 	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
+		
 	}
-	@Autowired
-	private RecommendationFeedbackRepository recFedRepo;
 	@ApiOperation(value = "This resource stores the recommendation feedback")
 	@RequestMapping(value = "recommendation-feedback/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody boolean storeRecommendationFeedback(
@@ -128,7 +119,7 @@ public class RecommenderRestController {
 		return true;
 	}
 	
-	@RequestMapping(value = "query", method = RequestMethod.GET)
+	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)
 	public Query getQuery() {
 		Query q = new Query();
 		q.setCurrentMethodCode(
@@ -176,19 +167,5 @@ public class RecommenderRestController {
 				"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
 				"}}}");
 		return q;
-	}
-
-	@RequestMapping(value = "/pattern/{file_name:.+}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
-		try {
-			File file = new ClassPathResource("CLAMS_PATTERN/" + fileName).getFile();
-			InputStream is = new FileInputStream(file);
-			org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-			response.flushBuffer();
-		} catch (IOException ex) {
-			logger.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-			throw new RuntimeException("IOError writing file to output stream");
-		}
-
 	}
 }
