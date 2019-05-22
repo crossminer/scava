@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -87,18 +88,6 @@ public class ArtifactsRestController {
 		return artifactRepository.findAll(pageable);
     }
 	
-	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: property(,asc|desc). "
-								  + "Default sort order is ascending. "
-								  + "Multiple sort criteria are supported.")
-	})
-
-	
 	@ApiOperation(value = "Get artifact by id", response = Iterable.class)
 	@RequestMapping(value="/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
     public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
@@ -111,6 +100,9 @@ public class ArtifactsRestController {
 //    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery) {
 //		return recommenderManager.getArtifactsByQuery(projectQuery);
 //    }
+	
+	@ApiOperation(value = "Search artifact to KB")
+	@RequestMapping(value="search/{artifact_query}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	@ApiImplicitParams({	//FIXME
 		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
 						  value = "Results page you want to retrieve (0..N)"),
@@ -119,10 +111,10 @@ public class ArtifactsRestController {
 		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query",
 						  value = "Sorting criteria in the format: [asc|desc]")
 	})
-	@ApiOperation(value = "Search artifact to KB")
-	@RequestMapping(value="search/{artifact_query}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
     public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
-    		int page, int size, String sort) {
+    		@RequestParam(value = "page", defaultValue = "0") int page, 
+    		@RequestParam(value = "size", defaultValue = "10") int size, 
+    		@RequestParam(value = "sort", defaultValue = "asc") String sort) {
 		PageRequest pr = new PageRequest(page, size, new Sort(Arrays.asList(
 				sort.equalsIgnoreCase("ASC")? new Order(Direction.ASC, "temp"): new Order(Direction.DESC, "temp"))));
 		return recommenderManager.getArtifactsByQuery(projectQuery, pr);
