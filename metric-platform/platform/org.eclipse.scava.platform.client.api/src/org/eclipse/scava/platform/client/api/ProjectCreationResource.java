@@ -18,9 +18,11 @@ import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
+import org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
+import org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem;
 import org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker;
 import org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
@@ -146,6 +148,17 @@ public class ProjectCreationResource extends ServerResource {
 						jira.setLogin(bts.get("login").asText());
 						jira.setPassword(bts.get("password").asText());
 						buggy = jira;
+						break;
+					case "mantis":
+						MantisBugTrackingSystem mantis = new MantisBugTrackingSystem();
+						mantis.setToken(bts.get("token").asText());
+						buggy = mantis;
+						break;
+					case "bitbucket":
+						BitbucketBugTrackingSystem bitbucket = new BitbucketBugTrackingSystem();
+						bitbucket.setLogin(bts.get("login").asText());
+						bitbucket.setPassword(bts.get("password").asText());
+						buggy = bitbucket;
 						break;
 					default:
 						continue;

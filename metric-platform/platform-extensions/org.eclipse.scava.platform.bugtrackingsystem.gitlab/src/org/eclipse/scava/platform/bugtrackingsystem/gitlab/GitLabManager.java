@@ -49,8 +49,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	private int timeToReset;
 	@SuppressWarnings("unused")
 	private int rateLimit;
-	private static String host = "http://gitlab.com/";
-	private static String exthost = "api/v4/projects/";
+	//private String host = "https://gitlab.com/";
+	//private static String exthost = "api/v4/projects/";
 	private final static String PAGE_SIZE = "100";
 	private int current_page;
 	private int next_page;
@@ -59,7 +59,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	private String builder;
 	private OkHttpClient client;
 
-	public GitLabManager() {
+	public GitLabManager()
+	{
 
 		this.open_id = "";
 		this.builder = "";
@@ -70,7 +71,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		this.last_page = 0;
 		this.next_page = 0;
 		this.client = new OkHttpClient();
-
 	}
 	
 	@Override
@@ -137,8 +137,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 
 		setClient(gitlabTracker);
 
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(gitlabTracker.getProject_id());
+		HttpUrl.Builder builder = HttpUrl.parse(gitlabTracker.getUrl()).newBuilder();
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("scope", "all");
 		builder.addEncodedQueryParameter("sort", "asc");
@@ -200,8 +199,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(gitlabTracker.getProject_id());
+		HttpUrl.Builder builder = HttpUrl.parse(gitlabTracker.getUrl()).newBuilder();
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedQueryParameter("scope", "all");
 		builder.addEncodedQueryParameter("sort", "asc");
@@ -273,8 +271,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		// projects/:id/issues/:issue_iid/notes
-		HttpUrl.Builder builder = HttpUrl.parse(host + exthost).newBuilder();
-		builder.addEncodedPathSegment(gitlabTracker.getProject_id());
+		HttpUrl.Builder builder = HttpUrl.parse(gitlabTracker.getUrl()).newBuilder();
 		builder.addEncodedPathSegment("issues");
 		builder.addEncodedPathSegment(issueID);
 		builder.addEncodedPathSegment("notes");
@@ -334,7 +331,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	public void setClient(GitLabTracker gitlabTracker) throws IOException {
 
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
-		
 	
 		Runnable runnable = new Runnable() {	// This is triggered at a fixed rate, see scheduled executor service below
 			

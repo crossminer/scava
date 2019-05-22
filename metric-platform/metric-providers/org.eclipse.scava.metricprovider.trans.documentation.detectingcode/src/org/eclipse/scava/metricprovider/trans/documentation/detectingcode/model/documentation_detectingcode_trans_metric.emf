@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationDetectingCodeTransMetric {
+	val DocumentationEntryDetectingCode[*] documentationEntriesDetectingCode;
+}
+
+class DocumentationEntryDetectingCode {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr String naturalLanguage;
+	attr String code;
+}

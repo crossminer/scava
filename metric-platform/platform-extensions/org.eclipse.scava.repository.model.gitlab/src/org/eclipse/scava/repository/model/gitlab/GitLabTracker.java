@@ -26,13 +26,11 @@ public class GitLabTracker extends org.eclipse.scava.repository.model.BugTrackin
 		PERSONAL_ACCESS_TOKEN.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabTracker");
 		CLIENT_ID.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabTracker");
 		CLIENT_SECRET.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabTracker");
-		PROJECT_ID.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabTracker");
 	}
 	
 	public static StringQueryProducer PERSONAL_ACCESS_TOKEN = new StringQueryProducer("personal_access_token"); 
 	public static StringQueryProducer CLIENT_ID = new StringQueryProducer("client_id"); 
 	public static StringQueryProducer CLIENT_SECRET = new StringQueryProducer("client_secret"); 
-	public static StringQueryProducer PROJECT_ID = new StringQueryProducer("project_id"); 
 	
 	
 	public String getPersonal_access_token() {
@@ -62,26 +60,15 @@ public class GitLabTracker extends org.eclipse.scava.repository.model.BugTrackin
 		notifyChanged();
 		return this;
 	}
-	public String getProject_id() {
-		return parseString(dbObject.get("project_id")+"", "");
-	}
 	
-	public GitLabTracker setProject_id(String project_id) {
-		dbObject.put("project_id", project_id);
-		notifyChanged();
-		return this;
-	}
-
 	@Override
 	public String getBugTrackerType() {
-		// TODO Auto-generated method stub
 		return "gitlab";
 	}
 
 	@Override
 	public String getInstanceId() {
-		// TODO Auto-generated method stub
-		return getUrl() + ':' + getProject_id();
+		return getUrl();
 	}
 	
 	

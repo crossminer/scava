@@ -2,7 +2,7 @@
     "dashboard": {
         "id": "72ac14b0-456e-11e9-a208-9748f08b9341",
         "value": {
-            "description": "",
+            "description": "Quality model dashboard",
             "hits": 0,
             "kibanaSavedObjectMeta": {
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"

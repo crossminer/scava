@@ -11,6 +11,7 @@
 package org.eclipse.scava.severityclassifier.opennlptartarus.libsvm;
 
 import org.eclipse.scava.libsvm.svm_predict_nofiles;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import libsvm.svm_model;
 
@@ -19,13 +20,14 @@ class ClassifierModelSingleton {
 
 	private static ClassifierModelSingleton singleton = new ClassifierModelSingleton( );
 	private svm_model model;
+	protected OssmeterLogger logger;
 	
 	/* A private Constructor prevents any other 
 	 * class from instantiating.
 	 */
 	private ClassifierModelSingleton(){
-		model = svm_predict_nofiles.parse_args_and_load_model(getClass().getClassLoader(), "classifierFiles", "Test-ThreadClustering-5.m", true);
-		System.err.println("Severity classification model loaded");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("severityclassifier.opennlptartarus.libsvm");
+		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-ThreadClustering-5.m", true, logger);
     }
 	   
 	/* Static 'instance' method */

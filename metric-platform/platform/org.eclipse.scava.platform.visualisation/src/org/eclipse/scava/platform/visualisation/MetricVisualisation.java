@@ -80,6 +80,8 @@ public class MetricVisualisation {
 		ArrayNode datatable = chart.createDatatable(vis.get("datatable"), collection, query);
 		
 		visualisation.put("id", vis.path("id").textValue());
+		visualisation.put("projectId", db.toString());
+		visualisation.put("metricId", metricId);
 		visualisation.put("name", vis.path("name").textValue());
 		visualisation.put("description", vis.path("description").textValue());
 		visualisation.put("type", vis.path("type").textValue());
@@ -88,6 +90,20 @@ public class MetricVisualisation {
 		visualisation.put("ordinal", vis.path("ordinal").asBoolean());
 		
 		chart.completeFields(visualisation, vis);
+		
+		return visualisation;
+	}
+	
+	public JsonNode getVisualisation(DB db, BasicDBObject query) {
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode visualisation = mapper.createObjectNode();
+				
+		visualisation.put("id", vis.path("id").textValue());
+		visualisation.put("projectId", db.toString());
+		visualisation.put("metricId", metricId);
+		visualisation.put("name", vis.path("name").textValue());
+		visualisation.put("description", vis.path("description").textValue());
+		visualisation.put("type", vis.path("type").textValue());
 		
 		return visualisation;
 	}

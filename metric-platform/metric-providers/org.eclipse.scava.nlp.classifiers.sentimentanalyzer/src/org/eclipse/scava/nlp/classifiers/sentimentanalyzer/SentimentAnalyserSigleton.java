@@ -10,11 +10,11 @@
 package org.eclipse.scava.nlp.classifiers.sentimentanalyzer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.zip.ZipException;
 
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
@@ -25,6 +25,7 @@ class SentimentAnalyserSigleton
 	private static SentimentAnalyserSigleton singleton = new SentimentAnalyserSigleton();
 	protected OssmeterLogger logger;
 	private Vasttext sentimentAnalyzer;
+	private String modelPath="model/Sentic_lemma_Vasttext_model.zip";
 	
 	private SentimentAnalyserSigleton()
 	{	
@@ -37,29 +38,27 @@ class SentimentAnalyserSigleton
 		}
 		catch (ClassNotFoundException | IOException e)
 		{
+			logger.error("Error while loading the model:", e);
 			e.printStackTrace();
 		}
 	}
 	
-	private void checkModelFile(Path path) throws FileNotFoundException
+	private void loadModel() throws ClassNotFoundException, IOException
 	{
-		logger.info("Searching the model at " + path.toString());
-		if(!Files.exists(path))
-        {
-        	throw new FileNotFoundException("The file "+path+" has not been found"); 
-        }
-	}
-	
-	private void loadModel() throws ZipException, ClassNotFoundException, IOException
-	{
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		if (path.endsWith("target/classes/"))
-			path = path.substring(0, path.lastIndexOf("target/classes/"));
-		File file= new File(path+"model/Sentic_lemma_Vasttext_model.zip");
-		checkModelFile(file.toPath());
-		sentimentAnalyzer.loadModel(file);
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(modelPath);
+		if(resource==null)
+		{
+			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			File file= new File(path+modelPath);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+modelPath+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
+		sentimentAnalyzer.loadModel(resource);
 	}
 	
 	public static SentimentAnalyserSigleton getInstance()

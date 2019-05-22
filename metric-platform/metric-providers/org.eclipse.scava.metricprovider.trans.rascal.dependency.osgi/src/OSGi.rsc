@@ -75,6 +75,7 @@ int numberOSGiPackageDependencies (map[loc, loc] workingCopies = ()) {
 @doc{Retrieves the number of OSGi bunlde dependencies (i.e. Require-Bundle dependencies).}
 @friendlyName{Number all OSGi bundle dependencies}
 @appliesTo{java()}
+@historic{}
 int numberOSGiBundleDependencies (map[loc, loc] workingCopies = ()) {
 	if(repo <- workingCopies) {
 		m = getOSGiModelFromWorkingCopy(workingCopies[repo]);

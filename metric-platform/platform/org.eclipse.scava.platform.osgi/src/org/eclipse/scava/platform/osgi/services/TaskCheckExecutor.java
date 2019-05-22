@@ -21,7 +21,7 @@ import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 public class TaskCheckExecutor implements Runnable {
 
     private static final Integer cycle = 10000;
-    private static final Integer heartbet = 3600000;
+    private static final Integer heartbet = 3600*1000*24; // 24 hours
 
 	private Boolean executeTasks;
 	private Platform platform;
@@ -37,19 +37,17 @@ public class TaskCheckExecutor implements Runnable {
 			Date day = dateToDay(new Date());
 			
 			// Detect Worker Failure / Replace Task in execution pending list
-			/*
 			for(Worker  worker : this.platform.getAnalysisRepositoryManager().getWorkerService().getWorkers()) {
 				if(worker.getCurrentTask() != null && new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
 					
 					AnalysisTask task = this.platform.getAnalysisRepositoryManager().getTaskService().getTaskByAnalysisTaskId(worker.getCurrentTask().getAnalysisTaskId());
 					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
 					task.getScheduling().setWorkerId(null);
-
 					
 					this.platform.getAnalysisRepositoryManager().getRepository().getWorkers().remove(worker);				
 					this.platform.getAnalysisRepositoryManager().getRepository().sync();
 				}
-			}*/
+			}
 			
 			// Detect New Daily Execution
 			for(AnalysisTask task : this.platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks()) {			

@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,15 +21,14 @@ import org.eclipse.scava.business.dto.APIMigrationResponse;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
-import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.dto.RecommendationType;
-import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
+import org.eclipse.scava.business.integration.PatternRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.eclipse.scava.business.model.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,14 +107,14 @@ public class RecommenderRestController {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
 	
-	@ApiOperation(value = "This resource lists of versions for each dependecies")
+
+	@ApiOperation(value = "This resource lists plugin versions for each dependecies")
 	@RequestMapping(value = "version/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getVersions(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.VERSION);
+		
 	}
-	@Autowired
-	private RecommendationFeedbackRepository recFedRepo;
 	@ApiOperation(value = "This resource stores the recommendation feedback")
 	@RequestMapping(value = "recommendation-feedback/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody boolean storeRecommendationFeedback(
@@ -179,6 +176,7 @@ public class RecommenderRestController {
 				"}}}");
 		return q;
 	}
+<<<<<<< HEAD
 
 	@RequestMapping(value = "/pattern/{file_name:.+}", method = RequestMethod.GET)
 	public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
@@ -201,4 +199,6 @@ public class RecommenderRestController {
             APIMigrationResponse result = new APIMigrationResponse();
             return result;
     }
+=======
+>>>>>>> issue161
 }

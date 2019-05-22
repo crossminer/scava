@@ -2,16 +2,16 @@
     "dashboard": {
         "id": "cad02df0-36a7-11e9-aa38-a7635aed55af",
         "value": {
-            "description": "Dashboard about sentiment data obtained via SCAVA",
+            "description": "Sentiment dashboard",
             "hits": 0,
             "kibanaSavedObjectMeta": {
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
             },
             "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-            "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":36,\"x\":0,\"y\":0},\"id\":\"37ff9130-369a-11e9-aa38-a7635aed55af\",\"panelIndex\":\"1\",\"title\":\"Results metrics per projects\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":22,\"i\":\"2\",\"w\":23,\"x\":24,\"y\":15},\"id\":\"f3ed38d0-36a3-11e9-aa38-a7635aed55af\",\"panelIndex\":\"2\",\"title\":\"Results metrics evolution\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":22,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":15},\"id\":\"53d672d0-3699-11e9-aa38-a7635aed55af\",\"panelIndex\":\"3\",\"title\":\"Results per metric\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":11,\"x\":36,\"y\":0},\"id\":\"2a319720-3699-11e9-aa38-a7635aed55af\",\"panelIndex\":\"4\",\"title\":\"Results per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
-            "release_date": "2019-02-22T13:43:47.311700",
+            "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":0,\"w\":26,\"h\":15,\"i\":\"1\"},\"embeddableConfig\":{},\"id\":\"37ff9130-369a-11e9-aa38-a7635aed55af\",\"title\":\"Results metrics per projects\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"2\",\"gridData\":{\"x\":24,\"y\":15,\"w\":24,\"h\":22,\"i\":\"2\"},\"embeddableConfig\":{},\"id\":\"f3ed38d0-36a3-11e9-aa38-a7635aed55af\",\"title\":\"Results metrics evolution\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":15,\"w\":24,\"h\":22,\"i\":\"3\"},\"embeddableConfig\":{},\"id\":\"53d672d0-3699-11e9-aa38-a7635aed55af\",\"title\":\"Results per metric\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":37,\"y\":0,\"w\":11,\"h\":15,\"i\":\"5\"},\"embeddableConfig\":{},\"id\":\"2a319720-3699-11e9-aa38-a7635aed55af\",\"title\":\"Results per top project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":26,\"y\":0,\"w\":11,\"h\":15,\"i\":\"6\"},\"title\":\"Resuls per project\",\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"171d5b00-6511-11e9-babf-e374148441fd\",\"embeddableConfig\":{}}]",
+            "release_date": "2019-04-22T15:25:42.338524",
             "timeRestore": false,
-            "title": "ScavaSentiment",
+            "title": "scava-sentiment",
             "version": 1
         }
     },
@@ -19,8 +19,7 @@
         {
             "id": "ea1313b0-8f29-11e8-a362-0d37aacd7dee",
             "value": {
-                "fieldFormatMap": "{\"metric_name\":{\"id\":\"truncate\",\"params\":{\"fieldLength\":\"1\"}}}",
-                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_class\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_desc\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_compute\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
+                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"meta.top_projects\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_class\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_desc\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_compute\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
                 "release_date": "2019-02-20T17:41:31.260440",
                 "timeFieldName": "datetime",
                 "title": "scava-metrics"
@@ -93,6 +92,20 @@
         },
         {
             "id": "2a319720-3699-11e9-aa38-a7635aed55af",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "savedSearchId": "6f7e5530-3698-11e9-aa38-a7635aed55af",
+                "title": "sentiment-per-top-project",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"sentiment-per-top-project\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"meta.top_projects\",\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5000,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "171d5b00-6511-11e9-babf-e374148441fd",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {

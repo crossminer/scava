@@ -11,6 +11,7 @@ import { AnalysisTaskService } from '../../shared/services/analysis-task/analysi
 })
 export class MetricProvidersComponent implements OnInit {
 
+  showSpinner: boolean;
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
 
@@ -26,20 +27,26 @@ export class MetricProvidersComponent implements OnInit {
   }
   
   loadAll() {
+    this.showSpinner = true;
     this.analysisTaskService.getMetricProviders().subscribe(
       (resp) => {
         this.dataSource = new MatTableDataSource<MetricProvider>(resp as MetricProvider[]);
         this.selection = new SelectionModel<MetricProvider>(true, []);
         this.dataSource.sort = this.sort;
+        this.showSpinner=false;
       },
       (error) => {
-
+        this.onShowMessage(error);
       }
     )
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onShowMessage(msg: any) {
+    console.log(msg);
   }
 
 }

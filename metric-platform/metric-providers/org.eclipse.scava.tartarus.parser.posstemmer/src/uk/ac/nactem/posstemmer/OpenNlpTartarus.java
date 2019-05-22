@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
  * Copyright (c) 2017 University of Manchester
  * 
  * This program and the accompanying materials are made
@@ -9,13 +10,19 @@
  ******************************************************************************/
 package uk.ac.nactem.posstemmer;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.englishStemmer;
 
 import opennlp.tools.cmdline.postag.POSModelLoader;
 import opennlp.tools.postag.POSModel;
@@ -23,9 +30,7 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.SimpleTokenizer;
-
-import org.tartarus.snowball.SnowballStemmer;
-import org.tartarus.snowball.ext.englishStemmer;
+import opennlp.tools.util.InvalidFormatException;
 
 
 public class OpenNlpTartarus {
@@ -39,25 +44,30 @@ public class OpenNlpTartarus {
 	private static POSTaggerME posTaggerME;
 	
 	private static SnowballStemmer stemmer; 
+	protected OssmeterLogger logger;
+	
 	
 	public OpenNlpTartarus() {
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
 		
-		System.err.println("path: " + path);
-		posTaggerME = loadPoSME(path + "models/en-pos-maxent.bin");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("uk.ac.nactem.posstemmer");
+		
+		ClassLoader cl = getClass().getClassLoader();
+		try {
+			posTaggerME = loadPoSME(cl, "models/en-pos-maxent.bin");
+			simpleTokenizer = SimpleTokenizer.INSTANCE;
+			SentenceModel sentenceModel = loadSentenceModel(cl, "models/en-sent.bin");
+			sentenceDetector = new SentenceDetectorME(sentenceModel);
+			logger.info("Models have been sucessfully loaded");
+		} catch (IOException e) {
+			logger.error("Error while loading the model:", e);
+			e.printStackTrace();
+		}
 
 //		InputStream tokenizerModelInput = loadModelInput("models/en-token.bin");
 //		TokenizerModel tokenizerModel = loadTokenizerModel(tokenizerModelInput);
 //		tokenizerME = new TokenizerME(tokenizerModel);
 
-		simpleTokenizer = SimpleTokenizer.INSTANCE;
-		
-		InputStream sentenceModelInput = loadModelInput(path + "models/en-sent.bin");
-		SentenceModel sentenceModel = loadSentenceModel(sentenceModelInput);
-		sentenceDetector = new SentenceDetectorME(sentenceModel);
-		
+
 		stemmer = new englishStemmer();
 	}
 	
@@ -85,23 +95,37 @@ public class OpenNlpTartarus {
 		return tokenSentences;
 	}
 	
-	private POSTaggerME loadPoSME(String filename) {
-		File file = new File(filename);
+	private POSTaggerME loadPoSME(ClassLoader cl, String filename) throws IOException {
+		InputStream resource = loadModelInput(cl, filename);
 		POSModelLoader posModelLoader = new POSModelLoader();
-		POSModel model = posModelLoader.load(file);
+		POSModel model = posModelLoader.load(createTempFile(resource, "bin"));
 		POSTaggerME posTagger = new POSTaggerME(model);
 		return posTagger;
 	}
-
-	private FileInputStream loadModelInput(String modelFilename) {
-		FileInputStream tokenisationModelInput = null;
+	
+	private InputStream loadModelInput(ClassLoader cl, String filename) throws IOException {
+		InputStream resource = cl.getResourceAsStream("/" + filename);
+		if(resource==null)
+			throw new FileNotFoundException("The file "+filename+" has not been found");
+		return resource;
+	}
+	
+	private static File createTempFile(InputStream inputStream, String extension) throws IOException
+	{
+		File tmpFile = File.createTempFile("openNlpTartarus", extension);
 		try {
-			tokenisationModelInput = new FileInputStream(modelFilename);
-		} catch (FileNotFoundException e) {
-			System.err.println("Cannot read tokenisation model file!");
-			e.printStackTrace();
-		}
-		return tokenisationModelInput;
+			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(tmpFile));
+	        IOUtils.copy(inputStream, bufferedOutputStream);
+	        bufferedOutputStream.flush();
+	        IOUtils.closeQuietly(bufferedOutputStream);
+	        return tmpFile;
+		} catch (IOException e)
+		{
+            if(tmpFile != null){
+                tmpFile.delete();
+            }
+            throw e;
+        }
 	}
 
 //	private TokenizerModel loadTokenizerModel(InputStream tokenizerModelInput) {
@@ -123,21 +147,12 @@ public class OpenNlpTartarus {
 //		return tokenizerModel;
 //	}
 
-	private SentenceModel loadSentenceModel(InputStream sentenceModelInput) {
+	private SentenceModel loadSentenceModel(ClassLoader cl, String filename) throws InvalidFormatException, IOException {
+		InputStream sentenceModelInput= loadModelInput(cl, filename);
 		SentenceModel sentenceModel = null;
-		try { 
-			sentenceModel = new SentenceModel(sentenceModelInput);
-		} catch (IOException e) { 
-			System.err.println("Cannot load sentence model!");
-			e.printStackTrace(); 
-		} finally {
-			if (sentenceModelInput != null) {
-				try { 
-					sentenceModelInput.close(); 
-				} catch (IOException e) {
-					System.err.println("Cannot close sentence input file!");
-				}
-			}
+		sentenceModel = new SentenceModel(sentenceModelInput);
+		if (sentenceModelInput != null) {
+			sentenceModelInput.close(); 
 		}
 		return sentenceModel;
 	}

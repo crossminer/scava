@@ -33,8 +33,7 @@
               <b>Metric Provider :</b>
             </div>
             <div class="col-7">
-              <a [routerLink]="" (click)="showMetricProviderList(worker.currentTask)">{{worker.currentTask.metricExecutions.length}}
-                Metrics</a>
+              <a [routerLink]="" title="Metrics Execution with visualisation" (click)="showMetricProviderList(worker.currentTask)">{{worker.currentTask.metricExecutions.length}} Metrics</a>
             </div>
           </div>
 
@@ -134,8 +133,7 @@
           <b> Kind :</b> {{task.type}}
         </div>
         <div class="col-sm">
-          <b> Metrics : </b> <a [routerLink]="" (click)="showMetricProviderList(task)">{{task.metricExecutions.length}}
-            Metrics</a>
+          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation" (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
         </div>
         <div class="col-sm">
           <b> Start Date :</b> <span *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>

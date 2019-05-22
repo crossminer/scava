@@ -1,17 +1,20 @@
 package org.eclipse.scava.libsvm;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.eclipse.core.runtime.FileLocator;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import libsvm.svm;
@@ -144,9 +147,7 @@ public class svm_predict_nofiles {
 		System.exit(1);
 	}
 
-	public static svm_model parse_args_and_load_model(ClassLoader cl, String folderModel, String modelName, boolean predictProb) {
-		OssmeterLogger logger = (OssmeterLogger) OssmeterLogger.getLogger("libsvm");
-		int i;
+	public static svm_model parse_args_and_load_model(Class cl, String folderModel, String modelName, boolean predictProb, OssmeterLogger logger) {
 		predict_probability=predictProb;
 		svm_print_string = svm_print_stdout;
 
@@ -154,59 +155,88 @@ public class svm_predict_nofiles {
 		
 		svm_model model = null;
 		try {
-			URL resource = cl.getResource("/" + model_filename);
+			File modelFile;
+			InputStream resource = cl.getClassLoader().getResourceAsStream("/" + model_filename);
 			if(resource==null)
 			{
-				unzipModel(cl.getResource("/" + model_filename +".zip"));
-				resource = cl.getResource("/" + model_filename);
+				resource=cl.getClassLoader().getResourceAsStream("/" + model_filename +".zip");
+				if(resource==null)
+					throw new FileNotFoundException("The file "+model_filename+" .m or .m.zip has not been found");
+				modelFile=unzipModel(resource);
 			}
-			logger.info("Searching the model at " + FileLocator.toFileURL(resource).getPath());
-			model = svm.svm_load_model(FileLocator.toFileURL(resource).getPath());
-		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if (model == null)
-		{
-			logger.info("Model hasn't been found");
-		}
-		else
+			else
+				modelFile=createTempFile(resource, "m");
+			if(modelFile==null)
+			{
+				String path = cl.getProtectionDomain().getCodeSource().getLocation().getFile();
+				if (path.endsWith("bin/"))
+					path = path.substring(0, path.lastIndexOf("bin/"));
+				File file= new File(path+model_filename);
+				if(!Files.exists(file.toPath()))
+					throw new FileNotFoundException("The file "+model_filename+" has not been found");
+				else
+					resource=new FileInputStream(file);
+			}
+			model = svm.svm_load_model(modelFile.getPath());
+			modelFile.delete();
+			
+			if(predict_probability)
+			{
+				if(svm.svm_check_probability_model(model)==0)
+				{
+					System.err.print("Model does not support probabiliy estimates\n");
+				}
+			}
+			else
+			{
+				if(svm.svm_check_probability_model(model)!=0)
+				{
+					svm_predict_nofiles.info("Model supports probability estimates, but disabled in prediction.\n");
+				}
+			}
+			
 			logger.info("Model has been sucessfully loaded");
-		if(predict_probability)
-		{
-			if(svm.svm_check_probability_model(model)==0)
-			{
-				System.err.print("Model does not support probabiliy estimates\n");
-				System.exit(1);
-			}
-		}
-		else
-		{
-			if(svm.svm_check_probability_model(model)!=0)
-			{
-				svm_predict_nofiles.info("Model supports probability estimates, but disabled in prediction.\n");
-			}
+		} catch (IOException | URISyntaxException e) {
+			logger.error("Error while loading the model:", e);
+			e.printStackTrace();
 		}
 		return model;
 	}
 	
-	private static void unzipModel(URL zipModelURL) throws IOException, URISyntaxException
+	private static File createTempFile(InputStream inputStream, String extension) throws IOException
 	{
-		File zipmodelFile = new File(FileLocator.toFileURL(zipModelURL).getPath());
+		File tmpFile = File.createTempFile("svmModelLoader", extension);
+		try {
+			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(tmpFile));
+	        IOUtils.copy(inputStream, bufferedOutputStream);
+	        bufferedOutputStream.flush();
+	        IOUtils.closeQuietly(bufferedOutputStream);
+	        return tmpFile;
+		} catch (IOException e)
+		{
+            if(tmpFile != null){
+                tmpFile.delete();
+            }
+            throw e;
+        }
+	}
+	
+	private static File unzipModel(InputStream inputStream) throws IOException, URISyntaxException
+	{
+		File zipmodelFile = createTempFile(inputStream, ".zip");
 		String unzipModel = zipmodelFile.toString();
-		unzipModel=(String) unzipModel.subSequence(0, unzipModel.length()-4);
+		unzipModel=(String) unzipModel.subSequence(0, unzipModel.length()-6);
 		FileInputStream fis = new FileInputStream(zipmodelFile);
         ZipInputStream zis = new ZipInputStream(fis);
         ZipEntry entry = zis.getNextEntry();
         
+        File unzipedFile = null;
         if(entry != null)
         {
         	byte[] buffer = new byte[1024];
         	int len;
-            File newFile = new File(unzipModel);
-            System.out.println("Unzipping to "+newFile.getAbsolutePath());
-            FileOutputStream fos = new FileOutputStream(newFile);
+            unzipedFile = File.createTempFile(unzipModel, "m");
+            FileOutputStream fos = new FileOutputStream(unzipedFile);
             while ((len = zis.read(buffer)) > 0)
             {
            		fos.write(buffer, 0, len);
@@ -216,5 +246,7 @@ public class svm_predict_nofiles {
         zis.closeEntry();
         zis.close();
         fis.close();
+        
+        return unzipedFile;
 	}
 }

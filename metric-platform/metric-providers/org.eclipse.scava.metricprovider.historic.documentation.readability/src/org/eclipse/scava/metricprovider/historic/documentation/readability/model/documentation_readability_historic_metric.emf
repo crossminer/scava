@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.historic.documentation.readability.model;
+
+class DocumentationReadabilityHistoricMetric {
+	val DocumentationHistoricReadability[*] documentationReadability;
+	val DocumentationEntryHistoricReadability[*] documentationEntriesReadability;
+}
+
+class DocumentationHistoricReadability {
+	attr String documentationId;
+	attr int numberOfDocumentationEntries;
+	attr double averageDocumentationReadability;
+}
+
+class DocumentationEntryHistoricReadability {
+	attr String documentationId;
+	attr String entryId;
+	attr double readability;
+}
+

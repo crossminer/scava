@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.average",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.average.RequestsRepliesHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "bugs.requestsreplies-averageperday",

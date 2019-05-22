@@ -9,6 +9,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="bugTrackerTopics" upperBound="-1" eType="//BugTrackerTopic" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newsgroupArticles" upperBound="-1" eType="//NewsgroupArticlesData" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newsgroupTopics" upperBound="-1" eType="//NewsgroupTopic" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forumPosts" upperBound="-1" eType="//ForumPostData" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forumTopics" upperBound="-1" eType="//ForumPostTopic" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BugTrackerCommentsData">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugTrackerId">
@@ -49,6 +51,27 @@
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForumPostData">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="forumId">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topicId">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="postId">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="subject">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="date">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BugTrackerTopic">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugTrackerId">
       <eAnnotations source="searchable"/>
@@ -63,6 +86,18 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NewsgroupTopic">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="newsgroupName">
+      <eAnnotations source="searchable"/>
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfDocuments">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForumPostTopic">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="forumId">
       <eAnnotations source="searchable"/>
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>

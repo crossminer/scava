@@ -17,16 +17,25 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
+import org.eclipse.scava.business.integration.MavenLibraryRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
+import org.eclipse.scava.business.model.MavenLibrary;
 import org.eclipse.scava.business.model.Stargazers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @Qualifier("Ossmeter")
@@ -50,6 +60,9 @@ public class OssmeterImporter implements IImporter {
 	private String ossmeterUrl;
 
 	@Autowired
+	private MavenLibraryRepository mavenLibraryRepository;
+	
+	@Autowired
 	private ArtifactRepository projectRepository;
 
 	private static final Logger logger = LoggerFactory.getLogger(OssmeterImporter.class);
@@ -64,7 +77,7 @@ public class OssmeterImporter implements IImporter {
 
 	@Override
 	public Artifact importProject(String projectName) throws IOException {
-		
+
 		Artifact result = projectRepository.findOneByName(projectName);
 		if (result == null)
 			result = new Artifact();
@@ -90,22 +103,22 @@ public class OssmeterImporter implements IImporter {
 		bufferReader.close();
 		result.setStarred(getStargazers(projectName));
 		storeGithubUser(result.getStarred(), result.getFullName());
-		result.setDependencies(getDependencies(projectName));	
+		result.setDependencies(getDependencies(projectName));
 		projectRepository.save(result);
 		return result;
 	}
-	
-	private List<Stargazers> getStargazers(String artId){
+
+	private List<Stargazers> getStargazers(String artId) {
 		List<Stargazers> result = new ArrayList<>();
 		try {
-			
+
 			URL url = new URL(ossmeterUrl + "raw/projects/p/" + artId + "/m/stars");
 			URLConnection connection = url.openConnection();
 			InputStream is = connection.getInputStream();
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 			String jsonText = readAll(bufferReader);
 			JSONArray array = (JSONArray) JSONValue.parse(jsonText);
-			
+
 			for (Object object : array) {
 				Stargazers s = new Stargazers();
 				s.setDatestamp((String) ((JSONObject) object).get("datestamp"));
@@ -117,11 +130,11 @@ public class OssmeterImporter implements IImporter {
 			return result;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-		} 
+		}
 		return result;
 	}
-	
-	private List<String> getDependencies(String artId){
+
+	private List<String> getDependencies(String artId) {
 		List<String> result = new ArrayList<>();
 		try {
 			URL url = new URL(ossmeterUrl + "raw/projects/p/" + artId + "/m/dependencies");
@@ -160,7 +173,7 @@ public class OssmeterImporter implements IImporter {
 					guard = false;
 				else
 					for (Object object : projects)
-						importProject((String)((JSONObject) object).get("name"));
+						importProject((String) ((JSONObject) object).get("name"));
 				page++;
 			} catch (IOException e) {
 				guard = false;
@@ -174,7 +187,7 @@ public class OssmeterImporter implements IImporter {
 	public void storeGithubUser(List<Stargazers> starred, String repoName) {
 		for (Stargazers stargazer : starred) {
 			GithubUser user = userRepository.findOneByLogin(stargazer.getLogin());
-			if(user == null){
+			if (user == null) {
 				user = new GithubUser();
 				user.setLogin(stargazer.getLogin());
 			}
@@ -182,11 +195,12 @@ public class OssmeterImporter implements IImporter {
 			userRepository.save(user);
 		}
 	}
+
 	@Override
 	public void storeGithubUserCommitter(List<GithubUser> committers, String repoName) {
 		for (GithubUser committer : committers) {
 			GithubUser user = userRepository.findOneByLogin(committer.getLogin());
-			if(user == null){
+			if (user == null) {
 				user = new GithubUser();
 				user.setLogin(committer.getLogin());
 			}
@@ -195,4 +209,33 @@ public class OssmeterImporter implements IImporter {
 		}
 	}
 
+	public void importVersionsFromMavenMinerCSV(String fileName) {
+		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+			boolean first = true;
+			for (String repo : stream.collect(Collectors.toList())) {
+				if (first)
+					first = false;
+				else {
+					MavenLibrary mvn = new MavenLibrary();
+					String completeLibrary = repo.replace("\"", "").split(",")[0];
+					mvn.setGroupid(completeLibrary.split(":")[0]);
+					mvn.setArtifactid(completeLibrary.split(":")[1]);
+					mvn.setVersion(completeLibrary.split(":")[2]);
+
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+					try {
+						mvn.setReleasedate(
+								dateFormat.parse(repo.split(",")[2].replace("\"", "").replace("Z[GMT]", "")));
+					} catch (ParseException e) {
+						
+					}
+
+					mavenLibraryRepository.save(mvn);
+				}
+			}
+		} catch (IOException e) {
+			
+		}
+
+	}
 }

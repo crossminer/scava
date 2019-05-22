@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src/"/>
+	<classpathentry exported="true" kind="lib" path="carrot2-core-3.9.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

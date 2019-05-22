@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.tests;
 
-import static org.junit.Assert.assertEquals;
+/*import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -72,3 +72,4 @@ public class TestCachesCommunicationChannel {
 		assertEquals(contents, cache.getCachedContents(article));
 	}
 }
+*/

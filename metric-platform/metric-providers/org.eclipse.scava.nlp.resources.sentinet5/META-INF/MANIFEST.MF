@@ -8,5 +8,7 @@ Bundle-Activator: org.eclipse.scava.nlp.resources.sentinet5.Activator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.nlp.tools.other,
- org.eclipse.scava.nlp.tools.core
+ org.eclipse.scava.nlp.tools.core,
+ org.eclipse.scava.platform,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -2,10 +2,13 @@ package org.eclipse.scava.platform.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.scava.platform.analysis.data.model.DataStorage;
-import org.eclipse.scava.platform.analysis.data.model.MetricProvider;
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
+import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
+import org.eclipse.scava.platform.visualisation.MetricVisualisation;
+import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 
 public class MetricProviderService {
 	
@@ -19,37 +22,25 @@ public class MetricProviderService {
 		return this.repository;
 	}
 	
-	public MetricProvider registreMetricProvider(String metricProviderId, String label, String kind, String description,List<String> dataStograges) {
-		MetricProvider provider = new MetricProvider();
+	public MetricProviderDTO registreMetricProvider(String metricProviderId, String label, String kind, String description,List<String> dataStograges) {
+		MetricProviderDTO provider = new MetricProviderDTO();
 		provider.setMetricProviderId(metricProviderId);
 		provider.setLabel(label);
 		provider.setKind(kind);
 		provider.setDescription(description);
-		this.repository.getMetricProviders().add(provider);
 
-		for (String storage : dataStograges) {
-			DataStorage dCollection = new DataStorage();
-			dCollection.setStorage(storage);
-			provider.getStorages().add(dCollection);
-		}
-		this.repository.sync();
+//		for (String storage : dataStograges) {
+//			DataStorage dCollection = new DataStorage();
+//			dCollection.setStorage(storage);
+//			provider.getStorages().add(dCollection);
+//		}
 		return provider;
-	}
-
+	}	
 	
-	public void addMetricProviderDependency(MetricProvider provider, List<MetricProvider> dependsOn) {
-		for (MetricProvider dependency : dependsOn) {
-			provider.getDependOf().add(dependency);
-		}
-		this.repository.sync();
-	}
-	
-	
-	public List<MetricProvider> getMetricProviders() {
-		List<MetricProvider> providers = new ArrayList<>();
-		for (MetricProvider provider : this.repository.getMetricProviders()) {
-			providers.add(provider);
-		}
+	public List<MetricProviderDTO> getMetricProviders(Platform platform) {
+		List<MetricProviderDTO> providers = new ArrayList<MetricProviderDTO>();
+		MetricProviderInitialiser initialiser = new MetricProviderInitialiser(platform);
+		providers = initialiser.loadMetricProviders();
 		return providers;
 	}
 

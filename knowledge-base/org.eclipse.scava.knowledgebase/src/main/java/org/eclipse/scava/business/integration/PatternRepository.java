@@ -18,4 +18,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface PatternRepository extends MongoRepository<Pattern, String> {
 
+	Pattern findOneByPatternName(String patternName);
 }

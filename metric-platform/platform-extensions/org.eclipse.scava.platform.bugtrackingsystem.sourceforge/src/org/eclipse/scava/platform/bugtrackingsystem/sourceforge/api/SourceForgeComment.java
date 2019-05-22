@@ -20,6 +20,7 @@ public class SourceForgeComment extends BugTrackingSystemComment {
     private String subject;
 	private SourceForgeAttachment[] attachments;
 	private Date updateDate;
+	private boolean hexId=true;
 	
 	public SourceForgeComment() {
 	}
@@ -47,6 +48,16 @@ public class SourceForgeComment extends BugTrackingSystemComment {
 	public void setAttachments(SourceForgeAttachment[] attachments) {
 		this.attachments = attachments;
 	}
+
+	public boolean isHexId() {
+		return hexId;
+	}
+
+	public void setHexId(boolean hexId) {
+		this.hexId = hexId;
+	}
+	
+	 
 	
 	
 }

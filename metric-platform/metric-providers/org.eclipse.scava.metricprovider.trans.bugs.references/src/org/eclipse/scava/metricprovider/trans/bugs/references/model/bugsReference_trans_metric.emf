@@ -1,0 +1,17 @@
+package org.eclipse.scava.metricprovider.trans.bugs.references.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class BugsReferenceTransMetric {
+	val BugReferringTo[*] bugsReferringTo;
+}
+
+class BugReferringTo {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String commentId;
+	attr String[*] bugsReferred;
+	attr String[*] commitsReferred;
+}
+

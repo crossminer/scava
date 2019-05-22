@@ -45,6 +45,8 @@ import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.util.JSON;
 
+import static org.junit.Assert.*;
+
 public class RascalMetricsTest {
 
 	private static final String PROJECTS = "test_projects";
@@ -138,40 +140,44 @@ public class RascalMetricsTest {
 			int colsDiff = 0;
 			int colPHP = 0;
 			
-			for(File f : files) {
-				String name = f.getName();
-				String col = name.substring(0, name.lastIndexOf("."));
-				
-				//Only check Rascal collections.
-				if(col.contains("rascal")) {
-					cols++;
-					JSONArray a1 = getJSONArrayFromDump(f);
-					JSONArray a2 = getJSONArrayFromDB(db, col);
+			try {
+				for(File f : files) {
+					String name = f.getName();
+					String col = name.substring(0, name.lastIndexOf("."));
 
-					String expected = a1.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
-					String actual = a2.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
+					//Only check Rascal collections.
+					if(col.contains("rascal")) {
+						cols++;
+						JSONArray a1 = getJSONArrayFromDump(f);
+						JSONArray a2 = getJSONArrayFromDB(db, col);
 
-					JSONCompareResult res = JSONCompare.compareJSON(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+						String expected = a1.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
+						String actual = a2.toString().replaceAll("\"_id\":\"[a-z0-9-]+\",", "");
 
-					boolean current = res.passed();
-					
-					if(!current) {
-						colsDiff++;
+						JSONCompareResult res = JSONCompare.compareJSON(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+
+						boolean current = res.passed();
 						
-						result = false;
-						
-						if(col.contains("PHP") || col.contains("php")) {
-							colPHP++;
+						if(!current) {
+							colsDiff++;
+
+							result = false;
+
+							if(col.contains("PHP") || col.contains("php")) {
+								colPHP++;
+							}
+							else {
+	//							System.err.println("[ERROR] There are different values in the " + db 
+	//									+ " database and the " + col + " collection.");
+								System.err.println(res);
+							}
+							//assertTrue("There are different values in the " + db 
+							//		+ " database and the " + col + " collection.", result);
 						}
-						else {
-//							System.err.println("[ERROR] There are different values in the " + db 
-//									+ " database and the " + col + " collection.");
-							System.err.println(res);
-						}
-						//assertTrue("There are different values in the " + db 
-						//		+ " database and the " + col + " collection.", result);
 					}
 				}
+			} catch (JSONException e) {
+				fail(e.getMessage());
 			}
 			
 			System.out.println("Total: " + cols + " - Different: " + colsDiff + " - PHP: " + colPHP);
@@ -180,7 +186,7 @@ public class RascalMetricsTest {
 		assertTrue(result);
 	}
 
-	private JSONArray getJSONArrayFromDump(File dump) {
+	private JSONArray getJSONArrayFromDump(File dump) throws JSONException {
 		try {
 			JSONArray result = new JSONArray(); 
 			InputStream is = new FileInputStream(dump);
@@ -264,7 +270,7 @@ public class RascalMetricsTest {
 		return true;
 	}
 
-	private boolean compareJSONObjects(JSONObject o1, JSONObject o2) {
+	private boolean compareJSONObjects(JSONObject o1, JSONObject o2) throws JSONException {
 		String[] names = JSONObject.getNames(o1);
 		for(String name : names) {
 			if(!o2.has(name)) {

@@ -9,13 +9,17 @@
  ******************************************************************************/
 package vasttext;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipException;
 
+import org.apache.commons.io.IOUtils;
 import org.datavec.api.conf.Configuration;
 import org.deeplearning4j.datasets.iterator.MultiDataSetWrapperIterator;
 import org.deeplearning4j.eval.ConfusionMatrix;
@@ -69,6 +73,9 @@ public class Vasttext
 	private String typeVasttext;
 	private VasttextTextVectorizer vectorizer;
 
+//	private UIServer uiServer;
+//	private StatsStorage statsStorage;
+	
 	//Configuration variables
 	public final static String DENSE_DIMENSION = NAME_SPACE +".densedimension";
 	public final static String LR = NAME_SPACE +  ".lr";
@@ -537,8 +544,28 @@ public class Vasttext
         return new MultiLayerNetwork(nnConf);
 	}
 	
+	public void loadModel(InputStream inputStream) throws IOException, ClassNotFoundException
+	{
+		File tmpFile = File.createTempFile("vasttextModelLoader", "bin");
+		try {
+			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(tmpFile));
+	        IOUtils.copy(inputStream, bufferedOutputStream);
+	        bufferedOutputStream.flush();
+	        IOUtils.closeQuietly(bufferedOutputStream);
+	        loadModel(tmpFile);
+	        if(tmpFile!=null)
+	        	tmpFile.delete();
+		} catch (IOException e)
+		{
+            if(tmpFile != null){
+                tmpFile.delete();
+            }
+            throw e;
+        }
+	}
+	
 	@SuppressWarnings("unchecked")
-	public void loadModel(File file) throws ZipException, IOException, ClassNotFoundException
+	public void loadModel(File file) throws FileNotFoundException, ClassNotFoundException, IOException
 	{
 		HashMap<String, Object> configuration = (HashMap<String, Object>) ModelSerializer.getObjectFromFile(file, "vasttext.config");
 		multiLabel = (Boolean) configuration.get("multiLabel");
@@ -589,3 +616,4 @@ public class Vasttext
 	}
 
 }
+

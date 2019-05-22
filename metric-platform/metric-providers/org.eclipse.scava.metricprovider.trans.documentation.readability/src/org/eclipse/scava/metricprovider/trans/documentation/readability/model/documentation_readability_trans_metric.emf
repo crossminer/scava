@@ -1,0 +1,17 @@
+package org.eclipse.scava.metricprovider.trans.documentation.readability.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationReadabilityTransMetric {
+	val DocumentationEntryReadability[*] documentationEntriesReadability;
+}
+
+class DocumentationEntryReadability {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr double readability;
+}
+
+
+

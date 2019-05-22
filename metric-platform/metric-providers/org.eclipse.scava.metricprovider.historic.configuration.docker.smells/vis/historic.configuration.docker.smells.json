@@ -1,0 +1,164 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.docker.smells",
+	"vis" : [ 
+		{
+			"id" : "docker.smells",
+			"name" : "Sum of Docker Smells",
+			"description" : "The number of Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "DockerSmells", "field" : "$cumulativeNumberOfDockerSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DockerSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperUpgradeSmells",
+			"name" : "Improper Upgrade Docker Smells",
+			"description" : "The number of Improper Upgrade Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "ImproperUpgradeSmells", "field" : "$numberOfImproperUpgradeSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperUpgradeSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.unknownPackageVersionSmells",
+			"name" : "Unknown Package Version Docker Smells",
+			"description" : "The number of Unknown Package Version Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "UnknownPackageVersionSmells", "field" : "$numberOfUnknownPackageVersionSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "UnknownPackageVersionSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.untaggedImageSmells",
+			"name" : "Untagged Image Docker Smells",
+			"description" : "The number of Untagged Image Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "UntaggedImageDockerSmells", "field" : "$numberOfUntaggedImageSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "UntaggedImageDockerSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperSudoSmells",
+			"name" : "Improper Sudo Docker Smells",
+			"description" : "The number of Improper Sudo Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperSudoSmells", "field" : "$numberOfImproperSudoSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperSudoSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperCopySmells",
+			"name" : "Improper Copy Docker Smells",
+			"description" : "The number of Improper Copy Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperCopySmells", "field" : "$numberOfImproperCopySmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperCopySmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperFromSmells",
+			"name" : "Improper From Docker Smells",
+			"description" : "The number of Improper From Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperFromSmells", "field" : "$numberOfImproperFromSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperFromSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperCmdSmells",
+			"name" : "Improper Cmd Docker Smells",
+			"description" : "The number of Improper Cmd Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperCmdSmells", "field" : "$numberOfImproperCmdSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperCmdSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.meaninglessSmells",
+			"name" : "Meaningless Instructions Docker Smells",
+			"description" : "The number of Meaningless Instructions Docker Smells smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "MeaninglessInstructionsSmells", "field" : "$numberOfMeaninglessSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "MeaninglessInstructionsSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.invalidPortsSmells",
+			"name" : "Invalid Ports Docker Smells",
+			"description" : "The number of Invalid Ports Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "InvalidPortsSmells", "field" : "$numberOfInvalidPortsSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "InvalidPortsSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperShellSmells",
+			"name" : "Improper Shell Docker Smells",
+			"description" : "The number of Improper Shell Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperShellSmells", "field" : "$numberOfImproperShellSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperShellSmells",
+			"timeSeries" : true
+		},{
+			"id" : "docker.smells.improperEntrypointSmells",
+			"name" : "Improper Entrypoint Docker Smells",
+			"description" : "The number of Improper Entrypoint Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "ImproperEntrypointSmells", "field" : "$numberOfImproperEntrypointSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "ImproperEntrypointSmells",
+			"timeSeries" : true
+		}
+		,{
+			"id" : "docker.smells.deprecatedInstructionSmells",
+			"name" : "Deprecated Instruction Docker Smells",
+			"description" : "The number of Deprecated Instruction Docker smells per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "DeprecatedInstructionSmells", "field" : "$numberOfDeprecatedInstructionSmells" } ]
+			},
+			"x" : "Date",
+			"y" : "DeprecatedInstructionSmells",
+			"timeSeries" : true
+		}
+	]
+
+}

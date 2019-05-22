@@ -10,3 +10,5 @@ Require-Bundle: org.eclipse.scava.libsvm.dependencies,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.libsvm
+Bundle-ClassPath: .,
+ lib/org.apache.commons.io_2.2.0.v201405211200.jar

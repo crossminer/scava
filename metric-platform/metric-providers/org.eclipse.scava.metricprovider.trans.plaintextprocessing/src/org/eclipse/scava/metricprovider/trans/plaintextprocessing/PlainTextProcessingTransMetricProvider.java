@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.plaintextprocessing;
 
 import java.util.Collections;
@@ -10,7 +19,8 @@ import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTex
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugTrackersOthers;
 import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugzilla;
-import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextMarkdownBased;
+import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextBugTrackerMarkdownBased;
+import org.eclipse.scava.nlp.tools.plaintext.bugtrackers.PlainTextRedmine;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextEclipseForums;
 import org.eclipse.scava.nlp.tools.plaintext.communicationchannels.PlainTextNewsgroups;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -84,6 +94,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.platformBugTrackingSystemManager = context.getPlatformBugTrackingSystemManager();
 		this.communicationChannelManager = context.getPlatformCommunicationChannelManager();
+		
 	}
 
 	@Override
@@ -123,10 +134,11 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 					case "gitlab":
 					case "bitbucket":
 					case "jira":
-					case "github": plainTextObject=PlainTextMarkdownBased.process(comment.getText()); break;
+					case "github": plainTextObject=PlainTextBugTrackerMarkdownBased.process(comment.getText()); break;
 					case "bugzilla": plainTextObject=PlainTextBugzilla.process(comment.getText()); break;
-					//case "redmine":
+					case "redmine": plainTextObject=PlainTextRedmine.process(comment.getText()); break;
 					//case "mantis":
+					//case "sourceforge":
 					default: plainTextObject=PlainTextBugTrackersOthers.process(comment.getText()); break;
 				}
 				commentsData.getPlainText().addAll(plainTextObject.getPlainTextAsList());
@@ -184,7 +196,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				}
 			}
 		}
-		
+			
 	}
 	
 	private void clearDB(PlainTextProcessingTransMetric db) {

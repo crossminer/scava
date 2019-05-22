@@ -18,7 +18,7 @@ import { ProjectMgmtDeleteDialogComponent } from '../delete-project/delete-proje
 export class ConfigureProjectComponent implements OnInit {
 
     project: Project = null;
-    executionTasks: ExecutionTask[] = null;
+    executionTasks: ExecutionTask[] = [];
     interval: any;
     globalStatus: string;
     hasAuthorities: boolean;
@@ -48,6 +48,15 @@ export class ConfigureProjectComponent implements OnInit {
                         this.analysisTaskService.getTasksbyProject(this.project.shortName).subscribe(
                             (resp) => {
                                 this.executionTasks = resp as ExecutionTask[];
+                                this.executionTasks.forEach(analysisTask => {
+                                    let filteredMetricExecutions: MetricExecutions[] = [];
+                                    analysisTask.metricExecutions.forEach(metricExecution => {
+                                        if (metricExecution.hasVisualisation == "true") {
+                                            filteredMetricExecutions.push(metricExecution);
+                                        }
+                                    });
+                                    analysisTask.metricExecutions = filteredMetricExecutions;
+                                });                                
                             },
                             (error) => {
                                 this.onShowMessage(error);

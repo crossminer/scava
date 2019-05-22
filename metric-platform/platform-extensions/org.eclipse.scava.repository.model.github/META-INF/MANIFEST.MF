@@ -7,7 +7,9 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: com.googlecode.pongo.runtime.dependencies,
- com.googlecode.pongo.runtime,
+Require-Bundle: com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.vcs.git
 Export-Package: org.eclipse.scava.repository.model.github

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <!--
-  Copyright (c) 2017 University of Manchester
+  Copyright (c) 2019 Edge Hill University
   
   This program and the accompanying materials are made
   available under the terms of the Eclipse Public License 2.0
@@ -21,9 +21,6 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugId">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstRequest">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="answered">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
