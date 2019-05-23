@@ -60,7 +60,7 @@ public class ProjectDeleteResource extends ServerResource {
 					// Drop ProjectAnalysis					
 					service.deleteProjectAnalysis(projectId);
 					// Drop project analysis database
-					int db = mongo.getDatabaseNames().indexOf(project.getName());
+					int db = mongo.getDatabaseNames().indexOf(project.getShortName());
 					if (db != -1) {
 						platform.getMetricsRepository(project).getDb().dropDatabase();
 					}
