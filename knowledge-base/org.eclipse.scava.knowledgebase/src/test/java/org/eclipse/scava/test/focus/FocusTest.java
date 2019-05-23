@@ -77,8 +77,7 @@ public class FocusTest {
 		
 		MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(car).build();
-        Resource resource = new ClassPathResource("FOCUS");
-        
+        Resource resource = new ClassPathResource("FOCUS/");
         List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
         testing = artifacts.get(4);
 		artifacts.remove(testing);

@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
@@ -32,7 +34,8 @@ public class DataReaderTest {
     @Test(expected = IOException.class) 
     public void testReadArtifactFromFileException() throws IOException
     {
-    	Artifact res = dr.readArtifactFromFile("asd.txt");
+    	Resource resource = new ClassPathResource("FOCUS/asd.txt");
+    	Artifact res = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
         res.getMethodDeclarations().forEach(x-> System.out.println(x));
     	assertNotNull(res);
     }
@@ -40,7 +43,8 @@ public class DataReaderTest {
     @Test
     public void testReadArtifactFromFile() throws IOException
     {
-    	Artifact res = dr.readArtifactFromFile("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.txt");
+    	Resource resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.txt");
+    	Artifact res = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
         res.getMethodDeclarations().forEach(x-> System.out.println(x));
     	assertNotNull(res);
     }
@@ -48,7 +52,8 @@ public class DataReaderTest {
     @Test
     public void testReadArtifactFromPath() throws IOException
     {
-    	List<Artifact> res = dr.readArtifactsFromPath("FOCUS");
+    	Resource resource = new ClassPathResource("FOCUS/");
+    	List<Artifact> res = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
     	assertNotNull(res);
     }
 }

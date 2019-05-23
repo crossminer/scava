@@ -51,8 +51,6 @@ public class FocusSimilarityCalculatorTest {
 	public void init() throws IOException {
 		Resource resource = new ClassPathResource("FOCUS");
         artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
-        
-
 	}
 
 	@Test
