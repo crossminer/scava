@@ -3,7 +3,7 @@
 <_>
 	
 	<!-- Example demonstrating how to implement non-static committment using RestMule -->
-	<workflow name="GhRepoExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked">
+	<workflow name="GhRepoExample">
 	
 		<source name="GhRepoSource" out="GhRepos"/>
 		
@@ -29,6 +29,7 @@
 			<field name="authors" type="Integer"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>

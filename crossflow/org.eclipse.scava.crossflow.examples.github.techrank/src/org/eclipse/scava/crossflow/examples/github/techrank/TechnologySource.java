@@ -18,7 +18,7 @@ public class TechnologySource extends TechnologySourceBase {
 		
 	}
 	
-	public List<Technology> getTechnologies() {
+	public List<Technology> getTechnologyList() {
 		return technologies;
 	}
 

@@ -1,0 +1,45 @@
+[%
+	var lang = w.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="run_all" name="Assemble Single Experiment ZIP for project">
+
+[%
+//	<property name="deps" value="[ %=dependenciesPath% ]"/>
+%]
+	
+   	<!-- Running this will create a JAR of this project in the experiment directory -->
+    <target name="create_run_jar">
+        <jar destfile="experiment/[%=package%].jar" filesetmanifest="mergewithoutmain">
+        	<fileset dir="bin"/>
+        </jar>
+	</target>
+	
+	<!-- Running this will create a ZIP file of the project input directory -->
+    <target name="create_in_zip">
+        <zip
+        	destfile="experiment/in.zip"
+			basedir="experiment/in" 
+			update="true"
+        />
+    </target>
+    	
+	<!-- Running this will create a ZIP file containing all required artifacts for uploading this project as a new workflow in the Crossflow web application -->
+    <target name="assemble_single_experiment_zip">
+        <zip
+        	destfile="experiment/[%=w.name%].zip"
+			basedir="experiment" 
+			excludes="in/"
+			update="true"
+        />
+    </target>
+    
+    <target name="run_all"
+   		depends="create_run_jar,create_in_zip,assemble_single_experiment_zip" />
+    
+</project>

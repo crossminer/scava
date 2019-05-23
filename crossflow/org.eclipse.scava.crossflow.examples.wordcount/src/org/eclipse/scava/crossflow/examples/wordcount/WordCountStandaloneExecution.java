@@ -1,12 +1,11 @@
 package org.eclipse.scava.crossflow.examples.wordcount;
 
-import org.eclipse.scava.crossflow.runtime.FailedJob;
-import org.eclipse.scava.crossflow.runtime.InternalException;
-import org.eclipse.scava.crossflow.runtime.Mode;
-
 import java.io.File;
 
 import org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow;
+import org.eclipse.scava.crossflow.runtime.FailedJob;
+import org.eclipse.scava.crossflow.runtime.InternalException;
+import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class WordCountStandaloneExecution {
 	

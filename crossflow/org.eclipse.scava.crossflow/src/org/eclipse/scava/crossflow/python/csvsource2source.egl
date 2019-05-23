@@ -9,7 +9,7 @@ class [%=t.name%]([%=t.name%]Base):
 	
 	def produce(self):
 		try:
-			parser = CSVParser('[%=t.filename%]')
+			parser = CSVParser('[%=t.fileName%]')
 			records = parser.get_records_iterable()
 			for row in records:
 				[%for (s in t.output) { %]

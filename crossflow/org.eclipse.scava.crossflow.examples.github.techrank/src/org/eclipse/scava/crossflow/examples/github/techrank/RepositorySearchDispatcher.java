@@ -12,7 +12,7 @@ public class RepositorySearchDispatcher extends RepositorySearchDispatcherBase {
 		if (!repositories.contains(repository.getPath())) {
 			repositories.add(repository.getPath());
 			return new RepositorySearch(repository.getPath(), 
-					workflow.getTechnologySource().getTechnologies(), repository);
+					workflow.getTechnologySource().getTechnologyList(), repository);
 		}
 		return null;
 	}

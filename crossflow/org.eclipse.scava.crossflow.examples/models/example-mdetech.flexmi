@@ -3,7 +3,7 @@
 <_>
 
 	<!-- Example demonstrating how to implement non-static committment using RestMule -->
-	<workflow name="MdeTechnologyExample" package="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech">
+	<workflow name="MdeTechnologyExample">
 		
 		<!-- source of MDE technologies -->
 		<source name="MdeTechnologySource" out="MdeTechnologies"/> 
@@ -70,6 +70,7 @@
 			<field name="field4" type="Integer"/> <!-- ( author | file | owner popularity ) count -->
 		</type>
 				
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>
 	
 </_>

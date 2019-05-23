@@ -2,7 +2,7 @@
 <?render-graphviz-neato ../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
 <_>
 
-	<workflow name="TechrankWorkflow" package="org.eclipse.scava.crossflow.examples.github.techrank">
+	<workflow name="TechrankWorkflow">
 		<source name="TechnologySource" out="Technologies"/>
 		<queue name="Technologies" type="Technology"/>
 		<task name="GitHubCodeSearcher" in="Technologies" out="Repositories"/>
@@ -33,6 +33,7 @@
 			<field name="results" type="int"/>
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.github.techrank" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 
 </_>

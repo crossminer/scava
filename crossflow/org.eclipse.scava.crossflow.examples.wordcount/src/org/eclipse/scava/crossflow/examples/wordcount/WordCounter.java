@@ -2,7 +2,6 @@ package org.eclipse.scava.crossflow.examples.wordcount;
 
 import java.util.HashMap;
 
-import org.eclipse.scava.crossflow.examples.wordcount.Line;
 import org.eclipse.scava.crossflow.examples.wordcount.WordCounterBase;
 import org.eclipse.scava.crossflow.examples.wordcount.WordFrequency;
 

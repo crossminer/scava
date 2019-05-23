@@ -9,9 +9,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 import org.eclipse.scava.crossflow.examples.wordcount.WordCountSinkBase;
 import org.eclipse.scava.crossflow.examples.wordcount.WordFrequency;
+import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 public class WordCountSink extends WordCountSinkBase {
 

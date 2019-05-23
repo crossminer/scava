@@ -3,7 +3,7 @@
 <_>
 	
 	<!-- Example counting the committer count of the most popular Java projects on Github -->
-	<workflow name="SearchWorkflow" package="org.eclipse.scava.crossflow.examples.github.topsearch">
+	<workflow name="SearchWorkflow">
 	
 		<!-- csv source of Github top search result projects (owner/repo) -->
 		<csvsource name="SearchCsvSource" out="SearchRepos" filename="repos.csv"/>
@@ -46,6 +46,7 @@
 			<field name="authorCount" type="Integer"/> <!-- unique author count -->
 		</type>
 		
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.github.topsearch" genOutputFolder="src-gen" outputFolder="src"/>
 	</workflow>	
 	
 </_>

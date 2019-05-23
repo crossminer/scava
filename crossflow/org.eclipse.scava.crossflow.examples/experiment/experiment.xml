@@ -1,7 +1,7 @@
 <experiment
-	title="SearchWorkflow"
-	class="org.eclipse.scava.crossflow.examples.github.topsearch.SearchWorkflow"
-	jar="org.eclipse.scava.crossflow.examples.github.topsearch.jar"
+	title="MdeTechnologyExample"
+	class="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.MdeTechnologyExample"
+	jar="org.eclipse.scava.crossflow.examples.firstcommitment.mdetech.jar"
 	input="in"
 	output="out"
 	summary="Optional summary of the Experiment goes here."

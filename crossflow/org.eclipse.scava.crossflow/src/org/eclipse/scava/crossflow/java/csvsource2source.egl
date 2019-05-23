@@ -1,0 +1,43 @@
+[%
+	var lang = w.languages.select(l|l.name=="Java");
+	var langExists = not lang.isEmpty;
+
+	var package = w.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+%]
+package [%=package%];
+
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.apache.commons.csv.CSVRecord;
+import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+
+public class [%=t.name%] extends [%=t.name%]Base {
+	
+	protected Iterable<CSVRecord> records;
+	
+	@Override
+	public void produce() {
+		try {
+			final CsvParser parser = new CsvParser("[%=t.fileName%]");
+			records = parser.getRecordsIterable();
+		
+			for (CSVRecord record : records) {
+				[%for (s in t.output) { %]
+				[%=s.type.name%] [%=s.type.name.ftlc()%] = new [%=s.type.name%]();
+				[% var i=0; %]
+				[%for (f in s.type.fields) { %]
+				// [%=s.type.name.ftlc()%].set[%=f.name.ftuc()%](record.get([%=i%]));
+				[% i++; }%]
+				sendTo[%=s.name%]( [%=s.type.name.ftlc()%]);
+				[%}%]	
+			}
+		} catch (Exception e) {
+			workflow.log(SEVERITY.ERROR, e.getMessage());
+		}
+	}
+	
+	public Iterable<CSVRecord> getRecords() {
+		return records;
+	}
+}

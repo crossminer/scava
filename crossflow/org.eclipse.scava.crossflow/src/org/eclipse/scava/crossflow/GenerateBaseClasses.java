@@ -15,8 +15,14 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
@@ -27,15 +33,11 @@ import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
-import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
 
 public class GenerateBaseClasses {
 
-	//FIXME automate language-specific generator enabling
-	//enum Languages {put enums in}
-	
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
 
@@ -55,55 +57,57 @@ public class GenerateBaseClasses {
 
 	public void execute() throws Exception {
 
-		// 
-		
-		module = createModule();
-		module.parse(getFileURI("crossflow.egx"));
+		EmfModel model = getModel();
+		Resource r = model.getResource();
+		HashSet<String> languages = findLanguages(r);
+		// add java regardless of whether it exists in the model
+		languages.add("java");
+		//
+		for (String language : languages) {
 
-		if (module.getParseProblems().size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
-			}
-			return;
-		}
-
-		for (IModel model : getModels()) {
+			module = createModule();
 			module.getContext().getModelRepository().addModel(model);
-		}
-
-		for (Variable parameter : parameters) {
-			module.getContext().getFrameStack().put(parameter);
-		}
-
-		result = execute(module);
-
-		module.getContext().getModelRepository().dispose();
-		
-		//TODO is there a better way to add languages other than manually?
-		
-		module = createModule();
-		module.parse(getFileURI("python/crossflow-python.egx"));
-
-		if (module.getParseProblems().size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
+			module.parse(getFileURI(language + "/crossflow.egx"));
+			
+			if (module.getParseProblems().size() > 0) {
+				System.err.println("Parse errors occured...");
+				for (ParseProblem problem : module.getParseProblems()) {
+					System.err.println(problem.toString());
+				}
+				return;
 			}
-			return;
+
+			for (Variable parameter : parameters) {
+				module.getContext().getFrameStack().put(parameter);
+			}
+
+			result = execute(module);
+
+			//module.getContext().getModelRepository().dispose();
+
+		}
+		
+		model.dispose();
+
+	}
+
+	private HashSet<String> findLanguages(Resource r) {
+
+		EClass language = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("Language");
+		EAttribute languageName = language.getEAllAttributes().stream().filter(a -> a.getName().equals("name"))
+				.findFirst().get();
+
+		HashSet<String> ret = new HashSet<>();
+
+		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
+			EObject o;
+			if ((o = it.next()).eClass().getName().equals(language.getName())) {
+				ret.add(((String) o.eGet(languageName)).toLowerCase());
+			}
 		}
 
-		for (IModel model : getModels()) {
-			module.getContext().getModelRepository().addModel(model);
-		}
+		return ret;
 
-		for (Variable parameter : parameters) {
-			module.getContext().getFrameStack().put(parameter);
-		}
-
-		result = execute(module);
-
-		module.getContext().getModelRepository().dispose();
 	}
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {
@@ -134,13 +138,11 @@ public class GenerateBaseClasses {
 		}
 	}
 
-	public List<IModel> getModels() throws Exception {
-		List<IModel> models = new ArrayList<IModel>();
-		models.add(createAndLoadAnEmfModel("org.eclipse.scava.crossflow",
-				modelRelativePath, "Model", true,
-				false, false));
+	public EmfModel getModel() throws Exception {
+		EmfModel model = createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false,
+				false);
 
-		return models;
+		return model;
 	}
 
 	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
