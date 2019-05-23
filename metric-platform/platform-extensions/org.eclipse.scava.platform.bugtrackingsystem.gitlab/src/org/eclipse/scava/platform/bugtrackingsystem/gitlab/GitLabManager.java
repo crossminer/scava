@@ -24,6 +24,7 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.IBugTrackingSystemManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
 import org.joda.time.DateTime;
@@ -58,10 +59,13 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	private String open_id;
 	private String builder;
 	private OkHttpClient client;
+	
+	protected OssmeterLogger logger;
 
 	public GitLabManager()
 	{
 
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.bugtrackingsystem.gitlab");
 		this.open_id = "";
 		this.builder = "";
 		this.callsRemaning = -1;
@@ -422,17 +426,33 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	 */
 	private void checkHeader(Headers responseHeader, GitLabTracker gitlabTracker) {
 
-		this.current_page = Integer.parseInt(responseHeader.get("X-Page"));
+		if(responseHeader.get("X-Page")!=null)
+			this.current_page = Integer.parseInt(responseHeader.get("X-Page"));
+		else
+		{
+			logger.error("Couldn't find the current page in json header. Considering there is just one page (page 0).");
+			this.current_page=0;
+		}
 
-		this.last_page = Integer.parseInt(responseHeader.get("X-Total-Pages"));
+		if(responseHeader.get("X-Total-Pages")!=null)
+			this.last_page = Integer.parseInt(responseHeader.get("X-Total-Pages"));
+		else
+		{
+			logger.error("Couldn't find the total number of pages in json header. Considering there is just one page (page 0).");
+			this.last_page=0;
+		}
 
-		if (!(responseHeader.get("X-Next-Page").equals(""))) {
-
-			this.next_page = Integer.parseInt(responseHeader.get("X-Next-Page"));
+		if(responseHeader.get("X-Next-Page")!=null)
+		{
+			if (!(responseHeader.get("X-Next-Page").equals(""))) {
+	
+				this.next_page = Integer.parseInt(responseHeader.get("X-Next-Page"));
+			}
 		}
 
 		if(responseHeader.get("RateLimit-Limit")!=null)
 		{
+			logger.info("Gitlab server seems to do not set any rate limit.");
 			this.rateLimit = Integer.parseInt(responseHeader.get("RateLimit-Limit"));
 			this.callsRemaning = Integer.parseInt(responseHeader.get("RateLimit-Remaining"));
 			this.timeToReset = Integer.parseInt(responseHeader.get("RateLimit-Reset"));
