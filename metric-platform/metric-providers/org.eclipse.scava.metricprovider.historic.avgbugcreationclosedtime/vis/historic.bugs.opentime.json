@@ -19,7 +19,8 @@
 			"description" : "The average time between creating and closing bugs in relation to the number of bugs considered." ,
 			"type" : "LineChart",
 			"datatable" : {
-				"cols" : [  { "name" : "Bugs", "field" : "$bugsConsidered" }, 
+				"cols" : [ { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Bugs", "field" : "$bugsConsidered" }, 
 					{ "name" : "Bug Open Time", "field" : "$avgBugOpenTimeInDays" } ]
 			},
 			"x" : "Bugs",

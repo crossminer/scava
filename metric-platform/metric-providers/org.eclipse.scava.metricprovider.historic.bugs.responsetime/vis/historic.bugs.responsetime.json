@@ -19,7 +19,8 @@
 			"description" : "The average response time of bugs addressed every day, in relation to the number of bugs considered." ,
 			"type" : "ScatterChart",
 			"datatable" : {
-				"cols" : [  { "name" : "Threads", "field" : "$bugsConsidered" }, 
+				"cols" : [ { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Threads", "field" : "$bugsConsidered" }, 
 					{ "name" : "Response Time", "field" : "$avgResponseTime" } ]
 			},
 			"x" : "Threads",
@@ -43,7 +44,8 @@
 			"description" : "The average response time of bugs addressed up to and including the current date, in relation to the number of bugs considered." ,
 			"type" : "LineChart",
 			"datatable" : {
-				"cols" : [  { "name" : "Threads", "field" : "$cumulativeBugsConsidered" }, 
+				"cols" : [ { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Threads", "field" : "$cumulativeBugsConsidered" }, 
 					{ "name" : "Response Time", "field" : "$cumulativeAvgResponseTime" } ]
 			},
 			"x" : "Threads",

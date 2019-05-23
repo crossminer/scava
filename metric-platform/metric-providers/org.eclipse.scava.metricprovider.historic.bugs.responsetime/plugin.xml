@@ -16,7 +16,7 @@
    </metricProvider>
 </extension>
 <extension point="org.eclipse.scava.platform.visualisation.metric">
-   <visualisation json="vis/historic.newsgroups.responsetime.json">
+   <visualisation json="vis/historic.bugs.responsetime.json">
    </visualisation>
 </extension>
 
