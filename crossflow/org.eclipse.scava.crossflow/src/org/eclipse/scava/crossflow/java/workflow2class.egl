@@ -222,7 +222,7 @@ public class [%=w.name%] extends Workflow {
 }	
 [%
 operation Task isJavaTask(){
-	return not self.language.isDefined() or self.language.name=="Java";
+	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
 }
 
 operation Workflow getParallelizableTasks() {

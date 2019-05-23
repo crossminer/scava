@@ -68,7 +68,7 @@ rule CsvSink2Sink
 rule CommitmentTask2BaseClass 
 	transform t : CommitmentTask {
 	
-	guard : not t.language.isDefined() or t.language.isJava()
+	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -81,7 +81,7 @@ rule CommitmentTask2BaseClass
 rule OpinionatedTask2BaseClass 
 	transform t : OpinionatedTask {
 	
-	guard : not t.language.isDefined() or t.language.isJava()
+	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -94,7 +94,7 @@ rule OpinionatedTask2BaseClass
 rule Task2BaseClass 
 	transform t : Task {
 	
-	guard : not t.language.isDefined() or t.language.isJava()
+	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -107,7 +107,7 @@ rule Task2BaseClass
 rule Task2ImplClass 
 	transform t : Task {
 	
-	guard : not t.language.isDefined() or t.language.isJava()	
+	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())	
 		
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	

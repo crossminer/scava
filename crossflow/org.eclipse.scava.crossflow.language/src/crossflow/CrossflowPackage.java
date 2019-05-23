@@ -385,13 +385,22 @@ public interface CrossflowPackage extends EPackage {
 	int TASK__PARAMETERS = 7;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__LANGUAGE = 8;
+	int TASK__LANGUAGES = 8;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__CONFIGURATIONS = 9;
 
 	/**
 	 * The number of structural features of the '<em>Task</em>' class.
@@ -400,7 +409,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK_FEATURE_COUNT = 9;
+	int TASK_FEATURE_COUNT = 10;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -485,13 +494,22 @@ public interface CrossflowPackage extends EPackage {
 	int SOURCE__PARAMETERS = TASK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SOURCE__LANGUAGE = TASK__LANGUAGE;
+	int SOURCE__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__CONFIGURATIONS = TASK__CONFIGURATIONS;
 
 	/**
 	 * The number of structural features of the '<em>Source</em>' class.
@@ -585,13 +603,22 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SOURCE__PARAMETERS = SOURCE__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CSV_SOURCE__LANGUAGE = SOURCE__LANGUAGE;
+	int CSV_SOURCE__LANGUAGES = SOURCE__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__CONFIGURATIONS = SOURCE__CONFIGURATIONS;
 
 	/**
 	 * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -694,13 +721,22 @@ public interface CrossflowPackage extends EPackage {
 	int SINK__PARAMETERS = TASK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SINK__LANGUAGE = TASK__LANGUAGE;
+	int SINK__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__CONFIGURATIONS = TASK__CONFIGURATIONS;
 
 	/**
 	 * The number of structural features of the '<em>Sink</em>' class.
@@ -794,13 +830,22 @@ public interface CrossflowPackage extends EPackage {
 	int CSV_SINK__PARAMETERS = SINK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CSV_SINK__LANGUAGE = SINK__LANGUAGE;
+	int CSV_SINK__LANGUAGES = SINK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__CONFIGURATIONS = SINK__CONFIGURATIONS;
 
 	/**
 	 * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -903,13 +948,22 @@ public interface CrossflowPackage extends EPackage {
 	int COMMITMENT_TASK__PARAMETERS = TASK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMMITMENT_TASK__LANGUAGE = TASK__LANGUAGE;
+	int COMMITMENT_TASK__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__CONFIGURATIONS = TASK__CONFIGURATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Commit After</b></em>' attribute.
@@ -1012,13 +1066,22 @@ public interface CrossflowPackage extends EPackage {
 	int OPINIONATED_TASK__PARAMETERS = TASK__PARAMETERS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' reference.
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OPINIONATED_TASK__LANGUAGE = TASK__LANGUAGE;
+	int OPINIONATED_TASK__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__CONFIGURATIONS = TASK__CONFIGURATIONS;
 
 	/**
 	 * The number of structural features of the '<em>Opinionated Task</em>' class.
@@ -1502,15 +1565,26 @@ public interface CrossflowPackage extends EPackage {
 	EReference getTask_Parameters();
 
 	/**
-	 * Returns the meta object for the reference '{@link crossflow.Task#getLanguage <em>Language</em>}'.
+	 * Returns the meta object for the reference list '{@link crossflow.Task#getLanguages <em>Languages</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Language</em>'.
-	 * @see crossflow.Task#getLanguage()
+	 * @return the meta object for the reference list '<em>Languages</em>'.
+	 * @see crossflow.Task#getLanguages()
 	 * @see #getTask()
 	 * @generated
 	 */
-	EReference getTask_Language();
+	EReference getTask_Languages();
+
+	/**
+	 * Returns the meta object for the reference list '{@link crossflow.Task#getConfigurations <em>Configurations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Configurations</em>'.
+	 * @see crossflow.Task#getConfigurations()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EReference getTask_Configurations();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Source <em>Source</em>}'.
@@ -2035,12 +2109,20 @@ public interface CrossflowPackage extends EPackage {
 		EReference TASK__PARAMETERS = eINSTANCE.getTask_Parameters();
 
 		/**
-		 * The meta object literal for the '<em><b>Language</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Languages</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference TASK__LANGUAGE = eINSTANCE.getTask_Language();
+		EReference TASK__LANGUAGES = eINSTANCE.getTask_Languages();
+
+		/**
+		 * The meta object literal for the '<em><b>Configurations</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TASK__CONFIGURATIONS = eINSTANCE.getTask_Configurations();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.

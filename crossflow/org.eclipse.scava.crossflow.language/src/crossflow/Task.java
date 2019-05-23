@@ -23,7 +23,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
  *   <li>{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}</li>
  *   <li>{@link crossflow.Task#getParameters <em>Parameters</em>}</li>
- *   <li>{@link crossflow.Task#getLanguage <em>Language</em>}</li>
+ *   <li>{@link crossflow.Task#getLanguages <em>Languages</em>}</li>
+ *   <li>{@link crossflow.Task#getConfigurations <em>Configurations</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getTask()
@@ -217,29 +218,35 @@ public interface Task extends EObject {
 	EList<Field> getParameters();
 
 	/**
-	 * Returns the value of the '<em><b>Language</b></em>' reference.
+	 * Returns the value of the '<em><b>Languages</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Language}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Language</em>' reference isn't clear,
+	 * If the meaning of the '<em>Languages</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Language</em>' reference.
-	 * @see #setLanguage(Language)
-	 * @see crossflow.CrossflowPackage#getTask_Language()
+	 * @return the value of the '<em>Languages</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Languages()
 	 * @model
 	 * @generated
 	 */
-	Language getLanguage();
+	EList<Language> getLanguages();
 
 	/**
-	 * Sets the value of the '{@link crossflow.Task#getLanguage <em>Language</em>}' reference.
+	 * Returns the value of the '<em><b>Configurations</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Type}.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Configurations</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Language</em>' reference.
-	 * @see #getLanguage()
+	 * @return the value of the '<em>Configurations</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Configurations()
+	 * @model
 	 * @generated
 	 */
-	void setLanguage(Language value);
+	EList<Type> getConfigurations();
 
 } // Task

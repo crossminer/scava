@@ -48,7 +48,9 @@ class Task {
   
   ref Field[*] parameters;
   
-  ref Language language;  
+  ref Language[*] languages;  
+  
+  ref Type[*] configurations;
 }
 
 @gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 11 10 0",polygon.y="0 0 2 4 4")

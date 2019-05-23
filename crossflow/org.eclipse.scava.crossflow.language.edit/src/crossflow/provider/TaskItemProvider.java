@@ -68,7 +68,8 @@ public class TaskItemProvider
 			addCachedPropertyDescriptor(object);
 			addMultipleOutputsPropertyDescriptor(object);
 			addParametersPropertyDescriptor(object);
-			addLanguagePropertyDescriptor(object);
+			addLanguagesPropertyDescriptor(object);
+			addConfigurationsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -250,19 +251,41 @@ public class TaskItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Language feature.
+	 * This adds a property descriptor for the Languages feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addLanguagePropertyDescriptor(Object object) {
+	protected void addLanguagesPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Task_language_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Task_language_feature", "_UI_Task_type"),
-				 CrossflowPackage.Literals.TASK__LANGUAGE,
+				 getString("_UI_Task_languages_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_languages_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__LANGUAGES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Configurations feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addConfigurationsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Task_configurations_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_configurations_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__CONFIGURATIONS,
 				 true,
 				 false,
 				 true,

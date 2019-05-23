@@ -1,8 +1,6 @@
 rule Workflow2Class 
 	transform w : Workflow {
 	
-	guard: w.appliesTo()
-	
 	parameters : Map{"w" = w,"package" = w.getPackage()}
 	
 	template : "workflow2class.egl"
@@ -13,39 +11,11 @@ rule Workflow2Class
 rule Type2Class 
 	transform t : Type {
 	
-	guard : t.appliesTo() and t.impl.isUndefined() //and s.csvFile.isUndefined()
+	guard : t.impl.isUndefined()
 	
 	template : "type2class.egl"
 	
 	target : t.getPath() + t.name + ".py"
-}
-
-rule CsvSource2Source
-	transform t : CsvSource {
-
-	guard: t.appliesTo()
-
-	parameters : Map{"w" = t.eContainer()}
-
-	template : "csvsource2source.egl"
-	
-	target : t.getImplPath() + t.name + ".py"	
-	
-	overwrite : false
-}
-
-rule CsvSink2Sink
-	transform t : CsvSink {
-
-	guard: t.appliesTo()
-
-	parameters : Map{"w" = t.eContainer()}
-
-	template : "csvsink2sink.egl"
-	
-	target : t.getImplPath() + t.name + ".py"	
-	
-	overwrite : false
 }
 
 @greedy
@@ -78,12 +48,9 @@ rule Task2ImplClass
 	
 	overwrite : false
 }
-
-@greedy
+@greedy
 rule Steam2Class 
 	transform s : Stream {
-	
-	guard: s.appliesTo()
 	
 	parameters : Map{"w" = s.eContainer()}
 	
@@ -96,8 +63,6 @@ rule Steam2Class
 rule Steam2Consumer 
 	transform s : Stream {
 	
-	guard: s.appliesTo()
-	
 	parameters : Map{"t" = Task}
 	
 	template : "stream2consumer.egl"
@@ -108,8 +73,6 @@ rule Steam2Consumer
 rule GenerateRequirementsTxt
 	transform w : Workflow {
 	
-	guard: w.appliesTo()
-	
 	template: "generateRequirementsTxt.egl"
 	
 	target: w.getOutputFolder() + "/requirements.txt"
@@ -117,8 +80,6 @@ rule GenerateRequirementsTxt
 
 rule GenerateMain
 	transform w : Workflow {
-	
-	guard: w.appliesTo()
 	
 	parameters : Map{"w" = w,"package" = w.getPackage()}
 	
@@ -130,8 +91,6 @@ rule GenerateMain
 rule GenerateRuntime
 	transform w : Workflow {
 	
-	guard: w.appliesTo()
-	
 	template: "generateRuntime.egl"
 	
 	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow".toPath() + "/runtime.py"
@@ -139,8 +98,6 @@ rule GenerateRuntime
 
 rule GenerateBXStream
 	transform w : Workflow {
-	
-	guard: w.appliesTo()
 	
 	template: "generateBXStream.egl"
 	
@@ -190,14 +147,8 @@ operation String toPath() : String {
 	return self.replaceAll("\\.", "/") + "/";
 }
 
-operation Any appliesTo() : Boolean {
-	if (self.getPython().isDefined()) {
-		if (self.isKindOf(Task)) {
-			return self.language.isDefined() and self.language.isPython();
-		}
-		return true;
-	}
-	return false;
+operation Task appliesTo() : Boolean {
+	return self.languages.exists(l|l.isPython());
 }
 
 @cached
