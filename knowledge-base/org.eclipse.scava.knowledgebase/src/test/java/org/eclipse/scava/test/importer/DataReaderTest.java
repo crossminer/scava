@@ -1,15 +1,16 @@
 package org.eclipse.scava.test.importer;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.scava.business.impl.DataReader;
 import org.eclipse.scava.business.model.Artifact;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
@@ -23,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
 public class DataReaderTest {
+	private static final Logger logger = LoggerFactory.getLogger(DataReaderTest.class);
     /**
      * Create the test case
      *
@@ -54,6 +56,7 @@ public class DataReaderTest {
     {
     	Resource resource = new ClassPathResource("FOCUS/");
     	List<Artifact> res = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+    	logger.info("ARTIFACTS: "+ res.size());
     	assertNotNull(res);
     }
 }

@@ -79,10 +79,10 @@ public class FocusTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(car).build();
         Resource resource = new ClassPathResource("FOCUS/");
         List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+        logger.info("ARTIFACTS: " + artifacts.size());
         testing = artifacts.get(4);
 		artifacts.remove(testing);
 		trainings = artifacts;
-		testing = artifacts.get(4);
 		 
 		for (Artifact art : trainings) {
 			simRes.put(art, new Float(Math.random()));
