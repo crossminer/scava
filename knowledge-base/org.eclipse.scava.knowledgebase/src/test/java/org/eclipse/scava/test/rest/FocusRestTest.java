@@ -41,6 +41,8 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -84,7 +86,9 @@ public class FocusRestTest {
     public void init() throws IOException{
     	MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(recController).build();
-        List<Artifact> artifacts = dr.readArtifactsFromPath("FOCUS");
+      
+        Resource resource = new ClassPathResource("FOCUS/");
+        List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
         testing = artifacts.get(4);
 		logger.info(testing.getFullName());
 		artifacts.remove(testing);
