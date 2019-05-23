@@ -305,7 +305,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					BugTrackerBugsData severityData = findCollection(bugTrackerSeverityData, BugTrackerBugsData.class,
 							bugTrackerSeverityData.getBugTrackerBugs(), bug);
 
-					if (!(severityData.getSeverity() == (null))) {
+					if (!(severityData.getSeverity().isEmpty())) {
 						enrichmentData.setSeverity(severityData.getSeverity());
 					}
 
@@ -359,16 +359,13 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 							BugTrackerCommentsEmotionClassification.class,
 							bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
 
-					if (emotionData.equals(null)) {
-
-					} else if (!(emotionData.isEmpty())) {
-
+				
 						for (String dimension : emotionData) {
 
 							enrichmentData.addEmotionalDimension(dimension);
 
 						}
-					}
+					
 
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
 						| NoSuchMethodException | InvocationTargetException e) {
@@ -414,7 +411,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 							BugTrackerCommentPlainTextProcessing.class,
 							bugTrackerCommentsPlainTextData.getBugTrackerComments(), comment);
 
-					if (!(plainTextData.getPlainText().equals(null))) {
+					if (plainTextData.getPlainText() != null) {
 
 						String plaintext = String.join(" ", plainTextData.getPlainText());
 						enrichmentData.setPlain_text(plaintext);
@@ -440,18 +437,18 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					BugTrackerCommentDetectingCode detectingcodeData = findCollection(bugTrackerDetectingCodeData,
 							BugTrackerCommentDetectingCode.class, bugTrackerDetectingCodeData.getBugTrackerComments(),
 							comment);
-					if (!detectingcodeData.getCode().equals(null)) {
-
-						if (detectingcodeData.getCode().equals("[]")) {
-
-							enrichmentData.setCode(false);
-
-						} else {
-
-							enrichmentData.setCode(true);
-
+					
+					if (detectingcodeData != null) {					
+						
+						if (!detectingcodeData.getCode().isEmpty()) {
+	
+								enrichmentData.setCode(true);
+						}else{
+								enrichmentData.setCode(false);
+	
+							} 
 						}
-					}
+						
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
 						| NoSuchMethodException | InvocationTargetException e) {
 
@@ -471,7 +468,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					BugTrackerComments requestReplyData = findCollection(bugtrackerRequestReplyData,
 							BugTrackerComments.class, bugtrackerRequestReplyData.getBugTrackerComments(), comment);
 
-					if (!(requestReplyData.equals(null))) {
+					if (requestReplyData != null) {
 
 						enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
 
@@ -495,7 +492,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					CommentData contentClassData = findCollection(bugTrackerContentClassData, CommentData.class,
 							bugTrackerContentClassData.getComments(), comment);
 
-					if (!(contentClassData.equals(null))) {
+					if (contentClassData != null) {
 						enrichmentData.setContent_class(contentClassData.getContentClass());
 					}
 
@@ -516,7 +513,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	private BugDocument enrichIssueDocument(BugDocument document, EnrichmentData enrichmentData) {
 
 		// severity
-		if (!(enrichmentData.getSeverity() == (null))) {
+		if (enrichmentData.getSeverity() != null) {
 			document.setSeverity(enrichmentData.getSeverity());
 		}
 
@@ -526,34 +523,34 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	private CommentDocument enrichCommentDocument(CommentDocument document, EnrichmentData enrichmentData) {
 
 		// emotions
-		if (!(enrichmentData.getEmotionalDimensions() == null)) {
+		if (enrichmentData.getEmotionalDimensions() != null) {
 			for (String emotion : enrichmentData.getEmotionalDimensions()) {
 				document.getEmotional_dimension().add(emotion);
 			}
 		}
 
 		// plainText
-		if (!(enrichmentData.getPlain_text() == null)) {
+		if (enrichmentData.getPlain_text() != null) {
 			document.setPlain_text(enrichmentData.getPlain_text());
 		}
 
 		// detecting Code
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setContains_code(enrichmentData.getCode());
 		}
 
 		// request Reply
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
 		}
 
 		// content class
-		if (!(enrichmentData.getContent_class() == null)) {
+		if (enrichmentData.getContent_class() != null) {
 			document.setContent_class(enrichmentData.getContent_class());
 		}
 
 		// sentiment
-		if (!(enrichmentData.getSentiment() == null)) {
+		if (enrichmentData.getSentiment() != null) {
 			document.setSentiment(enrichmentData.getSentiment());
 		}
 

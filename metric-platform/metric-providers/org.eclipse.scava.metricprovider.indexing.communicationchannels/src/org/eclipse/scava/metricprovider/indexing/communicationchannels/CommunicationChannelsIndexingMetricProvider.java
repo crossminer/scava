@@ -103,11 +103,15 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	@Override
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel : project.getCommunicationChannels()) {
-			if (communicationChannel instanceof NntpNewsGroup) return true;
-			if (communicationChannel instanceof EclipseForum) return true;
-			if (communicationChannel instanceof Discussion) return true;
-			if (communicationChannel instanceof SympaMailingList) return true;
-			//if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof NntpNewsGroup)
+				return true;
+			if (communicationChannel instanceof EclipseForum)
+				return true;
+			if (communicationChannel instanceof Discussion)
+				return true;
+			if (communicationChannel instanceof SympaMailingList)
+				return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -140,42 +144,41 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		for (CommunicationChannelDelta delta : communicationChannelProjectDelta.getCommunicationChannelSystemDeltas()) {
 
 			CommunicationChannel communicationChannel = delta.getCommunicationChannel();
-			
+
 			if (communicationChannel instanceof NntpNewsGroup) {
-				
-				
+
 				NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
 				String newsgroupName = newsGroup.getNewsGroupName();
 				prepareArticle(project, projectDelta, delta, "newsgroup.article", newsgroupName);
 
 			} else if (communicationChannel instanceof EclipseForum) {
-				
-				//forums are handled in a unquie way due to the way we want them stored in ES
+
+				// forums are handled in a unquie way due to the way we want them stored in ES
 				prepareForum(project, projectDelta, delta);
 
-			}else if (communicationChannel instanceof Discussion) {
-				//FIXME - how do we handle these? As they do not have a name defined in the Discussion object
+			} else if (communicationChannel instanceof Discussion) {
+				// FIXME - how do we handle these? As they do not have a name defined in the
+				// Discussion object
 				String discussionName = projectDelta.getProject().getName();
 				prepareArticle(project, projectDelta, delta, "discussion.post", discussionName);
-			
-			}else if (communicationChannel instanceof SympaMailingList) {
-				
+
+			} else if (communicationChannel instanceof SympaMailingList) {
+
 				SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
 				String mailinglistName = sympaMailingList.getMailingListName();
 				prepareArticle(project, projectDelta, delta, "sympa.mail", mailinglistName);
-				
-				
-//			TODO add support for Mailbox and IRC
-//			}else if (communicationChannel instanceof IRC) {
-				//IRC ircChat = (IRC) communicationChannel;
-				//String chatName = ircChat.getName();
-				//prepareArticle(project, projectDelta, delta, "irc.message", chatName);
-	
-//			}else if (communicationChannel instanceof MailingList) {
-				//MailingList mailingList = (MailingList) communicationChannel;
-				//String mailinglistName = mailingList.getMailingListName();
-				//prepareArticle(project, projectDelta, delta, "mbox.mail", mailinglistName);
-			
+
+				// TODO add support for Mailbox and IRC
+				// }else if (communicationChannel instanceof IRC) {
+				// IRC ircChat = (IRC) communicationChannel;
+				// String chatName = ircChat.getName();
+				// prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+
+				// }else if (communicationChannel instanceof MailingList) {
+				// MailingList mailingList = (MailingList) communicationChannel;
+				// String mailinglistName = mailingList.getMailingListName();
+				// prepareArticle(project, projectDelta, delta, "mbox.mail", mailinglistName);
+
 			} else {
 
 				System.out.println("this " + delta.getCommunicationChannel().getCommunicationChannelType()
@@ -185,11 +188,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		}
 
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * Prepares a elements relating to Forums
 	 * 
@@ -203,11 +202,11 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 		// Note - Forums are treated internally as Articles, but are indexed as 'posts
 
-		for (CommunicationChannelArticle article : delta.getArticles()) { 
-			
+		for (CommunicationChannelArticle article : delta.getArticles()) {
+
 			String documentType = "forum.post";
 			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
-			
+
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
 
@@ -218,25 +217,19 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			EnrichmentData enrichmentData = getEnrichmentData(article, project);
 
-			ForumPostDocument enrichedDocument = 
-					enrichForumPostDocument(new ForumPostDocument(uniqueIdentifier,
-							project.getName(),
-							article.getText(),
-							article.getUser(),
-							article.getDate(),
-							eclipseForum.getForum_id(),
-							article.getMessageThreadId(),
-							article.getArticleId(),
-							article.getSubject(),
-							eclipseForum.getForum_name()), enrichmentData);
+			ForumPostDocument enrichedDocument = enrichForumPostDocument(
+					new ForumPostDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
+							article.getDate(), eclipseForum.getForum_id(), article.getMessageThreadId(),
+							article.getArticleId(), article.getSubject(), eclipseForum.getForum_name()),
+					enrichmentData);
 
 			String document;
 
 			try {
-			
+
 				document = mapper.writeValueAsString(enrichedDocument);
 				indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
-			
+
 			} catch (JsonProcessingException e) {
 
 				e.printStackTrace();
@@ -245,8 +238,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		}
 
 	}
-	
-	
+
 	/**
 	 * Prepares a elements relating to NewsGroups
 	 * 
@@ -254,15 +246,16 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @param communicationChannelDelta
 	 * @param projectDelta
 	 */
-	private void prepareArticle(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta, String docType, String collectionName) {
+	private void prepareArticle(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta,
+			String docType, String collectionName) {
 
 		ObjectMapper mapper = new ObjectMapper();
 
 		for (CommunicationChannelArticle article : delta.getArticles()) { // Articles
 
 			String documentType = docType;
-			
-			String name = collectionName; 
+
+			String name = collectionName;
 
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
@@ -283,10 +276,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			String document;
 
 			try {
-				
+
 				document = mapper.writeValueAsString(enrichedDocument);
 				indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
-			
+
 			} catch (JsonProcessingException e) {
 
 				e.printStackTrace();
@@ -304,7 +297,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @param project
 	 * @return
 	 */
-	
+
 	private EnrichmentData getEnrichmentData(CommunicationChannelArticle article, Project project) {
 
 		EnrichmentData enrichmentData = new EnrichmentData();
@@ -316,9 +309,9 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				.getMetricIdentifiers()) {
 
 			switch (metricIdentifier) {
-			
-			//TODO - add Topics
-			//TODO - add Threads
+
+			// TODO - add Topics
+			// TODO - add Threads
 
 			case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
 
@@ -330,7 +323,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 							NewsgroupArticlePlainTextProcessing.class, commChannelPlainTextData.getNewsgroupArticles(),
 							article);
 
-					if (!(plainTextData.getPlainText().equals(null))) {
+					if (!plainTextData.getPlainText().isEmpty()) {
 
 						String plaintext = String.join(" ", plainTextData.getPlainText());
 						enrichmentData.setPlain_text(plaintext);
@@ -343,7 +336,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					e.printStackTrace();
 				}
 				break;
-				// EMOTION
+			// EMOTION
 			case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
 
 				EmotionClassificationTransMetric commChannelEmotionData = new EmotionClassificationTransMetricProvider()
@@ -354,15 +347,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 							NewsgroupArticlesEmotionClassification.class, commChannelEmotionData.getNewsgroupArticles(),
 							article).getEmotions();
 
-					if (emotionData.equals(null)) {
+					for (String dimension : emotionData) {
 
-					} else if (!(emotionData.isEmpty())) {
+						enrichmentData.addEmotionalDimension(dimension);
 
-						for (String dimension : emotionData) {
-
-							enrichmentData.addEmotionalDimension(dimension);
-
-						}
 					}
 
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
@@ -384,7 +372,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 							commChannelCommentsSentimentData, NewsgroupArticlesSentimentClassification.class,
 							commChannelCommentsSentimentData.getNewsgroupArticles(), article);
 
-					if (!(sentimentData.equals(null))) {
+					if (sentimentData != null) {
 
 						enrichmentData.setSentiment(sentimentData.getPolarity());
 
@@ -409,18 +397,20 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					NewsgroupArticleDetectingCode detectingcodeData = findCollection(commChannelDetectingCodeData,
 							NewsgroupArticleDetectingCode.class, commChannelDetectingCodeData.getNewsgroupArticles(),
 							article);
-					if (!detectingcodeData.getCode().equals(null)) {
 
-						if (detectingcodeData.getCode().equals("[]")) {
+					if (detectingcodeData != null) {
 
-							enrichmentData.setCode(false);
-
-						} else {
+						if (!detectingcodeData.getCode().isEmpty()) {
 
 							enrichmentData.setCode(true);
+							
+						} else {
+							
+							enrichmentData.setCode(false);
 
 						}
 					}
+
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
 						| NoSuchMethodException | InvocationTargetException e) {
 
@@ -439,7 +429,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					NewsgroupArticles requestReplyData = findCollection(commChannelRequestReplyData,
 							NewsgroupArticles.class, commChannelRequestReplyData.getNewsgroupArticles(), article);
 
-					if (!(requestReplyData.equals(null))) {
+					if (requestReplyData!= null) {
 
 						enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
 
@@ -462,7 +452,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					ContentClass contentClassData = findCollection(commChannelContentClassificationData,
 							ContentClass.class, commChannelContentClassificationData.getContentClasses(), article);
 
-					if (!(contentClassData.equals(null))) {
+					if (contentClassData != null) {
 
 						enrichmentData.setContent_class(contentClassData.getClassLabel());
 
@@ -482,76 +472,73 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 	}
 
-	
 	private ForumPostDocument enrichForumPostDocument(ForumPostDocument document, EnrichmentData enrichmentData) {
 
 		// emotions
-		if (!(enrichmentData.getEmotionalDimensions() == null)) {
+		if (enrichmentData.getEmotionalDimensions() != null) {
 			for (String emotion : enrichmentData.getEmotionalDimensions()) {
 				document.getEmotional_dimension().add(emotion);
 			}
 		}
 
 		// plainText
-		if (!(enrichmentData.getPlain_text() == null)) {
+		if (enrichmentData.getPlain_text() != null) {
 			document.setPlain_text(enrichmentData.getPlain_text());
 		}
 
 		// detecting Code
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setContains_code(enrichmentData.getCode());
 		}
 
 		// request Reply
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
 		}
 
 		// content class
-		if (!(enrichmentData.getContent_class() == null)) {
+		if (enrichmentData.getContent_class() != null) {
 			document.setContent_class(enrichmentData.getContent_class());
 		}
 
 		// sentiment
-		if (!(enrichmentData.getSentiment() == null)) {
+		if (enrichmentData.getSentiment() != null) {
 			document.setSentiment(enrichmentData.getSentiment());
 		}
 		return document;
 	}
-	
-	
 
 	private ArticleDocument enrichNewsGroupDocument(ArticleDocument document, EnrichmentData enrichmentData) {
 
 		// emotions
-		if (!(enrichmentData.getEmotionalDimensions() == null)) {
+		if (enrichmentData.getEmotionalDimensions() != null) {
 			for (String emotion : enrichmentData.getEmotionalDimensions()) {
 				document.getEmotional_dimension().add(emotion);
 			}
 		}
 
 		// plainText
-		if (!(enrichmentData.getPlain_text() == null)) {
+		if (enrichmentData.getPlain_text() != null) {
 			document.setPlain_text(enrichmentData.getPlain_text());
 		}
 
 		// detecting Code
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setContains_code(enrichmentData.getCode());
 		}
 
 		// request Reply
-		if (!(enrichmentData.getCode() == null)) {
+		if (enrichmentData.getCode() != null) {
 			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
 		}
 
 		// content class
-		if (!(enrichmentData.getContent_class() == null)) {
+		if (enrichmentData.getContent_class() != null) {
 			document.setContent_class(enrichmentData.getContent_class());
 		}
 
 		// sentiment
-		if (!(enrichmentData.getSentiment() == null)) {
+		if (enrichmentData.getSentiment() != null) {
 			document.setSentiment(enrichmentData.getSentiment());
 		}
 		return document;
@@ -648,49 +635,48 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 */
-	
-	//TODO add support for IRC, Sympa, MailBox
+
+	// TODO add support for IRC, Sympa, MailBox
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			CommunicationChannelArticle article) throws NoSuchFieldException, SecurityException,
 			IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		
-		String collectionName = ""; 
+
+		String collectionName = "";
 		CommunicationChannel communicationChannel = article.getCommunicationChannel();
-		
+
 		if (communicationChannel instanceof NntpNewsGroup) {
-			
+
 			NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
 			collectionName = newsGroup.getNewsGroupName();
-		}else if (communicationChannel instanceof EclipseForum) {
-			
+		} else if (communicationChannel instanceof EclipseForum) {
+
 			EclipseForum eclipseForum = (EclipseForum) communicationChannel;
 			collectionName = eclipseForum.getForum_name();
-			
-		}else if (communicationChannel instanceof Discussion) {
+
+		} else if (communicationChannel instanceof Discussion) {
 			Discussion discussion = (Discussion) communicationChannel;
-			//FIXME - How do we handle discussions?
-		
-		}else if (communicationChannel instanceof SympaMailingList) {
+			// FIXME - How do we handle discussions?
+
+		} else if (communicationChannel instanceof SympaMailingList) {
 			SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
 			collectionName = sympaMailingList.getMailingListName();
-			
-//		TODO add support for Mailbox and IRC
-//		}else if (communicationChannel instanceof IRC) {
-			//IRC ircChat = (IRC) communicationChannel;
-			//String chatName = ircChat.getName();
-			//prepareArticle(project, projectDelta, delta, "irc.message", chatName);
 
-//		}else if (communicationChannel instanceof MailingList) {
-			//MailingList mailingList = (MailingList) communicationChannel;
-			//String mailinglistName = mailingList.getMailingListName();
-			//prepareArticle(project, projectDelta, delta, "mbox.email", mailinglistName);
-		
+			// TODO add support for Mailbox and IRC
+			// }else if (communicationChannel instanceof IRC) {
+			// IRC ircChat = (IRC) communicationChannel;
+			// String chatName = ircChat.getName();
+			// prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+
+			// }else if (communicationChannel instanceof MailingList) {
+			// MailingList mailingList = (MailingList) communicationChannel;
+			// String mailinglistName = mailingList.getMailingListName();
+			// prepareArticle(project, projectDelta, delta, "mbox.email", mailinglistName);
+
 		}
-		
+
 		T output = null;
 
-		Iterable<T> iterator = collection.find(
-				getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(collectionName),
+		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(collectionName),
 				getNumericalQueryProducer(type, output, "ARTICLENUMBER").eq(article.getArticleNumber()));
 
 		for (T t : iterator) {
@@ -699,7 +685,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 		return output;
 	}
-
 
 	private <T extends Pongo> StringQueryProducer getStringQueryProducer(Class<T> type, T t, String field) {
 
