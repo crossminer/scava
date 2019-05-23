@@ -39,6 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -50,7 +52,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @TestPropertySource(locations = "classpath:application.properties")
 public class FocusTest {
 
-	@Autowired DataReader dr;
+	@Autowired 
+	private DataReader dr;
 
 	private MockMvc mockMvc;
 	@Mock
@@ -74,11 +77,12 @@ public class FocusTest {
 		
 		MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(car).build();
-        List<Artifact> artifacts = dr.readArtifactsFromPath("FOCUS");
+        Resource resource = new ClassPathResource("FOCUS/");
+        List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+        logger.info("ARTIFACTS: " + artifacts.size());
         testing = artifacts.get(4);
 		artifacts.remove(testing);
 		trainings = artifacts;
-		testing = artifacts.get(4);
 		 
 		for (Artifact art : trainings) {
 			simRes.put(art, new Float(Math.random()));

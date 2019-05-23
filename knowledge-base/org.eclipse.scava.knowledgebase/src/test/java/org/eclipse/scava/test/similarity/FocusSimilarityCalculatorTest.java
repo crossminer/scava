@@ -11,6 +11,7 @@ package org.eclipse.scava.test.similarity;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -45,9 +48,9 @@ public class FocusSimilarityCalculatorTest {
 	List<Artifact> artifacts;
 
 	@Before
-	public void init() {
-		artifacts = dr.readArtifactsFromPath("FOCUS");
-
+	public void init() throws IOException {
+		Resource resource = new ClassPathResource("FOCUS");
+        artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
 	}
 
 	@Test
