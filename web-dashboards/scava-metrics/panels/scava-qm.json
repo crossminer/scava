@@ -8,7 +8,7 @@
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
             },
             "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-            "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":23,\"x\":0,\"y\":0},\"id\":\"b70a3790-456e-11e9-a208-9748f08b9341\",\"panelIndex\":\"1\",\"title\":\"Total scores per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"2\",\"w\":48,\"x\":0,\"y\":15},\"id\":\"60f3d630-456f-11e9-a208-9748f08b9341\",\"panelIndex\":\"2\",\"title\":\"QM metrics  per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":48,\"x\":0,\"y\":29},\"id\":\"d9a50db0-456f-11e9-a208-9748f08b9341\",\"panelIndex\":\"3\",\"title\":\"QM attributes per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"4\",\"w\":48,\"x\":0,\"y\":44},\"id\":\"9f35aee0-4570-11e9-a208-9748f08b9341\",\"panelIndex\":\"4\",\"title\":\"QM goals per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{\"spy\":null},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":25,\"x\":23,\"y\":0},\"id\":\"433a0e50-4571-11e9-a208-9748f08b9341\",\"panelIndex\":\"5\",\"title\":\"QM projects\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
+            "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":0,\"w\":23,\"h\":15,\"i\":\"1\"},\"embeddableConfig\":{},\"id\":\"b70a3790-456e-11e9-a208-9748f08b9341\",\"title\":\"Total scores per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"title\":\"QM metrics  per project comparison\",\"panelIndex\":\"2\",\"gridData\":{\"x\":0,\"y\":15,\"w\":23,\"h\":15,\"i\":\"2\"},\"embeddableConfig\":{},\"id\":\"60f3d630-456f-11e9-a208-9748f08b9341\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":30,\"w\":23,\"h\":15,\"i\":\"3\"},\"embeddableConfig\":{},\"id\":\"d9a50db0-456f-11e9-a208-9748f08b9341\",\"title\":\"QM attributes project comparison\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":45,\"w\":23,\"h\":16,\"i\":\"4\"},\"embeddableConfig\":{},\"id\":\"9f35aee0-4570-11e9-a208-9748f08b9341\",\"title\":\"QM goals project comparison\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":23,\"y\":0,\"w\":25,\"h\":15,\"i\":\"5\"},\"embeddableConfig\":{\"spy\":null},\"id\":\"433a0e50-4571-11e9-a208-9748f08b9341\",\"title\":\"QM projects\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":23,\"y\":30,\"w\":25,\"h\":15,\"i\":\"6\"},\"embeddableConfig\":{},\"id\":\"7170bd80-7cf0-11e9-90b8-953deda2e5b5\",\"title\":\"QM project attributes\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":23,\"y\":45,\"w\":25,\"h\":16,\"i\":\"7\"},\"embeddableConfig\":{},\"id\":\"edd2ef10-7cf0-11e9-90b8-953deda2e5b5\",\"title\":\"QM project goals\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"title\":\"QM project metrics\",\"panelIndex\":\"8\",\"gridData\":{\"x\":23,\"y\":15,\"w\":25,\"h\":15,\"i\":\"8\"},\"version\":\"6.3.1\",\"type\":\"visualization\",\"id\":\"6fba6580-7cf1-11e9-90b8-953deda2e5b5\",\"embeddableConfig\":{}}]",
             "refreshInterval": {
                 "display": "Off",
                 "pause": false,
@@ -95,6 +95,45 @@
                 "uiStateJSON": "{}",
                 "version": 1,
                 "visState": "{\"title\":\"QM-projects\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"project.keyword\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"project.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "7170bd80-7cf0-11e9-90b8-953deda2e5b5",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"1e5ef710-456e-11e9-a208-9748f08b9341\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "qm-attributes-bars-median",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"qm-attributes-bars-median\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Median score\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Median score\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"score\",\"percents\":[50]}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"attribute.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"QM attributes\"}}]}"
+            }
+        },
+        {
+            "id": "edd2ef10-7cf0-11e9-90b8-953deda2e5b5",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"1e5ef710-456e-11e9-a208-9748f08b9341\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "qm-goals-per-project-bars",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"qm-goals-per-project-bars\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Median score\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Median score\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"score\",\"percents\":[50]}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"goal.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"QM goals\"}}]}"
+            }
+        },
+        {
+            "id": "6fba6580-7cf1-11e9-90b8-953deda2e5b5",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"1e5ef710-456e-11e9-a208-9748f08b9341\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "qm-metrics-bars",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"qm-metrics-bars\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Max score\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Max score\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"score\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"metric.keyword\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"QM metrics\"}}]}"
             }
         }
     ]
