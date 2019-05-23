@@ -452,7 +452,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 
 		if(responseHeader.get("RateLimit-Limit")!=null)
 		{
-			logger.info("Gitlab server seems to do not set any rate limit.");
 			this.rateLimit = Integer.parseInt(responseHeader.get("RateLimit-Limit"));
 			this.callsRemaning = Integer.parseInt(responseHeader.get("RateLimit-Remaining"));
 			this.timeToReset = Integer.parseInt(responseHeader.get("RateLimit-Reset"));
@@ -503,8 +502,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		if(timeToReset==-1)
 			return;
 		try {
-			
-			System.err.println("[Git Lab Reader] The rate limit has been reached. This thread will be suspended for "
+			logger.info("The rate limit has been reached. This thread will be suspended for "
 					+ this.timeToReset + " seconds until the limit has been reset");
 			Thread.sleep((this.timeToReset * 1000l) + 2);
 
