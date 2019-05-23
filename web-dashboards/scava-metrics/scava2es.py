@@ -214,18 +214,20 @@ def create_item_metrics_from_barchart(mdata, mupdated):
 def create_item_metrics_from_linechart(mdata, mupdated):
     metrics = []
     if isinstance(mdata['y'], str):
-        metric = {}
+
         for sample in mdata['datatable']:
-            metric['project'] = mdata['project']
-            metric['metric_class'] = mdata['id'].split(".")[0]
-            metric['metric_type'] = mdata['type']
-            metric['metric_id'] = mdata['id']
-            metric['metric_desc'] = mdata['description']
-            metric['metric_name'] = mdata['name']
-            metric['metric_es_compute'] = 'cumulative'
-            metric['datetime'] = mupdated
-            metric['scava'] = mdata
-            metric['metric_es_value'] = None
+            metric = {
+                'project': mdata['project'],
+                'metric_class': mdata['id'].split(".")[0],
+                'metric_type': mdata['type'],
+                'metric_id': mdata['id'],
+                'metric_desc': mdata['description'],
+                'metric_name': mdata['name'],
+                'metric_es_compute': 'cumulative',
+                'datetime': mupdated,
+                'scava': mdata,
+                'metric_es_value': None
+            }
 
             if 'y' in mdata and mdata['y'] in sample:
                 metric['metric_es_value'] = sample[mdata['y']]
@@ -287,7 +289,7 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
             if 'Date' in sample:
                 metric['metric_es_compute'] = 'sample'
                 metric['datetime'] = sample['Date']
-            if mdata['series'] in sample:
+            if mdata['series'] in sample and mdata['series'] != 'Repository':
                 metric['metric_id'] = mdata['id'] + '_' + sample[mdata['series']]
                 metric['metric_desc'] = mdata['description'] + '(' + sample[mdata['series']] + ')',
                 metric['metric_name'] = mdata['name'] + '(' + sample[mdata['series']] + ')'
