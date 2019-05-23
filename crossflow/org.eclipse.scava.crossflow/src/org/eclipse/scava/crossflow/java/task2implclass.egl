@@ -32,9 +32,13 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 	[%} else {%]
 	[% for (s in t.input) { %]
 	@Override
-	public [%if(not t.multipleOutputs and t.output.size==1) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
+	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 		
-		[%/*for single output tasks*/if(not t.multipleOutputs and t.output.size==1) {%]
+		[%
+		if(s.isConfigurationChannel()) {
+		%]		// TODO: handle configuration		
+		[%
+		} else /*for single output tasks*/if((not t.multipleOutputs and t.output.size==1)) {%]
 		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Inst = new [%=t.output.first.type.name%]();
 		[%for (f in t.output.first.type.fields) { %]
 		//	[%=t.output.first.type.name.ftlc()%]Inst.set[%=f.name.ftuc()%]( [%=f.type%] );
@@ -69,3 +73,10 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 [%}%]
 
 }
+[%
+operation Stream isConfigurationChannel() {
+	if(not self.name.endsWith("Topic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("Topic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+%]

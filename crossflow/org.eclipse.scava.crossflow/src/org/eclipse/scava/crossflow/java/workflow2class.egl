@@ -16,6 +16,7 @@ import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 
 public class [%=w.name%] extends Workflow {
 
@@ -110,7 +111,9 @@ public class [%=w.name%] extends Workflow {
 	@Override
 	public void run(int delay) throws Exception {
 	
-	[%for (t in w.getParallelizableTasks()) {%]
+[%
+
+	for (t in w.getParallelizableTasks()) {%]
 	[%=t.name.ftlc()%]s.init(this);
 	[%}%]
 	

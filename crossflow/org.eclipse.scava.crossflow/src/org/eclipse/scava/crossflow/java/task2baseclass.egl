@@ -60,8 +60,13 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	[%}%]
 	
 	[%for (s in t.input) { %]
+	
+	[%if(s.isConfigurationChannel()){%]
+	boolean hasProcessed[%=s.name%] = false;
+	[%}%]	
+	
 [%=s.createStartOfConsumeMethod()%]
-		[%if(not t.multipleOutputs and t.output.size==1) {%]
+		[%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%]
 				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				if(result != null){
 					if(isCacheable())
@@ -71,8 +76,8 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 				}
 		[%}else {%]
 				consume[%=s.name%]([%=s.type.name.ftlc()%]);
-[%=s.sendConfirmationMessage()%]
-		[%}%]
+[%if(not s.isConfigurationChannel()){%][%=s.sendConfirmationMessage()%]
+		[%}}%]
 [%=s.createEndOfConsumeMethod()%]
 	[%}%]
 	
@@ -83,11 +88,32 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 }
 
 [%
+operation Stream isConfigurationChannel() {
+	if(not self.name.endsWith("Topic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("Topic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+
 operation Stream createStartOfConsumeMethod() {%]
 	@Override
 	public [%if(t.isTypeOf(Task)){%]final[%}else{%][%=out.chop(1)%][%}%] void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.type.name.ftlc()%]) {
 		
-		[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
+		[%if (t.input.exists(c|c.isConfigurationChannel()) and not self.isConfigurationChannel()){%]
+		while([%
+		for (s in t.input) {
+			if(s.isConfigurationChannel()){
+				%]!hasProcessed[%=s.name%] ||[%
+			}
+		}
+		out.chop(3);
+		%])
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			workflow.reportInternalException(e);
+		}
+		[%}%]
+		[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
 		try {
 			workflow.get[%=t.name%]s().getSemaphore().acquire();
 		} catch (Exception e) {
@@ -117,22 +143,24 @@ operation Stream createEndOfConsumeMethod() {%]
 				}
 			} finally {
 				try {
-					[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]
+					[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
 					workflow.get[%=t.name%]s().getSemaphore().release();
+					[%}if(self.isConfigurationChannel()){%]
+					hasProcessed[%=self.name%] = true;
 					[%}%]
 					workflow.setTaskWaiting(this);
 				} catch (Exception e) {
 					workflow.reportInternalException(e);
 				}
 			}
-		[%if (not (t.isKindOf(Source) or t.isKindOf(Sink))){%]		
+		[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]		
 		};
 
 		workflow.get[%=t.name%]s().getExecutor().submit(consumer);
 		[%}%]
 	}
 	
-	[%if(t.multipleOutputs or t.output.size<>1) {%]
+	[%if(self.isConfigurationChannel() or (t.multipleOutputs or t.output.size<>1)) {%]
 	public abstract void consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
 	[%}else {%]
 	public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
