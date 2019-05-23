@@ -78,11 +78,11 @@ public class FocusTest {
 		MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(car).build();
         Resource resource = new ClassPathResource("FOCUS/");
-        List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
-        logger.info("ARTIFACTS: " + artifacts.size());
-        testing = artifacts.get(4);
-		artifacts.remove(testing);
-		trainings = artifacts;
+        trainings = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+        logger.info("ARTIFACTS: " + trainings.size());
+        resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.txt");
+        testing = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
+		
 		 
 		for (Artifact art : trainings) {
 			simRes.put(art, new Float(Math.random()));
