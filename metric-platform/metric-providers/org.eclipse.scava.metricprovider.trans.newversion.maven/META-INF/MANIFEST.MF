@@ -9,9 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  com.googlecode.pongo.runtime,
  com.googlecode.pongo.runtime.osgi,
- org.apache.log4j;bundle-version="1.0.0",
- com.google.code.gson,
- org.eclipse.scava.platform.vcs.workingcopy.manager
+ org.apache.log4j,
+ com.google.code.gson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.newversion.maven
 Bundle-ActivationPolicy: lazy

@@ -96,22 +96,16 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 	        }
 	        in.close();
 	        
-	        System.out.println(content);
-	        
 	        JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
 	        
 	        for (int i = 0; i < jsonArray.size(); i++) {
 	            String value = jsonArray.get(i).getAsJsonObject().get("value").getAsString();
 	            String[] valueParts = value.split("bundle://maven/")[1].split("/");
 	            
-	            System.out.println("1 " + value);
-	            
 	            if(value.contains("none") || value.contains("$"))
 	            	continue;
 	            
 	            String newVersion = testMaven(valueParts[0], valueParts[1]);
-	            
-	            System.out.println("3 " + newVersion);
 	            
 	            if(newVersion == null)
 	            		continue;
@@ -122,8 +116,6 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 	            	mv.setPackageName(valueParts[1]);
 	            	mv.setOldVersion(valueParts[2]);
 	            	mv.setNewVersion(newVersion);
-	            	
-	            	System.out.println("2 " + valueParts[1] + " " + valueParts[2]);
 
 					db.getNewVersions().add(mv);
 					db.sync();
@@ -200,12 +192,26 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
         oldVersion = oldVersion.split("-")[0];
         newVersion = newVersion.split("-")[0];
         
+        oldVersion = oldVersion.split("_")[0];
+        newVersion = newVersion.split("_")[0];
+        
         String[] oldVersionParts = oldVersion.split("\\.");
         String[] newVersionParts = newVersion.split("\\.");
         
-        for(int i = 0; i < oldVersionParts.length; i++){
-            if(Integer.parseInt(newVersionParts[i]) > Integer.parseInt(oldVersionParts[i]))
+        int length;
+        
+        if(oldVersionParts.length < newVersionParts.length)
+            length = oldVersionParts.length;
+        else
+            length = newVersionParts.length;
+        
+        for(int i = 0; i < length; i++){
+        	if(Integer.parseInt(newVersionParts[i]) > Integer.parseInt(oldVersionParts[i]))
                 return true;
+            else if(Integer.parseInt(newVersionParts[i]) == Integer.parseInt(oldVersionParts[i]))
+                continue;
+            else
+                return false;
         }
         
         return false;
