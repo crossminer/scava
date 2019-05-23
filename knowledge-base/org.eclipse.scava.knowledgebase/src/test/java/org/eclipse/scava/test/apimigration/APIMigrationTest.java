@@ -28,10 +28,10 @@ public class APIMigrationTest {
 	@Autowired
 	private MigrationService migrationService;
 	
-	@Test
-	public void getDetectionTest() {
-		migrationService.calculateDetection(null);
-	}
+//	@Test
+//	public void getDetectionTest() {
+//		migrationService.calculateDetection(null);
+//	}
 
 	
 
