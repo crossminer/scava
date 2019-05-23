@@ -1,4 +1,4 @@
-package org.eclipse.scava.metricprovider.trans.newversion.maven;
+package org.eclipse.scava.metricprovider.trans.newversion.osgi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.eclipse.scava.metricprovider.trans.newversion.osgi.model.NewOsgiVersion;
+import org.eclipse.scava.metricprovider.trans.newversion.osgi.model.NewOsgiVersions;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -17,27 +19,26 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion;
-import org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersions;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.DB;
 
-public class NewVersionMavenTransMetricProvider implements ITransientMetricProvider<NewMavenVersions> {
+public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvider<NewOsgiVersions> {
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
 	
 	private final OssmeterLogger logger;
 	
-	public NewVersionMavenTransMetricProvider() {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider");
+	public NewVersionOsgiTransMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider");
 	}
     
     @Override
     public String getIdentifier() {
-    return NewVersionMavenTransMetricProvider.class.getCanonicalName();
+    return NewVersionOsgiTransMetricProvider.class.getCanonicalName();
     }
     
     @Override
@@ -60,12 +61,12 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     }
     
     @Override
-    public NewMavenVersions adapt(DB db) {
-    	return new NewMavenVersions(db);
+    public NewOsgiVersions adapt(DB db) {
+    	return new NewOsgiVersions(db);
     }
     
     @Override
-	public void measure(Project project, ProjectDelta projectDelta, NewMavenVersions db) {
+	public void measure(Project project, ProjectDelta projectDelta, NewOsgiVersions db) {
     	
     	String projectName = project.getName();
 		
@@ -82,7 +83,7 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 			db.sync();
 			
 			
-			url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+			url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
 			
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
@@ -100,18 +101,18 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 	        
 	        for (int i = 0; i < jsonArray.size(); i++) {
 	            String value = jsonArray.get(i).getAsJsonObject().get("value").getAsString();
-	            String[] valueParts = value.split("bundle://maven/")[1].split("/");
+	            String[] valueParts = value.split("bundle://")[1].split("/");
 	            
-	            if(value.contains("none") || value.contains("$"))
+	            if(value.contains("none") || value.contains("%") || value.contains("("))
 	            	continue;
 	            
-	            String newVersion = testMaven(valueParts[0], valueParts[1]);
+	            String newVersion = testMaven(valueParts[1]);
 	            
 	            if(newVersion == null)
 	            		continue;
 	            
 	            if(testNewerVersion(valueParts[2], newVersion)) {
-	            	NewMavenVersion mv = new NewMavenVersion();
+	            	NewOsgiVersion mv = new NewOsgiVersion();
 	            	
 	            	mv.setPackageName(valueParts[1]);
 	            	mv.setOldVersion(valueParts[2]);
@@ -130,12 +131,12 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     
     @Override
     public String getShortIdentifier() {
-    	return "newVersionMaven";
+    	return "newVersionOsgi";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "NewVersionMaven";
+    	return "NewVersionOsgi";
     }
     
     @Override
@@ -143,12 +144,12 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     	return "TODO";
     }
     
-    public String testMaven(String group, String artifact){
+    public String testMaven(String artifact){
         try {
             	
             String url = "https://search.maven.org/solrsearch/select";
             String charset = "UTF-8";  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
-            String param1 = "g:" + group + "+AND+a:" + artifact;
+            String param1 = "a:" + artifact;
             String param2 = "gav";
             String param3 = "20";
             String param4 = "json";

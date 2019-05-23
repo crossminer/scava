@@ -2,8 +2,8 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension point="com.googlecode.pongo.runtime.osgi">
-      <class name="org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVerions"/>
-      <class name="org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewVerion"/>
+      <class name="org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersions"/>
+      <class name="org.eclipse.scava.metricprovider.trans.newversion.maven.model.NewMavenVersion"/>
    </extension>
    <extension
          point="org.eclipse.scava.platform.metricprovider">
