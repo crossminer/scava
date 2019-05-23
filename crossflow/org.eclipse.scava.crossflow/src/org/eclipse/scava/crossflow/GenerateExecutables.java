@@ -53,7 +53,7 @@ public class GenerateExecutables {
 	public void execute() throws Exception {
 
 		module = createModule();
-		module.parse(getFileURI("generateExecutables.egx"));
+		module.parse(getFileURI("java/generateExecutables.egx"));
 
 		Variable dependenciesPath = new Variable();
 		dependenciesPath.setName("dependenciesPath");
