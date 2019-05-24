@@ -417,6 +417,7 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
 
         dependency_data = scava_dep['data']
         eitem = dependency_data
+        eitem['dependency_count'] = 1
 
         # common fields
         eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
@@ -427,6 +428,7 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
             dependency_raw = dependency_data['dependency']
             eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
             eitem['dependency_version'] = dependency_raw.split('/')[-1]
+            eitem['dependency_has_version'] = 1 if eitem['dependency_version'] else 0
 
         if meta_info:
             eitem['meta'] = meta_info
