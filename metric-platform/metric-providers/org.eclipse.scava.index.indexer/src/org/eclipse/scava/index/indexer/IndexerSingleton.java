@@ -1,7 +1,6 @@
 package org.eclipse.scava.index.indexer;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -35,28 +34,20 @@ class IndexerSingleton {
 
 	private static IndexerSingleton singleton = null;
 
-	// When running the platform locally using a different elasticsearch instance
-	//private static String hostname = "localhost";
-	// private static String clustername = "elasticsearch";
+
 	// When running inside CROSSMINER
 		private static String hostname = "elasticsearch";
-	//	 private static String clustername = "bitergia_elasticsearch";
-
-	// Ports and Scheme are the same in both
-	private static String scheme = "https";
-	private static int port = 9200;
-	//private static int clusterport = 9300;
+		private static String scheme = "https";
+		private static int port = 9200;
+	
 	private RestHighLevelClient highLevelclient;
-	// private Client adminClient;
+
 
 	private IndexerSingleton() {
 
 		try {
 			logger = (OssmeterLogger) OssmeterLogger.getLogger("Indexer Singleton");
-			highLevelclient = createHighLevelClient(hostname); // This client handles 'High Level requests' such as indexing
-														// docs
-			// adminClient = createAdminClient(); // this client is used to perform
-			// administration tasks on ES
+			highLevelclient = createHighLevelClient(hostname); 
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,6 +96,7 @@ class IndexerSingleton {
 	 * @throws IOException 
 	 */
 
+	@SuppressWarnings("resource")
 	private RestHighLevelClient createHighLevelClient(String host)
 			throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
@@ -159,17 +151,19 @@ class IndexerSingleton {
 
 		}
 	
-		
-		
-
 		return client;
 
 	}
 	
 	
-	
+	/***
+	 * USED WHEN TESTING A LOCAL INSTANCE OF ES
+	 * 
+	 * 
+	 * @param host
+	 * @return client
+	 */
 	private RestHighLevelClient createHighLevelClientLocal(String host) {
-		
 		
 		
 		RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(host, port, "http"),
@@ -208,42 +202,11 @@ class IndexerSingleton {
 			return createHighLevelClientLocal("localHost");
 		}
 	
-		
-		
 
 		return new RestHighLevelClient(restClientBuilder);
 
-		
-		
-		
-		
 	}
 
-	// /**
-	// * Creates an Elasticsearch Admin Client
-	// * @return Client
-	// */
-	//
-	// private Client createAdminClient() {
-	//
-	// Client client = null;
-	//
-	// Settings settings = Settings.builder().put("client.transport.sniff",
-	// true).put("cluster.name", clustername)
-	// .build();
-	//
-	// try {
-	// client = new PreBuiltTransportClient(settings)
-	// .addTransportAddress(new TransportAddress(InetAddress.getByName(hostname),
-	// clusterport));
-	//
-	// } catch (UnknownHostException e) {
-	// e.printStackTrace();
-	// }
-	//
-	//
-	// return client;
-	// }
 
 	// ------------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------------
