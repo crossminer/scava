@@ -45,7 +45,7 @@ public class PuppetDependenciesHistoricMetricProvider extends AbstractHistorical
         
     @Override
     public List<String> getIdentifiersOfUses() {
-    	return Arrays.asList(PuppetDependenciesHistoricMetricProvider.class.getCanonicalName());
+    	return Arrays.asList(PuppetDependenciesTransMetricProvider.class.getCanonicalName());
     }
     
     public void setMetricProviderContext(MetricProviderContext context) {
