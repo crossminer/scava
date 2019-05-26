@@ -31,6 +31,8 @@ from ...backend import (Backend,
                         BackendCommandArgumentParser)
 from ...client import HttpClient
 
+SCAVA_API = "http://localhost:8182"
+RECOMMENDATION_API = "http://localhost:8080/api"
 
 CATEGORY_METRIC = 'metric'
 CATEGORY_PROJECT = 'project'
@@ -38,6 +40,7 @@ CATEGORY_FACTOID = 'factoid'
 CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
 CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
 CATEGORY_USER = 'user'
+CATEGORY_RECOMMENDATION = 'recommendation'
 
 DEP_MAVEN = 'maven'
 DEP_MAVEN_OPT = 'opt'
@@ -77,14 +80,15 @@ class Scava(Backend):
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
                   CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
-                  CATEGORY_CONF_DEPENDENCY]
+                  CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION]
 
-    def __init__(self, url, project=None, tag=None, archive=None):
+    def __init__(self, url, project=None, recommendation_url=RECOMMENDATION_API, tag=None, archive=None):
         origin = url
 
         super().__init__(origin, tag=tag, archive=archive)
         self.project = project
         self.url = url
+        self.recommendation_url = recommendation_url
         self.client = None
 
     def fetch(self, category=CATEGORY_METRIC):
@@ -138,7 +142,8 @@ class Scava(Backend):
                                 CATEGORY_METRIC,
                                 CATEGORY_USER,
                                 CATEGORY_DEV_DEPENDENCY,
-                                CATEGORY_CONF_DEPENDENCY]:
+                                CATEGORY_CONF_DEPENDENCY,
+                                CATEGORY_RECOMMENDATION]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -228,7 +233,7 @@ class Scava(Backend):
     def _init_client(self, from_archive=False):
         """Init client"""
 
-        client = ScavaClient(self.url, self.project, self.archive, from_archive)
+        client = ScavaClient(self.url, self.project, self.recommendation_url, self.archive, from_archive)
         if self.project:
             self.project_updated = client.get_project_update(self.project)
         return client
@@ -252,9 +257,10 @@ class ScavaClient(HttpClient):
     ITEMS_PER_PAGE = 20  # Items per page in Scava API
     API_PATH = '/'
 
-    def __init__(self, url, project=None, archive=None, from_archive=False):
+    def __init__(self, url, project=None, recommendation_url=None, archive=None, from_archive=False):
         super().__init__(url, archive=archive, from_archive=from_archive)
         self.project = project
+        self.recommendation_url = recommendation_url
         self.api_projects_url = urijoin(self.base_url, "projects")
 
     def get_project_update(self, project_name=None):
@@ -302,6 +308,7 @@ class ScavaClient(HttpClient):
 
         elif category == CATEGORY_USER:
             api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, METRIC_CHURN_PER_COMMITTER))
+            logger.debug("Scava client calls API: %s", api)
             project_metric = self.fetch(api)
 
             json_metric = json.loads(project_metric)
@@ -365,6 +372,17 @@ class ScavaClient(HttpClient):
                 for dep in deps:
                     yield dep
 
+        elif category == CATEGORY_RECOMMENDATION:
+            api = urijoin(self.api_projects_url, "/p/%s" % project)
+            logger.debug("Scava client calls API: %s", api)
+            project_info_raw = self.fetch(api)
+            project_info = json.loads(project_info_raw)
+
+            project_url = project_info['html_url']
+            recommendation_artifacts_api = urijoin(self.recommendation_url, "artifacts", "artifacts")
+            recommendation_artifacts_raw = self.fetch(recommendation_artifacts_api)
+            recommendation_artifacts = json.loads(recommendation_artifacts_raw)
+            # TODO 
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -377,6 +395,7 @@ class ScavaClient(HttpClient):
 
     def __fetch_dev_dependencies(self, project, dep_metric, dep_type=None, dep_sub_type=None):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_dependencies)
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
@@ -399,6 +418,7 @@ class ScavaClient(HttpClient):
 
     def __fetch_conf_dependencies(self, project, dep_metric):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_dependencies)
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
@@ -432,13 +452,14 @@ class ScavaCommand(BackendCommand):
 
         parser = BackendCommandArgumentParser(archive=True)
         # Required arguments
-        parser.parser.add_argument('url', nargs='?',
-                                   default="http://localhost:8182",
+        parser.parser.add_argument('url', default=SCAVA_API,
                                    help="Scava REST API URL (default: http://localhost:8182")
         # Optional arguments
         group = parser.parser.add_argument_group('Scava arguments')
         group.add_argument('--project', dest='project',
                            required=False,
                            help="Name of the Scava project")
+        group.add_argument('--recommendation-api', default=RECOMMENDATION_API, dest='recommendation_url',
+                           required=False, help="Recommendation API URL (default: http://localhost:8080/api")
 
         return parser
