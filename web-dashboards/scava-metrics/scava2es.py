@@ -37,6 +37,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC,
                                            CATEGORY_USER,
+                                           CATEGORY_RECOMMENDATION,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -472,6 +473,11 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
     logging.info("Dependency enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_recommendations(scava_recommendations, meta_info=None):
+    for scava_recommendation in scava_recommendations:
+        print("here")
+
+
 def enrich_users(scava_users, meta_info=None):
     """
     Enrich user data coming from Scava to use them in Kibana.
@@ -613,7 +619,14 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_user
 
                 logging.debug("End fetch user data for %s" % project)
+            elif category == CATEGORY_RECOMMENDATION:
+                logging.debug("Start fetch recommendation data for %s" % project)
 
+                for enriched_recommendation in enrich_recommendations(scavaProject.fetch(CATEGORY_RECOMMENDATION),
+                                                                      meta):
+                    yield enriched_recommendation
+
+                logging.debug("End fetch recommendation data for %s" % project)
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -654,7 +667,13 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_user
 
             logging.debug("End fetch user data for %s" % project)
+        elif category == CATEGORY_RECOMMENDATION:
+            logging.debug("Start fetch recommendation data for %s" % project)
 
+            for enriched_recommendation in enrich_recommendations(scava.fetch(CATEGORY_RECOMMENDATION)):
+                yield enriched_recommendation
+
+            logging.debug("End fetch recommendation data for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
