@@ -30,14 +30,12 @@ export class ImportProjectComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.githubTokenFount || this.gitlabTokenFount) {
-            this.importProjectService.importProject(this.project).subscribe(resp => {
-                this.router.navigate(['/project']);
-            }, (error) => {
-                this.isSaving = false;
-                this.onShowMessage(error);
-            });
-        }
+        this.importProjectService.importProject(this.project).subscribe(resp => {
+            this.router.navigate(['/project']);
+        }, (error) => {
+            this.isSaving = false;
+            this.onShowMessage(error);
+        });
     }
 
     checkPropertyExist(){
