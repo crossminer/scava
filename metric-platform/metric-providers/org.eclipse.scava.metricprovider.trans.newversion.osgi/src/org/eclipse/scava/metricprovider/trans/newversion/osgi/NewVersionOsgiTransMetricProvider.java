@@ -68,9 +68,10 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
     @Override
 	public void measure(Project project, ProjectDelta projectDelta, NewOsgiVersions db) {
     	
-    	String projectName = project.getName();
+    	String projectName = project.getShortName();
 		
     	URL url;
+    	BufferedReader in = null;
 		try {
 			List<VcsRepositoryDelta> repoDeltas = projectDelta.getVcsDelta().getRepoDeltas();
 			
@@ -88,7 +89,7 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
 	        
-	        BufferedReader in = new BufferedReader(
+	        in = new BufferedReader(
 	                new InputStreamReader(con.getInputStream()));
 	        String inputLine;
 	        StringBuffer content = new StringBuffer();
@@ -124,8 +125,16 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
 	        }
         
 	    } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	    	logger.error("unexpected IO exception while measuring", e);
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				if(in != null)
+					in.close();
+			} catch (IOException e) {
+				logger.error("unexpected IO exception while measuring", e);
+				throw new RuntimeException(e);
+			}
 		}
     }
     
@@ -145,6 +154,7 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
     }
     
     public String testMaven(String artifact){
+    	BufferedReader in = null;
         try {
             	
             String url = "https://search.maven.org/solrsearch/select";
@@ -161,7 +171,7 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
             connection.setRequestMethod("GET");
 
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
@@ -186,7 +196,15 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
         } catch (IOException e) {
         	logger.error("unexpected exception while measuring", e);
 			throw new RuntimeException(e);
-        }
+        } finally {
+			try {
+				if(in != null)
+					in.close();
+			} catch (IOException e) {
+				logger.error("unexpected IO exception while measuring", e);
+				throw new RuntimeException(e);
+			}
+		}
     }
     
     public boolean testNewerVersion(String oldVersion, String newVersion){
