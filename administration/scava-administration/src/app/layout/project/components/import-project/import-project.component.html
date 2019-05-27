@@ -17,13 +17,19 @@
                 <form #importProjectForm="ngForm" novalidate name="importProjectForm" novalidate (ngSubmit)="save()">
                     <div class="form-group">
                         <label for="projectName">URL</label>
-                        <input type="text" class="form-control" name="url" id="url" [(ngModel)]="project.url" aria-describedby="url" placeholder="URL"
-                        #urlInput="ngModel" required minlength="1">
+                        <input type="text" class="form-control" name="url" id="url" [(ngModel)]="project.url" aria-describedby="url" placeholder="URL" 
+                        #urlInput="ngModel" required minlength="1" (ngModelChange)="checkPropertyExist()">
                         <div *ngIf="urlInput.dirty && urlInput.invalid">
                             <small class="form-text text-danger" *ngIf="urlInput.errors.required">
                                 This field is required.
                             </small>
                         </div>
+                        <small class="form-text text-danger" *ngIf="githubTokenFount == false">
+                            The github token property is required.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="gitlabTokenFount == false">
+                            The gitlab token property is required.
+                        </small>
                     </div>
                     <hr/>
                     <div class="form-group">
@@ -31,7 +37,7 @@
                             <i class="fa fa-ban"></i>&nbsp;
                             <span>Cancel</span>
                         </button>&nbsp;
-                        <button type="submit" [disabled]="importProjectForm.form.invalid || isSaving" class="btn btn-outline-dark btn-sm">
+                        <button type="submit" [disabled]="importProjectForm.form.invalid || isSaving || githubTokenFount == false || gitlabTokenFount == false" class="btn btn-outline-dark btn-sm">
                             <i class="fa fa-save"></i>&nbsp;
                             <span>Save</span>
                         </button>
