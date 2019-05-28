@@ -86,14 +86,14 @@
                         "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "size",
                         "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "sort",
@@ -143,14 +143,14 @@
                         "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "size",
                         "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "sort",
@@ -237,14 +237,14 @@
                         "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "size",
                         "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "type": "string"
+                        "type": "object"
                     },
                     {
                         "name": "sort",
