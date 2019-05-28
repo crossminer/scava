@@ -351,6 +351,7 @@
     </module>
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.cc.sympa
+    </module>
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata
     </module>
