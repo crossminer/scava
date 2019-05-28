@@ -35,6 +35,7 @@
                     "application/json"
                 ],
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -76,6 +77,7 @@
                 "summary": "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ",
                 "operationId": "getArtifactsUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -84,14 +86,14 @@
                         "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "type": "Object"
+                        "type": "string"
                     },
                     {
                         "name": "size",
                         "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "type": "Object"
+                        "type": "string"
                     },
                     {
                         "name": "sort",
@@ -124,6 +126,93 @@
                 }
             }
         },
+        "/api/artifacts/artifacts.xml": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER (XML)",
+                "operationId": "getArtifactsXMLUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Results page you want to retrieve (0..N)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Number of records per page.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Iterable"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/gargo}": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "temp",
+                "operationId": "tempUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/MetricsForProject"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/artifacts/search/{artifact_query}": {
             "get": {
                 "tags": [
@@ -132,6 +221,7 @@
                 "summary": "Search artifact to KB",
                 "operationId": "getProjectUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -143,31 +233,25 @@
                         "type": "string"
                     },
                     {
-                        "in": "query",
                         "name": "page",
+                        "in": "query",
                         "description": "Results page you want to retrieve (0..N)",
                         "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/integer"
-                        }
+                        "type": "string"
                     },
                     {
-                        "in": "query",
                         "name": "size",
+                        "in": "query",
                         "description": "Number of records per page.",
                         "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/integer"
-                        }
+                        "type": "string"
                     },
                     {
-                        "in": "query",
                         "name": "sort",
+                        "in": "query",
                         "description": "Sorting criteria in the format: [asc|desc]",
                         "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -192,6 +276,53 @@
                 }
             }
         },
+        "/api/artifacts/store-metrics}": {
+            "post": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Store IDE metrics",
+                "operationId": "storeIDEMetricsUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "metricForProject",
+                        "description": "metricForProject",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/MetricsForProject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/artifacts/{artifact_id}": {
             "get": {
                 "tags": [
@@ -200,6 +331,7 @@
                 "summary": "Get artifact by id",
                 "operationId": "getArtifactUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -238,6 +370,7 @@
                 "summary": "getClusters",
                 "operationId": "getClustersUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -286,6 +419,7 @@
                 "summary": "getClusterByArtifact",
                 "operationId": "getClusterByArtifactUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -317,6 +451,53 @@
                         "schema": {
                             "$ref": "#/definitions/Cluster"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/focus/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.",
+                "operationId": "getNextApiCallsRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -394,6 +575,53 @@
                 }
             }
         },
+        "/api/recommendation/recommendation-feedback/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource stores the recommendation feedback",
+                "operationId": "storeRecommendationFeedbackUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "recFed",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RecommendationFeedback"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/recommendation/recommended_API_call": {
             "post": {
                 "tags": [
@@ -405,6 +633,7 @@
                     "application/json"
                 ],
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -451,6 +680,7 @@
                     "application/json"
                 ],
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -497,6 +727,7 @@
                     "application/json"
                 ],
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -540,6 +771,7 @@
                 "summary": "This resource is used to retrieve projects that are similar to a given project.",
                 "operationId": "getSimilarProjectUsingGET",
                 "produces": [
+                    "application/xml",
                     "application/json"
                 ],
                 "parameters": [
@@ -575,6 +807,53 @@
                                 "$ref": "#/definitions/Artifact"
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/version/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource get list of versions foreach dependecies",
+                "operationId": "getVersionsUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -640,6 +919,9 @@
                 "git_url": {
                     "type": "string"
                 },
+                "hasPomFiles": {
+                    "type": "boolean"
+                },
                 "homePage": {
                     "type": "string"
                 },
@@ -651,6 +933,12 @@
                 },
                 "master_branch": {
                     "type": "string"
+                },
+                "methodDeclarations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MethodDeclaration"
+                    }
                 },
                 "metricPlatformId": {
                     "type": "string"
@@ -769,7 +1057,7 @@
                 "artifactID": {
                     "type": "string"
                 },
-                "name": {
+                "groupID": {
                     "type": "string"
                 },
                 "url": {
@@ -781,9 +1069,108 @@
             },
             "title": "Dependency"
         },
+        "FocusInput": {
+            "type": "object",
+            "properties": {
+                "activeDeclaration": {
+                    "type": "string"
+                },
+                "methodDeclarations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MethodDeclaration"
+                    }
+                }
+            },
+            "title": "FocusInput"
+        },
         "Iterable": {
             "type": "object",
             "title": "Iterable"
+        },
+        "MethodDeclaration": {
+            "type": "object",
+            "properties": {
+                "methodInvocations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "title": "MethodDeclaration"
+        },
+        "MetricBoundary": {
+            "type": "object",
+            "properties": {
+                "beginDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "metricValues": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MetricDescriptor"
+                    }
+                }
+            },
+            "title": "MetricBoundary"
+        },
+        "MetricDescriptor": {
+            "type": "object",
+            "properties": {
+                "itemValuePairs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "metricName": {
+                    "type": "string"
+                }
+            },
+            "title": "MetricDescriptor"
+        },
+        "MetricMilestoneSlice": {
+            "type": "object",
+            "properties": {
+                "boundary": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MetricBoundary"
+                    }
+                },
+                "bounder": {
+                    "type": "string"
+                }
+            },
+            "title": "MetricMilestoneSlice"
+        },
+        "MetricsForProject": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "metricMilestoneSlice": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MetricMilestoneSlice"
+                    }
+                },
+                "project": {
+                    "type": "string"
+                }
+            },
+            "title": "MetricsForProject"
         },
         "PageOfArtifacts": {
             "type": "object",
@@ -868,6 +1255,9 @@
                 "currentMethodCode": {
                     "type": "string"
                 },
+                "focusInput": {
+                    "$ref": "#/definitions/FocusInput"
+                },
                 "live": {
                     "type": "boolean"
                 },
@@ -892,6 +1282,12 @@
                 "similarityMethod": {
                     "type": "string"
                 },
+                "soRecommendationSelection": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
                 "textOffset": {
                     "type": "integer",
                     "format": "int32"
@@ -911,6 +1307,28 @@
             },
             "title": "Recommendation"
         },
+        "RecommendationFeedback": {
+            "type": "object",
+            "properties": {
+                "feedback": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "query": {
+                    "$ref": "#/definitions/Query"
+                },
+                "recommendation": {
+                    "$ref": "#/definitions/Recommendation"
+                },
+                "stars": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "title": "RecommendationFeedback"
+        },
         "RecommendationItem": {
             "type": "object",
             "properties": {
@@ -919,6 +1337,13 @@
                 },
                 "apiDocumentationLink": {
                     "type": "string"
+                },
+                "apiFunctionCallFOCUS": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number",
+                        "format": "float"
+                    }
                 },
                 "artifact": {
                     "$ref": "#/definitions/Artifact"

@@ -37,11 +37,11 @@ public class ApiDocumentationModel extends Model {
 		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
 
 		Query query = new Query();
-		query.setCurrentMethodCode(methodCode);
+		query.setCompilationUnit(methodCode);
 
 		Recommendation recommendation = recommenderRestController.getApiDocumentationRecommendationUsingPOST(query);
 		return recommendation.getRecommendationItems().stream().map(r -> {
-			String url = r.getApiDocumentationLink();
+			String url = "https://stackoverflow.com/questions/" + r.getApiDocumentationLink();
 			String label = getTitleOfPage(url);
 			return new ApiDocumentation(label, url);
 		}).collect(Collectors.toList());

@@ -181,9 +181,9 @@ public class LibrarySuggestionModel extends Model {
 	private io.swagger.client.model.Dependency parseLibraryModelToDependency(Library base) {
 		io.swagger.client.model.Dependency dependency = new io.swagger.client.model.Dependency();
 
-		dependency.setArtifactID("UNKNOW");
-		dependency.setName(base.getGroupId() + ": " + base.getArtifactId()); // NOTE this is some hacky solution
-		dependency.setVersion("1");
+		dependency.setGroupID(base.getGroupId());
+		dependency.setArtifactID(base.getArtifactId());
+		dependency.setVersion(base.getVersion());
 
 		return dependency;
 	}
