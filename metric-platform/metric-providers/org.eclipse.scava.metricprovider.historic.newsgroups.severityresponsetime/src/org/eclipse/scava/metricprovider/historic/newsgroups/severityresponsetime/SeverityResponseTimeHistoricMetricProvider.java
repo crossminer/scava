@@ -28,7 +28,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -55,6 +57,9 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -76,14 +81,14 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 			
 			for (NewsgroupThreadData newsgroupThreadData: severityClassifier.getNewsgroupThreads()) {
 				 
-				String newsgroupName = newsgroupThreadData.getNewsgroupName();
+				String ossmeterID = newsgroupThreadData.getNewsgroupName();
 				 
 				String severity = newsgroupThreadData.getSeverity();
 				addOrIncrease(severities, severity);
 			 
 				ThreadStatistics threadStatistics = null;
 				Iterable<ThreadStatistics> threadStatisticsIt = threadsRequestsReplies.getThreads().
-						 							 	   find(ThreadStatistics.NEWSGROUPNAME.eq(newsgroupName),
+						 							 	   find(ThreadStatistics.NEWSGROUPNAME.eq(ossmeterID),
 						 							 			 ThreadStatistics.THREADID.eq(newsgroupThreadData.getThreadId()));
 				for (ThreadStatistics ts: threadStatisticsIt) threadStatistics = ts;
 
@@ -174,7 +179,7 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupseveritysentiment";
+		return "historic.newsgroups.severityresponsetime";
 	}
 
 	@Override
@@ -184,8 +189,9 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in newsgroup threads submitted every day.";
+		return "This metric computes the average time in which the community (users) responds to open "
+				+ "threads per severity level per day for each bug tracker. Format: dd:HH:mm:ss:SS, "
+				+ "where dd=days, HH:hours, mm=minutes, ss:seconds, SS=milliseconds. Note: there are 7 "
+				+ "severity  levels (blocker, critical, major, minor, enhancement, normal, trivial).";
 	}
 }

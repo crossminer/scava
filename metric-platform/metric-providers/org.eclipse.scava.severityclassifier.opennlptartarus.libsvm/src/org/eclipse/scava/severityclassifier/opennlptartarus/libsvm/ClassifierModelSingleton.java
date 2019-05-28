@@ -27,7 +27,7 @@ class ClassifierModelSingleton {
 	 */
 	private ClassifierModelSingleton(){
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("severityclassifier.opennlptartarus.libsvm");
-		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-ThreadClustering-5.m", true, logger);
+		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-ThreadClustering-5.m", logger);
     }
 	   
 	/* Static 'instance' method */

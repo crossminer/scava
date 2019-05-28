@@ -24,8 +24,8 @@ class ClassifierModelSingleton {
 	 */
 	private ClassifierModelSingleton(){
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("contentclassifier.opennlptartarus.libsvm");
-		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m", true, logger);
-		System.err.println("Severity classification model loaded");
+		model = svm_predict_nofiles.parse_args_and_load_model(getClass(), "classifierFiles", "Test-TfIdfFeatures-Clean-AllPoS-BeginningOnly-.m", logger);
+		System.err.println("Content classification model loaded");
     }
 	   
 	/* Static 'instance' method */

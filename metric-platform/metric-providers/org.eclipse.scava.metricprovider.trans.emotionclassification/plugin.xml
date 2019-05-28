@@ -8,8 +8,6 @@
   
   SPDX-License-Identifier: EPL-2.0
 -->
-<!--Adrián was here
--->
 <?eclipse version="3.4"?>
 <plugin>
 	<extension point="org.eclipse.scava.platform.metricprovider">
@@ -21,6 +19,5 @@
 		<class name="org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric"/>
 		<class name="org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTrackerCommentsEmotionClassification"/>
 		<class name="org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification"/>
-		<class name="org.eclipse.scava.metricprovider.trans.emotionclassification.model.ForumPostEmotionClassification"/>
 	</extension>
 </plugin>

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sympa
+Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.sympa;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.repository.model.cc.sympa
+Require-Bundle: org.eclipse.scava.repository.model,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.eclipse.scava.repository.model.cc.sympa

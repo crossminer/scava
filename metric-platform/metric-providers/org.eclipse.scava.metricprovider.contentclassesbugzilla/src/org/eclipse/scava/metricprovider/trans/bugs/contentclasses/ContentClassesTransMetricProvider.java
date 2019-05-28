@@ -125,17 +125,17 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "BugcontentClasses";
+		return "trans.bugs.contentclasses";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Content Classes in Bug Comments";
+		return "Content classes in bug comments";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Content Classes in Bug Comments";
+		return "This metric computes the frequency and percentage of content Classes in bug comments, per bug tracker";
 	}
 
 }

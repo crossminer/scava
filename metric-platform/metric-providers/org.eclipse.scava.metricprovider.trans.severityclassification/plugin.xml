@@ -15,15 +15,6 @@
      </metricProvider>
   </extension>
 
-
-
-
-
-
-
-
-
-
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.metricprovider.trans.severityclassification.model.SeverityClassificationTransMetric"/>
     <class name="org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData"/>

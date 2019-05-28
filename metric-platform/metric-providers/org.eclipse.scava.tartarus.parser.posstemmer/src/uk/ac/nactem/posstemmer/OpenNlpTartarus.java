@@ -100,6 +100,8 @@ public class OpenNlpTartarus {
 		POSModelLoader posModelLoader = new POSModelLoader();
 		POSModel model = posModelLoader.load(createTempFile(resource, "bin"));
 		POSTaggerME posTagger = new POSTaggerME(model);
+		if(resource!=null)
+			resource.close();
 		return posTagger;
 	}
 	

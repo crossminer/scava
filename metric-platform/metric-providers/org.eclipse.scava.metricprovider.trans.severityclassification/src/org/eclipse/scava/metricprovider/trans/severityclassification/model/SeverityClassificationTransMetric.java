@@ -16,7 +16,6 @@ public class SeverityClassificationTransMetric extends PongoDB {
 	protected BugTrackerBugsDataCollection bugTrackerBugs = null;
 	protected NewsgroupArticleDataCollection newsgroupArticles = null;
 	protected NewsgroupThreadDataCollection newsgroupThreads = null;
-	protected ForumPostDataCollection forumPosts = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
@@ -34,10 +33,6 @@ public class SeverityClassificationTransMetric extends PongoDB {
 		return newsgroupThreads;
 	}
 	
-	public ForumPostDataCollection getForumPosts() {
-		return forumPosts;
-	}
-	
 	
 	@Override
 	public void setDb(DB db) {
@@ -48,7 +43,5 @@ public class SeverityClassificationTransMetric extends PongoDB {
 		pongoCollections.add(newsgroupArticles);
 		newsgroupThreads = new NewsgroupThreadDataCollection(db.getCollection("SeverityClassificationTransMetric.newsgroupThreads"));
 		pongoCollections.add(newsgroupThreads);
-		forumPosts = new ForumPostDataCollection(db.getCollection("SeverityClassificationTransMetric.forumPosts"));
-		pongoCollections.add(forumPosts);
 	}
 }

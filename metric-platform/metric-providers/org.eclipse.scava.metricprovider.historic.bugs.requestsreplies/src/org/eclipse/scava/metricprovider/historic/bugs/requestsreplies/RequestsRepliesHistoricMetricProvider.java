@@ -148,18 +148,18 @@ public class RequestsRepliesHistoricMetricProvider extends AbstractHistoricalMet
 
 	@Override
 	public String getShortIdentifier() {
-		return "requestsrepliespernewsgroup";
+		return "historic.bugs.requestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Requests and Replies Per Bug Tracker";
+		return "Number of requests and replies in bug comments per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This class computes the number of request and reply bug tracker comments " +
-				"per day for each bug Tracker separately.";
+		return "This metric computes the number of requests and replies realting "
+				+ "to comments posted to bugs by the community (users) per day  for each bug tracker seperately.";
 	}
 
 }

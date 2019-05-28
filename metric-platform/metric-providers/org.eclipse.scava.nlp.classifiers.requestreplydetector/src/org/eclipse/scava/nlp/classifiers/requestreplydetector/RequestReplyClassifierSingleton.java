@@ -53,6 +53,8 @@ class RequestReplyClassifierSingleton
 			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 			if (path.endsWith("bin/"))
 				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
 			File file= new File(path+modelPath);
 			if(!Files.exists(file.toPath()))
 				throw new FileNotFoundException("The file "+modelPath+" has not been found");
@@ -60,6 +62,7 @@ class RequestReplyClassifierSingleton
 				resource=new FileInputStream(file);
 		}
 		requestReplyClassifier.loadModel(resource);
+		resource.close();
 	}
 	
 	public static RequestReplyClassifierSingleton getInstance()

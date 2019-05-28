@@ -91,7 +91,7 @@ public class CommentsHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugcomments";
+		return "historic.bugs.comments";
 	}
 
 	@Override
@@ -101,6 +101,7 @@ public class CommentsHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of comments submitted every day.";
+		return "This metric computes the number of bug comments submitted by "
+				+ "the community (users) per day for each bug tracker.";
 	}
 }

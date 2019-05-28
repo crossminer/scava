@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.scava.severityclassifier.opennlptartarus.libsvm;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -96,12 +97,28 @@ public class Features {
 		String content = null;
 		try {
 			URL resource = getClass().getResource("/" + filename);
-			content = Resources.toString(resource, Charsets.UTF_8);
+			if(resource!=null)
+				content = Resources.toString(resource, Charsets.UTF_8);
+			else
+			{
+				String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+				if (path.endsWith("bin/"))
+					path = path.substring(0, path.lastIndexOf("bin/"));
+				if (path.endsWith("target/classes/"))
+					path = path.substring(0, path.lastIndexOf("target/classes/"));
+				Path filePath= Paths.get(path+"/"+filename);
+				if(!Files.exists(filePath))
+					throw new FileNotFoundException("The file "+filename+" has not been found");
+				else
+					content=Resources.toString(filePath.toUri().toURL(), Charsets.UTF_8);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		if (content != null) {
-			for (String line: content.split("\\n")) {
+			for (String line: content.split("\\v+")) {
+				if(line.isEmpty())
+					continue;
 				String[] elements = line.split("\\t");
 				int order = Integer.parseInt(elements[0].trim());
 				String lemma = elements[1].trim();
@@ -112,18 +129,6 @@ public class Features {
 				}
 			}
 		}
-	}
-
-	private static String readFileAsString(File afile) throws java.io.IOException{
-	    byte[] buffer = new byte[(int) afile.length()];
-	    BufferedInputStream f = null;
-	    try {
-	        f = new BufferedInputStream(new FileInputStream(afile));
-	        f.read(buffer);
-	    } finally { 
-	    	if (f != null) try { f.close(); } catch (IOException ignored) { }
-	    }
-	    return new String(buffer);
 	}
 
 }

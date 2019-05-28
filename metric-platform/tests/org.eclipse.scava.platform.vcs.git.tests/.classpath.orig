@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+<<<<<<< HEAD
+	<classpathentry kind="src" path="src/">
+		<attributes>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+=======
+	<classpathentry kind="src" path="src"/>
+>>>>>>> b9077f010af9b1f1495d44a6d727465ff232ab8d
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

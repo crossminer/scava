@@ -1,0 +1,16 @@
+package org.eclipse.scava.repository.model.cc.sympa;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+
+}
+
+class SympaMailingList extends CommunicationChannel {
+	@searchable
+	attr String MailingListName;
+	attr String MailingListDescription;
+	attr String username;
+	attr String password;
+	attr String compressedFileExtension;
+
+	}

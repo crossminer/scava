@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2018 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,8 @@ package org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
@@ -26,7 +28,9 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -49,6 +53,9 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -60,7 +67,7 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -77,11 +84,17 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsContentClassesTransMetric db) {
 
-		if (uses.size()!=1) {
+		if (uses.size()!=2) {
 			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
 								"the transient metric it needs!");
 			System.exit(-1);
 		}
+		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 
 		NewsgroupsThreadsTransMetric usedThreads = 
 				((ThreadsTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
@@ -136,17 +149,17 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupcontentClasses";
+		return "trans.newsgroups.contentclasses";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Content Classes in Newgroup Articles";
+		return "Content classes in newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Content Classes in Newgroup Articles";
+		return "This metric computes the content classes in newgroup articles, per newsgroup";
 	}
 
 }

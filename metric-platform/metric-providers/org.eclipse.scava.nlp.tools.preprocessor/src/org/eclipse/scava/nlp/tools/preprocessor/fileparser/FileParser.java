@@ -25,7 +25,6 @@ public class FileParser
 	
 	private static OssmeterLogger logger;
 	private static AutoDetectParser parser;
-	private static Metadata metadata;
 	private static Detector detector;
 	private static HashMap<String,String> supportedFiles = new HashMap<String,String>();
 	private static Pattern mediaTypePattern;
@@ -35,7 +34,6 @@ public class FileParser
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.preprocessor.fileparser");
 		FileParserSingleton singleton = FileParserSingleton.getInstance();
 		parser = singleton.getParser();
-		metadata = singleton.getMetadata();
 		supportedFiles = singleton.getSupportedFiles();
 		detector = parser.getDetector();
 		mediaTypePattern= Pattern.compile(";.+$");
@@ -59,7 +57,13 @@ public class FileParser
 	
 	public static boolean isSupported(BufferedInputStream stream) throws IOException
 	{
-		return isSupported(detectMediaType(stream));
+		Metadata metadata = new Metadata();
+		return isSupported(detectMediaType(stream, metadata));
+	}
+	
+	private static boolean isSupported(BufferedInputStream stream, Metadata metadata) throws IOException
+	{
+		return isSupported(detectMediaType(stream, metadata));
 	}
 	
 	private static boolean isSupported(MediaType mediaType)
@@ -71,7 +75,7 @@ public class FileParser
 		return false;
 	}
 	
-	private static MediaType detectMediaType(BufferedInputStream stream) throws IOException
+	private static MediaType detectMediaType(BufferedInputStream stream, Metadata metadata) throws IOException
 	{
 		try {
 			return detector.detect(stream, metadata);
@@ -126,8 +130,9 @@ public class FileParser
 	public static String extractTextAsString(BufferedInputStream bufferedStream) throws Exception
 	{
 		BodyContentHandler handler = new BodyContentHandler(-1);
+		Metadata metadata = new Metadata();
 	    try {
-	    	if(isSupported(bufferedStream))
+	    	if(isSupported(bufferedStream, metadata))
 	    	{
 	    		parser.parse(bufferedStream, handler, metadata);
 	    		return handler.toString();

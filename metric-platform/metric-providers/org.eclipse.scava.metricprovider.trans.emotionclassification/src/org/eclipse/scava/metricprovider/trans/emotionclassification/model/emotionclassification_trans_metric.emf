@@ -5,7 +5,6 @@ package org.eclipse.scava.metricprovider.trans.emotionclassification.model;
 class EmotionClassificationTransMetric {
 	val BugTrackerCommentsEmotionClassification[*] bugTrackerComments;
 	val NewsgroupArticlesEmotionClassification[*] newsgroupArticles;
-	val ForumPostEmotionClassification[*] forumPosts;
 }
 
 class BugTrackerCommentsEmotionClassification {
@@ -21,11 +20,4 @@ class NewsgroupArticlesEmotionClassification {
    	attr String newsGroupName;
    	attr long articleNumber;
    	attr String[] emotions;
-}
-
-class ForumPostEmotionClassification {
-	attr String forumId;
-	attr String topicId;
-	attr String postId;
-	attr String[] emotions;
 }

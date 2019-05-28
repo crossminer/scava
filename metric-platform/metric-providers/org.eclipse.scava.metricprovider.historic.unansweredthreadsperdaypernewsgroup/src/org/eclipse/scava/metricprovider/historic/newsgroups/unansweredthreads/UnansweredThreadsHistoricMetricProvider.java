@@ -24,7 +24,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -51,6 +53,9 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -75,7 +80,7 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 		Map<String, Integer> newsgroupsUnansweredThreads = new HashMap<String, Integer>();
 		for (ThreadStatistics thread: usedThreads.getThreads()) {
 			if ((!thread.getAnswered())&&(thread.getFirstRequest())) {
-				if (newsgroupsUnansweredThreads.containsKey(thread.getNewsgroupName()))
+				if (newsgroupsUnansweredThreads.containsKey(thread.getNewsgroupName()))//ossmeterID
 					newsgroupsUnansweredThreads.put(thread.getNewsgroupName(), 
 									newsgroupsUnansweredThreads.get(thread.getNewsgroupName()) + 1);
 				else
@@ -118,12 +123,12 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "unansweredthreadspernewsgroup";
+		return "historic.newsgroups.unansweredthreads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Unanswered Threads Per Day Per Newsgroup";
+		return "Number of unanswered threads per day per newsgroup";
 	}
 
 	@Override

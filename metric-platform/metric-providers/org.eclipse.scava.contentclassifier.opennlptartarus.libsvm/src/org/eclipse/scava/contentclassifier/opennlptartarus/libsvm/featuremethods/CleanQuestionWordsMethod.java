@@ -11,10 +11,13 @@
 package org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.featuremethods;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -63,7 +66,19 @@ public class CleanQuestionWordsMethod {
 		ClassLoader cl = (new Classifier()).getClass().getClassLoader();
 		InputStream resource = cl.getResourceAsStream(questionWordsFileName);
 		if(resource==null)
-			throw new FileNotFoundException("The file "+questionWordsFileName+" has not been found");
+		{
+			String path = (new Classifier()).getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
+			File file= new File(path+"/"+questionWordsFileName);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+questionWordsFileName+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
+			
 		BufferedReader model = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
 		String line;
 		HashSet<String> hashSet = new HashSet<String>();
@@ -71,6 +86,8 @@ public class CleanQuestionWordsMethod {
 		{
 			hashSet.add(line.trim());
 		}
+		model.close();
+		resource.close();
 		return hashSet;
 	}
 	

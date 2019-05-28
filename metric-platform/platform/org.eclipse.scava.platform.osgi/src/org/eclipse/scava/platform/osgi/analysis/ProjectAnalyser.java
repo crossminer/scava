@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
+import org.eclipse.scava.platform.AbstractIndexingMetricProvider;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -72,6 +73,7 @@ public class ProjectAnalyser {
 		List<IMetricProvider> paltformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
 		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
+		List<IMetricProvider> indexing = extractIndexingMetricProviders(filtredMetricProvider); // DC
 		
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
 
@@ -120,6 +122,15 @@ public class ProjectAnalyser {
 				mExe.setMetricList(branch);			
 				executorService.execute(mExe);
 			}
+			
+			//DC - checks if the indexing facilities are required by the user
+			if (indexing.size() > 0) {
+				this.logger.info("Executing indexing services");
+				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
+				mExe.setMetricList(indexing);
+				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
+			}
+			
 			
 			try {
 				executorService.shutdown();
@@ -196,6 +207,16 @@ public class ProjectAnalyser {
 			taskProviders.add(provider.getMetricProviderId());
 		}
 		
+		//DAN WAS HERE
+		// This was used for debugging purposes only
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		for(IMetricProvider platformProvider : metricProviders) {
 			if(taskProviders.contains(platformProvider.getIdentifier())) {
 				filtredProviders.add(platformProvider);
@@ -218,6 +239,22 @@ public class ProjectAnalyser {
 		allProviders.removeAll(factoids);
 		this.logger.info("Extracting Factoid metricProviders is done.");
 		return factoids;
+	}
+	
+	//DC
+	//this finds the indexing metric providers and removes them from the allProviders list and returns the a list of indexingMetricProviders
+	protected List<IMetricProvider> extractIndexingMetricProviders(List<IMetricProvider> allProviders) {
+		this.logger.info("Extracting indexing metric of all metricProviders");
+		List<IMetricProvider> indexingMetric = new ArrayList<>();
+		
+		for (IMetricProvider imp : allProviders) {
+			if (imp instanceof AbstractIndexingMetricProvider) {
+				indexingMetric.add(imp);
+			}
+		}
+		allProviders.removeAll(indexingMetric);
+		this.logger.info("Extracting Indexing metric is done.");
+		return indexingMetric;
 	}
 	
 	
@@ -282,20 +319,37 @@ public class ProjectAnalyser {
 		}
 		return null;
 	}
-		
-
-	
+			
 	private List<IMetricProvider> sortMetricProviders(List<IMetricProvider> providers) {
 		List<IMetricProvider> sorted = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> marked = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> temporarilyMarked = new ArrayList<IMetricProvider>();
 		List<IMetricProvider> unmarked = new ArrayList<IMetricProvider>();
+		List<IMetricProvider> indexing = new ArrayList<IMetricProvider>();
+		
+for(IMetricProvider provider: providers) {
+			
+			if(provider instanceof AbstractIndexingMetricProvider) {
+				
+				indexing.add(provider);
+			}
+			
+		}
+		
+		providers.removeAll(indexing);
+		
 		unmarked.addAll(providers);
+		
+		
+		
 		
 		while (unmarked.size()>0) {
 			IMetricProvider mp = unmarked.get(0);
 			visitDependencies(marked, temporarilyMarked, unmarked, mp, providers, sorted);
 		}
+		
+		sorted.addAll(indexing);
+		
 		return sorted;
 	}
 	
@@ -339,7 +393,4 @@ public class ProjectAnalyser {
 			e.printStackTrace();
 		}
 	}
-	
-
-	
 }

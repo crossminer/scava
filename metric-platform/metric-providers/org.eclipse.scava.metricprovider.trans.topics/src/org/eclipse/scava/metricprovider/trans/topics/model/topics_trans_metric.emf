@@ -6,12 +6,9 @@ class TopicsTransMetric {
 
 	val BugTrackerCommentsData[*] bugTrackerComments;
 	val BugTrackerTopic[*] bugTrackerTopics;
-	
+
 	val NewsgroupArticlesData[*] newsgroupArticles;
 	val NewsgroupTopic[*] newsgroupTopics;
-	
-	val ForumPostData[*] forumPosts;
-	val ForumPostTopic[*] forumTopics;
 }
 
 class BugTrackerCommentsData {
@@ -33,16 +30,6 @@ class NewsgroupArticlesData {
    	attr String date;
 }
 
-class ForumPostData {
-	@searchable
-	attr String forumId;
-	attr String topicId;
-	attr String postId;
-   	attr String subject;
-   	attr String text;
-	attr String date;
-}
-
 class BugTrackerTopic {
 	@searchable
    	attr String bugTrackerId;
@@ -53,13 +40,6 @@ class BugTrackerTopic {
 class NewsgroupTopic {
 	@searchable
    	attr String newsgroupName;
-   	attr String label;
-   	attr int numberOfDocuments;
-}
-
-class ForumPostTopic {
-	@searchable
-   	attr String forumId;
    	attr String label;
    	attr int numberOfDocuments;
 }
