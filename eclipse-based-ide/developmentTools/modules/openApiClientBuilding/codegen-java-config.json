@@ -1,0 +1,5 @@
+{
+    "groupId":"org.eclipse.scava",
+    "artifactId":"org.eclipse.scava.plugin.client",
+    "artifactVersion":"1.0.0"
+  }
