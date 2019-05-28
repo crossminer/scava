@@ -17,7 +17,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.metricprovider.trans.detectingcode,
  org.eclipse.scava.repository.model.cc.eclipseforums,
  org.eclipse.scava.nlp.tools.predictions,
- org.eclipse.scava.nlp.classifiers.emotionclassifier
+ org.eclipse.scava.nlp.classifiers.emotionclassifier,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation,
+ org.eclipse.scava.repository.model.cc.sympa
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.emotionclassification.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

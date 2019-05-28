@@ -94,12 +94,12 @@ public class UnansweredThreadsHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "unansweredbugs";
+		return "historic.bugs.unansweredbugs";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Unanswered Bugs Per Day";
+		return "Number of unanswered bugs per day";
 	}
 
 	@Override

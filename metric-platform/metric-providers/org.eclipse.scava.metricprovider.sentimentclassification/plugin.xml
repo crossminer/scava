@@ -13,17 +13,10 @@
    		<metricProvider provider="org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider">
    		</metricProvider>
 	</extension>
-	
-
-
-
-
-
 
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.metricprovider.trans.sentimentclassification.model.SentimentClassificationTransMetric"/>
 	<class name="org.eclipse.scava.metricprovider.trans.sentimentclassification.model.BugTrackerCommentsSentimentClassification"/>
 	<class name="org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification"/>
-	<class name="org.eclipse.scava.metricprovider.trans.sentimentclassification.model.ForumPostSentimentClassification"/>
   </extension>
 </plugin>

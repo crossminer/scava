@@ -22,7 +22,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -49,6 +51,9 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 		for (CommunicationChannel communicationchannel: project.getCommunicationChannels()) {
 			if (communicationchannel instanceof NntpNewsGroup) return true;
 			if (communicationchannel instanceof Discussion) return true;
+			if (communicationchannel instanceof EclipseForum) return true;
+			if (communicationchannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -61,7 +66,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 			 for (NewsgroupTopic newsgroupTopic: usedTopics.getNewsgroupTopics()) {
 				 NewsgrpTopic topic = new NewsgrpTopic();
 				 topics.getNewsgrpTopics().add(topic);
-				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());
+				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());//uses ossmeterID
 				 topic.setLabel(newsgroupTopic.getLabel());
 				 topic.setNumberOfDocuments(newsgroupTopic.getNumberOfDocuments());
 			 }
@@ -86,16 +91,17 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgrouptopics";
+		return "historic.newsgroups.topics";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Labels Of Newsgroup Topics Per Day";
+		return "Labels of newsgroup topics per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematci clusters) in articles submitted every day.";
+		return "This metric computes the labels of topics (thematic clusters) in articles submitted "
+				+ "by the community (users) per day, for each newsgroup seperately.";
 	}
 }

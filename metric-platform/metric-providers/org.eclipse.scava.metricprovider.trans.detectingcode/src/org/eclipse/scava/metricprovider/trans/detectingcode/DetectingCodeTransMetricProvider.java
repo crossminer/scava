@@ -14,11 +14,11 @@ import java.util.List;
 
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
-import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.BugTrackerCommentPlainTextProcessing;
-import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.ForumPostPlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTextProcessingTransMetric;
 import org.eclipse.scava.nlp.classifiers.codedetector.CodeDetector;
@@ -33,6 +33,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -52,17 +53,17 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public String getShortIdentifier() {
-		return "codedetection";
+		return "trans.detectingcode";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Code Detection";
+		return "Distinguishes between code and natural language";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric determines which parts of a bug comment or a newsgroup article are code and which natural language";
+		return "This metric determines the parts of a bug comment or a newsgroup article that contains code or natural language";
 	}
 
 	@Override
@@ -71,6 +72,8 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+//			if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	}
@@ -83,7 +86,7 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(PlainTextProcessingTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(PlainTextProcessingTransMetricProvider.class.getCanonicalName(),  IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -104,6 +107,12 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 		clearDB(db);
 		
 		PlainTextProcessingTransMetric plainTextProcessor = ((PlainTextProcessingTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		//Then we add it back to the database
+		indexPrepTransMetric.sync();
 		
 		//We obtain all the comments preprocessed by the Textpreprocessing Trans Metric
 		Iterable<BugTrackerCommentPlainTextProcessing> commentsIt = plainTextProcessor.getBugTrackerComments();
@@ -141,21 +150,6 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 			db.sync();
 		}
 		
-		Iterable<ForumPostPlainTextProcessing> postsIt = plainTextProcessor.getForumPosts();
-		for (ForumPostPlainTextProcessing post : postsIt)
-		{
-			ForumPostDetectingCode postDataInDC = findForumPost(db, post);
-			if(postDataInDC == null)
-			{
-				postDataInDC = new ForumPostDetectingCode();
-				postDataInDC.setForumId(post.getForumId());
-				postDataInDC.setTopicId(post.getTopicId());
-				postDataInDC.setPostId(post.getPostId());
-				db.getForumPosts().add(postDataInDC);
-			}
-			applyCodeDetector(post.getPlainText(), postDataInDC);
-			db.sync();
-		}
 	}
 	
 	private void applyCodeDetector(List<String> plainText, BugTrackerCommentDetectingCode comment)
@@ -172,12 +166,6 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 		article.setNaturalLanguage(output[1]);
 	}
 	
-	private void applyCodeDetector(List<String> plainText, ForumPostDetectingCode post)
-	{
-		String[] output = applyCodeDetector(plainText);
-		post.setCode(output[0]);
-		post.setNaturalLanguage(output[1]);
-	}
 	
 	private String[] applyCodeDetector(List<String> plainText)
 	{
@@ -217,27 +205,12 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 		}
 		return nadc;
 	}
-	
-	private ForumPostDetectingCode findForumPost(DetectingCodeTransMetric db, ForumPostPlainTextProcessing post)
-	{
-		ForumPostDetectingCode fpdc = null;
-		Iterable<ForumPostDetectingCode> fpdcIt = 
-				db.getForumPosts().
-					find(ForumPostDetectingCode.FORUMID.eq(post.getForumId()),
-							ForumPostDetectingCode.TOPICID.eq(post.getTopicId()),
-							ForumPostDetectingCode.POSTID.eq(post.getPostId()));
-		for(ForumPostDetectingCode fpd : fpdcIt)
-		{
-			fpdc = fpd;
-		}
-		return fpdc;
-	}
+
 	
 	private void clearDB(DetectingCodeTransMetric db)
 	{
 		db.getBugTrackerComments().getDbCollection().drop();
 		db.getNewsgroupArticles().getDbCollection().drop();
-		db.getForumPosts().getDbCollection().drop();
 		db.sync();
 	}
 

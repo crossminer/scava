@@ -153,7 +153,7 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugsrequestsreplies";
+		return "trans.bugs.requestreplies";
 	}
 
 	@Override
@@ -163,8 +163,7 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 
 	@Override
 	public String getSummaryInformation() {
-		return "The metric computed for each bug whether it is answered." +
-				"If yes, it also computes the response time";
+		return "This metric computes for each bug, whether it was  answered. If so, it computes the time taken to respond";
 	}
 
 }

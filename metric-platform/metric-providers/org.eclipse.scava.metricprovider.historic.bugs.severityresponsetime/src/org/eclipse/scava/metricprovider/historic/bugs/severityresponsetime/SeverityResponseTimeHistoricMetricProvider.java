@@ -167,18 +167,21 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugseveritysentiment";
+		return "historic.bugs.severityresponsetime";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Sentiment Per Bug Severity Levels Per Day";
+		return "Average response time to bugs per severity level per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in bugs submitted every day.";
+		return "This metric computes the average time in which the community (users) responds to open "
+				+ "bugs per severity level per day for each bug tracker. Format: dd:HH:mm:ss:SS, "
+				+ "where dd=days, HH:hours, mm=minutes, ss:seconds, SS=milliseconds. Note: there are 8 "
+				+ "severity  levels (blocker, critical, major, minor, enhancement, normal, trivial, unknown). "
+				+ "A bug severity is considered `unknown` if there is not enough information for the classifier "
+				+ "to make a decision. For example, an unanswered bug with no user comment to analyse.";
 	}
 }

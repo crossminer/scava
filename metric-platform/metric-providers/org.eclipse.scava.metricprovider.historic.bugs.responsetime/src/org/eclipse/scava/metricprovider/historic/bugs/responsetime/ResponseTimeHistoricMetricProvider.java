@@ -154,12 +154,12 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 
 	@Override
 	public String getShortIdentifier() {
-		return "avgresponsetimeperbugtracker";
+		return "historic.bugs.responsetime";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Average Thread Response Time Per Day Per bug Tracker";
+		return "Average response time to open bugs per bug tracker";
 	}
 
 	@Override

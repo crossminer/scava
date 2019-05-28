@@ -103,12 +103,12 @@ public class OpenTimeHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getFriendlyName() {
-		return "Average Bug Duration";
+		return "Average duration to close an open bug";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average time between creating and closing bugs. " +
+		return "This metric computes the average duration between creating and closing bugs. " +
 				"Format: dd:HH:mm:ss:SS, where dd=days, HH:hours, mm=minutes, ss:seconds, SS=milliseconds.";
 	}
 }

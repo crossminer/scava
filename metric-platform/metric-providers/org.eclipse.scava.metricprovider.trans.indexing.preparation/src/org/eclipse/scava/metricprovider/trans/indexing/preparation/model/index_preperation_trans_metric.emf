@@ -1,0 +1,10 @@
+package org.eclipse.scava.metricprovider.trans.indexing.preperation.model;
+
+@db(qualifiedCollectionNames="true")
+class IndexPrepTransMetric {
+	val ExecutedMetricProviders[*] executedMetricProviders;
+}
+
+class ExecutedMetricProviders{
+   	attr String[*] metricIdentifiers;
+}

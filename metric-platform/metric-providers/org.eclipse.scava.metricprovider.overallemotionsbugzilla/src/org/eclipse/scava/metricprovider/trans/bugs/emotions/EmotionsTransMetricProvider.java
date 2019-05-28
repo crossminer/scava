@@ -19,6 +19,8 @@ import org.eclipse.scava.metricprovider.trans.bugs.emotions.model.EmotionDimensi
 import org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.BugTrackerCommentsEmotionClassification;
 import org.eclipse.scava.metricprovider.trans.emotionclassification.model.EmotionClassificationTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -74,7 +76,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 	public void measure(Project project, ProjectDelta projectDelta, BugsEmotionsTransMetric db) {
 		
 		EmotionClassificationTransMetric emotionClassificationMetric = ((EmotionClassificationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-		
+			
 		BugTrackingSystemProjectDelta delta = projectDelta.getBugTrackingSystemDelta();
 		
 		for (BugTrackingSystemDelta bugTrackingSystemDelta : delta.getBugTrackingSystemDeltas()) {
@@ -150,17 +152,18 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 
 	@Override
 	public String getShortIdentifier() {
-		return "Bugemotions";
+		return "trans.bugs.emotions";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Emotional Dimensions in Bug Comments";
+		return "Emotions in bug comments";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Emotional Dimensions in Bug Comments";
+		return "This metric computes the emotional dimensions in bug comments, per bug tracker. "
+				+ "There are 6 emotion labels (anger, fear, joy, sadness, love, surprise).";
 	}
 	
 	private List<String> getEmotions(EmotionClassificationTransMetric db, BugTrackingSystemComment comment)

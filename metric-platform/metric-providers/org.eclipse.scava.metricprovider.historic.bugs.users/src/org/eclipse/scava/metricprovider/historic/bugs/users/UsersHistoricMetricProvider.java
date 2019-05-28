@@ -95,17 +95,17 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 
 	@Override
 	public String getShortIdentifier() {
-		return "activeinactiveusersperbugtracker";
+		return "historic.bugs.users";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Active and Inactive Users Per Day Per Bug Tracker Provider";
+		return "Number of users, active and inactive per day per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of active and inactive users " +
+		return "This metric computes the number of users, active and inactive users " +
 				"per day for each bug tracker separately.";
 	}
 

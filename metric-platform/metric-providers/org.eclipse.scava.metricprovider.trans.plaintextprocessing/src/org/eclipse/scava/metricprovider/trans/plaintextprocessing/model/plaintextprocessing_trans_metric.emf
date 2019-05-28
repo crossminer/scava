@@ -5,7 +5,6 @@ package org.eclipse.scava.metricprovider.trans.plaintextprocessing.model;
 class PlainTextProcessingTransMetric {
 	val BugTrackerCommentPlainTextProcessing[*] bugTrackerComments;
 	val NewsgroupArticlePlainTextProcessing[*] newsgroupArticles;
-	val ForumPostPlainTextProcessing[*] forumPosts;
 }
 
 class BugTrackerCommentPlainTextProcessing {
@@ -23,13 +22,4 @@ class NewsgroupArticlePlainTextProcessing {
    	attr long articleNumber;
    	attr String[*] plainText;
    	attr boolean hadReplies;
-}
-
-class ForumPostPlainTextProcessing {
-	@searchable
-	attr String forumId;
-	attr String topicId;
-	attr String postId;
-	attr String[*] plainText;
-	attr boolean hadReplies;
 }

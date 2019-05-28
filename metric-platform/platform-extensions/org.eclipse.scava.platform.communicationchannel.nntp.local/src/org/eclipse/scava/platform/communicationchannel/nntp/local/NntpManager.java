@@ -106,7 +106,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 						newNewsgroup.setPassword(newsgroup.getPassword());
 						newNewsgroup.setPort(newsgroup.getPort());
 						newNewsgroup.setInterval(newsgroup.getInterval());
-						communicationChannelArticle.setNewsgroup(newNewsgroup);
+						communicationChannelArticle.setCommunicationChannel(newNewsgroup);
 						List<String> referenceList = articleData.getReferences();
 						String[] referenceArray = list2array(referenceList);
 						communicationChannelArticle.setReferences(referenceArray);

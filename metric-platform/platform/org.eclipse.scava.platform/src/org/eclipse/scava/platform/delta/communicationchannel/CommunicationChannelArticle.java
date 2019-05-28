@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 University of York
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@ package org.eclipse.scava.platform.delta.communicationchannel;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.CommunicationChannel;
 
 public class CommunicationChannelArticle implements Serializable {
 	
@@ -20,7 +20,7 @@ public class CommunicationChannelArticle implements Serializable {
 	
 	private String articleId;
 	private long articleNumber;
-	transient private NntpNewsGroup newsgroup;
+	transient private CommunicationChannel communicationChannel;
 	private String messageThreadId;
 	private String subject;
 	private String text;
@@ -46,12 +46,12 @@ public class CommunicationChannelArticle implements Serializable {
 		this.articleNumber = articleNumber;
 	}
 
-	public NntpNewsGroup getCommunicationChannel() {
-		return newsgroup;
+	public CommunicationChannel getCommunicationChannel() {
+		return communicationChannel;
 	}
 
-	public void setNewsgroup(NntpNewsGroup communicationChannel) {
-		this.newsgroup = communicationChannel;
+	public void setCommunicationChannel(CommunicationChannel communicationChannel) {
+		this.communicationChannel = communicationChannel;
 	}
 
 	public String getMessageThreadId() {

@@ -24,6 +24,8 @@ import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.Classifier;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.CurrentDate;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupData;
@@ -40,15 +42,17 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
 
-public class ThreadsTransMetricProvider implements ITransientMetricProvider<NewsgroupsThreadsTransMetric>{
+public class ThreadsTransMetricProvider implements ITransientMetricProvider<NewsgroupsThreadsTransMetric> {
 
 	protected PlatformCommunicationChannelManager communicationChannelManager;
-	
+
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
 
@@ -59,9 +63,15 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 	@Override
 	public boolean appliesTo(Project project) {
-		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
-			if (communicationChannel instanceof NntpNewsGroup) return true;
-			if (communicationChannel instanceof Discussion) return true;
+		for (CommunicationChannel communicationChannel : project.getCommunicationChannels()) {
+			if (communicationChannel instanceof NntpNewsGroup)
+				return true;
+			if (communicationChannel instanceof Discussion)
+				return true;
+			if (communicationChannel instanceof EclipseForum)
+				return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -73,7 +83,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -90,18 +100,24 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, NewsgroupsThreadsTransMetric db) {
 
-		if (uses.size()!=getIdentifiersOfUses().size())
-		{
-			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
-								"the transient metrics it needs!");
+		if (uses.size() != getIdentifiersOfUses().size()) {
+			System.err
+					.println("Metric: " + getIdentifier() + " failed to retrieve " + "the transient metrics it needs!");
 			System.exit(-1);
 		}
 		
-		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+
+		DetectingCodeTransMetric detectingCodeMetric = ((DetectingCodeTransMetricProvider) uses.get(0))
+				.adapt(context.getProjectDB(project));
 		
+		// Threading preparation begin
 		Iterable<CurrentDate> currentDateIt = db.getDate();
 		CurrentDate currentDate = null;
-		for (CurrentDate cd:  currentDateIt)
+		for (CurrentDate cd : currentDateIt)
 			currentDate = cd;
 		if (currentDate != null)
 			currentDate.setDate(projectDelta.getDate().toString());
@@ -110,151 +126,279 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			currentDate.setDate(projectDelta.getDate().toString());
 			db.getDate().add(currentDate);
 		}
-			
-		for (NewsgroupData newsgroupData: db.getNewsgroups())
+
+		for (NewsgroupData newsgroupData : db.getNewsgroups())
 			newsgroupData.setPreviousThreads(newsgroupData.getThreads());
-		
+
 		CommunicationChannelProjectDelta delta = projectDelta.getCommunicationChannelDelta();
 
 		Map<String, Set<Long>> articleIdsPerNewsgroup = new HashMap<String, Set<Long>>();
 		Map<String, Set<Integer>> threadsPerNewsgroup = new HashMap<String, Set<Integer>>();
 
-		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
+		// Threading preparation end
+		
+//		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
+		for (CommunicationChannelDelta communicationChannelDelta : delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
 			
-			if (communicationChannelDelta.getArticles().size() > 0) {
-				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup))
-					communicationChannelName = communicationChannel.getUrl();
-				else {
-					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-					communicationChannelName = newsgroup.getNewsGroupName();
-				}
-				
-				Map<Long, String> previousClassAssignments = new HashMap<Long, String>();
-				
-				List<Article> articles = new ArrayList<Article>();
-				for (ThreadData threadData: db.getThreads()) {
-					for (ArticleData articleData: threadData.getArticles()) {
-						if (articleData.getNewsgroupName().equals(communicationChannelName)) {
-							previousClassAssignments.put(articleData.getArticleNumber(), articleData.getContentClass());
-							articles.add(prepareArticle(articleData));
-							Set<Long> articleIds = null;
-							if (articleIdsPerNewsgroup.containsKey(articleData.getNewsgroupName()))
-								articleIds = articleIdsPerNewsgroup.get(articleData.getNewsgroupName());
-							else {
-								articleIds = new HashSet<Long>();
-								articleIdsPerNewsgroup.put(articleData.getNewsgroupName(), articleIds);
+			//Process for forums
+			if (communicationChannel instanceof EclipseForum) {
+
+//-------------------------------------------------------------------------
+	
+				if (communicationChannelDelta.getArticles().size() > 0) {
+					String ossmeterID = communicationChannel.getOSSMeterId();
+					
+//					I am retrieving the threads and the articles each of them contains from the db.
+					Map<Integer, Set<Long>> articleIdsPerThread = new HashMap<Integer, Set<Long>>();
+									
+					for (ThreadData threadData : db.getThreads()) {
+						int threadId = threadData.getThreadId();
+						for (ArticleData articleData : threadData.getArticles()) {
+							if (articleData.getNewsgroupName().equals(ossmeterID)) {
+								Set<Long> articleIds = null;
+								if (articleIdsPerThread.containsKey(threadId))
+									articleIds = articleIdsPerThread.get(threadId);
+								else {
+									articleIds = new HashSet<Long>();
+									articleIdsPerThread.put(threadId, articleIds);
+								}
+								articleIds.add(articleData.getArticleNumber());
 							}
-							articleIds.add(articleData.getArticleNumber());
 						}
 					}
-				}
-				
-				Map<Long, ClassificationInstance> instanceIndex = new HashMap<Long, ClassificationInstance>();
-				for (CommunicationChannelArticle deltaArticle :communicationChannelDelta.getArticles()) {
 
-					Boolean articleExists = false;
-					if (articleIdsPerNewsgroup.containsKey(communicationChannelName)
-						&& articleIdsPerNewsgroup.get(communicationChannelName).contains(deltaArticle.getArticleNumber()))
-						articleExists = true;
 					
-					if (!articleExists) {
-						articles.add(prepareArticle(deltaArticle));
-						ClassificationInstance instance = 
-								prepareClassificationInstance(communicationChannelName, deltaArticle, detectingCodeMetric);
-						instanceIndex.put(instance.getArticleNumber(), instance);
-					}
-				}
-				
-				System.out.println("Building message thread tree... (" + articles.size() + ")");
-				Threader threader = new Threader();
-				Article root = (Article)threader.thread(articles);
-				List<List<Article>> articleList = zeroLevelCall(root);
-				
-				db.getThreads().getDbCollection().drop();
-				db.sync();
-				
-				Classifier classifier = new Classifier();
-				for (List<Article> list: articleList) {
-					int positionInThread = 0;
-					for (Article article: list) {
-						positionInThread++;
-						if (instanceIndex.containsKey(article.getArticleNumberLong())) {
-							ClassificationInstance instance = instanceIndex.get(article.getArticleNumberLong());
+					HashMap<Integer,List<CommunicationChannelArticle>> newArticles = new HashMap<Integer,List<CommunicationChannelArticle>>();
+					Classifier classifier = new Classifier();
+					Map<Long, ClassificationInstance> instanceIndex = new HashMap<Long, ClassificationInstance>();
+					
+					
+					for (CommunicationChannelArticle deltaArticle : communicationChannelDelta.getArticles()) {
+						int threadId = Integer.parseInt(deltaArticle.getMessageThreadId());
+						Boolean articleExists = false;
+						if (articleIdsPerThread.containsKey(threadId) && 
+							articleIdsPerThread.get(threadId).contains(deltaArticle.getArticleNumber()))
+							articleExists = true;
+
+						if (!articleExists) {
+							if(!newArticles.containsKey(threadId))
+								newArticles.put(threadId, new ArrayList<CommunicationChannelArticle>());
+							newArticles.get(threadId).add(deltaArticle);
+							ClassificationInstance instance = prepareClassificationInstance(ossmeterID, deltaArticle, detectingCodeMetric);
+							int positionInThread = 1;
+							if (articleIdsPerThread.containsKey(threadId))
+								positionInThread += articleIdsPerThread.get(threadId).size();
 							instance.setPositionFromThreadBeginning(positionInThread);
-//							instance.setPositionFromThreadEnd(list.size()+1-positionInThread);
+							instanceIndex.put(instance.getArticleNumber(), instance);
 							classifier.add(instance);
 						}
-					}
-				}
-				classifier.classify();
-				int index = 0;
-				for (List<Article> list: articleList) {
-					index++;
+					}			
 					
-					ThreadData threadData = new ThreadData();
-					threadData.setThreadId(index);
-					for (Article article: list) {
-						threadData.getArticles().add(
-								prepareArticleData(article, communicationChannelName, classifier, 
-												   previousClassAssignments, instanceIndex));
-						
-						if (threadsPerNewsgroup.containsKey(communicationChannelName))
-							threadsPerNewsgroup.get(communicationChannelName).add(index);
-						else {
-							Set<Integer> threadSet = new HashSet<Integer>();
-							threadSet.add(index);
-							threadsPerNewsgroup.put(communicationChannelName, threadSet);
+					classifier.classify();
+					
+					
+					for(Integer threadToProcess : newArticles.keySet())
+					{
+						ThreadData threadData = getThreaData(db, threadToProcess);
+						if(threadData==null) {
+							threadData = new ThreadData();
+							threadData.setThreadId(threadToProcess);
 						}
+						for (CommunicationChannelArticle newArticle : newArticles.get(threadToProcess)) {// Thread data
+							
+							threadData.getArticles().add(prepareArticleData(newArticle, ossmeterID,  
+									classifier, instanceIndex));
+
+							
+
+							if (threadsPerNewsgroup.containsKey(ossmeterID))
+								threadsPerNewsgroup.get(ossmeterID).add(threadToProcess);
+							else {
+								Set<Integer> threadSet = new HashSet<Integer>();
+								threadSet.add(threadToProcess);
+								threadsPerNewsgroup.put(ossmeterID, threadSet);
+							}
+							
+						}
+						db.getThreads().add(threadData);
+						
 					}
-					db.getThreads().add(threadData);
+					
+						
+					db.sync();
+				}
+
+				db.sync();
+
+				// updates existing threads with new data (OSSid == ossmeterID
+				for (String OSSid : threadsPerNewsgroup.keySet()) {
+					Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(OSSid));
+					NewsgroupData newsgroupData = null;
+					for (NewsgroupData ngd : newsgroupDataIt)
+						newsgroupData = ngd;
+					if (newsgroupData != null) {
+						newsgroupData.setThreads(threadsPerNewsgroup.get(OSSid).size());
+					} else {
+						newsgroupData = new NewsgroupData();
+						newsgroupData.setNewsgroupName(OSSid);
+						newsgroupData.setPreviousThreads(0);
+						newsgroupData.setThreads(threadsPerNewsgroup.get(OSSid).size());
+						db.getNewsgroups().add(newsgroupData);
+					}
 				}
 				db.sync();
+//-------------------------------------------------------------------------
+	
 			}
+
+			else  {
+
+				if (communicationChannelDelta.getArticles().size() > 0) {
+					String ossmeterID = communicationChannel.getOSSMeterId();
+					
+
+					Map<Long, String> previousClassAssignments = new HashMap<Long, String>();
+									
+					List<Article> articles = new ArrayList<Article>();
+					for (ThreadData threadData : db.getThreads()) {
+						for (ArticleData articleData : threadData.getArticles()) {
+							if (articleData.getNewsgroupName().equals(ossmeterID)) {
+								previousClassAssignments.put(articleData.getArticleNumber(),
+										articleData.getContentClass());
+								articles.add(prepareArticle(articleData));
+								Set<Long> articleIds = null;
+								if (articleIdsPerNewsgroup.containsKey(articleData.getNewsgroupName()))
+									articleIds = articleIdsPerNewsgroup.get(articleData.getNewsgroupName());
+								else {
+									articleIds = new HashSet<Long>();
+									articleIdsPerNewsgroup.put(articleData.getNewsgroupName(), articleIds);
+								}
+								articleIds.add(articleData.getArticleNumber());
+							}
+						}
+					}
+
+					Map<Long, ClassificationInstance> instanceIndex = new HashMap<Long, ClassificationInstance>();
+					for (CommunicationChannelArticle deltaArticle : communicationChannelDelta.getArticles()) {
+
+						Boolean articleExists = false;
+						if (articleIdsPerNewsgroup.containsKey(ossmeterID) && articleIdsPerNewsgroup
+								.get(ossmeterID).contains(deltaArticle.getArticleNumber()))
+							articleExists = true;
+
+						if (!articleExists) {
+							articles.add(prepareArticle(deltaArticle));
+							ClassificationInstance instance = prepareClassificationInstance(ossmeterID,
+									deltaArticle, detectingCodeMetric);
+							instanceIndex.put(instance.getArticleNumber(), instance);
+						}
+					}
+
+					System.out.println("Building message thread tree... (" + articles.size() + ")");
+					Threader threader = new Threader();
+					Article root = (Article) threader.thread(articles);
+					List<List<Article>> articleList = zeroLevelCall(root);
+
+					db.getThreads().getDbCollection().drop();
+					db.sync();
+
+					Classifier classifier = new Classifier();
+					for (List<Article> list : articleList) {
+						int positionInThread = 0;
+						for (Article article : list) {
+							positionInThread++;
+							if (instanceIndex.containsKey(article.getArticleNumberLong())) {
+								ClassificationInstance instance = instanceIndex.get(article.getArticleNumberLong());
+								instance.setPositionFromThreadBeginning(positionInThread);
+								// instance.setPositionFromThreadEnd(list.size()+1-positionInThread);
+								classifier.add(instance);
+							}
+						}
+					}
+					classifier.classify();
+					int index = 0;
+					for (List<Article> list : articleList) {// Thread data
+						index++;
+
+						ThreadData threadData = new ThreadData();
+						threadData.setThreadId(index);
+						for (Article article : list) {
+							threadData.getArticles().add(prepareArticleData(article, ossmeterID,
+									classifier, previousClassAssignments, instanceIndex));
+
+							if (threadsPerNewsgroup.containsKey(ossmeterID))
+								threadsPerNewsgroup.get(ossmeterID).add(index);
+							else {
+								Set<Integer> threadSet = new HashSet<Integer>();
+								threadSet.add(index);
+								threadsPerNewsgroup.put(ossmeterID, threadSet);
+							}
+						}
+						db.getThreads().add(threadData);
+					}
+					db.sync();
+				}
+
+				db.sync();
+
+				// updates existing threads with new data
+				for (String OSSid : threadsPerNewsgroup.keySet()) {
+					Iterable<NewsgroupData> newsgroupDataIt = db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(OSSid));
+					NewsgroupData newsgroupData = null;
+					for (NewsgroupData ngd : newsgroupDataIt)
+						newsgroupData = ngd;
+					if (newsgroupData != null) {
+						newsgroupData.setThreads(threadsPerNewsgroup.get(OSSid).size());
+					} else {
+						newsgroupData = new NewsgroupData();
+						newsgroupData.setNewsgroupName(OSSid);
+						newsgroupData.setPreviousThreads(0);
+						newsgroupData.setThreads(threadsPerNewsgroup.get(OSSid).size());
+						db.getNewsgroups().add(newsgroupData);
+					}
+				}
+				db.sync();
+
+			} 
 		}
-		db.sync();
-		for (String newsgroupName: threadsPerNewsgroup.keySet()) {
-			Iterable<NewsgroupData> newsgroupDataIt = 
-					db.getNewsgroups().find(NewsgroupData.NEWSGROUPNAME.eq(newsgroupName));
-			NewsgroupData newsgroupData = null;
-			for (NewsgroupData ngd:  newsgroupDataIt)
-				newsgroupData = ngd;
-			if (newsgroupData!=null) {
-				newsgroupData.setThreads(threadsPerNewsgroup.get(newsgroupName).size());
-			} else {
-				newsgroupData = new NewsgroupData();
-				newsgroupData.setNewsgroupName(newsgroupName);
-				newsgroupData.setPreviousThreads(0);
-				newsgroupData.setThreads(threadsPerNewsgroup.get(newsgroupName).size());
-				db.getNewsgroups().add(newsgroupData);
-			}
-		}
-		db.sync();
+		
+		
+
 	}
 	
-	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db)
+	private ThreadData getThreaData (NewsgroupsThreadsTransMetric db, int threadId)
 	{
+		ThreadData threadData=null;
+		Iterable<ThreadData> threadDataIt = db.getThreads().find(ThreadData.THREADID.eq(threadId));
+		for(ThreadData td : threadDataIt)
+			threadData=td;
+		return threadData;
+	}
+
+
+	private String getNaturalLanguage(CommunicationChannelArticle article, DetectingCodeTransMetric db, 
+			String newsgroupName) {
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
-		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
-						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
-		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
+		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().find(
+				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(newsgroupName),
+				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+		for (NewsgroupArticleDetectingCode nadc : newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
-		if(newsgroupArticleInDetectionCode.getNaturalLanguage() != null)
+		if (newsgroupArticleInDetectionCode.getNaturalLanguage() != null)
 			return newsgroupArticleInDetectionCode.getNaturalLanguage();
 		else
 			return "";
 	}
 
-	private ClassificationInstance prepareClassificationInstance(String communicationChannelName, CommunicationChannelArticle article, DetectingCodeTransMetric db)
-	{
-		ClassificationInstance instance = new ClassificationInstance(); 
+	private ClassificationInstance prepareClassificationInstance(String ossmeterID,
+			CommunicationChannelArticle article, DetectingCodeTransMetric db) {
+		ClassificationInstance instance = new ClassificationInstance();
 		instance.setArticleNumber(article.getArticleNumber());
-		instance.setNewsgroupName(communicationChannelName);
+		instance.setNewsgroupName(ossmeterID);
 		instance.setSubject(article.getSubject());
-		instance.setText(getNaturalLanguage(article, db));
+		instance.setText(getNaturalLanguage(article, db, ossmeterID));
 		return instance;
 	}
 
@@ -265,32 +409,49 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		article.setDate(deltaArticle.getDate().toString());
 		article.setFrom(deltaArticle.getUser());
 		article.setSubject(deltaArticle.getSubject());
-		for (String reference: deltaArticle.getReferences())
+		for (String reference : deltaArticle.getReferences())
 			article.addReference(reference);
 		return article;
 	}
 
-	private ArticleData prepareArticleData(Article article, 
-					String communicationChannelName, Classifier classifier, 
-					Map<Long, String> previousClassAssignments, Map<Long, ClassificationInstance> instanceIndex) {
+	private ArticleData prepareArticleData(Article article, String ossmeterId, Classifier classifier,
+			Map<Long, String> previousClassAssignments, Map<Long, ClassificationInstance> instanceIndex) {
 		ArticleData articleData = new ArticleData();
-		articleData.setNewsgroupName(communicationChannelName);
+		articleData.setNewsgroupName(ossmeterId);
 		articleData.setArticleId(article.getArticleId());
 		articleData.setArticleNumber(article.getArticleNumberLong());
 		articleData.setDate(article.getDate());
 		articleData.setFrom(article.getFrom());
 		articleData.setSubject(article.getSubject());
 		String references = "";
-		for (String reference: article.getReferences())
+		for (String reference : article.getReferences())
 			references += " " + reference;
 		articleData.setReferences(references.trim());
 		if (previousClassAssignments.containsKey(article.getArticleNumberLong())) {
 			articleData.setContentClass(previousClassAssignments.get(article.getArticleNumberLong()));
-		}
-		else {
+		} else {
 			articleData.setContentClass(
 					classifier.getClassificationResult(instanceIndex.get(article.getArticleNumberLong())));
 		}
+		return articleData;
+	}
+
+	private ArticleData prepareArticleData(CommunicationChannelArticle article, String ossmeterID, Classifier classifier,
+			Map<Long, ClassificationInstance> instanceIndex) {
+		ArticleData articleData = new ArticleData();
+		articleData.setNewsgroupName(ossmeterID);
+		articleData.setArticleId(article.getArticleId());
+		articleData.setArticleNumber(article.getArticleNumber());
+		articleData.setDate(article.getDate().toString());
+		articleData.setFrom(article.getUser());
+		articleData.setSubject(article.getSubject());
+		String references = "";
+		if (article.getReferences() != null) {
+			for (String reference : article.getReferences())
+				references += " " + reference;
+		}
+		articleData.setReferences(references.trim());
+		articleData.setContentClass(classifier.getClassificationResult(instanceIndex.get(article.getArticleNumber())));
 		return articleData;
 	}
 
@@ -301,57 +462,57 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		article.setDate(articleData.getDate());
 		article.setFrom(articleData.getFrom());
 		article.setSubject(articleData.getSubject());
-		for (String reference: articleData.getReferences().split(" "))
+		for (String reference : articleData.getReferences().split(" "))
 			article.addReference(reference);
 		return article;
 	}
+	
 
 	@Override
 	public String getShortIdentifier() {
-		return "threads";
+		return "trans.newsgroups.threads";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Threads";
+		return "Assigns newsgroup articles to threads";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric holds information for assigning newsgroup articles to threads. " +
-				"The threading algorithm is executed from scratch everytime.";
+		return "This metric holds information for assigning newsgroup articles to threads. "
+				+ "The threading algorithm is executed from scratch everytime.";
 	}
-	
+
 	public static List<List<Article>> zeroLevelCall(Article article) {
-//		Article root = article;
+		// Article root = article;
 		List<List<Article>> threadList = new ArrayList<List<Article>>();
-		while (article!=null) {
+		while (article != null) {
 			List<Article> articleNumbers = new ArrayList<Article>();
-			if (article.getArticleNumberLong()>0)
+			if (article.getArticleNumberLong() > 0)
 				articleNumbers.add(article);
 			if (article.kid != null)
 				articleNumbers.addAll(higherLevelCall(article.kid));
 			Collections.sort(articleNumbers);
-			if (threadList.size()==0)
+			if (threadList.size() == 0)
 				threadList.add(articleNumbers);
 			else {
-				int index=0;
-				while ((index<threadList.size()) && 
-						(articleNumbers.get(0).getArticleNumberLong() > 
-							threadList.get(index).get(0).getArticleNumberLong()))
+				int index = 0;
+				while ((index < threadList.size()) && (articleNumbers.get(0).getArticleNumberLong() > threadList
+						.get(index).get(0).getArticleNumberLong()))
 					index++;
 				threadList.add(index, articleNumbers);
 			}
-				
+
 			article = article.next;
 		}
-//		printThreadList(root, threadList);
+		// printThreadList(root, threadList);
 		return threadList;
 	}
 
 	public static List<Article> higherLevelCall(Article article) {
 		List<Article> articleNumbers = new ArrayList<Article>();
-		if (article.getArticleNumberLong()>0)
+		if (article.getArticleNumberLong() > 0)
 			articleNumbers.add(article);
 		if (article.kid != null)
 			articleNumbers.addAll(higherLevelCall(article.kid));
@@ -359,5 +520,5 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 			articleNumbers.addAll(higherLevelCall(article.next));
 		return articleNumbers;
 	}
-	
+
 }

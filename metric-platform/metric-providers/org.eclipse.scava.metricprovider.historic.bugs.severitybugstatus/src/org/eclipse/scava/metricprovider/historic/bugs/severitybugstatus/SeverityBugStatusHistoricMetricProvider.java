@@ -202,18 +202,21 @@ public class SeverityBugStatusHistoricMetricProvider extends AbstractHistoricalM
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugseveritysentiment";
+		return "historic.bugs.severitybugstatus";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Sentiment Per Bug Severity Levels Per Day";
+		return "Number of each bug status per bug severity level";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the average sentiment, the sentiment at " +
-			   "the beginning of threads and the sentiment at the end of threads " +
-			   "per severity level, in bugs submitted every day.";
+		return "This metric computes the total number and percentage of each bug status per severity level, "
+				+ "in bugs submitted every day, per bug tracker. There are 7 bug status (ResolvedClosed, WontFix, "
+				+ "WorksForMe, NonResolvedClosed, Invalid, Fixed, Duplicate) and 8 severity  levels (blocker, critical, "
+				+ "major, minor, enhancement, normal, trivial, unknown). A bug severity is considered `unknown` if "
+				+ "there is not enough information for the classifier to make a decision. For example, an unanswered "
+				+ "bug with no user comment to analyse..";
 	}
 }
