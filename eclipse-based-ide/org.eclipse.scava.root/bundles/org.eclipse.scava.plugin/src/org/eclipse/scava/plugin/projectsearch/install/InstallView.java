@@ -209,6 +209,7 @@ public class InstallView extends TitleAreaDialogView<IInstallViewEventListener> 
 	
 	public void setEnabledClose(boolean enabled) {
 		btnFinish.setEnabled(enabled);
+		btnBack.setEnabled(enabled);
 	}
 
 	@Override
