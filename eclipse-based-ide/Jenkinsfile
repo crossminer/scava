@@ -8,7 +8,7 @@ pipeline {
   	stage('Generating Swagger API') {
   		steps {
   			dir(path: 'eclipse-based-ide/developmentTools/modules/openApiClientBuilding') {
-  				sh 'java -jar swagger-codegen-cli-3.0.7.jar generate -i openapi.json -l java -o client -c codegen-java-config.json -DapiTests=false'
+  				sh 'java -jar swagger-codegen-cli-3.0.7.jar generate -i openapi.json -l java -o client -c codegen-java-config.json'
   			}
   		}
   	}
