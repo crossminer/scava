@@ -25,9 +25,6 @@ import libsvm.svm_print_interface;
 
 public class svm_predict_nofiles {
 	
-	private static boolean predict_probability;
-	private static String model_filename;
-
 	private static svm_print_interface svm_print_null = new svm_print_interface()
 	{
 		public void print(String s) {}
@@ -70,23 +67,21 @@ public class svm_predict_nofiles {
 		int nr_class=svm.svm_get_nr_class(model);
 		double[] prob_estimates=null;
 
-		if(predict_probability)
+
+		if(svm_type == svm_parameter.EPSILON_SVR ||
+		   svm_type == svm_parameter.NU_SVR)
 		{
-			if(svm_type == svm_parameter.EPSILON_SVR ||
-			   svm_type == svm_parameter.NU_SVR)
-			{
-				svm_predict_nofiles.info("Prob. model for test data: target value = predicted value + z,\nz: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma="+svm.svm_get_svr_probability(model)+"\n");
-			}
-			else
-			{
-				prob_estimates = new double[nr_class];
+			svm_predict_nofiles.info("Prob. model for test data: target value = predicted value + z,\nz: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma="+svm.svm_get_svr_probability(model)+"\n");
+		}
+		else
+		{
+			prob_estimates = new double[nr_class];
 //				int[] labels=new int[nr_class];
 //				svm.svm_get_labels(model,labels);
 //				output.writeBytes("labels");
 //				for(int j=0;j<nr_class;j++)
 //					output.writeBytes(" "+labels[j]);
 //				output.writeBytes("\n");
-			}
 		}
 		
 		List<List<Double>> output = new ArrayList<List<Double>>(target_list.size());
@@ -97,7 +92,7 @@ public class svm_predict_nofiles {
 			
 			double v;
 			List<Double> output_line;
-			if (predict_probability && (svm_type==svm_parameter.C_SVC || svm_type==svm_parameter.NU_SVC))
+			if (svm_type==svm_parameter.C_SVC || svm_type==svm_parameter.NU_SVC)
 			{
 				v = svm.svm_predict_probability(model,node,prob_estimates);
 				output_line = new ArrayList<Double>(nr_class+1);
@@ -146,53 +141,71 @@ public class svm_predict_nofiles {
 		+"-q : quiet mode (no outputs)\n");
 		System.exit(1);
 	}
+	
+	private static File loadLocalFile(Class cl, String modelFileName, boolean compressed)
+	{
+		if(compressed)
+			modelFileName+=".zip";
+		String path = cl.getProtectionDomain().getCodeSource().getLocation().getFile();
+		if (path.endsWith("bin/"))
+			path = path.substring(0, path.lastIndexOf("bin/"));
+		File file=new File(path+modelFileName);
+		if(!Files.exists(file.toPath()))
+			return null;
+		else
+			return file;
+	}
 
-	public static svm_model parse_args_and_load_model(Class cl, String folderModel, String modelName, boolean predictProb, OssmeterLogger logger) {
-		predict_probability=predictProb;
+	public static svm_model parse_args_and_load_model(Class cl, String folderModel, String modelName, OssmeterLogger logger) {
 		svm_print_string = svm_print_stdout;
 
-		model_filename = folderModel+"/"+modelName;
+		String model_filename = folderModel+"/"+modelName;
 		
 		svm_model model = null;
 		try {
-			File modelFile;
+			File modelFile=null;
 			InputStream resource = cl.getClassLoader().getResourceAsStream("/" + model_filename);
-			if(resource==null)
+			if(resource!=null)
 			{
-				resource=cl.getClassLoader().getResourceAsStream("/" + model_filename +".zip");
-				if(resource==null)
-					throw new FileNotFoundException("The file "+model_filename+" .m or .m.zip has not been found");
-				modelFile=unzipModel(resource);
-			}
-			else
 				modelFile=createTempFile(resource, "m");
-			if(modelFile==null)
-			{
-				String path = cl.getProtectionDomain().getCodeSource().getLocation().getFile();
-				if (path.endsWith("bin/"))
-					path = path.substring(0, path.lastIndexOf("bin/"));
-				File file= new File(path+model_filename);
-				if(!Files.exists(file.toPath()))
-					throw new FileNotFoundException("The file "+model_filename+" has not been found");
-				else
-					resource=new FileInputStream(file);
-			}
-			model = svm.svm_load_model(modelFile.getPath());
-			modelFile.delete();
-			
-			if(predict_probability)
-			{
-				if(svm.svm_check_probability_model(model)==0)
-				{
-					System.err.print("Model does not support probabiliy estimates\n");
-				}
+				model = svm.svm_load_model(modelFile.getPath());
+				modelFile.delete();
 			}
 			else
 			{
-				if(svm.svm_check_probability_model(model)!=0)
+				resource = cl.getClassLoader().getResourceAsStream("/" + model_filename+".zip");
+				if(resource!=null)
 				{
-					svm_predict_nofiles.info("Model supports probability estimates, but disabled in prediction.\n");
+					modelFile=unzipModel(resource);
+					model = svm.svm_load_model(modelFile.getPath());
+					modelFile.delete();
 				}
+				else
+				{
+					modelFile=loadLocalFile(cl, model_filename, false);
+					if(modelFile==null)
+					{
+						
+						File tempFile = loadLocalFile(cl, model_filename, true);
+						if(tempFile==null)
+							throw new FileNotFoundException("The file "+model_filename+" .m or .m.zip has not been found");
+						InputStream is = new FileInputStream(tempFile);
+						modelFile=unzipModel(is);
+						is.close();
+						model = svm.svm_load_model(modelFile.getPath());
+						modelFile.delete();
+						
+					}
+					else
+					{
+						model = svm.svm_load_model(modelFile.getPath());
+					}
+				}
+			}	
+
+			if(svm.svm_check_probability_model(model)==0)
+			{
+				System.err.print("Model does not support probabiliy estimates\n");
 			}
 			
 			logger.info("Model has been sucessfully loaded");

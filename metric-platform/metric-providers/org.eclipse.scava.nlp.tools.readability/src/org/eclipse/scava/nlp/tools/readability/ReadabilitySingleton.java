@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -25,14 +24,12 @@ class ReadabilitySingleton {
 	private ReadabilitySingleton()
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.readability");
-		BufferedReader lexicon;
 		try
 		{
-			lexicon = loadFile();
-			readLexicon(lexicon);
+			loadFile();
 			logger.info("Lexicon has been sucessfully loaded");
 		}
-		catch (IOException  e) 
+		catch (IOException | InputMismatchException  e) 
 		{
 			logger.error("Error while loading the lexicon:", e);
 			e.printStackTrace();
@@ -51,7 +48,7 @@ class ReadabilitySingleton {
 		}
 	}
 	
-	private BufferedReader loadFile() throws UnsupportedEncodingException, FileNotFoundException 
+	private void loadFile() throws InputMismatchException, IOException 
 	{
 		ClassLoader cl = getClass().getClassLoader();
 		InputStream resource = cl.getResourceAsStream(lexiconPath);
@@ -66,7 +63,10 @@ class ReadabilitySingleton {
 			else
 				resource=new FileInputStream(file);
 		}
-		return new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		readLexicon(br);
+		br.close();
+		resource.close();
 	}
 	
 	

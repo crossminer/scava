@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,16 +37,14 @@ class SenticNet5Singleton
 	private SenticNet5Singleton()
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.resources.sentinet5");
-		BufferedReader lexicon;
 		try
 		{
-			lexicon = loadFile();
 			listPos=new ArrayList<String>();
 			listNeg=new ArrayList<String>();
-			readLexicon(lexicon);
+			loadFile();
 			logger.info("Lexicon has been sucessfully loaded");
 		}
-		catch (IOException  e) 
+		catch (IOException | InputMismatchException  e) 
 		{
 			logger.error("Error while loading the lexicon:", e);
 			e.printStackTrace();
@@ -90,7 +87,7 @@ class SenticNet5Singleton
 		}
 	}
 	
-	private BufferedReader loadFile() throws UnsupportedEncodingException, FileNotFoundException 
+	private void loadFile() throws InputMismatchException, IOException 
 	{
 		ClassLoader cl = getClass().getClassLoader();
 		InputStream resource = cl.getResourceAsStream(lexiconPath);
@@ -100,13 +97,18 @@ class SenticNet5Singleton
 			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 			if (path.endsWith("bin/"))
 				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
 			File file= new File(path+lexiconPath);
 			if(!Files.exists(file.toPath()))
 				throw new FileNotFoundException("The file "+lexiconPath+" has not been found");
 			else
 				resource=new FileInputStream(file);
 		}
-		return new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		readLexicon(br);
+		br.close();
+		resource.close();
 	}
 	
 	public HashMap<String, HashMap<String, Double>> getDictionary()

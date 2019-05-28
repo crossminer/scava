@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
-import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
@@ -22,7 +21,6 @@ class FileParserSingleton {
 	private OssmeterLogger logger;
 	private String supportedFilesListPath="/extraData/supportedFilesToText.txt";
 	private AutoDetectParser parser;
-	private Metadata metadata;
 	private HashMap<String,String> supportedFiles = new HashMap<String,String>();
 	
 	private FileParserSingleton()
@@ -35,7 +33,6 @@ class FileParserSingleton {
 			readSupportedFilesList(fileList);
 			logger.info("List of supported files has been sucessfully loaded");
 			parser = new AutoDetectParser();
-		    metadata = new Metadata();
 		}
 		catch (IOException  e) 
 		{
@@ -89,10 +86,6 @@ class FileParserSingleton {
 
 	public AutoDetectParser getParser() {
 		return parser;
-	}
-
-	public Metadata getMetadata() {
-		return metadata;
 	}
 
 	public HashMap<String, String> getSupportedFiles() {
