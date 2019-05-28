@@ -7,11 +7,14 @@ const INTERNAL_EXCEPTION_COUNT = "InternalExceptions";
 const SIZE_COUNT = "Size";
 const STREAM_POST = "Post";
 
-const IN_FLIGHT_LABEL_PRE = "InFlight: ";
-const SUBSCRIBER_LABEL_PRE = "Subscribers: ";
+const IN_FLIGHT_LABEL_PRE = "InFlight";
+const SUBSCRIBER_LABEL_PRE = "Subscribers";
 const FAILED_JOBS_LABEL_PRE = "Failed Jobs: ";
 const INTERNAL_EXCEPTION_LABEL_PRE = "Exceptions: ";
-const SIZE_LABEL_PRE = "Size: ";
+const SIZE_LABEL_PRE = "Size (total)";
+const PRE_SIZE_LABEL_PRE = "Size (pre)";
+const POST_SIZE_LABEL_PRE = "Size (post)";
+const DEST_SIZE_LABEL_PRE = "Size (dest)";
 
 const STREAM_TOPIC = "/topic/StreamMetadataBroadcaster";
 const TASK_TOPIC = "/topic/TaskMetadataBroadcaster";

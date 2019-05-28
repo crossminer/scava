@@ -275,6 +275,16 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	
 	size = "n/a";
 	sizeUnit = "";
+
+	preSize = "n/a";
+	preSizeUnit = "";
+	
+	postSize = "n/a";
+	postSizeUnit = "";
+	
+	destSize = "n/a";
+	destSizeUnit = "";
+	
 	inFlight = "n/a";
 	subscribers = "n/a";
 	taskStatus = "n/a";
@@ -320,27 +330,21 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 		for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
 			if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
 				//console.log("streams encountered");
-				for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ )
+				for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ ) {
 					//console.log("i="+i+";  j="+j);
+				
+					// handle pre-queue
 					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
-							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Pre.') ) {
 					
 						//console.log("i="+i+";  j="+j);
 						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
 						//console.log('name='+name);
 						
 						// size
-						size = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
-						//console.log('size='+size);
-						if ( size >= 1000 && size <= 999999 ) {
-							sizeUnit = "K";
-							size = size / 1000;
-						} else if ( size >= 1000000 ) {
-							sizeUnit = "M";
-							size = size / 1000000;
-						}
-						//console.log('size='+size);
+						preSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
+						//console.log('preSize='+preSize);
 						
 						// inFlight
 						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
@@ -350,23 +354,137 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
 						//console.log('subscribers='+subscribers);
 						
-						// also visible queue size for consistency
-						cell.value = Math.round(size) + sizeUnit;
-					}
+					}// handle pre-queue
 					
-			}
-		}// for streamTopicXmlDoc
-		
-		cellTooltip = "<table border=1><tr><td>" + SIZE_LABEL_PRE + size + sizeUnit + "</td><td>" + IN_FLIGHT_LABEL_PRE + inFlight + "</td><td>" + SUBSCRIBER_LABEL_PRE + subscribers + "</td></tr></table>";
+					// handle post-queue
+					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
+					
+						//console.log("i="+i+";  j="+j);
+						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
+						//console.log('name='+name);
+						
+						// size
+						postSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
+						//console.log('postSize='+postSize);
+						
+						// inFlight
+						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						//console.log('inFlight='+inFlight);
+
+						// numberOfSubscribers
+						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
+						//console.log('subscribers='+subscribers);
 			
-		if ( cellTooltip.includes("n/a") ) {
-			// return latest known status
-			return cellTooltips[modelElement];
-		} 
+					}// handle post-queue
+					
+					// handle destination-queue
+					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
+							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Destination.') ) {
+					
+						//console.log("i="+i+";  j="+j);
+						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
+						//console.log('name='+name);
+						
+						// size
+						destSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
+						//console.log('destSize='+destSize);
+						
+						// inFlight
+						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						//console.log('inFlight='+inFlight);
+
+						// numberOfSubscribers
+						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
+						//console.log('subscribers='+subscribers);
+			
+					}// handle destination-queue
+					
+			}// for
+			
+		}// if
 		
-		cellTooltips[modelElement] = cellTooltip;
-		
-		return cellTooltip;
+	}// for streamTopicXmlDoc
+					
+	// sum up size of pre-queue, post-queue, and destination-queue
+	size = 0;
+	if ( preSize!='n/a' && preSize!='0' )
+		size += parseInt(preSize, 10);
+	if ( postSize!='n/a' && postSize!='0' )
+		size += parseInt(postSize, 10);
+	if ( destSize!='n/a' && destSize!='0' )
+		size += parseInt(destSize, 10);
+	
+	// add unit to size and make size human-readable
+	if ( size >= 1000 && size <= 999999 ) {
+		sizeUnit = "K";
+		size = size / 1000;
+	} else if ( size >= 1000000 ) {
+		sizeUnit = "M";
+		size = size / 1000000;
+	} else {
+		sizeUnit = ""; // no unit
+	}
+	// rounding size
+	size = Math.round(size);
+	//console.log('size='+size);
+	
+	// add unit to preSize and make size human-readable
+	if ( preSize >= 1000 && preSize <= 999999 ) {
+		preSizeUnit = "K";
+		preSize = preSize / 1000;
+	} else if ( postSize >= 1000000 ) {
+		preSizeUnit = "M";
+		preSize = preSize / 1000000;
+	} else {
+		preSizeUnit = ""; // no unit
+	}
+	// rounding preSize
+	preSize = Math.round(preSize);
+	//console.log('preSize='+preSize);
+	
+	// add unit to postSize and make size human-readable
+	if ( postSize >= 1000 && postSize <= 999999 ) {
+		postSizeUnit = "K";
+		postSize = postSize / 1000;
+	} else if ( postSize >= 1000000 ) {
+		postSizeUnit = "M";
+		postSize = postSize / 1000000;
+	} else {
+		postSizeUnit = ""; // no unit
+	}
+	// rounding postSize
+	postSize = Math.round(postSize);
+	//console.log('postSize='+postSize);
+	
+	// add unit to destSize and make size human-readable
+	if ( destSize >= 1000 && destSize <= 999999 ) {
+		destSizeUnit = "K";
+		destSize = destSize / 1000;
+	} else if ( destSize >= 1000000 ) {
+		destSizeUnit = "M";
+		destSize = destSize / 1000000;
+	} else {
+		destSizeUnit = ""; // no unit
+	}
+	// rounding destSize
+	destSize = Math.round(destSize);
+	//console.log('destSize='+destSize);
+	
+	// also visible queue size for consistency
+	cell.value = Math.round(size) + sizeUnit;
+				
+	cellTooltip = "<table border=1>" + "<tr><td>" + PRE_SIZE_LABEL_PRE + "</td><td>" + preSize + preSizeUnit + "</td></tr>" + "<tr><td>" + POST_SIZE_LABEL_PRE + "</td><td>" + postSize + postSizeUnit + "</td></tr>" + "<tr><td>" + DEST_SIZE_LABEL_PRE + "</td><td>" + destSize + destSizeUnit + "</td></tr>" + "<tr><td>" + SIZE_LABEL_PRE + "</td><td>" + size + sizeUnit + "</td></tr>" + "<tr><td>" + IN_FLIGHT_LABEL_PRE + "</td><td>" + inFlight + "</td></tr>" + "<tr><td>" + SUBSCRIBER_LABEL_PRE + "</td><td>" + subscribers + "</td></tr></table>";		
+	if ( cellTooltip.includes("n/a") ) {
+		// return latest known status
+		return cellTooltips[modelElement];
+	} 
+	
+	cellTooltips[modelElement] = cellTooltip;
+	
+	return cellTooltip;
 		
 	}// if stream tooltip
 	else {
