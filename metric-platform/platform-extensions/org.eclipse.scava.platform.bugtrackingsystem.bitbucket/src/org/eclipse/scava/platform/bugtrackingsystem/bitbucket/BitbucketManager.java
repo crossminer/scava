@@ -477,23 +477,6 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
 
-		Runnable runnable = new Runnable() { // This is triggered at a fixed rate, see scheduled executor service below
-
-			public void run() {
-
-				try {
-
-					setClient(bitbucket);
-
-				} catch (IOException e) {
-
-					e.printStackTrace();
-
-				}
-			}
-		};
-
-		if (open_id.contains("Too Many Requests") == false) {
 
 			newClient.addInterceptor(new Interceptor() {
 
@@ -513,68 +496,18 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 						newRequest = request.newBuilder();
 					}
 					
-					//FIXME: OAuth authentication - reader currently defaults to unauthenticated client
-					
-					
-					// else if (!(bitbucket.getPersonal_access_token() == null)) {
-					//
-					// newRequest = request.newBuilder().header("Private-Token",
-					// bitbucket.getPersonal_access_token());
-					//
-					// } else if (!((bitbucket.getClient_id() == null)
-					// && (bitbucket.getClient_secret() == null))) {
-					//
-					// generateOAuth2Token(bitbucket);
-					// newRequest = request.newBuilder().header("Authorization", " Bearer " +
-					// getOAuth2Token());
-
-					// }
+			
 
 					return chain.proceed(newRequest.build());
 				}
 			});
 
-			// creates a single threaded service with a fixed rate that will generate a
-			// newClient per specified interval.
 
-			// TODO Change unit of time to reflect the the reset limit of each
-			// authentication method
-			ScheduledExecutorService newClientService = Executors.newSingleThreadScheduledExecutor();
-			newClientService.scheduleAtFixedRate(runnable, 1, 1, TimeUnit.MINUTES);
-
-		}
-
-		// sets client to a new client (with or without an interceptor)
+		
 		this.client = newClient.build();
 	}
 
-	// TODO - Modify to generate Token using Bitbucket requirements
-//	private void generateOAuth2Token(BitbucketBugTrackingSystem bitbucket) throws IOException {
-//
-//		System.out.println("Generating OAuth token");
-//		OkHttpClient genClient = new OkHttpClient();
-//		// HttpUrl.Builder httpurlBuilder =
-//		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
-//
-//		FormBody.Builder formBodyBuilder = new FormBody.Builder();
-//		formBodyBuilder.add("grant_type", "client_credentials");
-//		// formBodyBuilder.add("client_id", bitbucket.getClient_id());
-//		// formBodyBuilder.add("client_secret", bitbucket.getClient_secret());
-//
-//		FormBody body = formBodyBuilder.build();
-//
-//		// Used for a POST request
-//		Request.Builder builder = new Request.Builder();
-//		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
-//		builder = builder.post(body);
-//		Request request = builder.build();
-//		Response response = genClient.newCall(request).execute();
-//		checkHeader(response.headers(), bitbucket);
-//
-//		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
-//		String open_id = BitbucketUtils.fixString(jsonNode.get("access_token").toString());
-//
-//		this.open_id = open_id;
+
 //	}
 
 	/**
