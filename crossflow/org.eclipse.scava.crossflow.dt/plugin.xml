@@ -17,6 +17,24 @@
                   name="group">
             </separator>
          </menu>
+         <action
+               class="org.eclipse.scava.crossflow.dt.UploadZipAndRun"
+               enablesFor="1"
+               icon="icons/running.gif"
+               id="CROSSFLOWUploadZipAction"
+               label="Upload Zip and Run"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
+         </action>
+         <action
+               class="org.eclipse.scava.crossflow.dt.UploadZip"
+               enablesFor="1"
+               icon="icons/running.gif"
+               id="CROSSFLOWUploadZipAction"
+               label="Upload Zip"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
+         </action>
          
          <action
                class="org.eclipse.scava.crossflow.dt.CreateExecutablesAction"
@@ -52,6 +70,24 @@
                   name="group">
             </separator>
          </menu>
+         <action
+               class="org.eclipse.scava.crossflow.dt.UploadZipAndRun"
+               enablesFor="1"
+               icon="icons/running.gif"
+               id="CROSSFLOWUploadZipAction"
+               label="Upload Zip and Run"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
+         </action>
+         <action
+               class="org.eclipse.scava.crossflow.dt.UploadZip"
+               enablesFor="1"
+               icon="icons/running.gif"
+               id="CROSSFLOWUploadZipAction"
+               label="Upload Zip"
+               menubarPath="CROSSFLOWGeneration.menu/group"
+               tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
+         </action>
          <action
                class="org.eclipse.scava.crossflow.dt.CreateExecutablesAction"
                enablesFor="1"

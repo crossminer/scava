@@ -5,6 +5,7 @@
 	input="in"
 	output="out"
 	summary="Optional summary of the Experiment goes here."
+	webServer="localhost:8080"
 >
 	<input path="in/input.csv" title="Input"/>
 	<output path="out/output.csv" title="Output"/>
