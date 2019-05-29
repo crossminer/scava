@@ -344,12 +344,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 						newRequest = request.newBuilder().header("Private-Token",
 						gitlabTracker.getPersonal_access_token());
 
-					} else if (!((gitlabTracker.getClient_id() == null)
-							&& (gitlabTracker.getClient_secret() == null))) {
-
-						generateOAuth2Token(gitlabTracker);
-						newRequest = request.newBuilder().header("Authorization", " Bearer " + getOAuth2Token());
-
 					}
 
 					return chain.proceed(newRequest.build());
@@ -361,34 +355,34 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		this.client = newClient.build();
 	}
 
-	// TODO - Modify to generate Token using GitLabs requirements
-	private void generateOAuth2Token(GitLabTracker gitlabTracker) throws IOException {
-
-		System.out.println("Generating OAuth token");
-		OkHttpClient genClient = new OkHttpClient();
-		// HttpUrl.Builder httpurlBuilder =
-		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
-
-		FormBody.Builder formBodyBuilder = new FormBody.Builder();
-		formBodyBuilder.add("grant_type", "client_credentials");
-		formBodyBuilder.add("client_id", gitlabTracker.getClient_id());
-		formBodyBuilder.add("client_secret", gitlabTracker.getClient_secret());
-
-		FormBody body = formBodyBuilder.build();
-
-		// Used for a POST request
-		Request.Builder builder = new Request.Builder();
-		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
-		builder = builder.post(body);
-		Request request = builder.build();
-		Response response = genClient.newCall(request).execute();
-		checkHeader(response.headers(), gitlabTracker);
-
-		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
-		String open_id = GitLabUtils.fixString(jsonNode.get("access_token").toString());
-
-		this.open_id = open_id;
-	}
+//	// TODO - Modify to generate Token using GitLabs requirements
+//	private void generateOAuth2Token(GitLabTracker gitlabTracker) throws IOException {
+//
+//		System.out.println("Generating OAuth token");
+//		OkHttpClient genClient = new OkHttpClient();
+//		// HttpUrl.Builder httpurlBuilder =
+//		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
+//
+//		FormBody.Builder formBodyBuilder = new FormBody.Builder();
+//		formBodyBuilder.add("grant_type", "client_credentials");
+//		formBodyBuilder.add("client_id", gitlabTracker.getClient_id());
+//		formBodyBuilder.add("client_secret", gitlabTracker.getClient_secret());
+//
+//		FormBody body = formBodyBuilder.build();
+//
+//		// Used for a POST request
+//		Request.Builder builder = new Request.Builder();
+//		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
+//		builder = builder.post(body);
+//		Request request = builder.build();
+//		Response response = genClient.newCall(request).execute();
+//		checkHeader(response.headers(), gitlabTracker);
+//
+//		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
+//		String open_id = GitLabUtils.fixString(jsonNode.get("access_token").toString());
+//
+//		this.open_id = open_id;
+//	}
 
 	/**
 	 * This method checks the HTTP response headers for current values associated
