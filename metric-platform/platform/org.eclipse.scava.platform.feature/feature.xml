@@ -1066,6 +1066,12 @@
          version="0.0.0"/>
          
     <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+    <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.docker.smells"
          download-size="0"
          install-size="0"
