@@ -101,17 +101,18 @@ public class SeverityResponseTimeHistoricMetricProvider extends AbstractHistoric
 			 for (String severity: severities.keySet()) {
 				 int numberOfSeverityThreads = severities.get(severity);
 				 SeverityLevel severityLevel = new SeverityLevel();
-				 metric.getSeverityLevels().add(severityLevel);
-				 severityLevel.setSeverityLevel(severity);
-				 severityLevel.setNumberOfThreads(numberOfSeverityThreads);
-				 
 				 long duration = getValueLong(durations, severity);
-				 long avgResponseTime = 0;
 				 if (duration > 0)
-					 avgResponseTime = computeAverageDuration(duration, numberOfSeverityThreads);
-				 severityLevel.setAvgResponseTime(avgResponseTime);
-				 String avgResponseTimeFormatted = format(avgResponseTime);
-				 severityLevel.setAvgResponseTimeFormatted(avgResponseTimeFormatted);
+				 {
+					 severityLevel.setSeverityLevel(severity);
+					 severityLevel.setNumberOfThreads(numberOfSeverityThreads);
+				 
+				 
+					 long avgResponseTime = computeAverageDuration(duration, numberOfSeverityThreads);
+					 severityLevel.setAvgResponseTime(avgResponseTime);
+					 severityLevel.setAvgResponseTimeFormatted(format(avgResponseTime));
+				 }
+				 metric.getSeverityLevels().add(severityLevel);
 			 }
 			 
 		}

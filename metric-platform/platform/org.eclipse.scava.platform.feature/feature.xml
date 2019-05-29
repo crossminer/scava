@@ -1994,13 +1994,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.platform.documentation.github"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.scava.metricprovider.trans.documentation.detectingcode"
          download-size="0"
          install-size="0"
