@@ -163,11 +163,11 @@
 						   <p></p>
 						   <table class="table table-striped table-bordered" id="log-table">
 						      <thead class="thead-dark">
-						         <tr>
+						       		"<tr>" +
 						            <th>Creation</th>
 						            <th><span class="badge badge-secondary">Severity</span></th>
 						            <th>Message</th>
-						         </tr>
+						       		"</tr>" +
 						      </thead>
 						      <tbody id="log-table-body">
 						      </tbody>
@@ -273,19 +273,27 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	streamTopicXmlDoc = window.streamTopicXmlDoc;
 	taskTopicXmlDoc = window.taskTopicXmlDoc;
 	
-	size = "n/a";
-	sizeUnit = "";
+	queueSize = "n/a";
+	queueSizeUnit = "";
+	
+	inFlightSize = "n/a";
+	inFlightSizeUnit = "";
 
 	preSize = "n/a";
 	preSizeUnit = "";
+	preInFlightSize = "n/a";
+	preInFlightSizeUnit = "";
 	
 	postSize = "n/a";
 	postSizeUnit = "";
+	postInFlightSize = "n/a";
+	postInFlightSizeUnit = "";
 	
 	destSize = "n/a";
 	destSizeUnit = "";
-	
-	inFlight = "n/a";
+	destInFlightSize = "n/a";
+	destInFlightSizeUnit = "";
+
 	subscribers = "n/a";
 	taskStatus = "n/a";
 
@@ -347,12 +355,8 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 						//console.log('preSize='+preSize);
 						
 						// inFlight
-						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						preInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
-
-						// numberOfSubscribers
-						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
-						//console.log('subscribers='+subscribers);
 						
 					}// handle pre-queue
 					
@@ -370,7 +374,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 						//console.log('postSize='+postSize);
 						
 						// inFlight
-						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						postInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
 
 						// numberOfSubscribers
@@ -393,13 +397,9 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 						//console.log('destSize='+destSize);
 						
 						// inFlight
-						inFlight = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
+						destInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
-
-						// numberOfSubscribers
-						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
-						//console.log('subscribers='+subscribers);
-			
+						
 					}// handle destination-queue
 					
 			}// for
@@ -408,30 +408,54 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 		
 	}// for streamTopicXmlDoc
 					
-	// sum up size of pre-queue, post-queue, and destination-queue
-	size = 0;
+	// sum up queue size of pre-queue, post-queue, and destination-queue
+	queueSize = 0;
 	if ( preSize!='n/a' && preSize!='0' )
-		size += parseInt(preSize, 10);
+		queueSize += parseInt(preSize, 10);
 	if ( postSize!='n/a' && postSize!='0' )
-		size += parseInt(postSize, 10);
+		queueSize += parseInt(postSize, 10);
 	if ( destSize!='n/a' && destSize!='0' )
-		size += parseInt(destSize, 10);
+		queueSize += parseInt(destSize, 10);
 	
-	// add unit to size and make size human-readable
-	if ( size >= 1000 && size <= 999999 ) {
-		sizeUnit = "K";
-		size = size / 1000;
-	} else if ( size >= 1000000 ) {
-		sizeUnit = "M";
-		size = size / 1000000;
+	// add unit to queue size and make it human-readable
+	if ( queueSize >= 1000 && queueSize <= 999999 ) {
+		queueSizeUnit = "K";
+		queueSize = queueSize / 1000;
+	} else if ( queueSize >= 1000000 ) {
+		queueSizeUnit = "M";
+		queueSize = queueSize / 1000000;
 	} else {
-		sizeUnit = ""; // no unit
+		queueSizeUnit = ""; // no unit
 	}
-	// rounding size
-	size = Math.round(size);
-	//console.log('size='+size);
+	// rounding queue size
+	queueSize = Math.round(queueSize);
+	//console.log('queueSize='+queueSize);
 	
-	// add unit to preSize and make size human-readable
+	// sum up in-flight size of pre-queue, post-queue, and destination-queue
+	inFlightSize = 0;
+	if ( preInFlightSize !='n/a' && preInFlightSize !='0' )
+		inFlightSize += parseInt(preInFlightSize, 10);
+	if ( postInFlightSize !='n/a' && postInFlightSize !='0' )
+		inFlightSize += parseInt(postInFlightSize, 10);
+	if ( destInFlightSize !='n/a' && destInFlightSize !='0' )
+		inFlightSize += parseInt(destInFlightSize, 10);
+	
+	// add unit to in-flight size and make it human-readable
+	if ( inFlightSize >= 1000 && inFlightSize <= 999999 ) {
+		inFlightSizeUnit = "K";
+		inFlightSize = inFlightSize / 1000;
+	} else if ( inFlightSize >= 1000000 ) {
+		inFlightSizeUnit = "M";
+		inFlightSize = inFlightSize / 1000000;
+	} else {
+		inFlightSizeUnit = ""; // no unit
+	}
+	// rounding in-flight size
+	inFlightSizeUnit = Math.round(inFlightSize);
+	//console.log('inFlightSize='+inFlightSize);
+	
+	
+	// add unit to preSize and make it human-readable
 	if ( preSize >= 1000 && preSize <= 999999 ) {
 		preSizeUnit = "K";
 		preSize = preSize / 1000;
@@ -445,7 +469,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	preSize = Math.round(preSize);
 	//console.log('preSize='+preSize);
 	
-	// add unit to postSize and make size human-readable
+	// add unit to postSize and make it human-readable
 	if ( postSize >= 1000 && postSize <= 999999 ) {
 		postSizeUnit = "K";
 		postSize = postSize / 1000;
@@ -459,7 +483,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	postSize = Math.round(postSize);
 	//console.log('postSize='+postSize);
 	
-	// add unit to destSize and make size human-readable
+	// add unit to destSize and make it human-readable
 	if ( destSize >= 1000 && destSize <= 999999 ) {
 		destSizeUnit = "K";
 		destSize = destSize / 1000;
@@ -473,10 +497,84 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	destSize = Math.round(destSize);
 	//console.log('destSize='+destSize);
 	
+	// add unit to preInFlightSize and make it human-readable
+	if ( preInFlightSize >= 1000 && preInFlightSize <= 999999 ) {
+		preInFlightSizeUnit = "K";
+		preInFlightSize = preInFlightSize / 1000;
+	} else if ( preInFlightSize >= 1000000 ) {
+		preInFlightSizeUnit = "M";
+		preInFlightSize = preInFlightSize / 1000000;
+	} else {
+		preInFlightSizeUnit = ""; // no unit
+	}
+	// rounding preInFlightSize
+	preInFlightSize = Math.round(preInFlightSize);
+	//console.log('preInFlightSize='+preInFlightSize);
+	
+	// add unit to postInFlightSize and make it human-readable
+	if ( postInFlightSize >= 1000 && postInFlightSize <= 999999 ) {
+		postInFlightSizeUnit = "K";
+		postInFlightSize = postInFlightSize / 1000;
+	} else if ( postInFlightSize >= 1000000 ) {
+		postInFlightSizeUnit = "M";
+		postInFlightSize = postInFlightSize / 1000000;
+	} else {
+		postInFlightSizeUnit = ""; // no unit
+	}
+	// rounding postInFlightSize
+	postInFlightSize = Math.round(postInFlightSize);
+	//console.log('postInFlightSize='+postInFlightSize);
+	
+	// add unit to destInFlightSize and make it human-readable
+	if ( destInFlightSize >= 1000 && destInFlightSize <= 999999 ) {
+		destInFlightSizeUnit = "K";
+		destInFlightSize = destInFlightSize / 1000;
+	} else if ( destSize >= 1000000 ) {
+		destInFlightSizeUnit = "M";
+		destInFlightSize = destInFlightSize / 1000000;
+	} else {
+		destInFlightSizeUnit = ""; // no unit
+	}
+	// rounding destInFlightSize
+	destInFlightSize = Math.round(destInFlightSize);
+	//console.log('destInFlightSize='+destInFlightSize);
+	
 	// also visible queue size for consistency
-	cell.value = Math.round(size) + sizeUnit;
+	cell.value = Math.round(queueSize) + queueSizeUnit;
 				
-	cellTooltip = "<table border=1>" + "<tr><td>" + PRE_SIZE_LABEL_PRE + "</td><td>" + preSize + preSizeUnit + "</td></tr>" + "<tr><td>" + POST_SIZE_LABEL_PRE + "</td><td>" + postSize + postSizeUnit + "</td></tr>" + "<tr><td>" + DEST_SIZE_LABEL_PRE + "</td><td>" + destSize + destSizeUnit + "</td></tr>" + "<tr><td>" + SIZE_LABEL_PRE + "</td><td>" + size + sizeUnit + "</td></tr>" + "<tr><td>" + IN_FLIGHT_LABEL_PRE + "</td><td>" + inFlight + "</td></tr>" + "<tr><td>" + SUBSCRIBER_LABEL_PRE + "</td><td>" + subscribers + "</td></tr></table>";		
+	cellTooltip = "<table class='tg'> " + 
+	
+		"<tr>" +
+		   "<th></th>" +
+	    	"<th style='text-align: center;'>In-Flight   </th>" +
+	    	"<th style='text-align: center;'>   Queue</th>" +
+		"</tr>" +
+		"<tr>" +
+ 		   "<td style='font-style: italic'>Pre</td>" +
+    		"<td style='text-align: center;'>" + preInFlightSize + preInFlightSizeUnit + "</td>" +
+    		"<td style='text-align: center;'>" + preSize + preSizeUnit + "</td>" +
+	"</tr>" +
+		"<tr>" +
+		 	 "<td style='font-style: italic'>Dest</td>" +
+			"<td style='text-align: center;'>" + destInFlightSize + destInFlightSizeUnit + "</td>" +
+			"<td style='text-align: center;'>" + destSize + destSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+		     "<td style='font-style: italic'>Post</td>" +
+    	 	 "<td style='text-align: center;'>" + postInFlightSize + destInFlightSizeUnit + "</td>" +
+ 			"<td style='text-align: center;'>" + postSize + postSizeUnit + "</td>" +
+	"</tr>" +
+		"<tr>" +
+		   	 "<th style='font-style: italic'>Total</th>" +
+   			 "<td style='text-align: center;'>" + inFlightSize +  "</td>" + 
+    	     "<td style='text-align: center;'>" + queueSize +queueSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+	     	"<td style='font-style: italic'>Subs</td>" +
+  			"<td  style='text-align: center;' colspan='2'>" + subscribers + "</td>" +
+		"</tr>" +
+	
+		"</table>";		
 	if ( cellTooltip.includes("n/a") ) {
 		// return latest known status
 		return cellTooltips[modelElement];
