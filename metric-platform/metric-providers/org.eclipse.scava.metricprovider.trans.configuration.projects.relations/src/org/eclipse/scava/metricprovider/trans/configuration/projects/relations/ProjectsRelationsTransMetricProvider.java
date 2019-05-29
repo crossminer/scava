@@ -5,11 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.model.DockerDependencies;
+import org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.model.DockerDependency;
+import org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.model.DockerDependencyCollection;
+import org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.configuration.projects.relations.model.ProjectRelation;
 import org.eclipse.scava.metricprovider.trans.configuration.projects.relations.model.ProjectRelations;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.model.PuppetDependencies;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.model.PuppetDependency;
+import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.model.PuppetDependencyCollection;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -50,7 +59,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
         
     @Override
     public List<String> getIdentifiersOfUses() {
-    	return Collections.emptyList();
+    	return Arrays.asList(new String[]{DockerDependenciesTransMetricProvider.class.getCanonicalName(), PuppetDependenciesTransMetricProvider.class.getCanonicalName()});
     }
     
     public void setMetricProviderContext(MetricProviderContext context) {
@@ -118,25 +127,25 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 					db.sync();
 	            }
 	            
-	            /*if(testDocker(shortName)) {
+	            if(testDocker(shortName, project)) {
 	            	ProjectRelation pr = new ProjectRelation();
 	            	
-	            	pr.setProjectName(shortName);
+	            	pr.setRelationName(shortName);
 	            	pr.setDependencyType("docker");
 
 					db.getRelations().add(pr);
 					db.sync();
 	            }
 	            
-	            if(testPuppet(shortName)) {
+	            if(testPuppet(shortName, project)) {
 	            	ProjectRelation pr = new ProjectRelation();
 	            	
-	            	pr.setProjectName(shortName);
+	            	pr.setRelationName(shortName);
 	            	pr.setDependencyType("puppet");
 
 					db.getRelations().add(pr);
 					db.sync();
-	            }*/
+	            }
 	        }
         
 	    } catch (IOException e) {
@@ -243,7 +252,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 	        return false;
 
         } catch (IOException e) {
-        	logger.error("unexpected exception while measuring", e);
+        	logger.error("unexpected IO exception while measuring", e);
 			throw new RuntimeException(e);
         } finally {
 			try {
@@ -254,5 +263,33 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 				throw new RuntimeException(e);
 			}
 		}
+    }
+    
+    public boolean testPuppet(String projectName, Project project){
+    	PuppetDependencies puppetDependencies = 
+				((PuppetDependenciesTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+    	
+    	PuppetDependencyCollection col = puppetDependencies.getDependencies();
+    	
+    	for(PuppetDependency puppetDependency : col) {
+    		if(puppetDependency.getDependencyName().equals(projectName))
+            	return true;
+    	}
+        
+        return false;
+    }
+    
+    public boolean testDocker(String projectName, Project project){
+    	DockerDependencies dockerDependencies = 
+				((DockerDependenciesTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+    	
+    	DockerDependencyCollection col = dockerDependencies.getDependencies();
+    	
+    	for(DockerDependency dockerDependency : col) {
+    		if(dockerDependency.getDependencyName().equals(projectName))
+            	return true;
+    	}
+        
+        return false;
     }
 }
