@@ -32,7 +32,7 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 - Install Web Tools Platform SDK (WTP SDK) from http://download.eclipse.org/webtools/repository/photon
 
 ### Tomcat
-- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip
+- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.zip
 - Set up Tomcat in your Eclipse through the Servers view
 
 ### Thrift
