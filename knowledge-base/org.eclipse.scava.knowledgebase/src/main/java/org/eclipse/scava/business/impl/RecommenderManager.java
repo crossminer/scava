@@ -47,12 +47,15 @@ import com.google.common.collect.Lists;
 public class RecommenderManager implements IRecommenderManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderManager.class);
+	
 	@Autowired
 	@Qualifier("ApiRecommendation")
 	private IRecommendationProvider libRecommendationProvider;
+	
 	@Autowired
 	@Qualifier("AlternativeLibraries")
 	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
+	
 	@Autowired
 	@Qualifier("Focus")
 	private IRecommendationProvider focusRecomenderProvider;
@@ -64,6 +67,7 @@ public class RecommenderManager implements IRecommenderManager {
 	@Autowired
 	@Qualifier("SORecommender")
 	private SORecommender soRecommender;
+	
 	@Autowired
 	private VersionsRecServiceImpl versionRecommender;
 	
@@ -71,15 +75,17 @@ public class RecommenderManager implements IRecommenderManager {
 	private ArtifactRepository artifactRepository;
 
 	@Autowired
-	List<ISimilarityCalculator> similarityFunction;
-	@Autowired
-	List<IClusterCalculator> clustercalculators;
+	private List<ISimilarityCalculator> similarityFunction;
 	
+	@Autowired
+	private List<IClusterCalculator> clustercalculators;
 	
 	@Autowired
 	private IClusterManager clusterManager;
+	
 	@Autowired
 	private ISimilarityManager similarityManager;
+	
 	@Autowired
 	private MongoTemplate template;
 
