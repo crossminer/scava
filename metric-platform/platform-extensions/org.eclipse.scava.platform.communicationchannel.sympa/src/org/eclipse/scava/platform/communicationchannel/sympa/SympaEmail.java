@@ -1,7 +1,5 @@
 package org.eclipse.scava.platform.communicationchannel.sympa;
 
-import java.util.Date;
-
 import org.eclipse.scava.platform.communicationchannel.sympa.parser.Email;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
