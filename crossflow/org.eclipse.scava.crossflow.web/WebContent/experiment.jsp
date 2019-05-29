@@ -546,8 +546,8 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	
 		"<tr>" +
 		   "<th></th>" +
-	    	"<th style='text-align: center;'>In-Flight   </th>" +
-	    	"<th style='text-align: center;'>   Queue</th>" +
+	    	"<th style='text-align: center;'>In-Flight |</th>" +
+	    	"<th style='text-align: center;'>| Queue</th>" +
 		"</tr>" +
 		"<tr>" +
  		   "<td style='font-style: italic'>Pre</td>" +
