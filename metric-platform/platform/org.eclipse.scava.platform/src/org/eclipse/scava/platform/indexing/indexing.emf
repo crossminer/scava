@@ -1,0 +1,13 @@
+package org.eclipse.scava.platform.indexing;
+
+@db
+class Indexing {
+	val Index[*] indexs;
+}
+
+class Index {
+	@searchable
+	attr String metricId;
+	attr String indexName;
+	attr String[*] metricDependencies;
+	}

@@ -33,7 +33,9 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -57,6 +59,9 @@ public class SentimentTransMetricProvider  implements
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -150,17 +155,17 @@ public class SentimentTransMetricProvider  implements
 
 	@Override
 	public String getShortIdentifier() {
-		return "threadssentiment";
+		return "trans.newsgroups.sentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Thread Sentiment";
+		return "Average sentiment in newsgroup threads";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "The metric computes sentiment at the beginning of each thread, at its end, and on average.";
+		return "The metric computes the average sentiment, including sentiment at the beginning and end of each thread, per newsgroup.";
 	}
 
 }

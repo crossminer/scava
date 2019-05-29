@@ -7,7 +7,6 @@
     <eAnnotations source="customize"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bugTrackerComments" upperBound="-1" eType="//BugTrackerCommentsEmotionClassification" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newsgroupArticles" upperBound="-1" eType="//NewsgroupArticlesEmotionClassification" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="forumPosts" upperBound="-1" eType="//ForumPostEmotionClassification" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BugTrackerCommentsEmotionClassification">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bugTrackerId">
@@ -31,20 +30,6 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="articleNumber">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="emotions" upperBound="-1">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForumPostEmotionClassification">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="forumId">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topicId">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="postId">
-      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="emotions" upperBound="-1">
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>

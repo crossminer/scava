@@ -392,7 +392,7 @@ class ScavaClient(HttpClient):
                 "scava_metric_provider": dep_metric,
                 "type": dep_type,
                 "sub_type": dep_sub_type,
-                "id": dep['_id']
+                "id": dep['value']
             }
 
             yield json.dumps(project_dep)
@@ -415,7 +415,7 @@ class ScavaClient(HttpClient):
                 "scava_metric_provider": dep_metric,
                 "type": dep['type'],
                 "sub_type": dep['subType'] if 'subType' in dep else None,
-                "id": dep['_id']
+                "id": "{}_{}".format(dep['dependencyName'], dep['dependencyVersion'])
             }
 
             yield json.dumps(project_dep)

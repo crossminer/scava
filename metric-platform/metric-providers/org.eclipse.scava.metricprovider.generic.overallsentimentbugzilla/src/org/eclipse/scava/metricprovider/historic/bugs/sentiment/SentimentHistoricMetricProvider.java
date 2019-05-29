@@ -97,7 +97,7 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugsentiment";
+		return "historic.bugs.sentiment";
 	}
 
 	@Override
@@ -107,8 +107,9 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the overall sentiment per bug repository up to the processing date." +
-				"The overall sentiment score ranges from -1 (negative sentiment) to +1 (positive sentiment)." +
-				"In the computation, the sentiment score of each thread contributes equally, independently of its size.";
+		return "This metric computes the overall sentiment per bug tracker up to the processing date. "
+				+ "The overall sentiment score could be -1 (negative sentiment), 0 (neutral sentiment) "
+				+ "or +1 (positive sentiment). In the computation, the sentiment score for each bug "
+				+ "contributes equally, regardless of it's size.";
 	}
 }

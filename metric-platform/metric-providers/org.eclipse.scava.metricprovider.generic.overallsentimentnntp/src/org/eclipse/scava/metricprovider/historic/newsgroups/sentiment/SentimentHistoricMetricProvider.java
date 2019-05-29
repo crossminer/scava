@@ -21,7 +21,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -48,6 +50,9 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -114,18 +119,18 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgroupsentiment";
+		return "historic.newsgroups.sentiment";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Overall Sentiment of Newsgroup Articles";
+		return "Overall sentiment of newsgroup articles";
 	}
 
 	@Override
 	public String getSummaryInformation() {
 		return "This metric computes the overall sentiment per repository up to the processing date." +
-				"The overall sentiment score ranges from -1 (negative sentiment) to +1 (positive sentiment)." +
+				"The overall sentiment score could be -1 (negative sentiment), 0 (neutral sentiment) or +1 (positive sentiment)." +
 				"In the computation, the sentiment score of each thread contributes equally, independently of its size.";
 	}
 }

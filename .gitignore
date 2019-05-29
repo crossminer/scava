@@ -8,7 +8,9 @@
 bin/
 local.properties
 .settings/
+.recommenders
 
 # Maven
 target/
 
+/.recommenders/

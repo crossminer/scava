@@ -23,7 +23,9 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -39,24 +41,27 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 
 	@Override
 	public String getShortIdentifier() {
-		return "newsgrouparticles";
+		return "trans.newsgroups.articles";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of articles";
+		return "Number of articles per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "Holds the number of articles";
+		return "This metric computes the number of articles, per newsgroup";
 	}
 	
 	@Override
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -87,17 +92,12 @@ public class ArticlesTransMetricProvider implements ITransientMetricProvider<New
 		CommunicationChannelProjectDelta delta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			String communicationChannelName;
-			if (!(communicationChannel instanceof NntpNewsGroup))
-				communicationChannelName = communicationChannel.getUrl();
-			else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
-			NewsgroupData newsgroupData = db.getNewsgroups().findOneByNewsgroupName(communicationChannelName);
+			String ossmeterID =  communicationChannel.getOSSMeterId();
+			
+			NewsgroupData newsgroupData = db.getNewsgroups().findOneByNewsgroupName(ossmeterID);
 			if (newsgroupData == null) {
 				newsgroupData = new NewsgroupData();
-				newsgroupData.setNewsgroupName(communicationChannelName);
+				newsgroupData.setNewsgroupName(ossmeterID);
 				db.getNewsgroups().add(newsgroupData);
 			} 
 			int articles = communicationChannelDelta.getArticles().size();

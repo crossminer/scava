@@ -134,16 +134,21 @@ public class SeverityHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugseveritylevels";
+		return "historic.bugs.severity";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Bug Severity Levels Per Day";
+		return "Number of bugs per severity level per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of bug severity levels in bugs submitted every day.";
+		return "This metric computes the number of severity levels for bugs submitted by the community (users) "
+				+ "every day for each bug tracker. Specifically, it calculates the number and percentage of bugs "
+				+ "that have been categorised into 1 of 8 severity levels (blocker, critical, major, minor, "
+				+ "enhancement, normal, trivial, unknown). A bug severity is considered `unknown` if there is not "
+				+ "enough information for the classifier to make a decision. For example, an unanswered bug with no "
+				+ "user comment to analyse.";
 	}
 }

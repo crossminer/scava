@@ -29,7 +29,9 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -52,7 +54,10 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return false;
 	}
@@ -103,14 +108,9 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 
 		for ( CommunicationChannelDelta communicationChannelDelta: delta.getCommunicationChannelSystemDeltas()) {
 			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			String communicationChannelName;
-			if (!(communicationChannel instanceof NntpNewsGroup))
-				communicationChannelName = communicationChannel.getUrl();
-			else {
-				NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-				communicationChannelName = newsgroup.getNewsGroupName();
-			}
-
+			
+			String ossmeterID = communicationChannel.getOSSMeterId();
+			
 			List<CommunicationChannelArticle> articles = communicationChannelDelta.getArticles();
 			for (CommunicationChannelArticle article: articles) {
 
@@ -123,7 +123,7 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 				DayArticles dayArticles = db.getDayArticles().findOneByName(dayName);
 				dayArticles.setNumberOfArticles(dayArticles.getNumberOfArticles()+1);
 				String requestReplyClass = 
-						getRequestReplyClass(usedClassifier, communicationChannelName, article);
+						getRequestReplyClass(usedClassifier, ossmeterID, article);
 				if (requestReplyClass.equals("__label__Request"))
 					dayArticles.setNumberOfRequests(dayArticles.getNumberOfRequests()+1);
 				else if (requestReplyClass.equals("__label__Reply"))
@@ -171,9 +171,9 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 	}
 
 	private String getRequestReplyClass(RequestReplyClassificationTransMetric usedClassifier, 
-							String communicationChannelName, CommunicationChannelArticle article) {
+							String ossmeterId, CommunicationChannelArticle article) {
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = usedClassifier.getNewsgroupArticles().
-				find(NewsgroupArticles.NEWSGROUPNAME.eq(communicationChannelName), 
+				find(NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterId), 
 						NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
 		NewsgroupArticles newsgroupArticleData = null;
 		for (NewsgroupArticles art:  newsgroupArticlesIt) {
@@ -182,7 +182,7 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 		if (newsgroupArticleData == null) {
 			System.err.println("Newsgroups - Daily Requests Replies -\t" + 
 					"there is no classification for article: " + article.getArticleNumber() +
-					"\t of newsgroup: " + communicationChannelName);
+					"\t belonging to: " + article.getCommunicationChannel().getUrl());
 //			System.exit(-1);
 		} else
 			return newsgroupArticleData.getClassificationResult();
@@ -191,18 +191,18 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 
 	@Override
 	public String getShortIdentifier() {
-		return "dailyrequestsreplies";
+		return "trans.newsgroups.dailyrequestsreplies";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number of Articles, Requests and Replies per Day of the Week";
+		return "Number of articles, requests and replies per day";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric stores the number of articles, " +
-				"requests and replies for each day of the week.";
+		return "This metric computes the number of articles, including those regarded "
+				+ "as requests and replies for each day of the week, per newsgroup.";
 	}
 
 }

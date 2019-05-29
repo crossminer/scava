@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.scava.platform,
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.eclipseforums.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.scava.platform.communicationchannel.eclipseforums

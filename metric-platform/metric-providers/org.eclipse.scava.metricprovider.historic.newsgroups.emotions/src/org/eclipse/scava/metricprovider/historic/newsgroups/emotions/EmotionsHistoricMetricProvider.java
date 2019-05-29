@@ -24,7 +24,9 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -51,6 +53,10 @@ public class EmotionsHistoricMetricProvider extends AbstractHistoricalMetricProv
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
+			
 		}
 		return false;
 	}
@@ -99,16 +105,18 @@ public class EmotionsHistoricMetricProvider extends AbstractHistoricalMetricProv
 
 	@Override
 	public String getShortIdentifier() {
-		return "bugemotions";
+		return "historic.newsgroups.emotions";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Number Of Bug Emotions Per Day";
+		return "Number of emotions per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the number of emotional dimensions in comments submitted every day.";
+		return "This metric computes the emotional dimensions present in newsgroup comments "
+				+ "submitted by the community (users) per day for each newsgroup. Emotion can "
+				+ "be 1 of 6 (anger, fear, joy, sadness, love or surprise).";
 	}
 }

@@ -22,14 +22,14 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
-import org.eclipse.scava.metricprovider.trans.detectingcode.model.ForumPostDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ArticleData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData;
 import org.eclipse.scava.metricprovider.trans.severityclassification.model.BugTrackerBugsData;
-import org.eclipse.scava.metricprovider.trans.severityclassification.model.ForumPostData;
 import org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData;
 import org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupThreadData;
 import org.eclipse.scava.metricprovider.trans.severityclassification.model.SeverityClassificationTransMetric;
@@ -42,7 +42,6 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComme
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
-import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelProjectDelta;
@@ -52,6 +51,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 import org.eclipse.scava.severityclassifier.opennlptartarus.libsvm.ClassificationInstance;
 import org.eclipse.scava.severityclassifier.opennlptartarus.libsvm.Classifier;
@@ -79,6 +79,8 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			// if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();	   
 	}
@@ -91,7 +93,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	@Override
 	public List<String> getIdentifiersOfUses() {
 		return Arrays.asList(ThreadsTransMetricProvider.class.getCanonicalName(),
-				DetectingCodeTransMetricProvider.class.getCanonicalName());
+				DetectingCodeTransMetricProvider.class.getCanonicalName(), IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -113,9 +115,15 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		long previousTime = startTime;
 		previousTime = printTimeMessage(startTime, previousTime, -1, "Started " + getIdentifier());
 		
+		
+		//This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(2)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
 		//Elements from bugs or forums that should be deleted (for newsgroups is impossible, as these can have many threads)
 		List<BugTrackerBugsData> bugDataToDelete = new ArrayList<BugTrackerBugsData>();
-		List<ForumPostData> forumDatatoDelete = new ArrayList<ForumPostData>();
+		//List<ForumPostData> forumDatatoDelete = new ArrayList<ForumPostData>();
 		
 		//Elements that have neither comments or severity but that were created on that day
 		Set<String> idsWithData;
@@ -206,36 +214,12 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		CommunicationChannelProjectDelta ccpDelta = projectDelta.getCommunicationChannelDelta();
 		for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
 		{
-			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-			if(communicationChannel instanceof EclipseForum)
-			{
-				for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-				{
-					//Find posts previously analyzed, if null, we haven't analyzed that topic/thread
-					ForumPostData forumPostInSeverity = findForumPost(db,post);
-					FeatureIdCollection featureIdCollection = retrieveForumPostFeatures(forumPostInSeverity);
-					//Adrián is testing this feature: If we have analyzed previously the topic/thread, then we can delete it from MongoDB
-					//Because the features have been loaded in FeatureIdCollection
-					if(forumPostInSeverity!= null)
-						forumDatatoDelete.add(forumPostInSeverity);
-					ClassifierMessage classifierMessage = prepareForumPostClassifierMessage(post, detectingCodeMetric);
-					classifier.add(classifierMessage, featureIdCollection);	
-				}
-			}
-			else
-			{
-				String communicationChannelName;
-				if (!(communicationChannel instanceof NntpNewsGroup))
-					communicationChannelName = communicationChannel.getUrl();
-				else
-				{
-					NntpNewsGroup newsgroup = (NntpNewsGroup) communicationChannel;
-					communicationChannelName = newsgroup.getNewsGroupName();
-				}
+			CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();		
+				
 				if (communicationChannelDelta.getArticles().size()==0) continue;
 
 				//Load all stored articles for this newsgroup
-				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannelName);
+				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannel.getOSSMeterId());
 				System.err.println("articlesFeatureIdCollections.size(): " + articlesFeatureIdCollections.size());
 
 				Map<Long, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<Long, CommunicationChannelArticle>();
@@ -258,12 +242,12 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 							//We need to match here the thread article with the code detector article
 							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleNumber());
 							deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
-							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannelName, deltaArticle, threadId);
+							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
 							db.getNewsgroupArticles().add(newsgroupArticleData);
 						}
 					}
 				}
-			}
+//			}
 			db.sync();
 		}
 
@@ -318,27 +302,6 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
 					"stored classified bugs");
 			
-			for ( CommunicationChannelDelta communicationChannelDelta: ccpDelta.getCommunicationChannelSystemDeltas())
-			{
-				CommunicationChannel communicationChannel = communicationChannelDelta.getCommunicationChannel();
-				if(communicationChannel instanceof EclipseForum)
-				{
-					for(CommunicationChannelForumPost post : communicationChannelDelta.getPosts())
-					{
-						ForumPostData forumPostData = prepareForumPostData(classifier, post);
-						db.getForumPosts().add(forumPostData);
-						db.sync();
-					}
-					//Data that has been used for loading the features can be deleted without problem
-					for(ForumPostData toDelete : forumDatatoDelete)
-					{
-						db.getForumPosts().remove(toDelete);
-						db.sync();
-					}
-				}
-				else
-					continue;
-			}
 			
 			previousTime = printTimeMessage(startTime, previousTime, classifier.instanceCollectionSize(),
 					"stored classified forums posts");
@@ -375,42 +338,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 		
  	}
-	
-	private ForumPostData prepareForumPostData(Classifier classifier, CommunicationChannelForumPost post)
-	{
-		ClassifierMessage classifierMessage = prepareForumPostClassifierMessage(post);
-		String severity = classifier.getClassificationResult(classifierMessage);
-		
-		ClassificationInstance classificationInstance = classifier.getClassificationInstance(classifierMessage);
-		
-		ForumPostData forumPostData = new ForumPostData();
-		forumPostData.setForumId(post.getCommunicationChannel().getOSSMeterId());
-		forumPostData.setTopicId(post.getTopicId());
-		forumPostData.setSeverity(severity);
-		
-		for (int unigramId: classifier.getUnigramOrders(classificationInstance.getUnigrams()))
-			forumPostData.getUnigrams().add(unigramId);
-		
-		for (int bigramId: classifier.getBigramOrders(classificationInstance.getBigrams()))
-			forumPostData.getBigrams().add(bigramId);
-		
-		for (int trigramId: classifier.getTrigramOrders(classificationInstance.getTrigrams()))
-			forumPostData.getTrigrams().add(trigramId);
-		
-		for (int quadgramId: classifier.getQuadgramOrders(classificationInstance.getQuadgrams()))
-			forumPostData.getQuadgrams().add(quadgramId);
-		
-		for (int charTrigramId: classifier.getCharTrigramOrders(classificationInstance.getCharTrigrams()))
-			forumPostData.getCharTrigrams().add(charTrigramId);
-		
-		for (int charQuadgramId: classifier.getCharQuadgramOrders(classificationInstance.getCharQuadgrams()))
-			forumPostData.getCharQuadgrams().add(charQuadgramId);
-		
-		for (int charFivegramId: classifier.getCharFivegramOrders(classificationInstance.getCharFivegrams()))
-			forumPostData.getCharFivegrams().add(charFivegramId);
-		
-		return forumPostData;
-	}
+
 	
 	private BugTrackerBugsData prepareBugTrackerBugsData(Classifier classifier, BugTrackingSystemBug bug) {
 
@@ -448,14 +376,14 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return bugTrackerBugsData;
 	}
 
-	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String communicationChannelName, CommunicationChannelArticle deltaArticle, int threadId)
+	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String ossmeterID, CommunicationChannelArticle deltaArticle, int threadId)
 	{
-		ClassificationInstance instanceToStore = new ClassificationInstance(communicationChannelName, deltaArticle, threadId);
+		ClassificationInstance instanceToStore = new ClassificationInstance(ossmeterID, deltaArticle, threadId);
 		
-		classifier.add(communicationChannelName, deltaArticle, threadId, instanceToStore);
+		classifier.add(ossmeterID, deltaArticle, threadId, instanceToStore);
 		
 		NewsgroupArticleData newsgroupArticleData = new NewsgroupArticleData();
-		newsgroupArticleData.setNewsGroupName(communicationChannelName);
+		newsgroupArticleData.setNewsGroupName(ossmeterID);
 		newsgroupArticleData.setArticleNumber(deltaArticle.getArticleNumber());
 
 		for (int unigramId: classifier.getUnigramOrders(instanceToStore.getUnigrams()))
@@ -519,25 +447,6 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
         return classifierMessage;
 	}
 	
-	private ClassifierMessage prepareForumPostClassifierMessage(CommunicationChannelForumPost post, DetectingCodeTransMetric db) {
-		ClassifierMessage classifierMessage = prepareForumPostClassifierMessage(post);
-		classifierMessage.setForumId(post.getCommunicationChannel().getOSSMeterId());
-		classifierMessage.setTopicId(post.getTopicId());
-		String naturalLanguage = naturalLanguageForumPost(db, post);
-		if (naturalLanguage == null) {
-			classifierMessage.setText("");			
-		} else {
-			classifierMessage.setText(naturalLanguage);
-		}
-		return classifierMessage;
-	}
-	
-	private ClassifierMessage prepareForumPostClassifierMessage(CommunicationChannelForumPost post) {
-		ClassifierMessage classifierMessage = new ClassifierMessage();
-		classifierMessage.setForumId(post.getCommunicationChannel().getOSSMeterId());
-		classifierMessage.setTopicId(post.getTopicId());
-		return classifierMessage;
-	}
 	
 	private ClassifierMessage prepareNewsgroupClassifierMessage(String newsgroupName, int threadId) {
 		ClassifierMessage classifierMessage = new ClassifierMessage();
@@ -559,30 +468,6 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return bugTrackerBugsData;
 	}
 	
-	private ForumPostData findForumPost(SeverityClassificationTransMetric db, CommunicationChannelForumPost post) {
-		ForumPostData forumPostsData = null;
-		Iterable<ForumPostData> forumPostsDataIt = 
-				db.getForumPosts().
-				find(ForumPostData.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
-						ForumPostData.TOPICID.eq(post.getTopicId()));  
-		for (ForumPostData fps:  forumPostsDataIt) {
-			forumPostsData = fps;
-		}
-		return forumPostsData;
-	}
-	
-	private String naturalLanguageForumPost(DetectingCodeTransMetric db, CommunicationChannelForumPost post) {
-		ForumPostDetectingCode forumPostInDetectionCode = null;
-		
-		Iterable<ForumPostDetectingCode> forumPostIt = db.getForumPosts().
-				find(ForumPostDetectingCode.FORUMID.eq(post.getCommunicationChannel().getOSSMeterId()),
-						ForumPostDetectingCode.TOPICID.eq(post.getTopicId()),
-						ForumPostDetectingCode.POSTID.eq(post.getPostId()));
-		for (ForumPostDetectingCode fpdc:  forumPostIt) {
-			forumPostInDetectionCode = fpdc;
-		}
-		return forumPostInDetectionCode.getNaturalLanguage();
-	}
 	
 	private String naturalLanguageBugTrackerComment(DetectingCodeTransMetric db, BugTrackingSystemComment comment) {
 		BugTrackerCommentDetectingCode bugtrackerCommentInDetectionCode = null;
@@ -598,8 +483,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	
 	private String naturalLanguageNewsgroupArticle(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
+				
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
-				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getNewsGroupName()),
+				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
@@ -623,10 +509,10 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return featureIdCollection;
 	}
 
-	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String communicationChannelName)
+	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String ossmeterID)
 	{
 		Map<Long, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<Long, FeatureIdCollection>();
-		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(communicationChannelName));
+		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(ossmeterID));
 		for (NewsgroupArticleData newsgroupArticleData:  newsgroupArticleDataIt)
 		{
 			FeatureIdCollection featureIdCollection = new FeatureIdCollection();
@@ -647,26 +533,10 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return articlesFeatureIdCollections;
 	}
 	
-	private FeatureIdCollection retrieveForumPostFeatures(ForumPostData forumPostData)
-	{
-		FeatureIdCollection featureIdCollection = new FeatureIdCollection();
-		if (forumPostData!=null)
-		{
-			featureIdCollection.addUnigrams(forumPostData.getUnigrams());
-			featureIdCollection.addBigrams(forumPostData.getBigrams());
-			featureIdCollection.addTrigrams(forumPostData.getTrigrams());
-			featureIdCollection.addQuadgrams(forumPostData.getQuadgrams());
-
-			featureIdCollection.addCharTrigrams(forumPostData.getCharTrigrams());
-			featureIdCollection.addCharQuadgrams(forumPostData.getCharQuadgrams());
-			featureIdCollection.addCharFivegrams(forumPostData.getCharFivegrams());
-		}
-		return featureIdCollection;
-	}
 
 	@Override
 	public String getShortIdentifier() {
-		return "severityclassification";
+		return "trans.severityclassification";
 	}
 
 	@Override
@@ -676,7 +546,11 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the severity of each bug or thread.";
+		return "This metric computes the severity of each bug comment, newsgroup article or forum post. "
+				+ "Severity could be blocker, critical, major, minor, enhancement,  normal). For bug comments, "
+				+ "there is an additional severity level called `unknown`. A bug severity is considered `unknown` "
+				+ "if there is not enough information for the classifier to make a decision. For example, an "
+				+ "unanswered bug with no user comment to analyse.";
 	}
 
 }

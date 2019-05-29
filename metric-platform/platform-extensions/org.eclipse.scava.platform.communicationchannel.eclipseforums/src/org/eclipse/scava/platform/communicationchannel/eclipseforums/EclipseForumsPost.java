@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.communicationchannel.eclipseforums;
 
-import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelForumPost;
+import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 
 
-public class EclipseForumsPost extends CommunicationChannelForumPost {
+public class EclipseForumsPost extends CommunicationChannelArticle {
 
 	private static final long serialVersionUID = 1L;
 	
