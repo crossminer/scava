@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Irc
+Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.irc;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.repository.model.cc.irc
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

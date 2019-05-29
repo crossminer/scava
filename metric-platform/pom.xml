@@ -442,6 +442,12 @@
     <module>
     	../migration/third-party/ch.qos.logback.logback-core
     </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.irc
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.irc
+    </module>
   </modules>
   <build>
     <plugins>
