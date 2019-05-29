@@ -329,24 +329,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	public void setClient(GitLabTracker gitlabTracker) throws IOException {
 
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
-	
-		Runnable runnable = new Runnable() {	// This is triggered at a fixed rate, see scheduled executor service below
-			
-			public void run() {
-			
-				try {
-					
-					setClient(gitlabTracker);
-			
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-					
-				}
-			}
-		};
 
-		if (open_id.contains("Too Many Requests") == false) {
 
 			newClient.addInterceptor(new Interceptor() {
 
@@ -373,16 +356,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 				}
 			});
 
-			// creates a single threaded service with a fixed rate that will generate a
-			// newClient per specified interval.
-
-			// TODO Change unit of time to reflect the the reset limit of each
-			// authentication method
-			ScheduledExecutorService newClientService = Executors.newSingleThreadScheduledExecutor();
-			newClientService.scheduleAtFixedRate(runnable, 1, 1, TimeUnit.MINUTES);
-
-		}
-
+			
 		// sets client to a new client (with or without an interceptor)
 		this.client = newClient.build();
 	}
