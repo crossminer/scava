@@ -11,15 +11,15 @@
 <plugin>
   
   <extension point="org.eclipse.scava.platform.metricprovider">
-     <metricProvider provider="org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider">
+     <metricProvider provider="org.eclipse.scava.metricprovider.historic.commits.messages.topics.CommitsMessagesTopicsHistoricMetricProvider">
      </metricProvider>
   </extension>
   <extension point="org.eclipse.scava.platform.visualisation.metric">
-     <visualisation json="vis/historic.bugs.topics.json"/>
+     <visualisation json="vis/historic.commits.messages.topics.json"/>
   </extension>
 
 <extension point="com.googlecode.pongo.runtime.osgi">
-    <class name="org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugsTopicsHistoricMetric"/>
-    <class name="org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic"/>
+    <class name="org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitsMessagesTopicsHistoricMetric"/>
+    <class name="org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic"/>
   </extension>
 </plugin>

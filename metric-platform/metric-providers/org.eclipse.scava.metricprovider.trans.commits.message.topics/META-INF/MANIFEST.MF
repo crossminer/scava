@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Topics
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.commits.message.topics;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: org.eclipse.scava.metricprovider.trans.commits.message.topics
+Export-Package: org.eclipse.scava.metricprovider.trans.commits.message.topics,
+ org.eclipse.scava.metricprovider.trans.commits.message.topics.model
 Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
