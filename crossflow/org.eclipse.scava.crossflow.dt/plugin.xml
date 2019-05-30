@@ -109,7 +109,7 @@
       </objectContribution>
            <objectContribution
             id="CROSSFLOWBaseClassGeneration.contribution"
-            nameFilter="*crossflow_model"
+            nameFilter="*.crossflow_model"
             objectClass="org.eclipse.core.resources.IFile">
          <menu
                icon="icons/running.gif"
