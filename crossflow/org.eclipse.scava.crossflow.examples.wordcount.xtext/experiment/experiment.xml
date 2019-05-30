@@ -1,0 +1,13 @@
+<experiment
+	title="WordCountWorkflow"
+	class="org.eclipse.scava.crossflow.examples.wordcount.xtext.WordCountWorkflow"
+	jar="org.eclipse.scava.crossflow.examples.wordcount.xtext.jar"
+	input="in"
+	output="out"
+	summary="Optional summary of the Experiment goes here."
+>
+	<output path="out/output.csv" title="Output"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
+</experiment>
