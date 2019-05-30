@@ -455,6 +455,9 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.topics
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.historic.commits.messages.topics
+    </module>
   </modules>
   <build>
     <plugins>
