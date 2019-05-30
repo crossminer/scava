@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Topics
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.commits.message.topics;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.metricprovider.trans.commits.message.topics
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.metricprovider.trans.commits.message.plaintext,
+ org.carrot2.dependencies
+Bundle-Activator: org.eclipse.scava.metricprovider.trans.commits.message.topics.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

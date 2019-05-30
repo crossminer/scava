@@ -363,7 +363,7 @@
     	metric-providers/org.eclipse.scava.nlp.tools.references
     </module>
     <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.messagereferences
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.references
     </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.readability
@@ -448,6 +448,12 @@
     </module>
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.cc.irc
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.plaintext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.topics
     </module>
   </modules>
   <build>

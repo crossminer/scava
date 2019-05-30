@@ -1942,7 +1942,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.metricprovider.trans.commits.messagereferences"
+         id="org.eclipse.scava.metricprovider.trans.commits.message.references"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -2199,6 +2199,20 @@
 
    <plugin
          id="org.eclipse.scava.repository.model.cc.irc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.commits.message.plaintext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.commits.message.topics"
          download-size="0"
          install-size="0"
          version="0.0.0"
