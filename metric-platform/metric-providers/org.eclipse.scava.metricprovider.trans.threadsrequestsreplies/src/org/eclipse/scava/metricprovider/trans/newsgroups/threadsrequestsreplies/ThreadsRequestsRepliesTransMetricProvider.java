@@ -37,6 +37,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicati
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -64,7 +65,7 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
-			// if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof Irc) return true;
 		}
 		return false;
 	}
