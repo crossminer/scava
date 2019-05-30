@@ -1309,6 +1309,12 @@
          version="0.0.0"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.projects.relations"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.eclipse.scava.platform.jadolint"
          download-size="0"
          install-size="0"
@@ -1994,13 +2000,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.platform.documentation.github"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.scava.metricprovider.trans.documentation.detectingcode"
          download-size="0"
          install-size="0"
@@ -2179,6 +2178,27 @@
 
    <plugin
          id="org.eclipse.scava.index.indexer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.compress"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.communicationchannel.irc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.cc.irc"
          download-size="0"
          install-size="0"
          version="0.0.0"

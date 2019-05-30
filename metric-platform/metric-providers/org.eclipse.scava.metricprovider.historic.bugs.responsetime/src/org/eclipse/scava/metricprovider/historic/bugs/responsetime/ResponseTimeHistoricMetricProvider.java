@@ -50,12 +50,10 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 
 	@Override
 	public Pongo measure(Project project) {
-//		final long startTime = System.currentTimeMillis();
 
 		if (uses.size()!=1) {
 			System.err.println("Metric: " + IDENTIFIER + " failed to retrieve " + 
 								"the transient metric it needs!");
-			System.exit(-1);
 		}
 
 		BugsRequestsRepliesTransMetric usedBugsRequestsReplies = 
@@ -90,28 +88,30 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 		}
 		
 		BugsResponseTimeHistoricMetric dailyAverageThreadResponseTime = new BugsResponseTimeHistoricMetric();
-
-		dailyAverageThreadResponseTime.setBugTrackerId(bugTrackerId);
-		dailyAverageThreadResponseTime.setBugsConsidered(bugsConsidered);
-		dailyAverageThreadResponseTime.setCumulativeBugsConsidered(cumulativeBugsConsidered);
 		
-		long avgResponseTime = 0;
-		if (bugsConsidered>0)
-			avgResponseTime = computeAverageDuration(sumOfDurations, bugsConsidered);
-		dailyAverageThreadResponseTime.setAvgResponseTime(avgResponseTime);
-		
-		String avgResponseTimeFormatted = format(avgResponseTime);
-		dailyAverageThreadResponseTime.setAvgResponseTimeFormatted(avgResponseTimeFormatted);
-		
-		long cumulativeAvgResponseTime = 0;
-		if (cumulativeBugsConsidered > 0)
-			cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeBugsConsidered);
-		dailyAverageThreadResponseTime.setCumulativeAvgResponseTime(cumulativeAvgResponseTime);
-		
-		String cumulativeAvgResponseTimeFormatted = format(cumulativeAvgResponseTime);
-		dailyAverageThreadResponseTime.setCumulativeAvgResponseTimeFormatted(cumulativeAvgResponseTimeFormatted);
-
-//		System.err.println(time(System.currentTimeMillis() - startTime) + "\tdaily_new");
+		//There were no bugs detected
+		if(bugTrackerId!="")
+		{
+			dailyAverageThreadResponseTime.setBugTrackerId(bugTrackerId);
+			dailyAverageThreadResponseTime.setBugsConsidered(bugsConsidered);
+			dailyAverageThreadResponseTime.setCumulativeBugsConsidered(cumulativeBugsConsidered);
+			
+			long avgResponseTime = 0;
+			if (bugsConsidered>0)
+			{
+				avgResponseTime = computeAverageDuration(sumOfDurations, bugsConsidered);
+				dailyAverageThreadResponseTime.setAvgResponseTime(avgResponseTime);
+				dailyAverageThreadResponseTime.setAvgResponseTimeFormatted(format(avgResponseTime));
+			}
+				
+			long cumulativeAvgResponseTime = 0;
+			if (cumulativeBugsConsidered > 0)
+			{
+				cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeBugsConsidered);
+				dailyAverageThreadResponseTime.setCumulativeAvgResponseTime(cumulativeAvgResponseTime);
+				dailyAverageThreadResponseTime.setCumulativeAvgResponseTimeFormatted(format(cumulativeAvgResponseTime));
+			}
+		}
 		return dailyAverageThreadResponseTime;
 	}
 

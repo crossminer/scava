@@ -159,6 +159,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.osgi</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.docker</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.puppet</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.projects.relations</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>
@@ -441,6 +442,12 @@
     </module>
     <module>
     	../migration/third-party/ch.qos.logback.logback-core
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.irc
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.irc
     </module>
   </modules>
   <build>
