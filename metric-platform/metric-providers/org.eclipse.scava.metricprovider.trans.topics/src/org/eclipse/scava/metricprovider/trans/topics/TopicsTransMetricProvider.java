@@ -80,7 +80,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			if (communicationChannel instanceof EclipseForum)
 				return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
-			// if (communicationChannel instanceof IRC) return true;
+			//if (communicationChannel instanceof IRC) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	}

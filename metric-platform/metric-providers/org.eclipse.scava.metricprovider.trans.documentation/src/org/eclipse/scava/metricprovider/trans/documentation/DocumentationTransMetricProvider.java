@@ -3,6 +3,7 @@ package org.eclipse.scava.metricprovider.trans.documentation;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -123,7 +124,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 			//In theory it should always return at maximum one entry
 			List<CommunicationChannelDocumentation> documentationList = ccDelta.getDocumentation();
 			
-			if(documentationList.size()==0)
+			if(documentationList.size()!=1)
 				return;
 			
 			String nextDateDelta = documentationList.get(0).getNextExecutionDate().toString();
@@ -151,32 +152,52 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 			{
 				documentation.setNextUpdateDate(nextDateDelta);
 				File documentationStorage = createSystematicDocumentationStorage(project);
-				Crawler crawler = new Crawler(documentationStorage, Arrays.asList(url));
-				crawler.start();
-				HashMap<String, String> mappings = crawler.getMappingPaths();
-				
-				try (Stream<Path> filePaths = Files.walk(documentationStorage.toPath()))
-		        {
-					
-					for(Path file : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
-					{
-						String fileUniqueName=file.getName(file.getNameCount()-1).toString();
-						if(mappings.containsKey(fileUniqueName))
-						{
-					 		String relativePath=mappings.get(fileUniqueName);
-					 		
-					 		if(!relativePath.equals(""))
-					 			relativePath=relativePath.replaceAll("\\\\", "/");		
-					 		System.err.println(relativePath);
-					 		processFile(file.toFile(), db, documentation, documentationId, relativePath);
-						}
-						file.toFile().delete();
+				Crawler crawler = null;
+				if(documentationList.get(0).isLoginNeeded())
+				{
+					CommunicationChannelDocumentation documentationFromDelta = documentationList.get(0);
+					try {
+						crawler = new Crawler(documentationStorage, Arrays.asList(url),
+								documentationFromDelta.getLoginURL(),
+								documentationFromDelta.getUsername(),
+								documentationFromDelta.getPassword(),
+								documentationFromDelta.getUsernameFieldName(),
+								documentationFromDelta.getPasswordFieldName());
+					} catch (MalformedURLException e) {
+						logger.error("Error while parsing login URL: ", e);
 					}
-					db.sync();
+				}
+				else
+					crawler = new Crawler(documentationStorage, Arrays.asList(url));
+				
+				if(crawler!=null)
+				{	
+					crawler.start();
+					HashMap<String, String> mappings = crawler.getMappingPaths();
 					
-		        
-		        } catch (IOException e) {
-					e.printStackTrace();
+					try (Stream<Path> filePaths = Files.walk(documentationStorage.toPath()))
+			        {
+						
+						for(Path file : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
+						{
+							String fileUniqueName=file.getName(file.getNameCount()-1).toString();
+							if(mappings.containsKey(fileUniqueName))
+							{
+						 		String relativePath=mappings.get(fileUniqueName);
+						 		
+						 		if(!relativePath.equals(""))
+						 			relativePath=relativePath.replaceAll("\\\\", "/");		
+						 		System.err.println(relativePath);
+						 		processFile(file.toFile(), db, documentation, documentationId, relativePath);
+							}
+							file.toFile().delete();
+						}
+						db.sync();
+						
+			        
+			        } catch (IOException e) {
+			        	logger.error("Error while reading file from crawled copy of documentation: ", e);
+					}
 				}
 				
 			}
@@ -264,12 +285,12 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						db.sync();
 						
 			        } catch (IOException e) {
-			        	logger.error("Error while reading file from local copy of documentation:", e);
+			        	logger.error("Error while reading file from local copy of documentation: ", e);
 						e.printStackTrace();
 					}
 				}
 				 catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
-						logger.error("Error while creating local copy of documentation:", e);
+						logger.error("Error while creating local copy of documentation: ", e);
 						e.printStackTrace();
 				}
 			}
@@ -342,7 +363,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 							db.sync();
 							
 						} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
-							logger.error("Error while creating local copy of documentation:", e);
+							logger.error("Error while creating local copy of documentation: ", e);
 							e.printStackTrace();
 						}
 						
@@ -382,7 +403,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	 		}
 			
 		} catch (UnsupportedOperationException e) {
-			logger.error(e.getMessage()+file.toString());
+			logger.error(e.getMessage()+" "+file.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

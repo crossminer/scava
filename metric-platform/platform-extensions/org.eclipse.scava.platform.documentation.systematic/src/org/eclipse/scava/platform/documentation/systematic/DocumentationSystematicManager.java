@@ -7,6 +7,7 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDocumentation;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
@@ -14,6 +15,12 @@ import com.mongodb.DB;
 
 public class DocumentationSystematicManager implements ICommunicationChannelManager<DocumentationSystematic> {
 
+	protected OssmeterLogger logger;
+	
+	public DocumentationSystematicManager() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.documentation.systematic");
+	}
+	
 	@Override
 	public boolean appliesTo(CommunicationChannel communicationChannel) {
 		return (communicationChannel instanceof DocumentationSystematic);
@@ -32,16 +39,33 @@ public class DocumentationSystematicManager implements ICommunicationChannelMana
 		documentation.setDateDelta(date.toJavaDate());
 		documentation.setNextExecutionDate(getNextDateExecution(date, documentationSystematic.getExecutionFrequency()));
 		
-		//if(!documentationSystematic.getLogin().isEmpty()|| !documentationSystematic.getLogin().equals("null"))
-		//{
-		//	documentation.setLogin(documentationSystematic.getLogin());
-		//	documentation.setPassword(documentationSystematic.getPassword());
-		//}
+		if(!documentationSystematic.getUsername().isEmpty() && !documentationSystematic.getPassword().isEmpty())
+		{
+			try {
+				if(documentationSystematic.getUsernameFieldName().isEmpty())
+					throw new UnsupportedOperationException("Please set the name of the username field.");
+				if(documentationSystematic.getPasswordFieldName().isEmpty())
+					throw new UnsupportedOperationException("Please set the name of the password field.");
+				if(documentationSystematic.getLoginURL().isEmpty())
+					throw new UnsupportedOperationException("Please set the URL where the login has to be done.");
+				documentation.setUsername(documentationSystematic.getUsername());
+				documentation.setPassword(documentationSystematic.getPassword());
+				documentation.setLoginURL(documentationSystematic.getLoginURL());
+				documentation.setPasswordFieldName(documentationSystematic.getPasswordFieldName());
+				documentation.setUsernameFieldName(documentationSystematic.getUsernameFieldName());
+				documentation.setLoginNeeded(true);
+				delta.getDocumentation().add(documentation);
+			}
+			catch(UnsupportedOperationException e)
+			{
+				logger.error("Error while setting data regarding authentification:", e);
+			}
+		}
+		else
+		{
+			delta.getDocumentation().add(documentation);
+		}
 		
-		documentation.setLogin("");
-		documentation.setPassword("");
-		
-		delta.getDocumentation().add(documentation);
 		
 		return delta;
 	}
