@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.scava.crossflow.GenerateBaseClasses;
 
 import com.beust.jcommander.JCommander;
@@ -60,10 +60,22 @@ public class Standalone {
 	}
 
 	public void doCopyRuntime() throws Exception {
+		
+		// Get the output folder for generated code to copy runtime to
+		final EmfModel model = getGenerator().getModel();
+		final Optional<String> genOutputFolder = model.getAllOfType("Language").stream()
+			.map(l -> (Language) l)
+			.filter(l -> l.getName().equalsIgnoreCase("java"))
+			.map(l -> l.getGenOutputFolder())
+			.findFirst();
+		
+		// Return if folder is not specified
+		if (!genOutputFolder.isPresent()) return;
+		
 		// Retrieve location of runtime Java source and pre-process final output paths
-		ImmutableSet<ClassInfo> classInfo = ClassPath.from(Standalone.class.getClassLoader())
+		final ImmutableSet<ClassInfo> classInfo = ClassPath.from(Standalone.class.getClassLoader())
 				.getTopLevelClassesRecursive("org.eclipse.scava.crossflow.runtime");
-		Map<String, File> javaFiles = classInfo.stream()
+		final Map<String, File> javaFiles = classInfo.stream()
 			.map(ci -> ci.url().toString())
 			.map(url -> url.replaceFirst("/bin/", "/src/"))
 			.map(url -> url.replaceFirst("\\.class", ".java"))
@@ -76,20 +88,11 @@ public class Standalone {
 					}, 
 					t -> t));
 		
-		for (IModel model : getGenerator().getModels()) {
-			Optional<String> genOutputFolder = model.getAllOfType("Language").stream()
-					.map(l -> (Language) l)
-					.filter(l -> l.getName().equalsIgnoreCase("java"))
-					.map(l -> l.getGenOutputFolder())
-					.findFirst();
-			if (!genOutputFolder.isPresent()) continue;
-			
-			for (Map.Entry<String, File> e : javaFiles.entrySet()) {
-				File newFile = new File(projectLoc + "/" + genOutputFolder.get() + "/" + e.getKey());
-				FileUtils.copyFile(e.getValue(), newFile);
-			}
+		// Do the copying
+		for (Map.Entry<String, File> e : javaFiles.entrySet()) {
+			File newFile = new File(projectLoc + "/" + genOutputFolder.get() + "/" + e.getKey());
+			FileUtils.copyFile(e.getValue(), newFile);
 		}
-
 	}
 
 	public String getProjectLoc() {
