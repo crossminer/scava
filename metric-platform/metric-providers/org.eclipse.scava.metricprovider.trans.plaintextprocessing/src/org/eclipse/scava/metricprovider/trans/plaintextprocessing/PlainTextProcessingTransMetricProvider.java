@@ -40,6 +40,7 @@ import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -84,8 +85,8 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				return true;
 			if (communicationChannel instanceof SympaMailingList)
 				return true;
-//			if (communicationChannel instanceof IRC)
-//				return true;
+			if (communicationChannel instanceof Irc)
+				return true;
 			
 		}
 		return !project.getBugTrackingSystems().isEmpty();
