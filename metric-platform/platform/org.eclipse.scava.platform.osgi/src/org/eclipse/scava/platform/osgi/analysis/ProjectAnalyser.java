@@ -206,17 +206,7 @@ public class ProjectAnalyser {
 		for(MetricExecution provider : task.getMetricExecutions()) {
 			taskProviders.add(provider.getMetricProviderId());
 		}
-		
-		//DAN WAS HERE
-		// This was used for debugging purposes only
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+				
 		for(IMetricProvider platformProvider : metricProviders) {
 			if(taskProviders.contains(platformProvider.getIdentifier())) {
 				filtredProviders.add(platformProvider);
