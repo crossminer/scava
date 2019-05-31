@@ -29,7 +29,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 
 import com.mongodb.DB;
 
-public class PuppetDesignAntipatternsTransMetricProvider implements ITransientMetricProvider<DesignAntipatterns> {
+public class PuppetDesignAntipatternTransMetricProvider implements ITransientMetricProvider<DesignAntipatterns> {
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -41,13 +41,13 @@ public class PuppetDesignAntipatternsTransMetricProvider implements ITransientMe
 	
 	private final OssmeterLogger logger;
 	
-	public PuppetDesignAntipatternsTransMetricProvider() {
+	public PuppetDesignAntipatternTransMetricProvider() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.trans.configuration.puppet.designantipatterns.PuppetDesignAntipatternsTransMetricProvider");
 	}
     
     @Override
     public String getIdentifier() {
-    return PuppetDesignAntipatternsTransMetricProvider.class.getCanonicalName();
+    return PuppetDesignAntipatternTransMetricProvider.class.getCanonicalName();
     }
     
     @Override

@@ -148,6 +148,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies</module>
