@@ -24,9 +24,7 @@ public abstract class AbstractIndexingMetricProvider implements ITransientMetric
 	protected List<IMetricProvider> uses;
 	
 	@Override
-	public String getIdentifier() {
-		return this.getClass().getName();
-	}
+	public abstract String getIdentifier();
 	
 	@Override
 	public abstract boolean appliesTo(Project project);
