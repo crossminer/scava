@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -27,7 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.core.cache.AbstractCacheManager;
 import org.eclipse.scava.crossflow.restmule.core.cache.ICache;
-import org.eclipse.scava.crossflow.restmule.core.data.okhttp3.wrappers.OkHttp3Response;
 import org.eclipse.scava.crossflow.restmule.core.session.AbstractSession;
 import org.eclipse.scava.crossflow.restmule.core.session.ISession;
 import org.eclipse.scava.crossflow.restmule.core.util.OkHttpUtil;
@@ -77,12 +76,15 @@ public abstract class AbstractInterceptor {
 
 			private AtomicInteger remainingRequestCounter = new AtomicInteger(1);
 			private ISession session;
+			
+			// list of codes that will trigger a fixed-time retry (such as bad gateway)
+			private List<Integer> retryCodes = Arrays.asList(502);
 
 			@Override
 			public Response intercept(Chain chain) throws IOException {
 
-				System.out.println("AbstractInterceptor.intercept( " +chain.request().url() + " )" );
-				
+				System.out.println("AbstractInterceptor.intercept( " + chain.request().url() + " )");
+
 				if (activateCaching)
 					cache = c.getCacheInstance();
 
@@ -113,11 +115,11 @@ public abstract class AbstractInterceptor {
 					requestBuilder.cacheControl(FORCE_NETWORK).tag(TAG_FORCE_NETWORK);
 					networkRequest = getFilteredRequest(request, requestBuilder, false);
 					response = chain.proceed(networkRequest);
-					
+
 				}
 				// session set -- try to use cache or go to network
 				else {
-			
+
 					if (cache != null) {
 						if (cache.isDistributed()) {
 							try {
@@ -166,11 +168,26 @@ public abstract class AbstractInterceptor {
 				LOG.info("DEALING WITH NETWORK RESPONSE");
 
 				if (response.networkResponse() != null) {
-					
+
 					// erroneous response
 					if (!response.networkResponse().isSuccessful()) {
 						int code = response.networkResponse().code();
 						if (code != HttpStatus.SC_NOT_MODIFIED) {
+							// error that can triggers a fixed-time retry
+							while (retryCodes.contains(code)) {
+								long ms = 1000 * 30;
+								LOG.info("CODE:" + code + "RETRYING IN " + (ms / 1000) + " s");
+								try {
+									TimeUnit.MILLISECONDS.sleep(ms);
+									LOG.info("RETRYING NOW");
+									response = chain.proceed(networkRequest);
+									code = response.code();
+								} catch (InterruptedException e) {
+									LOG.info(e.getMessage());
+									e.printStackTrace();
+								}
+							}
+							// rate-limit reached
 							while (code == HttpStatus.SC_FORBIDDEN) {
 								peekResponse(response);
 								try {
@@ -231,68 +248,71 @@ public abstract class AbstractInterceptor {
 				String knownHeaderRemaining = response.networkResponse().header(headerRemaining);
 				String knownHeaderReset = response.networkResponse().header(headerReset);
 
-				if ( knownHeaderLimit != null ) {
-					session.setRateLimit( knownHeaderLimit );
-				}// knownHeaderLimit
+				if (knownHeaderLimit != null) {
+					session.setRateLimit(knownHeaderLimit);
+				} // knownHeaderLimit
 
-				if ( knownHeaderRemaining != null) {
-					session.setRateLimitRemaining( knownHeaderRemaining );
+				if (knownHeaderRemaining != null) {
+					session.setRateLimitRemaining(knownHeaderRemaining);
 					remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
-				}// knownHeaderRemaining
-				
-				if ( knownHeaderReset != null) {
-					session.setRateLimitReset( knownHeaderReset );
-				}// knownHeaderReset
+				} // knownHeaderRemaining
 
-				if ( headerReset.contentEquals("midnight") ) {
-					session.setRateLimitReset( getMidnightPlusOne() );
-				}// headerReset = midnight
-				LOG.info("Rate limit reset will occur at " + session.getRateLimitReset() );
-				
-				// ---- START: STACKEXCHANGE API-SPECIFIC (TODO: move to API-specific client?) -----
-				if ( response.request().url().toString().startsWith("https://api.stackexchange.com") && jsonResponse instanceof JsonObject ) {
+				if (knownHeaderReset != null) {
+					session.setRateLimitReset(knownHeaderReset);
+				} // knownHeaderReset
+
+				if (headerReset.contentEquals("midnight")) {
+					session.setRateLimitReset(getMidnightPlusOne());
+				} // headerReset = midnight
+				LOG.info("Rate limit reset will occur at " + session.getRateLimitReset());
+
+				// ---- START: STACKEXCHANGE API-SPECIFIC (TODO: move to API-specific client?)
+				// -----
+				if (response.request().url().toString().startsWith("https://api.stackexchange.com")
+						&& jsonResponse instanceof JsonObject) {
 					JsonObject jsonObject = (JsonObject) jsonResponse;
 					Set<Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-					
+
 					for (Map.Entry<String, JsonElement> entry : entrySet) {
-						
+
 						JsonElement entryValue = entry.getValue();
-						if ( entry.getKey().equals("has_more") ) {
+						if (entry.getKey().equals("has_more")) {
 							LOG.info("Response indicates that there are (!) still items to be retrieved.");
-							if ( !entry.getValue().getAsBoolean() ) {
+							if (!entry.getValue().getAsBoolean()) {
 								LOG.info("NO MORE RESULTS --- UNSETTING SESSION.");
 								session.unset();
 							}
-							
-						} else if ( entry.getKey().equals(headerLimit) ) {
-							session.setRateLimit( entryValue.getAsString() );
+
+						} else if (entry.getKey().equals(headerLimit)) {
+							session.setRateLimit(entryValue.getAsString());
 							LOG.info("Rate limit set from response: " + entryValue);
-							
-						} else if ( entry.getKey().equals(headerRemaining) ) {
-							session.setRateLimitRemaining( entryValue.getAsString() );
+
+						} else if (entry.getKey().equals(headerRemaining)) {
+							session.setRateLimitRemaining(entryValue.getAsString());
 							remainingRequestCounter.set(session.getRateLimitRemaining().get() + 1);
-							
-						} 
-						else if ( entry.getKey().equals("total") ) {
-							LOG.info("Total number of items to be retrieved: " + entryValue );
-							
-							if ( session.getRateLimitRemaining().intValue() <= 0 ) {
-								// assuming that there are calls remaining 
-								LOG.info("Setting rate limit by assuming (!) that the total number of items (" + entryValue + ") can be retrieved.");
-								String totalPlusOne = String.valueOf(entryValue.getAsInt()+1);
-								session.setRateLimitRemaining( totalPlusOne );
-								session.setRateLimit( totalPlusOne );
-								remainingRequestCounter.set( Integer.parseInt(totalPlusOne) );
-								
+
+						} else if (entry.getKey().equals("total")) {
+							LOG.info("Total number of items to be retrieved: " + entryValue);
+
+							if (session.getRateLimitRemaining().intValue() <= 0) {
+								// assuming that there are calls remaining
+								LOG.info("Setting rate limit by assuming (!) that the total number of items ("
+										+ entryValue + ") can be retrieved.");
+								String totalPlusOne = String.valueOf(entryValue.getAsInt() + 1);
+								session.setRateLimitRemaining(totalPlusOne);
+								session.setRateLimit(totalPlusOne);
+								remainingRequestCounter.set(Integer.parseInt(totalPlusOne));
+
 							} else {
-								session.setRateLimitRemaining( String.valueOf(session.getRateLimitRemaining().get() + 1) );
-								session.setRateLimit( entryValue.getAsString() );
-								remainingRequestCounter.set( entryValue.getAsInt() );
+								session.setRateLimitRemaining(
+										String.valueOf(session.getRateLimitRemaining().get() + 1));
+								session.setRateLimit(entryValue.getAsString());
+								remainingRequestCounter.set(entryValue.getAsInt());
 							}
 
 						}
 					}
-				} else if ( jsonResponse instanceof JsonArray ) {
+				} else if (jsonResponse instanceof JsonArray) {
 					// not required
 				}
 				// ---- END: STACKEXCHANGE API-SPECIFIC -----
@@ -302,42 +322,45 @@ public abstract class AbstractInterceptor {
 				LocalTime midnight = LocalTime.MIDNIGHT;
 				LocalDate today = LocalDate.now(ZoneId.of("UTC"));
 				LocalDateTime tomorrowMidnight = LocalDateTime.of(today, midnight).plusDays(1);
-				String todayMidnightPlusOneString = String.valueOf( tomorrowMidnight.toEpochSecond(ZoneOffset.UTC)+1);
+				String todayMidnightPlusOneString = String.valueOf(tomorrowMidnight.toEpochSecond(ZoneOffset.UTC) + 1);
 				return todayMidnightPlusOneString;
 			}
 
 			/**
-			 * Make sure to include asking for the total number of items on the first call to StackExchange API
+			 * Make sure to include asking for the total number of items on the first call
+			 * to StackExchange API
 			 * 
 			 * @param request
 			 * @param requestBuilder
-			 * @param session 
+			 * @param session
 			 * @return
 			 */
 			private Request getFilteredRequest(Request request, Builder requestBuilder, boolean filterTotal) {
 				String requestUrl = request.url().toString();
-				
+
 				// ---- START: STACKEXCHANGE API-SPECIFIC -----
-				// TODO: eventually move API-specific code from core to API-specific project interceptor
-				if ( requestUrl.startsWith("https://api.stackexchange.com") ) {
-					
-					if ( filterTotal ) {
+				// TODO: eventually move API-specific code from core to API-specific project
+				// interceptor
+				if (requestUrl.startsWith("https://api.stackexchange.com")) {
+
+					if (filterTotal) {
 						// remove filter=total (only required for initial request)
 						requestUrl = requestUrl.replace("filter=total", "");
-						
-					} else if ( !filterTotal && !requestUrl.contains("filter=total") ) {
+
+					} else if (!filterTotal && !requestUrl.contains("filter=total")) {
 						requestUrl = requestUrl.concat("&filter=total");
-						
+
 					}
-					
-					if ( !session.isHeader() && session.key() != null && !session.key().isEmpty() && !requestUrl.contains("key=") ) {
+
+					if (!session.isHeader() && session.key() != null && !session.key().isEmpty()
+							&& !requestUrl.contains("key=")) {
 						// attach api key to url if non-header session
-						requestUrl = requestUrl.concat("&key="+session.key());
+						requestUrl = requestUrl.concat("&key=" + session.key());
 					}
 				}
 				// ---- END: STACKEXCHANGE API-SPECIFIC -----
 //				System.out.println("requestUrl="+requestUrl);
-				return requestBuilder.url(requestUrl).build();						
+				return requestBuilder.url(requestUrl).build();
 			}// getFilteredRequest
 
 			private JsonElement peekResponse(Response response) throws IOException {
@@ -381,7 +404,7 @@ public abstract class AbstractInterceptor {
 				body.close();
 				bufferedReader.close();
 				jsonReader.close();
-				
+
 				return jsonResponse;
 			}
 
