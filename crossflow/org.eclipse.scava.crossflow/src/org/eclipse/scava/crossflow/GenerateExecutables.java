@@ -53,7 +53,7 @@ public class GenerateExecutables {
 	public void execute() throws Exception {
 
 		IEolContext context = (module = createModule()).getContext();
-		module.parse(getFileURI("generateExecutables.egx"));
+		module.parse(getFileURI("java/generateExecutables.egx"));
 
 		Variable dependenciesPath = new Variable();
 		dependenciesPath.setName("dependenciesPath");
@@ -110,7 +110,7 @@ public class GenerateExecutables {
 	}
 
 	public List<IModel> getModels() throws Exception {
-		List<IModel> models = new ArrayList<>(2);
+		List<IModel> models = new ArrayList<>();
 		models.add(
 				createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false, false));
 
