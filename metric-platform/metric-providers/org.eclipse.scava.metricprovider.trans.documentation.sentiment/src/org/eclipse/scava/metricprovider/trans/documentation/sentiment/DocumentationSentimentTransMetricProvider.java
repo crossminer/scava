@@ -19,6 +19,7 @@ import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
@@ -31,6 +32,7 @@ import com.mongodb.DB;
 public class DocumentationSentimentTransMetricProvider implements ITransientMetricProvider<DocumentationSentimentTransMetric> {
 
 	protected PlatformVcsManager platformVcsManager;
+	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -77,6 +79,7 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context=context;
+		this.communicationChannelManager= context.getPlatformCommunicationChannelManager();
 		this.platformVcsManager=context.getPlatformVcsManager();
 	}
 

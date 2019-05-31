@@ -18,6 +18,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 
 import com.mongodb.DB;
@@ -26,6 +27,7 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	
 	protected PlatformVcsManager platformVcsManager;
+	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -75,6 +77,7 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context=context;
+		this.communicationChannelManager= context.getPlatformCommunicationChannelManager();
 		this.platformVcsManager=context.getPlatformVcsManager();
 	}
 
