@@ -29,7 +29,7 @@ class SentimentAnalyserSigleton
 	
 	private SentimentAnalyserSigleton()
 	{	
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.requestreplydetector");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.sentimentanalyzer");
 		sentimentAnalyzer=new Vasttext();
 		try
 		{
