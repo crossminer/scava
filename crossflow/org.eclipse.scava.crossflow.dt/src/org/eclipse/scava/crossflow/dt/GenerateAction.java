@@ -1,3 +1,4 @@
+
 package org.eclipse.scava.crossflow.dt;
 
 import java.io.BufferedReader;
@@ -33,7 +34,7 @@ public class GenerateAction implements IObjectActionDelegate {
 		try {
 
 			// create experiment folder and initial contents
-			File experimentFolder = new File(projectFolder,"experiment");
+			File experimentFolder = new File(projectFolder, "experiment");
 			experimentFolder.mkdirs();
 
 			File inFolder = new File(experimentFolder, "in");
@@ -67,7 +68,7 @@ public class GenerateAction implements IObjectActionDelegate {
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (Exception e) {
-			MessageDialog.openError(shell, "Error", e.getMessage());
+			ExceptionHandler.handle(e, shell);
 		}
 	}
 
@@ -82,7 +83,7 @@ public class GenerateAction implements IObjectActionDelegate {
 		}
 		r.close();
 
-		//TODO make this smarter for manifests with multiple dependencies
+		// TODO make this smarter for manifests with multiple dependencies
 		if (!contents.stream().anyMatch(s -> s.contains("Require-Bundle: org.eclipse.scava.crossflow.runtime"))) {
 
 			String dependencies = "Require-Bundle: org.eclipse.scava.crossflow.runtime";
@@ -92,7 +93,7 @@ public class GenerateAction implements IObjectActionDelegate {
 			w.close();
 
 		}
-		
+
 		if (!contents.stream().anyMatch(s -> s.contains("Bundle-RequiredExecutionEnvironment"))) {
 
 			String jre = "Bundle-RequiredExecutionEnvironment: JavaSE-1.8";
@@ -101,8 +102,8 @@ public class GenerateAction implements IObjectActionDelegate {
 			w.append(jre + "\n");
 			w.close();
 
-		}		
-		
+		}
+
 	}
 
 	@Override

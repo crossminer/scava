@@ -52,14 +52,14 @@ public class CreateExecutablesAction implements IObjectActionDelegate {
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (Exception e) {
-			MessageDialog.openError(shell, "Error", e.getMessage());
+			ExceptionHandler.handle(e, shell);
 		}
 	}
 
 	private void createClientJar(boolean replace, String path) throws Exception {
 
-		//FIXME WiP -- currently user uses eclipse export fat jar wizard
-		
+		// FIXME WiP -- currently user uses eclipse export fat jar wizard
+
 //		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
 //		IProject project = selectedFile.getProject();
 //

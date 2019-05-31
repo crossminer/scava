@@ -26,9 +26,11 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class UploadZip implements IObjectActionDelegate {
 
-	private Shell shell;
-	protected ISelection selection = null;
-	private static final String webAppProjectName = "org.eclipse.scava.crossflow.web";
+	protected Shell shell;
+	protected ISelection selection;
+	protected final String webAppProjectName = "org.eclipse.scava.crossflow.web";
+	protected String experimentName;
+	protected String serverIp;
 
 	@Override
 	public void run(IAction action) {
@@ -49,33 +51,30 @@ public class UploadZip implements IObjectActionDelegate {
 				return;
 			System.out.println(zipfile);
 
+			experimentName = zipfile.getName();
+
 			File config = new File(experimentFolder,
 					getFileWithExt(experimentFolder, "experiment.xml", new LinkedList<String>()));
 			if (config == null || !config.exists())
 				return;
 			System.out.println(config);
 
-			String serverIp = getWebServerIp(config);
+			serverIp = getWebServerIp(config);
 			System.out.println(serverIp);
 			// send zip to webserver
 			//
-			sendPOST(serverIp, zipfile);
+			uploadExperiment(zipfile);
 
 		} catch (Exception e) {
-			String trace = "";
-			for (StackTraceElement t : e.getStackTrace())
-				trace = trace + t + "\n";
-			MessageDialog.openError(shell, "Error", e.getMessage() + "\n" + trace);
+			ExceptionHandler.handle(e, shell);
 		}
 	}
 
-	private void sendPOST(String ip, File zipfile) throws IOException {
+	protected void uploadExperiment(File zipfile) throws IOException {
 
 		HttpClient httpclient = new DefaultHttpClient();
 
-		String experimentName = zipfile.getName();
-
-		HttpPost httppost = new HttpPost("http://" + ip + "/" + webAppProjectName + "/uploadExperiment");
+		HttpPost httppost = new HttpPost("http://" + serverIp + "/" + webAppProjectName + "/uploadExperiment");
 
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.addPart("experimentZip", new FileBody(zipfile));
