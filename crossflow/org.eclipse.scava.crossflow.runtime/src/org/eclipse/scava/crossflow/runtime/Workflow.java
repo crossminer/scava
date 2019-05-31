@@ -2,39 +2,18 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.ThreadPoolExecutor;
-
-import javax.management.MBeanServerConnection;
-import javax.management.MBeanServerInvocationHandler;
-import javax.management.ObjectName;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
-
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.management.*;
+import javax.management.remote.*;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.eclipse.scava.crossflow.runtime.utils.CFThreadPoolExecutorServiceFactory;
-import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
-import org.eclipse.scava.crossflow.runtime.utils.Result;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
-import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
-
+import org.eclipse.scava.crossflow.runtime.utils.*;
 import com.beust.jcommander.Parameter;
 
 public abstract class Workflow {
@@ -78,10 +57,10 @@ public abstract class Workflow {
 			"-parallelization" }, description = "The parallelization of the workflow (for non-singleton tasks), defaults to 1")
 	protected int parallelization = 1;// Runtime.getRuntime().availableProcessors();
 
-	private List<String> activeJobs = new ArrayList<String>();
-	protected HashSet<Stream> activeStreams = new HashSet<Stream>();
+	private List<String> activeJobs = new ArrayList<>();
+	protected HashSet<Stream> activeStreams = new HashSet<>();
 
-	protected HashSet<Task> tasks = new HashSet<Task>();
+	protected HashSet<Task> tasks = new HashSet<>();
 
 	@Parameter(names = {
 			"-cacheEnabled" }, description = "Whether this workflow caches intermediary results or not.", arity = 1)
@@ -106,6 +85,7 @@ public abstract class Workflow {
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
+	protected BuiltinStream<java.io.Serializable> configTopic = null;
 
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected CrossflowLogger logger = new CrossflowLogger(this);
@@ -118,12 +98,20 @@ public abstract class Workflow {
 	protected List<InternalException> internalExceptions = null;
 
 	// for master to keep track of active and terminated workers
-	protected Collection<String> activeWorkerIds = new HashSet<String>();
-	protected Collection<String> terminatedWorkerIds = new HashSet<String>();
+	protected Collection<String> activeWorkerIds = new HashSet<>();
+	protected Collection<String> terminatedWorkerIds = new HashSet<>();
 	protected Serializer serializer = new Serializer();
 
 	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<String>();
+	protected Collection<String> tasksToExclude = new LinkedList<>();
+
+	protected Collection<ExecutorService> executorPools = new LinkedList<>();
+
+	public ExecutorService newExecutor() {
+		ExecutorService executor = Executors.newFixedThreadPool(parallelization);
+		executorPools.add(executor);
+		return executor;
+	}
 
 	/**
 	 * Sets whether tasks are able to obtain more jobs while they are in the middle
@@ -192,21 +180,22 @@ public abstract class Workflow {
 	}
 
 	public Workflow() {
-		taskStatusTopic = new BuiltinStream<TaskStatus>(this, "TaskStatusPublisher");
-		resultsTopic = new BuiltinStream<Result>(this, "ResultsBroadcaster");
-		streamMetadataTopic = new BuiltinStream<StreamMetadataSnapshot>(this, "StreamMetadataBroadcaster");
-		taskMetadataTopic = new BuiltinStream<TaskStatus>(this, "TaskMetadataBroadcaster");
-		controlTopic = new BuiltinStream<ControlSignal>(this, "ControlTopic");
-		logTopic = new BuiltinStream<LogMessage>(this, "LogTopic");
-		failedJobsQueue = new BuiltinStream<FailedJob>(this, "FailedJobs", false);
-		internalExceptionsQueue = new BuiltinStream<InternalException>(this, "InternalExceptions", false);
+		taskStatusTopic = new BuiltinStream<>(this, "TaskStatusPublisher");
+		resultsTopic = new BuiltinStream<>(this, "ResultsBroadcaster");
+		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");
+		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
+		controlTopic = new BuiltinStream<>(this, "ControlTopic");
+		configTopic = new BuiltinStream<>(this, "ConfigurationTopic");
+		logTopic = new BuiltinStream<>(this, "LogTopic");
+		failedJobsQueue = new BuiltinStream<>(this, "FailedJobs", false);
+		internalExceptionsQueue = new BuiltinStream<>(this, "InternalExceptions", false);
 
 		instanceId = UUID.randomUUID().toString();
 	}
 
-	private HashMap<String, String> displayedTaskStatuses = new HashMap<String, String>();
-	private HashMap<String, Long> waitingTaskStatuses = new HashMap<String, Long>();
-	private HashSet<String> activeTimers = new HashSet<String>();
+	private HashMap<String, String> displayedTaskStatuses = new HashMap<>();
+	private HashMap<String, Long> waitingTaskStatuses = new HashMap<>();
+	private HashSet<String> activeTimers = new HashSet<>();
 	private Timer taskStatusDelayedUpdateTimer = new Timer();
 
 	protected void connect() throws Exception {
@@ -219,12 +208,13 @@ public abstract class Workflow {
 		streamMetadataTopic.init();
 		taskMetadataTopic.init();
 		controlTopic.init();
+		configTopic.init();
 		logTopic.init();
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
 
 		activeStreams.add(taskStatusTopic);
-
+		activeStreams.add(configTopic);
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
 		// XXX do not add this topic/queue or any other non-essential ones to
@@ -251,20 +241,18 @@ public abstract class Workflow {
 					case WORKER_REMOVED:
 						activeWorkerIds.remove(signal.getSenderId());
 						break;
-
 					default:
 						break;
 					}
 
-				} else {
-					if (signal.getSignal().equals(ControlSignals.TERMINATION))
-						try {
-							terminate();
-						} catch (Exception e) {
-							unrecoverableException(e);
-						}
 				}
-
+				else if (signal.getSignal().equals(ControlSignals.TERMINATION)) {
+					try {
+						terminate();
+					} catch (Exception e) {
+						unrecoverableException(e);
+					}
+				}
 			}
 		});
 
@@ -352,7 +340,7 @@ public abstract class Workflow {
 										activeTimers.remove(taskName);
 										//
 										long delayedtime = System.currentTimeMillis();
-										String[] dSplit = displayedTaskStatuses.get(taskName).split(":");
+										//String[] dSplit = displayedTaskStatuses.get(taskName).split(":");
 										if (waitingTaskStatuses.containsKey(taskName) && (delayedtime
 												- waitingTaskStatuses.get(taskName) > taskChangePeriod)) {
 											waitingTaskStatuses.remove(taskName);
@@ -605,7 +593,7 @@ public abstract class Workflow {
 		run(0);
 	}
 
-	protected int delay = 0;
+	protected long delay = 0;
 
 	/**
 	 * delays the execution of sources for 'delay' milliseconds. Needs to set the
@@ -614,7 +602,7 @@ public abstract class Workflow {
 	 * @param delay
 	 * @throws Exception
 	 */
-	public abstract void run(int delay) throws Exception;
+	public abstract void run(long delay) throws Exception;
 
 	private synchronized boolean areStreamsEmpty() {
 
@@ -757,6 +745,13 @@ public abstract class Workflow {
 			// stop all permanent streams
 
 			try {
+				configTopic.stop();
+			} catch (Exception e) {
+				// Ignore any exception
+				e.printStackTrace();
+			}
+			
+			try {
 				resultsTopic.stop();
 			} catch (Exception e) {
 				// Ignore any exception
@@ -770,6 +765,7 @@ public abstract class Workflow {
 				e.printStackTrace();
 			}
 
+			activeStreams.remove(configTopic);
 			activeStreams.remove(resultsTopic);
 			activeStreams.remove(logTopic);
 
@@ -814,8 +810,8 @@ public abstract class Workflow {
 			}
 
 			// destroy all thread pools used by tasks
-			for (ThreadPoolExecutor ex : CFThreadPoolExecutorServiceFactory.getPools()) {
-				List<Runnable> pending = ex.shutdownNow();
+			for (ExecutorService executor : executorPools) {
+				List<Runnable> pending = executor.shutdownNow();
 				if (pending.size() > 0)
 					System.err.println("WARNING: there were pending tasks in the threadpool upon termination!");
 			}
@@ -829,6 +825,7 @@ public abstract class Workflow {
 			}
 
 			terminated = true;
+			notifyAll();
 			System.out.println("workflow " + getName() + " terminated.");
 			//
 		} catch (Exception ex) {
@@ -862,6 +859,10 @@ public abstract class Workflow {
 		return controlTopic;
 	}
 
+	public BuiltinStream<java.io.Serializable> getConfigurationTopic() {
+		return configTopic;
+	}
+	
 	public BuiltinStream<FailedJob> getFailedJobsQueue() {
 		return failedJobsQueue;
 	}
@@ -965,7 +966,7 @@ public abstract class Workflow {
 	 *         JobStreams
 	 */
 	public Set<ActiveMQDestination> getAllJobStreamsInternals() {
-		Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
+		Set<ActiveMQDestination> ret = new HashSet<>();
 		activeStreams.stream().filter(s -> s instanceof JobStream)
 				.forEach(js -> ret.addAll(((JobStream<?>) js).getAllQueues()));
 		return ret;
@@ -1036,6 +1037,20 @@ public abstract class Workflow {
 
 	public void log(SEVERITY level, String message) {
 		logger.log(level, message);
+	}
+	
+	/**
+	 * Waits until {@link #hasTerminated()} return true.
+	 */
+	public synchronized void awaitTermination() {
+		while (!terminated) {
+			try {
+				wait();
+			}
+			catch (InterruptedException ie) {
+				logger.log(SEVERITY.INFO, ie.getMessage());
+			}
+		}
 	}
 
 }

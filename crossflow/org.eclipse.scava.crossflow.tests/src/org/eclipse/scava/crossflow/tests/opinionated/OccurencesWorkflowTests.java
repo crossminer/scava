@@ -1,9 +1,7 @@
 package org.eclipse.scava.crossflow.tests.opinionated;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
-
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;
 
@@ -12,7 +10,7 @@ public class OccurencesWorkflowTests extends WorkflowTests {
 	@Test
 	public void testWorkflow() throws Exception {
 
-		HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
+		HashMap<String, Integer> wordMap = new HashMap<>();
 		wordMap.put("Apple", 3);
 		wordMap.put("Banana", 2);
 

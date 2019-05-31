@@ -123,9 +123,9 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		assertEquals(true, master.getAdder().getExecutions() < 10);
 		assertEquals(10, worker.getAdder().getExecutions() + master.getAdder().getExecutions());
 
-		HashSet<Integer> expected = new HashSet<Integer>();
+		HashSet<Integer> expected = new HashSet<>();
 		input.stream().map(i -> i * 2).forEach(i -> expected.add(i));
-		assertEquals(expected, new HashSet<Integer>(master.getAdditionResultsSink().getNumbers()));
+		assertEquals(expected, new HashSet<>(master.getAdditionResultsSink().getNumbers()));
 	}
 
 	@Test

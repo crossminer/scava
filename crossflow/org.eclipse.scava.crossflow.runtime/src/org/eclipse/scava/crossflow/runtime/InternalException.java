@@ -3,6 +3,8 @@ package org.eclipse.scava.crossflow.runtime;
 import java.io.Serializable;
 
 public class InternalException implements Serializable {
+
+	private static final long serialVersionUID = 3379426884982685293L;
 	
 	protected Exception exception;
 	protected String worker;

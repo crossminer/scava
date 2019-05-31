@@ -1,8 +1,6 @@
 package org.eclipse.scava.crossflow.tests.cache;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflow;

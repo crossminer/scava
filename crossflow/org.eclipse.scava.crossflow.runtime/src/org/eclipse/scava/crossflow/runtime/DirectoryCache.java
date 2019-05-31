@@ -18,8 +18,8 @@ public class DirectoryCache implements Cache {
 
 	boolean verbose = false;
 
-	protected HashMap<String, File> jobFolderMap = new HashMap<String, File>();
-	protected HashMap<String, Job> jobMap = new HashMap<String, Job>();
+	protected HashMap<String, File> jobFolderMap = new HashMap<>();
+	protected HashMap<String, Job> jobMap = new HashMap<>();
 
 	protected File directory;
 	protected Workflow workflow = null;
@@ -51,9 +51,10 @@ public class DirectoryCache implements Cache {
 		}
 	}
 
+	@Override
 	public List<Job> getCachedOutputs(Job input) {
 		if (hasCachedOutputs(input)) {
-			ArrayList<Job> outputs = new ArrayList<Job>();
+			ArrayList<Job> outputs = new ArrayList<>();
 			File inputFolder = jobFolderMap.get(input.getHash());
 			for (File outputFile : inputFolder.listFiles()) {
 				Job output = (Job) workflow.getSerializer().toObject(outputFile);
@@ -68,12 +69,14 @@ public class DirectoryCache implements Cache {
 		}
 	}
 
+	@Override
 	public boolean hasCachedOutputs(Job input) {
 		if (input == null)
 			return !jobFolderMap.isEmpty();
 		return jobFolderMap.containsKey(input.getHash());
 	}
 
+	@Override
 	public synchronized void cache(Job output) {
 
 		if (!output.isCacheable())
@@ -114,7 +117,7 @@ public class DirectoryCache implements Cache {
 		this.workflow = workflow;
 	}
 
-	HashMap<String, LinkedList<Job>> pendingTransactions = new HashMap<String, LinkedList<Job>>();
+	HashMap<String, LinkedList<Job>> pendingTransactions = new HashMap<>();
 
 	@Override
 	public synchronized void cacheTransactionally(Job output) {
@@ -137,7 +140,7 @@ public class DirectoryCache implements Cache {
 
 		LinkedList<Job> currentPending;
 		if ((currentPending = pendingTransactions.get(output.getCorrelationId())) == null)
-			currentPending = new LinkedList<Job>();
+			currentPending = new LinkedList<>();
 		currentPending.add(output);
 
 		pendingTransactions.put(output.getCorrelationId(), currentPending);
@@ -145,7 +148,7 @@ public class DirectoryCache implements Cache {
 
 	}
 
-	private HashMap<String, Integer> confirmations = new HashMap<String, Integer>();
+	private HashMap<String, Integer> confirmations = new HashMap<>();
 
 	private void cachePendingTransactions(Job output) {
 
@@ -214,6 +217,7 @@ public class DirectoryCache implements Cache {
 	/**
 	 * Clears the entire cache
 	 */
+	@Override
 	public boolean clear() {
 		return clear("");
 	}
@@ -222,6 +226,7 @@ public class DirectoryCache implements Cache {
 	 * Clears the cache for a specific queue (use the empty string for a global
 	 * cache clear, or use the 0 parameter method clear())
 	 */
+	@Override
 	public boolean clear(String stream) {
 		// System.out.println(jobFolderMap);
 		File streamFolder = stream.trim().length() == 0 ? directory : new File(directory, stream);

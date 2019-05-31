@@ -41,7 +41,7 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 	
 	[%}%]
 	
-	public Object[] toObjectArray(){
+	public Object[] toObjectArray() {
 		Object[] ret = new Object[[%=t.fields.size%]];
 	[%var i = 0; for (f in t.fields) { %]
 	 	ret[[%=i%]] = get[%=f.name.ftuc()%]();

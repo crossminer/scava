@@ -2,25 +2,14 @@ package org.eclipse.scava.crossflow.tests.minimal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
@@ -68,9 +57,9 @@ public class MinimalWorkflowTests extends WorkflowTests {
 
 	//
 	private abstract class InternalQueueMonitor extends TimerTask {
-		Map<String, Long> queueSizes = new HashMap<String, Long>();
+		Map<String, Long> queueSizes = new HashMap<>();
 		boolean queueSizesActive = false;
-		Map<String, Long> queuesInFlight = new HashMap<String, Long>();
+		Map<String, Long> queuesInFlight = new HashMap<>();
 		boolean queuesInFlightActive = false;
 
 	};
@@ -91,36 +80,35 @@ public class MinimalWorkflowTests extends WorkflowTests {
 						// System.out.println(s);
 
 						String url = "service:jmx:rmi:///jndi/rmi://" + workflow.getMaster() + ":1099/jmxrmi";
-						JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url));
-						MBeanServerConnection connection = connector.getMBeanServerConnection();
-
-						ObjectName destination = new ObjectName("org.apache.activemq:type=Broker,brokerName="
-								+ workflow.getMaster() + ",destinationType=" + (c.isQueue() ? "Queue" : "Topic")
-								+ ",destinationName=" + c.getPhysicalName());
-
-						DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection,
-								destination, DestinationViewMBean.class, true);
-
-//							System.err.println(destinationName + ":" 
-//									+ destinationType + " " 
-//									+ mbView.getQueueSize() + " "
-//									+ mbView.getInFlightCount());
-
-						try {
-							long qSize = mbView.getQueueSize();
-							queueSizes.put(c.toString(), qSize);
-							if (qSize > 0)
-								queueSizesActive = true;
-							long qIFC = mbView.getInFlightCount();
-							queuesInFlight.put(c.toString(), qIFC);
-							if (qIFC > 0)
-								queuesInFlightActive = true;
-						} catch (Exception ex) {
-							// Ignore exception as we will be getting these during workflow termination as
-							// we keep trying to get queue info on queues that will be shutting down
+						try (JMXConnector connector = JMXConnectorFactory.connect(new JMXServiceURL(url))) {
+							MBeanServerConnection connection = connector.getMBeanServerConnection();
+	
+							ObjectName destination = new ObjectName("org.apache.activemq:type=Broker,brokerName="
+									+ workflow.getMaster() + ",destinationType=" + (c.isQueue() ? "Queue" : "Topic")
+									+ ",destinationName=" + c.getPhysicalName());
+	
+							DestinationViewMBean mbView = MBeanServerInvocationHandler.newProxyInstance(connection,
+									destination, DestinationViewMBean.class, true);
+	
+	//							System.err.println(destinationName + ":" 
+	//									+ destinationType + " " 
+	//									+ mbView.getQueueSize() + " "
+	//									+ mbView.getInFlightCount());
+	
+							try {
+								long qSize = mbView.getQueueSize();
+								queueSizes.put(c.toString(), qSize);
+								if (qSize > 0)
+									queueSizesActive = true;
+								long qIFC = mbView.getInFlightCount();
+								queuesInFlight.put(c.toString(), qIFC);
+								if (qIFC > 0)
+									queuesInFlightActive = true;
+							} catch (Exception ex) {
+								// Ignore exception as we will be getting these during workflow termination as
+								// we keep trying to get queue info on queues that will be shutting down
+							}
 						}
-
-						connector.close();
 
 						// streamSizes.put(s.getName(), s.getSize());
 						// streamsInFlight.put(s.getName(), s.getInFlight());
@@ -179,7 +167,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		List<Integer> numbers = Arrays.asList(1, 2);
 		MinimalWorkflow workflow = new MinimalWorkflow();
 		workflow.createBroker(createBroker);
-		List<Integer> results = new LinkedList<Integer>();
+		List<Integer> results = new LinkedList<>();
 		workflow.getMinimalSource().setNumbers(numbers);
 		//
 		workflow.getMinimalSource().setSendToResults(true);
@@ -212,7 +200,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 
 	private abstract class StreamMetadataBuiltinStreamConsumer
 			implements BuiltinStreamConsumer<StreamMetadataSnapshot> {
-		public List<Map.Entry<Long, Long>> failures = new ArrayList<Map.Entry<Long, Long>>();
+		public List<Map.Entry<Long, Long>> failures = new ArrayList<>();
 		public boolean updated = false;
 		public long maxQueueSize = 0;
 		public int nonZeroMatches = 0;
@@ -234,7 +222,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		//
 		workflow.setEnablePrefetch(enablePrefetch);
 		//
-		List<Integer> numbers = new LinkedList<Integer>();
+		List<Integer> numbers = new LinkedList<>();
 		for (int i = 1; i <= 10; i++)
 			numbers.add(i);
 		//
@@ -286,7 +274,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 				} catch (Throwable e) {
 					// e.printStackTrace();
 					if(!workflow.isTerminating()) // during termination the number of subscribers is inconsistent so ignore it
-						failures.add(new AbstractMap.SimpleEntry<Long, Long>(streamSize, statusBasedSize));
+						failures.add(new AbstractMap.SimpleEntry<>(streamSize, statusBasedSize));
 				}
 			}
 		};
@@ -343,7 +331,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 					assertEquals(t.getStream(INPUT_STREAM_ID).getNumberOfSubscribers(), 2);
 				} catch (Throwable e) {
 					if(!workflow.isTerminating()) // during termination the number of subscribers is inconsistent so ignore it
-						failures.add(new AbstractMap.SimpleEntry<Long, Long>(subs, ((long) 2)));
+						failures.add(new AbstractMap.SimpleEntry<>(subs, ((long) 2)));
 				}
 			}
 		};

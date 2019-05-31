@@ -14,12 +14,14 @@ public class Serializer {
 		return xstream.toXML(object);
 	}
 	
-	public Object toObject(String string) {
-		return xstream.fromXML(string);
+	@SuppressWarnings("unchecked")
+	public <O> O toObject(String string) {
+		return (O) xstream.fromXML(string);
 	}
 	
-	public Object toObject(File file) {
-		return xstream.fromXML(file);
+	@SuppressWarnings("unchecked")
+	public <O> O toObject(File file) {
+		return (O) xstream.fromXML(file);
 	}
 	
 	public void setClassloader(ClassLoader classLoader) {

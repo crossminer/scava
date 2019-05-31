@@ -42,7 +42,7 @@ public class WordCountSink extends WordCountSinkBase {
 		                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
 		                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 				
-				for (String w : new ArrayList<String>(sorted.keySet()).subList(0, Math.min(sorted.keySet().size(), 100))) {
+				for (String w : new ArrayList<>(sorted.keySet()).subList(0, Math.min(sorted.keySet().size(), 100))) {
 					writer.writeRecord(w, sorted.get(w));
 				}
 				writer.flush();

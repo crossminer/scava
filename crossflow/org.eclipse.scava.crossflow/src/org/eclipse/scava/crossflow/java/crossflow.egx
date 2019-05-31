@@ -80,7 +80,7 @@ rule CsvSink2Sink
 rule CommitmentTask2BaseClass 
 	transform t : CommitmentTask {
 	
-	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
+	guard : t.isJavaTask()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -93,7 +93,7 @@ rule CommitmentTask2BaseClass
 rule OpinionatedTask2BaseClass 
 	transform t : OpinionatedTask {
 	
-	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
+	guard : t.isJavaTask()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -106,7 +106,7 @@ rule OpinionatedTask2BaseClass
 rule Task2BaseClass 
 	transform t : Task {
 	
-	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())
+	guard : t.isJavaTask()
 	
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -119,7 +119,7 @@ rule Task2BaseClass
 rule Task2ImplClass 
 	transform t : Task {
 	
-	guard : t.languages.isEmpty() or t.languages.exists(l|l.isJava())	
+	guard :	t.isJavaTask()	
 		
 	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
 	
@@ -224,4 +224,8 @@ operation Workflow getPackageName() {
 
 operation Language isJava() : Boolean {
 	return self.name.toLowerCase()=="java";
+}
+
+operation Task isJavaTask() {
+	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
 }

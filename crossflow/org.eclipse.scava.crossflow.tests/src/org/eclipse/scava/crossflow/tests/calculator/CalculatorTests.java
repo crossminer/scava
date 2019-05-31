@@ -1,9 +1,7 @@
 package org.eclipse.scava.crossflow.tests.calculator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.Assert.*;
 import java.io.File;
-
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;

@@ -1,21 +1,7 @@
 package org.eclipse.scava.crossflow.runtime;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.jms.Connection;
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-
+import java.util.*;
+import javax.jms.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -28,7 +14,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 	protected Connection connection;
 	protected Session session;
 	protected Workflow workflow;
-	protected List<MessageConsumer> consumers = new LinkedList<MessageConsumer>();
+	protected List<MessageConsumer> consumers = new LinkedList<>();
 	protected Task cacheManagerTask = new Task() {
 		
 		@Override
@@ -50,9 +36,9 @@ public abstract class JobStream<T extends Job> implements Stream {
 		connection.start();
 		session = connection.createSession(false, ActiveMQSession.INDIVIDUAL_ACKNOWLEDGE);
 				
-		destination = new HashMap<String, ActiveMQDestination>();
-		pre = new HashMap<String, ActiveMQDestination>();
-		post = new HashMap<String, ActiveMQDestination>();
+		destination = new HashMap<>();
+		pre = new HashMap<>();
+		post = new HashMap<>();
 	}
 	
 	public void send(T job, String taskId) {
@@ -66,23 +52,27 @@ public abstract class JobStream<T extends Job> implements Stream {
 				job.setDestination(getClass().getSimpleName());
 				producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
 				producer.close();
-			} else
+			}
+			else {
 				// otherwise the sender must be the source of this stream so intends to
 				// propagate its messages to all the physical queues
-				for (Entry<String, ActiveMQDestination> e : pre.entrySet()) {			
-					MessageProducer producer = session.createProducer(e.getValue());
+				for (Destination dest : pre.values()) {			
+					MessageProducer producer = session.createProducer(dest);
 					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 					job.setDestination(this.getClass().getSimpleName());
 					producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
 					producer.close();
 				}
-		} catch (Exception ex) {
+			}
+		}
+		catch (Exception ex) {
 			workflow.reportInternalException(ex);
 		}
 	}
 	
+	@Override
 	public Collection<String> getDestinationNames() {
-		List<String> ret = new LinkedList<String>();
+		List<String> ret = new ArrayList<>(pre.size() + destination.size() + post.size());
 		for (ActiveMQDestination d : pre.values())
 			ret.add(d.getPhysicalName());
 		for (ActiveMQDestination d : destination.values())
@@ -92,9 +82,11 @@ public abstract class JobStream<T extends Job> implements Stream {
 		return ret;
 	}
 	
+	@Override
 	public void stop() throws JMSException {
-		for (MessageConsumer c : consumers)
+		for (MessageConsumer c : consumers) {
 			c.close();
+		}
 		session.close();
 		connection.close();
 	}
@@ -109,7 +101,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 	 * @return A set containing all ActiveMQDestination objects used by this JobStream 
 	 */
 	protected Set<ActiveMQDestination> getAllQueues() {
-		Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
+		Set<ActiveMQDestination> ret = new HashSet<>();
 		ret.addAll(pre.values());
 		ret.addAll(post.values());
 		ret.addAll(destination.values());

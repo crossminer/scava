@@ -8,7 +8,7 @@ public class WordCounter extends WordCounterBase {
 	public void consumeLines(Line line) {
 		
 		String text = line.getText().replaceAll("[^A-Za-z]", " ");
-		HashMap<String, Integer> frequencies = new HashMap<String, Integer>();
+		HashMap<String, Integer> frequencies = new HashMap<>();
 		for (String part : text.split(" ")) {
 			part = part.trim().toLowerCase();
 			if (part.length() == 0) continue;

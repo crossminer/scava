@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class FailedJob implements Serializable {
 
+	private static final long serialVersionUID = -8868868495593187850L;
+	
 	protected Job job;
 	protected Exception exception;
 	protected String worker;

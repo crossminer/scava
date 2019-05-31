@@ -1,8 +1,6 @@
 package org.eclipse.scava.crossflow.tests.addition;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,9 +26,9 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 		AdditionWorkflow worker = AdditionWorkflow.run(new String[] { "-mode", "worker", "-instance", "aw1" });
 
 		waitFor(master);
-		HashSet<Integer> expected = new HashSet<Integer>(Arrays.asList(new Integer[] { 2, 4, 6, 8, 10 }));
+		HashSet<Integer> expected = new HashSet<>(Arrays.asList(new Integer[] { 2, 4, 6, 8, 10 }));
 		System.out.println(expected);
-		HashSet<Integer> actual = new HashSet<Integer>(master.getAdditionResultsSink().getNumbers());
+		HashSet<Integer> actual = new HashSet<>(master.getAdditionResultsSink().getNumbers());
 		System.out.println(actual);
 		assertEquals(expected, actual);
 		assertTrue(master.getAdder().getExecutions() < 5);
@@ -71,7 +69,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 		for (int i = 1; i <= master.getParallelization(); i++)
 			results.addAll(Arrays.asList(1 * i * 2, 2 * i * 2, 3 * i * 2, 4 * i * 2, 5 * i * 2));
 
-		assertEquals(new HashSet<Integer>(results), new HashSet<>(master.getAdditionResultsSink().getNumbers()));
+		assertEquals(new HashSet<>(results), new HashSet<>(master.getAdditionResultsSink().getNumbers()));
 
 		System.out.println("" + master.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())));
 		System.out.println("" + worker.getAdders().stream().collect(Collectors.summingInt(a -> a.getExecutions())));

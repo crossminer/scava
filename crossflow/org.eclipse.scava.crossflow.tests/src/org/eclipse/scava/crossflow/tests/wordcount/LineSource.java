@@ -9,12 +9,12 @@ public class LineSource extends LineSourceBase {
 	@Override
 	public void produce() throws Exception {
 		for (File file : workflow.getInputDirectory().listFiles()) {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sendToLines(new Line(line));
+			try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sendToLines(new Line(line));
+				}
 			}
-			reader.close();
 		}
 	}
 

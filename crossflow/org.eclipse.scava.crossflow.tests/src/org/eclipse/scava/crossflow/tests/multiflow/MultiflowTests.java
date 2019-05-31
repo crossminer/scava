@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.multiflow;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.Assert.*;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.junit.Test;

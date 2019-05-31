@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AdditionResultsSink extends AdditionResultsSinkBase {
 	
-	protected List<Integer> numbers = new ArrayList<Integer>();
+	protected List<Integer> numbers = new ArrayList<>();
 	
 	@Override
 	public void consumeAdditionResults(Number number) {

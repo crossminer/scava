@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class WordSource extends WordSourceBase {
 	
-	protected HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
+	protected HashMap<String, Integer> wordMap = new HashMap<>();
 	
 	@Override
 	public void produce() {

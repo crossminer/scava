@@ -5,7 +5,7 @@ import java.util.List;
 
 public class UrlCollector extends UrlCollectorBase {
 	
-	protected List<String> locations = new ArrayList<String>();
+	protected List<String> locations = new ArrayList<>();
 	
 	@Override
 	public Url consumeUrls(Url url) {

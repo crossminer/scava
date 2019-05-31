@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Sink extends SinkBase {
 
-	private LinkedList<Map.Entry<String, Boolean>> results = new LinkedList<Map.Entry<String, Boolean>>();
+	private LinkedList<Map.Entry<String, Boolean>> results = new LinkedList<>();
 
 	public LinkedList<Map.Entry<String, Boolean>> getResults() {
 		return results;

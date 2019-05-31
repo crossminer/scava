@@ -3,7 +3,7 @@ package [%=package%];
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 
-public abstract class Opinionated[%=t.name%]Base extends [%=t.name%]Base{
+public abstract class Opinionated[%=t.name%]Base extends [%=t.name%]Base {
 	
 	[%for (s in t.input) { %]
 [%=s.createStartOfConsumeMethod()%]

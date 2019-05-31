@@ -25,16 +25,8 @@ public class UpdateClasspath {
 	}
 
 	protected URI getFileURI(String fileName) throws URISyntaxException {
-
 		URI binUri = UpdateClasspath.class.getResource(fileName).toURI();
-		URI uri = null;
-
-		if (binUri.toString().indexOf("bin") > -1) {
-			uri = new URI(binUri.toString().replaceAll("bin", "src"));
-		} else {
-			uri = binUri;
-		}
-		return uri;
+		return new URI(binUri.toString().replace("bin", "src"));
 	}
 
 }

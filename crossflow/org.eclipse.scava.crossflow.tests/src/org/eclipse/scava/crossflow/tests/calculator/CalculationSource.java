@@ -11,7 +11,7 @@ public class CalculationSource extends CalculationSourceBase {
 	public void produce() throws Exception {
 		CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "input.csv").getAbsolutePath());
 		
-		for (CSVRecord record : parser.getRecordsList()){
+		for (CSVRecord record : parser.getRecordsList()) {
 			Calculation calculation = new Calculation();
 			calculation.setA(Integer.parseInt(record.get(0)));
 			calculation.setOperator(record.get(1));

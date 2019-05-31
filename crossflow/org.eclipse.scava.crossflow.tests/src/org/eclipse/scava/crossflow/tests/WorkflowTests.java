@@ -10,9 +10,7 @@ public class WorkflowTests {
 	protected BrokerService brokerService;
 
 	public void waitFor(Workflow workflow) throws Exception {
-		while (!workflow.hasTerminated()) {
-			Thread.sleep(100);
-		}
+		workflow.awaitTermination();
 	}
 
 	public void startBroker() throws Exception {

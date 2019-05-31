@@ -2,7 +2,10 @@ package org.eclipse.scava.crossflow.runtime.utils;
 
 import java.io.Serializable;
 
-public class StreamMetadata  implements Serializable{
+public class StreamMetadata implements Serializable {
+	
+	private static final long serialVersionUID = 8710075551250735965L;
+	
 	private String name;
 	private long size;
 	private long inFlight;

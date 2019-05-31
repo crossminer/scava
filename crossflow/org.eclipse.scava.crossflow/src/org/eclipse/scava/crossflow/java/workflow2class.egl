@@ -4,13 +4,11 @@ import java.util.List;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
-import org.eclipse.scava.crossflow.runtime.utils.ParallelList;
+import org.eclipse.scava.crossflow.runtime.utils.ParallelTaskList;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
@@ -65,7 +63,7 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 
 	[%for (t in w.getParallelizableTasks()) {%]
-	protected ParallelList<[%=t.name%]> [%=t.name.ftlc()%]s = new ParallelList<>();
+	protected ParallelTaskList<[%=t.name%]> [%=t.name.ftlc()%]s = new ParallelTaskList<>();
 	[%}%]
 
 	//
@@ -109,7 +107,7 @@ public class [%=w.name%] extends Workflow {
 	 * @param delay
 	 */
 	@Override
-	public void run(int delay) throws Exception {
+	public void run(long delay) throws Exception {
 	
 [%
 
@@ -166,18 +164,14 @@ public class [%=w.name%] extends Workflow {
 			if (isMaster()){
 			[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
 				// run all sources in parallel threads
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							setTaskInProgess([%=t.name.ftlc()%]);
-							[%=t.name.ftlc()%].produce();
-							setTaskWaiting([%=t.name.ftlc()%]);
-						} catch (Exception ex) {
-							reportInternalException(ex);
-							terminate();
-						}
+				new Thread(() -> {
+					try {
+						setTaskInProgess([%=t.name.ftlc()%]);
+						[%=t.name.ftlc()%].produce();
+						setTaskWaiting([%=t.name.ftlc()%]);
+					} catch (Exception ex) {
+						reportInternalException(ex);
+						terminate();
 					}
 				}).start();	
 			[%}%]
@@ -215,7 +209,7 @@ public class [%=w.name%] extends Workflow {
 	[%}%]
 	}
 	[%if(w.getParallelizableTasks().contains(t)){%]
-	public ParallelList<[%=t.name%]> get[%=t.name%]s() {
+	public ParallelTaskList<[%=t.name%]> get[%=t.name%]s() {
 		return [%=t.name.ftlc()%]s;	
 	}	
 	[%}%]

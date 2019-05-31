@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
@@ -24,6 +23,7 @@ import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
@@ -32,7 +32,7 @@ import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 public class GenerateExecutables {
 
 	protected IEolModule module;
-	protected List<Variable> parameters = new ArrayList<Variable>();
+	protected List<Variable> parameters = new ArrayList<>();
 
 	protected Object result;
 
@@ -52,8 +52,8 @@ public class GenerateExecutables {
 
 	public void execute() throws Exception {
 
-		module = createModule();
-		module.parse(getFileURI("java/generateExecutables.egx"));
+		IEolContext context = (module = createModule()).getContext();
+		module.parse(getFileURI("generateExecutables.egx"));
 
 		Variable dependenciesPath = new Variable();
 		dependenciesPath.setName("dependenciesPath");
@@ -61,21 +61,20 @@ public class GenerateExecutables {
 		dependenciesPath.setValue(dependenciesLocation, module.getContext());
 		parameters.add(dependenciesPath);
 
-		if (module.getParseProblems().size() > 0) {
+		List<ParseProblem> parseProblems = module.getParseProblems();
+		
+		if (parseProblems.size() > 0) {
 			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
+			for (ParseProblem problem : parseProblems) {
+				System.err.println(problem);
 			}
 			return;
 		}
 
-		for (IModel model : getModels()) {
-			module.getContext().getModelRepository().addModel(model);
-		}
-
-		for (Variable parameter : parameters) {
-			module.getContext().getFrameStack().put(parameter);
-		}
+		IModel[] modelsArr = getModels().toArray(new IModel[0]);
+		
+		context.getModelRepository().addModels(modelsArr);
+		context.getFrameStack().put(parameters);
 
 		result = execute(module);
 
@@ -111,7 +110,7 @@ public class GenerateExecutables {
 	}
 
 	public List<IModel> getModels() throws Exception {
-		List<IModel> models = new ArrayList<IModel>();
+		List<IModel> models = new ArrayList<>(2);
 		models.add(
 				createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false, false));
 

@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.tests.ack;
 
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.tests.WorkflowTests;
 import org.eclipse.scava.crossflow.tests.util.Retry;

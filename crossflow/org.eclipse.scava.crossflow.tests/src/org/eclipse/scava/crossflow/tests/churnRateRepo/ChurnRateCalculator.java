@@ -12,9 +12,7 @@ import java.util.Set;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
@@ -26,7 +24,6 @@ import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -35,15 +32,15 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 
 	// it contains the remote branches that are cloned
-	private ArrayList<String> remoteBranches = new ArrayList<String>();
+	private ArrayList<String> remoteBranches = new ArrayList<>();
 
 	// each key-value contains each branch (key) and all its commit list values
-	private HashMap<String, List<String>> remoteCommits = new HashMap<String, List<String>>();
+	private HashMap<String, List<String>> remoteCommits = new HashMap<>();
 
 	// key represents the branch, hashmap value represents another hashmap with key
 	// of the path of the file with changes and integer the number of changes of
 	// this specific file in this specific branch
-	private HashMap<String, HashMap<String, Integer>> changesPerBranch = new HashMap<String, HashMap<String, Integer>>();
+	private HashMap<String, HashMap<String, Integer>> changesPerBranch = new HashMap<>();
 
 	// stores the cloned repository
 	private Git repo;
@@ -218,13 +215,11 @@ public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 		// convert SHA into ObjectId
 		ObjectId commitId = ObjectId.fromString(commit);
 
-		RevWalk revWalk = new RevWalk(myrepo);
-		RevCommit mycommit = revWalk.parseCommit(commitId);
-		revWalk.close();
-
-		System.out.println("got the tree" + mycommit.getTree());
-		return mycommit.getTree();
-
+		try (RevWalk revWalk = new RevWalk(myrepo)) {
+			RevCommit mycommit = revWalk.parseCommit(commitId);
+			System.out.println("got the tree" + mycommit.getTree());
+			return mycommit.getTree();
+		}
 	}
 
 	// this method sets diffs to all branches
@@ -380,7 +375,7 @@ public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 
 				// adds changes to appropriate value of inner HashMap
 				// HashMap<String,Integer> temp = new HashMap<String,Integer>();
-				HashMap<String, Integer> temp = new HashMap<String, Integer>();
+				HashMap<String, Integer> temp = new HashMap<>();
 				temp.put(path, this.getChangesPerBranch(branch, path) + 1);
 
 				// temp.put(path, getChangesPerBranch(branch,path)+1);
@@ -404,7 +399,7 @@ public class ChurnRateCalculator extends ChurnRateCalculatorBase {
 		// or if it does not contain branch or path
 		else {
 
-			HashMap<String, Integer> temp = new HashMap<String, Integer>();
+			HashMap<String, Integer> temp = new HashMap<>();
 			temp.put(path, 1);
 			this.changesPerBranch.put(branch, temp);
 			System.out.println("Inside 3 " + temp + "\n");
