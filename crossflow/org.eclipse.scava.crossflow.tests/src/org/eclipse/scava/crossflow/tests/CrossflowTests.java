@@ -6,6 +6,7 @@ import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowTests;
 import org.eclipse.scava.crossflow.tests.cache.DirectoryCacheCommandLineTests;
 import org.eclipse.scava.crossflow.tests.cache.DirectoryCacheTests;
 import org.eclipse.scava.crossflow.tests.commitment.CommitmentWorkflowTests;
+import org.eclipse.scava.crossflow.tests.configurable.addition.ConfigurableWorkflowTests;
 import org.eclipse.scava.crossflow.tests.crawler.CrawlerWorkflowTests;
 import org.eclipse.scava.crossflow.tests.exceptions.ExceptionsWorkflowTests;
 import org.eclipse.scava.crossflow.tests.matrix.MatrixWorkflowTests;
@@ -33,7 +34,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExceptionsWorkflowTests.class,
 	AckWorkflowTests.class,
 	ParallelWorkflowTests.class,
-	TransactionalCachingTests.class
+	TransactionalCachingTests.class,
+	ConfigurableWorkflowTests.class
 })
 public class CrossflowTests {
 
