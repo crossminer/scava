@@ -73,7 +73,7 @@ public class ProjectAnalyser {
 		List<IMetricProvider> paltformMetricProviders = platform.getMetricProviderManager().getMetricProviders();
 		List<IMetricProvider> filtredMetricProvider = filterMetricProvider(paltformMetricProviders,analysisTaskId);
 		List<IMetricProvider> factoids = extractFactoidProviders(filtredMetricProvider);
-		List<IMetricProvider> indexing = extractIndexingMetricProviders(filtredMetricProvider); // DC
+		//List<IMetricProvider> indexing = extractIndexingMetricProviders(filtredMetricProvider); // DC
 		
 		List<List<IMetricProvider>> metricBranches = splitIntoBranches(filtredMetricProvider);
 
@@ -124,12 +124,12 @@ public class ProjectAnalyser {
 			}
 			
 			//DC - checks if the indexing facilities are required by the user
-			if (indexing.size() > 0) {
+			/*if (indexing.size() > 0) {
 				this.logger.info("Executing indexing services");
 				MetricListExecutor mExe = new MetricListExecutor(this.platform,project.getShortName(),analysisTaskId, delta, date);
 				mExe.setMetricList(indexing);
 				mExe.run(); // TODO Blocking (as desired). But should it have its own thread?
-			}
+			}*/
 			
 			
 			try {
