@@ -20,14 +20,14 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 import vasttext.Vasttext;
 
-class SentimentAnalyserSigleton
+class SentimentAnalyzerSigleton
 {
-	private static SentimentAnalyserSigleton singleton = new SentimentAnalyserSigleton();
+	private static SentimentAnalyzerSigleton singleton = new SentimentAnalyzerSigleton();
 	protected OssmeterLogger logger;
 	private Vasttext sentimentAnalyzer;
 	private String modelPath="model/Sentic_lemma_Vasttext_model.zip";
 	
-	private SentimentAnalyserSigleton()
+	private SentimentAnalyzerSigleton()
 	{	
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.sentimentanalyzer");
 		sentimentAnalyzer=new Vasttext();
@@ -64,7 +64,7 @@ class SentimentAnalyserSigleton
 		resource.close();
 	}
 	
-	public static SentimentAnalyserSigleton getInstance()
+	public static SentimentAnalyzerSigleton getInstance()
 	{
 		return singleton;
 	}
