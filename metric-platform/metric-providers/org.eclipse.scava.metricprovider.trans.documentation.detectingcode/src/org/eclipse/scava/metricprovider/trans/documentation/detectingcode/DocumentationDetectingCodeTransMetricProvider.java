@@ -46,14 +46,12 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	@Override
 	public String getFriendlyName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Documentation detection of code";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "This metric process the plain text from documentation and detects the portions corresponding to code and antural language.";
 	}
 
 	@Override

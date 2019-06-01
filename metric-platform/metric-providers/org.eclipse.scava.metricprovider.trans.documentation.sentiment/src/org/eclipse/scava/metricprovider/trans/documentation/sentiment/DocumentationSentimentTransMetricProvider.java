@@ -56,7 +56,7 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 
 	@Override
 	public String getSummaryInformation() {
-		return null;
+		return "This metric calculates the sentiment polarity of the each documentation entry.";
 	}
 
 	@Override

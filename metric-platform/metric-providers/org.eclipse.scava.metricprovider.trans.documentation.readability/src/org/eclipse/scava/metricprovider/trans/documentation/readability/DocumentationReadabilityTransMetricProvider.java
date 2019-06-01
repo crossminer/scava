@@ -48,13 +48,12 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 
 	@Override
 	public String getFriendlyName() {
-		return null;
+		return "Documentation calculation of readability";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "This metric calculates the readability of the each documentation entry.";
 	}
 
 	@Override

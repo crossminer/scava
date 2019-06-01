@@ -36,14 +36,12 @@ public class DocumentationSentimentHistoricMetricProvider extends AbstractHistor
 
 	@Override
 	public String getFriendlyName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Documentation sentiment polarity Historic Metric";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Historic metric for that stores the evolution of the documentation sentiment polarity.";
 	}
 
 	@Override
