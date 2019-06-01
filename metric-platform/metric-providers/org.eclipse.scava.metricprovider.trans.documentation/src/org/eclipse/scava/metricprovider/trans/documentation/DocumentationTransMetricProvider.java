@@ -9,7 +9,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +19,8 @@ import java.util.stream.Stream;
 import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationMarkdownBased;
 import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationOthers;
@@ -55,6 +56,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 
 	protected PlatformVcsManager platformVcsManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
+	
+	protected List<IMetricProvider> uses;
+	protected MetricProviderContext context;
 	
 	protected OssmeterLogger logger;
 	
@@ -93,17 +97,17 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		
-		
+		this.uses = uses;	
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
+		this.context = context;
 		this.platformVcsManager=context.getPlatformVcsManager();
 		this.communicationChannelManager= context.getPlatformCommunicationChannelManager();
 	}
@@ -118,6 +122,11 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 
 		db.getDocumentationEntries().getDbCollection().drop();
 		db.sync();
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 		
 		CommunicationChannelProjectDelta ccProjectDelta = projectDelta.getCommunicationChannelDelta();
 		

@@ -13,6 +13,8 @@ import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.sentiment.model.DocumentationEntrySentiment;
 import org.eclipse.scava.metricprovider.trans.documentation.sentiment.model.DocumentationSentimentTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.classifiers.sentimentanalyzer.SentimentAnalyzer;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -73,7 +75,7 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DocumentationTransMetricProvider.class.getCanonicalName(), DocumentationDetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(), DocumentationTransMetricProvider.class.getCanonicalName(), DocumentationDetectingCodeTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -91,9 +93,14 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 	@Override
 	public void measure(Project project, ProjectDelta delta, DocumentationSentimentTransMetric db) {
 		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
 		DocumentationEntrySentiment documentationEntrySentiment;
 		
-		DocumentationTransMetric documentationProcess = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		DocumentationTransMetric documentationProcess = ((DocumentationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 		SingleLabelPredictionCollection instancesCollection = new SingleLabelPredictionCollection();
 		
@@ -111,7 +118,7 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 			}
 		}
 		
-		DocumentationDetectingCodeTransMetric documentationDetectingCode = ((DocumentationDetectingCodeTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
+		DocumentationDetectingCodeTransMetric documentationDetectingCode = ((DocumentationDetectingCodeTransMetricProvider)uses.get(2)).adapt(context.getProjectDB(project));
 		Iterable<DocumentationEntryDetectingCode> documentationEntriesDetectingCode = documentationDetectingCode.getDocumentationEntriesDetectingCode();
 			
 		for(DocumentationEntryDetectingCode documentationEntry : documentationEntriesDetectingCode)

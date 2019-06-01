@@ -1,0 +1,7 @@
+package org.eclipse.scava.metricprovider.indexing.documentation.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationIndexingMetric {
+
+}

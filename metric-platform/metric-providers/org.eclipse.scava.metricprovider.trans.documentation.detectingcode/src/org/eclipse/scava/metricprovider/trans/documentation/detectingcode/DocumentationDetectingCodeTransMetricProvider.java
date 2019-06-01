@@ -7,6 +7,8 @@ import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.classifiers.codedetector.CodeDetector;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -71,7 +73,7 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DocumentationTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),DocumentationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -92,7 +94,12 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 		db.getDocumentationEntriesDetectingCode().getDbCollection().drop();
 		db.sync();
 		
-		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 		Iterable<DocumentationEntry> documentationEntries = documentationProcessor.getDocumentationEntries();
 		
