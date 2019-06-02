@@ -1237,6 +1237,18 @@
          version="0.0.0"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells"
          download-size="0"
          install-size="0"
@@ -1250,6 +1262,12 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.configuration.docker.smells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
