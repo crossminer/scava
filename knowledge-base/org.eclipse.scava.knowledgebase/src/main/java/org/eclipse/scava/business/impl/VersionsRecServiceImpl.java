@@ -58,6 +58,7 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 				RecommendationItem ri = new RecommendationItem();
 				RecommendedLibrary rl = new RecommendedLibrary();
 				rl.setLibraryName(String.format("%s:%s:%s",mavenLibrary.getGroupid(),mavenLibrary.getArtifactid(),mavenLibrary.getVersion()));
+				rl.setReleaseDate(mavenLibrary.getReleasedate());
 				ri.setRecommendedLibrary(rl);
 				rec.getRecommendationItems().add(ri);
 			}

@@ -11,5 +11,8 @@ class DocumentationSystematic extends CommunicationChannel {
 	attr String url;
 	attr int executionFrequency;
   	attr String password;
-  	attr String login;
+  	attr String username;
+  	attr String loginURL;
+  	attr String usernameFieldName;
+  	attr String passwordFieldName;
 }

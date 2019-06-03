@@ -83,9 +83,14 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	private Indexer indexer;
 
 	@Override
+	public String getIdentifier() {
+		return IDENTIFIER;
+	}
+	
+	@Override
 	public String getShortIdentifier() {
 
-		return IDENTIFIER;
+		return SHORT_IDENTIFIER;
 	}
 
 	@Override

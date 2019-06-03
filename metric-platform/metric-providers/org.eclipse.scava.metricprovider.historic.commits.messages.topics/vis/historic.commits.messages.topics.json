@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.commits.messages.topics.CommitsMessagesTopicsHistoricMetricProvider",
+	"vis" : [ 
+		{
+			"id" : "commits.topics.messages",
+			"name" : "Commits Messages Topics",
+			"description" : "The number of commits messages containing each topic.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$commitMessageTopics",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Topic", "field" : "$label" },
+					{ "name" : "Commits Messages", "field" : "$numberOfMessages" } ]
+			},
+			"x" : "Date",
+			"y" : "Commits Messages", 
+			"series" : "Topics",
+			"timeSeries" : true
+		}
+	]
+}

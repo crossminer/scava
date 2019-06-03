@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.topics.TopicsHistoricMetricProvider",
+	"vis" : [ 
+		{
+			"id" : "newsgroups.topics.articles",
+			"name" : "Newsgroups Articles Topics",
+			"description" : "The number of newsgroups articles containing each topic.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$newsgrpTopics",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Topic", "field" : "$label" },
+					{ "name" : "Articles", "field" : "$numberOfDocuments" } ]
+			},
+			"x" : "Date",
+			"y" : "Articles", 
+			"series" : "Topics",
+			"timeSeries" : true
+		}
+	]
+}

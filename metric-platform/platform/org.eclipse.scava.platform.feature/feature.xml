@@ -1237,6 +1237,18 @@
          version="0.0.0"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells"
          download-size="0"
          install-size="0"
@@ -1250,6 +1262,12 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.configuration.docker.smells"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1304,6 +1322,12 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.newversion.puppet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.configuration.projects.relations"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1936,7 +1960,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.metricprovider.trans.commits.messagereferences"
+         id="org.eclipse.scava.metricprovider.trans.commits.message.references"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1988,13 +2012,6 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.trans.documentation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.scava.platform.documentation.github"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -2179,6 +2196,55 @@
 
    <plugin
          id="org.eclipse.scava.index.indexer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.compress"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.platform.communicationchannel.irc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.repository.model.cc.irc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.commits.message.plaintext"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.trans.commits.message.topics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.historic.commits.messages.topics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.metricprovider.indexing.documentation"
          download-size="0"
          install-size="0"
          version="0.0.0"

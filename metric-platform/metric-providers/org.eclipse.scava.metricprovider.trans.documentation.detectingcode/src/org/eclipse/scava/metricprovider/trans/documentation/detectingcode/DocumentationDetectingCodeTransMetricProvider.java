@@ -7,6 +7,8 @@ import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.classifiers.codedetector.CodeDetector;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -18,6 +20,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 
 import com.mongodb.DB;
@@ -26,6 +29,7 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	
 	protected PlatformVcsManager platformVcsManager;
+	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -42,14 +46,12 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	@Override
 	public String getFriendlyName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Documentation detection of code";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "This metric process the plain text from documentation and detects the portions corresponding to code and antural language.";
 	}
 
 	@Override
@@ -69,12 +71,13 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DocumentationTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),DocumentationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context=context;
+		this.communicationChannelManager= context.getPlatformCommunicationChannelManager();
 		this.platformVcsManager=context.getPlatformVcsManager();
 	}
 
@@ -89,7 +92,12 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 		db.getDocumentationEntriesDetectingCode().getDbCollection().drop();
 		db.sync();
 		
-		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
+		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 		Iterable<DocumentationEntry> documentationEntries = documentationProcessor.getDocumentationEntries();
 		

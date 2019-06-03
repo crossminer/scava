@@ -11,11 +11,14 @@ import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationEntryReadability;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationReadabilityTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.tools.readability.Readability;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
@@ -28,6 +31,7 @@ import com.mongodb.DB;
 public class DocumentationReadabilityTransMetricProvider implements ITransientMetricProvider<DocumentationReadabilityTransMetric> {
 
 	protected PlatformVcsManager platformVcsManager;
+	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
@@ -44,13 +48,12 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 
 	@Override
 	public String getFriendlyName() {
-		return null;
+		return "Documentation calculation of readability";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "This metric calculates the readability of the each documentation entry.";
 	}
 
 	@Override
@@ -69,13 +72,14 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(DocumentationTransMetricProvider.class.getCanonicalName(), DocumentationDetectingCodeTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),DocumentationTransMetricProvider.class.getCanonicalName(), DocumentationDetectingCodeTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.context=context;
 		this.platformVcsManager=context.getPlatformVcsManager();
+		this.communicationChannelManager= context.getPlatformCommunicationChannelManager();
 	}
 
 	@Override
@@ -86,9 +90,14 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 	@Override
 	public void measure(Project project, ProjectDelta delta, DocumentationReadabilityTransMetric db) {
 		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
 		DocumentationEntryReadability documentationEntryReadability;
 		
-		DocumentationTransMetric documentationProcess = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		DocumentationTransMetric documentationProcess = ((DocumentationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 		for(Documentation documentation : documentationProcess.getDocumentation())
 		{
@@ -103,7 +112,7 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 			}
 		}
 		
-		DocumentationDetectingCodeTransMetric documentationDetectingCode = ((DocumentationDetectingCodeTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
+		DocumentationDetectingCodeTransMetric documentationDetectingCode = ((DocumentationDetectingCodeTransMetricProvider)uses.get(2)).adapt(context.getProjectDB(project));
 		Iterable<DocumentationEntryDetectingCode> documentationEntriesDetectingCode = documentationDetectingCode.getDocumentationEntriesDetectingCode();
 			
 		for(DocumentationEntryDetectingCode documentationEntry : documentationEntriesDetectingCode)

@@ -1,0 +1,25 @@
+package org.eclipse.scava.metricprovider.trans.commits.message.topics.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class CommitsMessageTopicsTransMetric {
+	@series
+	val CommitMessage[*] commitsMessages;
+	val CommitsTopic[*] commitsTopics;
+}
+
+class CommitMessage {
+	@searchable
+	attr String repository;
+	attr String revision;
+	attr String subject;
+	attr String message;
+	attr Date date;
+}
+
+class CommitsTopic {
+	@searchable
+	attr String repository;
+	attr String label;
+	attr int numberOfMessages;
+}

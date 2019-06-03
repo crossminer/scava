@@ -208,7 +208,11 @@ public class NntpUtil {
 				try {
 					Session session = Session.getInstance(new Properties());	//For parsing the messages correctly
 					MimeMessage message = new MimeMessage(session, inputStream);
-					articleBody = getBodyPart((MimeMultipart) message.getContent());
+					Object contentObject = message.getContent();
+					if(!(contentObject instanceof MimeMultipart))
+						articleBody = (String)contentObject;
+					else
+						articleBody = getBodyPart((MimeMultipart) contentObject);
 					
 				} catch (MessagingException e) {
 					// TODO Auto-generated catch block

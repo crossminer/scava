@@ -1,0 +1,21 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider",
+	"vis" : [ 
+		{
+			"id" : "bugs.topics.comments",
+			"name" : "Bug Comments Topics",
+			"description" : "The number of bug comments containing each topic.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$bugTopics",
+				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+					{ "name" : "Topic", "field" : "$label" },
+					{ "name" : "Comments", "field" : "$numberOfDocuments" } ]
+			},
+			"x" : "Date",
+			"y" : "Comments", 
+			"series" : "Topics",
+			"timeSeries" : true
+		}
+	]
+}

@@ -1,9 +1,7 @@
 package org.eclipse.scava.repository.model.documentation.systematic;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
 public class DocumentationSystematic extends org.eclipse.scava.repository.model.CommunicationChannel {
@@ -16,13 +14,19 @@ public class DocumentationSystematic extends org.eclipse.scava.repository.model.
 		URL.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
 		EXECUTIONFREQUENCY.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
 		PASSWORD.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
-		LOGIN.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
+		USERNAME.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
+		LOGINURL.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
+		USERNAMEFIELDNAME.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
+		PASSWORDFIELDNAME.setOwningType("org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic");
 	}
 	
 	public static StringQueryProducer URL = new StringQueryProducer("url"); 
 	public static NumericalQueryProducer EXECUTIONFREQUENCY = new NumericalQueryProducer("executionFrequency");
 	public static StringQueryProducer PASSWORD = new StringQueryProducer("password"); 
-	public static StringQueryProducer LOGIN = new StringQueryProducer("login"); 
+	public static StringQueryProducer USERNAME = new StringQueryProducer("username"); 
+	public static StringQueryProducer LOGINURL = new StringQueryProducer("loginURL"); 
+	public static StringQueryProducer USERNAMEFIELDNAME = new StringQueryProducer("usernameFieldName"); 
+	public static StringQueryProducer PASSWORDFIELDNAME = new StringQueryProducer("passwordFieldName"); 
 	
 	
 	public String getUrl() {
@@ -52,19 +56,46 @@ public class DocumentationSystematic extends org.eclipse.scava.repository.model.
 		notifyChanged();
 		return this;
 	}
-	public String getLogin() {
-		return parseString(dbObject.get("login")+"", "");
+	public String getUsername() {
+		return parseString(dbObject.get("username")+"", "");
 	}
 	
-	public DocumentationSystematic setLogin(String login) {
-		dbObject.put("login", login);
+	public DocumentationSystematic setUsername(String username) {
+		dbObject.put("username", username);
+		notifyChanged();
+		return this;
+	}
+	public String getLoginURL() {
+		return parseString(dbObject.get("loginURL")+"", "");
+	}
+	
+	public DocumentationSystematic setLoginURL(String loginURL) {
+		dbObject.put("loginURL", loginURL);
+		notifyChanged();
+		return this;
+	}
+	public String getUsernameFieldName() {
+		return parseString(dbObject.get("usernameFieldName")+"", "");
+	}
+	
+	public DocumentationSystematic setUsernameFieldName(String usernameFieldName) {
+		dbObject.put("usernameFieldName", usernameFieldName);
+		notifyChanged();
+		return this;
+	}
+	public String getPasswordFieldName() {
+		return parseString(dbObject.get("passwordFieldName")+"", "");
+	}
+	
+	public DocumentationSystematic setPasswordFieldName(String passwordFieldName) {
+		dbObject.put("passwordFieldName", passwordFieldName);
 		notifyChanged();
 		return this;
 	}
 
 	@Override
 	public String getCommunicationChannelType() {
-		return "documentationSystematic";
+		return "DocumentationSystematic";
 	}
 
 	@Override
