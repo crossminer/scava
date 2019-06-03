@@ -1,0 +1,107 @@
+Workflow ghmde {
+	
+	// streams for incoming and outgoing tasks
+	streams {
+		
+		Queue MDETechnologyTuples { 
+			type MDETechnologyTuple
+			inputOf ( RepositorySearcher )
+			outputOf ( MDETechnologyTupleSource )
+		}// MDETechnologyTuples
+		
+//		Queue getRepos_Stream {
+//			type Tuple 
+//			inputOf ( getRepos )
+//		}// getRepos_Stream
+		
+		Queue RepositorySearchResults {
+			type Repository
+			outputOf ( RepositorySearcher )
+		}// RepositorySearchResults
+		
+		Queue RepositoryCloneResults {
+			type Repository //originally: String
+			outputOf ( RepositoryCloner )
+		}// RepositoryCloneResults
+		
+		Queue RepositoryResults {
+			type Repository //originally: String
+			inputOf ( RepositoryCounter RepositoryFileCounter RepositoryAuthorCounter )
+			outputOf ( RepositoryResultSink )
+		}// RepositoryResults
+		
+	}// workflow streams
+	
+	tasks {
+		
+		CsvSource MDETechnologyTupleSource {
+			output ( MDETechnologyTuples )
+			languages(Java)
+		}// MDETechnologyTupleSource
+		
+		Task RepositorySearcher {
+			input ( MDETechnologyTuples )
+			output ( RepositorySearchResults )
+			languages(Java)
+		}// RepositorySearcher
+		
+		Task RepositoryCloner {
+			input ( RepositorySearchResults )
+			output ( RepositoryCloneResults )	
+			languages(Java)
+		}// RepositoryCloner
+		
+		Task RepositoryCounter {
+			input ( RepositoryCloneResults )
+			output ( RepositoryResults )	
+			languages(Java)
+		}// RepositoryCounter
+		
+		Task RepositoryFileCounter {
+			input ( RepositoryCloneResults )
+			output ( RepositoryResults )	
+			languages(Java)
+		}// RepositoryFileCounter
+		
+		Task RepositoryAuthorCounter {
+			input ( RepositoryCloneResults )
+			output ( RepositoryResults )	
+			languages(Java)
+		}// RepositoryAuthorCounter
+		
+		CsvSink RepositoryResultSink {
+			input ( RepositoryResults )
+			languages(Java)
+		}// RepositoryResultSink	
+		
+	}// workflow tasks
+	
+	types {
+		isMany Type Repository {
+			fields {
+				Field url {
+					type String
+				}
+			}
+		}
+		Type MDETechnologyTuple {
+			fields {
+				Field fileExt {
+					type String
+				}
+				Field techKey {
+					type String
+				}
+			}
+		}
+	}// workflow data types
+	
+	languages {
+		Language Java {
+			package "org.eclipse.scava.crossflow.examples.ghmde.xtext"
+			outputFolder "src"
+			genOutputFolder "src-gen"
+		}
+	}// workflow languages
+	
+}// workflow definition

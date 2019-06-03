@@ -1,0 +1,23 @@
+Repository_cloneRepos_Stream --> RepositorySearchResults
+
+String_cloneRepos_Stream --> RepositoryClones
+
+GetRepos --> RepositorySearcher
+
+CloneRepos --> RepositoryCloner
+
+MDETechnologies_Stream --> MDETechnologyTuples
+
+MDETechnologies --> MDETechnologyTuple
+
+RepositoryClones --> RepositoryCloneResults
+
+CountRepos --> RepositoryCounter
+
+CountFiles --> RepositoryFileCounter
+
+CountAuthors --> RepositoryAuthorCounter
+
+PrettyPrinter --> RepositoryResultSink
+
+Tuple --> MDETechnologyTuple

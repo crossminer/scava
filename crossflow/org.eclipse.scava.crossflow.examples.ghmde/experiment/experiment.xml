@@ -1,0 +1,15 @@
+<experiment
+	title="Ghmde"
+	class="org.eclipse.scava.crossflow.examples.ghmde.Ghmde"
+	jar="org.eclipse.scava.crossflow.examples.ghmde.jar"
+	input="in"
+	output="out"
+	summary="Optional summary of the Experiment goes here."
+	webServer="localhost:8080"
+>
+	<input path="in/input.csv" title="Input"/>
+	<output path="out/output.csv" title="Output"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
+</experiment>

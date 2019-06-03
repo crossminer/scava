@@ -1,0 +1,24 @@
+var v_MDETechnologyTupleSource = createTask("MDETechnologyTupleSource", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_MDETechnologyTuples = createStream("MDETechnologyTuples", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositorySearcher = createTask("RepositorySearcher", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositorySearchResults = createStream("RepositorySearchResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositoryCloner = createTask("RepositoryCloner", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositoryCloneResults = createStream("RepositoryCloneResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositoryCounter = createTask("RepositoryCounter", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositoryResults = createStream("RepositoryResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositoryFileCounter = createTask("RepositoryFileCounter", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositoryResults = createStream("RepositoryResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositoryAuthorCounter = createTask("RepositoryAuthorCounter", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositoryResults = createStream("RepositoryResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositoryResultSink = createTask("RepositoryResultSink", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+
+link(v_MDETechnologyTupleSource, s_MDETechnologyTuples, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositoryCounter, s_RepositoryResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_RepositoryResults, v_RepositoryAuthorCounter, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositoryAuthorCounter, s_RepositoryResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositoryFileCounter, s_RepositoryResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositorySearcher, s_RepositorySearchResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositoryCloner, s_RepositoryCloneResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_MDETechnologyTuples, v_RepositorySearcher, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_RepositoryResults, v_RepositoryFileCounter, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_RepositoryResults, v_RepositoryCounter, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
