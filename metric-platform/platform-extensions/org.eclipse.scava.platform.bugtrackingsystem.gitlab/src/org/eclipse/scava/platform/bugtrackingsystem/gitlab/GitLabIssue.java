@@ -53,6 +53,11 @@ public class GitLabIssue extends BugTrackingSystemBug {
 		public GitLabIssue(Issue issue, GitLabTracker gitlabTracker) {
 			this.bugId = issue.getId();
 			this.status = issue.getState();
+			if ((!issue.getClosed_at().isEmpty()) ||(!issue.getClosed_at().equals(null))) {
+				this.closed_at = convertStringToDate(issue.getClosed_at());				
+			}else {
+				this.closed_at = null;
+			}
 			this.creator = issue.getAuthor().getUsername();
 			this.creationTime = convertStringToDate(issue.getCreated_at());
 			this.summary = issue.getTitle();

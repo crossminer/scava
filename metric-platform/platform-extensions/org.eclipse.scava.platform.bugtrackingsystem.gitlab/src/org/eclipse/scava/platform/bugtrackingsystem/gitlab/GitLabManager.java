@@ -12,14 +12,10 @@ package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Comment;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Issue;
-import org.eclipse.scava.platform.bugtrackingsystem.gitlab.utils.GitLabUtils;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
@@ -36,7 +32,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.DB;
 
-import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -50,13 +45,10 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	private int timeToReset;
 	@SuppressWarnings("unused")
 	private int rateLimit;
-	//private String host = "https://gitlab.com/";
-	//private static String exthost = "api/v4/projects/";
 	private final static String PAGE_SIZE = "100";
 	private int current_page;
 	private int next_page;
 	private int last_page;
-	private String open_id;
 	private String builder;
 	private OkHttpClient client;
 	
@@ -66,7 +58,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	{
 
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.bugtrackingsystem.gitlab");
-		this.open_id = "";
 		this.builder = "";
 		this.callsRemaning = -1;
 		this.rateLimit = -1;
@@ -138,6 +129,9 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	public Date getFirstDate(DB db, GitLabTracker gitlabTracker) throws Exception {
 		
 		Date firstDate = null;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		setClient(gitlabTracker);
 
@@ -150,7 +144,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		Request request = new Request.Builder().url(builder.build().toString()).build();
 
 		Response response = this.client.newCall(request).execute();
-		JsonNode rootNode = new ObjectMapper().readTree(response.body().string());
+		
+		JsonNode rootNode = mapper.readTree(response.body().string());
 
 		if (rootNode.isArray()) {
 			String firstDateStr = rootNode.get(0).path("created_at").toString().replaceAll("\"", "");
@@ -209,20 +204,17 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		builder.addEncodedQueryParameter("sort", "asc");
 
 		builder.addEncodedQueryParameter("per_page", PAGE_SIZE);
-		//Default order is created_at no need to include as a query parameter
-
-
+	
 		this.builder = builder.toString();
 
 		Request request = new Request.Builder().url(builder.build().toString()).build();
 
 		Response response = this.client.newCall(request).execute();
 
-		// check header
 		checkHeader(response.headers(), gitlabTracker);
 
-		JsonNode rootNode = new ObjectMapper().readTree(response.body().string());
-		// first page
+		JsonNode rootNode = mapper.readTree(response.body().string());
+
 		if (rootNode.isArray()) {
 
 			for (JsonNode element : rootNode) {
@@ -234,8 +226,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 				}
 			}
 		
-
-		// pagination
 		if (this.last_page > 1) {
 			while (this.current_page != this.last_page) {
 
@@ -283,14 +273,11 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 
 		Response response = this.client.newCall(request).execute();
 		
-		// check header
+	
 		checkHeader(response.headers(), gitlabTracker);
 		
 		JsonNode rootNode = new ObjectMapper().readTree(response.body().string());
-		
-		
 	
-		// first page
 		if (rootNode.isArray()) {
 	
 			for (JsonNode element : rootNode) {
@@ -300,7 +287,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 			
 		}
 	
-		// pagination
+	
 				if (this.last_page > 1) {
 					while (this.current_page != this.last_page) {
 
@@ -355,34 +342,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		this.client = newClient.build();
 	}
 
-//	// TODO - Modify to generate Token using GitLabs requirements
-//	private void generateOAuth2Token(GitLabTracker gitlabTracker) throws IOException {
-//
-//		System.out.println("Generating OAuth token");
-//		OkHttpClient genClient = new OkHttpClient();
-//		// HttpUrl.Builder httpurlBuilder =
-//		// HttpUrl.parse("https://accounts.eclipse.org/oauth2/token").newBuilder();
-//
-//		FormBody.Builder formBodyBuilder = new FormBody.Builder();
-//		formBodyBuilder.add("grant_type", "client_credentials");
-//		formBodyBuilder.add("client_id", gitlabTracker.getClient_id());
-//		formBodyBuilder.add("client_secret", gitlabTracker.getClient_secret());
-//
-//		FormBody body = formBodyBuilder.build();
-//
-//		// Used for a POST request
-//		Request.Builder builder = new Request.Builder();
-//		builder = builder.url("https://accounts.eclipse.org/oauth2/token");// Modify
-//		builder = builder.post(body);
-//		Request request = builder.build();
-//		Response response = genClient.newCall(request).execute();
-//		checkHeader(response.headers(), gitlabTracker);
-//
-//		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
-//		String open_id = GitLabUtils.fixString(jsonNode.get("access_token").toString());
-//
-//		this.open_id = open_id;
-//	}
+
 
 	/**
 	 * This method checks the HTTP response headers for current values associated
@@ -426,15 +386,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		}
 	}
 
-	/**
-	 * gets the OAuth2Token
-	 * 
-	 * @return open_id
-	 */
-	private String getOAuth2Token() {
 
-		return this.open_id;
-	}
 
 	/**
 	 * Retrieves the next page of a request
@@ -496,5 +448,6 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	
 		return null;
 	}
+	
 
 }
