@@ -23,7 +23,7 @@ public final class Mapping {
 			"      \"type\" : \"text\"\n" + 
 			"    },\n" + 
 			"    \"uid\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
+			"      \"type\" : \"keyword\"\n" + 
 			"    }\n" + 
 			"  }\n" + 
 			"}";
@@ -31,7 +31,7 @@ public final class Mapping {
 	private static final String commentMapping = "{\n" + 
 			"  \"properties\" : {\n" + 
 			"    \"comment_Id\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
+			"      \"type\" : \"keyword\"\n" + 
 			"    },\n" + 
 			"    \"body\" : {\n" + 
 			"      \"type\" : \"text\"\n" + 
@@ -67,7 +67,7 @@ public final class Mapping {
 			"      \"type\" : \"date\"\n" + 
 			"    },\n" + 
 			"    \"uid\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
+			"      \"type\" : \"keyword\"\n" + 
 			"    }\n" + 
 			"  }\n" + 
 			"}";
