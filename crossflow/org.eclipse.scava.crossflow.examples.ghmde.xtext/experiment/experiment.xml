@@ -1,6 +1,6 @@
 <experiment
-	title="ghmde"
-	class="org.eclipse.scava.crossflow.examples.ghmde.xtext.ghmde"
+	title="Ghmde"
+	class="org.eclipse.scava.crossflow.examples.ghmde.xtext.Ghmde"
 	jar="org.eclipse.scava.crossflow.examples.ghmde.xtext.jar"
 	input="in"
 	output="out"

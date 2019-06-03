@@ -1,4 +1,4 @@
-Workflow ghmde {
+Workflow Ghmde {
 	
 	// streams for incoming and outgoing tasks
 	streams {
@@ -8,11 +8,6 @@ Workflow ghmde {
 			inputOf ( RepositorySearcher )
 			outputOf ( MDETechnologyTupleSource )
 		}// MDETechnologyTuples
-		
-//		Queue getRepos_Stream {
-//			type Tuple 
-//			inputOf ( getRepos )
-//		}// getRepos_Stream
 		
 		Queue RepositorySearchResults {
 			type Repository
@@ -26,7 +21,7 @@ Workflow ghmde {
 		
 		Queue RepositoryResults {
 			type RepositoryResult //originally: String
-			inputOf ( RepositoryCounter RepositoryFileCounter RepositoryAuthorCounter )
+			inputOf ( RepositoryFileCounter RepositoryAuthorCounter )
 			outputOf ( RepositoryResultSink )
 		}// RepositoryResults
 		
@@ -35,11 +30,12 @@ Workflow ghmde {
 	tasks {
 		
 		CsvSource MDETechnologyTupleSource {
+			fileName "input.csv"
 			output ( MDETechnologyTuples )
 			languages(Java)
 		}// MDETechnologyTupleSource
 		
-		Task RepositorySearcher {
+		multipleOutputs Task RepositorySearcher {
 			input ( MDETechnologyTuples )
 			output ( RepositorySearchResults )
 			languages(Java)
@@ -50,12 +46,6 @@ Workflow ghmde {
 			output ( RepositoryCloneResults )	
 			languages(Java)
 		}// RepositoryCloner
-		
-		Task RepositoryCounter {
-			input ( RepositoryCloneResults )
-			output ( RepositoryResults )	
-			languages(Java)
-		}// RepositoryCounter
 		
 		Task RepositoryFileCounter {
 			input ( RepositoryCloneResults )
@@ -70,6 +60,7 @@ Workflow ghmde {
 		}// RepositoryAuthorCounter
 		
 		CsvSink RepositoryResultSink {
+			fileName "output.csv"
 			input ( RepositoryResults )
 			languages(Java)
 		}// RepositoryResultSink	
@@ -113,9 +104,6 @@ Workflow ghmde {
 					type int
 				}
 				Field authorCount {
-					type int
-				}
-				Field totalCount {
 					type int
 				}
 			}

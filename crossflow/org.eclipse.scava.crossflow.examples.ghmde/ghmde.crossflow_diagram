@@ -3,11 +3,10 @@
   <cf:Workflow xmi:id="_bobLwIXqEemnurftv9BbEg" name="Ghmde">
     <streams xmi:type="cf:Queue" xmi:id="_zfo4gIXqEemNI_lvasQPzQ" name="MDETechnologyTuples" type="_N9oaQIXrEemNI_lvasQPzQ" inputOf="_Bl1XIIXrEemNI_lvasQPzQ" outputOf="_5SNoMIX3EemY8JuncGZEaw"/>
     <streams xmi:type="cf:Queue" xmi:id="_9MhNgIXqEemNI_lvasQPzQ" name="RepositorySearchResults" type="_Ho1bYIXrEemNI_lvasQPzQ" inputOf="_CYC3MIXrEemNI_lvasQPzQ" outputOf="_Bl1XIIXrEemNI_lvasQPzQ"/>
-    <streams xmi:type="cf:Queue" xmi:id="_-L0HUIXqEemNI_lvasQPzQ" name="RepositoryCloneResults" type="_-yAHIIX2EemY8JuncGZEaw" inputOf="_DUWHYIXrEemNI_lvasQPzQ _EIlnwIXrEemNI_lvasQPzQ _E3sJcIXrEemNI_lvasQPzQ" outputOf="_CYC3MIXrEemNI_lvasQPzQ"/>
-    <streams xmi:type="cf:Queue" xmi:id="_-6tNoIXqEemNI_lvasQPzQ" name="RepositoryResults" type="_EFrnQIX3EemY8JuncGZEaw" inputOf="_1i9IMIX3EemY8JuncGZEaw" outputOf="_DUWHYIXrEemNI_lvasQPzQ _EIlnwIXrEemNI_lvasQPzQ _E3sJcIXrEemNI_lvasQPzQ"/>
-    <tasks xmi:type="cf:Task" xmi:id="_Bl1XIIXrEemNI_lvasQPzQ" name="RepositorySearcher" input="_zfo4gIXqEemNI_lvasQPzQ" output="_9MhNgIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
+    <streams xmi:type="cf:Queue" xmi:id="_-L0HUIXqEemNI_lvasQPzQ" name="RepositoryCloneResults" type="_-yAHIIX2EemY8JuncGZEaw" inputOf="_EIlnwIXrEemNI_lvasQPzQ _E3sJcIXrEemNI_lvasQPzQ" outputOf="_CYC3MIXrEemNI_lvasQPzQ"/>
+    <streams xmi:type="cf:Queue" xmi:id="_-6tNoIXqEemNI_lvasQPzQ" name="RepositoryResults" type="_EFrnQIX3EemY8JuncGZEaw" inputOf="_1i9IMIX3EemY8JuncGZEaw" outputOf="_EIlnwIXrEemNI_lvasQPzQ _E3sJcIXrEemNI_lvasQPzQ"/>
+    <tasks xmi:type="cf:Task" xmi:id="_Bl1XIIXrEemNI_lvasQPzQ" name="RepositorySearcher" input="_zfo4gIXqEemNI_lvasQPzQ" output="_9MhNgIXqEemNI_lvasQPzQ" multipleOutputs="true" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:Task" xmi:id="_CYC3MIXrEemNI_lvasQPzQ" name="RepositoryCloner" input="_9MhNgIXqEemNI_lvasQPzQ" output="_-L0HUIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
-    <tasks xmi:type="cf:Task" xmi:id="_DUWHYIXrEemNI_lvasQPzQ" name="RepositoryCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:Task" xmi:id="_EIlnwIXrEemNI_lvasQPzQ" name="RepositoryFileCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:Task" xmi:id="_E3sJcIXrEemNI_lvasQPzQ" name="RepositoryAuthorCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:CsvSink" xmi:id="_1i9IMIX3EemY8JuncGZEaw" name="RepositoryResultSink" input="_-6tNoIXqEemNI_lvasQPzQ" fileName="output.csv"/>
@@ -24,9 +23,8 @@
       <fields xmi:type="cf:Field" xmi:id="_BJs-UIX3EemY8JuncGZEaw" name="localPath"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_EFrnQIX3EemY8JuncGZEaw" name="RepositoryResult" extending="_-yAHIIX2EemY8JuncGZEaw">
-      <fields xmi:type="cf:Field" xmi:id="_GfpIQIX3EemY8JuncGZEaw" name="fileCount"/>
-      <fields xmi:type="cf:Field" xmi:id="_KA1-IIX3EemY8JuncGZEaw" name="authorCount"/>
-      <fields xmi:type="cf:Field" xmi:id="_NiXkIIX3EemY8JuncGZEaw" name="totalCount"/>
+      <fields xmi:type="cf:Field" xmi:id="_GfpIQIX3EemY8JuncGZEaw" name="fileCount" type="int"/>
+      <fields xmi:type="cf:Field" xmi:id="_KA1-IIX3EemY8JuncGZEaw" name="authorCount" type="int"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_IXb74IXtEemNI_lvasQPzQ" name="Java" package="org.eclipse.scava.crossflow.examples.ghmde" outputFolder="src" genOutputFolder="src-gen"/>
   </cf:Workflow>
@@ -55,17 +53,13 @@
       <children xmi:type="notation:DecorationNode" xmi:id="_CYDeQoXrEemNI_lvasQPzQ" type="5010"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CYDeQYXrEemNI_lvasQPzQ" x="740" y="132"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_DUWucIXrEemNI_lvasQPzQ" type="2010" element="_DUWHYIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
-      <children xmi:type="notation:DecorationNode" xmi:id="_DUWucoXrEemNI_lvasQPzQ" type="5010"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DUWucYXrEemNI_lvasQPzQ" x="388" y="268"/>
-    </children>
     <children xmi:type="notation:Shape" xmi:id="_EImO0IXrEemNI_lvasQPzQ" type="2010" element="_EIlnwIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_EImO0oXrEemNI_lvasQPzQ" type="5010"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EImO0YXrEemNI_lvasQPzQ" x="388" y="320"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EImO0YXrEemNI_lvasQPzQ" x="384" y="276"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_E3swgIXrEemNI_lvasQPzQ" type="2010" element="_E3sJcIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_E3swgoXrEemNI_lvasQPzQ" type="5010"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_E3swgYXrEemNI_lvasQPzQ" x="388" y="372"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_E3swgYXrEemNI_lvasQPzQ" x="384" y="328"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_Ho2pgIXrEemNI_lvasQPzQ" type="2011" element="_Ho1bYIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_Ho3QkIXrEemNI_lvasQPzQ" type="5012"/>
@@ -134,15 +128,11 @@
           <children xmi:type="notation:DecorationNode" xmi:id="_KA1-I4X3EemY8JuncGZEaw" type="5011"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KA1-IoX3EemY8JuncGZEaw"/>
         </children>
-        <children xmi:type="notation:Shape" xmi:id="_NiXkIYX3EemY8JuncGZEaw" type="3001" element="_NiXkIIX3EemY8JuncGZEaw" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_NiYLMIX3EemY8JuncGZEaw" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NiXkIoX3EemY8JuncGZEaw"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_EFrnRoX3EemY8JuncGZEaw"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_EFrnR4X3EemY8JuncGZEaw"/>
       </children>
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_EFrnQoX3EemY8JuncGZEaw"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EFrnQ4X3EemY8JuncGZEaw" x="752" y="240" width="120" height="105"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EFrnQ4X3EemY8JuncGZEaw" x="752" y="240" width="120" height="85"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_1i-WUIX3EemY8JuncGZEaw" type="2002" element="_1i9IMIX3EemY8JuncGZEaw" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_1i-9YIX3EemY8JuncGZEaw" type="5002"/>
@@ -218,16 +208,6 @@
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tQiAAIXsEemNI_lvasQPzQ" id="(0.3503184713375796,0.85)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tQiAAYXsEemNI_lvasQPzQ" id="(0.0,0.5)"/>
     </edges>
-    <edges xmi:type="notation:Connector" xmi:id="_vXwLMIXsEemNI_lvasQPzQ" type="4005" source="_-L0uYIXqEemNI_lvasQPzQ" target="_DUWucIXrEemNI_lvasQPzQ">
-      <children xmi:type="notation:DecorationNode" xmi:id="_vXwLM4XsEemNI_lvasQPzQ" type="6005">
-        <styles xmi:type="notation:DescriptionStyle" xmi:id="_vXwLNIXsEemNI_lvasQPzQ"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_vXwLNYXsEemNI_lvasQPzQ" y="40"/>
-      </children>
-      <styles xmi:type="notation:FontStyle" xmi:id="_vXwLMYXsEemNI_lvasQPzQ" fontName=".SF NS Text"/>
-      <element xsi:nil="true"/>
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_vXwLMoXsEemNI_lvasQPzQ" points="[16, -13, -110, 71]$[90, -86, -36, -2]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_vXwyQIXsEemNI_lvasQPzQ" id="(0.9365079365079365,0.225)"/>
-    </edges>
     <edges xmi:type="notation:Connector" xmi:id="_wDAHoIXsEemNI_lvasQPzQ" type="4005" source="_-L0uYIXqEemNI_lvasQPzQ" target="_EImO0IXrEemNI_lvasQPzQ">
       <children xmi:type="notation:DecorationNode" xmi:id="_wDAHo4XsEemNI_lvasQPzQ" type="6005">
         <styles xmi:type="notation:DescriptionStyle" xmi:id="_wDAHpIXsEemNI_lvasQPzQ"/>
@@ -249,17 +229,6 @@
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_wYlWEoXsEemNI_lvasQPzQ" points="[0, 0, -139, -60]$[132, 68, -7, 8]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_wYl9IIXsEemNI_lvasQPzQ" id="(0.9259259259259259,0.85)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_wYl9IYXsEemNI_lvasQPzQ" id="(0.375,0.8)"/>
-    </edges>
-    <edges xmi:type="notation:Connector" xmi:id="_yTtmAIXsEemNI_lvasQPzQ" type="4003" source="_DUWucIXrEemNI_lvasQPzQ" target="_-6tNoYXqEemNI_lvasQPzQ">
-      <children xmi:type="notation:DecorationNode" xmi:id="_yTuNEIXsEemNI_lvasQPzQ" type="6003">
-        <styles xmi:type="notation:DescriptionStyle" xmi:id="_yTuNEYXsEemNI_lvasQPzQ"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_yTuNEoXsEemNI_lvasQPzQ" y="40"/>
-      </children>
-      <styles xmi:type="notation:FontStyle" xmi:id="_yTtmAYXsEemNI_lvasQPzQ" fontName=".SF NS Text"/>
-      <element xsi:nil="true"/>
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_yTtmAoXsEemNI_lvasQPzQ" points="[0, 0, -69, -39]$[58, 35, -11, -4]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yTu0IIXsEemNI_lvasQPzQ" id="(1.0,0.825)"/>
-      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yTu0IYXsEemNI_lvasQPzQ" id="(0.125,0.1)"/>
     </edges>
     <edges xmi:type="notation:Connector" xmi:id="_ypm9gIXsEemNI_lvasQPzQ" type="4003" source="_EImO0IXrEemNI_lvasQPzQ" target="_-6tNoYXqEemNI_lvasQPzQ">
       <children xmi:type="notation:DecorationNode" xmi:id="_ypm9g4XsEemNI_lvasQPzQ" type="6003">
