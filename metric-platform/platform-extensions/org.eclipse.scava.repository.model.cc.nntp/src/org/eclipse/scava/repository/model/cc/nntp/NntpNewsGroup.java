@@ -130,7 +130,7 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 
 	@Override
 	public String getInstanceId() {
-		return getNewsGroupName();
+		return getUrl();
 	}
 	
 	
