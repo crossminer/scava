@@ -264,6 +264,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			
 		} catch (SecurityException | IllegalArgumentException e) {
 
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return output;
@@ -275,6 +276,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			return (StringQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return null;
