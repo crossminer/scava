@@ -11,19 +11,23 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 public final class Mapping {
 	
 	private static Mapping singleton = new Mapping();
-	private static String mappingsPath = "/mappings/"; 
-	private static String dictionnaryName = "mappingsDictionary.txt";
+	private String mappingsPath = "/mappings/"; 
+	private String dictionnaryName = "mappingsDictionary.txt";
 	private HashMap<String,String> mappings;
+	protected OssmeterLogger logger;
 	
 	private Mapping()
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("indexing.documentation.mapping");
 		String documentType;
 		mappings=new HashMap<String,String>();
 		try {
-			String[] mappingsToRead = loadFile(dictionnaryName).split("\\n|\\r");
+			String[] mappingsToRead = loadFile(dictionnaryName).split("\n");
 			
 			for(String mappingName : mappingsToRead)
 			{
@@ -31,8 +35,10 @@ public final class Mapping {
 					continue;
 				documentType=mappingName.replace("_", ".");
 				mappings.put(documentType, loadFile(mappingName+".json"));
+				logger.info("Mapping for: "+mappingName + " has been loaded.");
 			}
 		} catch (InputMismatchException | IOException e) {
+			logger.error("Error while loading the indexing mappings:", e);
 			e.printStackTrace();
 		}
 	}
@@ -60,7 +66,7 @@ public final class Mapping {
 		String line;
 		while((line = br.readLine()) != null)
 		{
-				content+=line;
+				content+=line+"\n";
 		}
 		br.close();
 		resource.close();

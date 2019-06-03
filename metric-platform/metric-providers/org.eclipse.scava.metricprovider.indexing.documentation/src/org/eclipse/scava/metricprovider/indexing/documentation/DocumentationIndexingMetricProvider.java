@@ -29,6 +29,7 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.platform.indexing.Indexing;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
@@ -52,7 +53,13 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 	
 	private Indexer indexer;
 	
+	protected OssmeterLogger logger;
+	
 	private final static String NLP = "nlp";// knowledge type.
+	
+	public DocumentationIndexingMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.documentation");
+	}
 	
 	@Override
 	public String getIdentifier() {
@@ -124,6 +131,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		documentType = "documentation";
 		for(Documentation documentation : documentationIt)
 		{
+			
 			indexName = Indexer.generateIndexName(documentation.getDocumentationId(), documentType, NLP);
 			uid = generateUniqueDocumentationId(projectName, documentation.getDocumentationId());
 			mapping = Mapping.getMapping(documentType);
@@ -139,6 +147,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				document = mapper.writeValueAsString(dd);
 				indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			} catch (JsonProcessingException e) {
+				logger.error("Error while processing json:", e);
 				e.printStackTrace();
 			}
 		}
@@ -166,6 +175,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				document = mapper.writeValueAsString(ded);
 				indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			} catch (JsonProcessingException e) {
+				logger.error("Error while processing json:", e);
 				e.printStackTrace();
 			}
 		}
