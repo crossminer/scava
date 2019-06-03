@@ -10,11 +10,11 @@ Workflow returns Workflow:
 	name=EString
 	'{'
 		('package' package=EString)?
-		('streams' '{' streams+=Stream ( "," streams+=Stream)* '}' )?
-		('tasks' '{' tasks+=Task ( "," tasks+=Task)* '}' )?
-		('types' '{' types+=Type ( "," types+=Type)* '}' )?
-		('parameters' '{' parameters+=Field ( "," parameters+=Field)* '}' )?
-		('languages' '{' languages+=Language ( "," languages+=Language)* '}' )?
+		('streams' '{' streams+=Stream (streams+=Stream)* '}' )?
+		('tasks' '{' tasks+=Task (tasks+=Task)* '}' )?
+		('types' '{' types+=Type (types+=Type)* '}' )?
+		('parameters' '{' parameters+=Field (parameters+=Field)* '}' )?
+		('languages' '{' languages+=Language (languages+=Language)* '}' )?
 	'}';
 
 Stream returns Stream:
@@ -39,11 +39,11 @@ Task_Impl returns Task:
 	'Task'
 	name=EString
 	'{'
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 Type returns Type:
@@ -52,8 +52,8 @@ Type returns Type:
 	name=EString
 	'{'
 		('impl' impl=EString)?
-		('extending' '(' extending+=[Type|EString] ( "," extending+=[Type|EString])* ')' )?
-		('fields' '{' fields+=Field ( "," fields+=Field)* '}' )?
+		('extending' '(' extending+=[Type|EString] (extending+=[Type|EString])* ')' )?
+		('fields' '{' fields+=Field (fields+=Field)* '}' )?
 	'}';
 
 Field returns Field:
@@ -73,7 +73,7 @@ Language returns Language:
 		('package' package=EString)?
 		('outputFolder' outputFolder=EString)?
 		('genOutputFolder' genOutputFolder=EString)?
-		('parameters' '{' parameters+=Parameter ( "," parameters+=Parameter)* '}' )?
+		('parameters' '{' parameters+=Parameter (parameters+=Parameter)* '}' )?
 	'}';
 
 Topic returns Topic:
@@ -82,8 +82,8 @@ Topic returns Topic:
 	name=EString
 	'{'
 		('type' type=[Type|EString])?
-		('inputOf' '(' inputOf+=[Task|EString] ( "," inputOf+=[Task|EString])* ')' )?
-		('outputOf' '(' outputOf+=[Task|EString] ( "," outputOf+=[Task|EString])* ')' )?
+		('inputOf' '(' inputOf+=[Task|EString] (inputOf+=[Task|EString])* ')' )?
+		('outputOf' '(' outputOf+=[Task|EString] (outputOf+=[Task|EString])* ')' )?
 	'}';
 
 Queue returns Queue:
@@ -92,8 +92,8 @@ Queue returns Queue:
 	name=EString
 	'{'
 		('type' type=[Type|EString])?
-		('inputOf' '(' inputOf+=[Task|EString] ( "," inputOf+=[Task|EString])* ')' )?
-		('outputOf' '(' outputOf+=[Task|EString] ( "," outputOf+=[Task|EString])* ')' )?
+		('inputOf' '(' inputOf+=[Task|EString] (inputOf+=[Task|EString])* ')' )?
+		('outputOf' '(' outputOf+=[Task|EString] (outputOf+=[Task|EString])* ')' )?
 	'}';
 
 EBooleanObject returns ecore::EBooleanObject:
@@ -108,11 +108,11 @@ Source_Impl returns Source:
 	'Source'
 	name=EString
 	'{'
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 CsvSource returns CsvSource:
@@ -125,11 +125,11 @@ CsvSource returns CsvSource:
 	name=EString
 	'{'
 		('fileName' fileName=EString)?
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 Sink_Impl returns Sink:
@@ -141,11 +141,11 @@ Sink_Impl returns Sink:
 	'Sink'
 	name=EString
 	'{'
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 CsvSink returns CsvSink:
@@ -158,11 +158,11 @@ CsvSink returns CsvSink:
 	name=EString
 	'{'
 		('fileName' fileName=EString)?
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 CommitmentTask returns CommitmentTask:
@@ -175,11 +175,11 @@ CommitmentTask returns CommitmentTask:
 	name=EString
 	'{'
 		('commitAfter' commitAfter=EInt)?
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 OpinionatedTask returns OpinionatedTask:
@@ -191,11 +191,11 @@ OpinionatedTask returns OpinionatedTask:
 	'OpinionatedTask'
 	name=EString
 	'{'
-		('input' '(' input+=[Stream|EString] ( "," input+=[Stream|EString])* ')' )?
-		('output' '(' output+=[Stream|EString] ( "," output+=[Stream|EString])* ')' )?
-		('parameters' '(' parameters+=[Field|EString] ( "," parameters+=[Field|EString])* ')' )?
-		('languages' '(' languages+=[Language|EString] ( "," languages+=[Language|EString])* ')' )?
-		('configurations' '(' configurations+=[Type|EString] ( "," configurations+=[Type|EString])* ')' )?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
 	'}';
 
 EInt returns ecore::EInt:

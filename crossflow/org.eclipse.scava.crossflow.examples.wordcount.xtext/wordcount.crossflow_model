@@ -5,12 +5,12 @@ Workflow WordCountWorkflow {
 			type Line
 			inputOf (WordCounter)
 			outputOf (LineSource)
-		},
+		}
 		Queue WordFrequencies {
 			type WordFrequency
 			inputOf (Filter)
 			outputOf (WordCounter)
-		},
+		}
 		Queue Filtered {
 			type WordFrequency
 			inputOf (WordCountSink)
@@ -22,17 +22,17 @@ Workflow WordCountWorkflow {
 		Source LineSource {
 			output (Lines)
 			languages(Java)
-		},
+		}
 		multipleOutputs Task WordCounter {
 			input (Lines)
 			output (WordFrequencies)
 			languages(Java)
-		},
+		}
 		Task Filter {
 			input (WordFrequencies)
 			output (Filtered)
 			languages(Python)
-		},
+		}
 		Sink WordCountSink {
 			input (Filtered)
 			languages(Java)
@@ -46,12 +46,12 @@ Workflow WordCountWorkflow {
 					type String
 				}
 			}
-		},
+		}
 		Type WordFrequency {
 			fields {
 				Field word {
 					type String
-				},
+				}
 				Field frequency {
 					type int
 				}
@@ -64,7 +64,7 @@ Workflow WordCountWorkflow {
 			package "org.eclipse.scava.crossflow.examples.wordcount.xtext"
 			outputFolder "src"
 			genOutputFolder "src-gen"
-		},
+		}
 		Language Python {
 			package "org.eclipse.scava.crossflow.examples.wordcount.xtext"
 			outputFolder "py"
