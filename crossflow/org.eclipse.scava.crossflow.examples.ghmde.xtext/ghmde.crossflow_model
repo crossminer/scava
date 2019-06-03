@@ -20,12 +20,12 @@ Workflow ghmde {
 		}// RepositorySearchResults
 		
 		Queue RepositoryCloneResults {
-			type Repository //originally: String
+			type RepositoryClone //originally: String
 			outputOf ( RepositoryCloner )
 		}// RepositoryCloneResults
 		
 		Queue RepositoryResults {
-			type Repository //originally: String
+			type RepositoryResult //originally: String
 			inputOf ( RepositoryCounter RepositoryFileCounter RepositoryAuthorCounter )
 			outputOf ( RepositoryResultSink )
 		}// RepositoryResults
