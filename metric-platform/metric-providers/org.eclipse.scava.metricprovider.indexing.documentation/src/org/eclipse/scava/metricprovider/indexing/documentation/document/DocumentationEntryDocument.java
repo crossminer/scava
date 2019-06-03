@@ -21,7 +21,7 @@ public class DocumentationEntryDocument {
 	
 	// NLP
 	private String sentiment;
-	private String plainText;
+	private String plain_text;
 	private Double readability;
 	private Boolean code;
 	
@@ -35,7 +35,7 @@ public class DocumentationEntryDocument {
 	}
 
 
-	public String getProjectName() {
+	public String getProject_name() {
 		return project_name;
 	}
 
@@ -45,17 +45,17 @@ public class DocumentationEntryDocument {
 	}
 
 
-	public String getDocumentationId() {
+	public String getDocumentation_id() {
 		return documentation_id;
 	}
 
 
-	public String getDocumentationEntryId() {
+	public String getDocumentation_entry_id() {
 		return documentation_entry_id;
 	}
 
 
-	public Date getCreatedAt() {
+	public Date getCreated_at() {
 		return created_at;
 	}
 
@@ -65,8 +65,8 @@ public class DocumentationEntryDocument {
 	}
 
 
-	public String getPlainText() {
-		return plainText;
+	public String getPlain_text() {
+		return plain_text;
 	}
 
 
@@ -83,8 +83,8 @@ public class DocumentationEntryDocument {
 	}
 
 
-	public void setPlainText(String plainText) {
-		this.plainText = plainText;
+	public void setPlain_text(String plainText) {
+		this.plain_text = plainText;
 	}
 
 

@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.nlp.tools.references,
  org.eclipse.scava.repository.model.github,
- org.eclipse.scava.repository.model.jira
+ org.eclipse.scava.repository.model.jira,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.commits.message.references.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

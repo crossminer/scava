@@ -27,15 +27,15 @@ public class DocumentationDocument {
 		this.last_update = lastUpdate;
 	}
 
-	public List<String> getDocumentationEntries() {
+	public List<String> getDocumentation_entries() {
 		return documentation_entries;
 	}
 
-	public void setDocumentationEntries(List<String> documentationEntries) {
+	public void setDocumentation_entries(List<String> documentationEntries) {
 		this.documentation_entries = documentationEntries;
 	}
 
-	public String getProjectName() {
+	public String getProject_name() {
 		return project_name;
 	}
 
@@ -43,11 +43,11 @@ public class DocumentationDocument {
 		return uid;
 	}
 
-	public String getDocumentationId() {
+	public String getDocumentation_id() {
 		return documentation_id;
 	}
 
-	public Date getLastUpdate() {
+	public Date getLast_update() {
 		return last_update;
 	}
 

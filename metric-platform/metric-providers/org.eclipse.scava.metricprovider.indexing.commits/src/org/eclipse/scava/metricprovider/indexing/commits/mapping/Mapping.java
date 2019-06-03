@@ -1,13 +1,13 @@
 /*******************************************************************************
-Â * Copyright (c) 2019 Edge Hill University
-Â *Â 
-Â * This program and the accompanying materials are made
-Â * available under the terms of the Eclipse Public License 2.0
-Â * which is available at https://www.eclipse.org/legal/epl-2.0/
-Â *Â 
-Â * SPDX-License-Identifier: EPL-2.0
-Â ******************************************************************************/
-package org.eclipse.scava.metricprovider.indexing.documentation.mapping;
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
+package org.eclipse.scava.metricprovider.indexing.commits.mapping;
 
 import java.io.BufferedReader;
 import java.io.File;

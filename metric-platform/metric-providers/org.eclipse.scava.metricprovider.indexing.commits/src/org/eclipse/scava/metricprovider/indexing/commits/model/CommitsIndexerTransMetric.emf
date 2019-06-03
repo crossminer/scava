@@ -1,0 +1,7 @@
+package org.eclipse.scava.metricprovider.indexing.commits.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class CommitsIndexingMetric {
+
+}

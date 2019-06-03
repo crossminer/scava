@@ -79,8 +79,7 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 
 	@Override
 	public boolean appliesTo(Project project) {
-		for(VcsRepository repository : project.getVcsRepositories())
-			if(repository instanceof DocumentationGitBased) return true;
+		if(project.getVcsRepositories().size()>0) return true;
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
