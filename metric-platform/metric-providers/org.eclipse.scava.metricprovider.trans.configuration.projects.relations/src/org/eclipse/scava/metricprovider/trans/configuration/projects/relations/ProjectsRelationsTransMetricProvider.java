@@ -267,7 +267,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     
     public boolean testPuppet(String projectName, Project project){
     	PuppetDependencies puppetDependencies = 
-				((PuppetDependenciesTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+				((PuppetDependenciesTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
     	
     	PuppetDependencyCollection col = puppetDependencies.getDependencies();
     	
