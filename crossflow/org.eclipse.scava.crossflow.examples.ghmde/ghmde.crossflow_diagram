@@ -14,6 +14,7 @@
     <tasks xmi:type="cf:CsvSource" xmi:id="_5SNoMIX3EemY8JuncGZEaw" name="MDETechnologyTupleSource" output="_zfo4gIXqEemNI_lvasQPzQ" fileName="input.csv"/>
     <types xmi:type="cf:Type" xmi:id="_Ho1bYIXrEemNI_lvasQPzQ" name="Repository" isMany="true" extending="_N9oaQIXrEemNI_lvasQPzQ">
       <fields xmi:type="cf:Field" xmi:id="_M6QRsIXrEemNI_lvasQPzQ" name="url"/>
+      <fields xmi:type="cf:Field" xmi:id="_F3YcIIX8EemY8JuncGZEaw" name="name"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_N9oaQIXrEemNI_lvasQPzQ" name="MDETechnologyTuple">
       <fields xmi:type="cf:Field" xmi:id="_PltLUIXrEemNI_lvasQPzQ" name="fileExt"/>
@@ -73,11 +74,15 @@
           <children xmi:type="notation:DecorationNode" xmi:id="_M6Q4woXrEemNI_lvasQPzQ" type="5011"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_M6Q4wYXrEemNI_lvasQPzQ"/>
         </children>
+        <children xmi:type="notation:Shape" xmi:id="_F3YcIYX8EemY8JuncGZEaw" type="3001" element="_F3YcIIX8EemY8JuncGZEaw" fontName=".SF NS Text">
+          <children xmi:type="notation:DecorationNode" xmi:id="_F3YcI4X8EemY8JuncGZEaw" type="5011"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_F3YcIoX8EemY8JuncGZEaw"/>
+        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_Ho4esYXrEemNI_lvasQPzQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_Ho4esoXrEemNI_lvasQPzQ"/>
       </children>
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_Ho2pgYXrEemNI_lvasQPzQ"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ho2pgoXrEemNI_lvasQPzQ" x="568" y="48"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ho2pgoXrEemNI_lvasQPzQ" x="568" y="24" height="78"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_N9pBUIXrEemNI_lvasQPzQ" type="2011" element="_N9oaQIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_N9pBU4XrEemNI_lvasQPzQ" type="5012"/>
@@ -306,7 +311,7 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_AnYUYYX3EemY8JuncGZEaw" fontName=".SF NS Text"/>
       <element xsi:nil="true"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_AnYUYoX3EemY8JuncGZEaw" points="[0, -27, -485, 166]$[0, -52, -485, 141]$[673, -52, 188, 141]$[673, -187, 188, 6]$[492, -187, 7, 6]"/>
-      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Andz8IX3EemY8JuncGZEaw" id="(0.9416666666666667,0.48148148148148145)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Andz8IX3EemY8JuncGZEaw" id="(0.9416666666666667,0.5857142857142857)"/>
     </edges>
     <edges xmi:type="notation:Connector" xmi:id="_DgrcwIX3EemY8JuncGZEaw" type="4001" source="_-L0uYIXqEemNI_lvasQPzQ" target="_-yIC8IX2EemY8JuncGZEaw">
       <children xmi:type="notation:DecorationNode" xmi:id="_Dgrcw4X3EemY8JuncGZEaw" type="6001">
@@ -348,7 +353,7 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_K24t8YX6EemY8JuncGZEaw" fontName=".SF NS Text"/>
       <element xsi:nil="true"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_K24t8oX6EemY8JuncGZEaw" points="[-33, -2, 374, 28]$[-406, -55, 1, -25]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_K258EIX6EemY8JuncGZEaw" id="(0.18333333333333332,0.16666666666666666)"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_K258EIX6EemY8JuncGZEaw" id="(0.0,0.35714285714285715)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_K258EYX6EemY8JuncGZEaw" id="(0.9781021897810219,0.5)"/>
     </edges>
   </notation:Diagram>

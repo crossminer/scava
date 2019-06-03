@@ -93,6 +93,9 @@ Workflow ghmde {
 				Field url {
 					type String
 				}
+				Field name {
+					type String
+				}
 			}
 		}
 		isMany Type RepositoryClone {
