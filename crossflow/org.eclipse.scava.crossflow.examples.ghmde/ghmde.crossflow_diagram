@@ -12,7 +12,7 @@
     <tasks xmi:type="cf:Task" xmi:id="_E3sJcIXrEemNI_lvasQPzQ" name="RepositoryAuthorCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:CsvSink" xmi:id="_1i9IMIX3EemY8JuncGZEaw" name="RepositoryResultSink" input="_-6tNoIXqEemNI_lvasQPzQ" fileName="output.csv"/>
     <tasks xmi:type="cf:CsvSource" xmi:id="_5SNoMIX3EemY8JuncGZEaw" name="MDETechnologyTupleSource" output="_zfo4gIXqEemNI_lvasQPzQ" fileName="input.csv"/>
-    <types xmi:type="cf:Type" xmi:id="_Ho1bYIXrEemNI_lvasQPzQ" name="Repository" isMany="true">
+    <types xmi:type="cf:Type" xmi:id="_Ho1bYIXrEemNI_lvasQPzQ" name="Repository" isMany="true" extending="_N9oaQIXrEemNI_lvasQPzQ">
       <fields xmi:type="cf:Field" xmi:id="_M6QRsIXrEemNI_lvasQPzQ" name="url"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_N9oaQIXrEemNI_lvasQPzQ" name="MDETechnologyTuple">
@@ -339,6 +339,17 @@
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nVsYQoX3EemY8JuncGZEaw" points="[0, -2, -100, 32]$[0, -34, -100, 0]$[98, -34, -2, 0]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_nVuNcIX3EemY8JuncGZEaw" id="(0.4968152866242038,0.05)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_nVuNcYX3EemY8JuncGZEaw" id="(0.015625,0.5393258426966292)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_K24t8IX6EemY8JuncGZEaw" type="4004" source="_Ho2pgIXrEemNI_lvasQPzQ" target="_N9pBUIXrEemNI_lvasQPzQ">
+      <children xmi:type="notation:DecorationNode" xmi:id="_K24t84X6EemY8JuncGZEaw" type="6004">
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_K24t9IX6EemY8JuncGZEaw"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_K24t9YX6EemY8JuncGZEaw" y="40"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_K24t8YX6EemY8JuncGZEaw" fontName=".SF NS Text"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_K24t8oX6EemY8JuncGZEaw" points="[-33, -2, 374, 28]$[-406, -55, 1, -25]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_K258EIX6EemY8JuncGZEaw" id="(0.18333333333333332,0.16666666666666666)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_K258EYX6EemY8JuncGZEaw" id="(0.9781021897810219,0.5)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>

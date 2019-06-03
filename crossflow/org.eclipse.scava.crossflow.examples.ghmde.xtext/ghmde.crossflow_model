@@ -77,13 +77,6 @@ Workflow ghmde {
 	}// workflow tasks
 	
 	types {
-		isMany Type Repository {
-			fields {
-				Field url {
-					type String
-				}
-			}
-		}
 		Type MDETechnologyTuple {
 			fields {
 				Field fileExt {
@@ -91,6 +84,36 @@ Workflow ghmde {
 				}
 				Field techKey {
 					type String
+				}
+			}
+		}
+		isMany Type Repository {
+			extending ( MDETechnologyTuple )
+			fields {
+				Field url {
+					type String
+				}
+			}
+		}
+		isMany Type RepositoryClone {
+			extending ( Repository )
+			fields {
+				Field localPath {
+					type String
+				}
+			}
+		}
+		isMany Type RepositoryResult {
+			extending ( RepositoryClone )
+			fields {
+				Field fileCount {
+					type int
+				}
+				Field authorCount {
+					type int
+				}
+				Field totalCount {
+					type int
 				}
 			}
 		}
