@@ -15,6 +15,7 @@ Export-Package: org.eclipse.scava.crossflow.restmule.client.github.api,
  org.eclipse.scava.crossflow.restmule.client.github.interceptor,
  org.eclipse.scava.crossflow.restmule.client.github.model,
  org.eclipse.scava.crossflow.restmule.client.github.page,
+ org.eclipse.scava.crossflow.restmule.client.github.query,
  org.eclipse.scava.crossflow.restmule.client.github.session,
  org.eclipse.scava.crossflow.restmule.client.github.util
 Bundle-ClassPath: resources/,

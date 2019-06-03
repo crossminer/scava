@@ -11,5 +11,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.scava.crossflow.restmule.client.github.test,
  org.eclipse.scava.crossflow.restmule.client.github.test.mde,
- org.eclipse.scava.crossflow.restmule.client.github.test.query,
  org.eclipse.scava.crossflow.restmule.client.github.test.util

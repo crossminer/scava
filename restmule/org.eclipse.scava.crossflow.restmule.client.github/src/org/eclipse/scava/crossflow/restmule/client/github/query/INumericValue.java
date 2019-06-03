@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.restmule.client.github.test.query;
+package org.eclipse.scava.crossflow.restmule.client.github.query;
 
 public interface INumericValue<T,O> {
 

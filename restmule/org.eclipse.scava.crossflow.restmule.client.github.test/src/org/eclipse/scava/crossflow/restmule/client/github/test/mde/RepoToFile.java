@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode.Repository;
-import org.eclipse.scava.crossflow.restmule.client.github.test.query.CodeSearchQuery;
+import org.eclipse.scava.crossflow.restmule.client.github.query.CodeSearchQuery;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 

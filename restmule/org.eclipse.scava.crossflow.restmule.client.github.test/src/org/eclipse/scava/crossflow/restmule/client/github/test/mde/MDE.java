@@ -1,6 +1,6 @@
 package org.eclipse.scava.crossflow.restmule.client.github.test.mde;
 
-import org.eclipse.scava.crossflow.restmule.client.github.test.query.CodeSearchQuery;
+import org.eclipse.scava.crossflow.restmule.client.github.query.CodeSearchQuery;
 
 public enum MDE {
 
