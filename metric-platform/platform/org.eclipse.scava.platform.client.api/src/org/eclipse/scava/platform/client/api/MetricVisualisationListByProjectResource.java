@@ -58,15 +58,6 @@ public class MetricVisualisationListByProjectResource extends AbstractApiResourc
 		
 		Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
 		
-		Mongo mongo;
-		try {
-			mongo = Configuration.getInstance().getMongoConnection();
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-			getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-			return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-		}
-		
 		this.db = mongo.getDB(ANALYSIS_SCHEDULING_DATABASE);
 		ProjectAnalysisResportory repository = new ProjectAnalysisResportory(db);
 		Iterable<MetricExecution> providers = repository.getMetricExecutions().findByProjectId(projectId);

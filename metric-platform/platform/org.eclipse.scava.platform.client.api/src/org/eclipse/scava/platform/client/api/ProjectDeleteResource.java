@@ -7,11 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.List;
 
 import org.eclipse.scava.platform.Configuration;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.AnalysisTaskService;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
@@ -25,12 +23,7 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.ServerResource;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.mongodb.QueryBuilder;
 
 public class ProjectDeleteResource extends ServerResource {
 	
@@ -39,11 +32,9 @@ public class ProjectDeleteResource extends ServerResource {
 	
 	@Delete
 	public Representation deleteAnalysisTask() {
-		Mongo mongo = null;
-		Platform platform = null;
 		try {
-			mongo = Configuration.getInstance().getMongoConnection();
-			platform = new Platform(mongo);				
+			Platform platform = Platform.getInstance();
+			Mongo mongo = Configuration.getInstance().getMongoConnection();
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			
 			String projectId = (String) getRequest().getAttributes().get("projectid");
@@ -99,11 +90,7 @@ public class ProjectDeleteResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
-		} finally {
-			if (mongo != null) mongo.close();
-			platform = null;
 		}
-
 	}
 	
 	void deleteDirectoryRecursion(Path path) throws IOException {

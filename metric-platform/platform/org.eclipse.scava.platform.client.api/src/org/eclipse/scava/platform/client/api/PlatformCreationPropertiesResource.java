@@ -10,9 +10,7 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Properties;
 import org.restlet.data.MediaType;
@@ -26,15 +24,13 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mongodb.Mongo;
 
 public class PlatformCreationPropertiesResource extends ServerResource {
 	
 	@Post
 	public Representation createPlatformProperties(Representation entity) {
-		Mongo mongo = null;
-		Platform platform = null;
 		try {
+			Platform platform = Platform.getInstance();
 			ObjectMapper mapper = new ObjectMapper();
 			
 			// WARNING: This is a _DESTRUCTIVE_ read. It took me AGES to realise this and it isn't in the Restlet javadoc. I hate you Restlet.
@@ -47,15 +43,6 @@ public class PlatformCreationPropertiesResource extends ServerResource {
 			properties.setKey(json.get("key").asText());
 			properties.setValue(json.get("value").asText());
 			
-			try {
-				mongo = Configuration.getInstance().getMongoConnection();
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-			}
-			platform = new Platform(mongo);
-			
 			// TODO: Check it doesn't already exist - how?
 			System.out.println("Create platform properties ...");
 			platform.getProjectRepositoryManager().getProjectRepository().getProperties().add(properties);
@@ -65,16 +52,12 @@ public class PlatformCreationPropertiesResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_CREATED);
 			return rep;
-
 		} catch (IOException e) {
 			e.printStackTrace(); // TODO
 			StringRepresentation rep = new StringRepresentation("{\"status\":\"error\", \"message\" : \""+e.getMessage()+"\"}");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
-		} finally {
-			if (mongo != null) mongo.close();
-			platform = null;
 		}
 	}
 	
