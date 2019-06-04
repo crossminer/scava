@@ -59,9 +59,6 @@ public abstract class AbstractApiResource extends ServerResource {
 			e1.printStackTrace();
 			getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
 			return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-		} finally {
-			if (mongo != null)
-				mongo.close();
 		}
 	}
 	
