@@ -140,7 +140,6 @@ public class ProjectAnalysisTests {
 		assertFalse(project.getExecutionInformation().getInErrorState());
 	}
 
-	@Ignore
 	@Test
 	public void testAllMetricsOnClif() throws Exception {
 		String analysisTaskId = "ClifTask";
@@ -148,7 +147,7 @@ public class ProjectAnalysisTests {
 
 		// Set token
 		// TODO: Valid GitLab token here
-		Response res = helper.setProperty("gitlabToken", "-------------------------");
+		Response res = helper.setProperty("gitlabToken", "ZxsWNuQtXxCX41mmAzso");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Import project
