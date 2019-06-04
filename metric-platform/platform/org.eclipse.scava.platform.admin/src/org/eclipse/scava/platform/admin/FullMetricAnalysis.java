@@ -74,9 +74,6 @@ public class FullMetricAnalysis extends ServerResource {
 				
 			} catch (UnknownHostException e1) {
 				e1.printStackTrace();
-			} finally {
-				if (mongo != null)
-					mongo.close();
 			}
 			
 			return null;
