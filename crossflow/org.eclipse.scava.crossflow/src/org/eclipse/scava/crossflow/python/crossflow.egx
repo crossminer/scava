@@ -3,7 +3,9 @@ import '../util.eol';
 rule Workflow2Class 
 	transform w : Workflow {
 	
-	parameters : w.getParams()
+	parameters : Map {
+		"package" = w.getPackage()
+	}
 	
 	template : "workflow2class.egl"
 	
@@ -26,7 +28,11 @@ rule Task2BaseClass
 
 	guard : t.appliesTo()
 	
-	parameters : t.getParams()
+	parameters : Map {
+		"w" = t.getWorkflow(),
+		"package" = t.getPackage(),
+		"outputTypes" = t.getOutputTypes()
+	}
 	
 	template : "task2baseclass.egl"
 	
@@ -39,7 +45,11 @@ rule Task2ImplClass
 		
 	guard : t.appliesTo()
 		
-	parameters : t.getParams()
+	parameters : Map {
+		"w" = t.getWorkflow(),
+		"package" = t.getPackage(),
+		"outputTypes" = t.getOutputTypes()
+	}
 	
 	template : "task2implclass.egl"
 	
@@ -51,7 +61,9 @@ rule Task2ImplClass
 rule Steam2Class 
 	transform s : Stream {
 	
-	parameters : s.getParams()
+	parameters : Map {
+		"w" = s.getWorkflow()
+	}
 	
 	template : "stream2class.egl"
 	
@@ -62,12 +74,15 @@ rule Steam2Class
 rule Steam2Consumer 
 	transform s : Stream {
 	
-	parameters : Map{"t" = Task}
+	parameters : Map {
+		"t" = Task
+	}
 	
 	template : "stream2consumer.egl"
 	
 	target : s.getPath() + s.name + "Consumer.py"
 }
+
 
 rule GenerateRequirementsTxt
 	transform w : Workflow {
@@ -80,7 +95,9 @@ rule GenerateRequirementsTxt
 rule GenerateMain
 	transform w : Workflow {
 	
-	parameters : w.getParams()
+	parameters : Map {
+		"package" = w.getPackage()
+	}
 	
 	template: "generateMain.egl"
 	
@@ -134,17 +151,14 @@ operation Any getImplPath() : String {
 operation Any getSupportPath() {
 }
 
-operation Any getParams() : Map {
-	return Map {
-		'w'= self.getWorkflow(),
-		'package' = self.getLanguage("python")
-	};
-}
-
 operation String toPath() : String {
 	return self.replaceAll("\\.", "/") + "/";
 }
 
 operation Task appliesTo() : Boolean {
 	return self.hasLanguage("python");
+}
+
+operation Task getOutputTypes() : Set {
+	return self.output.collect(o|o.type).asSet();
 }
