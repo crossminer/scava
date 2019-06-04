@@ -9,22 +9,18 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.client.api;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
-import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.DB;
-import com.mongodb.Mongo;
 
 public class RawMetricListByProjectResource extends AbstractApiResource {
 	
@@ -40,15 +36,6 @@ public class RawMetricListByProjectResource extends AbstractApiResource {
 		res.put("metrics", metrics);
 		
 		Iterator<IMetricProvider> it = platform.getMetricProviderManager().getMetricProviders().iterator();
-		
-		Mongo mongo;
-		try {
-			mongo = Configuration.getInstance().getMongoConnection();
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-			getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-			return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-		}
 		
 		this.db = mongo.getDB(ANALYSIS_SCHEDULING_DATABASE);
 		ProjectAnalysisResportory repository = new ProjectAnalysisResportory(this.db);
