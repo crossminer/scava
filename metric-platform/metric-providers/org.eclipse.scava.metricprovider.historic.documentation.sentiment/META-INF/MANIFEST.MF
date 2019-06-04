@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.metricprovider.trans.documentation.sentiment,
  org.eclipse.scava.repository.model.documentation.gitbased,
- org.eclipse.scava.repository.model.vcs.git
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.documentation.systematic

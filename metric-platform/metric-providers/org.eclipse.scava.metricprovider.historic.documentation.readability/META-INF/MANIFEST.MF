@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.metricprovider.trans.documentation.readability,
  org.eclipse.scava.repository.model.documentation.gitbased,
- org.eclipse.scava.repository.model.vcs.git
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.documentation.systematic
 Bundle-Activator: org.eclipse.scava.metricprovider.historic.documentation.readability.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

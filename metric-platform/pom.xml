@@ -464,6 +464,9 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.indexing.documentation
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.commits
+    </module>
   </modules>
   <build>
     <plugins>

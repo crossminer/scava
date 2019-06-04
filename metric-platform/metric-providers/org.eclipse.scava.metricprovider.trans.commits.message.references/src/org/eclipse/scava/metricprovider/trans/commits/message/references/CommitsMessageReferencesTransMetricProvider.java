@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.commits.message.references;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.metricprovider.trans.commits.message.references.model.CommitMessageReferringTo;
 import org.eclipse.scava.metricprovider.trans.commits.message.references.model.CommitsMessageReferenceTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.tools.references.NormalizedReferences;
 import org.eclipse.scava.nlp.tools.references.bitbucket.ReferencesInBitBucket;
 import org.eclipse.scava.nlp.tools.references.bugzilla.ReferencesInBugzilla;
@@ -45,6 +47,8 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 {
 
 	protected PlatformVcsManager vcsManager;
+	protected List<IMetricProvider> uses;
+	protected MetricProviderContext context;
 	
 	@Override
 	public String getIdentifier() {
@@ -75,18 +79,18 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		
+		this.uses = uses;	
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.vcsManager = context.getPlatformVcsManager();
-		
+		this.context = context;	
 	}
 
 	@Override
@@ -99,6 +103,11 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 	{
 		
 		clearDB(db);
+		
+		//This is for the indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));	
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
 		
 		VcsProjectDelta vcsd = delta.getVcsDelta();
 		

@@ -10,6 +10,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.git.GitManager;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
@@ -17,6 +18,12 @@ import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 
 public class DocumentationGitBasedManager extends GitManager {
 
+	protected OssmeterLogger logger;
+	
+	public DocumentationGitBasedManager() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.documentation.gitbased");
+	}
+	
 	@Override
 	public boolean appliesTo(VcsRepository repository) {
 		return repository instanceof DocumentationGitBased;
@@ -28,6 +35,7 @@ public class DocumentationGitBasedManager extends GitManager {
 			return super.getDelta(repository, startRevision, endRevision);
 		VcsRepositoryDelta vcsDelta = new VcsRepositoryDelta();
 		vcsDelta.setRepository(repository);
+		logger.error("Returning an empty delta due to an invalid repository.");
 		return vcsDelta;
 	}
 	
@@ -45,8 +53,10 @@ public class DocumentationGitBasedManager extends GitManager {
 			{
 				revisions.add(revision);
 			}
+			logger.info("Found "+revisions.size());
 			return revisions.toArray(new String[revisions.size()]);
 		}
+		logger.error("The repository is not valid: It doesn't exist or there is an issue witht the URL.");
 		return new String[0];
 	}
 	
