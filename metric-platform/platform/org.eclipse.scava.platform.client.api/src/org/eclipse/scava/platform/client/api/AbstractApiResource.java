@@ -30,6 +30,7 @@ import com.mongodb.Mongo;
 public abstract class AbstractApiResource extends ServerResource {
 	
 	protected Platform platform;
+	protected Mongo mongo;
 	protected ObjectMapper mapper;
 	
 	abstract public Representation doRepresent();
@@ -46,23 +47,24 @@ public abstract class AbstractApiResource extends ServerResource {
 		
 		mapper = new ObjectMapper();
 		
-		Mongo mongo;
 		try {
 			mongo = Configuration.getInstance().getMongoConnection();
+			platform = new Platform(mongo);
+
+			// Delegate to resource
+			PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor()); //FIXME: This _cannot_ stay here. A new one will get added on EVERY API call.
+			Representation rep = doRepresent();
+			
+			return rep;
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 			getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
 			return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
+		} finally {
+			if (mongo != null)
+				mongo.close();
+			platform = null;
 		}
-		platform = new Platform(mongo);
-
-		// Delegate to resource
-		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor()); //FIXME: This _cannot_ stay here. A new one will get added on EVERY API call.
-		Representation rep = doRepresent();
-		
-		mongo.close();
-		platform = null;
-		return rep;
 	}
 	
 	protected JsonNode generateRequestJson(ObjectMapper mapper, String projectName) {
