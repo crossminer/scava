@@ -20,3 +20,20 @@ operation Any getWorkflow() : Workflow {
 	}
 	return self.eContainer().getWorkflow();
 }
+
+operation String toSnakeCase() : String {
+	var matcher := Native("java.util.regex.Pattern")
+		.compile("[A-Z]?[a-z]+|[A-Z]{2,}(?=[A-Z][a-z]|\\d|\\W|$)|\\d+")
+		.matcher(self);
+	
+	var join = "";	
+	var i = 0;
+	var result = matcher.find(i);
+	while (result) {
+		join += matcher.group();
+		result = matcher.find(matcher.end());
+		if (result) join += "_";
+	}
+
+	return join.toLowercase();
+}
