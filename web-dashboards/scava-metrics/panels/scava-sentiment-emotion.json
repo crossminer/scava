@@ -2,7 +2,7 @@
     "dashboard": {
         "id": "05696120-7c9e-11e9-aebb-ed652e0cbf12",
         "value": {
-            "description": "Sentiment dashboard",
+            "description": "Sentiment and emotion dashboard",
             "hits": 0,
             "kibanaSavedObjectMeta": {
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
