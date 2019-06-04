@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.bugs.requestsreplies;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
