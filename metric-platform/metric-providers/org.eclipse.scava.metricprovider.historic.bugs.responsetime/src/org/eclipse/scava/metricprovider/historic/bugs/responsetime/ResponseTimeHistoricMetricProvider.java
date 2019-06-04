@@ -21,7 +21,6 @@ import org.eclipse.scava.platform.AbstractHistoricalMetricProvider;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
-import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.repository.model.Project;
 
 import com.googlecode.pongo.runtime.Pongo;
