@@ -25,3 +25,4 @@ Require-Bundle: org.eclipse.osgi,
  org.elasticsearch.dependencies,
  org.eclipse.scava.repository.model.cc.sympa
 Bundle-Activator: org.eclipse.scava.metricprovider.indexing.communicationchannels.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
