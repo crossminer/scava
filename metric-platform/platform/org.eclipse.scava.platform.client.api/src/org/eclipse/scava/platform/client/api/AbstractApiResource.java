@@ -29,7 +29,7 @@ import com.mongodb.Mongo;
 
 public abstract class AbstractApiResource extends ServerResource {
 	
-	protected Platform platform;
+	protected Platform platform = Platform.getInstance();
 	protected Mongo mongo;
 	protected ObjectMapper mapper;
 	
@@ -49,7 +49,6 @@ public abstract class AbstractApiResource extends ServerResource {
 		
 		try {
 			mongo = Configuration.getInstance().getMongoConnection();
-			platform = new Platform(mongo);
 
 			// Delegate to resource
 			PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor()); //FIXME: This _cannot_ stay here. A new one will get added on EVERY API call.
@@ -63,7 +62,6 @@ public abstract class AbstractApiResource extends ServerResource {
 		} finally {
 			if (mongo != null)
 				mongo.close();
-			platform = null;
 		}
 	}
 	

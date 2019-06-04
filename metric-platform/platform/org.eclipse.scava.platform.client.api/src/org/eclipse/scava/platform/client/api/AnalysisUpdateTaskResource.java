@@ -28,28 +28,25 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 
 	@Put
 	public Representation updateAnalysisTask(Representation entity) {
-		Mongo mongo = null;
-		Platform platform= null;
 		try {
-			mongo = Configuration.getInstance().getMongoConnection();
-			platform = new Platform(mongo);
+			Platform platform = Platform.getInstance();
 			AnalysisTaskService service = platform.getAnalysisRepositoryManager().getTaskService();
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode jsonNode = mapper.readTree(entity.getText());
-
+	
 			String oldAnalysisTaskId = jsonNode.get("oldAnalysisTaskId").toString().replace("\"", "");
 			String analysisTaskId = jsonNode.get("analysisTaskId").toString().replace("\"", "");
 			String taskLabel = jsonNode.get("label").toString().replace("\"", "");
 			String taskType = jsonNode.get("type").toString().replace("\"", "");
-
+	
 			Date taskStartDate = new SimpleDateFormat("dd/MM/yyyy")
 					.parse(jsonNode.get("startDate").toString().replace("\"", ""));
-
+	
 			AnalysisTask newTask = new AnalysisTask();
 			newTask.setAnalysisTaskId(analysisTaskId);
 			newTask.setLabel(taskLabel);
 			newTask.setStartDate(taskStartDate);
-
+	
 			if (taskType.equals(AnalysisExecutionMode.SINGLE_EXECUTION.name())) {
 				newTask.setType(AnalysisExecutionMode.SINGLE_EXECUTION.name());
 				Date taskEndDate = new SimpleDateFormat("dd/MM/yyyy")
@@ -58,29 +55,24 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 			} else if (taskType.equals(AnalysisExecutionMode.CONTINUOUS_MONITORING.name())) {
 				newTask.setType(AnalysisExecutionMode.CONTINUOUS_MONITORING.name());
 			}
-
+	
 			List<String> metricsProviders = new ArrayList<>();
 			for (JsonNode metricProvider : (ArrayNode) jsonNode.get("metricProviders")) {
 				metricsProviders.add(metricProvider.toString().replace("\"", ""));
 			}
-
+	
 			AnalysisTask updatedTask = service.updateAnalysisTask(oldAnalysisTaskId, newTask, metricsProviders);
-
+	
 			StringRepresentation rep = new StringRepresentation(updatedTask.getDbObject().toString());
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_CREATED);
 			return rep;
-
-		} catch (ParseException | IOException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
-		} finally {
-			if (mongo != null) mongo.close();
-			platform = null;
 		}
-
 	}
 }

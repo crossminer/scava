@@ -55,9 +55,6 @@ public class MetricListAnalysis extends ServerResource {
 			} catch (UnknownHostException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} finally {
-				if (mongo != null)
-					mongo.close();
 			}
 			
 			return null;

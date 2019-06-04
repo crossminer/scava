@@ -34,25 +34,14 @@ public class ProjectImportResource extends ServerResource {
 
 	@Post("json")
 	public Representation importProject(Representation entity) {
-		
-		Mongo mongo = null;
-		Platform platform = null;
 		try {
+			Platform platform = Platform.getInstance();
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode obj = (ObjectNode)mapper.readTree(entity.getText());
 			System.out.println(obj);
 			String url = obj.get("url").toString();
 
 			url = url.replace("\"", "");
-			
-			try {
-				mongo = Configuration.getInstance().getMongoConnection();
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-			}
-			platform = new Platform(mongo);
 			
 			ProjectImporter importer = new ProjectImporter();
 			
@@ -93,19 +82,14 @@ public class ProjectImportResource extends ServerResource {
 			StringRepresentation rep = new StringRepresentation(p.getDbObject().toString());
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.SUCCESS_CREATED);
-			
-			mongo.close();
-			return rep;
 
+			return rep;
 		} catch (IOException e) {
 			e.printStackTrace(); // TODO
 			StringRepresentation rep = new StringRepresentation("");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
-		} finally {
-			if (mongo != null) mongo.close();
-			platform = null;
 		}
 	}
 	
