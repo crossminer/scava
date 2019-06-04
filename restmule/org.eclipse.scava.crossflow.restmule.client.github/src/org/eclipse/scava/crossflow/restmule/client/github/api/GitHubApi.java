@@ -700,7 +700,7 @@ public class GitHubApi  {
 			Validate.notNull(filter);
 			Validate.matchesPattern(filter,"(assigned|created|mentioned|subscribed|all)");
 			Validate.notNull(state);
-			Validate.matchesPattern(state,"(open|closed)");
+			Validate.matchesPattern(state,"(open|closed|all)");
 			Validate.notNull(labels);
 			Validate.notNull(sort);
 			Validate.matchesPattern(sort,"(created|updated|comments)");
