@@ -99,6 +99,7 @@ public class ProjectAnalysisTests {
 		assertFalse(project.getExecutionInformation().getInErrorState());
 	}
 
+	@Ignore
 	@Test
 	public void testAllMetricsOnASM() throws Exception {
 		String analysisTaskId = "AsmTask";
@@ -106,7 +107,7 @@ public class ProjectAnalysisTests {
 
 		// Set token
 		// TODO: Valid GitLab token here
-		Response res = helper.setProperty("gitlabToken", "ZxsWNuQtXxCX41mmAzso");
+		Response res = helper.setProperty("gitlabToken", "-------------------------");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Import project
@@ -122,6 +123,46 @@ public class ProjectAnalysisTests {
 
 		res = helper.createTask(projectId, analysisTaskId, "ASM Task", AnalysisExecutionMode.SINGLE_EXECUTION,
 				metricProviders, "01/03/2019", "05/03/2019");
+		assertEquals(201, res.getStatus().getCode());
+
+		// Start task
+		res = helper.startTask(analysisTaskId);
+		assertEquals(200, res.getStatus().getCode());
+
+		// Start execution
+		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects()
+				.findOneByShortName(projectId);
+		platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId, WORKER_ID);
+		ProjectAnalyser projectAnalyser = new ProjectAnalyser(platform);
+		projectAnalyser.executeAnalyse(analysisTaskId, WORKER_ID);
+		platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+
+		assertFalse(project.getExecutionInformation().getInErrorState());
+	}
+
+	@Test
+	public void testAllMetricsOnClif() throws Exception {
+		String analysisTaskId = "ClifTask";
+		String projectId = "clif";
+
+		// Set token
+		// TODO: Valid GitLab token here
+		Response res = helper.setProperty("gitlabToken", "ZxsWNuQtXxCX41mmAzso");
+		assertEquals(201, res.getStatus().getCode());
+
+		// Import project
+		res = helper.importProject("https://gitlab.ow2.org/clif/clif-legacy");
+		assertEquals(201, res.getStatus().getCode());
+
+		// Create task
+		List<MetricProviderDTO> providers = helper.getMetricProviders();
+		List<String> metricProviders = new ArrayList<String>();
+		for (MetricProviderDTO provider : providers) {
+			metricProviders.add(provider.getMetricProviderId());
+		}
+
+		res = helper.createTask(projectId, analysisTaskId, "Clif Task", AnalysisExecutionMode.SINGLE_EXECUTION,
+				metricProviders, "01/01/2018", "01/03/2018");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Start task
