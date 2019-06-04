@@ -51,8 +51,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 	protected PlatformVcsManager platformVcsManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
-	private Indexer indexer;
-	
 	protected OssmeterLogger logger;
 	
 	private final static String KNOWLEDGE = "nlp";// knowledge type.
@@ -126,6 +124,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		String mapping;
 		String document="";
 		
+		
 		//Documentation
 		Iterable<Documentation> documentationIt = documentationProcessor.getDocumentation();
 		documentType = "documentation";
@@ -145,25 +144,14 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			
 			try {
 				document = mapper.writeValueAsString(dd);
-				indexer.indexDocument(indexName, mapping, documentType, uid, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			}
 			catch (JsonProcessingException e) {
 				logger.error("Error while processing json:", e);
 				e.printStackTrace();
 			}
 			catch (NullPointerException e) {
-				String errorMessage="";
-				if(indexName==null)
-					errorMessage+="Index name null.\n";
-				if(mapping==null)
-					errorMessage+="Mapping null.\n";
-				if(documentType==null)
-					errorMessage+="Document type null.\n";
-				if(uid==null)
-					errorMessage+="UID null.\n";
-				if(document==null)
-					errorMessage+="Document null.\n";
-				logger.error("Error while indexing document."+errorMessage, e);
+				logger.error("Error while indexing document:", e);
 				e.printStackTrace();
 			}
 		}
@@ -189,20 +177,9 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			
 			try {
 				document = mapper.writeValueAsString(ded);
-				indexer.indexDocument(indexName, mapping, documentType, uid, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			} catch (JsonProcessingException e) {
-				String errorMessage="";
-				if(indexName==null)
-					errorMessage+="Index name null.\n";
-				if(mapping==null)
-					errorMessage+="Mapping null.\n";
-				if(documentType==null)
-					errorMessage+="Document type null.\n";
-				if(uid==null)
-					errorMessage+="UID null.\n";
-				if(document==null)
-					errorMessage+="Document null.\n";
-				logger.error("Error while indexing document."+errorMessage, e);
+				logger.error("Error while indexing document: ", e);
 				e.printStackTrace();
 			}
 		}
@@ -279,20 +256,12 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 
 		T output = null;
 
-		try {
-			Iterable<T> iterator = collection.find(
-					getStringQueryProducer(type, output, "DOCUMENTATIONID").eq(documentationEntry.getDocumentationId()),
-					getStringQueryProducer(type, output, "ENTRYID").eq(documentationEntry.getEntryId()));
-		
-			for (T t : iterator) {
-				output = t;
-			}
-		
-			
-		} catch (SecurityException | IllegalArgumentException e) {
-
-			logger.error("Error while searching data in MongoBD:", e);
-			e.printStackTrace();
+		Iterable<T> iterator = collection.find(
+				getStringQueryProducer(type, output, "DOCUMENTATIONID").eq(documentationEntry.getDocumentationId()),
+				getStringQueryProducer(type, output, "ENTRYID").eq(documentationEntry.getEntryId()));
+	
+		for (T t : iterator) {
+			output = t;
 		}
 		return output;
 	}

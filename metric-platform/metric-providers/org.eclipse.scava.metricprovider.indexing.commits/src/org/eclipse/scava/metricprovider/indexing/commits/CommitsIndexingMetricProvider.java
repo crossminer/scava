@@ -41,8 +41,6 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 	
 	protected PlatformVcsManager platformVcsManager;
 	
-	private Indexer indexer;
-	
 	protected OssmeterLogger logger;
 	
 	private final static String KNOWLEDGE = "code/nlp";
@@ -124,7 +122,7 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 				enrichCommitDocument(project, commit, repository.getUrl(), cd);
 				try {
 					document = mapper.writeValueAsString(cd);
-					indexer.indexDocument(indexName, mapping, documentType, uid, document);
+					Indexer.indexDocument(indexName, mapping, documentType, uid, document);
 				} catch (JsonProcessingException e) {
 					logger.error("Error while processing json:", e);
 					e.printStackTrace();
@@ -178,21 +176,14 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 
 		T output = null;
 
-		try {
-			Iterable<T> iterator = collection.find(
-					getStringQueryProducer(type, output, "REPOSITORY").eq(repositoryURL),
-					getStringQueryProducer(type, output, "REVISION").eq(commit.getRevision()));
-		
-			for (T t : iterator) {
-				output = t;
-			}
-		
-			
-		} catch (SecurityException | IllegalArgumentException e) {
-
-			logger.error("Error while searching data in MongoBD:", e);
-			e.printStackTrace();
+		Iterable<T> iterator = collection.find(
+				getStringQueryProducer(type, output, "REPOSITORY").eq(repositoryURL),
+				getStringQueryProducer(type, output, "REVISION").eq(commit.getRevision()));
+	
+		for (T t : iterator) {
+			output = t;
 		}
+			
 		return output;
 	}
 		

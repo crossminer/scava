@@ -9,14 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.bugs;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,8 +72,6 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 	public final static String NLP = "nlp";// knowledge type.
 
-	private Indexer indexer;
-
 	@Override
 	public String getIdentifier() {
 
@@ -132,8 +123,6 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, Indexing db) {
 		BugTrackingSystemProjectDelta bugTrackingSystemProjectDelta = projectDelta.getBugTrackingSystemDelta();
-
-		indexer = new Indexer();
 
 		for (BugTrackingSystemDelta bugTrackingSystemDelta : bugTrackingSystemProjectDelta
 				.getBugTrackingSystemDeltas()) {
@@ -201,7 +190,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 			try {
 				
 				document = mapper.writeValueAsString(enrichedDocument);
-				indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
 				
 			} catch (JsonProcessingException e) { 
 
@@ -231,7 +220,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 			try {
 			
 				document = mapper.writeValueAsString(enrichedDocument);
-				indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
 			
 			} catch (JsonProcessingException e) {
 
@@ -261,7 +250,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 			try {
 				
 				document = mapper.writeValueAsString(enrichedDocument);
-				indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
 
 			} catch (JsonProcessingException e) {
 
@@ -313,10 +302,6 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 					enrichmentData.setSeverity("unable to calculate severity at this time (reason: no comments)");
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
 				}
 
 				break;
@@ -354,24 +339,17 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 				EmotionClassificationTransMetric bugTrackerEmotionData = new EmotionClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
-				try {
-					List<String> emotionData = findCollection(bugTrackerEmotionData,
-							BugTrackerCommentsEmotionClassification.class,
-							bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
+				List<String> emotionData = findCollection(bugTrackerEmotionData,
+						BugTrackerCommentsEmotionClassification.class,
+						bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
 
-				
-						for (String dimension : emotionData) {
+			
+					for (String dimension : emotionData) {
 
-							enrichmentData.addEmotionalDimension(dimension);
+						enrichmentData.addEmotionalDimension(dimension);
 
-						}
-					
+					}
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
 
 				break;
 
@@ -381,21 +359,14 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				SentimentClassificationTransMetric bugTrackerCommentsSentimentData = new SentimentClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
-					BugTrackerCommentsSentimentClassification sentimentData = findCollection(
-							bugTrackerCommentsSentimentData, BugTrackerCommentsSentimentClassification.class,
-							bugTrackerCommentsSentimentData.getBugTrackerComments(), comment);
+				BugTrackerCommentsSentimentClassification sentimentData = findCollection(
+						bugTrackerCommentsSentimentData, BugTrackerCommentsSentimentClassification.class,
+						bugTrackerCommentsSentimentData.getBugTrackerComments(), comment);
 
-					if (!(sentimentData.equals(null))) {
+				if (!(sentimentData.equals(null))) {
 
-						enrichmentData.setSentiment(sentimentData.getPolarity());
+					enrichmentData.setSentiment(sentimentData.getPolarity());
 
-					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
 				}
 
 				break;
@@ -406,23 +377,17 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				PlainTextProcessingTransMetric bugTrackerCommentsPlainTextData = new PlainTextProcessingTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
-					BugTrackerCommentPlainTextProcessing plainTextData = findCollection(bugTrackerCommentsPlainTextData,
-							BugTrackerCommentPlainTextProcessing.class,
-							bugTrackerCommentsPlainTextData.getBugTrackerComments(), comment);
+				BugTrackerCommentPlainTextProcessing plainTextData = findCollection(bugTrackerCommentsPlainTextData,
+						BugTrackerCommentPlainTextProcessing.class,
+						bugTrackerCommentsPlainTextData.getBugTrackerComments(), comment);
 
-					if (plainTextData.getPlainText() != null) {
+				if (plainTextData.getPlainText() != null) {
 
-						String plaintext = String.join(" ", plainTextData.getPlainText());
-						enrichmentData.setPlain_text(plaintext);
+					String plaintext = String.join(" ", plainTextData.getPlainText());
+					enrichmentData.setPlain_text(plaintext);
 
-					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
 				}
+
 
 				break;
 
@@ -432,28 +397,22 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				DetectingCodeTransMetric bugTrackerDetectingCodeData = new DetectingCodeTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 
-					BugTrackerCommentDetectingCode detectingcodeData = findCollection(bugTrackerDetectingCodeData,
-							BugTrackerCommentDetectingCode.class, bugTrackerDetectingCodeData.getBugTrackerComments(),
-							comment);
+				BugTrackerCommentDetectingCode detectingcodeData = findCollection(bugTrackerDetectingCodeData,
+						BugTrackerCommentDetectingCode.class, bugTrackerDetectingCodeData.getBugTrackerComments(),
+						comment);
+				
+				if (detectingcodeData != null) {					
 					
-					if (detectingcodeData != null) {					
-						
-						if (!detectingcodeData.getCode().isEmpty()) {
-	
-								enrichmentData.setCode(true);
-						}else{
-								enrichmentData.setCode(false);
-	
-							} 
-						}
-						
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
+					if (!detectingcodeData.getCode().isEmpty()) {
 
-					e.printStackTrace();
-				}
+							enrichmentData.setCode(true);
+					}else{
+							enrichmentData.setCode(false);
+
+						} 
+					}
+						
 
 				break;
 
@@ -463,22 +422,16 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				RequestReplyClassificationTransMetric bugtrackerRequestReplyData = new RequestReplyClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 
-					BugTrackerComments requestReplyData = findCollection(bugtrackerRequestReplyData,
-							BugTrackerComments.class, bugtrackerRequestReplyData.getBugTrackerComments(), comment);
+				BugTrackerComments requestReplyData = findCollection(bugtrackerRequestReplyData,
+						BugTrackerComments.class, bugtrackerRequestReplyData.getBugTrackerComments(), comment);
 
-					if (requestReplyData != null) {
+				if (requestReplyData != null) {
 
-						enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
+					enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
 
-					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
 				}
+
 
 				break;
 
@@ -488,20 +441,13 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				BugsBugMetadataTransMetric bugTrackerContentClassData = new BugMetadataTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
-					CommentData contentClassData = findCollection(bugTrackerContentClassData, CommentData.class,
-							bugTrackerContentClassData.getComments(), comment);
+				CommentData contentClassData = findCollection(bugTrackerContentClassData, CommentData.class,
+						bugTrackerContentClassData.getComments(), comment);
 
-					if (contentClassData != null) {
-						enrichmentData.setContent_class(contentClassData.getContentClass());
-					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-
+				if (contentClassData != null) {
+					enrichmentData.setContent_class(contentClassData.getContentClass());
 				}
+
 			}
 
 		}
@@ -570,70 +516,6 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 		return uid;
 	}
 
-	/**
-	 * Loads the mapping for a particular index from the 'mappings'directory
-	 * 
-	 * @param mapping
-	 * @return String
-	 */
-	private String loadMapping(String documentType, String knowlegeType) {
-
-		String indexmapping = "";
-		File file = null;
-		try {
-			file = new File(locateMappings(documentType, knowlegeType));
-		} catch (IllegalArgumentException | IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = br.readLine()) != null) {
-				indexmapping = indexmapping + line;
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return indexmapping;
-	}
-
-	/**
-	 * Locates the mapping file within the 'mappings' directory and returns a file
-	 * path
-	 * 
-	 * @return String
-	 * @throws IllegalArgumentException
-	 * @throws IOException
-	 */
-	private String locateMappings(String documentType, String knowledgeType)
-			throws IllegalArgumentException, IOException {
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		File file = new File(path + "mappings/" + documentType + "." + knowledgeType + ".json");
-		checkPropertiesFilePath(file.toPath());
-
-		return file.getPath();
-	}
-
-	/**
-	 * Checks if a file exists
-	 * 
-	 * @param path
-	 */
-	private void checkPropertiesFilePath(Path path) {
-		if (!Files.exists(path)) {
-			System.err.println("The file " + path + " has not been found");
-		}
-	}
-	
-	
-	
-	
 
 	/**
 	 * This method finds a collection relating to a metric provider
@@ -644,16 +526,9 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	 * @param collection
 	 * @param comment
 	 * @return
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
 	 */
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
-			BugTrackingSystemComment comment) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-			IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+			BugTrackingSystemComment comment) {
 
 		T output = null;
 
@@ -686,8 +561,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	 * @throws InvocationTargetException
 	 */
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
-			BugTrackingSystemBug issue) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-			IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+			BugTrackingSystemBug issue) {
 
 		T output = null;
 
