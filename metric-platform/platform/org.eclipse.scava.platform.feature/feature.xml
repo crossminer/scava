@@ -1786,13 +1786,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.nlp.libraries.fasttext"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.scava.nlp.resources.sentinet5"
          download-size="0"
          install-size="0"
@@ -2252,6 +2245,13 @@
 
    <plugin
          id="org.eclipse.scava.metricprovider.indexing.commits"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.github.sszuev.fasttext"
          download-size="0"
          install-size="0"
          version="0.0.0"

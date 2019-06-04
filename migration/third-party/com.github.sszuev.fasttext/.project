@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.scava.nlp.libraries.fasttext</name>
+	<name>com.github.sszuev.fasttext</name>
 	<comment></comment>
 	<projects>
 	</projects>
