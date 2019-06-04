@@ -150,10 +150,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				logger.error("Error while processing json:", e);
 				e.printStackTrace();
 			}
-			catch (NullPointerException e) {
-				logger.error("Error while indexing document:", e);
-				e.printStackTrace();
-			}
 		}
 		
 		//Documentation Entries
