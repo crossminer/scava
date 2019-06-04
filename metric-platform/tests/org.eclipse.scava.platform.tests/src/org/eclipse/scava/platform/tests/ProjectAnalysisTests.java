@@ -143,7 +143,7 @@ public class ProjectAnalysisTests {
 	@Test
 	public void testAllMetricsOnClif() throws Exception {
 		String analysisTaskId = "ClifTask";
-		String projectId = "clif";
+		String projectId = "cliflegacy";
 
 		// Set token
 		// TODO: Valid GitLab token here
