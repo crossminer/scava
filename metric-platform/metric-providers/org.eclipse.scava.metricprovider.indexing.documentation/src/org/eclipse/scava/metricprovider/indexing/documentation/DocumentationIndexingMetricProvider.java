@@ -121,10 +121,10 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		String projectName = delta.getProject().getName();
 		ObjectMapper mapper = new ObjectMapper();
 		String documentType;
-		String indexName;
+		String indexName="";
 		String uid;
 		String mapping;
-		String document;
+		String document="";
 		
 		//Documentation
 		Iterable<Documentation> documentationIt = documentationProcessor.getDocumentation();
@@ -146,8 +146,24 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			try {
 				document = mapper.writeValueAsString(dd);
 				indexer.indexDocument(indexName, mapping, documentType, uid, document);
-			} catch (JsonProcessingException e) {
+			}
+			catch (JsonProcessingException e) {
 				logger.error("Error while processing json:", e);
+				e.printStackTrace();
+			}
+			catch (NullPointerException e) {
+				String errorMessage="";
+				if(indexName==null)
+					errorMessage+="Index name null.\n";
+				if(mapping==null)
+					errorMessage+="Mapping null.\n";
+				if(documentType==null)
+					errorMessage+="Document type null.\n";
+				if(uid==null)
+					errorMessage+="UID null.\n";
+				if(document==null)
+					errorMessage+="Document null.\n";
+				logger.error("Error while indexing document."+errorMessage, e);
 				e.printStackTrace();
 			}
 		}
@@ -175,7 +191,18 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				document = mapper.writeValueAsString(ded);
 				indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			} catch (JsonProcessingException e) {
-				logger.error("Error while processing json:", e);
+				String errorMessage="";
+				if(indexName==null)
+					errorMessage+="Index name null.\n";
+				if(mapping==null)
+					errorMessage+="Mapping null.\n";
+				if(documentType==null)
+					errorMessage+="Document type null.\n";
+				if(uid==null)
+					errorMessage+="UID null.\n";
+				if(document==null)
+					errorMessage+="Document null.\n";
+				logger.error("Error while indexing document."+errorMessage, e);
 				e.printStackTrace();
 			}
 		}
