@@ -1,0 +1,22 @@
+@cached
+operation Task hasLanguage(language : String) : Boolean {
+	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation Workflow hasLanguage(language : String) : Language {
+	return self.getLanguage(language).isDefined();
+}
+
+@cached
+operation Any getLanguage(language : String) : Language {
+	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation Any getWorkflow() : Workflow {
+	if (self.isTypeOf(Workflow)) {
+		return self;
+	}
+	return self.eContainer().getWorkflow();
+}

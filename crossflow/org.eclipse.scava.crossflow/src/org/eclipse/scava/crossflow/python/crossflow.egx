@@ -1,7 +1,9 @@
+import '../util.eol';
+
 rule Workflow2Class 
 	transform w : Workflow {
 	
-	parameters : Map{"w" = w,"package" = w.getPackage()}
+	parameters : w.getParams()
 	
 	template : "workflow2class.egl"
 	
@@ -24,7 +26,7 @@ rule Task2BaseClass
 
 	guard : t.appliesTo()
 	
-	parameters : Map{"w" = t.eContainer()}
+	parameters : t.getParams()
 	
 	template : "task2baseclass.egl"
 	
@@ -37,10 +39,7 @@ rule Task2ImplClass
 		
 	guard : t.appliesTo()
 		
-	parameters : Map {
-		"w" = t.getWorkflow(),
-		"package" = t.getPackage()
-	}
+	parameters : t.getParams()
 	
 	template : "task2implclass.egl"
 	
@@ -52,7 +51,7 @@ rule Task2ImplClass
 rule Steam2Class 
 	transform s : Stream {
 	
-	parameters : Map{"w" = s.eContainer()}
+	parameters : s.getParams()
 	
 	template : "stream2class.egl"
 	
@@ -81,7 +80,7 @@ rule GenerateRequirementsTxt
 rule GenerateMain
 	transform w : Workflow {
 	
-	parameters : Map{"w" = w,"package" = w.getPackage()}
+	parameters : w.getParams()
 	
 	template: "generateMain.egl"
 	
@@ -104,43 +103,42 @@ rule GenerateBXStream
 	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow.utils".toPath() + "/basic_xstream.py"
 }
 
-@cached
+operation Any getPackage() : String {
+	return self.getLanguage("python").package;
+}
+
 operation Any getGenOutputFolder() : String {
-	if (self.getPython().isDefined() and self.getPython().genOutputFolder.isDefined()) {
-		return self.getPython().genOutputFolder;
+	var genOutputFolder = self.getLanguage("python").genOutputFolder;
+	if (genOutputFolder.isDefined()) {
+		return genOutputFolder;
 	}
 	return "py-gen";
 }
 
-@cached
 operation Any getOutputFolder() : String {
-	if (self.getPython().isDefined() and self.getPython().outputFolder.isDefined()) {
-		return self.getPython().outputFolder;
+	var outputFolder = self.getLanguage("python").outputFolder;
+	if (outputFolder.isDefined()) {
+		return outputFolder;
 	}
 	return "py";
 }
 
-@cached
 operation Any getPath() : String {
 	return self.getGenOutputFolder() + "/" + self.getPackage().toPath();
 }
 
-@cached
 operation Any getImplPath() : String {
 	return self.getOutputFolder() + "/" + self.getPackage().toPath();
 }
 
-/**
- * Get a path for placing supporting files such as setup.py and requirements.py
- */
-@cached
 operation Any getSupportPath() {
 }
 
-@cached
-operation Any getWorkflow() : Workflow {
-	if (self.isTypeOf(Workflow)) return self;
-	return self.eContainer().getWorkflow();
+operation Any getParams() : Map {
+	return Map {
+		'w'= self.getWorkflow(),
+		'package' = self.getLanguage("python")
+	};
 }
 
 operation String toPath() : String {
@@ -148,27 +146,5 @@ operation String toPath() : String {
 }
 
 operation Task appliesTo() : Boolean {
-	return self.languages.exists(l|l.isPython());
-}
-
-@cached
-operation Any getPackage() : String {
-	var python = self.getPython();
-	if (not python.isDefined() or not python.package.isDefined()) {
-		return self.getWorkflow().name.ftlc;
-	}
-	return python.package;
-}
-
-operation Language isPython() : Boolean {
-	return self.name.toLowerCase=="python";
-}
-
-@cached
-operation Any getPython() : Language {
-	var langs = self.getWorkflow().languages.select(l|l.isPython());
-	if (langs.isEmpty()) {
-		return null;
-	}
-	return langs.first;
+	return self.hasLanguage("python");
 }
