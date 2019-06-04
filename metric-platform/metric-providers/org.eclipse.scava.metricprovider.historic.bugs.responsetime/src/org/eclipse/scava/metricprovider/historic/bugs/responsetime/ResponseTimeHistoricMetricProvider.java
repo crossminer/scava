@@ -79,8 +79,7 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 			if (bugStats.getAnswered()) {
 				cumulativeSumOfDurations += bugStats.getResponseDurationSec();
 				cumulativeBugsConsidered++;
-				java.util.Date responseDate = NntpUtil.parseDate(bugStats.getResponseDate());
-				if (currentDate.compareTo(responseDate)==0) {
+				if (currentDate.compareTo(bugStats.getResponseDate())==0) {
 					sumOfDurations += bugStats.getResponseDurationSec();
 					bugsConsidered++;
 				}

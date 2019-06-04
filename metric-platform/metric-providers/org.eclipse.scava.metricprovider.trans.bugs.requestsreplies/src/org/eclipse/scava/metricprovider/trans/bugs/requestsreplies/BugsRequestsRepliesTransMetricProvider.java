@@ -27,7 +27,6 @@ import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
-import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.repository.model.Project;
@@ -145,10 +144,8 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 		
 	}
 
-	private long computeDurationInSeconds(String firstMessageTimeString, String firstResponseTimeString) {
-		java.util.Date javaFirstMessageTime = NntpUtil.parseDate(firstMessageTimeString);
-		java.util.Date javaFirstResponseTime = NntpUtil.parseDate(firstResponseTimeString);
-		return Date.duration(javaFirstMessageTime, javaFirstResponseTime) / 1000;
+	private long computeDurationInSeconds(java.util.Date firstMessageTime, java.util.Date firstResponseTime) {
+		return Date.duration(firstMessageTime, firstResponseTime) / 1000;
 	}
 
 	@Override
