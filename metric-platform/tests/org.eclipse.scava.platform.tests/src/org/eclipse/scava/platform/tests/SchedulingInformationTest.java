@@ -15,6 +15,7 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.ProjectCollection;
 import org.eclipse.scava.repository.model.SchedulingInformation;
 import org.eclipse.scava.repository.model.SchedulingInformationCollection;
+import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,7 +27,9 @@ public class SchedulingInformationTest {
 	@Ignore
 	public void test() throws Exception {
 		Mongo mongo = new Mongo();
-		Platform platform = new Platform(mongo);
+		Platform platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		SchedulingInformationCollection col = platform.getProjectRepositoryManager().getProjectRepository().getSchedulingInformation();
 		

@@ -40,7 +40,9 @@ public class ProjectAnalysisTests {
 		mongo = new Mongo();
 		helper = new ApiHelper();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		platform = new Platform(mongo);
+		platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 
 		WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
 		// Register Worker
@@ -97,7 +99,6 @@ public class ProjectAnalysisTests {
 		assertFalse(project.getExecutionInformation().getInErrorState());
 	}
 
-	@Ignore
 	@Test
 	public void testAllMetricsOnASM() throws Exception {
 		String analysisTaskId = "AsmTask";
@@ -105,7 +106,7 @@ public class ProjectAnalysisTests {
 
 		// Set token
 		// TODO: Valid GitLab token here
-		Response res = helper.setProperty("gitlabToken", "-----------------");
+		Response res = helper.setProperty("gitlabToken", "ZxsWNuQtXxCX41mmAzso");
 		assertEquals(201, res.getStatus().getCode());
 
 		// Import project

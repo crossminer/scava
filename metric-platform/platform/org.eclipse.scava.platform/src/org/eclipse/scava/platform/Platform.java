@@ -25,13 +25,8 @@ import org.eclipse.scava.repository.model.Project;
 
 import com.mongodb.Mongo;
 
-public class Platform {
-	
-	/*
-	 * We need a static reference so that we can get hold of the platform from the
-	 * client API.
-	 */
-	protected static Platform INSTANCE;
+public final class Platform {
+	private static final Platform INSTANCE = new Platform();
 	
 	public static Platform getInstance() {
 		return INSTANCE;
@@ -48,9 +43,11 @@ public class Platform {
 	// FIXME: Take from config
 	protected final Path localStorageHomeDirectory = get(System.getProperty("user.home"), "scava");
 
-	public Platform(Mongo mongo) {
-		INSTANCE = this;
-		this.mongo = mongo;
+	private Platform() {
+		
+	}
+	
+	public void initialize() {
 		projectRepositoryManager = new ProjectRepositoryManager(mongo);
 		analysisRepositoryManager = new AnalysisRepositoryManager(mongo);
 		metricProviderManager = new ExtensionPointMetricProviderManager();
@@ -58,6 +55,10 @@ public class Platform {
 		communicationChannelManager = new ExtensionPointCommunicationChannelManager(this);
 		bugTrackingSystemManager = new ExtensionPointBugTrackingSystemManager(this);
 		initialisePlatformLocalStorage();
+	}
+	
+	public void setMongo(Mongo mongo) {
+		this.mongo = mongo;
 	}
 	
 	public Path getLocalStorageHomeDirectory() {

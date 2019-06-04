@@ -46,7 +46,9 @@ public class MetricExecutorTest {
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
 		
 		mongo = new Mongo();
-		platform = new Platform(mongo);
+		platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		Project project = new Project();
 		project.setName(PROJECT_NAME);
