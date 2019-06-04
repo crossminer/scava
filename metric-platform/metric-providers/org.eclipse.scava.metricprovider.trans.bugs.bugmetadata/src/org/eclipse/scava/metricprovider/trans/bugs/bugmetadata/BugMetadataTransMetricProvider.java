@@ -222,20 +222,16 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		java.util.Date closingDate = null;
 		if (bug instanceof BugzillaBug) {
 			BugzillaBug bugzillaBug = (BugzillaBug) bug; 
-			if (bugzillaBug.getLastClosed()!=null)
-				closingDate=bugzillaBug.getLastClosed();
+			closingDate=bugzillaBug.getLastClosed();
 		} else if (bug instanceof GitHubIssue) {
 			GitHubIssue issue = (GitHubIssue) bug; 
-			if (issue.getClosedTime()!=null)
-				closingDate=issue.getClosedTime();
+			closingDate=issue.getClosedTime();
 		} else if(bug instanceof GitLabIssue) {
 			GitLabIssue issue = (GitLabIssue) bug;
-			if(issue.getClosed_at()!=null)
-				closingDate=issue.getClosed_at();
+			closingDate=issue.getClosed_at();
 		} else if(bug instanceof JiraIssue)	{
 			JiraIssue issue = (JiraIssue) bug;
-			if(issue.getResolutionDate()!=null)
-				closingDate=issue.getResolutionDate();
+			closingDate=issue.getResolutionDate();
 		}
 		else {
 			System.err.println("Issue tracker do not provide a closing date.");
