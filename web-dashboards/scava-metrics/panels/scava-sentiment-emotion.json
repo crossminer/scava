@@ -17,7 +17,7 @@
             "timeFrom": "now-10y",
             "timeRestore": true,
             "timeTo": "now",
-            "title": "scava-sentiment",
+            "title": "scava-sentiment-emotion",
             "version": 1
         }
     },
