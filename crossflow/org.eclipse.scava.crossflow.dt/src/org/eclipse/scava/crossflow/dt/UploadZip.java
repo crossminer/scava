@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
@@ -23,6 +25,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
 
 public class UploadZip implements IObjectActionDelegate {
 
@@ -31,6 +35,8 @@ public class UploadZip implements IObjectActionDelegate {
 	protected final String webAppProjectName = "org.eclipse.scava.crossflow.web";
 	protected String experimentName;
 	protected String serverIp;
+
+	protected boolean startImmediately = false;
 
 	@Override
 	public void run(IAction action) {
@@ -51,8 +57,6 @@ public class UploadZip implements IObjectActionDelegate {
 				return;
 			System.out.println(zipfile);
 
-			experimentName = zipfile.getName();
-
 			File config = new File(experimentFolder,
 					getFileWithExt(experimentFolder, "experiment.xml", new LinkedList<String>()));
 			if (config == null || !config.exists())
@@ -60,6 +64,7 @@ public class UploadZip implements IObjectActionDelegate {
 			System.out.println(config);
 
 			serverIp = getWebServerIp(config);
+			experimentName = getExperimentName(config);
 			System.out.println(serverIp);
 			// send zip to webserver
 			//
@@ -70,7 +75,7 @@ public class UploadZip implements IObjectActionDelegate {
 		}
 	}
 
-	protected void uploadExperiment(File zipfile) throws IOException {
+	protected void uploadExperiment(File zipfile) throws Exception {
 
 		HttpClient httpclient = new DefaultHttpClient();
 
@@ -80,6 +85,9 @@ public class UploadZip implements IObjectActionDelegate {
 		builder.addPart("experimentZip", new FileBody(zipfile));
 		builder.addPart("inputName", new StringBody(experimentName));
 
+		if (startImmediately == true)
+			builder.addPart("inputCheck", new StringBody("on"));
+
 		HttpEntity entity = builder.build();
 
 		httppost.setEntity(entity);
@@ -87,6 +95,13 @@ public class UploadZip implements IObjectActionDelegate {
 		HttpResponse response = httpclient.execute(httppost);
 
 		System.out.println(response.toString());
+
+		if (startImmediately == true) {
+
+			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL("http://" + serverIp
+					+ "/" + webAppProjectName + "/index.jsp?id=" + experimentName + "&launchExperiment=true"));
+
+		}
 
 	}
 
@@ -97,7 +112,21 @@ public class UploadZip implements IObjectActionDelegate {
 		String ret = null;
 		while ((next = r.readLine()) != null)
 			if (next.trim().startsWith(webserverprefix))
-				ret = next.trim().substring(next.trim().indexOf(webserverprefix) + 11, next.trim().length() - 1);
+				ret = next.trim().substring(next.trim().indexOf(webserverprefix) + webserverprefix.length(),
+						next.trim().length() - 1);
+		r.close();
+		return ret;
+	}
+
+	private String getExperimentName(File config) throws Exception {
+		BufferedReader r = new BufferedReader(new FileReader(config));
+		String webserverprefix = "title=\"";
+		String next;
+		String ret = null;
+		while ((next = r.readLine()) != null)
+			if (next.trim().startsWith(webserverprefix))
+				ret = next.trim().substring(next.trim().indexOf(webserverprefix) + webserverprefix.length(),
+						next.trim().length() - 1);
 		r.close();
 		return ret;
 	}

@@ -22,7 +22,7 @@
                enablesFor="1"
                icon="icons/running.gif"
                id="CROSSFLOWUploadZipAction"
-               label="Upload Zip and Run"
+               label="Upload Zip and Run (new browser window)"
                menubarPath="CROSSFLOWGeneration.menu/group"
                tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
          </action>
@@ -75,7 +75,7 @@
                enablesFor="1"
                icon="icons/running.gif"
                id="CROSSFLOWUploadZipAction"
-               label="Upload Zip and Run"
+               label="Upload Zip and Run (new browser window)"
                menubarPath="CROSSFLOWGeneration.menu/group"
                tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
          </action>
@@ -125,7 +125,7 @@
                enablesFor="1"
                icon="icons/running.gif"
                id="CROSSFLOWUploadZipAction"
-               label="Upload Zip and Run"
+               label="Upload Zip and Run (new browser window)"
                menubarPath="CROSSFLOWGeneration.menu/group"
                tooltip="Uploads the workflow Zip to a running web server (IP defined in the experiment.xml file)">
          </action>
