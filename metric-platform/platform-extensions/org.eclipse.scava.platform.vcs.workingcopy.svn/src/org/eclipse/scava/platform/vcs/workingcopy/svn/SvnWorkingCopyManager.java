@@ -61,7 +61,7 @@ public class SvnWorkingCopyManager implements WorkingCopyManager {
   }
   
   @Override
-  public void checkout(File workingDirectory, VcsRepository repository, String revision)
+  public synchronized void checkout(File workingDirectory, VcsRepository repository, String revision)
       throws WorkingCopyCheckoutException {
     try {
       // TODO: we'd rather use the SVNkit but that blocks indefinitely on loading classes (see above)
@@ -74,7 +74,7 @@ public class SvnWorkingCopyManager implements WorkingCopyManager {
   }
 
   @Override
-  public List<Churn> getDiff(File workingDirectory, String lastRevision) {
+  public synchronized List<Churn> getDiff(File workingDirectory, String lastRevision) {
 	List<Churn> result = new ArrayList<>();
 	StringBuilder option = new StringBuilder("-c");
 	if (lastRevision == null) {
