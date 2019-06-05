@@ -26,5 +26,6 @@ Comma-separated values (CSV)	text/csv
 HyperText Markup Language (HTML)	text/html
 Text	text/plain
 Markdown	text/markdown
+Markdown	text/x-web-markdown
 Rich Text Format (RTF)	text/rtf
 Tab-separated-values	text/tab-separated-values

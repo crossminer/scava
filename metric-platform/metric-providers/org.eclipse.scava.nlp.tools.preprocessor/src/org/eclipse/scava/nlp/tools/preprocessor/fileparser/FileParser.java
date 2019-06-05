@@ -48,17 +48,13 @@ public class FileParser
 	{
 		FileInputStream fis = fileToInputStream(file);
 		BufferedInputStream bif = new BufferedInputStream(fis);
-		boolean supported = isSupported(bif);
+		Metadata metadata = new Metadata();
+		metadata.add(Metadata.RESOURCE_NAME_KEY, file.getName());
+		boolean supported = isSupported(bif, metadata);
 		bif.close();
 		fis.close();
 		return supported;
 		
-	}
-	
-	public static boolean isSupported(BufferedInputStream stream) throws IOException
-	{
-		Metadata metadata = new Metadata();
-		return isSupported(detectMediaType(stream, metadata));
 	}
 	
 	private static boolean isSupported(BufferedInputStream stream, Metadata metadata) throws IOException
@@ -115,7 +111,9 @@ public class FileParser
 	{
 		FileInputStream fis = fileToInputStream(file);
 		BufferedInputStream bif = new BufferedInputStream(fis);
-		String text = extractTextAsString(bif);
+		Metadata metadata = new Metadata();
+		metadata.add(Metadata.RESOURCE_NAME_KEY, file.getName());
+		String text = extractTextAsString(bif, metadata);
 		bif.close();
 		fis.close();
 		return text;
@@ -127,10 +125,9 @@ public class FileParser
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String extractTextAsString(BufferedInputStream bufferedStream) throws Exception
+	private static String extractTextAsString(BufferedInputStream bufferedStream, Metadata metadata) throws Exception
 	{
 		BodyContentHandler handler = new BodyContentHandler(-1);
-		Metadata metadata = new Metadata();
 	    try {
 	    	if(isSupported(bufferedStream, metadata))
 	    	{
@@ -164,17 +161,6 @@ public class FileParser
 	public static List<String> extractTextAsList(File file) throws Exception
 	{
 		return stringToList(extractTextAsString(file));
-	}
-	
-	/**
-	 * 
-	 * @param inputStream
-	 * @return
-	 * @throws Exception 
-	 */
-	public static List<String> extractTextAsList(BufferedInputStream inputStream) throws Exception
-	{
-		return stringToList(extractTextAsString(inputStream));
 	}
 	
 	
