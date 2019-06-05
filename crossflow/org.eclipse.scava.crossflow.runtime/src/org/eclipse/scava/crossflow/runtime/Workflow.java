@@ -76,6 +76,10 @@ public abstract class Workflow {
 	@Parameter(names = {
 			"-outputDirectory" }, description = "The output directory of the workflow.", converter = DirectoryConverter.class)
 	protected File outputDirectory = new File("").getParentFile();
+	
+	@Parameter(names = {
+			"-disableTermination"}, description = "Flag to disable termination when queues are empty")
+	protected boolean terminationEnabled = true;
 
 	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
@@ -152,7 +156,6 @@ public abstract class Workflow {
 	boolean aboutToTerminate = false;
 	protected boolean terminated = false;
 	protected boolean terminating = false;
-	private boolean terminationEnabled = true;
 
 	/**
 	 * used to manually add local workers to master as they may be enabled too
