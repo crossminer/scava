@@ -8,7 +8,7 @@
                 "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
             },
             "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-            "panelsJSON": "[{\"title\":\"Sentiment per project\",\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":15,\"i\":\"1\"},\"embeddableConfig\":{},\"id\":\"171d5b00-6511-11e9-babf-e374148441fd\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"title\":\"Sentiment per top project\",\"panelIndex\":\"2\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":15,\"i\":\"2\"},\"embeddableConfig\":{},\"id\":\"2a319720-3699-11e9-aa38-a7635aed55af\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":59,\"w\":24,\"h\":15,\"i\":\"3\"},\"title\":\"Project sentiment by label\",\"embeddableConfig\":{},\"id\":\"837ae5d0-7c9d-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":24,\"y\":37,\"w\":24,\"h\":7,\"i\":\"4\"},\"title\":\"Articles percentages\",\"embeddableConfig\":{},\"id\":\"2bf62760-7c9e-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":0,\"y\":15,\"w\":24,\"h\":7,\"i\":\"5\"},\"title\":\"Comments cumulative\",\"embeddableConfig\":{},\"id\":\"b418ec40-7c9e-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":24,\"y\":15,\"w\":24,\"h\":7,\"i\":\"6\"},\"title\":\"Comments percentages\",\"embeddableConfig\":{},\"id\":\"c75f4f60-7c9e-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":24,\"y\":59,\"w\":24,\"h\":15,\"i\":\"9\"},\"title\":\"Project sentiment by label on time\",\"embeddableConfig\":{},\"id\":\"0cafcc10-7ca0-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"10\",\"gridData\":{\"x\":0,\"y\":37,\"w\":24,\"h\":7,\"i\":\"10\"},\"title\":\"Articles cumulative\",\"embeddableConfig\":{},\"id\":\"e3ddf070-7ca2-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"11\",\"gridData\":{\"x\":0,\"y\":44,\"w\":24,\"h\":15,\"i\":\"11\"},\"title\":\"Articles cumulative on time  by project\",\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"id\":\"9cbc4b50-7ca3-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"12\",\"gridData\":{\"x\":24,\"y\":44,\"w\":24,\"h\":15,\"i\":\"12\"},\"title\":\"Articles percentages on time  by project\",\"embeddableConfig\":{},\"id\":\"3150a400-7ca4-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"13\",\"gridData\":{\"x\":0,\"y\":22,\"w\":24,\"h\":15,\"i\":\"13\"},\"title\":\"Comments cumulative on time by project\",\"embeddableConfig\":{},\"id\":\"4dc51340-7ca5-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"panelIndex\":\"14\",\"gridData\":{\"x\":24,\"y\":22,\"w\":24,\"h\":15,\"i\":\"14\"},\"title\":\"Comments percentages on time by project\",\"embeddableConfig\":{},\"id\":\"73a8ef50-7ca5-11e9-aebb-ed652e0cbf12\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
+            "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":16,\"x\":16,\"y\":0},\"id\":\"171d5b00-6511-11e9-babf-e374148441fd\",\"panelIndex\":\"1\",\"title\":\"Project selection\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":16,\"x\":32,\"y\":0},\"id\":\"2a319720-3699-11e9-aa38-a7635aed55af\",\"panelIndex\":\"2\",\"title\":\"Top project selection\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":17,\"i\":\"15\",\"w\":24,\"x\":24,\"y\":15},\"id\":\"6d00a860-8794-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"15\",\"title\":\"Emotions on comments per project (details)\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"gridData\":{\"h\":17,\"i\":\"16\",\"w\":24,\"x\":0,\"y\":15},\"id\":\"cfcd8e70-8796-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"16\",\"title\":\"Emotions on comments per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"18\",\"w\":24,\"x\":0,\"y\":32},\"id\":\"10d42510-879b-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"18\",\"title\":\"Sentiment on threads per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"19\",\"w\":24,\"x\":24,\"y\":32},\"id\":\"a7a1fd90-879c-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"19\",\"title\":\"Sentiment on threads per project (details)\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"20\",\"w\":16,\"x\":0,\"y\":0},\"id\":\"8e198de0-879f-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"20\",\"title\":\"Emotions summary\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
             "refreshInterval": {
                 "display": "Off",
                 "pause": false,
@@ -25,7 +25,7 @@
         {
             "id": "ea1313b0-8f29-11e8-a362-0d37aacd7dee",
             "value": {
-                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"meta.top_projects\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_class\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_desc\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_compute\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
+                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"meta.top_projects\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_class\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_desc\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_compute\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value_weighted\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
                 "timeFieldName": "datetime",
                 "title": "scava-metrics"
             }
@@ -48,101 +48,6 @@
                     "desc"
                 ],
                 "title": "search_sentiment",
-                "version": 1
-            }
-        },
-        {
-            "id": "6f7e5530-3698-11e9-aa38-a7635aed55af",
-            "value": {
-                "columns": [
-                    "_source"
-                ],
-                "description": "",
-                "hits": 0,
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions* AND metric_id:*___label__*\"},\"filter\":[]}"
-                },
-                "sort": [
-                    "datetime",
-                    "desc"
-                ],
-                "title": "search_sentiment with label",
-                "version": 1
-            }
-        },
-        {
-            "id": "4472afe0-7c9c-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "columns": [
-                    "_source"
-                ],
-                "description": "",
-                "hits": 0,
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions* AND metric_id:*article* AND (metric_id:*Percentage* OR metric_id:*percentage*)\"},\"filter\":[]}"
-                },
-                "sort": [
-                    "datetime",
-                    "desc"
-                ],
-                "title": "search_sentiment articles percentages",
-                "version": 1
-            }
-        },
-        {
-            "id": "34a45c80-7c9c-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "columns": [
-                    "_source"
-                ],
-                "description": "",
-                "hits": 0,
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions* AND metric_id:*comment* AND NOT metric_id:*Percentage*\"},\"filter\":[]}"
-                },
-                "sort": [
-                    "datetime",
-                    "desc"
-                ],
-                "title": "search_sentiment comment cumulative",
-                "version": 1
-            }
-        },
-        {
-            "id": "9aae1e10-7c9e-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "columns": [
-                    "_source"
-                ],
-                "description": "",
-                "hits": 0,
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions* AND metric_id:*comment* AND (metric_id:*Percentage* OR metric_id:*percentage*)\"},\"filter\":[]}"
-                },
-                "sort": [
-                    "datetime",
-                    "desc"
-                ],
-                "title": "search_sentiment comment percentage",
-                "version": 1
-            }
-        },
-        {
-            "id": "9eb74d70-7ca2-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "columns": [
-                    "_source"
-                ],
-                "description": "",
-                "hits": 0,
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions* AND metric_id:*article* AND NOT (metric_id:*Percentage* OR metric_id:*percentage*)\"},\"filter\":[]}"
-                },
-                "sort": [
-                    "datetime",
-                    "desc"
-                ],
-                "title": "search_sentiment articles cumulative",
                 "version": 1
             }
         }
@@ -177,143 +82,68 @@
             }
         },
         {
-            "id": "837ae5d0-7c9d-11e9-aebb-ed652e0cbf12",
+            "id": "6d00a860-8794-11e9-98ac-55e1b9f6217c",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
                 },
-                "savedSearchId": "6f7e5530-3698-11e9-aa38-a7635aed55af",
-                "title": "Project sentiment by label heat map",
-                "uiStateJSON": "{\"vis\":{\"defaultColors\":{\"0 - 1,125\":\"rgb(247,252,245)\",\"1,125 - 2,250\":\"rgb(199,233,192)\",\"2,250 - 3,375\":\"rgb(116,196,118)\",\"3,375 - 4,500\":\"rgb(35,139,69)\"}}}",
-                "version": 1,
-                "visState": "{\"title\":\"Project sentiment by label heat map\",\"type\":\"heatmap\",\"params\":{\"type\":\"heatmap\",\"addTooltip\":true,\"addLegend\":true,\"enableHover\":false,\"legendPosition\":\"right\",\"times\":[],\"colorsNumber\":4,\"colorSchema\":\"Greens\",\"setColorRange\":false,\"colorsRange\":[],\"invertColors\":false,\"percentageMode\":false,\"valueAxes\":[{\"show\":false,\"id\":\"ValueAxis-1\",\"type\":\"value\",\"scale\":{\"type\":\"linear\",\"defaultYExtents\":false},\"labels\":{\"show\":false,\"rotate\":0,\"overwriteColor\":false,\"color\":\"#555\"}}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":\"metric_id:*__label__anger*\"},\"label\":\"Anger\"},{\"input\":{\"query\":\"metric_id:*__label__sadness*\"},\"label\":\"Sadness\"},{\"input\":{\"query\":\"metric_id:*__label__love*\"},\"label\":\"Love\"}]}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":1000,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
-            }
-        },
-        {
-            "id": "2bf62760-7c9e-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "description": "",
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
-                },
-                "savedSearchId": "4472afe0-7c9c-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-articles-percentages",
-                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
-                "version": 1,
-                "visState": "{\"title\":\"sentiment-articles-percentages\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"percents\":[50],\"customLabel\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"metric_name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Article name\"}}]}"
-            }
-        },
-        {
-            "id": "b418ec40-7c9e-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "description": "",
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
-                },
-                "savedSearchId": "34a45c80-7c9c-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-comments-cumulative",
-                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
-                "version": 1,
-                "visState": "{\"title\":\"sentiment-comments-cumulative\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Cumulative\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"metric_name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":1000,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Name\"}}]}"
-            }
-        },
-        {
-            "id": "c75f4f60-7c9e-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "description": "",
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
-                },
-                "savedSearchId": "9aae1e10-7c9e-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-comments-percentages",
-                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
-                "version": 1,
-                "visState": "{\"title\":\"sentiment-comments-percentages\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"percents\":[50]}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"metric_name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":1000,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"Name\"}}]}"
-            }
-        },
-        {
-            "id": "0cafcc10-7ca0-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "description": "",
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
-                },
-                "savedSearchId": "6f7e5530-3698-11e9-aa38-a7635aed55af",
-                "title": "Feeling evolution sentiment",
+                "title": "comments-project-emotions-evolution",
                 "uiStateJSON": "{}",
                 "version": 1,
-                "visState": "{\"title\":\"Feeling evolution sentiment\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":\"metric_id:*__label__love*\"},\"label\":\"Love\"},{\"input\":{\"query\":\"metric_id:*__label__anger*\"},\"label\":\"Anger\"},{\"input\":{\"query\":\"metric_id:*__label__sadness*\"},\"label\":\"Sadness\"}]}}]}"
+                "visState": "{\"title\":\"comments-project-emotions-evolution\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Emotions\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Emotions\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value_weighted\",\"customLabel\":\"Emotions\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"metric_id\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
             }
         },
         {
-            "id": "e3ddf070-7ca2-11e9-aebb-ed652e0cbf12",
+            "id": "cfcd8e70-8796-11e9-98ac-55e1b9f6217c",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
                 },
-                "savedSearchId": "9eb74d70-7ca2-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-articles-cumulative",
-                "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
-                "version": 1,
-                "visState": "{\"title\":\"sentiment-articles-cumulative\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Cumulative\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"metric_name\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":1000,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Name\"}}]}"
-            }
-        },
-        {
-            "id": "9cbc4b50-7ca3-11e9-aebb-ed652e0cbf12",
-            "value": {
-                "description": "",
-                "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
-                },
-                "savedSearchId": "9eb74d70-7ca2-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-articles-cumulative-time",
+                "title": "comments-project-emotions-evolution-",
                 "uiStateJSON": "{}",
                 "version": 1,
-                "visState": "{\"title\":\"sentiment-articles-cumulative-time\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Cumulative\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Cumulative\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Cumulative\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+                "visState": "{\"title\":\"comments-project-emotions-evolution-\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Emotions\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Emotions\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value_weighted\",\"customLabel\":\"Emotions\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":500,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
             }
         },
         {
-            "id": "3150a400-7ca4-11e9-aebb-ed652e0cbf12",
+            "id": "10d42510-879b-11e9-98ac-55e1b9f6217c",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"metric_id\",\"value\":\"bugs.sentiment_Average Sentiment\",\"params\":{\"query\":\"bugs.sentiment_Average Sentiment\",\"type\":\"phrase\"}},\"query\":{\"match\":{\"metric_id\":{\"query\":\"bugs.sentiment_Average Sentiment\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
                 },
-                "savedSearchId": "4472afe0-7c9c-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-articles-percentages-time",
+                "title": "sentiment-per-project-evolution",
                 "uiStateJSON": "{}",
                 "version": 1,
-                "visState": "{\"title\":\"sentiment-articles-percentages-time\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Median metric_es_value\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Median metric_es_value\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"median\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"percents\":[50]}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":100,\"order\":\"desc\",\"orderBy\":\"_term\"}}]}"
+                "visState": "{\"title\":\"sentiment-per-project-evolution\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Sentiment\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Sentiment\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Sentiment\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":500,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Projects\"}}]}"
             }
         },
         {
-            "id": "4dc51340-7ca5-11e9-aebb-ed652e0cbf12",
+            "id": "a7a1fd90-879c-11e9-98ac-55e1b9f6217c",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.sentimentAtThreadBeggining, bugs.sentimentAtThreadEnd\",\"params\":[\"bugs.sentimentAtThreadBeggining\",\"bugs.sentimentAtThreadEnd\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.sentimentAtThreadBeggining\"}},{\"match_phrase\":{\"metric_id\":\"bugs.sentimentAtThreadEnd\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
                 },
-                "savedSearchId": "34a45c80-7c9c-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-comments-cumulative-time",
+                "title": "sentiment-per-project-evolution-details",
                 "uiStateJSON": "{}",
                 "version": 1,
-                "visState": "{\"title\":\"sentiment-comments-cumulative-time\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"legendPosition\":\"right\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"Cumulative\"},\"drawLinesBetweenPoints\":true,\"mode\":\"stacked\",\"show\":\"true\",\"showCircles\":true,\"type\":\"histogram\",\"valueAxis\":\"ValueAxis-1\"}],\"times\":[],\"type\":\"histogram\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"mode\":\"normal\",\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"Cumulative\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Cumulative\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":100,\"order\":\"desc\",\"orderBy\":\"_term\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":0,\"extended_bounds\":{}}}]}"
+                "visState": "{\"title\":\"sentiment-per-project-evolution-details\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Sentiment at thread beginning and end\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Sentiment at thread beginning and end\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Sentiment at thread beginning and end\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"metric_id\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Projects\"}}]}"
             }
         },
         {
-            "id": "73a8ef50-7ca5-11e9-aebb-ed652e0cbf12",
+            "id": "8e198de0-879f-11e9-98ac-55e1b9f6217c",
             "value": {
                 "description": "",
                 "kibanaSavedObjectMeta": {
-                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
                 },
-                "savedSearchId": "9aae1e10-7c9e-11e9-aebb-ed652e0cbf12",
-                "title": "sentiment-comments-percentages-time",
-                "uiStateJSON": "{}",
+                "title": "trip-advisor-emotions",
+                "uiStateJSON": "{\"vis\":{\"legendOpen\":false}}",
                 "version": 1,
-                "visState": "{\"title\":\"sentiment-comments-percentages-time\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Max metric_es_value\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Max metric_es_value\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5000,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+                "visState": "{\"title\":\"trip-advisor-emotions\",\"type\":\"horizontal_bar\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":200},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"bottom\",\"show\":false,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":75,\"filter\":true,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":true,\"type\":\"histogram\",\"mode\":\"normal\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"segment\",\"params\":{\"filters\":[{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__surprise\\\"\"},\"label\":\"Surprise\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__joy\\\"\"},\"label\":\"Joy\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__love\\\"\"},\"label\":\"Love\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__sadness\\\"\"},\"label\":\"Sadness\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__anger\\\"\"},\"label\":\"Anger\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__fear\\\"\"},\"label\":\"Fear\"}]}}]}"
             }
         }
     ]
