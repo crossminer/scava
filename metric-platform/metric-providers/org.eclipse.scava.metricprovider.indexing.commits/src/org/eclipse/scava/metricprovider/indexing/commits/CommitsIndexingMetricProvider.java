@@ -43,7 +43,7 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 	
 	protected OssmeterLogger logger;
 	
-	private final static String KNOWLEDGE = "code/nlp";
+	private final static String KNOWLEDGE = "code-nlp";
 	
 	public CommitsIndexingMetricProvider() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.commits");
