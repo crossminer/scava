@@ -2,11 +2,9 @@ package org.eclipse.scava.metricprovider.trans.documentation.detectingcode;
 
 import java.util.Arrays;
 import java.util.List;
-import org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider;
+
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationDetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
-import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
-import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationEntryPlainText;
 import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationPlainTextTransMetric;
@@ -17,14 +15,14 @@ import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
+import org.eclipse.scava.platform.delta.ProjectDelta;
+import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
+import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
-import org.eclipse.scava.platform.delta.ProjectDelta;
-import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
-import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 
 import com.mongodb.DB;
 
@@ -131,8 +129,8 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 	{
 		DocumentationEntryDetectingCode documentationEntryDetectingCode = null;
 		Iterable<DocumentationEntryDetectingCode> documentationEntryDCIt = db.getDocumentationEntriesDetectingCode().
-				find(DocumentationEntry.DOCUMENTATIONID.eq(documentationEntryPlainText.getDocumentationId()),
-						DocumentationEntry.ENTRYID.eq(documentationEntryPlainText.getEntryId()));
+				find(DocumentationEntryDetectingCode.DOCUMENTATIONID.eq(documentationEntryPlainText.getDocumentationId()),
+						DocumentationEntryDetectingCode.ENTRYID.eq(documentationEntryPlainText.getEntryId()));
 		for(DocumentationEntryDetectingCode dedc : documentationEntryDCIt)
 			documentationEntryDetectingCode=dedc;
 		return documentationEntryDetectingCode;
