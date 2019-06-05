@@ -181,7 +181,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 		try {
 			Table table = new Table();
 			boolean header = true;
-			for (CSVRecord record : CSVFormat.RFC4180.parse(new FileReader(file))) {
+			FileReader fileReader = new FileReader(file);
+			for (CSVRecord record : CSVFormat.RFC4180.parse(fileReader)) {
 				Row row = new Row();
 				for (int i=0;i<record.size();i++) {
 					row.addToCells(record.get(i));
@@ -194,6 +195,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 					table.addToRows(row);
 				}
 			}
+			fileReader.close();
 			return table;
 		}
 		catch (Exception ex) {
