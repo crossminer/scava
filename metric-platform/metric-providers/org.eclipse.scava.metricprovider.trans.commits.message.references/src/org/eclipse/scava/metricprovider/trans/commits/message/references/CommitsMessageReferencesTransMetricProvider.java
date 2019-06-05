@@ -113,7 +113,7 @@ public class CommitsMessageReferencesTransMetricProvider implements ITransientMe
 		
 		BugTrackingSystem bugTracker=null;
 		ProjectParsedData projectParsedData=null;
-		if(project.getBugTrackingSystems().size()!=1)
+		if(project.getBugTrackingSystems().size()==1)
 		{
 			bugTracker = project.getBugTrackingSystems().get(0);
 			projectParsedData= new ProjectParsedData(bugTracker);
