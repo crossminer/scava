@@ -13,6 +13,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.net.nntp.Article;
 import org.apache.commons.net.nntp.NNTPClient;
 import org.apache.commons.net.nntp.NewsgroupInfo;
+import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.communicationchannel.nntp.local.model.ArticleData;
 import org.eclipse.scava.platform.communicationchannel.nntp.local.model.Messages;
 import org.eclipse.scava.platform.communicationchannel.nntp.local.model.NewsgroupData;
@@ -66,7 +67,7 @@ public class NNTPDownloader {
 				"Articles in newsgroup:\t" + newsgroupInfo.getArticleCountLong());
 		System.err.println();
 		
-		Mongo mongo = new Mongo();
+		Mongo mongo = Configuration.getInstance().getMongoConnection();
 		DB db = mongo.getDB(newsgroup.getName() + "LocalStorage");
 		Messages dbMessages = new Messages(db);
 			

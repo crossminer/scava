@@ -90,7 +90,9 @@ public class GitHubDownloadCounterMetricProvider extends AbstractTransientMetric
 			Mongo mongo;
 			mongo = new Mongo();
 			PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-			Platform platform = new Platform(mongo);
+			Platform platform = Platform.getInstance();
+			platform.setMongo(mongo);
+			platform.initialize();
 			provider.measure(p1, new ProjectDelta(p1, d, platform),new DownloadCounter());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

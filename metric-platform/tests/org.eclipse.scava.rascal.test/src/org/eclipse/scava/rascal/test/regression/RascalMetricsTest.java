@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompare;
@@ -63,7 +64,9 @@ public class RascalMetricsTest {
 	public void setUp() throws Exception {
 		mongo = new Mongo();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		platform = new Platform(mongo);
+		platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
 		// Register Worker

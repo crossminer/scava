@@ -23,6 +23,7 @@ import org.eclipse.scava.platform.delta.vcs.VcsCommitItem;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
 import org.eclipse.scava.platform.vcs.svn.SvnManager;
 import org.eclipse.scava.repository.model.vcs.svn.SvnRepository;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.mongodb.Mongo;
@@ -41,7 +42,9 @@ public class SvnManagerTests {
 		SvnRepository repository = new SvnRepository();
 		repository.setUrl("http://pongo.googlecode.com/svn");
 		
-		Platform platform = new Platform(new Mongo());
+		Platform platform = Platform.getInstance();
+		platform.setMongo(new Mongo());
+		platform.initialize();
 		PlatformVcsManager platformVcsManager = platform.getVcsManager();
 		platformVcsManager.getVcsManagers().add(new SvnManager());
 		

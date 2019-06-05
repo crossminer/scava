@@ -10,9 +10,7 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.CommunicationChannel;
@@ -39,7 +37,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mongodb.Mongo;
 
 public class ProjectCreationResource extends ServerResource {
 	
@@ -82,9 +79,8 @@ public class ProjectCreationResource extends ServerResource {
 
 	@Post
 	public Representation createProject(Representation entity) {
-		Mongo mongo = null;
-		Platform platform = null;
 		try {
+			Platform platform = Platform.getInstance();
 			ObjectMapper mapper = new ObjectMapper();
 			
 			// WARNING: This is a _DESTRUCTIVE_ read. It took me AGES to realise this and it isn't in the Restlet javadoc. I hate you Restlet.
@@ -169,14 +165,6 @@ public class ProjectCreationResource extends ServerResource {
 			}	// TODO: Validate all channels.
 
 			
-			try {
-				mongo = Configuration.getInstance().getMongoConnection();
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-			}
-			platform = new Platform(mongo);
 			String shortName = platform.getProjectRepositoryManager().generateUniqueId(project);
 			project.setShortName(shortName);
 			
@@ -197,9 +185,6 @@ public class ProjectCreationResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
-		} finally {
-			if (mongo != null) mongo.close();
-			platform = null;
 		}
 	}
 	

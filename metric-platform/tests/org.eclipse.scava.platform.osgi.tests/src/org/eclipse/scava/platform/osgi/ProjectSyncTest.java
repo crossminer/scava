@@ -19,13 +19,16 @@ import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
+import org.junit.AfterClass;
 
 import com.mongodb.Mongo;
 
 public class ProjectSyncTest {
 	public static void main(String[] args) throws Exception{
 		Mongo mongo = new Mongo();
-		Platform platform = new Platform(mongo);
+		Platform platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		Project project = platform.getProjectRepositoryManager().getProjectRepository().getProjects().first();
 		

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.bugs.requestsreplies;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,13 +68,7 @@ public class RequestsRepliesHistoricMetricProvider extends AbstractHistoricalMet
 								 replies = new HashMap<String, Integer>();
 			for (CommentData comment: usedRrc.getComments()) {
 				Map<String, Integer> crr = null, rr = null;
-				Date naDate = null;
-				try {
-					naDate = new Date(comment.getCreationTime());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Date naDate = new Date(comment.getCreationTime());
 				if (comment.getRequestReplyPrediction().equals("__label__Request")) {
 					crr = cumulativeRequests;
 					cumulativeRequestSum++;

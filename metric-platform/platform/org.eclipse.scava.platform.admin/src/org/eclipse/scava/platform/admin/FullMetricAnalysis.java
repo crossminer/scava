@@ -39,10 +39,11 @@ public class FullMetricAnalysis extends ServerResource {
 			responseHeaders.add(new Header("Access-Control-Allow-Origin", "*"));
 			responseHeaders.add(new Header("Access-Control-Allow-Methods", "GET"));
 			
+			Mongo mongo = null;
 			try {
 				String metricId = (String) getRequest().getAttributes().get("metricId");
 				
-				Mongo mongo = Configuration.getInstance().getMongoConnection();
+				mongo = Configuration.getInstance().getMongoConnection();
 				
 				DB db = mongo.getDB("scava");
 				DBCollection col = db.getCollection("metricAnalysis");
@@ -68,8 +69,6 @@ public class FullMetricAnalysis extends ServerResource {
 						results.add((Integer)obj.get("millisTaken"));
 					}
 				}
-				
-				mongo.close();
 				
 				return results.toString();
 				

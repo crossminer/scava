@@ -8,7 +8,6 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 package org.eclipse.scava.nlp.classifiers.codedetector;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,15 +51,9 @@ public class CodeDetector
 	public static void printSentenceVector(String input)
 	{
 		Vector vec;
-		try
-		{
-			input=formatter(input);
-			vec = codeDetector.getSentenceVector(input);
-			System.out.println(input + " " + vec);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		input=formatter(input);
+		vec = codeDetector.getSentenceVector(input);
+		System.out.println(input + " " + vec);
 	}
 	
 	/**

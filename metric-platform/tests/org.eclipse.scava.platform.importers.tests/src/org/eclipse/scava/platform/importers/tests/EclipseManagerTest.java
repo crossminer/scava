@@ -35,7 +35,9 @@ public class EclipseManagerTest {
 	@BeforeClass
 	public static void setup() throws Exception {
 		mongo = new Mongo();
-		platform = new Platform(mongo);
+		platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		im = new EclipseProjectImporter();
 		//repository.setUrl("https://code.google.com/p/super-awesome-fighter");
 	}

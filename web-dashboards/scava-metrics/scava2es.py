@@ -316,6 +316,37 @@ def extract_metrics(scava_metric):
     return item_metrics
 
 
+def add_weighted_value(eitem):
+    """Add a weighted value to each metric, by default the weight is set to 1,
+    thus `metric_es_value` is equal to `metric_es_value_weighted`
+
+    :param eitem: the enriched item containing the metric
+    """
+
+    if eitem['metric_id'] in ['bugs.emotions.comments___label__anger',
+                              'bugs.emotions.cumulativeComments___label__anger']:
+        metric_es_value_weighted = -3 * eitem['metric_es_value']
+    elif eitem['metric_id'] in ['bugs.emotions.comments___label__fear',
+                                'bugs.emotions.cumulativeComments___label__fear']:
+        metric_es_value_weighted = -2 * eitem['metric_es_value']
+    elif eitem['metric_id'] in ['bugs.emotions.comments___label__sadness',
+                                'bugs.emotions.cumulativeComments___label__sadness']:
+        metric_es_value_weighted = -1 * eitem['metric_es_value']
+    elif eitem['metric_id'] in ['bugs.emotions.comments___label__surprise',
+                                'bugs.emotions.cumulativeComments___label__surprise']:
+        metric_es_value_weighted = 1 * eitem['metric_es_value']
+    elif eitem['metric_id'] in ['bugs.emotions.comments___label__joy',
+                                'bugs.emotions.cumulativeComments___label__joy']:
+        metric_es_value_weighted = 2 * eitem['metric_es_value']
+    elif eitem['metric_id'] in ['bugs.emotions.comments___label__love',
+                                'bugs.emotions.cumulativeComments___label__love']:
+        metric_es_value_weighted = 3 * eitem['metric_es_value']
+    else:
+        metric_es_value_weighted = eitem['metric_es_value']
+
+    return metric_es_value_weighted
+
+
 def enrich_metrics(scava_metrics, meta_info=None):
     """
     Enrich metrics coming from Scava to use them in Kibana
@@ -344,6 +375,9 @@ def enrich_metrics(scava_metrics, meta_info=None):
 
             eitem['datetime'] = str_to_datetime(eitem['datetime']).isoformat()
             eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+            # add weighted metric value to the enrich item
+            eitem['metric_es_value_weighted'] = add_weighted_value(eitem)
 
             if isinstance(eitem['metric_es_value'], str):
                 enriched_error += 1

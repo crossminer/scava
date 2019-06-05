@@ -21,7 +21,6 @@ import org.eclipse.scava.platform.AbstractHistoricalMetricProvider;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
-import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.repository.model.Project;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -79,8 +78,7 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 			if (bugStats.getAnswered()) {
 				cumulativeSumOfDurations += bugStats.getResponseDurationSec();
 				cumulativeBugsConsidered++;
-				java.util.Date responseDate = NntpUtil.parseDate(bugStats.getResponseDate());
-				if (currentDate.compareTo(responseDate)==0) {
+				if (currentDate.compareTo(bugStats.getResponseDate())==0) {
 					sumOfDurations += bugStats.getResponseDurationSec();
 					bugsConsidered++;
 				}

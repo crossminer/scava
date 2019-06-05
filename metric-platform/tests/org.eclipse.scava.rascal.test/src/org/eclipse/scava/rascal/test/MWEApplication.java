@@ -30,6 +30,7 @@ import org.eclipse.scava.repository.model.LocalStorage;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.VcsRepository;
+import org.junit.AfterClass;
 import org.rascalmpl.interpreter.Evaluator;
 
 import com.googlecode.pongo.runtime.PongoFactory;
@@ -43,7 +44,9 @@ public class MWEApplication implements IApplication {
 	public Object start(IApplicationContext ctx) throws Exception {
 		Mongo mongo = new Mongo();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		Platform platform = new Platform(mongo);
+		Platform platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		RascalManager manager = RascalManager.getInstance();
 		Evaluator eval = manager.getEvaluator();
 

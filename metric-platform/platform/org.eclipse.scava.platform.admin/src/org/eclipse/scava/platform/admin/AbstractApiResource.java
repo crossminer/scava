@@ -45,15 +45,13 @@ public abstract class AbstractApiResource extends ServerResource {
 		
 		try {
 			mongo = Configuration.getInstance().getMongoConnection();
+			Representation rep = doRepresent();
+			return rep;
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 			getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
 			return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
 		}
-		
-		Representation rep = doRepresent();
-		mongo.close();
-		return rep;
 	}
 	
 	protected JsonNode generateRequestJson(ObjectMapper mapper, String projectName) {

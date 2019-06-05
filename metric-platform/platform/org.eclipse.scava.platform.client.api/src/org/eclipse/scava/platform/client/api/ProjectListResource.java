@@ -36,19 +36,8 @@ public class ProjectListResource extends AbstractApiResource {
         String _page = getQueryValue("page");
         String _size = getQueryValue("size");
 
-        Mongo mongo = null;
-        try {
-        	mongo = Configuration.getInstance().getMongoConnection();
-			platform = new Platform(mongo);
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-			ObjectNode m = mapper.createObjectNode();
-			m.put("apicall", "list-all-projects");
-			return Util.generateErrorMessageRepresentation(m, e1.getMessage());
-		}
-        
-        ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
-        
+		ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+	        
         DBCursor cursor;
         if(_page != null && !"".equals(_page) && isInteger(_page) && _size != null && !"".equals(_size) && isInteger(_size)) {
         	int page = Integer.valueOf(_page);
@@ -82,12 +71,10 @@ public class ProjectListResource extends AbstractApiResource {
         }
         
         cursor.close();
-        mongo.close();
         
         StringRepresentation resp = new StringRepresentation(projects.toString());
 		resp.setMediaType(MediaType.APPLICATION_JSON);
 		return resp;
-		
     }
 
 	@Post("json")

@@ -2,32 +2,27 @@
 	"properties" : {
 		"created_at" : {
 			"type" : "date"
+		},
+		"project_name" : {
+		"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "text"
+		},
+		"documentation_id" : {
+			"type" : "keyword"
+		},
+		"documentation_entry_id" : {
+			"type" : "keyword"
+		},
+		"plain_text" : {
+			"type" : "text"
+		},
+		"sentiment" : {
+			"type" : "text"
+		},
+		"readability" : {
+			"type" : "double"
 		}
-	},
-	"project_name" : {
-		"type" : "keyword"
-	},
-	"uid" : {
-		"type" : "text"
-	},
-	"documentation_id" : {
-		"type" : "keyword"
-	},
-	"documentation_entry_id" : {
-		"type" : "keyword"
-	},
-	"plain_text" : {
-		"type" : "text"
-	},
-	"sentiment" : {
-		"type" : "text"
-	},
-	"readability" : {
-		"type" : "double"
 	}
 }
-	
-	
-	
-	
-	

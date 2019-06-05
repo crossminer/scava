@@ -51,11 +51,9 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 	protected PlatformVcsManager platformVcsManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
-	private Indexer indexer;
-	
 	protected OssmeterLogger logger;
 	
-	private final static String NLP = "nlp";// knowledge type.
+	private final static String KNOWLEDGE = "nlp";// knowledge type.
 	
 	public DocumentationIndexingMetricProvider() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.documentation");
@@ -121,10 +119,11 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		String projectName = delta.getProject().getName();
 		ObjectMapper mapper = new ObjectMapper();
 		String documentType;
-		String indexName;
+		String indexName="";
 		String uid;
 		String mapping;
-		String document;
+		String document="";
+		
 		
 		//Documentation
 		Iterable<Documentation> documentationIt = documentationProcessor.getDocumentation();
@@ -132,21 +131,22 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		for(Documentation documentation : documentationIt)
 		{
 			
-			indexName = Indexer.generateIndexName(documentation.getDocumentationId(), documentType, NLP);
+			indexName = Indexer.generateIndexName("documentation", documentType, KNOWLEDGE);
 			uid = generateUniqueDocumentationId(projectName, documentation.getDocumentationId());
 			mapping = Mapping.getMapping(documentType);
 			
-			DocumentationDocument dd = new DocumentationDocument(project.getName(),
+			DocumentationDocument dd = new DocumentationDocument(projectName,
 					uid,
 					documentation.getDocumentationId(),
 					delta.getDate().toJavaDate());
 			
-			dd.setDocumentationEntries(documentation.getEntriesId());
+			dd.setDocumentation_entries(documentation.getEntriesId());
 			
 			try {
 				document = mapper.writeValueAsString(dd);
-				indexer.indexDocument(indexName, mapping, documentType, uid, document);
-			} catch (JsonProcessingException e) {
+				Indexer.indexDocument(indexName, mapping, documentType, uid, document);
+			}
+			catch (JsonProcessingException e) {
 				logger.error("Error while processing json:", e);
 				e.printStackTrace();
 			}
@@ -159,11 +159,11 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		
 		for(DocumentationEntry documentationEntry : documentationEntries)
 		{
-			indexName = Indexer.generateIndexName(documentationEntry.getDocumentationId(), documentType, NLP);
+			indexName = Indexer.generateIndexName("documentation", documentType, KNOWLEDGE);
 			uid = generateUniqueDocumentationEntryId(projectName, documentationEntry.getDocumentationId(), documentationEntry.getEntryId());
 			mapping = Mapping.getMapping(documentType);
 			
-			DocumentationEntryDocument ded = new DocumentationEntryDocument(project.getName(),
+			DocumentationEntryDocument ded = new DocumentationEntryDocument(projectName,
 					uid,
 					documentationEntry.getDocumentationId(),
 					documentationEntry.getEntryId(),
@@ -173,9 +173,9 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			
 			try {
 				document = mapper.writeValueAsString(ded);
-				indexer.indexDocument(indexName, mapping, documentType, uid, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uid, document);
 			} catch (JsonProcessingException e) {
-				logger.error("Error while processing json:", e);
+				logger.error("Error while indexing document: ", e);
 				e.printStackTrace();
 			}
 		}
@@ -204,16 +204,16 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				// Plain Text
 				case "org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider":
 				{
-					ded.setPlainText(String.join(" ",documentationEntry.getPlainText()));
+					ded.setPlain_text(String.join(" ",documentationEntry.getPlainText()));
 					break;
 				}
 				// CODE
 				case "org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider":
 				{
-					DocumentationDetectingCodeTransMetric detectingCodeCollection = new DocumentationDetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
-					DocumentationEntryDetectingCode detectingCodeDocEntry = findCollection(detectingCodeCollection,
+					DocumentationDetectingCodeTransMetric detectingCodeDB = new DocumentationDetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryDetectingCode detectingCodeDocEntry = findCollection(detectingCodeDB,
 							 															DocumentationEntryDetectingCode.class,
-							 															detectingCodeCollection.getDocumentationEntriesDetectingCode(),
+							 															detectingCodeDB.getDocumentationEntriesDetectingCode(),
 							 															documentationEntry);
 					if (!detectingCodeDocEntry.getCode().isEmpty())
 						ded.setCode(true); 
@@ -224,10 +224,10 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//READABILITY
 				case "org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider":
 				{
-					DocumentationReadabilityTransMetric readabilityCollection = new DocumentationReadabilityTransMetricProvider().adapt(context.getProjectDB(project));
-					DocumentationEntryReadability readabiliytyDocEntry = findCollection(readabilityCollection,
+					DocumentationReadabilityTransMetric readabilityDB = new DocumentationReadabilityTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryReadability readabiliytyDocEntry = findCollection(readabilityDB,
 																						DocumentationEntryReadability.class,
-							 															readabilityCollection.getDocumentationEntriesReadability(),
+							 															readabilityDB.getDocumentationEntriesReadability(),
 							 															documentationEntry);
 					ded.setReadability(readabiliytyDocEntry.getReadability());
 					break;
@@ -235,12 +235,12 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//SENTIMENT
 				case "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider":
 				{
-					DocumentationSentimentTransMetric sentimentCollection = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
-					DocumentationEntrySentiment detectingcodeData = findCollection(sentimentCollection,
+					DocumentationSentimentTransMetric sentimentDB = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntrySentiment detectingcodeDocEntry = findCollection(sentimentDB,
 																						DocumentationEntrySentiment.class,
-							 															sentimentCollection.getDocumentationEntriesSentiment(),
+							 															sentimentDB.getDocumentationEntriesSentiment(),
 							 															documentationEntry);
-					ded.setSentiment(detectingcodeData.getPolarity());	 
+					ded.setSentiment(detectingcodeDocEntry.getPolarity());	 
 					break;
 				}
 			}
@@ -252,19 +252,12 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 
 		T output = null;
 
-		try {
-			Iterable<T> iterator = collection.find(
-					getStringQueryProducer(type, output, "DOCUMENTATIONID").eq(documentationEntry.getDocumentationId()),
-					getStringQueryProducer(type, output, "ENTRYID").eq(documentationEntry.getEntryId()));
-		
-			for (T t : iterator) {
-				output = t;
-			}
-		
-			
-		} catch (SecurityException | IllegalArgumentException e) {
-
-			e.printStackTrace();
+		Iterable<T> iterator = collection.find(
+				getStringQueryProducer(type, output, "DOCUMENTATIONID").eq(documentationEntry.getDocumentationId()),
+				getStringQueryProducer(type, output, "ENTRYID").eq(documentationEntry.getEntryId()));
+	
+		for (T t : iterator) {
+			output = t;
 		}
 		return output;
 	}
@@ -275,6 +268,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			return (StringQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return null;

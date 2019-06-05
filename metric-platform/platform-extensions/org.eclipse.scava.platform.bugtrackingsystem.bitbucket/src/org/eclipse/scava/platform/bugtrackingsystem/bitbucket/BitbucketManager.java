@@ -14,15 +14,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.model.issue.Issue;
-import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.utils.BitbucketUtils;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
@@ -40,7 +36,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.DB;
 
 import okhttp3.Credentials;
-import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;

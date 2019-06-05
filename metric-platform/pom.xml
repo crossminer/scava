@@ -276,12 +276,6 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
     </module>
-    
-    
-    
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.libraries.fasttext
-    </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.resources.sentinet5
     </module>
@@ -465,6 +459,10 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.indexing.documentation
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.commits
+    </module>
+    <module>../migration/third-party/com.github.sszuev.fasttext</module>
   </modules>
   <build>
     <plugins>

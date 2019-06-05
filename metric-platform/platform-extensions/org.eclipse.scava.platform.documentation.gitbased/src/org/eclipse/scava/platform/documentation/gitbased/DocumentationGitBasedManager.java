@@ -53,6 +53,7 @@ public class DocumentationGitBasedManager extends GitManager {
 			{
 				revisions.add(revision);
 			}
+			logger.info("Found "+revisions.size());
 			return revisions.toArray(new String[revisions.size()]);
 		}
 		logger.error("The repository is not valid: It doesn't exist or there is an issue witht the URL.");
