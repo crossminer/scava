@@ -14,6 +14,9 @@ import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.
 import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationEntryPlainText;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationPlainTextTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationEntryReadability;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationReadabilityTransMetric;
@@ -167,6 +170,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 					uid,
 					documentationEntry.getDocumentationId(),
 					documentationEntry.getEntryId(),
+					documentationEntry.getBody(),
 					delta.getDate().toJavaDate());
 			
 			enrichDocumentationEntryDocument(project, documentationEntry, ded);
@@ -202,9 +206,14 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			switch (metricIdentifier) 
 			{
 				// Plain Text
-				case "org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider":
+				case "org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider":
 				{
-					ded.setPlain_text(String.join(" ",documentationEntry.getPlainText()));
+					DocumentationPlainTextTransMetric plainTextDB = new DocumentationPlainTextTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryPlainText plainTextDocEntry = findCollection(plainTextDB,
+																			DocumentationEntryPlainText.class,
+																			plainTextDB.getDocumentationEntriesPlainText(),
+																			documentationEntry);
+					ded.setPlain_text(String.join(" ",plainTextDocEntry.getPlainText()));
 					break;
 				}
 				// CODE

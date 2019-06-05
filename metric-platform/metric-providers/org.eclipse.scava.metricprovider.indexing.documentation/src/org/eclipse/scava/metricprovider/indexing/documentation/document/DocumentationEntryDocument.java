@@ -17,7 +17,9 @@ public class DocumentationEntryDocument {
 	private String uid;
 	private String documentation_id;
 	private String documentation_entry_id;
+	private String body;
 	private Date created_at;
+	
 	
 	// NLP
 	private String sentiment;
@@ -26,11 +28,12 @@ public class DocumentationEntryDocument {
 	private Boolean code;
 	
 
-	public DocumentationEntryDocument(String projectName, String uid, String documentationId, String documentationEntryId, Date createdAt) {
+	public DocumentationEntryDocument(String projectName, String uid, String documentationId, String documentationEntryId, String body, Date createdAt) {
 		this.project_name = projectName;
 		this.uid = uid;
 		this.documentation_id = documentationId;
 		this.documentation_entry_id = documentationEntryId;
+		this.body=body;
 		this.created_at = createdAt;
 	}
 
@@ -52,6 +55,10 @@ public class DocumentationEntryDocument {
 
 	public String getDocumentation_entry_id() {
 		return documentation_entry_id;
+	}
+	
+	public String getBody() {
+		return body;
 	}
 
 

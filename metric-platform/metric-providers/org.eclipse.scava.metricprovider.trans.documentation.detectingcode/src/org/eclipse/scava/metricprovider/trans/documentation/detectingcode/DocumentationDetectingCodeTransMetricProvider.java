@@ -7,6 +7,9 @@ import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationEntryPlainText;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationPlainTextTransMetric;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.classifiers.codedetector.CodeDetector;
@@ -71,7 +74,7 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),DocumentationTransMetricProvider.class.getCanonicalName());
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),DocumentationPlainTextTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
@@ -97,23 +100,23 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
 		indexPrepTransMetric.sync();
 		
-		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
+		DocumentationPlainTextTransMetric documentationPlainTextProcessor = ((DocumentationPlainTextTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
-		Iterable<DocumentationEntry> documentationEntries = documentationProcessor.getDocumentationEntries();
+		Iterable<DocumentationEntryPlainText> documentationEntriesPlainText = documentationPlainTextProcessor.getDocumentationEntriesPlainText();
 		
 		SingleLabelPredictionCollection predictions;
 		
-		for(DocumentationEntry documentationEntry : documentationEntries)
+		for(DocumentationEntryPlainText documentationEntryPlainText : documentationEntriesPlainText)
 		{
-			DocumentationEntryDetectingCode documentationEntryDetectingCode = findDocumentationEntryDetectingCode(db, documentationEntry);
+			DocumentationEntryDetectingCode documentationEntryDetectingCode = findDocumentationEntryDetectingCode(db, documentationEntryPlainText);
 			if(documentationEntryDetectingCode==null)
 			{
 				documentationEntryDetectingCode= new DocumentationEntryDetectingCode();
-				documentationEntryDetectingCode.setDocumentationId(documentationEntry.getDocumentationId());
-				documentationEntryDetectingCode.setEntryId(documentationEntry.getEntryId());
+				documentationEntryDetectingCode.setDocumentationId(documentationEntryPlainText.getDocumentationId());
+				documentationEntryDetectingCode.setEntryId(documentationEntryPlainText.getEntryId());
 				db.getDocumentationEntriesDetectingCode().add(documentationEntryDetectingCode);
 			}
-			predictions = CodeDetector.predict(documentationEntry.getPlainText());
+			predictions = CodeDetector.predict(documentationEntryPlainText.getPlainText());
 			
 			documentationEntryDetectingCode.setCode(String.join("\n", predictions.getTextsPredictedWithLabel("__label__Code")));
 			
@@ -124,12 +127,12 @@ public class DocumentationDetectingCodeTransMetricProvider implements ITransient
 		
 	}
 	
-	private DocumentationEntryDetectingCode findDocumentationEntryDetectingCode (DocumentationDetectingCodeTransMetric db, DocumentationEntry documentationEntry)
+	private DocumentationEntryDetectingCode findDocumentationEntryDetectingCode (DocumentationDetectingCodeTransMetric db, DocumentationEntryPlainText documentationEntryPlainText)
 	{
 		DocumentationEntryDetectingCode documentationEntryDetectingCode = null;
 		Iterable<DocumentationEntryDetectingCode> documentationEntryDCIt = db.getDocumentationEntriesDetectingCode().
-				find(DocumentationEntry.DOCUMENTATIONID.eq(documentationEntry.getDocumentationId()),
-						DocumentationEntry.ENTRYID.eq(documentationEntry.getEntryId()));
+				find(DocumentationEntry.DOCUMENTATIONID.eq(documentationEntryPlainText.getDocumentationId()),
+						DocumentationEntry.ENTRYID.eq(documentationEntryPlainText.getEntryId()));
 		for(DocumentationEntryDetectingCode dedc : documentationEntryDCIt)
 			documentationEntryDetectingCode=dedc;
 		return documentationEntryDetectingCode;

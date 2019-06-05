@@ -462,6 +462,9 @@
     	metric-providers/org.eclipse.scava.metricprovider.indexing.commits
     </module>
     <module>../migration/third-party/com.github.sszuev.fasttext</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
+    </module>
   </modules>
   <build>
     <plugins>

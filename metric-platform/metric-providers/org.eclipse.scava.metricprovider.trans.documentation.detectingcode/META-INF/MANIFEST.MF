@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.documentation.gitbased,
  org.eclipse.scava.repository.model.vcs.git,
  org.eclipse.scava.repository.model.documentation.systematic,
- org.eclipse.scava.metricprovider.trans.indexing.preparation
+ org.eclipse.scava.metricprovider.trans.indexing.preparation,
+ org.eclipse.scava.metricprovider.trans.documentation.plaintext
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.detectingcode.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

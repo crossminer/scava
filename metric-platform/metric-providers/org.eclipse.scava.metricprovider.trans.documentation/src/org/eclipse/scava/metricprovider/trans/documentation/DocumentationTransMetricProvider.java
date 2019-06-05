@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,9 +20,7 @@ import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationE
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
-import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
-import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationMarkdownBased;
-import org.eclipse.scava.nlp.tools.plaintext.documentation.PlainTextDocumentationOthers;
+import org.eclipse.scava.nlp.tools.preprocessor.fileparser.FileContent;
 import org.eclipse.scava.nlp.tools.preprocessor.fileparser.FileParser;
 import org.eclipse.scava.nlp.tools.webcrawler.Crawler;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -83,7 +80,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric process the files or text returned from the documentation readers and transform raw text into plain text.";
+		return "This metric process the files returned from the documentation readers and extracts the body (in format HTML or text).";
 	}
 
 	@Override
@@ -389,9 +386,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	private void processFile(File file, DocumentationTransMetric db, Documentation documentation, String documentId, String entryId)
 	{
 		try {
-			String fileContent = FileParser.extractTextAsString(file);
+			FileContent fileContent = FileParser.extractText(file);
 			
-			if(!fileContent.isEmpty())
+			if(fileContent!=null)
 	 		{
 		 		DocumentationEntry documentationEntry = findDocumentationEntry(db, documentId, entryId);
 				if(documentationEntry==null)
@@ -403,12 +400,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						documentation.getEntriesId().add(entryId);
 					db.getDocumentationEntries().add(documentationEntry);
 				}
-				else
-					documentationEntry.getPlainText().clear();
 				
-				//For a weird reason the addAll wasn't adding all the lines
-				for(String line : getPlainText(entryId, fileContent))
-					documentationEntry.getPlainText().add(line);
+				documentationEntry.setBody(fileContent.getContent());
+				documentationEntry.setHtmlFormatted(fileContent.isHtmlFormat());
 					
 				db.sync();
 	 		}
@@ -419,20 +413,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 			e.printStackTrace();
 		}
  		
-	}
-	
-	private List<String> getPlainText(String fileName, String fileContent)
-	{
-		PlainTextObject plainText=null;
-		if(fileName.endsWith(".md") || fileName.endsWith(".markdown"))
-		{
-			plainText = PlainTextDocumentationMarkdownBased.process(fileContent);
-		}
-		else
-			plainText = PlainTextDocumentationOthers.process(fileContent);
-		if(plainText==null)
-			return new ArrayList<String>(0);
-		return plainText.getPlainTextAsList();
 	}
 	
 	private DocumentationEntry findDocumentationEntry(DocumentationTransMetric db, String documentationId, String relativePathFile)

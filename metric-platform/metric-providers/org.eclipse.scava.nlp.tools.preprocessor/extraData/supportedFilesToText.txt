@@ -1,31 +1,31 @@
 #Application
-AbiWord document	application/x-abiword
-Amazon Kindle eBook format	application/vnd.amazon.ebook
-Microsoft Word	application/msword
-Microsoft Word (OpenXML)	application/vnd.openxmlformats-officedocument.wordprocessingml.document
-Electronic publication (EPUB)	application/epub+zip
-OpenDocument presentation document	application/vnd.oasis.opendocument.presentation
-OpenDocument spreadsheet document	application/vnd.oasis.opendocument.spreadsheet
-OpenDocument text document	application/vnd.oasis.opendocument.text
-Portable Document Format (PDF)	application/pdf
-Microsoft PowerPoint	application/vnd.ms-powerpoint
-Microsoft PowerPoint (OpenXML)	application/vnd.openxmlformats-officedocument.presentationml.presentation
-Rich Text Format (RTF)	application/rtf
-XHTML	application/xhtml+xml
-Microsoft Excel	application/vnd.ms-excel
-Microsoft Excel (OpenXML)	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-Wordperfect	application/vnd.wordperfect
-Microsoft Works	application/vnd.ms-works
-Tika Word	application/x-tika-ooxml
+AbiWord document	application/x-abiword	HTML
+Amazon Kindle eBook format	application/vnd.amazon.ebook	HTML
+Microsoft Word	application/msword	HTML
+Microsoft Word (OpenXML)	application/vnd.openxmlformats-officedocument.wordprocessingml.document	HTML
+Electronic publication (EPUB)	application/epub+zip	HTML
+OpenDocument presentation document	application/vnd.oasis.opendocument.presentation	HTML
+OpenDocument spreadsheet document	application/vnd.oasis.opendocument.spreadsheet	HTML
+OpenDocument text document	application/vnd.oasis.opendocument.text	HTML
+Portable Document Format (PDF)	application/pdf	HTML
+Microsoft PowerPoint	application/vnd.ms-powerpoint	HTML
+Microsoft PowerPoint (OpenXML)	application/vnd.openxmlformats-officedocument.presentationml.presentation	HTML
+Rich Text Format (RTF)	application/rtf	HTML
+XHTML	application/xhtml+xml	HTML
+Microsoft Excel	application/vnd.ms-excel	HTML
+Microsoft Excel (OpenXML)	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet	HTML
+Wordperfect	application/vnd.wordperfect	HTML
+Microsoft Works	application/vnd.ms-works	HTML
+Tika Word	application/x-tika-ooxml	HTML
 #Images
-DJVU	image/vnd.djvu
+DJVU	image/vnd.djvu	HTML
 #
 #
 #Text
-Comma-separated values (CSV)	text/csv
-HyperText Markup Language (HTML)	text/html
-Text	text/plain
-Markdown	text/markdown
-Markdown	text/x-web-markdown
-Rich Text Format (RTF)	text/rtf
-Tab-separated-values	text/tab-separated-values
+Comma-separated values (CSV)	text/csv	PLAIN
+HyperText Markup Language (HTML)	text/html	HTML
+Text	text/plain	PLAIN
+Markdown	text/markdown	MARKDOWN
+Markdown	text/x-web-markdown	MARKDOWN
+Rich Text Format (RTF)	text/rtf	HTML
+Tab-separated-values	text/tab-separated-values	PLAIN

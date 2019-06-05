@@ -15,23 +15,22 @@ import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
 import org.eclipse.scava.nlp.tools.preprocessor.htmlparser.HtmlParser;
-import org.eclipse.scava.nlp.tools.preprocessor.markdown.MarkdownParser;
 
-public class PlainTextDocumentationMarkdownBased
+public class PlainTextDocumentationHtmlBased
 {
-	private static Pattern newlines;
+	private static Pattern escapedNewline;
 	
 	static
 	{
-		newlines=Pattern.compile("\\\\r\\\\n");
+		escapedNewline = Pattern.compile("(\\\\n|\\\\r)");
 	}
 	
 	public static PlainTextObject process(String text)
 	{
 		if(text==null)
 			return new PlainTextObject(new ArrayList<String>(Arrays.asList("")));
-		text=newlines.matcher(text).replaceAll("\n");
-		text= MarkdownParser.parse(text);
+		//In case the text contain escaped newlines
+		text=escapedNewline.matcher(text).replaceAll("");
 		return new PlainTextObject(HtmlParser.parse(text));
 	}
 

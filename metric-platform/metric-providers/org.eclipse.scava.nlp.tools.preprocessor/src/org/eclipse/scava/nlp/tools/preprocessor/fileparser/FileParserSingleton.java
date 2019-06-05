@@ -22,6 +22,7 @@ class FileParserSingleton {
 	private String supportedFilesListPath="/extraData/supportedFilesToText.txt";
 	private AutoDetectParser parser;
 	private HashMap<String,String> supportedFiles = new HashMap<String,String>();
+	private HashMap<String,String> contentHandlerType = new HashMap<String,String>();
 	
 	private FileParserSingleton()
 	{
@@ -50,11 +51,12 @@ class FileParserSingleton {
 			if (!line.trim().startsWith("#"))
 			{
 				entry=line.split("\\t");
-				if(entry.length!=2)
+				if(entry.length!=3)
 				{
 					throw new InputMismatchException("The supported file List "+ supportedFilesListPath+" has errors in its format in line: "+line); 
 				}
 				supportedFiles.put(entry[1], entry[0]);
+				contentHandlerType.put(entry[1], entry[2]);
 			}
 		}
 	}
@@ -90,6 +92,10 @@ class FileParserSingleton {
 
 	public HashMap<String, String> getSupportedFiles() {
 		return supportedFiles;
+	}
+	
+	public HashMap<String, String> getContentHandlerType() {
+		return contentHandlerType;
 	}
 	
 	
