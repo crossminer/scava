@@ -45,19 +45,47 @@
 	<script>
 		var app = new Vue({
 			el: '#app',
-	  		data: {
-		    	message: 'Hello Vue!',
-		    	experiments: null
-	    	}
+			data : {
+				message : 'Hello Vue!',
+				experiments: null
+			}
 		})
 		
 		var transport = new Thrift.TXHRTransport("/org.eclipse.scava.crossflow.web/crossflow");
 		var protocol = new Thrift.TJSONProtocol(transport);
 		var crossflow = new CrossflowClient(protocol);
-
+		
+	 	var url = new URL(window.location.href);
+		this.experimentId = url.searchParams.get("id");
+		app.launchExperiment = url.searchParams.get("launchExperiment");
+		
+		if ( this.experimentId != null && this.experimentId != "" && app.launchExperiment != null && app.launchExperiment != "" && app.launchExperiment == "true" ) {
+		    console.log("Waiting a bit for the Java classloader to finish loading recently uploaded executables ...");
+			setTimeout(function(){					    
+				try {
+					if ( crossflow.getExperiment(this.experimentId) != null && url.searchParams.get("launched") == null ) {
+						// redirect after waiting period (required for classloader to load recently uploaded executables)
+						window.location.replace(url+"&launched=true");
+					    
+					} else if ( crossflow.getExperiment(this.experimentId) != null ) {
+						console.log('Launching experiment with id = ' + this.experimentId);
+						crossflow.startExperiment(this.experimentId, true);
+						console.log('Completed launching experiment with id = ' + this.experimentId);	
+						
+						// remove parameters and redirect
+						window.location.replace(url.href.substring(0, url.href.indexOf("index.jsp")+"index.jsp".length));
+					}
+				} catch (err) {
+					console.log("No experiment with id '" + this.experimentId + "' available to launch.");
+				}
+			}, 3000);
+		}
+		
 		setInterval(function() {
 			app.experiments = crossflow.getExperiments();
 		}, 1000);
+
+		
 	</script>
 	
 <jsp:include page="footer.jsp"/>

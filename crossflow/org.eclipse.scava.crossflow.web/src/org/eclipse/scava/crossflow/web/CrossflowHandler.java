@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -101,8 +102,15 @@ public class CrossflowHandler implements Crossflow.Iface {
 	
 	@Override
 	public Experiment getExperiment(String experimentId) throws TException {
-		return getExperiments().stream().filter(e -> e.getId().equals(experimentId)).
+		Experiment experiment = null;
+		try {
+			experiment = getExperiments().stream().filter(e -> e.getId().equals(experimentId)).
 				collect(Collectors.toList()).iterator().next();
+		} catch (Exception e) {
+			System.err.println("Experiment with id '" + experimentId + "' does not exist.");
+			return experiment;
+		}
+		return experiment;
 	}
 	
 	@Override

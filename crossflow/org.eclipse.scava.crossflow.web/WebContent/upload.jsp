@@ -33,6 +33,11 @@
 			</div>
 			<br /> <br />
 			
+			<div class="form-check">
+				<input type="checkbox" class="form-check-input" id="inputCheck" name="inputCheck">
+				<label class="form-check-label" for="exampleCheck1">Launch experiment immediately.</label>
+			</div>
+			<br /> 
 			<button type="submit" class="btn btn-success">Upload</button>
 		</form>
 

@@ -30,20 +30,19 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import java.io.*;
 
-@WebServlet("/uploadExperiment")
+@WebServlet("/controlExperiment")
 @MultipartConfig
-public class UploadExperiment extends HttpServlet {
+public class ControlExperiment extends HttpServlet {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	 		
-		// parse parameters and prepare target locations
+		// prepare target locations
  		String experimentName = request.getParameter("inputName");
- 		boolean launchExperiment = request.getParameter("inputCheck") != null && request.getParameter("inputCheck").contentEquals("on") ? true : false;
 		Path experimentPath = Paths.get(getServletContext().getRealPath("experiments/"), experimentName);
 		Path experimentJarPath= Paths.get(getServletContext().getRealPath("WEB-INF/lib/"));
 		
@@ -86,7 +85,7 @@ public class UploadExperiment extends HttpServlet {
 			System.err.println(e.getMessage());
 		}
 		
-		response.sendRedirect("/org.eclipse.scava.crossflow.web/index.jsp?id="+experimentName+"&launchExperiment="+launchExperiment);
+		response.sendRedirect("/org.eclipse.scava.crossflow.web/");
 	}
 
 	/**
