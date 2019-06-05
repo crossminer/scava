@@ -87,6 +87,9 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 			db.getRelations().getDbCollection().drop();
 			db.sync();
 			
+			String projectName = project.getName();
+			String projectShortName = project.getShortName();
+			
 			
 			url = new URL("http://localhost:8182/projects/");
 			
@@ -105,46 +108,49 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 	        JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
 	        
 	        for (int i = 0; i < jsonArray.size(); i++) {
-	            String shortName = jsonArray.get(i).getAsJsonObject().get("shortName").getAsString();
+	            String thirdName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
+	            String thirdShortName = jsonArray.get(i).getAsJsonObject().get("shortName").getAsString();
 	            
-	            if(testMaven(shortName)) {
-	            	ProjectRelation pr = new ProjectRelation();
-	            	
-	            	pr.setRelationName(shortName);
-	            	pr.setDependencyType("maven");
-
-					db.getRelations().add(pr);
-					db.sync();
-	            }
-	            
-	            if(testOsgi(shortName)) {
-	            	ProjectRelation pr = new ProjectRelation();
-	            	
-	            	pr.setRelationName(shortName);
-	            	pr.setDependencyType("osgi");
-
-					db.getRelations().add(pr);
-					db.sync();
-	            }
-	            
-	            if(testDocker(shortName, project)) {
-	            	ProjectRelation pr = new ProjectRelation();
-	            	
-	            	pr.setRelationName(shortName);
-	            	pr.setDependencyType("docker");
-
-					db.getRelations().add(pr);
-					db.sync();
-	            }
-	            
-	            if(testPuppet(shortName, project)) {
-	            	ProjectRelation pr = new ProjectRelation();
-	            	
-	            	pr.setRelationName(shortName);
-	            	pr.setDependencyType("puppet");
-
-					db.getRelations().add(pr);
-					db.sync();
+	            if(!thirdShortName.equals(projectShortName)) {
+		            if(testMaven(projectName, thirdShortName)) {
+		            	ProjectRelation pr = new ProjectRelation();
+		            	
+		            	pr.setRelationName(thirdName);
+		            	pr.setDependencyType("maven");
+	
+						db.getRelations().add(pr);
+						db.sync();
+		            }
+		            
+		            if(testOsgi(projectName, thirdShortName)) {
+		            	ProjectRelation pr = new ProjectRelation();
+		            	
+		            	pr.setRelationName(thirdName);
+		            	pr.setDependencyType("osgi");
+	
+						db.getRelations().add(pr);
+						db.sync();
+		            }
+		            
+		            if(testDocker(projectName, thirdShortName)) {
+		            	ProjectRelation pr = new ProjectRelation();
+		            	
+		            	pr.setRelationName(thirdName);
+		            	pr.setDependencyType("docker");
+	
+						db.getRelations().add(pr);
+						db.sync();
+		            }
+		            
+		            if(testPuppet(projectName, thirdShortName)) {
+		            	ProjectRelation pr = new ProjectRelation();
+		            	
+		            	pr.setRelationName(thirdName);
+		            	pr.setDependencyType("puppet");
+	
+						db.getRelations().add(pr);
+						db.sync();
+		            }
 	            }
 	        }
         
@@ -177,11 +183,11 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     	return "TODO";
     }
     
-    public boolean testMaven(String projectName){
+    public boolean testMaven(String projectName, String thirdShortName){
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -221,11 +227,11 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 		}
     }
     
-    public boolean testOsgi(String projectName){
+    public boolean testOsgi(String projectName, String thirdShortName){
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
+        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -265,31 +271,89 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 		}
     }
     
-    public boolean testPuppet(String projectName, Project project){
-    	PuppetDependencies puppetDependencies = 
-				((PuppetDependenciesTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
-    	
-    	PuppetDependencyCollection col = puppetDependencies.getDependencies();
-    	
-    	for(PuppetDependency puppetDependency : col) {
-    		if(puppetDependency.getDependencyName().equals(projectName))
-            	return true;
-    	}
-        
-        return false;
+    public boolean testPuppet(String projectName, String thirdShortName){
+    	BufferedReader in = null;
+        try {
+            	
+        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider");
+            
+        	HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+
+            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            
+            JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
+	        
+	        for (int i = 0; i < jsonArray.size(); i++) {
+	        	String name = jsonArray.get(i).getAsJsonObject().get("dependencyName").getAsString();
+	            
+	            if(name.equals(projectName))
+	            	return true;
+	        }
+	        
+	        return false;
+
+        } catch (IOException e) {
+        	logger.error("unexpected IO exception while measuring", e);
+			throw new RuntimeException(e);
+        } finally {
+			try {
+				if(in != null)
+					in.close();
+			} catch (IOException e) {
+				logger.error("unexpected IO exception while measuring", e);
+				throw new RuntimeException(e);
+			}
+		}
     }
     
-    public boolean testDocker(String projectName, Project project){
-    	DockerDependencies dockerDependencies = 
-				((DockerDependenciesTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-    	
-    	DockerDependencyCollection col = dockerDependencies.getDependencies();
-    	
-    	for(DockerDependency dockerDependency : col) {
-    		if(dockerDependency.getDependencyName().equals(projectName))
-            	return true;
-    	}
-        
-        return false;
+    public boolean testDocker(String projectName, String thirdShortName){
+    	BufferedReader in = null;
+        try {
+            	
+        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider");
+            
+        	HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+
+            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            
+            JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
+	        
+	        for (int i = 0; i < jsonArray.size(); i++) {
+	        	String name = jsonArray.get(i).getAsJsonObject().get("dependencyName").getAsString();
+	            
+	            if(name.equals(projectName))
+	            	return true;
+	        }
+	        
+	        return false;
+
+        } catch (IOException e) {
+        	logger.error("unexpected IO exception while measuring", e);
+			throw new RuntimeException(e);
+        } finally {
+			try {
+				if(in != null)
+					in.close();
+			} catch (IOException e) {
+				logger.error("unexpected IO exception while measuring", e);
+				throw new RuntimeException(e);
+			}
+		}
     }
 }
