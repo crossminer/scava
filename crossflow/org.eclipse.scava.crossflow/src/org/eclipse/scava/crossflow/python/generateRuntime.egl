@@ -618,7 +618,14 @@ class BuiltinStream(object):
         return self.name + "." + self.workflow.getInstanceId()
     
     def init(self):
-        self.connection = stomp.Connection(self.workflow.getBroker())
+        self.connection = stomp.Connection(
+            host_and_ports=self.workflow.getBroker(),
+            reconnect_sleep_initial=15,
+            reconnect_sleep_increase=0.0,
+            reconnect_sleep_jitter=0.0,
+            reconnect_sleep_max=15.0,
+            reconnect_attempts_max=-1
+        )
         self.connection.start()
         self.connection.connect(wait=True)  # add credentials?
 
