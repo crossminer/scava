@@ -16,7 +16,7 @@
 </extension>
 
 <extension point="com.googlecode.pongo.runtime.osgi">
-    <class name="org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetric"/>
-    <class name="org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationEntryClassification"/>
+    <class name="org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationClassificationTransMetric"/>
+    <class name="org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationEntryClassification"/>
   </extension>
 </plugin>

@@ -12,7 +12,7 @@ class HtmlHeadingsFinder {
 	public static List<String> find(String htmlCode, boolean fromPDF)
 	{
 		List<Entry<String, String>> tagsText = HtmlParser.parseWithTags(htmlCode);
-		//In PDF only the headings will be arsed with li, these will be located at the end of the document.
+		//In PDF only the headings will be parsed with li, these will be located at the end of the document.
 		if(fromPDF)
 			return HtmlParser.filterParsedHtmlWithTags(tagsText, "li");
 		else
