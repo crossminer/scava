@@ -10,6 +10,7 @@
 package org.eclipse.scava.metricprovider.indexing.documentation.document;
 
 import java.util.Date;
+import java.util.List;
 
 public class DocumentationEntryDocument {
 
@@ -28,6 +29,7 @@ public class DocumentationEntryDocument {
 	private String plain_text;
 	private Double readability;
 	private Boolean code;
+	private List<String> documentation_types;
 	
 
 	public DocumentationEntryDocument(String projectName,
@@ -102,6 +104,10 @@ public class DocumentationEntryDocument {
 	public Double getReadability() {
 		return readability;
 	}
+	
+	public List<String> getDocumentation_types() {
+		return documentation_types;
+	}
 
 	public void setSentiment(String sentiment) {
 		this.sentiment = sentiment;
@@ -119,6 +125,10 @@ public class DocumentationEntryDocument {
 	
 	public void setReadability(Double readability) {
 		this.readability = readability;
+	}
+	
+	public void setDocumentation_types(List<String> documentation_types) {
+		this.documentation_types = documentation_types;
 	}
 
 

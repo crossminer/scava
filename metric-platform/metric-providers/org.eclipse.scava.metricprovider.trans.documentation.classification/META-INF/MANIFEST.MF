@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Classification
 Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.documentation.classification;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: org.eclipse.scava.metricprovider.trans.documentation.classification
+Export-Package: org.eclipse.scava.metricprovider.trans.documentation.classification,
+ org.eclipse.scava.metricprovider.trans.documentation.classification.model
 Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.platform,

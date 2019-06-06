@@ -32,6 +32,9 @@
 		},
 		"readability" : {
 			"type" : "double"
+		},
+		"documentation_type" : {
+			"type" : "text"
 		}
 	}
 }

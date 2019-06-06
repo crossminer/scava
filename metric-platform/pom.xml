@@ -465,6 +465,12 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.classification
+    </module>
+    <module>
+    	../../org.eclipse.scava.nlp.classifiers.documentation
+    </module>
   </modules>
   <build>
     <plugins>
