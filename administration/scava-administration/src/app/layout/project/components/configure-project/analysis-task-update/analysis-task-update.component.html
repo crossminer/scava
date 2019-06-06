@@ -38,7 +38,7 @@
                     <label class="form-control-label">Start date</label><br>
                     <small>* Starting time range of the project's analysis process</small>
                     <mat-form-field>
-                        <input matInput name="startDate" [(ngModel)]="startDate" [max]="maxStartDate" [matDatepicker]="startDateInput" required>
+                        <input matInput [disabled]="true" name="startDate" [(ngModel)]="startDate" [max]="maxStartDate" [matDatepicker]="startDateInput" required>
                         <mat-datepicker-toggle matSuffix [for]="startDateInput"></mat-datepicker-toggle>
                         <mat-datepicker #startDateInput></mat-datepicker>
                     </mat-form-field>
@@ -48,7 +48,7 @@
                     <small>* Ending time range of the project's analysis process</small>
                     <mat-form-field>
                         <input matInput [disabled]="executionTask.type=='CONTINUOUS_MONITORING'" name="startDateInput" [(ngModel)]="endDate" 
-                            [min]="executionTask.startDate" [max]="maxEndDate" [matDatepicker]="endDateInput" required>
+                            [min]="executionTask.startDate.$date" [max]="maxEndDate" [matDatepicker]="endDateInput" required>
                         <mat-datepicker-toggle matSuffix [for]="endDateInput"></mat-datepicker-toggle>
                         <mat-datepicker #endDateInput></mat-datepicker>
                     </mat-form-field>
