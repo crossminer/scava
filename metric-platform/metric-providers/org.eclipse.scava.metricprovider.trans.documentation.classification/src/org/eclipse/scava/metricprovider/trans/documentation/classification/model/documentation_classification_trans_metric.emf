@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.documentation.classification.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationClassificationTransMetric {
+	val DocumentationEntryClassification[*] documentationEntriesClassification;
+}
+
+class DocumentationEntryClassification {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr String[*] types;
+}
+
