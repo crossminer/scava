@@ -402,6 +402,8 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 				
 				documentationEntry.setBody(fileContent.getContent());
+				documentationEntry.setOriginalFormatName(fileContent.getFormatName());
+				documentationEntry.setOriginalFormatMime(fileContent.getMime());
 				documentationEntry.setHtmlFormatted(fileContent.isHtmlFormat());
 					
 				db.sync();

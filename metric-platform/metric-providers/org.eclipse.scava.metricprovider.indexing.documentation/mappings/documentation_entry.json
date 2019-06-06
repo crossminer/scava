@@ -15,6 +15,15 @@
 		"documentation_entry_id" : {
 			"type" : "keyword"
 		},
+		"body" : {
+			"type" : "text"
+		},
+		"original_format_mime" : {
+			"type" : "text"
+		},
+		"original_format_name" : {
+			"type" : "text"
+		},
 		"plain_text" : {
 			"type" : "text"
 		},

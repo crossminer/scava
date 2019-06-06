@@ -171,6 +171,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 					documentationEntry.getDocumentationId(),
 					documentationEntry.getEntryId(),
 					documentationEntry.getBody(),
+					documentationEntry.getOriginalFormatMime(),
+					documentationEntry.getOriginalFormatName(),
 					delta.getDate().toJavaDate());
 			
 			enrichDocumentationEntryDocument(project, documentationEntry, ded);
