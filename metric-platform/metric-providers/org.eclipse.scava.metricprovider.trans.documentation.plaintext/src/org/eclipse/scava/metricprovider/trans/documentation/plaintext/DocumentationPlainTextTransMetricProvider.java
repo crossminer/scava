@@ -134,8 +134,8 @@ public class DocumentationPlainTextTransMetricProvider implements ITransientMetr
 	{
 		DocumentationEntryPlainText documentationEntryDetectingCode = null;
 		Iterable<DocumentationEntryPlainText> documentationEntryDCIt = db.getDocumentationEntriesPlainText().
-				find(DocumentationEntry.DOCUMENTATIONID.eq(documentationEntry.getDocumentationId()),
-						DocumentationEntry.ENTRYID.eq(documentationEntry.getEntryId()));
+				find(DocumentationEntryPlainText.DOCUMENTATIONID.eq(documentationEntry.getDocumentationId()),
+						DocumentationEntryPlainText.ENTRYID.eq(documentationEntry.getEntryId()));
 		for(DocumentationEntryPlainText dedc : documentationEntryDCIt)
 			documentationEntryDetectingCode=dedc;
 		return documentationEntryDetectingCode;
