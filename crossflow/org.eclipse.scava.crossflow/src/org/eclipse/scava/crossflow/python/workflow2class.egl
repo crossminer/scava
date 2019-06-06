@@ -21,18 +21,9 @@ import traceback
 
 class [%=w.name%](Workflow):
 
-	def __init__(self, mode=Mode.MASTER, createBroker=True):
-		super().__init__(None, mode, createBroker, None)
-			
-		self.createBroker = createBroker	
+	def __init__(self):
+		super().__init__()
 		self.enablePrefetch = False
-			
-		self.name = "[%=w.name%]"
-		self.mode = mode
-		[%for (p in w.parameters) { %]
-		#@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
-		self.[%=p.name%] = None
-		[%}%]
 		
 		# streams
 		[%for (s in w.streams) { %]
@@ -169,12 +160,20 @@ class [%=w.name%](Workflow):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-mode', help='Must be master_bare, master or worker')
-	parser.add_argument('-createBroker', help='Whether this workflow creates a broker or not.')
+	parser.add_argument('-name', default='[%=w.name%]', help='The name of the workflow')
+	parser.add_argument('-master', default='localhost', help='IP of the master')
+	parser.add_argument('-stomp', default=61613, help='Port to use for stomp based messages')
+	parser.add_argument('-instance', default=None, help='The instance of the master (to contribute to)')
+	parser.add_argument('-mode', default=Mode.WORKER, help='Must be master_bare, master or worker')
 	
 	parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
 	
-	app = [%=w.name%](parsedArgs.mode, parsedArgs.createBroker)
+	app = [%=w.name%]()
+	app.name = parsedArgs.name
+	app.master = parsedArgs.master
+	app.stomp = parsedArgs.stomp
+	app.instanceId = parsedArgs.instance
+	app.mode = parsedArgs.mode
 	app.run();
 	
 [%
