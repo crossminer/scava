@@ -22,7 +22,7 @@ public class WordCountSink extends WordCountSinkBase {
 
 	@Override
 	public synchronized void consumeFiltered(WordFrequency wordFrequency) {
-		// System.out.println("sink consuming: "+wordFrequency);
+		 System.out.println("sink consuming: "+wordFrequency);
 
 		if (!started)
 			t.schedule(new TimerTask() {
