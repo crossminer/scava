@@ -109,6 +109,7 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 					documentationEntryReadability = findDocumentationEntryReadability(db, documentation.getDocumentationId(), entryId);
 					db.getDocumentationEntriesReadability().remove(documentationEntryReadability);
 				}
+				db.sync();
 			}
 		}
 		
@@ -129,8 +130,9 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 				}
 				documentationEntryReadability.setReadability(Readability.calculateDaleChall(documentationEntry.getNaturalLanguage()));
 			}
+			db.sync();
 		}
-		db.sync();
+		
 		
 
 	}

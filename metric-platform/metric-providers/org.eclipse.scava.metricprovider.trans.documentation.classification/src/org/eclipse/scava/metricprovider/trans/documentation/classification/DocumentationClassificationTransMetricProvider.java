@@ -108,6 +108,7 @@ public class DocumentationClassificationTransMetricProvider implements ITransien
 					documentationEntryClass = findDocumentationEntryClassification(db, documentation.getDocumentationId(), entryId);
 					db.getDocumentationEntriesClassification().remove(documentationEntryClass);
 				}
+				db.sync();
 			}
 		}
 		
@@ -139,7 +140,9 @@ public class DocumentationClassificationTransMetricProvider implements ITransien
 			{
 				documentationEntryClass.getTypes().add("Unknown");
 			}
+			db.sync();
 		}
+		
 		
 	}
 	
