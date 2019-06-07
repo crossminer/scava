@@ -137,7 +137,8 @@ public class FileParser
 	    	mediaType=detectMediaType(bufferedStream, metadata);
 	    	if(isSupported(mediaType))
 	    	{
-	    		handlerType=contentHandlerType.get(mediaTypeString(mediaType));
+	    		String mediaTypeString=mediaTypeString(mediaType);
+	    		handlerType=contentHandlerType.get(mediaTypeString);
 	    		switch (handlerType)
 	    		{
 	    			case "HTML":
@@ -152,16 +153,17 @@ public class FileParser
 	    		{
 		    		parser.parse(bufferedStream, handler, metadata);
 		    		FileContent fileContent=null;
+		    		String formatName = supportedFiles.get(mediaTypeString);
 		    		switch (handlerType)
 		    		{
 		    			case "HTML":
-		    				fileContent= new FileContent(handler.toString(), true);
+		    				fileContent= new FileContent(handler.toString(),mediaTypeString,formatName, true);
 		    				break;
 		    			case "MARKDOWN":
-		    				fileContent= new FileContent(MarkdownParser.parse(handler.toString()), true);
+		    				fileContent= new FileContent(MarkdownParser.parse(handler.toString()),mediaTypeString,formatName, true);
 		    				break;
 		    			case "PLAIN":
-		    				fileContent= new FileContent(handler.toString(), false);
+		    				fileContent= new FileContent(handler.toString(),mediaTypeString,formatName, false);
 		    				break;
 		    		}
 	    			return fileContent;

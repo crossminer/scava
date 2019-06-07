@@ -12,6 +12,8 @@ class DocumentationEntry {
 	attr String documentationId;
 	attr String entryId;
 	attr String body;
+	attr String originalFormatName;
+	attr String originalFormatMime;
 	attr boolean htmlFormatted;
 }
 
