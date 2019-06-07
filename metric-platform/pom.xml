@@ -472,6 +472,9 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.documentation
     </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.license
+    </module>
   </modules>
   <build>
     <plugins>
