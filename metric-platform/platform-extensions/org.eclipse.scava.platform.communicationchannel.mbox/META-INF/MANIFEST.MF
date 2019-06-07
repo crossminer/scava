@@ -4,11 +4,7 @@ Bundle-Name: Mbox
 Bundle-SymbolicName: org.eclipse.scava.platform.communicationchannel.mbox;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: lib/apache-mime4j-mbox-iterator-0.8.3.jar,
- lib/commons-email-1.5.jar,
- lib/commons-io-2.6.jar,
- lib/commons-net-3.6.jar,
  lib/jcharset-2.1.jar,
- lib/mail-1.4.jar,
  .
 Export-Package: org.eclipse.scava.platform.communicationchannel.mbox.encoding,
  org.eclipse.scava.platform.communicationchannel.mbox.parser
@@ -21,6 +17,10 @@ Require-Bundle: org.eclipse.scava.platform.communicationchannel.mbox,
  org.eclipse.scava.repository.model,
  org.mapdb,
  org.apache.commons.compress,
- com.googlecode.pongo.runtime.dependencies
+ com.googlecode.pongo.runtime.dependencies,
+ org.apache.commons.commons-email,
+ commons-net.commons-net,
+ commons-io.commons-io
 Import-Package: ch.qos.logback.classic,
  org.apache.logging.log4j.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

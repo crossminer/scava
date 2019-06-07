@@ -481,6 +481,11 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.license
     </module>
+    <module>
+    	../migration/third-party/org.apache.commons.commons-email
+    </module>
+    <module>../migration/third-party/commons-net.commons-net</module>
+    <module>../migration/third-party/commons-io.commons-io</module>
   </modules>
   <build>
     <plugins>

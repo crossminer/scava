@@ -81,10 +81,8 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			filePaths = Files.walk(rootPath);
 			
 			for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
-
 			{
 				File file = path.toFile();
-//				MBoxReader.parseFile(file);
 
 				for (Email email : MBoxReader.parseFile(file)) {
 
