@@ -71,8 +71,8 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 				return true;
 			if (communicationChannel instanceof EclipseForum)
 				return true;
-			if (communicationChannel instanceof SympaMailingList) 
-				return true;
+//			if (communicationChannel instanceof SympaMailingList) 
+//				return true;
 			if (communicationChannel instanceof Irc) 
 				return true;
 		}
