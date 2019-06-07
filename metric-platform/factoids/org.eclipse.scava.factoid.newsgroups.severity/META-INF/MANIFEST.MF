@@ -14,5 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.sourceforge,
  org.eclipse.scava.repository.model.cc.eclipseforums,
  org.eclipse.scava.repository.model.cc.sympa,
- org.eclipse.scava.repository.model.cc.irc
+ org.eclipse.scava.repository.model.cc.irc,
+ org.eclipse.scava.repository.model.cc.mbox
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

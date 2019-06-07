@@ -50,6 +50,7 @@ import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -115,7 +116,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				return true;
 			if (communicationChannel instanceof SympaMailingList)
 				return true;
-			if (communicationChannel instanceof Irc) return true;
+			if (communicationChannel instanceof Irc) 
+				return true;
+			if (communicationChannel instanceof Mbox) 
+				return true;
 		}
 		return false;
 	}
@@ -174,11 +178,12 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				 Irc ircChat = (Irc) communicationChannel;
 				 String chatName = ircChat.getName();
 				 prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+				 
+			} else if (communicationChannel instanceof Mbox) {
 
-				// }else if (communicationChannel instanceof MailingList) {
-				// MailingList mailingList = (MailingList) communicationChannel;
-				// String mailinglistName = mailingList.getMailingListName();
-				// prepareArticle(project, projectDelta, delta, "mbox.mail", mailinglistName);
+				Mbox mbox = (Mbox) communicationChannel;
+				String mboxName = mbox.getMboxName();
+				prepareArticle(project, projectDelta, delta, "mbox.mail", mboxName);
 
 			} else {
 

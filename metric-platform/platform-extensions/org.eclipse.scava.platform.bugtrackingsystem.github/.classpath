@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/github_restmule_client.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/restmule_core.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/okhttp-3.9.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/adapter-rxjava2-2.3.0.jar"/>
@@ -37,5 +34,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/retrofit-2.3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/rxjava-2.1.0.jar"/>
 	<classpathentry kind="src" path="src/"/>
+	<classpathentry exported="true" kind="lib" path="lib/okhttp-3.9.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/github_restmule_client.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/restmule_core.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

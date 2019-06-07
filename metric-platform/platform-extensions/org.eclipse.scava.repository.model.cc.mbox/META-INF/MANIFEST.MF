@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mbox
+Bundle-SymbolicName: org.eclipse.scava.repository.model.cc.mbox;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.repository.model.cc.mbox
+Require-Bundle: com.googlecode.pongo.runtime,
+ org.eclipse.scava.repository.model
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.eclipse.scava.repository.model.cc.mbox

@@ -27,6 +27,7 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
@@ -87,6 +88,7 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 			if (communicationChannel instanceof SympaMailingList) return true;
 			if (communicationChannel instanceof Irc) return true;
 			if (communicationChannel instanceof DocumentationSystematic) return true;
+			if (communicationChannel instanceof Mbox) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	

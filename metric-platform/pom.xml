@@ -465,6 +465,12 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
     </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.mbox
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.mbox
+    </module>
   </modules>
   <build>
     <plugins>
