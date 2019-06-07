@@ -115,7 +115,9 @@ public class DocumentationPlainTextTransMetricProvider implements ITransientMetr
 			//For a weird reason the addAll wasn't adding all the lines
 			for(String line : getPlainText(documentationEntry.getBody(), documentationEntry.getHtmlFormatted()))
 				documentationEntryPlainText.getPlainText().add(line);
+			db.sync();
 		}
+		
 	}
 	
 	private List<String> getPlainText(String fileContent, boolean htmlFormatted)
