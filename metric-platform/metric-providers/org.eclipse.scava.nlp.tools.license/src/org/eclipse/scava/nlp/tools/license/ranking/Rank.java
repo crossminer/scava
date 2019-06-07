@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.tools.license.ranking;
 
-import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelLicenseAnalyserResult;
+import org.eclipse.scava.nlp.tools.license.prediction.SingleLabelLicenseAnalyserResult;
 
 public class Rank {
 	

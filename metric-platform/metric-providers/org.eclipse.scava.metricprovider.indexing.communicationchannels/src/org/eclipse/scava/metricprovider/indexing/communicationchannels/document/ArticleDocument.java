@@ -6,7 +6,7 @@ public class ArticleDocument extends Document {
 
 	private String article_id;
 	private Long aritcle_number;
-	private String newsgroup_name;
+	private String collection_name;
 	private String message_thread_id;
 	
 
@@ -20,7 +20,7 @@ public class ArticleDocument extends Document {
 		this.message_body = messageBody;
 		this.creator = creator;
 		this.created_at = createdAt;
-		this.newsgroup_name = newsgroupName;
+		this.collection_name = newsgroupName;
 		this.subject = subject;
 		this.message_thread_id = messageThreadID;
 	}
@@ -33,8 +33,8 @@ public class ArticleDocument extends Document {
 		return aritcle_number;
 	}
 
-	public String getNewsgroup_name() {
-		return newsgroup_name;
+	public String getCollection_name() {
+		return collection_name;
 	}
 
 	public String getMessage_thread_id() {
@@ -49,8 +49,8 @@ public class ArticleDocument extends Document {
 		this.aritcle_number = aritcle_number;
 	}
 
-	public void setNewsgroup_name(String newsgroup_name) {
-		this.newsgroup_name = newsgroup_name;
+	public void setCollection_name(String newsgroup_name) {
+		this.collection_name = newsgroup_name;
 	}
 
 	public void setMessage_thread_id(String message_thread_id) {

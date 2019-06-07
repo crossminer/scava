@@ -13,12 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.scava.nlp.tools.license.prediction.SingleLabelLicenseAnalyserResult;
 import org.eclipse.scava.nlp.tools.license.processing.NgramTokeniser;
 import org.eclipse.scava.nlp.tools.license.processing.TextProcessor;
 import org.eclipse.scava.nlp.tools.license.ranking.Rank;
 import org.eclipse.scava.nlp.tools.license.ranking.Ranking;
 import org.eclipse.scava.nlp.tools.license.utils.Utils;
-import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelLicenseAnalyserResult;
+
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
