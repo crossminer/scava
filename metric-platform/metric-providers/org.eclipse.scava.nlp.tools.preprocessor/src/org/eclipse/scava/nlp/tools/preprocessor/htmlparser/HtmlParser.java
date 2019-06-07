@@ -262,7 +262,7 @@ public class HtmlParser
 	 * @param tags array indicating which tags should be used in the filtering
 	 * @return A {@code List<String>} with the filters designated previously 
 	 */
-	public List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags)
+	public static List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags)
 	{
 		return filterParsedHtmlWithTags(ParsedHtmlWithTags, tags, false);
 	}
@@ -274,7 +274,7 @@ public class HtmlParser
 	 * @param negation if {@code true}, it stipulates that it should be used to filter only the tags different from {@code tags}   
 	 * @return A {@code List<String>} with the filters designated previously 
 	 */
-	public List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags, Boolean negation)
+	public static List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags, Boolean negation)
 	{
 		List<String> tagsList = Arrays.asList(tags);
 		tagsList.replaceAll(tag->tag.toLowerCase());

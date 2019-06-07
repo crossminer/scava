@@ -8,6 +8,9 @@ import org.eclipse.scava.metricprovider.indexing.documentation.document.Document
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationEntryDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationClassificationTransMetric;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationEntryClassification;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationDetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
@@ -171,6 +174,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 					documentationEntry.getDocumentationId(),
 					documentationEntry.getEntryId(),
 					documentationEntry.getBody(),
+					documentationEntry.getOriginalFormatMime(),
+					documentationEntry.getOriginalFormatName(),
 					delta.getDate().toJavaDate());
 			
 			enrichDocumentationEntryDocument(project, documentationEntry, ded);
@@ -245,13 +250,25 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				case "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider":
 				{
 					DocumentationSentimentTransMetric sentimentDB = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
-					DocumentationEntrySentiment detectingcodeDocEntry = findCollection(sentimentDB,
+					DocumentationEntrySentiment sentimentDocEntry = findCollection(sentimentDB,
 																						DocumentationEntrySentiment.class,
 							 															sentimentDB.getDocumentationEntriesSentiment(),
 							 															documentationEntry);
-					ded.setSentiment(detectingcodeDocEntry.getPolarity());	 
+					ded.setSentiment(sentimentDocEntry.getPolarity());	 
 					break;
 				}
+				//Classification
+				case "org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider":
+				{
+					DocumentationClassificationTransMetric classificationDB = new DocumentationClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryClassification classificationDocEntry = findCollection(classificationDB,
+																						DocumentationEntryClassification.class,
+																						classificationDB.getDocumentationEntriesClassification(),
+							 															documentationEntry);
+					ded.setDocumentation_types(classificationDocEntry.getTypes()); 
+					break;
+				}
+				
 			}
 		}
 	}

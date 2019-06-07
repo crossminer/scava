@@ -34,6 +34,11 @@ public class SingleLabelPredictionCollection
 		data = new ArrayList<SingleLabelPrediction>(numberOfEntries);
 	}
 	
+	public SingleLabelPredictionCollection(List<SingleLabelPrediction> singleLabelPredictions)
+	{
+		data = singleLabelPredictions;
+	}
+	
 	public int size()
 	{
 		return data.size();

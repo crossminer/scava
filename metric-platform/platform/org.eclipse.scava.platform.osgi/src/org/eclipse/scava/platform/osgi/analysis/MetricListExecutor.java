@@ -85,9 +85,9 @@ public class MetricListExecutor implements Runnable {
 			// We need to check that it hasn't already been executed for this date
 			MetricExecution mpd = platform.getAnalysisRepositoryManager().getSchedulingService().findMetricExecution(this.projectId,m.getIdentifier());
 			try {
-				Date lastExec = new Date(mpd.getLastExecutionDate());	
+				Date lastExec = new Date(mpd.getLastExecutionDate());
 				// Check we haven't already executed the MP for this day.
-				if (date.compareTo(lastExec) < 0) {
+				if (date.compareTo(lastExec) <= 0) {
 					this.loggerOssmeter.warn("Metric provider '" + m.getIdentifier() + "' has been executed for this date already. Ignoring.");
 					platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
 					continue;

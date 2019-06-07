@@ -2,20 +2,21 @@
 	"properties" : {
 		"last_update" : {
 			"type" : "date"
+		},
+		"project_name" : {
+		"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "text"
+		},
+		"documentation_id" : {
+			"type" : "keyword"
+		},
+		"documentation_entries" : {
+			"type" : "keyword"
 		}
-	},
-	"project_name" : {
-		"type" : "keyword"
-	},
-	"uid" : {
-		"type" : "text"
-	},
-	"documentation_id" : {
-		"type" : "keyword"
-	},
-	"documentation_entries" : {
-		"type" : "keyword"
 	}
+	
 }
 	
 	

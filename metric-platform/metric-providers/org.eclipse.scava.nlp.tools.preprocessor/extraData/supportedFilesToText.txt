@@ -10,13 +10,13 @@ OpenDocument text document	application/vnd.oasis.opendocument.text	HTML
 Portable Document Format (PDF)	application/pdf	HTML
 Microsoft PowerPoint	application/vnd.ms-powerpoint	HTML
 Microsoft PowerPoint (OpenXML)	application/vnd.openxmlformats-officedocument.presentationml.presentation	HTML
-Rich Text Format (RTF)	application/rtf	HTML
+Rich Text Format (Application-RTF)	application/rtf	HTML
 XHTML	application/xhtml+xml	HTML
 Microsoft Excel	application/vnd.ms-excel	HTML
 Microsoft Excel (OpenXML)	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet	HTML
 Wordperfect	application/vnd.wordperfect	HTML
 Microsoft Works	application/vnd.ms-works	HTML
-Tika Word	application/x-tika-ooxml	HTML
+Generic Office Open XML	application/x-tika-ooxml	HTML
 #Images
 DJVU	image/vnd.djvu	HTML
 #
@@ -27,5 +27,5 @@ HyperText Markup Language (HTML)	text/html	HTML
 Text	text/plain	PLAIN
 Markdown	text/markdown	MARKDOWN
 Markdown	text/x-web-markdown	MARKDOWN
-Rich Text Format (RTF)	text/rtf	HTML
+Rich Text Format (Text-RTF)	text/rtf	HTML
 Tab-separated-values	text/tab-separated-values	PLAIN

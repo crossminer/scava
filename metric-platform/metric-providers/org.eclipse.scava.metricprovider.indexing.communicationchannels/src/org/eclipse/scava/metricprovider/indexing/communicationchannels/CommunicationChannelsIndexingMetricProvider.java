@@ -261,8 +261,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			String documentType = docType;
 
-			String name = collectionName;
-
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
 
@@ -275,7 +273,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			ArticleDocument enrichedDocument = enrichNewsGroupDocument(
 					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), name, article.getSubject(), article.getMessageThreadId(),
+							article.getDate(), collectionName, article.getSubject(), article.getMessageThreadId(),
 							article.getArticleNumber(), article.getArticleId()),
 					enrichmentData);
 

@@ -2265,6 +2265,27 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.scava.metricprovider.trans.documentation.classification"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.classifiers.documentation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.scava.nlp.tools.license"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.scava.platform.communicationchannel.mbox"
          download-size="0"
          install-size="0"

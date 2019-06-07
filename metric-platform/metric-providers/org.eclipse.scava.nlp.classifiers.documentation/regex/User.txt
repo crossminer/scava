@@ -1,0 +1,9 @@
+#1#users guide
+#1#user guide
+#1#user documentation
+##How-to Guides for Users
+#1#user manual
+#1#user guides
+######REGEX
+user(?:'?s?'?)? (?:guide|documentation|manual|reference|tutorial|basics|introduction)s?
+(?:guide|documentation|manual|reference|tutorial|basics|introduction)s? for users

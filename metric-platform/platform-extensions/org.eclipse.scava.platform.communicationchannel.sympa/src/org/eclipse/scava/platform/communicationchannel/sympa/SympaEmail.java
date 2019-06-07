@@ -16,7 +16,8 @@ public class SympaEmail extends CommunicationChannelArticle{
 	private String replyTo;
 	
 	public SympaEmail (Email email, SympaMailingList sympaMailingList) {
-		this.setCommunicationChannel(sympaMailingList);;
+		this.setCommunicationChannel(sympaMailingList);
+		
 		this.setDate(email.getDate());
 		this.setSender(email.getFrom());
 		this.setArticleId(email.getMessageId());
@@ -25,6 +26,7 @@ public class SympaEmail extends CommunicationChannelArticle{
 		this.setSubject(email.getSubject());
 		this.setText(email.getText());
 		this.setRecipient(email.getTo());
+		this.setArticleNumber(this.getDate().getTime());
 	}
 
 	/**

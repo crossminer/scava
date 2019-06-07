@@ -10,6 +10,7 @@
 package org.eclipse.scava.metricprovider.indexing.documentation.document;
 
 import java.util.Date;
+import java.util.List;
 
 public class DocumentationEntryDocument {
 
@@ -18,6 +19,8 @@ public class DocumentationEntryDocument {
 	private String documentation_id;
 	private String documentation_entry_id;
 	private String body;
+	private String original_format_mime;
+	private String original_format_name;
 	private Date created_at;
 	
 	
@@ -26,14 +29,24 @@ public class DocumentationEntryDocument {
 	private String plain_text;
 	private Double readability;
 	private Boolean code;
+	private List<String> documentation_types;
 	
 
-	public DocumentationEntryDocument(String projectName, String uid, String documentationId, String documentationEntryId, String body, Date createdAt) {
+	public DocumentationEntryDocument(String projectName,
+										String uid,
+										String documentationId,
+										String documentationEntryId,
+										String body,
+										String originalFormatMime,
+										String originalFormatName,
+										Date createdAt) {
 		this.project_name = projectName;
 		this.uid = uid;
 		this.documentation_id = documentationId;
 		this.documentation_entry_id = documentationEntryId;
 		this.body=body;
+		this.original_format_mime=originalFormatMime;
+		this.original_format_name=originalFormatName;
 		this.created_at = createdAt;
 	}
 
@@ -60,7 +73,14 @@ public class DocumentationEntryDocument {
 	public String getBody() {
 		return body;
 	}
-
+	
+	public String getOriginal_format_mime() {
+		return original_format_mime;
+	}
+	
+	public String getOriginal_format_name() {
+		return original_format_name;
+	}
 
 	public Date getCreated_at() {
 		return created_at;
@@ -84,6 +104,10 @@ public class DocumentationEntryDocument {
 	public Double getReadability() {
 		return readability;
 	}
+	
+	public List<String> getDocumentation_types() {
+		return documentation_types;
+	}
 
 	public void setSentiment(String sentiment) {
 		this.sentiment = sentiment;
@@ -101,6 +125,10 @@ public class DocumentationEntryDocument {
 	
 	public void setReadability(Double readability) {
 		this.readability = readability;
+	}
+	
+	public void setDocumentation_types(List<String> documentation_types) {
+		this.documentation_types = documentation_types;
 	}
 
 

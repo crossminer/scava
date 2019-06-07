@@ -466,10 +466,20 @@
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
     </module>
     <module>
+
     	platform-extensions/org.eclipse.scava.platform.communicationchannel.mbox
     </module>
     <module>
     	platform-extensions/org.eclipse.scava.repository.model.cc.mbox
+	    </module><module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.classification
+    </module>
+    
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.documentation
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.license
     </module>
   </modules>
   <build>

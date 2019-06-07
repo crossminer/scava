@@ -38,8 +38,14 @@ public class DocumentationSystematicManager implements ICommunicationChannelMana
 		documentation.setUrl(documentationSystematic.getUrl());
 		documentation.setDateDelta(date.toJavaDate());
 		documentation.setNextExecutionDate(getNextDateExecution(date, documentationSystematic.getExecutionFrequency()));
-		
-		if(!documentationSystematic.getUsername().isEmpty() && !documentationSystematic.getPassword().isEmpty())
+		boolean authetication=true;
+		if(documentationSystematic.getUsername()==null && documentationSystematic.getPassword()==null)
+			authetication=false;
+		else if(documentationSystematic.getUsername().equals("null") && documentationSystematic.getPassword().equals("null"))
+			authetication=false;
+		else if(documentationSystematic.getUsername().isEmpty() && documentationSystematic.getPassword().isEmpty())
+			authetication=false;		
+		if(authetication)
 		{
 			try {
 				if(documentationSystematic.getUsernameFieldName().isEmpty())
