@@ -163,11 +163,11 @@
 						   <p></p>
 						   <table class="table table-striped table-bordered" id="log-table">
 						      <thead class="thead-dark">
-						       		"<tr>" +
-						            <th>Creation</th>
-						            <th><span class="badge badge-secondary">Severity</span></th>
-						            <th>Message</th>
-						       		"</tr>" +
+						       		<tr>
+							            <th>Creation</th>
+							            <th><span class="badge badge-secondary">Severity</span></th>
+							            <th>Message</th>
+						       		</tr>
 						      </thead>
 						      <tbody id="log-table-body">
 						      </tbody>
