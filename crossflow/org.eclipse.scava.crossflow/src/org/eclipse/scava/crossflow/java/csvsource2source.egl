@@ -9,6 +9,9 @@
 package [%=package%];
 
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+
+import java.io.File;
+
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
@@ -19,7 +22,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 	@Override
 	public void produce() {
 		try {
-			final CsvParser parser = new CsvParser("[%=t.fileName%]");
+			final CsvParser parser = new CsvParser(new File(workflow.getInputDirectory(), "[%=t.fileName%]").getAbsolutePath());
 			records = parser.getRecordsIterable();
 		
 			for (CSVRecord record : records) {

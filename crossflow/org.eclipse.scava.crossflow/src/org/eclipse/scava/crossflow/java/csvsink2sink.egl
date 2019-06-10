@@ -8,6 +8,8 @@
 %]
 package [%=package%];
 
+import java.io.File;
+
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
@@ -23,7 +25,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 		try {
 			[% for (s in t.input) {%]
 			if ( writer[%=loopCount%] == null ) {
-				writer[%=loopCount%] = new CsvWriter("[%=t.fileName%]", [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
+				writer[%=loopCount%] = new CsvWriter(new File(workflow.getOutputDirectory(), "[%=t.fileName%]").getAbsolutePath(), [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] "cached");
 			}
 			[%}%]
 		
