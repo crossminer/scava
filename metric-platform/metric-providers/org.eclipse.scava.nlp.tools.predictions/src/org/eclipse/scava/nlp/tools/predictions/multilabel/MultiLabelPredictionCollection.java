@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 public class MultiLabelPredictionCollection
 {
-	List<MultiLabelPrediction> data;
-	Boolean idsSet=null;
-	boolean predictionSet=false;
+	protected List<MultiLabelPrediction> data;
+	protected Boolean idsSet=null;
+	protected boolean predictionSet=false;
 		
 	public MultiLabelPredictionCollection()
 	{

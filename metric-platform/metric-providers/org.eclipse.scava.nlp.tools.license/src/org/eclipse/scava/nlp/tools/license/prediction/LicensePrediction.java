@@ -2,13 +2,17 @@ package org.eclipse.scava.nlp.tools.license.prediction;
 
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction;
 
-public class SingleLabelLicenseAnalyserResult extends SingleLabelPrediction{
+public class LicensePrediction extends SingleLabelPrediction{
 
 	private Boolean licenseFound, isHeader, isGroup;
 	private double score, ngramsMatchedPercent;
 	private String licenseName, licenseGroup;
 	
-	public SingleLabelLicenseAnalyserResult(Object id, String text) {
+	public LicensePrediction(String text) {
+		super(text);	
+	}
+	
+	public LicensePrediction(Object id, String text) {
 		super(id, text);
 		
 	}

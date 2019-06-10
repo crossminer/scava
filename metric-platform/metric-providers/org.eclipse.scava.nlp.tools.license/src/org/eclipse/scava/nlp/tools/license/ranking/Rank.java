@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.tools.license.ranking;
 
-import org.eclipse.scava.nlp.tools.license.prediction.SingleLabelLicenseAnalyserResult;
+import org.eclipse.scava.nlp.tools.license.prediction.LicensePrediction;
 
 public class Rank {
 	
@@ -59,7 +59,7 @@ public class Rank {
 	}
 	
 	
-	public SingleLabelLicenseAnalyserResult toPrediction(SingleLabelLicenseAnalyserResult prediction) {
+	public LicensePrediction toPrediction(LicensePrediction prediction) {
 		
 		prediction.setLabel(this.getName());
 		prediction.setLicenseName(this.getName());

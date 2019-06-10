@@ -32,8 +32,17 @@ public class Ranking {
 		// lets first remove all entries from the whose score is maximum no match value
 		// as these are not interesting and that fall below the threshold
 		double noMatchValue = ngramsInSource * modifier;
-		while (scores.values().remove(noMatchValue))
-			;
+		
+		scores.values().removeIf(v-> v==noMatchValue);
+		
+		ngramsMatched.keySet().removeIf(k -> !scores.containsKey(k));
+		ngramsMatched.values().removeIf(v -> v<5);
+		
+		scores.keySet().removeIf(k-> !ngramsMatched.containsKey(k));
+		
+		
+		
+		List<String> rankedLicencesPerNgramsMatched = rankNgramsMatched(ngramsMatched);
 
 		// then lets also remove instances where the min number of ngrams for the
 		// smallest license in the group < 50%
@@ -57,8 +66,15 @@ public class Ranking {
 
 			});
 
-			double result = (double) ngramsMatched.get(entry.getKey()) / (double) lowestNgramCount.get();
-
+			
+			double result=0.0;
+			if(rankedLicencesPerNgramsMatched.contains(entry.getKey()))
+			{
+				result = (double) ngramsMatched.get(entry.getKey()) / (double) lowestNgramCount.get();
+			
+				result += ((double) rankedLicencesPerNgramsMatched.indexOf(entry.getKey())+1)/ (double) rankedLicencesPerNgramsMatched.size();
+				result /=2.0;
+			}
 			if (result < threshold) {
 
 				keysToBeRemoved.add(entry.getKey());
@@ -69,6 +85,13 @@ public class Ranking {
 		keysToBeRemoved.stream().forEach(key -> scores.remove(key));
 
 		return rankScores(scores, ngramsInSource, ngramsMatched, modifier);
+	}
+	
+	private static List<String> rankNgramsMatched(Map<String, Integer> ngramsMatched)
+	{
+		List<String> licenseName = new ArrayList<>(ngramsMatched.size()); 
+		ngramsMatched.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(e -> licenseName.add(e.getKey()));
+		return licenseName;
 	}
 
 	public static Map<String, Rank> calculateHeaderRank(Map<String, Double> scores, Map<String, Integer> ngramsMatched,

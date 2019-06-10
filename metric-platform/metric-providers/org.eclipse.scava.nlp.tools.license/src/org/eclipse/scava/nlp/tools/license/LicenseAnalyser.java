@@ -13,13 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.scava.nlp.tools.license.prediction.SingleLabelLicenseAnalyserResult;
+import org.eclipse.scava.nlp.tools.license.prediction.LicensePrediction;
+import org.eclipse.scava.nlp.tools.license.prediction.LicensePredictionCollection;
 import org.eclipse.scava.nlp.tools.license.processing.NgramTokeniser;
 import org.eclipse.scava.nlp.tools.license.processing.TextProcessor;
 import org.eclipse.scava.nlp.tools.license.ranking.Rank;
 import org.eclipse.scava.nlp.tools.license.ranking.Ranking;
 import org.eclipse.scava.nlp.tools.license.utils.Utils;
-
+import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
@@ -32,7 +33,7 @@ public class LicenseAnalyser {
 
 	static {
 
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.LicenseAnalyser");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.classifiers.licenseclassifier");
 		groupLanguageModel = LicenseAnalyserSingleton.getInstance().getGroupLicenseModel();
 
 		singleLanguageModel = LicenseAnalyserSingleton.getInstance().getIndividualLicenseModel();
@@ -58,34 +59,40 @@ public class LicenseAnalyser {
 		return headerLanguageModel;
 	}
 
-	public static SingleLabelPredictionCollection predict(SingleLabelPredictionCollection textCollection) {
-		//TODO Adrián to populate once he has modified the collection
-		return null;
+	public static SingleLabelPredictionCollection predict(LicensePredictionCollection licensePredictionCollection) {
+		boolean predictionsSet = false;
+		for(SingleLabelPrediction licensePrediction : licensePredictionCollection.getPredictionCollection())
+		{
+			predict((LicensePrediction) licensePrediction);
+			if(predictionsSet==false)
+				predictionsSet=true;
+		}
+		licensePredictionCollection.setPredictionSet(predictionsSet);
+		return licensePredictionCollection;
 	}
 
-	public static SingleLabelLicenseAnalyserResult predict(SingleLabelLicenseAnalyserResult singleLabelPrediction) {
+	public static LicensePrediction predict(LicensePrediction licensePrediction) {
 
 
-		if (!singleLabelPrediction.getText().isEmpty()) {
+		if (!licensePrediction.getText().isEmpty()) {
 			TextProcessor processedText;
 			NgramTokeniser tokens;
 
-			processedText = new TextProcessor(singleLabelPrediction.getText());
-			processedText.getProcessedText();
+			processedText = new TextProcessor(licensePrediction.getText());
 			tokens = new NgramTokeniser(processedText.getProcessedText());
 
-			return analyse(tokens.getNgrams(), singleLabelPrediction);
+			return analyse(tokens.getNgrams(), licensePrediction);
 
 		} else {
 
-			singleLabelPrediction.setLabel("no license found");
-			singleLabelPrediction.setLicenseFound(false);
-			return singleLabelPrediction;
+			licensePrediction.setLabel("No license found");
+			licensePrediction.setLicenseFound(false);
+			return licensePrediction;
 		}
 	}
 
-	private static SingleLabelLicenseAnalyserResult analyse(List<String> ngrams,
-			SingleLabelLicenseAnalyserResult singleLabelPrediction) {
+	private static LicensePrediction analyse(List<String> ngrams,
+			LicensePrediction lincensePrediction) {
 
 		logger.info("Starting License Analysis");
 
@@ -108,11 +115,11 @@ public class LicenseAnalyser {
 
 				Rank topIndividual = Ranking.getTopRank(indiviudalRankings);
 
-				singleLabelPrediction = topIndividual.toPrediction(singleLabelPrediction);
-				singleLabelPrediction.setIsGroup(false);
-				singleLabelPrediction.setIsHeader(false);
-				singleLabelPrediction.setLicenseFound(true);
-				singleLabelPrediction.setLicenseGroup(groupName);
+				lincensePrediction = topIndividual.toPrediction(lincensePrediction);
+				lincensePrediction.setIsGroup(false);
+				lincensePrediction.setIsHeader(false);
+				lincensePrediction.setLicenseFound(true);
+				lincensePrediction.setLicenseGroup(groupName);
 
 				logger.info("Analysing those licenses that have headers");
 				headerRankings = analyseLicenseHeaders(indiviudalRankings, ngrams);
@@ -123,38 +130,35 @@ public class LicenseAnalyser {
 
 					if (topHeader.getScore() > topIndividual.getScore()) {
 
-						singleLabelPrediction = topHeader.toPrediction(singleLabelPrediction);
-						singleLabelPrediction.setIsGroup(false);
-						singleLabelPrediction.setIsHeader(true);
-						singleLabelPrediction.setLicenseFound(true);
-						singleLabelPrediction.setLicenseGroup(groupName);
+						lincensePrediction = topHeader.toPrediction(lincensePrediction);
+						lincensePrediction.setIsGroup(false);
+						lincensePrediction.setIsHeader(true);
+						lincensePrediction.setLicenseFound(true);
+						lincensePrediction.setLicenseGroup(groupName);
 
-						return singleLabelPrediction;// returns header
+						return lincensePrediction;// returns header
 
-					} else {
-
-						return singleLabelPrediction;// returns individual license
-
-					}
+					} 
 				}
+
+				return lincensePrediction;// returns individual license
+
 			} else {
 
-				singleLabelPrediction = topGroup.toPrediction(singleLabelPrediction);
-				singleLabelPrediction.setLicenseFound(true);
-				singleLabelPrediction.setIsGroup(true);
-				singleLabelPrediction.setLicenseGroup(groupName);
+				lincensePrediction = topGroup.toPrediction(lincensePrediction);
+				lincensePrediction.setLicenseFound(true);
+				lincensePrediction.setIsGroup(true);
+				lincensePrediction.setLicenseGroup(groupName);
 
-				return singleLabelPrediction; // returns group
+				return lincensePrediction; // returns group
 			}
 
 		}
-
-		singleLabelPrediction.setLabel("no license found");
-		singleLabelPrediction.setLicenseFound(false);
-		singleLabelPrediction.setIsGroup(false);
-		singleLabelPrediction.setLicenseGroup("");
-
-		return singleLabelPrediction;// nothing found
+		lincensePrediction.setLabel("no license found");
+		lincensePrediction.setLicenseFound(false);
+		lincensePrediction.setIsGroup(false);
+		lincensePrediction.setLicenseGroup("");
+		return lincensePrediction;// nothing found
 	}
 
 	private static Map<String, Rank> analyseLicenseHeaders(Map<String, Rank> headerRankings, List<String> ngrams) {
@@ -260,8 +264,113 @@ public class LicenseAnalyser {
 
 	public static void main(String[] args) {
 
-		// empty
-		String test0 = "";
+		
+		String test0 = "\"\"\"Load configuration from guesslang `config` directory\"\"\"\n" + 
+				"\n" + 
+				"import json\n" + 
+				"import logging.config\n" + 
+				"from pathlib import Path\n" + 
+				"import platform\n" + 
+				"from typing import cast, Dict, Any, Tuple, Optional\n" + 
+				"\n" + 
+				"from pkg_resources import (\n" + 
+				"    Requirement, resource_string, resource_filename, DistributionNotFound)\n" + 
+				"\n" + 
+				"import tensorflow as tf\n" + 
+				"\n" + 
+				"\n" + 
+				"LOGGER = logging.getLogger(__name__)\n" + 
+				"\n" + 
+				"PACKAGE = Requirement.parse('guesslang')\n" + 
+				"DATADIR = 'guesslang/data/{}'\n" + 
+				"DATA_FALLBACK = Path(__file__).parent.joinpath('data')\n" + 
+				"\n" + 
+				"\n" + 
+				"class ColorLogFormatter(logging.Formatter):\n" + 
+				"    \"\"\"Logging formatter that prints pretty colored log messages\"\"\"\n" + 
+				"\n" + 
+				"    STYLE = {\n" + 
+				"        # Log messages styles\n" + 
+				"        'DEBUG': '\\033[94m',\n" + 
+				"        'INFO': '\\033[0m',\n" + 
+				"        'WARNING': '\\033[93m',\n" + 
+				"        'ERROR': '\\033[1;91m',\n" + 
+				"        'CRITICAL': '\\033[1;95m',\n" + 
+				"        # Other styles\n" + 
+				"        'LEVEL': '\\033[1m',\n" + 
+				"        'END': '\\033[0m',\n" + 
+				"    }\n" + 
+				"\n" + 
+				"    def format(self, record: logging.LogRecord) -> str:\n" + 
+				"        \"\"\"Format log records to produce colored messages.\n" + 
+				"        :param record: log record\n" + 
+				"        :return: log message\n" + 
+				"        \"\"\"\n" + 
+				"        if platform.system() != 'Linux':  # Avoid funny logs on Windows & MacOS\n" + 
+				"            return super().format(record)\n" + 
+				"\n" + 
+				"        record.msg = (\n" + 
+				"            self.STYLE[record.levelname] + record.msg + self.STYLE['END'])\n" + 
+				"        record.levelname = (\n" + 
+				"            self.STYLE['LEVEL'] + record.levelname + self.STYLE['END'])\n" + 
+				"        return super().format(record)\n" + 
+				"\n" + 
+				"\n" + 
+				"def config_logging(debug: bool = False) -> None:\n" + 
+				"    \"\"\"Set-up application and `tensorflow` logging.\n" + 
+				"    :param debug: show or hide debug messages\n" + 
+				"    \"\"\"\n" + 
+				"    if debug:\n" + 
+				"        level = 'DEBUG'\n" + 
+				"        tf_level = tf.logging.INFO\n" + 
+				"    else:\n" + 
+				"        level = 'INFO'\n" + 
+				"        tf_level = tf.logging.ERROR\n" + 
+				"\n" + 
+				"    logging_config = config_dict('logging.json')\n" + 
+				"    for logger in logging_config['loggers'].values():\n" + 
+				"        logger['level'] = level\n" + 
+				"\n" + 
+				"    logging.config.dictConfig(logging_config)\n" + 
+				"    tf.logging.set_verbosity(tf_level)\n" + 
+				"\n" + 
+				"\n" + 
+				"def config_dict(name: str) -> Dict[str, Any]:\n" + 
+				"    \"\"\"Load a JSON configuration dict from Guesslang config directory.\n" + 
+				"    :param name: the JSON file name.\n" + 
+				"    :return: configuration\n" + 
+				"    \"\"\"\n" + 
+				"    try:\n" + 
+				"        content = resource_string(PACKAGE, DATADIR.format(name)).decode()\n" + 
+				"    except DistributionNotFound as error:\n" + 
+				"        LOGGER.warning(\"Cannot load %s from packages: %s\", name, error)\n" + 
+				"        content = DATA_FALLBACK.joinpath(name).read_text()\n" + 
+				"\n" + 
+				"    return cast(Dict[str, Any], json.loads(content))\n" + 
+				"\n" + 
+				"\n" + 
+				"def model_info(model_dir: Optional[str] = None) -> Tuple[str, bool]:\n" + 
+				"    \"\"\"Retrieve Guesslang model directory name,\n" + 
+				"    and tells if it is the default model.\n" + 
+				"    :param model_dir: model location, if `None` default model is selected\n" + 
+				"    :return: selected model directory with an indication\n" + 
+				"        that the model is the default or not\n" + 
+				"    \"\"\"\n" + 
+				"    if model_dir is None:\n" + 
+				"        try:\n" + 
+				"            model_dir = resource_filename(PACKAGE, DATADIR.format('model'))\n" + 
+				"        except DistributionNotFound as error:\n" + 
+				"            LOGGER.warning(\"Cannot load model from packages: %s\", error)\n" + 
+				"            model_dir = str(DATA_FALLBACK.joinpath('model').absolute())\n" + 
+				"        is_default_model = True\n" + 
+				"    else:\n" + 
+				"        is_default_model = False\n" + 
+				"\n" + 
+				"    model_path = Path(model_dir)\n" + 
+				"    model_path.mkdir(exist_ok=True)\n" + 
+				"    LOGGER.debug(\"Using model: %s, default: %s\", model_path, is_default_model)\n" + 
+				"\n" + 
+				"return (model_dir, is_default_model)";
 
 		// GPL (header)
 		String test1 = "# Copyright (C) 2009-2015 Luis Adrián Cabrera-Diego;Juan-Manuel Torres-Moreno\n" + "#\n"
@@ -510,34 +619,129 @@ public class LicenseAnalyser {
 				+ "  look for such a notice.\n" + "\n"
 				+ "You may add additional accurate notices of copyright ownership.";
 
-		SingleLabelLicenseAnalyserResult prediction0 = new SingleLabelLicenseAnalyserResult("0", test0);
+		String test4= "BSD License\n" + 
+				"\n" + 
+				"For fastText software\n" + 
+				"\n" + 
+				"Copyright (c) 2016-present, Facebook, Inc. All rights reserved.\n" + 
+				"\n" + 
+				"Redistribution and use in source and binary forms, with or without modification,\n" + 
+				"are permitted provided that the following conditions are met:\n" + 
+				"\n" + 
+				" * Redistributions of source code must retain the above copyright notice, this\n" + 
+				"   list of conditions and the following disclaimer.\n" + 
+				"\n" + 
+				" * Redistributions in binary form must reproduce the above copyright notice,\n" + 
+				"   this list of conditions and the following disclaimer in the documentation\n" + 
+				"   and/or other materials provided with the distribution.\n" + 
+				"\n" + 
+				" * Neither the name Facebook nor the names of its contributors may be used to\n" + 
+				"   endorse or promote products derived from this software without specific\n" + 
+				"   prior written permission.\n" + 
+				"\n" + 
+				"THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n" + 
+				"ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n" + 
+				"WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n" + 
+				"DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR\n" + 
+				"ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n" + 
+				"(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n" + 
+				"LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\n" + 
+				"ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n" + 
+				"(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n" + 
+				"SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
+		
+		String test5="The contents of this file are subject to the Mozilla Public License\n" + 
+				"Version 1.1 (the \"License\"); you may not use this file except in\n" + 
+				"compliance with the License. You may obtain a copy of the License at\n" + 
+				"https://www.mozilla.org/MPL/\n" + 
+				"\n" + 
+				"Software distributed under the License is distributed on an \"AS IS\"\n" + 
+				"basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the\n" + 
+				"License for the specific language governing rights and limitations\n" + 
+				"under the License.\n" + 
+				"\n";
+				/*"The Original Code is from Edge Hill University.\n" + 
+				"\n" + 
+				"The Initial Developer of the Original Code is Daniel Campbell.\n" + 
+				"Portions created by Luis Adrián Cabrera Diego are Copyright (C) Edge Hill University. All Rights Reserved.\n" + 
+				"\n" + 
+				"Contributor(s): Daniel Campbell, Luis Adrián Cabrera Diego.\n" + 
+				"\n" + 
+				"Alternatively, the contents of this file may be used under the terms\n" + 
+				"of the BLABLABLA license (the  \"BLABLABLA License\"), in which case the\n" + 
+				"provisions of BLABLABLA License are applicable instead of those\n" + 
+				"above. If you wish to allow use of your version of this file only\n" + 
+				"under the terms of the BLABLABLA License and not to allow others to use\n" + 
+				"your version of this file under the MPL, indicate your decision by\n" + 
+				"deleting the provisions above and replace them with the notice and\n" + 
+				"other provisions required by the BLABLABLA License. If you do not delete\n" + 
+				"the provisions above, a recipient may use your version of this file\n" + 
+				"under either the MPL or the BLABLABLA License.";*/
+		
+		String test6 = "The MIT License (MIT)\n" + 
+				"\n" + 
+				"Copyright (c) 2017 Y. SOMDA\n" + 
+				"\n" + 
+				"Permission is hereby granted, free of charge, to any person obtaining a copy\n" + 
+				"of this software and associated documentation files (the \"Software\"), to deal\n" + 
+				"in the Software without restriction, including without limitation the rights\n" + 
+				"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n" + 
+				"copies of the Software, and to permit persons to whom the Software is\n" + 
+				"furnished to do so, subject to the following conditions:\n" + 
+				"\n" + 
+				"The above copyright notice and this permission notice shall be included in all\n" + 
+				"copies or substantial portions of the Software.\n" + 
+				"\n" + 
+				"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" + 
+				"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" + 
+				"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" + 
+				"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" + 
+				"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" + 
+				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n" + 
+				"SOFTWARE.";
+		
+		LicensePredictionCollection collection = new LicensePredictionCollection(4);
+		
+		/*collection.addText("0", test0);
+		collection.addText("1", test1);
+		collection.addText("2", test2);
+		collection.addText("3", test3);
+		collection.addText("4", test4);
+		collection.addText("5", test5);*/
+		collection.addText("6", test6);
+		
+		LicenseAnalyser.predict(collection);
+		
+		/*LicensePrediction prediction0 = new LicensePrediction("0", test0);
 		prediction0 = LicenseAnalyser.predict(prediction0);
 
-		SingleLabelLicenseAnalyserResult prediction1 = new SingleLabelLicenseAnalyserResult("1", test1);
+		LicensePrediction prediction1 = new LicensePrediction("1", test1);
 		prediction1 = LicenseAnalyser.predict(prediction1);
 
-		SingleLabelLicenseAnalyserResult prediction2 = new SingleLabelLicenseAnalyserResult("2", test2);
+		LicensePrediction prediction2 = new LicensePrediction("2", test2);
 		prediction2 = LicenseAnalyser.predict(prediction2);
 
-		SingleLabelLicenseAnalyserResult prediction3 = new SingleLabelLicenseAnalyserResult("3", test3);
-		prediction3 = LicenseAnalyser.predict(prediction3);
+		LicensePrediction prediction3 = new LicensePrediction("3", test3);
+		prediction3 = LicenseAnalyser.predict(prediction3);*/
 
 		System.out.println("\nExample Results:");
 
-		{
-			System.err.println("Prediction 0 : Has a license been found? " + prediction0.getLicenseFound());
+		/*System.err.println("Prediction 0 : Has a license been found? " + prediction0.getLicenseFound());
 
-			System.err.println("Prediction 1 : We have found a license belonging to the group "
-					+ prediction1.getLicenseGroup() + ". We believe it is the license is ["
-					+ prediction1.getLicenseName() + "]. Is it a header? (" + prediction1.getIsHeader() + ")");
+		System.err.println("Prediction 1 : We have found a license belonging to the group "
+				+ prediction1.getLicenseGroup() + ". We believe it is the license is ["
+				+ prediction1.getLicenseName() + "]. Is it a header? (" + prediction1.getIsHeader() + ")");
 
-			System.err.println("Prediction 2 : This text matched a total of " + prediction2.getNgramsMatchedPercent()
-					+ " ngrams. Did it match any licenses? (" + prediction2.getLicenseFound() + ")");
+		System.err.println("Prediction 2 : This text matched a total of " + prediction2.getNgramsMatchedPercent()
+				+ " ngrams. Did it match any licenses? (" + prediction2.getLicenseFound() + ")");
 
-			System.err.println("Prediction 3 : We have found a " + prediction3.getLicenseName()
-					+ " license. It recieved a score of" + prediction3.getScore());
+		System.err.println("Prediction 3 : We have found a " + prediction3.getLicenseName()
+				+ " license. It recieved a score of" + prediction3.getScore());*/
+		
+		HashMap<Object, String> output = collection.getIdsWithPredictedLabel();
+		
+		System.out.println("Finished");
 
-		}
 	}
 
 }
