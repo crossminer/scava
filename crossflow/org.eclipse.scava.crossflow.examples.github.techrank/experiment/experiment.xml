@@ -2,8 +2,8 @@
 	title="TechrankWorkflow"
 	class="org.eclipse.scava.crossflow.examples.github.techrank.TechrankWorkflow"
 	jar="org.eclipse.scava.crossflow.examples.github.techrank.jar"
-	input="experiment/in"
-	output="experiment/out"
+	input="in"
+	output="out"
 	summary="Optional summary of the Experiment goes here."
 	webServer="localhost:8080"
 >

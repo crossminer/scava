@@ -2,8 +2,8 @@
 	title="Word Count"
 	class="org.eclipse.scava.crossflow.tests.wordcount.WordCountWorkflow"
 	jar="org.eclipse.scava.crossflow.tests.jar"
-	input="experiment/in"
-	output="experiment/out"
+	input="in"
+	output="out"
 	summary="Counts the frequencies of words in a set of text files and displays the 100 most frequent of them."
 	>
 	<output path="output.csv" title="Results"/>

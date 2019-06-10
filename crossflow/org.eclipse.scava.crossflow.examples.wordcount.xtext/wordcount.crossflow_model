@@ -19,7 +19,7 @@ Workflow WordCountWorkflow {
 	}// streams
 	
 	tasks {
-		Source LineSource {
+		masterOnly Source LineSource {
 			output (Lines)
 			languages(Java)
 		}
@@ -33,7 +33,7 @@ Workflow WordCountWorkflow {
 			output (Filtered)
 			languages(Python)
 		}
-		Sink WordCountSink {
+		masterOnly Sink WordCountSink {
 			input (Filtered)
 			languages(Java)
 		}

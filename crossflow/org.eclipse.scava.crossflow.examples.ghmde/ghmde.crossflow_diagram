@@ -9,8 +9,8 @@
     <tasks xmi:type="cf:Task" xmi:id="_CYC3MIXrEemNI_lvasQPzQ" name="RepositoryCloner" input="_9MhNgIXqEemNI_lvasQPzQ" output="_-L0HUIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:Task" xmi:id="_EIlnwIXrEemNI_lvasQPzQ" name="RepositoryFileCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
     <tasks xmi:type="cf:Task" xmi:id="_E3sJcIXrEemNI_lvasQPzQ" name="RepositoryAuthorCounter" input="_-L0HUIXqEemNI_lvasQPzQ" output="_-6tNoIXqEemNI_lvasQPzQ" languages="_IXb74IXtEemNI_lvasQPzQ"/>
-    <tasks xmi:type="cf:CsvSink" xmi:id="_1i9IMIX3EemY8JuncGZEaw" name="RepositoryResultSink" input="_-6tNoIXqEemNI_lvasQPzQ" fileName="output.csv"/>
-    <tasks xmi:type="cf:CsvSource" xmi:id="_5SNoMIX3EemY8JuncGZEaw" name="MDETechnologyTupleSource" output="_zfo4gIXqEemNI_lvasQPzQ" fileName="input.csv"/>
+    <tasks xmi:type="cf:CsvSink" xmi:id="_1i9IMIX3EemY8JuncGZEaw" name="RepositoryResultSink" input="_-6tNoIXqEemNI_lvasQPzQ" masterOnly="true" fileName="output.csv"/>
+    <tasks xmi:type="cf:CsvSource" xmi:id="_5SNoMIX3EemY8JuncGZEaw" name="MDETechnologyTupleSource" output="_zfo4gIXqEemNI_lvasQPzQ" masterOnly="true" fileName="input.csv"/>
     <types xmi:type="cf:Type" xmi:id="_Ho1bYIXrEemNI_lvasQPzQ" name="Repository" isMany="true" extending="_N9oaQIXrEemNI_lvasQPzQ">
       <fields xmi:type="cf:Field" xmi:id="_M6QRsIXrEemNI_lvasQPzQ" name="url"/>
       <fields xmi:type="cf:Field" xmi:id="_F3YcIIX8EemY8JuncGZEaw" name="name"/>

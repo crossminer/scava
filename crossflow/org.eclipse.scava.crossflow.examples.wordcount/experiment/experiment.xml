@@ -2,14 +2,13 @@
 	title="WordCountWorkflow"
 	class="org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow"
 	jar="org.eclipse.scava.crossflow.examples.wordcount.jar"
-	input="experiment/in"
-	output="experiment/out"
-	summary="Optional summary of the Experiment goes here."
+	input="in"
+	output="out"
+	summary="Word Frequency Counter Workflow."
 	webServer="localhost:8080"
 >
-	<input path="input.csv" title="Input"/>
-	<output path="output.csv" title="Output"/>
+	<output path="output.csv" title="Result"/>
 	<description>
-		Optional description of the Experiment goes here.
+		Counts the frequencies of words in a set of text files and displays them sorted by frequency of occurrence.
 	</description>
 </experiment>

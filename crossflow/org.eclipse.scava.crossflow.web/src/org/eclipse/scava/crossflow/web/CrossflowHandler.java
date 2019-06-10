@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -321,8 +322,13 @@ public class CrossflowHandler implements Crossflow.Iface {
 	
 	protected FileDescriptor elementToFileDescriptor(Element element) {
 		FileDescriptor fileDescriptor = new FileDescriptor();
-		fileDescriptor.setPath(element.getAttribute("path"));
 		fileDescriptor.setTitle(element.getAttribute("title"));
+		Element parentElem = (Element) element.getParentNode();
+		if ( parentElem.getAttribute(element.getNodeName()) != null ) {
+			fileDescriptor.setPath(Paths.get(parentElem.getAttribute(element.getNodeName()), element.getAttribute("path")).toString());			
+		} else {
+			fileDescriptor.setPath(element.getAttribute("path"));			
+		}
 		return fileDescriptor;
 	}
 }

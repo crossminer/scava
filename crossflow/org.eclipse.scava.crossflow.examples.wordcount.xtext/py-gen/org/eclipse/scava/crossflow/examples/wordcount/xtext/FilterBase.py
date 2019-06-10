@@ -5,6 +5,8 @@ from org.eclipse.scava.crossflow.utils.basic_xstream import getSimpleClassName
 from org.eclipse.scava.crossflow.runtime import FailedJob
 from org.eclipse.scava.crossflow.runtime import Task
 
+from org.eclipse.scava.crossflow.examples.wordcount.xtext.WordFrequency import WordFrequency
+
 
 class FilterBase(Task):
 

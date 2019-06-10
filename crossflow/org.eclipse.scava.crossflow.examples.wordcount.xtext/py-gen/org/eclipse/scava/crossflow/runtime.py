@@ -618,7 +618,14 @@ class BuiltinStream(object):
         return self.name + "." + self.workflow.getInstanceId()
     
     def init(self):
-        self.connection = stomp.Connection(self.workflow.getBroker())
+        self.connection = stomp.Connection(
+            host_and_ports=self.workflow.getBroker(),
+            reconnect_sleep_initial=15,
+            reconnect_sleep_increase=0.0,
+            reconnect_sleep_jitter=0.0,
+            reconnect_sleep_max=15.0,
+            reconnect_attempts_max=-1
+        )
         self.connection.start()
         self.connection.connect(wait=True)  # add credentials?
 
@@ -1124,46 +1131,37 @@ class Workflow(object):
     classdocs
     '''
 
-    def __init__(self, params=None, mode=None, createBroker=None, name=None):
+    def __init__(self,
+                 name='',
+                 cache=None,
+                 master='localhost',
+                 brokerHost=None,
+                 stompPort=61613,
+                 instanceId=None,
+                 mode=Mode.WORKER,
+                 cacheEnabled=True,
+                 deleteCache=None):
         '''
         Constructor
         '''        
-        # @Parameter(names =  "-name" , description = "The name of the workflow")
-        self.name = ''
-        if params != None and params.name != None:
-            self.name = params.name
-        elif name != None:
-            self.name = name
-        self.cache = None
-        # @Parameter(names =  "-master" , description = "IP of the master")
-        self.master = 'localhost'
-        if params != None and params.master != None:
-            self.master = params.master
-        # @Parameter(names =  "-brokerHost" , description = "IP of the broker")
-        self.brokerHost = 'localhost'
-        if params != None and params.brokerHost != None:
-            self.brokerHost = params.brokerHost
-        # @Parameter(names =  "-port" , description = "Port of the broker")
-        self.port = 61613
-        if params != None and params.port != None:
-            self. port = params.port
-        self.brokerService = None
-        # @Parameter(names =  "-instance" , description = "The instance of the master (to contribute to)")
-        self.instanceId = str(uuid.uuid4())
-        if params != None and params.instance != None:
-            self.instanceId = params.instance
-        # @Parameter(names =  "-mode" , description = "Must be master_bare, master or worker", converter = ModeConverter.class)
-        self.mode = Mode.MASTER;
-        if params != None and params.mode != None:
-            self.mode = params.mode
-        elif mode != None:
-            self.mode = mode
-        # @Parameter(names =  "-createBroker" , description = "Whether this workflow creates a broker or not.", arity = 1)
+        self.name = name
+        self.cache = cache
+        self.master = master
+        self.stompPort = stompPort
+        
+        if brokerHost is None:
+            self.brokerHost = master
+
+        self.instanceId = instanceId
+        if instanceId is None:
+            self.instanceId = str(uuid.uuid4())
+
+        self.mode = mode
+        self.cacheEnabled = cacheEnabled
+
+        # TODO: REMOVE THIS, KEPT IN UNTIL CODE REFACTOR CAN BE DONE NOT NEEDED UNLESS PYTHON MASTER REQUIRED
         self.createBroker = True
-        if params != None and params.createBroker != None:
-            self.createBroker = params.createBroker
-        elif createBroker != None:
-            self.createBroker = createBroker
+
         self.cacheEnabled = True
         self.activeJobs = []
         self.activeStreams = []
@@ -1333,16 +1331,14 @@ class Workflow(object):
     def getMaster(self): 
         return self.master
 
-    def getPort(self): 
-        return self.port
+    def getStompPort(self): 
+        return self.stompPort
 
-    def setPort(self, port): 
-        self.port = port
+    def setStompPort(self, stompPort): 
+        self.stompPort = stompPort
 
     def getBroker(self): 
-        # adds a more lenient delay for heavily loaded servers (60 instead of 10 sec)
-        # return "tcp://" + self.master + ":" + str(self.port) + "?wireFormat.maxInactivityDurationInitalDelay=60000"
-        return [(self.brokerHost, self.port)]
+        return [(self.brokerHost, self.stompPort)]
 
     def stopBroker(self): 
         self.brokerService.deleteAllMessages()

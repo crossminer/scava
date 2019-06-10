@@ -29,7 +29,7 @@ Workflow Ghmde {
 	
 	tasks {
 		
-		CsvSource MDETechnologyTupleSource {
+		masterOnly CsvSource MDETechnologyTupleSource {
 			fileName "input.csv"
 			output ( MDETechnologyTuples )
 			languages(Java)
@@ -59,7 +59,7 @@ Workflow Ghmde {
 			languages(Java)
 		}// RepositoryAuthorCounter
 		
-		CsvSink RepositoryResultSink {
+		masterOnly CsvSink RepositoryResultSink {
 			fileName "output.csv"
 			input ( RepositoryResults )
 			languages(Java)

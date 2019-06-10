@@ -4,8 +4,8 @@
     <streams xmi:type="cf:Queue" xmi:id="_yq47wHNoEemR4dUnJRQOBg" name="Lines" type="_HFU_oHNpEemR4dUnJRQOBg" inputOf="_wu8zgHNoEemR4dUnJRQOBg" outputOf="_vtMbkHNoEemR4dUnJRQOBg"/>
     <streams xmi:type="cf:Queue" xmi:id="_zltlQHNoEemR4dUnJRQOBg" name="WordFrequencies" type="_Pv6KIHNpEemR4dUnJRQOBg" inputOf="_gYdnYHcEEemqspYsNeYz4w" outputOf="_wu8zgHNoEemR4dUnJRQOBg"/>
     <streams xmi:type="cf:Queue" xmi:id="_h6eMsHcEEemqspYsNeYz4w" name="Filtered" type="_Pv6KIHNpEemR4dUnJRQOBg" inputOf="_wQeu0HNoEemR4dUnJRQOBg" outputOf="_gYdnYHcEEemqspYsNeYz4w"/>
-    <tasks xmi:type="cf:Source" xmi:id="_vtMbkHNoEemR4dUnJRQOBg" name="LineSource" output="_yq47wHNoEemR4dUnJRQOBg" languages="_mw7iIHcAEemkt6jvRKbpEA"/>
-    <tasks xmi:type="cf:Sink" xmi:id="_wQeu0HNoEemR4dUnJRQOBg" name="WordCountSink" input="_h6eMsHcEEemqspYsNeYz4w" languages="_mw7iIHcAEemkt6jvRKbpEA"/>
+    <tasks xmi:type="cf:Source" xmi:id="_vtMbkHNoEemR4dUnJRQOBg" name="LineSource" output="_yq47wHNoEemR4dUnJRQOBg" masterOnly="true" languages="_mw7iIHcAEemkt6jvRKbpEA"/>
+    <tasks xmi:type="cf:Sink" xmi:id="_wQeu0HNoEemR4dUnJRQOBg" name="WordCountSink" input="_h6eMsHcEEemqspYsNeYz4w" masterOnly="true" languages="_mw7iIHcAEemkt6jvRKbpEA"/>
     <tasks xmi:type="cf:Task" xmi:id="_wu8zgHNoEemR4dUnJRQOBg" name="WordCounter" input="_yq47wHNoEemR4dUnJRQOBg" output="_zltlQHNoEemR4dUnJRQOBg" multipleOutputs="true" languages="_mw7iIHcAEemkt6jvRKbpEA"/>
     <tasks xmi:type="cf:Task" xmi:id="_gYdnYHcEEemqspYsNeYz4w" name="Filter" input="_zltlQHNoEemR4dUnJRQOBg" output="_h6eMsHcEEemqspYsNeYz4w" languages="_PTFCoHfnEemgDr9JORHhZg"/>
     <types xmi:type="cf:Type" xmi:id="_HFU_oHNpEemR4dUnJRQOBg" name="Line">

@@ -72,10 +72,10 @@ public abstract class Workflow {
 
 	@Parameter(names = {
 			"-inputDirectory" }, description = "The input directory of the workflow.", converter = DirectoryConverter.class)
-	protected File inputDirectory = new File("experiment/in").getAbsoluteFile();
+	protected File inputDirectory = new File("in").getAbsoluteFile();
 	@Parameter(names = {
 			"-outputDirectory" }, description = "The output directory of the workflow.", converter = DirectoryConverter.class)
-	protected File outputDirectory = new File("experiment/out").getParentFile();
+	protected File outputDirectory = new File("out").getParentFile();
 	
 	@Parameter(names = {
 			"-disableTermination"}, description = "Flag to disable termination when queues are empty")
