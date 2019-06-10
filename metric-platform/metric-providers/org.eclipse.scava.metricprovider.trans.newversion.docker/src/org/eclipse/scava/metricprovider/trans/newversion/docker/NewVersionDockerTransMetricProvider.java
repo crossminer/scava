@@ -95,8 +95,6 @@ public class NewVersionDockerTransMetricProvider implements ITransientMetricProv
             
             String newVersion = testAptCache(dockerDependency.getDependencyName());
             
-            System.out.println("package " + dockerDependency.getDependencyName());
-            
             if(newVersion == null || dockerDependency.getDependencyVersion().equals("N/A"))
             		continue;
             
