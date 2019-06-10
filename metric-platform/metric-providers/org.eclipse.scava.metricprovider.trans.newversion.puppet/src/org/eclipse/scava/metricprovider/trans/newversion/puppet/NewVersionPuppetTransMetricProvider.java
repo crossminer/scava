@@ -90,9 +90,9 @@ public class NewVersionPuppetTransMetricProvider implements ITransientMetricProv
         
 		for (PuppetDependency puppetDependency: col) {
             
-            String newVersion = testAptCache(col.getName());
+            String newVersion = testAptCache(puppetDependency.getDependencyName());
             
-            if(newVersion == null)
+            if(newVersion == null || puppetDependency.getDependencyVersion().equals("N/A"))
             		continue;
             
             if(testNewerVersion(puppetDependency.getDependencyVersion(), newVersion)) {
@@ -146,6 +146,10 @@ public class NewVersionPuppetTransMetricProvider implements ITransientMetricProv
 		        
 				version = version.split("_")[0];
 				
+				if(version.contains(":")) {
+					version = version.split(":")[1];
+		        }
+				
 				return version;
 			} else
 				return null;
@@ -166,10 +170,17 @@ public class NewVersionPuppetTransMetricProvider implements ITransientMetricProv
         
         int length;
         
+        if(newVersionParts[0].contains(":")) {
+        	newVersionParts[0] = newVersionParts[0].split(":")[1];
+        }
+        
         if(oldVersionParts.length < newVersionParts.length)
             length = oldVersionParts.length;
         else
             length = newVersionParts.length;
+        
+        if(newVersionParts[0].contains("none"))
+        	return false;
         
         for(int i = 0; i < length; i++){
         	if(Integer.parseInt(newVersionParts[i]) > Integer.parseInt(oldVersionParts[i]))
