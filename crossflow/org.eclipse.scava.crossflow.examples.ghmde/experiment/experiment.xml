@@ -2,13 +2,13 @@
 	title="GitHub MDE Analysis"
 	class="org.eclipse.scava.crossflow.examples.ghmde.Ghmde"
 	jar="org.eclipse.scava.crossflow.examples.ghmde.jar"
-	input="in"
-	output="out"
+	input="experiment/in"
+	output="experiment/out"
 	summary="GitHub MDE Technologies Analysis Workflow."
 	webServer="localhost:8080"
 >
-	<input path="in/input.csv" title="Input"/>
-	<output path="out/output.csv" title="Output"/>
+	<input path="input.csv" title="Input"/>
+	<output path="output.csv" title="Output"/>
 	<description>
 		Analysis workflow querying GitHub for MDE technologies defined by file extension and keyword.
 	</description>

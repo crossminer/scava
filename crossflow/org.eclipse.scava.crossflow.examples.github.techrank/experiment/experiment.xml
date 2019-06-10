@@ -2,13 +2,13 @@
 	title="TechrankWorkflow"
 	class="org.eclipse.scava.crossflow.examples.github.techrank.TechrankWorkflow"
 	jar="org.eclipse.scava.crossflow.examples.github.techrank.jar"
-	input="in"
-	output="out"
+	input="experiment/in"
+	output="experiment/out"
 	summary="Optional summary of the Experiment goes here."
 	webServer="localhost:8080"
 >
-	<input path="in/input.csv" title="Input"/>
-	<output path="out/output.csv" title="Output"/>
+	<input path="input.csv" title="Input"/>
+	<output path="output.csv" title="Output"/>
 	<description>
 		Optional description of the Experiment goes here.
 	</description>

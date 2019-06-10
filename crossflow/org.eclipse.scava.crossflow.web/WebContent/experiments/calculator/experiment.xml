@@ -2,12 +2,12 @@
 	title="Calculator"
 	class="org.eclipse.scava.crossflow.tests.calculator.CalculatorWorkflow"
 	jar="org.eclipse.scava.crossflow.tests.jar"
-	input="in"
-	output="out"
+	input="experiment/in"
+	output="experiment/out"
 	summary="A minimal example that performs numerical operations defined in a comma-seprated values (CSV) file."
 	>
-	<input path="in/input.csv" title="Calculations"/>
-	<output path="out/output.csv" title="Results"/>
+	<input path="input.csv" title="Calculations"/>
+	<output path="output.csv" title="Results"/>
 	<description>
 		To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
 	</description>
