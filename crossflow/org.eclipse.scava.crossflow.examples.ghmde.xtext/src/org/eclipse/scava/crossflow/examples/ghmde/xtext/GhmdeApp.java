@@ -1,17 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2019 The University of York.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * Contributor(s):
+ *      Patrick Neubauer - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.scava.crossflow.examples.ghmde.xtext;
+
+import java.io.File;
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 
 public class GhmdeApp {
 
 	public static void main(String[] args) throws Exception {
 		
-		CloneUtils.removeRepoClones(GhmdeProperties.CLONE_PARENT_DESTINATION); 
+		//CloneUtils.removeRepoClones(GhmdeProperties.CLONE_PARENT_DESTINATION); 
 		
 		Ghmde master = new Ghmde(Mode.MASTER);
+		master.setInputDirectory(new File("experiment/in"));
+		master.setOutputDirectory(new File("experiment/out"));
 		master.setName("Master");
 		
 		Ghmde worker1 = new Ghmde(Mode.WORKER);

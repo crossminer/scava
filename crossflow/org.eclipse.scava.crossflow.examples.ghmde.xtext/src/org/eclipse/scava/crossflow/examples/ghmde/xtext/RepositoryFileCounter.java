@@ -56,8 +56,15 @@ public class RepositoryFileCounter extends RepositoryFileCounterBase {
 			if ( committedRepoMap.containsKey( repositoryClone.getUrl() ) ) {
 				// We have seen this job before and committed to handle it
 				committedRepoMap.replace( repositoryClone.getUrl(), committedRepoMap.get( repositoryClone.getUrl()) + 1 );
+				
 				int fileCount = count( repositoryClone );
+				repositoryResultInst.setFileExt( repositoryClone.getFileExt() );
+				repositoryResultInst.setTechKey( repositoryClone.getTechKey() );
+				repositoryResultInst.setUrl( repositoryClone.getUrl() );
+				repositoryResultInst.setName( repositoryClone.getName() );
+				repositoryResultInst.setLocalPath( repositoryClone.getLocalPath() );
 				repositoryResultInst.setFileCount( fileCount );
+				repositoryResultInst.setAuthorCount( -1 ); // placeholder value for sink
 			}
 			
 		}

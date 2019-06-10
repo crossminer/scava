@@ -1,15 +1,15 @@
 <experiment
-	title="GitHub MDE Analysis"
+	title="Ghmde"
 	class="org.eclipse.scava.crossflow.examples.ghmde.xtext.Ghmde"
 	jar="org.eclipse.scava.crossflow.examples.ghmde.xtext.jar"
 	input="in"
 	output="out"
-	summary="GitHub MDE Technologies Analysis Workflow."
+	summary="Optional summary of the Experiment goes here."
 	webServer="localhost:8080"
 >
 	<input path="input.csv" title="Input"/>
 	<output path="output.csv" title="Output"/>
 	<description>
-		Analysis workflow querying GitHub for MDE technologies defined by file extension and keyword.
+		Optional description of the Experiment goes here.
 	</description>
 </experiment>

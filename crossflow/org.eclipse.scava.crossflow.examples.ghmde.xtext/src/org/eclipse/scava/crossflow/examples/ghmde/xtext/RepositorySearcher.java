@@ -19,7 +19,6 @@ import org.eclipse.scava.crossflow.restmule.client.github.query.CodeSearchQuery;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubUtils;
 import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 
-
 public class RepositorySearcher extends RepositorySearcherBase {
 	
 protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
@@ -71,6 +70,8 @@ protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
 		for (SearchCode resultItem : repoFiles) {
 			org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode.Repository resultRepo = resultItem.getRepository();
 			
+			repositoryInst.setFileExt( tuple.getFileExt() );
+			repositoryInst.setTechKey( tuple.getTechKey() );
 			repositoryInst.setUrl( resultRepo.getHtmlUrl() );
 			repositoryInst.setName( resultRepo.getFullName() );
 			

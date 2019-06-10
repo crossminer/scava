@@ -31,9 +31,7 @@ public class RepositoryCloner extends RepositoryClonerBase {
 		
 		final String CLONE_SOURCE = repository.getUrl() + ".git";
 
-		final File CLONE_PARENT_DESTINATION = new File(
-				// level: eclipse project root directory
-				"I:" + File.separator + "cloned-repos");
+		final File CLONE_PARENT_DESTINATION = GhmdeProperties.CLONE_PARENT_DESTINATION;
 
 		final File CLONE_REPO_DESTINATION = new File(CLONE_PARENT_DESTINATION + File.separator
 				+ createUniqueFolderForRepo(repository.getName(), repository.getUrl()));
@@ -44,6 +42,11 @@ public class RepositoryCloner extends RepositoryClonerBase {
 		//
 
 		String clonedRepoLocalPath = CLONE_REPO_DESTINATION.getPath();
+		
+		repositoryCloneInst.setFileExt( repository.getFileExt() );
+		repositoryCloneInst.setTechKey( repository.getTechKey() );
+		repositoryCloneInst.setUrl( repository.getUrl() );
+		repositoryCloneInst.setName( repository.getName() );
 		repositoryCloneInst.setLocalPath(clonedRepoLocalPath);
 		
 		try {

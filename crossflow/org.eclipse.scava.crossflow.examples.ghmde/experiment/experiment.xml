@@ -1,7 +1,7 @@
 <experiment
 	title="GitHub MDE Analysis"
-	class="org.eclipse.scava.crossflow.examples.ghmde.xtext.Ghmde"
-	jar="org.eclipse.scava.crossflow.examples.ghmde.xtext.jar"
+	class="org.eclipse.scava.crossflow.examples.ghmde.Ghmde"
+	jar="org.eclipse.scava.crossflow.examples.ghmde.jar"
 	input="in"
 	output="out"
 	summary="GitHub MDE Technologies Analysis Workflow."

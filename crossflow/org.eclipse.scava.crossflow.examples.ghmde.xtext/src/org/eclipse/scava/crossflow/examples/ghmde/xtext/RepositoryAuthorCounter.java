@@ -57,7 +57,13 @@ public class RepositoryAuthorCounter extends RepositoryAuthorCounterBase {
 				// We have seen this job before and committed to handle it
 				committedRepoMap.replace( repositoryClone.getUrl(), committedRepoMap.get( repositoryClone.getUrl()) + 1 );
 				int authorCount = count( repositoryClone.getLocalPath() );
+				repositoryResultInst.setFileExt( repositoryClone.getFileExt() );
+				repositoryResultInst.setTechKey( repositoryClone.getTechKey() );
+				repositoryResultInst.setUrl( repositoryClone.getUrl() );
+				repositoryResultInst.setName( repositoryClone.getName() );
+				repositoryResultInst.setLocalPath( repositoryClone.getLocalPath() );
 				repositoryResultInst.setAuthorCount( authorCount );
+				repositoryResultInst.setFileCount( -1 ); // placeholder value for sink
 			}
 			
 		}
