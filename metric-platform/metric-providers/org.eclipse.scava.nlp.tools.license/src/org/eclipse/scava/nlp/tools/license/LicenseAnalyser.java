@@ -21,7 +21,6 @@ import org.eclipse.scava.nlp.tools.license.ranking.Rank;
 import org.eclipse.scava.nlp.tools.license.ranking.Ranking;
 import org.eclipse.scava.nlp.tools.license.utils.Utils;
 import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPrediction;
-import org.eclipse.scava.nlp.tools.predictions.singlelabel.SingleLabelPredictionCollection;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class LicenseAnalyser {
@@ -61,7 +60,7 @@ public class LicenseAnalyser {
 		return headerLanguageModel;
 	}
 
-	public static SingleLabelPredictionCollection predict(LicensePredictionCollection licensePredictionCollection) {
+	public static LicensePredictionCollection predict(LicensePredictionCollection licensePredictionCollection) {
 		boolean predictionsSet = false;
 		for(SingleLabelPrediction licensePrediction : licensePredictionCollection.getPredictionCollection())
 		{
@@ -87,7 +86,7 @@ public class LicenseAnalyser {
 
 		} else {
 
-			licensePrediction.setLabel("No license found");
+			licensePrediction.setLabel("");
 			licensePrediction.setLicenseFound(false);
 			return licensePrediction;
 		}
@@ -156,7 +155,7 @@ public class LicenseAnalyser {
 			}
 
 		}
-		lincensePrediction.setLabel("No license found");
+		lincensePrediction.setLabel("");
 		lincensePrediction.setLicenseFound(false);
 		lincensePrediction.setIsGroup(false);
 		lincensePrediction.setLicenseGroup("");

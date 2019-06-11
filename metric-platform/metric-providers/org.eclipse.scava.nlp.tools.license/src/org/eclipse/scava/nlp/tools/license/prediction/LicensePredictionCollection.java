@@ -1,6 +1,7 @@
 package org.eclipse.scava.nlp.tools.license.prediction;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.scava.nlp.tools.predictions.externalExtra.ExternalExtraFeaturesObject;
@@ -73,6 +74,17 @@ public class LicensePredictionCollection extends SingleLabelPredictionCollection
 	public void setPredictionSet(boolean status)
 	{
 		predictionSet=status;
+	}
+	
+	public HashMap<Object, LicensePrediction> getIdsWithPredictedLicenseInformation()
+	{
+		if(idsSet==false)
+			throw new UnsupportedOperationException("The collection doesn't have IDs.");
+		HashMap<Object, LicensePrediction> idsWithLicenseInformation = new HashMap<Object, LicensePrediction>(data.size());
+		data.stream().forEachOrdered(p->{
+			idsWithLicenseInformation.put(p.getId(), (LicensePrediction) p);
+		});
+		return idsWithLicenseInformation;
 	}
 	
 }

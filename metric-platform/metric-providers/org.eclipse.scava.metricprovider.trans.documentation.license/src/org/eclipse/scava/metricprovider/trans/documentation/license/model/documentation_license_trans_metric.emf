@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.trans.documentation.license.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationLicenseTransMetric {
+	val DocumentationEntryLicense[*] documentationEntriesLicense;
+}
+
+class DocumentationEntryLicense {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr boolean licenseFound;
+	attr String licenseName;
+	attr String licenseGroup;
+	attr boolean headerType;
+	attr double score;
+}
+

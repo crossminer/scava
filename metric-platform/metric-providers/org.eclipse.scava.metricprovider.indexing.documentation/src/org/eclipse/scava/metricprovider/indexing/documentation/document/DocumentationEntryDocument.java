@@ -12,6 +12,8 @@ package org.eclipse.scava.metricprovider.indexing.documentation.document;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.scava.metricprovider.indexing.documentation.document.extra.License;
+
 public class DocumentationEntryDocument {
 
 	private String project_name;
@@ -30,6 +32,8 @@ public class DocumentationEntryDocument {
 	private Double readability;
 	private Boolean code;
 	private List<String> documentation_types;
+	private Boolean license_found;
+	private License license;
 	
 
 	public DocumentationEntryDocument(String projectName,
@@ -108,6 +112,14 @@ public class DocumentationEntryDocument {
 	public List<String> getDocumentation_types() {
 		return documentation_types;
 	}
+	
+	public Boolean getLicense_found() {
+		return license_found;
+	}
+	
+	public License getLicense() {
+		return license;
+	}
 
 	public void setSentiment(String sentiment) {
 		this.sentiment = sentiment;
@@ -130,7 +142,13 @@ public class DocumentationEntryDocument {
 	public void setDocumentation_types(List<String> documentation_types) {
 		this.documentation_types = documentation_types;
 	}
-
-
+	
+	public void setLicense_found(Boolean license_found) {
+		this.license_found = license_found;
+	}
+	
+	public void setLicense(String group, String name, Boolean header_found, Double score) {
+		this.license = new License(group, name, header_found, score);
+	}
 
 }

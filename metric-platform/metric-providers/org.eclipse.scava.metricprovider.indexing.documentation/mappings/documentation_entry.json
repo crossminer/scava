@@ -36,5 +36,36 @@
 		"documentation_type" : {
 			"type" : "text"
 		}
+		"license_found" : {
+			"type" : "boolean"
+		}
+		"license" :
+		{
+			"group" : {
+				"type" : "text"
+			},
+			"name" : {
+				"type" : "text"
+			},
+			"header_found": {
+				"type" : "boolean"
+			},
+			"score": {
+				"type" : "double"
+			},
+			"is_deprecated_license": {
+				"type" : "boolean"
+			},
+			"is_fsf_libre": {
+				"type" : "boolean"
+			},
+			"is_osi_approved": {
+				"type" : "boolean"
+			},
+			"license_comments": {
+				"type" : "text"
+			}
+			
+		}
 	}
 }

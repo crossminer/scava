@@ -14,6 +14,9 @@ import org.eclipse.scava.metricprovider.trans.documentation.classification.model
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationDetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
+import org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.license.model.DocumentationEntryLicense;
+import org.eclipse.scava.metricprovider.trans.documentation.license.model.DocumentationLicenseTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
@@ -266,6 +269,21 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																						classificationDB.getDocumentationEntriesClassification(),
 							 															documentationEntry);
 					ded.setDocumentation_types(classificationDocEntry.getTypes()); 
+					break;
+				}
+				//License
+				case "org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider":
+				{
+					DocumentationLicenseTransMetric licenseDB = new DocumentationLicenseTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryLicense licenseDocEntry = findCollection(licenseDB,
+																						DocumentationEntryLicense.class,
+																						licenseDB.getDocumentationEntriesLicense(),
+							 															documentationEntry);
+					ded.setLicense_found(licenseDocEntry.getLicenseFound());
+					if(licenseDocEntry.getLicenseFound())
+					{
+						ded.setLicense(licenseDocEntry.getLicenseGroup(), licenseDocEntry.getLicenseName(), licenseDocEntry.getHeaderType(), licenseDocEntry.getScore());
+					}
 					break;
 				}
 				

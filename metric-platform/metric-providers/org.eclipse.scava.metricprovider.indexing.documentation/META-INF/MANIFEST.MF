@@ -21,7 +21,9 @@ Require-Bundle: com.googlecode.pongo.runtime,
  org.eclipse.scava.metricprovider.trans.documentation.sentiment,
  org.apache.log4j,
  org.eclipse.scava.metricprovider.trans.documentation.plaintext,
- org.eclipse.scava.metricprovider.trans.documentation.classification
+ org.eclipse.scava.metricprovider.trans.documentation.classification,
+ org.eclipse.scava.nlp.tools.license,
+ org.eclipse.scava.metricprovider.trans.documentation.license
 Bundle-Activator: org.eclipse.scava.metricprovider.indexing.documentation.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

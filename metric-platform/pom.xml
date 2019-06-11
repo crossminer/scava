@@ -486,6 +486,9 @@
     </module>
     <module>../migration/third-party/commons-net.commons-net</module>
     <module>../migration/third-party/commons-io.commons-io</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.license
+    </module>
   </modules>
   <build>
     <plugins>
