@@ -29,6 +29,7 @@ public class LicenseAnalyser {
 	private static Map<String, Map<String, Double>> groupLanguageModel, singleLanguageModel, headerLanguageModel;
 	private static Map<String, Integer> headerLicenseStats;
 	private static Map<String, List<License>> licenseGroupHierarchy;
+	
 	private static final double modifier = -100;
 
 	static {
@@ -42,8 +43,9 @@ public class LicenseAnalyser {
 		headerLicenseStats = LicenseAnalyserSingleton.getInstance().getLiceseHeaderStats();
 
 		licenseGroupHierarchy = LicenseAnalyserSingleton.getInstance().getLicenseHierarchy();
-
+		
 	}
+	
 
 	public static Map<String, List<License>> getHierarchy() {
 		return licenseGroupHierarchy;

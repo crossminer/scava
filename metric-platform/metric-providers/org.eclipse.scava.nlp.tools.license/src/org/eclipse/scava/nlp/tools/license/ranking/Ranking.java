@@ -25,6 +25,28 @@ import org.eclipse.scava.nlp.tools.license.LicenseAnalyser;
 public class Ranking {
 
 	final static double threshold = 0.5; // cut of point
+	
+	final static double thresholdNgrams = 5;
+	
+	private static Map<String, Integer> lowestNgramCount;
+	
+	static
+	{
+		setLowestGroupNgramCount();
+	}
+	
+	private static void setLowestGroupNgramCount() {
+		
+		for(String group : LicenseAnalyser.getHierarchy().keySet())
+		{
+			LicenseAnalyser.getHierarchy().get(group).stream().forEach(license -> {	
+				if (!lowestNgramCount.containsKey(group))
+					lowestNgramCount.put(group, license.getNumberOfNgrams());
+				else if (license.getNumberOfNgrams() < lowestNgramCount.get(group))
+					lowestNgramCount.put(group, license.getNumberOfNgrams());
+			});
+		}
+	}
 
 	public static Map<String, Rank> calculateGroupRank(Map<String, Double> scores, Map<String, Integer> ngramsMatched,
 			Map<String, Integer> ngramsNotMatched, int ngramsInSource, double modifier) {
@@ -36,7 +58,7 @@ public class Ranking {
 		scores.values().removeIf(v-> v==noMatchValue);
 		
 		ngramsMatched.keySet().removeIf(k -> !scores.containsKey(k));
-		ngramsMatched.values().removeIf(v -> v<5);
+		ngramsMatched.values().removeIf(v -> v<thresholdNgrams);
 		
 		scores.keySet().removeIf(k-> !ngramsMatched.containsKey(k));
 		
@@ -50,27 +72,11 @@ public class Ranking {
 		List<String> keysToBeRemoved = new ArrayList<>();
 
 		scores.entrySet().stream().forEach(entry -> {
-
-			AtomicInteger lowestNgramCount = new AtomicInteger();
-
-			LicenseAnalyser.getHierarchy().get(entry.getKey()).stream().forEach(license -> {
-
-				if (lowestNgramCount.get() == 0) {
-
-					lowestNgramCount.set(license.getNumberOfNgrams());
-
-				} else if (license.getNumberOfNgrams() < lowestNgramCount.get()) {
-
-					lowestNgramCount.set(license.getNumberOfNgrams());
-				}
-
-			});
-
 			
 			double result=0.0;
 			if(rankedLicencesPerNgramsMatched.contains(entry.getKey()))
 			{
-				result = (double) ngramsMatched.get(entry.getKey()) / (double) lowestNgramCount.get();
+				result = (double) ngramsMatched.get(entry.getKey()) / (double) lowestNgramCount.get(entry.getKey());
 			
 				result += ((double) rankedLicencesPerNgramsMatched.indexOf(entry.getKey())+1)/ (double) rankedLicencesPerNgramsMatched.size();
 				result /=2.0;
