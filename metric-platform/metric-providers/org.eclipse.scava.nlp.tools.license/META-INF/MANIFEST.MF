@@ -4,10 +4,9 @@ Bundle-Name: LicenseAnalyser
 Bundle-SymbolicName: org.eclipse.scava.nlp.tools.license;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.nlp.tools.license.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
- org.apache.log4j;bundle-version="1.0.0",
+ org.apache.log4j,
  org.eclipse.scava.nlp.tools.predictions,
  com.fasterxml.jackson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
