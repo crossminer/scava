@@ -18,14 +18,14 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 public class RepositoryResultSink extends RepositoryResultSinkBase {
 	
-	protected HashMap<String, RepositoryResult> results = new HashMap<String, RepositoryResult>();
+	protected HashMap<String, AnalysisResult> results = new HashMap<String, AnalysisResult>();
 	
 	private boolean started = false;
 	private Timer t = new Timer();
 
 	@Override
-	public synchronized void consumeRepositoryResults(RepositoryResult repositoryResult) {
-		System.out.println("sink consuming: "+repositoryResult);
+	public void consumeRepositoryResults(AnalysisResult analysisResult) throws Exception {
+		System.out.println("sink consuming: "+analysisResult);
 
 		if (!started)
 			t.schedule(new TimerTask() {
@@ -36,21 +36,21 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 			}, 2000, 2000);
 		started = true;
 		
-		if ( !results.containsKey(repositoryResult.getName()) && repositoryResult.getName()!=null ) {
+		if ( !results.containsKey(analysisResult.getName()) && analysisResult.getName()!=null ) {
 			// add new item
-			results.put(repositoryResult.getName(), repositoryResult);
+			results.put(analysisResult.getName(), analysisResult);
 			
-		} else if ( results.containsKey(repositoryResult.getName()) ) {
+		} else if ( results.containsKey(analysisResult.getName()) ) {
 			// supplement new item with existing information (if available)
-			RepositoryResult existingResult = results.get(repositoryResult.getName());
+			AnalysisResult existingResult = results.get(analysisResult.getName());
 
-			if ( repositoryResult.getAuthorCount()==-1 && existingResult.getAuthorCount()!=-1 ) {
-				repositoryResult.setAuthorCount( existingResult.getAuthorCount() );
+			if ( analysisResult.getAuthorCount()==-1 && existingResult.getAuthorCount()!=-1 ) {
+				analysisResult.setAuthorCount( existingResult.getAuthorCount() );
 			}
-			if ( repositoryResult.getFileCount()==-1 && existingResult.getFileCount()!=-1 ) {
-				repositoryResult.setFileCount( existingResult.getFileCount() );
+			if ( analysisResult.getFileCount()==-1 && existingResult.getFileCount()!=-1 ) {
+				analysisResult.setFileCount( existingResult.getFileCount() );
 			}
-			results.replace(existingResult.getName(), repositoryResult);
+			results.replace(existingResult.getName(), analysisResult);
 		}
 
 	}
@@ -69,7 +69,7 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 
 			CsvWriter writer = new CsvWriter(outputTemp.getAbsolutePath(), "repository name", "MDE technology file count", "unique author count", "cached");
 			
-			for ( RepositoryResult result : results.values() ) {
+			for ( AnalysisResult result : results.values() ) {
 				writer.writeRecord(result.getName(), result.getFileCount(), result.getAuthorCount(), result.isCached());
 			}
 			
