@@ -71,9 +71,11 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 				}
 			}
 			if (numberOfUsers > 0)
+			{
 				users.setNumberOfUsers(numberOfUsers);
 				users.setNumberOfActiveUsers(numberOfActiveUsers);
 				users.setNumberOfInactiveUsers(numberOfInactiveUsers);
+			}
 		}
 		return users;
 	}

@@ -73,24 +73,24 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 				if ((newsgroup.getUsers() > 0) || (newsgroup.getActiveUsers() > 0) || (newsgroup.getInactiveUsers() > 0)) {
 					DailyNewsgroupData dailyNewsgroupData = new DailyNewsgroupData();
 					dailyNewsgroupData.setNewsgroupName(newsgroup.getNewsgroupName());
-					if (newsgroup.getUsers() > 0) {
-						dailyNewsgroupData.setNumberOfUsers(newsgroup.getUsers());
+					if (newsgroup.getUsers() > 0)
 						numberOfUsers += newsgroup.getUsers();
-					}
-					if (newsgroup.getActiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfActiveUsers(newsgroup.getActiveUsers());
+					if (newsgroup.getActiveUsers() > 0)
 						numberOfActiveUsers += newsgroup.getActiveUsers();
-					}
-					if (newsgroup.getInactiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfInactiveUsers(newsgroup.getInactiveUsers());
+					if (newsgroup.getInactiveUsers() > 0)
 						numberOfInactiveUsers += newsgroup.getInactiveUsers();
-					}
+					dailyNewsgroupData.setNumberOfUsers(newsgroup.getUsers());
+					dailyNewsgroupData.setNumberOfActiveUsers(newsgroup.getActiveUsers());
+					dailyNewsgroupData.setNumberOfInactiveUsers(newsgroup.getInactiveUsers());
 					users.getNewsgroups().add(dailyNewsgroupData);
 				}
 			}
-			users.setNumberOfUsers(numberOfUsers);
-			users.setNumberOfActiveUsers(numberOfActiveUsers);
-			users.setNumberOfInactiveUsers(numberOfInactiveUsers);
+			if (numberOfUsers > 0)
+			{
+				users.setNumberOfUsers(numberOfUsers);
+				users.setNumberOfActiveUsers(numberOfActiveUsers);
+				users.setNumberOfInactiveUsers(numberOfInactiveUsers);
+			}
 		}
 		return users;
 	}
