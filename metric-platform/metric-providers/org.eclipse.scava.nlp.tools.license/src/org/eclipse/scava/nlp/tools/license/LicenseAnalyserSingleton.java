@@ -91,8 +91,6 @@ class LicenseAnalyserSingleton {
 			logger.error("Error while loading the header stats: \n", e);
 			e.printStackTrace();
 		}
-
-		logger.info("I'm done loading the models that I need...");
 	}
 
 	@SuppressWarnings("unchecked")
