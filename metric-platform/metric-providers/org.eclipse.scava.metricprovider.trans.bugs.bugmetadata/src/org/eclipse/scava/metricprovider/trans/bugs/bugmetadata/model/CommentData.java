@@ -1,9 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model;
 
-import java.util.Date;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class CommentData extends Pongo {

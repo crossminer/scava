@@ -57,28 +57,29 @@ public class StatusHistoricMetricProvider extends AbstractHistoricalMetricProvid
 				 numberOfInvalidBugs = 0,
 				 numberOfFixedBugs = 0,
 				 numberOfDuplicateBugs = 0;
+			 
 			 for (BugData bugData: usedBhm.getBugData()) {
-				 if (bugData.getStatus().toLowerCase().equals("resolved")||
-						 (bugData.getStatus().toLowerCase().equals("closed")))
+				 if (bugData.getStatus().equals("resolved")||
+						 (bugData.getStatus().equals("closed")))
 					 numberOfResolvedClosedBugs++;
-				 if (bugData.getResolution().toLowerCase().equals("wontfix")
-						 ||(bugData.getResolution().toLowerCase().equals("cantfix")))
+				 if (bugData.getResolution().contains("wontfix")
+						 ||(bugData.getResolution().contains("cantfix")))
 						 	numberOfWontFixBugs++;
-				 if (bugData.getResolution().toLowerCase().equals("worksforme"))
+				 if (bugData.getResolution().contains("worksforme"))
 					 numberOfWorksForMeBugs++;
-				 if (!bugData.getStatus().toLowerCase().equals("resolved")
-						 &&(!bugData.getStatus().toLowerCase().equals("closed")))
+				 if (!bugData.getStatus().equals("resolved")
+						 &&(!bugData.getStatus().equals("closed")))
 					 numberOfNonResolvedClosedBugs++;
-				 if (bugData.getResolution().toLowerCase().equals("invalid")
-						 ||(bugData.getResolution().toLowerCase().equals("notabug")))
+				 if (bugData.getResolution().contains("invalid")
+						 ||(bugData.getResolution().contains("notabug")))
 					 numberOfInvalidBugs++;
-				 if ((bugData.getResolution().toLowerCase().equals("fixed"))
-						 ||(bugData.getResolution().toLowerCase().equals("upstream"))
-						 ||(bugData.getResolution().toLowerCase().equals("currentrelease"))
-						 ||(bugData.getResolution().toLowerCase().equals("nextrelease"))
-						 ||(bugData.getResolution().toLowerCase().equals("rawhide")))
+				 if ((bugData.getResolution().contains("fixed"))
+						 ||(bugData.getResolution().contains("upstream"))
+						 ||(bugData.getResolution().contains("currentrelease"))
+						 ||(bugData.getResolution().contains("nextrelease"))
+						 ||(bugData.getResolution().contains("rawhide")))
 						 	numberOfFixedBugs++;
-				 if (bugData.getResolution().toLowerCase().equals("duplicate"))
+				 if (bugData.getResolution().contains("duplicate"))
 					 numberOfDuplicateBugs++;
 			 }
 			 bugStatus.setNumberOfBugs(usedBhm.getBugData().size());

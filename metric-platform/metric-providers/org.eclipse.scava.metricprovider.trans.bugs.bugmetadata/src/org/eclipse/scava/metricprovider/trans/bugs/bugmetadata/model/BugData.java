@@ -1,18 +1,19 @@
 package org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model;
 
-import java.util.Date;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class BugData extends Pongo {
 	
+	protected List<String> resolution = null;
 	
 	
 	public BugData() { 
 		super();
+		dbObject.put("resolution", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		BUGID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		STATUS.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
@@ -29,7 +30,6 @@ public class BugData extends Pongo {
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
 	public static StringQueryProducer BUGID = new StringQueryProducer("bugId"); 
 	public static StringQueryProducer STATUS = new StringQueryProducer("status"); 
-	public static StringQueryProducer RESOLUTION = new StringQueryProducer("resolution"); 
 	public static StringQueryProducer OPERATINGSYSTEM = new StringQueryProducer("operatingSystem"); 
 	public static StringQueryProducer PRIORITY = new StringQueryProducer("priority"); 
 	public static StringQueryProducer CREATIONTIME = new StringQueryProducer("creationTime"); 
@@ -37,6 +37,7 @@ public class BugData extends Pongo {
 	public static NumericalQueryProducer AVERAGESENTIMENT = new NumericalQueryProducer("averageSentiment");
 	public static StringQueryProducer STARTSENTIMENT = new StringQueryProducer("startSentiment"); 
 	public static StringQueryProducer ENDSENTIMENT = new StringQueryProducer("endSentiment"); 
+	public static ArrayQueryProducer RESOLUTION = new ArrayQueryProducer("resolution");
 	
 	
 	public String getBugTrackerId() {
@@ -63,15 +64,6 @@ public class BugData extends Pongo {
 	
 	public BugData setStatus(String status) {
 		dbObject.put("status", status);
-		notifyChanged();
-		return this;
-	}
-	public String getResolution() {
-		return parseString(dbObject.get("resolution")+"", "");
-	}
-	
-	public BugData setResolution(String resolution) {
-		dbObject.put("resolution", resolution);
 		notifyChanged();
 		return this;
 	}
@@ -139,6 +131,12 @@ public class BugData extends Pongo {
 		return this;
 	}
 	
+	public List<String> getResolution() {
+		if (resolution == null) {
+			resolution = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("resolution"));
+		}
+		return resolution;
+	}
 	
 	
 	

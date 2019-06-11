@@ -12,7 +12,7 @@ class BugData {
 	attr String bugTrackerId;
 	attr String bugId;
 	attr String status;
-	attr String resolution;
+	attr String[*] resolution;
 	attr String operatingSystem;
 	attr String priority;
 	attr Date creationTime;

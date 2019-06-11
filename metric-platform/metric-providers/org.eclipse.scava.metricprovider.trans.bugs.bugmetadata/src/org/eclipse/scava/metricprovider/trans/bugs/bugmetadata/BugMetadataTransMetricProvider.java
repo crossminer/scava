@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.ClassificationInstance;
@@ -217,30 +218,45 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		}
 		bugData.setOperatingSystem(bug.getOperatingSystem());
 		bugData.setPriority(bug.getPriority());
-		bugData.setResolution(bug.getResolution());
-		bugData.setStatus(bug.getStatus());
 		java.util.Date closingDate = null;
+		String status="closed";
 		if (bug instanceof BugzillaBug) {
 			BugzillaBug bugzillaBug = (BugzillaBug) bug; 
 			closingDate=bugzillaBug.getLastClosed();
+			status=bugzillaBug.getStatus().toLowerCase(Locale.ENGLISH);
 		} else if (bug instanceof GitHubIssue) {
 			GitHubIssue issue = (GitHubIssue) bug; 
 			closingDate=issue.getClosedTime();
+			bugData.getResolution().clear();
+			for(String label : issue.getLabelsAsString())
+				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));
 		} else if(bug instanceof GitLabIssue) {
 			GitLabIssue issue = (GitLabIssue) bug;
 			closingDate=issue.getClosed_at();
+			bugData.getResolution().clear();
+			for(Object label : issue.getLabels())
+			{
+				if(label instanceof String)
+					bugData.getResolution().add(((String) label).toLowerCase(Locale.ENGLISH));
+			}
 		} else if(bug instanceof JiraIssue)	{
 			JiraIssue issue = (JiraIssue) bug;
 			closingDate=issue.getResolutionDate();
+			bugData.getResolution().add(issue.getResolution().toLowerCase(Locale.ENGLISH));
 		}
 		else {
 			System.err.println("Issue tracker do not provide a closing date.");
+			bugData.getResolution().add(bug.getResolution().toLowerCase(Locale.ENGLISH));
+			bugData.setStatus(bug.getStatus().toLowerCase(Locale.ENGLISH));
 		}
 		if(closingDate!=null)
 		{
 			//We compare at platform date
-			if(new Date (closingDate).compareTo(deltaDate)==0)
+			if(deltaDate.compareTo(new Date (closingDate))==0)
+			{
 				bugData.setLastClosedTime(closingDate);
+				bugData.setStatus(status);
+			}
 		}
 		updateSentimentPerThread(sentimentClassifier, db, bugData);
 		return bugData;
