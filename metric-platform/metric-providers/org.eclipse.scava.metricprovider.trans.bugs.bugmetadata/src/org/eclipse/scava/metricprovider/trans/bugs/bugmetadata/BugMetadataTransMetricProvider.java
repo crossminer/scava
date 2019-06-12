@@ -234,11 +234,8 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			GitLabIssue issue = (GitLabIssue) bug;
 			closingDate=issue.getClosed_at();
 			bugData.getResolution().clear();
-			for(Object label : issue.getLabels())
-			{
-				if(label instanceof String)
-					bugData.getResolution().add(((String) label).toLowerCase(Locale.ENGLISH));
-			}
+			for(String label : issue.getLabels())
+				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));
 		} else if(bug instanceof JiraIssue)	{
 			JiraIssue issue = (JiraIssue) bug;
 			closingDate=issue.getResolutionDate();
