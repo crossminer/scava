@@ -43,7 +43,7 @@ public class GitHubReaderUtils {
 		gitHubIssue.setClosedTime(issue);
 		gitHubIssue.setUpdatedTime(issue);
 		gitHubIssue.setNumComments(issue);
-		//gitHubIssue.addLabel(issue);
+		gitHubIssue.addLabel(issue);
 		//gitHubIssue.setMilestone(issue);
 		gitHubIssue.setBody(issue);
 		gitHubIssue.setAssignee(issue);

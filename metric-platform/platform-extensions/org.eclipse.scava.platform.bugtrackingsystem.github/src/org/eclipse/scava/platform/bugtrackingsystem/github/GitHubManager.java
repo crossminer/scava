@@ -125,7 +125,9 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 					Date commentDate = new Date(comment.getCreationTime());
 					
 					if (commentDate.compareTo(analysisDate) == 0) {
-
+						//Issues that have a new comment will be considered as updated
+						if(!(delta.getNewBugs().contains(issuesMap.get(comment.getBugId()))) && !(delta.getUpdatedBugs().contains(issuesMap.get(comment.getBugId()))))
+							delta.getUpdatedBugs().add(issuesMap.get(comment.getBugId()));
 						delta.getComments().add(comment);
 
 					}
