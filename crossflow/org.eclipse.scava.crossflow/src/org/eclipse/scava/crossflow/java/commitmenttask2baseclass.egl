@@ -27,7 +27,7 @@ public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {
 				if (commitments.contains([%=s.type.name.ftlc()%].getName())) {
 					occurences++;
 					result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>[%=t.commitAfter%]) {
+				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>=[%=t.commitAfter%]) {
 					commitments.add([%=s.type.name.ftlc()%].getId());
 					result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				} else {
@@ -45,7 +45,7 @@ public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {
 				if (commitments.contains([%=s.type.name.ftlc()%].getName())) {
 					occurences++;
 					consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>[%=t.commitAfter%]) {
+				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>=[%=t.commitAfter%]) {
 					commitments.add([%=s.type.name.ftlc()%].getId());
 					consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				} else {

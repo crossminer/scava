@@ -1,0 +1,7 @@
+for authenticated access to github
+a file named githubprivate.properties (in this folder) 
+needs to be filled in with the following details:
+
+username={github username}
+password={github password}
+personal.access.token={github oath token, with at least 'public_repo' selected}
