@@ -3,12 +3,13 @@
 	<dependencies>
 
 		<dependency org="org.apache.thrift" name="libthrift" rev="0.12.0"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
 		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.8"/>
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>	
-
+		
+		<exclude org="org.slf4j"/>
+		
 	</dependencies>
 </ivy-module>
