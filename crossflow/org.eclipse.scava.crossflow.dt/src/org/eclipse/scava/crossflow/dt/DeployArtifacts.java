@@ -28,7 +28,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 
-public class UploadZip implements IObjectActionDelegate {
+public class DeployArtifacts implements IObjectActionDelegate {
 
 	protected Shell shell;
 	protected ISelection selection;

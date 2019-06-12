@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class CreateExecutablesAction implements IObjectActionDelegate {
+public class GenerateDeploymentArtifactsAction implements IObjectActionDelegate {
 
 	private Shell shell;
 	protected ISelection selection = null;

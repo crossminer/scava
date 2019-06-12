@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.dt;
 
 import org.eclipse.jface.action.IAction;
 
-public class UploadZipAndRun extends UploadZip {
+public class DeployArtifactsAndRun extends DeployArtifacts {
 
 	@Override
 	public void run(IAction action) {
