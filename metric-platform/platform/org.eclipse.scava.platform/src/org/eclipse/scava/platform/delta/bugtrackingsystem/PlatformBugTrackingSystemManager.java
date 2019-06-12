@@ -20,7 +20,7 @@ import org.eclipse.scava.platform.cache.bugtrackingsystem.IBugTrackingSystemDelt
 import org.eclipse.scava.platform.delta.NoManagerFoundException;
 import org.eclipse.scava.repository.model.BugTrackingSystem;
 import org.eclipse.scava.repository.model.ManagerAnalysis;
-
+import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import com.mongodb.DB;
 
 public abstract class PlatformBugTrackingSystemManager implements IBugTrackingSystemManager<BugTrackingSystem> {
@@ -101,8 +101,9 @@ public abstract class PlatformBugTrackingSystemManager implements IBugTrackingSy
 			
 			mAnal.setMillisTaken(System.currentTimeMillis() - start);
 			platform.getProjectRepositoryManager().getProjectRepository().getManagerAnalysis().sync();
-
-			getDeltaCache().putDelta(bugTrackingSystem.getUrl(), date, delta);
+			//RESTMULE manages internally cache
+			if(!(bugTrackingSystem instanceof GitHubBugTracker))
+				getDeltaCache().putDelta(bugTrackingSystem.getUrl(), date, delta);
 			return delta;
 		}
 		return null;
