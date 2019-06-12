@@ -3,72 +3,69 @@ Workflow Ghmde {
 	// streams for incoming and outgoing tasks
 	streams {
 		
-		Queue MDETechnologyTuples { 
-			type MDETechnologyTuple
-			inputOf ( RepositorySearcher )
-			outputOf ( MDETechnologyTupleSource )
-		}// MDETechnologyTuples
+		Queue MDETechnologies { 
+			type MDETechnology
+			inputOf ( CodeSearcher )
+			outputOf ( MDETechnologySource )
+		}// MDETechnologies queue
 		
-		Queue RepositorySearchResults {
+		Queue Repositories {
 			type Repository
-			outputOf ( RepositorySearcher )
-		}// RepositorySearchResults
+			outputOf ( CodeSearcher )
+		}// Repositories queue
 		
-		Queue RepositoryCloneResults {
-			type RepositoryClone //originally: String
-			outputOf ( RepositoryCloner )
-		}// RepositoryCloneResults
+		Queue RepositorySearches {
+			type Repository
+			outputOf ( RepositorySearchDispatcher )
+		}// RepositorySearches queue
 		
 		Queue RepositoryResults {
-			type RepositoryResult //originally: String
-			inputOf ( RepositoryFileCounter RepositoryAuthorCounter )
+			type AnalysisResult
+			inputOf ( RepositorySearcher )
 			outputOf ( RepositoryResultSink )
-		}// RepositoryResults
+		}// RepositoryResults queue
 		
 	}// workflow streams
 	
 	tasks {
 		
-		masterOnly CsvSource MDETechnologyTupleSource {
+		masterOnly CsvSource MDETechnologySource {
 			fileName "input.csv"
-			output ( MDETechnologyTuples )
+			output ( MDETechnologies )
 			languages(Java)
-		}// MDETechnologyTupleSource
+		}// MDETechnologySource
 		
-		multipleOutputs Task RepositorySearcher {
-			input ( MDETechnologyTuples )
-			output ( RepositorySearchResults )
+		multipleOutputs Task CodeSearcher {
+			input ( MDETechnologies )
+			output ( Repositories )
 			languages(Java)
-		}// RepositorySearcher
+		}// CodeSearcher task
 		
-		Task RepositoryCloner {
-			input ( RepositorySearchResults )
-			output ( RepositoryCloneResults )	
+		multipleOutputs Task RepositorySearchDispatcher {
+			input ( Repositories )
+			output ( RepositorySearches )	
 			languages(Java)
-		}// RepositoryCloner
+		}// RepositorySearchDispatcher task
 		
-		Task RepositoryFileCounter {
-			input ( RepositoryCloneResults )
+		multipleOutputs CommitmentTask RepositorySearcher {
+			commitAfter 1
+			input ( RepositorySearches )
 			output ( RepositoryResults )	
 			languages(Java)
-		}// RepositoryFileCounter
-		
-		Task RepositoryAuthorCounter {
-			input ( RepositoryCloneResults )
-			output ( RepositoryResults )	
-			languages(Java)
-		}// RepositoryAuthorCounter
+			configurations ( MDETechnologyCollection )
+		}// RepositorySearcher task
 		
 		masterOnly CsvSink RepositoryResultSink {
 			fileName "output.csv"
 			input ( RepositoryResults )
 			languages(Java)
-		}// RepositoryResultSink	
+		}// RepositoryResultSink task
 		
 	}// workflow tasks
 	
 	types {
-		Type MDETechnologyTuple {
+		
+		Type MDETechnology {
 			fields {
 				Field fileExt {
 					type String
@@ -77,9 +74,10 @@ Workflow Ghmde {
 					type String
 				}
 			}
-		}
+		}// MDETechnology type
+		
 		isMany Type Repository {
-			extending ( MDETechnologyTuple )
+			extending ( MDETechnology )
 			fields {
 				Field url {
 					type String
@@ -88,17 +86,9 @@ Workflow Ghmde {
 					type String
 				}
 			}
-		}
-		isMany Type RepositoryClone {
-			extending ( Repository )
-			fields {
-				Field localPath {
-					type String
-				}
-			}
-		}
-		isMany Type RepositoryResult {
-			extending ( RepositoryClone )
+		}// Repository type
+		
+		isMany Type AnalysisResult {			
 			fields {
 				Field fileCount {
 					type int
@@ -106,8 +96,26 @@ Workflow Ghmde {
 				Field authorCount {
 					type int
 				}
+				Field repository {
+					type String
+				}
+				Field technology {
+					type String
+				}
+				Field name {
+					type String
+				}
+			}
+		}// AnalysisResult type
+		
+		Type MDETechnologyCollection {
+			fields {
+				many Field technologies {
+					type MDETechnology
+				}
 			}
 		}
+		
 	}// workflow data types
 	
 	languages {
