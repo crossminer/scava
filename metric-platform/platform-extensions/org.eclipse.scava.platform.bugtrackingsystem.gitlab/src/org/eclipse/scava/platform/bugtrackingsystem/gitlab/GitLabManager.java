@@ -11,7 +11,9 @@ package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Comment;
@@ -52,6 +54,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	private String builder;
 	private OkHttpClient client;
 	
+	private Set<String> newAndUpdatesIssuesIds;
+	
 	protected OssmeterLogger logger;
 
 	public GitLabManager()
@@ -66,6 +70,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		this.last_page = 0;
 		this.next_page = 0;
 		this.client = new OkHttpClient();
+		this.newAndUpdatesIssuesIds = new HashSet<String>();
 	}
 	
 	@Override
@@ -83,6 +88,7 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		
 		delta.setBugTrackingSystem(gitlabTracker);
 
+		newAndUpdatesIssuesIds.clear();
 		
 		for (Issue issue : getAllIssues(date, gitlabTracker)) {
 			
@@ -93,13 +99,13 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 			if(created.compareTo(date) == 0) {
 				
 				delta.getNewBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds new issues to delta
-				
+				newAndUpdatesIssuesIds.add(issue.getId());
 			}
 			
 			if ( (modified.compareTo(date) == 0) && (modified.toJavaDate().after(created.toJavaDate()))) {
 				
 				delta.getUpdatedBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));// adds modified issues to delta
-				
+				newAndUpdatesIssuesIds.add(issue.getId());
 			}
 			
 			if (issue.getUser_notes_count() > 0) {
@@ -108,7 +114,11 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 					Date commentDate = new Date(convertStringToDate(gitlabComment.getCreated_at()));
 					
 					if (commentDate.compareTo(date) == 0) {//Prevents past and future comments being added to the detla
-						
+						if(!newAndUpdatesIssuesIds.contains(issue.getId()))
+						{
+							delta.getUpdatedBugs().add(gitlabIissueToBtsBug(issue, gitlabTracker));
+							newAndUpdatesIssuesIds.add(issue.getId());
+						}
 						delta.getComments().add(gitLabCommentToBtsComment(gitlabComment, gitlabTracker, issue.getId(), issue.getIid()));//adds comments to delta
 						
 					}				

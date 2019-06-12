@@ -10,6 +10,7 @@
 package org.eclipse.scava.platform.bugtrackingsystem.gitlab.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Issue {
 	
@@ -23,9 +24,9 @@ public class Issue {
 	 private String updated_at;
 	 private String closed_at = null;
 	 private Author closed_by = null;
-	 private ArrayList < Object > labels = new ArrayList < Object > ();
+	 private List < Object > labels = new ArrayList < Object > ();
 	 private Milestone MilestoneObject;
-	 private ArrayList < Object > assignees = new ArrayList < Object > ();
+	 private List < Object > assignees = new ArrayList < Object > ();
 	 private Author AuthorObject;
 	 private Assignee AssigneeObject;
 	 private float user_notes_count;
@@ -37,7 +38,6 @@ public class Issue {
 	 private String web_url;
 	 Time_stats Time_statsObject;
 	 private String weight = null;
-
 
 	 // Getter Methods 
 
@@ -128,6 +128,10 @@ public class Issue {
 	 public String getWeight() {
 	  return weight;
 	 }
+	 
+	 public List<Object> getLabels() {
+		return labels;
+	}
 
 	 // Setter Methods 
 
@@ -218,4 +222,8 @@ public class Issue {
 	 public void setWeight(String weight) {
 	  this.weight = weight;
 	 }
+	 
+	 public void setLabels(ArrayList<Object> labels) {
+		this.labels = labels;
+	}
 }
