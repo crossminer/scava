@@ -25,5 +25,7 @@ public interface IBugTrackingSystemManager<B extends BugTrackingSystem> {
 	public String getContents(DB db, B bugTrackingSystem, BugTrackingSystemBug bug) throws Exception;
 	
 	public String getContents(DB db, B bugTrackingSystem, BugTrackingSystemComment comment) throws Exception;
+	
+	public boolean isRestmule();
 
 }

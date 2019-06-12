@@ -102,7 +102,7 @@ public abstract class PlatformBugTrackingSystemManager implements IBugTrackingSy
 			mAnal.setMillisTaken(System.currentTimeMillis() - start);
 			platform.getProjectRepositoryManager().getProjectRepository().getManagerAnalysis().sync();
 			//RESTMULE manages internally cache
-			if(!(bugTrackingSystem instanceof GitHubBugTracker))
+			if(!bugTrackingSystemManager.isRestmule())
 				getDeltaCache().putDelta(bugTrackingSystem.getUrl(), date, delta);
 			return delta;
 		}

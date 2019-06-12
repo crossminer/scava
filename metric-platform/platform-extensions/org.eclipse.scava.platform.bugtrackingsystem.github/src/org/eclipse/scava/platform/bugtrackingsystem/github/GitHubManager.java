@@ -282,6 +282,11 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 		}
 		return session.getSession();
 	}
+	
+	@Override
+	public boolean isRestmule() {
+		return true;
+	}
 
 	/*----------------------------------------------------------------------------------
 	 *  TRASH CODE

@@ -185,6 +185,11 @@ public class SourceForgeManager implements
 		SourceForgeTrackerRestClient client =  new SourceForgeTrackerRestClient(bugTracker.getUrl());
 		return client;
 	}
+	
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 
 	public static void main(String[] args) throws Exception {
 		SourceForgeManager manager = new SourceForgeManager();

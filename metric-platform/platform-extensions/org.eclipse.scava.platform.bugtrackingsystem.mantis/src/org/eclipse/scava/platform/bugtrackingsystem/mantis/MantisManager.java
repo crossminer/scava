@@ -172,4 +172,8 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 		return null;
 	}
 
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 }

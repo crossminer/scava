@@ -600,4 +600,9 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		return null;
 	}
 
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
+
 }

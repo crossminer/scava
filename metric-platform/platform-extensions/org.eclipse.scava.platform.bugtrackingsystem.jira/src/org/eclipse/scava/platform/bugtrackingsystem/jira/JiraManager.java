@@ -171,6 +171,11 @@ public class JiraManager implements
 		}
 		return client;
 	}
+	
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 
 	public static void main(String[] args) throws Exception {
 
@@ -201,4 +206,5 @@ public class JiraManager implements
 					+ jiraComment.getUpdateDate());
 		}
 	}
+	
 }

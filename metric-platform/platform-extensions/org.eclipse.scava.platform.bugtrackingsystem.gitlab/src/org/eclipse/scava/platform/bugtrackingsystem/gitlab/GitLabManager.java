@@ -449,5 +449,8 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 		return null;
 	}
 	
-
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 }
