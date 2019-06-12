@@ -22,11 +22,11 @@ import org.springframework.data.mongodb.repository.Query;
  *
  */
 public interface ArtifactRepository extends MongoRepository<Artifact, String> {
-
 	@Query("{ $where : 'this.dependencies.length < ?0'}")
 	public List<Artifact> findByNumdependencies(int numDependencies);
 	public Page<Artifact> findAll(Pageable pageable); 
 	public Artifact findOneByName(String name);
 	public List<Artifact> findFirst10ByOrderByIdDesc();
 	public Artifact findOneByFullName(String fullName);
+	public Artifact findOneByMetricPlatformId(String metricPlatformId);
 }
