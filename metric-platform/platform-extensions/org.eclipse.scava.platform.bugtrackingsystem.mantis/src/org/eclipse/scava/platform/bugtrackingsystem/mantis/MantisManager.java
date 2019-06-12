@@ -11,7 +11,9 @@ package org.eclipse.scava.platform.bugtrackingsystem.mantis;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.eclipse.scava.platform.Date;
@@ -36,6 +38,8 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 
 	private final static String PAGE_SIZE = "100";
 	
+	private Set<String> newAndUpdatesIssuesIds;
+	
 	@Override
 	public boolean appliesTo(BugTrackingSystem bugTrackingSystem) {
 		return bugTrackingSystem instanceof MantisBugTrackingSystem;
@@ -46,7 +50,8 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 	public BugTrackingSystemDelta getDelta(DB db, MantisBugTrackingSystem bugTrackingSystem, Date date)
 			throws Exception {
 		
-	
+		newAndUpdatesIssuesIds = new HashSet<String>();
+		
 		BugTrackingSystemDelta delta = new BugTrackingSystemDelta();
 	
 		delta.setBugTrackingSystem(bugTrackingSystem);
@@ -56,6 +61,7 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 			if (issue.getCreationTime() == issue.getUpdated_at()){
 			
 				delta.getNewBugs().add(issue);
+				newAndUpdatesIssuesIds.add(issue.getBugId());
 				
 			}else if (DateUtils.isSameDay(issue.getCreationTime(), date.toJavaDate())) {
 				
@@ -70,6 +76,7 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 					if (DateUtils.isSameDay(note.getCreationTime(), date.toJavaDate())){
 												
 						delta.getComments().add(note);
+						newAndUpdatesIssuesIds.add(issue.getBugId());
 
 					}
 				}
@@ -79,7 +86,14 @@ public class MantisManager implements IBugTrackingSystemManager<MantisBugTrackin
 				
 				if (DateUtils.isSameDay(issue.getUpdated_at(), date.toJavaDate())) {
 					
+					if(!newAndUpdatesIssuesIds.contains(issue.getBugId()))
+					{
+						delta.getUpdatedBugs().add(issue);
+						newAndUpdatesIssuesIds.add(issue.getBugId());
+					}
+					
 					delta.getUpdatedBugs().add(issue);
+					
 				
 				}
 			}
