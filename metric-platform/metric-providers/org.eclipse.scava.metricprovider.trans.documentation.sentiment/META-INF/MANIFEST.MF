@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.nlp.classifiers.sentimentanalyzer,
  org.eclipse.scava.repository.model.documentation.gitbased,
  org.eclipse.scava.repository.model.vcs.git,
- org.eclipse.scava.repository.model.documentation.systematic
+ org.eclipse.scava.repository.model.documentation.systematic,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.sentiment.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

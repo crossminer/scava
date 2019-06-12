@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.tika.detect.Detector;
@@ -17,7 +15,10 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.sax.ToXMLContentHandler;
+import org.eclipse.scava.nlp.tools.preprocessor.markdown.MarkdownParser;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 public class FileParser
@@ -27,6 +28,7 @@ public class FileParser
 	private static AutoDetectParser parser;
 	private static Detector detector;
 	private static HashMap<String,String> supportedFiles = new HashMap<String,String>();
+	private static HashMap<String,String> contentHandlerType = new HashMap<String,String>();
 	private static Pattern mediaTypePattern;
 	
 	static
@@ -35,6 +37,7 @@ public class FileParser
 		FileParserSingleton singleton = FileParserSingleton.getInstance();
 		parser = singleton.getParser();
 		supportedFiles = singleton.getSupportedFiles();
+		contentHandlerType = singleton.getContentHandlerType();
 		detector = parser.getDetector();
 		mediaTypePattern= Pattern.compile(";.+$");
 	}
@@ -48,17 +51,13 @@ public class FileParser
 	{
 		FileInputStream fis = fileToInputStream(file);
 		BufferedInputStream bif = new BufferedInputStream(fis);
-		boolean supported = isSupported(bif);
+		Metadata metadata = new Metadata();
+		metadata.add(Metadata.RESOURCE_NAME_KEY, file.getName());
+		boolean supported = isSupported(bif, metadata);
 		bif.close();
 		fis.close();
 		return supported;
 		
-	}
-	
-	public static boolean isSupported(BufferedInputStream stream) throws IOException
-	{
-		Metadata metadata = new Metadata();
-		return isSupported(detectMediaType(stream, metadata));
 	}
 	
 	private static boolean isSupported(BufferedInputStream stream, Metadata metadata) throws IOException
@@ -111,14 +110,16 @@ public class FileParser
 	 * @return Null if the file is not supported
 	 * @throws Exception 
 	 */
-	public static String extractTextAsString(File file) throws Exception
+	public static FileContent extractText(File file) throws Exception
 	{
 		FileInputStream fis = fileToInputStream(file);
 		BufferedInputStream bif = new BufferedInputStream(fis);
-		String text = extractTextAsString(bif);
+		Metadata metadata = new Metadata();
+		metadata.add(Metadata.RESOURCE_NAME_KEY, file.getName());
+		FileContent fileContent = extractText(bif, metadata);
 		bif.close();
 		fis.close();
-		return text;
+		return fileContent;
 	}
 	
 	/**
@@ -127,15 +128,47 @@ public class FileParser
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String extractTextAsString(BufferedInputStream bufferedStream) throws Exception
+	private static FileContent extractText(BufferedInputStream bufferedStream, Metadata metadata) throws Exception
 	{
-		BodyContentHandler handler = new BodyContentHandler(-1);
-		Metadata metadata = new Metadata();
+		MediaType mediaType;
+		ContentHandler handler=null;
+		String handlerType;
 	    try {
-	    	if(isSupported(bufferedStream, metadata))
+	    	mediaType=detectMediaType(bufferedStream, metadata);
+	    	if(isSupported(mediaType))
 	    	{
-	    		parser.parse(bufferedStream, handler, metadata);
-	    		return handler.toString();
+	    		String mediaTypeString=mediaTypeString(mediaType);
+	    		handlerType=contentHandlerType.get(mediaTypeString);
+	    		switch (handlerType)
+	    		{
+	    			case "HTML":
+	    				handler = new ToXMLContentHandler();
+	    				break;
+	    			case "MARKDOWN":
+	    			case "PLAIN":
+	    				handler = new BodyContentHandler(-1);
+	    				break;
+	    		}
+	    		if(handler!=null)
+	    		{
+		    		parser.parse(bufferedStream, handler, metadata);
+		    		FileContent fileContent=null;
+		    		String formatName = supportedFiles.get(mediaTypeString);
+		    		switch (handlerType)
+		    		{
+		    			case "HTML":
+		    				fileContent= new FileContent(handler.toString(),mediaTypeString,formatName, true);
+		    				break;
+		    			case "MARKDOWN":
+		    				fileContent= new FileContent(MarkdownParser.parse(handler.toString()),mediaTypeString,formatName, true);
+		    				break;
+		    			case "PLAIN":
+		    				fileContent= new FileContent(handler.toString(),mediaTypeString,formatName, false);
+		    				break;
+		    		}
+	    			return fileContent;
+	    		}
+	    		throw new UnsupportedOperationException("Impossible to determine how to handle the file: ");
 	    	}
 	    	throw new UnsupportedOperationException("File is not supported: ");
 		}
@@ -153,34 +186,5 @@ public class FileParser
 			throw e;
 		}
 	    
-	}
-	
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 * @throws Exception 
-	 */
-	public static List<String> extractTextAsList(File file) throws Exception
-	{
-		return stringToList(extractTextAsString(file));
-	}
-	
-	/**
-	 * 
-	 * @param inputStream
-	 * @return
-	 * @throws Exception 
-	 */
-	public static List<String> extractTextAsList(BufferedInputStream inputStream) throws Exception
-	{
-		return stringToList(extractTextAsString(inputStream));
-	}
-	
-	
-	private static List<String> stringToList(String text)
-	{
-		List<String> split = Arrays.asList(text.split("\\v+"));
-		return split;
 	}
 }

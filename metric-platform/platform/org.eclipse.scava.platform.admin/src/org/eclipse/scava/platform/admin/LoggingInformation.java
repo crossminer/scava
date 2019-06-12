@@ -12,6 +12,7 @@ package org.eclipse.scava.platform.admin;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import org.eclipse.scava.platform.Configuration;
 import org.restlet.data.Header;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -40,9 +41,9 @@ public class LoggingInformation extends ServerResource{
 		responseHeaders.add(new Header("Access-Control-Allow-Origin", "*"));
 		responseHeaders.add(new Header("Access-Control-Allow-Methods", "GET"));
 		
-		
+		Mongo mongo = null;
 		try {
-			Mongo mongo = new Mongo();
+			mongo = Configuration.getInstance().getMongoConnection();
 			
 			DB db = mongo.getDB("logging");
 			DBCollection col = db.getCollection("log");
@@ -67,11 +68,8 @@ public class LoggingInformation extends ServerResource{
 			} finally {
 			   cursor.close();
 			}
-			
-			mongo.close();
 					
 			return results.toString();
-			
 		} catch (UnknownHostException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

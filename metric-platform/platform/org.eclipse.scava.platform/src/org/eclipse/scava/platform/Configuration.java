@@ -62,7 +62,7 @@ public class Configuration {
 	
 	public Mongo getMongoConnection() throws UnknownHostException {
 	
-		if(this.mongo == null) {
+		if (this.mongo == null) {
 			String[] hosts = properties.getProperty(MONGO_HOSTS, "localhost:27017").split(",");
 			
 			if (hosts.length > 1) {
@@ -72,14 +72,13 @@ public class Configuration {
 					mongoHostAddresses.add(new ServerAddress(s[0], Integer.valueOf(s[1])));
 				}
 				
-				return new Mongo(mongoHostAddresses);
+				this.mongo = new Mongo(mongoHostAddresses);
 				
 			} else {
-				return new Mongo();//hosts[0]);
+				this.mongo = new Mongo();//hosts[0]);
 			}
-		}else {
-			return this.mongo;
 		}
-		
+
+		return this.mongo;
 	}
 }

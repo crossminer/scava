@@ -1,0 +1,10 @@
+#2#how to install
+#1#installation
+#3#Declarative Installation
+######REGEX
+installation (?:guide|documentation|manual|reference|tutorial|basics|introduction)s?
+how(?:(?: do I)|(?:.to)) install(:? on)?
+steps to install(:? on)?
+installing on
+(:?declarative )?installation
+(:?installation )?requirements

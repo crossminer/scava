@@ -9,14 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.communicationchannels;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,9 +45,12 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelProjectDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.indexing.Indexing;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -80,12 +75,22 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	protected PlatformCommunicationChannelManager platformCommunicationChannelManager;
 
 	public final static String NLP = "nlp";// knowledge type.
-	private Indexer indexer;
 
+	protected OssmeterLogger logger;
+	
+	public CommunicationChannelsIndexingMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.communicationchannels");
+	}
+	
+	@Override
+	public String getIdentifier() {
+		return IDENTIFIER;
+	}
+	
 	@Override
 	public String getShortIdentifier() {
 
-		return IDENTIFIER;
+		return SHORT_IDENTIFIER;
 	}
 
 	@Override
@@ -111,7 +116,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				return true;
 			if (communicationChannel instanceof SympaMailingList)
 				return true;
-			// if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof Irc) 
+				return true;
+			if (communicationChannel instanceof Mbox) 
+				return true;
 		}
 		return false;
 	}
@@ -138,8 +146,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	public void measure(Project project, ProjectDelta projectDelta, Indexing db) {
 		System.err.println("Indexing Communication Channels");
 		CommunicationChannelProjectDelta communicationChannelProjectDelta = projectDelta.getCommunicationChannelDelta();
-
-		indexer = new Indexer();
 
 		for (CommunicationChannelDelta delta : communicationChannelProjectDelta.getCommunicationChannelSystemDeltas()) {
 
@@ -168,16 +174,16 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				String mailinglistName = sympaMailingList.getMailingListName();
 				prepareArticle(project, projectDelta, delta, "sympa.mail", mailinglistName);
 
-				// TODO add support for Mailbox and IRC
-				// }else if (communicationChannel instanceof IRC) {
-				// IRC ircChat = (IRC) communicationChannel;
-				// String chatName = ircChat.getName();
-				// prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+			}else if (communicationChannel instanceof Irc) {
+				 Irc ircChat = (Irc) communicationChannel;
+				 String chatName = ircChat.getName();
+				 prepareArticle(project, projectDelta, delta, "irc.message", chatName);
+				 
+			} else if (communicationChannel instanceof Mbox) {
 
-				// }else if (communicationChannel instanceof MailingList) {
-				// MailingList mailingList = (MailingList) communicationChannel;
-				// String mailinglistName = mailingList.getMailingListName();
-				// prepareArticle(project, projectDelta, delta, "mbox.mail", mailinglistName);
+				Mbox mbox = (Mbox) communicationChannel;
+				String mboxName = mbox.getMboxName();
+				prepareArticle(project, projectDelta, delta, "mbox.mail", mboxName);
 
 			} else {
 
@@ -213,7 +219,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			String uniqueIdentifier = generateUniqueDocumentId(projectDelta, article.getArticleId(),
 					delta.getCommunicationChannel().getCommunicationChannelType());
 
-			String mapping = loadMapping(documentType, NLP);
+			String mapping = Mapping.getMapping(documentType);
 
 			EnrichmentData enrichmentData = getEnrichmentData(article, project);
 
@@ -228,10 +234,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			try {
 
 				document = mapper.writeValueAsString(enrichedDocument);
-				indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
 
 			} catch (JsonProcessingException e) {
-
+				logger.error("Error while indexing document: ", e);
 				e.printStackTrace();
 			}
 
@@ -255,8 +261,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			String documentType = docType;
 
-			String name = collectionName;
-
 			String indexName = Indexer.generateIndexName(
 					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
 
@@ -269,7 +273,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			ArticleDocument enrichedDocument = enrichNewsGroupDocument(
 					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), name, article.getSubject(), article.getMessageThreadId(),
+							article.getDate(), collectionName, article.getSubject(), article.getMessageThreadId(),
 							article.getArticleNumber(), article.getArticleId()),
 					enrichmentData);
 
@@ -278,10 +282,10 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			try {
 
 				document = mapper.writeValueAsString(enrichedDocument);
-				indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
+				Indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
 
 			} catch (JsonProcessingException e) {
-
+				logger.error("Error while indexing document: ", e);
 				e.printStackTrace();
 			}
 
@@ -310,7 +314,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 			switch (metricIdentifier) {
 
-			// TODO - add Topics
 			// TODO - add Threads
 
 			case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
@@ -318,7 +321,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				PlainTextProcessingTransMetric commChannelPlainTextData = new PlainTextProcessingTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 					NewsgroupArticlePlainTextProcessing plainTextData = findCollection(commChannelPlainTextData,
 							NewsgroupArticlePlainTextProcessing.class, commChannelPlainTextData.getNewsgroupArticles(),
 							article);
@@ -329,12 +331,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 						enrichmentData.setPlain_text(plaintext);
 
 					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
 				break;
 			// EMOTION
 			case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
@@ -342,7 +338,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				EmotionClassificationTransMetric commChannelEmotionData = new EmotionClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 					List<String> emotionData = findCollection(commChannelEmotionData,
 							NewsgroupArticlesEmotionClassification.class, commChannelEmotionData.getNewsgroupArticles(),
 							article).getEmotions();
@@ -353,12 +348,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 					}
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
-
 				break;
 
 			// SENTIMENT
@@ -367,7 +356,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				SentimentClassificationTransMetric commChannelCommentsSentimentData = new SentimentClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 					NewsgroupArticlesSentimentClassification sentimentData = findCollection(
 							commChannelCommentsSentimentData, NewsgroupArticlesSentimentClassification.class,
 							commChannelCommentsSentimentData.getNewsgroupArticles(), article);
@@ -378,12 +366,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 					}
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
-
 				break;
 
 			// DETECTING CODE
@@ -391,8 +373,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 				DetectingCodeTransMetric commChannelDetectingCodeData = new DetectingCodeTransMetricProvider()
 						.adapt(context.getProjectDB(project));
-
-				try {
 
 					NewsgroupArticleDetectingCode detectingcodeData = findCollection(commChannelDetectingCodeData,
 							NewsgroupArticleDetectingCode.class, commChannelDetectingCodeData.getNewsgroupArticles(),
@@ -411,12 +391,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 						}
 					}
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
-
 				break;
 
 			// REQUEST REPLY
@@ -424,7 +398,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				RequestReplyClassificationTransMetric commChannelRequestReplyData = new RequestReplyClassificationTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 
 					NewsgroupArticles requestReplyData = findCollection(commChannelRequestReplyData,
 							NewsgroupArticles.class, commChannelRequestReplyData.getNewsgroupArticles(), article);
@@ -435,11 +408,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 					}
 
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
 				break;
 
 			// Content Classification
@@ -447,7 +415,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				NewsgroupsContentClassesTransMetric commChannelContentClassificationData = new ContentClassesTransMetricProvider()
 						.adapt(context.getProjectDB(project));
 
-				try {
 
 					ContentClass contentClassData = findCollection(commChannelContentClassificationData,
 							ContentClass.class, commChannelContentClassificationData.getContentClasses(), article);
@@ -457,12 +424,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 						enrichmentData.setContent_class(contentClassData.getClassLabel());
 
 					}
-
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-						| NoSuchMethodException | InvocationTargetException e) {
-
-					e.printStackTrace();
-				}
 
 				break;
 			}
@@ -558,67 +519,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	}
 
 	/**
-	 * Loads the mapping for a particular index from the 'mappings'directory
-	 * 
-	 * @param mapping
-	 * @return String
-	 */
-	private String loadMapping(String documentType, String knowlegeType) {
-
-		String indexmapping = "";
-		File file = null;
-		try {
-			file = new File(locateMappings(documentType, knowlegeType));
-		} catch (IllegalArgumentException | IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = br.readLine()) != null) {
-				indexmapping = indexmapping + line;
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return indexmapping;
-	}
-
-	/**
-	 * Locates the mapping file within the 'mappings' directory and returns a file
-	 * path
-	 * 
-	 * @return String
-	 * @throws IllegalArgumentException
-	 * @throws IOException
-	 */
-	private String locateMappings(String documentType, String knowledgeType)
-			throws IllegalArgumentException, IOException {
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (path.endsWith("bin/"))
-			path = path.substring(0, path.lastIndexOf("bin/"));
-		File file = new File(path + "mappings/" + documentType + "." + knowledgeType + ".json");
-		checkPropertiesFilePath(file.toPath());
-
-		return file.getPath();
-	}
-
-	/**
-	 * Checks if a file exists
-	 * 
-	 * @param path
-	 */
-	private void checkPropertiesFilePath(Path path) {
-		if (!Files.exists(path)) {
-			System.err.println("The file " + path + " has not been found");
-		}
-	}
-
-	/**
 	 * This method finds a collection created by a metric provider relating to
 	 * newsgroup articles
 	 * 
@@ -628,55 +528,15 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	 * @param collection
 	 * @param article
 	 * @return
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
 	 */
 
 	// TODO add support for IRC, Sympa, MailBox
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
-			CommunicationChannelArticle article) throws NoSuchFieldException, SecurityException,
-			IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-
-		String collectionName = "";
-		CommunicationChannel communicationChannel = article.getCommunicationChannel();
-
-		if (communicationChannel instanceof NntpNewsGroup) {
-
-			NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
-			collectionName = newsGroup.getNewsGroupName();
-		} else if (communicationChannel instanceof EclipseForum) {
-
-			EclipseForum eclipseForum = (EclipseForum) communicationChannel;
-			collectionName = eclipseForum.getForum_name();
-
-		} else if (communicationChannel instanceof Discussion) {
-			Discussion discussion = (Discussion) communicationChannel;
-			// FIXME - How do we handle discussions?
-
-		} else if (communicationChannel instanceof SympaMailingList) {
-			SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
-			collectionName = sympaMailingList.getMailingListName();
-
-			// TODO add support for Mailbox and IRC
-			// }else if (communicationChannel instanceof IRC) {
-			// IRC ircChat = (IRC) communicationChannel;
-			// String chatName = ircChat.getName();
-			// prepareArticle(project, projectDelta, delta, "irc.message", chatName);
-
-			// }else if (communicationChannel instanceof MailingList) {
-			// MailingList mailingList = (MailingList) communicationChannel;
-			// String mailinglistName = mailingList.getMailingListName();
-			// prepareArticle(project, projectDelta, delta, "mbox.email", mailinglistName);
-
-		}
+			CommunicationChannelArticle article) {
 
 		T output = null;
 
-		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(collectionName),
+		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(article.getCommunicationChannel().getOSSMeterId()),
 				getNumericalQueryProducer(type, output, "ARTICLENUMBER").eq(article.getArticleNumber()));
 
 		for (T t : iterator) {
@@ -693,6 +553,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			return (StringQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return null;
@@ -705,6 +566,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			return (NumericalQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return null;

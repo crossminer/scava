@@ -1,7 +1,5 @@
 package org.eclipse.scava.platform.communicationchannel.sympa;
 
-import java.util.Date;
-
 import org.eclipse.scava.platform.communicationchannel.sympa.parser.Email;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
@@ -18,7 +16,8 @@ public class SympaEmail extends CommunicationChannelArticle{
 	private String replyTo;
 	
 	public SympaEmail (Email email, SympaMailingList sympaMailingList) {
-		this.setCommunicationChannel(sympaMailingList);;
+		this.setCommunicationChannel(sympaMailingList);
+		
 		this.setDate(email.getDate());
 		this.setSender(email.getFrom());
 		this.setArticleId(email.getMessageId());
@@ -27,6 +26,7 @@ public class SympaEmail extends CommunicationChannelArticle{
 		this.setSubject(email.getSubject());
 		this.setText(email.getText());
 		this.setRecipient(email.getTo());
+		this.setArticleNumber(this.getDate().getTime());
 	}
 
 	/**

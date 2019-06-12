@@ -1,0 +1,39 @@
+{
+	"properties" : {
+		"created_at" : {
+			"type" : "date"
+		},
+		"project_name" : {
+		"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "text"
+		},
+		"repository" : {
+			"type" : "keyword"
+		},
+		"revision" : {
+			"type" : "keyword"
+		},
+		"author" : {
+			"type" : "text"
+		},
+		"author_email" : {
+			"type" : "text"
+		},
+		"body" : {
+			"type" : "text"
+		},
+		"plain_text" : {
+			"type" : "text"
+		},
+		"commits_references" : {
+			"type" : "text"
+		},
+		"bugs_references" : {
+			"type" : "text"
+		}
+		
+	}
+	
+}

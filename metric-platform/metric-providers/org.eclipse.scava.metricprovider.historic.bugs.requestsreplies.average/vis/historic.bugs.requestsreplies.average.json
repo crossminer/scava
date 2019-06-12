@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.requestsreplies-averageperday",
-			"name" : "Comments, Requests and Replies Per Day",
+			"name" : "Bug Average Comments, Requests and Replies Per Day",
 			"description" : "The average number of comments, requests and replies per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -17,7 +17,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requests-averageperday",
-			"name" : "Requests Per Day",
+			"name" : "Bug Average Requests Per Day",
 			"description" : "The average number of requests per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -29,7 +29,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.comments-averageperday",
-			"name" : "Comments Per Day",
+			"name" : "Bug Average Comments Per Day",
 			"description" : "The average number of comments per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -41,7 +41,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.replies-averageperday",
-			"name" : "Replies Per Day",
+			"name" : "Bug Average Replies Per Day",
 			"description" : "The average number of replies per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

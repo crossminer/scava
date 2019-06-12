@@ -13,16 +13,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.model.issue.Issue;
-import org.eclipse.scava.platform.bugtrackingsystem.bitbucket.utils.BitbucketUtils;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemBug;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemComment;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta;
@@ -40,7 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.DB;
 
 import okhttp3.Credentials;
-import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -63,12 +60,15 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 	private String builder;
 	private OkHttpClient client;
 	private boolean temporalFlag;
+	
+	private Set<String> newAndUpdatesIssuesIds;
 
 	public BitbucketManager() {
 
 		this.open_id = "";
 		this.builder = "";
 		this.client = new OkHttpClient();
+		this.newAndUpdatesIssuesIds = new HashSet<String>();
 	}
 
 	@Override
@@ -95,6 +95,8 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		
 		ProcessedBitBucketURL processedURL= new ProcessedBitBucketURL(bitbucketTracker);
 		
+		newAndUpdatesIssuesIds.clear();
+		
 		for (Issue issue : getIssues(processedURL)) {
 
 			Date created_on = new Date(convertStringToDate(issue.getCreatedOn()));
@@ -104,6 +106,8 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 				BitbucketIssue bug = new BitbucketIssue(issue, bitbucketTracker);
 
 				delta.getNewBugs().add(bug);
+				
+				newAndUpdatesIssuesIds.add(issue.getId());
 
 			}
 
@@ -114,6 +118,8 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 				BitbucketIssue bug = new BitbucketIssue(issue, bitbucketTracker);
 
 				delta.getUpdatedBugs().add(bug);
+				
+				newAndUpdatesIssuesIds.add(issue.getId());
 
 			}
 
@@ -123,6 +129,13 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		
 
 				if (created.compareTo(date.toJavaDate()) == 0) {
+					
+					if(!newAndUpdatesIssuesIds.contains(issue.getId()))
+					{
+						delta.getUpdatedBugs().add(new BitbucketIssue(issue, bitbucketTracker));
+						newAndUpdatesIssuesIds.add(issue.getId());
+					}
+					
 					delta.getComments().add(comment);
 				}
 
@@ -603,6 +616,11 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 			throws Exception {
 
 		return null;
+	}
+
+	@Override
+	public boolean isRestmule() {
+		return false;
 	}
 
 }

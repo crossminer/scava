@@ -82,7 +82,7 @@ public class Indexer {
 	 *            - name of the new index
 	 * @throws IOException
 	 */
-	private Boolean createIndex(String indexName)  {
+	private static Boolean createIndex(String indexName)  {
 		
 		
 	
@@ -142,7 +142,7 @@ public class Indexer {
 	 * @param mapping
 	 *            - a JSON document represented as a string
 	 */
-	private void addMappingToIndex(String indexName, String documentType, String mapping) {
+	private static void addMappingToIndex(String indexName, String documentType, String mapping) {
 
 		PutMappingRequest putMappingRequest = new PutMappingRequest(indexName.toLowerCase());
 		putMappingRequest.source(mapping, XContentType.JSON).type(documentType.toLowerCase());
@@ -223,7 +223,7 @@ public class Indexer {
 	 * @return IndexResponse
 	 * @throws IOException
 	 */
-	private void index(String indexName, String documentType, String uid, String document) {
+	private static void index(String indexName, String documentType, String uid, String document) {
 
 		try {
 			IndexRequest indexRequest = new IndexRequest();
@@ -243,7 +243,7 @@ public class Indexer {
 	 * 
 	 * @throws IOException
 	 */
-	private void closeHighLevelClient() {
+	private static void closeHighLevelClient() {
 
 		try {
 			highLevelClient.close();
@@ -260,7 +260,7 @@ public class Indexer {
 	 * 
 	 */
 
-	private void closeAllClients() {
+	private static void closeAllClients() {
 
 		closeHighLevelClient();
 		//closeAdminClient();
@@ -278,7 +278,7 @@ public class Indexer {
 	 * @throws IOException 
 	 */
 
-	public void indexDocument(String indexName, String mapping, String documentType, String uid, String document)  {
+	public static void indexDocument(String indexName, String mapping, String documentType, String uid, String document)  {
 
 		logger.info("Indexing tool has started");
 		
@@ -302,11 +302,10 @@ public class Indexer {
 	}
 
 	public static void main(String[] args)  {
-		Indexer indexer = new Indexer();
 
-		System.out.println(indexer.highLevelClient);
+		System.out.println(Indexer.highLevelClient);
 
-		indexer.indexDocument("hello", "", "test", "01010101", "{\n" + "    \"glossary\": {\n"
+		Indexer.indexDocument("hello", "", "test", "01010101", "{\n" + "    \"glossary\": {\n"
 				+ "        \"title\": \"example glossary\",\n" + "		\"GlossDiv\": {\n"
 				+ "            \"title\": \"S\",\n" + "			\"GlossList\": {\n"
 				+ "                \"GlossEntry\": {\n" + "                    \"ID\": \"SGML\",\n"

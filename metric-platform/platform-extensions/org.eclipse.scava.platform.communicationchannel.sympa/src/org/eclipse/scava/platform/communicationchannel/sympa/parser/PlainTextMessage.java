@@ -74,7 +74,6 @@ public class PlainTextMessage extends Message {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 			System.err.println("DATE NOT FOUND");
-			System.exit(-1);
 		}
 		if (date==null || date.toString().length()==0)
 			System.err.println("DATE NULL OR ZERO LENGTH");
@@ -89,7 +88,6 @@ public class PlainTextMessage extends Message {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("FROM NOT FOUND");
-			System.exit(-1);
 		}
 		if (from==null || from.length()==0)
 			System.err.println("FROM NULL OR ZERO LENGTH");
@@ -104,7 +102,6 @@ public class PlainTextMessage extends Message {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("SUBJECT NOT FOUND");
-			System.exit(-1);
 		}
 		if (subject==null || subject.length()==0)
 			System.err.println("SUBJECT NULL OR ZERO LENGTH");
@@ -119,7 +116,6 @@ public class PlainTextMessage extends Message {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("REPLY TO NOT FOUND");
-			System.exit(-1);
 		}
 //		if (replyTo==null || replyTo.length()==0)
 //			System.out.println("REPLY TO NULL OR ZERO LENGTH");
@@ -139,7 +135,6 @@ public class PlainTextMessage extends Message {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 			System.err.println("REFERENCES NOT FOUND");
-			System.exit(-1);
 		}
 		Set<String> references = new TreeSet<String>();
 		if (referenceString == null) {
@@ -175,20 +170,17 @@ public class PlainTextMessage extends Message {
 			is = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.exit(-1);
 		}
 		try {
 			mimeMessage = new MimeMessage(null, is);
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			System.exit(-1);
 		}
 		mimeMessageParser = new MimeMessageParser(mimeMessage);
 		try {
 			mimeMessageParser.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(-1);
 		}
 	}
 

@@ -32,4 +32,6 @@ public class EclipseForumUtils {
 		String fixedString = string.replaceAll("\"", "").replace("[", "").replace("]", "");
 		return fixedString;
 	}
+	
+	
 }

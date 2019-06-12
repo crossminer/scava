@@ -1,0 +1,150 @@
+{
+    "dashboard": {
+        "id": "05696120-7c9e-11e9-aebb-ed652e0cbf12",
+        "value": {
+            "description": "Sentiment and emotion dashboard",
+            "hits": 0,
+            "kibanaSavedObjectMeta": {
+                "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
+            },
+            "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
+            "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":16,\"x\":16,\"y\":0},\"id\":\"171d5b00-6511-11e9-babf-e374148441fd\",\"panelIndex\":\"1\",\"title\":\"Project selection\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":16,\"x\":32,\"y\":0},\"id\":\"2a319720-3699-11e9-aa38-a7635aed55af\",\"panelIndex\":\"2\",\"title\":\"Top project selection\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":17,\"i\":\"15\",\"w\":24,\"x\":24,\"y\":15},\"id\":\"6d00a860-8794-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"15\",\"title\":\"Emotions on comments per project (details)\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"gridData\":{\"h\":17,\"i\":\"16\",\"w\":24,\"x\":0,\"y\":15},\"id\":\"cfcd8e70-8796-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"16\",\"title\":\"Emotions on comments per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"18\",\"w\":24,\"x\":0,\"y\":32},\"id\":\"10d42510-879b-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"18\",\"title\":\"Sentiment on threads per project\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"19\",\"w\":24,\"x\":24,\"y\":32},\"id\":\"a7a1fd90-879c-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"19\",\"title\":\"Sentiment on threads per project (details)\",\"type\":\"visualization\",\"version\":\"6.3.1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"20\",\"w\":16,\"x\":0,\"y\":0},\"id\":\"8e198de0-879f-11e9-98ac-55e1b9f6217c\",\"panelIndex\":\"20\",\"title\":\"Emotions summary\",\"type\":\"visualization\",\"version\":\"6.3.1\"}]",
+            "refreshInterval": {
+                "display": "Off",
+                "pause": false,
+                "value": 0
+            },
+            "timeFrom": "now-10y",
+            "timeRestore": true,
+            "timeTo": "now",
+            "title": "scava-sentiment-emotion",
+            "version": 1
+        }
+    },
+    "index_patterns": [
+        {
+            "id": "ea1313b0-8f29-11e8-a362-0d37aacd7dee",
+            "value": {
+                "fields": "[{\"name\":\"_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_index\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"_score\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_source\",\"type\":\"_source\",\"count\":0,\"scripted\":false,\"searchable\":false,\"aggregatable\":false,\"readFromDocValues\":false},{\"name\":\"_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":false},{\"name\":\"datetime\",\"type\":\"date\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"meta.top_projects\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_class\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_desc\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_compute\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_es_value_weighted\",\"type\":\"number\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_id\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_name\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"metric_type\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"project\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true},{\"name\":\"uuid\",\"type\":\"string\",\"count\":0,\"scripted\":false,\"searchable\":true,\"aggregatable\":true,\"readFromDocValues\":true}]",
+                "timeFieldName": "datetime",
+                "title": "scava-metrics"
+            }
+        }
+    ],
+    "searches": [
+        {
+            "id": "579d9ef0-7ca0-11e9-aebb-ed652e0cbf12",
+            "value": {
+                "columns": [
+                    "_source"
+                ],
+                "description": "",
+                "hits": 0,
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"metric_id:*sentiment* OR *emotions*\"},\"filter\":[]}"
+                },
+                "sort": [
+                    "datetime",
+                    "desc"
+                ],
+                "title": "search_sentiment",
+                "version": 1
+            }
+        }
+    ],
+    "visualizations": [
+        {
+            "id": "171d5b00-6511-11e9-babf-e374148441fd",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "savedSearchId": "579d9ef0-7ca0-11e9-aebb-ed652e0cbf12",
+                "title": "sentiment-per-project",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"sentiment-per-project\",\"type\":\"pie\",\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"project\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"project\",\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5000,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "2a319720-3699-11e9-aa38-a7635aed55af",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\n  \"filter\": [],\n  \"query\": {\n    \"query\": \"\",\n    \"language\": \"lucene\"\n  }\n}"
+                },
+                "savedSearchId": "579d9ef0-7ca0-11e9-aebb-ed652e0cbf12",
+                "title": "sentiment-per-top-project",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\n  \"title\": \"sentiment-per-top-project\",\n  \"type\": \"pie\",\n  \"params\": {\n    \"type\": \"pie\",\n    \"addTooltip\": true,\n    \"addLegend\": true,\n    \"legendPosition\": \"right\",\n    \"isDonut\": true,\n    \"labels\": {\n      \"show\": false,\n      \"values\": true,\n      \"last_level\": true,\n      \"truncate\": 100\n    }\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"enabled\": true,\n      \"type\": \"count\",\n      \"schema\": \"metric\",\n      \"params\": {}\n    },\n    {\n      \"id\": \"2\",\n      \"enabled\": true,\n      \"type\": \"terms\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"meta.top_projects\",\n        \"otherBucket\": true,\n        \"otherBucketLabel\": \"Other\",\n        \"missingBucket\": false,\n        \"missingBucketLabel\": \"Missing\",\n        \"size\": 5000,\n        \"order\": \"desc\",\n        \"orderBy\": \"1\"\n      }\n    }\n  ]\n}"
+            }
+        },
+        {
+            "id": "6d00a860-8794-11e9-98ac-55e1b9f6217c",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "comments-project-emotions-evolution",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"comments-project-emotions-evolution\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Emotions\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Emotions\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value_weighted\",\"customLabel\":\"Emotions\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"metric_id\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "cfcd8e70-8796-11e9-98ac-55e1b9f6217c",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "comments-project-emotions-evolution-",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"comments-project-emotions-evolution-\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Emotions\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Emotions\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value_weighted\",\"customLabel\":\"Emotions\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":500,\"order\":\"desc\",\"orderBy\":\"1\"}}]}"
+            }
+        },
+        {
+            "id": "10d42510-879b-11e9-98ac-55e1b9f6217c",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"metric_id\",\"value\":\"bugs.sentiment_Average Sentiment\",\"params\":{\"query\":\"bugs.sentiment_Average Sentiment\",\"type\":\"phrase\"}},\"query\":{\"match\":{\"metric_id\":{\"query\":\"bugs.sentiment_Average Sentiment\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "sentiment-per-project-evolution",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"sentiment-per-project-evolution\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Sentiment\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Sentiment\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Sentiment\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"project\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":500,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Projects\"}}]}"
+            }
+        },
+        {
+            "id": "a7a1fd90-879c-11e9-98ac-55e1b9f6217c",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.sentimentAtThreadBeggining, bugs.sentimentAtThreadEnd\",\"params\":[\"bugs.sentimentAtThreadBeggining\",\"bugs.sentimentAtThreadEnd\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.sentimentAtThreadBeggining\"}},{\"match_phrase\":{\"metric_id\":\"bugs.sentimentAtThreadEnd\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "sentiment-per-project-evolution-details",
+                "uiStateJSON": "{}",
+                "version": 1,
+                "visState": "{\"title\":\"sentiment-per-project-evolution-details\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"Sentiment at thread beginning and end\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Sentiment at thread beginning and end\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_es_value\",\"customLabel\":\"Sentiment at thread beginning and end\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"datetime\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"metric_id\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"Projects\"}}]}"
+            }
+        },
+        {
+            "id": "8e198de0-879f-11e9-98ac-55e1b9f6217c",
+            "value": {
+                "description": "",
+                "kibanaSavedObjectMeta": {
+                    "searchSourceJSON": "{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"filter\":[{\"meta\":{\"index\":\"ea1313b0-8f29-11e8-a362-0d37aacd7dee\",\"type\":\"phrases\",\"key\":\"metric_id\",\"value\":\"bugs.emotions.comments___label__anger, bugs.emotions.comments___label__joy, bugs.emotions.comments___label__love, bugs.emotions.comments___label__fear, bugs.emotions.comments___label__sadness, bugs.emotions.comments___label__surprise\",\"params\":[\"bugs.emotions.comments___label__anger\",\"bugs.emotions.comments___label__joy\",\"bugs.emotions.comments___label__love\",\"bugs.emotions.comments___label__fear\",\"bugs.emotions.comments___label__sadness\",\"bugs.emotions.comments___label__surprise\"],\"negate\":false,\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"should\":[{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__anger\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__joy\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__love\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__fear\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__sadness\"}},{\"match_phrase\":{\"metric_id\":\"bugs.emotions.comments___label__surprise\"}}],\"minimum_should_match\":1}},\"$state\":{\"store\":\"appState\"}}],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+                },
+                "title": "trip-advisor-emotions",
+                "uiStateJSON": "{\"vis\":{\"legendOpen\":false}}",
+                "version": 1,
+                "visState": "{\"title\":\"trip-advisor-emotions\",\"type\":\"horizontal_bar\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false,\"style\":{\"color\":\"#eee\"}},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":200},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"bottom\",\"show\":false,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":75,\"filter\":true,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":true,\"type\":\"histogram\",\"mode\":\"normal\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"segment\",\"params\":{\"filters\":[{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__surprise\\\"\"},\"label\":\"Surprise\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__joy\\\"\"},\"label\":\"Joy\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__love\\\"\"},\"label\":\"Love\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__sadness\\\"\"},\"label\":\"Sadness\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__anger\\\"\"},\"label\":\"Anger\"},{\"input\":{\"query\":\"metric_id=\\\"bugs.emotions.comments___label__fear\\\"\"},\"label\":\"Fear\"}]}}]}"
+            }
+        }
+    ]
+}

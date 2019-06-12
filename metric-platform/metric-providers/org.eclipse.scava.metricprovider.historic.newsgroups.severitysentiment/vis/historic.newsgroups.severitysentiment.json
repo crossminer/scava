@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "newsgroups.severity.sentiment",
-			"name" : "Average Sentiment: Overall, at Thread Beginning and at Thread End.",
+			"name" : "Newsgroup Average Sentiment: Overall, at Thread Beginning and at Thread End per severity.",
 			"description" : "Sentiment per newsgroup per severity level." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -19,7 +19,7 @@
 		},
 		{
 			"id" : "newsgroups.severity.averageSentiment",
-			"name" : "Average Sentiment per Newsgroup Severity",
+			"name" : "Newsgroup Average Sentiment per Severity",
 			"description" : "The average sentiment per bug newsgroup per severity level",
 			"type" : "LineChart",
 			"datatable" : {
@@ -35,7 +35,7 @@
 		},
 		{
 			"id" : "newsgroups.severity.sentimentAtThreadBeggining",
-			"name" : "Thread Beginning Sentiment per Newsgroup Severity",
+			"name" : "Newsgroup Thread Beginning Sentiment per Severity",
 			"description" : "The average sentiment at the beginning of threads per bug newsgroup per severity level",
 			"type" : "LineChart",
 			"datatable" : {
@@ -51,7 +51,7 @@
 		},
 		{
 			"id" : "newsgroups.severity.sentimentAtThreadEnd",
-			"name" : "Thread End per Newsgroup Severity",
+			"name" : "Newsgroup Thread End Sentiment per Severity",
 			"description" : "The average sentiment at the end of threads per newsgroup per severity level",
 			"type" : "LineChart",
 			"datatable" : {

@@ -21,7 +21,6 @@ import org.eclipse.scava.platform.AbstractHistoricalMetricProvider;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
-import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.repository.model.Project;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -58,24 +57,26 @@ public class OpenTimeHistoricMetricProvider extends AbstractHistoricalMetricProv
 			long seconds = 0;
 			int durations = 0;
 			for (BugData bugData: usedBhm.getBugData()) {
-				if (!bugData.getLastClosedTime().equals("null")) {
-					java.util.Date javaOpenTime = NntpUtil.parseDate(bugData.getCreationTime());
-					java.util.Date javaCloseTime = NntpUtil.parseDate(bugData.getLastClosedTime());
+				if (bugData.getLastClosedTime()!=null) {
+					java.util.Date javaOpenTime = bugData.getCreationTime();
+					java.util.Date javaCloseTime = bugData.getLastClosedTime();
 					seconds += ( Date.duration(javaOpenTime, javaCloseTime) / 1000);
 					durations++;
 				}
 			}
-			long avgDuration = 0;
+			
 			if (durations>0)
-				avgDuration = seconds / durations;
-			double daysReal = ( (double) avgDuration ) / SECONDS_DAY;
-			avgBugOpenTime.setAvgBugOpenTimeInDays(daysReal);
-			int days = (int) daysReal;
-			long lessThanDay = (avgDuration % SECONDS_DAY);
-			String formatted = DurationFormatUtils.formatDuration(lessThanDay*1000, "HH:mm:ss:SS");
-			avgBugOpenTime.setAvgBugOpenTime(days+":"+formatted);
-//			System.out.println(days + ":" + formatted);
-			avgBugOpenTime.setBugsConsidered(durations);
+			{
+				long avgDuration = seconds / durations;
+				double daysReal = ( (double) avgDuration ) / SECONDS_DAY;
+				avgBugOpenTime.setAvgBugOpenTimeInDays(daysReal);
+				int days = (int) daysReal;
+				long lessThanDay = (avgDuration % SECONDS_DAY);
+				String formatted = DurationFormatUtils.formatDuration(lessThanDay*1000, "HH:mm:ss:SS");
+				avgBugOpenTime.setAvgBugOpenTime(days+":"+formatted);
+				System.out.println(days + ":" + formatted);
+				avgBugOpenTime.setBugsConsidered(durations);
+			}
 
 		}
 		return avgBugOpenTime;

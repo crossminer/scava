@@ -60,7 +60,9 @@ public class OssmeterApplication implements IApplication{
 
 		// Connect to Mongo - single instance per node
 		mongo = Configuration.getInstance().getMongoConnection();
-		Platform platform = new Platform(mongo);
+		Platform platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		// Ensure OSGi contributors are active
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());

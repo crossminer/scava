@@ -4,7 +4,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.activeinactiveusers",
-			"name" : "Users, Active Users and Inactive Users",
+			"name" : "Bug Tracker Users, Active Users and Inactive Users",
 			"description" : "The number of users, active users and inactive users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -18,7 +18,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.users",
-			"name" : "Users",
+			"name" : "Bug Tracker Users",
 			"description" : "The number of users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -30,7 +30,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.activeusers",
-			"name" : "Active Users",
+			"name" : "Bug Tracker Active Users",
 			"description" : "The number of active users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -42,7 +42,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.inactiveusers",
-			"name" : "Inactive Users",
+			"name" : "Bug Tracker Inactive Users",
 			"description" : "The number of inactive users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

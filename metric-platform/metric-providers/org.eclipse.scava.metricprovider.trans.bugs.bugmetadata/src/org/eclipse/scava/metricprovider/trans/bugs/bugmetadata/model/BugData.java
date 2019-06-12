@@ -1,25 +1,19 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class BugData extends Pongo {
 	
+	protected List<String> resolution = null;
 	
 	
 	public BugData() { 
 		super();
+		dbObject.put("resolution", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		BUGID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		STATUS.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
@@ -36,7 +30,6 @@ public class BugData extends Pongo {
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
 	public static StringQueryProducer BUGID = new StringQueryProducer("bugId"); 
 	public static StringQueryProducer STATUS = new StringQueryProducer("status"); 
-	public static StringQueryProducer RESOLUTION = new StringQueryProducer("resolution"); 
 	public static StringQueryProducer OPERATINGSYSTEM = new StringQueryProducer("operatingSystem"); 
 	public static StringQueryProducer PRIORITY = new StringQueryProducer("priority"); 
 	public static StringQueryProducer CREATIONTIME = new StringQueryProducer("creationTime"); 
@@ -44,6 +37,7 @@ public class BugData extends Pongo {
 	public static NumericalQueryProducer AVERAGESENTIMENT = new NumericalQueryProducer("averageSentiment");
 	public static StringQueryProducer STARTSENTIMENT = new StringQueryProducer("startSentiment"); 
 	public static StringQueryProducer ENDSENTIMENT = new StringQueryProducer("endSentiment"); 
+	public static ArrayQueryProducer RESOLUTION = new ArrayQueryProducer("resolution");
 	
 	
 	public String getBugTrackerId() {
@@ -73,15 +67,6 @@ public class BugData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public String getResolution() {
-		return parseString(dbObject.get("resolution")+"", "");
-	}
-	
-	public BugData setResolution(String resolution) {
-		dbObject.put("resolution", resolution);
-		notifyChanged();
-		return this;
-	}
 	public String getOperatingSystem() {
 		return parseString(dbObject.get("operatingSystem")+"", "");
 	}
@@ -100,20 +85,20 @@ public class BugData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public String getCreationTime() {
-		return parseString(dbObject.get("creationTime")+"", "");
+	public Date getCreationTime() {
+		return parseDate(dbObject.get("creationTime")+"", null);
 	}
 	
-	public BugData setCreationTime(String creationTime) {
+	public BugData setCreationTime(Date creationTime) {
 		dbObject.put("creationTime", creationTime);
 		notifyChanged();
 		return this;
 	}
-	public String getLastClosedTime() {
-		return parseString(dbObject.get("lastClosedTime")+"", "");
+	public Date getLastClosedTime() {
+		return parseDate(dbObject.get("lastClosedTime")+"", null);
 	}
 	
-	public BugData setLastClosedTime(String lastClosedTime) {
+	public BugData setLastClosedTime(Date lastClosedTime) {
 		dbObject.put("lastClosedTime", lastClosedTime);
 		notifyChanged();
 		return this;
@@ -146,6 +131,12 @@ public class BugData extends Pongo {
 		return this;
 	}
 	
+	public List<String> getResolution() {
+		if (resolution == null) {
+			resolution = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("resolution"));
+		}
+		return resolution;
+	}
 	
 	
 	

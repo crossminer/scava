@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.requestsreplies",
-			"name" : "Requests and Replies",
+			"name" : "Bug Requests and Replies",
 			"description" : "The number of requests and replies submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -16,7 +16,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requests",
-			"name" : "Requests",
+			"name" : "Bug Requests",
 			"description" : "The number of requests submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -28,7 +28,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.replies",
-			"name" : "Replies",
+			"name" : "Bug Replies",
 			"description" : "The number of replies submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -40,7 +40,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativerequestsreplies",
-			"name" : "Requests and Replies (Cumulative)",
+			"name" : "Bug Requests and Replies (Cumulative)",
 			"description" : "The number of requests and replies submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -53,7 +53,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativerequests",
-			"name" : "Requests (Cumulative)",
+			"name" : "Bug Requests (Cumulative)",
 			"description" : "The number of requests submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -65,7 +65,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativereplies",
-			"name" : "Replies (Cumulative)",
+			"name" : "Bug Replies (Cumulative)",
 			"description" : "The number of replies submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

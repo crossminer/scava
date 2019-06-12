@@ -18,11 +18,11 @@ import org.eclipse.scava.nlp.tools.predictions.externalExtra.ExternalExtraFeatur
 
 public class SingleLabelPredictionCollection
 {
-	List<SingleLabelPrediction> data;
-	Boolean idsSet=null;
-	boolean predictionSet=false;
-	Boolean extraSet=null;
-	Object typeExtraSet=null;
+	protected List<SingleLabelPrediction> data;
+	protected Boolean idsSet=null;
+	protected boolean predictionSet=false;
+	protected Boolean extraSet=null;
+	protected Object typeExtraSet=null;
 		
 	public SingleLabelPredictionCollection()
 	{

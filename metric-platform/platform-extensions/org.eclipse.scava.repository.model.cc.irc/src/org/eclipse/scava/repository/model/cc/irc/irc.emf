@@ -1,0 +1,15 @@
+package org.eclipse.scava.repository.model.cc.irc;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+   
+}
+
+class Irc extends  CommunicationChannel {
+	@searchable
+	attr String username;
+	attr String password;
+	attr String description;
+	attr String name;
+	attr String compressedFileExtension;
+}

@@ -45,4 +45,5 @@ public class ExtensionPointBugTrackingSystemManager extends PlatformBugTrackingS
 		return bugTrackingSystemManagers;
 		
 	}
+
 }

@@ -47,6 +47,7 @@ import org.eclipse.scava.repository.model.LocalStorage;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectExecutionInformation;
 import org.eclipse.scava.repository.model.VcsRepository;
+import org.junit.AfterClass;
 import org.rascalmpl.interpreter.Evaluator;
 import org.rascalmpl.uri.URIResolverRegistry;
 import org.rascalmpl.values.ValueFactoryFactory;
@@ -75,7 +76,9 @@ public class RascalTestCaseGenerator implements IApplication  {
 		// create platform with mongo db
 		Mongo mongo = new Mongo();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		Platform platform = new Platform(mongo);
+		Platform platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		OssmeterLogger logger = (OssmeterLogger) OssmeterLogger.getLogger("RascalTestCaseGenerator");
 		
 		// load rascal manager and metric providers

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commons-email
+Bundle-SymbolicName: org.apache.commons.commons-email
+Bundle-Version: 1.5.0
+Require-Bundle: javax.mail
+Bundle-ClassPath: commons-email-1.5.jar
+Export-Package: org.apache.commons.mail,
+ org.apache.commons.mail.resolver,
+ org.apache.commons.mail.util

@@ -10,6 +10,6 @@ class BugStatistics {
    attr String bugId;
    attr boolean answered;
    attr long responseDurationSec;
-   attr String responseDate;
+   attr Date responseDate;
 
 }

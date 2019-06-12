@@ -10,9 +10,43 @@ public class CommunicationChannelDocumentation implements Serializable {
 	private String url;
 	private Date dateDelta;
 	private Date nextExecutionDate;
-	private String login;
+	private String username;
 	private String password;
+	private String loginURL;
+	private String usernameFieldName;
+	private String passwordFieldName;
+	private boolean loginNeeded = false;
 	
+	public boolean isLoginNeeded() {
+		return loginNeeded;
+	}
+	public void setLoginNeeded(boolean loginNeeded) {
+		this.loginNeeded = loginNeeded;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getLoginURL() {
+		return loginURL;
+	}
+	public void setLoginURL(String loginURL) {
+		this.loginURL = loginURL;
+	}
+	public String getUsernameFieldName() {
+		return usernameFieldName;
+	}
+	public void setUsernameFieldName(String usernameFieldName) {
+		this.usernameFieldName = usernameFieldName;
+	}
+	public String getPasswordFieldName() {
+		return passwordFieldName;
+	}
+	public void setPasswordFieldName(String passwordFieldName) {
+		this.passwordFieldName = passwordFieldName;
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -31,12 +65,7 @@ public class CommunicationChannelDocumentation implements Serializable {
 	public void setNextExecutionDate(Date nextExecutionDate) {
 		this.nextExecutionDate = nextExecutionDate;
 	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
+
 	public String getPassword() {
 		return password;
 	}

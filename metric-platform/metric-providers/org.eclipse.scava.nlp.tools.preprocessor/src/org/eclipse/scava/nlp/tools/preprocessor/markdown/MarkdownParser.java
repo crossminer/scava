@@ -50,7 +50,7 @@ public class MarkdownParser
 		text=renderer.render(document);
 		//We need to delete the extra newlines again before returning the text
 		text=newline.matcher(text).replaceAll("");
-		return text;
+		return "<body>"+text+ "</body>";
 	}
 
 }

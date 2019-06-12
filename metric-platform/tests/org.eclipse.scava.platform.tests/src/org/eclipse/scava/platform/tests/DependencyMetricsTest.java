@@ -17,6 +17,7 @@ import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.vcs.git.GitRepository;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -38,7 +39,9 @@ public class DependencyMetricsTest {
 	public void setUp() throws UnknownHostException {
 		mongo = new Mongo();
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		platform = new Platform(mongo);
+		platform = Platform.getInstance();
+		platform.setMongo(mongo);
+		platform.initialize();
 		
 		WORKER_ID = Configuration.getInstance().getSlaveIdentifier();
 		// Register Worker

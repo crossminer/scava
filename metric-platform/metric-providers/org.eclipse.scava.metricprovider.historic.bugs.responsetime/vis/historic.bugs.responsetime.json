@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.averageResponseTime",
-			"name" : "Average Response Time (ms)",
+			"name" : "Bug Average Response Time (s)",
 			"description" : "The average response time of bugs addressed every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -15,7 +15,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.averageResponseTime-bugs",
-			"name" : "Average Response Time per Thread (ms)",
+			"name" : "Bug Average Response Time per Thread (s)",
 			"description" : "The average response time of bugs addressed every day, in relation to the number of bugs considered." ,
 			"type" : "ScatterChart",
 			"datatable" : {
@@ -28,7 +28,7 @@
 			"timeSeries" : false
 		},{
 			"id" : "bugs.cumulativeAverageResponseTime",
-			"name" : "Average Response Time (Cumulative) (ms)",
+			"name" : "Bug Average Response Time (Cumulative) (s)",
 			"description" : "The average response time of bugs addressed up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -40,7 +40,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativeAverageResponseTime-bugs",
-			"name" : " Average Response Time per Thread (Cumulative) (ms)",
+			"name" : " Bug Average Response Time per Thread (Cumulative) (s)",
 			"description" : "The average response time of bugs addressed up to and including the current date, in relation to the number of bugs considered." ,
 			"type" : "LineChart",
 			"datatable" : {

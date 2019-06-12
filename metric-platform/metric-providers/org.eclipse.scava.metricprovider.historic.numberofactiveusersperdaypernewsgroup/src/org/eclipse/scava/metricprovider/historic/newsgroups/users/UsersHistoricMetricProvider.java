@@ -23,6 +23,8 @@ import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -53,7 +55,8 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
-			// if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof Irc) return true;
+			if (communicationChannel instanceof Mbox) return true;
 		}
 		return false;
 	}
@@ -70,24 +73,24 @@ public class UsersHistoricMetricProvider extends AbstractHistoricalMetricProvide
 				if ((newsgroup.getUsers() > 0) || (newsgroup.getActiveUsers() > 0) || (newsgroup.getInactiveUsers() > 0)) {
 					DailyNewsgroupData dailyNewsgroupData = new DailyNewsgroupData();
 					dailyNewsgroupData.setNewsgroupName(newsgroup.getNewsgroupName());
-					if (newsgroup.getUsers() > 0) {
-						dailyNewsgroupData.setNumberOfUsers(newsgroup.getUsers());
+					if (newsgroup.getUsers() > 0)
 						numberOfUsers += newsgroup.getUsers();
-					}
-					if (newsgroup.getActiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfActiveUsers(newsgroup.getActiveUsers());
+					if (newsgroup.getActiveUsers() > 0)
 						numberOfActiveUsers += newsgroup.getActiveUsers();
-					}
-					if (newsgroup.getInactiveUsers() > 0) {
-						dailyNewsgroupData.setNumberOfInactiveUsers(newsgroup.getInactiveUsers());
+					if (newsgroup.getInactiveUsers() > 0)
 						numberOfInactiveUsers += newsgroup.getInactiveUsers();
-					}
+					dailyNewsgroupData.setNumberOfUsers(newsgroup.getUsers());
+					dailyNewsgroupData.setNumberOfActiveUsers(newsgroup.getActiveUsers());
+					dailyNewsgroupData.setNumberOfInactiveUsers(newsgroup.getInactiveUsers());
 					users.getNewsgroups().add(dailyNewsgroupData);
 				}
 			}
-			users.setNumberOfUsers(numberOfUsers);
-			users.setNumberOfActiveUsers(numberOfActiveUsers);
-			users.setNumberOfInactiveUsers(numberOfInactiveUsers);
+			if (numberOfUsers > 0)
+			{
+				users.setNumberOfUsers(numberOfUsers);
+				users.setNumberOfActiveUsers(numberOfActiveUsers);
+				users.setNumberOfInactiveUsers(numberOfInactiveUsers);
+			}
 		}
 		return users;
 	}

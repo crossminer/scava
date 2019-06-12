@@ -12,6 +12,11 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.repository.model.cc.nntp,
  org.eclipse.scava.repository.model.sourceforge,
  org.eclipse.scava.repository.model.cc.eclipseforums,
- org.eclipse.scava.repository.model.cc.sympa
+ org.eclipse.scava.repository.model.cc.sympa,
+ org.eclipse.scava.repository.model.cc.irc,
+ org.eclipse.scava.repository.model.documentation.gitbased,
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.repository.model.documentation.systematic,
+ org.eclipse.scava.repository.model.cc.mbox
 Export-Package: org.eclipse.scava.metricprovider.trans.indexing.preparation,
  org.eclipse.scava.metricprovider.trans.indexing.preparation.model

@@ -21,11 +21,17 @@ import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
+import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 import com.mongodb.DB;
@@ -46,7 +52,7 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 	protected MetricProviderContext context;
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
-
+	protected PlatformVcsManager platformVcsManager;
 	
 	@Override
 	public String getIdentifier() {
@@ -74,13 +80,15 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 
 	@Override
 	public boolean appliesTo(Project project) {
-		
+		if(project.getVcsRepositories().size()>0) return true;
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
-			//if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof Irc) return true;
+			if (communicationChannel instanceof DocumentationSystematic) return true;
+			if (communicationChannel instanceof Mbox) return true;
 		}
 		return !project.getBugTrackingSystems().isEmpty();
 	
@@ -101,7 +109,7 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.platformBugTrackingSystemManager = context.getPlatformBugTrackingSystemManager();
 		this.communicationChannelManager = context.getPlatformCommunicationChannelManager();
-
+		this.platformVcsManager=context.getPlatformVcsManager();
 	}
 
 	@Override

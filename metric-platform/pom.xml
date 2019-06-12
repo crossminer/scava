@@ -147,7 +147,10 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.smells</module>
@@ -159,6 +162,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.osgi</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.docker</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.puppet</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.projects.relations</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>
@@ -271,12 +275,6 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
     </module>
-    
-    
-    
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.libraries.fasttext
-    </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.resources.sentinet5
     </module>
@@ -362,7 +360,7 @@
     	metric-providers/org.eclipse.scava.nlp.tools.references
     </module>
     <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.messagereferences
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.references
     </module>
     <module>
     	metric-providers/org.eclipse.scava.nlp.tools.readability
@@ -441,6 +439,55 @@
     </module>
     <module>
     	../migration/third-party/ch.qos.logback.logback-core
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.irc
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.irc
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.plaintext
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.topics
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.historic.commits.messages.topics
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.documentation
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.indexing.commits
+    </module>
+    <module>../migration/third-party/com.github.sszuev.fasttext</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
+    </module>
+    <module>
+
+    	platform-extensions/org.eclipse.scava.platform.communicationchannel.mbox
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.repository.model.cc.mbox
+	    </module><module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.classification
+    </module>
+    
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.documentation
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.tools.license
+    </module>
+    <module>
+    	../migration/third-party/org.apache.commons.commons-email
+    </module>
+    <module>../migration/third-party/commons-net.commons-net</module>
+    <module>../migration/third-party/commons-io.commons-io</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.license
     </module>
   </modules>
   <build>

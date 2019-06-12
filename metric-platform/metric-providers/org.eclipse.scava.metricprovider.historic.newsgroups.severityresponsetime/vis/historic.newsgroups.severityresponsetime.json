@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "newsgroups.severity.averageResponseTime",
-			"name" : "Newsgroup Thread Average Response Time (ms) per Severity Level",
+			"name" : "Newsgroup Thread Average Response Time (s) per Severity Level",
 			"description" : "The number of newsgroup threads average response time per severity level",
 			"type" : "LineChart",
 			"datatable" : {

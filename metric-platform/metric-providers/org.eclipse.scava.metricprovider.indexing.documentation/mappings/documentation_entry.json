@@ -1,0 +1,71 @@
+{
+	"properties" : {
+		"created_at" : {
+			"type" : "date"
+		},
+		"project_name" : {
+		"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "text"
+		},
+		"documentation_id" : {
+			"type" : "keyword"
+		},
+		"documentation_entry_id" : {
+			"type" : "keyword"
+		},
+		"body" : {
+			"type" : "text"
+		},
+		"original_format_mime" : {
+			"type" : "text"
+		},
+		"original_format_name" : {
+			"type" : "text"
+		},
+		"plain_text" : {
+			"type" : "text"
+		},
+		"sentiment" : {
+			"type" : "text"
+		},
+		"readability" : {
+			"type" : "double"
+		},
+		"documentation_type" : {
+			"type" : "text"
+		}
+		"license_found" : {
+			"type" : "boolean"
+		}
+		"license" :
+		{
+			"group" : {
+				"type" : "text"
+			},
+			"name" : {
+				"type" : "text"
+			},
+			"header_found": {
+				"type" : "boolean"
+			},
+			"score": {
+				"type" : "double"
+			},
+			"is_deprecated_license": {
+				"type" : "boolean"
+			},
+			"is_fsf_libre": {
+				"type" : "boolean"
+			},
+			"is_osi_approved": {
+				"type" : "boolean"
+			},
+			"license_comments": {
+				"type" : "text"
+			}
+			
+		}
+	}
+}

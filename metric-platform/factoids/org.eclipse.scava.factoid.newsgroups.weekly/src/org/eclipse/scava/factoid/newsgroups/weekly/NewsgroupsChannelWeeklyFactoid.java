@@ -23,7 +23,12 @@ import org.eclipse.scava.platform.factoids.Factoid;
 import org.eclipse.scava.platform.factoids.StarRating;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
+import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
 public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 
@@ -49,6 +54,11 @@ public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvide
 	public boolean appliesTo(Project project) {
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
 			if (communicationChannel instanceof NntpNewsGroup) return true;
+			if (communicationChannel instanceof Discussion) return true;
+			if (communicationChannel instanceof EclipseForum) return true;
+			if (communicationChannel instanceof SympaMailingList) return true;
+			if (communicationChannel instanceof Irc) return true;
+			if (communicationChannel instanceof Mbox) return true;
 		}
 		return false;
 	}

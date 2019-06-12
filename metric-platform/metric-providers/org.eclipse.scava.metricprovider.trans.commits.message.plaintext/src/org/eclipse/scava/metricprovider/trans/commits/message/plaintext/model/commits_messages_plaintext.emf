@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class CommitsMessagePlainTextTransMetric {
+	@series
+	val CommitMessagePlainText[*] commitsMessagesPlainText;
+}
+
+class CommitMessagePlainText {
+	@searchable
+	attr String repository;
+	attr String revision;
+	attr String[*] plainText;
+}

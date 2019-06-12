@@ -12,6 +12,7 @@ package org.eclipse.scava.platform.tests;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.github.GitHubRepository;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.googlecode.pongo.runtime.PongoFactory;
@@ -25,7 +26,9 @@ public class TestOtherTypesOfProjects {
 		
 		GitHubRepository project = new GitHubRepository();
 		
-		Platform platform = new Platform(new Mongo());
+		Platform platform = Platform.getInstance();
+		platform.setMongo(new Mongo());
+		platform.initialize();
 		platform.getProjectRepositoryManager().getProjectRepository().getProjects().add(project);
 		platform.getProjectRepositoryManager().getProjectRepository().sync();
 		
@@ -37,7 +40,8 @@ public class TestOtherTypesOfProjects {
 		PongoFactory.getInstance().clear();
 		
 		PongoFactory.getInstance().getContributors().add(new OsgiPongoFactoryContributor());
-		Platform platform = new Platform(new Mongo());
+		Platform platform = Platform.getInstance();
+		platform.setMongo(new Mongo());
 		for (Project project : platform.getProjectRepositoryManager().getProjectRepository().getProjects()) {
 			System.err.println(project);
 		}

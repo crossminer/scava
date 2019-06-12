@@ -26,44 +26,44 @@ public class EnrichmentData {
 	public String getContent_class() {
 		return content_class;
 	}
-	public void setContent_class(String content_class) throws NullPointerException {
+	public void setContent_class(String content_class)  {
 		this.content_class = content_class;
 	}
 	public List<String> getEmotionalDimensions() {
 		return emotional_Dimensions;
 	}
-	public void addEmotionalDimension(String emotionalDimension) throws NullPointerException {
+	public void addEmotionalDimension(String emotionalDimension)  {
 		this.emotional_Dimensions.add(emotionalDimension);
 	}
 	public String getSentiment() {
 		return sentiment;
 	}
-	public void setSentiment(String sentiment) throws NullPointerException {
+	public void setSentiment(String sentiment)  {
 		this.sentiment = sentiment;
 	}
 	public String getSeverity() {
 		return severity;
 	}
-	public void setSeverity(String severity) throws NullPointerException {
+	public void setSeverity(String severity)  {
 		this.severity = severity;
 	}
 	public String getPlain_text() {
 		return plain_text;
 	}
-	public void setPlain_text(String plain_text) throws NullPointerException {
+	public void setPlain_text(String plain_text)  {
 		this.plain_text = plain_text;
 	}
 
 	public String getRequest_reply_classification() {
 		return request_reply_classification;
 	}
-	public void setRequest_reply_classification(String request_reply_classification) throws NullPointerException {
+	public void setRequest_reply_classification(String request_reply_classification)  {
 		this.request_reply_classification = request_reply_classification;
 	}
 	public Boolean getCode() {
 		return code;
 	}
-	public void setCode(Boolean code) throws NullPointerException {
+	public void setCode(Boolean code)  {
 		this.code = code;
 	}	
 }

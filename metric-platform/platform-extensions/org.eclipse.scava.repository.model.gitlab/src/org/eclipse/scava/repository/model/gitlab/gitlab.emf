@@ -5,17 +5,14 @@ abstract class BugTrackingSystem {
 
 }
 
-
 @customize
 class GitLabTracker extends BugTrackingSystem {
 	@searchable
 	attr String personal_access_token;
-	attr String client_id;
-	attr String client_secret;
 }
 
 @stub(javaClass="org.eclipse.scava.repository.model.Project")
-class Project {  
+class Project {
 }
 
 class GitLabRepository extends Project {

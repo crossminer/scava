@@ -10,48 +10,30 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
-import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
-import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
-import org.eclipse.scava.platform.analysis.data.types.MetricProviderKind;
-import org.eclipse.scava.platform.logging.OssmeterLoggerFactory;
-import org.eclipse.scava.platform.visualisation.MetricVisualisation;
-import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.scava.repository.model.ProjectRepository;
-import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.googlecode.pongo.runtime.Pongo;
 import com.googlecode.pongo.runtime.PongoCollection;
-import com.googlecode.pongo.runtime.PongoDB;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.QueryBuilder;
-import com.mongodb.util.JSON;
 
 public class RawMetricResource extends AbstractApiResource {
 
@@ -86,16 +68,6 @@ public class RawMetricResource extends AbstractApiResource {
 		ArrayNode results = mapper.createArrayNode();
 				
 		if (projectId != null && metricId != null) {
-		
-			Mongo mongo;
-			try {
-				mongo = Configuration.getInstance().getMongoConnection();
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-				getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
-				return Util.generateErrorMessageRepresentation(generateRequestJson(mapper, null), "The API was unable to connect to the database.");
-			}
-			
 			this.db = mongo.getDB(ANALYSIS_SCHEDULING_DATABASE);
 			ProjectAnalysisResportory repository = new ProjectAnalysisResportory(this.db);
 			Iterable<MetricExecution> listMetricExecutions = repository.getMetricExecutions().findByProjectId(projectId);

@@ -199,7 +199,7 @@ public class MetricVisualisation {
 		// 		 If we're visualising transients, this may need amending 
 		
 		String id = metricId.replace("org.eclipse.scava.metricprovider.", "");
-		if (!db.collectionExists(id)) {
+		if (db.getCollection(id).count() == 0) {
 			System.err.println("ERROR: Could not find collection: " + metricId);
 		}
 		

@@ -11,6 +11,9 @@ package org.eclipse.scava.platform.bugtrackingsystem.gitlab;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Assignee;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Author;
@@ -34,7 +37,7 @@ public class GitLabIssue extends BugTrackingSystemBug {
 		private Date closed_at = null;
 		private Date updated_at = null;
 		private String closed_by = null;
-		private ArrayList < Object > labels = new ArrayList < Object > ();
+		private List<String> labels;
 		private Milestone MilestoneObject;
 		ArrayList < Object > assignees = new ArrayList < Object > ();
 		Author AuthorObject;
@@ -53,13 +56,26 @@ public class GitLabIssue extends BugTrackingSystemBug {
 		public GitLabIssue(Issue issue, GitLabTracker gitlabTracker) {
 			this.bugId = issue.getId();
 			this.status = issue.getState();
+			if (issue.getClosed_at()!=null) {
+				this.closed_at = convertStringToDate(issue.getClosed_at());				
+			}else {
+				this.closed_at = null;
+			}
 			this.creator = issue.getAuthor().getUsername();
 			this.creationTime = convertStringToDate(issue.getCreated_at());
 			this.summary = issue.getTitle();
 			this.bugTrackingSystem = gitlabTracker;
 			this.iid = issue.getIid();
 			this.user_notes_count = issue.getUser_notes_count();
+			this.labels = convertLabels(issue.getLabels());
 		}
+		
+	private List<String> convertLabels(List<Object> labels)
+	{
+		List<String> labelsString = labels.stream().map(object -> Objects.toString(object, null))
+				   .collect(Collectors.toList());
+		return labelsString;
+	}
 	
 	/**
 	 * @return the iid
@@ -106,7 +122,7 @@ public class GitLabIssue extends BugTrackingSystemBug {
 	/**
 	 * @return the labels
 	 */
-	public ArrayList<Object> getLabels() {
+	public List<String> getLabels() {
 		return labels;
 	}
 
@@ -248,8 +264,8 @@ public class GitLabIssue extends BugTrackingSystemBug {
 	/**
 	 * @param labels the labels to set
 	 */
-	public void setLabels(ArrayList<Object> labels) {
-		this.labels = labels;
+	public void setLabels(List<Object> labels) {
+		this.labels = convertLabels(labels);
 	}
 
 	/**
@@ -348,6 +364,8 @@ public class GitLabIssue extends BugTrackingSystemBug {
 	
 	private static java.util.Date convertStringToDate(String isoDate) {
 		
+		if(isoDate.isEmpty())
+			return null;
 		isoDate = isoDate.replaceAll("\"", "");
 		DateTimeFormatter parser = ISODateTimeFormat.dateTimeParser();
 		DateTime date = parser.parseDateTime(isoDate);

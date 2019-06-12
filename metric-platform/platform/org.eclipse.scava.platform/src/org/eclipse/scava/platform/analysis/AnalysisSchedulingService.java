@@ -67,7 +67,10 @@ public class AnalysisSchedulingService {
 				.find(MetricExecution.PROJECTID.eq(projectId), MetricExecution.METRICPROVIDERID.eq(metricId));
 
 		if (providers.iterator().hasNext()) {
-			providers.iterator().next().setLastExecutionDate(task.getScheduling().getCurrentDate());
+			MetricExecution metricExec = providers.iterator().next();
+			if (metricExec.getLastExecutionDate().compareTo(task.getScheduling().getCurrentDate()) < 0 ) {
+				metricExec.setLastExecutionDate(task.getScheduling().getCurrentDate());
+			}
 		}
 
 		// Calculate Progress

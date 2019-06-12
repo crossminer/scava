@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.newbugs",
-			"name" : "Bugs",
+			"name" : "New Bugs",
 			"description" : "The number of bugs submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -15,8 +15,8 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativeNewBugs",
-			"name" : "Bugs (Cumulative)",
-			"description" : "The number of bugs submitted up to and including the current date." ,
+			"name" : "New Bugs (Cumulative)",
+			"description" : "The total number of bugs submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 

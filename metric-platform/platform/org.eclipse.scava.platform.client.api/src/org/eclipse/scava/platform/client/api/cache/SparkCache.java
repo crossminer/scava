@@ -61,7 +61,6 @@ public class SparkCache {
 		DBCollection col = db.getCollection("sparks");
 		col.ensureIndex("sparkid");
 		col.ensureIndex(new BasicDBObject("created_at", 1), new BasicDBObject("expireAfterSeconds", 3600));
-		mongo.close();
 	}
 
 	public synchronized byte[] getSpark(String sparkId) {
@@ -82,7 +81,6 @@ public class SparkCache {
 		if (obj != null) {
 			spark = (byte[])obj.get("bytes");
 		}
-		mongo.close();
 		return spark;
 	}
 	
@@ -108,8 +106,6 @@ public class SparkCache {
 		obj.put("created_at", new Date());
 		
 		col.insert(obj);
-		
-		mongo.close();
 	}
 	
 	public synchronized String getSparkData(String query) {

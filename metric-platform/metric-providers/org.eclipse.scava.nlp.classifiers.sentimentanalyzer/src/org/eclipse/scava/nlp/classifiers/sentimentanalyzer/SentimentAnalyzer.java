@@ -25,7 +25,7 @@ public class SentimentAnalyzer
 	
 	static
 	{
-		sentimentAnalyzer = SentimentAnalyserSigleton.getInstance().getSentimentAnalyzer();
+		sentimentAnalyzer = SentimentAnalyzerSigleton.getInstance().getSentimentAnalyzer();
 	}
 	
 	public static SingleLabelPredictionCollection predict(List<String> textCollection) throws IOException, InterruptedException

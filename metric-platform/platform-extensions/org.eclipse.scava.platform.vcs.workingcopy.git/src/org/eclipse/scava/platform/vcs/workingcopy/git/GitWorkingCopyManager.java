@@ -35,7 +35,7 @@ public class GitWorkingCopyManager implements WorkingCopyManager {
   }
 
   @Override
-  public void checkout(File workingDirectory, VcsRepository repository, String revision)
+  public synchronized void checkout(File workingDirectory, VcsRepository repository, String revision)
       throws WorkingCopyCheckoutException {
     try {
       if (workingDirectory.exists()) {
@@ -56,7 +56,7 @@ public class GitWorkingCopyManager implements WorkingCopyManager {
   }
 
   @Override
-  public List<Churn> getDiff(File workingDirectory, String lastRevision) {
+  public synchronized List<Churn> getDiff(File workingDirectory, String lastRevision) {
 	  List<Churn> result = new ArrayList<>();
 	  List<String> commandArgs = new ArrayList<>(Arrays.asList(new String[] { "git", "show", "--numstat" }));
 	  

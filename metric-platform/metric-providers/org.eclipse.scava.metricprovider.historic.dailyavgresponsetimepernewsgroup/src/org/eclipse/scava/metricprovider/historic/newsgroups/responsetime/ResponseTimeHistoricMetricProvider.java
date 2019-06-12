@@ -25,6 +25,8 @@ import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
@@ -55,14 +57,15 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 			if (communicationChannel instanceof Discussion) return true;
 			if (communicationChannel instanceof EclipseForum) return true;
 			if (communicationChannel instanceof SympaMailingList) return true;
-			// if (communicationChannel instanceof IRC) return true;
+			if (communicationChannel instanceof Irc) return true;
+			if (communicationChannel instanceof Mbox) return true;
 		}
 		return false;
 	}
 
 	@Override
 	public Pongo measure(Project project) {
-//		final long startTime = System.currentTimeMillis();
+
 
 		if (uses.size()!=1) {
 			System.err.println("Metric: dailyavgresponsetimepernewsgroup failed to retrieve " + 
@@ -96,29 +99,28 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 		
 		NewsgroupsResponseTimeHistoricMetric dailyAverageThreadResponseTime = new NewsgroupsResponseTimeHistoricMetric();
 
-		dailyAverageThreadResponseTime.setNewsgroupName(lastNewsgroupName);
-		dailyAverageThreadResponseTime.setThreadsConsidered(threadsConsidered);
-		dailyAverageThreadResponseTime.setCumulativeThreadsConsidered(cumulativeThreadsConsidered);
+		//If there were no threads, we don't know the name of the cc
+		if(lastNewsgroupName!="")
+		{
+			dailyAverageThreadResponseTime.setNewsgroupName(lastNewsgroupName);
+			dailyAverageThreadResponseTime.setThreadsConsidered(threadsConsidered);
+			dailyAverageThreadResponseTime.setCumulativeThreadsConsidered(cumulativeThreadsConsidered);
+	
+			if (threadsConsidered>0)
+			{
+				long avgResponseTime = computeAverageDuration(sumOfDurations, threadsConsidered);
+				dailyAverageThreadResponseTime.setAvgResponseTime(avgResponseTime);
+				dailyAverageThreadResponseTime.setAvgResponseTimeFormatted(format(avgResponseTime));
+			}
 
-		long avgResponseTime = 0;
-		if (threadsConsidered>0)
-			avgResponseTime = computeAverageDuration(sumOfDurations, threadsConsidered);
-		dailyAverageThreadResponseTime.setAvgResponseTime(avgResponseTime);
-		String avgResponseTimeFormatted = format(avgResponseTime);
-		dailyAverageThreadResponseTime.setAvgResponseTimeFormatted(avgResponseTimeFormatted);
-
-		long cumulativeAvgResponseTime = 0;
-		if (cumulativeThreadsConsidered>0)
-			cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeThreadsConsidered);
-		dailyAverageThreadResponseTime.setCumulativeAvgResponseTime(cumulativeAvgResponseTime);
-		String cumulativeAvgResponseTimeFormatted = format(cumulativeAvgResponseTime);
-		dailyAverageThreadResponseTime.setCumulativeAvgResponseTimeFormatted(cumulativeAvgResponseTimeFormatted);
-		
-		if ( (threadsConsidered>0) || (cumulativeThreadsConsidered>0) ) {
-			
+			if (cumulativeThreadsConsidered>0)
+			{
+				long cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeThreadsConsidered);
+				dailyAverageThreadResponseTime.setCumulativeAvgResponseTime(cumulativeAvgResponseTime);
+				dailyAverageThreadResponseTime.setCumulativeAvgResponseTimeFormatted(format(cumulativeAvgResponseTime));
+			}
 		}
 
-//		System.err.println(time(System.currentTimeMillis() - startTime) + "\tdaily_new");
 		return dailyAverageThreadResponseTime;
 	}
 

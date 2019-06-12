@@ -84,34 +84,34 @@ public class SeverityBugStatusHistoricMetricProvider extends AbstractHistoricalM
 						 													 BugData.BUGID.eq(bugTrackerBugsData.getBugId()));
 				 for (BugData bd: bugDataIt) bugData = bd;
 
-				 if (bugData.getStatus().toLowerCase().equals("resolved")||
-						 (bugData.getStatus().toLowerCase().equals("closed")))
+				 if (bugData.getStatus().equals("resolved")||
+						 (bugData.getStatus().equals("closed")))
 					 addOrIncrease(resolvedClosedBugs, severity);
 
-				 if (bugData.getResolution().toLowerCase().equals("wontfix")
-						 ||(bugData.getResolution().toLowerCase().equals("cantfix")))
+				 if (bugData.getResolution().contains("wontfix")
+						 ||(bugData.getResolution().contains("cantfix")))
 					 addOrIncrease(wontFixBugs, severity);
 
-				 if (bugData.getResolution().toLowerCase().equals("worksforme"))
+				 if (bugData.getResolution().contains("worksforme"))
 					 addOrIncrease(worksForMeBugs, severity);
 
-				 if (!bugData.getStatus().toLowerCase().equals("resolved")
-						 &&(!bugData.getStatus().toLowerCase().equals("closed")))
+				 if (!bugData.getStatus().equals("resolved")
+						 &&(!bugData.getStatus().equals("closed")))
 					 addOrIncrease(nonResolvedClosedBugs, severity);
 
-				 if (bugData.getResolution().toLowerCase().equals("invalid")
-						 ||(bugData.getResolution().toLowerCase().equals("notabug")))
+				 if (bugData.getResolution().contains("invalid")
+						 ||(bugData.getResolution().contains("notabug")))
 
 					 addOrIncrease(invalidBugs, severity);
 
-				 if ((bugData.getResolution().toLowerCase().equals("fixed"))
-						 ||(bugData.getResolution().toLowerCase().equals("upstream"))
-						 ||(bugData.getResolution().toLowerCase().equals("currentrelease"))
-						 ||(bugData.getResolution().toLowerCase().equals("nextrelease"))
-						 ||(bugData.getResolution().toLowerCase().equals("rawhide")))
+				 if ((bugData.getResolution().contains("fixed"))
+						 ||(bugData.getResolution().contains("upstream"))
+						 ||(bugData.getResolution().contains("currentrelease"))
+						 ||(bugData.getResolution().contains("nextrelease"))
+						 ||(bugData.getResolution().contains("rawhide")))
 					 addOrIncrease(fixedBugs, severity);
 
-				 if (bugData.getResolution().toLowerCase().equals("duplicate"))
+				 if (bugData.getResolution().contains("duplicate"))
 
 					 addOrIncrease(duplicateBugs, severity);
 

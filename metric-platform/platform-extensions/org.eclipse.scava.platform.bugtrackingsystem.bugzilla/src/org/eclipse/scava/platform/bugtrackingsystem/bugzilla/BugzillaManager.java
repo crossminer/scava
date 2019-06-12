@@ -484,5 +484,10 @@ public class BugzillaManager implements IBugTrackingSystemManager<Bugzilla> {
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 
 }

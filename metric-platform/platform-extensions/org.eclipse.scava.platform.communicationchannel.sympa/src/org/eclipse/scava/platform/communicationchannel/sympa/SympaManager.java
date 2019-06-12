@@ -7,7 +7,6 @@ import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -53,7 +52,7 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 		delta.setCommunicationChannel(sympa);
 
  		for (SympaEmail sympaEmail : getAnalysisDateMail(sympa, date)) {
-
+ 	
 			delta.getArticles().add(sympaEmail);
 		}
 
@@ -62,7 +61,6 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 
 	private List<Email> getMailingList(SympaMailingList sympa, Date date) {
 
-		List<Email> emails;
 		LocalDate localDate = date.toJavaDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 		int year = localDate.getYear();
@@ -97,7 +95,7 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 			return SympaPlainTextFileReader.parseFolder(rootPath);
 		}
 
-		return emails = new ArrayList<Email>();
+		return new ArrayList<Email>();
 	}
 
 	/**
@@ -263,44 +261,5 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 		return null;
 	}
 
-	// T E S T I N G
-	public static void main(String[] args) throws Exception {
-
-		SympaManager manager = new SympaManager();
-
-		SympaMailingList sympa = new SympaMailingList();
-		// Modify the directory
-		sympa.setUrl("http://localhost:8888/download/");
-		sympa.setMailingListDescription("testing Y'all");
-		sympa.setMailingListName("lemonldap-ng-dev");
-		sympa.setCompressedFileExtension("tar.gz");
-		// sympa.setUsername("crossminer");
-		// sympa.setPassword("U4QRh7H9SFy4AZxa");
-
-		// this simulates the delta creation process
-		Date today = new Date();
-		// Date date = new Date(manager.getFirstDate(null, sympa).toString());
-		Date date = new Date(java.util.Date.parse("05/19/2008"));
-		Date date1 = new Date(java.util.Date.parse("06/01/2008"));
-
-		System.out.println(date);
-		int count = 0;
-		System.out.println("Analysis Date: " + date);
-
-		do {
-			if (date == date1) {
-
-				System.out.println("hello");
-			}
-			CommunicationChannelDelta delta = new CommunicationChannelDelta();
-			delta = manager.getDelta(null, sympa, date);
-			System.out.println("\n\tDate :\t" + date + "\tDelta Size :\t" + delta.getArticles().size());
-			count = count + delta.getArticles().size();
-			date = new Date(date.addDays(1).toString());
-		} while (date.compareTo(today) < 1);
-
-		System.out.println("\nTotal Emails: " + count);
-
-	}
 
 }

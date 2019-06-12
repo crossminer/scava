@@ -13,9 +13,11 @@ import org.eclipse.scava.metricprovider.trans.documentation.readability.model.Do
 import org.eclipse.scava.platform.AbstractHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
+import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
 import com.googlecode.pongo.runtime.Pongo;
 
@@ -36,20 +38,20 @@ public class DocumentationReadabilityHistoricMetricProvider extends AbstractHist
 
 	@Override
 	public String getFriendlyName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Documentation readability Historic Metric";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Historic metric for that stores the evolution of the documentation readability.";
 	}
 
 	@Override
 	public boolean appliesTo(Project project) {
 		for(VcsRepository repository : project.getVcsRepositories())
 			if(repository instanceof DocumentationGitBased) return true;
+		for (CommunicationChannel communicationChannel: project.getCommunicationChannels())
+			if (communicationChannel instanceof DocumentationSystematic) return true;
 		return false;
 	}
 

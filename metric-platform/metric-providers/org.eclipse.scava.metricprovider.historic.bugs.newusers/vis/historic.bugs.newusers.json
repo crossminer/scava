@@ -3,8 +3,8 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.newUsers",
-			"name" : "New Users",
-			"description" : "The number of new users every day." ,
+			"name" : "Bug Tracker New Users",
+			"description" : "The number of new users every day per bug tracker." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -15,8 +15,8 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativeNewUsers",
-			"name" : "New Users (Cumulative)",
-			"description" : "The number of new users up to and including the current date." ,
+			"name" : "Bug Tracker New Users (Cumulative)",
+			"description" : "The number of new users up to and including the current date per bug tracker." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 

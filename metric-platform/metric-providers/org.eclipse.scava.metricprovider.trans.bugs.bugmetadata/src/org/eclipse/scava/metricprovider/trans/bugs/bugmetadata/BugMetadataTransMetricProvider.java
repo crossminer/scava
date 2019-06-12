@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.scava.contentclassifier.opennlptartarus.libsvm.ClassificationInstance;
@@ -33,6 +34,7 @@ import org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.R
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.BugTrackerCommentsSentimentClassification;
 import org.eclipse.scava.metricprovider.trans.sentimentclassification.model.SentimentClassificationTransMetric;
+import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.ITransientMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
@@ -166,11 +168,11 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			db.sync(); 
 
 			for (BugTrackingSystemBug bug: delta.getNewBugs()) {
-				storeBug(sentimentClassifier, db, bug);
+				storeBug(sentimentClassifier, db, bug, projectDelta.getDate());
 			}
 			db.sync();
 			for (BugTrackingSystemBug bug: delta.getUpdatedBugs()) {
-				storeBug(sentimentClassifier, db, bug);
+				storeBug(sentimentClassifier, db, bug, projectDelta.getDate());
 			}
 			db.sync();
 		}
@@ -202,7 +204,7 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		return instance;
 	}
 
-	private BugData storeBug(SentimentClassificationTransMetric sentimentClassifier, BugsBugMetadataTransMetric db, BugTrackingSystemBug bug) {
+	private BugData storeBug(SentimentClassificationTransMetric sentimentClassifier, BugsBugMetadataTransMetric db, BugTrackingSystemBug bug, Date deltaDate) {
 		Iterable<BugData> bugDataIt = db.getBugData().find(BugData.BUGTRACKERID.eq(bug.getBugTrackingSystem().getOSSMeterId()), 
 											BugData.BUGID.eq(bug.getBugId()));
 		BugData bugData = null;
@@ -211,32 +213,47 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			bugData = new BugData();
 			bugData.setBugTrackerId(bug.getBugTrackingSystem().getOSSMeterId());
 			bugData.setBugId(bug.getBugId());
-			bugData.setCreationTime(bug.getCreationTime().toString());
+			bugData.setCreationTime(bug.getCreationTime());
 			db.getBugData().add(bugData);
 		}
 		bugData.setOperatingSystem(bug.getOperatingSystem());
 		bugData.setPriority(bug.getPriority());
-		bugData.setResolution(bug.getResolution());
-		bugData.setStatus(bug.getStatus());
+		java.util.Date closingDate = null;
+		String status="closed";
 		if (bug instanceof BugzillaBug) {
 			BugzillaBug bugzillaBug = (BugzillaBug) bug; 
-			if (bugzillaBug.getLastClosed()!=null)
-				bugData.setLastClosedTime(bugzillaBug.getLastClosed().toString());
+			closingDate=bugzillaBug.getLastClosed();
+			status=bugzillaBug.getStatus().toLowerCase(Locale.ENGLISH);
 		} else if (bug instanceof GitHubIssue) {
 			GitHubIssue issue = (GitHubIssue) bug; 
-			if (issue.getClosedTime()!=null)
-				bugData.setLastClosedTime(issue.getClosedTime().toString());
+			closingDate=issue.getClosedTime();
+			bugData.getResolution().clear();
+			for(String label : issue.getLabelsAsString())
+				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));
 		} else if(bug instanceof GitLabIssue) {
 			GitLabIssue issue = (GitLabIssue) bug;
-			if(issue.getClosed_at()!=null)
-				bugData.setLastClosedTime(issue.getClosed_at().toString());
+			closingDate=issue.getClosed_at();
+			bugData.getResolution().clear();
+			for(String label : issue.getLabels())
+				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));
 		} else if(bug instanceof JiraIssue)	{
 			JiraIssue issue = (JiraIssue) bug;
-			if(issue.getResolutionDate()!=null)
-				bugData.setLastClosedTime(issue.getResolutionDate().toString());
+			closingDate=issue.getResolutionDate();
+			bugData.getResolution().add(issue.getResolution().toLowerCase(Locale.ENGLISH));
 		}
 		else {
 			System.err.println("Issue tracker do not provide a closing date.");
+			bugData.getResolution().add(bug.getResolution().toLowerCase(Locale.ENGLISH));
+			bugData.setStatus(bug.getStatus().toLowerCase(Locale.ENGLISH));
+		}
+		if(closingDate!=null)
+		{
+			//We compare at platform date
+			if(deltaDate.compareTo(new Date (closingDate))==0)
+			{
+				bugData.setLastClosedTime(closingDate);
+				bugData.setStatus(status);
+			}
 		}
 		updateSentimentPerThread(sentimentClassifier, db, bugData);
 		return bugData;
@@ -302,7 +319,7 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 				commentData.setBugTrackerId(comment.getBugTrackingSystem().getOSSMeterId());
 				commentData.setBugId(comment.getBugId());
 				commentData.setCommentId(comment.getCommentId());
-				commentData.setCreationTime(comment.getCreationTime().toString());
+				commentData.setCreationTime(comment.getCreationTime());
 				commentData.setCreator(comment.getCreator());
 				ClassificationInstance classificationInstance = 
 						classificationInstanceIndex.get(comment.getBugId()+"_"+comment.getCommentId());
