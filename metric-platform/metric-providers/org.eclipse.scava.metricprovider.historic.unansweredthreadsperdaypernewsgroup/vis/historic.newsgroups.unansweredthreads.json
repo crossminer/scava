@@ -4,7 +4,7 @@
 	"vis" : [ 
 		{
 			"id" : "newsgroups.unansweredThreads",
-			"name" : "Unanswered Threads",
+			"name" : "Newsgroup Unanswered Threads",
 			"description" : "The number of unanswered threads per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

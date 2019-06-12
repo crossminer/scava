@@ -3,8 +3,8 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.comments",
-			"name" : "Comments",
-			"description" : "The number of comments submitted every day." ,
+			"name" : "Bug Tracker Comments",
+			"description" : "The number of comments submitted every day per bug tracker." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
@@ -15,8 +15,8 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.cumulativeComments",
-			"name" : "Comments (Cumulative)",
-			"description" : "The number of comments submitted up to and including the current date." ,
+			"name" : "Bug Tracker Comments (Cumulative)",
+			"description" : "The number of comments submitted up to and including the current date per bug tracker." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
