@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.bugtrackingsystem.jira;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.eclipse.scava.platform.Date;
@@ -35,6 +37,8 @@ public class JiraManager implements
 
 	private Caches<JiraIssue, String> issueCaches = new Caches<JiraIssue, String>(
 			new IssueCacheProvider());
+	
+	private Set<String> newAndUpdatesIssuesIds;
 
 	private static class IssueCacheProvider extends
 			DateRangeCacheProvider<JiraIssue, String> {
@@ -87,6 +91,10 @@ public class JiraManager implements
 	@Override
 	public BugTrackingSystemDelta getDelta(DB db, JiraBugTrackingSystem bugTracker, Date date) throws Exception {
 
+		newAndUpdatesIssuesIds = new HashSet<String>();
+		
+		boolean commentAdded;
+		
 		java.util.Date day = date.toJavaDate();
 
 		Cache<JiraIssue, String> issueCache = issueCaches
@@ -100,8 +108,10 @@ public class JiraManager implements
 
 			if (DateUtils.isSameDay(issue.getUpdateDate(), day)) {
 				delta.getUpdatedBugs().add(issue);
+				newAndUpdatesIssuesIds.add(issue.getBugId());
 			} else if (DateUtils.isSameDay(issue.getCreationTime(), day)) {
 				delta.getNewBugs().add(issue);
+				newAndUpdatesIssuesIds.add(issue.getBugId());
 			}
 
 			// Store updated comments in delta
@@ -110,11 +120,18 @@ public class JiraManager implements
 
 				java.util.Date updated = jiraComment.getUpdateDate();
 				java.util.Date created = jiraComment.getCreationTime();
-
+				commentAdded=false;
 				if (DateUtils.isSameDay(created, day)) {
+					commentAdded=true;
 					delta.getComments().add(comment);
 				} else if (updated != null && DateUtils.isSameDay(updated, day)) {
+					commentAdded=true;
 					delta.getComments().add(comment);
+				}
+				if(commentAdded && !(newAndUpdatesIssuesIds.contains(issue.getBugId())))
+				{
+					newAndUpdatesIssuesIds.add(issue.getBugId());
+					delta.getUpdatedBugs().add(issue);
 				}
 			}
 		}
