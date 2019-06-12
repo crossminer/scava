@@ -15,7 +15,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.requestsreplies-useraverage",
-			"name" : "Articles, Requests and Replies Per User",
+			"name" : "Average Articles, Requests and Replies Per User",
 			"description" : "The average number of articles, requests and replies per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -29,7 +29,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.requests-useraverage",
-			"name" : "Requests Per User",
+			"name" : "Average Requests Per User",
 			"description" : "The average number of requests per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -41,7 +41,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.articles-useraverage",
-			"name" : "Articles Per User",
+			"name" : "Average Articles Per User",
 			"description" : "The average number of articles per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -53,7 +53,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.replies-useraverage",
-			"name" : "Replies Per User",
+			"name" : "Average Replies Per User",
 			"description" : "The average number of replies per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -65,7 +65,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.requestsreplies-threadaverage",
-			"name" : "Articles, Requests and Replies Per Thread",
+			"name" : "Average Articles, Requests and Replies Per Thread",
 			"description" : "The average number of articles, requests and replies per thread, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -79,7 +79,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.requests-threadaverage",
-			"name" : "Requests Per Thread",
+			"name" : "Average Requests Per Thread",
 			"description" : "The average number of requests per thread, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -91,7 +91,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.articles-threadaverage",
-			"name" : "Articles Per Thread",
+			"name" : "Average Articles Per Thread",
 			"description" : "The average number of articles per thread, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -103,7 +103,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.replies-threadaverage",
-			"name" : "Replies Per Thread",
+			"name" : "Average Replies Per Thread",
 			"description" : "The average number of replies per thread, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

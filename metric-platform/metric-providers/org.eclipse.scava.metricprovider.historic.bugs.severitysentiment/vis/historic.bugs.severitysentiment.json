@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.severity.sentiment",
-			"name" : "Average Sentiment: Overall, at Thread Beginning and at Thread End.",
+			"name" : "Bug Tracker Average Sentiment: Overall, at Thread Beginning and at Thread End per Severity.",
 			"description" : "Sentiment per bug repository per severity level." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -19,7 +19,7 @@
 		},
 		{
 			"id" : "bugs.severity.averageSentiment",
-			"name" : "Average Sentiment per Bug Severity",
+			"name" : "Bug Tracker Average Sentiment per Severity",
 			"description" : "The average sentiment per bug repository per severity level",
 			"type" : "LineChart",
 			"datatable" : {
@@ -35,7 +35,7 @@
 		},
 		{
 			"id" : "bugs.severity.sentimentAtThreadBeggining",
-			"name" : "Thread Beginning Sentiment per Bug Severity",
+			"name" : "Bug Tracker Thread Beginning Sentiment per Severity",
 			"description" : "The average sentiment at the beginning of threads per bug repository per severity level",
 			"type" : "LineChart",
 			"datatable" : {
@@ -51,7 +51,7 @@
 		},
 		{
 			"id" : "bugs.severity.sentimentAtThreadEnd",
-			"name" : "Thread End per Bug Severity",
+			"name" : "Bug Tracker Thread End Sentiment per Severity",
 			"description" : "The average sentiment at the end of threads per bug repository per severity level",
 			"type" : "LineChart",
 			"datatable" : {

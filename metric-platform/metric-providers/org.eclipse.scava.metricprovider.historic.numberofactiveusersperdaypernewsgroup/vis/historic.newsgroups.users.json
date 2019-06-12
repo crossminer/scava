@@ -4,7 +4,7 @@
 	"vis" : [ 
 {
 			"id" : "newsgroups.activeinactiveusers",
-			"name" : "Users, Active Users and Inactive Users",
+			"name" : "Newsgroup Users, Active Users and Inactive Users",
 			"description" : "The number of users, active users and inactive users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -18,7 +18,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.users",
-			"name" : "Users",
+			"name" : "Newsgroup Users",
 			"description" : "The number of users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -30,7 +30,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.activeusers",
-			"name" : "Active Users",
+			"name" : "Newsgroup Active Users",
 			"description" : "The number of active users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -43,7 +43,7 @@
 		},
 		{
 			"id" : "newsgroups.inactiveusers",
-			"name" : "Inactive Users",
+			"name" : "Newsgroup Inactive Users",
 			"description" : "The number of inactive users per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

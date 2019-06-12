@@ -31,6 +31,6 @@
 			"y" : "Number of Documentation Entries", 
 			"series" : "Sentiment",
 			"timeSeries" : true
-		},
+		}
 	]
 }

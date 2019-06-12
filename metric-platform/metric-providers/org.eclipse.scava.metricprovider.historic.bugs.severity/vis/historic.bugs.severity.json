@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.severity",
-			"name" : "Bug Severity",
+			"name" : "Bug Tracker Severity",
 			"description" : "The number of bugs per severity level",
 			"type" : "LineChart",
 			"datatable" : {
@@ -19,7 +19,7 @@
 		},
 		{
 			"id" : "bugs.severity.percentages",
-			"name" : "Bug Severity (Percentages)",
+			"name" : "Bug Tracker Severity (Percentages)",
 			"description" : "The percentage of bugs per severity level",
 			"type" : "LineChart",
 			"datatable" : {

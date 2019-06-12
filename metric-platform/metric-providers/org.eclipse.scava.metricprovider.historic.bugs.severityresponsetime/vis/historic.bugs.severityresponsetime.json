@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.severity.averageResponseTime",
-			"name" : "Bug Average Response Time (ms) per Severity Level",
+			"name" : "Bug Average Response Time (s) per Severity Level",
 			"description" : "The number of bug average response time per severity level",
 			"type" : "LineChart",
 			"datatable" : {
