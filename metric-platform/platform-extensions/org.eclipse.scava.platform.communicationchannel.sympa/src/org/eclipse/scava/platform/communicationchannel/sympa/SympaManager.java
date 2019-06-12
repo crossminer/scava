@@ -13,9 +13,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.net.ntp.NtpUtils;
 import org.eclipse.scava.platform.Date;
-import org.eclipse.scava.platform.communicationchannel.nntp.NntpUtil;
 import org.eclipse.scava.platform.communicationchannel.sympa.downloader.MyAuthenticator;
 import org.eclipse.scava.platform.communicationchannel.sympa.downloader.TgzExtractor;
 import org.eclipse.scava.platform.communicationchannel.sympa.parser.Email;
