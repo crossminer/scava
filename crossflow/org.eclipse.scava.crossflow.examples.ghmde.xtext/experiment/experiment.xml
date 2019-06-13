@@ -1,15 +1,15 @@
 <experiment
-	title="GitHub MDE Technologies Analysis"
-	class="org.eclipse.scava.crossflow.examples.ghmde.xtext.Ghmde"
-	jar="org.eclipse.scava.crossflow.examples.ghmde.xtext.jar"
+	title="GitHub MDE Popularity Analysis"
+	class="org.eclipse.scava.crossflow.examples.ghmde.Ghmde"
+	jar="org.eclipse.scava.crossflow.examples.ghmde.jar"
 	input="in"
 	output="out"
-	summary="GitHub MDE Technologies Analysis Workflow."
+	summary="GitHub MDE Popularity Analysis Workflow."
 	webServer="localhost:8080"
 >
 	<input path="input.csv" title="Input"/>
 	<output path="output.csv" title="Output"/>
 	<description>
-		Analysis workflow querying GitHub for MDE technologies defined by file extension and keyword.
+		Popularity analysis workflow querying GitHub for MDE technologies defined by file extension and keyword.
 	</description>
 </experiment>
