@@ -6,7 +6,6 @@ import org::maracas::delta::DeltaBuilder;
 import org::maracas::delta::Detector;
 import org::maracas::m3::Core;
 
-
 Delta delta(loc oldAPI, loc newAPI) 
 	= createDelta(m3(oldAPI), m3(newAPI));
 

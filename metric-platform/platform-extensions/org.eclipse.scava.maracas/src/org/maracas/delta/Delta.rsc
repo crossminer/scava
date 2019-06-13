@@ -67,10 +67,7 @@ tuple[loc, Mapping[&T]] buildDeltaMapping(loc elem, Mapping[&T] mapping)
 Mapping[&T] buildMapping(&T from, &T to, real score, str meth)
 	= <from, to, score, meth>;
 
-Delta breakingChanges(Delta delta) {
-	M3 m3from = m3(delta.id.from);
-	M3 m3to   = m3(delta.id.to);
-
+Delta breakingChanges(Delta delta, M3 m3from, M3 m3to) {
 	delta.accessModifiers   = { <e, m> | <e, m> <- delta.accessModifiers,   isAPI(m3from, e), !isAPI(m3to, e) };
 	// Only problematic when going from static to non-static
 	delta.finalModifiers    = { <e, m> | <e, m> <- delta.finalModifiers,    isAPI(m3from, e), m[1] == \final() };
