@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.scava.maracas
 Bundle-SymbolicName: org.eclipse.scava.maracas;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: rascal_eclipse,
  rascal_java_build_manager;bundle-version="0.0.1";resolution:=optional,
  org.eclipse.platform;bundle-version="4.5.2",
