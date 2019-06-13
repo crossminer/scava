@@ -38,6 +38,8 @@ rule GenerateExperimentXML
 	template : "generateExperimentXML.egl"
 	
 	target : "experiment/experiment.xml"
+	
+	overwrite : false
 }
 
 rule Type2Class 
