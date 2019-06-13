@@ -239,7 +239,8 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		} else if(bug instanceof JiraIssue)	{
 			JiraIssue issue = (JiraIssue) bug;
 			closingDate=issue.getResolutionDate();
-			bugData.getResolution().add(issue.getResolution().toLowerCase(Locale.ENGLISH));
+			if(issue.getResolution()!=null)
+				bugData.getResolution().add(issue.getResolution().toLowerCase(Locale.ENGLISH));
 		}
 		else {
 			System.err.println("Issue tracker do not provide a closing date.");
