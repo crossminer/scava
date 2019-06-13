@@ -489,6 +489,12 @@
     <module>
     	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.license
     </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange.workflow
+    </module>
+    <module>
+    	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange
+    </module>
   </modules>
   <build>
     <plugins>
