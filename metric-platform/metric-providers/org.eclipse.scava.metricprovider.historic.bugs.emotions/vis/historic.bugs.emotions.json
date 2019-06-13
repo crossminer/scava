@@ -3,8 +3,8 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.emotions.comments",
-			"name" : "Comment Emotions",
-			"description" : "The number of comments containing each emotion",
+			"name" : "Bug Comment Emotions",
+			"description" : "The number of bug comments containing each emotion",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$dimensions",
@@ -19,7 +19,7 @@
 		},
 		{
 			"id" : "bugs.emotions.cumulativeComments",
-			"name" : "Comment Emotions (Cumulative)",
+			"name" : "Bug Comment Emotions (Cumulative)",
 			"description" : "The cumulative number of comments containing each emotion",
 			"type" : "LineChart",
 			"datatable" : {
@@ -35,7 +35,7 @@
 		},
 		{
 			"id" : "bugs.emotions.commentPercentages",
-			"name" : "Comment Emotion Percentages",
+			"name" : "Bug Comment Emotion Percentages",
 			"description" : "The percentages of comments containing each emotion",
 			"type" : "LineChart",
 			"datatable" : {
@@ -51,7 +51,7 @@
 		},
 		{
 			"id" : "bugs.emotions.cumulativeCommentPercentages",
-			"name" : "Comment Emotion Percentages (Cumulative)",
+			"name" : "Bug Comment Emotion Percentages (Cumulative)",
 			"description" : "The cumulative percentages of comments containing each emotion",
 			"type" : "LineChart",
 			"datatable" : {

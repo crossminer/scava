@@ -170,17 +170,17 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     
     @Override
     public String getShortIdentifier() {
-    	return "newVersionMaven";
+    	return "ProjectsRlations";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "NewVersionMaven";
+    	return "ProjectsRlations";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "Relations between projects. A relation is detected if a project that is analysed is declared as dependency in an already analysed project.";
     }
     
     public boolean testMaven(String projectName, String thirdShortName){

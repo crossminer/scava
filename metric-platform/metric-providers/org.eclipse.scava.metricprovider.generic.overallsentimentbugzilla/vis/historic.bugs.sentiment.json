@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "bugs.sentiment",
-			"name" : "Average Sentiment: Overall, at Thread Beginning and at Thread End.",
+			"name" : "Bug Tracker Average Sentiment: Overall, at Thread Beginning and at Thread End.",
 			"description" : "The average sentiment per bug repository up to and including the processing date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -17,7 +17,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.averageSentiment",
-			"name" : "Average Sentiment",
+			"name" : "Bug Tracker Average Sentiment",
 			"description" : "The average sentiment per bug repository up to and including the processing date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -29,7 +29,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.sentimentAtThreadBeggining",
-			"name" : "Average Sentiment At Thread Beginning",
+			"name" : "Bug Tracker Average Sentiment At Thread Beginning",
 			"description" : "The average sentiment at the beginning of threads per bug repository up to and including the processing date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -41,7 +41,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.sentimentAtThreadEnd",
-			"name" : "Average Sentiment At Thread End",
+			"name" : "Bug Tracker Average Sentiment At Thread End",
 			"description" : "The average sentiment at the end of threads per bug repository up to and including the processing date." ,
 			"type" : "LineChart",
 			"datatable" : { 

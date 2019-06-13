@@ -169,6 +169,11 @@ public class RedmineManager implements
 		}
 		return client;
 	}
+	
+	@Override
+	public boolean isRestmule() {
+		return false;
+	}
 
 	public static void main(String[] args) throws Exception {
 		RedmineManager manager = new RedmineManager();

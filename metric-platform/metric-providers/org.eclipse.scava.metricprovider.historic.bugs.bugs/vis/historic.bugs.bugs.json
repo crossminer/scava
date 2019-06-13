@@ -4,7 +4,7 @@
 		{
 			"id" : "bugs.bugs",
 			"name" : "Bugs",
-			"description" : "The number of bugs per day, up to and including the current date." ,
+			"description" : "The number of bugs per day, that have been submitted, updated or commented up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
@@ -15,7 +15,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requestsreplies-useraverage",
-			"name" : "Comments, Requests and Replies Per User",
+			"name" : "Bug Comments, Requests and Replies Per User",
 			"description" : "The average number of comments, requests and replies per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -29,7 +29,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requests-useraverage",
-			"name" : "Requests Per User",
+			"name" : "Bug Requests Per User",
 			"description" : "The average number of requests per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -41,7 +41,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.comments-useraverage",
-			"name" : "Comments Per User",
+			"name" : "Bug Comments Per User",
 			"description" : "The average number of comments per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -53,7 +53,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.replies-useraverage",
-			"name" : "Replies Per User",
+			"name" : "Bug Replies Per User",
 			"description" : "The average number of replies per user, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -65,7 +65,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requestsreplies-bugaverage",
-			"name" : "Comments, Requests and Replies Per Bug",
+			"name" : "Average Comments, Requests and Replies Per Bug",
 			"description" : "The average number of comments, requests and replies per bug, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -79,7 +79,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.requests-bugaverage",
-			"name" : "Requests Per Bug",
+			"name" : "Average Requests Per Bug",
 			"description" : "The average number of requests per bug, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -91,7 +91,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.comments-bugaverage",
-			"name" : "Comments Per Bug",
+			"name" : "Average Comments Per Bug",
 			"description" : "The average number of comments per bug, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -103,7 +103,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "bugs.replies-bugaverage",
-			"name" : "Replies Per Bug",
+			"name" : "Average Replies Per Bug",
 			"description" : "The average number of replies per bug, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

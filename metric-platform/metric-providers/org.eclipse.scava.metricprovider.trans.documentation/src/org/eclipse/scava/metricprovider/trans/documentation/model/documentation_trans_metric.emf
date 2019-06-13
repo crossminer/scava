@@ -11,7 +11,10 @@ class DocumentationEntry {
 	@searchable
 	attr String documentationId;
 	attr String entryId;
-	attr String[*] plainText;
+	attr String body;
+	attr String originalFormatName;
+	attr String originalFormatMime;
+	attr boolean htmlFormatted;
 }
 
 class Documentation {

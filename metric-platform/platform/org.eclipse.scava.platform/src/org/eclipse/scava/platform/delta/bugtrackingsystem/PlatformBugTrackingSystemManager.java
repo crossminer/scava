@@ -101,8 +101,9 @@ public abstract class PlatformBugTrackingSystemManager implements IBugTrackingSy
 			
 			mAnal.setMillisTaken(System.currentTimeMillis() - start);
 			platform.getProjectRepositoryManager().getProjectRepository().getManagerAnalysis().sync();
-
-			getDeltaCache().putDelta(bugTrackingSystem.getUrl(), date, delta);
+			//RESTMULE manages internally cache
+			if(!bugTrackingSystemManager.isRestmule())
+				getDeltaCache().putDelta(bugTrackingSystem.getUrl(), date, delta);
 			return delta;
 		}
 		return null;
@@ -158,6 +159,11 @@ public abstract class PlatformBugTrackingSystemManager implements IBugTrackingSy
 			deltaCache = new BugTrackingSystemDeltaCache();
 		}
 		return deltaCache;		
+	}
+	
+	@Override
+	public boolean isRestmule() {
+		return false;
 	}
 
 }

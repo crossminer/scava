@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "newsgroups.newUsers",
-			"name" : "New Users",
+			"name" : "Newsgroup New Users",
 			"description" : "The number of new users every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -15,7 +15,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.cumulativeNewUsers",
-			"name" : "New Users (Cumulative)",
+			"name" : "Newsgroup New Users (Cumulative)",
 			"description" : "The number of new users up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {

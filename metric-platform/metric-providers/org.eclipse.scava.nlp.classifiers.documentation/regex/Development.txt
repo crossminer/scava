@@ -1,0 +1,16 @@
+#1#developer guide
+#4#how to contribute
+#1#developer documentation
+#1#contributor guide
+#3#deliver a contribution
+#6#contribution
+#1#developer manual
+#5#development environment setup
+#3#how to make a contribution
+######Regex
+(?:developer|contributor|development)(?:'?s?'?)? (?:guide|documentation|manual|reference|tutorial|basics|introduction)s?
+(?:guide|documentation|manual|reference|tutorial|basics|introduction)s? for (?:developer|contributor)s
+(?:how.to )?(?:make|deliver|submit|share) (?:a|your) contributions?
+how.to contribute
+development (?:environment )setup
+contribut(?:ion|e|ing)

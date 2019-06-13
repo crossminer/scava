@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "newsgroups.requestsreplies",
-			"name" : "Requests and Replies",
+			"name" : "Newsgroup Requests and Replies",
 			"description" : "The number of requests and replies submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -16,7 +16,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.requests",
-			"name" : "Requests",
+			"name" : "Newsgroup Requests",
 			"description" : "The number of requests submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -28,7 +28,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.replies",
-			"name" : "Replies",
+			"name" : "Newsgroup Replies",
 			"description" : "The number of replies submitted every day." ,
 			"type" : "LineChart",
 			"datatable" : { 
@@ -40,7 +40,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.cumulativerequestsreplies",
-			"name" : "Requests and Replies (Cumulative)",
+			"name" : "Newsgroup Requests and Replies (Cumulative)",
 			"description" : "The number of requests and replies submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -53,7 +53,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.cumulativerequests",
-			"name" : "Requests (Cumulative)",
+			"name" : "Newsgroup Requests (Cumulative)",
 			"description" : "The number of requests submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
@@ -65,7 +65,7 @@
 			"timeSeries" : true
 		},{
 			"id" : "newsgroups.cumulativereplies",
-			"name" : "Replies (Cumulative)",
+			"name" : "Newsgroup Replies (Cumulative)",
 			"description" : "The number of replies submitted up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : { 

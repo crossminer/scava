@@ -8,12 +8,21 @@ import org.eclipse.scava.metricprovider.indexing.documentation.document.Document
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationEntryDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationClassificationTransMetric;
+import org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationEntryClassification;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationDetectingCodeTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.detectingcode.model.DocumentationEntryDetectingCode;
+import org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.license.model.DocumentationEntryLicense;
+import org.eclipse.scava.metricprovider.trans.documentation.license.model.DocumentationLicenseTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.model.Documentation;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationEntry;
 import org.eclipse.scava.metricprovider.trans.documentation.model.DocumentationTransMetric;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationEntryPlainText;
+import org.eclipse.scava.metricprovider.trans.documentation.plaintext.model.DocumentationPlainTextTransMetric;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationEntryReadability;
 import org.eclipse.scava.metricprovider.trans.documentation.readability.model.DocumentationReadabilityTransMetric;
@@ -167,6 +176,9 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 					uid,
 					documentationEntry.getDocumentationId(),
 					documentationEntry.getEntryId(),
+					documentationEntry.getBody(),
+					documentationEntry.getOriginalFormatMime(),
+					documentationEntry.getOriginalFormatName(),
 					delta.getDate().toJavaDate());
 			
 			enrichDocumentationEntryDocument(project, documentationEntry, ded);
@@ -202,9 +214,14 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 			switch (metricIdentifier) 
 			{
 				// Plain Text
-				case "org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider":
+				case "org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider":
 				{
-					ded.setPlain_text(String.join(" ",documentationEntry.getPlainText()));
+					DocumentationPlainTextTransMetric plainTextDB = new DocumentationPlainTextTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryPlainText plainTextDocEntry = findCollection(plainTextDB,
+																			DocumentationEntryPlainText.class,
+																			plainTextDB.getDocumentationEntriesPlainText(),
+																			documentationEntry);
+					ded.setPlain_text(String.join(" ",plainTextDocEntry.getPlainText()));
 					break;
 				}
 				// CODE
@@ -236,13 +253,40 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				case "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider":
 				{
 					DocumentationSentimentTransMetric sentimentDB = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
-					DocumentationEntrySentiment detectingcodeDocEntry = findCollection(sentimentDB,
+					DocumentationEntrySentiment sentimentDocEntry = findCollection(sentimentDB,
 																						DocumentationEntrySentiment.class,
 							 															sentimentDB.getDocumentationEntriesSentiment(),
 							 															documentationEntry);
-					ded.setSentiment(detectingcodeDocEntry.getPolarity());	 
+					ded.setSentiment(sentimentDocEntry.getPolarity());	 
 					break;
 				}
+				//Classification
+				case "org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider":
+				{
+					DocumentationClassificationTransMetric classificationDB = new DocumentationClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryClassification classificationDocEntry = findCollection(classificationDB,
+																						DocumentationEntryClassification.class,
+																						classificationDB.getDocumentationEntriesClassification(),
+							 															documentationEntry);
+					ded.setDocumentation_types(classificationDocEntry.getTypes()); 
+					break;
+				}
+				//License
+				case "org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider":
+				{
+					DocumentationLicenseTransMetric licenseDB = new DocumentationLicenseTransMetricProvider().adapt(context.getProjectDB(project));
+					DocumentationEntryLicense licenseDocEntry = findCollection(licenseDB,
+																						DocumentationEntryLicense.class,
+																						licenseDB.getDocumentationEntriesLicense(),
+							 															documentationEntry);
+					ded.setLicense_found(licenseDocEntry.getLicenseFound());
+					if(licenseDocEntry.getLicenseFound())
+					{
+						ded.setLicense(licenseDocEntry.getLicenseGroup(), licenseDocEntry.getLicenseName(), licenseDocEntry.getHeaderType(), licenseDocEntry.getScore());
+					}
+					break;
+				}
+				
 			}
 		}
 	}

@@ -1,0 +1,15 @@
+package org.eclipse.scava.metricprovider.trans.documentation.plaintext.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class DocumentationPlainTextTransMetric {
+	val DocumentationEntryPlainText[*] documentationEntriesPlainText;
+}
+
+class DocumentationEntryPlainText {
+	@searchable
+	attr String documentationId;
+	attr String entryId;
+	attr String[*] plainText;
+}
+

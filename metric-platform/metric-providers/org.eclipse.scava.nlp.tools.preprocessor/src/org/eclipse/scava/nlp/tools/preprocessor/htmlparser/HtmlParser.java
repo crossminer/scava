@@ -31,34 +31,47 @@ public class HtmlParser
 {
 	
 	private static OutputSettings outputSettings= new OutputSettings();
-	private static String[] tagsToRemoveWhitelist= {"b","em","i","small","strong","sub","sup","ins","del","mark","span","a"};
 	private static Pattern newline;
+	private static Whitelist whitelist;
 	
 	static
 	{
 		outputSettings.prettyPrint(false);
 		newline=Pattern.compile("(\\n|\\r)+");
+		String[] tagsToRemoveWhitelist= {"b","em","i","small","strong","sub","sup","ins","del","mark","span","a"};
+		String[] tagsToAddWhitelist= {"h1","h2","h3","h4","h5","h6"};
+		whitelist=Whitelist.basic().removeTags(tagsToRemoveWhitelist).addTags(tagsToAddWhitelist);
 	}
 	
-	private static Whitelist whitelist()
-	{		
-		return Whitelist.basic().removeTags(tagsToRemoveWhitelist);
+	public static Whitelist getWhitelist()
+	{
+		return whitelist;
 	}
 	
-	private static Whitelist whitelist(String extraTagToRemoveWhitelist)
-	{		
-		return Whitelist.basic().removeTags(tagsToRemoveWhitelist).removeTags(extraTagToRemoveWhitelist);
+	private static Whitelist whitelist(String extraTagToRemoveWhitelist, String extraTagToAddWhiteList)
+	{	
+		Whitelist newWhiteList = whitelist;
+		if(extraTagToRemoveWhitelist!=null && !extraTagToRemoveWhitelist.isEmpty())
+			newWhiteList.removeTags(extraTagToRemoveWhitelist);
+		if(extraTagToAddWhiteList!=null && !extraTagToAddWhiteList.isEmpty())
+			newWhiteList.addTags(extraTagToAddWhiteList);
+		return newWhiteList;
 	}
 	
-	private static Whitelist whitelist(String[] extraTagToRemoveWhitelist)
+	private static Whitelist whitelist(String[] extraTagsToRemoveWhitelist, String[] extraTagsToAddWhiteList)
 	{		
-		return Whitelist.basic().removeTags(tagsToRemoveWhitelist).removeTags(extraTagToRemoveWhitelist);
+		Whitelist newWhiteList = whitelist;
+		if(extraTagsToRemoveWhitelist!=null && extraTagsToRemoveWhitelist.length>0)
+			newWhiteList.removeTags(extraTagsToRemoveWhitelist);
+		if(extraTagsToAddWhiteList!=null && extraTagsToAddWhiteList.length>0)
+			newWhiteList.addTags(extraTagsToAddWhiteList);
+		return whitelist.removeTags(extraTagsToRemoveWhitelist);
 	}
 	
 	
 	public static List<String> parse(Path path) throws IOException
 	{
-		return parse(readFile(path), whitelist());
+		return parse(readFile(path), whitelist);
 	}
 	
 	private static String readFile(Path path) throws IOException
@@ -67,30 +80,30 @@ public class HtmlParser
 		return new String(encoded, "UTF-8");
 	}
 	
-	public static List<String> parse(Path path, String extraTagToRemoveWhitelist) throws IOException 
+	public static List<String> parse(Path path, String extraTagToRemoveWhitelist, String extraTagToAddWhiteList) throws IOException 
 	{
-		return parse(readFile(path), whitelist(extraTagToRemoveWhitelist));
+		return parse(readFile(path), whitelist(extraTagToRemoveWhitelist, extraTagToAddWhiteList));
 	}
 	
-	public static List<String> parse(Path path, String[] extraTagToRemoveWhitelist) throws IOException 
+	public static List<String> parse(Path path, String[] extraTagsToRemoveWhitelist, String[] extraTagsToAddWhiteList) throws IOException 
 	{
-		return parse(readFile(path), whitelist(extraTagToRemoveWhitelist));
+		return parse(readFile(path), whitelist(extraTagsToRemoveWhitelist, extraTagsToAddWhiteList));
 	}
 	
 
 	public static List<String> parse(String input)
 	{
-		return parse(input, whitelist());
+		return parse(input, whitelist);
 	}
 	
-	public static List<String> parse(String input, String extraTagToRemoveWhitelist)
+	public static List<String> parse(String input, String extraTagToRemoveWhitelist, String extraTagToAddWhiteList)
 	{
-		return parse(input, whitelist(extraTagToRemoveWhitelist));
+		return parse(input, whitelist(extraTagToRemoveWhitelist, extraTagToAddWhiteList));
 	}
 	
-	public static List<String> parse(String input, String[] extraTagToRemoveWhitelist)
+	public static List<String> parse(String input, String[] extraTagsToRemoveWhitelist, String [] extraTagsToAddWhiteList)
 	{
-		return parse(input, whitelist(extraTagToRemoveWhitelist));
+		return parse(input, whitelist(extraTagsToRemoveWhitelist, extraTagsToAddWhiteList));
 	}
 	
 	private static List<String> parse(String input, Whitelist wl)
@@ -132,48 +145,48 @@ public class HtmlParser
 	
 	public static List<Map.Entry<String,String>> parseWithTags(Path path) throws IOException 
 	{
-		return parseWithTags(readFile(path),whitelist());
+		return parseWithTags(readFile(path),whitelist);
 	}
 	
 	/**
 	 * 
 	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
 	 */
-	public static List<Map.Entry<String,String>> parseWithTags(Path path, String extraTagToRemove) throws IOException 
+	public static List<Map.Entry<String,String>> parseWithTags(Path path, String extraTagToRemoveWhitelist, String extraTagToAddWhiteList) throws IOException 
 	{
-		return parseWithTags(readFile(path),whitelist(extraTagToRemove));
+		return parseWithTags(readFile(path),whitelist(extraTagToRemoveWhitelist, extraTagToAddWhiteList));
 	}
 	
 	/**
 	 * 
 	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
 	 */
-	public static List<Map.Entry<String,String>> parseWithTags(Path path, String[] extraTagToRemove) throws IOException 
+	public static List<Map.Entry<String,String>> parseWithTags(Path path, String[] extraTagsToRemoveWhitelist, String[] extraTagsToAddWhiteList) throws IOException 
 	{
-		return parseWithTags(readFile(path),whitelist(extraTagToRemove));
+		return parseWithTags(readFile(path),whitelist(extraTagsToRemoveWhitelist, extraTagsToAddWhiteList));
 	}
 	
 	public static List<Map.Entry<String,String>> parseWithTags(String input)
 	{
-		return parseWithTags(input, whitelist());
+		return parseWithTags(input, whitelist);
 	}
 	
 	/**
 	 * 
 	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
 	 */
-	public static List<Map.Entry<String,String>> parseWithTags(String input, String extraTagToRemove)
+	public static List<Map.Entry<String,String>> parseWithTags(String input, String extraTagToRemoveWhitelist, String extraTagToAddWhiteList)
 	{
-		return parseWithTags(input, whitelist(extraTagToRemove));
+		return parseWithTags(input, whitelist(extraTagToRemoveWhitelist,extraTagToAddWhiteList));
 	}
 	
 	/**
 	 * 
 	 * @param extraTagsToRemove is a set of HTML tag that should be deleted as well, like p or pre.
 	 */
-	public static List<Map.Entry<String,String>> parseWithTags(String input, String[] extraTagToRemove)
+	public static List<Map.Entry<String,String>> parseWithTags(String input, String[] extraTagsToRemoveWhitelist, String[] extraTagsToAddWhiteList)
 	{
-		return parseWithTags(input, whitelist(extraTagToRemove));
+		return parseWithTags(input, whitelist(extraTagsToRemoveWhitelist,extraTagsToAddWhiteList));
 	}
 	
 	
@@ -249,7 +262,7 @@ public class HtmlParser
 	 * @param tags array indicating which tags should be used in the filtering
 	 * @return A {@code List<String>} with the filters designated previously 
 	 */
-	public List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags)
+	public static List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags)
 	{
 		return filterParsedHtmlWithTags(ParsedHtmlWithTags, tags, false);
 	}
@@ -261,7 +274,7 @@ public class HtmlParser
 	 * @param negation if {@code true}, it stipulates that it should be used to filter only the tags different from {@code tags}   
 	 * @return A {@code List<String>} with the filters designated previously 
 	 */
-	public List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags, Boolean negation)
+	public static List<String> filterParsedHtmlWithTags (List<Map.Entry<String,String>> ParsedHtmlWithTags, String [] tags, Boolean negation)
 	{
 		List<String> tagsList = Arrays.asList(tags);
 		tagsList.replaceAll(tag->tag.toLowerCase());

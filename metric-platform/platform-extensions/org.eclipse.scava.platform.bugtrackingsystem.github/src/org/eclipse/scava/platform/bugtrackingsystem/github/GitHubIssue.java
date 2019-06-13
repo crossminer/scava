@@ -142,6 +142,15 @@ public class GitHubIssue extends BugTrackingSystemBug {
 	public List<Issues.Labels> getLabels() {
 		return labels;
 	}
+	
+	public List<String> getLabelsAsString(){
+		List<String> labelsString = new ArrayList<String>(labels.size());
+		for(Issues.Labels labels : getLabels())
+		{
+			labelsString.add(labels.getName());
+		}
+		return labelsString;
+	}
 
 	public Integer getMilestone() {
 		return milestone;

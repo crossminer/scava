@@ -15,7 +15,8 @@ Require-Bundle: com.googlecode.pongo.runtime,
  org.eclipse.scava.nlp.tools.predictions,
  org.eclipse.scava.metricprovider.trans.indexing.preparation,
  org.eclipse.scava.repository.model.cc.sympa,
- org.eclipse.scava.repository.model.cc.irc
+ org.eclipse.scava.repository.model.cc.irc,
+ org.eclipse.scava.repository.model.cc.mbox
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.detectingcode.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

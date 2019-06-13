@@ -1,0 +1,6 @@
+#1#api reference
+#1#api basics
+######REGEX
+(?:(?:rest(?:ful)|soap|(?:xml.|json.)?rcp) )?apis? (?:guide|documentation|manual|reference|tutorial|basics)s?
+(?:rest(?:ful)|soap|(?:xml.|json.)?rcp) apis?
+apis?

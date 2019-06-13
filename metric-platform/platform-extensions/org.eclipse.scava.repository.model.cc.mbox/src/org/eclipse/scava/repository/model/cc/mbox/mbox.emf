@@ -1,0 +1,16 @@
+package org.eclipse.scava.repository.model.cc.mbox;
+
+@stub(javaClass="org.eclipse.scava.repository.model.CommunicationChannel")
+abstract class CommunicationChannel {
+
+}
+
+class Mbox extends CommunicationChannel {
+	@searchable
+	attr String MboxName;
+	attr String MboxDescription;
+	attr String username;
+	attr String password;
+	attr String compressedFileExtension;
+}
+

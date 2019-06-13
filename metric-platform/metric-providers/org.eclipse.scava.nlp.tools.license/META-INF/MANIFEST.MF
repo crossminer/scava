@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LicenseAnalyser
+Bundle-SymbolicName: org.eclipse.scava.nlp.tools.license;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.scava.nlp.tools.license.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scava.platform,
+ org.apache.log4j,
+ org.eclipse.scava.nlp.tools.predictions,
+ com.fasterxml.jackson
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.scava.nlp.tools.license
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.scava.nlp.tools.license,
+ org.eclipse.scava.nlp.tools.license.prediction

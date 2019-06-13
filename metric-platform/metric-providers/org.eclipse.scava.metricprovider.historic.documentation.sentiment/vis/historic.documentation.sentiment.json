@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "documentation.sentiment.entries",
-			"name" : "Documentation Entries Eeadability",
+			"name" : "Documentation Entries Sentiment",
 			"description" : "The sentiment of each documentation entry",
 			"type" : "LineChart",
 			"datatable" : {
@@ -31,6 +31,6 @@
 			"y" : "Number of Documentation Entries", 
 			"series" : "Sentiment",
 			"timeSeries" : true
-		},
+		}
 	]
 }

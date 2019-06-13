@@ -52,7 +52,7 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 		delta.setCommunicationChannel(sympa);
 
  		for (SympaEmail sympaEmail : getAnalysisDateMail(sympa, date)) {
-
+ 	
 			delta.getArticles().add(sympaEmail);
 		}
 
@@ -260,5 +260,6 @@ public class SympaManager implements ICommunicationChannelManager<SympaMailingLi
 
 		return null;
 	}
+
 
 }

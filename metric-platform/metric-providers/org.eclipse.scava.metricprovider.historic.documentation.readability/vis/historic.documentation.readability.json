@@ -3,7 +3,7 @@
 	"vis" : [ 
 		{
 			"id" : "documentation.readability.entries",
-			"name" : "Documentation Entries Eeadability",
+			"name" : "Documentation Entries Readability",
 			"description" : "The readability of each documentation entry",
 			"type" : "LineChart",
 			"datatable" : {
@@ -31,6 +31,6 @@
 			"y" : "Number of Documentation Entries", 
 			"series" : "Readability",
 			"timeSeries" : true
-		},
+		}
 	]
 }
