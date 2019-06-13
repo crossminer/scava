@@ -15,4 +15,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.apache.httpcomponents.httpclient,
  org.apache.httpcomponents.httpasyncclient,
  org.apache.httpcomponents.httpmime,
- org.json
+ org.json,
+ org.apache.httpcomponents.httpcore,
+ org.apache.httpcomponents.httpcorenio
