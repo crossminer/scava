@@ -41,52 +41,56 @@ public class UploadExperiment extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	 		
+		
 		// parse parameters and prepare target locations
  		String experimentName = request.getParameter("inputName");
- 		boolean launchExperiment = request.getParameter("inputCheck") != null && request.getParameter("inputCheck").contentEquals("on") ? true : false;
-		Path experimentPath = Paths.get(getServletContext().getRealPath("experiments/"), experimentName);
-		Path experimentJarPath= Paths.get(getServletContext().getRealPath("WEB-INF/lib/"));
-		
-		try {
-			Files.createDirectories(experimentPath);
-			
-			// serialize
-			serialize(request, "experimentZip", experimentPath + "/experiment.zip");
-			
-			// unzip experiment
-		    unzip(Paths.get(experimentPath.toString(), "experiment.zip"), Paths.get(experimentPath.toString(), "/"));
-		    Files.deleteIfExists(Paths.get(experimentPath.toString(), "/experiment.zip"));
-			
-	    	// parse required information from experiment.xml
-	    	String inPath = "in";
-	    	String jarName = "";
-	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	    	try {
-	    		DocumentBuilder builder = factory.newDocumentBuilder();
-				Document document = builder.parse(new File( experimentPath + "/experiment.xml" ));
-				Element experimentElem = document.getDocumentElement();
-				inPath = experimentElem.getAttribute("input");
-				jarName = experimentElem.getAttribute("jar");
-			} catch (SAXException e) {
-				System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
-			} catch (ParserConfigurationException e) {
-				System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
-			}
-	
-		    // unzip to input path
-		    unzip(Paths.get(experimentPath.toString(), "in.zip"), Paths.get(experimentPath.toString(), inPath, "/"));
-		    Files.deleteIfExists(Paths.get(experimentPath + "/in.zip"));
 
-		    // move experment jar to web app container lib directory
-		    File experimentJarFile = new File(experimentJarPath.toString() + "/" + jarName);
-		    Files.copy(Paths.get(experimentPath.toString(), jarName), experimentJarFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		    
-		} catch (IOException e) {
-			System.err.println("Failed to upload experiment. Make sure no experiment with the same name has already been deployed.");
-			System.err.println(e.getMessage());
-		}
+ 		if ( ExperimentRegistry.getWorkflow(experimentName) == null || ExperimentRegistry.getWorkflow(experimentName).hasTerminated() ) {
+	 		boolean launchExperiment = request.getParameter("inputCheck") != null && request.getParameter("inputCheck").contentEquals("on") ? true : false;
+			Path experimentPath = Paths.get(getServletContext().getRealPath("experiments/"), experimentName);
+			Path experimentJarPath= Paths.get(getServletContext().getRealPath("WEB-INF/lib/"));
+			
+			try {
+				Files.createDirectories(experimentPath);
+				
+				// serialize
+				serialize(request, "experimentZip", experimentPath + "/experiment.zip");
+				
+				// unzip experiment
+			    unzip(Paths.get(experimentPath.toString(), "experiment.zip"), Paths.get(experimentPath.toString(), "/"));
+			    Files.deleteIfExists(Paths.get(experimentPath.toString(), "/experiment.zip"));
+				
+		    	// parse required information from experiment.xml
+		    	String inPath = "in";
+		    	String jarName = "";
+		    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		    	try {
+		    		DocumentBuilder builder = factory.newDocumentBuilder();
+					Document document = builder.parse(new File( experimentPath + "/experiment.xml" ));
+					Element experimentElem = document.getDocumentElement();
+					inPath = experimentElem.getAttribute("input");
+					jarName = experimentElem.getAttribute("jar");
+				} catch (SAXException e) {
+					System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
+				} catch (ParserConfigurationException e) {
+					System.err.println("Exception occured while parsing experiment.xml: " + e.getMessage());
+				}
 		
-		response.sendRedirect("/org.eclipse.scava.crossflow.web/index.jsp?id="+experimentName+"&launchExperiment="+launchExperiment);
+			    // unzip to input path
+			    unzip(Paths.get(experimentPath.toString(), "in.zip"), Paths.get(experimentPath.toString(), inPath, "/"));
+			    Files.deleteIfExists(Paths.get(experimentPath + "/in.zip"));
+	
+			    // move experment jar to web app container lib directory
+			    File experimentJarFile = new File(experimentJarPath.toString() + "/" + jarName);
+			    Files.copy(Paths.get(experimentPath.toString(), jarName), experimentJarFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			    
+			} catch (IOException e) {
+				System.err.println("Failed to upload experiment. Make sure no experiment with the same name has already been deployed.");
+				System.err.println(e.getMessage());
+			}
+			
+			response.sendRedirect("/org.eclipse.scava.crossflow.web/index.jsp?id="+experimentName+"&launchExperiment="+launchExperiment);
+ 		}
 	}
 
 	/**

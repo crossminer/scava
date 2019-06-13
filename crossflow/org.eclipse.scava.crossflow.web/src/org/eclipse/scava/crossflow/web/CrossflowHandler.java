@@ -7,22 +7,19 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.thrift.TException;
+import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
@@ -34,7 +31,6 @@ import org.w3c.dom.NodeList;
 
 public class CrossflowHandler implements Crossflow.Iface {
 
-	protected HashMap<String, Workflow> workflows = new HashMap<>();
 	protected BrokerService brokerService;
 	protected CrossflowServlet servlet;
 	
@@ -49,6 +45,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 	@Override
 	public String startExperiment(String experimentId, boolean worker) throws TException {
 		Experiment experiment = getExperiment(experimentId);
+		ExperimentRegistry.addExperiment(experiment);
 		try {
 			
 			if (!isBrokerRunning()) {
@@ -66,13 +63,27 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.setInstanceId(experimentId);
 			workflow.getSerializer().setClassloader(classLoader);
 			workflow.createBroker(false);
-			workflow.setCache(new DirectoryCache(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"))));
+			File cacheDir = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"));
+			cacheDir.mkdirs();
+			workflow.setCache(new DirectoryCache(cacheDir));
 			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));
 			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 			
 			workflow.run();
 			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " started.");
-			workflows.put(experimentId, workflow);
+			
+			// add new workflow to registry
+			ExperimentRegistry.addWorkflow(workflow, experimentId);
+			
+			// remove workflow from registry after termination
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					workflow.awaitTermination();
+					ExperimentRegistry.removeWorkflow(experimentId);
+				}
+			}).start();
+			
 			return workflow.getInstanceId();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,17 +93,16 @@ public class CrossflowHandler implements Crossflow.Iface {
 	
 	@Override
 	public void stopExperiment(String experimentId) throws TException {
-		Workflow workflow = workflows.get(experimentId);
+		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
 		if (workflow != null) {
 			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " termination requested.");
 			workflow.terminate();
-			workflows.remove(experimentId);
 		}
 	}
 	
 	@Override
 	public boolean isExperimentRunning(String experimentId) throws TException {
-		Workflow workflow = workflows.get(experimentId);
+		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
 		if (workflow != null) {
 			return workflow.hasTerminated();
 		}
@@ -149,20 +159,19 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 	
 	@Override
-	public boolean clearQueue(String experimentId, String queueName) throws TException {
-		Workflow w = workflows.get(experimentId);	
-		if ( w == null ) {
-			System.err.println("Failed to clear queue. Unable to obtain running workflow from experimentId \'" + experimentId + "\'. Has this experiment been started yet?");
+	public boolean clearQueueCache(String experimentId, String queueName) throws TException {
+		Workflow w = ExperimentRegistry.getWorkflow(experimentId);	
+		if ( w != null ) {
+			System.err.println("Failed to clear queue. Unable to clear queue from running workflow with experimentId \'" + experimentId + "\'. Has this experiment been stopped yet?");
 			return false;
 		} else {
-			w.getCache().clear(queueName);
-			if ( queueName != "" )
-				w.log(CrossflowLogger.SEVERITY.INFO, "Cache for queue " + queueName + " cleared.");
-			else
-				w.log(CrossflowLogger.SEVERITY.INFO, "Entire cache cleared.");
+			Cache cache = ExperimentRegistry.getCache(experimentId);
+			if ( cache != null ) {
+				cache.	clear(queueName);
+			}
 			return true;
 		}
-	}
+	}// clearQueueCache
 	
 	public void delete(File file) {
 		if (file.isDirectory()) {
@@ -241,7 +250,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 				experiment.addToFileDescriptors(fileDescriptor);
 			}
 
-			Workflow workflow = workflows.get(experiment.getId());
+			Workflow workflow = ExperimentRegistry.getWorkflow(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
 				experiment.status = "running";
 			}
