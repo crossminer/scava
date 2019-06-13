@@ -197,7 +197,7 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 		private String owner=null;
 		private String repository=null;
 		private Pattern protocolRegex=Pattern.compile("^https?://");
-		private Pattern ownerRepositoryRegex=Pattern.compile("^/([^/]+)/([^/]+)/");
+		private Pattern ownerRepositoryRegex=Pattern.compile("^/([^/]+)/([^/]+)/?");
 		private OssmeterLogger logger;
 		
 		public ProcessedBitBucketURL(BitbucketBugTrackingSystem bitbucketTracker)
