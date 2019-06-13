@@ -120,6 +120,12 @@ public class ArtifactsRestController {
 		return recommenderManager.getArtifactsByQuery(projectQuery, pr);
     }
 	
+	@ApiOperation(value = "Get artifact by metric platform id")
+	@RequestMapping(value="artifact/mpp/{metricPlatformId}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+    public @ResponseBody Artifact getProjectByMetricPlatformId(@PathVariable("metricPlatformId") String mppID) {
+		return artifactRepository.findOneByMetricPlatformId(mppID);
+    }
+	
 	@ApiOperation(value = "Add github project to KB")
 	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {

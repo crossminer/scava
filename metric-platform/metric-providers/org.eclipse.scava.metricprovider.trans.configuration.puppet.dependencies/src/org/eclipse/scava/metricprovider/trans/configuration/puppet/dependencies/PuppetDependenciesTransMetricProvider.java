@@ -1,13 +1,17 @@
 package org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.model.PuppetDependencies;
 import org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.model.PuppetDependency;
@@ -82,6 +86,10 @@ public class PuppetDependenciesTransMetricProvider implements ITransientMetricPr
 				if (repoDeltas.isEmpty()) {
 					return;
 				}
+				
+				InputStream input = getClass().getClassLoader().getResourceAsStream("/META-INF/puppeteer.properties");
+	    		Properties prop = new Properties();
+	    		prop.load(input);
 	
 				computeFolders(project, projectDelta, workingCopyFolders, scratchFolders);
 				
@@ -95,23 +103,32 @@ public class PuppetDependenciesTransMetricProvider implements ITransientMetricPr
 					}
 					db.sync();
 					
-					for(int i = 0; i < 10; i++) {
-						PuppetDependency puppetDependency = new PuppetDependency();
-						
-						puppetDependency.setDependencyName("dummyDep" + i);
-						puppetDependency.setDependencyVersion("dummyVersion" + i);
-						puppetDependency.setType("puppet");
-
-						db.getDependencies().add(puppetDependency);
-						db.sync();
-					}
-					
+					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer") + " " + workingCopyFolders.get(repoUrl) + "/ 2");
+					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					String ins = in.readLine();
+					while(ins != null){
+		                if(ins.startsWith("package:")) {
+		                	if(!ins.split(":")[1].contains("$")) {
+			                	PuppetDependency puppetDependency = new PuppetDependency();
+			                	puppetDependency.setDependencyName(ins.split(":")[1]);
+								puppetDependency.setDependencyVersion("N/A");
+								puppetDependency.setType("puppet");
+	
+								db.getDependencies().add(puppetDependency);
+								db.sync();
+		                	}
+		                }
+		                ins = in.readLine();
+		            }
 					
 	    		}
 	    	}
 	    	catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 	    		logger.error("unexpected exception while measuring", e);
 				throw new RuntimeException("Metric failed due to missing working copy", e);
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				throw new RuntimeException(e);
 			}
     }
     
