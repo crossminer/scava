@@ -284,7 +284,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 					 			relativePath+="/";
 					 		}
 					 		relativePath+=fileName;
-					 		if(relativePath.startsWith("/."))
+					 		if(relativePath.contains("/.") || relativePath.startsWith("."))
 					 			continue;
 					 		
 					 		System.err.println(relativePath);
