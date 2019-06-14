@@ -39,6 +39,7 @@ CATEGORY_PROJECT = 'project'
 CATEGORY_FACTOID = 'factoid'
 CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
 CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
+CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS = 'version-dependency'
 CATEGORY_USER = 'user'
 CATEGORY_RECOMMENDATION = 'recommendation'
 
@@ -47,6 +48,8 @@ DEP_MAVEN_OPT = 'opt'
 DEP_OSGI = 'osgi'
 DEP_OSGI_PACKAGE = 'package'
 DEP_OSGI_BUNDLE = 'bundle'
+DEP_PUPPET = 'puppet'
+DEP_DOCKER = 'docker'
 
 METRICPROVIDER_ID_MAVEN_DEP_ALL = 'trans.rascal.dependency.maven.allMavenDependencies'
 METRICPROVIDER_ID_MAVEN_DEP_OPT = 'trans.rascal.dependency.maven.allOptionalMavenDependencies'
@@ -55,6 +58,12 @@ METRICPROVIDER_ID_OSGI_DEP_BNL_ALL = 'trans.rascal.dependency.osgi.allOSGiBundle
 
 METRICPROVIDER_ID_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider'
 METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider'
+
+METRIC_PROVIDER_ID_NEWVERSION_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.docker.NewVersionDockerTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
+
 
 METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
 
@@ -82,7 +91,8 @@ class Scava(Backend):
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
                   CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
-                  CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION]
+                  CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION,
+                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS]
 
     def __init__(self, url, project=None, recommendation_url=RECOMMENDATION_API, tag=None, archive=None):
         origin = url
@@ -145,7 +155,8 @@ class Scava(Backend):
                                 CATEGORY_USER,
                                 CATEGORY_DEV_DEPENDENCY,
                                 CATEGORY_CONF_DEPENDENCY,
-                                CATEGORY_RECOMMENDATION]:
+                                CATEGORY_RECOMMENDATION,
+                                CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -229,6 +240,8 @@ class Scava(Backend):
             category = CATEGORY_USER
         elif 'recommendation_type' in item:
             category = CATEGORY_RECOMMENDATION
+        elif 'packageName' in item:
+            category = CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -439,6 +452,25 @@ class ScavaClient(HttpClient):
 
                 for prj in recommended_projects:
                     yield json.dumps(prj)
+        elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+            docker_version_deps = self.__fetch_version_dependencies(project,
+                                                                    METRIC_PROVIDER_ID_NEWVERSION_DOCKER_DEPS,
+                                                                    DEP_DOCKER)
+            puppet_version_deps = self.__fetch_version_dependencies(project,
+                                                                    METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS,
+                                                                    DEP_PUPPET)
+            maven_version_deps = self.__fetch_version_dependencies(project,
+                                                                   METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS,
+                                                                   DEP_MAVEN)
+            osgi_version_deps = self.__fetch_version_dependencies(project,
+                                                                  METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS,
+                                                                  DEP_OSGI)
+
+            group_deps = [docker_version_deps, puppet_version_deps, maven_version_deps, osgi_version_deps]
+
+            for deps in group_deps:
+                for dep in deps:
+                    yield dep
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -473,6 +505,27 @@ class ScavaClient(HttpClient):
             recommendations.append(recommended_project)
 
         return recommendations
+
+    def __fetch_version_dependencies(self, project, dep_metric, dep_type):
+        api_version_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_version_dependencies)
+        version_dependencies = json.loads(self.fetch(api_version_dependencies))
+
+        if not version_dependencies:
+            yield '[]'
+
+        for version in version_dependencies:
+
+            version_dep = {
+                "dependency": version['packageName'],
+                "scava_metric_provider": dep_metric,
+                "type": dep_type,
+                "new_version": version['newVersion'],
+                "old_version": version['oldVersion'],
+                "id": version['packageName']
+            }
+
+            yield json.dumps(version_dep)
 
     def __fetch_dev_dependencies(self, project, dep_metric, dep_type=None, dep_sub_type=None):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
