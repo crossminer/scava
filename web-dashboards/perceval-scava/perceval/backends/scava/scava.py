@@ -58,6 +58,8 @@ METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configur
 
 METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
 
+SIM_METHODS = ['Compound', 'CrossSim', 'Dependency', 'CrossRec', 'Readme', 'RepoPalCompound', 'RepoPalCompoundV2']
+RECOMMENDED_PROJECTS = 10
 
 logger = logging.getLogger(__name__)
 
@@ -225,6 +227,8 @@ class Scava(Backend):
             category = CATEGORY_CONF_DEPENDENCY
         elif 'user' in item:
             category = CATEGORY_USER
+        elif 'recommendation_type' in item:
+            category = CATEGORY_RECOMMENDATION
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -378,11 +382,63 @@ class ScavaClient(HttpClient):
             project_info_raw = self.fetch(api)
             project_info = json.loads(project_info_raw)
 
-            project_url = project_info['html_url']
-            recommendation_artifacts_api = urijoin(self.recommendation_url, "artifacts", "artifacts")
-            recommendation_artifacts_raw = self.fetch(recommendation_artifacts_api)
-            recommendation_artifacts = json.loads(recommendation_artifacts_raw)
-            # TODO 
+            project_name = project_info['shortName']
+            recommendation_project_api = urijoin(self.recommendation_url,
+                                                 "artifacts", "artifact", "mpp", project_name)
+            recommendation_project_raw = self.fetch(recommendation_project_api)
+
+            # Fake data
+            recommendation_project_raw = """
+            {
+              "id": "5b155b04065f2d726d6db241",
+              "tags": null,
+              "name": "json-simple",
+              "shortName": null,
+              "description": "A simple Java toolkit for JSON. You can use json-simple to encode or decode JSON text.",
+              "fullName": "fangyidong/json-simple",
+              "methodDeclarations": [],
+              "year": 0,
+              "active": true,
+              "homePage": "",
+              "type": null,
+              "private_": null,
+              "fork": null,
+              "html_url": "https://github.com/fangyidong/json-simple",
+              "clone_url": "https://github.com/fangyidong/json-simple.git",
+              "git_url": "git://github.com/fangyidong/json-simple.git",
+              "ssh_url": null,
+              "svn_url": null,
+              "mirror_url": null,
+              "size": 0,
+              "master_branch": "master",
+              "webDashboardId": "app/kibana#/dashboard/ScavaProject?_a=(query:(match:(project.keyword:(query:jsonsimple))))",
+              "metricPlatformId": "jsonsimple",
+              "readmeText": "Please visit: http://code.google.com/p/json-simple/",
+              "dependencies": [
+                "junit:junit"
+              ],
+              "starred": [
+                {
+                  "login": "veita",
+                  "datestamp": "2015-04-13T08:55:08Z"
+                }
+              ],
+              "parent": null
+            }
+            """
+
+            try:
+                recommendation_artifacts = json.loads(recommendation_project_raw)
+            except:
+                return '[]'
+
+            kb_project_id = recommendation_artifacts['id']
+
+            for sim_method in SIM_METHODS:
+                recommended_projects = self.__fetch_recommendations(kb_project_id, sim_method)
+
+                for prj in recommended_projects:
+                    yield json.dumps(prj)
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -392,6 +448,31 @@ class ScavaClient(HttpClient):
         response = super().fetch(url, payload)
 
         return response.text
+
+    def __fetch_recommendations(self, project_id, sim_method):
+        recommendation_similar_api = urijoin(self.recommendation_url, "recommendation", "similar",
+                                             "p", project_id, "m", sim_method, "n", RECOMMENDED_PROJECTS)
+        recommendation_similar_raw = self.fetch(recommendation_similar_api)
+        recommendation_similar = json.loads(recommendation_similar_raw)
+
+        recommendations = []
+        for recommendation in recommendation_similar:
+            recommended_project = {
+                "id": project_id,
+                "name": recommendation['name'],
+                "full_name": recommendation['fullName'],
+                "description": recommendation['description'],
+                "url": recommendation['html_url'],
+                "readme": recommendation['readmeText'],
+                "dependencies": recommendation['dependencies'],
+                "active": recommendation['active'],
+                "recommendation_type": sim_method,
+                "project": recommendation['metricPlatformId']
+            }
+
+            recommendations.append(recommended_project)
+
+        return recommendations
 
     def __fetch_dev_dependencies(self, project, dep_metric, dep_type=None, dep_sub_type=None):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
