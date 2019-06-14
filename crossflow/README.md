@@ -1,4 +1,4 @@
-# Crossflow
+![Logo](crossflow_96dpi.png)
 
 Crossflow is a distributed data processing framework that supports dispensation of work across multiple opinionated and low-commitment workers.
 
