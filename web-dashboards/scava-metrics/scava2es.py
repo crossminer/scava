@@ -45,6 +45,7 @@ from grimoirelab_toolkit.datetime import str_to_datetime
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
+KEYWORD_MAX_SIZE = 30000  # this control allows to avoid max_bytes_length_exceeded_exception
 
 META_MARKER = '--meta'
 DEFAULT_TOP_PROJECT = 'main'
@@ -474,8 +475,60 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
 
 
 def enrich_recommendations(scava_recommendations, meta_info=None):
+    """
+    Enrich recommendation data from the Knowledge-Based (KB) database.
+    The current enriched items contains the ID of the recommended project in the KB, its name,
+    full name, description, url, readme, dependencies, whether the project is active or not,
+    the type of recommendation, the project in SCAVA and when it was updated.
+    An example of enriched item is shown below:
+
+          "id" : "5b155b04065f2d726d6db241",
+          "name" : "kotlinRestAssured",
+          "full_name" : "rmarinsky/kotlinRestAssured",
+          "description" : "SImple project for demonstartion compatibility of Kotlin with rest-assuredd",
+          "url" : "https://github.com/rmarinsky/kotlinRestAssured",
+          "readme" : "...",
+          "dependencies" : [
+            "junit:junit",
+            "io.rest-assured:rest-assured",
+            "com.google.cloud:google-cloud-translate",
+            "org.assertj:assertj-core",
+            "com.fasterxml.jackson.core:jackson-databind"
+          ],
+          "active" : true,
+          "recommendation_type" : "Compound",
+          "project" : "microprofile",
+          "updated" : "20180430",
+          "datetime" : "2018-04-30T00:00:00+00:00",
+          "uuid" : "ba595239b468c7242ccfd0f8203386d8d82a049c",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_recommendations: recommendation generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
     for scava_recommendation in scava_recommendations:
-        print("here")
+        processed += 1
+
+        recommendation_data = scava_recommendation['data']
+        eitem = recommendation_data
+
+        eitem['readme'] = eitem['readme'][:KEYWORD_MAX_SIZE]
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+        eitem['uuid'] = uuid(eitem['recommendation_type'], eitem['id'], eitem['url'], eitem['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Recommendation enrichment summary - processed/enriched: %s", processed)
 
 
 def enrich_users(scava_users, meta_info=None):
