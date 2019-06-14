@@ -22,9 +22,12 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Post;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mongodb.BasicDBList;
+import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
@@ -56,6 +59,7 @@ public class ProjectListResource extends AbstractApiResource {
 				p.removeField("metricProviderData");
 				p.removeField("_superTypes");
 				p.removeField("_id");
+				p.removeField("token");
 				
 				// FIXME: Temporary solution
 				p.removeField("licenses");
