@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/crossflow.css" rel="stylesheet">
     	
 	<script src="js/thrift.js"></script>
     <script src="js/gen/Crossflow.js"></script>
@@ -62,7 +63,7 @@
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
           <a href="/org.eclipse.scava.crossflow.web" class="navbar-brand d-flex align-items-center">
-            <strong>Crossflow</strong>
+            <div class="logo-header">Crossflow</div>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'space_ranger_halftoneregular';
+    src: url('spacerangerhalf-webfont.woff2') format('woff2'),
+         url('spacerangerhalf-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+div.logo-header {
+	font-family: 'space_ranger_halftoneregular';
+	font-size:24pt;
+}
+
+h1.logo {
+	font-family: 'space_ranger_halftoneregular';
+	font-size:52pt;
+}
