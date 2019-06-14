@@ -38,6 +38,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_METRIC,
                                            CATEGORY_USER,
                                            CATEGORY_RECOMMENDATION,
+                                           CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -439,6 +440,34 @@ def enrich_factoids(scava_factoids, meta_info=None):
     logging.info("Factoid enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_version_dependencies(scava_version_dependencies, meta_info=None):
+    """
+    Enrich version dependencies coming from Scava to use them in Kibana
+
+    :param scava_version_dependencies: dependency generator
+    :param meta_info: meta project information retrieved from the project description
+    :return:
+    """
+    processed = 0
+
+    for scava_dep in scava_version_dependencies:
+        processed += 1
+
+        dependency_data = scava_dep['data']
+        eitem = dependency_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
+        eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Dependency version enrichment summary - processed/enriched: %s", processed)
+
+
 def enrich_dependencies(scava_dependencies, meta_info=None):
     """
     Enrich dependencies coming from Scava to use them in Kibana
@@ -641,7 +670,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_metric
 
                 logging.debug("End fetch metrics for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_FACTOID:
                 logging.debug("Start fetch factoids for %s" % project_scava['data']['shortName'])
 
@@ -649,7 +677,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_factoid
 
                 logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_DEV_DEPENDENCY:
                 logging.debug("Start fetch dev dependencies for %s" % project_scava['data']['shortName'])
 
@@ -657,7 +684,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_dep
 
                 logging.debug("End fetch dev dependencies for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_CONF_DEPENDENCY:
                 logging.debug("Start fetch conf dependencies for %s" % project_scava['data']['shortName'])
 
@@ -665,6 +691,14 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_dep
 
                 logging.debug("End fetch conf dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+                logging.debug("Start fetch version dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_version_dependencies(
+                        scavaProject.fetch(CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch version dependencies for %s" % project_scava['data']['shortName'])
             elif category == CATEGORY_USER:
                 logging.debug("Start fetch user data for %s" % project)
 
@@ -712,7 +746,13 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_dep
 
             logging.debug("End fetch conf dependencies for %s" % project)
+        elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+            logging.debug("Start fetch version dependencies for %s" % project)
 
+            for enriched_dep in enrich_version_dependencies(scava.fetch(CATEGORY_DEV_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch version dependencies for %s" % project)
         elif category == CATEGORY_USER:
             logging.debug("Start fetch user data for %s" % project)
 
