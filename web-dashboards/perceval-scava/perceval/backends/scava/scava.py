@@ -440,7 +440,7 @@ class ScavaClient(HttpClient):
             project_name = project_info['shortName']
             recommendation_project_api = urijoin(self.recommendation_url,
                                                  "artifacts", "artifact", "mpp", project_name)
-            # recommendation_project_raw = self.fetch(recommendation_project_api)
+            recommendation_project_raw = self.fetch(recommendation_project_api)
 
             # Fake data
             recommendation_project_raw = """

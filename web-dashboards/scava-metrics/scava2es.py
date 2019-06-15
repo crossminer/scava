@@ -87,6 +87,7 @@ def get_params():
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
+    parser.add_argument("--recommendation-url", default='http://localhost:8080', help="Recommendation API URL")
     parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, type=int, help="Number of items uploaded per bulk")
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int, help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
@@ -702,23 +703,25 @@ def extract_meta(project_name, description=None):
     return meta
 
 
-def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
+def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommendation_url=None):
     """
     Fetch the metrics from a Scava project using the Scava API REST
 
     :param project: name of the Scava project to get the metrics from
     :param url_api_rest: URL for the Scava API REST
     :param category: category of the items to fetch
+    :param recommendation_url: URL for the Recommendation API REST
+
     :return: a metrics generator
     """
-    scava = Scava(url=url_api_rest, project=project)
+    scava = Scava(url=url_api_rest, project=project, recommendation_url=recommendation_url)
 
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
 
             project_shortname = project_scava['data']['shortName']
-            scavaProject = Scava(url=url_api_rest, project=project_shortname)
+            scavaProject = Scava(url=url_api_rest, project=project_shortname, recommendation_url=recommendation_url)
 
             prj_descr = project_scava['data']['description'] if 'description' in project_scava['data'] else None
             meta = extract_meta(prj_descr, project_shortname)
@@ -876,7 +879,7 @@ if __name__ == '__main__':
     elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
-    scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
+    scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category, ARGS.recommendation_url)
 
     if scava_data:
         logging.info("Uploading Scava data to Elasticsearch")
