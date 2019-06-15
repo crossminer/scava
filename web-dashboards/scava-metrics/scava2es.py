@@ -39,6 +39,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_USER,
                                            CATEGORY_RECOMMENDATION,
                                            CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                                           CATEGORY_CONF_SMELL,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -560,6 +561,65 @@ def enrich_recommendations(scava_recommendations, meta_info=None):
     logging.info("Recommendation enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_conf_smells(conf_smells, meta_info=None):
+    """Enrich the configuration smells data extracted from the SCAVA API raw endpoints.
+    The current enriched items contains the smell name, the line and file name where the smell was detected,
+    the reason, the type of configuration (puppet or docker), the smell type (implementation or design) and
+    the sub type (e.g., antipattern), some optional attributes such as the commit and date when the smell
+    was found (`date`), plus information about the project (`project` and `meta`), when the project was updated,
+    the id of the smell and the uuid of the enriched item. It is worth noting that the field `datetime` is derived
+    using the `date` attribute (if not None) or the project `updated` attribute.
+    An example of enriched item is shown below:
+
+          "smell_name" : "Inconsistent naming convention",
+          "line" : " 24",
+          "reason" : " python::pyvenv not in autoload module layout ",
+          "file_name" : "/root/scava/puppetpython/.../manifests/pyvenv.pp ",
+          "commit" : "c3bb6b37e7711f816faba3ea8fb98b72286830e1",
+          "date" : "2019-05-21T18:40:17.000Z",
+          "conf_type" : "puppet",
+          "smell_type" : "implementation",
+          "smell_sub_type" : "antipattern",
+          "id" : "puppet_implementation_Inconsistent...",
+          "updated" : "20190402",
+          "project" : "puppetpython",
+          "datetime" : "2019-05-21T18:40:17+00:00",
+          "uuid" : "11eb644184b9a752ccda2e00af5a76d9bfbcc32b",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param conf_smells: configuration smells generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for conf_smell in conf_smells:
+        processed += 1
+
+        smell_data = conf_smell['data']
+        eitem = smell_data
+
+        eitem['reason'] = eitem['reason'][:KEYWORD_MAX_SIZE]
+        # common fields
+
+        if 'date' in eitem and eitem['date']:
+            eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        else:
+            eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+
+        eitem['uuid'] = uuid(eitem['id'], eitem['project'], eitem['datetime'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Configuration smell enrichment summary - processed/enriched: %s", processed)
+
+
 def enrich_users(scava_users, meta_info=None):
     """
     Enrich user data coming from Scava to use them in Kibana.
@@ -714,6 +774,14 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_recommendation
 
                 logging.debug("End fetch recommendation data for %s" % project)
+            elif category == CATEGORY_CONF_SMELL:
+                logging.debug("Start fetch configuration smells data for %s" % project)
+
+                for enriched_conf_smell in enrich_conf_smells(scavaProject.fetch(CATEGORY_CONF_SMELL),
+                                                              meta):
+                    yield enriched_conf_smell
+
+                logging.debug("End fetch configuration smells data for %s" % project)
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -767,6 +835,13 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_recommendation
 
             logging.debug("End fetch recommendation data for %s" % project)
+        elif category == CATEGORY_CONF_SMELL:
+            logging.debug("Start fetch configuration smells data for %s" % project)
+
+            for enriched_conf_smell in enrich_conf_smells(scavaProject.fetch(CATEGORY_CONF_SMELL)):
+                yield enriched_conf_smell
+
+            logging.debug("End fetch configuration smells data for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
