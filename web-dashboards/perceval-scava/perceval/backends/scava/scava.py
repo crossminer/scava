@@ -42,6 +42,7 @@ CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
 CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS = 'version-dependency'
 CATEGORY_USER = 'user'
 CATEGORY_RECOMMENDATION = 'recommendation'
+CATEGORY_CONF_SMELL = 'conf-smell'
 
 DEP_MAVEN = 'maven'
 DEP_MAVEN_OPT = 'opt'
@@ -50,6 +51,11 @@ DEP_OSGI_PACKAGE = 'package'
 DEP_OSGI_BUNDLE = 'bundle'
 DEP_PUPPET = 'puppet'
 DEP_DOCKER = 'docker'
+
+DESIGN_SMELL = 'design'
+IMPLEMENTATION_SMELL = 'implementation'
+ANTIPATTERN_SMELL = 'antipattern'
+CONF_SMELL = 'conf'
 
 METRICPROVIDER_ID_MAVEN_DEP_ALL = 'trans.rascal.dependency.maven.allMavenDependencies'
 METRICPROVIDER_ID_MAVEN_DEP_OPT = 'trans.rascal.dependency.maven.allOptionalMavenDependencies'
@@ -64,6 +70,11 @@ METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.tr
 METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider'
 METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
 
+METRIC_PROVIDER_ID_PUPPET_DESIGN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells.PuppetDesignTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_IMPL_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.PuppetImplementationTransMetricProvider'
+METRIC_PROVIDER_ID_DOCKER_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.smells.DockerTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_DESIGN_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns.PuppetDesignAntipatternTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_IMPL_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns.PuppetImplementationAntipatternTransMetricProvider'
 
 METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
 
@@ -92,7 +103,7 @@ class Scava(Backend):
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
                   CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
                   CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION,
-                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS]
+                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS, CATEGORY_CONF_SMELL]
 
     def __init__(self, url, project=None, recommendation_url=RECOMMENDATION_API, tag=None, archive=None):
         origin = url
@@ -156,7 +167,8 @@ class Scava(Backend):
                                 CATEGORY_DEV_DEPENDENCY,
                                 CATEGORY_CONF_DEPENDENCY,
                                 CATEGORY_RECOMMENDATION,
-                                CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS]:
+                                CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                                CATEGORY_CONF_SMELL]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -242,6 +254,8 @@ class Scava(Backend):
             category = CATEGORY_RECOMMENDATION
         elif 'packageName' in item:
             category = CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS
+        elif 'reason' in item:
+            category = CATEGORY_CONF_SMELL
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -389,6 +403,34 @@ class ScavaClient(HttpClient):
                 for dep in deps:
                     yield dep
 
+        elif category == CATEGORY_CONF_SMELL:
+            puppet_design_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_PUPPET_DESIGN_SMELLS,
+                                                            conf_type=DEP_PUPPET,
+                                                            smell_type=DESIGN_SMELL)
+            puppet_impl_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_PUPPET_IMPL_SMELLS,
+                                                          conf_type=DEP_PUPPET,
+                                                          smell_type=IMPLEMENTATION_SMELL)
+            docker_conf_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_DOCKER_SMELLS,
+                                                          smell_type=CONF_SMELL, conf_type=DEP_DOCKER)
+            puppet_design_ap_smells = self.__fetch_conf_smells(project,
+                                                               METRIC_PROVIDER_ID_PUPPET_DESIGN_ANTIPATTERN_SMELLS,
+                                                               conf_type=DEP_PUPPET,
+                                                               smell_type=DESIGN_SMELL,
+                                                               smell_sub_type=ANTIPATTERN_SMELL)
+            puppet_impl_ap_smells = self.__fetch_conf_smells(project,
+                                                             METRIC_PROVIDER_ID_PUPPET_IMPL_ANTIPATTERN_SMELLS,
+                                                             conf_type=DEP_PUPPET,
+                                                             smell_type=IMPLEMENTATION_SMELL,
+                                                             smell_sub_type=ANTIPATTERN_SMELL)
+
+            group_smells = [puppet_design_smells, puppet_impl_smells,
+                            docker_conf_smells, puppet_design_ap_smells,
+                            puppet_impl_ap_smells]
+
+            for smells in group_smells:
+                for smell in smells:
+                    yield smell
+
         elif category == CATEGORY_RECOMMENDATION:
             api = urijoin(self.api_projects_url, "/p/%s" % project)
             logger.debug("Scava client calls API: %s", api)
@@ -398,7 +440,7 @@ class ScavaClient(HttpClient):
             project_name = project_info['shortName']
             recommendation_project_api = urijoin(self.recommendation_url,
                                                  "artifacts", "artifact", "mpp", project_name)
-            recommendation_project_raw = self.fetch(recommendation_project_api)
+            # recommendation_project_raw = self.fetch(recommendation_project_api)
 
             # Fake data
             recommendation_project_raw = """
@@ -505,6 +547,33 @@ class ScavaClient(HttpClient):
             recommendations.append(recommended_project)
 
         return recommendations
+
+    def __fetch_conf_smells(self, project, smell_id, conf_type, smell_type, smell_sub_type=None):
+        api_conf_smells = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, smell_id))
+
+        logger.debug("Scava client calls API: %s", api_conf_smells)
+        conf_smells = json.loads(self.fetch(api_conf_smells))
+
+        if not conf_smells:
+            yield '[]'
+
+        for conf_smell in conf_smells:
+            smell = {
+                "smell_name": conf_smell.get('smellName', None),
+                "line": conf_smell.get('line', None),
+                "reason": conf_smell.get('reason', None),
+                "file_name": conf_smell.get('fileName', None),
+                "commit": conf_smell.get('commit', None),
+                "date": conf_smell['date']['$date'] if 'date' in conf_smell else None,
+                "conf_type": conf_type,
+                "smell_type": smell_type,
+                "smell_sub_type": smell_sub_type
+            }
+
+            smell['id'] = "{}_{}_{}_{}_{}".format(conf_type, smell_type,
+                                                  smell['smell_name'], smell['line'], smell['file_name'])
+
+            yield json.dumps(smell)
 
     def __fetch_version_dependencies(self, project, dep_metric, dep_type):
         api_version_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
