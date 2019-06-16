@@ -40,6 +40,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_RECOMMENDATION,
                                            CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
                                            CATEGORY_CONF_SMELL,
+                                           CATEGORY_PROJECT_RELATION,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -621,6 +622,49 @@ def enrich_conf_smells(conf_smells, meta_info=None):
     logging.info("Configuration smell enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_project_relations(project_relations, meta_info=None):
+    """
+    Enrich project relations data coming from Scava to use them in Kibana.
+    The current enriched items contain the type of the relation (e.g., docker), the name of
+    the related project, when the relation was calculated (`datetime`), plus project
+    and meta project information. An example of enriched item is shown below:
+
+          "relation_type" : "docker",
+          "related_to" : "im",
+          "id" : "vim_im",
+          "updated" : "20190616",
+          "project" : "vim",
+          "datetime" : "2019-06-16T00:00:00+00:00",
+          "uuid" : "1fe3957fa267d89c86c3b1f5ca86fd28a40f7548",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param project_relations: project relations data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for project_relation in project_relations:
+        processed += 1
+
+        relation_data = project_relation['data']
+        eitem = relation_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+        eitem['uuid'] = uuid(eitem['id'], eitem['project'], eitem['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Project relation summary - processed/enriched: %s", processed)
+
+
 def enrich_users(scava_users, meta_info=None):
     """
     Enrich user data coming from Scava to use them in Kibana.
@@ -785,6 +829,15 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommenda
                     yield enriched_conf_smell
 
                 logging.debug("End fetch configuration smells data for %s" % project)
+
+            elif category == CATEGORY_PROJECT_RELATION:
+                logging.debug("Start fetch project relations for %s" % project)
+
+                for enriched_project_relation in enrich_project_relations(scavaProject.fetch(CATEGORY_PROJECT_RELATION),
+                                                                          meta):
+                    yield enriched_project_relation
+
+                logging.debug("End fetch project relations for %s" % project)
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -841,10 +894,18 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommenda
         elif category == CATEGORY_CONF_SMELL:
             logging.debug("Start fetch configuration smells data for %s" % project)
 
-            for enriched_conf_smell in enrich_conf_smells(scavaProject.fetch(CATEGORY_CONF_SMELL)):
+            for enriched_conf_smell in enrich_conf_smells(scava.fetch(CATEGORY_CONF_SMELL)):
                 yield enriched_conf_smell
 
             logging.debug("End fetch configuration smells data for %s" % project)
+
+        elif category == CATEGORY_PROJECT_RELATION:
+            logging.debug("Start fetch project relations for %s" % project)
+
+            for enriched_project_relation in enrich_project_relations(scava.fetch(CATEGORY_PROJECT_RELATION)):
+                yield enriched_project_relation
+
+            logging.debug("End fetch project relations for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
