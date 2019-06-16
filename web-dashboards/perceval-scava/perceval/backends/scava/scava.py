@@ -43,6 +43,7 @@ CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS = 'version-dependency'
 CATEGORY_USER = 'user'
 CATEGORY_RECOMMENDATION = 'recommendation'
 CATEGORY_CONF_SMELL = 'conf-smell'
+CATEGORY_PROJECT_RELATION = 'project-relation'
 
 DEP_MAVEN = 'maven'
 DEP_MAVEN_OPT = 'opt'
@@ -76,6 +77,8 @@ METRIC_PROVIDER_ID_DOCKER_SMELLS = 'org.eclipse.scava.metricprovider.trans.confi
 METRIC_PROVIDER_ID_PUPPET_DESIGN_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns.PuppetDesignAntipatternTransMetricProvider'
 METRIC_PROVIDER_ID_PUPPET_IMPL_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns.PuppetImplementationAntipatternTransMetricProvider'
 
+METRIC_PROVIDER_ID_PROJECT_RELATIONS = 'org.eclipse.scava.metricprovider.trans.configuration.projects.relations.ProjectsRelationsTransMetricProvider'
+
 METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
 
 SIM_METHODS = ['Compound', 'CrossSim', 'Dependency', 'CrossRec', 'Readme', 'RepoPalCompound', 'RepoPalCompoundV2']
@@ -103,7 +106,8 @@ class Scava(Backend):
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
                   CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
                   CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION,
-                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS, CATEGORY_CONF_SMELL]
+                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                  CATEGORY_CONF_SMELL, CATEGORY_PROJECT_RELATION]
 
     def __init__(self, url, project=None, recommendation_url=RECOMMENDATION_API, tag=None, archive=None):
         origin = url
@@ -168,7 +172,8 @@ class Scava(Backend):
                                 CATEGORY_CONF_DEPENDENCY,
                                 CATEGORY_RECOMMENDATION,
                                 CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
-                                CATEGORY_CONF_SMELL]:
+                                CATEGORY_CONF_SMELL,
+                                CATEGORY_PROJECT_RELATION]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -256,6 +261,8 @@ class Scava(Backend):
             category = CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS
         elif 'reason' in item:
             category = CATEGORY_CONF_SMELL
+        elif 'related_to' in item:
+            category = CATEGORY_PROJECT_RELATION
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -513,6 +520,27 @@ class ScavaClient(HttpClient):
             for deps in group_deps:
                 for dep in deps:
                     yield dep
+
+        elif category == CATEGORY_PROJECT_RELATION:
+            api_project_relations = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' %
+                                            (project, METRIC_PROVIDER_ID_PROJECT_RELATIONS))
+            logger.debug("Scava client calls API: %s", api_project_relations)
+
+            project_relations = json.loads(self.fetch(api_project_relations))
+
+            if not project_relations:
+                return '[]'
+
+            for project_relation in project_relations:
+
+                relation = {
+                    "relation_type": project_relation['dependencyType'],
+                    "related_to": project_relation['relationName']
+                }
+
+                relation['id'] = "{}_{}_{}".format(project, relation['related_to'], relation['relation_type'])
+
+                yield json.dumps(relation)
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -555,7 +583,7 @@ class ScavaClient(HttpClient):
         conf_smells = json.loads(self.fetch(api_conf_smells))
 
         if not conf_smells:
-            yield '[]'
+            return '[]'
 
         for conf_smell in conf_smells:
             smell = {
@@ -581,7 +609,7 @@ class ScavaClient(HttpClient):
         version_dependencies = json.loads(self.fetch(api_version_dependencies))
 
         if not version_dependencies:
-            yield '[]'
+            return '[]'
 
         for version in version_dependencies:
 
@@ -602,7 +630,7 @@ class ScavaClient(HttpClient):
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
-            yield '[]'
+            return '[]'
 
         for dep in dependencies:
             if 'value' not in dep or not dep['value']:
@@ -625,7 +653,7 @@ class ScavaClient(HttpClient):
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
-            yield '[]'
+            return '[]'
 
         for dep in dependencies:
             if 'dependencyName' not in dep or not dep['dependencyName']:
