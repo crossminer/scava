@@ -89,7 +89,6 @@ public abstract class Workflow {
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
-	protected BuiltinStream<java.io.Serializable> configTopic = null;
 
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected CrossflowLogger logger = new CrossflowLogger(this);
@@ -188,7 +187,6 @@ public abstract class Workflow {
 		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");
 		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
 		controlTopic = new BuiltinStream<>(this, "ControlTopic");
-		configTopic = new BuiltinStream<>(this, "ConfigurationTopic");
 		logTopic = new BuiltinStream<>(this, "LogTopic");
 		failedJobsQueue = new BuiltinStream<>(this, "FailedJobs", false);
 		internalExceptionsQueue = new BuiltinStream<>(this, "InternalExceptions", false);
@@ -211,13 +209,11 @@ public abstract class Workflow {
 		streamMetadataTopic.init();
 		taskMetadataTopic.init();
 		controlTopic.init();
-		configTopic.init();
 		logTopic.init();
 		failedJobsQueue.init();
 		internalExceptionsQueue.init();
 
 		activeStreams.add(taskStatusTopic);
-		activeStreams.add(configTopic);
 		activeStreams.add(failedJobsQueue);
 		activeStreams.add(internalExceptionsQueue);
 		// XXX do not add this topic/queue or any other non-essential ones to
@@ -746,13 +742,6 @@ public abstract class Workflow {
 			}
 
 			// stop all permanent streams
-
-			try {
-				configTopic.stop();
-			} catch (Exception e) {
-				// Ignore any exception
-				e.printStackTrace();
-			}
 			
 			try {
 				resultsTopic.stop();
@@ -768,7 +757,6 @@ public abstract class Workflow {
 				e.printStackTrace();
 			}
 
-			activeStreams.remove(configTopic);
 			activeStreams.remove(resultsTopic);
 			activeStreams.remove(logTopic);
 
@@ -860,10 +848,6 @@ public abstract class Workflow {
 
 	public BuiltinStream<ControlSignal> getControlTopic() {
 		return controlTopic;
-	}
-
-	public BuiltinStream<java.io.Serializable> getConfigurationTopic() {
-		return configTopic;
 	}
 	
 	public BuiltinStream<FailedJob> getFailedJobsQueue() {
