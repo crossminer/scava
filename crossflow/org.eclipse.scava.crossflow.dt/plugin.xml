@@ -9,7 +9,7 @@
             nameFilter="*.Crossflow_diagram"
             id="CrossflowBaseClassGeneration.contribution">
          <menu
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGeneration.menu"
                label="Crossflow"
                path="additions">
@@ -20,7 +20,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifactsAndRun"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts and Run (new browser window)"
                menubarPath="CrossflowGeneration.menu/group"
@@ -29,7 +29,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifacts"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -39,7 +39,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"
                label="Generate Deployment Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -49,7 +49,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowBaseClassGenerationAction"
                label="Generate Base Classes"
                menubarPath="CrossflowGeneration.menu/group"
@@ -62,7 +62,7 @@
             nameFilter="*.flexmi"
             objectClass="org.eclipse.core.resources.IFile">
          <menu
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGeneration.menu"
                label="Crossflow"
                path="additions">
@@ -73,7 +73,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifactsAndRun"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts and Run (new browser window)"
                menubarPath="CrossflowGeneration.menu/group"
@@ -82,7 +82,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifacts"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -91,7 +91,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"
                label="Generate Deployment Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -100,7 +100,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowBaseClassGenerationAction"
                label="Generate Base Classes"
                menubarPath="CrossflowGeneration.menu/group"
@@ -112,7 +112,7 @@
             nameFilter="*.Crossflow_model"
             objectClass="org.eclipse.core.resources.IFile">
          <menu
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGeneration.menu"
                label="Crossflow"
                path="additions">
@@ -123,7 +123,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifactsAndRun"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts and Run (new browser window)"
                menubarPath="CrossflowGeneration.menu/group"
@@ -132,7 +132,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.DeployArtifacts"
                enablesFor="1"
-               icon="icons/running.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowDeployArtifactsAction"
                label="Deploy Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -141,7 +141,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"
                label="Generate Deployment Artifacts"
                menubarPath="CrossflowGeneration.menu/group"
@@ -150,7 +150,7 @@
          <action
                class="org.eclipse.scava.crossflow.dt.GenerateAction"
                enablesFor="1"
-               icon="icons/busy.gif"
+               icon="icons/crossflow-c.png"
                id="CrossflowBaseClassGenerationAction"
                label="Generate Base Classes"
                menubarPath="CrossflowGeneration.menu/group"

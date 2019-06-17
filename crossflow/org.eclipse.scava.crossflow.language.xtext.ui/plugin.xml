@@ -4,12 +4,13 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="org.eclipse.scava.crossflow.language.xtext.ui.CrossflowExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
-			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
-			default="true"
-			extensions="crossflow_model"
-			id="org.eclipse.scava.crossflow.language.xtext.Crossflow"
-			name="Crossflow Editor">
+        class="org.eclipse.scava.crossflow.language.xtext.ui.CrossflowExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+        contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+        default="true"
+        extensions="crossflow_model"
+        icon="icons/obj16/CrossflowDiagramFile.png"
+        id="org.eclipse.scava.crossflow.language.xtext.Crossflow"
+        name="Crossflow Editor">
 		</editor>
 	</extension>
 	<extension

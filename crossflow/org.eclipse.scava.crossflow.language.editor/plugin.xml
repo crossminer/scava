@@ -16,7 +16,7 @@
             name="%_UI_CrossflowModelWizard_label"
             class="crossflow.presentation.CrossflowModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/CrossflowModelFile.gif">
+            icon="icons/full/obj16/CrossflowModelFile.png">
          <description>%_UI_CrossflowModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
@@ -27,7 +27,7 @@
       <editor
             id="crossflow.presentation.CrossflowEditorID"
             name="%_UI_CrossflowEditor_label"
-            icon="icons/full/obj16/CrossflowModelFile.gif"
+            icon="icons/full/obj16/CrossflowModelFile.png"
             extensions="crossflow"
             class="crossflow.presentation.CrossflowEditor"
             contributorClass="crossflow.presentation.CrossflowActionBarContributor">

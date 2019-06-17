@@ -23,7 +23,7 @@
       <editor
          id="crossflow.diagram.part.CrossflowDiagramEditorID"
          name="%editorName"
-         icon="icons/obj16/CrossflowDiagramFile.gif"
+         icon="icons/obj16/CrossflowDiagramFile.png"
          extensions="crossflow_diagram"
          default="true"
          class="crossflow.diagram.part.CrossflowDiagramEditor"
@@ -46,7 +46,7 @@
       <?gmfgen generated="true"?>
   	  <wizard
   	     name="%newWizardName"
-  	     icon="icons/obj16/CrossflowDiagramFile.gif"
+  	     icon="icons/obj16/CrossflowDiagramFile.png"
   	     category="org.eclipse.ui.Examples"
   	     class="crossflow.diagram.part.CrossflowCreationWizard"
   	     id="crossflow.diagram.part.CrossflowCreationWizardID">
@@ -660,7 +660,7 @@
             priority="normal" 
             contentProvider="crossflow.diagram.navigator.CrossflowNavigatorContentProvider" 
             labelProvider="crossflow.diagram.navigator.CrossflowNavigatorLabelProvider"
-            icon="icons/obj16/CrossflowDiagramFile.gif"
+            icon="icons/obj16/CrossflowDiagramFile.png"
             activeByDefault="true">
          <triggerPoints>
             <or>
@@ -702,7 +702,7 @@
             priority="normal" 
             contentProvider="crossflow.diagram.navigator.CrossflowDomainNavigatorContentProvider" 
             labelProvider="crossflow.diagram.navigator.CrossflowDomainNavigatorLabelProvider"
-            icon="icons/obj16/CrossflowDiagramFile.gif"
+            icon="icons/obj16/CrossflowDiagramFile.png"
             activeByDefault="true">
          <triggerPoints>
             <or>
