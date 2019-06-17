@@ -1,10 +1,9 @@
-from org.eclipse.scava.crossflow.runtime import Mode
 from org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow import WordCountWorkflow
 import time
 
-worker = WordCountWorkflow(mode=Mode.WORKER)
+worker = WordCountWorkflow()
 worker.setMaster('localhost')
-worker.setInstanceId('wc')
+worker.setInstanceId('WordCountWorkflow')
 worker.setName('workerPY')
 worker.run()
 while (not worker.hasTerminated()):

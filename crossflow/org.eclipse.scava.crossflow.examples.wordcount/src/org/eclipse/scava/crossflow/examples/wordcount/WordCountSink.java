@@ -3,7 +3,7 @@
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributor(s):
  *      Patrick Neubauer - initial API and implementation
  ******************************************************************************/
@@ -24,7 +24,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 /**
  * Consumes instances of {@link WordFrequency}, i.e. words and their ocurrence frequency, by writing them to disk every two seconds.
- * 
+ *
  * @author Patrick Neubauer
  *
  */
@@ -39,7 +39,7 @@ public class WordCountSink extends WordCountSinkBase {
 	public synchronized void consumeFiltered(WordFrequency wordFrequency) {
 		 System.out.println("Sink consuming: "+wordFrequency);
 
-		 // schedule reocurring task that flushes current state to disk
+		 // schedule re-occurring task that flushes current state to disk
 		if (!started)
 			t.schedule(new TimerTask() {
 				@Override
@@ -86,7 +86,7 @@ public class WordCountSink extends WordCountSinkBase {
 			ex.printStackTrace();
 		}
 	}// flushToDisk
-	
+
 	@Override
 	public void close() {
 		t.cancel();
