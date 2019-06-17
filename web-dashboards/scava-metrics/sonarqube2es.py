@@ -27,6 +27,7 @@
 
 import argparse
 import hashlib
+<<<<<<< HEAD
 import json
 import logging
 import re
@@ -34,6 +35,15 @@ import requests
 import time
 
 from perceval.backends.scava.sonarqube import Sonar
+=======
+import logging
+import json
+import time
+
+from perceval.backends.sonarqube import Sonar
+
+from grimoirelab_toolkit.datetime import str_to_datetime
+>>>>>>> OW2 use case sonarqube metrics integration
 
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
@@ -41,6 +51,10 @@ from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 DEFAULT_BULK_SIZE = 100
 DEFAULT_WAIT_TIME = 10
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> OW2 use case sonarqube metrics integration
 def get_params():
     parser = argparse.ArgumentParser(usage="usage: sonarqube2es [options]",
                                      description="Import Sonarqube metrics in ElasticSearch")
@@ -49,9 +63,13 @@ def get_params():
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", help="URL for Sonarqube instance")
+<<<<<<< HEAD
     parser.add_argument("-t", "--time", help="Timestamp used to enrich item")
     parser.add_argument("-c", "--components", help="URL containing the list of components with corresponding mappings")
     parser.add_argument("-m", "--metrics", nargs='+', help="List of metrics")
+=======
+    parser.add_argument("-c", "--components", nargs='+', help="List of components")
+>>>>>>> OW2 use case sonarqube metrics integration
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -134,13 +152,18 @@ def __init_index(elastic_url, index, wait_time):
     return elastic
 
 
+<<<<<<< HEAD
 def enrich_metrics(sonar_metrics, timestamp):
+=======
+def enrich_metrics(sonar_metrics):
+>>>>>>> OW2 use case sonarqube metrics integration
     """
     Enrich metrics coming from Sonarqube to use them in Kibana
 
     :param sonar_metrics: metrics generator
     :return:
     """
+<<<<<<< HEAD
     processed = 0
     enriched_skipped = 0
 
@@ -205,10 +228,32 @@ def load_components(url):
 
 
 def fetch_sonarqube(url, components_url, metrics, timestamp):
+=======
+
+    for sonar_metric in sonar_metrics:
+
+        metric = {
+            # origin : https://sonarcloud.io/api/measures/component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
+            # we get only component name, in this example: org.xwiki.contrib:application-antispam
+            'project': ((sonar_metrics['origin'].split('?')[1]).split('&')[0]).split('=')[1],
+            'metric_class': sonar_metrics['data']['id'],
+            'metric_type': sonar_metrics['backend_name'],
+            'metric_id': sonar_metrics['data']['id'],
+            'metric_name': sonar_metrics['data']['metric'],
+            'metric_value': sonar_metrics['data']['value'],
+            'datetime': sonar_metrics['data']['fetched_on']
+        }
+
+        yield metric
+
+
+def fetch_sonarqube(url, components):
+>>>>>>> OW2 use case sonarqube metrics integration
     """
     Fetch the metrics from Sonarqube
 
     """
+<<<<<<< HEAD
     components = load_components(components_url)
 
     for component in components:
@@ -224,6 +269,16 @@ def fetch_sonarqube(url, components_url, metrics, timestamp):
         msg = "Metrics {} from component {} fetched".format(metrics, component)
         logging.debug(msg)
 
+=======
+    # Get the metrics for all projects
+    for component in components:
+
+        sonar_backend = Sonar(component=component, base_url=url)
+
+        for enriched_metric in enrich_metrics(sonar_backend.fetch()):
+            yield enriched_metric
+
+>>>>>>> OW2 use case sonarqube metrics integration
 
 if __name__ == '__main__':
 
@@ -239,12 +294,20 @@ if __name__ == '__main__':
     elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
+<<<<<<< HEAD
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
     sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics,ARGS.time)
 
     if sonar_metrics:
         logging.info("Uploading SonarQube metrics to Elasticsearch")
+=======
+    # OW2 specific: fetch from SonarQube and our quality model, OMM
+    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components)
+
+    if sonar_metrics:
+        logging.info("Loading SonarQube metrics in Elasticsearch")
+>>>>>>> OW2 use case sonarqube metrics integration
 
         counter = 0
         to_upload = []
@@ -259,4 +322,8 @@ if __name__ == '__main__':
 
         if len(to_upload) > 0:
             counter += len(to_upload)
+<<<<<<< HEAD
             elastic.bulk_upload(to_upload, "uuid")
+=======
+            elastic.bulk_upload(to_upload, "uuid")
+>>>>>>> OW2 use case sonarqube metrics integration
