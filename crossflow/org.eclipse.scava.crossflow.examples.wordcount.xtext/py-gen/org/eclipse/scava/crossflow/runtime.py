@@ -1135,7 +1135,7 @@ class Workflow(object):
                  name='',
                  cache=None,
                  master='localhost',
-                 brokerHost=None,
+                 brokerHost='localhost',
                  stompPort=61613,
                  instanceId=None,
                  mode=Mode.WORKER,
@@ -1147,10 +1147,8 @@ class Workflow(object):
         self.name = name
         self.cache = cache
         self.master = master
+        self.brokerHost = brokerHost
         self.stompPort = stompPort
-        
-        if brokerHost is None:
-            self.brokerHost = master
 
         self.instanceId = instanceId
         if instanceId is None:

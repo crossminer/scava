@@ -102,9 +102,10 @@
 	<extension
 			point="org.eclipse.ui.propertyPages">
 		<page
-			class="org.eclipse.scava.crossflow.language.xtext.ui.CrossflowExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.eclipse.scava.crossflow.language.xtext.Crossflow"
-			name="Crossflow">
+        class="org.eclipse.scava.crossflow.language.xtext.ui.CrossflowExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+        icon="icons/obj16/CrossflowDiagramFile.png"
+        id="org.eclipse.scava.crossflow.language.xtext.Crossflow"
+        name="Crossflow">
 			<keywordReference id="org.eclipse.scava.crossflow.language.xtext.ui.keyword_Crossflow"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
@@ -143,9 +144,10 @@
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
 			 <command
-				 commandId="org.eclipse.scava.crossflow.language.xtext.Crossflow.validate"
-				 style="push"
-				 tooltip="Trigger expensive validation">
+          commandId="org.eclipse.scava.crossflow.language.xtext.Crossflow.validate"
+          icon="icons/obj16/CrossflowDiagramFile.png&#x0A;"
+          style="push"
+          tooltip="Trigger expensive validation">
 			<visibleWhen checkEnabled="false">
 				<reference
 					definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened">
@@ -155,24 +157,32 @@
 		</menuContribution>
 		<!-- copy qualified name -->
 		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
-			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
-				style="push" tooltip="Copy Qualified Name">
+			<command
+         commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+         style="push"
+         tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 		<menuContribution locationURI="menu:edit?after=copy">
-			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
-				style="push" tooltip="Copy Qualified Name">
+			<command
+         commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+         icon="icons/obj16/CrossflowDiagramFile.png"
+         style="push"
+         tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 		<menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
-			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
-				style="push" tooltip="Copy Qualified Name">
+			<command
+         commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+         icon="icons/obj16/CrossflowDiagramFile.png"
+         style="push"
+         tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<and>
 						<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.XtextEditor.opened" />
@@ -186,7 +196,9 @@
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
-			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+			<command
+         commandId="org.eclipse.xtext.ui.editor.FindReferences"
+         icon="icons/obj16/CrossflowDiagramFile.png">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened">
 					</reference>
@@ -289,9 +301,10 @@
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
 			<command
-				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
-				id="org.eclipse.scava.crossflow.language.xtext.Crossflow.OpenGeneratedCode"
-				style="push">
+         commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+         icon="icons/obj16/CrossflowDiagramFile.png"
+         id="org.eclipse.scava.crossflow.language.xtext.Crossflow.OpenGeneratedCode"
+         style="push">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened" />
 				</visibleWhen>
@@ -331,9 +344,11 @@
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.open">
-			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
-				style="push"
-				tooltip="Open Quick Outline">
+			<command
+         commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+         icon="icons/obj16/CrossflowDiagramFile.png"
+         style="push"
+         tooltip="Open Quick Outline">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened"/>
 				</visibleWhen>
@@ -383,8 +398,10 @@
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
-			<command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
-				style="push">
+			<command
+         commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+         icon="icons/obj16/CrossflowDiagramFile.png"
+         style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
 						definitionId="org.eclipse.scava.crossflow.language.xtext.Crossflow.Editor.opened">
