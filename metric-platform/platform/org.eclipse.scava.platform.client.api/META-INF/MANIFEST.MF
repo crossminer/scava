@@ -30,7 +30,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model.importer;bundle-version="1.0.0",
  org.eclipse.scava.repository.model.gitlab.importer;bundle-version="1.0.0",
  org.eclipse.scava.repository.model.mantis,
- org.eclipse.scava.repository.model.bitbucket
+ org.eclipse.scava.repository.model.bitbucket,
+ org.eclipse.scava.repository.model.cc.irc,
+ org.eclipse.scava.repository.model.cc.sympa;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.cc.mbox;bundle-version="1.0.0",
+ org.eclipse.scava.repository.model.cc.eclipseforums
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.client.api

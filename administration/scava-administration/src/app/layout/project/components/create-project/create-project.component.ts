@@ -83,11 +83,53 @@ export class CreateProjectComponent implements OnInit {
   }
 
   createCommunicationChannels(type: string) {
-    return this.formBuilder.group({
-      'type': [type],
-      'name': ['NNTP'],
-      'url': ['', Validators.required],
-    });
+    switch (type) {
+      case 'nntp':
+        return this.formBuilder.group({
+          'type': [type],
+          'name': ['NNTP'],
+          'url': ['', Validators.required],
+        });
+      case 'irc':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required],
+          'name': ['', Validators.required],
+          'description': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'sympa':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required],
+          'mailingListName': ['', Validators.required],
+          'mailingListDescription': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'mbox':
+        return this.formBuilder.group({
+          'type': [type],
+          'mboxName': ['', Validators.required],
+          'mboxDescription': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'eclipseForum':
+        return this.formBuilder.group({
+          'type': [type],
+          'forumId': ['', Validators.required],
+          'forumName': ['', Validators.required],
+          'clientId': ['', Validators.required],
+          'clientSecret': ['', Validators.required],
+        });
+      default:
+        break;
+    }
   }
 
   createIssueTrackingSystems(type: string) {
