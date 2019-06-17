@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2019 The University of York.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * Contributor(s):
+ *      Patrick Neubauer - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.scava.crossflow.examples.wordcount;
 
 import java.io.File;
@@ -13,6 +22,12 @@ import org.eclipse.scava.crossflow.examples.wordcount.WordCountSinkBase;
 import org.eclipse.scava.crossflow.examples.wordcount.WordFrequency;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
+/**
+ * Consumes instances of {@link WordFrequency}, i.e. words and their ocurrence frequency, by writing them to disk every two seconds.
+ * 
+ * @author Patrick Neubauer
+ *
+ */
 public class WordCountSink extends WordCountSinkBase {
 
 	protected Map<String, Integer> frequencies = new HashMap<>();
@@ -22,8 +37,9 @@ public class WordCountSink extends WordCountSinkBase {
 
 	@Override
 	public synchronized void consumeFiltered(WordFrequency wordFrequency) {
-		 System.out.println("sink consuming: "+wordFrequency);
+		 System.out.println("Sink consuming: "+wordFrequency);
 
+		 // schedule reocurring task that flushes current state to disk
 		if (!started)
 			t.schedule(new TimerTask() {
 				@Override
@@ -42,13 +58,7 @@ public class WordCountSink extends WordCountSinkBase {
 			frequencies.put(word, frequencies.get(word) + frequency);
 		}
 
-	}
-
-	@Override
-	public void close() {
-		t.cancel();
-		flushToDisk();
-	}
+	}// consumeFiltered
 
 	private synchronized void flushToDisk() {
 		try {
@@ -62,7 +72,7 @@ public class WordCountSink extends WordCountSinkBase {
 					.sorted((Map.Entry.<String, Integer>comparingByValue().reversed())).collect(Collectors
 							.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-			for (String w : new ArrayList<String>(sorted.keySet()).subList(0, Math.min(sorted.keySet().size(), 100))) {
+			for (String w : new ArrayList<String>(sorted.keySet()).subList(0, Math.min(sorted.keySet().size(), WordCountProperties.MIN_WORD_FREQUENCY))) {
 				writer.writeRecord(w, sorted.get(w));
 			}
 			writer.flush();
@@ -75,6 +85,12 @@ public class WordCountSink extends WordCountSinkBase {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
+	}// flushToDisk
+	
+	@Override
+	public void close() {
+		t.cancel();
+		flushToDisk();
+	}// close
 
-}
+}// WordCountSink

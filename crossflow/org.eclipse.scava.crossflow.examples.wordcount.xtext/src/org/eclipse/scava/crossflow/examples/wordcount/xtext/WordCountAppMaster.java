@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2019 The University of York.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * Contributor(s):
+ *      Patrick Neubauer - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.scava.crossflow.examples.wordcount.xtext;
 
 import java.io.File;
@@ -7,28 +16,26 @@ import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
-public class WordCountStandaloneExecution {
+/**
+ * Standalone application for running a master (only) for workers to connect to.
+ * 
+ *  (!) Requires matching instance identifier (instanceId).
+ * 
+ * @author Patrick Neubauer
+ *
+ */
+public class WordCountAppMaster {
 	
-	public WordCountStandaloneExecution() throws Exception {
+	public WordCountAppMaster() throws Exception {
 		WordCountWorkflow master = new WordCountWorkflow(Mode.MASTER);
-		master.createBroker(true);
+		//master.createBroker(false);
 		master.setInputDirectory(new File("experiment/in"));
 		master.setOutputDirectory(new File("experiment/out"));
+		master.setInstanceId(WordCountProperties.INSTANCE_ID);
 		master.setName("Master");
-		master.setInstanceId("wc");
-		
-		WordCountWorkflow worker1 = new WordCountWorkflow(Mode.WORKER);
-		worker1.setName("Worker1");
-		worker1.setInstanceId("wc");
-		
-		WordCountWorkflow worker2 = new WordCountWorkflow(Mode.WORKER);
-		worker2.setName("Worker2");
-		worker2.setInstanceId("wc");
 		
 		master.run();
-		worker1.run();
-		worker2.run();
-		
+
 		// master
 		while (!master.hasTerminated()) {
 			Thread.sleep(100);
@@ -44,10 +51,11 @@ public class WordCountStandaloneExecution {
 	
 		System.out.println("Done");
 	}
-
+	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		// setup and launch experiment
-		WordCountStandaloneExecution app = new WordCountStandaloneExecution();
-	}
+		WordCountAppMaster app = new WordCountAppMaster();
+	}// main
 	
-}
+}// WordCountAppMaster

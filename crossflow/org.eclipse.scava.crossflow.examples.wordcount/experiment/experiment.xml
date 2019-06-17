@@ -4,12 +4,11 @@
 	jar="org.eclipse.scava.crossflow.examples.wordcount.jar"
 	input="in"
 	output="out"
-	summary="Optional summary of the Experiment goes here."
+	summary="Counts the frequencies of words in a set of text files and displays the 100 most frequent of them."
 	webServer="localhost:8080"
 >
-	<input path="input.csv" title="Input"/>
 	<output path="output.csv" title="Output"/>
 	<description>
-		Optional description of the Experiment goes here.
+		Counts the frequencies of words in a set of text files and displays the 100 most frequent of them.
 	</description>
 </experiment>

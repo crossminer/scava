@@ -7,10 +7,9 @@ class Filter(FilterBase):
 
 	def consumeWordFrequencies(self, wordFrequency):
 		
+		# list of words to exclude / filter
 		ignoredWords = [ "the", "and", "is", "or", "of", "to", "a", "in", "on", "as" ]
 	
 		if not wordFrequency.word in ignoredWords:
 			self.sendToFiltered(wordFrequency)
-	
-		
 	

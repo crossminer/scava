@@ -17,35 +17,25 @@ import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
 /**
- * Standalone application for running a master and a set of workers.
+ * Standalone application for running a master (only) for workers to connect to.
  * 
  *  (!) Requires matching instance identifier (instanceId).
  * 
  * @author Patrick Neubauer
  *
  */
-public class WordCountApp {
+public class WordCountAppMaster {
 	
-	public WordCountApp() throws Exception {
+	public WordCountAppMaster() throws Exception {
 		WordCountWorkflow master = new WordCountWorkflow(Mode.MASTER);
-		master.createBroker(false);
+		//master.createBroker(false);
 		master.setInputDirectory(new File("experiment/in"));
 		master.setOutputDirectory(new File("experiment/out"));
 		master.setInstanceId(WordCountProperties.INSTANCE_ID);
 		master.setName("Master");
 		
-		WordCountWorkflow worker1 = new WordCountWorkflow(Mode.WORKER);
-		worker1.setInstanceId(WordCountProperties.INSTANCE_ID);
-		worker1.setName("Worker1");
-		
-		WordCountWorkflow worker2 = new WordCountWorkflow(Mode.WORKER);
-		worker2.setInstanceId(WordCountProperties.INSTANCE_ID);
-		worker2.setName("Worker2");
-		
 		master.run();
-		worker1.run();
-		worker2.run();
-		
+
 		// master
 		while (!master.hasTerminated()) {
 			Thread.sleep(100);
@@ -61,11 +51,11 @@ public class WordCountApp {
 	
 		System.out.println("Done");
 	}
-
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		// setup and launch experiment
-		WordCountApp app = new WordCountApp();
+		WordCountAppMaster app = new WordCountAppMaster();
 	}// main
 	
-}// WordCountApp
+}// WordCountAppMaster
