@@ -17,7 +17,6 @@ public class CodeSearcher extends CodeSearcherBase {
 	}
 
 	private void search(MDETechnology tech) {
-		Repository repositoryInst = new Repository();
 
 		String query = new CodeSearchQuery().create(tech.getTechKey()).extension(tech.getFileExt()).inFile().build()
 				.getQuery();
@@ -30,7 +29,7 @@ public class CodeSearcher extends CodeSearcherBase {
 		for (SearchCode resultItem : repoFiles) {
 			org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode.Repository resultRepo = resultItem
 					.getRepository();
-
+			Repository repositoryInst = new Repository();
 			repositoryInst.setUrl(resultRepo.getHtmlUrl());
 			repositoryInst.setName(resultRepo.getFullName());
 
