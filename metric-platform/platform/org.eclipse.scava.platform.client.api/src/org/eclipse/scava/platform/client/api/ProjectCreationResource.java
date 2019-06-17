@@ -18,7 +18,11 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
 import org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem;
 import org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker;
@@ -113,6 +117,55 @@ public class ProjectCreationResource extends ServerResource {
 						newsgroup.setName(cc.get("name").asText());
 						newsgroup.setUrl(cc.get("url").asText());
 						channel = newsgroup;
+						break;
+					case "irc":
+						Irc irc = new Irc();
+						irc.setUrl(cc.get("url").asText());
+						irc.setName(cc.get("name").asText());
+						irc.setDescription(cc.get("description").asText());
+						irc.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							irc.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							irc.setUsername(cc.get("password").asText());
+						}
+						channel = irc;
+						break;
+					case "sympa":
+						SympaMailingList sympa = new SympaMailingList();
+						sympa.setUrl(cc.get("url").asText());
+						sympa.setMailingListName(cc.get("mailingListName").asText());
+						sympa.setMailingListDescription(cc.get("mailingListDescription").asText());
+						sympa.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							sympa.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							sympa.setUsername(cc.get("password").asText());
+						}
+						channel = sympa;
+						break;
+					case "mbox":
+						Mbox mbox = new Mbox();
+						mbox.setMboxName(cc.get("mboxName").asText());
+						mbox.setMboxDescription(cc.get("mboxDescription").asText());
+						mbox.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							mbox.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							mbox.setUsername(cc.get("password").asText());
+						}
+						channel = mbox;
+						break;
+					case "eclipseForum":
+						EclipseForum eclipseForum = new EclipseForum();
+						eclipseForum.setForum_id(cc.get("forumId").asText());
+						eclipseForum.setForum_name(cc.get("forumName").asText());
+						eclipseForum.setClient_id(cc.get("clientId").asText());
+						eclipseForum.setClient_secret(cc.get("clientSecret").asText());
+						channel = eclipseForum;
 						break;
 					default:
 						continue;

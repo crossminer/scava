@@ -1,7 +1,8 @@
 <div style="padding-top:20px;">
     <h2>Register project</h2>
     <hr />
-    <form [formGroup]="form" role="form" #createProjectForm="ngForm" name="createProjectForm" novalidate (ngSubmit)="save()">
+    <form [formGroup]="form" role="form" #createProjectForm="ngForm" name="createProjectForm" novalidate
+        (ngSubmit)="save()">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="form-group">
@@ -28,12 +29,14 @@
                     <small>Version Control Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('vcs', 'git')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('vcs', 'git')">
                                 <span>Git</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('vcs', 'svn')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('vcs', 'svn')">
                                 <span>SVN</span>
                             </button>
                         </li>
@@ -41,32 +44,38 @@
                     <small>Issue Tracking Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'bugzilla')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'bugzilla')">
                                 <span>Bugzilla</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'sourceforge')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'sourceforge')">
                                 <span>SourceForge</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'redmine')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'redmine')">
                                 <span>Redmine</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'jira')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'jira')">
                                 <span>Jira</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'mantis')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'mantis')">
                                 <span>Mantis</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('bts', 'bitbucket')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('bts', 'bitbucket')">
                                 <span>Bitbucket</span>
                             </button>
                         </li>
@@ -74,8 +83,33 @@
                     <small>Communication Channels</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addInformationSource('communication_channels', 'nntp')">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'nntp')">
                                 <span>NNTP</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'irc')">
+                                <span>Irc</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'sympa')">
+                                <span>Sympa Mailing List</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'mbox')">
+                                <span>Mbox</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'eclipseForum')">
+                                <span>Eclipse Forum</span>
                             </button>
                         </li>
                     </ul>
@@ -88,17 +122,20 @@
                             <div class="card">
                                 <div class="card-header">
                                     <label>{{form.get('vcs').value[i].type | uppercase}} Repository</label>
-                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('vcs', i)">
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut"
+                                        (click)="removeInformationSource('vcs', i)">
                                         <i class="fa fa-times"></i>
                                     </span>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group" [hidden]=true>
-                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        <input type="text" class="form-control" id="type" name="type"
+                                            formControlName="type">
                                     </div>
                                     <div class="form-group">
                                         <label for="url">URL</label>
-                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                        <input type="text" class="form-control" id="url" name="url"
+                                            formControlName="url">
                                     </div>
                                 </div>
                             </div>
@@ -113,17 +150,20 @@
                             <div class="card">
                                 <div class="card-header">
                                     <label>{{form.get('bts').value[i].type | uppercase}}</label>
-                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('bts', i)">
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut"
+                                        (click)="removeInformationSource('bts', i)">
                                         <i class="fa fa-times"></i>
                                     </span>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group" [hidden]=true>
-                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        <input type="text" class="form-control" id="type" name="type"
+                                            formControlName="type">
                                     </div>
                                     <div class="form-group">
                                         <label for="url">URL</label>
-                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                        <input type="text" class="form-control" id="url" name="url"
+                                            formControlName="url">
                                     </div>
                                     <div *ngIf="form.get('bts').value[i].type === 'bugzilla'">
                                         <div class="form-group">
@@ -169,17 +209,20 @@
                                     <div *ngIf="form.get('bts').value[i].type === 'mantis'">
                                         <div class="form-group">
                                             <label for="token">Token</label>
-                                            <input type="text" class="form-control" id="token" name="token" formControlName="token">
+                                            <input type="text" class="form-control" id="token" name="token"
+                                                formControlName="token">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('bts').value[i].type === 'bitbucket'">
                                         <div class="form-group">
                                             <label for="login">Login</label>
-                                            <input type="text" class="form-control" id="login" name="login" formControlName="login">
+                                            <input type="text" class="form-control" id="login" name="login"
+                                                formControlName="login">
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                            <input type="text" class="form-control" id="password" name="password"
+                                                formControlName="password">
                                         </div>
                                     </div>
                                 </div>
@@ -194,21 +237,129 @@
                         <div [formGroupName]="i">
                             <div class="card">
                                 <div class="card-header">
-                                    <label>Communication Channels</label>
-                                    <span class="pull-right clickable close-icon" data-effect="fadeOut" (click)="removeInformationSource('communication_channels', i)">
+                                    <label>{{form.get('communication_channels').value[i].type | uppercase}}</label>
+                                    <span class="pull-right clickable close-icon" data-effect="fadeOut"
+                                        (click)="removeInformationSource('communication_channels', i)">
                                         <i class="fa fa-times"></i>
                                     </span>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-group" [hidden]=true>
-                                        <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'nntp'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        </div>
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="url">URL</label>
+                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                        </div>
                                     </div>
-                                    <div class="form-group" [hidden]=true>
-                                        <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'irc'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="url">URL</label>
+                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <input type="text" class="form-control" id="description" name="description" formControlName="description">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="compressedFileExtension">compressedFileExtension</label>
+                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension" formControlName="compressedFileExtension">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="url">URL</label>
-                                        <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'sympa'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="url">URL</label>
+                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailingListName">Mailing List Name</label>
+                                            <input type="text" class="form-control" id="mailingListName" name="mailingListName" formControlName="mailingListName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailingListDescription">Mailing List Description</label>
+                                            <input type="text" class="form-control" id="mailingListDescription" name="mailingListDescription" formControlName="mailingListDescription">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="compressedFileExtension">compressed File Extension</label>
+                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension"
+                                                formControlName="compressedFileExtension">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'mbox'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mboxName">Mbox Name</label>
+                                            <input type="text" class="form-control" id="mboxName" name="mboxName" formControlName="mboxName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mboxDescription">Mbox Description</label>
+                                            <input type="text" class="form-control" id="mboxDescription" name="mboxDescription" formControlName="mboxDescription">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="compressedFileExtension">compressed File Extension</label>
+                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension" formControlName="compressedFileExtension">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'eclipseForum'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="forumId">Forum Id</label>
+                                            <input type="text" class="form-control" id="forumId" name="forumId" formControlName="forumId">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="forumName">Forum Name</label>
+                                            <input type="text" class="form-control" id="forumName" name="forumName" formControlName="forumName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="clientId">Client Id</label>
+                                            <input type="text" class="form-control" id="clientId" name="clientId" formControlName="clientId">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="clientSecret">clientSecret</label>
+                                            <input type="text" class="form-control" id="clientSecret" name="clientSecret" formControlName="clientSecret">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +375,8 @@
                 <i class="fa fa-ban"></i>&nbsp;
                 <span>Cancel</span>
             </button>&nbsp;
-            <button type="submit" [disabled]="createProjectForm.form.invalid || isSaving || !infosSouceExist" class="btn btn-outline-dark btn-sm">
+            <button type="submit" [disabled]="createProjectForm.form.invalid || isSaving || !infosSouceExist"
+                class="btn btn-outline-dark btn-sm">
                 <i class="fa fa-save"></i>&nbsp;
                 <span>Save</span>
             </button>
