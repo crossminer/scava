@@ -29,13 +29,13 @@
                     <small>Version Control Systems</small>
                     <ul class="pagination">
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm"
+                            <button type="button" [disabled]="gitBasedExists" class="btn btn-outline-dark btn-sm"
                                 (click)="addInformationSource('vcs', 'git')">
                                 <span>Git</span>
                             </button>
                         </li>&nbsp;
                         <li>
-                            <button type="button" class="btn btn-outline-dark btn-sm"
+                            <button type="button" [disabled]="gitExists" class="btn btn-outline-dark btn-sm"
                                 (click)="addInformationSource('vcs', 'gitbased')">
                                 <span>Documentation Git Based</span>
                             </button>

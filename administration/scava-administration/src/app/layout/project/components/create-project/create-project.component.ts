@@ -15,6 +15,8 @@ export class CreateProjectComponent implements OnInit {
   project: Project;
   isSaving: boolean;
   infosSouceExist: boolean;
+  gitExists: boolean;
+  gitBasedExists: boolean;
   noLogin: string = '';
 
   constructor(
@@ -68,11 +70,13 @@ export class CreateProjectComponent implements OnInit {
   createVersionControlSystems(type: string) {
     switch (type) {
       case 'git':
+        this.gitExists = true;
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required]
         });
       case 'gitbased':
+          this.gitBasedExists = true;
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required]
@@ -203,6 +207,8 @@ export class CreateProjectComponent implements OnInit {
     const formValue = this.form.value;
     if (formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0) {
       this.infosSouceExist = false;
+      this.gitExists = false;
+      this.gitBasedExists = false;
     }
   }
 
