@@ -11,6 +11,7 @@ package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
@@ -59,7 +60,25 @@ public class ProjectListResource extends AbstractApiResource {
 				p.removeField("metricProviderData");
 				p.removeField("_superTypes");
 				p.removeField("_id");
-				p.removeField("token");
+				
+				if (p.containsField("token"))
+					p.removeField("token");
+				if (p.containsField("password"))
+					p.removeField("password");
+				
+				BasicDBList btsArray = (BasicDBList) p.get("bugTrackingSystems");
+				for (int i = 0; i < btsArray.size(); i++) {
+					DBObject dbObject = (DBObject) btsArray.get(i);
+					if (dbObject.containsField("personal_access_token"))
+						dbObject.removeField("personal_access_token");
+				}
+				
+				BasicDBList ccArray = (BasicDBList) p.get("communication_channels");
+				for (int i = 0; i < ccArray.size(); i++) {
+					DBObject dbObject = (DBObject) ccArray.get(i);
+					if (dbObject.containsField("client_secret"))
+						dbObject.removeField("client_secret");
+				}
 				
 				// FIXME: Temporary solution
 				p.removeField("licenses");
