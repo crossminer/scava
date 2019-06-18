@@ -123,6 +123,7 @@ export class CreateProjectComponent implements OnInit {
       case 'mbox':
         return this.formBuilder.group({
           'type': [type],
+          'url': ['', Validators.required],
           'mboxName': ['', Validators.required],
           'mboxDescription': ['', Validators.required],
           'compressedFileExtension': ['', Validators.required],

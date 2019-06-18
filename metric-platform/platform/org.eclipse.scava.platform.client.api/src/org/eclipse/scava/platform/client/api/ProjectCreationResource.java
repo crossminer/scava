@@ -154,6 +154,7 @@ public class ProjectCreationResource extends ServerResource {
 						break;
 					case "mbox":
 						Mbox mbox = new Mbox();
+						mbox.setUrl(cc.get("url").asText());
 						mbox.setMboxName(cc.get("mboxName").asText());
 						mbox.setMboxDescription(cc.get("mboxDescription").asText());
 						mbox.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
