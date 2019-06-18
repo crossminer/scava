@@ -76,7 +76,7 @@ export class CreateProjectComponent implements OnInit {
           'url': ['', Validators.required]
         });
       case 'gitbased':
-          this.gitBasedExists = true;
+        this.gitBasedExists = true;
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required]
@@ -220,7 +220,6 @@ export class CreateProjectComponent implements OnInit {
     } else {
       this.noLogin = 'option1';
     }
-    console.log('noLogin ' + this.noLogin);
   }
 
   save() {
