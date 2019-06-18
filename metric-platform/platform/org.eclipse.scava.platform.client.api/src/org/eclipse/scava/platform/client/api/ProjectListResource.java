@@ -64,6 +64,8 @@ public class ProjectListResource extends AbstractApiResource {
 				if (btsArray != null) {
 					for (int i = 0; i < btsArray.size(); i++) {
 						DBObject dbObject = (DBObject) btsArray.get(i);
+						if (dbObject.containsField("token"))
+							dbObject.removeField("token");
 						if (dbObject.containsField("personal_access_token"))
 							dbObject.removeField("personal_access_token");
 					}
