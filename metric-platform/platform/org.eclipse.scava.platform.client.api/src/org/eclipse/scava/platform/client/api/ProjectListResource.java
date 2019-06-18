@@ -10,10 +10,7 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
 
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectRepository;
@@ -23,15 +20,12 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Post;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.BasicDBList;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 
 public class ProjectListResource extends AbstractApiResource {
 
@@ -67,17 +61,21 @@ public class ProjectListResource extends AbstractApiResource {
 					p.removeField("password");
 				
 				BasicDBList btsArray = (BasicDBList) p.get("bugTrackingSystems");
-				for (int i = 0; i < btsArray.size(); i++) {
-					DBObject dbObject = (DBObject) btsArray.get(i);
-					if (dbObject.containsField("personal_access_token"))
-						dbObject.removeField("personal_access_token");
+				if (btsArray != null) {
+					for (int i = 0; i < btsArray.size(); i++) {
+						DBObject dbObject = (DBObject) btsArray.get(i);
+						if (dbObject.containsField("personal_access_token"))
+							dbObject.removeField("personal_access_token");
+					}
 				}
 				
 				BasicDBList ccArray = (BasicDBList) p.get("communication_channels");
-				for (int i = 0; i < ccArray.size(); i++) {
-					DBObject dbObject = (DBObject) ccArray.get(i);
-					if (dbObject.containsField("client_secret"))
-						dbObject.removeField("client_secret");
+				if (ccArray != null) {
+					for (int i = 0; i < ccArray.size(); i++) {
+						DBObject dbObject = (DBObject) ccArray.get(i);
+						if (dbObject.containsField("client_secret"))
+							dbObject.removeField("client_secret");
+					}
 				}
 				
 				// FIXME: Temporary solution
