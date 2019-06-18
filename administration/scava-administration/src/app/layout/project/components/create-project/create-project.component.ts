@@ -15,6 +15,7 @@ export class CreateProjectComponent implements OnInit {
   project: Project;
   isSaving: boolean;
   infosSouceExist: boolean;
+  noLogin: string = '';
 
   constructor(
     private router: Router,
@@ -67,6 +68,11 @@ export class CreateProjectComponent implements OnInit {
   createVersionControlSystems(type: string) {
     switch (type) {
       case 'git':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required]
+        });
+      case 'gitbased':
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required]
@@ -127,6 +133,18 @@ export class CreateProjectComponent implements OnInit {
           'clientId': ['', Validators.required],
           'clientSecret': ['', Validators.required],
         });
+      case 'documentation systematic':
+        return this.formBuilder.group({
+          'type': [type],
+          'loginOption': [''],
+          'url': [''],
+          'executionFrequency': [''],
+          'loginURL': [''],
+          'username': [''],
+          'usernameFieldName': [''],
+          'password': [''],
+          'passwordFieldName': ['']
+        });
       default:
         break;
     }
@@ -186,6 +204,17 @@ export class CreateProjectComponent implements OnInit {
     if (formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0) {
       this.infosSouceExist = false;
     }
+  }
+
+  toggleSystematicLogin() {
+    if (this.noLogin == 'option1') {
+      this.noLogin = 'option2';
+    } else if (this.noLogin == 'option2') {
+      this.noLogin = 'option1';
+    } else {
+      this.noLogin = 'option1';
+    }
+    console.log('noLogin ' + this.noLogin);
   }
 
   save() {

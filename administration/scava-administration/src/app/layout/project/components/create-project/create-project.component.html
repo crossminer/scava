@@ -36,6 +36,12 @@
                         </li>&nbsp;
                         <li>
                             <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('vcs', 'gitbased')">
+                                <span>Documentation Git Based</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
                                 (click)="addInformationSource('vcs', 'svn')">
                                 <span>SVN</span>
                             </button>
@@ -110,6 +116,12 @@
                             <button type="button" class="btn btn-outline-dark btn-sm"
                                 (click)="addInformationSource('communication_channels', 'eclipseForum')">
                                 <span>Eclipse Forum</span>
+                            </button>
+                        </li>&nbsp;
+                        <li>
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                (click)="addInformationSource('communication_channels', 'documentation systematic')">
+                                <span>Documentation Systematic</span>
                             </button>
                         </li>
                     </ul>
@@ -246,119 +258,212 @@
                                 <div class="card-body">
                                     <div *ngIf="form.get('communication_channels').value[i].type === 'nntp'">
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
                                         </div>
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                formControlName="name">
                                         </div>
                                         <div class="form-group">
                                             <label for="url">URL</label>
-                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                            <input type="text" class="form-control" id="url" name="url"
+                                                formControlName="url">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('communication_channels').value[i].type === 'irc'">
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
                                         </div>
                                         <div class="form-group">
                                             <label for="url">URL</label>
-                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                            <input type="text" class="form-control" id="url" name="url"
+                                                formControlName="url">
                                         </div>
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                formControlName="name">
                                         </div>
                                         <div class="form-group">
                                             <label for="description">Description</label>
-                                            <input type="text" class="form-control" id="description" name="description" formControlName="description">
+                                            <input type="text" class="form-control" id="description" name="description"
+                                                formControlName="description">
                                         </div>
                                         <div class="form-group">
                                             <label for="compressedFileExtension">compressedFileExtension</label>
-                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension" formControlName="compressedFileExtension">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="username">Username <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password">Password <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
-                                        </div>
-                                    </div>
-                                    <div *ngIf="form.get('communication_channels').value[i].type === 'sympa'">
-                                        <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="url">URL</label>
-                                            <input type="text" class="form-control" id="url" name="url" formControlName="url">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="mailingListName">Mailing List Name</label>
-                                            <input type="text" class="form-control" id="mailingListName" name="mailingListName" formControlName="mailingListName">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="mailingListDescription">Mailing List Description</label>
-                                            <input type="text" class="form-control" id="mailingListDescription" name="mailingListDescription" formControlName="mailingListDescription">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="compressedFileExtension">compressed File Extension</label>
-                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension"
+                                            <input type="text" class="form-control" id="compressedFileExtension"
+                                                name="compressedFileExtension"
                                                 formControlName="compressedFileExtension">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                            <input type="text" class="form-control" id="username" name="username"
+                                                formControlName="username">
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                            <input type="text" class="form-control" id="password" name="password"
+                                                formControlName="password">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'sympa'">
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="url">URL</label>
+                                            <input type="text" class="form-control" id="url" name="url"
+                                                formControlName="url">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailingListName">Mailing List Name</label>
+                                            <input type="text" class="form-control" id="mailingListName"
+                                                name="mailingListName" formControlName="mailingListName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailingListDescription">Mailing List Description</label>
+                                            <input type="text" class="form-control" id="mailingListDescription"
+                                                name="mailingListDescription" formControlName="mailingListDescription">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="compressedFileExtension">Compressed File Extension</label>
+                                            <input type="text" class="form-control" id="compressedFileExtension"
+                                                name="compressedFileExtension"
+                                                formControlName="compressedFileExtension">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="username" name="username"
+                                                formControlName="username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password <small>(optional)</small></label>
+                                            <input type="text" class="form-control" id="password" name="password"
+                                                formControlName="password">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('communication_channels').value[i].type === 'mbox'">
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
                                         </div>
                                         <div class="form-group">
                                             <label for="mboxName">Mbox Name</label>
-                                            <input type="text" class="form-control" id="mboxName" name="mboxName" formControlName="mboxName">
+                                            <input type="text" class="form-control" id="mboxName" name="mboxName"
+                                                formControlName="mboxName">
                                         </div>
                                         <div class="form-group">
                                             <label for="mboxDescription">Mbox Description</label>
-                                            <input type="text" class="form-control" id="mboxDescription" name="mboxDescription" formControlName="mboxDescription">
+                                            <input type="text" class="form-control" id="mboxDescription"
+                                                name="mboxDescription" formControlName="mboxDescription">
                                         </div>
                                         <div class="form-group">
-                                            <label for="compressedFileExtension">compressed File Extension</label>
-                                            <input type="text" class="form-control" id="compressedFileExtension" name="compressedFileExtension" formControlName="compressedFileExtension">
+                                            <label for="compressedFileExtension">Compressed File Extension</label>
+                                            <input type="text" class="form-control" id="compressedFileExtension"
+                                                name="compressedFileExtension"
+                                                formControlName="compressedFileExtension">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                            <input type="text" class="form-control" id="username" name="username"
+                                                formControlName="username">
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password <small>(optional)</small></label>
-                                            <input type="text" class="form-control" id="password" name="password" formControlName="password">
+                                            <input type="text" class="form-control" id="password" name="password"
+                                                formControlName="password">
                                         </div>
                                     </div>
                                     <div *ngIf="form.get('communication_channels').value[i].type === 'eclipseForum'">
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
                                         </div>
                                         <div class="form-group">
                                             <label for="forumId">Forum Id</label>
-                                            <input type="text" class="form-control" id="forumId" name="forumId" formControlName="forumId">
+                                            <input type="text" class="form-control" id="forumId" name="forumId"
+                                                formControlName="forumId">
                                         </div>
                                         <div class="form-group">
                                             <label for="forumName">Forum Name</label>
-                                            <input type="text" class="form-control" id="forumName" name="forumName" formControlName="forumName">
+                                            <input type="text" class="form-control" id="forumName" name="forumName"
+                                                formControlName="forumName">
                                         </div>
                                         <div class="form-group">
                                             <label for="clientId">Client Id</label>
-                                            <input type="text" class="form-control" id="clientId" name="clientId" formControlName="clientId">
+                                            <input type="text" class="form-control" id="clientId" name="clientId"
+                                                formControlName="clientId">
                                         </div>
                                         <div class="form-group">
                                             <label for="clientSecret">clientSecret</label>
-                                            <input type="text" class="form-control" id="clientSecret" name="clientSecret" formControlName="clientSecret">
+                                            <input type="text" class="form-control" id="clientSecret"
+                                                name="clientSecret" formControlName="clientSecret">
+                                        </div>
+                                    </div>
+                                    <div
+                                        *ngIf="form.get('communication_channels').value[i].type === 'documentation systematic'">
+                                        <div class="form-group">
+                                            <label for="loginOption">Login necessary ?</label> <br>
+                                            <select name="loginOption" formControlName="loginOption" (click)="toggleSystematicLogin()">
+                                                <option [disabled]="noLogin == 'option1'" value="option1">No Login</option>
+                                                <option [disabled]="noLogin == '' || noLogin == 'option2'" value="option2">With Login</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" [hidden]=true>
+                                            <input type="text" class="form-control" id="type" name="type"
+                                                formControlName="type">
+                                        </div>
+                                        <div *ngIf="noLogin == 'option1'">
+                                            <div class="form-group">
+                                                <label for="url">URL</label>
+                                                <input type="text" class="form-control" id="url" name="url"
+                                                    formControlName="url">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="executionFrequency">Execution Frequency</label>
+                                                <input type="text" class="form-control" id="executionFrequency"
+                                                    name="executionFrequency" formControlName="executionFrequency">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="noLogin == 'option2'">
+                                            <div class="form-group">
+                                                <label for="url">URL</label>
+                                                <input type="text" class="form-control" id="url" name="url"
+                                                    formControlName="url">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="executionFrequency">Execution Frequency</label>
+                                                <input type="text" class="form-control" id="executionFrequency"
+                                                    name="executionFrequency" formControlName="executionFrequency">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="loginURL">Login URL</label>
+                                                <input type="text" class="form-control" id="loginURL" name="loginURL"
+                                                    formControlName="loginURL">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="username">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    formControlName="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="usernameFieldName">Username Field Name</label>
+                                                <input type="text" class="form-control" id="usernameFieldName"
+                                                    name="usernameFieldName" formControlName="usernameFieldName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input type="text" class="form-control" id="password" name="password"
+                                                    formControlName="password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="passwordFieldName">Password Field Name</label>
+                                                <input type="text" class="form-control" id="passwordFieldName"
+                                                    name="passwordFieldName" formControlName="passwordFieldName">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

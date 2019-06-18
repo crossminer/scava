@@ -23,6 +23,8 @@ import org.eclipse.scava.repository.model.cc.irc.Irc;
 import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
 import org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem;
 import org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker;
@@ -102,7 +104,11 @@ public class ProjectCreationResource extends ServerResource {
 				VcsRepository repo = null;
 				if (vcs.get("type").asText().equals("git")) {
 					repo = new GitRepository();
-				} else if (vcs.get("type").asText().equals("svn")) {
+				} 
+				else if (vcs.get("type").asText().equals("gitbased")) {
+					repo = new DocumentationGitBased();
+				}
+				else if (vcs.get("type").asText().equals("svn")) {
 					repo = new SvnRepository();
 				}
 //				repo.setName(vcs.get("name").asText());
@@ -167,6 +173,21 @@ public class ProjectCreationResource extends ServerResource {
 						eclipseForum.setClient_secret(cc.get("clientSecret").asText());
 						channel = eclipseForum;
 						break;
+					case "documentation systematic":
+						DocumentationSystematic systematic = new DocumentationSystematic();
+						if (cc.get("loginOption").asText().equals("option1")) {
+							systematic.setUrl(cc.get("url").asText());
+							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+						} else if (cc.get("loginOption").asText().equals("option2")) {
+							systematic.setUrl(cc.get("url").asText());
+							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							systematic.setLoginURL(cc.get("loginURL").asText());
+							systematic.setUsername(cc.get("username").asText());
+							systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
+							systematic.setPassword(cc.get("password").asText());
+							systematic.setPasswordFieldName(cc.get("passwordFieldName").asText());
+						}
+						channel = systematic;
 					default:
 						continue;
 				}
