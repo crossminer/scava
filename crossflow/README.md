@@ -1,4 +1,4 @@
-![Logo](crossflow_96dpi.png)
+![Logo](https://github.com/crossminer/scava/raw/crossflow/crossflow/crossflow_96dpi.png)
 
 Crossflow is a distributed data processing framework that supports dispensation of work across multiple opinionated and low-commitment workers.
 
@@ -67,35 +67,35 @@ You will need to run the ANT build-files below to generate stuff after you impor
 
 ### Screenshots
 
-![Screenshot](https://i.imgur.com/2fCpm3j.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/running-example-crossflow-web-docker-index-page.png)
 **Figure**: Main page listing available workflows and *Upload New Workflow* button.
 
-![Screenshot](https://i.imgur.com/kUHzksZ.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-advanced.png)
 **Figure**: Calculator experiment page *Advanced* tab listing Calculator workflow configuration.
 
-![Screenshot](https://i.imgur.com/dVt67VZ.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-input.png)
 **Figure**: Calculator experiment page *Calculations* tab listing Calculator workflow input calculations obtained from CSV source.
 
-![Screenshot](https://i.imgur.com/CdaLwCp.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-model.png)
 **Figure**: Calculator experiment page *Model* tab listing Calculator workflow model.
 
-![Screenshot](https://i.imgur.com/JkhO1ww.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-log.png)
 **Figure**: Calculator experiment page *Log* tab listing Calculator workflow log after experiment completion.
 
-![Screenshot](https://i.imgur.com/eXMHPQR.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model before execution.
 
-![Screenshot](https://i.imgur.com/7Yllj4N.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-running.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution visualizing task status and queue size by means of color and rounded number, respectively. **Task status (color)**: STARTED (lightcyan), WAITING (skyblue), INPROGRESS (palegreen), BLOCKED (salmon), and FINISHED (slategrey).  
 
-![Screenshot](https://i.imgur.com/8RAeDDl.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-running-tooltip.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse hovering over initial queue depicting (queue) size, in-flight count, and subscriber count.
 
-![Screenshot](https://i.imgur.com/kFrultE.png)
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-clear-all.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse click inside empty model area, i.e. not on a particular task or queue, displaying context menu popup to clear the cache of all queues involved in the Word Count workflow.
 
- ![Screenshot](https://i.imgur.com/wjbiQn0.png)
+ ![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-clear-specific.png)
 **Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse click inside boundaries of *WordFrequencies* queue displaying context menu popup to clear the cache of all queues involved in the Word Count workflow.
 
- ![Screenshot](https://i.imgur.com/MCqT43z.png)
+ ![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/upload.png)
 **Figure**: Upload New Workflow page allowing the upload and deployment of new experiments.
