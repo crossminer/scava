@@ -373,32 +373,31 @@ public class AnalysisTaskService {
 	
 	private void cleanMetricsTaskDatabase(AnalysisTask task) {
 		DB projectDb = mongo.getDB(task.getProject().getProjectId());
-		platform = Platform.getInstance();
-		List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
-
-		List<String> taskMetricIds = new ArrayList<String>();
-		for (MetricExecution metricExecution : task.getMetricExecutions()) {
-			taskMetricIds.add(metricExecution.getMetricProviderId());
-		}
-		
-		for (String metricId : taskMetricIds) {
-			for (IMetricProvider iMetricProvider : platformProvider) {
-				if (iMetricProvider.getIdentifier().equals(metricId)) {
-					if(iMetricProvider instanceof IHistoricalMetricProvider) {
-						projectDb.getCollection(((IHistoricalMetricProvider) iMetricProvider).getCollectionName()).drop();
-					} else if (iMetricProvider instanceof ITransientMetricProvider) {
-						List<PongoCollection> pongoCollection = ((ITransientMetricProvider) iMetricProvider).adapt(projectDb).getPongoCollections();
-						for (PongoCollection  collection :pongoCollection) {
-							collection.getDbCollection().drop();
+		if (mongo.getDatabaseNames().contains(projectDb.getName())) {
+			platform = Platform.getInstance();
+			List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
+	
+			List<String> taskMetricIds = new ArrayList<String>();
+			for (MetricExecution metricExecution : task.getMetricExecutions()) {
+				taskMetricIds.add(metricExecution.getMetricProviderId());
+			}
+			
+			for (String metricId : taskMetricIds) {
+				for (IMetricProvider iMetricProvider : platformProvider) {
+					if (iMetricProvider.getIdentifier().equals(metricId)) {
+						if(iMetricProvider instanceof IHistoricalMetricProvider) {
+							projectDb.getCollection(((IHistoricalMetricProvider) iMetricProvider).getCollectionName()).drop();
+						} else if (iMetricProvider instanceof ITransientMetricProvider) {
+							List<PongoCollection> pongoCollection = ((ITransientMetricProvider) iMetricProvider).adapt(projectDb).getPongoCollections();
+							for (PongoCollection  collection :pongoCollection) {
+								collection.getDbCollection().drop();
+							}
 						}
+						break;
 					}
-					break;
 				}
 			}
 		}
-		
-		
-	
 	}
 
 }
