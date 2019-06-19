@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.ghmde;
+package org.eclipse.scava.crossflow.examples.techanalysis;
 
 import java.util.HashSet;
 import java.util.Set;

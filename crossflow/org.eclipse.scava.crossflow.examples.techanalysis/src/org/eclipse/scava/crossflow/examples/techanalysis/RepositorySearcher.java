@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.ghmde;
+package org.eclipse.scava.crossflow.examples.techanalysis;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 		final String CLONE_SOURCE = repository.getUrl() + ".git";
 
-		final File CLONE_PARENT_DESTINATION = GhmdeProperties.CLONE_PARENT_DESTINATION;
+		final File CLONE_PARENT_DESTINATION = TechAnalysisProperties.CLONE_PARENT_DESTINATION;
 
 		final File CLONE_REPO_DESTINATION = new File(CLONE_PARENT_DESTINATION + File.separator
 				+ createUniqueFolderForRepo(repository.getName(), repository.getUrl()));
@@ -143,9 +143,9 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 	}
 
 	@Override
-	public void consumeMDETechnologyCollectionTopic(MDETechnologyCollection mDETechnologyCollection) throws Exception {
+	public void consumeTechnologyCollectionTopic(TechnologyCollection technologyCollection) throws Exception {
 
-		for (MDETechnology tech : mDETechnologyCollection.technologies)
+		for (Technology tech : technologyCollection.technologies)
 			technologies.put(tech.getFileExt(), tech.getTechKey());
 
 	}

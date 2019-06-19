@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ghmde
-Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.ghmde
+Bundle-Name: TechAnalysis
+Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.techanalysis
 Bundle-Version: 1.0.0.qualifier
-Automatic-Module-Name: org.eclipse.scava.crossflow.examples.ghmde
+Automatic-Module-Name: org.eclipse.scava.crossflow.examples.techanalysis
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.scava.crossflow.runtime,
  org.eclipse.scava.crossflow.restmule.client.github,

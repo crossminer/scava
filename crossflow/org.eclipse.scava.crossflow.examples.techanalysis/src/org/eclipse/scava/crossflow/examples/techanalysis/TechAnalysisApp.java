@@ -7,7 +7,7 @@
  * Contributor(s):
  *      Patrick Neubauer - initial API and implementation
  ******************************************************************************/
-package org.eclipse.scava.crossflow.examples.ghmde;
+package org.eclipse.scava.crossflow.examples.techanalysis;
 
 import java.io.File;
 
@@ -15,21 +15,21 @@ import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.InternalException;
 import org.eclipse.scava.crossflow.runtime.Mode;
 
-public class GhmdeApp {
+public class TechAnalysisApp {
 
 	public static void main(String[] args) throws Exception {
 		
-		//CloneUtils.removeRepoClones(GhmdeProperties.CLONE_PARENT_DESTINATION); 
+		//CloneUtils.removeRepoClones(TechAnalysisProperties.CLONE_PARENT_DESTINATION); 
 		
-		Ghmde master = new Ghmde(Mode.MASTER);
+		TechnologyAnalysis master = new TechnologyAnalysis(Mode.MASTER);
 		master.setInputDirectory(new File("experiment/in"));
 		master.setOutputDirectory(new File("experiment/out"));
 		master.setName("Master");
 		
-		Ghmde worker1 = new Ghmde(Mode.WORKER);
+		TechnologyAnalysis worker1 = new TechnologyAnalysis(Mode.WORKER);
 		worker1.setName("Worker1");
 		
-		Ghmde worker2 = new Ghmde(Mode.WORKER);
+		TechnologyAnalysis worker2 = new TechnologyAnalysis(Mode.WORKER);
 		worker2.setName("Worker2");
 		
 		master.run();

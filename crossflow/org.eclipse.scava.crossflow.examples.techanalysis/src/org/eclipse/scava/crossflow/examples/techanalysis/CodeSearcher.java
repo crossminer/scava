@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.ghmde;
+package org.eclipse.scava.crossflow.examples.techanalysis;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 public class CodeSearcher extends CodeSearcherBase {
 
 	@Override
-	public void consumeMDETechnologies(MDETechnology tech) throws Exception {
+	public void consumeTechnologies(Technology tech) throws Exception {
 
 		search(tech);
 
 	}
 
-	private void search(MDETechnology tech) {
+	private void search(Technology tech) {
 
 		String query = new CodeSearchQuery().create(tech.getTechKey()).extension(tech.getFileExt()).inFile().build()
 				.getQuery();
