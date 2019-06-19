@@ -1,12 +1,12 @@
-Workflow Ghmde {
+Workflow TechnologyAnalysis {
 	
 	// streams for incoming and outgoing tasks
 	streams {
 		
-		Queue MDETechnologies { 
-			type MDETechnology
+		Queue Technologies { 
+			type Technology
 			inputOf ( CodeSearcher )
-			outputOf ( MDETechnologySource )
+			outputOf ( TechnologySource )
 		}// MDETechnologies queue
 		
 		Queue Repositories {
@@ -29,14 +29,14 @@ Workflow Ghmde {
 	
 	tasks {
 		
-		masterOnly CsvSource MDETechnologySource {
+		masterOnly CsvSource TechnologySource {
 			fileName "input.csv"
-			output ( MDETechnologies )
+			output ( Technologies )
 			languages(Java)
 		}// MDETechnologySource
 		
 		multipleOutputs Task CodeSearcher {
-			input ( MDETechnologies )
+			input ( Technologies )
 			output ( Repositories )
 			languages(Java)
 		}// CodeSearcher task
@@ -52,7 +52,7 @@ Workflow Ghmde {
 			input ( RepositorySearches )
 			output ( RepositoryResults )	
 			languages(Java)
-			configurations ( MDETechnologyCollection )
+			configurations ( TechnologyCollection )
 		}// RepositorySearcher task
 		
 		masterOnly CsvSink RepositoryResultSink {
@@ -65,7 +65,7 @@ Workflow Ghmde {
 	
 	types {
 		
-		Type MDETechnology {
+		Type Technology {
 			fields {
 				Field fileExt {
 					type String
@@ -77,7 +77,7 @@ Workflow Ghmde {
 		}// MDETechnology type
 		
 		isMany Type Repository {
-			extending ( MDETechnology )
+			extending ( Technology )
 			fields {
 				Field url {
 					type String
@@ -108,10 +108,10 @@ Workflow Ghmde {
 			}
 		}// AnalysisResult type
 		
-		Type MDETechnologyCollection {
+		Type TechnologyCollection {
 			fields {
 				many Field technologies {
-					type MDETechnology
+					type Technology
 				}
 			}
 		}
@@ -120,7 +120,7 @@ Workflow Ghmde {
 	
 	languages {
 		Language Java {
-			package "org.eclipse.scava.crossflow.examples.ghmde.xtext"
+			package "org.eclipse.scava.crossflow.examples.techanalysis.xtext"
 			outputFolder "src"
 			genOutputFolder "src-gen"
 		}

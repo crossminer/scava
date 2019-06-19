@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.ghmde.xtext;
+package org.eclipse.scava.crossflow.examples.techanalysis.xtext;
 
 import java.util.List;
 
@@ -10,14 +10,13 @@ import org.eclipse.scava.crossflow.restmule.core.data.IDataSet;
 public class CodeSearcher extends CodeSearcherBase {
 
 	@Override
-	public void consumeMDETechnologies(MDETechnology tech) throws Exception {
+	public void consumeTechnologies(Technology tech) throws Exception {
 
 		search(tech);
 
 	}
 
-	private void search(MDETechnology tech) {
-		Repository repositoryInst = new Repository();
+	private void search(Technology tech) {
 
 		String query = new CodeSearchQuery().create(tech.getTechKey()).extension(tech.getFileExt()).inFile().build()
 				.getQuery();
@@ -30,7 +29,7 @@ public class CodeSearcher extends CodeSearcherBase {
 		for (SearchCode resultItem : repoFiles) {
 			org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode.Repository resultRepo = resultItem
 					.getRepository();
-
+			Repository repositoryInst = new Repository();
 			repositoryInst.setUrl(resultRepo.getHtmlUrl());
 			repositoryInst.setName(resultRepo.getFullName());
 

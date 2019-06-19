@@ -1,0 +1,15 @@
+<experiment
+	title="GitHub Technology Popularity Analysis"
+	class="org.eclipse.scava.crossflow.examples.techanalysis.TechnologyAnalysis"
+	jar="org.eclipse.scava.crossflow.examples.techanalysis.jar"
+	input="in"
+	output="out"
+	summary="GitHub Technology Popularity Analysis Workflow."
+	webServer="localhost:8080"
+>
+	<input path="input.csv" title="Input"/>
+	<output path="output.csv" title="Output"/>
+	<description>
+		Popularity analysis workflow querying GitHub for technologies defined by file extension and keyword.
+	</description>
+</experiment>

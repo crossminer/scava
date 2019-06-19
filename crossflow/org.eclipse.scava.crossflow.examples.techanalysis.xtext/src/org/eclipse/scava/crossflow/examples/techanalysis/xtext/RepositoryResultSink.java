@@ -7,7 +7,7 @@
  * Contributor(s):
  *      Patrick Neubauer - initial API and implementation
  ******************************************************************************/
-package org.eclipse.scava.crossflow.examples.ghmde.xtext;
+package org.eclipse.scava.crossflow.examples.techanalysis.xtext;
 
 import java.io.File;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 			File output = new File(workflow.getOutputDirectory(), "output.csv");
 			File outputTemp = new File(workflow.getOutputDirectory(), "output-temp.csv");
 
-			CsvWriter writer = new CsvWriter(outputTemp.getAbsolutePath(), "repository name", "MDE technology",
+			CsvWriter writer = new CsvWriter(outputTemp.getAbsolutePath(), "repository name", "Technology",
 					"file count", "unique author count", "cached");
 
 			for (AnalysisResult result : results.values()) {

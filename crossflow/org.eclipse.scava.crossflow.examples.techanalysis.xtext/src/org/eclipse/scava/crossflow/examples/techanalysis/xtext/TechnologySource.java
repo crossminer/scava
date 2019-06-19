@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.ghmde.xtext;
+package org.eclipse.scava.crossflow.examples.techanalysis.xtext;
 
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 
@@ -7,7 +7,7 @@ import java.io.File;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
 
-public class MDETechnologySource extends MDETechnologySourceBase {
+public class TechnologySource extends TechnologySourceBase {
 
 	protected Iterable<CSVRecord> records;
 
@@ -19,10 +19,10 @@ public class MDETechnologySource extends MDETechnologySourceBase {
 			records = parser.getRecordsIterable();
 
 			for (CSVRecord record : records) {
-				MDETechnology mDETechnologyTuple = new MDETechnology();
-				mDETechnologyTuple.setFileExt(record.get(0));
-				mDETechnologyTuple.setTechKey(record.get(1));
-				sendToMDETechnologies(mDETechnologyTuple);
+				Technology technologyTuple = new Technology();
+				technologyTuple.setFileExt(record.get(0));
+				technologyTuple.setTechKey(record.get(1));
+				sendToTechnologies(technologyTuple);
 
 			}
 		} catch (Exception e) {

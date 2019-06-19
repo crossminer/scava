@@ -7,11 +7,11 @@
  * Contributor(s):
  *      Patrick Neubauer - initial API and implementation
  ******************************************************************************/
-package org.eclipse.scava.crossflow.examples.ghmde.xtext;
+package org.eclipse.scava.crossflow.examples.techanalysis.xtext;
 
 import java.io.File;
 
-public class GhmdeProperties {
+public class TechAnalysisProperties {
 
 	final static File CLONE_PARENT_DESTINATION = new File(
 	"tmp" + File.separator + "clones");

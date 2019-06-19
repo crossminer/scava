@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Crossflow Ghmde Xtext
-Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.ghmde.xtext
+Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.techanalysis.xtext
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.eclipse.scava.crossflow.examples.ghmde.xtext
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
