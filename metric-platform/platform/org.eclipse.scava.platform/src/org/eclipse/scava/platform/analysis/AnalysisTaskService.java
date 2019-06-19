@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.scava.platform.IHistoricalMetricProvider;
+import org.eclipse.scava.platform.IMetricProvider;
+import org.eclipse.scava.platform.ITransientMetricProvider;
+import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis;
@@ -15,11 +19,16 @@ import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.visualisation.MetricVisualisation;
 import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
+import org.eclipse.scava.repository.model.Project;
 
+import com.googlecode.pongo.runtime.PongoCollection;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 public class AnalysisTaskService {
 	private ProjectAnalysisResportory repository;
+	protected Platform platform;
 	private Mongo mongo;
 
 	public AnalysisTaskService(ProjectAnalysisResportory repository, Mongo mongo) {
@@ -137,6 +146,9 @@ public class AnalysisTaskService {
 	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		if (task != null) {
+			// Clean database collections linked to specific task
+			cleanMetricsTaskDatabase(task);
+			// delete the analysis task
 			for (MetricExecution metricProvider : task.getMetricExecutions()) {
 				this.repository.getMetricExecutions().remove(metricProvider);
 			}
@@ -358,22 +370,35 @@ public class AnalysisTaskService {
 
 		return task;
 	}
+	
+	private void cleanMetricsTaskDatabase(AnalysisTask task) {
+		DB projectDb = mongo.getDB(task.getProject().getProjectId());
+		platform = Platform.getInstance();
+		List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 
-	//FIXME
-//	private void cleanMetricDatabase(AnalysisTask task) {
-//		DB projectDb = mongo.getDB(task.getProject().getProjectId());
-//		for (MetricExecution executionData : task.getMetricExecutions()) {
-//			Iterable<MetricProvider> providers = this.repository.getMetricProviders()
-//					.findByMetricProviderId(executionData.getMetricProviderId());
-//			if (providers.iterator().hasNext()) {
-//				MetricProvider provider = providers.iterator().next();
-//				if (MetricProviderKind.HISTORIC.name().equals(provider.getKind())) {
-//					for (DataStorage storage : provider.getStorages()) {
-//						projectDb.getCollection(storage.getStorage()).drop();
-//					}
-//				}
-//			}
-//		}
-//	}
+		List<String> taskMetricIds = new ArrayList<String>();
+		for (MetricExecution metricExecution : task.getMetricExecutions()) {
+			taskMetricIds.add(metricExecution.getMetricProviderId());
+		}
+		
+		for (String metricId : taskMetricIds) {
+			for (IMetricProvider iMetricProvider : platformProvider) {
+				if (iMetricProvider.getIdentifier().equals(metricId)) {
+					if(iMetricProvider instanceof IHistoricalMetricProvider) {
+						projectDb.getCollection(((IHistoricalMetricProvider) iMetricProvider).getCollectionName()).drop();
+					} else if (iMetricProvider instanceof ITransientMetricProvider) {
+						List<PongoCollection> pongoCollection = ((ITransientMetricProvider) iMetricProvider).adapt(projectDb).getPongoCollections();
+						for (PongoCollection  collection :pongoCollection) {
+							collection.getDbCollection().drop();
+						}
+					}
+					break;
+				}
+			}
+		}
+		
+		
+	
+	}
 
 }
