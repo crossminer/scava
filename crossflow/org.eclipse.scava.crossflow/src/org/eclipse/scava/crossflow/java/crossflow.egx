@@ -1,15 +1,3 @@
-// Executed before Config2ConfigSource until support for multiple sources in abstract.graph is provided
-// Currently, configurable tasks, such as CommitmentTask, create derived sources, queues, and topics (invisible in Eugenia editor) 
-rule Workflow2AbstractGraph 
-	transform w : Workflow {
-	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
-	
-	template : "workflow2abstractGraph.egl"
-	
-	target : "experiment/abstract.graph"
-}
-
 rule Config2ConfigSource
 	transform t : Type {
 	

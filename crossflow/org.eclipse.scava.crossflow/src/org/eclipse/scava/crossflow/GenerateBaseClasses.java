@@ -56,6 +56,7 @@ public class GenerateBaseClasses {
 	public void execute() throws Exception {
 
 		EmfModel model = getModel();
+		model.setStoredOnDisposal(false);
 		Resource r = model.getResource();
 		HashSet<String> languages = findLanguages(r);
 		// add java regardless of whether it exists in the model
@@ -66,7 +67,7 @@ public class GenerateBaseClasses {
 			module = createModule();
 			module.getContext().getModelRepository().addModel(model);
 			module.parse(getFileURI(language + "/crossflow.egx"));
-			
+
 			if (module.getParseProblems().size() > 0) {
 				System.err.println("Parse errors occured...");
 				for (ParseProblem problem : module.getParseProblems()) {
@@ -82,7 +83,33 @@ public class GenerateBaseClasses {
 			// module.getContext().getModelRepository().dispose();
 
 		}
-		
+
+		model.dispose();
+
+		// generate code for external tools (such as web ui)
+		//
+		model = getModel();
+		model.setStoredOnDisposal(false);
+		r = model.getResource();
+
+		module = createModule();
+		module.getContext().getModelRepository().addModel(model);
+		module.parse(getFileURI("external/crossflowExternalTools.egx"));
+
+		if (module.getParseProblems().size() > 0) {
+			System.err.println("Parse errors occured...");
+			for (ParseProblem problem : module.getParseProblems()) {
+				System.err.println(problem.toString());
+			}
+			return;
+		}
+
+		module.getContext().getFrameStack().put(parameters);
+
+		result = execute(module);
+
+		// module.getContext().getModelRepository().dispose();
+
 		model.dispose();
 
 	}

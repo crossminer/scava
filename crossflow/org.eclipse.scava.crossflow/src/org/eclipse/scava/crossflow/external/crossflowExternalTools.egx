@@ -1,0 +1,24 @@
+rule Workflow2AbstractGraph 
+	transform w : Workflow {
+	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	
+	template : "workflow2abstractGraph.egl"
+	
+	target : "experiment/abstract.graph"
+}
+
+operation Workflow getPackageName() {
+	var lang = self.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var package = self.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+	
+	return package;
+}
+
+operation Language isJava() : Boolean {
+	return self.name.toLowerCase()=="java";
+}
