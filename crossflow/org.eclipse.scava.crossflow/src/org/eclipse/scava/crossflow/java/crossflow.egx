@@ -1,3 +1,15 @@
+rule Workflow2App
+	transform w : Workflow {
+	
+	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	
+	template : "workflow2app.egl"
+	
+	target : w.getImplPath() + w.name + "App.java"
+
+	overwrite : false
+}
+
 rule Config2ConfigSource
 	transform t : Type {
 	
