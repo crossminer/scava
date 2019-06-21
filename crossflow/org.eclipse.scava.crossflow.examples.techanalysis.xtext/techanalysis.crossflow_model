@@ -5,24 +5,18 @@ Workflow TechnologyAnalysis {
 		
 		Queue Technologies { 
 			type Technology
-			inputOf ( CodeSearcher )
-			outputOf ( TechnologySource )
 		}// MDETechnologies queue
 		
 		Queue Repositories {
 			type Repository
-			outputOf ( CodeSearcher )
 		}// Repositories queue
 		
 		Queue RepositorySearches {
 			type Repository
-			outputOf ( RepositorySearchDispatcher )
 		}// RepositorySearches queue
 		
 		Queue RepositoryResults {
 			type AnalysisResult
-			inputOf ( RepositorySearcher )
-			outputOf ( RepositoryResultSink )
 		}// RepositoryResults queue
 		
 	}// workflow streams

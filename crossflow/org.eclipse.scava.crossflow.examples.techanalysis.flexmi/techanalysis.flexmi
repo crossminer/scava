@@ -1,0 +1,45 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+	<workflow name="TechnologyAnalysis">
+
+		<!-- TASKS -->
+		<csvsource name="TechnologySource" masterOnly="true" output="Technologies" fileName="input.csv" languages="Java"/>
+		<task name="CodeSearcher" multipleOutputs="true" input="Technologies" output="Repositories" languages="Java"/>
+		<task name="RepositorySearchDispatcher" multipleOutputs="true" input="Repositories" output="RepositorySearches" languages="Java"/>
+		<commitmenttask name="RepositorySearcher" multipleOutputs="true" input="RepositorySearches" output="RepositoryResults" languages="Java"
+			 commitAfter="1" configurations="TechnologyCollection"/>
+		<csvsink name="RepositoryResultSink" masterOnly="true" fileName="output.csv" input="RepositoryResults" languages="Java"/>
+		
+		<!-- QUEUES -->
+		<queue name="Technologies" type="Technology"/>
+		<queue name="Repositories" type="Repository"/>
+		<queue name="RepositorySearches" type="Repository"/>
+		<queue name="RepositoryResults" type="AnalysisResult"/>
+		
+		<!-- LANGUAGES (Java is set by default, can be neglected, and appears here for integrity purposes only) -->
+		<language name="Java" package="org.eclipse.scava.crossflow.examples.techanalysis.flexmi" outputFolder="src" genOutputFolder="src-gen"/>
+		
+		<!-- TYPES -->
+		<type name="Technology">
+			<field name="fileExt" type="String"/>
+			<field name="techKey" type="String"/>
+		</type>
+		<type name="Repository" isMany="true" extending="Technology">
+			<field name="url" type="String"/>
+			<field name="name" type="String"/>
+		</type>
+		<type name="AnalysisResult" isMany="true" extending="Technology">
+			<field name="fileCount" type="int"/>
+			<field name="authorCount" type="int"/>
+			<field name="repository" type="String"/>
+			<field name="technology" type="String"/>
+			<field name="name" type="String"/>
+		</type>
+		<type name="TechnologyCollection">
+			<field name="technologies" type="Technology" many="true"/>
+		</type>		
+		
+	</workflow>	
+</_>
+
