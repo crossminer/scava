@@ -31,6 +31,9 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 	- Epsilon EMF Integration
 	- Epsilon GMF Integration
 - Install Web Tools Platform SDK (WTP SDK) from http://download.eclipse.org/webtools/repository/photon
+- Install Eclipse Xtext for textual workflow modelling support from https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ update site and select the following:
+	- Xtext Complete SDK
+	- Xtext Runtime
 
 ### Tomcat
 - Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.zip
