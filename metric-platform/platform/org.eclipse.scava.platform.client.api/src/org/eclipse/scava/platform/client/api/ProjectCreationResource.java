@@ -134,7 +134,7 @@ public class ProjectCreationResource extends ServerResource {
 							irc.setUsername(cc.get("username").asText());
 						}
 						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
-							irc.setUsername(cc.get("password").asText());
+							irc.setPassword(cc.get("password").asText());
 						}
 						channel = irc;
 						break;
@@ -148,7 +148,7 @@ public class ProjectCreationResource extends ServerResource {
 							sympa.setUsername(cc.get("username").asText());
 						}
 						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
-							sympa.setUsername(cc.get("password").asText());
+							sympa.setPassword(cc.get("password").asText());
 						}
 						channel = sympa;
 						break;
@@ -162,7 +162,7 @@ public class ProjectCreationResource extends ServerResource {
 							mbox.setUsername(cc.get("username").asText());
 						}
 						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
-							mbox.setUsername(cc.get("password").asText());
+							mbox.setPassword(cc.get("password").asText());
 						}
 						channel = mbox;
 						break;
