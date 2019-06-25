@@ -1,92 +1,91 @@
 <div>
     <div class="page-header">
-        <h2>Edit Project <b>{{project?.name}}</b></h2>
-        <h3>(Work in progress)</h3>
+        <h2>Edit Project <b>{{project?.shortName}}</b></h2>
         <hr />
     </div>
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
         <table style="width: 100%;">
             <tbody *ngIf="project">
-                <tr *ngIf="project?.full_name" class="row">
+                <tr *ngIf="project?.shortName != null" class="row">
+                    <td class="col-2">Short Name: </td>
+                    <td class="col-10">
+                        <input type="text" [disabled]="true" class="form-control" name="shortName" [(ngModel)]="project.shortName">
+                    </td>
+                </tr>
+                <tr *ngIf="project?.full_name != null" class="row">
                     <td class="col-2"><label class="form-control-label">Full Name:</label></td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="full_name" [(ngModel)]="project.full_name">
                     </td>
                 </tr>
-                <tr *ngIf="project?.name" class="row">
+                <tr *ngIf="project?.name != null" class="row">
                     <td class="col-2">Name: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="name" [(ngModel)]="project.name">
                     </td>
                 </tr>
-                <tr *ngIf="project?.shortName" class="row">
-                    <td class="col-2">Short Name: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="shortName" [(ngModel)]="project.shortName">
-                    </td>
-                </tr>
-                <tr *ngIf="project?.description" class="row">
+                <tr *ngIf="project?.description != null" class="row">
                     <td class="col-2">Description: </td>
                     <td class="col-10">
                         <textarea class="form-control" name="description" [(ngModel)]="project.description" rows="3"
                             cols="8"></textarea>
                     </td>
                 </tr>
-                <tr *ngIf="project?.homePage" class="row">
+                <tr *ngIf="project?.homePage != null" class="row">
                     <td class="col-2">Home Page: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="homePage" [(ngModel)]="project.homePage">
                     </td>
                 </tr>
-                <tr *ngIf="project?.token" class="row">
+                <tr *ngIf="project?.token != null" class="row">
                     <td class="col-2">Github Token: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="token" [(ngModel)]="project.token">
+                        <input type="password" class="form-control" name="token" [(ngModel)]="project.token">
                     </td>
                 </tr>
-                <tr *ngIf="project?.ssh_url" class="row">
+                <tr *ngIf="project?.ssh_url != null" class="row">
                     <td class="col-2">SSH Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="ssh_url" [(ngModel)]="project.ssh_url">
                     </td>
                 </tr>
-                <tr *ngIf="project?.git_url" class="row">
+                <tr *ngIf="project?.git_url != null" class="row">
                     <td class="col-2">Git Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="git_url" [(ngModel)]="project.git_url">
                     </td>
                 </tr>
-                <tr *ngIf="project?.svn_url" class="row">
+                <tr *ngIf="project?.svn_url != null" class="row">
                     <td class="col-2">SVN Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="svn_url" [(ngModel)]="project.svn_url">
                     </td>
                 </tr>
-                <tr *ngIf="project?.clone_url" class="row">
+                <tr *ngIf="project?.clone_url != null" class="row">
                     <td class="col-2">Clone Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="clone_url" [(ngModel)]="project.clone_url">
                     </td>
                 </tr>
-                <tr *ngIf="project?.html_url" class="row">
+                <tr *ngIf="project?.html_url != null" class="row">
                     <td class="col-2">HTML Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="html_url" [(ngModel)]="project.html_url">
                     </td>
                 </tr>
-                <tr *ngIf="project?.state" class="row">
+                <tr *ngIf="project?.state != null" class="row">
                     <td class="col-2">State: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="state" [(ngModel)]="project.state">
                     </td>
                 </tr>
-                <tr *ngIf="project?.downloadsUrl" class="row">
+                <tr *ngIf="project?.downloadsUrl != null" class="row">
                     <td class="col-2">Downloads Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="downloadsUrl" [(ngModel)]="project.downloadsUrl">
                     </td>
                 </tr>
-                <tr *ngIf="project?.projectplanUrl" class="row">
+                <tr *ngIf="project?.projectplanUrl != null" class="row">
                     <td class="col-2">Project Plan Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="projectplanUrl" [(ngModel)]="project.projectplanUrl">
@@ -100,79 +99,103 @@
             </tr>
             <tbody *ngFor="let vcs of project?.vcsRepositories;let i=index;">
                 <tr><td>Version Control System {{i + 1}}</td></tr>
-                <tr *ngIf="vcs?.name" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="vcs.name" [(ngModel)]="vcs.name">
-                    </td>
-                </tr>
-                <tr *ngIf="vcs?.url" class="row">
+                <tr *ngIf="vcs?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="vcs.url" [(ngModel)]="vcs.url">
                     </td>
                 </tr>
+                <tr *ngIf="vcs?.name != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="vcs.name" [(ngModel)]="vcs.name">
+                    </td>
+                </tr>
             </tbody>
-            <!-- <tr *ngIf="project?.bugTrackingSystems.length>0">
+            <tr *ngIf="project?.bugTrackingSystems.length>0">
                 <td><strong>Bug Tracking Systems</strong></td>
             </tr>
             <tbody *ngFor="let bts of project?.bugTrackingSystems;let i=index;">
                 <tr><td>Bug Tracking System {{i + 1}}</td></tr>
-                <tr *ngIf="vcs?.name" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Repository Name: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="bts.repository" [(ngModel)]="bts.repository">
-                    </td>
-                </tr>
-                <tr *ngIf="bts?.url" class="row">
+                <tr *ngIf="bts?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="bts.url" [(ngModel)]="bts.url">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.user" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;User: </td>
+                <tr *ngIf="bts?.token != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Token: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.user" [(ngModel)]="bts.user">
+                        <input type="password" class="form-control" name="bts.token" [(ngModel)]="bts.token">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.cgiQueryProgram" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;CGI Query Program: </td>
+                <tr *ngIf="bts?.personal_access_token != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Access Token: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.cgiQueryProgram" [(ngModel)]="bts.cgiQueryProgram">
+                        <input type="password" class="form-control" name="bts.personal_access_token" [(ngModel)]="bts.personal_access_token">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.product" class="row">
+                <tr *ngIf="bts?.login != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Login: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="bts.login" [(ngModel)]="bts.login">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.password != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="bts.password" [(ngModel)]="bts.password">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.project != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Project: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="bts.project" [(ngModel)]="bts.project">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.product != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Product: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="bts.product" [(ngModel)]="bts.product">
                     </td>
                 </tr>
-            </tbody>
+                <tr *ngIf="bts?.cgiQueryProgram != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;CGIQueryProgram: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="bts.cgiQueryProgram" [(ngModel)]="bts.cgiQueryProgram">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.component != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Component: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="bts.component" [(ngModel)]="bts.component">
+                    </td>
+                </tr>
+            </tbody> 
             <tr *ngIf="project?.communicationChannels.length>0">
                 <td><strong>Communication Channels</strong></td>
             </tr>
             <tbody *ngFor="let cc of project?.communicationChannels;let i=index;">
                 <tr><td>Communication Channel {{i + 1}}</td></tr>
-                <tr *ngIf="cc?.name" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="cc.name" [(ngModel)]="cc.name">
-                    </td>
-                </tr>
-                <tr *ngIf="cc?.description" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Description: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="cc.description" [(ngModel)]="cc.description">
-                    </td>
-                </tr>
-                <tr *ngIf="cc?.url" class="row">
+                <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="cc.url" [(ngModel)]="cc.url">
                     </td>
                 </tr>
-            </tbody> -->
+                <tr *ngIf="cc?.name != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.name" [(ngModel)]="cc.name">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.description != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Description: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.description" [(ngModel)]="cc.description">
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <div>
             <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">
