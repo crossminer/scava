@@ -195,6 +195,36 @@
                         <input type="text" class="form-control" name="cc.description" [(ngModel)]="cc.description">
                     </td>
                 </tr>
+                <tr *ngIf="cc?.MailingListName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.MailingListName" [(ngModel)]="cc.MailingListName">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.MailingListDescription != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Description: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.MailingListDescription" [(ngModel)]="cc.MailingListDescription">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.compressedFileExtension != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;compressed File: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.compressedFileExtension" [(ngModel)]="cc.compressedFileExtension">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.username != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Username: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.username" [(ngModel)]="cc.username">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.password != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="cc.password" [(ngModel)]="cc.password">
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div>

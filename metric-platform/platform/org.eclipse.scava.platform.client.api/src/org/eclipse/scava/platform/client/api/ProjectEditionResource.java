@@ -10,11 +10,13 @@ import org.eclipse.scava.repository.model.ProjectRepository;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
 import org.eclipse.scava.repository.model.cc.forum.Forum;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import org.eclipse.scava.repository.model.github.GitHubRepository;
 import org.eclipse.scava.repository.model.gitlab.GitLabRepository;
 import org.eclipse.scava.repository.model.gitlab.GitLabTracker;
+import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -49,6 +51,8 @@ public class ProjectEditionResource extends ServerResource {
 				this.importGitlabProject(json, project);
 			} else if (project instanceof EclipseProject) {
 				this.importEclipseProject(json, project);
+			}  else {
+				this.importProject(json, project);
 			}
 
 			System.out.println("Editing the project " + project.getShortName() + "\n");
@@ -64,6 +68,55 @@ public class ProjectEditionResource extends ServerResource {
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 			return rep;
+		}
+	}
+
+	private void importProject(JsonNode json, Project project) {
+		if (isValidKey(json, "name"))
+			project.setName(json.get("name").asText());
+		if (isValidKey(json, "description"))
+			project.setDescription(json.get("description").asText());
+		if (isValidKey(json, "homePage"))
+			project.setHomePage(json.get("homePage").asText());
+		
+		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
+			int i = 0;
+			VcsRepository repo = project.getVcsRepositories().get(i);			
+			if (isValidKey(vcs, "url"))
+				repo.setUrl(vcs.get("url").asText());
+			i++;
+		}
+		
+		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
+			int i = 0;
+			BugTrackingSystem buggy = project.getBugTrackingSystems().get(i);
+			if (isValidKey(bts, "url"))
+				buggy.setUrl(bts.get("url").asText());
+			if (isValidKey(bts, "login"))
+				((JiraBugTrackingSystem) buggy).setLogin(bts.get("login").asText());
+			if (isValidKey(bts, "password"))
+				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
+			if (isValidKey(bts, "project"))
+				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
+			i++;			
+		}
+		
+		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
+			int i = 0;
+			CommunicationChannel comunication = project.getCommunicationChannels().get(i);
+			if (isValidKey(cc, "url"))
+				comunication.setUrl(cc.get("url").asText());
+			if (isValidKey(cc, "MailingListName"))
+				((SympaMailingList) comunication).setMailingListName(cc.get("MailingListName").asText());
+			if (isValidKey(cc, "MailingListDescription"))
+				((SympaMailingList) comunication).setMailingListDescription(cc.get("MailingListDescription").asText());
+			if (isValidKey(cc, "compressedFileExtension"))
+				((SympaMailingList) comunication).setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+			if (isValidKey(cc, "username"))
+				((SympaMailingList) comunication).setUsername(cc.get("username").asText());
+			if (isValidKey(cc, "password"))
+				((SympaMailingList) comunication).setPassword(cc.get("password").asText());
+			i++;
 		}
 	}
 
