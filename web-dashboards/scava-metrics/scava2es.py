@@ -37,6 +37,7 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC,
                                            CATEGORY_USER,
+                                           CATEGORY_TOPIC,
                                            CATEGORY_RECOMMENDATION,
                                            CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
                                            CATEGORY_CONF_SMELL,
@@ -715,6 +716,50 @@ def enrich_users(scava_users, meta_info=None):
     logging.info("User enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_comments_topics(scava_comments_topics, meta_info=None):
+    """
+    Enrich comments topics data coming from Scava to use them in Kibana.
+    The current enriched items contain the topic name, the date (i.e., `date` and `datetime`) when
+    the metric was calculated, the number of comments for that topic, the scava metric from
+    where the data was fetched, project and meta project information.
+
+          "topic" : "Wider Community",
+          "date" : "20190307",
+          "comments" : 2,
+          "scava_metric" : "bugs.topics.comments",
+          "updated" : "20180430",
+          "project" : "microprofile",
+          "datetime" : "2019-03-07T00:00:00+00:00",
+          "uuid" : "6e3b802219e41792d7c3a0744b3305c42f1e249c",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_comments_topics: user data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for comment_topic in scava_comments_topics:
+        processed += 1
+
+        topic_data = comment_topic['data']
+        eitem = topic_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        eitem['uuid'] = uuid(eitem['topic'], eitem['project'], eitem['date'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Comments topics enrichment summary - processed/enriched: %s", processed)
+
+
 def extract_meta(project_name, description=None):
     """Extract the meta information defined in the project description. Meta information
     should appear at the very end of the description after the marker META_MARKER, for instance:
@@ -838,6 +883,16 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommenda
                     yield enriched_project_relation
 
                 logging.debug("End fetch project relations for %s" % project)
+
+            elif category == CATEGORY_TOPIC:
+                logging.debug("Start fetch comments topics for %s" % project)
+
+                for enriched_comment_topic in enrich_comments_topics(scavaProject.fetch(CATEGORY_TOPIC),
+                                                                     meta):
+                    yield enriched_comment_topic
+
+                logging.debug("End fetch comments topics for %s" % project)
+
             else:
                 msg = "category %s not handled" % category
                 raise Exception(msg)
@@ -906,6 +961,14 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommenda
                 yield enriched_project_relation
 
             logging.debug("End fetch project relations for %s" % project)
+
+        elif category == CATEGORY_TOPIC:
+            logging.debug("Start fetch comments topics for %s" % project)
+
+            for enriched_comment_topic in enrich_comments_topics(scava.fetch(CATEGORY_TOPIC)):
+                yield enriched_comment_topic
+
+            logging.debug("End fetch comments topics for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
