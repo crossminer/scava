@@ -19,11 +19,9 @@ import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.visualisation.MetricVisualisation;
 import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
-import org.eclipse.scava.repository.model.Project;
 
 import com.googlecode.pongo.runtime.PongoCollection;
 import com.mongodb.DB;
-import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 public class AnalysisTaskService {
@@ -143,15 +141,25 @@ public class AnalysisTaskService {
 
 		return task;
 	}
+	
 	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		if (task != null) {
+			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.EXECUTION.name())) {
+				String workerId = task.getScheduling().getWorkerId();
+				Worker worker = this.repository.getWorkers().findOneByWorkerId(workerId);
+				task.getScheduling().setWorkerId(null);
+				this.repository.getWorkers().remove(worker);
+				worker = new Worker();
+				worker.setWorkerId(workerId);
+				this.repository.getWorkers().add(worker);
+			}
 			// Clean database collections linked to specific task
 			cleanMetricsTaskDatabase(task);
 			// delete the analysis task
 			for (MetricExecution metricProvider : task.getMetricExecutions()) {
 				this.repository.getMetricExecutions().remove(metricProvider);
-			}
+			}			
 			ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(task.getProject().getProjectId());
 			project.getAnalysisTasks().remove(task);
 			this.repository.getAnalysisTasks().remove(task);
