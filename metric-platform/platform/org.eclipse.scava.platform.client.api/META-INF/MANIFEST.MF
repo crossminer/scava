@@ -44,4 +44,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.client.api
 Import-Package: org.eclipse.scava.repository.model.jira,
  org.eclipse.scava.repository.model.vcs.git,
- org.eclipse.scava.repository.model.vcs.svn
+ org.eclipse.scava.repository.model.vcs.svn,
+ org.json
