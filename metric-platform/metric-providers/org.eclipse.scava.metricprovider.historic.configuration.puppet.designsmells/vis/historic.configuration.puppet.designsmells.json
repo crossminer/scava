@@ -2,7 +2,7 @@
 	"metricid" : "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells.PuppetDesignHistoricMetricProvider",
 	"vis" : [ 
 		{
-			"id" : "puppet.designsmells.smells",
+			"id" : "puppet.design.smells",
 			"name" : "Sum of Puppet Design Smells",
 			"description" : "The number of Puppet design smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -14,7 +14,7 @@
 			"y" : "DesignSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.multifacetedSmells",
+			"id" : "puppet.design.multifacetedSmells",
 			"name" : "Multifaceted Abstraction Puppet Smells",
 			"description" : "The number of Multifaceted Abstraction Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -26,7 +26,7 @@
 			"y" : "MultifacetedAbstractionSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.unnecessarySmells",
+			"id" : "puppet.design.unnecessarySmells",
 			"name" : "Unnecessary Abstraction Puppet Smells",
 			"description" : "The number of Unnecessary Abstraction Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -38,7 +38,7 @@
 			"y" : "UnnecessaryAbstractionSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.imperativeSmells",
+			"id" : "puppet.design.imperativeSmells",
 			"name" : "Imperative Abstraction Puppet Smells",
 			"description" : "The number of Imperative Abstraction Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -50,7 +50,7 @@
 			"y" : "ImperativeAbstractionSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.missAbSmells",
+			"id" : "puppet.design.missAbSmells",
 			"name" : "Missing Abstraction Puppet Smells",
 			"description" : "The number of Missing Abstraction Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -62,7 +62,7 @@
 			"y" : "MissingAbstractionSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.insufficientSmells",
+			"id" : "puppet.design.insufficientSmells",
 			"name" : "Insufficient Modularization Puppet Smells",
 			"description" : "The number of Insufficient Modularization Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -74,7 +74,7 @@
 			"y" : "InsufficientModularizationSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.unstructuredSmells",
+			"id" : "puppet.design.unstructuredSmells",
 			"name" : "Unstructured Module Puppet Smells",
 			"description" : "The number of Unstructured Module Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -86,7 +86,7 @@
 			"y" : "UnstructuredModuleSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.tightSmells",
+			"id" : "puppet.design.tightSmells",
 			"name" : "Tightly-coupled Module Puppet Smells",
 			"description" : "The number of Tightly-coupled Module Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -98,7 +98,7 @@
 			"y" : "TightlyCoupledModuleSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.brokenSmells",
+			"id" : "puppet.design.brokenSmells",
 			"name" : "Broken Hierarchy Puppet Smells",
 			"description" : "The number of Broken Hierarchy Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -110,7 +110,7 @@
 			"y" : "BrokenHierarchySmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.missingDepSmells",
+			"id" : "puppet.design.missingDepSmells",
 			"name" : "Missing Dependency Puppet Smells",
 			"description" : "The number of Missing Dependency Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -122,7 +122,7 @@
 			"y" : "MissingDependencySmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.hairballSmells",
+			"id" : "puppet.design.hairballSmells",
 			"name" : "Hairball Structure Puppet Smells",
 			"description" : "The number of Hairball Structure Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -134,7 +134,7 @@
 			"y" : "HairballStructureSmells",
 			"timeSeries" : true
 		},{
-			"id" : "puppet.designsmells.deficientSmells",
+			"id" : "puppet.design.deficientSmells",
 			"name" : "Deficient Encapsulation Puppet Smells",
 			"description" : "The number of Deficient Encapsulation Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
@@ -147,7 +147,7 @@
 			"timeSeries" : true
 		}
 		,{
-			"id" : "puppet.designsmells.weakenSmells",
+			"id" : "puppet.design.weakenSmells",
 			"name" : "Weaken Modularity Puppet Smells",
 			"description" : "The number of Weaken Modularity Puppet smells per day, up to and including the current date." ,
 			"type" : "LineChart",
