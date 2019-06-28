@@ -104,6 +104,8 @@ public class DockerTransMetricProvider implements ITransientMetricProvider<Docke
 					
 					Jadolint j = new Jadolint();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					Files.walk(Paths.get(workingCopyFolders.get(repoUrl).getPath()))
                     .filter(Files::isRegularFile)
                     .filter(f -> f.getFileName().toString().equals("Dockerfile"))
@@ -169,7 +171,7 @@ public class DockerTransMetricProvider implements ITransientMetricProvider<Docke
 							
 							smell.setReason(v.getMessage());
 							smell.setCode(v.getCode());
-							smell.setFileName(v.getFileName());
+							smell.setFileName(v.getFileName().replace(wcpath, ""));
 							smell.setLine(String.valueOf(v.getLineNumber()));
 							db.getSmells().add(smell);
 							db.sync();
