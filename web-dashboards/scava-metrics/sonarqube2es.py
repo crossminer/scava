@@ -28,12 +28,11 @@
 import argparse
 import hashlib
 import logging
-import json
 import time
 
-from perceval.backends.sonarqube import Sonar
+from perceval.backends.scava.sonarqube import Sonar
 
-from grimoirelab_toolkit.datetime import str_to_datetime
+from grimoirelab_toolkit.datetime import unixtime_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
@@ -140,22 +139,60 @@ def enrich_metrics(sonar_metrics):
     :param sonar_metrics: metrics generator
     :return:
     """
+    processed = 0
+    enriched_skipped = 0
 
     for sonar_metric in sonar_metrics:
 
-        metric = {
-            # origin : https://sonarcloud.io/api/measures/component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
+        processed += 1
+
+        project = ((sonar_metric['origin'].split('?')[1]).split('&')[0]).split('=')[1]
+        datetime = unixtime_to_datetime(sonar_metric['data']['fetched_on']).isoformat()
+
+        sonar_data = sonar_metric['data']
+
+        try:
+            metric_value = sonar_data.get('value', None)
+            if metric_value:
+                float(metric_value)
+        except:
+            metric_value = None
+
+        if not metric_value:
+            periods = sonar_data.get('periods', [])
+            if periods:
+                metric_value = periods[0]['value']
+
+        if not metric_value:
+            msg = "Metric value not processed for {} and value {}".format(sonar_data['metric'], sonar_data['value'])
+            logging.warning(msg)
+            enriched_skipped += 1
+        else:
+            metric_value = float(metric_value)
+
+        eitem = {
+            # origin : https://sonarc..component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
             # we get only component name, in this example: org.xwiki.contrib:application-antispam
-            'project': ((sonar_metrics['origin'].split('?')[1]).split('&')[0]).split('=')[1],
-            'metric_class': sonar_metrics['data']['id'],
-            'metric_type': sonar_metrics['backend_name'],
-            'metric_id': sonar_metrics['data']['id'],
-            'metric_name': sonar_metrics['data']['metric'],
-            'metric_value': sonar_metrics['data']['value'],
-            'datetime': sonar_metrics['data']['fetched_on']
+            'project': project,
+            'metric_class': 'sonarqube',
+            'metric_type': sonar_metric['backend_name'],
+            'metric_id': sonar_data['id'],
+            'metric_desc': sonar_data['metric'],
+            'metric_name': sonar_data['metric'],
+            'metric_es_value': metric_value,
+            'metric_es_compute': 'sample',
+            'metric_value': metric_value,
+            'metric_es_value_weighted': metric_value,
+            'datetime': datetime,
+            'sonar': sonar_data
         }
 
-        yield metric
+        eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+        yield eitem
+
+    msg = "Metric enrichment summary processed: {}, skipped: {}".format(processed, enriched_skipped)
+    logging.info(msg)
 
 
 def fetch_sonarqube(url, components):
