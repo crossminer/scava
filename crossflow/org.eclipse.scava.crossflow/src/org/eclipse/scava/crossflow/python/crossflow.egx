@@ -17,6 +17,10 @@ rule Type2Class
 	
 	guard : t.impl.isUndefined()
 	
+	parameters : Map {
+	   "package" = t.getPackage()
+	}
+	
 	template : "type2class.egl"
 	
 	target : t.getPath() + t.name + ".py"

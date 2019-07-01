@@ -3,7 +3,7 @@ import sys
 import time
 
 from org.eclipse.scava.crossflow.runtime import Mode
-from [%=package%].[%=w.name%] import [%=w.name%]
+from [%=package%].runtime.[%=w.name%] import [%=w.name%]
 
 
 if __name__ == '__main__':

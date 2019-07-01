@@ -71,7 +71,7 @@ def javaClassToPyClass(javaName):
             java_package = java_package[0:java_package.index('utils') - 1]
         return java_package + '.' + shortName
     else:
-        return java_package + '.' + shortName + '.' + shortName
+        return java_package + '.runtime.' + shortName + '.' + shortName
         
     
 def propertiesOnly(member, in_obj):
@@ -102,6 +102,9 @@ def bxToString(in_obj, package=''):
             m_dict[m] = m_val
     in_obj_type = str(type(in_obj))
     full_name = pyClass2JavaClass(in_obj)
+    op = getattr(in_obj, "get_serialisation_name", None)
+    if callable(op):
+        full_name = in_obj.get_serialisation_name()
     if package != None and len(package) > 0:
         full_name = package + in_obj_type[in_obj_type.rindex('.') + 1:len(in_obj_type) - 2]
     x_dict[full_name] = m_dict
