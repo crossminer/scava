@@ -162,6 +162,12 @@ public class ProjectEditionResource extends ServerResource {
 				String repo = githubRepository.getFull_name().split("/")[1];
 				((GitHubBugTracker) buggy).setProject(token, owner, repo);
 			}
+			if (isValidKey(bts, "login"))
+				((JiraBugTrackingSystem) buggy).setLogin(bts.get("login").asText());
+			if (isValidKey(bts, "password"))
+				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
+			if (isValidKey(bts, "project"))
+				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
 			i++;			
 		}
 		
