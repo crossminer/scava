@@ -15,7 +15,7 @@ from [%=package%].[%=t.name%] import [%=t.name%]
 from [%=package%].[%=t.name%] import [%=t.name%]
 [%}%]
 [%for (s in w.streams) { %]
-from [%=package%].[%=s.name%] import [%=s.name%]
+from [%=package%].runtime.[%=s.name%] import [%=s.name%]
 [%}%]
 
 

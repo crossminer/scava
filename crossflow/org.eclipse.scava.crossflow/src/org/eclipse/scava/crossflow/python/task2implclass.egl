@@ -1,9 +1,9 @@
 [%if (t.isTypeOf(Source)){%]
 import threading
 [%}%]
-from [%=package%].[%=t.name%]Base import [%=t.name%]Base
+from [%=package%].runtime.[%=t.name%]Base import [%=t.name%]Base
 [%for (s in t.output) { %]
-from [%=package%].[%=s.type.name%] import [%=s.type.name%]
+from [%=package%].runtime.[%=s.type.name%] import [%=s.type.name%]
 [% } %]
 
 class [%=t.name%]([%=t.name%]Base):

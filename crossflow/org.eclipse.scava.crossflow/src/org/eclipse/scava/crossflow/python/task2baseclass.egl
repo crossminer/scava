@@ -6,7 +6,7 @@ from org.eclipse.scava.crossflow.runtime import FailedJob
 from org.eclipse.scava.crossflow.runtime import Task
 
 [% for (t in outputTypes) { %]
-from [%=package%].[%=t.name%] import [%=t.name%]
+from [%=package%].runtime.[%=t.name%] import [%=t.name%]
 [%}%]
 
 

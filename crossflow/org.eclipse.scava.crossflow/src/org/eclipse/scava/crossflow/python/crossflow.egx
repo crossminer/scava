@@ -141,7 +141,7 @@ operation Any getOutputFolder() : String {
 }
 
 operation Any getPath() : String {
-	return self.getGenOutputFolder() + "/" + self.getPackage().toPath();
+	return self.getGenOutputFolder() + "/" + self.getPackage().toPath() + "/runtime/";
 }
 
 operation Any getImplPath() : String {
