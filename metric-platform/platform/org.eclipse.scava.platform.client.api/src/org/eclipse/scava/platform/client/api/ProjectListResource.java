@@ -10,15 +10,10 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectRepository;
-import org.json.JSONObject;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -28,10 +23,8 @@ import org.restlet.resource.Post;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mongodb.BasicDBList;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 
 public class ProjectListResource extends AbstractApiResource {
 
@@ -60,64 +53,12 @@ public class ProjectListResource extends AbstractApiResource {
 				p.removeField("metricProviderData");
 				p.removeField("_superTypes");
 				p.removeField("_id");
-
+				
 				// FIXME: Temporary solution
 				p.removeField("licenses");
 				p.removeField("persons");
 				
-				Map<String, Object> objectNode = new HashMap<String, Object>();
-				for (String key : p.keySet()) {
-					if (key.equals("token"))
-						objectNode.put(key, "hidden github token");
-					else if (key.equals("bugTrackingSystems")) {
-						List<Object> arrayNode = new ArrayList<Object>();
-						BasicDBList btsArray = (BasicDBList) p.get("bugTrackingSystems");
-						if (btsArray != null) {
-							for (int i = 0; i < btsArray.size(); i++) {
-								DBObject btsDbObject = (DBObject) btsArray.get(i);
-								Map<String, Object> subObjectNode = new HashMap<String, Object>();
-								for (String subKey : btsDbObject.keySet()) {
-									if (subKey.equals("token"))
-										subObjectNode.put("token", "hidden github token");
-									else if (subKey.equals("personal_access_token"))
-										subObjectNode.put("personal_access_token", "hidden gitlab token");
-									else if (subKey.equals("password"))
-										subObjectNode.put("password", "hidden password");
-									else
-										subObjectNode.put(subKey, btsDbObject.get(subKey));
-								}
-								arrayNode.add(subObjectNode);
-							}
-						}
-						objectNode.put(key, arrayNode);
-					}
-					else if (key.equals("communicationChannels")) {
-						List<Object> arrayNode = new ArrayList<Object>();
-						BasicDBList ccArray = (BasicDBList) p.get("communicationChannels");
-						if (ccArray != null) {
-							for (int i = 0; i < ccArray.size(); i++) {
-								DBObject ccDbObject = (DBObject) ccArray.get(i);
-								Map<String, Object> subObjectNode = new HashMap<String, Object>();
-								for (String subKey : ccDbObject.keySet()) {
-									if (subKey.equals("client_secret"))
-										subObjectNode.put("client_secret", "hidden client secret");
-									else if (subKey.equals("password"))
-										subObjectNode.put("password", "hidden password");
-									else
-										subObjectNode.put(subKey, ccDbObject.get(subKey));
-								}
-								arrayNode.add(subObjectNode);
-							}
-						}
-						objectNode.put(key, arrayNode);
-					}
-					else 
-						objectNode.put(key, p.get(key));
-				}
-				
-				JSONObject output = new JSONObject(new JSON().serialize(objectNode));
-				
-				projects.add(mapper.readTree(output.toString()));
+				projects.add(mapper.readTree(p.toString()));
             } catch (Exception e) {
             	System.err.println("Error: " + e.getMessage());
 				ObjectNode m = mapper.createObjectNode();
