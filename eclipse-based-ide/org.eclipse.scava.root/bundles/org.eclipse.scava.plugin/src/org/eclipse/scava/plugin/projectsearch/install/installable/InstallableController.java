@@ -131,6 +131,7 @@ public class InstallableController extends ModelViewController<InstallableModel,
 			Paths.get(destinationPath);
 			destinationFolder.getCanonicalPath();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new ConditionFailException("The specified destination path is not valid.");
 		}
 

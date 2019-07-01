@@ -95,6 +95,8 @@ public class PuppetDesignAntipatternTransMetricProvider implements ITransientMet
 					
 					String repoUrl = repo.getUrl();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
 					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer") + " " + workingCopyFolders.get(repoUrl) + "/ 2");
@@ -105,7 +107,7 @@ public class PuppetDesignAntipatternTransMetricProvider implements ITransientMet
 		                	DesignAntipattern designAntipattern = new DesignAntipattern();
 		                	designAntipattern.setSmellName(ins.split(",")[1].trim());
 		                	designAntipattern.setReason(ins.split(",")[2].trim());
-		                	designAntipattern.setFileName(ins.split(",")[3].trim());
+		                	designAntipattern.setFileName(ins.split(",")[3].trim().replace(wcpath, ""));
 		                	designAntipattern.setCommit(getLastRevision(projectDelta));
 		                	designAntipattern.setDate(getLastDate(projectDelta));
 							db.getDesignAntipatterns().add(designAntipattern);

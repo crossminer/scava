@@ -96,6 +96,8 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
 					
 					String repoUrl = repo.getUrl();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
 					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppet-lint") + " " + workingCopyFolders.get(repoUrl) + "/ " + prop.getProperty("puppet-lint-bin"));
 					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -109,7 +111,7 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
 		                		ImplementationAntipattern implementationAntipattern = new ImplementationAntipattern();
 		                		implementationAntipattern.setLine(rest[rest.length - 1]);
 		                		implementationAntipattern.setReason("ensure found on line but it's not the first attribute");
-		                		implementationAntipattern.setFileName(f);
+		                		implementationAntipattern.setFileName(f.replace(wcpath, ""));
 		                		implementationAntipattern.setSmellName("Misplaced attribute");
 								db.getAntipatterns().add(implementationAntipattern);
 								db.sync();
@@ -119,7 +121,7 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
 			                	ImplementationAntipattern implementationAntipattern = new ImplementationAntipattern();
 			                	implementationAntipattern.setLine(rest[1]);
 			                	implementationAntipattern.setReason(rest[0]);
-			                	implementationAntipattern.setFileName(f);
+			                	implementationAntipattern.setFileName(f.replace(wcpath, ""));
 								
 								if(rest[0].contains("case statement without a default case"))
 									implementationAntipattern.setSmellName("Missing default case");
@@ -180,7 +182,7 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
 		                	ImplementationAntipattern implementationAntipattern = new ImplementationAntipattern();
 		                	implementationAntipattern.setLine(rest[1]);
 		                	implementationAntipattern.setReason(rest[0]);
-		                	implementationAntipattern.setFileName(f);
+		                	implementationAntipattern.setFileName(f.replace(wcpath, ""));
 							
 							if(rest[0].contains("case statement without a default case"))
 								implementationAntipattern.setSmellName("Missing default case");
@@ -244,7 +246,7 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
 		                	CustomImplementationAntipattern customImplementationAntipattern = new CustomImplementationAntipattern();
 		                	customImplementationAntipattern.setSmellName(ins2.split(",")[1]);
 		                	customImplementationAntipattern.setReason(ins2.split(",")[2]);
-		                	customImplementationAntipattern.setFileName(ins2.split(",")[3]);
+		                	customImplementationAntipattern.setFileName(ins2.split(",")[3].replace(wcpath, ""));
 		                	customImplementationAntipattern.setCommit(getLastRevision(projectDelta));
 		                	customImplementationAntipattern.setDate(getLastDate(projectDelta));
 							db.getCustomAntipatterns().add(customImplementationAntipattern);
