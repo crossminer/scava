@@ -2334,7 +2334,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.scava.platform.questionanswering.stackoverflow"
+         id="org.eclipse.scava.platform.questionanswering.stackexchange"
          download-size="0"
          install-size="0"
          version="0.0.0"
