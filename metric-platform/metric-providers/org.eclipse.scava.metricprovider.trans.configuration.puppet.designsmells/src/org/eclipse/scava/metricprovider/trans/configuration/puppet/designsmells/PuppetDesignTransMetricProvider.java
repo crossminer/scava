@@ -101,6 +101,8 @@ public class PuppetDesignTransMetricProvider implements ITransientMetricProvider
 					}
 					db.sync();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
 					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppeteer") + " " + workingCopyFolders.get(repoUrl) + "/ 2");
 					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -110,7 +112,7 @@ public class PuppetDesignTransMetricProvider implements ITransientMetricProvider
 		                	Smell smell = new Smell();
 							smell.setSmellName(ins.split(",")[1].trim());
 							smell.setReason(ins.split(",")[2].trim());
-							smell.setFileName(ins.split(",")[3].trim());
+							smell.setFileName(ins.split(",")[3].trim().replace(wcpath, ""));
 							db.getSmells().add(smell);
 							db.sync();
 		                }

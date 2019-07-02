@@ -37,6 +37,7 @@ RECOMMENDATION_API = "http://localhost:8080/api"
 CATEGORY_METRIC = 'metric'
 CATEGORY_PROJECT = 'project'
 CATEGORY_FACTOID = 'factoid'
+CATEGORY_TOPIC = 'topic'
 CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
 CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
 CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS = 'version-dependency'
@@ -57,6 +58,8 @@ DESIGN_SMELL = 'design'
 IMPLEMENTATION_SMELL = 'implementation'
 ANTIPATTERN_SMELL = 'antipattern'
 CONF_SMELL = 'conf'
+
+METRIC_PROVIDER_ID_COMMENTS_TOPICS = 'bugs.topics.comments'
 
 METRICPROVIDER_ID_MAVEN_DEP_ALL = 'trans.rascal.dependency.maven.allMavenDependencies'
 METRICPROVIDER_ID_MAVEN_DEP_OPT = 'trans.rascal.dependency.maven.allOptionalMavenDependencies'
@@ -104,7 +107,7 @@ class Scava(Backend):
     version = '0.1.0'
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
-                  CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
+                  CATEGORY_USER, CATEGORY_DEV_DEPENDENCY, CATEGORY_TOPIC,
                   CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION,
                   CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
                   CATEGORY_CONF_SMELL, CATEGORY_PROJECT_RELATION]
@@ -166,6 +169,7 @@ class Scava(Backend):
                     item['executionInformation']['lastExecuted'] = datetime_utcnow().strftime("%Y%m%d")
 
                 if category in [CATEGORY_FACTOID,
+                                CATEGORY_TOPIC,
                                 CATEGORY_METRIC,
                                 CATEGORY_USER,
                                 CATEGORY_DEV_DEPENDENCY,
@@ -209,6 +213,8 @@ class Scava(Backend):
             mid = item['name']
         elif 'user' in item:
             mid = item['user'] + item['updated'] + item['project']
+        elif 'topic' in item:
+            mid = item['topic'] + item['updated'] + item['project']
         else:
             raise TypeError("Cannot extract metadata_id from", item)
 
@@ -263,6 +269,8 @@ class Scava(Backend):
             category = CATEGORY_CONF_SMELL
         elif 'related_to' in item:
             category = CATEGORY_PROJECT_RELATION
+        elif 'topic' in item:
+            category = CATEGORY_TOPIC
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -541,6 +549,26 @@ class ScavaClient(HttpClient):
                 relation['id'] = "{}_{}_{}".format(project, relation['related_to'], relation['relation_type'])
 
                 yield json.dumps(relation)
+
+        elif category == CATEGORY_TOPIC:
+            api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, METRIC_PROVIDER_ID_COMMENTS_TOPICS))
+            logger.debug("Scava comments topics calls API: %s", api)
+            project_metric = self.fetch(api)
+
+            json_metric = json.loads(project_metric)
+
+            if 'datatable' not in json_metric or not json_metric['datatable']:
+                return '[]'
+
+            for t in json_metric['datatable']:
+                project_topic = {
+                    "topic": t['Topic'],
+                    "date": t['Date'],
+                    "comments": t['Comments'],
+                    "scava_metric": METRIC_PROVIDER_ID_COMMENTS_TOPICS
+                }
+
+                yield json.dumps(project_topic)
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -677,11 +705,12 @@ class ScavaCommand(BackendCommand):
 
     BACKEND = Scava
 
-    @staticmethod
-    def setup_cmd_parser():
+    @classmethod
+    def setup_cmd_parser(cls):
         """Returns the Scava argument parser."""
 
-        parser = BackendCommandArgumentParser(archive=True)
+        parser = BackendCommandArgumentParser(cls.BACKEND.CATEGORIES,
+                                              archive=True)
         # Required arguments
         parser.parser.add_argument('url', default=SCAVA_API,
                                    help="Scava REST API URL (default: http://localhost:8182")
