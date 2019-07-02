@@ -57,7 +57,8 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 	
 	@Override
 	public boolean appliesTo(Artifact art) {
-		return (!art.getMethodDeclarations().isEmpty());
+		return (!art.getMethodDeclarations().isEmpty()) 
+				&& art.getType().getName().equals("FOCUS");
 	}
 
 	@Override

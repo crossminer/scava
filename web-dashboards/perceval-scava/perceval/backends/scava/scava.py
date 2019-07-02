@@ -31,19 +31,35 @@ from ...backend import (Backend,
                         BackendCommandArgumentParser)
 from ...client import HttpClient
 
+SCAVA_API = "http://localhost:8182"
+RECOMMENDATION_API = "http://localhost:8080/api"
 
 CATEGORY_METRIC = 'metric'
 CATEGORY_PROJECT = 'project'
 CATEGORY_FACTOID = 'factoid'
+CATEGORY_TOPIC = 'topic'
 CATEGORY_DEV_DEPENDENCY = 'dev-dependency'
 CATEGORY_CONF_DEPENDENCY = 'conf-dependency'
+CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS = 'version-dependency'
 CATEGORY_USER = 'user'
+CATEGORY_RECOMMENDATION = 'recommendation'
+CATEGORY_CONF_SMELL = 'conf-smell'
+CATEGORY_PROJECT_RELATION = 'project-relation'
 
 DEP_MAVEN = 'maven'
 DEP_MAVEN_OPT = 'opt'
 DEP_OSGI = 'osgi'
 DEP_OSGI_PACKAGE = 'package'
 DEP_OSGI_BUNDLE = 'bundle'
+DEP_PUPPET = 'puppet'
+DEP_DOCKER = 'docker'
+
+DESIGN_SMELL = 'design'
+IMPLEMENTATION_SMELL = 'implementation'
+ANTIPATTERN_SMELL = 'antipattern'
+CONF_SMELL = 'conf'
+
+METRIC_PROVIDER_ID_COMMENTS_TOPICS = 'bugs.topics.comments'
 
 METRICPROVIDER_ID_MAVEN_DEP_ALL = 'trans.rascal.dependency.maven.allMavenDependencies'
 METRICPROVIDER_ID_MAVEN_DEP_OPT = 'trans.rascal.dependency.maven.allOptionalMavenDependencies'
@@ -53,8 +69,23 @@ METRICPROVIDER_ID_OSGI_DEP_BNL_ALL = 'trans.rascal.dependency.osgi.allOSGiBundle
 METRICPROVIDER_ID_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider'
 METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider'
 
+METRIC_PROVIDER_ID_NEWVERSION_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.docker.NewVersionDockerTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
+
+METRIC_PROVIDER_ID_PUPPET_DESIGN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells.PuppetDesignTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_IMPL_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.PuppetImplementationTransMetricProvider'
+METRIC_PROVIDER_ID_DOCKER_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.docker.smells.DockerTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_DESIGN_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns.PuppetDesignAntipatternTransMetricProvider'
+METRIC_PROVIDER_ID_PUPPET_IMPL_ANTIPATTERN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns.PuppetImplementationAntipatternTransMetricProvider'
+
+METRIC_PROVIDER_ID_PROJECT_RELATIONS = 'org.eclipse.scava.metricprovider.trans.configuration.projects.relations.ProjectsRelationsTransMetricProvider'
+
 METRIC_CHURN_PER_COMMITTER = 'churnPerCommitterTimeLine'
 
+SIM_METHODS = ['Compound', 'CrossSim', 'Dependency', 'CrossRec', 'Readme', 'RepoPalCompound', 'RepoPalCompoundV2']
+RECOMMENDED_PROJECTS = 10
 
 logger = logging.getLogger(__name__)
 
@@ -76,15 +107,18 @@ class Scava(Backend):
     version = '0.1.0'
 
     CATEGORIES = [CATEGORY_METRIC, CATEGORY_PROJECT, CATEGORY_FACTOID,
-                  CATEGORY_USER, CATEGORY_DEV_DEPENDENCY,
-                  CATEGORY_CONF_DEPENDENCY]
+                  CATEGORY_USER, CATEGORY_DEV_DEPENDENCY, CATEGORY_TOPIC,
+                  CATEGORY_CONF_DEPENDENCY, CATEGORY_RECOMMENDATION,
+                  CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                  CATEGORY_CONF_SMELL, CATEGORY_PROJECT_RELATION]
 
-    def __init__(self, url, project=None, tag=None, archive=None):
+    def __init__(self, url, project=None, recommendation_url=RECOMMENDATION_API, tag=None, archive=None):
         origin = url
 
         super().__init__(origin, tag=tag, archive=archive)
         self.project = project
         self.url = url
+        self.recommendation_url = recommendation_url
         self.client = None
 
     def fetch(self, category=CATEGORY_METRIC):
@@ -135,10 +169,15 @@ class Scava(Backend):
                     item['executionInformation']['lastExecuted'] = datetime_utcnow().strftime("%Y%m%d")
 
                 if category in [CATEGORY_FACTOID,
+                                CATEGORY_TOPIC,
                                 CATEGORY_METRIC,
                                 CATEGORY_USER,
                                 CATEGORY_DEV_DEPENDENCY,
-                                CATEGORY_CONF_DEPENDENCY]:
+                                CATEGORY_CONF_DEPENDENCY,
+                                CATEGORY_RECOMMENDATION,
+                                CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                                CATEGORY_CONF_SMELL,
+                                CATEGORY_PROJECT_RELATION]:
                     item['updated'] = self.project_updated
                     item['project'] = self.project
                 yield item
@@ -174,6 +213,8 @@ class Scava(Backend):
             mid = item['name']
         elif 'user' in item:
             mid = item['user'] + item['updated'] + item['project']
+        elif 'topic' in item:
+            mid = item['topic'] + item['updated'] + item['project']
         else:
             raise TypeError("Cannot extract metadata_id from", item)
 
@@ -220,6 +261,16 @@ class Scava(Backend):
             category = CATEGORY_CONF_DEPENDENCY
         elif 'user' in item:
             category = CATEGORY_USER
+        elif 'recommendation_type' in item:
+            category = CATEGORY_RECOMMENDATION
+        elif 'packageName' in item:
+            category = CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS
+        elif 'reason' in item:
+            category = CATEGORY_CONF_SMELL
+        elif 'related_to' in item:
+            category = CATEGORY_PROJECT_RELATION
+        elif 'topic' in item:
+            category = CATEGORY_TOPIC
         else:
             raise TypeError("Could not define the category of item " + str(item))
 
@@ -228,7 +279,7 @@ class Scava(Backend):
     def _init_client(self, from_archive=False):
         """Init client"""
 
-        client = ScavaClient(self.url, self.project, self.archive, from_archive)
+        client = ScavaClient(self.url, self.project, self.recommendation_url, self.archive, from_archive)
         if self.project:
             self.project_updated = client.get_project_update(self.project)
         return client
@@ -252,9 +303,10 @@ class ScavaClient(HttpClient):
     ITEMS_PER_PAGE = 20  # Items per page in Scava API
     API_PATH = '/'
 
-    def __init__(self, url, project=None, archive=None, from_archive=False):
+    def __init__(self, url, project=None, recommendation_url=None, archive=None, from_archive=False):
         super().__init__(url, archive=archive, from_archive=from_archive)
         self.project = project
+        self.recommendation_url = recommendation_url
         self.api_projects_url = urijoin(self.base_url, "projects")
 
     def get_project_update(self, project_name=None):
@@ -302,6 +354,7 @@ class ScavaClient(HttpClient):
 
         elif category == CATEGORY_USER:
             api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, METRIC_CHURN_PER_COMMITTER))
+            logger.debug("Scava client calls API: %s", api)
             project_metric = self.fetch(api)
 
             json_metric = json.loads(project_metric)
@@ -365,6 +418,157 @@ class ScavaClient(HttpClient):
                 for dep in deps:
                     yield dep
 
+        elif category == CATEGORY_CONF_SMELL:
+            puppet_design_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_PUPPET_DESIGN_SMELLS,
+                                                            conf_type=DEP_PUPPET,
+                                                            smell_type=DESIGN_SMELL)
+            puppet_impl_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_PUPPET_IMPL_SMELLS,
+                                                          conf_type=DEP_PUPPET,
+                                                          smell_type=IMPLEMENTATION_SMELL)
+            docker_conf_smells = self.__fetch_conf_smells(project, METRIC_PROVIDER_ID_DOCKER_SMELLS,
+                                                          smell_type=CONF_SMELL, conf_type=DEP_DOCKER)
+            puppet_design_ap_smells = self.__fetch_conf_smells(project,
+                                                               METRIC_PROVIDER_ID_PUPPET_DESIGN_ANTIPATTERN_SMELLS,
+                                                               conf_type=DEP_PUPPET,
+                                                               smell_type=DESIGN_SMELL,
+                                                               smell_sub_type=ANTIPATTERN_SMELL)
+            puppet_impl_ap_smells = self.__fetch_conf_smells(project,
+                                                             METRIC_PROVIDER_ID_PUPPET_IMPL_ANTIPATTERN_SMELLS,
+                                                             conf_type=DEP_PUPPET,
+                                                             smell_type=IMPLEMENTATION_SMELL,
+                                                             smell_sub_type=ANTIPATTERN_SMELL)
+
+            group_smells = [puppet_design_smells, puppet_impl_smells,
+                            docker_conf_smells, puppet_design_ap_smells,
+                            puppet_impl_ap_smells]
+
+            for smells in group_smells:
+                for smell in smells:
+                    yield smell
+
+        elif category == CATEGORY_RECOMMENDATION:
+            api = urijoin(self.api_projects_url, "/p/%s" % project)
+            logger.debug("Scava client calls API: %s", api)
+            project_info_raw = self.fetch(api)
+            project_info = json.loads(project_info_raw)
+
+            project_name = project_info['shortName']
+            recommendation_project_api = urijoin(self.recommendation_url,
+                                                 "artifacts", "artifact", "mpp", project_name)
+            recommendation_project_raw = self.fetch(recommendation_project_api)
+
+            # Fake data
+            recommendation_project_raw = """
+            {
+              "id": "5b155b04065f2d726d6db241",
+              "tags": null,
+              "name": "json-simple",
+              "shortName": null,
+              "description": "A simple Java toolkit for JSON. You can use json-simple to encode or decode JSON text.",
+              "fullName": "fangyidong/json-simple",
+              "methodDeclarations": [],
+              "year": 0,
+              "active": true,
+              "homePage": "",
+              "type": null,
+              "private_": null,
+              "fork": null,
+              "html_url": "https://github.com/fangyidong/json-simple",
+              "clone_url": "https://github.com/fangyidong/json-simple.git",
+              "git_url": "git://github.com/fangyidong/json-simple.git",
+              "ssh_url": null,
+              "svn_url": null,
+              "mirror_url": null,
+              "size": 0,
+              "master_branch": "master",
+              "webDashboardId": "app/kibana#/dashboard/ScavaProject?_a=(query:(match:(project.keyword:(query:jsonsimple))))",
+              "metricPlatformId": "jsonsimple",
+              "readmeText": "Please visit: http://code.google.com/p/json-simple/",
+              "dependencies": [
+                "junit:junit"
+              ],
+              "starred": [
+                {
+                  "login": "veita",
+                  "datestamp": "2015-04-13T08:55:08Z"
+                }
+              ],
+              "parent": null
+            }
+            """
+
+            try:
+                recommendation_artifacts = json.loads(recommendation_project_raw)
+            except:
+                return '[]'
+
+            kb_project_id = recommendation_artifacts['id']
+
+            for sim_method in SIM_METHODS:
+                recommended_projects = self.__fetch_recommendations(kb_project_id, sim_method)
+
+                for prj in recommended_projects:
+                    yield json.dumps(prj)
+        elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+            docker_version_deps = self.__fetch_version_dependencies(project,
+                                                                    METRIC_PROVIDER_ID_NEWVERSION_DOCKER_DEPS,
+                                                                    DEP_DOCKER)
+            puppet_version_deps = self.__fetch_version_dependencies(project,
+                                                                    METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS,
+                                                                    DEP_PUPPET)
+            maven_version_deps = self.__fetch_version_dependencies(project,
+                                                                   METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS,
+                                                                   DEP_MAVEN)
+            osgi_version_deps = self.__fetch_version_dependencies(project,
+                                                                  METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS,
+                                                                  DEP_OSGI)
+
+            group_deps = [docker_version_deps, puppet_version_deps, maven_version_deps, osgi_version_deps]
+
+            for deps in group_deps:
+                for dep in deps:
+                    yield dep
+
+        elif category == CATEGORY_PROJECT_RELATION:
+            api_project_relations = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' %
+                                            (project, METRIC_PROVIDER_ID_PROJECT_RELATIONS))
+            logger.debug("Scava client calls API: %s", api_project_relations)
+
+            project_relations = json.loads(self.fetch(api_project_relations))
+
+            if not project_relations:
+                return '[]'
+
+            for project_relation in project_relations:
+
+                relation = {
+                    "relation_type": project_relation['dependencyType'],
+                    "related_to": project_relation['relationName']
+                }
+
+                relation['id'] = "{}_{}_{}".format(project, relation['related_to'], relation['relation_type'])
+
+                yield json.dumps(relation)
+
+        elif category == CATEGORY_TOPIC:
+            api = urijoin(self.base_url, "projects/p/%s/m/%s" % (project, METRIC_PROVIDER_ID_COMMENTS_TOPICS))
+            logger.debug("Scava comments topics calls API: %s", api)
+            project_metric = self.fetch(api)
+
+            json_metric = json.loads(project_metric)
+
+            if 'datatable' not in json_metric or not json_metric['datatable']:
+                return '[]'
+
+            for t in json_metric['datatable']:
+                project_topic = {
+                    "topic": t['Topic'],
+                    "date": t['Date'],
+                    "comments": t['Comments'],
+                    "scava_metric": METRIC_PROVIDER_ID_COMMENTS_TOPICS
+                }
+
+                yield json.dumps(project_topic)
         else:
             raise ValueError(category + ' not supported in Scava')
 
@@ -375,12 +579,86 @@ class ScavaClient(HttpClient):
 
         return response.text
 
+    def __fetch_recommendations(self, project_id, sim_method):
+        recommendation_similar_api = urijoin(self.recommendation_url, "recommendation", "similar",
+                                             "p", project_id, "m", sim_method, "n", RECOMMENDED_PROJECTS)
+        recommendation_similar_raw = self.fetch(recommendation_similar_api)
+        recommendation_similar = json.loads(recommendation_similar_raw)
+
+        recommendations = []
+        for recommendation in recommendation_similar:
+            recommended_project = {
+                "id": project_id,
+                "name": recommendation['name'],
+                "full_name": recommendation['fullName'],
+                "description": recommendation['description'],
+                "url": recommendation['html_url'],
+                "readme": recommendation['readmeText'],
+                "dependencies": recommendation['dependencies'],
+                "active": recommendation['active'],
+                "recommendation_type": sim_method,
+                "project": recommendation['metricPlatformId']
+            }
+
+            recommendations.append(recommended_project)
+
+        return recommendations
+
+    def __fetch_conf_smells(self, project, smell_id, conf_type, smell_type, smell_sub_type=None):
+        api_conf_smells = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, smell_id))
+
+        logger.debug("Scava client calls API: %s", api_conf_smells)
+        conf_smells = json.loads(self.fetch(api_conf_smells))
+
+        if not conf_smells:
+            return '[]'
+
+        for conf_smell in conf_smells:
+            smell = {
+                "smell_name": conf_smell.get('smellName', None),
+                "line": conf_smell.get('line', None),
+                "reason": conf_smell.get('reason', None),
+                "file_name": conf_smell.get('fileName', None),
+                "commit": conf_smell.get('commit', None),
+                "date": conf_smell['date']['$date'] if 'date' in conf_smell else None,
+                "conf_type": conf_type,
+                "smell_type": smell_type,
+                "smell_sub_type": smell_sub_type
+            }
+
+            smell['id'] = "{}_{}_{}_{}_{}".format(conf_type, smell_type,
+                                                  smell['smell_name'], smell['line'], smell['file_name'])
+
+            yield json.dumps(smell)
+
+    def __fetch_version_dependencies(self, project, dep_metric, dep_type):
+        api_version_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_version_dependencies)
+        version_dependencies = json.loads(self.fetch(api_version_dependencies))
+
+        if not version_dependencies:
+            return '[]'
+
+        for version in version_dependencies:
+
+            version_dep = {
+                "dependency": version['packageName'],
+                "scava_metric_provider": dep_metric,
+                "type": dep_type,
+                "new_version": version['newVersion'],
+                "old_version": version['oldVersion'],
+                "id": version['packageName']
+            }
+
+            yield json.dumps(version_dep)
+
     def __fetch_dev_dependencies(self, project, dep_metric, dep_type=None, dep_sub_type=None):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_dependencies)
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
-            yield '[]'
+            return '[]'
 
         for dep in dependencies:
             if 'value' not in dep or not dep['value']:
@@ -399,10 +677,11 @@ class ScavaClient(HttpClient):
 
     def __fetch_conf_dependencies(self, project, dep_metric):
         api_dependencies = urijoin(self.base_url, 'raw/projects/p/%s/m/%s' % (project, dep_metric))
+        logger.debug("Scava client calls API: %s", api_dependencies)
         dependencies = json.loads(self.fetch(api_dependencies))
 
         if not dependencies:
-            yield '[]'
+            return '[]'
 
         for dep in dependencies:
             if 'dependencyName' not in dep or not dep['dependencyName']:
@@ -426,19 +705,21 @@ class ScavaCommand(BackendCommand):
 
     BACKEND = Scava
 
-    @staticmethod
-    def setup_cmd_parser():
+    @classmethod
+    def setup_cmd_parser(cls):
         """Returns the Scava argument parser."""
 
-        parser = BackendCommandArgumentParser(archive=True)
+        parser = BackendCommandArgumentParser(cls.BACKEND.CATEGORIES,
+                                              archive=True)
         # Required arguments
-        parser.parser.add_argument('url', nargs='?',
-                                   default="http://localhost:8182",
+        parser.parser.add_argument('url', default=SCAVA_API,
                                    help="Scava REST API URL (default: http://localhost:8182")
         # Optional arguments
         group = parser.parser.add_argument_group('Scava arguments')
         group.add_argument('--project', dest='project',
                            required=False,
                            help="Name of the Scava project")
+        group.add_argument('--recommendation-api', default=RECOMMENDATION_API, dest='recommendation_url',
+                           required=False, help="Recommendation API URL (default: http://localhost:8080/api")
 
         return parser

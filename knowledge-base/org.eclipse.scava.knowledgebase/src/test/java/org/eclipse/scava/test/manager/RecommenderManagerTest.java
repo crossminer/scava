@@ -14,8 +14,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.scava.business.IRecommenderManager;
+import org.eclipse.scava.business.impl.CROSSSimSimilarityCalculator;
+import org.eclipse.scava.business.impl.DependencySimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
@@ -79,9 +82,24 @@ public class RecommenderManagerTest {
 	}
 	
 	
+	
+	@Autowired 
+	private DependencySimilarityCalculator depSimCal;
+	@Autowired 
+	private CROSSSimSimilarityCalculator crossSimCal;
 	@Test
-	public void testGetClusters() throws Exception {
-		assertEquals(recommenderManager.getArtifactsByQuery("minimalistic").size(),1);
+	public void getSimilarProjectsSingleTest() {
+		Map<String, Double> res = recommenderManager.getSimilarProjects(artifacts.get(0), depSimCal.getSimilarityName() , 5);
+		assertEquals(5, res.size());
+		res.entrySet().stream().forEach(
+				z -> logger.info("{}",res.get(z.getKey())));
+	}
+	@Test
+	public void getSimilarProjectsAggregateTest() {
+		Map<String, Double> res = recommenderManager.getSimilarProjects(artifacts.get(0), crossSimCal.getSimilarityName() , 5);
+		assertEquals(5, res.size());
+		res.entrySet().stream().forEach(
+				z -> logger.info("{}",res.get(z.getKey())));
 	}
 
 }

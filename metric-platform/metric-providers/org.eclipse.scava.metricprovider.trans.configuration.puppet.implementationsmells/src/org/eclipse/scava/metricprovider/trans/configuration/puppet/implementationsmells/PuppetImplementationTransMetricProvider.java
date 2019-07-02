@@ -108,6 +108,8 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 					}
 					db.sync();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					//FIXME: It doesn't work because we can not find the full path of a resource inside a bundle so for now we use full path
 					Process p = Runtime.getRuntime().exec(prop.getProperty("python") + " " + prop.getProperty("puppet-lint") + " " + workingCopyFolders.get(repoUrl) + "/ " + prop.getProperty("puppet-lint-bin"));
 					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -121,7 +123,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 		                		Smell smell = new Smell();
 								smell.setLine(rest[rest.length - 1]);
 								smell.setReason("ensure found on line but it's not the first attribute");
-								smell.setFileName(f);
+								smell.setFileName(f.replace(wcpath, ""));
 								smell.setSmellName("Misplaced attribute");
 								db.getSmells().add(smell);
 								db.sync();
@@ -131,7 +133,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 			                	Smell smell = new Smell();
 								smell.setLine(rest[1]);
 								smell.setReason(rest[0]);
-								smell.setFileName(f);
+								smell.setFileName(f.replace(wcpath, ""));
 								
 								if(rest[0].contains("case statement without a default case"))
 									smell.setSmellName("Missing default case");
@@ -189,7 +191,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 		                	Smell smell = new Smell();
 							smell.setLine(rest[1]);
 							smell.setReason(rest[0]);
-							smell.setFileName(f);
+							smell.setFileName(f.replace(wcpath, ""));
 							
 							if(rest[0].contains("case statement without a default case"))
 								smell.setSmellName("Missing default case");
@@ -250,7 +252,7 @@ public class PuppetImplementationTransMetricProvider implements ITransientMetric
 		                	CustomSmell customSmell = new CustomSmell();
 		                	customSmell.setSmellName(ins2.split(",")[1]);
 		                	customSmell.setReason(ins2.split(",")[2]);
-		                	customSmell.setFileName(ins2.split(",")[3]);
+		                	customSmell.setFileName(ins2.split(",")[3].replace(wcpath, ""));
 							db.getCustomSmells().add(customSmell);
 							db.sync();
 		                }

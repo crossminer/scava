@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IProject } from '../../../layout/project/project.model';
 import { LocalStorageService } from '../authentication/local-storage.service';
 import { ConfigService } from '../configuration/configuration-service';
 import { RoleAuthorities } from '../authentication/role-authorities';
@@ -8,11 +7,11 @@ import { RoleAuthorities } from '../authentication/role-authorities';
 @Injectable({
   providedIn: 'root'
 })
-export class CreateProjectService {
+export class EditProjectService {
 
   private resourceUrl = '/administration';
   private projects = 'projects';
-  private create = 'create';
+  private edit = 'edit';
   private jwtToken: string = null;
     
   constructor(
@@ -22,12 +21,11 @@ export class CreateProjectService {
     private roleAuthorities: RoleAuthorities
   ) { }
 
-  createProject(project: IProject) {
+  editProject(project: any) {
     if (this.jwtToken == null  || this.roleAuthorities.tokenExpired(this.jwtToken)) {
       this.jwtToken = this.localStorageService.loadToken();
     }
-    return this.httpClient.post(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.projects}/${this.create}`, project,
+    return this.httpClient.put(`${this.configService.getSavedServerPath() +  this.resourceUrl}/${this.projects}/${this.edit}`, project,
     { headers: new HttpHeaders({ 'Authorization': this.jwtToken }) });
   }
-  
 }

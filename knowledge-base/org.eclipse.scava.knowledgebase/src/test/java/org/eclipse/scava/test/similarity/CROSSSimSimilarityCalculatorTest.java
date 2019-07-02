@@ -42,6 +42,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -91,7 +92,7 @@ public class CROSSSimSimilarityCalculatorTest {
 	}
 	@Test
 	public void crossSimCommutativeTest() {
-		Map<String, String> parameters = new HashMap<>();
+		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("committers","false");
 		parameters.put("deps","true");
 		parameters.put("stargazers","true");
