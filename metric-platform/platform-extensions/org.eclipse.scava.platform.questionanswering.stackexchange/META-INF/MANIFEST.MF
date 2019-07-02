@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Stackoverflow
+Bundle-Name: Stackexchange
 Bundle-SymbolicName: org.eclipse.scava.platform.questionanswering.stackexchange
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.eclipse.scava.platform.questionanswering.stackexchange,
