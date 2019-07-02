@@ -2077,7 +2077,7 @@ Export-Package: .,
  ucar.units,
  uk.ac.rdg.resc.edal.time
 Require-Bundle: org.jsoup.jsoup,
- com.google.code.gson,
+ com.google.gson;bundle-version="2.2.4",
  org.apache.commons.lang3,
  org.apache.commons.codec,
  org.apache.commons.lang,

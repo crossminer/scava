@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.repository.model,
  org.apache.log4j,
  org.eclipse.scava.repository.model.cc.irc,
- org.apache.commons.compress
+ org.apache.commons.compress,
+ org.eclipse.orbit.mongodb;bundle-version="2.10.1"
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.irc.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

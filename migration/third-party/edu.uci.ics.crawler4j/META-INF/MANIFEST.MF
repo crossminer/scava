@@ -9,7 +9,7 @@ Require-Bundle: org.apache.tika,
  org.slf4j.api,
  com.sleepycat.je,
  com.google.guava-jre,
- ch.qos.logback.logback-classic,
+ ch.qos.logback.classic;bundle-version="1.0.7",
  org.apache.httpcomponents.httpcore,
  org.apache.commons.codec,
  org.apache.commons.logging

@@ -4,7 +4,7 @@ Bundle-Name: Logback-classic
 Bundle-SymbolicName: ch.qos.logback.logback-classic
 Bundle-Version: 1.1.7
 Require-Bundle: ch.qos.logback.logback-core,
- org.slf4j.slf4j-api
+ org.slf4j.api;bundle-version="1.7.2"
 Bundle-ClassPath: logback-classic-1.1.7.jar
 Export-Package: ch.qos.logback.classic,
  ch.qos.logback.classic.boolex,

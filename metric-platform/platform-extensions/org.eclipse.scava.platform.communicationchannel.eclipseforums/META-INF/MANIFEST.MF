@@ -9,9 +9,12 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.cc.eclipseforums,
  org.eclipse.osgi,
- com.fasterxml.jackson,
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0",
  org.apache.log4j,
- com.squareup.okhttp3
+ com.squareup.okhttp3,
+ org.eclipse.orbit.mongodb;bundle-version="2.10.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.eclipseforums.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

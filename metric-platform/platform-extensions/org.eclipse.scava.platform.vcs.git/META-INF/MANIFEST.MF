@@ -9,8 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.platform,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.vcs.git,
- org.eclipse.jgit,
- org.eclipse.scava.repository.model.documentation.gitbased
+ org.eclipse.scava.repository.model.documentation.gitbased,
+ org.eclipse.jgit;bundle-version="5.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.platform.vcs.git

@@ -7,6 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.scava.platform.vcs.workingcopy.manager,
  org.eclipse.scava.platform.vcs.svn,
  org.eclipse.scava.repository.model.vcs.svn,
- org.svnkit,
+ org.svnkit;bundle-version="1.0.0",
  org.eclipse.scava.repository.model
 Export-Package: org.eclipse.scava.platform.vcs.workingcopy.svn

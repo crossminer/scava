@@ -11,4 +11,4 @@ Export-Package: org.apache.xmlrpc,
  org.apache.xmlrpc.serializer,
  org.apache.xmlrpc.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.apache.ws.commons
+Require-Bundle: org.apache.ws.commons.util;bundle-version="1.0.1"

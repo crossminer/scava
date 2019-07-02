@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime.osgi,
  org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies,
  org.apache.log4j,
- com.google.code.gson
+ com.google.gson;bundle-version="2.2.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.newversion.docker
 Bundle-ActivationPolicy: lazy

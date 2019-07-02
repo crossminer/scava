@@ -19,12 +19,12 @@
             <url>http://download.eclipse.org/releases/mars</url>
             <layout>p2</layout>
         </repository>
-		<repository>
+		<!--repository>
 			<id>rascal-unstable</id>
 			<url>https://update.rascal-mpl.org/unstable/</url>
 			<layout>p2</layout>
 		</repository>
-        <!--repository>
+        <repository>
             <id>Oxygen.3</id>
             <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20180206163158/repository/</url>
             <layout>p2</layout>
@@ -69,6 +69,13 @@
 							<version>1.0.0-SNAPSHOT</version>
 						</artifact>
 					</target-->
+					<target>
+						<artifact>
+							<groupId>org.eclipse.scava</groupId>
+							<artifactId>scava-target</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+						</artifact>
+					</target>
 					<environments>
 						<environment>
 							<os>linux</os>

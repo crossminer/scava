@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.googlecode.pongo.runtime,
  org.eclipse.scava.repository.model,
  org.eclipse.scava.repository.model.vcs.svn,
- org.svnkit
+ org.svnkit;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform.vcs.svn
