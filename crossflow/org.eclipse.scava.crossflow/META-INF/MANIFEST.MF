@@ -6,8 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.eclipse.scava.crossflow
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.egl.engine,
+ org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.emc.plainxml,
  org.eclipse.epsilon.flexmi,
  com.google.guava

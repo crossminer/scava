@@ -198,7 +198,7 @@ public class GenerateBaseClasses {
 	}
 
 	public EmfModel getModel() throws Exception {
-		EmfModel model = createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false,
+		EmfModel model = createAndLoadAnEmfModel("org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation", modelRelativePath, "Model", true, false,
 				false);
 
 		return model;
