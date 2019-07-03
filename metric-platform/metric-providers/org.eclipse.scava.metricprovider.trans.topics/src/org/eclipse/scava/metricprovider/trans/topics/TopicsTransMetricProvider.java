@@ -219,14 +219,14 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 
 
 		for (CommunicationChannelArticle article : ccpDelta.getArticles()) {
-			NewsgroupArticlesData articleInTopic = findNewsgroupArticle(db, article, communicationChannel.getOSSMeterId());
+			NewsgroupArticlesData articleInTopic = findNewsgroupArticle(db, article);
 			if (articleInTopic == null) {
 				articleInTopic = new NewsgroupArticlesData();
 				articleInTopic.setNewsgroupName(communicationChannel.getOSSMeterId());
 				articleInTopic.setArticleNumber(article.getArticleNumber());
 				articleInTopic.setDate(new Date(article.getDate()).toString());
 				articleInTopic.setSubject(article.getSubject());
-				articleInTopic.setText(articleNaturalLanguage(detectingCodeMetric, article, communicationChannel.getOSSMeterId()));
+				articleInTopic.setText(articleNaturalLanguage(detectingCodeMetric, article));
 				db.getNewsgroupArticles().add(articleInTopic);
 			}
 			db.sync();
@@ -321,11 +321,10 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		return bugTrackerComments.getNaturalLanguage();
 	}
 
-	private NewsgroupArticlesData findNewsgroupArticle(TopicsTransMetric db, CommunicationChannelArticle article,
-			String ossmeterID) {
+	private NewsgroupArticlesData findNewsgroupArticle(TopicsTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticlesData newsgroupArticles = null;
 		Iterable<NewsgroupArticlesData> articlesIt = db.getNewsgroupArticles().find(
-				NewsgroupArticlesData.NEWSGROUPNAME.eq(ossmeterID),
+				NewsgroupArticlesData.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 				NewsgroupArticlesData.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlesData nad : articlesIt) {
 			newsgroupArticles = nad;
@@ -333,11 +332,10 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		return newsgroupArticles;
 	}
 
-	private String articleNaturalLanguage(DetectingCodeTransMetric db, CommunicationChannelArticle article,
-			String ossmeterID) {
+	private String articleNaturalLanguage(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticleDetectingCode newsgroupArticles = null;
 		Iterable<NewsgroupArticleDetectingCode> articlesIt = db.getNewsgroupArticles().find(
-				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(ossmeterID),
+				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nad : articlesIt) {
 			newsgroupArticles = nad;
