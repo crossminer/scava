@@ -20,6 +20,7 @@ import org.carrot2.core.Cluster;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
+import org.carrot2.core.LanguageCode;
 import org.carrot2.core.ProcessingResult;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
@@ -244,7 +245,6 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			if (commentInTopic == null) {
 				commentInTopic = new BugTrackerCommentsData();
 				commentInTopic.setBugTrackerId(comment.getBugTrackingSystem().getOSSMeterId());
-				commentInTopic.setBugTrackerId(comment.getBugId());
 				commentInTopic.setBugId(comment.getBugId());
 				commentInTopic.setCommentId(comment.getCommentId());
 				commentInTopic.setSubject(retrieveSubject(btspDelta, comment.getBugId()));
@@ -255,6 +255,16 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			}
 		}
 		db.sync();
+	}
+	
+	private String produceUID(NewsgroupArticlesData article)
+	{
+		return article.getNewsgroupName()+"\t"+String.valueOf(article.getArticleNumber());
+	}
+	
+	private String produceUID(BugTrackerCommentsData comment)
+	{
+		return comment.getBugTrackerId()+"\t"+comment.getBugId()+"\t"+comment.getCommentId();
 	}
 
 	private String retrieveSubject(BugTrackingSystemDelta btspDelta, String bugId) {
@@ -270,7 +280,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 	private List<Cluster> produceNewsgroupTopics(TopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
 		for (NewsgroupArticlesData article : db.getNewsgroupArticles())
-			documents.add(new Document(article.getSubject(), article.getText()));
+			documents.add(new Document(article.getSubject(), article.getText(), "", LanguageCode.ENGLISH, produceUID(article)));
 		return produceTopics(documents);
 	}
 
@@ -278,7 +288,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 	private List<Cluster> produceBugTrackerTopics(TopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
 		for (BugTrackerCommentsData comment : db.getBugTrackerComments())
-			documents.add(new Document(comment.getSubject(), comment.getText()));
+			documents.add(new Document(comment.getSubject(), comment.getText(), "", LanguageCode.ENGLISH, produceUID(comment)));
 		return produceTopics(documents);
 	}
 
