@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.bugtrackingsystem.gitlab.model.Comment;
@@ -326,8 +327,11 @@ public class GitLabManager implements IBugTrackingSystemManager<GitLabTracker> {
 	public void setClient(GitLabTracker gitlabTracker) throws IOException {
 
 		OkHttpClient.Builder newClient = new OkHttpClient.Builder();
-
-
+		
+			newClient.connectTimeout(30, TimeUnit.SECONDS);
+			newClient.writeTimeout(1, TimeUnit.MINUTES);
+			newClient.readTimeout(1, TimeUnit.MINUTES);
+		
 			newClient.addInterceptor(new Interceptor() {
 
 				@Override
