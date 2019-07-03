@@ -1,0 +1,4 @@
+#Semi-Stopwords:
+#Stopwords that can be found in terms, such as kilometers per hour or degrees of freedom
+of
+per
