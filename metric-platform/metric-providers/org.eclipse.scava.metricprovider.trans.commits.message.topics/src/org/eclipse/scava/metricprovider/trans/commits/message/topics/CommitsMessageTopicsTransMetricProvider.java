@@ -11,6 +11,7 @@ import org.carrot2.core.Cluster;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
+import org.carrot2.core.LanguageCode;
 import org.carrot2.core.ProcessingResult;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model.CommitMessagePlainText;
@@ -176,10 +177,15 @@ public class CommitsMessageTopicsTransMetricProvider implements ITransientMetric
 			return commitMessagePlainText.getPlainText();
 	}
 	
+	private String produceUID(CommitMessage commitMessage)
+	{
+		return commitMessage.getRepository()+"\t"+commitMessage.getRevision();
+	}
+	
 	private List<Cluster> produceCommitsMessagesTopics(CommitsMessageTopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
 		for (CommitMessage commitMessage : db.getCommitsMessages())
-			documents.add(new Document(commitMessage.getSubject(), commitMessage.getMessage()));
+			documents.add(new Document(commitMessage.getSubject(), commitMessage.getMessage(), "", LanguageCode.ENGLISH, produceUID(commitMessage)));
 		return produceTopics(documents);
 	}
 	
