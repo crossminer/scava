@@ -10,7 +10,9 @@
 				"rows" : "$bugTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
 					{ "name" : "Topics", "field" : "$labels" },
-					{ "name" : "Comments", "field" : "$numberOfDocuments" } ]
+					{ "name" : "Comments", "field" : "$numberOfDocuments" },
+					{ "name" : "Source (BugID\tCommentID)", "field" : "$commentsId" }
+					 ]
 			},
 			"x" : "Date",
 			"y" : "Comments", 

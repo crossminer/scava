@@ -57,6 +57,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 				 topic.setBugTrackerId(bugTrackerTopic.getBugTrackerId());
 				 topic.getLabels().addAll(bugTrackerTopic.getLabels());
 				 topic.setNumberOfDocuments(bugTrackerTopic.getNumberOfDocuments());
+				 topic.getCommentsId().addAll(bugTrackerTopic.getCommentsId());
 			 }
 		}
 		return topics;

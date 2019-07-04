@@ -9,21 +9,23 @@ import com.googlecode.pongo.runtime.querying.*;
 public class BugTrackerTopic extends Pongo {
 	
 	protected List<String> labels = null;
-	protected List<CommentTopicId> commentsTopicId = null;
+	protected List<String> commentsId = null;
 	
 	
 	public BugTrackerTopic() { 
 		super();
 		dbObject.put("labels", new BasicDBList());
-		dbObject.put("commentsTopicId", new BasicDBList());
+		dbObject.put("commentsId", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
 		LABELS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
+		COMMENTSID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
 	}
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
 	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer COMMENTSID = new ArrayQueryProducer("commentsId");
 	
 	
 	public String getBugTrackerId() {
@@ -51,13 +53,13 @@ public class BugTrackerTopic extends Pongo {
 		}
 		return labels;
 	}
-	
-	public List<CommentTopicId> getCommentsTopicId() {
-		if (commentsTopicId == null) {
-			commentsTopicId = new PongoList<CommentTopicId>(this, "commentsTopicId", true);
+	public List<String> getCommentsId() {
+		if (commentsId == null) {
+			commentsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("commentsId"));
 		}
-		return commentsTopicId;
+		return commentsId;
 	}
+	
 	
 	
 }

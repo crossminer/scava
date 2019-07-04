@@ -9,19 +9,23 @@ import com.googlecode.pongo.runtime.querying.*;
 public class BugTopic extends Pongo {
 	
 	protected List<String> labels = null;
+	protected List<String> commentsId = null;
 	
 	
 	public BugTopic() { 
 		super();
 		dbObject.put("labels", new BasicDBList());
+		dbObject.put("commentsId", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
 		LABELS.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
+		COMMENTSID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
 	}
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
 	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer COMMENTSID = new ArrayQueryProducer("commentsId");
 	
 	
 	public String getBugTrackerId() {
@@ -48,6 +52,12 @@ public class BugTopic extends Pongo {
 			labels = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("labels"));
 		}
 		return labels;
+	}
+	public List<String> getCommentsId() {
+		if (commentsId == null) {
+			commentsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("commentsId"));
+		}
+		return commentsId;
 	}
 	
 	

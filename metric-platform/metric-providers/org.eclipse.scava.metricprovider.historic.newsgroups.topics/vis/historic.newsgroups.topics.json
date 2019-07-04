@@ -10,7 +10,8 @@
 				"rows" : "$newsgrpTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
 					{ "name" : "Topic", "field" : "$label" },
-					{ "name" : "Articles", "field" : "$numberOfDocuments" } ]
+					{ "name" : "Articles", "field" : "$numberOfDocuments" },
+					{ "name" : "Source (ArticleId)", "field" : "$historicArticlesId" } ]
 			},
 			"x" : "Date",
 			"y" : "Articles", 

@@ -9,21 +9,23 @@ import com.googlecode.pongo.runtime.querying.*;
 public class NewsgroupTopic extends Pongo {
 	
 	protected List<String> labels = null;
-	protected List<ArticleTopicId> articlesTopicId = null;
+	protected List<String> articlesId = null;
 	
 	
 	public NewsgroupTopic() { 
 		super();
 		dbObject.put("labels", new BasicDBList());
-		dbObject.put("articlesTopicId", new BasicDBList());
+		dbObject.put("articlesId", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
 		LABELS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
+		ARTICLESID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
 	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer ARTICLESID = new ArrayQueryProducer("articlesId");
 	
 	
 	public String getNewsgroupName() {
@@ -51,13 +53,13 @@ public class NewsgroupTopic extends Pongo {
 		}
 		return labels;
 	}
-	
-	public List<ArticleTopicId> getArticlesTopicId() {
-		if (articlesTopicId == null) {
-			articlesTopicId = new PongoList<ArticleTopicId>(this, "articlesTopicId", true);
+	public List<String> getArticlesId() {
+		if (articlesId == null) {
+			articlesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("articlesId"));
 		}
-		return articlesTopicId;
+		return articlesId;
 	}
+	
 	
 	
 }

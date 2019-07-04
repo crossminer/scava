@@ -17,7 +17,6 @@ import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsM
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model.CommitMessagePlainText;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model.CommitsMessagePlainTextTransMetric;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitMessage;
-import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitMessageId;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsMessageTopicsTransMetric;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic;
 import org.eclipse.scava.platform.Date;
@@ -215,10 +214,8 @@ public class CommitsMessageTopicsTransMetricProvider implements ITransientMetric
 			commitsTopic.setNumberOfMessages(cluster.getAllDocuments().size());
 			for(Document document : cluster.getDocuments())
 			{
-				CommitMessageId commit = new CommitMessageId();
 				String[] uid = document.getStringId().split("\t");
-				commit.setRevision(uid[1]);
-				commitsTopic.getCommitsMessageId().add(commit);
+				commitsTopic.getCommitsMessageId().add(uid[1]);
 			}
 		}
 		db.sync();

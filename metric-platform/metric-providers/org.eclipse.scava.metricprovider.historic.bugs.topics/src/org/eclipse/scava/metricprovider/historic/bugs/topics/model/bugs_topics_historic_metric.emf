@@ -9,4 +9,5 @@ class BugTopic {
    	attr String bugTrackerId;
    	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] commentsId;
 }

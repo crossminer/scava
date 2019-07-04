@@ -9,4 +9,5 @@ class NewsgrpTopic {
    	attr String newsgroupName;
    	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] articlesId;
 }

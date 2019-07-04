@@ -1,9 +1,10 @@
 package org.eclipse.scava.metricprovider.historic.commits.messages.topics.model;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.List;
+
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PongoList;
+import com.mongodb.BasicDBList;
 
 
 public class CommitsMessagesTopicsHistoricMetric extends Pongo {

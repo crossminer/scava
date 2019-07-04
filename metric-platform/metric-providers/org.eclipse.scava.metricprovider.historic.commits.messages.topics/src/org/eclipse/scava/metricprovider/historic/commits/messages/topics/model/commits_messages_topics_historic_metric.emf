@@ -9,4 +9,6 @@ class CommitMessageTopic {
    	attr String repository;
    	attr String[*] labels;
    	attr int numberOfMessages;
+   	attr String[*] commitsMessageId;
 }
+

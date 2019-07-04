@@ -28,10 +28,8 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeT
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
-import org.eclipse.scava.metricprovider.trans.topics.model.ArticleTopicId;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic;
-import org.eclipse.scava.metricprovider.trans.topics.model.CommentTopicId;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.TopicsTransMetric;
@@ -159,9 +157,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			for(Document document : cluster.getAllDocuments())
 			{
 				String[] uid = document.getStringId().split("\t");
-				ArticleTopicId article = new ArticleTopicId();
-				article.setArticleNumber(Long.valueOf(uid[1]));
-				newsgroupTopic.getArticlesTopicId().add(article);
+				newsgroupTopic.getArticlesId().add(uid[1]);
 			}
 		}
 		db.sync();
@@ -180,10 +176,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			for(Document document : cluster.getAllDocuments())
 			{
 				String[] uid = document.getStringId().split("\t");
-				CommentTopicId comment = new CommentTopicId();
-				comment.setBugId(uid[1]);
-				comment.setCommentId(uid[2]);
-				bugTrackerTopic.getCommentsTopicId().add(comment);
+				bugTrackerTopic.getCommentsId().add(uid[1]+"\t"+uid[2]);
 			}
 		}
 		db.sync();

@@ -9,7 +9,7 @@ import com.googlecode.pongo.runtime.querying.*;
 public class CommitsTopic extends Pongo {
 	
 	protected List<String> labels = null;
-	protected List<CommitMessageId> commitsMessageId = null;
+	protected List<String> commitsMessageId = null;
 	
 	
 	public CommitsTopic() { 
@@ -19,11 +19,13 @@ public class CommitsTopic extends Pongo {
 		REPOSITORY.setOwningType("org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic");
 		LABELS.setOwningType("org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic");
 		NUMBEROFMESSAGES.setOwningType("org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic");
+		COMMITSMESSAGEID.setOwningType("org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic");
 	}
 	
 	public static StringQueryProducer REPOSITORY = new StringQueryProducer("repository"); 
 	public static NumericalQueryProducer NUMBEROFMESSAGES = new NumericalQueryProducer("numberOfMessages");
 	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer COMMITSMESSAGEID = new ArrayQueryProducer("commitsMessageId");
 	
 	
 	public String getRepository() {
@@ -51,13 +53,13 @@ public class CommitsTopic extends Pongo {
 		}
 		return labels;
 	}
-	
-	public List<CommitMessageId> getCommitsMessageId() {
+	public List<String> getCommitsMessageId() {
 		if (commitsMessageId == null) {
-			commitsMessageId = new PongoList<CommitMessageId>(this, "commitsMessageId", true);
+			commitsMessageId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("commitsMessageId"));
 		}
 		return commitsMessageId;
 	}
+	
 	
 	
 }

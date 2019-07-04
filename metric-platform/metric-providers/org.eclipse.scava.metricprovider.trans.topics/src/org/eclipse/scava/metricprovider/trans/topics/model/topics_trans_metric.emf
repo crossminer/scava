@@ -35,13 +35,7 @@ class BugTrackerTopic {
    	attr String bugTrackerId;
    	attr String[*] labels;
    	attr int numberOfDocuments;
-   	val CommentTopicId[*] commentsTopicId;
-}
-
-class CommentTopicId {
-	@searchable
-	attr String bugId;
-   	attr String commentId; 
+   	attr String[*] commentsId;
 }
 
 class NewsgroupTopic {
@@ -49,10 +43,5 @@ class NewsgroupTopic {
    	attr String newsgroupName;
    	attr String[*] labels;
    	attr int numberOfDocuments;
-   	val ArticleTopicId[*] articlesTopicId;
-}
-
-class ArticleTopicId {
-	@searchable
-	attr long articleNumber;
+   	attr String[*] articlesId;
 }

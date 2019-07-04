@@ -22,10 +22,5 @@ class CommitsTopic {
 	attr String repository;
 	attr String[*] labels;
 	attr int numberOfMessages;
-	val CommitMessageId[*] commitsMessageId;
-}
-
-class CommitMessageId {
-	@searchable
-	attr String revision;
+	attr String[*] commitsMessageId;
 }

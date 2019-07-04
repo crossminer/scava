@@ -10,7 +10,8 @@
 				"rows" : "$commitMessageTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
 					{ "name" : "Topics", "field" : "$labels" },
-					{ "name" : "Commits Messages", "field" : "$numberOfMessages" } ]
+					{ "name" : "Commits Messages", "field" : "$numberOfMessages" },
+					{ "name" : "Source (Revisions)", "field" : "$commitsMessageId"} ]
 			},
 			"x" : "Date",
 			"y" : "Commits Messages", 

@@ -72,6 +72,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());//uses ossmeterID
 				 topic.getLabels().addAll(newsgroupTopic.getLabels());
 				 topic.setNumberOfDocuments(newsgroupTopic.getNumberOfDocuments());
+				 topic.getArticlesId().addAll(newsgroupTopic.getArticlesId());
 			 }
 		}
 		return topics;

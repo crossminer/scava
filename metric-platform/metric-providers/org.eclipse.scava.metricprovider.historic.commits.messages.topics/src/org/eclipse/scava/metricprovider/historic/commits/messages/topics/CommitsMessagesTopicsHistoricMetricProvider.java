@@ -74,6 +74,7 @@ public class CommitsMessagesTopicsHistoricMetricProvider extends AbstractHistori
 			 topic.setRepository(commitsTopic.getRepository());
 			 topic.getLabels().addAll(commitsTopic.getLabels());
 			 topic.setNumberOfMessages(commitsTopic.getNumberOfMessages());
+			 topic.getCommitsMessageId().addAll(commitsTopic.getCommitsMessageId());
 		 }
 		return topics;
 	}
