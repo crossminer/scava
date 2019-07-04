@@ -81,6 +81,7 @@ public class Crawler {
 		
 		config.setIncludeBinaryContentInCrawling(false);
         config.setResumableCrawling(false);
+        config.setMaxDownloadSize(6250000); //50mb
         
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();

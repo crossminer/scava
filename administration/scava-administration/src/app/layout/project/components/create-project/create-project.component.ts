@@ -15,6 +15,9 @@ export class CreateProjectComponent implements OnInit {
   project: Project;
   isSaving: boolean;
   infosSouceExist: boolean;
+  gitExists: boolean;
+  gitBasedExists: boolean;
+  noLogin: string = '';
 
   constructor(
     private router: Router,
@@ -67,6 +70,13 @@ export class CreateProjectComponent implements OnInit {
   createVersionControlSystems(type: string) {
     switch (type) {
       case 'git':
+        this.gitExists = true;
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required]
+        });
+      case 'gitbased':
+        this.gitBasedExists = true;
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required]
@@ -83,11 +93,66 @@ export class CreateProjectComponent implements OnInit {
   }
 
   createCommunicationChannels(type: string) {
-    return this.formBuilder.group({
-      'type': [type],
-      'name': ['NNTP'],
-      'url': ['', Validators.required],
-    });
+    switch (type) {
+      case 'nntp':
+        return this.formBuilder.group({
+          'type': [type],
+          'name': ['NNTP'],
+          'url': ['', Validators.required],
+        });
+      case 'irc':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required],
+          'name': ['', Validators.required],
+          'description': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'sympa':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required],
+          'mailingListName': ['', Validators.required],
+          'mailingListDescription': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'mbox':
+        return this.formBuilder.group({
+          'type': [type],
+          'url': ['', Validators.required],
+          'mboxName': ['', Validators.required],
+          'mboxDescription': ['', Validators.required],
+          'compressedFileExtension': ['', Validators.required],
+          'username': [''],
+          'password': ['']
+        });
+      case 'eclipseForum':
+        return this.formBuilder.group({
+          'type': [type],
+          'forumId': ['', Validators.required],
+          'forumName': ['', Validators.required],
+          'clientId': ['', Validators.required],
+          'clientSecret': ['', Validators.required],
+        });
+      case 'documentation systematic':
+        return this.formBuilder.group({
+          'type': [type],
+          'loginOption': [''],
+          'url': [''],
+          'executionFrequency': [''],
+          'loginURL': [''],
+          'username': [''],
+          'usernameFieldName': [''],
+          'password': [''],
+          'passwordFieldName': ['']
+        });
+      default:
+        break;
+    }
   }
 
   createIssueTrackingSystems(type: string) {
@@ -143,6 +208,18 @@ export class CreateProjectComponent implements OnInit {
     const formValue = this.form.value;
     if (formValue.vcs.length == 0 && formValue.bts.length == 0 && formValue.communication_channels.length == 0) {
       this.infosSouceExist = false;
+      this.gitExists = false;
+      this.gitBasedExists = false;
+    }
+  }
+
+  toggleSystematicLogin() {
+    if (this.noLogin == 'option1') {
+      this.noLogin = 'option2';
+    } else if (this.noLogin == 'option2') {
+      this.noLogin = 'option1';
+    } else {
+      this.noLogin = 'option1';
     }
   }
 

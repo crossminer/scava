@@ -57,6 +57,8 @@ class ReadabilitySingleton {
 			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 			if (path.endsWith("bin/"))
 				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
 			File file= new File(path+lexiconPath);
 			if(!Files.exists(file.toPath()))
 				throw new FileNotFoundException("The file "+lexiconPath+" has not been found");

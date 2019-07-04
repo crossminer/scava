@@ -16,19 +16,20 @@ import org.xml.sax.SAXException;
 public class SourceStackExchangeReader extends StackExchangeReaderBase {
 	
 	
-	static String dumpDirectory = "test/stackoverflowSampleData.xml";
+	static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\SplitXML\\Folder_0\\0_part_00.xml";
+	//static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\Posts.xml";
 	
 	@Override
 	public void produce() {
 
 				StackExchangeParser parser;
 				
-				QuestionFiltersBuilder questions = QuestionFiltersBuilder.addFilters().acceptedAnswerPresent().build();
-				AnswerFiltersBuilder answers = AnswerFiltersBuilder.addFilters().score(5).build();
+				//QuestionFiltersBuilder questions = QuestionFiltersBuilder.addFilters().acceptedAnswerPresent().build();
+				//AnswerFiltersBuilder answers = AnswerFiltersBuilder.addFilters().score(5).build();
 
 				StackExchangeParserBuilder parserBuilder = StackExchangeParserBuilder
-						.dumpFile(dumpDirectory).addPostTypes()
-						.questionFilters(questions).answerFilters(AnswerFiltersBuilder.allAnswers().build()).build();
+						.dumpFile(dumpDirectory).allPosts().build();
+						//.questionFilters(questions).answerFilters(AnswerFiltersBuilder.allAnswers().build()).build();
 
 				try {
 					

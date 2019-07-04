@@ -37,6 +37,11 @@ from perceval.backends.scava.scava import (Scava,
                                            CATEGORY_FACTOID,
                                            CATEGORY_METRIC,
                                            CATEGORY_USER,
+                                           CATEGORY_TOPIC,
+                                           CATEGORY_RECOMMENDATION,
+                                           CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS,
+                                           CATEGORY_CONF_SMELL,
+                                           CATEGORY_PROJECT_RELATION,
                                            DEP_MAVEN,
                                            DEP_OSGI)
 from grimoirelab_toolkit.datetime import str_to_datetime
@@ -44,6 +49,7 @@ from grimoirelab_toolkit.datetime import str_to_datetime
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 
+KEYWORD_MAX_SIZE = 30000  # this control allows to avoid max_bytes_length_exceeded_exception
 
 META_MARKER = '--meta'
 DEFAULT_TOP_PROJECT = 'main'
@@ -83,6 +89,7 @@ def get_params():
                                      description="Import Scava metrics in ElasticSearch")
     parser.add_argument("--project", help="CROSSMINER Project Collection")
     parser.add_argument("--category", help="category (either metric or factoid)")
+    parser.add_argument("--recommendation-url", default='http://localhost:8080', help="Recommendation API URL")
     parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, type=int, help="Number of items uploaded per bulk")
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int, help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", default='http://localhost:8182',
@@ -437,6 +444,34 @@ def enrich_factoids(scava_factoids, meta_info=None):
     logging.info("Factoid enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_version_dependencies(scava_version_dependencies, meta_info=None):
+    """
+    Enrich version dependencies coming from Scava to use them in Kibana
+
+    :param scava_version_dependencies: dependency generator
+    :param meta_info: meta project information retrieved from the project description
+    :return:
+    """
+    processed = 0
+
+    for scava_dep in scava_version_dependencies:
+        processed += 1
+
+        dependency_data = scava_dep['data']
+        eitem = dependency_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(dependency_data['updated']).isoformat()
+        eitem['uuid'] = uuid(dependency_data['id'], dependency_data['project'], dependency_data['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Dependency version enrichment summary - processed/enriched: %s", processed)
+
+
 def enrich_dependencies(scava_dependencies, meta_info=None):
     """
     Enrich dependencies coming from Scava to use them in Kibana
@@ -470,6 +505,165 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
         yield eitem
 
     logging.info("Dependency enrichment summary - processed/enriched: %s", processed)
+
+
+def enrich_recommendations(scava_recommendations, meta_info=None):
+    """
+    Enrich recommendation data from the Knowledge-Based (KB) database.
+    The current enriched items contains the ID of the recommended project in the KB, its name,
+    full name, description, url, readme, dependencies, whether the project is active or not,
+    the type of recommendation, the project in SCAVA and when it was updated.
+    An example of enriched item is shown below:
+
+          "id" : "5b155b04065f2d726d6db241",
+          "name" : "kotlinRestAssured",
+          "full_name" : "rmarinsky/kotlinRestAssured",
+          "description" : "SImple project for demonstartion compatibility of Kotlin with rest-assuredd",
+          "url" : "https://github.com/rmarinsky/kotlinRestAssured",
+          "readme" : "...",
+          "dependencies" : [
+            "junit:junit",
+            "io.rest-assured:rest-assured",
+            "com.google.cloud:google-cloud-translate",
+            "org.assertj:assertj-core",
+            "com.fasterxml.jackson.core:jackson-databind"
+          ],
+          "active" : true,
+          "recommendation_type" : "Compound",
+          "project" : "microprofile",
+          "updated" : "20180430",
+          "datetime" : "2018-04-30T00:00:00+00:00",
+          "uuid" : "ba595239b468c7242ccfd0f8203386d8d82a049c",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_recommendations: recommendation generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for scava_recommendation in scava_recommendations:
+        processed += 1
+
+        recommendation_data = scava_recommendation['data']
+        eitem = recommendation_data
+
+        eitem['readme'] = eitem['readme'][:KEYWORD_MAX_SIZE]
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+        eitem['uuid'] = uuid(eitem['recommendation_type'], eitem['id'], eitem['url'], eitem['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Recommendation enrichment summary - processed/enriched: %s", processed)
+
+
+def enrich_conf_smells(conf_smells, meta_info=None):
+    """Enrich the configuration smells data extracted from the SCAVA API raw endpoints.
+    The current enriched items contains the smell name, the line and file name where the smell was detected,
+    the reason, the type of configuration (puppet or docker), the smell type (implementation or design) and
+    the sub type (e.g., antipattern), some optional attributes such as the commit and date when the smell
+    was found (`date`), plus information about the project (`project` and `meta`), when the project was updated,
+    the id of the smell and the uuid of the enriched item. It is worth noting that the field `datetime` is derived
+    using the `date` attribute (if not None) or the project `updated` attribute.
+    An example of enriched item is shown below:
+
+          "smell_name" : "Inconsistent naming convention",
+          "line" : " 24",
+          "reason" : " python::pyvenv not in autoload module layout ",
+          "file_name" : "/root/scava/puppetpython/.../manifests/pyvenv.pp ",
+          "commit" : "c3bb6b37e7711f816faba3ea8fb98b72286830e1",
+          "date" : "2019-05-21T18:40:17.000Z",
+          "conf_type" : "puppet",
+          "smell_type" : "implementation",
+          "smell_sub_type" : "antipattern",
+          "id" : "puppet_implementation_Inconsistent...",
+          "updated" : "20190402",
+          "project" : "puppetpython",
+          "datetime" : "2019-05-21T18:40:17+00:00",
+          "uuid" : "11eb644184b9a752ccda2e00af5a76d9bfbcc32b",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param conf_smells: configuration smells generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for conf_smell in conf_smells:
+        processed += 1
+
+        smell_data = conf_smell['data']
+        eitem = smell_data
+
+        eitem['reason'] = eitem['reason'][:KEYWORD_MAX_SIZE]
+        # common fields
+
+        if 'date' in eitem and eitem['date']:
+            eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        else:
+            eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+
+        eitem['uuid'] = uuid(eitem['id'], eitem['project'], eitem['datetime'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Configuration smell enrichment summary - processed/enriched: %s", processed)
+
+
+def enrich_project_relations(project_relations, meta_info=None):
+    """
+    Enrich project relations data coming from Scava to use them in Kibana.
+    The current enriched items contain the type of the relation (e.g., docker), the name of
+    the related project, when the relation was calculated (`datetime`), plus project
+    and meta project information. An example of enriched item is shown below:
+
+          "relation_type" : "docker",
+          "related_to" : "im",
+          "id" : "vim_im",
+          "updated" : "20190616",
+          "project" : "vim",
+          "datetime" : "2019-06-16T00:00:00+00:00",
+          "uuid" : "1fe3957fa267d89c86c3b1f5ca86fd28a40f7548",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param project_relations: project relations data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for project_relation in project_relations:
+        processed += 1
+
+        relation_data = project_relation['data']
+        eitem = relation_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
+        eitem['uuid'] = uuid(eitem['id'], eitem['project'], eitem['updated'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Project relation summary - processed/enriched: %s", processed)
 
 
 def enrich_users(scava_users, meta_info=None):
@@ -522,6 +716,50 @@ def enrich_users(scava_users, meta_info=None):
     logging.info("User enrichment summary - processed/enriched: %s", processed)
 
 
+def enrich_comments_topics(scava_comments_topics, meta_info=None):
+    """
+    Enrich comments topics data coming from Scava to use them in Kibana.
+    The current enriched items contain the topic name, the date (i.e., `date` and `datetime`) when
+    the metric was calculated, the number of comments for that topic, the scava metric from
+    where the data was fetched, project and meta project information.
+
+          "topic" : "Wider Community",
+          "date" : "20190307",
+          "comments" : 2,
+          "scava_metric" : "bugs.topics.comments",
+          "updated" : "20180430",
+          "project" : "microprofile",
+          "datetime" : "2019-03-07T00:00:00+00:00",
+          "uuid" : "6e3b802219e41792d7c3a0744b3305c42f1e249c",
+          "meta" : {
+            "top_projects" : [
+              "main"
+            ]
+          }
+
+    :param scava_comments_topics: user data generator
+    :param meta_info: meta project information retrieved from the project description
+    """
+    processed = 0
+
+    for comment_topic in scava_comments_topics:
+        processed += 1
+
+        topic_data = comment_topic['data']
+        eitem = topic_data
+
+        # common fields
+        eitem['datetime'] = str_to_datetime(eitem['date']).isoformat()
+        eitem['uuid'] = uuid(eitem['topic'], eitem['project'], eitem['date'])
+
+        if meta_info:
+            eitem['meta'] = meta_info
+
+        yield eitem
+
+    logging.info("Comments topics enrichment summary - processed/enriched: %s", processed)
+
+
 def extract_meta(project_name, description=None):
     """Extract the meta information defined in the project description. Meta information
     should appear at the very end of the description after the marker META_MARKER, for instance:
@@ -554,23 +792,25 @@ def extract_meta(project_name, description=None):
     return meta
 
 
-def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
+def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC, recommendation_url=None):
     """
     Fetch the metrics from a Scava project using the Scava API REST
 
     :param project: name of the Scava project to get the metrics from
     :param url_api_rest: URL for the Scava API REST
     :param category: category of the items to fetch
+    :param recommendation_url: URL for the Recommendation API REST
+
     :return: a metrics generator
     """
-    scava = Scava(url=url_api_rest, project=project)
+    scava = Scava(url=url_api_rest, project=project, recommendation_url=recommendation_url)
 
     if not project:
         # Get the list of projects and get the metrics for all of them
         for project_scava in scava.fetch():
 
             project_shortname = project_scava['data']['shortName']
-            scavaProject = Scava(url=url_api_rest, project=project_shortname)
+            scavaProject = Scava(url=url_api_rest, project=project_shortname, recommendation_url=recommendation_url)
 
             prj_descr = project_scava['data']['description'] if 'description' in project_scava['data'] else None
             meta = extract_meta(prj_descr, project_shortname)
@@ -582,7 +822,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_metric
 
                 logging.debug("End fetch metrics for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_FACTOID:
                 logging.debug("Start fetch factoids for %s" % project_scava['data']['shortName'])
 
@@ -590,7 +829,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_factoid
 
                 logging.debug("End fetch factoids for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_DEV_DEPENDENCY:
                 logging.debug("Start fetch dev dependencies for %s" % project_scava['data']['shortName'])
 
@@ -598,7 +836,6 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_dep
 
                 logging.debug("End fetch dev dependencies for %s" % project_scava['data']['shortName'])
-
             elif category == CATEGORY_CONF_DEPENDENCY:
                 logging.debug("Start fetch conf dependencies for %s" % project_scava['data']['shortName'])
 
@@ -606,6 +843,14 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_dep
 
                 logging.debug("End fetch conf dependencies for %s" % project_scava['data']['shortName'])
+            elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+                logging.debug("Start fetch version dependencies for %s" % project_scava['data']['shortName'])
+
+                for enriched_dep in enrich_version_dependencies(
+                        scavaProject.fetch(CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS), meta):
+                    yield enriched_dep
+
+                logging.debug("End fetch version dependencies for %s" % project_scava['data']['shortName'])
             elif category == CATEGORY_USER:
                 logging.debug("Start fetch user data for %s" % project)
 
@@ -613,6 +858,40 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                     yield enriched_user
 
                 logging.debug("End fetch user data for %s" % project)
+            elif category == CATEGORY_RECOMMENDATION:
+                logging.debug("Start fetch recommendation data for %s" % project)
+
+                for enriched_recommendation in enrich_recommendations(scavaProject.fetch(CATEGORY_RECOMMENDATION),
+                                                                      meta):
+                    yield enriched_recommendation
+
+                logging.debug("End fetch recommendation data for %s" % project)
+            elif category == CATEGORY_CONF_SMELL:
+                logging.debug("Start fetch configuration smells data for %s" % project)
+
+                for enriched_conf_smell in enrich_conf_smells(scavaProject.fetch(CATEGORY_CONF_SMELL),
+                                                              meta):
+                    yield enriched_conf_smell
+
+                logging.debug("End fetch configuration smells data for %s" % project)
+
+            elif category == CATEGORY_PROJECT_RELATION:
+                logging.debug("Start fetch project relations for %s" % project)
+
+                for enriched_project_relation in enrich_project_relations(scavaProject.fetch(CATEGORY_PROJECT_RELATION),
+                                                                          meta):
+                    yield enriched_project_relation
+
+                logging.debug("End fetch project relations for %s" % project)
+
+            elif category == CATEGORY_TOPIC:
+                logging.debug("Start fetch comments topics for %s" % project)
+
+                for enriched_comment_topic in enrich_comments_topics(scavaProject.fetch(CATEGORY_TOPIC),
+                                                                     meta):
+                    yield enriched_comment_topic
+
+                logging.debug("End fetch comments topics for %s" % project)
 
             else:
                 msg = "category %s not handled" % category
@@ -646,7 +925,13 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_dep
 
             logging.debug("End fetch conf dependencies for %s" % project)
+        elif category == CATEGORY_DEPENDENCY_OLD_NEW_VERSIONS:
+            logging.debug("Start fetch version dependencies for %s" % project)
 
+            for enriched_dep in enrich_version_dependencies(scava.fetch(CATEGORY_DEV_DEPENDENCY)):
+                yield enriched_dep
+
+            logging.debug("End fetch version dependencies for %s" % project)
         elif category == CATEGORY_USER:
             logging.debug("Start fetch user data for %s" % project)
 
@@ -654,7 +939,36 @@ def fetch_scava(url_api_rest, project=None, category=CATEGORY_METRIC):
                 yield enriched_user
 
             logging.debug("End fetch user data for %s" % project)
+        elif category == CATEGORY_RECOMMENDATION:
+            logging.debug("Start fetch recommendation data for %s" % project)
 
+            for enriched_recommendation in enrich_recommendations(scava.fetch(CATEGORY_RECOMMENDATION)):
+                yield enriched_recommendation
+
+            logging.debug("End fetch recommendation data for %s" % project)
+        elif category == CATEGORY_CONF_SMELL:
+            logging.debug("Start fetch configuration smells data for %s" % project)
+
+            for enriched_conf_smell in enrich_conf_smells(scava.fetch(CATEGORY_CONF_SMELL)):
+                yield enriched_conf_smell
+
+            logging.debug("End fetch configuration smells data for %s" % project)
+
+        elif category == CATEGORY_PROJECT_RELATION:
+            logging.debug("Start fetch project relations for %s" % project)
+
+            for enriched_project_relation in enrich_project_relations(scava.fetch(CATEGORY_PROJECT_RELATION)):
+                yield enriched_project_relation
+
+            logging.debug("End fetch project relations for %s" % project)
+
+        elif category == CATEGORY_TOPIC:
+            logging.debug("Start fetch comments topics for %s" % project)
+
+            for enriched_comment_topic in enrich_comments_topics(scava.fetch(CATEGORY_TOPIC)):
+                yield enriched_comment_topic
+
+            logging.debug("End fetch comments topics for %s" % project)
         else:
             msg = "category %s not handled" % category
             raise Exception(msg)
@@ -689,7 +1003,7 @@ if __name__ == '__main__':
     elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
-    scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category)
+    scava_data = fetch_scava(ARGS.url, ARGS.project, ARGS.category, ARGS.recommendation_url)
 
     if scava_data:
         logging.info("Uploading Scava data to Elasticsearch")

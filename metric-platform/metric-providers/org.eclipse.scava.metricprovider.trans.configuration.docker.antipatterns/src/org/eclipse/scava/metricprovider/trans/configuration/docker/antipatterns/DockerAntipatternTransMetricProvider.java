@@ -92,6 +92,8 @@ public class DockerAntipatternTransMetricProvider implements ITransientMetricPro
 					
 					String repoUrl = repo.getUrl();
 					
+					String wcpath = workingCopyFolders.get(repoUrl).getPath().toString();
+					
 					Jadolint j = new Jadolint();
 					
 					Files.walk(Paths.get(workingCopyFolders.get(repoUrl).getPath()))
@@ -159,7 +161,7 @@ public class DockerAntipatternTransMetricProvider implements ITransientMetricPro
 							
 							dockerAntipattern.setReason(v.getMessage());
 							dockerAntipattern.setCode(v.getCode());
-							dockerAntipattern.setFileName(v.getFileName());
+							dockerAntipattern.setFileName(v.getFileName().replace(wcpath, ""));
 							dockerAntipattern.setLine(String.valueOf(v.getLineNumber()));
 							dockerAntipattern.setCommit(getLastRevision(projectDelta));
 							dockerAntipattern.setDate(getLastDate(projectDelta));
