@@ -4,7 +4,7 @@
 		{
 			"id" : "newsgroups.topics.articles",
 			"name" : "Newsgroups Articles Topics",
-			"description" : "The number of newsgroups articles containing each topic.",
+			"description" : "The number of newsgroups articles contained in each cluster of topics.",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$newsgrpTopics",

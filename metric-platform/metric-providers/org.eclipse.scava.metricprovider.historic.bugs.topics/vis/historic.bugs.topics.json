@@ -4,7 +4,7 @@
 		{
 			"id" : "bugs.topics.comments",
 			"name" : "Bug Comments Topics",
-			"description" : "The number of bug comments containing each cluster of topics.",
+			"description" : "The number of bug comments contained in each cluster of topics.",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$bugTopics",
