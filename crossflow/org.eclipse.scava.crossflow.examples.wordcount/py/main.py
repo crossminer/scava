@@ -3,7 +3,7 @@ import sys
 import time
 
 from org.eclipse.scava.crossflow.runtime import Mode
-from org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow import WordCountWorkflow
+from org.eclipse.scava.crossflow.examples.wordcount.runtime.WordCountWorkflow import WordCountWorkflow
 
 
 if __name__ == '__main__':

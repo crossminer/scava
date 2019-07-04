@@ -1,4 +1,4 @@
-from org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow import WordCountWorkflow
+from org.eclipse.scava.crossflow.examples.wordcount.runtime.WordCountWorkflow import WordCountWorkflow
 import time
 
 worker = WordCountWorkflow()

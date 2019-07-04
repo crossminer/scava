@@ -1,4 +1,4 @@
-from org.eclipse.scava.crossflow.examples.wordcount.FilterBase import FilterBase
+from org.eclipse.scava.crossflow.examples.wordcount.runtime.FilterBase import FilterBase
 
 class Filter(FilterBase):
 
