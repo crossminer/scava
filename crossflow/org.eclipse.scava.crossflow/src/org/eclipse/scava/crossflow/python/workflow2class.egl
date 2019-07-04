@@ -38,10 +38,12 @@ class [%=w.name%](Workflow):
         [%}%]
         
         # Task creation
+        self.tasks = []
         [%for (t in w.getWorkerTasks()){%]
         if (not '[%=t.name%]' in self.tasksToExclude):
             self.[%=t.name.ftlc()%] = [%=t.name%]()
             self.[%=t.name.ftlc()%].setWorkflow(self)
+            self.tasks.append(self.[%=t.name.ftlc()%])
         [%}%]
 
     def createWorker(self):

@@ -14,6 +14,7 @@ import shutil
 import csv
 import os
 import sys
+import threading
 
 from enum import Enum
 from pathlib import Path
@@ -590,15 +591,13 @@ class BuiltinStream(object):
     classdocs
     '''
 
-    def __init__(self, workflow, name, *args):
+    def __init__(self, workflow, name, broadcast=True):
         '''
         Constructor
         '''
-        self.broadcast = True
-        if(len(args) > 0):
-            self.broadcast = args[0]
-        self.workflow = workflow
         self.name = name
+        self.workflow = workflow
+        self.broadcast = broadcast
         self.consumers = []
         self.listeners = []
         self.pendingConsumers = []
@@ -1172,9 +1171,21 @@ class Workflow(object):
         self.taskStatusTopic = BuiltinStream(self, "TaskStatusPublisher")
         self.resultsTopic = BuiltinStream(self, "ResultsBroadcaster")
         self.streamMetadataTopic = BuiltinStream(self, "StreamMetadataBroadcaster")
+        self.taskMetadataTopic = BuiltinStream(self, "TaskMetadataBroadcaster")
         self.controlTopic = BuiltinStream(self, "ControlTopic")
+        self.logTopic = BuiltinStream(self, "LogTopic")
         self.failedJobsQueue = BuiltinStream(self, "FailedJobs", False)
         self.internalExceptionsQueue = BuiltinStream(self, "InternalExceptions", False)
+        
+        self._allStreams = []
+        self._allStreams.append(self.taskStatusTopic)
+        self._allStreams.append(self.resultsTopic)
+        self._allStreams.append(self.streamMetadataTopic)
+        self._allStreams.append(self.taskMetadataTopic)
+        self._allStreams.append(self.controlTopic)
+        self._allStreams.append(self.logTopic)
+        self._allStreams.append(self.failedJobsQueue)
+        self._allStreams.append(self.internalExceptionsQueue)
 
         self.failedJobs = None
         self.internalExceptions = None
@@ -1262,15 +1273,20 @@ class Workflow(object):
     def connect(self): 
         if (self.tempDirectory == None): 
             self.tempDirectory = tempfile.NamedTemporaryFile(prefix='crossflow')
+
         self.taskStatusTopic.init()
         self.resultsTopic.init()
         self.streamMetadataTopic.init()
+        self.taskMetadataTopic.init()
         self.controlTopic.init()
+        self.logTopic.init()
         self.failedJobsQueue.init()
         self.internalExceptionsQueue.init()
+
         self.activeStreams.append(self.taskStatusTopic)
         self.activeStreams.append(self.failedJobsQueue)
         self.activeStreams.append(self.internalExceptionsQueue)
+        
         # XXX do not add this topic/queue or any other non-essential ones to
         # activestreams as the workflow should be able to terminate regardless of their
         # state
@@ -1280,17 +1296,7 @@ class Workflow(object):
         self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal)) 
         # XXX if the worker sends this before the master is listening to this topic
         # / this information is lost which affects termination
-
-        if self.isMaster(): 
-            self.taskStatusTopic.addConsumer(BuiltinStreamConsumer(self.consumeTaskStatus)) 
-            self.failedJobs = []
-            self.failedJobsQueue.addConsumer(BuiltinStreamConsumer(self.consumeFailedJob))
-            self.internalExceptions = []
-            self.internalExceptionsQueue.addConsumer(BuiltinStreamConsumer(self.consumeInternalException))
-
-            # terminationTimer = new Timer(); TODO
-        else:
-            self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
+        self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
 
     def cancelTermination(self): 
         self.aboutToTerminate = False
@@ -1363,96 +1369,35 @@ class Workflow(object):
         {noformat} 
         """
         return True
+    
+    def terminate(self):
+        term_thread = threading.Thread(target=self.__terminate)
+        term_thread.start()
 
-    def terminate(self): 
+    def __terminate(self): 
         if self.terminated:
             return
 
         if self.terminationTimer != None:
             self.terminationTimer.cancel()
 
-        try: 
-            # master graceful termination logic
-            if self.isMaster(): 
+        # termination logic
+        print("terminating workflow... (" + self.getName() + ")");
+        # TODO: see Java comments remove from activeStreams
 
-                # ask all workers to terminate
-                self.controlTopic.send(ControlSignal(ControlSignals.TERMINATION, self.getName()))
+        self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
 
-                startTime = currentTimeMillis()
-                # wait for workers to terminate or for the termination timeout
-                while ((currentTimeMillis() - startTime) < self.terminationTimeout): 
-                    # System.out.println(terminatedWorkerIds);
-                    # System.out.println(activeWorkerIds);
-                    if (self.terminatedWorkerIds.equals(self.activeWorkerIds)): 
-                        print("all workers terminated, terminating master...");
-                        break
-                    
-                    # Thread.sleep(100);
-                
-                print("terminating master...");
-
-            # termination logic
-            print("terminating workflow... (" + self.getName() + ")");
-
-            if self.isMaster(): 
-                if(self.streamMetadataTimer != None):
-                    self.streamMetadataTimer.cancel()
-                try: 
-                    self.streamMetadataTopic.stop()
-                except Exception as ex:
-                    debug(ex) 
-                    # Ignore any exception
-                
-                self.activeStreams.remove(self.streamMetadataTopic)
-                try: 
-                    self.controlTopic.stop()
-                except Exception as ex:
-                    debug(ex) 
-                    # Ignore any exception
-                
-                self.activeStreams.remove(self.controlTopic)
-                print("createBroker: " + self.createBroker)
-                if self.createBroker: 
-                    self.stopBroker()
-                
-            else:
-
-                try: 
-                    self.controlTopic.stop()
-                except Exception as ex:
-                    traceback.print_exc()
-                    debug(ex) 
-                    # Ignore any exception
-                
-                self.activeStreams.remove(self.controlTopic)
+        for stream in self._allStreams:
+            print(stream.name)
             try:
-                self.resultsTopic.stop()
-            except Exception as ex:
-                traceback.print_exc()
-                debug(ex) 
+                print(stream.connection)
+                stream.stop()
+            except Exception:
                 # Ignore any exception
-
-            self.activeStreams.remove(self.resultsTopic)
-
-            # stop all remaining stream connections
-            for stream in self.activeStreams: 
-                try:
-                    stream.stop()
-                except Exception as ex:
-                    traceback.print_exc()
-                    # Ignore any exception
-            
-            if not self.isMaster():                 
-                self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
-
-            self.terminated = True
-            print("workflow " + self.getName() + " terminated.")
-        except Exception as ex:
-            traceback.print_exc()
- 
-            # There is nothing to do at this stage -- print error for debugging purposes
-            # only
-            # ex.printStackTrace();
+                traceback.print_exc()
+        
+        self.terminated = True
+        print("workflow " + self.getName() + " terminated.")
 
     def hasTerminated(self): 
         return self.terminated

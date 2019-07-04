@@ -90,3 +90,6 @@ class [%=t.name%]Base(Task):
 	def produce(self):
 		pass
 	[%}%]
+	
+	def close(self):
+		pass
