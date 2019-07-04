@@ -28,8 +28,10 @@ import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeT
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.NewsgroupArticleDetectingCode;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
+import org.eclipse.scava.metricprovider.trans.topics.model.ArticleTopicId;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic;
+import org.eclipse.scava.metricprovider.trans.topics.model.CommentTopicId;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData;
 import org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.TopicsTransMetric;
@@ -152,8 +154,15 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			db.getNewsgroupTopics().add(newsgroupTopic);
 			CommunicationChannel communicationChannel = ccpDelta.getCommunicationChannel();
 			newsgroupTopic.setNewsgroupName(communicationChannel.getOSSMeterId());
-			newsgroupTopic.setLabel(cluster.getLabel());
+			newsgroupTopic.getLabels().addAll(cluster.getPhrases());
 			newsgroupTopic.setNumberOfDocuments(cluster.getAllDocuments().size());
+			for(Document document : cluster.getAllDocuments())
+			{
+				String[] uid = document.getStringId().split("\t");
+				ArticleTopicId article = new ArticleTopicId();
+				article.setArticleNumber(Long.valueOf(uid[1]));
+				newsgroupTopic.getArticlesTopicId().add(article);
+			}
 		}
 		db.sync();
 	}
@@ -166,8 +175,16 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			BugTrackerTopic bugTrackerTopic = new BugTrackerTopic();
 			db.getBugTrackerTopics().add(bugTrackerTopic);
 			bugTrackerTopic.setBugTrackerId(btspDelta.getBugTrackingSystem().getOSSMeterId());
-			bugTrackerTopic.setLabel(cluster.getLabel());
+			bugTrackerTopic.getLabels().addAll(cluster.getPhrases());
 			bugTrackerTopic.setNumberOfDocuments(cluster.getAllDocuments().size());
+			for(Document document : cluster.getAllDocuments())
+			{
+				String[] uid = document.getStringId().split("\t");
+				CommentTopicId comment = new CommentTopicId();
+				comment.setBugId(uid[1]);
+				comment.setCommentId(uid[2]);
+				bugTrackerTopic.getCommentsTopicId().add(comment);
+			}
 		}
 		db.sync();
 	}
@@ -300,7 +317,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		 * Perform clustering by topic using the Lingo algorithm. Lingo can take
 		 * advantage of the original query, so we provide it along with the documents.
 		 */
-		final ProcessingResult byTopicClusters = controller.process(documents, "data mining",
+		final ProcessingResult byTopicClusters = controller.process(documents, null,
 				LingoClusteringAlgorithm.class);
 		final List<Cluster> clustersByTopic = byTopicClusters.getClusters();
 

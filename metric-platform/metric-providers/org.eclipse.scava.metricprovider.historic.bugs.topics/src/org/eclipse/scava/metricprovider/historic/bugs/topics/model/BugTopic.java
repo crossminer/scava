@@ -1,33 +1,27 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.bugs.topics.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class BugTopic extends Pongo {
 	
+	protected List<String> labels = null;
 	
 	
 	public BugTopic() { 
 		super();
+		dbObject.put("labels", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
-		LABEL.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
+		LABELS.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.topics.model.BugTopic");
 	}
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
-	public static StringQueryProducer LABEL = new StringQueryProducer("label"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
+	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
 	
 	
 	public String getBugTrackerId() {
@@ -36,15 +30,6 @@ public class BugTopic extends Pongo {
 	
 	public BugTopic setBugTrackerId(String bugTrackerId) {
 		dbObject.put("bugTrackerId", bugTrackerId);
-		notifyChanged();
-		return this;
-	}
-	public String getLabel() {
-		return parseString(dbObject.get("label")+"", "");
-	}
-	
-	public BugTopic setLabel(String label) {
-		dbObject.put("label", label);
 		notifyChanged();
 		return this;
 	}
@@ -58,6 +43,12 @@ public class BugTopic extends Pongo {
 		return this;
 	}
 	
+	public List<String> getLabels() {
+		if (labels == null) {
+			labels = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("labels"));
+		}
+		return labels;
+	}
 	
 	
 	

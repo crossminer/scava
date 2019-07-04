@@ -4,12 +4,12 @@
 		{
 			"id" : "bugs.topics.comments",
 			"name" : "Bug Comments Topics",
-			"description" : "The number of bug comments containing each topic.",
+			"description" : "The number of bug comments containing each cluster of topics.",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$bugTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Topic", "field" : "$label" },
+					{ "name" : "Topics", "field" : "$labels" },
 					{ "name" : "Comments", "field" : "$numberOfDocuments" } ]
 			},
 			"x" : "Date",

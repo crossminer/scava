@@ -55,7 +55,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 				 BugTopic topic = new BugTopic();
 				 topics.getBugTopics().add(topic);
 				 topic.setBugTrackerId(bugTrackerTopic.getBugTrackerId());
-				 topic.setLabel(bugTrackerTopic.getLabel());
+				 topic.getLabels().addAll(bugTrackerTopic.getLabels());
 				 topic.setNumberOfDocuments(bugTrackerTopic.getNumberOfDocuments());
 			 }
 		}
@@ -84,12 +84,11 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getFriendlyName() {
-		return "Labels of topics in bug comments per day";
+		return "Labels of topics clusters in bug comments per bug tracker";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematic clusters) in bug comments "
-				+ "submitted by the community (users) every day, per bug tracker..";
+		return "This metric computes the labels of topic clusters extracted from bug comments submitted by the community (users), per bug tracker." ;
 	}
 }
