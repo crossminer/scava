@@ -2,7 +2,11 @@ package org.eclipse.scava.business.model;
 
 import java.util.Date;
 
+import org.eclipse.aether.artifact.Artifact;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class MavenLibrary {
 	@Id
@@ -12,6 +16,9 @@ public class MavenLibrary {
 	private String groupid;
 	private String version;
 	private Date releasedate;
+	@JsonIgnore
+	@Transient
+	private Artifact artifact;
 	public String getCompleteLibrary() {
 		return completeLibrary;
 	}
@@ -41,5 +48,11 @@ public class MavenLibrary {
 	}
 	public void setGroupid(String groupid) {
 		this.groupid = groupid;
+	}
+	public Artifact getArtifact() {
+		return artifact;
+	}
+	public void setArtifact(Artifact artifact) {
+		this.artifact = artifact;
 	}
 }
