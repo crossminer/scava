@@ -17,6 +17,7 @@ import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsM
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model.CommitMessagePlainText;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.model.CommitsMessagePlainTextTransMetric;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitMessage;
+import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitMessageId;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsMessageTopicsTransMetric;
 import org.eclipse.scava.metricprovider.trans.commits.message.topics.model.CommitsTopic;
 import org.eclipse.scava.platform.Date;
@@ -197,7 +198,7 @@ public class CommitsMessageTopicsTransMetricProvider implements ITransientMetric
 		 * Perform clustering by topic using the Lingo algorithm. Lingo can take
 		 * advantage of the original query, so we provide it along with the documents.
 		 */
-		final ProcessingResult byTopicClusters = controller.process(documents, "data mining",
+		final ProcessingResult byTopicClusters = controller.process(documents, null,
 				LingoClusteringAlgorithm.class);
 		final List<Cluster> clustersByTopic = byTopicClusters.getClusters();
 
@@ -210,8 +211,15 @@ public class CommitsMessageTopicsTransMetricProvider implements ITransientMetric
 			CommitsTopic commitsTopic = new CommitsTopic();
 			db.getCommitsTopics().add(commitsTopic);
 			commitsTopic.setRepository(vcsRepositoryDelta.getRepository().getUrl());
-			commitsTopic.setLabel(cluster.getLabel());
+			commitsTopic.getLabels().addAll(cluster.getPhrases());
 			commitsTopic.setNumberOfMessages(cluster.getAllDocuments().size());
+			for(Document document : cluster.getDocuments())
+			{
+				CommitMessageId commit = new CommitMessageId();
+				String[] uid = document.getStringId().split("\t");
+				commit.setRevision(uid[1]);
+				commitsTopic.getCommitsMessageId().add(commit);
+			}
 		}
 		db.sync();
 	}

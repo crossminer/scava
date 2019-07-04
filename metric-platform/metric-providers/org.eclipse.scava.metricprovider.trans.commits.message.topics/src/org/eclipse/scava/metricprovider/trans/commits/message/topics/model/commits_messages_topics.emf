@@ -20,6 +20,12 @@ class CommitMessage {
 class CommitsTopic {
 	@searchable
 	attr String repository;
-	attr String label;
+	attr String[*] labels;
 	attr int numberOfMessages;
+	val CommitMessageId[*] commitsMessageId;
+}
+
+class CommitMessageId {
+	@searchable
+	attr String revision;
 }
