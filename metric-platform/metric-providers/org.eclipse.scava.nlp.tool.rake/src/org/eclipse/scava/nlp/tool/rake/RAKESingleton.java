@@ -48,10 +48,11 @@ public class RAKESingleton {
 				semiStopwordsPatterns.add(Pattern.compile("^ ?"+stopword+" "));
 				semiStopwordsPatterns.add(Pattern.compile(stopword+" ?$"));
 			}
+			logger.info("The stopwords have been sucessfully loaded");
 		}
 		catch (IOException | InputMismatchException  e) 
 		{
-			logger.error("Error while loading the lexicon:", e);
+			logger.error("Error while loading the stopwords:", e);
 			e.printStackTrace();
 		}	
 	}
