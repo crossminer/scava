@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Codeparsers
+Bundle-SymbolicName: org.eclipse.scava.code.tokenizers;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.code.tokenizers
+Bundle-Activator: org.eclipse.scava.code.tokenizers.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.runtime,
+ org.antlr.antlr4

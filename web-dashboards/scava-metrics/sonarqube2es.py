@@ -28,12 +28,11 @@
 import argparse
 import hashlib
 import logging
-import json
 import time
 
-from perceval.backends.sonarqube import Sonar
+from perceval.backends.scava.sonarqube import Sonar
 
-from grimoirelab_toolkit.datetime import str_to_datetime
+from grimoirelab_toolkit.datetime import unixtime_to_datetime
 
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
@@ -51,6 +50,7 @@ def get_params():
                         help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", help="URL for Sonarqube instance")
     parser.add_argument("-c", "--components", nargs='+', help="List of components")
+    parser.add_argument("-m", "--metrics", nargs='+', help="List of metrics")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -140,25 +140,63 @@ def enrich_metrics(sonar_metrics):
     :param sonar_metrics: metrics generator
     :return:
     """
+    processed = 0
+    enriched_skipped = 0
 
     for sonar_metric in sonar_metrics:
 
-        metric = {
-            # origin : https://sonarcloud.io/api/measures/component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
+        processed += 1
+
+        project = ((sonar_metric['origin'].split('?')[1]).split('&')[0]).split('=')[1]
+        datetime = unixtime_to_datetime(sonar_metric['data']['fetched_on']).isoformat()
+
+        sonar_data = sonar_metric['data']
+
+        try:
+            metric_value = sonar_data.get('value', None)
+            if metric_value:
+                float(metric_value)
+        except:
+            metric_value = None
+
+        if not metric_value:
+            periods = sonar_data.get('periods', [])
+            if periods:
+                metric_value = periods[0]['value']
+
+        if not metric_value:
+            msg = "Metric value not processed for {} and value {}".format(sonar_data['metric'], sonar_data['value'])
+            logging.warning(msg)
+            enriched_skipped += 1
+        else:
+            metric_value = float(metric_value)
+
+        eitem = {
+            # origin : https://sonarc..component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
             # we get only component name, in this example: org.xwiki.contrib:application-antispam
-            'project': ((sonar_metrics['origin'].split('?')[1]).split('&')[0]).split('=')[1],
-            'metric_class': sonar_metrics['data']['id'],
-            'metric_type': sonar_metrics['backend_name'],
-            'metric_id': sonar_metrics['data']['id'],
-            'metric_name': sonar_metrics['data']['metric'],
-            'metric_value': sonar_metrics['data']['value'],
-            'datetime': sonar_metrics['data']['fetched_on']
+            'project': project,
+            'metric_class': 'sonarqube',
+            'metric_type': sonar_metric['backend_name'],
+            'metric_id': sonar_data['id'],
+            'metric_desc': 'Sonar ' + sonar_data['metric'],
+            'metric_name': 'Sonar ' + sonar_data['metric'],
+            'metric_es_value': metric_value,
+            'metric_es_compute': 'sample',
+            'metric_value': metric_value,
+            'metric_es_value_weighted': metric_value,
+            'datetime': datetime,
+            'sonar': sonar_data
         }
 
-        yield metric
+        eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+        yield eitem
+
+    msg = "Metric enrichment summary processed: {}, skipped: {}".format(processed, enriched_skipped)
+    logging.info(msg)
 
 
-def fetch_sonarqube(url, components):
+def fetch_sonarqube(url, components, metrics):
     """
     Fetch the metrics from Sonarqube
 
@@ -166,10 +204,13 @@ def fetch_sonarqube(url, components):
     # Get the metrics for all projects
     for component in components:
 
-        sonar_backend = Sonar(component=component, base_url=url)
+        sonar_backend = Sonar(url, component, metrics)
 
         for enriched_metric in enrich_metrics(sonar_backend.fetch()):
             yield enriched_metric
+
+        msg = "Metrics {} from component {} fetched".format(metrics, component)
+        logging.debug(msg)
 
 
 if __name__ == '__main__':
@@ -187,10 +228,10 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components)
+    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics)
 
     if sonar_metrics:
-        logging.info("Loading SonarQube metrics in Elasticsearch")
+        logging.info("Uploading SonarQube metrics to Elasticsearch")
 
         counter = 0
         to_upload = []

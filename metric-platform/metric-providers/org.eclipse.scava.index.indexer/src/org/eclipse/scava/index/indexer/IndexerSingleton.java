@@ -47,7 +47,8 @@ class IndexerSingleton {
 
 		try {
 			logger = (OssmeterLogger) OssmeterLogger.getLogger("Indexer Singleton");
-			highLevelclient = createHighLevelClient(hostname); 
+			//highLevelclient = createHighLevelClient(hostname); 
+			highLevelclient = createHighLevelClientLocal("localhost");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,7 +97,6 @@ class IndexerSingleton {
 	 * @throws IOException 
 	 */
 
-	@SuppressWarnings("resource")
 	private RestHighLevelClient createHighLevelClient(String host)
 			throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
@@ -114,7 +114,7 @@ class IndexerSingleton {
 
 			@Override
 			public void onFailure(HttpHost host) {
-				logger.info("Client Connection Failure");
+				logger.info("Cluster Connection Failure: Unable to connect to the Scava Elasticsearch cluster");
 			}
 		});
 
@@ -147,7 +147,10 @@ class IndexerSingleton {
 	
 		} catch (IOException e) {
 			
-		client = createHighLevelClientLocal("localHost");
+			logger.error("Error connecting to the Elasticsearch Cluster\n\n" + e);
+		//DISABLE LOCAL HOST 	
+		//client = createHighLevelClientLocal("localHost");
+		
 
 		}
 	
@@ -172,7 +175,7 @@ class IndexerSingleton {
 
 			@Override
 			public void onFailure(HttpHost host) {
-				logger.info("Client Connection Failure");
+				logger.info("Development (Local Instance) Client Connection Failure");
 			}
 		});
 
@@ -196,10 +199,8 @@ class IndexerSingleton {
 			
 	
 		} catch (IOException e) {
-			logger.info(e);
+			logger.error("Unable to connect to development Elastic search instance\n" + e);
 			
-			
-			return createHighLevelClientLocal("localHost");
 		}
 	
 
@@ -208,48 +209,6 @@ class IndexerSingleton {
 	}
 
 
-	// ------------------------------------------------------------------------------------------
-	// ------------------------------------------------------------------------------------------
-
-	// MISC HELPER METHODS
-
-	// ------------------------------------------------------------------------------------------
-	// ------------------------------------------------------------------------------------------
-
-	// /**
-	// * Locates the elasticsearch.properties file within the 'prefs' directory and
-	// returns a file path
-	// *
-	// * @return String
-	// * @throws IllegalArgumentException
-	// * @throws IOException
-	// */
-	// private String locateProperties() throws IllegalArgumentException,
-	// IOException {
-	//
-	// String path =
-	// getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-	// if (path.endsWith("bin/"))
-	// path = path.substring(0, path.lastIndexOf("bin/"));
-	// File file = new File(path + "prefs/elasticsearch.properties");
-	// checkPropertiesFilePath(file.toPath());
-	//
-	// return file.getPath();
-	//
-	//
-	// }
-
-	// /**
-	// * Checks if a file exists
-	// *
-	// * @param path
-	// */
-	// private void checkPropertiesFilePath(Path path) {
-	//
-	// if (!Files.exists(path)) {
-	// System.err.println("The file " + path + " has not been found");
-	// }
-	// }
 
 	// ------------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------------
@@ -280,8 +239,49 @@ class IndexerSingleton {
 		return highLevelclient;
 	}
 
-	// public Client getAdminClient() {
-	// return adminClient;
-	// }
 
 }
+
+
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+
+// MISC HELPER METHODS
+
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+
+// /**
+// * Locates the elasticsearch.properties file within the 'prefs' directory and
+// returns a file path
+// *
+// * @return String
+// * @throws IllegalArgumentException
+// * @throws IOException
+// */
+// private String locateProperties() throws IllegalArgumentException,
+// IOException {
+//
+// String path =
+// getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+// if (path.endsWith("bin/"))
+// path = path.substring(0, path.lastIndexOf("bin/"));
+// File file = new File(path + "prefs/elasticsearch.properties");
+// checkPropertiesFilePath(file.toPath());
+//
+// return file.getPath();
+//
+//
+// }
+
+// /**
+// * Checks if a file exists
+// *
+// * @param path
+// */
+// private void checkPropertiesFilePath(Path path) {
+//
+// if (!Files.exists(path)) {
+// System.err.println("The file " + path + " has not been found");
+// }
+// }

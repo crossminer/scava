@@ -705,11 +705,12 @@ class ScavaCommand(BackendCommand):
 
     BACKEND = Scava
 
-    @staticmethod
-    def setup_cmd_parser():
+    @classmethod
+    def setup_cmd_parser(cls):
         """Returns the Scava argument parser."""
 
-        parser = BackendCommandArgumentParser(archive=True)
+        parser = BackendCommandArgumentParser(cls.BACKEND.CATEGORIES,
+                                              archive=True)
         # Required arguments
         parser.parser.add_argument('url', default=SCAVA_API,
                                    help="Scava REST API URL (default: http://localhost:8182")

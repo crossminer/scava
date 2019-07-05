@@ -7,6 +7,8 @@ class CommitsMessagesTopicsHistoricMetric {
 class CommitMessageTopic {
 	@searchable
    	attr String repository;
-   	attr String label;
+   	attr String[*] labels;
    	attr int numberOfMessages;
+   	attr String[*] commitsMessageId;
 }
+

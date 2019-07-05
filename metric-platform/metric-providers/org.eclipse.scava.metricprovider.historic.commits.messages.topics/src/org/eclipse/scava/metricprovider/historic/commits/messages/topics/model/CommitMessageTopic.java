@@ -1,24 +1,31 @@
 package org.eclipse.scava.metricprovider.historic.commits.messages.topics.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class CommitMessageTopic extends Pongo {
 	
+	protected List<String> labels = null;
+	protected List<String> commitsMessageId = null;
 	
 	
 	public CommitMessageTopic() { 
 		super();
+		dbObject.put("labels", new BasicDBList());
+		dbObject.put("commitsMessageId", new BasicDBList());
 		REPOSITORY.setOwningType("org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic");
-		LABEL.setOwningType("org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic");
+		LABELS.setOwningType("org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic");
 		NUMBEROFMESSAGES.setOwningType("org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic");
+		COMMITSMESSAGEID.setOwningType("org.eclipse.scava.metricprovider.historic.commits.messages.topics.model.CommitMessageTopic");
 	}
 	
 	public static StringQueryProducer REPOSITORY = new StringQueryProducer("repository"); 
-	public static StringQueryProducer LABEL = new StringQueryProducer("label"); 
 	public static NumericalQueryProducer NUMBEROFMESSAGES = new NumericalQueryProducer("numberOfMessages");
+	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer COMMITSMESSAGEID = new ArrayQueryProducer("commitsMessageId");
 	
 	
 	public String getRepository() {
@@ -27,15 +34,6 @@ public class CommitMessageTopic extends Pongo {
 	
 	public CommitMessageTopic setRepository(String repository) {
 		dbObject.put("repository", repository);
-		notifyChanged();
-		return this;
-	}
-	public String getLabel() {
-		return parseString(dbObject.get("label")+"", "");
-	}
-	
-	public CommitMessageTopic setLabel(String label) {
-		dbObject.put("label", label);
 		notifyChanged();
 		return this;
 	}
@@ -49,6 +47,18 @@ public class CommitMessageTopic extends Pongo {
 		return this;
 	}
 	
+	public List<String> getLabels() {
+		if (labels == null) {
+			labels = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("labels"));
+		}
+		return labels;
+	}
+	public List<String> getCommitsMessageId() {
+		if (commitsMessageId == null) {
+			commitsMessageId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("commitsMessageId"));
+		}
+		return commitsMessageId;
+	}
 	
 	
 	

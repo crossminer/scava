@@ -49,50 +49,6 @@ PER_PAGE = 100
 # Default sleep time and retries to deal with connection/server problems
 DEFAULT_SLEEP_TIME = 1
 MAX_RETRIES = 5
-
-# For the moment static but should be either parameter, either remove
-# list parameter
-TARGET_METRIC_FIELDS = [
-    "accessors", "new_technical_debt",
-    "blocker_violations", "new_it_conditions_to_cover",
-    "bugs", "burned_budget", "business_value",
-    "class_complexity_distribution", "classes,code_smells",
-    "cognitive_complexity", "commented_out_code_lines",
-    "comment_lines", "comment_lines_data", "comment_lines_density",
-    "class_complexity", "file_complexity","function_complexity",
-    "complexity_in_classes", "complexity_in_functions",
-    "branch_coverage", "new_it_branch_coverage", "new_branch_coverage",
-    "conditions_by_line", "conditions_to_cover",
-    "new_conditions_to_cover", "confirmed_issues", "coverage",
-    "new_it_coverage", "coverage_line_hits_data",
-    "new_coverage", "covered_conditions_by_line", "critical_violations", "complexity", "last_commit_date",
-    "directories", "duplicated_blocks", "new_duplicated_blocks", "duplicated_files", "duplicated_lines",
-    "duplicated_lines_density", "new_duplicated_lines", "new_duplicated_lines_density", "duplications_data",
-    "effort_to_reach_maintainability_rating_a", "executable_lines_data", "false_positive_issues",
-    "file_complexity_distribution", "files", "function_complexity_distribution", "functions", "generated_lines",
-    "generated_ncloc", "info_violations", "violations", "it_conditions_to_cover", "it_branch_coverage",
-    "it_conditions_by_line", "it_coverage", "it_coverage_line_hits_data", "it_covered_conditions_by_line",
-    "it_line_coverage", "it_lines_to_cover", "it_uncovered_conditions", "it_uncovered_lines", "line_coverage",
-    "new_it_line_coverage", "new_line_coverage", "lines", "ncloc", "ncloc_language_distribution", "lines_to_cover",
-    "new_it_lines_to_cover", "new_lines_to_cover", "sqale_rating", "new_maintainability_rating", "major_violations",
-    "minor_violations", "ncloc_data", "new_blocker_violations", "new_bugs", "new_code_smells",
-    "new_critical_violations", "new_info_violations", "new_violations", "new_lines", "new_major_violations",
-    "new_minor_violations", "new_vulnerabilities", "open_issues", "overall_conditions_to_cover",
-    "new_overall_conditions_to_cover", "overall_branch_coverage", "new_overall_branch_coverage",
-    "overall_conditions_by_line", "overall_coverage", "overall_coverage_line_hits_data", "new_overall_coverage",
-    "overall_covered_conditions_by_line", "overall_line_coverage", "new_overall_line_coverage",
-    "overall_lines_to_cover", "new_overall_lines_to_cover", "overall_uncovered_conditions",
-    "new_overall_uncovered_conditions", "overall_uncovered_lines", "new_overall_uncovered_lines", "quality_profiles",
-    "projects", "public_api", "public_documented_api_density", "public_undocumented_api", "quality_gate_details",
-    "alert_status", "reliability_rating", "new_reliability_rating", "reliability_remediation_effort",
-    "new_reliability_remediation_effort", "reopened_issues", "security_rating", "new_security_rating",
-    "security_remediation_effort", "new_security_remediation_effort", "skipped_tests", "sonarjava_feedback",
-    "development_cost", "statements", "team_size", "sqale_index", "sqale_debt_ratio", "new_sqale_debt_ratio",
-    "uncovered_conditions", "new_it_uncovered_conditions", "new_uncovered_conditions", "uncovered_lines",
-    "new_it_uncovered_lines", "new_uncovered_lines", "test_data", "test_execution_time", "test_errors", "test_failures",
-    "tests", "test_success_density", "vulnerabilities", "wont_fix_issues"]
-
-
 METRIC_KEYS = "metricKeys"
 
 logger = logging.getLogger(__name__)
@@ -114,13 +70,14 @@ class Sonar(Backend):
 
     CATEGORIES = [CATEGORY]
 
-    def __init__(self, component=None, base_url=None, tag=None, archive=None):
-        origin = base_url if base_url else SONAR_URL
+    def __init__(self, base_url, component, metrics, tag=None, archive=None):
+        origin = base_url
         origin = urijoin(origin, SONAR_API_URL) + component
 
         super().__init__(origin, tag=tag, archive=archive)
         self.base_url = base_url
         self.component = component
+        self.metrics = metrics
         self.client = None
 
     def fetch(self, category=CATEGORY, from_date=DEFAULT_DATETIME):
@@ -155,7 +112,7 @@ class Sonar(Backend):
         from_date = kwargs['from_date']
 
         nmetrics = 0
-        component_metrics_raw = self.client.component_metrics(from_date=from_date)
+        component_metrics_raw = self.client.component_metrics(self.metrics, from_date=from_date)
 
         component = json.loads(component_metrics_raw)['component']
         for metric in component['measures']:
@@ -247,7 +204,7 @@ class SonarClient(HttpClient):
         super().__init__(base_url, sleep_time=DEFAULT_DATETIME, max_retries=MAX_RETRIES,
                          archive=archive, from_archive=from_archive)
 
-    def component_metrics(self, from_date=None):
+    def component_metrics(self, metrics, from_date=None):
         """Get metrics for a given component.
 
         :param from_date: obtain metrics updated since this date
@@ -255,7 +212,7 @@ class SonarClient(HttpClient):
         :returns: a generator of metrics
         """
         payload = {
-            'metricKeys': ','.join(TARGET_METRIC_FIELDS)
+            'metricKeys': ','.join(metrics)
         }
 
         response = super().fetch(self.base_url, payload=payload)
@@ -282,7 +239,7 @@ class SonarCommand(BackendCommand):
                            help="Base URL for Sonarqube instance")
 
         # Positional arguments
-        parser.parser.add_argument('component',
-                                   help="Sonarqube component/project")
+        group.add_argument('component', help="Component/project")
+        group.add_argument('metrics', help="Metrics")
 
         return parser

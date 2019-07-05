@@ -20,6 +20,7 @@ import org.carrot2.core.Cluster;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
+import org.carrot2.core.LanguageCode;
 import org.carrot2.core.ProcessingResult;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
@@ -151,8 +152,13 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			db.getNewsgroupTopics().add(newsgroupTopic);
 			CommunicationChannel communicationChannel = ccpDelta.getCommunicationChannel();
 			newsgroupTopic.setNewsgroupName(communicationChannel.getOSSMeterId());
-			newsgroupTopic.setLabel(cluster.getLabel());
+			newsgroupTopic.getLabels().addAll(cluster.getPhrases());
 			newsgroupTopic.setNumberOfDocuments(cluster.getAllDocuments().size());
+			for(Document document : cluster.getAllDocuments())
+			{
+				String[] uid = document.getStringId().split("\t");
+				newsgroupTopic.getArticlesId().add(uid[1]);
+			}
 		}
 		db.sync();
 	}
@@ -165,8 +171,13 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			BugTrackerTopic bugTrackerTopic = new BugTrackerTopic();
 			db.getBugTrackerTopics().add(bugTrackerTopic);
 			bugTrackerTopic.setBugTrackerId(btspDelta.getBugTrackingSystem().getOSSMeterId());
-			bugTrackerTopic.setLabel(cluster.getLabel());
+			bugTrackerTopic.getLabels().addAll(cluster.getPhrases());
 			bugTrackerTopic.setNumberOfDocuments(cluster.getAllDocuments().size());
+			for(Document document : cluster.getAllDocuments())
+			{
+				String[] uid = document.getStringId().split("\t");
+				bugTrackerTopic.getCommentsId().add(uid[1]+"\t"+uid[2]);
+			}
 		}
 		db.sync();
 	}
@@ -219,14 +230,14 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 
 
 		for (CommunicationChannelArticle article : ccpDelta.getArticles()) {
-			NewsgroupArticlesData articleInTopic = findNewsgroupArticle(db, article, communicationChannel.getOSSMeterId());
+			NewsgroupArticlesData articleInTopic = findNewsgroupArticle(db, article);
 			if (articleInTopic == null) {
 				articleInTopic = new NewsgroupArticlesData();
 				articleInTopic.setNewsgroupName(communicationChannel.getOSSMeterId());
 				articleInTopic.setArticleNumber(article.getArticleNumber());
 				articleInTopic.setDate(new Date(article.getDate()).toString());
 				articleInTopic.setSubject(article.getSubject());
-				articleInTopic.setText(articleNaturalLanguage(detectingCodeMetric, article, communicationChannel.getOSSMeterId()));
+				articleInTopic.setText(articleNaturalLanguage(detectingCodeMetric, article));
 				db.getNewsgroupArticles().add(articleInTopic);
 			}
 			db.sync();
@@ -244,7 +255,6 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			if (commentInTopic == null) {
 				commentInTopic = new BugTrackerCommentsData();
 				commentInTopic.setBugTrackerId(comment.getBugTrackingSystem().getOSSMeterId());
-				commentInTopic.setBugTrackerId(comment.getBugId());
 				commentInTopic.setBugId(comment.getBugId());
 				commentInTopic.setCommentId(comment.getCommentId());
 				commentInTopic.setSubject(retrieveSubject(btspDelta, comment.getBugId()));
@@ -255,6 +265,16 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			}
 		}
 		db.sync();
+	}
+	
+	private String produceUID(NewsgroupArticlesData article)
+	{
+		return article.getNewsgroupName()+"\t"+String.valueOf(article.getArticleNumber());
+	}
+	
+	private String produceUID(BugTrackerCommentsData comment)
+	{
+		return comment.getBugTrackerId()+"\t"+comment.getBugId()+"\t"+comment.getCommentId();
 	}
 
 	private String retrieveSubject(BugTrackingSystemDelta btspDelta, String bugId) {
@@ -270,7 +290,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 	private List<Cluster> produceNewsgroupTopics(TopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
 		for (NewsgroupArticlesData article : db.getNewsgroupArticles())
-			documents.add(new Document(article.getSubject(), article.getText()));
+			documents.add(new Document(article.getSubject(), article.getText(), "", LanguageCode.ENGLISH, produceUID(article)));
 		return produceTopics(documents);
 	}
 
@@ -278,7 +298,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 	private List<Cluster> produceBugTrackerTopics(TopicsTransMetric db) {
 		final ArrayList<Document> documents = new ArrayList<Document>();
 		for (BugTrackerCommentsData comment : db.getBugTrackerComments())
-			documents.add(new Document(comment.getSubject(), comment.getText()));
+			documents.add(new Document(comment.getSubject(), comment.getText(), "", LanguageCode.ENGLISH, produceUID(comment)));
 		return produceTopics(documents);
 	}
 
@@ -290,7 +310,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		 * Perform clustering by topic using the Lingo algorithm. Lingo can take
 		 * advantage of the original query, so we provide it along with the documents.
 		 */
-		final ProcessingResult byTopicClusters = controller.process(documents, "data mining",
+		final ProcessingResult byTopicClusters = controller.process(documents, null,
 				LingoClusteringAlgorithm.class);
 		final List<Cluster> clustersByTopic = byTopicClusters.getClusters();
 
@@ -321,11 +341,10 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		return bugTrackerComments.getNaturalLanguage();
 	}
 
-	private NewsgroupArticlesData findNewsgroupArticle(TopicsTransMetric db, CommunicationChannelArticle article,
-			String ossmeterID) {
+	private NewsgroupArticlesData findNewsgroupArticle(TopicsTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticlesData newsgroupArticles = null;
 		Iterable<NewsgroupArticlesData> articlesIt = db.getNewsgroupArticles().find(
-				NewsgroupArticlesData.NEWSGROUPNAME.eq(ossmeterID),
+				NewsgroupArticlesData.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 				NewsgroupArticlesData.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticlesData nad : articlesIt) {
 			newsgroupArticles = nad;
@@ -333,11 +352,10 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		return newsgroupArticles;
 	}
 
-	private String articleNaturalLanguage(DetectingCodeTransMetric db, CommunicationChannelArticle article,
-			String ossmeterID) {
+	private String articleNaturalLanguage(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
 		NewsgroupArticleDetectingCode newsgroupArticles = null;
 		Iterable<NewsgroupArticleDetectingCode> articlesIt = db.getNewsgroupArticles().find(
-				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(ossmeterID),
+				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
 				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
 		for (NewsgroupArticleDetectingCode nad : articlesIt) {
 			newsgroupArticles = nad;

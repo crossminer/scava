@@ -160,15 +160,14 @@ class StackExchangeParserHandler extends DefaultHandler
 				return;
 			questionIds.add(post.getId());
 		}
-		else if(post.getPostType()==1)
-		{
-			questionIds.add(post.getId());
-		}
 		//Answers
 		else if (post.getPostType()==2)
 		{
-			if(!questionIds.contains(post.getParentId()))
-				return;
+			if(questionFilters != null)
+			{	
+				if(!questionIds.contains(post.getParentId()))
+					return;
+			}
 			if(answersFilters != null)
 			{
 				if(!dateComparisons(creationDateIntervalA, post.getCreationDate()))
