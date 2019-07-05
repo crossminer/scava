@@ -15,8 +15,7 @@ Require-Bundle: org.eclipse.swt,
  org.eclipse.core.resources,
  org.eclipse.scava.crossflow,
  org.eclipse.ant.core;bundle-version="3.5.100",
- org.eclipse.jdt.ui,
- org.eclipse.scava.crossflow.web
+ org.eclipse.jdt.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.crossflow.dt.Activator
 Export-Package: org.eclipse.scava.crossflow.dt
