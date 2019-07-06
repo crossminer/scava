@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
 import org.eclipse.scava.business.impl.OssmeterImporter;
@@ -51,7 +52,7 @@ public class SimilarityLiveCalculatorTest {
 	private ISimilarityManager simManager;
 	@Autowired
 	@Qualifier("CrossRec")
-	private ISingleSimilarityCalculator compoundSim;
+	private IAggregatedSimilarityCalculator compoundSim;
 	private static final Logger logger = LoggerFactory.getLogger(SimilarityLiveCalculatorTest.class);
 
 
