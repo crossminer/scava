@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.scava.business.integration.MavenLinkAllRepository;
 import org.eclipse.scava.business.model.MavenLibrary;
 import org.eclipse.scava.business.model.MavenLinkAll;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
-import nl.cwi.swat.aethereal.AetherDownloader;
 import nl.cwi.swat.aethereal.MavenCollector;
 import nl.cwi.swat.aethereal.MavenDataset;
 import nl.cwi.swat.aethereal.MigrationInfo;
@@ -31,8 +29,8 @@ import nl.cwi.swat.aethereal.MigrationInfo;
 @Service
 public class MigrationService {
 	private static final Logger logger = LoggerFactory.getLogger(MigrationService.class);
-	@Autowired
-	private AetherDownloader downloader;
+//	@Autowired
+//	private AetherDownloader downloader;
 	@Autowired
 	private MavenLinkAllRepository mavenLinkAllRepo;
 	@Autowired
@@ -41,9 +39,9 @@ public class MigrationService {
 	private String mavenRepoPath;
 
 	public Delta createDelta(MavenLibrary libV1, MavenLibrary libV2, org.eclipse.scava.business.model.Artifact art) {
-		Artifact v = downloader.downloadArtifact(new DefaultArtifact(
-				String.format("%s:%s:%s", libV1.getGroupid(), libV1.getArtifactid(), libV1.getVersion())));
-		libV1.setArtifact(v);
+//		Artifact v = downloader.downloadArtifact(new DefaultArtifact(
+//				String.format("%s:%s:%s", libV1.getGroupid(), libV1.getArtifactid(), libV1.getVersion())));
+//		libV1.setArtifact(v);
 		return null;
 	}
 
