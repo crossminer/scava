@@ -17,7 +17,6 @@ import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.impl.SORecommender;
 import org.eclipse.scava.business.impl.APIMigration.MigrationService;
 import org.maracas.data.Detection;
-import org.maracas.data.Detection.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +84,7 @@ public class ApiMigrationRestController {
 			@PathVariable("coordV2") String coordV2,
 			@RequestParam("file") MultipartFile file) {
 		List<Detection> v = Lists.newArrayList();
-		v.add(new Detection("jur", "juri2", "juri 3", Type.REMOVED, 1.0));
+		//v.add(new Detection(file.getName(),  coordV1, coordV2,Type.ADDED,  0.2);
 		return v;
 	}
 	
