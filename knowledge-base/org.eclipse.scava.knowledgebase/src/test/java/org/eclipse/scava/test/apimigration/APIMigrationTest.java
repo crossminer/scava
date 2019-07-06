@@ -70,7 +70,7 @@ public class APIMigrationTest {
 	
 	@Test
 	@Ignore
-	public void omporterTest() {
+	public void importerTest() {
 		migrationService.importer("/Users/juri/development/git/aethereal/aethereal/dependency-graph/links_all.csv");
 	}
 	
