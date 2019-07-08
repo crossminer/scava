@@ -2,24 +2,27 @@
 Created on 26 Mar 2019
 
 @author: stevet
+@author: Jon Co
 '''
-import uuid
-import stomp
-import traceback
-import tempfile
-import pickle
-import hashlib
-import time
-import shutil
 import csv
+import hashlib
 import os
+import pickle
+import shutil
+import stomp
 import sys
+import tempfile
+import time
 import threading
+import traceback
+import uuid
 
 from enum import Enum
 from pathlib import Path
+from typing import Type
 
-import org.eclipse.scava.crossflow.utils.basic_xstream as bxstream
+import xmltodict
+
 
 illegal_chars = [ 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
             18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47 ].sort()
@@ -434,13 +437,90 @@ def convert(modeString):
     if('master_bare' == Mode.MASTER_BARE):
         raise Exception("Mode must be 'master_bare', 'master' or 'worker' but was '" + modeString + "'")
 
-'''
-Created on 27 Feb 2019
 
-@author: stevet
-'''
+class Serializer(object):
+    """Simple port of the XStream XML serializer.
+    
+    To maintain cross-compatibility between different languages, types are
+    serialized using their simple non-qualified class name. It is expected 
+    that this contract is enforced throughout the Crossflow system.
+    
+    All objects that are to be deserialized should be registered using the
+    alias method.
+    """
+    
+    def __init__(self):
+        self.aliases = {}
+        
+    def to_string(self, obj):
+        """Mirror of Java method, delegates to serialize
+        """
+        return self.serialize(obj)
+    
+    def serialize(self, obj):
+        # Extract name
+        if isinstance(obj, InternalException):
+            return self.__serialize_internal(obj)
+        
+        name = self.aliases.get(type(obj), type(obj).__name__)
+        return xmltodict.unparse({name : obj.__dict__}, full_document=False, pretty=__debug__)
+    
+    def to_object(self, xml):
+        return self.deserialize(xml)
+    
+    def deserialize(self, xml):
+        parsed = xmltodict.parse(xml)
+        clazzname = list(parsed.keys())[0]
+        clazztype = self.aliases[clazzname]
+        instance = clazztype()
+        
+        members = parsed[clazzname]
+        for key, raw in members.items():
+            rawType = type(raw)
+            value = raw
+            
+            if rawType is int:
+                value = int(raw)
+            elif rawType is float:
+                value = float(raw)
+            elif rawType is bool:
+                if raw.capitalize() == "True":
+                    value = True
+                else:
+                    value = False
+            elif rawType is str:
+                value = str(raw)
+            else:
+                if str(rawType).startswith("<enum"):
+                    value = rawType.enum_from_name(raw)
+            
+            setattr(instance, key, value)
 
-
+        return instance
+    
+    def register(self, classType):
+        if not isinstance(classType, Type):
+            classType = type(classType)
+        self.aliases[classType.__name__] = classType
+    
+    def alias(self, clazz):
+        if not isinstance(clazz, Type):
+            clazz = type(clazz)
+        self.aliases[clazz.__name__] = clazz
+    
+    def __serialize_internal(self, ex):
+        exDict = {
+            "InternalException": {
+                "exception": {
+                    "detailMessage": "!PYTHON!" + str(ex.exception) + "\n" + "\n".join(traceback.extract_stack(ex.exception.__traceback__).format()),
+                    "stackTrace": {},
+                    "suppressedExceptions" : {}
+                }
+            }
+        }
+        return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
+    
+    
 class Task(object):
     '''
     classdocs
@@ -562,7 +642,7 @@ class MessageListener(stomp.ConnectionListener):
                 ackFunc = doClientAck
             try:
                 if self.convertToObject:
-                    self.consumer.consume(bxstream.bxToObject(message), ackFunc)
+                    self.consumer.consume(self.workflow.serializer.to_object(message), ackFunc)
                 else:
                     self.consumer.consume(message, ackFunc)
             except Exception as inst:
@@ -570,7 +650,7 @@ class MessageListener(stomp.ConnectionListener):
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
                 if self.workflow != None:
-                    self.workflow.reportInternalException(inst, '', stack)
+                    self.workflow.reportInternalException(inst, '')
                 else:
                     raise inst
         else:
@@ -644,7 +724,7 @@ class BuiltinStream(object):
     
     def send(self, t):
         self.updateDestination()
-        messageBody = bxstream.bxToString(t)
+        messageBody = self.workflow.serializer.to_string(t)
         self.connection.send(body=messageBody, destination=self.destination)
         # producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); ?
         # producer.setPriority(9); ?
@@ -727,7 +807,7 @@ class DirectoryCache(object):
             inputFolderObject = self.jobFolderMap.get(inputJob.getHash())
             for outputFilePath in os.listdir(os.path.realpath(inputFolderObject.name)):
                 outputFile = open(outputFilePath)
-                outputJob = bxstream.bxToObject(outputFile.read())
+                outputJob = self.workflow.serializer.to_object(outputFile.read())
                 outputFile.close() 
                 outputJob.setId(str(uuid.uuid4()))
                 outputJob.setCorrelationId(inputJob.getId())
@@ -759,7 +839,7 @@ class DirectoryCache(object):
                 traceback.print_exc()
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name, stack)
+                self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name)
     
     def getDirectory(self):
         return self.directory
@@ -814,7 +894,7 @@ class DirectoryCache(object):
                 traceback.print_exc()
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                self.workflow.reportInternalException(ex, 'Error caching pending transaction for correlation id' + correlationId, stack);
+                self.workflow.reportInternalException(ex, 'Error caching pending transaction for correlation id' + correlationId);
 
 '''
 Created on 27 Feb 2019
@@ -876,7 +956,7 @@ class InternalException(Exception):
     classdocs
     '''
 
-    def __init__(self, exception=Exception('Dummy'), message=None, worker=None, stackTrace=None):
+    def __init__(self, exception=None, message=None, worker=None):
         '''
         Constructor
         '''
@@ -944,9 +1024,9 @@ class Job(object):
         self.isTransactionSuccessMessage = False
         self.totalOutputs = 0
 
-    def __str__(self, *args, **kwargs):
-        return self.id + " " + self.correlationId + " " + self.destination + " " + self.cacheable + " " + self.failures
-
+    def __str__(self):
+        return str(self.__class__) + ": " + str(self.__dict__)
+    
     def isTransactional(self):
         return self.transactional
 
@@ -1080,8 +1160,8 @@ class JobStream(Job):
             dest = None
             # if the sender is one of the targets of this stream, it has re-sent a message
             # so it should only be put in the relevant physical queue
-            job.setDestination(bxstream.getSimpleClassName(self))
-            msgBody = bxstream.bxToString(job)
+            job.setDestination(type(self).__name__)
+            msgBody = self.workflow.serializer.to_string(job)
             dest = self.preQueue.get(taskId, None)
             if (dest != None):
                 # producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); - stomp is NON_PERSISTENT by default
@@ -1097,7 +1177,7 @@ class JobStream(Job):
             traceback.print_exc()
             exc_type, exc_value, exc_traceback = sys.exc_info()
             stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-            self.workflow.reportInternalException(ex, '', stack);
+            self.workflow.reportInternalException(ex, '');
     
     def getDestinationNames(self):
         return map(lambda x : x.getStompDestinationName(), self.dest.keys())
@@ -1163,6 +1243,12 @@ class Workflow(object):
         self.activeJobs = []
         self.activeStreams = []
         self.terminated = False
+        
+        self.serializer = Serializer()
+        self.serializer.register(ControlSignal);
+        self.serializer.register(Job);
+        self.serializer.register(StreamMetadata);
+        self.serializer.register(TaskStatus);
 
         self.inputDirectory = ''
         self.outputDirectory = ''
@@ -1423,9 +1509,9 @@ class Workflow(object):
     def getInternalExceptions(self): 
         return self.internalExceptions
 
-    def reportInternalException(self, ex, message, stackTrace):
+    def reportInternalException(self, ex, message):
         try:
-            ser_obj = bxstream.pyExceptionToJavaXML(InternalException(ex, message, None, stackTrace), stackTrace)
+            ser_obj = self.serializer.serialize(InternalException(ex, message, None))
             self.internalExceptionsQueue.sendSerialized(ser_obj)
         except Exception as ex:
             traceback.print_exc()

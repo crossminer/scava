@@ -5,25 +5,34 @@ import traceback
 
 from org.eclipse.scava.crossflow.runtime import ControlSignal
 from org.eclipse.scava.crossflow.runtime import ControlSignals
-from org.eclipse.scava.crossflow.runtime import Workflow
 from org.eclipse.scava.crossflow.runtime import Mode
+from org.eclipse.scava.crossflow.runtime import Workflow
 
-[%for (t in w.getMasterTasks()){%]
-from [%=package%].[%=t.name%] import [%=t.name%]
+[% var imports = new Sequence; 
+imports.addAll(w.getMasterTasks());
+imports.addAll(w.getWorkerTasks());
+imports = imports.sortBy(i|i.name);
+for (i in imports) {%]
+from [%=package%].[%=i.name%] import [%=i.name%]
 [%}%]
-[%for (t in w.getWorkerTasks()){%]
-from [%=package%].[%=t.name%] import [%=t.name%]
+[% imports = new Sequence;
+imports.addAll(w.streams);
+imports.addAll(w.types);
+imports = imports.sortBy(i|i.name);
+for (i in imports) {%]
+from [%=package%].runtime.[%=i.name%] import [%=i.name%]
 [%}%]
-[%for (s in w.streams) { %]
-from [%=package%].runtime.[%=s.name%] import [%=s.name%]
-[%}%]
-
 
 class [%=w.name%](Workflow):
 
     def __init__(self):
         super().__init__()
         self.enablePrefetch = False
+        
+        # Register types with serializer
+        [%for (t in w.types) {%]
+        self.serializer.register([%=t.name%])
+        [%}%]
         
         # Streams
         [%for (s in w.streams) { %]

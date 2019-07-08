@@ -97,6 +97,10 @@ public class [%=w.name%] extends Workflow {
 			}
 		[%}%]
 		}
+		
+		[%for (t in w.types){%]
+		this.serializer.register([%=t.name%].class);
+		[%}%]
 
 	}
 	

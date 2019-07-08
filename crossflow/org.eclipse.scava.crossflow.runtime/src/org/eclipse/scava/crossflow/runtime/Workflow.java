@@ -182,6 +182,15 @@ public abstract class Workflow {
 	}
 
 	public Workflow() {
+		serializer.register(ControlSignal.class);
+		serializer.register(InternalException.class);
+		serializer.register(Job.class);
+		serializer.register(LogMessage.class);
+		serializer.register(Result.class);
+		serializer.register(StreamMetadata.class);
+		serializer.register(StreamMetadataSnapshot.class);
+		serializer.register(TaskStatus.class);
+		
 		taskStatusTopic = new BuiltinStream<>(this, "TaskStatusPublisher");
 		resultsTopic = new BuiltinStream<>(this, "ResultsBroadcaster");
 		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");

@@ -105,7 +105,9 @@ rule GenerateMain
 	
 	template: "generateMain.egl"
 	
-	target: w.getOutputFolder() + "/main.py"	
+	target: w.getOutputFolder() + "/main.py"
+	
+	overwrite: false
 }
 
 rule GenerateRuntime
@@ -114,14 +116,6 @@ rule GenerateRuntime
 	template: "runtime.py"
 	
 	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow".toPath() + "/runtime.py"
-}
-
-rule GenerateBXStream
-	transform w : Workflow {
-	
-	template: "basic_xstream.py"
-	
-	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow.utils".toPath() + "/basic_xstream.py"
 }
 
 operation Any getPackage() : String {

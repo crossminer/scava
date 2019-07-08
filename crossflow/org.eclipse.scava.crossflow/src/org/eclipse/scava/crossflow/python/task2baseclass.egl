@@ -1,7 +1,6 @@
 import traceback
 import sys
 
-from org.eclipse.scava.crossflow.utils.basic_xstream import getSimpleClassName
 from org.eclipse.scava.crossflow.runtime import FailedJob
 from org.eclipse.scava.crossflow.runtime import Task
 
@@ -40,7 +39,7 @@ class [%=t.name%]Base(Task):
 		[%if(t.isTypeOf(Source)){%]
 		[%=s.type.name.ftlc()%].setTransactional(False)
 		[%}%]
-		self.get[%=s.name%]().send([%=s.type.name.ftlc()%], getSimpleClassName(self))
+		self.get[%=s.name%]().send([%=s.type.name.ftlc()%], self.__class__.__name__)
 	
 	[%}%]
 	[%for (s in t.input) { %]
@@ -72,7 +71,7 @@ class [%=t.name%]Base(Task):
 				traceback.print_exc()
 				exc_type, exc_value, exc_traceback = sys.exc_info()
 				stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-				self.workflow.reportInternalException(e, '', stack)
+				self.workflow.reportInternalException(e, '')
 		finally:
 			try:
 				self.workflow.setTaskWaiting(self)
@@ -80,7 +79,7 @@ class [%=t.name%]Base(Task):
 				traceback.print_exc()
 				exc_type, exc_value, exc_traceback = sys.exc_info()
 				stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-				self.workflow.reportInternalException(e, '', stack)
+				self.workflow.reportInternalException(e, '')
 	
 	def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
 		pass

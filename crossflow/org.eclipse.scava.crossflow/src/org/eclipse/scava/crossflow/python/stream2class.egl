@@ -1,9 +1,9 @@
+import sys
+import traceback
+
 from org.eclipse.scava.crossflow.runtime import JobStream
 from org.eclipse.scava.crossflow.runtime import QueueInfo, QueueType, str2QueueType
-from org.eclipse.scava.crossflow.utils.basic_xstream import bxToObject
 
-import traceback
-import sys
 
 class [%=s.name%](JobStream):
 		
@@ -32,7 +32,7 @@ class [%=s.name%](JobStream):
 						workflow.cancelTermination()
 						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
 						[%if (isCached){%]
-						job = bxToObject(message)
+						job = self.workflow.serializer.to_object(message)
 						if (workflow.getCache() != None and workflow.getCache().hasCachedOutputs(job)):
 							workflow.setTaskInProgess(self.cacheManagerTask)
 							cachedOutputs = workflow.getCache().getCachedOutputs(job)
@@ -58,14 +58,14 @@ class [%=s.name%](JobStream):
 						traceback.print_exc()
 						exc_type, exc_value, exc_traceback = sys.exc_info()
 						stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-						workflow.reportInternalException(ex, '', stack)
+						workflow.reportInternalException(ex, '')
 
 				self.subscribe(preQueue, handlePreMessage)
 
 				def handleDestinationMessage(message, ackFunc=None):
 					try:
 						workflow.cancelTermination()
-						job = bxToObject(message)
+						job = self.workflow.serializer.to_object(message)
 						if (workflow.getCache() != None) and (not job.isCached()):
 							if(job.isTransactional()):
 								workflow.getCache().cacheTransactionally(job)
@@ -81,7 +81,7 @@ class [%=s.name%](JobStream):
 						traceback.print_exc()
 						exc_type, exc_value, exc_traceback = sys.exc_info()
 						stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-						workflow.reportInternalException(ex, '', stack)
+						workflow.reportInternalException(ex, '')
 
 				self.subscribe(destQueue, handleDestinationMessage)
 	
@@ -91,7 +91,7 @@ class [%=s.name%](JobStream):
 		if consumer != None:
 			def messageHandler(message, ackFunc=None):		
 				try:
-					[%=s.type.name.ftlc%] = bxToObject(message)
+					[%=s.type.name.ftlc%] = self.workflow.serializer.to_object(message)
 					consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%])
 						
 					if ackFunc != None:
@@ -100,6 +100,6 @@ class [%=s.name%](JobStream):
 					traceback.print_exc()
 					exc_type, exc_value, exc_traceback = sys.exc_info()
 					stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-					self.workflow.reportInternalException(ex, '', stack)
+					self.workflow.reportInternalException(ex, '')
 
 			self.subscribe(postQueue, messageHandler)
