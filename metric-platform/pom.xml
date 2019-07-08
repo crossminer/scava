@@ -20,7 +20,7 @@
     <module>../migration/third-party/com.googlecode.pongo.runtime.dependencies</module>
     <module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
     <module>../migration/third-party/com.j2bugzilla</module>
-    <module>../migration/third-party/com.jcraft.jsch</module>
+    <!-- <module>../migration/third-party/com.jcraft.jsch</module> -->
     <module>../migration/third-party/com.mashape.unirest</module>
     <!-- <module>../migration/third-party/javax.mail</module> -->
     <!-- <module>../migration/third-party/org.apache.commons.codec</module> -->
