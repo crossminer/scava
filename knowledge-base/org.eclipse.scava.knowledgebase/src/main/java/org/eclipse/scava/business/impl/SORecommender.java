@@ -58,6 +58,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
+
 @Service
 @Qualifier("SORecommender")
 public class SORecommender implements IRecommendationProvider {
@@ -135,8 +137,7 @@ public class SORecommender implements IRecommendationProvider {
 			MyASTVisitor myVisitor = new MyASTVisitor();
 			block.accept(myVisitor);
 			tokens = myVisitor.getTokens();
-		}
-		catch (Exception exc) {
+		} catch (Exception exc) {
 			logger.error("JDT parsing error");
 		}
 		return tokens;
@@ -173,11 +174,7 @@ public class SORecommender implements IRecommendationProvider {
 			IndexSearcher searcher = new IndexSearcher(reader);
 			List<String> fields2 = getAllIndexTags(INDEX_DIRECTORY);
 			String[] fields = new String[fields2.size()];
-			int i = 0;
-			for (String string : fields2) {
-				fields[i] = string;
-				i++;
-			}
+			fields = fields2.toArray(fields);
 			Analyzer analzer = new StandardAnalyzer();
 			MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, analzer);
 			org.apache.lucene.search.Query q = qp.parse(compUnit);
@@ -213,6 +210,55 @@ public class SORecommender implements IRecommendationProvider {
 		String result = makeBoostedQuery(tokens, imports, entropies, param);
 		return result;
 
+	}
+
+	public Recommendation getVersionsSORecommendations(String v1, String v2) {
+		v1 = v1.replace(":", " ");
+		v2 = v2.replace(":", " ");
+		StringBuilder sb = new StringBuilder(500);
+		sb.append(String.format(" Title:%s OR", v1));
+		sb.append(String.format(" Answer:%s OR", v1));
+		sb.append(String.format(" Question:%s OR", v1));
+		sb.append(String.format(" Title:%s OR", v2));
+		sb.append(String.format(" Answer:%s OR", v2));
+		sb.append(String.format(" Question:%s", v2));
+		Recommendation rec = new Recommendation();
+		try {
+			File indexDirectory = new File(INDEX_DIRECTORY);
+			Directory indexDir;
+			indexDir = FSDirectory.open(Paths.get(indexDirectory.getAbsolutePath()));
+			IndexReader reader = DirectoryReader.open(indexDir);
+			IndexSearcher searcher = new IndexSearcher(reader);
+			List<String> fields2 = getAllIndexTags(INDEX_DIRECTORY);
+			String[] fields = new String[fields2.size()];
+			fields = fields2.toArray(fields);
+			Analyzer analzer = new StandardAnalyzer();
+			MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, analzer);
+			org.apache.lucene.search.Query q = qp.parse(sb.toString());
+			TopDocs results = executeQuery(q);
+			if (results != null) {
+				int counter = 0;
+				ArrayList<Explanation> expls = new ArrayList<Explanation>();
+				ArrayList<String> Ids = new ArrayList<String>();
+				for (ScoreDoc result : results.scoreDocs) {
+					if (counter < luceneTreshold) {
+						RecommendationItem ri = new RecommendationItem();
+						org.apache.lucene.document.Document d = searcher.doc(result.doc);
+						ri.setApiDocumentationLink(d.get("ID_POST"));
+						expls.add(searcher.explain(q, result.doc));
+						ri.setSignificance(result.score);
+						Ids.add(d.get("ID_POST"));
+						counter += 1;
+						rec.getRecommendationItems().add(ri);
+					}
+				}
+			}
+		} catch (IOException e) {
+			logger.error("IO error on {} {}",INDEX_DIRECTORY,e.getMessage());
+		} catch (ParseException e) {
+			logger.error("Error {} {} parsing query {}", v1, v2, e.getMessage());
+		}
+		return rec;
 	}
 
 	private List<String> getAllIndexTags(String INDEX_DIRECTORY) {
@@ -305,7 +351,7 @@ public class SORecommender implements IRecommendationProvider {
 		 * vardecltype fix
 		 */
 		ArrayList<String> imports = new ArrayList<String>();
-		if(tokens.containsKey("ImportDeclaration"))
+		if (tokens.containsKey("ImportDeclaration"))
 			for (String token : tokens.get("ImportDeclaration")) {
 				String imp = token.substring(token.lastIndexOf(".") + 1);
 				imports.add(imp);
@@ -325,10 +371,10 @@ public class SORecommender implements IRecommendationProvider {
 			while ((text = reader.readLine()) != null)
 				if (text.length() >= 5) {
 					text = text.substring(0, text.length() - 1);
-					if(tokens.containsKey("ImportDeclaration"))
-					for ( String txt : tokens.get("ImportDeclaration")) 
-						if (txt.toLowerCase().contains(text.toLowerCase()))
-							importedTokens.add(txt);
+					if (tokens.containsKey("ImportDeclaration"))
+						for (String txt : tokens.get("ImportDeclaration"))
+							if (txt.toLowerCase().contains(text.toLowerCase()))
+								importedTokens.add(txt);
 				}
 			Set<String> set = new HashSet<String>();
 			set.addAll(importedTokens);
@@ -344,13 +390,12 @@ public class SORecommender implements IRecommendationProvider {
 
 	}
 
-	private String getTokenBoosted(HashSet<String> tokens, String tokenType,
-			HashMap<String, Double> entropies) {
+	private String getTokenBoosted(HashSet<String> tokens, String tokenType, HashMap<String, Double> entropies) {
 		String query = "";
 		for (String token : tokens) {
 			if (token != null && (!token.isEmpty()) && entropies.containsKey(token))
 				query += String.format(Locale.US, " %s:%s^%.2f", tokenType, token, entropies.get(token));
-			
+
 		}
 		return query;
 
@@ -380,7 +425,7 @@ public class SORecommender implements IRecommendationProvider {
 		query = query.substring(0, query.length() - 3);
 		return query;
 	}
-
+	
 	private String getAnswer(ArrayList<String> vars, String query, boolean overallGuard) {
 		if (overallGuard == true)
 			for (String var : vars)
@@ -407,7 +452,7 @@ public class SORecommender implements IRecommendationProvider {
 		logger.info(tokenSize + "");
 		for (Entry<String, HashSet<String>> token : tokens.entrySet()) {
 			HashSet<String> values = token.getValue();
-			for (String coll : values) 				
+			for (String coll : values)
 				if (coll.length() > 1)
 					entropies = getEntropy(coll, snippet, entropies, true, tokenSize);
 		}

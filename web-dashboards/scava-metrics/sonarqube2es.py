@@ -27,7 +27,9 @@
 
 import argparse
 import hashlib
+import json
 import logging
+import requests
 import time
 
 from perceval.backends.scava.sonarqube import Sonar
@@ -49,7 +51,8 @@ def get_params():
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", help="URL for Sonarqube instance")
-    parser.add_argument("-c", "--components", nargs='+', help="List of components")
+    parser.add_argument("-c", "--components", help="URL containing the list of components with corresponding mappings")
+    parser.add_argument("-m", "--metrics", nargs='+', help="List of metrics")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -177,8 +180,8 @@ def enrich_metrics(sonar_metrics):
             'metric_class': 'sonarqube',
             'metric_type': sonar_metric['backend_name'],
             'metric_id': sonar_data['id'],
-            'metric_desc': sonar_data['metric'],
-            'metric_name': sonar_data['metric'],
+            'metric_desc': 'Sonar ' + sonar_data['metric'],
+            'metric_name': 'Sonar ' + sonar_data['metric'],
             'metric_es_value': metric_value,
             'metric_es_compute': 'sample',
             'metric_value': metric_value,
@@ -195,18 +198,33 @@ def enrich_metrics(sonar_metrics):
     logging.info(msg)
 
 
-def fetch_sonarqube(url, components):
+def load_components(url):
+
+    raw_mappings = requests.get(url)
+    mappings = json.loads(raw_mappings.text)
+
+    return mappings['component-mapping']
+
+
+def fetch_sonarqube(url, components_url, metrics):
     """
     Fetch the metrics from Sonarqube
 
     """
-    # Get the metrics for all projects
-    for component in components:
+    components = load_components(components_url)
 
-        sonar_backend = Sonar(component=component, base_url=url)
+    for component in components:
+        sonar_backend = Sonar(url, component, metrics)
 
         for enriched_metric in enrich_metrics(sonar_backend.fetch()):
+
+            if components[component]:
+                enriched_metric['project'] = components[component]
+
             yield enriched_metric
+
+        msg = "Metrics {} from component {} fetched".format(metrics, component)
+        logging.debug(msg)
 
 
 if __name__ == '__main__':
@@ -224,10 +242,10 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components)
+    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics)
 
     if sonar_metrics:
-        logging.info("Loading SonarQube metrics in Elasticsearch")
+        logging.info("Uploading SonarQube metrics to Elasticsearch")
 
         counter = 0
         to_upload = []

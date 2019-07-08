@@ -37,6 +37,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -140,11 +143,14 @@ public class ArtifactsRestController {
 	
 	@ApiOperation(value = "Store IDE metrics")
 	@RequestMapping(value="store-metrics", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public @ResponseBody boolean storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
-		try {
+    public ResponseEntity<Object> storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
+		try{
 			m4pRepository.save(metricForProject);
-		} catch(Exception e){return false;}
-		return true;
+		}
+		catch (Exception e) {
+			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
     }
 	
 //	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.test;
 
+import org.eclipse.scava.test.apimigration.APIMigrationTest;
 import org.eclipse.scava.test.codeclone.CodeCloneTest;
 import org.eclipse.scava.test.crossrec.CROSSRECTest;
 import org.eclipse.scava.test.focus.FocusTest;
@@ -37,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		RepoPalTimeSimilarityCalculatorTest.class, SimilarityManagerTest.class, GithubImporterTest.class,
 		ClusterManagerTest.class, DependencyServiceTest.class, RecommenderRestTest.class, CROSSRECTest.class,
 		AlternativeLibrariesRecommendationProviderTest.class, AlternativeLibrariesRecommendationProviderTest.class,
-		CodeCloneTest.class, FocusRestTest.class, FocusTest.class, FocusSimilarityCalculatorTest.class})
+		CodeCloneTest.class, FocusRestTest.class, FocusTest.class, FocusSimilarityCalculatorTest.class, APIMigrationTest.class})
 public class AllTests {
 
 }
