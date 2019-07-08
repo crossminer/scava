@@ -16,8 +16,8 @@ import org.xml.sax.SAXException;
 public class SourceStackExchangeReader extends StackExchangeReaderBase {
 	
 	
-	static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\SplitXML\\Folder_0\\0_part_00.xml";
-	//static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\Posts.xml";
+	//static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\SplitXML\\Folder_0\\0_part_00.xml";
+	static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\Posts.xml";
 	
 	@Override
 	public void produce() {
