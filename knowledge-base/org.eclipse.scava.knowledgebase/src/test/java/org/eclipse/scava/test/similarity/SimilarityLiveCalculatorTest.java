@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.test.similarity;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -17,17 +16,11 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
-import org.eclipse.scava.business.ISimilarityManager;
-import org.eclipse.scava.business.ISingleSimilarityCalculator;
-import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
-import org.eclipse.scava.business.integration.GithubUserRepository;
 import org.eclipse.scava.business.model.Artifact;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,15 +41,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SimilarityLiveCalculatorTest {
 	@Mock
 	private ArtifactRepository artifactRepository;
-	@InjectMocks
-	private ISimilarityManager simManager;
 	@Autowired
 	@Qualifier("CrossRec")
 	private IAggregatedSimilarityCalculator compoundSim;
 	private static final Logger logger = LoggerFactory.getLogger(SimilarityLiveCalculatorTest.class);
 
 
-	private Artifact artifact1;
 	private List<Artifact> artifacts;
 	@Before
 	public void init(){
@@ -66,7 +56,6 @@ public class SimilarityLiveCalculatorTest {
 			InputStream resourceInputStream = resource.getInputStream();
 			artifacts = mapper.readValue(resourceInputStream, new TypeReference<List<Artifact>>(){});
 			resourceInputStream.close();
-			artifact1 = artifacts.get(0);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
