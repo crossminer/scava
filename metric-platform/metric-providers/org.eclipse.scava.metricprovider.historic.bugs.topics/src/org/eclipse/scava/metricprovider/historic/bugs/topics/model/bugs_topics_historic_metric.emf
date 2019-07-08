@@ -7,6 +7,7 @@ class BugsTopicsHistoricMetric {
 class BugTopic {
 	@searchable
    	attr String bugTrackerId;
-   	attr String label;
+   	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] commentsId;
 }

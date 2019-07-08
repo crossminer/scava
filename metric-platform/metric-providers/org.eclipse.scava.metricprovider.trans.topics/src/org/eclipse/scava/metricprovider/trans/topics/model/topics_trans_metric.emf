@@ -33,13 +33,15 @@ class NewsgroupArticlesData {
 class BugTrackerTopic {
 	@searchable
    	attr String bugTrackerId;
-   	attr String label;
+   	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] commentsId;
 }
 
 class NewsgroupTopic {
 	@searchable
    	attr String newsgroupName;
-   	attr String label;
+   	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] articlesId;
 }

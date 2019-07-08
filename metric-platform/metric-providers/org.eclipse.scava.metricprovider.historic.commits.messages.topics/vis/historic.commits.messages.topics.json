@@ -4,13 +4,14 @@
 		{
 			"id" : "commits.topics.messages",
 			"name" : "Commits Messages Topics",
-			"description" : "The number of commits messages containing each topic.",
+			"description" : "The number of commits messages contained in each cluster of topics.",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$commitMessageTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Topic", "field" : "$label" },
-					{ "name" : "Commits Messages", "field" : "$numberOfMessages" } ]
+					{ "name" : "Topics", "field" : "$labels" },
+					{ "name" : "Commits Messages", "field" : "$numberOfMessages" },
+					{ "name" : "Source (Revisions)", "field" : "$commitsMessageId"} ]
 			},
 			"x" : "Date",
 			"y" : "Commits Messages", 

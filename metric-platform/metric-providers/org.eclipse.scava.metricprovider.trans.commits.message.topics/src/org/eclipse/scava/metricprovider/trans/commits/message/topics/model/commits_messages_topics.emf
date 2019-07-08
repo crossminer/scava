@@ -20,6 +20,7 @@ class CommitMessage {
 class CommitsTopic {
 	@searchable
 	attr String repository;
-	attr String label;
+	attr String[*] labels;
 	attr int numberOfMessages;
+	attr String[*] commitsMessageId;
 }

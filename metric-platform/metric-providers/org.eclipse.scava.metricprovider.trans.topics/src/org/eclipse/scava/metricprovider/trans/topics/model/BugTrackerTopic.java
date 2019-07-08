@@ -1,33 +1,31 @@
-/*******************************************************************************
- * Copyright (c) 2019 Edge Hill University
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.topics.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class BugTrackerTopic extends Pongo {
 	
+	protected List<String> labels = null;
+	protected List<String> commentsId = null;
 	
 	
 	public BugTrackerTopic() { 
 		super();
+		dbObject.put("labels", new BasicDBList());
+		dbObject.put("commentsId", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
-		LABEL.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
+		LABELS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
+		COMMENTSID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic");
 	}
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
-	public static StringQueryProducer LABEL = new StringQueryProducer("label"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
+	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer COMMENTSID = new ArrayQueryProducer("commentsId");
 	
 	
 	public String getBugTrackerId() {
@@ -36,15 +34,6 @@ public class BugTrackerTopic extends Pongo {
 	
 	public BugTrackerTopic setBugTrackerId(String bugTrackerId) {
 		dbObject.put("bugTrackerId", bugTrackerId);
-		notifyChanged();
-		return this;
-	}
-	public String getLabel() {
-		return parseString(dbObject.get("label")+"", "");
-	}
-	
-	public BugTrackerTopic setLabel(String label) {
-		dbObject.put("label", label);
 		notifyChanged();
 		return this;
 	}
@@ -58,6 +47,18 @@ public class BugTrackerTopic extends Pongo {
 		return this;
 	}
 	
+	public List<String> getLabels() {
+		if (labels == null) {
+			labels = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("labels"));
+		}
+		return labels;
+	}
+	public List<String> getCommentsId() {
+		if (commentsId == null) {
+			commentsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("commentsId"));
+		}
+		return commentsId;
+	}
 	
 	
 	

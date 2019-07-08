@@ -7,6 +7,7 @@ class NewsgroupTopicsHistoricMetric {
 class NewsgrpTopic {
 	@searchable
    	attr String newsgroupName;
-   	attr String label;
+   	attr String[*] labels;
    	attr int numberOfDocuments;
+   	attr String[*] articlesId;
 }
