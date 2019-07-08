@@ -498,6 +498,15 @@
     <module>metric-providers/org.eclipse.scava.nlp.tools.rake</module>
     <module>../migration/third-party/org.antlr.antlr4</module>
     <module>metric-providers/org.eclipse.scava.code.tokenizers</module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.migrationissues
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues
+    </module>
+    <module>
+    	metric-providers/org.eclipse.scava.nlp.classifiers.migrationpatternsdetector
+    </module>
   </modules>
   <build>
     <plugins>
