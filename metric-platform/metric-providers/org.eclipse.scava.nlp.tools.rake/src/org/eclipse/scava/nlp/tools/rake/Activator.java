@@ -7,7 +7,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-package org.eclipse.scava.nlp.tool.rake;
+package org.eclipse.scava.nlp.tools.rake;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

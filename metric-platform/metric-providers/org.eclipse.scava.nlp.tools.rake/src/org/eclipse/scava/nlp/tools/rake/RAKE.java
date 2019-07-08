@@ -1,4 +1,4 @@
-package org.eclipse.scava.nlp.tool.rake;
+package org.eclipse.scava.nlp.tools.rake;
 
 import java.util.ArrayList;
 import java.util.Arrays;

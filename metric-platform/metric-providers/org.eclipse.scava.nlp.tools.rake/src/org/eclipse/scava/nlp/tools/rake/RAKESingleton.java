@@ -1,4 +1,4 @@
-package org.eclipse.scava.nlp.tool.rake;
+package org.eclipse.scava.nlp.tools.rake;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +27,7 @@ public class RAKESingleton {
 	private List<Pattern> semiStopwordsPatterns;
 
 	private RAKESingleton() {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tool.rake");
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.rake");
 		try
 		{
 			stopwords = new ArrayList<String>();
