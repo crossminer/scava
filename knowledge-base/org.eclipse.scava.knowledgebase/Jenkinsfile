@@ -7,11 +7,11 @@ pipeline {
   stages {
     stage('Build Knowledge Base') {
       steps {
-        configFileProvider([configFile(fileId: '791f3c57-627b-46c3-a386-a88597aa92fa', variable: 'MY_KB_APP_PROP')]) {
+        configFileProvider([configFile(fileId: 'fe9a3595-f02f-47eb-b1cd-9863a4e8915b', variable: 'MY_KB_APP_PROP')]) {
           dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
             sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
             sh 'mvn validate'
-            sh 'mvn compile'
+            sh 'mvn clean compile'
             sh 'mvn package -Dmaven.test.skip=true'
           }
         }
@@ -20,7 +20,7 @@ pipeline {
     stage('Test Knowledge Base') {
       steps {
         lock('knowledge-base-test-lock') {
-            configFileProvider([configFile(fileId: '791f3c57-627b-46c3-a386-a88597aa92fa', variable: 'MY_KB_APP_PROP')]) {
+            configFileProvider([configFile(fileId: 'fe9a3595-f02f-47eb-b1cd-9863a4e8915b', variable: 'MY_KB_APP_PROP')]) {
                 dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
                 	sh 'rm -rf /tmp/scava_lucene/'
                     sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"

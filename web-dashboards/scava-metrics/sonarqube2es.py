@@ -27,7 +27,9 @@
 
 import argparse
 import hashlib
+import json
 import logging
+import requests
 import time
 
 from perceval.backends.scava.sonarqube import Sonar
@@ -49,7 +51,7 @@ def get_params():
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--url", help="URL for Sonarqube instance")
-    parser.add_argument("-c", "--components", nargs='+', help="List of components")
+    parser.add_argument("-c", "--components", help="URL containing the list of components with corresponding mappings")
     parser.add_argument("-m", "--metrics", nargs='+', help="List of metrics")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
@@ -196,17 +198,29 @@ def enrich_metrics(sonar_metrics):
     logging.info(msg)
 
 
-def fetch_sonarqube(url, components, metrics):
+def load_components(url):
+
+    raw_mappings = requests.get(url)
+    mappings = json.loads(raw_mappings.text)
+
+    return mappings['component-mapping']
+
+
+def fetch_sonarqube(url, components_url, metrics):
     """
     Fetch the metrics from Sonarqube
 
     """
-    # Get the metrics for all projects
-    for component in components:
+    components = load_components(components_url)
 
+    for component in components:
         sonar_backend = Sonar(url, component, metrics)
 
         for enriched_metric in enrich_metrics(sonar_backend.fetch()):
+
+            if components[component]:
+                enriched_metric['project'] = components[component]
+
             yield enriched_metric
 
         msg = "Metrics {} from component {} fetched".format(metrics, component)

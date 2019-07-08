@@ -45,8 +45,6 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 	@Autowired
 	private MavenLibraryRepository mvnRepository;
 
-
-
 	private static final Logger logger = LoggerFactory.getLogger(VersionsRecServiceImpl.class);
 	@Override
 	public Recommendation getRecommendation(Query query) throws Exception {
@@ -88,8 +86,7 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 						mvn.setReleasedate(
 								dateFormat.parse(repo.split(",")[2].replace("\"", "").replace("Z[GMT]", "")));
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						logger.info("Error parse date: {}", e.getMessage());
 					}
 
 					mvnRepository.save(mvn);
@@ -100,4 +97,5 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 			e.printStackTrace();
 		}
 	}
+	
 }

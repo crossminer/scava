@@ -16,8 +16,10 @@ import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationType;
+import org.eclipse.scava.business.impl.DataReader;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
+import org.eclipse.scava.business.model.MethodDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,7 @@ public class RecommenderRestController {
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.API_CALL);
 	}
-	@ApiOperation(value = "This resource is used to retrieve documentation recommendation from code context. NOT YET IMPLEMENTED.")
+	@ApiOperation(value = "This resource is used to retrieve documentation recommendation from code context.")
 	@RequestMapping(value = "recommended_API_documentation", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getApiDocumentationRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
@@ -119,53 +121,50 @@ public class RecommenderRestController {
 		return true;
 	}
 	
-	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)
-	public Query getQuery() {
-		Query q = new Query();
-		q.setCurrentMethodCode(
-				"package com.mkyong.core;\n" + 
-				"\n" + 
-				"import java.net.UnknownHostException;\n" + 
-				"import java.util.Date;\n" + 
-				"import com.mongodb.BasicDBObject;\n" + 
-				"import com.mongodb.DB;\n" + 
-				"import com.mongodb.DBCollection;\n" + 
-				"import com.mongodb.DBCursor;\n" + 
-				"import com.mongodb.MongoClient;\n" + 
-				"import com.mongodb.MongoException;\n" + 
-				"\n" + 
-				"/**\n" + 
-				" * Java + MongoDB Hello world Example\n" + 
-				" * \n" + 
-				" */\n" + 
-				"public class App {\n" + 
-				"  public static void main(String[] args) {\n" + 
-				"\n" + 
-				"    try {\n" + 
-				"\n" + 
-				"	/**** Connect to MongoDB ****/\n" + 
-				"	// Since 2.10.0, uses MongoClient\n" + 
-				"	MongoClient mongo = new MongoClient(\"localhost\", 27017);\n" + 
-				"\n" + 
-				"	/**** Get database ****/\n" + 
-				"	// if database doesn't exists, MongoDB will create it for you\n" + 
-				"	DB db = mongo.getDB(\"testdb\");\n" + 
-				"\n" + 
-				"	/**** Get collection / table from 'testdb' ****/\n" + 
-				"	// if collection doesn't exists, MongoDB will create it for you\n" + 
-				"	DBCollection table = db.getCollection(\"user\");\n" + 
-				"\n" + 
-				"	/**** Insert ****/\n" + 
-				"	// create a document to store key and value\n" + 
-				"	BasicDBObject document = new BasicDBObject();\n" + 
-				"	document.put(\"name\", \"mkyong\");\n" + 
-				"	document.put(\"age\", 30);\n" + 
-				"	document.put(\"createdDate\", new Date());\n" + 
-				"	table.insert(document);\n" + 
-				"\n" + 
-				"	/**** Find and display ****/\n" + 
-				"	BasicDBObject searchQuery = new BasicDBObject();\n" + 
-				"}}}");
-		return q;
-	}
+//	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)
+//	public Query getQuery() {
+//		Query q = new Query();
+//		q.setCurrentMethodCode(
+//				  "package camelinaction;" + 
+//				  "import org.apache.camel.CamelContext;" + 
+//				  "import org.apache.camel.builder.RouteBuilder;" + 
+//				  "import org.apache.camel.impl.DefaultCamelContext;" + 
+//				  "public class FilePrinter{" + 
+//				  "	public static void main (String[] args) throws Exception{" + 
+//				  "		CamelContext context =  new DefaultCamelContext();" + 
+//				  "		context.addRoutes(new RouteBuilder(){" + 
+//				  "			public void configure(){}" + 
+//				  "		});" + 
+//				  "	}" + 
+//				  "}" 
+//				);
+////				"public KieContainer kieContainer() throws IOException {\n" + 
+////				"    KieRepository kieRepository = getKieServices().getRepository();\n" + 
+////				" \n" + 
+////				"    kieRepository.addKieModule(new KieModule() {\n" + 
+////				"        public ReleaseId getReleaseId() {\n" + 
+////				"            return kieRepository.getDefaultReleaseId();\n" + 
+////				"        }\n" + 
+////				"    });\n" + 
+////				" \n" + 
+////				"    KieBuilder kieBuilder = getKieServices()\n" + 
+////				"      .newKieBuilder(kieFileSystem())\n" + 
+////				"      .buildAll();\n" + 
+////				"     \n" + 
+////				" \n" + 
+////				"    return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());\n" + 
+////				"}");
+//		return q;
+//	}
+////	
+//	@Autowired 
+//	private DataReader dr;
+////
+//	@RequestMapping(value = "focus-example", method = RequestMethod.GET)
+//	private List<MethodDeclaration> jj() {
+//		Artifact artifacts = dr.readArtifactFromFile("g_activation-1.1.jar.txt");
+//		logger.info(artifacts.getMethodDeclarations().get(4).getName());
+//        return artifacts.getMethodDeclarations();
+//		
+//	}
 }
