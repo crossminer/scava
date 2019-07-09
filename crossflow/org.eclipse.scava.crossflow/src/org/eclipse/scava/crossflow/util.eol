@@ -22,7 +22,13 @@ operation Any getWorkflow() : Workflow {
 }
 
 operation String toSnakeCase() : String {
-	var matcher := Native("java.util.regex.Pattern")
+	var CaseFormat = Native("com.google.common.base.CaseFormat");
+	var UPPER_CAMEL = CaseFormat.valueOf("UPPER_CAMEL");
+	var LOWER_UNDERSCORE = CaseFormat.valueOf("LOWER_UNDERSCORE");
+	return UPPER_CAMEL.to(LOWER_UNDERSCORE, self);
+	
+//	CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "SomeInput");
+	/*var matcher := Native("java.util.regex.Pattern")
 		.compile("[A-Z]?[a-z]+|[A-Z]{2,}(?=[A-Z][a-z]|\\d|\\W|$)|\\d+")
 		.matcher(self);
 	
@@ -35,5 +41,5 @@ operation String toSnakeCase() : String {
 		if (result) join += "_";
 	}
 
-	return join.toLowercase();
+	return join.toLowercase();*/
 }
