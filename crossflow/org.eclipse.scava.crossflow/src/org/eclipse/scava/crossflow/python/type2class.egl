@@ -1,6 +1,5 @@
+from crossflow.runtime import Job
 
-import uuid
-from org.eclipse.scava.crossflow.runtime import Job
 
 class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%] 
 	
@@ -28,7 +27,6 @@ class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%]
 		return self.[%=f.name%]
 	
 	[%}%]
-	
 	def toObjectArray(self):
 		ret = []
 	[%var i = 0; for (f in t.fields) { %]

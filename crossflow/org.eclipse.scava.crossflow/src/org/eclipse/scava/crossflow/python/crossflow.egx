@@ -1,156 +1,124 @@
-import '../util.eol';
+import "../util.eol";
 
 rule Workflow2Class 
 	transform w : Workflow {
-	
 	parameters : Map {
 		"package" = w.getPackage()
 	}
-	
 	template : "workflow2class.egl"
-	
-	target : w.getPath() + w.name + ".py"
+	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCase() + ".py"
 }
 
 rule Type2Class 
 	transform t : Type {
-	
 	guard : t.impl.isUndefined()
-	
 	parameters : Map {
 	   "package" = t.getPackage()
 	}
-	
 	template : "type2class.egl"
-	
-	target : t.getPath() + t.name + ".py"
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"
 }
 
 @greedy
 rule Task2BaseClass 
 	transform t : Task {
-
 	guard : t.appliesTo()
-	
 	parameters : Map {
 		"w" = t.getWorkflow(),
 		"package" = t.getPackage(),
 		"outputTypes" = t.getOutputTypes()
 	}
-	
 	template : "task2baseclass.egl"
-	
-	target : t.getPath() + t.name + "Base.py"	
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"	
 }
 
 @greedy
 rule Task2ImplClass 
 	transform t : Task {
-		
 	guard : t.appliesTo()
-		
 	parameters : Map {
 		"w" = t.getWorkflow(),
 		"package" = t.getPackage(),
 		"outputTypes" = t.getOutputTypes()
 	}
-	
 	template : "task2implclass.egl"
-	
-	target : t.getImplPath() + t.name + ".py"
-	
+	target : t.getOutFolder() + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"
 	overwrite : false
-}
-@greedy
-rule Steam2Class 
-	transform s : Stream {
-	
-	parameters : Map {
-		"w" = s.getWorkflow()
-	}
-	
-	template : "stream2class.egl"
-	
-	target : s.getPath() + s.name + ".py"
 }
 
 @greedy
-rule Steam2Consumer 
+rule Steam2Class 
 	transform s : Stream {
-	
 	parameters : Map {
-		"t" = Task
+		"w" = s.getWorkflow()
 	}
-	
-	template : "stream2consumer.egl"
-	
-	target : s.getPath() + s.name + "Consumer.py"
-}
-
-
-rule GenerateRequirementsTxt
-	transform w : Workflow {
-	
-	template: "requirements.txt"
-	
-	target: w.getOutputFolder() + "/requirements.txt"
-}
-
-rule GenerateMain
-	transform w : Workflow {
-	
-	parameters : Map {
-		"package" = w.getPackage()
-	}
-	
-	template: "generateMain.egl"
-	
-	target: w.getOutputFolder() + "/main.py"
-	
-	overwrite: false
+	template : "stream2class.egl"
+	target : s.getGenFolder() + "crossflow/" + s.getPackage().toPath() + s.name.toSnakeCase() + ".py"
 }
 
 rule GenerateRuntime
 	transform w : Workflow {
-	
 	template: "runtime.py"
-	
-	target: w.getGenOutputFolder() + "/org.eclipse.scava.crossflow".toPath() + "/runtime.py"
+	target: w.getGenFolder() + "crossflow/runtime.py"
 }
 
+rule GenerateRequirementsTxt
+	transform w : Workflow {
+	template: "requirements.txt"
+	target: w.getSupportFolder() + "requirements.txt"
+}
+
+rule GenerateMain
+	transform w : Workflow {
+	parameters : Map {
+		"package" = w.getPackage()
+	}
+	template: "generateMain.egl"
+	target: w.getSupportFolder() + "main.py"
+	overwrite: false
+}
+
+/*
+ * UTILITY FUNCTIONS
+ */
+
+@cached
 operation Any getPackage() : String {
 	return self.getLanguage("python").package;
 }
 
-operation Any getGenOutputFolder() : String {
-	var genOutputFolder = self.getLanguage("python").genOutputFolder;
-	if (genOutputFolder.isDefined()) {
-		return genOutputFolder;
+@cached
+operation Any getGenFolder() : String {
+	var outputFolder = self.getLanguage("python").genOutputFolder;
+	if (outputFolder.isDefined()) {
+		return outputFolder.toPath();
 	}
-	return "py-gen";
+	return "py-gen/";
 }
 
-operation Any getOutputFolder() : String {
+@cached
+operation Any getOutFolder() : String {
 	var outputFolder = self.getLanguage("python").outputFolder;
 	if (outputFolder.isDefined()) {
-		return outputFolder;
+		return outputFolder.toPath();
 	}
-	return "py";
+	return "py/";
 }
 
-operation Any getPath() : String {
-	return self.getGenOutputFolder() + "/" + self.getPackage().toPath() + "/runtime/";
-}
-
-operation Any getImplPath() : String {
-	return self.getOutputFolder() + "/" + self.getPackage().toPath();
-}
-
-operation Any getSupportPath() {
+operation Any getSupportFolder() : String {
+	var supportFolderParam = self.getLanguage("python").getParameters().selectOne(p|p.name == "supportFolder");
+	if (supportFolderParam.isDefined()) {
+		return supportFolderParam.value.toPath();
+	}
+	return self.getOutFolder();
 }
 
 operation String toPath() : String {
-	return self.replaceAll("\\.", "/") + "/";
+	var path = self.replaceAll("\\.", "/");
+	if (path.endsWith("/")) {
+		return path;
+	}
+	return path + "/";
 }
 
 operation Task appliesTo() : Boolean {

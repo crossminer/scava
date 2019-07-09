@@ -1,6 +1,7 @@
 import csv
 import traceback
-from org.eclipse.scava.crossflow.runtime import CSVParser
+
+from crossflow.runtime import CSVParser
 
 class [%=t.name%]([%=t.name%]Base):
 

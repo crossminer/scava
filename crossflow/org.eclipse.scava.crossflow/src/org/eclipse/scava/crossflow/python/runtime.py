@@ -15,13 +15,12 @@ import tempfile
 import time
 import threading
 import traceback
+import xmltodict
 import uuid
 
 from enum import Enum
 from pathlib import Path
 from typing import Type
-
-import xmltodict
 
 
 illegal_chars = [ 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,

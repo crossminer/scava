@@ -1,27 +1,25 @@
+[%import "../util.eol";%]
 import argparse
 import sys
 import time
 import traceback
-
-from org.eclipse.scava.crossflow.runtime import ControlSignal
-from org.eclipse.scava.crossflow.runtime import ControlSignals
-from org.eclipse.scava.crossflow.runtime import Mode
-from org.eclipse.scava.crossflow.runtime import Workflow
 
 [% var imports = new Sequence; 
 imports.addAll(w.getMasterTasks());
 imports.addAll(w.getWorkerTasks());
 imports = imports.sortBy(i|i.name);
 for (i in imports) {%]
-from [%=package%].[%=i.name%] import [%=i.name%]
+from [%=package%].[%=i.name.toSnakeCase()%] import [%=i.name%]
 [%}%]
 [% imports = new Sequence;
 imports.addAll(w.streams);
 imports.addAll(w.types);
 imports = imports.sortBy(i|i.name);
 for (i in imports) {%]
-from [%=package%].runtime.[%=i.name%] import [%=i.name%]
+from crossflow.[%=package%].[%=i.name.toSnakeCase()%] import [%=i.name%]
 [%}%]
+from crossflow.runtime import ControlSignal, ControlSignals, Mode, Workflow
+
 
 class [%=w.name%](Workflow):
 
@@ -115,7 +113,6 @@ class [%=w.name%](Workflow):
         return self.[%=t.name.ftlc()%]
         
     [%}%]
-
     def isEnablePrefetch(self):
         """Are tasks allowed to obtain more jobs while already executing
         :rtype: boolean

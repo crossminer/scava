@@ -1,8 +1,6 @@
-import sys
 import traceback
 
-from org.eclipse.scava.crossflow.runtime import JobStream
-from org.eclipse.scava.crossflow.runtime import QueueInfo, QueueType, str2QueueType
+from crossflow.runtime import JobStream, QueueInfo, QueueType, str2QueueType
 
 
 class [%=s.name%](JobStream):
@@ -56,8 +54,6 @@ class [%=s.name%](JobStream):
 						
 					except Exception as ex:
 						traceback.print_exc()
-						exc_type, exc_value, exc_traceback = sys.exc_info()
-						stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
 						workflow.reportInternalException(ex, '')
 
 				self.subscribe(preQueue, handlePreMessage)
@@ -79,8 +75,6 @@ class [%=s.name%](JobStream):
 							ackFunc()						
 					except Exception as ex:
 						traceback.print_exc()
-						exc_type, exc_value, exc_traceback = sys.exc_info()
-						stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
 						workflow.reportInternalException(ex, '')
 
 				self.subscribe(destQueue, handleDestinationMessage)
@@ -98,8 +92,19 @@ class [%=s.name%](JobStream):
 						ackFunc()						
 				except Exception as ex:
 					traceback.print_exc()
-					exc_type, exc_value, exc_traceback = sys.exc_info()
-					stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
 					self.workflow.reportInternalException(ex, '')
 
 			self.subscribe(postQueue, messageHandler)
+
+
+class [%=s.name%]Consumer(object):
+
+	def __init__(self):
+		pass
+	
+	def consume[%=s.name%]WithNotifications(self, [%=s.type.name.ftlc()%]):
+		pass
+
+	def consume[%=s.name%]External(self, [%=s.type.name.ftlc()%], owner):
+		pass
+		

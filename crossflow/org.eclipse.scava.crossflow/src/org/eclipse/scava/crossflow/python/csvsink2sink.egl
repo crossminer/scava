@@ -1,4 +1,4 @@
-from org.eclipse.scava.crossflow.runtime import CSVWriter
+from crossflow import CSVWriter
 
 import traceback
 

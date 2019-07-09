@@ -1,10 +1,17 @@
-[%if (t.isTypeOf(Source)){%]
+[%import "../util.eol";
+
+if (t.isTypeOf(Source)){%]
 import threading
+
 [%}%]
-from [%=package%].runtime.[%=t.name%]Base import [%=t.name%]Base
-[%for (s in t.output) { %]
-from [%=package%].runtime.[%=s.type.name%] import [%=s.type.name%]
-[% } %]
+from crossflow.[%=package%].[%=t.name.toSnakeCase()%] import [%=t.name%]Base
+[% var types = new Set;
+types.addAll(t.output.collect(t|t.type));
+types = types.sortBy(t|t.name);
+for (t in types) { %]
+from crossflow.[%=package%].[%=t.name.toSnakeCase()%] import [%=t.name%]
+[%}%]
+
 
 class [%=t.name%]([%=t.name%]Base):
 

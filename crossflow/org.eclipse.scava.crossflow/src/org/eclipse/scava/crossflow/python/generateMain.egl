@@ -1,9 +1,10 @@
+[%import "../util.eol";%]
 import argparse
 import sys
 import time
 
-from org.eclipse.scava.crossflow.runtime import Mode
-from [%=package%].runtime.[%=w.name%] import [%=w.name%]
+from crossflow.[%=package%].[%=w.name.toSnakeCase()%] import [%=w.name%]
+from crossflow.runtime import Mode
 
 
 if __name__ == '__main__':

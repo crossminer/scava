@@ -1,11 +1,10 @@
+[%import "../util.eol";%]
 import traceback
-import sys
 
-from org.eclipse.scava.crossflow.runtime import FailedJob
-from org.eclipse.scava.crossflow.runtime import Task
+from crossflow.runtime import FailedJob, Task
 
 [% for (t in outputTypes) { %]
-from [%=package%].runtime.[%=t.name%] import [%=t.name%]
+from crossflow.[%=package%].[%=t.name.toSnakeCase()%] import [%=t.name%]
 [%}%]
 
 
@@ -69,16 +68,12 @@ class [%=t.name%]Base(Task):
 				self.workflow.getFailedJobsQueue().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
 			except Exception as e:
 				traceback.print_exc()
-				exc_type, exc_value, exc_traceback = sys.exc_info()
-				stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
 				self.workflow.reportInternalException(e, '')
 		finally:
 			try:
 				self.workflow.setTaskWaiting(self)
 			except Exception as e:
 				traceback.print_exc()
-				exc_type, exc_value, exc_traceback = sys.exc_info()
-				stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
 				self.workflow.reportInternalException(e, '')
 	
 	def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
@@ -88,7 +83,7 @@ class [%=t.name%]Base(Task):
 	[%if (t.isKindOf(Source)){%]
 	def produce(self):
 		pass
+		
 	[%}%]
-	
 	def close(self):
 		pass
