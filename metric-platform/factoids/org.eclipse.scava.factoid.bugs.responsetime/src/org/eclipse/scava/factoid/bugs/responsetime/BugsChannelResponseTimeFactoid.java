@@ -30,7 +30,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelResponseTime";
+		return "factoid.bugs.responsetime";
 	}
 
 	@Override
@@ -41,7 +41,9 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding response time for bug trackers. "
+				+ "This could be a cummulative average, yearly average etc"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

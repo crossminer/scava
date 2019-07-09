@@ -37,7 +37,7 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelResponseTime";
+		return "factoid.newsgroups.responsetime";
 	}
 
 	@Override
@@ -48,7 +48,9 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding response time for newsgroups. "
+				+ "This could be a cummulative average, yearly average etc."; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

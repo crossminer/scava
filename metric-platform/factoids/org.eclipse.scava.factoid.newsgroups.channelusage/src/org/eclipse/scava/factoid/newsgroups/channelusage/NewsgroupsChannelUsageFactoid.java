@@ -42,7 +42,7 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelUsage";
+		return "factoid.newsgroups.channelusage";
 	}
 
 	@Override
@@ -53,7 +53,9 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding usage data for newsgroups. "
+				+ "For example, the total number of new articles, bugs or threads per year"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

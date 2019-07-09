@@ -37,18 +37,20 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelUsage";
+		return "factoid.bugs.channelusage";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Bug Tracker Usage";
+		return "Bug Tracker Usage data";
 		// This method will NOT be removed in a later version.
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding emotions for bug trackers. "
+				+ "For example, the percentage of positive, negative or surprise emotions expressed"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

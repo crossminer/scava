@@ -39,7 +39,7 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelSize";
+		return "factoid.bugs.size";
 	}
 
 	@Override
@@ -50,7 +50,8 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding bug size for bug trackers. "
+				+ "For example, the cumulative number of bug comments or patches"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

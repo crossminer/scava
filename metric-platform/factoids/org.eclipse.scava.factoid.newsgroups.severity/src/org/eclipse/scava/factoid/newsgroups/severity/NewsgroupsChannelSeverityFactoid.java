@@ -45,7 +45,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelSeverity";
+		return "factoid.newsgroups.severity";
 	}
 
 	@Override
@@ -56,7 +56,9 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding severity for newsgroups. "
+				+ "For example, the number of articles per severity level, the average "
+				+ "sentiment for each severity etc"; // This method will NOT be removed in a later version.
 	}
 
 	@Override
