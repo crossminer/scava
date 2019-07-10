@@ -74,7 +74,7 @@ rule genMain
 		"package" = w.getPackage()
 	}
 	template: "genMain.egl"
-	target: w.getSupportFolder() + "main.py"
+	target: w.getOutFolder() + "main.py"
 	overwrite: false
 }
 
