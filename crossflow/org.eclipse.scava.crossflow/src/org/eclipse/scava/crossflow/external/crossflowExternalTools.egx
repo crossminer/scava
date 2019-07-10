@@ -3,9 +3,9 @@ rule Workflow2AbstractGraph
 	
 	parameters : Map{"w" = w,"package" = w.getPackageName()}
 	
-	template : "workflow2abstractGraph.egl"
+	template : "crossflow2json.egl"
 	
-	target : "experiment/abstract.graph"
+	target : "experiment/model.json"
 }
 
 operation Workflow getPackageName() {
