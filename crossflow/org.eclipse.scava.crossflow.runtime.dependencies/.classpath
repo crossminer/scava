@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/arpack_combined_all-0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/codemodel-2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-compress-1.18.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-math-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-vfs2-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/compiler-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/core-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/datasets-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/easymock-2.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gcc-runtime-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/graphics-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/grDevices-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hamcrest-all-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jfreesvg-3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jniloader-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/maven-scm-api-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/maven-scm-provider-svn-commons-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/maven-scm-provider-svnexe-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/methods-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/native_ref-java-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/native_system-java-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-linux-armhf-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-linux-i686-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-linux-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-osx-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-win-i686-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_ref-win-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-linux-armhf-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-linux-i686-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-linux-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-osx-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-win-i686-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/netlib-native_system-win-x86_64-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/plexus-utils-1.5.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/regexp-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-appl-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-asm-5.0.4b.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-blas-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-core-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-gnur-runtime-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-guava-17.0b.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-lapack-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-math-common-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-nmath-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/renjin-script-engine-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/stats-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/utils-0.9.2726.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xz-1.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jsch-0.1.54.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jzlib-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
