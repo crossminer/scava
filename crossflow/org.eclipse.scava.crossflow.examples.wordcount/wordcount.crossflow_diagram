@@ -16,9 +16,7 @@
       <fields xmi:type="cf:Field" xmi:id="_TeJWcHNpEemR4dUnJRQOBg" name="frequency" type="int"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_mw7iIHcAEemkt6jvRKbpEA" name="Java" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="src" genOutputFolder="src-gen"/>
-    <languages xmi:type="cf:Language" xmi:id="_PTFCoHfnEemgDr9JORHhZg" name="Python" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="py" genOutputFolder="py-gen">
-      <parameters xmi:type="cf:Parameter" xmi:id="_TNIdYHfnEemgDr9JORHhZg" name="module" value="default"/>
-    </languages>
+    <languages xmi:type="cf:Language" xmi:id="_PTFCoHfnEemgDr9JORHhZg" name="Python" package="wordcount" outputFolder="py" genOutputFolder="py-gen"/>
   </cf:Workflow>
   <notation:Diagram xmi:id="_ZM1NAHNoEemR4dUnJRQOBg" type="Crossflow" element="_ZMRzYHNoEemR4dUnJRQOBg" name="wordcount.crossflow_diagram" measurementUnit="Pixel">
     <children xmi:type="notation:Shape" xmi:id="_vtWMkHNoEemR4dUnJRQOBg" type="2005" element="_vtMbkHNoEemR4dUnJRQOBg" fontName="Segoe UI">
@@ -91,10 +89,6 @@
     <children xmi:type="notation:Shape" xmi:id="_PTRP4HfnEemgDr9JORHhZg" type="2013" element="_PTFCoHfnEemgDr9JORHhZg" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_PTXWgHfnEemgDr9JORHhZg" type="5015"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_PTXWgXfnEemgDr9JORHhZg" type="7002">
-        <children xmi:type="notation:Shape" xmi:id="_TNOkAHfnEemgDr9JORHhZg" type="3002" element="_TNIdYHfnEemgDr9JORHhZg" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_TNOkAnfnEemgDr9JORHhZg" type="5014"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TNOkAXfnEemgDr9JORHhZg"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_PTXWgnfnEemgDr9JORHhZg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_PTXWg3fnEemgDr9JORHhZg"/>
       </children>
