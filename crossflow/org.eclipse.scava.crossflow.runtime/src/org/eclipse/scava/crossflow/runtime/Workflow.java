@@ -406,6 +406,7 @@ public abstract class Workflow {
 
 				@Override
 				public void consume(InternalException internalException) {
+					System.err.println("Workflow forwarding internal exception:");
 					internalException.getException().printStackTrace();
 					internalExceptions.add(internalException);
 				}

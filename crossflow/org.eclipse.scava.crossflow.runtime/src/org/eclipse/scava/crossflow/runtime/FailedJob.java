@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class FailedJob implements Serializable {
 
 	private static final long serialVersionUID = -8868868495593187850L;
-	
+
 	protected Job job;
 	protected Exception exception;
 	protected String worker;
@@ -14,7 +14,11 @@ public class FailedJob implements Serializable {
 	public FailedJob(Job job, Exception exception, String worker, String task) {
 		super();
 		this.job = job;
-		this.exception = exception;
+		// overwrite the original exception in case it contains information that XStream
+		// cannot serialize, keeping the trace and message
+		this.exception = new Exception(
+				"Workflow Failed Task Exception: " + (exception.getMessage() != null ? exception.getMessage() : ""));
+		this.exception.setStackTrace(exception.getStackTrace());
 		this.worker = worker;
 		this.task = task;
 	}
