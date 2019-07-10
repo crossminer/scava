@@ -39,11 +39,13 @@ import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
@@ -132,6 +134,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case SinkEditPart.VISUAL_ID:
 		case CommitmentTaskEditPart.VISUAL_ID:
 		case OpinionatedTaskEditPart.VISUAL_ID:
+		case ScriptedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
@@ -351,6 +354,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
+		case ScriptedTaskEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getScriptedTask_2015ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
 		case TaskEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getTask_2010ContainedLinks(view));
@@ -380,6 +390,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			break;
 		}
 		case Field2EditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getField_3003ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case Field3EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getField_3001ContainedLinks(view));
 			}

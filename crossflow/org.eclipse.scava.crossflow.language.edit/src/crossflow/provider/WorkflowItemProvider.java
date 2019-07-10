@@ -64,7 +64,6 @@ public class WorkflowItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
-			addPackagePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -83,28 +82,6 @@ public class WorkflowItemProvider
 				 getString("_UI_Workflow_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_name_feature", "_UI_Workflow_type"),
 				 CrossflowPackage.Literals.WORKFLOW__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Package feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addPackagePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Workflow_package_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_package_feature", "_UI_Workflow_type"),
-				 CrossflowPackage.Literals.WORKFLOW__PACKAGE,
 				 true,
 				 false,
 				 false,
@@ -186,7 +163,6 @@ public class WorkflowItemProvider
 
 		switch (notification.getFeatureID(Workflow.class)) {
 			case CrossflowPackage.WORKFLOW__NAME:
-			case CrossflowPackage.WORKFLOW__PACKAGE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CrossflowPackage.WORKFLOW__STREAMS:
@@ -255,6 +231,11 @@ public class WorkflowItemProvider
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__TASKS,
 				 CrossflowFactory.eINSTANCE.createOpinionatedTask()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createScriptedTask()));
 
 		newChildDescriptors.add
 			(createChildParameter

@@ -16,19 +16,18 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowFactory;
-import crossflow.Field;
 import crossflow.ScriptedTask;
-import crossflow.Type;
+import crossflow.Workflow;
 
 /**
  * @generated
  */
-public class Field2CreateCommand extends EditElementCommand {
+public class ScriptedTaskCreateCommand extends EditElementCommand {
 
 	/**
 	* @generated
 	*/
-	public Field2CreateCommand(CreateElementRequest req) {
+	public ScriptedTaskCreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
@@ -56,10 +55,10 @@ public class Field2CreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		Field newElement = CrossflowFactory.eINSTANCE.createField();
+		ScriptedTask newElement = CrossflowFactory.eINSTANCE.createScriptedTask();
 
-		ScriptedTask owner = (ScriptedTask) getElementToEdit();
-		owner.getOutputVariables().add(newElement);
+		Workflow owner = (Workflow) getElementToEdit();
+		owner.getTasks().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 
@@ -70,7 +69,8 @@ public class Field2CreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected void doConfigure(Field newElement, IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	protected void doConfigure(ScriptedTask newElement, IProgressMonitor monitor, IAdaptable info)
+			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
 		configureRequest.setClientContext(((CreateElementRequest) getRequest()).getClientContext());

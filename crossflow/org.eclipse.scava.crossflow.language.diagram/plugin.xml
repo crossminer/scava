@@ -23,7 +23,7 @@
       <editor
          id="crossflow.diagram.part.CrossflowDiagramEditorID"
          name="%editorName"
-         icon="icons/obj16/CrossflowDiagramFile.png"
+         icon="icons/obj16/CrossflowDiagramFile.gif"
          extensions="crossflow_diagram"
          default="true"
          class="crossflow.diagram.part.CrossflowDiagramEditor"
@@ -46,7 +46,7 @@
       <?gmfgen generated="true"?>
   	  <wizard
   	     name="%newWizardName"
-  	     icon="icons/obj16/CrossflowDiagramFile.png"
+  	     icon="icons/obj16/CrossflowDiagramFile.gif"
   	     category="org.eclipse.ui.Examples"
   	     class="crossflow.diagram.part.CrossflowCreationWizard"
   	     id="crossflow.diagram.part.CrossflowCreationWizardID">
@@ -258,7 +258,7 @@
          </object>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" containerViews="referencing-diagrams"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Crossflow"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2010,2011,2014,2013,3001,3002"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013,3003,3001,3002"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4005,4003,4004"/>
       </viewProvider>
    </extension>
@@ -271,16 +271,16 @@
             <method name="getType()" value="Crossflow"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2010,2011,2014,2013,3001,3002"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013,3003,3001,3002"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4005,4003,4004"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5010,5012,5016,5015,5011,5014"/>
+            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5017,5010,5012,5016,5015,5018,5011,5014"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
-            <method name="getType()" value="7001,7002"/>
+            <method name="getType()" value="7003,7001,7002"/>
          </object>
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
@@ -334,6 +334,11 @@
          <object class="crossflow.diagram.edit.parts.OpinionatedTaskEditPart" id="OpinionatedTask_2008"/>
          <context elements="OpinionatedTask_2008"/>
       </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfScriptedTaskEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.ScriptedTaskEditPart" id="ScriptedTask_2015"/>
+         <context elements="ScriptedTask_2015"/>
+      </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfTaskEditPart">
          <Priority name="Lowest"/>
          <object class="crossflow.diagram.edit.parts.TaskEditPart" id="Task_2010"/>
@@ -356,7 +361,12 @@
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfField2EditPart">
          <Priority name="Lowest"/>
-         <object class="crossflow.diagram.edit.parts.Field2EditPart" id="Field_3001"/>
+         <object class="crossflow.diagram.edit.parts.Field2EditPart" id="Field_3003"/>
+         <context elements="Field_3003"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfField3EditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.Field3EditPart" id="Field_3001"/>
          <context elements="Field_3001"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfParameterEditPart">
@@ -387,7 +397,7 @@
       <decoratorProvider class="crossflow.diagram.providers.CrossflowShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
          <object class="org.eclipse.gmf.runtime.notation.Node(org.eclipse.gmf.runtime.notation)" id="generated-top-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2010,2011,2014,2013"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013"/>
          </object>
          <context decoratorTargets="generated-top-nodes"/>
       </decoratorProvider>
@@ -487,6 +497,16 @@
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
+               id="org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"
+               name="%metatype.name.ScriptedTask_2015"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ScriptedTask"
+               edithelper="crossflow.diagram.edit.helpers.ScriptedTaskEditHelper">
+            <param name="semanticHint" value="2015"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <metamodelType
                id="org.eclipse.scava.crossflow.language.diagram.Task_2010"
                name="%metatype.name.Task_2010"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
@@ -510,7 +530,7 @@
                id="org.eclipse.scava.crossflow.language.diagram.Field_2014"
                name="%metatype.name.Field_2014"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="org.eclipse.scava.crossflow.language.diagram.Field_3001"/>
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
             <param name="semanticHint" value="2014"/>
          </specializationType>
       </metamodel>
@@ -526,13 +546,22 @@
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
-               id="org.eclipse.scava.crossflow.language.diagram.Field_3001"
-               name="%metatype.name.Field_3001"
+               id="org.eclipse.scava.crossflow.language.diagram.Field_3003"
+               name="%metatype.name.Field_3003"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
                eclass="Field"
                edithelper="crossflow.diagram.edit.helpers.FieldEditHelper">
-            <param name="semanticHint" value="3001"/>
+            <param name="semanticHint" value="3003"/>
          </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <specializationType
+               id="org.eclipse.scava.crossflow.language.diagram.Field_3001"
+               name="%metatype.name.Field_3001"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
+            <param name="semanticHint" value="3001"/>
+         </specializationType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
@@ -601,10 +630,12 @@
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Sink_2006"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.CommitmentTask_2007"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.OpinionatedTask_2008"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Task_2010"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Type_2011"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_2014"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Language_2013"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_3001"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Parameter_3002"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.StreamType_4001"/>
@@ -660,7 +691,7 @@
             priority="normal" 
             contentProvider="crossflow.diagram.navigator.CrossflowNavigatorContentProvider" 
             labelProvider="crossflow.diagram.navigator.CrossflowNavigatorLabelProvider"
-            icon="icons/obj16/CrossflowDiagramFile.png"
+            icon="icons/obj16/CrossflowDiagramFile.gif"
             activeByDefault="true">
          <triggerPoints>
             <or>
@@ -702,7 +733,7 @@
             priority="normal" 
             contentProvider="crossflow.diagram.navigator.CrossflowDomainNavigatorContentProvider" 
             labelProvider="crossflow.diagram.navigator.CrossflowDomainNavigatorLabelProvider"
-            icon="icons/obj16/CrossflowDiagramFile.png"
+            icon="icons/obj16/CrossflowDiagramFile.gif"
             activeByDefault="true">
          <triggerPoints>
             <or>

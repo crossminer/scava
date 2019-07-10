@@ -7,28 +7,27 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import crossflow.diagram.edit.commands.Field2CreateCommand;
-import crossflow.diagram.edit.commands.Field3CreateCommand;
-import crossflow.diagram.edit.commands.FieldCreateCommand;
 import crossflow.diagram.providers.CrossflowElementTypes;
 
 /**
  * @generated
  */
-public class TypeTypeFieldsCompartmentItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
+public class ScriptedTaskScriptedTaskOutputVariablesCompartmentItemSemanticEditPolicy
+		extends CrossflowBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public TypeTypeFieldsCompartmentItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Type_2011);
+	public ScriptedTaskScriptedTaskOutputVariablesCompartmentItemSemanticEditPolicy() {
+		super(CrossflowElementTypes.ScriptedTask_2015);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (CrossflowElementTypes.Field_3001 == req.getElementType()) {
-			return getGEFWrapper(new Field3CreateCommand(req));
+		if (CrossflowElementTypes.Field_3003 == req.getElementType()) {
+			return getGEFWrapper(new Field2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

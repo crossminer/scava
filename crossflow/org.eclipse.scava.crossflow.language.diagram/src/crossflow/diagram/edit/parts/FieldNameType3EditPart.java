@@ -55,12 +55,12 @@ import crossflow.diagram.providers.CrossflowParserProvider;
 /**
  * @generated
  */
-public class FieldNameType2EditPart extends CompartmentEditPart implements ITextAwareEditPart {
+public class FieldNameType3EditPart extends CompartmentEditPart implements ITextAwareEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5018;
+	public static final int VISUAL_ID = 5011;
 
 	/**
 	* @generated
@@ -90,7 +90,7 @@ public class FieldNameType2EditPart extends CompartmentEditPart implements IText
 	/**
 	* @generated
 	*/
-	public FieldNameType2EditPart(View view) {
+	public FieldNameType3EditPart(View view) {
 		super(view);
 	}
 
@@ -291,8 +291,8 @@ public class FieldNameType2EditPart extends CompartmentEditPart implements IText
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_3003, getParserElement(),
-					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.FieldNameType2EditPart.VISUAL_ID));
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_3001, getParserElement(),
+					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.FieldNameType3EditPart.VISUAL_ID));
 		}
 		return parser;
 	}

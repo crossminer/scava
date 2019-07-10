@@ -326,52 +326,62 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Sink9CreationTool_title;
+	public static String ScriptedTask9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink9CreationTool_desc;
+	public static String ScriptedTask9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source10CreationTool_title;
+	public static String Sink10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source10CreationTool_desc;
+	public static String Sink10CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task11CreationTool_title;
+	public static String Source11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task11CreationTool_desc;
+	public static String Source11CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic12CreationTool_title;
+	public static String Task12CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic12CreationTool_desc;
+	public static String Task12CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type13CreationTool_title;
+	public static String Topic13CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type13CreationTool_desc;
+	public static String Topic13CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type14CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type14CreationTool_desc;
 
 	/**
 	* @generated
@@ -412,6 +422,11 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String Type4CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart_title;
 
 	/**
 	* @generated
@@ -532,6 +547,16 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String NavigatorGroupName_Type_2011_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ScriptedTask_2015_incominglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ScriptedTask_2015_outgoinglinks;
 
 	/**
 	* @generated

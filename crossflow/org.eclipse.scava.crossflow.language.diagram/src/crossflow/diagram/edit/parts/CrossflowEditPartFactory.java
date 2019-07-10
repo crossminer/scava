@@ -76,6 +76,12 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case OpinionatedTaskNameEditPart.VISUAL_ID:
 				return new OpinionatedTaskNameEditPart(view);
 
+			case ScriptedTaskEditPart.VISUAL_ID:
+				return new ScriptedTaskEditPart(view);
+
+			case ScriptedTaskNameEditPart.VISUAL_ID:
+				return new ScriptedTaskNameEditPart(view);
+
 			case TaskEditPart.VISUAL_ID:
 				return new TaskEditPart(view);
 
@@ -106,11 +112,20 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case FieldNameType2EditPart.VISUAL_ID:
 				return new FieldNameType2EditPart(view);
 
+			case Field3EditPart.VISUAL_ID:
+				return new Field3EditPart(view);
+
+			case FieldNameType3EditPart.VISUAL_ID:
+				return new FieldNameType3EditPart(view);
+
 			case ParameterEditPart.VISUAL_ID:
 				return new ParameterEditPart(view);
 
 			case ParameterNameValueEditPart.VISUAL_ID:
 				return new ParameterNameValueEditPart(view);
+
+			case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
+				return new ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart(view);
 
 			case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 				return new TypeTypeFieldsCompartmentEditPart(view);

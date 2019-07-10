@@ -25,18 +25,18 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import crossflow.diagram.edit.policies.Field2ItemSemanticEditPolicy;
+import crossflow.diagram.edit.policies.Field3ItemSemanticEditPolicy;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 
 /**
  * @generated
  */
-public class Field2EditPart extends ShapeNodeEditPart {
+public class Field3EditPart extends ShapeNodeEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3003;
+	public static final int VISUAL_ID = 3001;
 
 	/**
 	* @generated
@@ -51,7 +51,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public Field2EditPart(View view) {
+	public Field3EditPart(View view) {
 		super(view);
 	}
 
@@ -60,7 +60,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new Field2ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new Field3ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -109,8 +109,8 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FieldNameType2EditPart) {
-			((FieldNameType2EditPart) childEditPart).setLabel(getPrimaryShape().getFigureFieldLabelFigure());
+		if (childEditPart instanceof FieldNameType3EditPart) {
+			((FieldNameType3EditPart) childEditPart).setLabel(getPrimaryShape().getFigureFieldLabelFigure());
 			return true;
 		}
 		return false;
@@ -120,7 +120,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FieldNameType2EditPart) {
+		if (childEditPart instanceof FieldNameType3EditPart) {
 			return true;
 		}
 		return false;
@@ -243,7 +243,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(FieldNameType2EditPart.VISUAL_ID));
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(FieldNameType3EditPart.VISUAL_ID));
 	}
 
 	/**

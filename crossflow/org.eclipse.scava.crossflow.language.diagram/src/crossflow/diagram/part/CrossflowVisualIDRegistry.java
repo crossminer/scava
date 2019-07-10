@@ -19,8 +19,10 @@ import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameType3EditPart;
 import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
@@ -31,6 +33,9 @@ import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -178,6 +183,9 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getOpinionatedTask().isSuperTypeOf(domainElement.eClass())) {
 				return OpinionatedTaskEditPart.VISUAL_ID;
 			}
+			if (CrossflowPackage.eINSTANCE.getScriptedTask().isSuperTypeOf(domainElement.eClass())) {
+				return ScriptedTaskEditPart.VISUAL_ID;
+			}
 			if (CrossflowPackage.eINSTANCE.getTask().isSuperTypeOf(domainElement.eClass())) {
 				return TaskEditPart.VISUAL_ID;
 			}
@@ -191,9 +199,14 @@ public class CrossflowVisualIDRegistry {
 				return LanguageEditPart.VISUAL_ID;
 			}
 			break;
-		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
 				return Field2EditPart.VISUAL_ID;
+			}
+			break;
+		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
+				return Field3EditPart.VISUAL_ID;
 			}
 			break;
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
@@ -249,6 +262,9 @@ public class CrossflowVisualIDRegistry {
 			if (OpinionatedTaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (ScriptedTaskEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (TaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -302,6 +318,14 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
+		case ScriptedTaskEditPart.VISUAL_ID:
+			if (ScriptedTaskNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case TaskEditPart.VISUAL_ID:
 			if (TaskNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -333,13 +357,23 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
+		case Field3EditPart.VISUAL_ID:
+			if (FieldNameType3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case ParameterEditPart.VISUAL_ID:
 			if (ParameterNameValueEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 			if (Field2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
+			if (Field3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -409,6 +443,7 @@ public class CrossflowVisualIDRegistry {
 	*/
 	public static boolean isCompartmentVisualID(int visualID) {
 		switch (visualID) {
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 			return true;
@@ -435,8 +470,9 @@ public class CrossflowVisualIDRegistry {
 		case OpinionatedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
-		case Field2EditPart.VISUAL_ID:
+		case Field3EditPart.VISUAL_ID:
 		case ParameterEditPart.VISUAL_ID:
+		case Field2EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

@@ -16,13 +16,13 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 /**
  * @generated
  */
-public class Field2ItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
+public class Field3ItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public Field2ItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Field_3003);
+	public Field3ItemSemanticEditPolicy() {
+		super(CrossflowElementTypes.Field_3001);
 	}
 
 	/**

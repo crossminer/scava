@@ -302,6 +302,29 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.ScriptedTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScriptedTaskItemProvider scriptedTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.ScriptedTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScriptedTaskAdapter() {
+		if (scriptedTaskItemProvider == null) {
+			scriptedTaskItemProvider = new ScriptedTaskItemProvider(this);
+		}
+
+		return scriptedTaskItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link crossflow.Type} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -502,6 +525,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (csvSinkItemProvider != null) csvSinkItemProvider.dispose();
 		if (commitmentTaskItemProvider != null) commitmentTaskItemProvider.dispose();
 		if (opinionatedTaskItemProvider != null) opinionatedTaskItemProvider.dispose();
+		if (scriptedTaskItemProvider != null) scriptedTaskItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
 		if (languageItemProvider != null) languageItemProvider.dispose();

@@ -25,6 +25,7 @@ import crossflow.Language;
 import crossflow.OpinionatedTask;
 import crossflow.Parameter;
 import crossflow.Queue;
+import crossflow.ScriptedTask;
 import crossflow.Sink;
 import crossflow.Source;
 import crossflow.Stream;
@@ -36,12 +37,15 @@ import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
@@ -74,6 +78,8 @@ public class CrossflowDiagramUpdater {
 		switch (CrossflowVisualIDRegistry.getVisualID(view)) {
 		case WorkflowEditPart.VISUAL_ID:
 			return getWorkflow_1000SemanticChildren(view);
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
+			return getScriptedTaskScriptedTaskOutputVariablesCompartment_7003SemanticChildren(view);
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 			return getTypeTypeFieldsCompartment_7001SemanticChildren(view);
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
@@ -115,6 +121,10 @@ public class CrossflowDiagramUpdater {
 				continue;
 			}
 			if (visualID == OpinionatedTaskEditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == ScriptedTaskEditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -165,6 +175,31 @@ public class CrossflowDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<CrossflowNodeDescriptor> getScriptedTaskScriptedTaskOutputVariablesCompartment_7003SemanticChildren(
+			View view) {
+		if (false == view.eContainer() instanceof View) {
+			return Collections.emptyList();
+		}
+		View containerView = (View) view.eContainer();
+		if (!containerView.isSetElement()) {
+			return Collections.emptyList();
+		}
+		ScriptedTask modelElement = (ScriptedTask) containerView.getElement();
+		LinkedList<CrossflowNodeDescriptor> result = new LinkedList<CrossflowNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getOutputVariables().iterator(); it.hasNext();) {
+			Field childElement = (Field) it.next();
+			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
+			if (visualID == Field2EditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<CrossflowNodeDescriptor> getTypeTypeFieldsCompartment_7001SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
@@ -178,7 +213,7 @@ public class CrossflowDiagramUpdater {
 		for (Iterator<?> it = modelElement.getFields().iterator(); it.hasNext();) {
 			Field childElement = (Field) it.next();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == Field2EditPart.VISUAL_ID) {
+			if (visualID == Field3EditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -234,6 +269,8 @@ public class CrossflowDiagramUpdater {
 			return getCommitmentTask_2007ContainedLinks(view);
 		case OpinionatedTaskEditPart.VISUAL_ID:
 			return getOpinionatedTask_2008ContainedLinks(view);
+		case ScriptedTaskEditPart.VISUAL_ID:
+			return getScriptedTask_2015ContainedLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010ContainedLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -243,6 +280,8 @@ public class CrossflowDiagramUpdater {
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013ContainedLinks(view);
 		case Field2EditPart.VISUAL_ID:
+			return getField_3003ContainedLinks(view);
+		case Field3EditPart.VISUAL_ID:
 			return getField_3001ContainedLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002ContainedLinks(view);
@@ -271,6 +310,8 @@ public class CrossflowDiagramUpdater {
 			return getCommitmentTask_2007IncomingLinks(view);
 		case OpinionatedTaskEditPart.VISUAL_ID:
 			return getOpinionatedTask_2008IncomingLinks(view);
+		case ScriptedTaskEditPart.VISUAL_ID:
+			return getScriptedTask_2015IncomingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010IncomingLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -280,6 +321,8 @@ public class CrossflowDiagramUpdater {
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013IncomingLinks(view);
 		case Field2EditPart.VISUAL_ID:
+			return getField_3003IncomingLinks(view);
+		case Field3EditPart.VISUAL_ID:
 			return getField_3001IncomingLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002IncomingLinks(view);
@@ -308,6 +351,8 @@ public class CrossflowDiagramUpdater {
 			return getCommitmentTask_2007OutgoingLinks(view);
 		case OpinionatedTaskEditPart.VISUAL_ID:
 			return getOpinionatedTask_2008OutgoingLinks(view);
+		case ScriptedTaskEditPart.VISUAL_ID:
+			return getScriptedTask_2015OutgoingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010OutgoingLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -317,6 +362,8 @@ public class CrossflowDiagramUpdater {
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013OutgoingLinks(view);
 		case Field2EditPart.VISUAL_ID:
+			return getField_3003OutgoingLinks(view);
+		case Field3EditPart.VISUAL_ID:
 			return getField_3001OutgoingLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002OutgoingLinks(view);
@@ -414,6 +461,16 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getScriptedTask_2015ContainedLinks(View view) {
+		ScriptedTask modelElement = (ScriptedTask) view.getElement();
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<CrossflowLinkDescriptor> getTask_2010ContainedLinks(View view) {
@@ -444,6 +501,13 @@ public class CrossflowDiagramUpdater {
 	* @generated
 	*/
 	public static List<CrossflowLinkDescriptor> getLanguage_2013ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getField_3003ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -558,6 +622,18 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getScriptedTask_2015IncomingLinks(View view) {
+		ScriptedTask modelElement = (ScriptedTask) view.getElement();
+		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
+				.find(view.eResource().getResourceSet().getResources());
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getIncomingFeatureModelFacetLinks_Stream_InputOf_4005(modelElement, crossReferences));
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<CrossflowLinkDescriptor> getTask_2010IncomingLinks(View view) {
@@ -593,6 +669,13 @@ public class CrossflowDiagramUpdater {
 	* @generated
 	*/
 	public static List<CrossflowLinkDescriptor> getLanguage_2013IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getField_3003IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -693,6 +776,16 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getScriptedTask_2015OutgoingLinks(View view) {
+		ScriptedTask modelElement = (ScriptedTask) view.getElement();
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<CrossflowLinkDescriptor> getTask_2010OutgoingLinks(View view) {
@@ -723,6 +816,13 @@ public class CrossflowDiagramUpdater {
 	* @generated
 	*/
 	public static List<CrossflowLinkDescriptor> getLanguage_2013OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getField_3003OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

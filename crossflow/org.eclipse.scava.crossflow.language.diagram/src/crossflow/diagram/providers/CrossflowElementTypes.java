@@ -22,11 +22,13 @@ import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
@@ -114,6 +116,12 @@ public class CrossflowElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType ScriptedTask_2015 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType Task_2010 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Task_2010"); //$NON-NLS-1$
 	/**
@@ -132,6 +140,12 @@ public class CrossflowElementTypes {
 	*/
 	public static final IElementType Language_2013 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Language_2013"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType Field_3003 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Field_3003"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -221,6 +235,8 @@ public class CrossflowElementTypes {
 
 			elements.put(OpinionatedTask_2008, CrossflowPackage.eINSTANCE.getOpinionatedTask());
 
+			elements.put(ScriptedTask_2015, CrossflowPackage.eINSTANCE.getScriptedTask());
+
 			elements.put(Task_2010, CrossflowPackage.eINSTANCE.getTask());
 
 			elements.put(Type_2011, CrossflowPackage.eINSTANCE.getType());
@@ -228,6 +244,8 @@ public class CrossflowElementTypes {
 			elements.put(Field_2014, CrossflowPackage.eINSTANCE.getField());
 
 			elements.put(Language_2013, CrossflowPackage.eINSTANCE.getLanguage());
+
+			elements.put(Field_3003, CrossflowPackage.eINSTANCE.getField());
 
 			elements.put(Field_3001, CrossflowPackage.eINSTANCE.getField());
 
@@ -266,10 +284,12 @@ public class CrossflowElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Sink_2006);
 			KNOWN_ELEMENT_TYPES.add(CommitmentTask_2007);
 			KNOWN_ELEMENT_TYPES.add(OpinionatedTask_2008);
+			KNOWN_ELEMENT_TYPES.add(ScriptedTask_2015);
 			KNOWN_ELEMENT_TYPES.add(Task_2010);
 			KNOWN_ELEMENT_TYPES.add(Type_2011);
 			KNOWN_ELEMENT_TYPES.add(Field_2014);
 			KNOWN_ELEMENT_TYPES.add(Language_2013);
+			KNOWN_ELEMENT_TYPES.add(Field_3003);
 			KNOWN_ELEMENT_TYPES.add(Field_3001);
 			KNOWN_ELEMENT_TYPES.add(Parameter_3002);
 			KNOWN_ELEMENT_TYPES.add(StreamType_4001);
@@ -303,6 +323,8 @@ public class CrossflowElementTypes {
 			return CommitmentTask_2007;
 		case OpinionatedTaskEditPart.VISUAL_ID:
 			return OpinionatedTask_2008;
+		case ScriptedTaskEditPart.VISUAL_ID:
+			return ScriptedTask_2015;
 		case TaskEditPart.VISUAL_ID:
 			return Task_2010;
 		case TypeEditPart.VISUAL_ID:
@@ -312,6 +334,8 @@ public class CrossflowElementTypes {
 		case LanguageEditPart.VISUAL_ID:
 			return Language_2013;
 		case Field2EditPart.VISUAL_ID:
+			return Field_3003;
+		case Field3EditPart.VISUAL_ID:
 			return Field_3001;
 		case ParameterEditPart.VISUAL_ID:
 			return Parameter_3002;

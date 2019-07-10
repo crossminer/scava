@@ -67,6 +67,7 @@ public class TaskItemProvider
 			addParallelPropertyDescriptor(object);
 			addCachedPropertyDescriptor(object);
 			addMultipleOutputsPropertyDescriptor(object);
+			addImplPropertyDescriptor(object);
 			addParametersPropertyDescriptor(object);
 			addLanguagesPropertyDescriptor(object);
 			addConfigurationsPropertyDescriptor(object);
@@ -229,6 +230,28 @@ public class TaskItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Impl feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addImplPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Task_impl_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Task_impl_feature", "_UI_Task_type"),
+				 CrossflowPackage.Literals.TASK__IMPL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Parameters feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -337,6 +360,7 @@ public class TaskItemProvider
 			case CrossflowPackage.TASK__PARALLEL:
 			case CrossflowPackage.TASK__CACHED:
 			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
+			case CrossflowPackage.TASK__IMPL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

@@ -26,8 +26,6 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.Field2EditPart;
-import crossflow.diagram.edit.parts.Field3EditPart;
-import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.part.CrossflowDiagramUpdater;
 import crossflow.diagram.part.CrossflowNodeDescriptor;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
@@ -35,7 +33,7 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 /**
  * @generated
  */
-public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
+public class ScriptedTaskScriptedTaskOutputVariablesCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	* @generated
@@ -53,7 +51,7 @@ public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditP
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return CrossflowPackage.eINSTANCE.getType_Fields();
+		return CrossflowPackage.eINSTANCE.getScriptedTask_OutputVariables();
 	}
 
 	/**
@@ -65,7 +63,7 @@ public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditP
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<CrossflowNodeDescriptor> childDescriptors = CrossflowDiagramUpdater
-				.getTypeTypeFieldsCompartment_7001SemanticChildren(viewObject);
+				.getScriptedTaskScriptedTaskOutputVariablesCompartment_7003SemanticChildren(viewObject);
 		for (CrossflowNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -83,7 +81,7 @@ public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditP
 	* @generated
 	*/
 	private boolean isMyDiagramElement(View view) {
-		return Field3EditPart.VISUAL_ID == CrossflowVisualIDRegistry.getVisualID(view);
+		return Field2EditPart.VISUAL_ID == CrossflowVisualIDRegistry.getVisualID(view);
 	}
 
 	/**
@@ -95,7 +93,8 @@ public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditP
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<CrossflowNodeDescriptor> childDescriptors = CrossflowDiagramUpdater
-				.getTypeTypeFieldsCompartment_7001SemanticChildren((View) getHost().getModel());
+				.getScriptedTaskScriptedTaskOutputVariablesCompartment_7003SemanticChildren(
+						(View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

@@ -23,7 +23,7 @@ public class CrossflowModelingAssistantProviderOfWorkflowEditPart extends Crossf
 	@Override
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(12);
+		List<IElementType> types = new ArrayList<IElementType>(13);
 		types.add(CrossflowElementTypes.CsvSource_2001);
 		types.add(CrossflowElementTypes.CsvSink_2002);
 		types.add(CrossflowElementTypes.Topic_2003);
@@ -32,6 +32,7 @@ public class CrossflowModelingAssistantProviderOfWorkflowEditPart extends Crossf
 		types.add(CrossflowElementTypes.Sink_2006);
 		types.add(CrossflowElementTypes.CommitmentTask_2007);
 		types.add(CrossflowElementTypes.OpinionatedTask_2008);
+		types.add(CrossflowElementTypes.ScriptedTask_2015);
 		types.add(CrossflowElementTypes.Task_2010);
 		types.add(CrossflowElementTypes.Type_2011);
 		types.add(CrossflowElementTypes.Field_2014);
