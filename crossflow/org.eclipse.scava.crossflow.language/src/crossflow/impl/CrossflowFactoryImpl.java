@@ -66,6 +66,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.CSV_SINK: return createCsvSink();
 			case CrossflowPackage.COMMITMENT_TASK: return createCommitmentTask();
 			case CrossflowPackage.OPINIONATED_TASK: return createOpinionatedTask();
+			case CrossflowPackage.SCRIPTED_TASK: return createScriptedTask();
 			case CrossflowPackage.TYPE: return createType();
 			case CrossflowPackage.FIELD: return createField();
 			case CrossflowPackage.LANGUAGE: return createLanguage();
@@ -173,6 +174,16 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	public OpinionatedTask createOpinionatedTask() {
 		OpinionatedTaskImpl opinionatedTask = new OpinionatedTaskImpl();
 		return opinionatedTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScriptedTask createScriptedTask() {
+		ScriptedTaskImpl scriptedTask = new ScriptedTaskImpl();
+		return scriptedTask;
 	}
 
 	/**

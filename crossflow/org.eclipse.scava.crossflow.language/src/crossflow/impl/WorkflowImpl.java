@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link crossflow.impl.WorkflowImpl#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.impl.WorkflowImpl#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getStreams <em>Streams</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getTypes <em>Types</em>}</li>
@@ -65,26 +64,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPackage()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PACKAGE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getPackage() <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPackage()
-	 * @generated
-	 * @ordered
-	 */
-	protected String package_ = PACKAGE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getStreams() <em>Streams</em>}' containment reference list.
@@ -181,27 +160,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getPackage() {
-		return package_;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setPackage(String newPackage) {
-		String oldPackage = package_;
-		package_ = newPackage;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__PACKAGE, oldPackage, package_));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<Stream> getStreams() {
 		if (streams == null) {
 			streams = new EObjectContainmentEList<Stream>(Stream.class, this, CrossflowPackage.WORKFLOW__STREAMS);
@@ -289,8 +247,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 		switch (featureID) {
 			case CrossflowPackage.WORKFLOW__NAME:
 				return getName();
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				return getPackage();
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return getStreams();
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -316,9 +272,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 		switch (featureID) {
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName((String)newValue);
-				return;
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				setPackage((String)newValue);
 				return;
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				getStreams().clear();
@@ -355,9 +308,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				setPackage(PACKAGE_EDEFAULT);
-				return;
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				getStreams().clear();
 				return;
@@ -387,8 +337,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 		switch (featureID) {
 			case CrossflowPackage.WORKFLOW__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return streams != null && !streams.isEmpty();
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -415,8 +363,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", package: ");
-		result.append(package_);
 		result.append(')');
 		return result.toString();
 	}

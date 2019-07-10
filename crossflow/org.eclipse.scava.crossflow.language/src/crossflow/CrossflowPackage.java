@@ -75,22 +75,13 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Package</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORKFLOW__PACKAGE = 1;
-
-	/**
 	 * The feature id for the '<em><b>Streams</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__STREAMS = 2;
+	int WORKFLOW__STREAMS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Tasks</b></em>' containment reference list.
@@ -99,7 +90,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__TASKS = 3;
+	int WORKFLOW__TASKS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Types</b></em>' containment reference list.
@@ -108,7 +99,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__TYPES = 4;
+	int WORKFLOW__TYPES = 3;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -117,7 +108,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__PARAMETERS = 5;
+	int WORKFLOW__PARAMETERS = 4;
 
 	/**
 	 * The feature id for the '<em><b>Languages</b></em>' containment reference list.
@@ -126,7 +117,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__LANGUAGES = 6;
+	int WORKFLOW__LANGUAGES = 5;
 
 	/**
 	 * The number of structural features of the '<em>Workflow</em>' class.
@@ -135,7 +126,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_FEATURE_COUNT = 7;
+	int WORKFLOW_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -376,13 +367,22 @@ public interface CrossflowPackage extends EPackage {
 	int TASK__MULTIPLE_OUTPUTS = 6;
 
 	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TASK__IMPL = 7;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__PARAMETERS = 7;
+	int TASK__PARAMETERS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Languages</b></em>' reference list.
@@ -391,7 +391,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__LANGUAGES = 8;
+	int TASK__LANGUAGES = 9;
 
 	/**
 	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
@@ -400,7 +400,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK__CONFIGURATIONS = 9;
+	int TASK__CONFIGURATIONS = 10;
 
 	/**
 	 * The number of structural features of the '<em>Task</em>' class.
@@ -409,7 +409,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TASK_FEATURE_COUNT = 10;
+	int TASK_FEATURE_COUNT = 11;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.SourceImpl <em>Source</em>}' class.
@@ -483,6 +483,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE__IMPL = TASK__IMPL;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
@@ -592,6 +601,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SOURCE__MULTIPLE_OUTPUTS = SOURCE__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SOURCE__IMPL = SOURCE__IMPL;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
@@ -712,6 +730,15 @@ public interface CrossflowPackage extends EPackage {
 	int SINK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
 
 	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SINK__IMPL = TASK__IMPL;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -819,6 +846,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int CSV_SINK__MULTIPLE_OUTPUTS = SINK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CSV_SINK__IMPL = SINK__IMPL;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
@@ -939,6 +975,15 @@ public interface CrossflowPackage extends EPackage {
 	int COMMITMENT_TASK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
 
 	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMITMENT_TASK__IMPL = TASK__IMPL;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1057,6 +1102,15 @@ public interface CrossflowPackage extends EPackage {
 	int OPINIONATED_TASK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
 
 	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPINIONATED_TASK__IMPL = TASK__IMPL;
+
+	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1093,6 +1147,151 @@ public interface CrossflowPackage extends EPackage {
 	int OPINIONATED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.ScriptedTaskImpl <em>Scripted Task</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.ScriptedTaskImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getScriptedTask()
+	 * @generated
+	 */
+	int SCRIPTED_TASK = 11;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__NAME = TASK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__INPUT = TASK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__PARALLEL = TASK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__IMPL = TASK__IMPL;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__CONFIGURATIONS = TASK__CONFIGURATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Language</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__LANGUAGE = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Script</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__SCRIPT = TASK_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Output Variables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK__OUTPUT_VARIABLES = TASK_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Scripted Task</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPTED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 3;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1100,7 +1299,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 11;
+	int TYPE = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1164,7 +1363,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getField()
 	 * @generated
 	 */
-	int FIELD = 12;
+	int FIELD = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1211,7 +1410,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
 	 * @generated
 	 */
-	int LANGUAGE = 13;
+	int LANGUAGE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1275,7 +1474,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
 	 * @generated
 	 */
-	int PARAMETER = 14;
+	int PARAMETER = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1325,17 +1524,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getWorkflow_Name();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Workflow#getPackage <em>Package</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Package</em>'.
-	 * @see crossflow.Workflow#getPackage()
-	 * @see #getWorkflow()
-	 * @generated
-	 */
-	EAttribute getWorkflow_Package();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link crossflow.Workflow#getStreams <em>Streams</em>}'.
@@ -1554,6 +1742,17 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getTask_MultipleOutputs();
 
 	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Task#getImpl <em>Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Impl</em>'.
+	 * @see crossflow.Task#getImpl()
+	 * @see #getTask()
+	 * @generated
+	 */
+	EAttribute getTask_Impl();
+
+	/**
 	 * Returns the meta object for the reference list '{@link crossflow.Task#getParameters <em>Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1678,6 +1877,49 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getOpinionatedTask();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.ScriptedTask <em>Scripted Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Scripted Task</em>'.
+	 * @see crossflow.ScriptedTask
+	 * @generated
+	 */
+	EClass getScriptedTask();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.ScriptedTask#getLanguage <em>Language</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Language</em>'.
+	 * @see crossflow.ScriptedTask#getLanguage()
+	 * @see #getScriptedTask()
+	 * @generated
+	 */
+	EAttribute getScriptedTask_Language();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.ScriptedTask#getScript <em>Script</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Script</em>'.
+	 * @see crossflow.ScriptedTask#getScript()
+	 * @see #getScriptedTask()
+	 * @generated
+	 */
+	EAttribute getScriptedTask_Script();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link crossflow.ScriptedTask#getOutputVariables <em>Output Variables</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Output Variables</em>'.
+	 * @see crossflow.ScriptedTask#getOutputVariables()
+	 * @see #getScriptedTask()
+	 * @generated
+	 */
+	EReference getScriptedTask_OutputVariables();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Type <em>Type</em>}'.
@@ -1925,14 +2167,6 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute WORKFLOW__NAME = eINSTANCE.getWorkflow_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Package</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute WORKFLOW__PACKAGE = eINSTANCE.getWorkflow_Package();
-
-		/**
 		 * The meta object literal for the '<em><b>Streams</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2101,6 +2335,14 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute TASK__MULTIPLE_OUTPUTS = eINSTANCE.getTask_MultipleOutputs();
 
 		/**
+		 * The meta object literal for the '<em><b>Impl</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TASK__IMPL = eINSTANCE.getTask_Impl();
+
+		/**
 		 * The meta object literal for the '<em><b>Parameters</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2207,6 +2449,40 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EClass OPINIONATED_TASK = eINSTANCE.getOpinionatedTask();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.ScriptedTaskImpl <em>Scripted Task</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.ScriptedTaskImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getScriptedTask()
+		 * @generated
+		 */
+		EClass SCRIPTED_TASK = eINSTANCE.getScriptedTask();
+
+		/**
+		 * The meta object literal for the '<em><b>Language</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCRIPTED_TASK__LANGUAGE = eINSTANCE.getScriptedTask_Language();
+
+		/**
+		 * The meta object literal for the '<em><b>Script</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCRIPTED_TASK__SCRIPT = eINSTANCE.getScriptedTask_Script();
+
+		/**
+		 * The meta object literal for the '<em><b>Output Variables</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SCRIPTED_TASK__OUTPUT_VARIABLES = eINSTANCE.getScriptedTask_OutputVariables();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.

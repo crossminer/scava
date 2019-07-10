@@ -112,6 +112,10 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createOpinionatedTaskAdapter();
 			}
 			@Override
+			public Adapter caseScriptedTask(ScriptedTask object) {
+				return createScriptedTaskAdapter();
+			}
+			@Override
 			public Adapter caseType(Type object) {
 				return createTypeAdapter();
 			}
@@ -298,6 +302,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createOpinionatedTaskAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.ScriptedTask <em>Scripted Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.ScriptedTask
+	 * @generated
+	 */
+	public Adapter createScriptedTaskAdapter() {
 		return null;
 	}
 

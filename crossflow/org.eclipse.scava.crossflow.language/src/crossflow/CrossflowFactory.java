@@ -112,6 +112,15 @@ public interface CrossflowFactory extends EFactory {
 	OpinionatedTask createOpinionatedTask();
 
 	/**
+	 * Returns a new object of class '<em>Scripted Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Scripted Task</em>'.
+	 * @generated
+	 */
+	ScriptedTask createScriptedTask();
+
+	/**
 	 * Returns a new object of class '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

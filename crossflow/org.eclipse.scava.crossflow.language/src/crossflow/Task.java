@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
  *   <li>{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflow.Task#getImpl <em>Impl</em>}</li>
  *   <li>{@link crossflow.Task#getParameters <em>Parameters</em>}</li>
  *   <li>{@link crossflow.Task#getLanguages <em>Languages</em>}</li>
  *   <li>{@link crossflow.Task#getConfigurations <em>Configurations</em>}</li>
@@ -200,6 +201,32 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	void setMultipleOutputs(Boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Impl</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Impl</em>' attribute.
+	 * @see #setImpl(String)
+	 * @see crossflow.CrossflowPackage#getTask_Impl()
+	 * @model
+	 * @generated
+	 */
+	String getImpl();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getImpl <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Impl</em>' attribute.
+	 * @see #getImpl()
+	 * @generated
+	 */
+	void setImpl(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.

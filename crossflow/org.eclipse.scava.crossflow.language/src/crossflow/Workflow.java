@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link crossflow.Workflow#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.Workflow#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.Workflow#getStreams <em>Streams</em>}</li>
  *   <li>{@link crossflow.Workflow#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.Workflow#getTypes <em>Types</em>}</li>
@@ -54,32 +53,6 @@ public interface Workflow extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Package</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Package</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Package</em>' attribute.
-	 * @see #setPackage(String)
-	 * @see crossflow.CrossflowPackage#getWorkflow_Package()
-	 * @model
-	 * @generated
-	 */
-	String getPackage();
-
-	/**
-	 * Sets the value of the '{@link crossflow.Workflow#getPackage <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Package</em>' attribute.
-	 * @see #getPackage()
-	 * @generated
-	 */
-	void setPackage(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Streams</b></em>' containment reference list.

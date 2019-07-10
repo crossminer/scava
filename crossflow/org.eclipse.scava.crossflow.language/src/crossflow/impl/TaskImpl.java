@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.TaskImpl#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getCached <em>Cached</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflow.impl.TaskImpl#getImpl <em>Impl</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getLanguages <em>Languages</em>}</li>
  *   <li>{@link crossflow.impl.TaskImpl#getConfigurations <em>Configurations</em>}</li>
@@ -168,6 +169,26 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * @ordered
 	 */
 	protected Boolean multipleOutputs = MULTIPLE_OUTPUTS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getImpl() <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpl()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String IMPL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getImpl() <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpl()
+	 * @generated
+	 * @ordered
+	 */
+	protected String impl = IMPL_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' reference list.
@@ -352,6 +373,27 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getImpl() {
+		return impl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setImpl(String newImpl) {
+		String oldImpl = impl;
+		impl = newImpl;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TASK__IMPL, oldImpl, impl));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<Field> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectResolvingEList<Field>(Field.class, this, CrossflowPackage.TASK__PARAMETERS);
@@ -438,6 +480,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return getCached();
 			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
 				return getMultipleOutputs();
+			case CrossflowPackage.TASK__IMPL:
+				return getImpl();
 			case CrossflowPackage.TASK__PARAMETERS:
 				return getParameters();
 			case CrossflowPackage.TASK__LANGUAGES:
@@ -479,6 +523,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return;
 			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
 				setMultipleOutputs((Boolean)newValue);
+				return;
+			case CrossflowPackage.TASK__IMPL:
+				setImpl((String)newValue);
 				return;
 			case CrossflowPackage.TASK__PARAMETERS:
 				getParameters().clear();
@@ -525,6 +572,9 @@ public class TaskImpl extends EObjectImpl implements Task {
 			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
 				setMultipleOutputs(MULTIPLE_OUTPUTS_EDEFAULT);
 				return;
+			case CrossflowPackage.TASK__IMPL:
+				setImpl(IMPL_EDEFAULT);
+				return;
 			case CrossflowPackage.TASK__PARAMETERS:
 				getParameters().clear();
 				return;
@@ -560,6 +610,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 				return CACHED_EDEFAULT == null ? cached != null : !CACHED_EDEFAULT.equals(cached);
 			case CrossflowPackage.TASK__MULTIPLE_OUTPUTS:
 				return MULTIPLE_OUTPUTS_EDEFAULT == null ? multipleOutputs != null : !MULTIPLE_OUTPUTS_EDEFAULT.equals(multipleOutputs);
+			case CrossflowPackage.TASK__IMPL:
+				return IMPL_EDEFAULT == null ? impl != null : !IMPL_EDEFAULT.equals(impl);
 			case CrossflowPackage.TASK__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 			case CrossflowPackage.TASK__LANGUAGES:
@@ -590,6 +642,8 @@ public class TaskImpl extends EObjectImpl implements Task {
 		result.append(cached);
 		result.append(", multipleOutputs: ");
 		result.append(multipleOutputs);
+		result.append(", impl: ");
+		result.append(impl);
 		result.append(')');
 		return result.toString();
 	}

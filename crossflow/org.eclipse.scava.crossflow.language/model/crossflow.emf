@@ -5,7 +5,6 @@ package crossflow;
 @gmf.diagram(onefile="true")
 class Workflow {
   attr String name;
-  attr String ~package;
   val Stream[*] streams;
   val Task[*] tasks;
   val Type[*] types;
@@ -46,6 +45,8 @@ class Task {
   attr Boolean cached;
   attr Boolean multipleOutputs = "false";
   
+  attr String impl;
+  
   ref Field[*] parameters;
   
   ref Language[*] languages;  
@@ -76,6 +77,15 @@ class CommitmentTask extends Task {
 
 @gmf.node(label="name")
 class OpinionatedTask extends Task {
+}
+
+@gmf.node(label="name")
+class ScriptedTask extends Task {
+	attr String language;
+	@emf.gen(propertyMultiLine="true")
+	attr String script;
+ 	@gmf.compartment(layout="list",collapsible="false")
+  	val Field[*] outputVariables;
 }
 
 @gmf.node(label="name", figure ="rectangle")
