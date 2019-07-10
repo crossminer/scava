@@ -1,0 +1,15 @@
+import "../../java/utils.egx";
+
+rule RTask2ImplClass
+	transform t : ScriptedTask {
+	
+	guard : t.language.toLowerCase="r"
+		
+	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName(), "self" = t}
+	
+	template : "rTask2implclass.egl"
+	
+	target : t.getImplPath() + t.name + ".java"
+	
+	overwrite : false
+}

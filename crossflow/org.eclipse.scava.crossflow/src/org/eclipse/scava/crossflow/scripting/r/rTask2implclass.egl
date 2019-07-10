@@ -1,0 +1,86 @@
+package [%=package%];
+
+import javax.script.*;
+import org.renjin.script.*;
+import org.renjin.sexp.*;
+[%if (t.isTypeOf(Source)){%]
+import java.util.Timer;
+import java.util.TimerTask;
+[%}%]
+
+public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%}%][%if(t.isTypeOf(OpinionatedTask)){%]Opinionated[%}%][%=t.name%]Base {
+
+	[%if (t.isTypeOf(Source)){%]
+	@Override
+	public void produce() throws Exception {
+			
+		// TODO: Add implementation that instantiates, sets, and submits source objects (NYI for R tasks)
+
+	}
+	[%} else {%]
+	[% for (s in t.input) { %]
+	@Override
+	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
+
+		[%
+		if(s.isConfigurationChannel()) {
+		%]		// TODO: handle configuration		
+		[%
+		} else{
+		%]
+		[%for (field in s.type.fields) { %]
+		[%=field.type%] [%=field.name%] = [%=s.type.name.ftlc()%].[%=field.name%];
+		[%}%]
+		
+		RenjinScriptEngine engine = new RenjinScriptEngineFactory().getScriptEngine();
+		engine.eval([%if(not self.script.startsWith("\"")){%]"[%}%][%=self.script.replace("\n","\\\\n")%][%if(not self.script.endsWith("\"")){%]"[%}%]);
+		[%for (outputVariable in self.outputVariables) { %]		
+		[%=outputVariable.type%] [%=outputVariable.name%] = ([%=outputVariable.type%]) engine.eval("[%=outputVariable.name%]");
+		[%}%]	
+		[%
+		/*for single output tasks*/if((not t.multipleOutputs and t.output.size==1)) {%]
+
+		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Inst = new [%=t.output.first.type.name%]();
+		[%for (f in t.output.first.type.fields) { %]
+		//	[%=t.output.first.type.name.ftlc()%]Inst.set[%=f.name.ftuc()%]( [%=f.type%] );
+		[%}%]
+		return [%=t.output.first.type.name.ftlc()%]Inst;
+
+		[%} else /*for all other tasks*/{%]
+
+		[%for (s in t.output) { %]
+		[%var number= loopCount;%]
+		[%=s.type.name%] [%=s.type.name.ftlc()%][%=number%] = new [%=s.type.name%]();
+		[%for (f in s.type.fields) { %]
+		//	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
+		[%}%]
+		sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%]);		
+		[% } %]
+		[% if (t.output.notEmpty()==false) { %]
+		System.out.println("[" + workflow.getName() + "] Result is " + [%=s.type.name.ftlc()%].toString() + " (cached=" + [%=s.type.name.ftlc()%].isCached() + ")");
+		[% } %]
+
+		[%}%]	
+	[%}%]
+	
+	}
+	[%}}%]
+
+[%if(t.isTypeOf(OpinionatedTask)){%]
+[%for (s in t.input){%]
+	@Override
+	public boolean acceptInput([%=s.type.name%] input) {
+		// TODO: logic for when to accept tasks for this instance of [%=t.name%] goes here.
+		return true;
+	}
+[%}%]
+[%}%]
+
+}
+[%
+operation Stream isConfigurationChannel() {
+	if(not self.name.endsWith("Topic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("Topic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+%]

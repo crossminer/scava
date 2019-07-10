@@ -1,0 +1,75 @@
+operation Type createSource(){
+	var source = new Source;
+	self.eContainer.tasks.add(source);
+	self.eContainer.types.add(self);
+	source.name = self.name+"ConfigSource";
+	var configTopic = new Topic;
+	self.eContainer.streams.add(configTopic);
+	configTopic.name = self.name+"Topic";
+	configTopic.type = self;
+	source.output.add(configTopic);
+	//self.findEligibleConfigurableTasks().input.add(configTopic);
+	for(t in self.findEligibleConfigurableTasks()){
+		t.input.add(configTopic);
+	}		
+	return source;	
+}
+
+operation Type findEligibleConfigurableTasks(){
+	return Task.all.select(t|t.configurations.exists(c|c=self));
+}
+
+operation Any getPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var path = "src-gen/";
+	
+	if (langExists and lang.first.genOutputFolder.isDefined()) {
+		path = lang.first.genOutputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+	
+	return path;
+}
+
+operation Any getImplPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+		
+	var path = "src/";
+		
+	if (langExists and lang.first.outputFolder.isDefined()) {
+		path = lang.first.outputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+
+	return path;
+}
+
+operation Workflow getPackageName() {
+	var lang = self.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var package = self.name.ftlc;
+	
+	if(langExists) package = lang.first.package;
+	
+	return package;
+}
+
+operation Language isJava() : Boolean {
+	return self.name.toLowerCase()=="java";
+}
+
+operation Task isJavaTask() {
+	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+}

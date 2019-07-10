@@ -57,8 +57,7 @@ public class GenerateBaseClasses {
 
 		EmfModel model = getModel();
 		model.setStoredOnDisposal(false);
-		Resource r = model.getResource();
-		HashSet<String> languages = findLanguages(r);
+		HashSet<String> languages = findLanguages(model.getResource());
 		// add java regardless of whether it exists in the model
 		languages.add("java");
 		//
@@ -85,12 +84,39 @@ public class GenerateBaseClasses {
 		}
 
 		model.dispose();
+		//
+		// generate code for scripting languages
+		model = getModel();
+		model.setStoredOnDisposal(false);
+
+		for (String language : findScriptingLanguages(model.getResource())) {
+
+			module = createModule();
+			module.getContext().getModelRepository().addModel(model);
+			module.parse(getFileURI("scripting/"+language + "/crossflow.egx"));
+
+			if (module.getParseProblems().size() > 0) {
+				System.err.println("Parse errors occured...");
+				for (ParseProblem problem : module.getParseProblems()) {
+					System.err.println(problem.toString());
+				}
+				return;
+			}
+
+			module.getContext().getFrameStack().put(parameters);
+
+			result = execute(module);
+
+			// module.getContext().getModelRepository().dispose();
+
+		}
+
+		//
 
 		// generate code for external tools (such as web ui)
 		//
 		model = getModel();
 		model.setStoredOnDisposal(false);
-		r = model.getResource();
 
 		module = createModule();
 		module.getContext().getModelRepository().addModel(model);
@@ -124,9 +150,28 @@ public class GenerateBaseClasses {
 
 		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
 			EObject o;
-			if ((o = it.next()).eClass().getName().equals(language.getName())) {
+			if ((o = it.next()).eClass().equals(language))
 				ret.add(((String) o.eGet(languageName)).toLowerCase());
-			}
+		}
+
+		return ret;
+
+	}
+
+	private HashSet<String> findScriptingLanguages(Resource r) {
+
+		EClass scriptingTask = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("ScriptedTask");
+		EAttribute scriptingLanguage = scriptingTask.getEAllAttributes().stream()
+				.filter(a -> a.getName().equals("language")).findFirst().get();
+
+		HashSet<String> ret = new HashSet<>();
+
+		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
+			EObject o;
+			String language;
+			if ((o = it.next()).eClass().equals(scriptingTask))
+				if (o.eIsSet(scriptingLanguage) && (language = (String) o.eGet(scriptingLanguage)).trim().length() > 0)
+					ret.add(language);
 		}
 
 		return ret;
