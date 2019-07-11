@@ -37,7 +37,7 @@ public class CommitsMessagesTopicsHistoricMetricProvider extends AbstractHistori
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematic clusters) in commits messages "
+		return "This metric computes the labels of topic clusters in commits messages "
 				+ "pushed by users in the last 30 days.";
 	}
 
@@ -72,8 +72,9 @@ public class CommitsMessagesTopicsHistoricMetricProvider extends AbstractHistori
 			 CommitMessageTopic topic = new CommitMessageTopic();
 			 topics.getCommitMessageTopics().add(topic);
 			 topic.setRepository(commitsTopic.getRepository());
-			 topic.setLabel(commitsTopic.getLabel());
+			 topic.getLabels().addAll(commitsTopic.getLabels());
 			 topic.setNumberOfMessages(commitsTopic.getNumberOfMessages());
+			 topic.getCommitsMessageId().addAll(commitsTopic.getCommitsMessageId());
 		 }
 		return topics;
 	}

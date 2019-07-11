@@ -38,7 +38,7 @@ public class NewsgroupsChannelThreadLengthFactoid extends AbstractFactoidMetricP
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelThreadLength";
+		return "factoid.newsgroups.threadlength";
 	}
 
 	@Override
@@ -49,7 +49,9 @@ public class NewsgroupsChannelThreadLengthFactoid extends AbstractFactoidMetricP
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding thread length for newsgroups. "
+				+ "For example, the average length of discussion per day, month etc. "; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

@@ -263,7 +263,6 @@ public class Indexer {
 	private static void closeAllClients() {
 
 		closeHighLevelClient();
-		//closeAdminClient();
 
 	}
 

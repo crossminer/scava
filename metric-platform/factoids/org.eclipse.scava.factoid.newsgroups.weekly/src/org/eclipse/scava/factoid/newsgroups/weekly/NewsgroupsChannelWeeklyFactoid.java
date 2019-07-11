@@ -36,7 +36,7 @@ public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvide
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelWeekly";
+		return "factoid.newsgroups.weekly";
 	}
 
 	@Override
@@ -47,7 +47,10 @@ public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding weekly user engagement for newsgroups. "
+				+ "For example, the average number of comments per week. This can be used to "
+				+ "present the most and least busy week in terms of engagement for a particular "
+				+ "project"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

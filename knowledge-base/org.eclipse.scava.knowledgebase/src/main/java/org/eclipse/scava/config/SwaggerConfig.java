@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (C) 2017 University of L'Aquila
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.config;
 
 import java.util.Collections;
@@ -15,23 +24,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {                                    
+public class SwaggerConfig {           
+	
+	ApiInfo apiInfo = new ApiInfo(
+	          "CROSSMINER APIs", 
+	          "This web interface allows one to use with the provided recommendations.", 
+	          "0.0.1.1",  
+	          "EPL-2.0", 
+	          new Contact("Juri Di Rocco", "", "juri.dirocco@univaq.it"), 
+	          "EPL-2.0", "https://www.eclipse.org/legal/epl-2.0/", Collections.EMPTY_LIST);
     @Bean
     public Docket api() { 
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("org.eclipse.scava.presentation.rest"))              
-          .paths(PathSelectors.any())                          
-          .build();                                          
+        return new Docket(DocumentationType.SWAGGER_2)
+        		.apiInfo(apiInfo)
+        		.select()               
+        		.apis(RequestHandlerSelectors.basePackage("org.eclipse.scava.presentation.rest"))              
+        		.paths(PathSelectors.any())                          
+        		.build();                                          
     }
-    private ApiInfo apiInfo() {
-//    	new ApiInfo
-        return new ApiInfo(
-          "CROSSMINER APIs", 
-          "Some custom description of API.", 
-          "API TOS", 
-          "Terms of service", 
-          new Contact("John Doe", "www.example.com", "myeaddress@company.com"), 
-          "License of API", "", Collections.emptyList());
-   }
+    
 }

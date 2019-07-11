@@ -29,7 +29,7 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelWeekly";
+		return "factoid.bugs.weekly";
 	}
 
 	@Override
@@ -40,7 +40,10 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding weekly user engagements for bug trackers. "
+				+ "For example, the average number of bug comments per week. This can be used to present "
+				+ "the most and least busy week in terms of engagement for a particular project."; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

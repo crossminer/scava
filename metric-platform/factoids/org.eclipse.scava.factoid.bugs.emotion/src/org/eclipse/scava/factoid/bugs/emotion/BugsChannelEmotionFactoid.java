@@ -29,18 +29,20 @@ public class BugsChannelEmotionFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelEmotion";
+		return "factoid.bugs.emotion";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Bug Tracker Emotion";
+		return "Bug Tracker Emotions";
 		// This method will NOT be removed in a later version.
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding emotions for bug trackers. "
+				+ "For example, the percentage of positive, negative or surprise emotions expressed"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

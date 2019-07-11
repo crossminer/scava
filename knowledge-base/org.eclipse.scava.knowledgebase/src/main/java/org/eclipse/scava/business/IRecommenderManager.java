@@ -10,6 +10,7 @@
 package org.eclipse.scava.business;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
@@ -26,6 +27,7 @@ public interface IRecommenderManager {
 	Recommendation getRecommendation(Query query, RecommendationType rt) throws Exception;
 	List<Cluster> getClusters(String similarityName, String algorithmsName);
 	List<Artifact> getSimilarProjects(String projectId, String similarityFunction, int numOfResult);
+	Map<String, Double> getSimilarProjects(Artifact project, String similarityFunction, int numOfResult);
 	List<Artifact> getArtifactsByQuery(String projectQuery);
 	List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page);
 	Cluster getClusterByArtifact(String artId, String simCalculator, String clusterAlgorithm);

@@ -38,7 +38,7 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelSentiment";
+		return "factoid.newsgroups.sentiment";
 	}
 
 	@Override
@@ -49,7 +49,9 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding sentiments for newsgroups. "
+				+ "For example, the average sentiment in all newsgroup channel associated to a project"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

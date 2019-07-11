@@ -4,13 +4,14 @@
 		{
 			"id" : "newsgroups.topics.articles",
 			"name" : "Newsgroups Articles Topics",
-			"description" : "The number of newsgroups articles containing each topic.",
+			"description" : "The number of newsgroups articles contained in each cluster of topics.",
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$newsgrpTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
 					{ "name" : "Topic", "field" : "$label" },
-					{ "name" : "Articles", "field" : "$numberOfDocuments" } ]
+					{ "name" : "Articles", "field" : "$numberOfDocuments" },
+					{ "name" : "Source (ArticleId)", "field" : "$historicArticlesId" } ]
 			},
 			"x" : "Date",
 			"y" : "Articles", 

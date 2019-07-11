@@ -55,6 +55,7 @@ public class ApiDocumentationModel extends Model {
 			String responseBody = scanner.useDelimiter("\\A").next();
 			return responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
 		} catch (IOException e) {
+			e.printStackTrace();
 			return "Title is not available";
 		}
 	}

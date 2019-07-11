@@ -31,7 +31,7 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelSentiment";
+		return "factoid.bugs.sentiment";
 	}
 
 	@Override
@@ -42,7 +42,9 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding sentiment for bug trackers. "
+				+ "For example, the average sentiment in all bug trackers associated to a project"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

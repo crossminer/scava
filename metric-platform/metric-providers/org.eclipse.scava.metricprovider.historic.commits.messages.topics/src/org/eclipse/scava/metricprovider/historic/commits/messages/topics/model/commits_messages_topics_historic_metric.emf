@@ -1,0 +1,14 @@
+package org.eclipse.scava.metricprovider.historic.commits.messages.topics.model;
+
+class CommitsMessagesTopicsHistoricMetric {
+	val CommitMessageTopic[*] commitMessageTopics;
+}
+
+class CommitMessageTopic {
+	@searchable
+   	attr String repository;
+   	attr String[*] labels;
+   	attr int numberOfMessages;
+   	attr String[*] commitsMessageId;
+}
+

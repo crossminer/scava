@@ -1,33 +1,31 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.newsgroups.topics.model;
 
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class NewsgrpTopic extends Pongo {
 	
+	protected List<String> labels = null;
+	protected List<String> articlesId = null;
 	
 	
 	public NewsgrpTopic() { 
 		super();
+		dbObject.put("labels", new BasicDBList());
+		dbObject.put("articlesId", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.topics.model.NewsgrpTopic");
-		LABEL.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.topics.model.NewsgrpTopic");
+		LABELS.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.topics.model.NewsgrpTopic");
 		NUMBEROFDOCUMENTS.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.topics.model.NewsgrpTopic");
+		ARTICLESID.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.topics.model.NewsgrpTopic");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static StringQueryProducer LABEL = new StringQueryProducer("label"); 
 	public static NumericalQueryProducer NUMBEROFDOCUMENTS = new NumericalQueryProducer("numberOfDocuments");
+	public static ArrayQueryProducer LABELS = new ArrayQueryProducer("labels");
+	public static ArrayQueryProducer ARTICLESID = new ArrayQueryProducer("articlesId");
 	
 	
 	public String getNewsgroupName() {
@@ -36,15 +34,6 @@ public class NewsgrpTopic extends Pongo {
 	
 	public NewsgrpTopic setNewsgroupName(String newsgroupName) {
 		dbObject.put("newsgroupName", newsgroupName);
-		notifyChanged();
-		return this;
-	}
-	public String getLabel() {
-		return parseString(dbObject.get("label")+"", "");
-	}
-	
-	public NewsgrpTopic setLabel(String label) {
-		dbObject.put("label", label);
 		notifyChanged();
 		return this;
 	}
@@ -58,6 +47,18 @@ public class NewsgrpTopic extends Pongo {
 		return this;
 	}
 	
+	public List<String> getLabels() {
+		if (labels == null) {
+			labels = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("labels"));
+		}
+		return labels;
+	}
+	public List<String> getArticlesId() {
+		if (articlesId == null) {
+			articlesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("articlesId"));
+		}
+		return articlesId;
+	}
 	
 	
 	

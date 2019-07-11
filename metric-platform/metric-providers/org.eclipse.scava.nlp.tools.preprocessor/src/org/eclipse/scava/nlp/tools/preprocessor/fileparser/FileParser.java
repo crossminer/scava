@@ -77,7 +77,19 @@ public class FileParser
 	private static MediaType detectMediaType(BufferedInputStream stream, Metadata metadata) throws IOException
 	{
 		try {
-			return detector.detect(stream, metadata);
+			
+			MediaType mediaType =detector.detect(stream, metadata);
+			//Tika seems to have problem detecting correctly Open Office files
+			if(mediaTypeString(mediaType).equals("application/zip"))
+			{
+				if(metadata.get(Metadata.RESOURCE_NAME_KEY).endsWith("odt"))
+					mediaType = new MediaType("application","vnd.oasis.opendocument.text");
+				else if(metadata.get(Metadata.RESOURCE_NAME_KEY).endsWith("ods"))
+					mediaType = new MediaType("application","vnd.oasis.opendocument.spreadsheet");
+				else if(metadata.get(Metadata.RESOURCE_NAME_KEY).endsWith("odp"))
+					mediaType = new MediaType("application","vnd.oasis.opendocument.presentation");
+			}
+			return mediaType;
 		}
 		catch (IOException e) {
 			logger.error("Error while detecting the media type:", e);
@@ -170,7 +182,7 @@ public class FileParser
 	    		}
 	    		throw new UnsupportedOperationException("Impossible to determine how to handle the file: ");
 	    	}
-	    	throw new UnsupportedOperationException("File is not supported: ");
+			throw new UnsupportedOperationException("File is not supported: ");
 		}
 	    catch (UnsupportedOperationException e)
 	    {

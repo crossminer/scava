@@ -70,8 +70,9 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 				 NewsgrpTopic topic = new NewsgrpTopic();
 				 topics.getNewsgrpTopics().add(topic);
 				 topic.setNewsgroupName(newsgroupTopic.getNewsgroupName());//uses ossmeterID
-				 topic.setLabel(newsgroupTopic.getLabel());
+				 topic.getLabels().addAll(newsgroupTopic.getLabels());
 				 topic.setNumberOfDocuments(newsgroupTopic.getNumberOfDocuments());
+				 topic.getArticlesId().addAll(newsgroupTopic.getArticlesId());
 			 }
 		}
 		return topics;
@@ -104,7 +105,7 @@ public class TopicsHistoricMetricProvider extends AbstractHistoricalMetricProvid
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric computes the labels of topics (thematic clusters) in articles submitted "
+		return "This metric computes the labels of topic clusters in articles submitted "
 				+ "by the community (users) per day, for each newsgroup seperately.";
 	}
 }

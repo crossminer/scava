@@ -1,0 +1,18 @@
+package org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model;
+
+@db(qualifiedCollectionNames="true")
+class BugTrackerMigrationIssueTransMetric {
+	val BugTrackerMigrationIssue[*] bugTrackerMigrationIssues;
+}
+
+class BugTrackerMigrationIssue {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String software;
+   	attr String[*] changes;
+}
+
+
+
+

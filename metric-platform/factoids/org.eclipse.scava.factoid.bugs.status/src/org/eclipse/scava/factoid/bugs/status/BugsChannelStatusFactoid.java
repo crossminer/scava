@@ -31,7 +31,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelStatus";
+		return "factoid.bugs.status";
 	}
 
 	@Override
@@ -42,7 +42,8 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding bug status for bug trackers. "
+				+ "For example, the number of fixed bugs, duplicate bugs etc"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

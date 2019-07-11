@@ -18,7 +18,13 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.irc.Irc;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
+import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
+import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem;
 import org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem;
 import org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker;
@@ -98,7 +104,11 @@ public class ProjectCreationResource extends ServerResource {
 				VcsRepository repo = null;
 				if (vcs.get("type").asText().equals("git")) {
 					repo = new GitRepository();
-				} else if (vcs.get("type").asText().equals("svn")) {
+				} 
+				else if (vcs.get("type").asText().equals("gitbased")) {
+					repo = new DocumentationGitBased();
+				}
+				else if (vcs.get("type").asText().equals("svn")) {
 					repo = new SvnRepository();
 				}
 //				repo.setName(vcs.get("name").asText());
@@ -114,6 +124,71 @@ public class ProjectCreationResource extends ServerResource {
 						newsgroup.setUrl(cc.get("url").asText());
 						channel = newsgroup;
 						break;
+					case "irc":
+						Irc irc = new Irc();
+						irc.setUrl(cc.get("url").asText());
+						irc.setName(cc.get("name").asText());
+						irc.setDescription(cc.get("description").asText());
+						irc.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							irc.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							irc.setPassword(cc.get("password").asText());
+						}
+						channel = irc;
+						break;
+					case "sympa":
+						SympaMailingList sympa = new SympaMailingList();
+						sympa.setUrl(cc.get("url").asText());
+						sympa.setMailingListName(cc.get("mailingListName").asText());
+						sympa.setMailingListDescription(cc.get("mailingListDescription").asText());
+						sympa.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							sympa.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							sympa.setPassword(cc.get("password").asText());
+						}
+						channel = sympa;
+						break;
+					case "mbox":
+						Mbox mbox = new Mbox();
+						mbox.setUrl(cc.get("url").asText());
+						mbox.setMboxName(cc.get("mboxName").asText());
+						mbox.setMboxDescription(cc.get("mboxDescription").asText());
+						mbox.setCompressedFileExtension(cc.get("compressedFileExtension").asText());
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							mbox.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							mbox.setPassword(cc.get("password").asText());
+						}
+						channel = mbox;
+						break;
+					case "eclipseForum":
+						EclipseForum eclipseForum = new EclipseForum();
+						eclipseForum.setForum_id(cc.get("forumId").asText());
+						eclipseForum.setForum_name(cc.get("forumName").asText());
+						eclipseForum.setClient_id(cc.get("clientId").asText());
+						eclipseForum.setClient_secret(cc.get("clientSecret").asText());
+						channel = eclipseForum;
+						break;
+					case "documentation systematic":
+						DocumentationSystematic systematic = new DocumentationSystematic();
+						if (cc.get("loginOption").asText().equals("option1")) {
+							systematic.setUrl(cc.get("url").asText());
+							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+						} else if (cc.get("loginOption").asText().equals("option2")) {
+							systematic.setUrl(cc.get("url").asText());
+							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							systematic.setLoginURL(cc.get("loginURL").asText());
+							systematic.setUsername(cc.get("username").asText());
+							systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
+							systematic.setPassword(cc.get("password").asText());
+							systematic.setPasswordFieldName(cc.get("passwordFieldName").asText());
+						}
+						channel = systematic;
 					default:
 						continue;
 				}

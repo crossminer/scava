@@ -51,6 +51,7 @@ public class ApiApplication extends Application {
 		router.attach("/platform/properties", PlatformListPropertiesResource.class);
 		router.attach("/projects/import", ProjectImportResource.class);
 		router.attach("/projects/create", ProjectCreationResource.class);
+		router.attach("/projects/edit", ProjectEditionResource.class);
 		router.attach("/projects/delete/{projectid}", ProjectDeleteResource.class);
 		router.attach("/projects/p/{projectid}", ProjectResource.class);
 		router.attach("/projects/p/{projectid}/", ProjectResource.class);

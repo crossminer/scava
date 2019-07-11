@@ -10,9 +10,7 @@
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
-import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.ProjectRepository;
@@ -27,7 +25,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 
 public class ProjectListResource extends AbstractApiResource {
 

@@ -1,0 +1,124 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+
+	<!-- 
+	========================================================================================
+	R E A D   M E
+	========================================================================================
+		
+		MASTER 	= 	Essentialy is the Source/Root of where the data comes from.
+		
+		SINK 	= 	Final step in the workflow 
+		
+		QUEUES 	=  	Are objects waiting to be processed by a node within the workflow.In 
+				   	this workflow queues are named according to what operation the objects
+				   	are queuing for.For example if a Post object is queing to be processed
+				    by the plain text,the queue name would be called PlainTextQueue. 
+		
+		TYPE	=	Object that is to be added to the queue.
+		OUT 	=	Refers to the queue that the object is to be added too.  
+	
+	========================================================================================
+	-->
+
+	<!-- Workflow for indexing stack exchange posts -->
+	<workflow name="StackExchangeIndexingWorkFlow">
+
+		<!-- Master (stack excahnge parser) -->
+		<source name="SourceStackExchangeReader" out="PlainTextQueue"/>
+		<queue name="PlainTextQueue" type="Post"/>
+		
+		<!-- Plain Text: Converts raw text to plain text -->
+		<task name="PlainText" in="PlainTextQueue" out="CodeDetectorQueue"/>
+		<queue name="CodeDetectorQueue" type="Post"/>
+		
+		<!-- Code Detector detected code in natural language -->
+		<task name="CodeDetection" in="CodeDetectorQueue" out="IndexingQueue"/>
+		<queue name="IndexingQueue" type="Post"/> 
+			
+		<!-- END NODE  (Indexes Posts) -->
+		<sink name="StackExchangeIndexing"  in="IndexingQueue"/>
+				 
+		<!-- Object Definitions -->
+		
+		<!-- 
+		Post Object
+			this object contains post from stack exchange and is enriched throughout the workflow.
+		 -->
+		<type name="Post">
+			<!-- Stack Exchange Fields -->
+			<field name="postId" type="Long"/>
+			<field name="repository" type="String"/>
+			<field name="project_name" type="String"/>
+			<field name="postType" type="Integer"/>
+			<field name="parentId" type="Long"/>
+			<field name="acceptedAnswerId" type="Long"/>
+			<field name="creationDate" type="Date"/>
+			<field name="score" type="Integer"/>
+			<field name="viewCount" type="Long"/>
+			<field name="body" type="String"/>
+			<field name="ownerUserId" type="Long"/>
+			<field name="lastEditorUserId" type="Long"/>
+			<field name="lastEditorDisplayName" type="String"/>
+			<field name="lastEditDate" type="Date"/>
+			<field name="lastActivityDate" type="Date"/>
+			<field name="communityOwnedDate" type="Date"/>
+			<field name="closedDate" type="Date"/>
+			<field name="title" type="String"/>
+			<field name="tags" type="List&lt;String&gt;"/>
+			<field name="answerCount" type="Integer"/>
+			<field name="commentCount" type="Integer"/>
+			<field name="favoriteCount" type="Integer"/>
+			<!-- Enrichment Fields -->
+			<field name="plainText"  type="String"/>
+			<field name="hasCode" type="boolean"/>
+		</type>
+			
+			
+		<!-- 
+		Document Object 
+			this object is used during the indexing as it aligns with other NLP related Indexes
+		-->
+		<type name="Document">
+			<field name="uid" type="String"/>
+			<field name="project_name" type="String"/>
+			<filed name="post_id" type="String"/>
+			<field name="parent_id" type="String"/>
+			<!-- same as ownerUserID -->
+			<field name="creator" type="String"/>
+			<!-- same as acceptedAnswerID -->
+			<field name="accepted_answer_id" type="String"/>
+			<!--this is the same as creationDate-->
+			<field name="created_at" type="Date"/>
+			<field name="score" type="Integer"/>
+			<!-- same as viewCount -->
+			<field name="view_count" type="Long"/>
+			<!-- this the same as body -->
+			<field name="message_body" type="String"/>
+			<!-- same as lastEditorUserId-->
+			<field name="last_editor" type="String"/>
+			<!-- same as lastEditorDisplayName-->
+			<field name="last_editor_display_name" type="String"/>
+			<!-- same as lastEditDate-->
+			<field name="last_edit_date" type="Date"/>
+			<!-- same as lastActivityDate-->
+			<field name="last_activity_date" type="Date"/>
+			<!-- same as communityOwnedDate-->
+			<field name="community_owned_date" type="Date"/>
+			<field name="title" type="String"/>
+			<field name="tags" type="List&lt;String&gt;"/>
+			<field name="answer_count" type="Integer"/>
+			<field name="comment_count" type="Integer"/>
+			<field name="favourite_count" type="Integer"/>
+			<!-- Enrichment Fields -->
+			<field name="plain_text" type="String"/>
+			<field name="contains_code" type="Boolean"/>
+		</type>
+
+		<!-- Output -->	
+		<language name="Java" package="org.eclipse.scava.crossflow.examples.indexingjjlkjkl" genOutputFolder="src-gen" outputFolder="src"/>
+	
+	</workflow>		
+	
+</_>

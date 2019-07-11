@@ -206,6 +206,8 @@ public class BitbucketManager implements IBugTrackingSystemManager<BitbucketBugT
 			String url = bitbucketTracker.getUrl();
 			if(!protocolRegex.matcher(url).find())
 				url = "https://"+url;
+			if(!url.endsWith("/"))
+				url+="/";
 			try {
 				URI projectURI = new URI(url);
 				host = "https://api."+projectURI.getHost();
