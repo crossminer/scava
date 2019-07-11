@@ -16,7 +16,13 @@
    <extension
          point="org.eclipse.scava.platform.visualisation.metric">
       <visualisation
-            json="vis/numberOSGiBundleDependencies.json">
+            json="vis/numberOfChanges.json">
+      </visualisation>
+   </extension>
+   <extension
+         point="org.eclipse.scava.platform.visualisation.metric">
+      <visualisation
+            json="vis/numberOfBreakingChanges.json">
       </visualisation>
    </extension>
 </plugin>

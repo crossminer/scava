@@ -42,7 +42,7 @@ tuple[M3 old, M3 new, Delta delta] computeDelta(ProjectDelta projectDelta, rel[L
 }
 
 @metric{numberOfChanges}
-@doc{TO BE WRITTEN}
+@doc{This metric depicts the number of (breaking and non-breaking) API changes over time.}
 @friendlyName{Number of changes}
 @appliesTo{java()}
 @resetOnEmptyDelta{}
@@ -54,7 +54,7 @@ int numberOfChanges(ProjectDelta projectDelta = ProjectDelta::\empty(), rel[Lang
 }
 
 @metric{numberOfBreakingChanges}
-@doc{TO BE WRITTEN}
+@doc{This metric depicts the number of breaking API changes over time.}
 @friendlyName{Number of breaking changes}
 @appliesTo{java()}
 @resetOnEmptyDelta{}
@@ -66,7 +66,7 @@ int numberOfBreakingChanges(ProjectDelta projectDelta = ProjectDelta::\empty(), 
 }
 
 @metric{changedMethods}
-@doc{TO BE WRITTEN}
+@doc{This metric stores the list of changed API methods over time.}
 @friendlyName{Changed methods}
 @appliesTo{java()}
 @resetOnEmptyDelta{}
