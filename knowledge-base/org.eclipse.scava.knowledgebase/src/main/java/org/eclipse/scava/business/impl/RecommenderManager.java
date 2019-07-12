@@ -79,6 +79,9 @@ public class RecommenderManager implements IRecommenderManager {
 	private SORecommender soRecommender;
 
 	@Autowired
+	private CROSSIndexRecommender crossIndexRecommender;
+	
+	@Autowired
 	private VersionsRecServiceImpl versionRecommender;
 
 	@Autowired
@@ -113,6 +116,14 @@ public class RecommenderManager implements IRecommenderManager {
 			return soRecommender.getRecommendation(query);
 		if (rt.equals(RecommendationType.VERSION))
 			return versionRecommender.getRecommendation(query);
+		if (rt.equals(RecommendationType.CROSSIndex_C))
+			return crossIndexRecommender.getRecommendation(query, "c");
+		if (rt.equals(RecommendationType.CROSSIndex_JAVA))
+			return crossIndexRecommender.getRecommendation(query, "java");
+		if (rt.equals(RecommendationType.CROSSIndex_JAVASCRIPT))
+			return crossIndexRecommender.getRecommendation(query, "javascript");
+		if (rt.equals(RecommendationType.CROSSIndex_PHP))
+			return crossIndexRecommender.getRecommendation(query, "php");
 		else {
 			logger.error("Recommendation not supported");
 			return null;

@@ -35,7 +35,7 @@ public class MigrationService {
 	private MavenLinkAllRepository mavenLinkAllRepo;
 	@Autowired
 	private MavenCollector collector;
-	@Value("${migration.maven.path}")
+	//@Value("${migration.maven.path}")
 	private String mavenRepoPath;
 
 	public Delta createDelta(MavenLibrary libV1, MavenLibrary libV2, org.eclipse.scava.business.model.Artifact art) {
