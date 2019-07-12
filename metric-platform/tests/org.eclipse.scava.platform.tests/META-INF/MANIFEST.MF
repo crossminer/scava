@@ -156,4 +156,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi;bundle-version="1.0.0",
  org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0",
  org.restlet,
- com.fasterxml.jackson
+ com.fasterxml.jackson,
+ org.eclipse.scava.maracas;bundle-version="1.0.0",
+ org.eclipse.scava.metricprovider.trans.rascal.api;bundle-version="1.0.0"

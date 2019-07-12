@@ -188,7 +188,7 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.PHP</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.activecommitters</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java</module>
-    
+	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.api</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.churnpercommit</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.clones</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.comments</module>
@@ -248,7 +248,8 @@
     <module>platform-extensions/org.eclipse.scava.repository.model.sourceforge.importer</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.vcs.cvs</module>
     <module>platform-extensions/org.eclipse.scava.repository.model.vcs.git</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.vcs.svn</module>
+	<module>platform-extensions/org.eclipse.scava.repository.model.vcs.svn</module>
+	<module>platform-extensions/org.eclipse.scava.maracas</module>
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.generic</module>
     <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.php</module>
     <module>platform/org.eclipse.scava.code.model/org.ossmeter.code.model.java</module>
