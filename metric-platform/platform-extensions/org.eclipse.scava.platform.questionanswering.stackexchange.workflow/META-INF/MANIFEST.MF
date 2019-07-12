@@ -12,8 +12,7 @@ Require-Bundle: org.eclipse.ui,
  com.fasterxml.jackson;bundle-version="2.3.1",
  org.eclipse.scava.index.indexer;bundle-version="1.0.0",
  org.eclipse.scava.nlp.tools.plaintext,
- com.github.sszuev.fasttext;bundle-version="1.0.0",
- org.eclipse.scava.platform.questionanswering.stackexchange;bundle-version="1.0.0"
+ com.github.sszuev.fasttext;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.crossflow.nlp.stackexchange
 Bundle-ActivationPolicy: lazy
@@ -202,4 +201,7 @@ Export-Package: com.bea.xml.stream,
  org.apache.activemq.console.filter,
  org.apache.activemq.console.formatter,
  org.apache.activemq.console.util,
- org.apache.activemq.filter
+ org.apache.activemq.filter,
+ org.eclipse.scava.crossflow.nlp.stackexchange,
+ org.eclipse.scava.platform.questionanswering.stackexchange.filters,
+ org.eclipse.scava.platform.questionanswering.stackexchange.parser

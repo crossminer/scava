@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.scava.crossflow.nlp.stackexchange.SourceStackExchangeReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,16 +34,15 @@ class StackExchangeParserHandler extends DefaultHandler
 	
 	private List<Long> questionIds;
 	
-	private List<StackExchangePost> selectedPosts;
-	
 	private SimpleDateFormat dateFormatter  = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+	
+	private SourceStackExchangeReader workflow;
 	
 	@SuppressWarnings("unchecked")
 	public StackExchangeParserHandler(StackExchangeParserBuilder parserBuilder) throws ParserConfigurationException, SAXException
 	{
 		this.questionFilters = parserBuilder.getQuestionParsingFilters();
 		this.answersFilters = parserBuilder.getAnswersParsingFilters();
-		selectedPosts = new ArrayList<StackExchangePost>();
 		questionIds = new ArrayList<Long>();
 		//The following lines are done to make the parsing faster, as these elements are going to be in constant use
 		if(answersFilters != null)
@@ -63,10 +63,11 @@ class StackExchangeParserHandler extends DefaultHandler
 		
 	}
 	
-	public List<StackExchangePost> getPosts()
+	public void SetWorkflow(SourceStackExchangeReader workflow)
 	{
-		return selectedPosts;
+		this.workflow=workflow;
 	}
+
 	
 	
 	
@@ -186,7 +187,7 @@ class StackExchangeParserHandler extends DefaultHandler
 		{
 			return;
 		}
-		selectedPosts.add(post);
+		workflow.addPost(post);
 	}
 	
 	private Boolean tagsComparison(List<String> tags)
