@@ -635,22 +635,22 @@ function createPopupMenu(graph, menu, cell, evt) {
 };// CONTEXT MENU
 
 // ---------------
-<%
-String graphPath = "experiments/" + request.getParameter("id") + "/abstract.graph";
-//new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
-
-%>
+// Load diagram data from wroflow's model.json
 try {
-window.runtimeModelGraph.getModel().beginUpdate();
-<jsp:include page="<%= graphPath %>" flush="true" />
-
-var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
-layout.execute(window.runtimeModelGraph.getDefaultParent());
-window.runtimeModelGraph.enabled = false; // de-activate graph editing
-
+  $.getJSON("${"experiments/"}${pageContext.request.getParameter("id")}${"/model.json"}", function( json ) {
+	    console.log( "JSON Data received " + json.vertices);
+	    window.runtimeModelGraph.getModel().beginUpdate();
+	    readModel(json, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+	    //var layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
+	    //layout.execute(window.runtimeModelGraph.getDefaultParent());
+	    // Updates the display
+	    window.runtimeModelGraph.getModel().endUpdate();
+  });
+  
+  window.runtimeModelGraph.enabled = false; // de-activate graph editing
 } finally {
 	// Updates the display
-	window.runtimeModelGraph.getModel().endUpdate();
+	// window.runtimeModelGraph.getModel().endUpdate();
 }
 
 </script>
