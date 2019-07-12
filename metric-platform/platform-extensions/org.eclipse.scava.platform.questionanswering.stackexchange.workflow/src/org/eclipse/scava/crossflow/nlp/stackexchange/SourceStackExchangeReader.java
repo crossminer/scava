@@ -16,8 +16,8 @@ import org.xml.sax.SAXException;
 public class SourceStackExchangeReader extends StackExchangeReaderBase {
 	
 	
-	//static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\SplitXML\\Folder_0\\0_part_00.xml";
-	static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\Posts.xml";
+	static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\SplitXML\\Folder_0\\0_part_01.xml";
+	//static String dumpDirectory = "D:\\StackOverflow_Dump\\StackOverflow\\Posts.xml";
 	
 	@Override
 	public void produce() {
@@ -34,16 +34,7 @@ public class SourceStackExchangeReader extends StackExchangeReaderBase {
 				try {
 					
 					System.out.println("im getting posts");
-					parser = new StackExchangeParser(parserBuilder);
-					
-					// Run Parser and iterate over split output...
-					for (StackExchangePost sop : parser.getPosts()) {
-						//convert to Post
-						Post post = convertToPost(sop);
-						//add to queue
-						sendToPlainTextQueue(post);
-
-					}
+					parser = new StackExchangeParser(parserBuilder, this);
 					
 				} catch (ParserConfigurationException | SAXException | IOException e) {
 				
@@ -51,6 +42,12 @@ public class SourceStackExchangeReader extends StackExchangeReaderBase {
 				}
 			}
 
+	public void addPost(StackExchangePost sop)
+	{
+		Post post = convertToPost(sop);
+		System.err.println(post.getId());
+		sendToPlainTextQueue(post);
+	}
 
 	/**
 	 * Converts StackExchangePost object into a Post object

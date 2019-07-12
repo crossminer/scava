@@ -492,9 +492,7 @@
     <module>
     	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange.workflow
     </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange
-    </module>
+    
     <module>metric-providers/org.eclipse.scava.nlp.tools.rake</module>
     <module>../migration/third-party/org.antlr.antlr4</module>
     <module>metric-providers/org.eclipse.scava.code.tokenizers</module>
