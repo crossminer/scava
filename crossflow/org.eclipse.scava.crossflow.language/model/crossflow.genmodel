@@ -47,7 +47,7 @@
     </genClasses>
     <genClasses ecoreClass="crossflow.ecore#//OpinionatedTask"/>
     <genClasses ecoreClass="crossflow.ecore#//ScriptedTask">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/scriptingLanguage"/>
       <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/script"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//ScriptedTask/outputVariables"/>
     </genClasses>

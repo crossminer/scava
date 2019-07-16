@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link crossflow.impl.ScriptedTaskImpl#getLanguage <em>Language</em>}</li>
+ *   <li>{@link crossflow.impl.ScriptedTaskImpl#getScriptingLanguage <em>Scripting Language</em>}</li>
  *   <li>{@link crossflow.impl.ScriptedTaskImpl#getScript <em>Script</em>}</li>
  *   <li>{@link crossflow.impl.ScriptedTaskImpl#getOutputVariables <em>Output Variables</em>}</li>
  * </ul>
@@ -35,24 +35,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	/**
-	 * The default value of the '{@link #getLanguage() <em>Language</em>}' attribute.
+	 * The default value of the '{@link #getScriptingLanguage() <em>Scripting Language</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLanguage()
+	 * @see #getScriptingLanguage()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LANGUAGE_EDEFAULT = null;
+	protected static final String SCRIPTING_LANGUAGE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute.
+	 * The cached value of the '{@link #getScriptingLanguage() <em>Scripting Language</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLanguage()
+	 * @see #getScriptingLanguage()
 	 * @generated
 	 * @ordered
 	 */
-	protected String language = LANGUAGE_EDEFAULT;
+	protected String scriptingLanguage = SCRIPTING_LANGUAGE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getScript() <em>Script</em>}' attribute.
@@ -108,8 +108,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getLanguage() {
-		return language;
+	public String getScriptingLanguage() {
+		return scriptingLanguage;
 	}
 
 	/**
@@ -117,11 +117,11 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLanguage(String newLanguage) {
-		String oldLanguage = language;
-		language = newLanguage;
+	public void setScriptingLanguage(String newScriptingLanguage) {
+		String oldScriptingLanguage = scriptingLanguage;
+		scriptingLanguage = newScriptingLanguage;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.SCRIPTED_TASK__LANGUAGE, oldLanguage, language));
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE, oldScriptingLanguage, scriptingLanguage));
 	}
 
 	/**
@@ -179,8 +179,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CrossflowPackage.SCRIPTED_TASK__LANGUAGE:
-				return getLanguage();
+			case CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE:
+				return getScriptingLanguage();
 			case CrossflowPackage.SCRIPTED_TASK__SCRIPT:
 				return getScript();
 			case CrossflowPackage.SCRIPTED_TASK__OUTPUT_VARIABLES:
@@ -198,8 +198,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CrossflowPackage.SCRIPTED_TASK__LANGUAGE:
-				setLanguage((String)newValue);
+			case CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE:
+				setScriptingLanguage((String)newValue);
 				return;
 			case CrossflowPackage.SCRIPTED_TASK__SCRIPT:
 				setScript((String)newValue);
@@ -220,8 +220,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.SCRIPTED_TASK__LANGUAGE:
-				setLanguage(LANGUAGE_EDEFAULT);
+			case CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE:
+				setScriptingLanguage(SCRIPTING_LANGUAGE_EDEFAULT);
 				return;
 			case CrossflowPackage.SCRIPTED_TASK__SCRIPT:
 				setScript(SCRIPT_EDEFAULT);
@@ -241,8 +241,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.SCRIPTED_TASK__LANGUAGE:
-				return LANGUAGE_EDEFAULT == null ? language != null : !LANGUAGE_EDEFAULT.equals(language);
+			case CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE:
+				return SCRIPTING_LANGUAGE_EDEFAULT == null ? scriptingLanguage != null : !SCRIPTING_LANGUAGE_EDEFAULT.equals(scriptingLanguage);
 			case CrossflowPackage.SCRIPTED_TASK__SCRIPT:
 				return SCRIPT_EDEFAULT == null ? script != null : !SCRIPT_EDEFAULT.equals(script);
 			case CrossflowPackage.SCRIPTED_TASK__OUTPUT_VARIABLES:
@@ -261,8 +261,8 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (language: ");
-		result.append(language);
+		result.append(" (scriptingLanguage: ");
+		result.append(scriptingLanguage);
 		result.append(", script: ");
 		result.append(script);
 		result.append(')');

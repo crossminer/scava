@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link crossflow.ScriptedTask#getLanguage <em>Language</em>}</li>
+ *   <li>{@link crossflow.ScriptedTask#getScriptingLanguage <em>Scripting Language</em>}</li>
  *   <li>{@link crossflow.ScriptedTask#getScript <em>Script</em>}</li>
  *   <li>{@link crossflow.ScriptedTask#getOutputVariables <em>Output Variables</em>}</li>
  * </ul>
@@ -25,30 +25,30 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ScriptedTask extends Task {
 	/**
-	 * Returns the value of the '<em><b>Language</b></em>' attribute.
+	 * Returns the value of the '<em><b>Scripting Language</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Language</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Scripting Language</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Language</em>' attribute.
-	 * @see #setLanguage(String)
-	 * @see crossflow.CrossflowPackage#getScriptedTask_Language()
+	 * @return the value of the '<em>Scripting Language</em>' attribute.
+	 * @see #setScriptingLanguage(String)
+	 * @see crossflow.CrossflowPackage#getScriptedTask_ScriptingLanguage()
 	 * @model
 	 * @generated
 	 */
-	String getLanguage();
+	String getScriptingLanguage();
 
 	/**
-	 * Sets the value of the '{@link crossflow.ScriptedTask#getLanguage <em>Language</em>}' attribute.
+	 * Sets the value of the '{@link crossflow.ScriptedTask#getScriptingLanguage <em>Scripting Language</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Language</em>' attribute.
-	 * @see #getLanguage()
+	 * @param value the new value of the '<em>Scripting Language</em>' attribute.
+	 * @see #getScriptingLanguage()
 	 * @generated
 	 */
-	void setLanguage(String value);
+	void setScriptingLanguage(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Script</b></em>' attribute.

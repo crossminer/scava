@@ -316,8 +316,8 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 		private RectangleFigure fScriptedTaskOutputVariablesCompartmentFigure;
 
 		/**
-			 * @generated
-			 */
+				 * @generated
+				 */
 		public ScriptedTaskFigure() {
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),

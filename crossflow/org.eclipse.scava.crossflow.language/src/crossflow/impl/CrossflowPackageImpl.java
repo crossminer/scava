@@ -537,7 +537,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getScriptedTask_Language() {
+	public EAttribute getScriptedTask_ScriptingLanguage() {
 		return (EAttribute)scriptedTaskEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -805,7 +805,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		opinionatedTaskEClass = createEClass(OPINIONATED_TASK);
 
 		scriptedTaskEClass = createEClass(SCRIPTED_TASK);
-		createEAttribute(scriptedTaskEClass, SCRIPTED_TASK__LANGUAGE);
+		createEAttribute(scriptedTaskEClass, SCRIPTED_TASK__SCRIPTING_LANGUAGE);
 		createEAttribute(scriptedTaskEClass, SCRIPTED_TASK__SCRIPT);
 		createEReference(scriptedTaskEClass, SCRIPTED_TASK__OUTPUT_VARIABLES);
 
@@ -919,7 +919,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEClass(opinionatedTaskEClass, OpinionatedTask.class, "OpinionatedTask", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(scriptedTaskEClass, ScriptedTask.class, "ScriptedTask", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getScriptedTask_Language(), ecorePackage.getEString(), "language", null, 0, 1, ScriptedTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScriptedTask_ScriptingLanguage(), ecorePackage.getEString(), "scriptingLanguage", null, 0, 1, ScriptedTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScriptedTask_Script(), ecorePackage.getEString(), "script", null, 0, 1, ScriptedTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScriptedTask_OutputVariables(), this.getField(), null, "outputVariables", null, 0, -1, ScriptedTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

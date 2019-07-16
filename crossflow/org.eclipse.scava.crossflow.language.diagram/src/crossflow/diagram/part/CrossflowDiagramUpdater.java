@@ -461,8 +461,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getScriptedTask_2015ContainedLinks(View view) {
 		ScriptedTask modelElement = (ScriptedTask) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
@@ -491,15 +491,15 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getField_2014ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -519,8 +519,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getParameter_3002ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -622,8 +622,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getScriptedTask_2015IncomingLinks(View view) {
 		ScriptedTask modelElement = (ScriptedTask) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
@@ -659,15 +659,15 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getField_2014IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -687,8 +687,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getParameter_3002IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -776,8 +776,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getScriptedTask_2015OutgoingLinks(View view) {
 		ScriptedTask modelElement = (ScriptedTask) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
@@ -806,15 +806,15 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getField_2014OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -834,8 +834,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getParameter_3002OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}

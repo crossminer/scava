@@ -3,6 +3,10 @@ package [%=package%];
 import javax.script.*;
 import org.renjin.script.*;
 import org.renjin.sexp.*;
+import org.apache.commons.math.complex.Complex;
+import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
 [%if (t.isTypeOf(Source)){%]
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,61 +14,119 @@ import java.util.TimerTask;
 
 public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%}%][%if(t.isTypeOf(OpinionatedTask)){%]Opinionated[%}%][%=t.name%]Base {
 
-	[%if (t.isTypeOf(Source)){%]
+[%if (t.isTypeOf(Source)){%]
 	@Override
 	public void produce() throws Exception {
 			
 		// TODO: Add implementation that instantiates, sets, and submits source objects (NYI for R tasks)
 
 	}
-	[%} else {%]
+[%} else {%]
 	[% for (s in t.input) { %]
 	@Override
 	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 
 		[%
 		if(s.isConfigurationChannel()) {
-		%]		// TODO: handle configuration		
+		%]		// Scripted tasks cannot be configuration channels		
 		[%
-		} else{
+		} else{	// for each input field create a variable with the same name (so that it can be used by the script)
 		%]
-		[%for (field in s.type.fields) { %]
-		[%=field.type%] [%=field.name%] = [%=s.type.name.ftlc()%].[%=field.name%];
-		[%}%]
-		
+			[%for (field in s.type.fields) { %]
+		String [%=field.name%] = [%=s.type.name.ftlc()%].[%=field.name%].toString();
+			[%}// execute script on engine
+		%]		
 		RenjinScriptEngine engine = new RenjinScriptEngineFactory().getScriptEngine();
-		engine.eval([%if(not self.script.startsWith("\"")){%]"[%}%][%=self.script.replace("\n","\\\\n")%][%if(not self.script.endsWith("\"")){%]"[%}%]);
-		[%for (outputVariable in self.outputVariables) { %]		
-		[%=outputVariable.type%] [%=outputVariable.name%] = ([%=outputVariable.type%]) engine.eval("[%=outputVariable.name%]");
-		[%}%]	
+		[%var script = self.script.replace("\n","\\\\n");%]
+		[%for (field in s.type.fields) { %]
+			[%script = script.replace(field.name,"\"+"+field.name+"+\"");%]
+		[%}%]		
+		engine.eval([%if(not self.script.startsWith("\"")){%]"[%}%][%=script%][%if(not self.script.endsWith("\"")){%]"[%}%]);
+		
+		[%// for each output variable get its value from the engine
+		
+		//defined primitive types (they can all be homogeneous collections as well) and their corresponding methods in the R engine)
+		var types : new Map;
+		types.put("int", "getElementAsInt");
+		types.put("double", "getElementAsDouble");
+		types.put("String", "getElementAsString");	
+		types.put("boolean", "getElementAsLogical");
+		types.put("double", "getElementAsDouble");
+		types.put("Complex", "getElementAsComplex");
+
+		for (outputVariable in self.outputVariables) { 
+			if(types.containsKey(outputVariable.type)){
+		%]
+		Object [%=outputVariable.name%]Object = engine.eval("[%=outputVariable.name%]");
+				[%if(not outputVariable.isMany()){%]
+		[%=outputVariable.type%] [%=outputVariable.name%] = ([%=outputVariable.type%]) ((Vector) [%=outputVariable.name%]Object).[%=types.get(outputVariable.type)%](0);
+				[%}else{%]
+		List<[%=outputVariable.type%]> [%=outputVariable.name%] = new ArrayList<>();
+		((Iterable<[%=outputVariable.type%]>)[%=outputVariable.name%]Object).forEach([%=outputVariable.name%]::add);
+				[%}%]
+			[%}%]
+		[%}%]
 		[%
-		/*for single output tasks*/if((not t.multipleOutputs and t.output.size==1)) {%]
-
-		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Inst = new [%=t.output.first.type.name%]();
-		[%for (f in t.output.first.type.fields) { %]
-		//	[%=t.output.first.type.name.ftlc()%]Inst.set[%=f.name.ftuc()%]( [%=f.type%] );
+		/*for single output tasks*/
+		if((not t.multipleOutputs and t.output.size==1)) {%]
+		
+		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Output = new [%=t.output.first.type.name%]();		
+		[%
+		var remainingUnsetFields = t.output.first.type.fields.size;
+		var remainingUnusedVariables = self.outputVariables.size;
+		//
+		for(outputVariable in self.outputVariables){
+			if(types.containsKey(outputVariable.type) and not t.output.first.type.fields.select(f|f.name=outputVariable.name and f.type=outputVariable.type and f.isMany=outputVariable.isMany).isEmpty)
+			{
+		%]
+		[%=t.output.first.type.name.ftlc()%]Output.[%=outputVariable.name%] = [%=outputVariable.name%];	
+			[%
+				remainingUnsetFields=remainingUnsetFields-1;
+				remainingUnusedVariables=remainingUnusedVariables-1;
+			}		
+		}
+			if(remainingUnsetFields>0 or remainingUnusedVariables>0){
+			
+			%]
+		
+		// FIXME user code needed for scripted tasks requiring custom output:
+		// for [%=self.scriptingLanguage%] tasks, captured output is of the form of int, boolean, double, string or complex (or collections thereof)
+		// and these outputs have to be the same name and type as the relevant fields in the type of the output stream this data is sent to
+		[%if(remainingUnusedVariables>0){%]
+		// unused output variables:
 		[%}%]
-		return [%=t.output.first.type.name.ftlc()%]Inst;
-
+				[%for(outputVariable in self.outputVariables){
+					if(not types.containsKey(outputVariable.type) or t.output.first.type.fields.select(f|f.name=outputVariable.name and f.type=outputVariable.type and f.isMany=outputVariable.isMany).isEmpty)
+					{%]
+			// [%=outputVariable.name%]	
+					[%}		
+				}%]
+		[%if(remainingUnsetFields>0){%]
+		// unset fields (of [%=t.output.first.type.name.ftlc()%]Output):
+		[%}%]
+		[%for(field in t.output.first.type.fields){
+					if(not types.containsKey(field.type) or self.outputVariables.select(v|v.name=field.name and v.type=field.type and v.isMany=field.isMany).isEmpty)
+					{%]
+			// [%=field.name%]					
+					[%}
+				}				
+			}%]
+		
+		return [%=t.output.first.type.name.ftlc()%]Output;
 		[%} else /*for all other tasks*/{%]
-
 		[%for (s in t.output) { %]
-		[%var number= loopCount;%]
-		[%=s.type.name%] [%=s.type.name.ftlc()%][%=number%] = new [%=s.type.name%]();
-		[%for (f in s.type.fields) { %]
-		//	[%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
-		[%}%]
-		sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%]);		
+		// FIXME user code needed for multi-output scripted tasks	
 		[% } %]
-		[% if (t.output.notEmpty()==false) { %]
+		[% if (t.output.isEmpty()) { %]
+		// FIXME user code needed for no-output scripted tasks
 		System.out.println("[" + workflow.getName() + "] Result is " + [%=s.type.name.ftlc()%].toString() + " (cached=" + [%=s.type.name.ftlc()%].isCached() + ")");
 		[% } %]
-
-		[%}%]	
+		[%}%]
 	[%}%]
-	
+
 	}
-	[%}}%]
+	[%}
+}%]
 
 [%if(t.isTypeOf(OpinionatedTask)){%]
 [%for (s in t.input){%]

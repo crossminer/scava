@@ -81,9 +81,10 @@ class OpinionatedTask extends Task {
 
 @gmf.node(label="name")
 class ScriptedTask extends Task {
-	attr String language;
+	attr String scriptingLanguage;
 	@emf.gen(propertyMultiLine="true")
 	attr String script;
+	
  	@gmf.compartment(layout="list",collapsible="false")
   	val Field[*] outputVariables;
 }

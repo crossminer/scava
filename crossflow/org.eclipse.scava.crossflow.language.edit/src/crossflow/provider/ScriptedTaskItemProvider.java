@@ -47,26 +47,26 @@ public class ScriptedTaskItemProvider extends TaskItemProvider {
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addLanguagePropertyDescriptor(object);
+			addScriptingLanguagePropertyDescriptor(object);
 			addScriptPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Language feature.
+	 * This adds a property descriptor for the Scripting Language feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addLanguagePropertyDescriptor(Object object) {
+	protected void addScriptingLanguagePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ScriptedTask_language_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScriptedTask_language_feature", "_UI_ScriptedTask_type"),
-				 CrossflowPackage.Literals.SCRIPTED_TASK__LANGUAGE,
+				 getString("_UI_ScriptedTask_scriptingLanguage_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ScriptedTask_scriptingLanguage_feature", "_UI_ScriptedTask_type"),
+				 CrossflowPackage.Literals.SCRIPTED_TASK__SCRIPTING_LANGUAGE,
 				 true,
 				 false,
 				 false,
@@ -165,7 +165,7 @@ public class ScriptedTaskItemProvider extends TaskItemProvider {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScriptedTask.class)) {
-			case CrossflowPackage.SCRIPTED_TASK__LANGUAGE:
+			case CrossflowPackage.SCRIPTED_TASK__SCRIPTING_LANGUAGE:
 			case CrossflowPackage.SCRIPTED_TASK__SCRIPT:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

@@ -162,7 +162,7 @@ public class GenerateBaseClasses {
 
 		EClass scriptingTask = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("ScriptedTask");
 		EAttribute scriptingLanguage = scriptingTask.getEAllAttributes().stream()
-				.filter(a -> a.getName().equals("language")).findFirst().get();
+				.filter(a -> a.getName().equals("scriptingLanguage")).findFirst().get();
 
 		HashSet<String> ret = new HashSet<>();
 

@@ -1256,13 +1256,13 @@ public interface CrossflowPackage extends EPackage {
 	int SCRIPTED_TASK__CONFIGURATIONS = TASK__CONFIGURATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Language</b></em>' attribute.
+	 * The feature id for the '<em><b>Scripting Language</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPTED_TASK__LANGUAGE = TASK_FEATURE_COUNT + 0;
+	int SCRIPTED_TASK__SCRIPTING_LANGUAGE = TASK_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Script</b></em>' attribute.
@@ -1889,15 +1889,15 @@ public interface CrossflowPackage extends EPackage {
 	EClass getScriptedTask();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.ScriptedTask#getLanguage <em>Language</em>}'.
+	 * Returns the meta object for the attribute '{@link crossflow.ScriptedTask#getScriptingLanguage <em>Scripting Language</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Language</em>'.
-	 * @see crossflow.ScriptedTask#getLanguage()
+	 * @return the meta object for the attribute '<em>Scripting Language</em>'.
+	 * @see crossflow.ScriptedTask#getScriptingLanguage()
 	 * @see #getScriptedTask()
 	 * @generated
 	 */
-	EAttribute getScriptedTask_Language();
+	EAttribute getScriptedTask_ScriptingLanguage();
 
 	/**
 	 * Returns the meta object for the attribute '{@link crossflow.ScriptedTask#getScript <em>Script</em>}'.
@@ -2461,12 +2461,12 @@ public interface CrossflowPackage extends EPackage {
 		EClass SCRIPTED_TASK = eINSTANCE.getScriptedTask();
 
 		/**
-		 * The meta object literal for the '<em><b>Language</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Scripting Language</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute SCRIPTED_TASK__LANGUAGE = eINSTANCE.getScriptedTask_Language();
+		EAttribute SCRIPTED_TASK__SCRIPTING_LANGUAGE = eINSTANCE.getScriptedTask_ScriptingLanguage();
 
 		/**
 		 * The meta object literal for the '<em><b>Script</b></em>' attribute feature.

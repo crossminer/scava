@@ -24,9 +24,8 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Type</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Type</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -42,9 +41,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class TypeImpl extends EObjectImpl implements Type {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -52,9 +51,9 @@ public class TypeImpl extends EObjectImpl implements Type {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -62,9 +61,9 @@ public class TypeImpl extends EObjectImpl implements Type {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getImpl() <em>Impl</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getImpl() <em>Impl</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getImpl()
 	 * @generated
 	 * @ordered
@@ -72,9 +71,9 @@ public class TypeImpl extends EObjectImpl implements Type {
 	protected static final String IMPL_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getImpl() <em>Impl</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getImpl() <em>Impl</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getImpl()
 	 * @generated
 	 * @ordered
@@ -83,8 +82,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 
 	/**
 	 * The default value of the '{@link #isIsMany() <em>Is Many</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #isIsMany()
 	 * @generated
 	 * @ordered
@@ -93,8 +91,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 
 	/**
 	 * The cached value of the '{@link #isIsMany() <em>Is Many</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #isIsMany()
 	 * @generated
 	 * @ordered
@@ -103,8 +100,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 
 	/**
 	 * The cached value of the '{@link #getExtending() <em>Extending</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getExtending()
 	 * @generated
 	 * @ordered
@@ -113,8 +109,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 
 	/**
 	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getFields()
 	 * @generated
 	 * @ordered
@@ -122,8 +117,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	protected EList<Field> fields;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected TypeImpl() {
@@ -131,8 +125,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -141,8 +134,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getName() {
@@ -150,8 +142,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -162,8 +153,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getImpl() {
@@ -171,8 +161,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setImpl(String newImpl) {
@@ -183,8 +172,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isIsMany() {
@@ -192,8 +180,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setIsMany(boolean newIsMany) {
@@ -204,8 +191,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Type> getExtending() {
@@ -216,8 +202,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<Field> getFields() {
@@ -228,8 +213,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -242,8 +226,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -264,8 +247,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -294,8 +276,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -321,8 +302,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -343,13 +323,14 @@ public class TypeImpl extends EObjectImpl implements Type {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
@@ -359,7 +340,14 @@ public class TypeImpl extends EObjectImpl implements Type {
 		result.append(", isMany: ");
 		result.append(isMany);
 		result.append(')');
+		//
+		result.append(" [ ");
+		for (Field f : getFields()) {
+			result.append(f.getName() + ":" + f.getType() + " ");
+		}
+		result.append("]");
+		//
 		return result.toString();
 	}
 
-} //TypeImpl
+} // TypeImpl
