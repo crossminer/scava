@@ -11,27 +11,58 @@
 package org.eclipse.scava.plugin.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.scava.plugin.Activator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.eclipse.wb.swt.SWTResourceManager;
 
-public class General extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
-	
+public class General extends PreferencePage implements IWorkbenchPreferencePage {
+
 	public General() {
-		super(GRID);
+
 	}
-	
+
 	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
-		setDescription("General settings for CROSSMINER Eclipse-based IDE");
+		setDescription("General settings and informations related to the CROSSMINER Eclipse-based IDE");
 	}
 
 	@Override
-	protected void createFieldEditors() {
-		
+	protected Control createContents(Composite parent) {
+		Composite top = new Composite(parent, SWT.LEFT);
+		top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		GridLayout gl_top = new GridLayout();
+		gl_top.numColumns = 2;
+		top.setLayout(gl_top);
+
+		Label lblCurrentVersion = new Label(top, SWT.NONE);
+		lblCurrentVersion.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblCurrentVersion.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		lblCurrentVersion.setText("Version:");
+
+		Label lblVersionNumber = new Label(top, SWT.NONE);
+		lblVersionNumber.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		try {
+			String version = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version");
+			lblVersionNumber.setText(version);
+		} catch (Exception e) {
+			MessageDialog.openError(getShell(), "Error",
+					"Something went wrong during requesting the plug-in's version number:\n\n" + e);
+			e.printStackTrace();
+		}
+
+		return top;
 	}
 
 }
