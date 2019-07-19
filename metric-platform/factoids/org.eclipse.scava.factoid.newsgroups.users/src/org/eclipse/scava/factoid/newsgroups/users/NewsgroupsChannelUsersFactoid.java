@@ -40,7 +40,7 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelUsers";
+		return "factoid.newsgroups.users";
 	}
 
 	@Override
@@ -51,7 +51,9 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding users for newsgroups. "
+				+ "For example, the average number of users associated to a project in "
+				+ "a newsgroup channel"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

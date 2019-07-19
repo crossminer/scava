@@ -28,18 +28,20 @@ public class BugsChannelHourlyFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelHourly";
+		return "factoid.bugs.hourly";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Bug Tracker Hourly";
+		return "Bug Tracker hourly data";
 		// This method will NOT be removed in a later version.
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding hourly statistics for bug trackers. "
+				+ "For example, the percentage of bugs, comments etc"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

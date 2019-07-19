@@ -35,7 +35,7 @@ public class NewsgroupsChannelHourlyFactoid extends AbstractFactoidMetricProvide
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelHourly";
+		return "factoid.newsgroups.hourly";
 	}
 
 	@Override
@@ -46,7 +46,8 @@ public class NewsgroupsChannelHourlyFactoid extends AbstractFactoidMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding hourly data for newsgroups, "
+				+ "such as the percentage of articles, threads etc"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class NewsgroupsChannelEmotionFactoid extends AbstractFactoidMetricProvid
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelEmotion";
+		return "factoid.newsgroups.emotion";
 	}
 
 	@Override
@@ -48,7 +48,9 @@ public class NewsgroupsChannelEmotionFactoid extends AbstractFactoidMetricProvid
 
 	@Override
 	public String getSummaryInformation() {
-		return "This plugin generates the factoid regarding emotions for newsgroups"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding emotions for newsgroups, "
+				+ "such as percentage of positive, negative or surprise emotions expressed."; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

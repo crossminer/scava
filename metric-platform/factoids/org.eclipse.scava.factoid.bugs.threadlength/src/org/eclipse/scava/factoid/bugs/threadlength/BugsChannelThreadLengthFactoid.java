@@ -31,7 +31,7 @@ public class BugsChannelThreadLengthFactoid extends AbstractFactoidMetricProvide
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelThreadLength";
+		return "factoid.bugs.threadlength";
 	}
 
 	@Override
@@ -42,7 +42,9 @@ public class BugsChannelThreadLengthFactoid extends AbstractFactoidMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding bug thread length for bug trackers. "
+				+ "For example, the average length of discussion associated to bugs"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

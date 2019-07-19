@@ -176,6 +176,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 					
 					HashMap<Integer,List<CommunicationChannelArticle>> newArticles = new HashMap<Integer,List<CommunicationChannelArticle>>();
+					HashMap<Integer,String> subjects = new HashMap<Integer,String>();
 					Classifier classifier = new Classifier();
 					Map<Long, ClassificationInstance> instanceIndex = new HashMap<Long, ClassificationInstance>();
 					
@@ -186,7 +187,6 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 						if (articleIdsPerThread.containsKey(threadId) && 
 							articleIdsPerThread.get(threadId).contains(deltaArticle.getArticleNumber()))
 							articleExists = true;
-
 						if (!articleExists) {
 							if(!newArticles.containsKey(threadId))
 								newArticles.put(threadId, new ArrayList<CommunicationChannelArticle>());
@@ -195,6 +195,8 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 							int positionInThread = 1;
 							if (articleIdsPerThread.containsKey(threadId))
 								positionInThread += articleIdsPerThread.get(threadId).size();
+							if(positionInThread==1)
+								subjects.put(threadId, deltaArticle.getSubject());
 							instance.setPositionFromThreadBeginning(positionInThread);
 							instanceIndex.put(instance.getArticleNumber(), instance);
 							classifier.add(instance);
@@ -210,9 +212,12 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 						if(threadData==null) {
 							threadData = new ThreadData();
 							threadData.setThreadId(threadToProcess);
+							threadData.setNewsgroupName(ossmeterID);
+							threadData.setSubject(subjects.get(threadToProcess));
 						}
 						for (CommunicationChannelArticle newArticle : newArticles.get(threadToProcess)) {// Thread data
 							
+							threadData.getArticleNumbers().add(newArticle.getArticleNumber());
 							threadData.getArticles().add(prepareArticleData(newArticle, ossmeterID,  
 									classifier, instanceIndex));
 
@@ -329,7 +334,10 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 
 						ThreadData threadData = new ThreadData();
 						threadData.setThreadId(index);
+						threadData.setNewsgroupName(ossmeterID);
+						threadData.setSubject(list.get(0).getSubject());
 						for (Article article : list) {
+							threadData.getArticleNumbers().add(article.getArticleNumberLong());
 							threadData.getArticles().add(prepareArticleData(article, ossmeterID,
 									classifier, previousClassAssignments, instanceIndex));
 

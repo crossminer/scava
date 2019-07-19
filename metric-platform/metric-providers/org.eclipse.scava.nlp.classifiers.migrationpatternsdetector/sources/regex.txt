@@ -1,0 +1,25 @@
+#We find migration problems with these groups of regex.
+#A group is a collection of regex that must be found in order
+#to consider that a migration issue has been found 
+#A double # means the end of a group
+#
+migrati(?:ons?|ing)
+(?:api|versions?)
+##
+up(:?grad|dat)(?:es?|ing)
+(?:method|(sub.?)?routine|function|call|api)s?
+##
+deprecat(?:ed|ion)
+(?:method|(sub.?)?routine|function|call|api)s?
+##
+(?:new(?:est)|recent|current|versions?)
+(?:break(?:es|ing)?|broken?)
+(?:method|(sub.?)?routine|function|call|api)s?
+##
+(?:breaking|broken?)
+(?:api|change)s?
+##
+up(:?grad|dat)(?:es?|ing)
+(?:from|to)
+(?:version|v\d+)
+##

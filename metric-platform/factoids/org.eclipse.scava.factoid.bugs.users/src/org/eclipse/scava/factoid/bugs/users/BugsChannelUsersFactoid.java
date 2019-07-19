@@ -33,7 +33,7 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelUsers";
+		return "factoid.bugs.users";
 	}
 
 	@Override
@@ -44,7 +44,9 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding users for bug trackers. "
+				+ "For example, the average number of users associated to a project in a "
+				+ "bug tracking system"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

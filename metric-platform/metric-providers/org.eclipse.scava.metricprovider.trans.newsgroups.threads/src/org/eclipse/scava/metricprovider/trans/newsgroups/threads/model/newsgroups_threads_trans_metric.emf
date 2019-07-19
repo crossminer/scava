@@ -11,6 +11,9 @@ class NewsgroupsThreadsTransMetric {
 class ThreadData {
    @searchable
    attr int threadId;
+   attr String newsgroupName;
+   attr String subject;
+   attr long[*] articleNumbers;
    val ArticleData[*] articles;
 }
 

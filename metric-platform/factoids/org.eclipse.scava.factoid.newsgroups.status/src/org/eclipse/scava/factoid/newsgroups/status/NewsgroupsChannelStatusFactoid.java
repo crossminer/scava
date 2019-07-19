@@ -41,7 +41,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelStatus";
+		return "factoid.newsgroups.status";
 	}
 
 	@Override
@@ -52,7 +52,8 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding thread or article status for newsgroups. "
+				+ "For example, the number of requests and replies"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

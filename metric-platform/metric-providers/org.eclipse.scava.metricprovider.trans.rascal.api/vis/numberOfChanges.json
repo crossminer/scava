@@ -1,0 +1,21 @@
+{
+	"metricid" : "trans.rascal.api.numberOfChanges",
+	"vis" : [ 
+		{
+			"id" : "numberOfChanges",
+			"name" : "Number of (breaking and non-breaking) API changes over time",
+			"description" : "This metric depicts the number of (breaking and non-breaking) API changes over time.",
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$value",
+				"cols" : [  { "name" : "Date", 		"field" : "$__date" }, 
+							{ "name" : "Number", 	"field" : "$value" } ]
+			},
+			"x" : "Date",
+			"y" : "Number", 
+			"x-label" : "Date",		
+			"y-label" : "Number",
+			"timeSeries" : true
+		}
+	]
+}

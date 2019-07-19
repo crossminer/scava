@@ -39,7 +39,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "BugChannelSeverity";
+		return "factoid.bugs.severity";
 	}
 
 	@Override
@@ -50,7 +50,9 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding severity for bug trackers. "
+				+ "For example, the number of bugs per severity level, the average sentiment for each severity etc"; 
+		// This method will NOT be removed in a later version.
 	}
 
 	@Override

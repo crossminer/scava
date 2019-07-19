@@ -44,7 +44,7 @@ public class NewsgroupsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 	
 	@Override
 	public String getShortIdentifier() {
-		return "NewsgroupChannelSize";
+		return "factoid.newsgroups.size";
 	}
 
 	@Override
@@ -55,7 +55,8 @@ public class NewsgroupsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "summaryblah"; // This method will NOT be removed in a later version.
+		return "This plugin generates the factoid regarding thread size for newsgroups. "
+				+ "For example, the cummulative number of threads"; // This method will NOT be removed in a later version.
 	}
 
 	@Override

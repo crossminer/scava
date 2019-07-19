@@ -1,0 +1,17 @@
+package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model;
+
+@db(qualifiedCollectionNames="true")
+class NewsgroupsMigrationIssueTransMetric {
+	val NewsgroupsMigrationIssue[*] newsgroupsMigrationIssues; 
+}
+
+class NewsgroupsMigrationIssue {
+	@searchable
+   	attr String newsgroupName;
+   	attr int threadId;
+   	attr String software;
+   	attr String[*] changes;
+}
+
+
+
