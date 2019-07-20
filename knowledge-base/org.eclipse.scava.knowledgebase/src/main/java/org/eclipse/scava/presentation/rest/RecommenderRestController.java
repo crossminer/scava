@@ -121,6 +121,34 @@ public class RecommenderRestController {
 		return true;
 	}
 	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about discussions and code snippets for C code using ElasticSearch Indexes.")
+	@RequestMapping(value = "crossindex-c/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getCROSSIndexCRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.CROSSIndex_C);
+	}
+	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about discussions and code snippets for Java code using ElasticSearch Indexes.")
+	@RequestMapping(value = "crossindex-java/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getCROSSIndexJavaRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.CROSSIndex_JAVA);
+	}
+	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about discussions and code snippets for JavaScript code using ElasticSearch Indexes.")
+	@RequestMapping(value = "crossindex-js/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getCROSSIndexJSRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.CROSSIndex_JAVASCRIPT);
+	}
+	
+	@ApiOperation(value = "This resource is used to retrieve recommendation about discussions and code snippets for PHP code using ElasticSearch Indexes.")
+	@RequestMapping(value = "crossindex-php/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getCROSSIndexPHPRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.CROSSIndex_PHP);
+	}
+	
 //	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)
 //	public Query getQuery() {
 //		Query q = new Query();

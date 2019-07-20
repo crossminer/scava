@@ -7,5 +7,9 @@ public enum RecommendationType {
 	API_DOCUMENTATION,
 	FOCUS,
 	SO,
-	VERSION
+	VERSION,
+	CROSSIndex_C,
+	CROSSIndex_JAVA,
+	CROSSIndex_JAVASCRIPT,
+	CROSSIndex_PHP
 }

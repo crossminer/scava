@@ -49,11 +49,12 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<lucene.version>7.5.0</lucene.version>
+		<lucene.version>7.3.1</lucene.version>
 		<log4j.version>2.11.2</log4j.version>
 		<aetherVersion>1.1.0</aetherVersion>
 		<mavenVersion>3.3.9</mavenVersion>
 		<rascal.version>0.12.0-SNAPSHOT</rascal.version>
+		<elasticsearch.version>6.3.2</elasticsearch.version>
 	</properties>
 
 	<dependencies>
@@ -277,7 +278,7 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
-			<version>4.3</version>
+			<version>4.7.2</version>
 		</dependency>
 		<!-- Swagger -->
 		<dependency>
@@ -292,16 +293,27 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.8.1</version>
 		</dependency>
+		<!-- ElasticSearch -->
+		<dependency>
+    		<groupId>org.elasticsearch</groupId>
+    		<artifactId>elasticsearch</artifactId>
+    		<version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.elasticsearch.client</groupId>
+    		<artifactId>elasticsearch-rest-high-level-client</artifactId>
+    		<version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.elasticsearch.client</groupId>
+    		<artifactId>elasticsearch-rest-client</artifactId>
+    		<version>${elasticsearch.version}</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>scava.knoledgebase</finalName>
