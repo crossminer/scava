@@ -29,6 +29,7 @@ import argparse
 import hashlib
 import json
 import logging
+import re
 import requests
 import time
 
@@ -179,7 +180,7 @@ def enrich_metrics(sonar_metrics):
             'project': project,
             'metric_class': 'sonarqube',
             'metric_type': sonar_metric['backend_name'],
-            'metric_id': sonar_data['id'],
+            'metric_id': 'sonar_{}'.format(re.sub('\W+', '_', sonar_data['metric']).lower()),
             'metric_desc': 'Sonar ' + sonar_data['metric'],
             'metric_name': 'Sonar ' + sonar_data['metric'],
             'metric_es_value': metric_value,
