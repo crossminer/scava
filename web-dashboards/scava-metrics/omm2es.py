@@ -146,9 +146,6 @@ def enrich_metrics(omm_metrics, project):
     for omm_metric in omm_metrics:
 
         processed += 1
-
-        datetime = datetime_utcnow()
-
         omm_data = omm_metric['data']
 
         try:
@@ -159,16 +156,9 @@ def enrich_metrics(omm_metrics, project):
             metric_value = None
 
         if not metric_value:
-            periods = omm_data.get('periods', [])
-            if periods:
-                metric_value = periods[0]['value']
-
-        if not metric_value:
-            msg = "Metric value not processed for {} and value {}".format(omm_data['metric'], omm_data['value'])
+            msg = "Metric value not found for {}".format(omm_data['metric'])
             logging.warning(msg)
             enriched_skipped += 1
-        else:
-            metric_value = float(metric_value)
 
         eitem = {
             'project': project,
@@ -181,7 +171,7 @@ def enrich_metrics(omm_metrics, project):
             'metric_es_compute': 'sample',
             'metric_value': metric_value,
             'metric_es_value_weighted': metric_value,
-            'datetime': datetime,
+            'datetime': omm_data['timestamp'],
             'omm': omm_data
         }
 
@@ -196,15 +186,14 @@ def enrich_metrics(omm_metrics, project):
 def fetch_omm(uri, project):
     """Fetch the metrics from OMM"""
 
-    for metric in metrics:
-        omm_backend = Omm(uri)
+    omm_backend = Omm(uri)
 
-        for enriched_metric in enrich_metrics(omm_backend.fetch(), project):
+    for enriched_metric in enrich_metrics(omm_backend.fetch(), project):
 
-            yield enriched_metric
+        yield enriched_metric
 
-        msg = "Metrics {} from component {} fetched".format(metrics, project)
-        logging.debug(msg)
+    msg = "OMM data fetched from {} for {}".format(uri, project)
+    logging.debug(msg)
 
 
 if __name__ == '__main__':
@@ -222,7 +211,7 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    omm_metrics = fetch_omm(ARGS.url, ARGS.project)
+    omm_metrics = fetch_omm(ARGS.uri, ARGS.project)
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
