@@ -193,20 +193,8 @@ def enrich_metrics(omm_metrics, project):
     logging.info(msg)
 
 
-def load_form(url):
-
-    raw_mappings = requests.get(url)
-    mappings = json.loads(raw_mappings.text)
-
-    return mappings['component-mapping']
-
-
 def fetch_omm(uri, project):
-    """
-    Fetch the metrics from OMM
-
-    """
-    metrics = load_form(uri)
+    """Fetch the metrics from OMM"""
 
     for metric in metrics:
         omm_backend = Omm(uri)
