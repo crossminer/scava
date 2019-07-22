@@ -2,22 +2,15 @@ package org.eclipse.scava.crossflow.dt;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.ui.jarpackager.IJarExportRunnable;
-import org.eclipse.jdt.ui.jarpackager.JarPackageData;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.scava.crossflow.GenerateExecutables;
+import org.eclipse.scava.crossflow.GenerateDeploymentArtifacts;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -33,27 +26,51 @@ public class GenerateDeploymentArtifactsAction implements IObjectActionDelegate 
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
 		String projectFolderLocation = projectFolder.getPath();
 		try {
-
+			// create ARTIFACTS_FOLDER folder and initial contents
+			File artifactsFolder = new File(projectFolder, GenerateDeploymentArtifacts.ARTIFACTS_FOLDER_NAME);
+			artifactsFolder.mkdirs();
+			File inFolder = new File(artifactsFolder, "in");
+			inFolder.mkdirs();
+			File outFolder = new File(artifactsFolder, "out");
+			outFolder.mkdirs();
+			
+			// FIXME Aren't this workflow/example specific?			
+			File inFile = new File(inFolder, "input.csv");
+			inFile.createNewFile();
+			File outFile = new File(outFolder, "output.csv");
+			outFile.createNewFile();
+			
+		
 			// generate ant script
-			new GenerateExecutables().run(projectFolderLocation,
+			String workflowName = new GenerateDeploymentArtifacts().run(projectFolderLocation,
 					selectedFile.getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""),
 					"unknown_deps_location");
-
 			// use ant script to generate experiment jars and zip
 			generateAll(true);
-
 			// remove ant script
 			File ant = new File(projectFolder, "build-experiment-zip.xml");
 			ant.delete();
 
 			// create client jar
-			createClientJar(true, projectFolderLocation);
-
+			//createClientJar(true, projectFolderLocation);
+			displayInformation(workflowName);
+			
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (Exception e) {
 			ExceptionHandler.handle(e, shell);
 		}
+	}
+	
+	private void displayInformation(String workflowName) {
+		StringBuilder message = new StringBuilder();
+		message.append(
+			String.format("The deployment artifacts have been generated and zipped under '%s/%s.zip'.",
+					GenerateDeploymentArtifacts.ARTIFACTS_FOLDER_NAME, workflowName));
+		message.append(System.lineSeparator());
+		message.append("The artifacts zip file can be uploaded to the server manually or via the "
+				+ "'Deploy Artifacts' commands.");
+		MessageDialog.openInformation(shell, "Implementation Generation", message.toString());
 	}
 
 	private void createClientJar(boolean replace, String path) throws Exception {
@@ -90,7 +107,7 @@ public class GenerateDeploymentArtifactsAction implements IObjectActionDelegate 
 
 		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
-		File expFolder = new File(projectFolder, "experiment");
+		File expFolder = new File(projectFolder, GenerateDeploymentArtifacts.ARTIFACTS_FOLDER_NAME);
 
 		if (replace || (expFolder.exists()
 				&& !Arrays.asList(expFolder.listFiles()).stream().anyMatch(f -> f.getName().endsWith(".zip")))) {

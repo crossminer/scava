@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
 	<extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -47,13 +46,13 @@
          </action>
 
          <action
-               class="org.eclipse.scava.crossflow.dt.GenerateAction"
+               class="org.eclipse.scava.crossflow.dt.GenerateImplementationDelegate"
                enablesFor="1"
                icon="icons/crossflow-c.png"
-               id="CrossflowBaseClassGenerationAction"
-               label="Generate Base Classes"
+               id="CrossflowGenerateImplementationAction"
+               label="Generate Workflow Scaffold(s)"
                menubarPath="CrossflowGeneration.menu/group"
-               tooltip="Generates the source code for this workflow, adapt the classes in the src folder to perform your task logic.">
+               tooltip="Generates the source code for this workflow for the defined languages.">
          </action>
 
       </objectContribution>
@@ -102,7 +101,7 @@
                enablesFor="1"
                icon="icons/crossflow-c.png"
                id="CrossflowBaseClassGenerationAction"
-               label="Generate Base Classes"
+               label="Generate Workflow Scaffold(s)"
                menubarPath="CrossflowGeneration.menu/group"
                tooltip="Generates the source code for this workflow, adapt the classes in the src folder to perform your task logic.">
          </action>
@@ -152,11 +151,10 @@
                enablesFor="1"
                icon="icons/crossflow-c.png"
                id="CrossflowBaseClassGenerationAction"
-               label="Generate Base Classes"
+               label="Generate Workflow Scaffold(s)"
                menubarPath="CrossflowGeneration.menu/group"
                tooltip="Generates the source code for this workflow, adapt the classes in the src folder to perform your task logic.">
          </action>
       </objectContribution>
    </extension>
-
 </plugin>

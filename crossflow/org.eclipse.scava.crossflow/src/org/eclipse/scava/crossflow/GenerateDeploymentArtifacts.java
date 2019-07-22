@@ -22,6 +22,7 @@ import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
@@ -29,8 +30,9 @@ import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 
-public class GenerateExecutables {
-
+public class GenerateDeploymentArtifacts {
+	
+	public static final String ARTIFACTS_FOLDER_NAME = "artifacts";
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<>();
 
@@ -41,44 +43,59 @@ public class GenerateExecutables {
 	String dependenciesLocation;
 	String packageName;
 
-	public void run(String projectLocation, String modelRelativePath, String dependenciesLocation) throws Exception {
+	public String run(String projectLocation, String modelRelativePath, String dependenciesLocation) throws Exception {
 
 		this.projectLocation = projectLocation;
 		this.modelRelativePath = modelRelativePath;
 		this.dependenciesLocation = dependenciesLocation;
 
-		execute();
+		return execute();
 	}
 
-	public void execute() throws Exception {
-
+	public String execute() throws Exception {
+	
 		IEolContext context = (module = createModule()).getContext();
-		module.parse(getFileURI("java/generateExecutables.egx"));
-
-		Variable dependenciesPath = new Variable();
-		dependenciesPath.setName("dependenciesPath");
-		dependenciesPath.setType(EolPrimitiveType.String);
-		dependenciesPath.setValue(dependenciesLocation, module.getContext());
-		parameters.add(dependenciesPath);
-
+		module.parse(getFileURI("general/generateExecutables.egx"));
 		List<ParseProblem> parseProblems = module.getParseProblems();
-		
 		if (parseProblems.size() > 0) {
 			System.err.println("Parse errors occured...");
 			for (ParseProblem problem : parseProblems) {
 				System.err.println(problem);
 			}
-			return;
+			throw new IllegalStateException("Generation script should not have errors. Corrupted?");
 		}
+	
+		Variable dependenciesPath = new Variable();
+		dependenciesPath.setName("dependenciesPath");
+		dependenciesPath.setType(EolPrimitiveType.String);
+		dependenciesPath.setValue(dependenciesLocation, module.getContext());
+		parameters.add(dependenciesPath);
+		
+		Variable destFolder = new Variable();
+		destFolder.setName("destFolder");
+		destFolder.setType(EolPrimitiveType.String);
+		destFolder.setValueBruteForce(ARTIFACTS_FOLDER_NAME);
+		parameters.add(destFolder);
+		
+		Variable descriptorFolder = new Variable();
+		descriptorFolder.setName("descriptorFolder");
+		descriptorFolder.setType(EolPrimitiveType.String);
+		descriptorFolder.setValueBruteForce(GenerateImplementations.RESOURCES_FOLDER_NAME);
+		parameters.add(descriptorFolder);
 
 		IModel[] modelsArr = getModels().toArray(new IModel[0]);
-		
 		context.getModelRepository().addModels(modelsArr);
 		context.getFrameStack().put(parameters);
-
-		result = execute(module);
-
+		try {
+			result = execute(module);
+		}
+		catch (EolRuntimeException ex) {
+			// FIXME Give better info
+			throw ex;
+		}
+		String name = getWorkflowName(modelsArr[0]);
 		module.getContext().getModelRepository().dispose();
+		return name;
 	}
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {
@@ -87,7 +104,7 @@ public class GenerateExecutables {
 
 	protected URI getFileURI(String fileName) throws URISyntaxException {
 
-		URI binUri = GenerateExecutables.class.getResource(fileName).toURI();
+		URI binUri = GenerateDeploymentArtifacts.class.getResource(fileName).toURI();
 		URI uri = null;
 
 		if (binUri.toString().indexOf("bin") > -1) {
@@ -130,5 +147,18 @@ public class GenerateExecutables {
 		theModel.load(properties, (IRelativePathResolver) null);
 		return theModel;
 	}
-
+	
+	private String getWorkflowName(IModel model) {
+		Object wf = null;
+		try {
+			 wf = model.getAllOfType("Workflow").iterator().next();
+		} catch (EolModelElementTypeNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
+		try {
+			return (String) model.getPropertyGetter().invoke(wf, "name");
+		} catch (EolRuntimeException e) {
+			throw new IllegalStateException(e);
+		}
+	}
 }

@@ -1,4 +1,4 @@
-import "utils.egx";
+import "../general/helper.eol";
 
 rule Workflow2App
 	transform w : Workflow {
@@ -32,18 +32,6 @@ rule Workflow2Class
 	template : "workflow2class.egl"
 	
 	target : w.getPath() + w.name + ".java"
-}
-
-rule GenerateExperimentXML
-	transform w : Workflow {
-	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
-	
-	template : "generateExperimentXML.egl"
-	
-	target : "experiment/experiment.xml"
-	
-	overwrite : false
 }
 
 rule Type2Class 
@@ -160,3 +148,63 @@ rule Steam2Consumer
 
 //
 
+operation Type createSource(){
+	var source = new Source;
+	self.eContainer.tasks.add(source);
+	self.eContainer.types.add(self);
+	source.name = self.name+"ConfigSource";
+	var configTopic = new Topic;
+	self.eContainer.streams.add(configTopic);
+	configTopic.name = self.name+"Topic";
+	configTopic.type = self;
+	source.output.add(configTopic);
+	//self.findEligibleConfigurableTasks().input.add(configTopic);
+	for(t in self.findEligibleConfigurableTasks()){
+		t.input.add(configTopic);
+	}		
+	return source;	
+}
+
+operation Type findEligibleConfigurableTasks(){
+	return Task.all.select(t|t.configurations.exists(c|c=self));
+}
+
+operation Any getPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var path = "src-gen/";
+	
+	if (langExists and lang.first.genOutputFolder.isDefined()) {
+		path = lang.first.genOutputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+	
+	return path;
+}
+
+operation Any getImplPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+		
+	var path = "src/";
+		
+	if (langExists and lang.first.outputFolder.isDefined()) {
+		path = lang.first.outputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+
+	return path;
+}
+
+operation Task isJavaTask() {
+	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+}

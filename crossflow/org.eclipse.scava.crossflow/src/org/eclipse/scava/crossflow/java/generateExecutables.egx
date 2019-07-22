@@ -1,9 +1,0 @@
-rule Workflow2ExperimentAnt
-	transform w : Workflow {
-	
-	parameters : Map{"dependenciesPath" = dependenciesPath}
-	
-	template : "workflow2experimentAnt.egl"
-	
-	target : "build-experiment-zip.xml"
-}
