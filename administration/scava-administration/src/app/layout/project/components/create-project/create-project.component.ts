@@ -97,8 +97,12 @@ export class CreateProjectComponent implements OnInit {
       case 'nntp':
         return this.formBuilder.group({
           'type': [type],
-          'name': ['NNTP'],
           'url': ['', Validators.required],
+          'name': ['', Validators.required],
+          'port': ['', Validators.required],
+          'interval': [''],
+          'username': [''],
+          'password': ['']
         });
       case 'irc':
         return this.formBuilder.group({
@@ -233,7 +237,6 @@ export class CreateProjectComponent implements OnInit {
     this.project.communication_channels = this.saveInformationSources('communication_channels');
     this.createProjectService.createProject(this.project).subscribe(resp => {
       let project: IProject = resp as IProject;
-      this.onShowMessage(project)
       this.router.navigate(['/project']);
     }, error => {
       this.onShowMessage(error)
