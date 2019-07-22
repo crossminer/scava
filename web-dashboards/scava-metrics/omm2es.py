@@ -4,7 +4,7 @@
 # Get metrics from Scava and publish them in Elasticsearch
 # If the collection is a OSSMeter one add project and other fields to items
 #
-# Copyright (C) 2018 Bitergia
+# Copyright (C) 2018-2019 Bitergia
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 # Authors:
-#   Alvaro del Castillo San Felix <acs@bitergia.com>
+#   Valerio Cosentino <valcos@bitergia.com>
 #   Assad Montasser <assad.montasser@ow2.org>
 #
 
