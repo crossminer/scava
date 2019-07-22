@@ -25,6 +25,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,23 +36,34 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CROSSIndexRecommender.class);
 	
-	private static final Pattern removeCharacters = Pattern.compile("[-*'\\^&!|(){}\\[\\]\"~?:\\\\]");
-	private static final Pattern extraSpacing=Pattern.compile("\\h\\h+");
+	private final Pattern removeCharacters = Pattern.compile("[-*'\\^&!|(){}\\[\\]\"~?:\\\\]");
+	private final Pattern extraSpacing=Pattern.compile("\\h\\h+");
 	
-	@Value("${CROSSIndexRecommender.hitsCodeBasedQuery}")
+	@Value("${crossindexrecommender.hitsCodeBasedQuery}")
 	private int hitsCodeBasedQuery=20;
 	
-	@Value("${CROSSIndexRecommender.hitsNLBasedQuery}")
+	@Value("${crossindexrecommender.hitsNLBasedQuery}")
 	private int hitsNLBasedQuery=20;
 	
-	@Value("${CROSSIndexRecommender.fieldForCodeBasedQuery}")
+	@Value("${crossindexrecommender.fieldForCodeBasedQuery}")
 	private String fieldForCodeBasedQuery="plain_text";
 	
-	@Value("${CROSSIndexRecommender.fieldForNLBasedQuery}")
+	@Value("${crossindexrecommender.fieldForNLBasedQuery}")
 	private String fieldForNLBasedQuery="plain_text";
 	
-	@Value("${CROSSIndexRecommender.fieldRecommendation}")
+	@Value("${crossindexrecommender.fieldRecommendation}")
 	private String fieldRecommendation="plain_text";
+	
+	@Value("${crossindexrecommender.elasticsearch.hostname}")
+	private String hostname="elasticsearch";
+	
+	@Value("${crossindexrecommender.elasticsearch.scheme}")
+	private String scheme="https";
+	
+	@Value("${crossindexrecommender.elasticsearch.port}")
+	private int port=9200;
+	
+	private ElasticSearchClient client;
 	
 	public static void main(String[] args) {
 		CROSSIndexRecommender crossIndexRecommender=new CROSSIndexRecommender();
@@ -102,6 +114,12 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 		}
 	}
 	
+	@Autowired
+	public void setElasticSearchClient()
+	{
+		client = new ElasticSearchClient(scheme, hostname, port);
+	}
+	
 	@Override
 	public Recommendation getRecommendation(Query query) throws Exception {
 		return getRecommendation(query, "java");
@@ -136,7 +154,7 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 		try {
 			HashMap<String, Double> tokensEntropy = getEntropy(snippet, tokens);
 			String boostedQuery=makeBoostedQuery(tokensEntropy);
-			return ElasticSearchClient.queryBoostedQueryIndex(boostedQuery, fieldForCodeBasedQuery, hitsCodeBasedQuery);
+			return client.queryBoostedQueryIndex(boostedQuery, fieldForCodeBasedQuery, hitsCodeBasedQuery);
 			
 		} catch (IOException e) {
 			logger.error("There was an issue quering ElasticSearch index: ", e);
@@ -175,7 +193,7 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 		System.err.println(boostedQuery);
 		
 		try {
-			return ElasticSearchClient.queryBoostedQueryIndex(boostedQuery, fieldForNLBasedQuery, hitsNLBasedQuery);
+			return client.queryBoostedQueryIndex(boostedQuery, fieldForNLBasedQuery, hitsNLBasedQuery);
 		} catch (IOException e) {
 			logger.error("There was an issue quering ElasticSearch index: ", e);
 			return null;
