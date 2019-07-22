@@ -1,6 +1,7 @@
 package org.eclipse.scava.business.impl.crossindex.elasticsearch;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -24,13 +25,17 @@ import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 class ElasticSearchSingleton {
 
 	private static ElasticSearchSingleton singleton=null;
 	
+	@Value("${CROSSIndexRecommender.elasticsearch.hostname}")
 	private final static String hostname = "elasticsearch";
+	@Value("${CROSSIndexRecommender.elasticsearch.scheme}")
 	private final static String scheme = "https";
+	@Value("${CROSSIndexRecommender.elasticsearch.port}")
 	private final static int port = 9200;
 	
 	private static RestHighLevelClient client;
