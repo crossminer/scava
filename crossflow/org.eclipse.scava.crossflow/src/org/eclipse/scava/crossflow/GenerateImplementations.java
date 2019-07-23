@@ -56,13 +56,9 @@ public class GenerateImplementations {
 	public static final String RESOURCES_FOLDER_NAME = "resources";
 	public static final String WORKFLOW_DESCRIPTION_NAME = "experiment";
 
-	protected IEolModule module;
-	// TODO Do we need parameters?
-	//protected List<Variable> parameters = new ArrayList<>();
+	//protected IEolModule module;
 	protected Object result;
-	
 	private final String modelRelativePath;
-	String packageName;
 	private final File projectFolder;
 	protected List<Variable> parameters = new ArrayList<>();
 
@@ -80,52 +76,30 @@ public class GenerateImplementations {
 
 		EmfModel model = getModel();
 		model.setStoredOnDisposal(false);
-		
-		Resource r = model.getResource();
-		Map<String, String[]> languages = findLanguages(r);
-		// add java regardless of whether it exists in the model
-		// FIXME really?
-		if (!languages.containsKey("java")) {
-			languages.put("java", new String[]{"src", "src-gen"});
-		}
-		
-		
-		Variable resourcesFolder = new Variable();
-		resourcesFolder.setName("resourcesFolder");
-		resourcesFolder.setType(EolPrimitiveType.String);
-		resourcesFolder.setValueBruteForce(RESOURCES_FOLDER_NAME);
-		parameters.add(resourcesFolder);
-		Variable xmlFileName = new Variable();
-		xmlFileName.setName("xmlFileName");
-		xmlFileName.setType(EolPrimitiveType.String);
-		xmlFileName.setValueBruteForce(WORKFLOW_DESCRIPTION_NAME);
-		parameters.add(xmlFileName);
-		
+		Map<String, String[]> languages = findLanguages(model.getResource());
+		createParameters();
 		for (String language : languages.keySet()) {
-			module = createModule();
-			module.getContext().getModelRepository().addModel(model);
-			module.getContext().getFrameStack().put(parameters);	
-			module.parse(getFileURI(language + "/crossflow.egx"));
-			if (module.getParseProblems().size() > 0) {
-				System.err.println("Parse errors occured...");
-				for (ParseProblem problem : module.getParseProblems()) {
-					System.err.println(problem.toString());
-				}
-				throw new IllegalStateException("Error parsing generator script. See console for errors.");
-			}
-			result = execute(module);
-			// TODO What do we need to do for other languages?
-			if ("java".equals(language)) {
-				updateJavaProject();
-			}
-			module.getContext().dispose();
+			generateLanguageCode(model, language);
 		}
-		
-		// Generate XML
-		module = createModule();
+		generateDescriptor(model);
+		model.dispose();
+		return languages;
+	}
+	
+	/**
+	 * Run the EGX script that generates the code generators for the 
+	 * @param model
+	 * @param language
+	 * @throws Exception
+	 * @throws URISyntaxException
+	 * @throws EolRuntimeException
+	 */
+	private void generateLanguageCode(EmfModel model, String language)
+			throws Exception, URISyntaxException, EolRuntimeException {
+		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
 		module.getContext().getFrameStack().put(parameters);	
-		module.parse(getFileURI("general/generateDescriptor.egx"));
+		module.parse(getFileURI(language + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
 			for (ParseProblem problem : module.getParseProblems()) {
@@ -133,28 +107,42 @@ public class GenerateImplementations {
 			}
 			throw new IllegalStateException("Error parsing generator script. See console for errors.");
 		}
-		execute(module);
+		result = execute(module);
+		// TODO What do we need to do for other languages?
+		if ("java".equals(language)) {
+			updateJavaProject();
+		}
 		module.getContext().dispose();
-		
-		
-
-//		module = createModule();
-//		module.getContext().getModelRepository().addModel(model);
-//		module.parse(getFileURI("external/crossflowExternalTools.egx"));
-//
-//		if (module.getParseProblems().size() > 0) {
-//			System.err.println("Parse errors occured...");
-//			for (ParseProblem problem : module.getParseProblems()) {
-//				System.err.println(problem.toString());
-//			}
-//			return;
-//		}
-//
-//		// module.getContext().getFrameStack().put(parameters);
-//
-//		result = execute(module);
-		model.dispose();
-		return languages;
+	}
+	
+	/**
+	 * Create the parameters required by the different scripts
+	 */
+	private void createParameters() {
+		createResourcesFolderParameter();		
+		createXmlFileNameParameter();
+	}
+	
+	/**
+	 * Create a parameter for the xmlFileName value
+	 */
+	private void createXmlFileNameParameter() {
+		Variable xmlFileName = new Variable();
+		xmlFileName.setName("xmlFileName");
+		xmlFileName.setType(EolPrimitiveType.String);
+		xmlFileName.setValueBruteForce(WORKFLOW_DESCRIPTION_NAME);
+		parameters.add(xmlFileName);
+	}
+	
+	/**
+	 * Create a parameter for the resourcesFolder value
+	 */
+	private void createResourcesFolderParameter() {
+		Variable resourcesFolder = new Variable();
+		resourcesFolder.setName("resourcesFolder");
+		resourcesFolder.setType(EolPrimitiveType.String);
+		resourcesFolder.setValueBruteForce(RESOURCES_FOLDER_NAME);
+		parameters.add(resourcesFolder);
 	}
 
 	private void updateJavaProject() throws Exception {
@@ -204,6 +192,11 @@ public class GenerateImplementations {
 					);
 			}
 		}
+		// add java regardless of whether it exists in the model
+		// FIXME really?
+		if (!ret.containsKey("java")) {
+			ret.put("java", new String[]{"src", "src-gen"});
+		}
 		return ret;
 	}
 
@@ -227,7 +220,12 @@ public class GenerateImplementations {
 	}
 
 	public EmfModel getModel() throws Exception {
-		EmfModel model = createAndLoadAnEmfModel("org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation", modelRelativePath, "Model", true, false,
+		EmfModel model = createAndLoadAnEmfModel(
+				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
+				modelRelativePath,
+				"Model",
+				true,
+				false,
 				false);
 
 		return model;
@@ -311,6 +309,29 @@ public class GenerateImplementations {
 
 		}
 
+	}
+	
+	/**
+	 * Runs the EGX script that generates the workflow descriptor
+	 * @param model
+	 * @throws Exception
+	 * @throws URISyntaxException
+	 * @throws EolRuntimeException
+	 */
+	private void generateDescriptor(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
+		IEolModule module = createModule();
+		module.getContext().getModelRepository().addModel(model);
+		module.getContext().getFrameStack().put(parameters);	
+		module.parse(getFileURI("general/generateDescriptor.egx"));
+		if (module.getParseProblems().size() > 0) {
+			System.err.println("Parse errors occured...");
+			for (ParseProblem problem : module.getParseProblems()) {
+				System.err.println(problem.toString());
+			}
+			throw new IllegalStateException("Error parsing generator script. See console for errors.");
+		}
+		execute(module);
+		module.getContext().dispose();
 	}
 
 }
