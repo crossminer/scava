@@ -1,0 +1,19 @@
+<ivy-module version="2.0">
+	<info organisation="org.eclipse.scava" module="crossflow.wordcount" status="integration"/>
+	<dependencies>
+
+
+
+
+
+
+
+		<dependency org="org.renjin.cran" name="e1071" rev="1.7-1-b1"/>
+		
+		
+		
+		
+		
+	
+	</dependencies>
+</ivy-module>
