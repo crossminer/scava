@@ -33,7 +33,6 @@ import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 public class GenerateDeploymentArtifacts {
 	
 	public static final String ARTIFACTS_FOLDER_NAME = "artifacts";
-	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<>();
 
 	protected Object result;
@@ -53,8 +52,20 @@ public class GenerateDeploymentArtifacts {
 	}
 
 	public String execute() throws Exception {
-	
-		IEolContext context = (module = createModule()).getContext();
+		
+		EmfModel model = getModel();
+		model.setStoredOnDisposal(false);
+		createParameters();
+		String name = getWorkflowName(model);
+		generateExecutables(model);
+		genereateWxGraphModel(model);
+		model.dispose();
+		return name;
+	}
+
+	private void generateExecutables(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
+		IEolModule module = createModule();
+		IEolContext context = module.getContext();
 		module.parse(getFileURI("general/generateExecutables.egx"));
 		List<ParseProblem> parseProblems = module.getParseProblems();
 		if (parseProblems.size() > 0) {
@@ -64,27 +75,7 @@ public class GenerateDeploymentArtifacts {
 			}
 			throw new IllegalStateException("Generation script should not have errors. Corrupted?");
 		}
-	
-		Variable dependenciesPath = new Variable();
-		dependenciesPath.setName("dependenciesPath");
-		dependenciesPath.setType(EolPrimitiveType.String);
-		dependenciesPath.setValue(dependenciesLocation, module.getContext());
-		parameters.add(dependenciesPath);
-		
-		Variable destFolder = new Variable();
-		destFolder.setName("destFolder");
-		destFolder.setType(EolPrimitiveType.String);
-		destFolder.setValueBruteForce(ARTIFACTS_FOLDER_NAME);
-		parameters.add(destFolder);
-		
-		Variable descriptorFolder = new Variable();
-		descriptorFolder.setName("descriptorFolder");
-		descriptorFolder.setType(EolPrimitiveType.String);
-		descriptorFolder.setValueBruteForce(GenerateImplementations.RESOURCES_FOLDER_NAME);
-		parameters.add(descriptorFolder);
-
-		IModel[] modelsArr = getModels().toArray(new IModel[0]);
-		context.getModelRepository().addModels(modelsArr);
+		context.getModelRepository().addModel(model);
 		context.getFrameStack().put(parameters);
 		try {
 			result = execute(module);
@@ -93,16 +84,44 @@ public class GenerateDeploymentArtifacts {
 			// FIXME Give better info
 			throw ex;
 		}
-		String name = getWorkflowName(modelsArr[0]);
-		module.getContext().getModelRepository().dispose();
-		return name;
+		module.getContext().dispose();
 	}
 
-	protected Object execute(IEolModule module) throws EolRuntimeException {
+	private void createParameters() throws EolRuntimeException {
+		createDependenciesPathParameter();
+		createDestinationFolderParameter();
+		createDescriptorFolderParameter();
+	}
+
+	private void createDescriptorFolderParameter() {
+		Variable descriptorFolder = new Variable();
+		descriptorFolder.setName("descriptorFolder");
+		descriptorFolder.setType(EolPrimitiveType.String);
+		descriptorFolder.setValueBruteForce(GenerateImplementations.RESOURCES_FOLDER_NAME);
+		parameters.add(descriptorFolder);
+	}
+
+	private void createDestinationFolderParameter() {
+		Variable destFolder = new Variable();
+		destFolder.setName("destFolder");
+		destFolder.setType(EolPrimitiveType.String);
+		destFolder.setValueBruteForce(ARTIFACTS_FOLDER_NAME);
+		parameters.add(destFolder);
+	}
+
+	private void createDependenciesPathParameter() throws EolRuntimeException {
+		Variable dependenciesPath = new Variable();
+		dependenciesPath.setName("dependenciesPath");
+		dependenciesPath.setType(EolPrimitiveType.String);
+		dependenciesPath.setValueBruteForce(dependenciesLocation);
+		parameters.add(dependenciesPath);
+	}
+
+	private Object execute(IEolModule module) throws EolRuntimeException {
 		return module.execute();
 	}
 
-	protected URI getFileURI(String fileName) throws URISyntaxException {
+	private URI getFileURI(String fileName) throws URISyntaxException {
 
 		URI binUri = GenerateDeploymentArtifacts.class.getResource(fileName).toURI();
 		URI uri = null;
@@ -116,7 +135,7 @@ public class GenerateDeploymentArtifacts {
 		return uri;
 	}
 
-	public IEolModule createModule() {
+	private IEolModule createModule() {
 		try {
 			EglFileGeneratingTemplateFactory templateFactory = new EglFileGeneratingTemplateFactory();
 			templateFactory.setOutputRoot(new File(projectLocation).getAbsolutePath());
@@ -125,12 +144,20 @@ public class GenerateDeploymentArtifacts {
 			throw new RuntimeException(ex);
 		}
 	}
+	
+	private EmfModel getModel() throws Exception {
+		return createAndLoadAnEmfModel(
+				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
+				modelRelativePath,
+				"Model",
+				true,
+				false,
+				false);
+	}
 
-	public List<IModel> getModels() throws Exception {
+	private List<IModel> getModels() throws Exception {
 		List<IModel> models = new ArrayList<>();
-		models.add(
-				createAndLoadAnEmfModel("org.eclipse.scava.crossflow", modelRelativePath, "Model", true, false, false));
-
+		models.add(getModel());
 		return models;
 	}
 
@@ -160,5 +187,29 @@ public class GenerateDeploymentArtifacts {
 		} catch (EolRuntimeException e) {
 			throw new IllegalStateException(e);
 		}
+	}
+	
+	/**
+	 * Runs the EGX script that genreates the model.json that describes the workflow diagram
+	 * @param model
+	 * @throws Exception
+	 * @throws URISyntaxException
+	 * @throws EolRuntimeException
+	 */
+	private void genereateWxGraphModel(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
+		IEolModule module = createModule();
+		module.getContext().getModelRepository().addModel(model);
+		module.getContext().getFrameStack().put(parameters);	
+		
+		module.parse(getFileURI("external/crossflowExternalTools.egx"));
+		if (module.getParseProblems().size() > 0) {
+			System.err.println("Parse errors occured...");
+			for (ParseProblem problem : module.getParseProblems()) {
+				System.err.println(problem.toString());
+			}
+			throw new IllegalStateException("Error parsing generator script. See console for errors.");
+		}
+	
+		result = execute(module);
 	}
 }
