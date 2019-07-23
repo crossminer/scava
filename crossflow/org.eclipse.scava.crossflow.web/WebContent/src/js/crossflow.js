@@ -3,7 +3,7 @@
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
  *     Konstantinos Barmpis - adaption for CROSSFLOW
@@ -29,12 +29,12 @@
 	 loadStencils();
 	 let vertexMap = new Map();
 	 for( var i = 0; i < model.vertices.length; i++ ) {
-         var v = model.vertices[ i ];
+		 const v = model.vertices[i];
 		 console.log("vertex ", v);
 		 console.log("type", v.type);
 		 switch(v.type) {
 		 case "Task":
-			 vertexMap.set(v.label, createTaskVertex(graph, parent, v.label, v.x, v.y, v.width, v.height)); 
+			 vertexMap.set(v.label, createTaskVertex(graph, parent, v.label, v.x, v.y, v.width, v.height));
 			 break;
 		 case "Queue":
 			 vertexMap.set(v.label, createQueueVertex(graph, parent, v.label, v.x, v.y, v.width, v.height));
@@ -49,14 +49,14 @@
 	 }
 	 console.log( "readModel " + model.edges);
 	 for (var i = 0; i < model.edges.length; i++ ) {
-		 var e = model.edges[i];
+		 const e = model.edges[i];
 		 // Remove if once we have all vertices!!!
 		 if (vertexMap.has(e.source) && vertexMap.has(e.target)) {
-		 var ge = graph.insertEdge(parent, null, '',
+			 const ge = graph.insertEdge(parent, null, '',
 				 vertexMap.get(e.source),
 				 vertexMap.get(e.target),
 				 "strokeColor=black;" + "endArrow=" + e.endArrow + ";");
-		 console.log("edge ", ge.style);
+			 console.log("edge ", ge.style);
 		 }
 	 }
  }
@@ -64,9 +64,9 @@
 /**
  * Create a Task Vertex.
  * The vertex's id is "task_" + label
- * 
+ *
  * @param graph						the graph that will contain the vertex
- * @param parent					mxCell that specifies the parent of the new vertex.			
+ * @param parent					mxCell that specifies the parent of the new vertex.
  * @param label						the label to use for the vertex
  * @param x							integer that defines the x coordinate of the vertex.
  * @param y							integer that defines the y coordinate of the vertex.
@@ -75,18 +75,18 @@
  * @returns the new vertex
  */
 function createTaskVertex(graph, parent, label, x, y, width, height) {
-	var id = 'task_' + label;
-	console.log("createTaskVertex " + label);
-	var v = createVertex(
-				graph,
-				parent,
-				id,
-				label,
-				x,
-				y,
-				width,
-				height,
-				'shape=Task;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
+	const id = 'task_' + label;
+	console.log("createTaskVertex " + id);
+	const v = createVertex(
+		graph,
+		parent,
+		id,
+		label,
+		x,
+		y,
+		width,
+		height,
+		'shape=Task;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
 		console.log("Autosize");
 		graph.autoSizeCell(v, true);
@@ -98,9 +98,9 @@ function createTaskVertex(graph, parent, label, x, y, width, height) {
 /**
  * Create a Queue Vertex.
  * The vertex's id is "stream_" + label
- * 
+ *
  * @param graph						the graph that will contain the vertex
- * @param parent					mxCell that specifies the parent of the new vertex.			
+ * @param parent					mxCell that specifies the parent of the new vertex.
  * @param label						the label to use for the vertex
  * @param x							integer that defines the x coordinate of the vertex.
  * @param y							integer that defines the y coordinate of the vertex.
@@ -109,19 +109,19 @@ function createTaskVertex(graph, parent, label, x, y, width, height) {
  * @returns the new vertex
  */
 function createQueueVertex(graph, parent, label, x, y, width, height) {
-	var id = 'stream_' + name;
-	var trail = " ".repeat(label.length/4);
-	console.log("createQueueVertex " + label);
-	var v = createVertex(
-			graph,
-			parent,
-			id,
-			label + trail,
-			x,
-			y,
-			width,
-			height,
-			'shape=Direct Data;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
+	const id = 'stream_' + label;
+	const trail = " ".repeat(label.length / 4);
+	console.log("createQueueVertex "+ id);
+	const v = createVertex(
+		graph,
+		parent,
+		id,
+		label + trail,
+		x,
+		y,
+		width,
+		height,
+		'shape=Direct Data;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
 		console.log("Autosize");
 		graph.autoSizeCell(v, true);
@@ -139,9 +139,9 @@ function createQueueVertex(graph, parent, label, x, y, width, height) {
 /**
  * Create a Source Vertex.
  * The vertex's id is "source_" + label
- * 
+ *
  * @param graph						the graph that will contain the vertex
- * @param parent					mxCell that specifies the parent of the new vertex.			
+ * @param parent					mxCell that specifies the parent of the new vertex.
  * @param label						the label to use for the vertex
  * @param x							integer that defines the x coordinate of the vertex.
  * @param y							integer that defines the y coordinate of the vertex.
@@ -150,18 +150,18 @@ function createQueueVertex(graph, parent, label, x, y, width, height) {
  * @returns the new vertex
  */
 function createSourceVertex(graph, parent, label, x, y, width, height) {
-	var id = 'source_' + label;
-	console.log("createSourceVertex " + label);
-	var v = createVertex(
-				graph,
-				parent,
-				id,
-				label,
-				x,
-				y,
-				width,
-				height,
-				'shape=Source;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
+	const id = 'source_' + label;
+	console.log("createSourceVertex "+ id);
+	const v = createVertex(
+		graph,
+		parent,
+		id,
+		label,
+		x,
+		y,
+		width,
+		height,
+		'shape=Source;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
 		console.log("Autosize");
 		graph.autoSizeCell(v, true);
@@ -173,9 +173,9 @@ function createSourceVertex(graph, parent, label, x, y, width, height) {
 /**
  * Create a Sink Vertex.
  * The vertex's id is "source_" + label
- * 
+ *
  * @param graph						the graph that will contain the vertex
- * @param parent					mxCell that specifies the parent of the new vertex.			
+ * @param parent					mxCell that specifies the parent of the new vertex.
  * @param label						the label to use for the vertex
  * @param x							integer that defines the x coordinate of the vertex.
  * @param y							integer that defines the y coordinate of the vertex.
@@ -184,18 +184,18 @@ function createSourceVertex(graph, parent, label, x, y, width, height) {
  * @returns the new vertex
  */
 function createSinkVertex(graph, parent, label, x, y, width, height) {
-	var id = 'sink' + label;
-	console.log("createSinkVertex " + label);
-	var v = createVertex(
-				graph,
-				parent,
-				id,
-				label,
-				x,
-				y,
-				width,
-				height,
-				'shape=Sink;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
+	const id = 'sink_' + label;
+	console.log("createSinkVertex "+ id);
+	const v = createVertex(
+		graph,
+		parent,
+		id,
+		label,
+		x,
+		y,
+		width,
+		height,
+		'shape=Sink;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
 		console.log("Autosize");
 		graph.autoSizeCell(v, true);
@@ -207,7 +207,7 @@ function createSinkVertex(graph, parent, label, x, y, width, height) {
 /**
  * Create  Vertex
  * @param graph						the graph that will contain the vertex
- * @param parent					mxCell that specifies the parent of the new vertex.			
+ * @param parent					mxCell that specifies the parent of the new vertex.
  * @param id						the vertex id
  * @param value						the label to use for the vertex
  * @param x							integer that defines the x coordinate of the vertex.
@@ -217,8 +217,8 @@ function createSinkVertex(graph, parent, label, x, y, width, height) {
  * @returns
  */
 function createVertex(graph, parent, id, value, x, y, width, height, style) {
-	var v = graph.insertVertex(parent, id, value, x, y, width, height);
-    graph.model.setStyle(v, style);
+	const v = graph.insertVertex(parent, id, value, x, y, width, height);
+	graph.model.setStyle(v, style);
     console.log("Applied style "  + v.style);
 	return v;
 }
@@ -243,9 +243,9 @@ function link(source, target, graph, parent) {
  */
 function loadStencils() {
 	console.log("loadStencils");
-	var req = mxUtils.load('src/js/flowchart.xml');
-	var root = req.getDocumentElement();
-	var shape = root.firstChild;
+	const req = mxUtils.load('src/js/flowchart.xml');
+	const root = req.getDocumentElement();
+	let shape = root.firstChild;
 	while (shape != null)
 	{
 		if (shape.nodeType == mxConstants.NODETYPE_ELEMENT)
@@ -269,13 +269,13 @@ TaskShape.prototype.paintVertexShape = function(c, x, y, w, h)
 {
 	// To make a round corner rectangle we need 8 points ?_min/_max represent the x and y
 	// coordinates with the nip removed to allocate the round corner
-	var nip = 0.05*w;
-	var x_min = x + nip;
-	var x_max = x + w - nip;
-	var y_min = y + nip;
-	var y_max = y + h - nip;
-	
-    c.begin();
+	const nip = 0.05 * w;
+	const x_min = x + nip;
+	const x_max = x + w - nip;
+	const y_min = y + nip;
+	const y_max = y + h - nip;
+
+	c.begin();
     c.moveTo(x_min, y);
     c.lineTo(x_max, y);
     c.moveTo(x_max, y);
