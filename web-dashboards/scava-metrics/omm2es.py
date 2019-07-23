@@ -41,6 +41,9 @@ from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 DEFAULT_BULK_SIZE = 100
 DEFAULT_WAIT_TIME = 10
 
+METRIC_VALUE = 'omm_score'
+METRIC_ID = 'omm_section'
+
 
 def get_params():
     parser = argparse.ArgumentParser(usage="usage: omm2es [options]",
@@ -50,7 +53,6 @@ def get_params():
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
     parser.add_argument("-u", "--uri", help="URI for Omm form")
-    parser.add_argument("-p", "--project", help="Project name")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -133,7 +135,7 @@ def __init_index(elastic_url, index, wait_time):
     return elastic
 
 
-def enrich_metrics(omm_metrics, project):
+def enrich_metrics(omm_metrics):
     """
     Enrich metrics coming from Ommto use them in Kibana
 
@@ -149,7 +151,8 @@ def enrich_metrics(omm_metrics, project):
         omm_data = omm_metric['data']
 
         try:
-            metric_value = omm_data.get('value', None)
+            metric_value = omm_data.get(METRIC_VALUE, None)
+            metric_value = metric_value.replace(',', '.')
             if metric_value:
                 float(metric_value)
         except:
@@ -161,12 +164,12 @@ def enrich_metrics(omm_metrics, project):
             enriched_skipped += 1
 
         eitem = {
-            'project': project,
+            'project': omm_data['scava_project_name'],
             'metric_class': 'omm',
             'metric_type': omm_metric['backend_name'],
-            'metric_id': omm_data['metric'],
-            'metric_desc': omm_data['metric'],
-            'metric_name':  omm_data['metric'],
+            'metric_id': 'omm_{}'.format(omm_data[METRIC_ID]),
+            'metric_desc': omm_data[METRIC_ID],
+            'metric_name':  omm_data[METRIC_ID],
             'metric_es_value': metric_value,
             'metric_es_compute': 'sample',
             'metric_value': metric_value,
@@ -183,16 +186,16 @@ def enrich_metrics(omm_metrics, project):
     logging.info(msg)
 
 
-def fetch_omm(uri, project):
+def fetch_omm(uri):
     """Fetch the metrics from OMM"""
 
     omm_backend = Omm(uri)
 
-    for enriched_metric in enrich_metrics(omm_backend.fetch(), project):
+    for enriched_metric in enrich_metrics(omm_backend.fetch()):
 
         yield enriched_metric
 
-    msg = "OMM data fetched from {} for {}".format(uri, project)
+    msg = "OMM data fetched from {}".format(uri)
     logging.debug(msg)
 
 
@@ -211,7 +214,7 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    omm_metrics = fetch_omm(ARGS.uri, ARGS.project)
+    omm_metrics = fetch_omm(ARGS.uri)
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
