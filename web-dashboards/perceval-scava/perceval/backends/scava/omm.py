@@ -34,9 +34,9 @@ from ...client import HttpClient
 
 CATEGORY_ENTRY = "ow2-omm"
 SEPARATOR = ','
-CSV_HEADER = 'metric,value'
+CSV_HEADER = 'omm_section,omm_score,scava_project_name,ow2_project_name'
 SKIP_HEADER = True
-ID_COLUMNS = 'metric,value'
+ID_COLUMNS = 'omm_section,scava_project_name,ow2_project_name'
 
 logger = logging.getLogger(__name__)
 
