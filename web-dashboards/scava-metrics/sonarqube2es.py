@@ -201,6 +201,7 @@ def enrich_metrics(sonar_metrics):
 
 def load_components(url):
 
+    logging.info("Fetching components from %s", url)
     raw_mappings = requests.get(url)
     mappings = json.loads(raw_mappings.text)
 
