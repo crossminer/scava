@@ -1,3 +1,5 @@
+import "../util.eol";
+
 rule Workflow2AbstractGraph 
 	transform w : Workflow {
 	
@@ -5,20 +7,5 @@ rule Workflow2AbstractGraph
 	
 	template : "crossflow2json.egl"
 	
-	target : "experiment/model.json"
-}
-
-operation Workflow getPackageName() {
-	var lang = self.languages.select(l|l.isJava());
-	var langExists = not lang.isEmpty;
-
-	var package = self.name.ftlc;
-	
-	if(langExists) package = lang.first.package;
-	
-	return package;
-}
-
-operation Language isJava() : Boolean {
-	return self.name.toLowerCase()=="java";
+	target : destFolder + "/model.json"
 }

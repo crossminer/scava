@@ -9,10 +9,6 @@ var edges = Sequence;
 [%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
     [%=stream.createVertex()%][%if(hasMore){%],
 [%}}%]
-[%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
-    [%=stream.createVertex()%][%if(hasMore){%],
-[%}%]
-[%}%]
   ],
   "edges": [
 [%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]

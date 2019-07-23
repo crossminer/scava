@@ -1,4 +1,4 @@
-import "helper.eol";
+import "../util.eol";
 
 rule Workflow2ExperimentAnt
 	transform w : Workflow {

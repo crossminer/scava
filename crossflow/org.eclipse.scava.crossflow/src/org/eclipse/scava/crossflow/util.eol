@@ -24,3 +24,19 @@ operation Any getWorkflow() : Workflow {
 operation String toSnakeCase() : String {
 	return self.replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase();
 }
+
+operation Workflow getPackageName() {
+    var lang = self.languages.select(l | l.isJava());
+    var package;
+    if (not lang.isEmpty) {
+        package = lang.first.package;
+    }
+    else {
+        package = self.name.ftlc;
+    }
+    return package;
+}
+
+operation Language isJava() {
+    return self.name.toLowerCase() == "java";
+}
