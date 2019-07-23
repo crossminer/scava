@@ -90,12 +90,12 @@ public class GenerateDeploymentArtifacts {
 	private void createParameters() throws EolRuntimeException {
 		createDependenciesPathParameter();
 		createDestinationFolderParameter();
-		createDescriptorFolderParameter();
+		createResourcesFolderParameter();
 	}
 
-	private void createDescriptorFolderParameter() {
+	private void createResourcesFolderParameter() {
 		Variable descriptorFolder = new Variable();
-		descriptorFolder.setName("descriptorFolder");
+		descriptorFolder.setName("resourcesFolder");
 		descriptorFolder.setType(EolPrimitiveType.String);
 		descriptorFolder.setValueBruteForce(GenerateImplementations.RESOURCES_FOLDER_NAME);
 		parameters.add(descriptorFolder);

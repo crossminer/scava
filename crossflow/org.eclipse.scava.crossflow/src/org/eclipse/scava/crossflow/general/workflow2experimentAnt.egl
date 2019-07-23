@@ -6,7 +6,7 @@
 %]
     <!-- Copy the descriptor and input files to the artifacts folder -->
     <copy todir="[%=destFolder%]" >  
-        <fileset dir="[%=descriptorFolder%]"/>  
+        <fileset dir="[%=resourcesFolder%]"/>  
     </copy> 
     	
    	<!-- Running this will create a JAR of this project in the [%=destFolder%] directory -->

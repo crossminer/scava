@@ -7,7 +7,7 @@ rule Workflow2ExperimentAnt
 	   "package" = w.getPackageName(),
 	   "dependenciesPath" = dependenciesPath,
 	   "destFolder" = destFolder,
-	   "descriptorFolder" = descriptorFolder}
+	   "resourcesFolder" = resourcesFolder}
 	
 	template : "workflow2experimentAnt.egl"
 	

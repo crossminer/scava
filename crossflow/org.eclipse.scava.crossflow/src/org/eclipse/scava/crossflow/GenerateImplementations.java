@@ -74,16 +74,39 @@ public class GenerateImplementations {
 
 	public Map<String, String[]> run() throws Exception {
 
-		EmfModel model = getModel();
+		final EmfModel model = getModel();
 		model.setStoredOnDisposal(false);
-		Map<String, String[]> languages = findLanguages(model.getResource());
+		final Map<String, String[]> languages =  findLanguages(model);
 		createParameters();
 		for (String language : languages.keySet()) {
 			generateLanguageCode(model, language);
 		}
+		final Map<String, String[]> scriptLanguages =  findScriptingLanguages(model);
+		languages.putAll(scriptLanguages);
+		for (String language : scriptLanguages.keySet()) {
+			generateScriptLanguageCode(model, language);
+		}
 		generateDescriptor(model);
 		model.dispose();
 		return languages;
+	}
+
+	private void generateScriptLanguageCode(final EmfModel model, String language)
+			throws Exception, URISyntaxException, EolRuntimeException {
+		IEolModule module = createModule();
+		module.getContext().getModelRepository().addModel(model);
+		module.parse(getFileURI("scripting/"+language + "/crossflow.egx"));
+		if (module.getParseProblems().size() > 0) {
+			System.err.println("Parse errors occured...");
+			for (ParseProblem problem : module.getParseProblems()) {
+				System.err.println(problem.toString());
+			}
+			throw new IllegalStateException("Error parsing generator script. See console for errors.");
+		}
+
+		module.getContext().getFrameStack().put(parameters);
+
+		result = execute(module);
 	}
 	
 	/**
@@ -160,16 +183,16 @@ public class GenerateImplementations {
 	}
 
 	/**
-	 * Located the target languages in the model.
-	 * <p>
-	 * Finds all instances of type Language and then queries for the name and output folder.
-	 * @param r
-	 * @return
+	 * Find any languages used and add them to the languages information.
+	 * 
+	 * @param model				the crossflow model
+	 * @param languages			the languages information
 	 */
     // FIXME Languages should be an enumeration at the meta-metamodel level so we can control
     // what languages we support and is less error prone
-	private Map<String, String[]> findLanguages(Resource r) {
-
+	private Map<String, String[]> findLanguages(EmfModel model) {
+		final Map<String, String[]> languages = new HashMap<String, String[]>();
+		Resource r = model.getResource();
 		EClass languageClass = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("Language");
 		EAttribute nameAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("name"))
 				.findFirst().get();
@@ -177,16 +200,13 @@ public class GenerateImplementations {
 				.findFirst().get();
 		EAttribute genOutfolderAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("genOutputFolder"))
 				.findFirst().get();
-
-		Map<String, String[]> ret = new HashMap<>();
-
 		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
 			EObject o;
 			if ((o = it.next()).eClass().equals(languageClass)) {
 				String[] value = new String[2];
 				value[0] = ((String) o.eGet(outfolderAttr)).toLowerCase();
 				value[1] = ((String) o.eGet(genOutfolderAttr)).toLowerCase();
-				ret.put(
+				languages.put(
 					((String) o.eGet(nameAttr)).toLowerCase(),
 					value
 					);
@@ -194,11 +214,34 @@ public class GenerateImplementations {
 		}
 		// add java regardless of whether it exists in the model
 		// FIXME really?
-		if (!ret.containsKey("java")) {
-			ret.put("java", new String[]{"src", "src-gen"});
+		if (!languages.containsKey("java")) {
+			languages.put("java", new String[]{"src", "src-gen"});
 		}
-		return ret;
+		return languages;
 	}
+	
+	/**
+	 * Find any scripting languages used and add them to the languages information.
+	 * 
+	 * @param model				the crossflow model
+	 * @param languages			the languages information
+	 */
+	private Map<String, String[]> findScriptingLanguages(EmfModel model) {
+		final Map<String, String[]> languages = new HashMap<String, String[]>();
+		Resource r = model.getResource();
+		EClass scriptingTask = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("ScriptedTask");
+		EAttribute scriptingLanguage = scriptingTask.getEAllAttributes().stream()
+				.filter(a -> a.getName().equals("scriptingLanguage")).findFirst().get();
+		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
+			EObject o;
+			String language;
+			if ((o = it.next()).eClass().equals(scriptingTask))
+				if (o.eIsSet(scriptingLanguage) && (language = (String) o.eGet(scriptingLanguage)).trim().length() > 0)
+					languages.put(language, new String[]{"src", "src-gen"});
+		}
+		return languages;
+	}
+	
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {
 		return module.execute();

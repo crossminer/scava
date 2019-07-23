@@ -1,4 +1,4 @@
-import "../../java/utils.egx";
+import "../../util.eol";
 
 rule RTask2ImplClass
 	transform t : ScriptedTask {
