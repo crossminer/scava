@@ -33,48 +33,53 @@ public class CrossflowHandler implements Crossflow.Iface {
 
 	protected BrokerService brokerService;
 	protected CrossflowServlet servlet;
-	
+
 	public CrossflowHandler(CrossflowServlet servlet) {
 		this.servlet = servlet;
 	}
-	
+
 	protected ClassLoader getClassLoader() throws Exception {
 		return Thread.currentThread().getContextClassLoader();
 	}
-	
+
 	@Override
 	public String startExperiment(String experimentId, boolean worker) throws TException {
 		Experiment experiment = getExperiment(experimentId);
 		ExperimentRegistry.addExperiment(experiment);
 		try {
-			
+
 			if (!isBrokerRunning()) {
 				startBroker();
 			}
-			
+
 			Mode mode = Mode.MASTER;
-			if (!worker) mode = Mode.MASTER_BARE;
-			
-			ClassLoader classLoader = new URLClassLoader(new URL[] {
-					new File(servlet.getServletContext().getRealPath("jars/" + experiment.getJar())).toURI().toURL()}, 
+			if (!worker)
+				mode = Mode.MASTER_BARE;
+
+			ClassLoader classLoader = new URLClassLoader(
+					new URL[] { new File(servlet.getServletContext()
+							.getRealPath("experiments/" + experimentId + "/" + experiment.getJar())).toURI().toURL() },
 					Thread.currentThread().getContextClassLoader());
-			
-			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName()).getConstructor(Mode.class).newInstance(mode);
+
+			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
+					.getConstructor(Mode.class, ClassLoader.class).newInstance(mode,classLoader);
+
 			workflow.setInstanceId(experimentId);
-			workflow.getSerializer().setClassloader(classLoader);
 			workflow.createBroker(false);
 			File cacheDir = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"));
 			cacheDir.mkdirs();
 			workflow.setCache(new DirectoryCache(cacheDir));
-			workflow.setInputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));
-			workflow.setOutputDirectory(new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
-			
+			workflow.setInputDirectory(new File(servlet.getServletContext()
+					.getRealPath("experiments/" + experimentId + "/" + experiment.getInputDirectory())));
+			workflow.setOutputDirectory(new File(servlet.getServletContext()
+					.getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
+
 			workflow.run();
 			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " started.");
-			
+
 			// add new workflow to registry
 			ExperimentRegistry.addWorkflow(workflow, experimentId);
-			
+
 			// remove workflow from registry after termination
 			new Thread(new Runnable() {
 				@Override
@@ -83,14 +88,14 @@ public class CrossflowHandler implements Crossflow.Iface {
 					ExperimentRegistry.removeWorkflow(experimentId);
 				}
 			}).start();
-			
+
 			return workflow.getInstanceId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TException(e);
 		}
 	}
-	
+
 	@Override
 	public void stopExperiment(String experimentId) throws TException {
 		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
@@ -99,31 +104,30 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.terminate();
 		}
 	}
-	
+
 	@Override
 	public boolean isExperimentRunning(String experimentId) throws TException {
 		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
 		if (workflow != null) {
 			return workflow.hasTerminated();
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public Experiment getExperiment(String experimentId) throws TException {
 		Experiment experiment = null;
 		try {
-			experiment = getExperiments().stream().filter(e -> e.getId().equals(experimentId)).
-				collect(Collectors.toList()).iterator().next();
+			experiment = getExperiments().stream().filter(e -> e.getId().equals(experimentId))
+					.collect(Collectors.toList()).iterator().next();
 		} catch (Exception e) {
 			System.err.println("Experiment with id '" + experimentId + "' does not exist.");
 			return experiment;
 		}
 		return experiment;
 	}
-	
+
 	@Override
 	public List<Experiment> getExperiments() throws TException {
 		File experimentsDirectory = new File(servlet.getServletContext().getRealPath("experiments"));
@@ -138,15 +142,16 @@ public class CrossflowHandler implements Crossflow.Iface {
 		}
 		return Collections.emptyList();
 	}
-	
+
 	@Override
 	public void resetExperiment(String experimentId) throws TException {
-		
+
 		Experiment experiment = getExperiment(experimentId);
 		System.out.println(experiment.getOutputDirectory() == null);
-		
+
 		if (experiment.getOutputDirectory() != null) {
-			File output = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory()));
+			File output = new File(servlet.getServletContext()
+					.getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory()));
 			if (output != null && output.exists()) {
 				delete(output);
 			}
@@ -155,24 +160,25 @@ public class CrossflowHandler implements Crossflow.Iface {
 		if (cache != null && cache.exists()) {
 			delete(cache);
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean clearQueueCache(String experimentId, String queueName) throws TException {
-		Workflow w = ExperimentRegistry.getWorkflow(experimentId);	
-		if ( w != null ) {
-			System.err.println("Failed to clear queue. Unable to clear queue from running workflow with experimentId \'" + experimentId + "\'. Has this experiment been stopped yet?");
+		Workflow w = ExperimentRegistry.getWorkflow(experimentId);
+		if (w != null) {
+			System.err.println("Failed to clear queue. Unable to clear queue from running workflow with experimentId \'"
+					+ experimentId + "\'. Has this experiment been stopped yet?");
 			return false;
 		} else {
 			Cache cache = ExperimentRegistry.getCache(experimentId);
-			if ( cache != null ) {
-				cache.	clear(queueName);
+			if (cache != null) {
+				cache.clear(queueName);
 			}
 			return true;
 		}
 	}// clearQueueCache
-	
+
 	public void delete(File file) {
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
@@ -181,43 +187,44 @@ public class CrossflowHandler implements Crossflow.Iface {
 		}
 		file.delete();
 	}
-	
+
 	@Override
 	public Table getContent(FileDescriptor fileDescriptor) throws TException {
-		
-		File file = new File(servlet.getServletContext().getRealPath("experiments/" + fileDescriptor.getExperimentId() + "/" + fileDescriptor.getPath()));
-		if (!file.exists()) return new Table();
-		
+
+		File file = new File(servlet.getServletContext()
+				.getRealPath("experiments/" + fileDescriptor.getExperimentId() + "/" + fileDescriptor.getPath()));
+		if (!file.exists())
+			return new Table();
+
 		try {
 			Table table = new Table();
 			boolean header = true;
 			FileReader fileReader = new FileReader(file);
 			for (CSVRecord record : CSVFormat.RFC4180.parse(fileReader)) {
 				Row row = new Row();
-				for (int i=0;i<record.size();i++) {
+				for (int i = 0; i < record.size(); i++) {
 					row.addToCells(record.get(i));
 				}
 				if (header) {
 					table.setHeader(row);
 					header = false;
-				}
-				else {
+				} else {
 					table.addToRows(row);
 				}
 			}
 			fileReader.close();
 			return table;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new TException(ex);
 		}
-		
+
 	}
-	
+
 	protected Experiment getExperiment(File experimentDirectory) throws TException {
 		try {
 			File config = new File(experimentDirectory, "experiment.xml");
-			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new FileInputStream(config));
+			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+					.parse(new FileInputStream(config));
 			Element experimentElement = document.getDocumentElement();
 			Experiment experiment = new Experiment();
 			experiment.setId(experimentDirectory.getName());
@@ -231,7 +238,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			if (experiment.getOutputDirectory() != null) {
 				experiment.setExecuted(new File(experimentDirectory, experiment.getOutputDirectory()).exists());
 			}
-			
+
 			for (Element descriptionElement : toElementList(experimentElement.getElementsByTagName("description"))) {
 				experiment.setDescription(descriptionElement.getTextContent());
 			}
@@ -242,7 +249,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 				fileDescriptor.setInput(true);
 				experiment.addToFileDescriptors(fileDescriptor);
 			}
-			
+
 			for (Element outputElement : toElementList(experimentElement.getElementsByTagName("output"))) {
 				FileDescriptor fileDescriptor = elementToFileDescriptor(outputElement);
 				fileDescriptor.setExperimentId(experiment.getId());
@@ -253,23 +260,22 @@ public class CrossflowHandler implements Crossflow.Iface {
 			Workflow workflow = ExperimentRegistry.getWorkflow(experiment.getId());
 			if (workflow != null && !workflow.hasTerminated()) {
 				experiment.status = "running";
-			}
-			else {
+			} else {
 				experiment.status = "stopped";
 			}
-			
+
 			return experiment;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new TException(ex);
 		}
 	}
 
 	@Override
 	public void startBroker() throws TException {
-		
-		if (isBrokerRunning()) return;
-		
+
+		if (isBrokerRunning())
+			return;
+
 		try {
 			brokerService = new BrokerService();
 			brokerService.setUseJmx(true);
@@ -277,8 +283,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			brokerService.addConnector("stomp://localhost:61613");
 			brokerService.addConnector("ws://localhost:61614");
 			brokerService.start();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new TException(ex);
 		}
 	}
@@ -290,29 +295,29 @@ public class CrossflowHandler implements Crossflow.Iface {
 				brokerService.deleteAllMessages();
 				brokerService.stopGracefully("", "", 1000, 1000);
 			} catch (Exception ex) {
-				throw new TException(ex); 
+				throw new TException(ex);
 			}
 			brokerService = null;
 		}
 	}
-	
+
 	@Override
 	public boolean isBrokerRunning() throws TException {
-		if ( !available("localhost", 61616) ) {
+		if (!available("localhost", 61616)) {
 			return true; // port already used, broker is already running
-		} 
+		}
 		// port not used, broker not running
 		return false;
 	}
-	
+
 	private static boolean available(String host, int port) {
-	    try (Socket ignored = new Socket(host, port)) {
-	        return false;
-	    } catch (IOException ignored) {
-	        return true;
-	    }
+		try (Socket ignored = new Socket(host, port)) {
+			return false;
+		} catch (IOException ignored) {
+			return true;
+		}
 	}
-	
+
 	@Override
 	public Diagnostics getDiagnostics() throws TException {
 		Diagnostics diagnostics = new Diagnostics();
@@ -320,23 +325,24 @@ public class CrossflowHandler implements Crossflow.Iface {
 		diagnostics.setRootDirectory(servlet.getServletContext().getRealPath(""));
 		return diagnostics;
 	}
-	
+
 	protected ArrayList<Element> toElementList(NodeList nodeList) {
 		ArrayList<Element> list = new ArrayList<Element>();
-		for (int i=0;i<nodeList.getLength();i++) {
-			list.add((Element)nodeList.item(i));
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			list.add((Element) nodeList.item(i));
 		}
 		return list;
 	}
-	
+
 	protected FileDescriptor elementToFileDescriptor(Element element) {
 		FileDescriptor fileDescriptor = new FileDescriptor();
 		fileDescriptor.setTitle(element.getAttribute("title"));
 		Element parentElem = (Element) element.getParentNode();
-		if ( parentElem.getAttribute(element.getNodeName()) != null ) {
-			fileDescriptor.setPath(Paths.get(parentElem.getAttribute(element.getNodeName()), element.getAttribute("path")).toString());			
+		if (parentElem.getAttribute(element.getNodeName()) != null) {
+			fileDescriptor.setPath(
+					Paths.get(parentElem.getAttribute(element.getNodeName()), element.getAttribute("path")).toString());
 		} else {
-			fileDescriptor.setPath(element.getAttribute("path"));			
+			fileDescriptor.setPath(element.getAttribute("path"));
 		}
 		return fileDescriptor;
 	}

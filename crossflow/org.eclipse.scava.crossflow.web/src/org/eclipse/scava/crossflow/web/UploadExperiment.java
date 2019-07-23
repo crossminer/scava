@@ -84,29 +84,9 @@ public class UploadExperiment extends HttpServlet {
 						Paths.get(experimentPath.toString(), inPath, "/"));
 				Files.deleteIfExists(Paths.get(experimentPath + "/in.zip"));
 
-				// move experment jar to web app container lib directory
-				File experimentJarFile = new File(experimentJarPath.toString() + "/" + jarName);
-				Files.copy(Paths.get(experimentPath.toString(), jarName), experimentJarFile.toPath(),
-						StandardCopyOption.REPLACE_EXISTING);
-
-				// move all dependency jars into the same location as well for dep resolution
-				File depRoot = new File(experimentPath.toString() + "/lib/");
-				//System.out.println(depRoot);
-				for (File dep : depRoot.listFiles()) {
-					//System.out.println(dep.toPath());
-					//System.out.println(new File(experimentJarPath.toString() + "/" + dep.getName()).toPath());
-					Files.copy(dep.toPath(), new File(experimentJarPath.toString() + "/" + dep.getName()).toPath(),
-							StandardCopyOption.REPLACE_EXISTING);
-				}
-
-				// TODO block execution of code until tomcat picks up these dependencies (such
-				// as then upload and run is called)
-				// one way would be to use the classloader to find these classes -- not very
-				// performant
-
 			} catch (IOException e) {
 				System.err.println(
-						"Failed to upload experiment. A jar file is currently locked, please shut down and clean the server, then re-upload the new version.");
+						"Failed to upload experiment. The uploaded jar is currently locked, please shut down and clean the server, then re-upload the new version.");
 				System.err.println(e.getMessage());
 				//e.printStackTrace();
 			}
