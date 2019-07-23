@@ -36,7 +36,7 @@
          </action>
          
          <action
-               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
+               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsDelegate"
                enablesFor="1"
                icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"
@@ -88,7 +88,7 @@
                tooltip="Deploys artifacts to a running web server (IP defined in the experiment.xml file)">
          </action>
          <action
-               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
+               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsDelegate"
                enablesFor="1"
                icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"
@@ -138,7 +138,7 @@
                tooltip="Deploys artifacts to a running web server (IP defined in the experiment.xml file)">
          </action>
          <action
-               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsAction"
+               class="org.eclipse.scava.crossflow.dt.GenerateDeploymentArtifactsDelegate"
                enablesFor="1"
                icon="icons/crossflow-c.png"
                id="CrossflowGenerateDeploymentArtifacts"

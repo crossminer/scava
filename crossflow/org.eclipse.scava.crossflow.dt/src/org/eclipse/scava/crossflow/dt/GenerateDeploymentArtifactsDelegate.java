@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class GenerateDeploymentArtifactsAction implements IObjectActionDelegate {
+public class GenerateDeploymentArtifactsDelegate implements IObjectActionDelegate {
 
 	private Shell shell;
 	protected ISelection selection = null;
