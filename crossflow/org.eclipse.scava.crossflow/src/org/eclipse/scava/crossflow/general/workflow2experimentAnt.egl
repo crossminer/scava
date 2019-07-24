@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="run_all" name="Assemble Artifacts to ZIP">
+<project default="cleanup" name="Assemble Artifacts to ZIP">
 
-[%
-//	<property name="deps" value="[ %=dependenciesPath% ]"/>
-%]
-    <!-- Copy the descriptor and input files to the artifacts folder -->
-    <copy todir="[%=destFolder%]" >  
-        <fileset dir="[%=resourcesFolder%]"/>  
-    </copy> 
-    	
-   	<!-- Running this will create a JAR of this project in the [%=destFolder%] directory -->
-    <target name="create_run_jar">
-        <jar destfile="[%=destFolder%]/[%=package%].jar" filesetmanifest="mergewithoutmain">
-        	<fileset dir="bin"/>
+    <property name="dist.dir" location="dist" />
+    <property name="dist.lib.dir" location="dist/lib" />
+    <property name="lib.dir" value="[%=resourcesFolder%]/lib" />
+    
+    <!-- Group all dependencies into a big dependency-all.jar -->
+    <target name="group-dependencies">
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${dist.lib.dir}" />
+        <jar jarfile="${dist.lib.dir}/dependencies-all.jar">
+            <zipgroupfileset dir="${lib.dir}">
+                <include name="**/*.jar" />
+            </zipgroupfileset>
         </jar>
-	</target>
-	
+    </target>
+    
+    <!-- jar it, extract above dependency-all.jar and zip it with project files -->
+    <target name="jar" depends="group-dependencies" description="package, output to JAR">
+       
+        <jar destfile="[%=destFolder%]/[%=package%].jar" filesetmanifest="mergewithoutmain">
+            <fileset dir="bin"/>
+            <zipfileset src="${dist.lib.dir}/dependencies-all.jar" 
+                                excludes="META-INF/*.SF" />
+        </jar>
+    </target>
+        
+    <!-- Copy the descriptor and input files to the artifacts folder -->	
+    <target name="copy-resources">
+        <copy todir="[%=destFolder%]">  
+            <fileset dir="[%=resourcesFolder%]">
+                <exclude name="**/lib/**" />
+            </fileset>
+        </copy> 
+    </target>
+       	
 	<!-- Running this will create a ZIP file of the project input directory -->
-    <target name="create_in_zip">
+    <target name="create-in-zip" depends="copy-resources">
         <zip
         	destfile="[%=destFolder%]/in.zip"
 			basedir="[%=destFolder%]/in" 
@@ -26,7 +45,7 @@
     </target>
     	
 	<!-- Running this will create a ZIP file containing all required artifacts for uploading this project as a new workflow in the Crossflow web application -->
-    <target name="assemble_artifacts_zip">
+    <target name="assemble-artifacts-zip" depends="create-in-zip,jar">
         <zip
         	destfile="[%=destFolder%]/[%=w.name%].zip"
 			basedir="[%=destFolder%]" 
@@ -35,7 +54,9 @@
         />
     </target>
     
-    <target name="run_all"
-   		depends="create_run_jar,create_in_zip,assemble_artifacts_zip" />
-    
+    <!-- delete the dist folder as we dont need to keep it -->
+    <target name="cleanup" depends="assemble-artifacts-zip">
+        <delete dir="${dist.dir}"/>
+    </target>
+
 </project>

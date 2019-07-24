@@ -51,8 +51,6 @@ public class GenerateDeploymentArtifactsDelegate implements IObjectActionDelegat
 			File ant = new File(projectFolder, "build-experiment-zip.xml");
 			ant.delete();
 
-			// create client jar
-			//createClientJar(true, projectFolderLocation);
 			displayInformation(workflowName);
 			
 			// refresh workspace
@@ -73,36 +71,6 @@ public class GenerateDeploymentArtifactsDelegate implements IObjectActionDelegat
 		MessageDialog.openInformation(shell, "Implementation Generation", message.toString());
 	}
 
-	private void createClientJar(boolean replace, String path) throws Exception {
-
-		// FIXME WiP -- currently user uses eclipse export fat jar wizard
-
-//		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
-//		IProject project = selectedFile.getProject();
-//
-//		StructuredSelection fSelection = new StructuredSelection(project);
-//
-//		JarPackageData fJarPackage = new JarPackageData();
-//		fJarPackage.setIncludeDirectoryEntries(true);
-//
-//		Object[] elems = { project };
-//
-//		fJarPackage.setElements(elems);
-//
-//		fJarPackage.setExportJavaFiles(true);
-//
-//		fJarPackage.setJarLocation(ResourcesPlugin.getWorkspace().getRoot().getLocation()
-//				.append(project.getFullPath().append("/worker.jar")));
-//
-//		fJarPackage.setOverwrite(true);
-//		
-//		IJarExportRunnable r = fJarPackage.createJarExportRunnable(shell);
-//
-//		if (replace || !new File(project.getLocation().toFile(), "worker.jar").exists())
-//			r.run(null);
-
-	}
-
 	private void generateAll(boolean replace) throws Exception {
 
 		IFile selectedFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
@@ -121,7 +89,6 @@ public class GenerateDeploymentArtifactsDelegate implements IObjectActionDelegat
 			runner.setArguments("-Dmessage=Building -verbose");
 
 			runner.run(null);
-
 		}
 
 	}

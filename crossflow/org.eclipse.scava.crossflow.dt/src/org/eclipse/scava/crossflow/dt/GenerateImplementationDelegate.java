@@ -78,6 +78,9 @@ public class GenerateImplementationDelegate implements IObjectActionDelegate {
 				GenerateImplementations.RESOURCES_FOLDER_NAME,
 				GenerateImplementations.WORKFLOW_DESCRIPTION_NAME));
 		message.append(System.lineSeparator());
+		message.append(String.format("If you are using a script language, make sure the required dependencys' "
+				+ "jar are added to the %s/lib folder (you can use ivy/maven/other to autoamte this).", GenerateImplementations.RESOURCES_FOLDER_NAME));
+		message.append(System.lineSeparator());
 		message.append("In order to deploy your flow, use the 'Generate Deployment Artifacts' command "
 				+ "to create the required artifacts. This will generate a zip file under the "
 				+ "'artifacts' folder in your project, which can then be uploaded to the server "

@@ -56,16 +56,18 @@ public class GenerateImplementations {
 	public static final String RESOURCES_FOLDER_NAME = "resources";
 	public static final String WORKFLOW_DESCRIPTION_NAME = "experiment";
 
-	//protected IEolModule module;
+	// protected IEolModule module;
 	protected Object result;
 	private final String modelRelativePath;
 	private final File projectFolder;
 	protected List<Variable> parameters = new ArrayList<>();
 
 	/**
-	 * Construct a new generator that uses the given project location and model path.
-	 * @param projectLocation		the location of the project
-	 * @param modelRelativePath		the relative path to the model
+	 * Construct a new generator that uses the given project location and model
+	 * path.
+	 * 
+	 * @param projectLocation   the location of the project
+	 * @param modelRelativePath the relative path to the model
 	 */
 	public GenerateImplementations(File projectFolder, String modelRelativePath) {
 		this.projectFolder = projectFolder;
@@ -73,18 +75,27 @@ public class GenerateImplementations {
 	}
 
 	public Map<String, String[]> run() throws Exception {
-
+		createParameters();
 		final EmfModel model = getModel();
 		model.setStoredOnDisposal(false);
-		final Map<String, String[]> languages =  findLanguages(model);
-		createParameters();
+
+		final Map<String, String[]> scriptLanguages = findScriptingLanguages(model);
+		for (String language : scriptLanguages.keySet()) {
+			generateScriptLanguageCode(model, language);
+		}
+
+		final Map<String, String[]> languages = findLanguages(model);
 		for (String language : languages.keySet()) {
 			generateLanguageCode(model, language);
 		}
-		final Map<String, String[]> scriptLanguages =  findScriptingLanguages(model);
-		languages.putAll(scriptLanguages);
-		for (String language : scriptLanguages.keySet()) {
-			generateScriptLanguageCode(model, language);
+		if (scriptLanguages.isEmpty()) {	// Since scripts are generated as Java, don't add it.
+			// FIXME really?
+			if (!languages.containsKey("java")) {
+				languages.put("java", new String[] { "src", "src-gen" });
+			}
+		}
+		else {
+			languages.putAll(scriptLanguages);
 		}
 		generateDescriptor(model);
 		model.dispose();
@@ -95,7 +106,7 @@ public class GenerateImplementations {
 			throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
-		module.parse(getFileURI("scripting/"+language + "/crossflow.egx"));
+		module.parse(getFileURI("scripting/" + language + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
 			for (ParseProblem problem : module.getParseProblems()) {
@@ -108,9 +119,10 @@ public class GenerateImplementations {
 
 		result = execute(module);
 	}
-	
+
 	/**
-	 * Run the EGX script that generates the code generators for the 
+	 * Run the EGX script that generates the code generators for the
+	 * 
 	 * @param model
 	 * @param language
 	 * @throws Exception
@@ -121,7 +133,7 @@ public class GenerateImplementations {
 			throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
-		module.getContext().getFrameStack().put(parameters);	
+		module.getContext().getFrameStack().put(parameters);
 		module.parse(getFileURI(language + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -137,15 +149,15 @@ public class GenerateImplementations {
 		}
 		module.getContext().dispose();
 	}
-	
+
 	/**
 	 * Create the parameters required by the different scripts
 	 */
 	private void createParameters() {
-		createResourcesFolderParameter();		
+		createResourcesFolderParameter();
 		createXmlFileNameParameter();
 	}
-	
+
 	/**
 	 * Create a parameter for the xmlFileName value
 	 */
@@ -156,7 +168,7 @@ public class GenerateImplementations {
 		xmlFileName.setValueBruteForce(WORKFLOW_DESCRIPTION_NAME);
 		parameters.add(xmlFileName);
 	}
-	
+
 	/**
 	 * Create a parameter for the resourcesFolder value
 	 */
@@ -185,46 +197,39 @@ public class GenerateImplementations {
 	/**
 	 * Find any languages used and add them to the languages information.
 	 * 
-	 * @param model				the crossflow model
-	 * @param languages			the languages information
+	 * @param model     the crossflow model
+	 * @param languages the languages information
 	 */
-    // FIXME Languages should be an enumeration at the meta-metamodel level so we can control
-    // what languages we support and is less error prone
+	// FIXME Languages should be an enumeration at the meta-metamodel level so we
+	// can control
+	// what languages we support and is less error prone
 	private Map<String, String[]> findLanguages(EmfModel model) {
 		final Map<String, String[]> languages = new HashMap<String, String[]>();
 		Resource r = model.getResource();
 		EClass languageClass = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("Language");
 		EAttribute nameAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("name"))
 				.findFirst().get();
-		EAttribute outfolderAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("outputFolder"))
-				.findFirst().get();
-		EAttribute genOutfolderAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("genOutputFolder"))
-				.findFirst().get();
+		EAttribute outfolderAttr = languageClass.getEAllAttributes().stream()
+				.filter(a -> a.getName().equals("outputFolder")).findFirst().get();
+		EAttribute genOutfolderAttr = languageClass.getEAllAttributes().stream()
+				.filter(a -> a.getName().equals("genOutputFolder")).findFirst().get();
 		for (Iterator<EObject> it = r.getAllContents(); it.hasNext();) {
 			EObject o;
 			if ((o = it.next()).eClass().equals(languageClass)) {
 				String[] value = new String[2];
 				value[0] = ((String) o.eGet(outfolderAttr)).toLowerCase();
 				value[1] = ((String) o.eGet(genOutfolderAttr)).toLowerCase();
-				languages.put(
-					((String) o.eGet(nameAttr)).toLowerCase(),
-					value
-					);
+				languages.put(((String) o.eGet(nameAttr)).toLowerCase(), value);
 			}
-		}
-		// add java regardless of whether it exists in the model
-		// FIXME really?
-		if (!languages.containsKey("java")) {
-			languages.put("java", new String[]{"src", "src-gen"});
 		}
 		return languages;
 	}
-	
+
 	/**
 	 * Find any scripting languages used and add them to the languages information.
 	 * 
-	 * @param model				the crossflow model
-	 * @param languages			the languages information
+	 * @param model     the crossflow model
+	 * @param languages the languages information
 	 */
 	private Map<String, String[]> findScriptingLanguages(EmfModel model) {
 		final Map<String, String[]> languages = new HashMap<String, String[]>();
@@ -237,11 +242,10 @@ public class GenerateImplementations {
 			String language;
 			if ((o = it.next()).eClass().equals(scriptingTask))
 				if (o.eIsSet(scriptingLanguage) && (language = (String) o.eGet(scriptingLanguage)).trim().length() > 0)
-					languages.put(language, new String[]{"src", "src-gen"});
+					languages.put(language, new String[] { "src", "src-gen" });
 		}
 		return languages;
 	}
-	
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {
 		return module.execute();
@@ -264,12 +268,8 @@ public class GenerateImplementations {
 
 	public EmfModel getModel() throws Exception {
 		EmfModel model = createAndLoadAnEmfModel(
-				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
-				modelRelativePath,
-				"Model",
-				true,
-				false,
-				false);
+				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation", modelRelativePath,
+				"Model", true, false, false);
 
 		return model;
 	}
@@ -295,7 +295,7 @@ public class GenerateImplementations {
 		theModel.load(properties, (IRelativePathResolver) null);
 		return theModel;
 	}
-	
+
 	private File getClasspathFile(File directory) {
 		if (containsFile(directory, ".classpath")) {
 			return new File(directory.getAbsolutePath() + "/.classpath");
@@ -311,7 +311,7 @@ public class GenerateImplementations {
 		}
 		return null;
 	}
-	
+
 	private boolean containsFile(File directory, String file) {
 		for (String f : directory.list()) {
 			if (f.equals(file))
@@ -319,7 +319,7 @@ public class GenerateImplementations {
 		}
 		return false;
 	}
-	
+
 	private void updateManifest(File manifest) throws Exception {
 
 		BufferedReader r = new BufferedReader(new FileReader(manifest));
@@ -353,9 +353,10 @@ public class GenerateImplementations {
 		}
 
 	}
-	
+
 	/**
 	 * Runs the EGX script that generates the workflow descriptor
+	 * 
 	 * @param model
 	 * @throws Exception
 	 * @throws URISyntaxException
@@ -364,7 +365,7 @@ public class GenerateImplementations {
 	private void generateDescriptor(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
-		module.getContext().getFrameStack().put(parameters);	
+		module.getContext().getFrameStack().put(parameters);
 		module.parse(getFileURI("general/generateDescriptor.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
