@@ -42,8 +42,11 @@ public class GenerateImplementationDelegate implements IObjectActionDelegate {
 		File projectFolder = selectedFile.getProject().getLocation().toFile();
 		try {
 			// create resources folder for xml file
-			File artifactsFolder = new File(projectFolder, GenerateImplementations.RESOURCES_FOLDER_NAME);
-			artifactsFolder.mkdirs();
+			File resourcesFolder = new File(projectFolder, GenerateImplementations.RESOURCES_FOLDER_NAME);
+			resourcesFolder.mkdirs();
+			File libs = new File(resourcesFolder, "lib");
+			libs.mkdirs();
+			
 			// generate implementations
 			displayInformation(new GenerateImplementations(
 					projectFolder,
