@@ -47,8 +47,8 @@ class IndexerSingleton {
 
 		try {
 			logger = (OssmeterLogger) OssmeterLogger.getLogger("Indexer Singleton");
-			//highLevelclient = createHighLevelClient(hostname); 
-			highLevelclient = createHighLevelClientLocal("localhost");
+			highLevelclient = createHighLevelClient(hostname); 
+			//highLevelclient = createHighLevelClientLocal("localhost");
 
 		} catch (Exception e) {
 			e.printStackTrace();
