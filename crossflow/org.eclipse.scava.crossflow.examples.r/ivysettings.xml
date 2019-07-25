@@ -15,8 +15,7 @@
       <ibiblio name="bedatadriven" m2compatible="true" root="https://nexus.bedatadriven.com/content/groups/public/"/>
      
       <ibiblio name="imagej" m2compatible="true" root="http://maven.imagej.net/content/repositories/public/"/>
-     
-     
+          
     </chain>
   </resolvers>
 </ivysettings>
