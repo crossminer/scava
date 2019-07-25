@@ -18,29 +18,39 @@
 
 <div class="album py-5 bg-light">
 	<div class="container">
-
+	<div class="row justify-content-center">
+	<div class="col-sm-6 col-md-6 py-6">
 		<form action="uploadExperiment" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<input type="text" class="form-control" id="inputName" name="inputName"
-					aria-describedby="textHelp" placeholder="Enter experiment name (unique internal identifier)"/> 
+					aria-describedby="textHelp" placeholder="Enter experiment name (unique internal identifier)" required/>
 			</div>
-		
 			<div class="custom-file">
-				<input type="file" class="custom-file-input" id="experimentZip" name="experimentZip" @change="updateExperimentZipState"/>
+				<input type="file" accept=".zip" class="custom-file-input" id="experimentZip" name="experimentZip" @change="updateExperimentZipState"/>
 				<label class="custom-file-label" for="experimentZip" id="experimentZipLabel">
 				Choose experiment ZIP file
 				</label>
 			</div>
 			<br /> <br />
-			
+
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" id="inputCheck" name="inputCheck">
-				<label class="form-check-label" for="exampleCheck1">Launch experiment immediately.</label>
+				<!--for="exampleCheck1"-->
+				<label class="form-check-label" >Launch experiment immediately.</label>
 			</div>
-			<br /> 
-			<button type="submit" class="btn btn-success">Upload</button>
-		</form>
+			<br />
+			<div class="row justify-content-center">
+				<div class="col-4">
+					<button action="action" type="reset" class="btn btn-danger" onclick="window.history.go(-1); return false;">Cancel</button>
+				</div>
+				<div class="col-4">
+					<button type="submit" id="upload" class="btn btn-success" disabled="true">Upload</button>
+				</div>
+			</div>
 
+		</form>
+	</div>
+	</div>
 	</div>
 </div>
 
@@ -53,13 +63,14 @@ var app = new Vue({
 		updateExperimentZipState : function(event) {
 			let experimentZipName = document.getElementById("experimentZip").value;
 			document.getElementById("experimentZipLabel").innerHTML = experimentZipName.replace(/^.*\\/, "");
+			document.getElementById("upload").disabled = false;
 		},
 
 		uploadSelectedFile : function(event) {
 			let formData = new FormData();
 			formData.append('file', this.file);
-			
-			
+
+
 			//console.log("uploadSelectedFile: " + this.$refs.file.files[0]);
 			/* crossflow.uploadFile(this.$refs.file.files[0]); */
 			crossflow.uploadFile("blah");
@@ -74,7 +85,7 @@ var crossflow = new CrossflowClient(protocol);
 
 var url = new URL(window.location.href);
 
-	
+
 </script>
 
 <jsp:include page="footer.jsp" />
