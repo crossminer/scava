@@ -6,6 +6,14 @@
 	<div class="container">
 		<h1 class="jumbotron-heading">{{ experiment.title }}</h1>
 		<p class="lead text-muted">{{ experiment.summary }}</p>
+		<div class="container">
+		<div class="row justify-content-center">
+			<!-- MODEL -->
+			<div class="show " id="model">
+				<div id="graphContainer" style="position: relative; overflow: scroll; width: 1200%; height: 400%; cursor: default;"></div>
+			</div>
+		</div>
+	    </div>
 
 		<div class="btn-group" v-if="experiment.status == 'stopped'">
 			<button type="button" class="btn btn-success"
@@ -34,10 +42,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-md-12 py-12">
-			
+
 				<!-- TAB SPECS -->
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
-				
+
 					<!-- CUSTOM FILE DESCRIPTOR TABS -->
 					<li class="nav-item"
 						v-for="(fileDescriptor,index) in experiment.fileDescriptors">
@@ -45,27 +53,22 @@
 						:href="'#file' + index" role="tab" :aria-controls="'file'+index"
 						aria-selected="true">{{ fileDescriptor.title }}</a>
 					</li>
-					
+
 					<!-- ADVANCED TAB -->
 					<li class="nav-item"><a class="nav-link active"
 						id="advanced-tab" data-toggle="tab" href="#advanced" role="tab"
 						aria-controls="advanced" aria-selected="false">Advanced</a></li>
-						
-					<!-- MODEL TAB -->
-					<li class="nav-item"><a class="nav-link" id="model-tab"
-						data-toggle="tab" href="#model" role="tab" aria-controls="model"
-						aria-selected="false">Model</a></li>
-						
+
 					<!-- LOG TAB -->
 					<li class="nav-item"><a class="nav-link" id="log-tab"
 						data-toggle="tab" href="#log" role="tab" aria-controls="log"
 						aria-selected="false">Log</a></li>
-				
+
 				</ul>
-				
+
 				<!-- TAB CONTENTS -->
 				<div class="tab-content" id="myTabContent">
-				
+
 					<!-- CUSTOM FILE DESCRIPTORS -->
 					<div class="tab-pane fade show"
 						v-for="(fileDescriptor,index) in experiment.fileDescriptors"
@@ -98,7 +101,7 @@
 							The experiment produced no data here.</div>
 
 					</div>
-					
+
 					<!-- ADVANCED -->
 					<div class="tab-pane fade show active" id="advanced"
 						role="tabpanel" aria-labelledby="advanced-tab">
@@ -145,16 +148,7 @@
 						</table>
 						</p>
 					</div>
-					
-					<!-- MODEL -->
-					<div class="tab-pane fade show" id="model" role="tabpanel"
-						aria-labelledby="model-tab">
-						<div id="graphContainer"
-							style="position: relative; overflow: scroll; width: 100%; height: 100%; cursor: default;">
-						</div>
-						<p></p>
-					</div>
-					
+
 					<!-- LOG -->
 					<div class="tab-pane fade show" id="log" role="tabpanel"
 						aria-labelledby="log-tab">
@@ -174,11 +168,11 @@
 						   </table>
 						   <!----> <!---->
 						</div>
-						
-						
+
+
 						<p></p>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -237,9 +231,9 @@
 			fileDescriptor.table = crossflow.getContent(fileDescriptor);
 		});
 		app.diagnostics = crossflow.getDiagnostics();
-		
+
 	}
-	
+
 var cellTooltips = {};
 
 loadStencils();
@@ -267,15 +261,15 @@ window.runtimeModelGraph.getPreferredSizeForCell = function(cell)
 };
 
 window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
-	
+
 	//console.log('getTooltipForCell triggered');
-	
+
 	streamTopicXmlDoc = window.streamTopicXmlDoc;
 	taskTopicXmlDoc = window.taskTopicXmlDoc;
-	
+
 	queueSize = "n/a";
 	queueSizeUnit = "";
-	
+
 	inFlightSize = "n/a";
 	inFlightSizeUnit = "";
 
@@ -283,12 +277,12 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	preSizeUnit = "";
 	preInFlightSize = "n/a";
 	preInFlightSizeUnit = "";
-	
+
 	postSize = "n/a";
 	postSizeUnit = "";
 	postInFlightSize = "n/a";
 	postInFlightSizeUnit = "";
-	
+
 	destSize = "n/a";
 	destSizeUnit = "";
 	destInFlightSize = "n/a";
@@ -306,73 +300,73 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 		// derive status from current cell style for consistency
 		cellStyle = cell.getStyle().substring(cell.getStyle().indexOf('fillColor='), cell.getStyle().length);
 		taskStatusCellTooltip = "<table border=1><tr><td>";
-		
+
 		if ( cellStyle.includes('lightcyan') )
 			taskStatusCellTooltip += "STARTED";
-		
+
 		else if ( cellStyle.includes('skyblue') )
 			taskStatusCellTooltip += "WAITING";
-		
+
 		else if ( cellStyle.includes('palegreen') )
 			taskStatusCellTooltip += "INPROGRESS";
-		
+
 		else if ( cellStyle.includes('salmon') )
 			taskStatusCellTooltip += "BLOCKED";
-		
+
 		else if ( cellStyle.includes('slategray') )
 			taskStatusCellTooltip += "FINISHED";
-		
+
 		else if ( cellStyle.includes('#fffff') )
 			taskStatusCellTooltip += "N/A";
-			
+
 		taskStatusCellTooltip += "</td></tr></table>";
 		return taskStatusCellTooltip;
-	}// if task tooltip 
-	
+	}// if task tooltip
+
 	else if ( cell.id.includes('stream_') ) {
 		modelElement = cell.id.substr('stream_'.length);
 		if ( streamTopicXmlDoc == null ) {
 			return;
 		}
-		
+
 		for ( i=0; i < streamTopicXmlDoc.childNodes[0].children.length; i++ ) {
 			if ( streamTopicXmlDoc.childNodes[0].children[i] != null ) {
 				//console.log("streams encountered");
 				for ( j=0; j < streamTopicXmlDoc.childNodes[0].children[i].children.length; j++ ) {
 					//console.log("i="+i+";  j="+j);
-				
+
 					// handle pre-queue
 					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Pre.') ) {
-					
+
 						//console.log("i="+i+";  j="+j);
 						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
 						//console.log('name='+name);
-						
+
 						// size
 						preSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
 						//console.log('preSize='+preSize);
-						
+
 						// inFlight
 						preInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
-						
+
 					}// handle pre-queue
-					
+
 					// handle post-queue
 					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Post.') ) {
-					
+
 						//console.log("i="+i+";  j="+j);
 						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
 						//console.log('name='+name);
-						
+
 						// size
 						postSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
 						//console.log('postSize='+postSize);
-						
+
 						// inFlight
 						postInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
@@ -380,34 +374,34 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 						// numberOfSubscribers
 						subscribers = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[4].innerHTML;
 						//console.log('subscribers='+subscribers);
-			
+
 					}// handle post-queue
-					
+
 					// handle destination-queue
 					if ( streamTopicXmlDoc.childNodes[0].children[i].children[j] != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML != null &&
 							streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML.includes(modelElement + 'Destination.') ) {
-					
+
 						//console.log("i="+i+";  j="+j);
 						name = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[0].innerHTML;
 						//console.log('name='+name);
-						
+
 						// size
 						destSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[1].innerHTML;
 						//console.log('destSize='+destSize);
-						
+
 						// inFlight
 						destInFlightSize = streamTopicXmlDoc.childNodes[0].children[i].children[j].children[2].innerHTML;
 						//console.log('inFlight='+inFlight);
-						
+
 					}// handle destination-queue
-					
+
 			}// for
-			
+
 		}// if
-		
+
 	}// for streamTopicXmlDoc
-					
+
 	// sum up queue size of pre-queue, post-queue, and destination-queue
 	queueSize = 0;
 	if ( preSize!='n/a' && preSize!='0' )
@@ -416,7 +410,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 		queueSize += parseInt(postSize, 10);
 	if ( destSize!='n/a' && destSize!='0' )
 		queueSize += parseInt(destSize, 10);
-	
+
 	// add unit to queue size and make it human-readable
 	if ( queueSize >= 1000 && queueSize <= 999999 ) {
 		queueSizeUnit = "K";
@@ -430,7 +424,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding queue size
 	queueSize = Math.round(queueSize);
 	//console.log('queueSize='+queueSize);
-	
+
 	// sum up in-flight size of pre-queue, post-queue, and destination-queue
 	inFlightSize = 0;
 	if ( preInFlightSize !='n/a' && preInFlightSize !='0' )
@@ -439,7 +433,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 		inFlightSize += parseInt(postInFlightSize, 10);
 	if ( destInFlightSize !='n/a' && destInFlightSize !='0' )
 		inFlightSize += parseInt(destInFlightSize, 10);
-	
+
 	// add unit to in-flight size and make it human-readable
 	if ( inFlightSize >= 1000 && inFlightSize <= 999999 ) {
 		inFlightSizeUnit = "K";
@@ -453,8 +447,8 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding in-flight size
 	inFlightSizeUnit = Math.round(inFlightSize);
 	//console.log('inFlightSize='+inFlightSize);
-	
-	
+
+
 	// add unit to preSize and make it human-readable
 	if ( preSize >= 1000 && preSize <= 999999 ) {
 		preSizeUnit = "K";
@@ -468,7 +462,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding preSize
 	preSize = Math.round(preSize);
 	//console.log('preSize='+preSize);
-	
+
 	// add unit to postSize and make it human-readable
 	if ( postSize >= 1000 && postSize <= 999999 ) {
 		postSizeUnit = "K";
@@ -482,7 +476,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding postSize
 	postSize = Math.round(postSize);
 	//console.log('postSize='+postSize);
-	
+
 	// add unit to destSize and make it human-readable
 	if ( destSize >= 1000 && destSize <= 999999 ) {
 		destSizeUnit = "K";
@@ -496,7 +490,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding destSize
 	destSize = Math.round(destSize);
 	//console.log('destSize='+destSize);
-	
+
 	// add unit to preInFlightSize and make it human-readable
 	if ( preInFlightSize >= 1000 && preInFlightSize <= 999999 ) {
 		preInFlightSizeUnit = "K";
@@ -510,7 +504,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding preInFlightSize
 	preInFlightSize = Math.round(preInFlightSize);
 	//console.log('preInFlightSize='+preInFlightSize);
-	
+
 	// add unit to postInFlightSize and make it human-readable
 	if ( postInFlightSize >= 1000 && postInFlightSize <= 999999 ) {
 		postInFlightSizeUnit = "K";
@@ -524,7 +518,7 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding postInFlightSize
 	postInFlightSize = Math.round(postInFlightSize);
 	//console.log('postInFlightSize='+postInFlightSize);
-	
+
 	// add unit to destInFlightSize and make it human-readable
 	if ( destInFlightSize >= 1000 && destInFlightSize <= 999999 ) {
 		destInFlightSizeUnit = "K";
@@ -538,12 +532,12 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	// rounding destInFlightSize
 	destInFlightSize = Math.round(destInFlightSize);
 	//console.log('destInFlightSize='+destInFlightSize);
-	
+
 	// also visible queue size for consistency
 	cell.value = Math.round(queueSize) + queueSizeUnit;
-				
-	cellTooltip = "<table class='tg'> " + 
-	
+
+	cellTooltip = "<table class='tg'> " +
+
 		"<tr>" +
 		   "<th></th>" +
 	    	"<th style='text-align: center;'>In-Flight |</th>" +
@@ -566,30 +560,30 @@ window.runtimeModelGraph.getTooltipForCell = function(cell, evt) {
 	"</tr>" +
 		"<tr>" +
 		   	 "<th style='font-style: italic'>Total</th>" +
-   			 "<td style='text-align: center;'>" + inFlightSize +  "</td>" + 
+   			 "<td style='text-align: center;'>" + inFlightSize +  "</td>" +
     	     "<td style='text-align: center;'>" + queueSize +queueSizeUnit + "</td>" +
 		"</tr>" +
 		"<tr>" +
 	     	"<td style='font-style: italic'>Subs</td>" +
   			"<td  style='text-align: center;' colspan='2'>" + subscribers + "</td>" +
 		"</tr>" +
-	
-		"</table>";		
+
+		"</table>";
 	if ( cellTooltip.includes("n/a") ) {
 		// return latest known status
 		return cellTooltips[modelElement];
-	} 
-	
+	}
+
 	cellTooltips[modelElement] = cellTooltip;
-	
+
 	return cellTooltip;
-		
+
 	}// if stream tooltip
 	else {
 		// unknown cell
 		return;
 	}
-	
+
 };// CELL TOOLTIPS
 
 //---------------
@@ -610,9 +604,9 @@ function createPopupMenu(graph, menu, cell, evt) {
 					// trigger cache clearing of queue cell.id
 					clearSuccess = crossflow.clearQueueCache(experimentId, cell.id);
 					if ( clearSuccess ) {
-						mxUtils.alert('Cache of queue \"' + cell.id.substr('stream_'.length) + '\" has been cleared.');						
+						mxUtils.alert('Cache of queue \"' + cell.id.substr('stream_'.length) + '\" has been cleared.');
 					} else {
-						mxUtils.alert('Failed to clear cache of queue \"' + cell.id.substr('stream_'.length) + '\". Has the experiment been stopped or terminated yet?');		
+						mxUtils.alert('Failed to clear cache of queue \"' + cell.id.substr('stream_'.length) + '\". Has the experiment been stopped or terminated yet?');
 					}
 				}
 			})
@@ -627,10 +621,10 @@ function createPopupMenu(graph, menu, cell, evt) {
 				if ( clearSuccess ) {
 					mxUtils.alert('Cache of all queues has been cleared.');
 				} else {
-					mxUtils.alert('Failed to clear cache of all queues. Has the experiment been stopped or terminated yet?');		
+					mxUtils.alert('Failed to clear cache of all queues. Has the experiment been stopped or terminated yet?');
 				}
 			}
-		});	
+		});
 	}
 };// CONTEXT MENU
 
@@ -646,7 +640,7 @@ try {
 	    // Updates the display
 	    window.runtimeModelGraph.getModel().endUpdate();
   });
-  
+
   window.runtimeModelGraph.enabled = false; // de-activate graph editing
 } finally {
 	// Updates the display
