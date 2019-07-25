@@ -1,6 +1,6 @@
 <project default="main">
 
-	<!-- Copies all jars from o.e.s.c.runtime.dependencies here, builds o.e.s.c.tests.jar and runs Thrift -->
+	<!-- Copies all jars from o.e.s.c.runtime.dependencies here and runs Thrift -->
 
 	<condition property="is-mac">
 		<os family="mac" />
@@ -31,16 +31,6 @@
 			<fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies/lib" includes="*.jar" />
 		</copy>
 
-		<mkdir dir="../org.eclipse.scava.crossflow.web.tests/src-gen" />
-
-		<exec executable="${thrift}">
-			<arg value="--gen" />
-			<arg value="java" />
-			<arg value="-out" />
-			<arg value="../org.eclipse.scava.crossflow.web.tests/src-gen" />
-			<arg value="crossflow.thrift" />
-		</exec>
-
 		<exec executable="${thrift}">
 			<arg value="--gen" />
 			<arg value="java" />
@@ -61,11 +51,6 @@
 			<fileset dir="../org.eclipse.scava.crossflow.runtime/bin" />
 		</jar>
 
-		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.scava.crossflow.tests.jar">
-			<fileset dir="../org.eclipse.scava.crossflow.tests/bin" />
-		</jar>
-
-		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.tests" depth="-1" />
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1" />
 
 	</target>

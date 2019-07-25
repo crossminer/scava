@@ -1,17 +1,11 @@
 <project default="main">
 	
-	<jar destfile="WebContent/jars/org.eclipse.scava.crossflow.tests.jar">
-		<fileset dir="../org.eclipse.scava.crossflow.tests/bin"/>
-	</jar>
-	
 	<target name="main">
 		<war destfile="../org.eclipse.scava.crossflow.web.docker/org.eclipse.scava.crossflow.web.war" needxmlfile='false'>
     		<fileset dir="WebContent"/>
     		<classes dir="build/classes"/>
     		<classes dir="../org.eclipse.scava.crossflow.runtime/bin"/>
     	</war>
-    	
-		<delete file="WebContent/jars/org.eclipse.scava.crossflow.tests.jar"/>
 		
     	<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.docker" depth="-1"/>
 	</target>
