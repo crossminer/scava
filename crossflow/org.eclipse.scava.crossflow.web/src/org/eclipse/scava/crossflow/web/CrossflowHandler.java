@@ -63,7 +63,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 
 			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
 					.getConstructor(Mode.class).newInstance(mode);
-
+			workflow.getSerializer().setClassloader(classLoader);
 			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
 			File cacheDir = new File(servlet.getServletContext().getRealPath("experiments/" + experimentId + "/cache"));
