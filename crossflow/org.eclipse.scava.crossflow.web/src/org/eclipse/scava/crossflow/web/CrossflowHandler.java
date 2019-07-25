@@ -62,7 +62,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 					Thread.currentThread().getContextClassLoader());
 
 			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
-					.getConstructor(Mode.class, ClassLoader.class).newInstance(mode,classLoader);
+					.getConstructor(Mode.class).newInstance(mode);
 
 			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
