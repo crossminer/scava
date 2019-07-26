@@ -83,20 +83,14 @@ public class GenerateImplementations {
 		for (String language : scriptLanguages.keySet()) {
 			generateScriptLanguageCode(model, language);
 		}
-
+		
 		final Map<String, String[]> languages = findLanguages(model);
+		// Java always has to be generated
+		languages.put("java", new String[] { "src", "src-gen" });
 		for (String language : languages.keySet()) {
 			generateLanguageCode(model, language);
 		}
-		if (scriptLanguages.isEmpty()) {	// Since scripts are generated as Java, don't add it.
-			// FIXME really?
-			if (!languages.containsKey("java")) {
-				languages.put("java", new String[] { "src", "src-gen" });
-			}
-		}
-		else {
-			languages.putAll(scriptLanguages);
-		}
+		languages.putAll(scriptLanguages);
 		generateDescriptor(model);
 		model.dispose();
 		return languages;
