@@ -85,8 +85,11 @@ public class GenerateImplementations {
 		}
 		
 		final Map<String, String[]> languages = findLanguages(model);
-		// Java always has to be generated
-		languages.put("java", new String[] { "src", "src-gen" });
+		// always add java as a language as the master node will have to run java for
+		// runing the crossflow infrastructure (sources, sinks, queues)
+		if (!languages.containsKey("java"))
+			languages.put("java", new String[] { "src", "src-gen" });
+		//
 		for (String language : languages.keySet()) {
 			generateLanguageCode(model, language);
 		}
