@@ -148,23 +148,6 @@ rule Steam2Consumer
 
 //
 
-operation Type createSource(){
-	var source = new Source;
-	self.eContainer.tasks.add(source);
-	self.eContainer.types.add(self);
-	source.name = self.name+"ConfigSource";
-	var configTopic = new Topic;
-	self.eContainer.streams.add(configTopic);
-	configTopic.name = self.name+"Topic";
-	configTopic.type = self;
-	source.output.add(configTopic);
-	//self.findEligibleConfigurableTasks().input.add(configTopic);
-	for(t in self.findEligibleConfigurableTasks()){
-		t.input.add(configTopic);
-	}		
-	return source;	
-}
-
 operation Type findEligibleConfigurableTasks(){
 	return Task.all.select(t|t.configurations.exists(c|c=self));
 }

@@ -12,16 +12,22 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 	public [%=t.name%]() {}
 	
 	[%if (t.fields.size > 0) {%]
-	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%]) {
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%][%=t.closure(e|e.extending).fields.flatten.collect(f|f.getJavaType() + " " + f.name).concat(", ")%]) {
 		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		[%for (f in t.closure(e|e.extending).fields.flatten) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
 	}
 	[%}%]
 	
 	[%if (t.isJob()) {%]
-	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.fields.size > 0) {%], [%}%]Job correlation) {
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%][%=t.closure(e|e.extending).fields.flatten.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.fields.size > 0 or t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%]Job correlation) {
 		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		[%for (f in t.closure(e|e.extending).fields.flatten) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
 		this.correlationId = correlation.getId();

@@ -141,8 +141,8 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 }
 [%
 operation Stream isConfigurationChannel() {
-	if(not self.name.endsWith("Topic"))return false;
-	var configurationName = self.name.substring(0,self.name.indexOf("Topic"));
+	if(not self.name.endsWith("ConfigTopic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
 	return t.configurations.exists(c|c.name=configurationName);
 }
 %]

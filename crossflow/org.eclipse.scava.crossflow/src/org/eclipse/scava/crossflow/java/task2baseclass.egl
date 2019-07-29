@@ -90,8 +90,8 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 
 [%
 operation Stream isConfigurationChannel() {
-	if(not self.name.endsWith("Topic"))return false;
-	var configurationName = self.name.substring(0,self.name.indexOf("Topic"));
+	if(not self.name.endsWith("ConfigTopic")) return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
 	return t.configurations.exists(c|c.name=configurationName);
 }
 

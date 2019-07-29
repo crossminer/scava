@@ -28,7 +28,7 @@ operation Type createSource(){
     source.name = self.name+"ConfigSource";
     var configTopic = new Topic;
     self.eContainer.streams.add(configTopic);
-    configTopic.name = self.name+"Topic";
+    configTopic.name = self.name+"ConfigTopic";
     configTopic.type = self;
     source.output.add(configTopic);
     //self.findEligibleConfigurableTasks().input.add(configTopic);
