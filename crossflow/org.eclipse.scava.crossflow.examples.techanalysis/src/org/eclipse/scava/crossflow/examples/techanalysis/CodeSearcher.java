@@ -27,7 +27,7 @@ public class CodeSearcher extends CodeSearcherBase {
 
 		// files in current repo
 		for (SearchCode resultItem : repoFiles) {
-			org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode.Repository resultRepo = resultItem
+			SearchCode.Repository resultRepo = resultItem
 					.getRepository();
 			Repository repositoryInst = new Repository();
 			repositoryInst.setUrl(resultRepo.getHtmlUrl());

@@ -7,10 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -22,7 +20,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
 
-public class RepositorySearcher extends CommitmentRepositorySearcherBase {
+public class RepositorySearcher extends OpinionatedRepositorySearcherBase {
 
 	private class RepositoryClone {
 
@@ -43,18 +41,20 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 		}
 	}
 
-	private Map<String, String> technologies = new HashMap<>();
-
+	//
+	
+	@Override
+	public boolean acceptInput(RepoTechPair input) {
+		// TODO logic for accepting repos (if already cloned etc)
+		//
+		return false;
+	}
+	
 	// do not update a repo if folder already exists -- for development
 	final boolean replace = false;
 
-	// results for each technology
-	Map<String, AnalysisResult> results = new HashMap<>();
-
 	@Override
-	public void consumeRepositorySearches(Repository repository) throws Exception {
-
-		results.clear();
+	public AnalysisResult consumeRepositorySearches(RepoTechPair repository) throws Exception {
 
 		// System.out.println("reposearcher received:\n\t" + repository.getName() + " |
 		// " + repository.getUrl());
@@ -63,14 +63,13 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 		RepositoryClone localClone = cloneRepo(repository);
 
 		// use clone to get files (and count)
-		countFiles(localClone);
+		AnalysisResult res = countFiles(localClone, repository.tech);
 
 		// use clone to get authors (and count)
-		// TODO limit to authors of commits of relevant files
-		countAuthors(localClone);
+		// XXX limit to authors of commits of relevant files
+		countAuthors(localClone, res);
 
-		for (AnalysisResult r : results.values())
-			sendToRepositoryResults(r);
+		return res;
 	}
 
 	private RepositoryClone cloneRepo(Repository repository) {
@@ -142,28 +141,6 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 	}
 
-	@Override
-	public void consumeTechnologyCollectionTopic(TechnologyCollection technologyCollection) throws Exception {
-
-		for (Technology tech : technologyCollection.technologies)
-			technologies.put(tech.getFileExt(), tech.getTechKey());
-
-	}
-
-	public AnalysisResult getOrCreateResult(RepositoryClone repositoryClone, String tech) {
-		if (results.containsKey(tech))
-			return results.get(tech);
-		else {
-			AnalysisResult r = new AnalysisResult();
-			r.name = repositoryClone.name;
-			r.repository = repositoryClone.url;
-			r.technology = tech;
-			results.put(tech, r);
-			return r;
-		}
-
-	}
-
 	// utility methods for cloning
 
 	private String createUniqueFolderForRepo(String name, String url) {
@@ -217,29 +194,31 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 	// utility methods for file counting
 
-	private void countFiles(RepositoryClone repositoryClone) {
+	private AnalysisResult countFiles(RepositoryClone repositoryClone, Technology tech) {
 
 		workflow.log(CrossflowLogger.SEVERITY.INFO, "count ( " + repositoryClone.path + " )");
 
 		File repositoryLocalPath = new File(repositoryClone.path);
 
-		for (String ext : technologies.keySet()) {
+		int fileCount = ((List<File>) FileUtils.listFiles(repositoryLocalPath,
+				Collections.singleton(tech.fileExt).toArray(new String[1]), true)).size();
 
-			int fileCount = ((List<File>) FileUtils.listFiles(repositoryLocalPath,
-					Collections.singleton(ext).toArray(new String[1]), true)).size();
+		AnalysisResult r = new AnalysisResult();
+		r.repository.name = repositoryClone.name;
+		r.repository.url = repositoryClone.url;
+		r.technology.fileExt = tech.fileExt;
+		r.fileCount = fileCount;
 
-			getOrCreateResult(repositoryClone, ext).fileCount = fileCount;
-
-		}
+		return r;
 
 	}// count
 
 	// utility methods for author count
 
-	private void countAuthors(RepositoryClone repositoryClone) {
+	private void countAuthors(RepositoryClone repositoryClone, AnalysisResult res) {
 
 		// getOrCreateResult(repositoryClone, ext).fileCount = fileCount;
-		// TODO NB:since authors are not linked to technologies yet, assume they all
+		// XXX NB: since authors are not linked to technologies yet, assume they all
 		// contribute to all technologies found in the files of the repo
 
 		Set<String> repoAuthorsSet = new HashSet<>();
@@ -272,8 +251,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 		//
 
-		for (AnalysisResult r : results.values())
-			r.authorCount = repoAuthorsSet.size();
+		res.authorCount = repoAuthorsSet.size();
 
 	}
 

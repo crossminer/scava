@@ -21,15 +21,15 @@ public class TechAnalysisApp {
 		
 		//CloneUtils.removeRepoClones(TechAnalysisProperties.CLONE_PARENT_DESTINATION); 
 		
-		TechnologyAnalysis master = new TechnologyAnalysis(Mode.MASTER);
+		GitHubTechnologyAnalysis master = new GitHubTechnologyAnalysis(Mode.MASTER);
 		master.setInputDirectory(new File("experiment/in"));
 		master.setOutputDirectory(new File("experiment/out"));
 		master.setName("Master");
 		
-		TechnologyAnalysis worker1 = new TechnologyAnalysis(Mode.WORKER);
+		GitHubTechnologyAnalysis worker1 = new GitHubTechnologyAnalysis(Mode.WORKER);
 		worker1.setName("Worker1");
 		
-		TechnologyAnalysis worker2 = new TechnologyAnalysis(Mode.WORKER);
+		GitHubTechnologyAnalysis worker2 = new GitHubTechnologyAnalysis(Mode.WORKER);
 		worker2.setName("Worker2");
 		
 		master.run();

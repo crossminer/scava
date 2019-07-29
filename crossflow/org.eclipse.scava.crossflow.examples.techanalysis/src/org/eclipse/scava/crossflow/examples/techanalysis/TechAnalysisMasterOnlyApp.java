@@ -20,7 +20,7 @@ public class TechAnalysisMasterOnlyApp {
 	public static void main(String[] args) throws Exception {
 		
 		//CloneUtils.removeRepoClones(TechAnalysisProperties.CLONE_PARENT_DESTINATION); 
-		TechnologyAnalysis master = new TechnologyAnalysis(Mode.MASTER);
+		GitHubTechnologyAnalysis master = new GitHubTechnologyAnalysis(Mode.MASTER);
 		master.createBroker(false);
 		master.setMaster("localhost");
 		master.setInputDirectory(new File("experiment/in"));

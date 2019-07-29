@@ -36,13 +36,13 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 			}, 2000, 2000);
 		started = true;
 
-		if (!results.containsKey(analysisResult.getName()) && analysisResult.getName() != null) {
+		if (!results.containsKey(analysisResult.repository.getName()) && analysisResult.repository.getName() != null) {
 			// add new item
-			results.put(analysisResult.getName(), analysisResult);
+			results.put(analysisResult.repository.getName(), analysisResult);
 
-		} else if (results.containsKey(analysisResult.getName())) {
+		} else if (results.containsKey(analysisResult.repository.getName())) {
 			// supplement new item with existing information (if available)
-			AnalysisResult existingResult = results.get(analysisResult.getName());
+			AnalysisResult existingResult = results.get(analysisResult.repository.getName());
 
 			if (analysisResult.getAuthorCount() == -1 && existingResult.getAuthorCount() != -1) {
 				analysisResult.setAuthorCount(existingResult.getAuthorCount());
@@ -50,7 +50,7 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 			if (analysisResult.getFileCount() == -1 && existingResult.getFileCount() != -1) {
 				analysisResult.setFileCount(existingResult.getFileCount());
 			}
-			results.replace(existingResult.getName(), analysisResult);
+			results.replace(existingResult.repository.getName(), analysisResult);
 		}
 
 	}
@@ -71,7 +71,7 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 					"file count", "unique author count", "cached");
 
 			for (AnalysisResult result : results.values()) {
-				writer.writeRecord(result.getName(), result.getTechnology(), result.getFileCount(),
+				writer.writeRecord(result.repository.getName(), result.getTechnology(), result.getFileCount(),
 						result.getAuthorCount(), result.isCached());
 			}
 
