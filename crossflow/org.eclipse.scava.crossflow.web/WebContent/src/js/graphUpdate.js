@@ -20,9 +20,9 @@ const STREAM_TOPIC = "/topic/StreamMetadataBroadcaster";
 const TASK_TOPIC = "/topic/TaskMetadataBroadcaster";
 const LOG_TOPIC = "/topic/LogTopic";
 
-const STREAM_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot>';
-const TASK_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.TaskStatus>';
-const LOG_TOPIC_ROOT = '<org.eclipse.scava.crossflow.runtime.utils.LogMessage>';
+const STREAM_TOPIC_ROOT = "<StreamMetadataSnapshot>";
+const TASK_TOPIC_ROOT = "<TaskStatus>";
+const LOG_TOPIC_ROOT = "<LogMessage>";
 
 
 /* (!) filePath must specify a location accessible by the web server */
