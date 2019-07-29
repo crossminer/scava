@@ -25,13 +25,10 @@
   * Read the model.json and create the corresponding vertices and edges.
   */
  function readModel(model, graph, parent) {
-	 console.log( "readModel " + model.vertices);
 	 loadStencils();
 	 let vertexMap = new Map();
-	 for( var i = 0; i < model.vertices.length; i++ ) {
+	 for (let i = 0; i < model.vertices.length; i++ ) {
 		 const v = model.vertices[i];
-		 console.log("vertex ", v);
-		 console.log("type", v.type);
 		 switch(v.type) {
 		 case "Task":
 			 vertexMap.set(v.label, createTaskVertex(graph, parent, v.label, v.x, v.y, v.width, v.height));
@@ -47,8 +44,7 @@
 			 break;
 		 }
 	 }
-	 console.log( "readModel " + model.edges);
-	 for (var i = 0; i < model.edges.length; i++ ) {
+	 for (let i = 0; i < model.edges.length; i++ ) {
 		 const e = model.edges[i];
 		 // Remove if once we have all vertices!!!
 		 if (vertexMap.has(e.source) && vertexMap.has(e.target)) {
@@ -56,9 +52,9 @@
 				 vertexMap.get(e.source),
 				 vertexMap.get(e.target),
 				 "strokeColor=black;" + "endArrow=" + e.endArrow + ";");
-			 console.log("edge ", ge.style);
 		 }
 	 }
+	 return model.auto;
  }
 
 /**
@@ -76,7 +72,7 @@
  */
 function createTaskVertex(graph, parent, label, x, y, width, height) {
 	const id = 'task_' + label;
-	console.log("createTaskVertex " + id);
+	//console.log("createTaskVertex " + id);
 	const v = createVertex(
 		graph,
 		parent,
@@ -88,7 +84,6 @@ function createTaskVertex(graph, parent, label, x, y, width, height) {
 		height,
 		'shape=Task;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
-		console.log("Autosize");
 		graph.autoSizeCell(v, true);
 	}
 	graph.updateCellSize(v, true);
@@ -111,7 +106,7 @@ function createTaskVertex(graph, parent, label, x, y, width, height) {
 function createQueueVertex(graph, parent, label, x, y, width, height) {
 	const id = 'stream_' + label;
 	const trail = " ".repeat(label.length / 4);
-	console.log("createQueueVertex "+ id);
+	//console.log("createQueueVertex "+ id);
 	const v = createVertex(
 		graph,
 		parent,
@@ -123,7 +118,6 @@ function createQueueVertex(graph, parent, label, x, y, width, height) {
 		height,
 		'shape=Direct Data;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
-		console.log("Autosize");
 		graph.autoSizeCell(v, true);
 	}
 	graph.updateCellSize(v, true);
@@ -151,7 +145,7 @@ function createQueueVertex(graph, parent, label, x, y, width, height) {
  */
 function createSourceVertex(graph, parent, label, x, y, width, height) {
 	const id = 'source_' + label;
-	console.log("createSourceVertex "+ id);
+	//console.log("createSourceVertex "+ id);
 	const v = createVertex(
 		graph,
 		parent,
@@ -163,7 +157,6 @@ function createSourceVertex(graph, parent, label, x, y, width, height) {
 		height,
 		'shape=Source;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
-		console.log("Autosize");
 		graph.autoSizeCell(v, true);
 	}
 	graph.updateCellSize(v, true);
@@ -185,7 +178,7 @@ function createSourceVertex(graph, parent, label, x, y, width, height) {
  */
 function createSinkVertex(graph, parent, label, x, y, width, height) {
 	const id = 'sink_' + label;
-	console.log("createSinkVertex "+ id);
+	//console.log("createSinkVertex "+ id);
 	const v = createVertex(
 		graph,
 		parent,
@@ -197,7 +190,6 @@ function createSinkVertex(graph, parent, label, x, y, width, height) {
 		height,
 		'shape=Sink;fontSize=12;fontColor=black;strokeColor=black;fillColor=#ffffff');
 	if ((width === -1) || (height === -1)) {
-		console.log("Autosize");
 		graph.autoSizeCell(v, true);
 	}
 	graph.updateCellSize(v, true);
@@ -219,8 +211,7 @@ function createSinkVertex(graph, parent, label, x, y, width, height) {
 function createVertex(graph, parent, id, value, x, y, width, height, style) {
 	const v = graph.insertVertex(parent, id, value, x, y, width, height);
 	graph.model.setStyle(v, style);
-    console.log("Applied style "  + v.style);
-	return v;
+    return v;
 }
 
 
@@ -242,7 +233,6 @@ function link(source, target, graph, parent) {
  * our own stencils so Eugenia and Web UI look similar.
  */
 function loadStencils() {
-	console.log("loadStencils");
 	const req = mxUtils.load('src/js/flowchart.xml');
 	const root = req.getDocumentElement();
 	let shape = root.firstChild;

@@ -1,0 +1,76 @@
+{
+  "vertices": [
+    {
+      "type": "Source",
+      "label": "CalculationSource",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Task",
+      "label": "Calculator",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Sink",
+      "label": "CalculationResultsSink",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Queue",
+      "label": "Calculations",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Queue",
+      "label": "CalculationResults",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    }  ],
+  "edges": [
+    {
+      "source": "CalculationSource",
+      "target": "Calculations",
+      "endArrow": "classic"
+    },
+    {
+      "source": "Calculations",
+      "target": "Calculator",
+      "endArrow": "classic"
+    },
+    {
+      "source": "Calculations",
+      "target": "Calculation",
+      "endArrow": "none"
+    },
+    {
+      "source": "Calculator",
+      "target": "CalculationResults",
+      "endArrow": "classic"
+    },
+    {
+      "source": "CalculationResults",
+      "target": "CalculationResultsSink",
+      "endArrow": "classic"
+    },
+    {
+      "source": "CalculationResults",
+      "target": "CalculationResult",
+      "endArrow": "none"
+    }  
+  ],
+  "auto": true
+}

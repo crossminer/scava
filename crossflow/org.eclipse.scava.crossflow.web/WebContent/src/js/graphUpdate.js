@@ -195,7 +195,7 @@ function main(crossflow, container, experimentId) {
 					}
 					console.log("new style " + fillcolor);
 					try {
-						//window.runtimeModelGraph.model.beginUpdate();
+						window.runtimeModelGraph.model.beginUpdate();
 						console.log("change style " + cellStylePre + cellStyle);
 						window.runtimeModelGraph.getView().clear(cell)
 						// window.runtimeModelGraph.getModel().setStyle(cell, cellStylePre + cellStyle);
@@ -207,7 +207,7 @@ function main(crossflow, container, experimentId) {
 						//console.log(taskId + ' (' + taskStatus + ')');
 					} finally {
 						// Updates the display
-						// window.runtimeModelGraph.model.endUpdate();
+						window.runtimeModelGraph.model.endUpdate();
 						//console.log("endUpdate(B)");
 						window.runtimeModelGraph.refresh();
 						//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');

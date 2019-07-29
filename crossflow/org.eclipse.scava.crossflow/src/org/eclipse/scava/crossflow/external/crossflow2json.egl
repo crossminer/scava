@@ -1,5 +1,6 @@
 [%
 var edges = Sequence;
+var autoLayout = false;
 %]
 {
   "vertices": [
@@ -15,7 +16,8 @@ var edges = Sequence;
     [%=stream.createEdges()%][%if(hasMore){%],
 [%}%]
 [%}%]  
-  ]
+  ],
+  "auto": "[%=autoLayout%]"
 }
 [%
 /**
@@ -96,11 +98,13 @@ operation getLayoutInformation(element: Any) : Bounds {
     if (shape.isDefined()) {
         return shape.layoutConstraint;
     }
-    // Model does not have GMF diagram
+    // Model does not have GMF diagram (E.g. FleXMI)
+    autoLayout = true;
     var result = new Bounds;
     result.x = 0;
     result.y = 0;
     result.width = -1;
     result.height = -1;
+    return result;
 }
 %]  
