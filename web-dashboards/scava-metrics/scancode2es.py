@@ -148,10 +148,13 @@ def fetch_scancode(uri, project):
     Fetch the metrics from Scancode
 
     """
-    licensesNames = []
+
+    licensesCount = 0
     noLicenseCount = 0
 
     metrics = load_report(uri)
+
+    licensesNames = []
 
     for scannedFile in metrics['files']:
 
@@ -165,37 +168,74 @@ def fetch_scancode(uri, project):
                     noLicenseCount += 1
 
 
-    licensesCount = Counter(licensesNames)
+    fileCount = metrics['files_count'] # total files
 
-    licensesSummary = []
+    licensesCount = fileCount - noLicenseCount # Number of files with licenses (somes files may have several licenceNames)
 
-    for licenseName, licenseCount in licensesCount.items():
-            licensesSummary.append({
-                'name': licenseName,
-                'count': licenseCount,
-                'concluded': 0
-            })
+    uniqueLicenses = len(Counter(licensesNames)) # Number of unique licenses (some licenses may be for several files)
 
-    licensesSummary = {
-        'licenses': licensesSummary,
-        'noLicenseCount': noLicenseCount,
-        'fileCount': metrics['files_count']
-    }
+    timestamp = datetime_utcnow().isoformat()
 
-    # enrich fields for ES
+    # enrich fields for ES: Unique licenses
     eitem = {
         'project': project,
         'metric_class': 'scancode',
         'metric_type': 'scancode',
-        'metric_id': 'scancode_{}'.format(), # todo
-        'metric_desc': 'scancode',
-        'metric_name': 'scancode',
-        'metric_es_value': licensesSummary,
+        'metric_id': 'scancode_unique_lic',
+        'metric_desc': 'Number of unique licenses',
+        'metric_name': 'scancode_unique_lic',
+        'metric_es_value': uniqueLicenses,
         'metric_es_compute': 'sample',
-        'metric_value': licensesSummary,
-        'metric_es_value_weighted': licensesSummary,
-        'datetime': datetime_utcnow(), # todo temporary time field
-        'scancode': licensesSummary
+        'metric_value': uniqueLicenses,
+        'metric_es_value_weighted': uniqueLicenses,
+        'datetime': timestamp,
+        'scancode': uniqueLicenses
+    }
+
+    eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+    yield eitem
+
+    msg = "Metrics {} from component {} fetched".format(eitem, project)
+    logging.debug(msg)
+
+    # enrich fields for ES: Number of files with licenses
+    eitem = {
+        'project': project,
+        'metric_class': 'scancode',
+        'metric_type': 'scancode',
+        'metric_id': 'scancode_number_lic',
+        'metric_desc': 'Number of files with licenses',
+        'metric_name': 'scancode_number_lic',
+        'metric_es_value': licensesCount,
+        'metric_es_compute': 'sample',
+        'metric_value': licensesCount,
+        'metric_es_value_weighted': licensesCount,
+        'datetime': timestamp,
+        'scancode': licensesCount
+    }
+
+    eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+    yield eitem
+
+    msg = "Metrics {} from component {} fetched".format(eitem, project)
+    logging.debug(msg)
+
+    # enrich fields for ES: Number of files without licenses
+    eitem = {
+        'project': project,
+        'metric_class': 'scancode',
+        'metric_type': 'scancode',
+        'metric_id': 'scancode_files_no_lic',
+        'metric_desc': 'Number of files without licenses',
+        'metric_name': 'scancode_files_no_lic',
+        'metric_es_value': noLicenseCount,
+        'metric_es_compute': 'sample',
+        'metric_value': noLicenseCount,
+        'metric_es_value_weighted': noLicenseCount,
+        'datetime': timestamp,
+        'scancode': noLicenseCount
     }
 
     eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
@@ -206,7 +246,53 @@ def fetch_scancode(uri, project):
     logging.debug(msg)
 
 
-    return licensesSummary
+    # enrich fields for ES: Number of files
+    eitem = {
+        'project': project,
+        'metric_class': 'scancode',
+        'metric_type': 'scancode',
+        'metric_id': 'scancode_number_files',
+        'metric_desc': 'Number of files',
+        'metric_name': 'scancode_number_files',
+        'metric_es_value': fileCount,
+        'metric_es_compute': 'sample',
+        'metric_value': fileCount,
+        'metric_es_value_weighted': fileCount,
+        'datetime': timestamp,
+        'scancode': fileCount
+    }
+
+    eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+    yield eitem
+
+    msg = "Metrics {} from component {} fetched".format(eitem, project)
+    logging.debug(msg)
+
+    # enrich fields for ES: Ratio of files with licenses compared to total files
+    ratio = licensesCount / fileCount
+
+    eitem = {
+        'project': project,
+        'metric_class': 'scancode',
+        'metric_type': 'scancode',
+        'metric_id': 'scancode_ratio_no_lic',
+        'metric_desc': 'Ratio of files with licenses compared to total files',
+        'metric_name': 'scancode_number_files',
+        'metric_es_value': ratio,
+        'metric_es_compute': 'sample',
+        'metric_value':ratio ,
+        'metric_es_value_weighted': ratio,
+        'datetime': timestamp,
+        'scancode': ratio
+    }
+
+    eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
+
+    yield eitem
+
+    msg = "Metrics {} from component {} fetched".format(eitem, project)
+    logging.debug(msg)
 
 
 if __name__ == '__main__':
