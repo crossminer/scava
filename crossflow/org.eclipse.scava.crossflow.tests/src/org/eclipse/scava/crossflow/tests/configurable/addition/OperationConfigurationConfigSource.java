@@ -7,7 +7,7 @@ public class OperationConfigurationConfigSource extends OperationConfigurationCo
 		OperationConfiguration ret = new OperationConfiguration();
 		ret.operation = "+";
 		System.out.println("sending: "+ret);
-		sendToOperationConfigurationTopic(ret);
+		sendToOperationConfigurationConfigTopic(ret);
 		System.out.println("sent: "+ret);
 	}
 
