@@ -155,7 +155,7 @@ public class Indexer {
 			if (putMappingResponse.isAcknowledged() == true) {
 
 				logger.info("Mapping for " + documentType + " in " + indexName + " was added successfully");
-
+				System.out.println("[Index Debug] Mapping for " + documentType + " in " + indexName + " was added successfully");
 			}
 
 		} catch (IOException e) {
@@ -225,6 +225,7 @@ public class Indexer {
 	 */
 	private static void index(String indexName, String documentType, String uid, String document) {
 
+		System.out.println("[Index Debug] creating request for document: " + uid + "to be added to the index " + indexName );
 		try {
 			IndexRequest indexRequest = new IndexRequest();
 			indexRequest.index(indexName.toLowerCase()).type(documentType.toLowerCase()).id(uid).source(document,
@@ -232,9 +233,12 @@ public class Indexer {
 			logger.info("Document (uid: " + uid + ") has been "
 					+ highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
 
+			System.out.println("[Index Debug] Document (uid: " + uid + ") has been " + 
+					 highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
+			
 		} catch (IOException io) {
-
-			logger.error(io);
+			logger.error("Method index has experienced an IO error\n" + io);
+			System.out.println("[Index Debug] Method index has experienced an IO error\n" + io);
 		}
 	}
 
@@ -279,9 +283,10 @@ public class Indexer {
 
 	public static void indexDocument(String indexName, String mapping, String documentType, String uid, String document)  {
 
-		logger.info("Indexing tool has started");
-		
-			if (createIndex(indexName)) {
+		logger.info("Indexing tool has started - Attempting to add document to " + indexName);
+		System.out.println("[Index Debug] Indexing tool is attempting to add document to " + indexName);
+			
+		if (createIndex(indexName)) {
 				
 				//if a mapping is provided add mapping to index
 				if (!(mapping.isEmpty()) && (!(mapping.equals(null)))) 
@@ -294,10 +299,12 @@ public class Indexer {
 			}else {
 				
 				logger.info("ERROR - " + indexName + " was not created");
+				System.out.println("[Index Debug] ERROR - " + indexName + " was not created");
 				
 			}
 
 		logger.info("Indexing tool has finished");
+		System.out.println("[Index Debug] indexing tool has finished");
 	}
 
 	public static void main(String[] args)  {

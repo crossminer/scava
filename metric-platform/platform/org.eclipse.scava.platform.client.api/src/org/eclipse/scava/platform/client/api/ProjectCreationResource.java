@@ -122,6 +122,16 @@ public class ProjectCreationResource extends ServerResource {
 						NntpNewsGroup newsgroup = new NntpNewsGroup();
 						newsgroup.setName(cc.get("name").asText());
 						newsgroup.setUrl(cc.get("url").asText());
+						newsgroup.setPort(Integer.parseInt(cc.get("port").asText()));
+						if (cc.get("interval").asText() != null && !cc.get("interval").asText().equals("")) {
+							newsgroup.setInterval(Integer.parseInt(cc.get("interval").asText()));
+						}
+						if (cc.get("username").asText() != null && !cc.get("username").asText().equals("")) {
+							newsgroup.setUsername(cc.get("username").asText());
+						}
+						if (cc.get("password").asText() != null && !cc.get("password").asText().equals("")) {
+							newsgroup.setPassword(cc.get("password").asText());
+						}
 						channel = newsgroup;
 						break;
 					case "irc":

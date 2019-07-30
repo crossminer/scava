@@ -4,7 +4,7 @@
 # Get metrics from Scava and publish them in Elasticsearch
 # If the collection is a OSSMeter one add project and other fields to items
 #
-# Copyright (C) 2018 Bitergia
+# Copyright (C) 2018-2019 Bitergia
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,25 +17,23 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors:
-#   Alvaro del Castillo San Felix <acs@bitergia.com>
 #   Assad Montasser <assad.montasser@ow2.org>
+#   Valerio Cosentino <valcos@bitergia.com>
 #
 
 import argparse
 import hashlib
 import json
 import logging
-import re
 import requests
 import time
 
-from perceval.backends.scava.sonarqube import Sonar
+from grimoirelab_toolkit.datetime import datetime_utcnow
 
-from grimoirelab_toolkit.datetime import unixtime_to_datetime
+from perceval.backends.scava.omm import Omm
 
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
@@ -43,17 +41,18 @@ from grimoire_elk.elastic_mapping import Mapping as BaseMapping
 DEFAULT_BULK_SIZE = 100
 DEFAULT_WAIT_TIME = 10
 
+METRIC_VALUE = 'omm_score'
+METRIC_ID = 'omm_section'
+
 
 def get_params():
-    parser = argparse.ArgumentParser(usage="usage: sonarqube2es [options]",
-                                     description="Import Sonarqube metrics in ElasticSearch")
+    parser = argparse.ArgumentParser(usage="usage: omm2es [options]",
+                                     description="Import Omm form metrics in ElasticSearch")
     parser.add_argument("--bulk-size", default=DEFAULT_BULK_SIZE, type=int,
                         help="Number of items uploaded per bulk")
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
-    parser.add_argument("-u", "--url", help="URL for Sonarqube instance")
-    parser.add_argument("-c", "--components", help="URL containing the list of components with corresponding mappings")
-    parser.add_argument("-m", "--metrics", nargs='+', help="List of metrics")
+    parser.add_argument("-u", "--uri", help="URI for Omm form")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -136,59 +135,47 @@ def __init_index(elastic_url, index, wait_time):
     return elastic
 
 
-def enrich_metrics(sonar_metrics):
+def enrich_metrics(omm_metrics):
     """
-    Enrich metrics coming from Sonarqube to use them in Kibana
+    Enrich metrics coming from Ommto use them in Kibana
 
-    :param sonar_metrics: metrics generator
+    :param omm_metrics: metrics generator
     :return:
     """
     processed = 0
     enriched_skipped = 0
 
-    for sonar_metric in sonar_metrics:
+    for omm_metric in omm_metrics:
 
         processed += 1
-
-        project = ((sonar_metric['origin'].split('?')[1]).split('&')[0]).split('=')[1]
-        datetime = unixtime_to_datetime(sonar_metric['data']['fetched_on']).isoformat()
-
-        sonar_data = sonar_metric['data']
+        omm_data = omm_metric['data']
 
         try:
-            metric_value = sonar_data.get('value', None)
+            metric_value = omm_data.get(METRIC_VALUE, None)
+            metric_value = metric_value.replace(',', '.')
             if metric_value:
                 float(metric_value)
         except:
             metric_value = None
 
         if not metric_value:
-            periods = sonar_data.get('periods', [])
-            if periods:
-                metric_value = periods[0]['value']
-
-        if not metric_value:
-            msg = "Metric value not processed for {} and value {}".format(sonar_data['metric'], sonar_data['value'])
+            msg = "Metric value not found for {}".format(omm_data['metric'])
             logging.warning(msg)
             enriched_skipped += 1
-        else:
-            metric_value = float(metric_value)
 
         eitem = {
-            # origin : https://sonarc..component?component=org.xwiki.contrib:application-antispam&metricKeys=accessors
-            # we get only component name, in this example: org.xwiki.contrib:application-antispam
-            'project': project,
-            'metric_class': 'sonarqube',
-            'metric_type': sonar_metric['backend_name'],
-            'metric_id': 'sonar_{}'.format(re.sub('\W+', '_', sonar_data['metric']).lower()),
-            'metric_desc': 'Sonar ' + sonar_data['metric'],
-            'metric_name': 'Sonar ' + sonar_data['metric'],
+            'project': omm_data['scava_project_name'],
+            'metric_class': 'omm',
+            'metric_type': omm_metric['backend_name'],
+            'metric_id': 'omm_{}'.format(omm_data[METRIC_ID]),
+            'metric_desc': omm_data[METRIC_ID],
+            'metric_name':  omm_data[METRIC_ID],
             'metric_es_value': metric_value,
             'metric_es_compute': 'sample',
             'metric_value': metric_value,
             'metric_es_value_weighted': metric_value,
-            'datetime': datetime,
-            'sonar': sonar_data
+            'datetime': omm_data['timestamp'],
+            'omm': omm_data
         }
 
         eitem['uuid'] = uuid(eitem['metric_id'], eitem['project'], eitem['datetime'])
@@ -199,34 +186,17 @@ def enrich_metrics(sonar_metrics):
     logging.info(msg)
 
 
-def load_components(url):
+def fetch_omm(uri):
+    """Fetch the metrics from OMM"""
 
-    logging.info("Fetching components from %s", url)
-    raw_mappings = requests.get(url)
-    mappings = json.loads(raw_mappings.text)
+    omm_backend = Omm(uri)
 
-    return mappings['component-mapping']
+    for enriched_metric in enrich_metrics(omm_backend.fetch()):
 
+        yield enriched_metric
 
-def fetch_sonarqube(url, components_url, metrics):
-    """
-    Fetch the metrics from Sonarqube
-
-    """
-    components = load_components(components_url)
-
-    for component in components:
-        sonar_backend = Sonar(url, component, metrics)
-
-        for enriched_metric in enrich_metrics(sonar_backend.fetch()):
-
-            if components[component]:
-                enriched_metric['project'] = components[component]
-
-            yield enriched_metric
-
-        msg = "Metrics {} from component {} fetched".format(metrics, component)
-        logging.debug(msg)
+    msg = "OMM data fetched from {}".format(uri)
+    logging.debug(msg)
 
 
 if __name__ == '__main__':
@@ -238,20 +208,20 @@ if __name__ == '__main__':
     else:
         logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 
-    logging.info("Importing items from Sonarqube to %s/%s", ARGS.elastic_url, ARGS.index)
+    logging.info("Importing items from OMM to %s/%s", ARGS.elastic_url, ARGS.index)
 
     elastic = __init_index(ARGS.elastic_url, ARGS.index, ARGS.wait_time)
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics)
+    omm_metrics = fetch_omm(ARGS.uri)
 
-    if sonar_metrics:
-        logging.info("Uploading SonarQube metrics to Elasticsearch")
+    if omm_metrics:
+        logging.info("Uploading Omm metrics to Elasticsearch")
 
         counter = 0
         to_upload = []
-        for item in sonar_metrics:
+        for item in omm_metrics:
 
             to_upload.append(item)
 
