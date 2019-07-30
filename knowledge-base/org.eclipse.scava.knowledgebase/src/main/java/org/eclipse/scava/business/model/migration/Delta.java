@@ -1,30 +1,49 @@
 package org.eclipse.scava.business.model.migration;
 
-import java.util.List;
-
-import org.eclipse.scava.business.model.MavenLibrary;
+import org.springframework.data.annotation.Id;
 
 public class Delta {
-	private MavenLibrary libv1;
-	private MavenLibrary libv2;
-	private List<Object> deltas;
-	public MavenLibrary getLibv1() {
-		return libv1;
+	@Id
+	private String id;
+	private String coordinate1;
+	private String coordinate2;
+	private String deltaPath;
+	
+	public Delta() {
+		super();
 	}
-	public void setLibv1(MavenLibrary libv1) {
-		this.libv1 = libv1;
+	
+	public Delta(String coordinateLibv1, String coordinateLibv2, String deltaPath) {
+		super();
+		this.coordinate1 = coordinateLibv1;
+		this.coordinate2 = coordinateLibv2;
+		this.deltaPath = deltaPath;
 	}
-	public MavenLibrary getLibv2() {
-		return libv2;
+	public String getCoordinate1() {
+		return coordinate1;
 	}
-	public void setLibv2(MavenLibrary libv2) {
-		this.libv2 = libv2;
+	public void setCoordinate1(String libv1) {
+		this.coordinate1 = libv1;
 	}
-	public List<Object> getDeltas() {
-		return deltas;
+	
+	public String getCoordinateLibv2() {
+		return coordinate2;
 	}
-	public void setDeltas(List<Object> deltas) {
-		this.deltas = deltas;
+	public void setCoordinate2(String libv2) {
+		this.coordinate2 = libv2;
+	}
+	
+	public String getDeltaPath() {
+		return deltaPath;
+	}
+	public void setDeltaPath(String deltas) {
+		this.deltaPath = deltas;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
