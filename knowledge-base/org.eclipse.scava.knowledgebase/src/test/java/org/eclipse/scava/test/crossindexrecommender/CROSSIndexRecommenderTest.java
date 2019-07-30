@@ -12,26 +12,26 @@ package org.eclipse.scava.test.crossindexrecommender;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.impl.CROSSIndexRecommender;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application.properties")
 public class CROSSIndexRecommenderTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(CROSSIndexRecommenderTest.class);
-
+	
 	@Autowired
 	private CROSSIndexRecommender crossIndexRecommender;
 
 	@Test
-	@Ignore
 	public void queryBuilderTest() throws Exception {
 		String query = "/*******************************************************************************\n"
 				+ " * Copyright (C) 2017 University of L'Aquila\n" + " * \n"
