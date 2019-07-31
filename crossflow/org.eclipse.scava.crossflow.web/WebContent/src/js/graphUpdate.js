@@ -82,8 +82,9 @@ function main(crossflow, container, experimentId) {
 	};
 
 	ws.onmessage = (e) => {
+		console.time('processActiveMQMessage');
 		processActiveMQMessage(e)
-
+		console.timeEnd('processActiveMQMessage');
 
 	};// onMessage
 
@@ -99,7 +100,6 @@ function main(crossflow, container, experimentId) {
 	}
 
 	function processActiveMQMessage(message) {
-		//console.log('onmessage: ' + message);
 		if ( message.data.startsWith('MESSAGE') ) {
 			//console.log("message.data="+message.data);
 			if ( message.data.includes(STREAM_TOPIC_ROOT) ) {
@@ -115,6 +115,7 @@ function main(crossflow, container, experimentId) {
 	}
 
 	function processStreamEvent(message) {
+		// console.log("processStreamEvent")
 		let text = message.data.substring(message.data.indexOf(STREAM_TOPIC_ROOT), message.data.length-1);
 		// FIXME We can create the tooltip info here since we are already parsing the xml
 		window.streamTopicXmlDoc = parser.parseFromString(text,"text/xml");
@@ -138,10 +139,12 @@ function main(crossflow, container, experimentId) {
 								if (vertexId.includes('stream_' + streamId)) {
 									size = formatSize(streams.children[i].children[1]);
 									try {
+										window.runtimeModelGraph.getModel().beginUpdate();
 										const cell = window.runtimeModelGraph.getModel().getCell(vertexId);
 										window.runtimeModelGraph.getModel().setValue(cell, size);
 									} finally {
 										window.runtimeModelGraph.refresh();
+										window.runtimeModelGraph.getModel().endUpdate();
 									}
 								}
 							}
@@ -154,15 +157,15 @@ function main(crossflow, container, experimentId) {
 
 	function processTaskEvent(message) {
 		let text = message.data.substring(message.data.indexOf(TASK_TOPIC_ROOT), message.data.length-1);
+		// FIXME Do the tooltip analysis here and store that in the window/graph
 		window.taskTopicXmlDoc = parser.parseFromString(text,"text/xml");
 		let taskTopicXmlDoc = window.taskTopicXmlDoc;
-		console.log("processTaskEvent")
-		let taskStatus = window.taskTopicXmlDoc.childNodes[0];
+		let taskStatus = taskTopicXmlDoc.childNodes[0];
 		let caller = taskStatus.children[1];
 		let taskId = caller.innerHTML.substring(0, caller.innerHTML.indexOf(':'));
 		if ( window.runtimeModelGraph.getDefaultParent().children != null ) {
 			for (let i = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; i < l; i++) {
-				if ( window.runtimeModelGraph.getDefaultParent().children[i].id == 'task_' + taskId ) {
+				if ( window.runtimeModelGraph.getDefaultParent().children[i].id == 'task_' + taskId) {
 					taskStatus = taskStatus.children[0].innerHTML;
 					const id = window.runtimeModelGraph.getDefaultParent().children[i].id;
 					const cell = window.runtimeModelGraph.model.getCell(id);
@@ -196,23 +199,24 @@ function main(crossflow, container, experimentId) {
 					console.log("new style " + fillcolor);
 					try {
 						window.runtimeModelGraph.model.beginUpdate();
-						console.log("change style " + cellStylePre + cellStyle);
+						// console.log("change style " + cellStylePre + cellStyle);
 						window.runtimeModelGraph.getView().clear(cell)
+						window.runtimeModelGraph.getModel().setCellStyle(mxConstants.STYLE_FILLCOLOR, fillcolor, cell);
 						// window.runtimeModelGraph.getModel().setStyle(cell, cellStylePre + cellStyle);
 						// window.runtimeModelGraph.setCellStyles(
 						// 		mxConstants.STYLE_FILLCOLOR, fillcolor,
 						// 		{cell});
-						cell.setStyle(cellStylePre + cellStyle);
+						//cell.setStyle(cellStylePre + cellStyle);
 						window.runtimeModelGraph.getView().validate(cell)
+
 						//console.log(taskId + ' (' + taskStatus + ')');
 					} finally {
 						// Updates the display
+						// window.runtimeModelGraph.refresh();
 						window.runtimeModelGraph.model.endUpdate();
 						//console.log("endUpdate(B)");
-						window.runtimeModelGraph.refresh();
 						//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');
 					}
-
 				}
 			}// for window.runtimeModelGraph.getDefaultParent().children
 		}

@@ -1,45 +1,38 @@
 <jsp:include page="header.jsp" />
 
 <main role="main" id="app">
-
-<section class="jumbotron text-center">
-	<div class="container">
-		<h1 class="jumbotron-heading">{{ experiment.title }}</h1>
-		<p class="lead text-muted">{{ experiment.summary }}</p>
-		<div class="container">
-		<div class="row justify-content-center">
-			<!-- MODEL -->
-			<div class="show " id="model">
-				<div id="graphContainer" style="position: relative; overflow: scroll; width: 1200%; height: 400%; cursor: default;"></div>
+    <div class="container">
+		<div class="row">
+			<div class="col align-self-center" align="center">
+				<h1 class="jumbotron-heading">{{ experiment.title }}</h1>
+				<p class="lead text-muted">{{ experiment.summary }}</p>
+				<div class="row justify-content-center">
+					<!-- MODEL -->
+					<div id="graphContainer" style="position: relative; overflow: scroll; width: 800%; height: 400%; cursor: default;"></div>
+				</div>
 			</div>
 		</div>
-	    </div>
-
-		<div class="btn-group" v-if="experiment.status == 'stopped'">
-			<button type="button" class="btn btn-success"
-				v-on:click="startExperiment">Start</button>
-			<button type="button"
-				class="btn btn-success dropdown-toggle dropdown-toggle-split"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<span class="sr-only">Toggle Dropdown</span>
-			</button>
-			<div class="dropdown-menu">
-				<a class="dropdown-item" href="#" v-on:click="startExperiment">Master
-					and worker</a> <a class="dropdown-item" href="#"
-					v-on:click="startExperimentMasterOnly">Master only</a>
+		<div class="row">
+			<div class="col align-self-center" align="center">
+				<form>
+					<div class="btn-group" v-if="experiment.status == 'stopped'">
+						<button type="button" class="btn btn-success" v-on:click="startExperiment">Start</button>
+						<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" v-on:click="startExperiment">Master and worker</a>
+							<a class="dropdown-item" href="#" v-on:click="startExperimentMasterOnly">Master only</a>
+						</div>
+					</div>
+					<button type='button' class="btn btn-danger my-2" v-if="experiment.status == 'running'"
+						v-on:click="stopExperiment" >Stop</button>
+					<button type='button' class="btn btn-information my-2" v-if="experiment.status != 'running' && (experiment.cached || experiment.executed)"
+						v-on:click="resetExperiment" >Reset</button>
+				</form>
 			</div>
 		</div>
-
-		<button v-on:click="stopExperiment"
-			v-if="experiment.status == 'running'" class="btn btn-danger my-2">Stop</button>
-		<button v-on:click="resetExperiment"
-			v-if="experiment.status != 'running' && (experiment.cached || experiment.executed)"
-			class="btn btn-information my-2">Reset</button>
-	</div>
-</section>
-
-<section>
-	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-md-12 py-12">
 
@@ -177,8 +170,6 @@
 			</div>
 		</div>
 	</div>
-</section>
-
 </main>
 
 
@@ -195,10 +186,10 @@
 		},
 		methods : {
 			startExperimentMasterOnly : function(event) {
-				crossflow.startExperiment(this.experimentId, false);
+				console.log("Start experiment Master", crossflow.startExperiment(this.experimentId, false));
 			},
 			startExperiment : function(event) {
-				crossflow.startExperiment(this.experimentId, true);
+				console.log("Start experiment", crossflow.startExperiment(this.experimentId, true));
 			},
 			stopExperiment : function(event) {
 				crossflow.stopExperiment(this.experimentId);
@@ -219,13 +210,14 @@
 
 	refresh();
 
-	setInterval(function() {
-		if (document.getElementById("refresh").checked) {
-			refresh();
-		}
-	}, 3000);
+	//setInterval(function() {
+	//	if (document.getElementById("refresh").checked) {
+	//			refresh();
+	//	}
+	//}, 3000);
 
 	function refresh() {
+		console.log("refresh");
 		app.experiment = crossflow.getExperiment(app.experimentId);
 		app.experiment.fileDescriptors.forEach(function(fileDescriptor) {
 			fileDescriptor.table = crossflow.getContent(fileDescriptor);
@@ -264,6 +256,7 @@
 		//console.log('getTooltipForCell triggered');
 		const streamTopicXmlDoc = window.streamTopicXmlDoc;
 		const taskTopicXmlDoc = window.taskTopicXmlDoc;
+		let cellTooltip;
 
 		let queueSize = "n/a";
 		let queueSizeUnit = "";

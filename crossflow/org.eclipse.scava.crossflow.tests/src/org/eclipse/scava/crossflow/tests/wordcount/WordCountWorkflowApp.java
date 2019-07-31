@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.tests.wordcount;
 
+import java.io.File;
+
 import org.eclipse.scava.crossflow.runtime.Mode;
 
 public class WordCountWorkflowApp {
@@ -10,10 +12,8 @@ public class WordCountWorkflowApp {
 		master.createBroker(true);
 		master.setMaster("localhost");
 		
-		//master.setParallelization(4);
-		
-		//master.setInputDirectory(new File("experiment/in"));
-		//master.setOutputDirectory(new File("experiment/out"));
+		master.setInputDirectory(new File("inputs/wordcount"));
+		master.setOutputDirectory(new File("outputs/wordcount"));
 		
 		master.setInstanceId("Example WordCountWorkflow Instance");
 		master.setName("WordCountWorkflow");

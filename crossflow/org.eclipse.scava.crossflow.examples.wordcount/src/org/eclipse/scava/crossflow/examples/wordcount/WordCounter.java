@@ -34,7 +34,7 @@ public class WordCounter extends WordCounterBase {
 			sendToWordFrequencies(frequency);
 		}
 
-	}// consomeLines
+	}
 
 	/**
 	 * Count the frequency of words in a line of text by considering characters A-Z and a-z (only) transformed to lower-case.

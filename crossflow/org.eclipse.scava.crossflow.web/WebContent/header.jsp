@@ -3,43 +3,43 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/crossflow.css" rel="stylesheet">
-    	
+
 	<script src="js/thrift.js"></script>
     <script src="js/gen/Crossflow.js"></script>
     <script src="js/gen/crossflow_types.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link href="css/album.css" rel="stylesheet">
-    
+
 	<!-- mxGraph JS imports -->
 	<script type="text/javascript">
 		mxBasePath = 'src';
 	</script>
 
 	<script type="text/javascript" src="src/js/mxClient.js"></script>
-	<script type="text/javascript" src="src/js/crossflow.js"></script>
+	<script type="text/javascript" src="src/js/diagram.js"></script>
 	<script type="text/javascript" src="src/js/graphUpdate.js"></script>
-	
+
 	<!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    
+
     <!-- ActiveMQ AJAX ( http://activemq.apache.org/ajax.html ) -->
     <!-- <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script> -->
 	<script type="text/javascript" src="js/amq_jquery_adapter.js"></script>
 	<script type="text/javascript" src="js/amq.js"></script>
 	<script type="text/javascript">
 	  var amq = org.activemq.Amq;
-	  amq.init({ 
-	    uri: 'tcp://localhost:61616', 
+	  amq.init({
+	    uri: 'tcp://localhost:61616',
 	    logging: true,
 	    timeout: 20
 	  });
 	</script>
-        
+
   </head>
-  
+
   <body onload="main(crossflow, document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))">
 
     <header>
