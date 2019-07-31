@@ -143,7 +143,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 	}
 
 	@Override
-	public void consumeTechnologyCollectionTopic(TechnologyCollection technologyCollection) throws Exception {
+	public void consumeTechnologyCollectionConfigTopic(TechnologyCollection technologyCollection) throws Exception {
 
 		for (Technology tech : technologyCollection.technologies)
 			technologies.put(tech.getFileExt(), tech.getTechKey());

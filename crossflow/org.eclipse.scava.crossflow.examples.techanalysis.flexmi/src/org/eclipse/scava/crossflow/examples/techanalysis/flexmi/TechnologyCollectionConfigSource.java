@@ -22,7 +22,7 @@ public class TechnologyCollectionConfigSource extends TechnologyCollectionConfig
 				technologyTuple.setTechKey(record.get(1));
 				collection.technologies.add(technologyTuple);
 			}
-			sendToTechnologyCollectionTopic(collection);
+			sendToTechnologyCollectionConfigTopic(collection);
 
 		} catch (Exception e) {
 			workflow.log(SEVERITY.ERROR, e.getMessage());
