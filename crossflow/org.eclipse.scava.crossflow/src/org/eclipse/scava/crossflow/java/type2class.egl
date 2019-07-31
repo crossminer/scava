@@ -1,11 +1,9 @@
 package [%=package%];
 
 import java.io.Serializable;
-import java.util.UUID;
-import org.eclipse.scava.crossflow.runtime.Job;
-import java.util.List;
+import java.util.Collection;
 import java.util.ArrayList;
-import java.io.Serializable;
+import org.eclipse.scava.crossflow.runtime.Job;
 
 public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]Job[%}else{%][%=t.extending.first.name%][%}}else{%] implements Serializable[%}%] {
 	
@@ -35,7 +33,7 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 	[%}%]
 		
 	[%for (f in t.fields) { %]
-	protected [%=f.getJavaType()%] [%=f.name%] [%if(f.many){%]= new ArrayList<>()[%}%];
+	protected [%=f.getJavaType()%] [%=f.name%] [%if(f.many){%] = new ArrayList<>()[%}%];
 	
 	public void set[%=f.name.ftuc()%]([%=f.getJavaType()%] [%=f.name%]) {
 		this.[%=f.name%] = [%=f.name%];
@@ -72,7 +70,7 @@ operation Type isJob() {
 
 operation Field getJavaType() {
 	if (self.many) {
-		return "List<" + self.type + ">";
+		return "Collection<" + self.type + ">";
 	}
 	else {
 		return self.type;

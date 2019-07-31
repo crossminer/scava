@@ -1,4 +1,3 @@
-package org.eclipse.scava.crossflow;
 /*******************************************************************************
  * Copyright (c) 2008 The University of York.
  * This program and the accompanying materials
@@ -9,6 +8,7 @@ package org.eclipse.scava.crossflow;
  *     Dimitrios Kolovos - initial API and implementation
  *     Konstantinos Barmpis - adaption for CROSSFLOW
  ******************************************************************************/
+package org.eclipse.scava.crossflow;
 
 import java.io.File;
 import java.net.URI;
@@ -20,6 +20,7 @@ import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
@@ -121,18 +122,9 @@ public class GenerateDeploymentArtifacts {
 		return module.execute();
 	}
 
-	private URI getFileURI(String fileName) throws URISyntaxException {
-
+	private static URI getFileURI(String fileName) throws URISyntaxException {
 		URI binUri = GenerateDeploymentArtifacts.class.getResource(fileName).toURI();
-		URI uri = null;
-
-		if (binUri.toString().indexOf("bin") > -1) {
-			uri = new URI(binUri.toString().replaceAll("bin", "src"));
-		} else {
-			uri = binUri;
-		}
-
-		return uri;
+		return binUri.toString().contains("bin") ? new URI(binUri.toString().replaceAll("bin", "src")) : binUri;
 	}
 
 	private IEolModule createModule() {
@@ -155,18 +147,12 @@ public class GenerateDeploymentArtifacts {
 				false);
 	}
 
-	private List<IModel> getModels() throws Exception {
-		List<IModel> models = new ArrayList<>();
-		models.add(getModel());
-		return models;
-	}
-
 	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
 			boolean readOnLoad, boolean storeOnDisposal, boolean isCached) throws EolModelLoadingException {
 		EmfModel theModel = new EmfModel();
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
-		properties.put(EmfModel.PROPERTY_MODEL_FILE, modelFile);
+		properties.put(EmfModel.PROPERTY_MODEL_URI, EmfUtil.createFileBasedURI(modelFile) + "");
 		properties.put(EmfModel.PROPERTY_NAME, modelName);
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
@@ -175,7 +161,7 @@ public class GenerateDeploymentArtifacts {
 		return theModel;
 	}
 	
-	private String getWorkflowName(IModel model) {
+	private static String getWorkflowName(IModel model) {
 		Object wf = null;
 		try {
 			 wf = model.getAllOfType("Workflow").iterator().next();

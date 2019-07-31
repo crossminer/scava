@@ -36,6 +36,7 @@ import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -201,7 +202,7 @@ public class GenerateImplementations {
 	// can control
 	// what languages we support and is less error prone
 	private Map<String, String[]> findLanguages(EmfModel model) {
-		final Map<String, String[]> languages = new HashMap<String, String[]>();
+		final Map<String, String[]> languages = new HashMap<>();
 		Resource r = model.getResource();
 		EClass languageClass = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("Language");
 		EAttribute nameAttr = languageClass.getEAllAttributes().stream().filter(a -> a.getName().equals("name"))
@@ -228,8 +229,8 @@ public class GenerateImplementations {
 	 * @param model     the crossflow model
 	 * @param languages the languages information
 	 */
-	private Map<String, String[]> findScriptingLanguages(EmfModel model) {
-		final Map<String, String[]> languages = new HashMap<String, String[]>();
+	private static Map<String, String[]> findScriptingLanguages(EmfModel model) {
+		final Map<String, String[]> languages = new HashMap<>();
 		Resource r = model.getResource();
 		EClass scriptingTask = (EClass) r.getContents().get(0).eClass().getEPackage().getEClassifier("ScriptedTask");
 		EAttribute scriptingLanguage = scriptingTask.getEAllAttributes().stream()
@@ -271,7 +272,7 @@ public class GenerateImplementations {
 		return model;
 	}
 
-	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
+	private static EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
 			boolean readOnLoad, boolean storeOnDisposal, boolean isCached) throws EolModelLoadingException {
 		final EmfModel theModel = new EmfModel() {
 			@Override
@@ -284,7 +285,7 @@ public class GenerateImplementations {
 		};
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
-		properties.put(EmfModel.PROPERTY_MODEL_FILE, modelFile);
+		properties.put(EmfModel.PROPERTY_MODEL_URI, EmfUtil.createFileBasedURI(modelFile) + "");
 		properties.put(EmfModel.PROPERTY_NAME, modelName);
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
@@ -293,14 +294,14 @@ public class GenerateImplementations {
 		return theModel;
 	}
 
-	private File getClasspathFile(File directory) {
+	private static File getClasspathFile(File directory) {
 		if (containsFile(directory, ".classpath")) {
 			return new File(directory.getAbsolutePath() + "/.classpath");
 		}
 		return null;
 	}
 
-	private File getManifestFile(File directory) {
+	private static File getManifestFile(File directory) {
 		File mff = new File(directory.getPath() + "/META-INF/");
 		System.out.println(mff);
 		if (containsFile(mff, "MANIFEST.MF")) {
@@ -309,7 +310,7 @@ public class GenerateImplementations {
 		return null;
 	}
 
-	private boolean containsFile(File directory, String file) {
+	private static boolean containsFile(File directory, String file) {
 		for (String f : directory.list()) {
 			if (f.equals(file))
 				return true;
@@ -317,36 +318,29 @@ public class GenerateImplementations {
 		return false;
 	}
 
-	private void updateManifest(File manifest) throws Exception {
-
-		BufferedReader r = new BufferedReader(new FileReader(manifest));
-
-		List<String> contents = new LinkedList<String>();
-		String line;
-		while ((line = r.readLine()) != null) {
-			contents.add(line);
+	private static void updateManifest(File manifest) throws Exception {
+		List<String> contents = new LinkedList<>();
+		
+		try (BufferedReader r = new BufferedReader(new FileReader(manifest))) {
+			String line;
+			while ((line = r.readLine()) != null) {
+				contents.add(line);
+			}
 		}
-		r.close();
 
 		// TODO make this smarter for manifests with multiple dependencies
 		if (!contents.stream().anyMatch(s -> s.contains("Require-Bundle: org.eclipse.scava.crossflow.runtime"))) {
-
 			String dependencies = "Require-Bundle: org.eclipse.scava.crossflow.runtime";
-
-			BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true));
-			w.append(dependencies + "\n");
-			w.close();
-
+			try (BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true))) {
+				w.append(dependencies + "\n");
+			}
 		}
 
 		if (!contents.stream().anyMatch(s -> s.contains("Bundle-RequiredExecutionEnvironment"))) {
-
 			String jre = "Bundle-RequiredExecutionEnvironment: JavaSE-1.8";
-
-			BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true));
-			w.append(jre + "\n");
-			w.close();
-
+			try (BufferedWriter w = new BufferedWriter(new FileWriter(manifest, true))) {
+				w.append(jre + "\n");
+			}
 		}
 
 	}
