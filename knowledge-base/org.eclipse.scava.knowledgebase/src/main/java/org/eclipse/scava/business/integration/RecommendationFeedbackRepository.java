@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.scava.business.integration;
 
-import java.util.List;
-
-import org.eclipse.scava.business.dto.metrics.MetricsForProject;
+import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  * @author Juri Di Rocco
  *
  */
-public interface RecommendationFeedbackRepository extends MongoRepository<RecommendationFeedbackRepository, String> {
+public interface RecommendationFeedbackRepository extends MongoRepository<RecommendationFeedback, String> {
 }

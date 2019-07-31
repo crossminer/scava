@@ -16,10 +16,9 @@ import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationType;
-import org.eclipse.scava.business.impl.DataReader;
+import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
-import org.eclipse.scava.business.model.MethodDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,8 @@ public class RecommenderRestController {
 	@Autowired
 	private IRecommenderManager recommenderManager;
 	private static final Logger logger = LoggerFactory.getLogger(RecommenderRestController.class);
+	@Autowired
+	private RecommendationFeedbackRepository recommendationFeedbackRepo;
 
 	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public List<Cluster> getClusters(
@@ -114,7 +115,7 @@ public class RecommenderRestController {
 	public @ResponseBody boolean storeRecommendationFeedback(
 			@ApiParam(value = "Query object", required = true) @RequestBody RecommendationFeedback recFed) throws Exception {
 		try {
-			recFed.equals(recFed);
+			recommendationFeedbackRepo.save(recFed);
 		} catch (Exception e) {
 			return false;
 		}

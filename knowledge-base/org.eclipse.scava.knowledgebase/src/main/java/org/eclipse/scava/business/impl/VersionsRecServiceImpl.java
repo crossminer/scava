@@ -45,7 +45,11 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 	@Autowired
 	private MavenLibraryRepository mvnRepository;
 
+	@Value("${versionrecommender.releasefile}")
+	private String fileName;
+	
 	private static final Logger logger = LoggerFactory.getLogger(VersionsRecServiceImpl.class);
+	
 	@Override
 	public Recommendation getRecommendation(Query query) throws Exception {
 		Recommendation rec = new Recommendation();
@@ -65,8 +69,6 @@ public class VersionsRecServiceImpl implements IRecommendationProvider {
 		return rec;
 	}
 	
-	@Value("${versionrecommender.releasefile}")
-	private String fileName;
 	public void loadVersions() {
 		
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
