@@ -4,7 +4,7 @@ public class PostConfigurationConfigSource extends PostConfigurationConfigSource
 	
 	@Override
 	public void produce() throws Exception {
-		sendToPostConfigurationConfigTopic(new PostConfiguration());
+		sendToPostConfigurationTopic(new PostConfiguration());
 		System.out.println("sent: "+new PostConfiguration());
 	}
 

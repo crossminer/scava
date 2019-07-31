@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -18,6 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.eclipse.scava.crossflow.runtime.Cache;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
@@ -43,26 +46,43 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 
 	@Override
-	public String startExperiment(String experimentId, boolean worker) throws TException {
+	public boolean startExperiment(String experimentId, boolean worker) throws TException {
 		Experiment experiment = getExperiment(experimentId);
 		ExperimentRegistry.addExperiment(experiment);
+		if (!isBrokerRunning()) {
+			startBroker();
+		}
+		Mode mode = Mode.MASTER;
+		if (!worker)
+			mode = Mode.MASTER_BARE;
+
+		URLClassLoader classLoader;
 		try {
-
-			if (!isBrokerRunning()) {
-				startBroker();
-			}
-
-			Mode mode = Mode.MASTER;
-			if (!worker)
-				mode = Mode.MASTER_BARE;
-
-			ClassLoader classLoader = new URLClassLoader(
+			classLoader = new URLClassLoader(
 					new URL[] { new File(servlet.getServletContext()
 							.getRealPath("experiments/" + experimentId + "/" + experiment.getJar())).toURI().toURL() },
 					Thread.currentThread().getContextClassLoader());
+		} catch (MalformedURLException e) {
+			throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Unable to load workflow jar to class path");
+		}
 
-			Workflow workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
+		Workflow workflow;
+		try {
+			workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
 					.getConstructor(Mode.class).newInstance(mode);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException | SecurityException
+				| ClassNotFoundException e) {
+			throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Unable to craete instance of workflow main class.");
+		}
+		finally {
+			try {
+				classLoader.close();
+			} catch (IOException e) {
+				// No foul
+			}
+		}
+		if (workflow != null) {
 			workflow.getSerializer().setClassloader(classLoader);
 			workflow.setInstanceId(experimentId);
 			workflow.createBroker(false);
@@ -74,12 +94,14 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.setOutputDirectory(new File(servlet.getServletContext()
 					.getRealPath("experiments/" + experimentId + "/" + experiment.getOutputDirectory())));
 
-			workflow.run();
-			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " started.");
-
+			try {
+				workflow.run();
+			} catch (Exception e) {
+				workflow.log(SEVERITY.ERROR, "Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
+				throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Error executiong the workflow");
+			}
 			// add new workflow to registry
 			ExperimentRegistry.addWorkflow(workflow, experimentId);
-
 			// remove workflow from registry after termination
 			new Thread(new Runnable() {
 				@Override
@@ -88,21 +110,21 @@ public class CrossflowHandler implements Crossflow.Iface {
 					ExperimentRegistry.removeWorkflow(experimentId);
 				}
 			}).start();
-
-			return workflow.getInstanceId();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new TException(e);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void stopExperiment(String experimentId) throws TException {
+	public boolean stopExperiment(String experimentId) throws TException {
 		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
-		if (workflow != null) {
+		boolean result = (workflow != null);
+		if (result) {
 			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " termination requested.");
 			workflow.terminate();
+			result = true;
 		}
+		return result;
 	}
 
 	@Override
@@ -144,7 +166,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 	}
 
 	@Override
-	public void resetExperiment(String experimentId) throws TException {
+	public boolean resetExperiment(String experimentId) throws TException {
 
 		Experiment experiment = getExperiment(experimentId);
 		System.out.println(experiment.getOutputDirectory() == null);
@@ -160,6 +182,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 		if (cache != null && cache.exists()) {
 			delete(cache);
 		}
+		return true;
 
 	}
 

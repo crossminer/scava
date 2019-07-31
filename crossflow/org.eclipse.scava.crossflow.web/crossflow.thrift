@@ -10,10 +10,10 @@ service Crossflow {
 	void stopBroker();
 	bool isBrokerRunning();
 	
-	string startExperiment(1:string experimentId, 2:bool worker);
+	bool startExperiment(1:string experimentId, 2:bool worker);
 	bool isExperimentRunning(1:string experimentId);
-	void stopExperiment(1:string experimentId);
-	void resetExperiment(1:string experimentId);
+	bool stopExperiment(1:string experimentId);
+	bool resetExperiment(1:string experimentId);
 	bool clearQueueCache(1:string experimentId, 2:string queueName);
 	Table getContent(1:FileDescriptor fileDescriptor);
 	

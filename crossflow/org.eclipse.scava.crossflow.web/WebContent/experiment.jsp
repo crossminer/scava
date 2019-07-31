@@ -15,7 +15,7 @@
 		<div class="row">
 			<div class="col align-self-center" align="center">
 				<form>
-					<div class="btn-group" v-if="experiment.status == 'stopped'">
+					<div class="btn-group" v-if="stopped">
 						<button type="button" class="btn btn-success" v-on:click="startExperiment">Start</button>
 						<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,9 +26,9 @@
 							<a class="dropdown-item" href="#" v-on:click="startExperimentMasterOnly">Master only</a>
 						</div>
 					</div>
-					<button type='button' class="btn btn-danger my-2" v-if="experiment.status == 'running'"
+					<button type='button' class="btn btn-danger my-2" v-if="running"
 						v-on:click="stopExperiment" >Stop</button>
-					<button type='button' class="btn btn-information my-2" v-if="experiment.status != 'running' && (experiment.cached || experiment.executed)"
+					<button type='button' class="btn btn-information my-2" v-if="reset"
 						v-on:click="resetExperiment" >Reset</button>
 				</form>
 			</div>
@@ -181,18 +181,41 @@
 		data : {
 			message : 'Hello Vue!',
 			experimentId : null,
+			stopped: true,
+			running : false,
+			reset: false,
 			experiment : new Experiment(),
 			diagnostics : new Diagnostics()
 		},
 		methods : {
 			startExperimentMasterOnly : function(event) {
-				console.log("Start experiment Master", crossflow.startExperiment(this.experimentId, false));
+				try {
+					this.running = crossflow.startExperiment(this.experimentId, false);
+					this.stopped = !this.running;
+				}
+				catch (e) {
+					this.stopped = true;
+					this.running = false;
+				}
 			},
 			startExperiment : function(event) {
-				console.log("Start experiment", crossflow.startExperiment(this.experimentId, true));
+				try {
+					this.stopped = crossflow.startExperiment(this.experimentId, true);
+					this.stopped = !this.running;
+				}
+				catch (e) {
+					this.stopped = true;
+					this.running = false;
+				}
 			},
 			stopExperiment : function(event) {
-				crossflow.stopExperiment(this.experimentId);
+				try {
+					this.stopped = crossflow.stopExperiment(this.experimentId);
+					this.running = !this.stopped;
+				}
+				catch (e) {
+					// pass
+				}
 			},
 			resetExperiment : function(event) {
 				crossflow.resetExperiment(this.experimentId);
@@ -210,11 +233,9 @@
 
 	refresh();
 
-	//setInterval(function() {
-	//	if (document.getElementById("refresh").checked) {
-	//			refresh();
-	//	}
-	//}, 3000);
+	setInterval(function() {
+			refresh();
+		}, 3000);
 
 	function refresh() {
 		console.log("refresh");
@@ -223,7 +244,12 @@
 			fileDescriptor.table = crossflow.getContent(fileDescriptor);
 		});
 		app.diagnostics = crossflow.getDiagnostics();
-
+		app.running = app.experiment.status === 'running';
+		app.stopped = app.experiment.status === 'stopped';
+		// "experiment.status != 'running' && (experiment.cached || experiment.executed)"
+		if (app.experiment.status !== 'running' && (app.experiment.cached || app.experiment.executed)) {
+			app.rest = true;
+		}
 	};
 
 	const cellTooltips = {};
