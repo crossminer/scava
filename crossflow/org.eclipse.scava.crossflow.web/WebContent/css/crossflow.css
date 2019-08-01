@@ -16,3 +16,59 @@ h1.logo {
 	font-family: 'space_ranger_halftoneregular';
 	font-size:52pt;
 }
+
+/*STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED*/
+.btn-started {
+       color: #000000;
+       background-color: #E0FFFF;
+       border-color: #000000;
+   }
+
+.btn-started.disabled, .btn-started:disabled {
+    background-color: #E0FFFF;
+    border-color: #000000;
+}
+
+.btn-waiting {
+    color: #000000;
+    background-color: #87CEEB;
+    border-color: #000000;
+}
+
+.btn-waiting.disabled, .btn-waiting:disabled {
+    background-color: #87CEEB;
+    border-color: #000000;
+}
+
+.btn-inprogress {
+    color: #000000;
+    background-color: #98FB98;
+    border-color: #000000;
+}
+
+.btn-inprogress.disabled, .btn-inprogress:disabled {
+    background-color: #98FB98;
+    border-color: #000000;
+}
+
+.btn-blocked {
+    color: #000000;
+    background-color: #FA8072;
+    border-color: #000000;
+}
+
+.btn-blocked.disabled, .btn-blocked:disabled {
+    background-color: #FA8072;
+    border-color: #000000;
+}
+
+.btn-finished {
+    color: #000000;
+    background-color: #708090;
+    border-color: #000000;
+}
+
+.btn-finished.disabled, .btn-finished:disabled {
+    background-color: #708090;
+    border-color: #000000;
+}

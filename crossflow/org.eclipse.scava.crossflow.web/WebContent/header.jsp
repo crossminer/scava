@@ -40,8 +40,9 @@
 
   </head>
 
-  <body onload="main(crossflow, document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))">
-
+  <!-- body onload="main(crossflow, document.getElementById('graphContainer'), new URL(document.location).searchParams.get('id'))" -->
+  <!--body onload="startWebSocket(new URL(document.location).searchParams.get('id'))"-->
+  <body>
     <header>
       <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">

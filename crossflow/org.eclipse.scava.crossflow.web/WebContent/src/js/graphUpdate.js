@@ -37,12 +37,17 @@ function loadFile(filePath) {
 	  return result;
 }// loadFile
 
-function main(crossflow, container, experimentId) {
-
+function startWebSocket(experimentId) {
+	console.log("startWebSocket", experimentId);
 	let ws = null;
 	const wsUri = 'ws://' + window.location.hostname + ':61614';
 	const protocol = 'stomp';
 	const parser = new DOMParser();
+
+	const queueSizes = new Map();
+	const taskOldStatusCache = new Map();
+	const taskStatusCache = new Map();
+
 
 	try {
 		ws = new WebSocket(wsUri, protocol);
@@ -82,21 +87,27 @@ function main(crossflow, container, experimentId) {
 	};
 
 	ws.onmessage = (e) => {
-		console.time('processActiveMQMessage');
+		// console.time('processActiveMQMessage');
 		processActiveMQMessage(e)
-		console.timeEnd('processActiveMQMessage');
+		// console.timeEnd('processActiveMQMessage');
 
 	};// onMessage
 
-	/*
-	 * TODO Animation: examples/animation.html / thread.html Markers:
-	 * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
-	 * monitor.html
-	 */
+	setInterval(function() {
+		updateGraph();
+	}, 50);
 
-	function sleep(delay) {
-	    let start = new Date().getTime();
-	    while (new Date().getTime() < start + delay);
+	function updateGraph() {
+		refreshQueuesValue();
+		try {
+			window.runtimeModelGraph.getModel().beginUpdate();
+			refreshTaskColors();
+		}
+		finally {
+			window.runtimeModelGraph.getModel().endUpdate();
+		}
+		window.runtimeModelGraph.refresh();
+
 	}
 
 	function processActiveMQMessage(message) {
@@ -122,8 +133,6 @@ function main(crossflow, container, experimentId) {
 		let streamTopicXmlDoc = window.streamTopicXmlDoc;
 		const streams = streamTopicXmlDoc.childNodes[0].children[0];
 		let streamId;
-		let vertexId;
-		let size;
 		if (streams != null) {
 			for (let i = 0; i < streams.children.length; i++) {
 				let streamName = streams.children[i].children[0];
@@ -132,23 +141,7 @@ function main(crossflow, container, experimentId) {
 					if (streamId.includes('Post')) {
 						// queue stream encountered
 						streamId = streamId.substring(0, streamId.indexOf('Post'));
-						// Find and update vertex
-						if (window.runtimeModelGraph.getDefaultParent().children != null) {
-							for (let j = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; j < l; j++) {
-								vertexId = window.runtimeModelGraph.getDefaultParent().children[j].id;
-								if (vertexId.includes('stream_' + streamId)) {
-									size = formatSize(streams.children[i].children[1]);
-									try {
-										window.runtimeModelGraph.getModel().beginUpdate();
-										const cell = window.runtimeModelGraph.getModel().getCell(vertexId);
-										window.runtimeModelGraph.getModel().setValue(cell, size);
-									} finally {
-										window.runtimeModelGraph.refresh();
-										window.runtimeModelGraph.getModel().endUpdate();
-									}
-								}
-							}
-						}
+						queueSizes.set(streamId, formatSize(streams.children[i].children[1]));
 					}
 				}
 			}
@@ -156,69 +149,72 @@ function main(crossflow, container, experimentId) {
 	}
 
 	function processTaskEvent(message) {
-		let text = message.data.substring(message.data.indexOf(TASK_TOPIC_ROOT), message.data.length-1);
+		let text = message.data.substring(message.data.indexOf(TASK_TOPIC_ROOT), message.data.length - 1);
 		// FIXME Do the tooltip analysis here and store that in the window/graph
-		window.taskTopicXmlDoc = parser.parseFromString(text,"text/xml");
+		window.taskTopicXmlDoc = parser.parseFromString(text, "text/xml");
 		let taskTopicXmlDoc = window.taskTopicXmlDoc;
 		let taskStatus = taskTopicXmlDoc.childNodes[0];
 		let caller = taskStatus.children[1];
-		let taskId = caller.innerHTML.substring(0, caller.innerHTML.indexOf(':'));
+		taskStatusCache.set(
+			caller.innerHTML.substring(0, caller.innerHTML.indexOf(':')),
+			taskStatus.children[0].innerHTML);
+	}
+
+	function refreshTaskColors() {
 		if ( window.runtimeModelGraph.getDefaultParent().children != null ) {
 			for (let i = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; i < l; i++) {
-				if ( window.runtimeModelGraph.getDefaultParent().children[i].id == 'task_' + taskId) {
-					taskStatus = taskStatus.children[0].innerHTML;
-					const id = window.runtimeModelGraph.getDefaultParent().children[i].id;
-					const cell = window.runtimeModelGraph.model.getCell(id);
+				let taskId = window.runtimeModelGraph.getDefaultParent().children[i].id.split("_")[1];
+				if (taskStatusCache.has(taskId)) {
+					const taskStatus = taskStatusCache.get(taskId);
+					const oldStatus = taskOldStatusCache.get(taskId);
+					if (oldStatus !== taskStatus) {
+						const id = window.runtimeModelGraph.getDefaultParent().children[i].id;
+						const cell = window.runtimeModelGraph.model.getCell(id);
+						let fillcolor = "";
+						if ( taskStatus === 'STARTED' ) {
+							fillcolor = 'lightcyan';
+						}
+						else if ( taskStatus === 'WAITING' ) {
+							fillcolor = 'skyblue';
+						}
+						else if ( taskStatus === 'INPROGRESS' ){
+							fillcolor = 'palegreen';
+						}
+						else if ( taskStatus === 'BLOCKED' ){
+							fillcolor = 'salmon';
+						}
+						else if ( taskStatus === 'FINISHED' ){
+							fillcolor = 'slategray';
+						}
+						// console.log("new style " + fillcolor);
+						window.runtimeModelGraph.setCellStyles(mxConstants.STYLE_FILLCOLOR, fillcolor, [cell]);
+						// console.log("change color to ", cell.getStyle())
 
-					// fontSize=16;labelBackgroundColor=#ffffff;fillColor=#ffffff;fontColor=black;strokeColor=black
-					let cellStylePre = cell.getStyle();
-					let cellStyle = cellStylePre.substring(cellStylePre.indexOf('fillColor='), cellStylePre.length - 1);
-					cellStylePre = cellStylePre.substring(0, cellStylePre.indexOf('fillColor='));
-					let fillcolor="";
-					// STARTED, WAITING, INPROGRESS, BLOCKED, FINISHED
-					if ( taskStatus === 'STARTED' ) {
-						cellStyle = 'fillColor=lightcyan';
-						fillcolor = 'lightcyan';
 					}
-					else if ( taskStatus === 'WAITING' ) {
-						cellStyle = 'fillColor=skyblue';
-						fillcolor = 'skyblue';
-					}
-					else if ( taskStatus === 'INPROGRESS' ){
-						cellStyle = 'fillColor=palegreen';
-						fillcolor = 'palegreen';
-					}
-					else if ( taskStatus === 'BLOCKED' ){
-						cellStyle = 'fillColor=salmon';
-						fillcolor = 'salmon';
-					}
-					else if ( taskStatus === 'FINISHED' ){
-						cellStyle = 'fillColor=slategray';
-						fillcolor = 'slategray';
-					}
-					console.log("new style " + fillcolor);
-					try {
-						window.runtimeModelGraph.model.beginUpdate();
-						// console.log("change style " + cellStylePre + cellStyle);
-						window.runtimeModelGraph.getView().clear(cell)
-						window.runtimeModelGraph.getModel().setCellStyle(mxConstants.STYLE_FILLCOLOR, fillcolor, cell);
-						// window.runtimeModelGraph.getModel().setStyle(cell, cellStylePre + cellStyle);
-						// window.runtimeModelGraph.setCellStyles(
-						// 		mxConstants.STYLE_FILLCOLOR, fillcolor,
-						// 		{cell});
-						//cell.setStyle(cellStylePre + cellStyle);
-						window.runtimeModelGraph.getView().validate(cell)
+					taskOldStatusCache.set(taskId, taskStatus);
+				}
+			}
+		}
+	}
 
-						//console.log(taskId + ' (' + taskStatus + ')');
-					} finally {
-						// Updates the display
-						// window.runtimeModelGraph.refresh();
-						window.runtimeModelGraph.model.endUpdate();
-						//console.log("endUpdate(B)");
-						//console.log('TASK_TOPIC: graphUpdate.main.onMessage.endUpdate');
+	function refreshQueuesValue() {
+		if (window.runtimeModelGraph.getDefaultParent().children != null) {
+			for (let [streamId, size] of queueSizes) {
+				// Find and update vertex
+				for (let j = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; j < l; j++) {
+					let vertexId = window.runtimeModelGraph.getDefaultParent().children[j].id;
+					if (vertexId.includes('stream_' + streamId)) {
+						//try {
+						//	window.runtimeModelGraph.getModel().beginUpdate();
+							const cell = window.runtimeModelGraph.getModel().getCell(vertexId);
+							window.runtimeModelGraph.getModel().setValue(cell, size);
+						//} finally {
+							// window.runtimeModelGraph.refresh();
+						//	window.runtimeModelGraph.getModel().endUpdate();
+						//}
 					}
 				}
-			}// for window.runtimeModelGraph.getDefaultParent().children
+			}
 		}
 	}
 
@@ -264,6 +260,17 @@ function main(crossflow, container, experimentId) {
 			size = size / 1000;
 		}
 		return Math.round(size) + sizeUnit
+	}
+
+	/*
+ * TODO Animation: examples/animation.html / thread.html Markers:
+ * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
+ * monitor.html
+ */
+
+	function sleep(delay) {
+		let start = new Date().getTime();
+		while (new Date().getTime() < start + delay);
 	}
 
 };// main

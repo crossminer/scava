@@ -251,81 +251,109 @@ function loadStencils() {
 // Shapes.
 // We need to create functions to draw the different shapes used in Eugenia.
 // TODO Auto-generate this
+function TaskShape(bounds, fill, stroke, strokewidth) {
+	mxShape.call(this);
+	this.bounds = bounds;
+	this.fill = fill;
+	this.stroke = stroke;
+	this.strokewidth = (strokewidth != null) ? strokewidth : 1;
+}
+mxUtils.extend(TaskShape, mxShape);
+TaskShape.prototype.paintBackground = function(c, x, y, w, h) {
+	let events = true;
 
-function TaskShape() { }
-TaskShape.prototype = new mxShape();
-TaskShape.prototype.constructor = TaskShape;
-TaskShape.prototype.paintVertexShape = function(c, x, y, w, h)
-{
-	// To make a round corner rectangle we need 8 points ?_min/_max represent the x and y
-	// coordinates with the nip removed to allocate the round corner
-	const nip = 0.05 * w;
-	const x_min = x + nip;
-	const x_max = x + w - nip;
-	const y_min = y + nip;
-	const y_max = y + h - nip;
-
-	c.begin();
-    c.moveTo(x_min, y);
-    c.lineTo(x_max, y);
-    c.moveTo(x_max, y);
-    c.quadTo(x + w, y, x + w, y_min);
-    c.moveTo(x + w, y_min);
-    c.lineTo(x + w, y_max);
-    c.moveTo(x + w, y_max);
-    c.quadTo(x + w, y + h, x_max, y + h);
-    c.moveTo(x_max, y + h);
-    c.lineTo(x_min, y + h);
-    c.moveTo(x_min, y + h);
-    c.quadTo(x, y + h, x, y_max);
-    c.moveTo(x, y_max);
-    c.lineTo(x, y_min);
-    c.moveTo(x, y_min);
-    c.quadTo(x, y, x_min, y);
-    c.moveTo(x_min, y);
-    c.close();
-    c.fillAndStroke();
+	if (this.style != null) {
+		events = mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '1';
+	}
+	if (events || (this.fill != null && this.fill != mxConstants.NONE) ||
+		(this.stroke != null && this.stroke != mxConstants.NONE)) {
+		if (!events && (this.fill == null || this.fill == mxConstants.NONE)) {
+			c.pointerEvents = false;
+		}
+		// To make a round corner rectangle we need 8 points ?_min/_max represent the x and y
+		// coordinates with the nip removed to allocate the round corner
+		const nip = 0.05 * w;
+		const x_min = x + nip;
+		const x_max = x + w - nip;
+		const y_min = y + nip;
+		const y_max = y + h - nip;
+		c.begin();
+		c.moveTo(x_min, y);
+		c.lineTo(x_max, y);
+		c.quadTo(x + w, y, x + w, y_min);
+		c.lineTo(x + w, y_max);
+		c.quadTo(x + w, y + h, x_max, y + h);
+		c.lineTo(x_min, y + h);
+		c.quadTo(x, y + h, x, y_max);
+		c.lineTo(x, y_min);
+		c.quadTo(x, y, x_min, y);
+		c.close();
+		c.fillAndStroke();
+	}
 };
 mxCellRenderer.registerShape('Task', TaskShape);
 
-function SourceShape() { }
-SourceShape.prototype = new mxShape();
-SourceShape.prototype.constructor = SourceShape;
-SourceShape.prototype.paintVertexShape = function(c, x, y, w, h)
-{
-    c.begin();
-    c.moveTo(x, y);
-    c.lineTo(x + 0.8*w, y);
-    c.moveTo(x + 0.8*w, y);
-    c.lineTo(x + w, y + h/2);
-    c.moveTo(x + w, y + h/2);
-    c.lineTo(x + 0.8*w, y + h);
-    c.moveTo(x + 0.8*w, y + h);
-    c.lineTo(x, y + h);
-    c.moveTo(x, y + h);
-    c.lineTo(x, y);
-    c.close();
-    c.fillAndStroke();
+function SourceShape(bounds, fill, stroke, strokewidth) {
+	mxShape.call(this);
+	this.bounds = bounds;
+	this.fill = fill;
+	this.stroke = stroke;
+	this.strokewidth = (strokewidth != null) ? strokewidth : 1;
+}
+mxUtils.extend(SourceShape, mxShape);
+SourceShape.prototype.paintBackground = function(c, x, y, w, h)  {
+	let events = true;
+
+	if (this.style != null) {
+		events = mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '1';
+	}
+	if (events || (this.fill != null && this.fill != mxConstants.NONE) ||
+		(this.stroke != null && this.stroke != mxConstants.NONE)) {
+		if (!events && (this.fill == null || this.fill == mxConstants.NONE)) {
+			c.pointerEvents = false;
+		}
+		c.begin();
+		c.moveTo(x, y);
+		c.lineTo(x + 0.8*w, y);
+		c.lineTo(x + w, y + h/2);
+		c.lineTo(x + 0.8*w, y + h);
+		c.lineTo(x, y + h);
+		c.lineTo(x, y);
+		c.close();
+		c.fillAndStroke();
+	}
 };
 mxCellRenderer.registerShape('Source', SourceShape);
 
-function SinkShape() { }
-SinkShape.prototype = new mxShape();
-SinkShape.prototype.constructor = SinkShape;
-SinkShape.prototype.paintVertexShape = function(c, x, y, w, h)
-{
-    c.begin();
-    c.moveTo(x, y);
-    c.lineTo(x + w, y);
-    c.moveTo(x + w, y);
-    c.lineTo(x + w, y + 0.8*h);
-    c.moveTo(x + w, y + 0.8*h);
-    c.lineTo(x + 0.5*w, y + h);
-    c.moveTo(x + 0.5*w, y + h);
-    c.lineTo(x, y + 0.8*h);
-    c.moveTo(x, y + 0.8*h);
-    c.lineTo(x, y);
-    c.close();
-    c.fillAndStroke();
+
+function SinkShape(bounds, fill, stroke, strokewidth) {
+	mxShape.call(this);
+	this.bounds = bounds;
+	this.fill = fill;
+	this.stroke = stroke;
+	this.strokewidth = (strokewidth != null) ? strokewidth : 1;
+}
+mxUtils.extend(SinkShape, mxShape);
+SinkShape.prototype.paintVertexShape = function(c, x, y, w, h) {
+	let events = true;
+
+	if (this.style != null) {
+		events = mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '1';
+	}
+	if (events || (this.fill != null && this.fill != mxConstants.NONE) ||
+		(this.stroke != null && this.stroke != mxConstants.NONE)) {
+		if (!events && (this.fill == null || this.fill == mxConstants.NONE)) {
+			c.pointerEvents = false;
+		}
+		c.begin();
+		c.moveTo(x, y);
+		c.lineTo(x + w, y);
+		c.lineTo(x + w, y + 0.8 * h);
+		c.lineTo(x + 0.5 * w, y + h);
+		c.lineTo(x, y + 0.8 * h);
+		c.lineTo(x, y);
+		c.close();
+		c.fillAndStroke();
+	}
 };
 mxCellRenderer.registerShape('Sink', SinkShape);
