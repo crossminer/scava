@@ -29,7 +29,7 @@ public class SwaggerConfig {
 	ApiInfo apiInfo = new ApiInfo(
 	          "CROSSMINER APIs", 
 	          "This web interface allows one to use with the provided recommendations.", 
-	          "0.0.1.1",  
+	          "0.0.1.2",  
 	          "EPL-2.0", 
 	          new Contact("Juri Di Rocco", "", "juri.dirocco@univaq.it"), 
 	          "EPL-2.0", "https://www.eclipse.org/legal/epl-2.0/", Collections.EMPTY_LIST);

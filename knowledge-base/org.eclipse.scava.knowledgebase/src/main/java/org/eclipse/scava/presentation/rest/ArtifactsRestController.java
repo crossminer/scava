@@ -1,4 +1,5 @@
 /*******************************************************************************
+
  * Copyright (C) 2017 University of L'Aquila
  * 
  * This program and the accompanying materials are made
@@ -10,18 +11,11 @@
 package org.eclipse.scava.presentation.rest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
-import org.eclipse.scava.business.dto.metrics.MetricBoundary;
-import org.eclipse.scava.business.dto.metrics.MetricDescriptor;
-import org.eclipse.scava.business.dto.metrics.MetricMilestoneSlice;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -38,16 +32,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

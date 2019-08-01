@@ -178,7 +178,7 @@ public class ApiMigrationRestController {
 		return null;
 	}
 	
-	@ApiOperation(value = "This API returns recommendation", response = Iterable.class)
+	@ApiOperation(value = "This API returns the m3 model of the input jar file", response = Iterable.class)
 	@RequestMapping(value = "/M3Model", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody byte[] getM3Model(
@@ -198,7 +198,7 @@ public class ApiMigrationRestController {
 	}
 	
 	
-	@ApiOperation(value = "This API returns all client pairs that migrate from coordV1 to coordV2", response = Iterable.class)
+	@ApiOperation(value = "This API returns the snippet (pointed by @clientLoc) of code of @coordV1", response = Iterable.class)
 	@RequestMapping(value = "client-code", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> getCode(@RequestParam("coordV1") String coordV1,
