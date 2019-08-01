@@ -183,6 +183,7 @@ public abstract class Workflow {
 
 	public Workflow() {
 		serializer.register(ControlSignal.class);
+		serializer.register(FailedJob.class);
 		serializer.register(InternalException.class);
 		serializer.register(Job.class);
 		serializer.register(LogMessage.class);

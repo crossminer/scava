@@ -64,7 +64,7 @@ class [%=t.name%]Base(Task):
 		except Exception as ex:
 			traceback.print_exc()
 			try:
-				[%=s.type.name.ftlc()%].setFailures([%=s.type.name.ftlc()%].getFailures() + 1)
+				[%=s.type.name.ftlc()%].setFailures(int([%=s.type.name.ftlc()%].getFailures()) + 1)
 				self.workflow.getFailedJobsQueue().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
 			except Exception as e:
 				traceback.print_exc()
