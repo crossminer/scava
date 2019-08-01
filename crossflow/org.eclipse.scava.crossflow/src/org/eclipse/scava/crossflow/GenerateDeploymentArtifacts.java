@@ -32,7 +32,7 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 
 public class GenerateDeploymentArtifacts {
-	
+
 	public static final String ARTIFACTS_FOLDER_NAME = "artifacts";
 	protected List<Variable> parameters = new ArrayList<>();
 
@@ -53,39 +53,45 @@ public class GenerateDeploymentArtifacts {
 	}
 
 	public String execute() throws Exception {
-		
+
 		EmfModel model = getModel();
-		model.setStoredOnDisposal(false);
-		createParameters();
-		String name = getWorkflowName(model);
-		generateExecutables(model);
-		genereateWxGraphModel(model);
-		model.dispose();
-		return name;
+		try {
+			model.setStoredOnDisposal(false);
+			createParameters();
+			String name = getWorkflowName(model);
+			generateExecutables(model);
+			genereateWxGraphModel(model);
+			return name;
+		} finally {
+			model.dispose();
+		}
+		
 	}
 
 	private void generateExecutables(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
-		IEolContext context = module.getContext();
-		module.parse(getFileURI("general/generateExecutables.egx"));
-		List<ParseProblem> parseProblems = module.getParseProblems();
-		if (parseProblems.size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : parseProblems) {
-				System.err.println(problem);
-			}
-			throw new IllegalStateException("Generation script should not have errors. Corrupted?");
-		}
-		context.getModelRepository().addModel(model);
-		context.getFrameStack().put(parameters);
 		try {
-			result = execute(module);
+			IEolContext context = module.getContext();
+			module.parse(getFileURI("general/generateExecutables.egx"));
+			List<ParseProblem> parseProblems = module.getParseProblems();
+			if (parseProblems.size() > 0) {
+				System.err.println("Parse errors occured...");
+				for (ParseProblem problem : parseProblems) {
+					System.err.println(problem);
+				}
+				throw new IllegalStateException("Generation script should not have errors. Corrupted?");
+			}
+			context.getModelRepository().addModel(model);
+			context.getFrameStack().put(parameters);
+			try {
+				result = execute(module);
+			} catch (EolRuntimeException ex) {
+				// FIXME Give better info
+				throw ex;
+			}
+		} finally {
+			module.getContext().dispose();
 		}
-		catch (EolRuntimeException ex) {
-			// FIXME Give better info
-			throw ex;
-		}
-		module.getContext().dispose();
 	}
 
 	private void createParameters() throws EolRuntimeException {
@@ -136,15 +142,10 @@ public class GenerateDeploymentArtifacts {
 			throw new RuntimeException(ex);
 		}
 	}
-	
+
 	private EmfModel getModel() throws Exception {
-		return createAndLoadAnEmfModel(
-				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
-				modelRelativePath,
-				"Model",
-				true,
-				false,
-				false);
+		return createAndLoadAnEmfModel("org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
+				modelRelativePath, "Model", true, false, false);
 	}
 
 	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
@@ -160,11 +161,11 @@ public class GenerateDeploymentArtifacts {
 		theModel.load(properties, (IRelativePathResolver) null);
 		return theModel;
 	}
-	
+
 	private static String getWorkflowName(IModel model) {
 		Object wf = null;
 		try {
-			 wf = model.getAllOfType("Workflow").iterator().next();
+			wf = model.getAllOfType("Workflow").iterator().next();
 		} catch (EolModelElementTypeNotFoundException e) {
 			throw new IllegalStateException(e);
 		}
@@ -174,9 +175,11 @@ public class GenerateDeploymentArtifacts {
 			throw new IllegalStateException(e);
 		}
 	}
-	
+
 	/**
-	 * Runs the EGX script that genreates the model.json that describes the workflow diagram
+	 * Runs the EGX script that genreates the model.json that describes the workflow
+	 * diagram
+	 * 
 	 * @param model
 	 * @throws Exception
 	 * @throws URISyntaxException
@@ -185,8 +188,8 @@ public class GenerateDeploymentArtifacts {
 	private void genereateWxGraphModel(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
-		module.getContext().getFrameStack().put(parameters);	
-		
+		module.getContext().getFrameStack().put(parameters);
+
 		module.parse(getFileURI("external/crossflowExternalTools.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -195,7 +198,7 @@ public class GenerateDeploymentArtifacts {
 			}
 			throw new IllegalStateException("Error parsing generator script. See console for errors.");
 		}
-	
+
 		result = execute(module);
 	}
 }

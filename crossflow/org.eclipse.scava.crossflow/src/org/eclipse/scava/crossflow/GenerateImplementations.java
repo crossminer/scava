@@ -76,28 +76,33 @@ public class GenerateImplementations {
 	}
 
 	public Map<String, String[]> run() throws Exception {
+
 		createParameters();
 		final EmfModel model = getModel();
-		model.setStoredOnDisposal(false);
+		try {
+			model.setStoredOnDisposal(false);
 
-		final Map<String, String[]> scriptLanguages = findScriptingLanguages(model);
-		for (String language : scriptLanguages.keySet()) {
-			generateScriptLanguageCode(model, language);
+			final Map<String, String[]> scriptLanguages = findScriptingLanguages(model);
+			for (String language : scriptLanguages.keySet()) {
+				generateScriptLanguageCode(model, language);
+			}
+
+			final Map<String, String[]> languages = findLanguages(model);
+			// always add java as a language as the master node will have to run java for
+			// runing the crossflow infrastructure (sources, sinks, queues)
+			if (!languages.containsKey("java"))
+				languages.put("java", new String[] { "src", "src-gen" });
+			//
+			for (String language : languages.keySet()) {
+				generateLanguageCode(model, language);
+			}
+			languages.putAll(scriptLanguages);
+			generateDescriptor(model);
+			return languages;
+		} finally {
+			model.dispose();
 		}
-		
-		final Map<String, String[]> languages = findLanguages(model);
-		// always add java as a language as the master node will have to run java for
-		// runing the crossflow infrastructure (sources, sinks, queues)
-		if (!languages.containsKey("java"))
-			languages.put("java", new String[] { "src", "src-gen" });
-		//
-		for (String language : languages.keySet()) {
-			generateLanguageCode(model, language);
-		}
-		languages.putAll(scriptLanguages);
-		generateDescriptor(model);
-		model.dispose();
-		return languages;
+
 	}
 
 	private void generateScriptLanguageCode(final EmfModel model, String language)
@@ -320,7 +325,7 @@ public class GenerateImplementations {
 
 	private static void updateManifest(File manifest) throws Exception {
 		List<String> contents = new LinkedList<>();
-		
+
 		try (BufferedReader r = new BufferedReader(new FileReader(manifest))) {
 			String line;
 			while ((line = r.readLine()) != null) {
@@ -355,18 +360,21 @@ public class GenerateImplementations {
 	 */
 	private void generateDescriptor(EmfModel model) throws Exception, URISyntaxException, EolRuntimeException {
 		IEolModule module = createModule();
-		module.getContext().getModelRepository().addModel(model);
-		module.getContext().getFrameStack().put(parameters);
-		module.parse(getFileURI("general/generateDescriptor.egx"));
-		if (module.getParseProblems().size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
+		try {
+			module.getContext().getModelRepository().addModel(model);
+			module.getContext().getFrameStack().put(parameters);
+			module.parse(getFileURI("general/generateDescriptor.egx"));
+			if (module.getParseProblems().size() > 0) {
+				System.err.println("Parse errors occured...");
+				for (ParseProblem problem : module.getParseProblems()) {
+					System.err.println(problem.toString());
+				}
+				throw new IllegalStateException("Error parsing generator script. See console for errors.");
 			}
-			throw new IllegalStateException("Error parsing generator script. See console for errors.");
+			execute(module);
+		} finally {
+			module.getContext().dispose();
 		}
-		execute(module);
-		module.getContext().dispose();
 	}
 
 }
