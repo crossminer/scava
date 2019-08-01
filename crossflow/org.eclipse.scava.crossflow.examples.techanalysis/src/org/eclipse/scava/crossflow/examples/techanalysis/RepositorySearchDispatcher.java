@@ -1,13 +1,13 @@
 package org.eclipse.scava.crossflow.examples.techanalysis;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class RepositorySearchDispatcher extends RepositorySearchDispatcherBase {
 
 	private Set<String> repos = new HashSet<>();
-	private List<Technology> techs;
+	private Collection<Technology> techs;
 
 	@Override
 	public void consumeRepositories(Repository repository) throws Exception {
