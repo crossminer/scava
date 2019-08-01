@@ -11,6 +11,7 @@ types = types.sortBy(t|t.name);
 for (t in types) { %]
 from crossflow.[%=package%].[%=t.name.toSnakeCase()%] import [%=t.name%]
 [%}%]
+from crossflow.runtime import logger
 
 
 class [%=t.name%]([%=t.name%]Base):

@@ -6,6 +6,7 @@ Created on 26 Mar 2019
 '''
 import csv
 import hashlib
+import logging
 import os
 import pickle
 import shutil
@@ -28,19 +29,15 @@ illegal_chars = [ 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 
 currentTimeMillis = lambda: int(round(time.time() * 1000))
 
-DEBUG = False
+logger = logging.getLogger("crossflow_runtime")
+logger.setLevel(logging.DEBUG)
+__fmt = logging.Formatter("[ %(asctime)s ] [ %(levelname)5s ] : %(message)s")
+__handler = logging.StreamHandler(sys.stdout)
+__handler.setLevel(logging.DEBUG)
+__handler.setFormatter(__fmt)
+logger.addHandler(__handler)
+logger.debug("Logger Initialised to sys.stdout")
 
-
-def debug(debugStr):
-    if DEBUG:
-        print(debugStr)
-
-'''
-Created on 22 Feb 2019
-
-@author: stevet
-'''
-            
 
 class CloneUtils(object):
     '''
@@ -56,16 +53,9 @@ class CloneUtils(object):
         return self.getUniqueRepoFolderNameWithName(self.extractGhRepoName(repoUrl), repoUrl)
     
     def getUniqueRepoFolderNameWithName(self, name, url):
-        ret = self.cleanFileName(name)
-        # create unique id for the remote url
-        messageDigest = None
-        try:
-            messageDigest = hashlib.sha1()
-            messageDigest.update(bytes(url, 'utf-8'))
-            ret = ret + "-" + messageDigest.hexdigest()
-        except Exception as ex:
-            traceback.print_exc()
-        return ret
+        messageDigest = hashlib.sha1()
+        messageDigest.update(bytes(url, 'utf-8'))
+        return self.cleanFileName(name) + "-" + messageDigest.hexdigest()
 
     def cleanFileName(self, badFileName):
         cleanName = ''
@@ -104,15 +94,15 @@ class CloneUtils(object):
         # clean local clone parent destination if it exists
         if (os.path.isfile(repoLocationFile)): 
             shutil.rmtree(repoLocationFile)
-            print("Successfully cleaned repo clone parent: " + repoLocationFile)
+            logger.info("Successfully cleaned repo clone parent {}".format(repoLocationFile))
             os.makedirs(repoLocationFile)
     
 '''    
 if __name__ == '__main__':
     url = 'https://github.com/eclipse/epsilon'
     cl = CloneUtils()
-    print(cl.extractGhRepoName(url))
-    print(cl.extractGhRepoOwner(url))
+    logger.info(cl.extractGhRepoName(url))
+    logger.info(cl.extractGhRepoOwner(url))
 ''' 
     
 '''
@@ -400,7 +390,7 @@ class TaskStatus(object):
 if __name__ == '__main__':
     testVal = TaskStatuses.WAITING
     
-    print('stat='+str(testVal))
+    logger.info('stat='+str(testVal))
 '''
 
 '''
@@ -605,9 +595,6 @@ refs:
 http://activemq.apache.org/stomp.html
 
 '''
-    
-import uuid
-
 
 class MessageListener(stomp.ConnectionListener):
 
@@ -620,16 +607,16 @@ class MessageListener(stomp.ConnectionListener):
         self.listenerId = str(self.listenerIdUuid)
         self.convertToObject = convertToObject
         self.clientAcks = clientAcks
-        debug('Created listener for ' + destName)
+        logger.debug("Created listener for {}".format(destName))
 
     def on_error(self, headers, message):
         if headers['destination'] == self.destName:
-            debug('received an error "%s"' % message)
+            logger.debug("Received an error: \n{}".format(message))
 
     def on_message(self, headers, message):
         if headers['destination'] == self.destName:
-            debug("Rx fm " + self.destName)
-            debug('received a message "%s"' % message)
+            logger.debug("Rx fm " + self.destName)
+            logger.debug("Received a message: \n{}".format(message))
             ackFunc = None
             if self.clientAcks:
 
@@ -644,19 +631,18 @@ class MessageListener(stomp.ConnectionListener):
                     self.consumer.consume(self.workflow.serializer.to_object(message), ackFunc)
                 else:
                     self.consumer.consume(message, ackFunc)
-            except Exception as inst:
-                traceback.print_exc()
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
+            except Exception as e:
+                msg = "Error consuming message"
+                logging.exception(msg)
                 if self.workflow != None:
-                    self.workflow.reportInternalException(inst, '')
+                    self.workflow.reportInternalException(e, msg)
                 else:
-                    raise inst
+                    raise e
         else:
-            print('Discarded message(' + self.destName + ') from ' + headers['destination'])
+            logging.debug("{} discarded message from {}:\n{}".format(self.destName, headers['destination'],message))
 
     def on_disconnected(self):
-        debug('disconnected')
+        logger.debug("Disconnected")
         
     def getListenerId(self):
         return self.listenerId
@@ -704,7 +690,6 @@ class BuiltinStream(object):
             reconnect_sleep_max=15.0,
             reconnect_attempts_max=-1
         )
-        self.connection.start()
         self.connection.connect(wait=True)  # add credentials?
 
         self.sessionCreated = True
@@ -835,9 +820,7 @@ class DirectoryCache(object):
                     self.jobFolderMap[inputJob.name] = inputFolderPath
                     self.save(outputJob, outputFile)
             except Exception as ex:
-                traceback.print_exc()
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                logger.exception("Error caching Job")
                 self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name)
     
     def getDirectory(self):
@@ -887,13 +870,10 @@ class DirectoryCache(object):
                         with open(inputFolder + "/" + outputJob.getHash()) as outputFile:
                             self.jobFolderMap[inputJob.getHash()] = inputFolder
                             self.save(outputJob, outputFile)
-            except Exception as ex:
-                print(correlationId)
-                print(self.pendingTransactions)
-                traceback.print_exc()
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                self.workflow.reportInternalException(ex, 'Error caching pending transaction for correlation id' + correlationId);
+            except Exception as e:
+                msg = "Error caching pending transaction for CorrelationID: {} ".format(correlationId)
+                logger.exception(msg)
+                self.workflow.reportInternalException(e, msg);
 
 '''
 Created on 27 Feb 2019
@@ -1120,21 +1100,19 @@ class JobStream(Job):
         self.postQueue = {}  # taskId : QueueInfo
         self.rxConnections = {}
         self.txConnection = stomp.Connection(self.workflow.getBroker())
-        self.txConnection.start()
         self.txConnection.connect(wait=True)  # add credentials?
         self.consumers = []
         self.cacheManagerTask = CacheManagerTask(workflow)
     
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-        debug('Tx to ' + dest)
+        logger.debug("Sending tx message to {}\s{}".format(dest, msg))
         self.txConnection.send(body=msg, destination=dest)
         
     def getRxConnection(self, dest):
         if dest in self.rxConnections:
             return self.rxConnections[dest]
         connection = stomp.Connection(self.workflow.getBroker())
-        connection.start()
         connection.connect(wait=True)  # add credentials?
         self.rxConnections[dest] = connection
         return connection
@@ -1146,7 +1124,7 @@ class JobStream(Job):
         if queueInfo.getPrefetchSize() > 0:
             stompHeaders['activemq.prefetchSize'] = queueInfo.getPrefetchSize()
             ackMode = 'client'
-        print('Subscribe ' + self.workflow.getName() + ' to ' + stompDestName)
+        logger.debug("Subscribe {} to {}".format(self.workflow.getName(), stompDestName))
         consumer = BuiltinStreamConsumer(msgCallbackFunc)
         connection = self.getRxConnection(stompDestName)
         listener = MessageListener(connection, consumer, self.workflow, stompDestName, False, ackMode == 'client')
@@ -1173,10 +1151,8 @@ class JobStream(Job):
                     stompDest = self.preQueue[taskId].getStompDestinationName()
                     self.sendMessage(msgBody, stompDest)
         except Exception as ex:
-            traceback.print_exc()
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-            self.workflow.reportInternalException(ex, '');
+            logger.exception("")
+            self.workflow.reportInternalException(ex, "");
     
     def getDestinationNames(self):
         return map(lambda x : x.getStompDestinationName(), self.dest.keys())
@@ -1294,7 +1270,7 @@ class Workflow(object):
         # from workers
         self.terminationTimeout = 10000
         
-        print("Workflow initialised.")
+        logger.info("Workflow initialised.")
     
     def excludeTasks(self, tasks):
         self.tasksToExclude = tasks
@@ -1332,12 +1308,9 @@ class Workflow(object):
             if signal.signal == ControlSignals.TERMINATION:
                 try: 
                     self.terminate()
-                except Exception as ex:
-                    traceback.print_exc()
-                    exc_type, exc_value, exc_traceback = sys.exc_info()
-                    stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-                    self.unrecoverableException(ex, stack)
-                    
+                except Exception:
+                    logger.exception("Failed to handle TERMINATION signal")
+
     def consumeTaskStatus(self, task):
         status = task.status
         
@@ -1348,11 +1321,11 @@ class Workflow(object):
             self.activeJobs.remove(task.caller)
             
     def consumeFailedJob(self, failedJob):
-        print(failedJob.getException())
+        logger.info(failedJob.getException())
         self.failedJobs.append(failedJob)
             
     def consumeInternalException(self, internalException):
-        print(internalException.getException())
+        logger.info(internalException.getException())
         self.internalExceptions.append(internalException)
         
     def connect(self): 
@@ -1432,7 +1405,7 @@ class Workflow(object):
     def stopBroker(self): 
         self.brokerService.deleteAllMessages()
         self.brokerService.stopGracefully("", "", 1000, 1000)
-        print("terminated broker (" + self.getName() + ")")
+        logger.info("terminated broker (" + self.getName() + ")")
 
     """
      * delays the execution of sources for 'delay' milliseconds. Needs to set the
@@ -1466,23 +1439,18 @@ class Workflow(object):
         if self.terminationTimer != None:
             self.terminationTimer.cancel()
 
-        # termination logic
-        print("terminating workflow... (" + self.getName() + ")");
-        # TODO: see Java comments remove from activeStreams
-
+        logger.info("Terminating workflow {}...".format(self.getName()));
         self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
-
+        
         for stream in self._allStreams:
-            print(stream.name)
+            logger.info("Terminating stream {}".format(stream.name))
             try:
-                print(stream.connection)
                 stream.stop()
             except Exception:
-                # Ignore any exception
-                traceback.print_exc()
+                logger.exception("Failed to stop stream ({})during termination".format(stream.name))
         
         self.terminated = True
-        print("workflow " + self.getName() + " terminated.")
+        logger.info("Workflow {} successfully terminated".format(self.getName()))
 
     def hasTerminated(self): 
         return self.terminated
@@ -1513,13 +1481,7 @@ class Workflow(object):
             ser_obj = self.serializer.serialize(InternalException(ex, message, None))
             self.internalExceptionsQueue.sendSerialized(ser_obj)
         except Exception as ex:
-            traceback.print_exc()
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            stack = traceback.format_exception(exc_type, exc_value, exc_traceback)
-            self.unrecoverableException(ex, stack)
-        
-    def unrecoverableException(self, ex): 
-        print(ex)
+            logger.exception("Could not propagate exception, serialisation error encountered")
 
     def setTaskInProgess(self, caller): 
         self.setTaskInProgessWithReason(caller, 'reason')

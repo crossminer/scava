@@ -18,7 +18,7 @@ imports = imports.sortBy(i|i.name);
 for (i in imports) {%]
 from crossflow.[%=package%].[%=i.name.toSnakeCase()%] import [%=i.name%]
 [%}%]
-from crossflow.runtime import ControlSignal, ControlSignals, Mode, Workflow
+from crossflow.runtime import ControlSignal, ControlSignals, logger, Mode, Workflow
 
 
 class [%=w.name%](Workflow):
@@ -100,8 +100,7 @@ class [%=w.name%](Workflow):
             time.sleep(1)
             self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
         except Exception as e:
-            traceback.print_exc()
-            print(e)
+            logger.exception("")
 
     [%for (s in w.streams) { %]
     def get[%=s.name%](self):

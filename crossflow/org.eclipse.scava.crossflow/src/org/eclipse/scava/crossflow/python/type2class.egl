@@ -1,4 +1,4 @@
-from crossflow.runtime import Job
+from crossflow.runtime import Job, logger
 
 
 class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%] 
@@ -46,7 +46,7 @@ class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%]
 
 [%
 operation Type isJob() {
-	return Stream.all.exists(s|s.type=self);
+	return Model!Stream.all.exists(s|s.type=self);
 }
 
 operation Field getPythonInitialiser() {

@@ -1,6 +1,6 @@
 import traceback
 
-from crossflow.runtime import JobStream, QueueInfo, QueueType, str2QueueType
+from crossflow.runtime import JobStream, logger, QueueInfo, QueueType, str2QueueType
 
 
 class [%=s.name%](JobStream):
@@ -52,9 +52,9 @@ class [%=s.name%](JobStream):
 						if ackFunc != None:
 							ackFunc()						
 						
-					except Exception as ex:
-						traceback.print_exc()
-						workflow.reportInternalException(ex, '')
+					except Exception as e:
+						logger.exception("")
+						workflow.reportInternalException(e, "")
 
 				self.subscribe(preQueue, handlePreMessage)
 
@@ -73,9 +73,9 @@ class [%=s.name%](JobStream):
 						
 						if ackFunc != None:
 							ackFunc()						
-					except Exception as ex:
-						traceback.print_exc()
-						workflow.reportInternalException(ex, '')
+					except Exception as e:
+						logger.exception("")
+						workflow.reportInternalException(e, "")
 
 				self.subscribe(destQueue, handleDestinationMessage)
 	
@@ -90,9 +90,9 @@ class [%=s.name%](JobStream):
 						
 					if ackFunc != None:
 						ackFunc()						
-				except Exception as ex:
-					traceback.print_exc()
-					self.workflow.reportInternalException(ex, '')
+				except Exception as e:
+					logger.exception("")
+					self.workflow.reportInternalException(e, "")
 
 			self.subscribe(postQueue, messageHandler)
 
