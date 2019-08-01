@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -25,6 +27,7 @@ import org.maracas.data.Detection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +60,8 @@ public class ApiMigrationRestController {
 	private MigrationService migrationService;
 	@Autowired
 	private SORecommender soRecommender;
-	private String filePath = "/Users/juri/Desktop/";
+	@Value("${migration.local.m3.files.path}")
+	private String localM3Files;
 	private static final Logger logger = LoggerFactory.getLogger(ApiMigrationRestController.class);
 
 	@ApiOperation(value = "This API returns all client pairs that migrate from coordV1 to coordV2", response = Iterable.class)
@@ -124,8 +128,7 @@ public class ApiMigrationRestController {
 			@RequestParam("file") MultipartFile file) {
 		List<Detection> v = Lists.newArrayList();
 		try {
-			String fileName = filePath + file.getOriginalFilename();
-			file.transferTo(new File(fileName));
+			String fileName = getLocalFilePath(file);
 			v = migrationService.getDetections(coordV1, coordV2, fileName);
 			return v;
 		} catch (IllegalStateException | IOException e) {
@@ -145,8 +148,7 @@ public class ApiMigrationRestController {
 			@RequestParam("file") MultipartFile file) {
 		
 		try {
-			String fileName = filePath + file.getOriginalFilename();
-			file.transferTo(new File(fileName));
+			String fileName = getLocalFilePath(file);
 			MultiValueMap<String, String> v = migrationService.recommendsSnippet(coordV1, coordV2, fileName);
 			return v;
 		} catch (IllegalStateException | IOException e) {
@@ -165,8 +167,7 @@ public class ApiMigrationRestController {
 			@RequestParam("file") MultipartFile file) {
 		
 		try {
-			String fileName = filePath + file.getOriginalFilename();
-			file.transferTo(new File(fileName));
+			String fileName = getLocalFilePath(file);
 			List<DetectionResult> v = migrationService.getDetecionResults(coordV1, coordV2, fileName);
 			return v;
 		} catch (IllegalStateException | IOException e) {
@@ -184,8 +185,7 @@ public class ApiMigrationRestController {
 			@RequestParam("file") MultipartFile file) {
 		
 		try {
-			String fileName = filePath + file.getOriginalFilename();
-			file.transferTo(new File(fileName));
+			String fileName = getLocalFilePath(file);
 			String v = migrationService.getM3modelFromJar(fileName);
 			InputStream in = new FileInputStream(v);
 			return IOUtils.toByteArray(in);
@@ -209,5 +209,13 @@ public class ApiMigrationRestController {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	private String getLocalFilePath(MultipartFile multipartFile) throws IOException {
+			String fileName = Paths.get(localM3Files, multipartFile.getOriginalFilename()).toString();
+			byte[] bytes = multipartFile.getBytes();
+		    java.nio.file.Path path = Paths.get(fileName);
+		    Files.write(path, bytes);
+		    return fileName;
 	}
 }
