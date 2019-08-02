@@ -45,6 +45,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public boolean startExperiment(String experimentId, boolean worker) throws TException {
 		Experiment experiment = getExperiment(experimentId);
@@ -76,11 +77,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 			throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Unable to craete instance of workflow main class.");
 		}
 		finally {
-			try {
-				classLoader.close();
-			} catch (IOException e) {
-				// No foul
-			}
+			// FIXME We should close the class loader somewhere!
+			//classLoader.close();
 		}
 		if (workflow != null) {
 			workflow.getSerializer().setClassloader(classLoader);

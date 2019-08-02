@@ -37,15 +37,15 @@ function loadFile(filePath) {
 	  return result;
 }// loadFile
 
-function startWebSocket(experimentId) {
-	console.log("startWebSocket", experimentId);
+function startWebSocket(app) {
+	console.log("startWebSocket", app.experimentId);
 	let ws = null;
 	const wsUri = 'ws://' + window.location.hostname + ':61614';
 	const protocol = 'stomp';
 	const parser = new DOMParser();
 
 	const queueSizes = new Map();
-	const taskOldStatusCache = new Map();
+	const taskOldStatusCache = app.taskStatusCache;
 	const taskStatusCache = new Map();
 
 
@@ -73,13 +73,13 @@ function startWebSocket(experimentId) {
 	  ws.send('CONNECT\n\n\0');
 	  console.log('connected to ' + wsUri + ' over ' + protocol + ' protocol');
 
-	  ws.send('SUBSCRIBE\ndestination:' + STREAM_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  ws.send('SUBSCRIBE\ndestination:' + STREAM_TOPIC + '.' + app.experimentId + '\n\nack:auto\n\n\0');
 	  console.log('subscribed to ' + STREAM_TOPIC);
 
-	  ws.send('SUBSCRIBE\ndestination:' + TASK_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  ws.send('SUBSCRIBE\ndestination:' + TASK_TOPIC + '.' + app.experimentId + '\n\nack:auto\n\n\0');
 	  console.log('subscribed to ' + TASK_TOPIC);
 
-	  ws.send('SUBSCRIBE\ndestination:' + LOG_TOPIC + '.' + experimentId + '\n\nack:auto\n\n\0');
+	  ws.send('SUBSCRIBE\ndestination:' + LOG_TOPIC + '.' + app.experimentId + '\n\nack:auto\n\n\0');
 	  console.log('subscribed to ' + LOG_TOPIC);
 
 	  //ws.send('DISCONNECT\n\n\0');
@@ -125,23 +125,39 @@ function startWebSocket(experimentId) {
 		}
 	}
 
+	// Regex to match queue data
+	const queueRegex = new RegExp('(.*)(Pre|Post|Destination$)');
+
 	function processStreamEvent(message) {
-		// console.log("processStreamEvent")
 		let text = message.data.substring(message.data.indexOf(STREAM_TOPIC_ROOT), message.data.length-1);
-		// FIXME We can create the tooltip info here since we are already parsing the xml
-		window.streamTopicXmlDoc = parser.parseFromString(text,"text/xml");
-		let streamTopicXmlDoc = window.streamTopicXmlDoc;
+		let streamTopicXmlDoc = parser.parseFromString(text,"text/xml");
+		//console.log("processStreamEvent", streamTopicXmlDoc)
 		const streams = streamTopicXmlDoc.childNodes[0].children[0];
-		let streamId;
 		if (streams != null) {
 			for (let i = 0; i < streams.children.length; i++) {
-				let streamName = streams.children[i].children[0];
-				if (streamName.innerHTML != null) {
-					let streamId = streamName.innerHTML.substring(0, streamName.innerHTML.indexOf('.'));
-					if (streamId.includes('Post')) {
-						// queue stream encountered
-						streamId = streamId.substring(0, streamId.indexOf('Post'));
-						queueSizes.set(streamId, formatSize(streams.children[i].children[1]));
+				let streamMetadata = streams.children[i];
+				if (streamMetadata.children[0].innerHTML != null) {
+					const match = queueRegex.exec(streamMetadata.children[0].innerHTML.split(".")[0]);
+					if (match !== null) {
+						const streamId = match[1];
+						const type = match[2];
+						// console.log("queueId name", streamId);
+						let tooltip = app.queueTooltips.get(streamId);
+						if (tooltip === undefined) {
+							tooltip = new QueueTooltip();
+							app.queueTooltips.set(streamId, tooltip);
+						}
+						if (type === 'Pre') {
+                            tooltip.addPre(streams.children[i])
+                        }
+                        else if (type === 'Post') {
+                        	const size = formatSize(streams.children[i].children[1].innerHTML);
+							queueSizes.set(streamId, size[0] + size[1]);
+							tooltip.addPost(streams.children[i])
+						}
+						else if (type ==='Destination') {
+                            tooltip.addDest(streams.children[i])
+                        }
 					}
 				}
 			}
@@ -150,9 +166,7 @@ function startWebSocket(experimentId) {
 
 	function processTaskEvent(message) {
 		let text = message.data.substring(message.data.indexOf(TASK_TOPIC_ROOT), message.data.length - 1);
-		// FIXME Do the tooltip analysis here and store that in the window/graph
-		window.taskTopicXmlDoc = parser.parseFromString(text, "text/xml");
-		let taskTopicXmlDoc = window.taskTopicXmlDoc;
+		let taskTopicXmlDoc = parser.parseFromString(text, "text/xml");
 		let taskStatus = taskTopicXmlDoc.childNodes[0];
 		let caller = taskStatus.children[1];
 		taskStatusCache.set(
@@ -167,31 +181,33 @@ function startWebSocket(experimentId) {
 				if (taskStatusCache.has(taskId)) {
 					const taskStatus = taskStatusCache.get(taskId);
 					const oldStatus = taskOldStatusCache.get(taskId);
+					// console.log("task status", taskStatus);
+					// console.log("old task status", oldStatus);
+					// console.log(oldStatus !== taskStatus);
 					if (oldStatus !== taskStatus) {
 						const id = window.runtimeModelGraph.getDefaultParent().children[i].id;
 						const cell = window.runtimeModelGraph.model.getCell(id);
-						let fillcolor = "";
+						let color = "";
 						if ( taskStatus === 'STARTED' ) {
-							fillcolor = 'lightcyan';
+							color = 'lightcyan';
 						}
 						else if ( taskStatus === 'WAITING' ) {
-							fillcolor = 'skyblue';
+							color = 'skyblue';
 						}
 						else if ( taskStatus === 'INPROGRESS' ){
-							fillcolor = 'palegreen';
+							color = 'palegreen';
 						}
 						else if ( taskStatus === 'BLOCKED' ){
-							fillcolor = 'salmon';
+							color = 'salmon';
 						}
 						else if ( taskStatus === 'FINISHED' ){
-							fillcolor = 'slategray';
+							color = 'slategray';
 						}
-						// console.log("new style " + fillcolor);
-						window.runtimeModelGraph.setCellStyles(mxConstants.STYLE_FILLCOLOR, fillcolor, [cell]);
+						// console.log("new style " + color);
+						window.runtimeModelGraph.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, [cell]);
 						// console.log("change color to ", cell.getStyle())
-
+						taskOldStatusCache.set(taskId, taskStatus);
 					}
-					taskOldStatusCache.set(taskId, taskStatus);
 				}
 			}
 		}
@@ -204,14 +220,8 @@ function startWebSocket(experimentId) {
 				for (let j = 0, l = window.runtimeModelGraph.getDefaultParent().children.length; j < l; j++) {
 					let vertexId = window.runtimeModelGraph.getDefaultParent().children[j].id;
 					if (vertexId.includes('stream_' + streamId)) {
-						//try {
-						//	window.runtimeModelGraph.getModel().beginUpdate();
-							const cell = window.runtimeModelGraph.getModel().getCell(vertexId);
-							window.runtimeModelGraph.getModel().setValue(cell, size);
-						//} finally {
-							// window.runtimeModelGraph.refresh();
-						//	window.runtimeModelGraph.getModel().endUpdate();
-						//}
+						const cell = window.runtimeModelGraph.getModel().getCell(vertexId);
+						window.runtimeModelGraph.getModel().setValue(cell, size);
 					}
 				}
 			}
@@ -219,18 +229,18 @@ function startWebSocket(experimentId) {
 	}
 
 	function processLogEvent(message) {
-		text = message.data.substring(message.data.indexOf(LOG_TOPIC_ROOT), message.data.length-1);
+		const text = message.data.substring(message.data.indexOf(LOG_TOPIC_ROOT), message.data.length-1);
 		window.logTopicXmlDoc = parser.parseFromString(text,"text/xml");
 //			  console.log('received log message: ' + window.logTopicXmlDoc);
 
-		timestamp = window.logTopicXmlDoc.children[0].children[1].innerHTML;
-		msg = window.logTopicXmlDoc.children[0].children[2].innerHTML
-		severity = window.logTopicXmlDoc.children[0].children[0].innerHTML;
+		const timestamp = window.logTopicXmlDoc.children[0].children[1].innerHTML;
+		const msg = window.logTopicXmlDoc.children[0].children[2].innerHTML
+		const severity = window.logTopicXmlDoc.children[0].children[0].innerHTML;
 
 		// unix timestamp to human readable
 		const newTimestampDate = new Date();
 		newTimestampDate.setTime(timestamp);
-		timestampHumanReadable = newTimestampDate.toUTCString();
+		const timestampHumanReadable = newTimestampDate.toUTCString();
 
 		let row = document.getElementById('log-table-body').insertRow(-1);
 
@@ -244,24 +254,6 @@ function startWebSocket(experimentId) {
 		row.insertCell(2).appendChild(document.createTextNode(msg));
 	}
 
-	/**
-	 * Format the size to use K, M, G, etc.
-	 * @param sizeElement
-	 * @returns {string}
-	 */
-	function formatSize(sizeElement) {
-		let size = sizeElement.innerHTML;
-		let sizeUnit = '';
-		if (size >= 1000000) {
-			sizeUnit = "M";
-			size = size / 1000000;
-		} else if (size >= 1000) {
-			sizeUnit = "K";
-			size = size / 1000;
-		}
-		return Math.round(size) + sizeUnit
-	}
-
 	/*
  * TODO Animation: examples/animation.html / thread.html Markers:
  * examples/control.html Orthogonal: examples/orthogonal.html Swimlanes:
@@ -273,4 +265,140 @@ function startWebSocket(experimentId) {
 		while (new Date().getTime() < start + delay);
 	}
 
-};// main
+}
+
+/**
+ * Format the size to use K, M, G, etc.
+ * @param sizeElement
+ * @returns {any[]}
+ */
+function formatSize(sizeElement) {
+	let size = sizeElement;
+	let sizeUnit = '';
+	if (size >= 1000000) {
+		sizeUnit = "M";
+		size = size / 1000000;
+	} else if (size >= 1000) {
+		sizeUnit = "K";
+		size = size / 1000;
+	}
+	return [Math.round(size), sizeUnit];
+}
+
+function QueueTooltip () {
+	this.preSize = null;
+	this.preInFlightSize = null;
+	this.postSize = null;
+	this.postInFlightSize = null;
+	this.subscribers = null;
+	this.destSize = null;
+	this.destInFlightSize = null;
+	this.cellTooltip = null;
+}
+
+QueueTooltip.prototype.addPre = function(streamMetadata) {
+	this.preSize = streamMetadata.children[1].innerHTML;
+	this.preInFlightSize = streamMetadata.children[2].innerHTML;
+	// console.log("addPre", this.preSize, this.preInFlightSize);
+};
+
+QueueTooltip.prototype.addPost = function(streamMetadata) {
+	this.postSize = streamMetadata.children[1].innerHTML;
+	this.postInFlightSize = streamMetadata.children[2].innerHTML;
+	this.subscribers = streamMetadata.children[4].innerHTML;
+	// console.log("addPost", this.postSize, this.postInFlightSize, this.subscribers);
+};
+
+QueueTooltip.prototype.addDest = function(streamMetadata) {
+	this.destSize = streamMetadata.children[1].innerHTML;
+	this.destInFlightSize = streamMetadata.children[2].innerHTML;
+	// console.log("addDest", this.destSize, this.destInFlightSize);
+};
+QueueTooltip.prototype.getToolTip = function() {
+	if (this.preSize === null) {
+		if (this.cellTooltip !== null) {
+			return this.cellTooltip;
+		}
+		return "";
+	}
+	let formatted = formatSize(this.getSize(this.preSize, this.postSize, this.destSize));
+	const queueSize = formatted[0];
+	const queueSizeUnit = formatted[1];
+
+	formatted = formatSize(this.getSize(this.preInFlightSize, this.postInFlightSize, this.destInFlightSize));
+	const inFlightSize = formatted[0];
+	const inFlightSizeUnit = formatted[1];
+
+	formatted = formatSize(this.preSize);
+	this.preSize	= formatted[0];
+	const preSizeUnit = formatted[1];
+
+	formatted = formatSize(this.postSize);
+	this.postSize = formatted[0];
+	const postSizeUnit = formatted[1];
+
+	formatted = formatSize(this.destSize);
+	this.destSize = formatted[0];
+	const destSizeUnit = formatted[1];
+
+	formatted = formatSize(this.preInFlightSize);
+	this.preInFlightSize = formatted[0];
+	const preInFlightSizeUnit = formatted[1];
+
+	formatted = formatSize(this.postInFlightSize);
+	this.postInFlightSize = formatted[0];
+	const postInFlightSizeUnit = formatted[1];
+
+	formatted = formatSize(this.destInFlightSize);
+	this.destInFlightSize = formatted[0];
+	const destInFlightSizeUnit = formatted[1];
+	this.cellTooltip =
+		"<table class='tg'> " +
+		"<tr>" +
+		"<th></th>" +
+		"<th style='text-align: center;'>In-Flight |</th>" +
+		"<th style='text-align: center;'>| Queue</th>" +
+		"</tr>" +
+		"<tr>" +
+		"<td style='font-style: italic'>Pre</td>" +
+		"<td style='text-align: center;'>" + this.preInFlightSize + preInFlightSizeUnit + "</td>" +
+		"<td style='text-align: center;'>" + this.preSize + preSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+		"<td style='font-style: italic'>Dest</td>" +
+		"<td style='text-align: center;'>" + this.destInFlightSize + destInFlightSizeUnit + "</td>" +
+		"<td style='text-align: center;'>" + this.destSize + destSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+		"<td style='font-style: italic'>Post</td>" +
+		"<td style='text-align: center;'>" + this.postInFlightSize + postInFlightSizeUnit + "</td>" +
+		"<td style='text-align: center;'>" + this.postSize + postSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+		"<th style='font-style: italic'>Total</th>" +
+		"<td style='text-align: center;'>" + inFlightSize + inFlightSizeUnit+ "</td>" +
+		"<td style='text-align: center;'>" + queueSize + queueSizeUnit + "</td>" +
+		"</tr>" +
+		"<tr>" +
+		"<td style='font-style: italic'>Subs</td>" +
+		"<td  style='text-align: center;' colspan='2'>" + this.subscribers + "</td>" +
+		"</tr>" +
+		"</table>";
+	return this.cellTooltip;
+}
+/**
+ * Sum up queue size of pre-queue, post-queue, and destination-queue
+ */
+QueueTooltip.prototype.getSize = function (pre, post, dest) {
+	let result = 0;
+	if (pre !== null) {
+		result += parseInt(pre, 10);
+	}
+	if (post !== null) {
+		result += parseInt(post, 10);
+	}
+	if (dest !== null) {
+		result += parseInt(dest, 10);
+	}
+	return result;
+}
