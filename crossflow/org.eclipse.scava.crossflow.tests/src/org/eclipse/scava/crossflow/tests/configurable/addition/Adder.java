@@ -25,7 +25,7 @@ public class Adder extends AdderBase {
 	}
 
 	@Override
-	public void consumeOperationConfigurationTopic(OperationConfiguration operationConfiguration) throws Exception {
+	public void consumeOperationConfigTopic(Operation operationConfiguration) throws Exception {
 
 		System.out.println("config received: " + operationConfiguration);
 
@@ -35,7 +35,7 @@ public class Adder extends AdderBase {
 	}
 
 	@Override
-	public void consumePostConfigurationTopic(PostConfiguration postConfiguration) throws Exception {
+	public void consumePostConfigTopic(Post postConfiguration) throws Exception {
 
 		// TODO: handle configuration
 

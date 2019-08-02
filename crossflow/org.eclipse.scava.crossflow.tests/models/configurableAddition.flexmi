@@ -7,7 +7,7 @@
 	<!-- Needs an interim version of Epsilon after 10/1/2019 as it makes use of templates -->
 	<workflow name="AdditionWorkflow">
 		<simple-source name="NumberPairSource" produces="NumberPair" to="Additions"/>
-		<simple-task configurations="OperationConfiguration,PostConfiguration" name="Adder" produces="Number" to="AdditionResults"/>
+		<simple-task configurations="Operation,Post" name="Adder" produces="Number" to="AdditionResults"/>
 		<simple-sink name="AdditionResultsSink"/>
 		
 		<type name="NumberPair">
@@ -19,11 +19,11 @@
 			<field name="n" type="int"/> 
 		</type>
 		
-		<type name="OperationConfiguration">
+		<type name="Operation">
 			<field name="operation" type="String"/> 
 		</type>
 		
-		<type name="PostConfiguration">
+		<type name="Post">
 			<field name="post" type="String"/> 
 		</type>
 

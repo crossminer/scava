@@ -1,13 +1,13 @@
 package org.eclipse.scava.crossflow.tests.configurable.addition;
 
-public class OperationConfigurationConfigSource extends OperationConfigurationConfigSourceBase {
+public class OperationConfigSource extends OperationConfigSourceBase {
 	
 	@Override
 	public void produce() throws Exception {
-		OperationConfiguration ret = new OperationConfiguration();
+		Operation ret = new Operation();
 		ret.operation = "+";
 		System.out.println("sending: "+ret);
-		sendToOperationConfigurationTopic(ret);
+		sendToOperationConfigTopic(ret);
 		System.out.println("sent: "+ret);
 	}
 
