@@ -22,6 +22,10 @@ public class BugData extends Pongo {
 		PRIORITY.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		CREATIONTIME.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		LASTCLOSEDTIME.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
+		COMMENTSUM.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
+		SENTIMENTSUM.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
+		FIRSTCOMMENTID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
+		LASTCOMMENTID.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		AVERAGESENTIMENT.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		STARTSENTIMENT.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
 		ENDSENTIMENT.setOwningType("org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugData");
@@ -34,6 +38,10 @@ public class BugData extends Pongo {
 	public static StringQueryProducer PRIORITY = new StringQueryProducer("priority"); 
 	public static StringQueryProducer CREATIONTIME = new StringQueryProducer("creationTime"); 
 	public static StringQueryProducer LASTCLOSEDTIME = new StringQueryProducer("lastClosedTime"); 
+	public static NumericalQueryProducer COMMENTSUM = new NumericalQueryProducer("commentSum");
+	public static NumericalQueryProducer SENTIMENTSUM = new NumericalQueryProducer("sentimentSum");
+	public static StringQueryProducer FIRSTCOMMENTID = new StringQueryProducer("firstCommentId"); 
+	public static StringQueryProducer LASTCOMMENTID = new StringQueryProducer("lastCommentId"); 
 	public static NumericalQueryProducer AVERAGESENTIMENT = new NumericalQueryProducer("averageSentiment");
 	public static StringQueryProducer STARTSENTIMENT = new StringQueryProducer("startSentiment"); 
 	public static StringQueryProducer ENDSENTIMENT = new StringQueryProducer("endSentiment"); 
@@ -100,6 +108,42 @@ public class BugData extends Pongo {
 	
 	public BugData setLastClosedTime(Date lastClosedTime) {
 		dbObject.put("lastClosedTime", lastClosedTime);
+		notifyChanged();
+		return this;
+	}
+	public int getCommentSum() {
+		return parseInteger(dbObject.get("commentSum")+"", 0);
+	}
+	
+	public BugData setCommentSum(int commentSum) {
+		dbObject.put("commentSum", commentSum);
+		notifyChanged();
+		return this;
+	}
+	public int getSentimentSum() {
+		return parseInteger(dbObject.get("sentimentSum")+"", 0);
+	}
+	
+	public BugData setSentimentSum(int sentimentSum) {
+		dbObject.put("sentimentSum", sentimentSum);
+		notifyChanged();
+		return this;
+	}
+	public String getFirstCommentId() {
+		return parseString(dbObject.get("firstCommentId")+"", "");
+	}
+	
+	public BugData setFirstCommentId(String firstCommentId) {
+		dbObject.put("firstCommentId", firstCommentId);
+		notifyChanged();
+		return this;
+	}
+	public String getLastCommentId() {
+		return parseString(dbObject.get("lastCommentId")+"", "");
+	}
+	
+	public BugData setLastCommentId(String lastCommentId) {
+		dbObject.put("lastCommentId", lastCommentId);
 		notifyChanged();
 		return this;
 	}

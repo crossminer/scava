@@ -110,7 +110,6 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		{
 			System.err.println("Metric: " + getIdentifier() + " failed to retrieve " + 
 								"the transient metrics it needs!");
-			System.exit(-1);
 		}
 
 		RequestReplyClassificationTransMetric requestReplyClassifier = ((RequestReplyClassificationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
@@ -214,6 +213,7 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			bugData.setBugTrackerId(bug.getBugTrackingSystem().getOSSMeterId());
 			bugData.setBugId(bug.getBugId());
 			bugData.setCreationTime(bug.getCreationTime());
+			bugData.setCommentSum(0);
 			db.getBugData().add(bugData);
 		}
 		bugData.setOperatingSystem(bug.getOperatingSystem());
@@ -270,6 +270,16 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 		String startSentiment = "__label__neutral", 
 			   endSentiment = "__label__neutral";
 		boolean first = true;
+		if(bugData.getCommentSum()>0)
+		{
+			startSentiment=bugData.getStartSentiment();
+			commentSum=bugData.getCommentSum();
+			totalSentiment=bugData.getSentimentSum();
+			earliestCommentId=Integer.parseInt(bugData.getFirstCommentId());
+			latestCommentId=Integer.parseInt(bugData.getLastCommentId());
+			first=false;
+		}
+		
 		for (BugTrackerCommentsSentimentClassification bcd:  commentIt) {
 			int cid = Integer.parseInt(bcd.getCommentId());
 			String sentimentClass = bcd.getPolarity();
@@ -295,11 +305,15 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 			first = false;
 		}
 		if(commentSum>0)
+		{
 			bugData.setAverageSentiment(((float)totalSentiment)/commentSum);
-		else
-			bugData.setAverageSentiment((float)totalSentiment);
-		bugData.setStartSentiment(startSentiment);
-		bugData.setEndSentiment(endSentiment);
+			bugData.setStartSentiment(startSentiment);
+			bugData.setEndSentiment(endSentiment);
+			bugData.setCommentSum(commentSum);
+			bugData.setSentimentSum(totalSentiment);
+			bugData.setFirstCommentId(String.valueOf(earliestCommentId));
+			bugData.setLastCommentId(String.valueOf(latestCommentId));
+		}	
 		db.sync();
 	}
 

@@ -65,7 +65,6 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 		if (uses.size()!=1) {
 			System.err.println("Metric: avgnumberofrequestsreplies failed to retrieve " + 
 								"the transient metric it needs!");
-			System.exit(-1);
 		}
 
 		 NewsgroupsSentimentTransMetric sentimentTransMetric = 
@@ -88,20 +87,15 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 				endSentiment-=1;
 		}
 		long size = sentimentTransMetric.getThreads().size();
+		NewsgroupsSentimentHistoricMetric sentiment = new NewsgroupsSentimentHistoricMetric();
 		if (size>0) {
 			overallSentiment /= size;
 			startSentiment /= size;
 			endSentiment /= size;
+			sentiment.setOverallAverageSentiment(overallSentiment);
+			sentiment.setOverallSentimentAtThreadBeggining(startSentiment);
+			sentiment.setOverallSentimentAtThreadEnd(endSentiment);
 		}
-		
-		NewsgroupsSentimentHistoricMetric sentiment = 
-										new NewsgroupsSentimentHistoricMetric();
-		sentiment.setOverallAverageSentiment(overallSentiment);
-		sentiment.setOverallSentimentAtThreadBeggining(startSentiment);
-		sentiment.setOverallSentimentAtThreadEnd(endSentiment);
-		System.out.println("overallSentiment: " + overallSentiment + "\t" + 
-				"startSentiment: " + startSentiment + "\t" + 
-				"endSentiment: " + endSentiment);
 		return sentiment;
 	}
 			

@@ -69,6 +69,10 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 		 			  
 			 Map<String, Integer> severities = new HashMap<String, Integer>();
 			 
+			 float averageSentiment;
+			 int startSentiment;
+			 int endSentiment;
+			 
 			 for (BugTrackerBugsData bugTrackerBugsData: severityClassifier.getBugTrackerBugs()) {
 				 
 				 String trackerId = bugTrackerBugsData.getBugTrackerId();
@@ -83,40 +87,42 @@ public class SeveritySentimentHistoricMetricProvider extends AbstractHistoricalM
 				 Iterable<BugData> bugDataIt = bugMetadata.getBugData().find(BugData.BUGTRACKERID.eq(trackerId),
 						 													 BugData.BUGID.eq(bugTrackerBugsData.getBugId()));
 				 for (BugData bd: bugDataIt) bugData = bd;
+				 
+				 if(bugData.getCommentSum()==0)
+					 continue;
 
-				 float averageSentiment = bugData.getAverageSentiment();
+				 averageSentiment = bugData.getAverageSentiment();
 //				 Map<String, Float> sentAverage = retrieveOrAddFloat(sentimentAverage, trackerId);
 				 addOrIncreaseFloat(sentimentAverage, severity, averageSentiment);
 				 
-				 int startSentiment = transformSentimentToInteger(bugData.getStartSentiment());
+				 startSentiment = transformSentimentToInteger(bugData.getStartSentiment());
 //				 Map<String, Integer> sentBeginning = retrieveOrAdd(sentimentAtBeginning, trackerId);
 				 addOrIncrease(sentimentAtBeginning, severity, startSentiment);
 				 
-				 int endSentiment = transformSentimentToInteger(bugData.getEndSentiment());
+				 endSentiment = transformSentimentToInteger(bugData.getEndSentiment());
 //				 Map<String, Integer> sentEnd = retrieveOrAdd(sentimentAtEnd, trackerId);
 				 addOrIncrease(sentimentAtEnd, severity, endSentiment);
 
 			 }
 			 
 			 for (String severity: severities.keySet()) {
-				 int numberOfSeverityBugs = severities.get(severity);
-				 SeverityLevel severityLevel = new SeverityLevel();
-				 severityLevel.setSeverityLevel(severity);
-				 severityLevel.setNumberOfBugs(numberOfSeverityBugs);
-				 float averageSentiment = sentimentAverage.get(severity) / numberOfSeverityBugs;
-				 severityLevel.setAverageSentiment(averageSentiment);
-				 float sentimentAtThreadBeggining = 
+				int numberOfSeverityBugs = severities.get(severity);
+				SeverityLevel severityLevel = new SeverityLevel();
+				severityLevel.setSeverityLevel(severity);
+				severityLevel.setNumberOfBugs(numberOfSeverityBugs);
+				if(sentimentAverage.containsKey(severity))
+				{
+					averageSentiment = sentimentAverage.get(severity) / numberOfSeverityBugs;
+					severityLevel.setAverageSentiment(averageSentiment);
+					float sentimentAtThreadBeggining = 
 						 ((float) sentimentAtBeginning.get(severity)) / numberOfSeverityBugs;
-				 severityLevel.setSentimentAtThreadBeggining(sentimentAtThreadBeggining);
-				 float sentimentAtThreadEnd = 
+					severityLevel.setSentimentAtThreadBeggining(sentimentAtThreadBeggining);
+					float sentimentAtThreadEnd = 
 						 ((float) sentimentAtEnd.get(severity)) / numberOfSeverityBugs;
-				 severityLevel.setSentimentAtThreadEnd(sentimentAtThreadEnd);
-				 metric.getSeverityLevels().add(severityLevel);
+					severityLevel.setSentimentAtThreadEnd(sentimentAtThreadEnd);
+					metric.getSeverityLevels().add(severityLevel);
+				}
 			 }
-			 
-//			 for (String bugTrackerId: severitiesPerTracker.keySet()) {
-//				 Map<String, Integer> severityMap = severitiesPerTracker.get(bugTrackerId);
-//			 }
 			 
 		}
 		return metric;

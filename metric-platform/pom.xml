@@ -94,8 +94,8 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.github.dependencies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentbugzilla</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentnntp</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.sentiment</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.sentiment</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.avgbugcreationclosedtime</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.avgnumberofrequestsreplies</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.bugs</module>
@@ -132,8 +132,8 @@
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.totaldownloadcounter</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.historic.unansweredthreadsperdaypernewsgroup</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.numberofnewbugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsbugzilla</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsnntp</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.emotions</module>
+    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.emotions</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.rascal.testability</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.sentimentclassification</module>
     <module>metric-providers/org.eclipse.scava.metricprovider.style</module>

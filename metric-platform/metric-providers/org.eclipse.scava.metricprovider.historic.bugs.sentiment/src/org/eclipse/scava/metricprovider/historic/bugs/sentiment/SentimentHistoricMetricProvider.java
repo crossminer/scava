@@ -53,8 +53,10 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 			 float overallSentiment = 0,
 				   startSentiment = 0,
 				   endSentiment = 0;
+			 long size=0;
 			 for (BugData bugData: usedBhm.getBugData()) {
-				 overallSentiment += bugData.getAverageSentiment();
+				 if(bugData.getCommentSum()==0)
+					 continue;
 				 String start = bugData.getStartSentiment();
 				 if (start.equals("__label__positive"))
 					 startSentiment+=1;
@@ -65,17 +67,17 @@ public class SentimentHistoricMetricProvider extends AbstractHistoricalMetricPro
 					 endSentiment+=1;
 				 else if (end.equals("__label__negative"))
 					 endSentiment-=1;
+				 overallSentiment += bugData.getAverageSentiment();
+				 size++;
 			 }
-			 long size = usedBhm.getBugData().size();
 			 if (size>0) {
 				 overallSentiment /= size;
 				 startSentiment /= size;
 				 endSentiment /= size;
+				 overallSentimentBugs.setOverallAverageSentiment(overallSentiment);
+				 overallSentimentBugs.setOverallSentimentAtThreadBeggining(startSentiment);
+				 overallSentimentBugs.setOverallSentimentAtThreadEnd(endSentiment);
 			 }
-			 
-			 overallSentimentBugs.setOverallAverageSentiment(overallSentiment);
-			 overallSentimentBugs.setOverallSentimentAtThreadBeggining(startSentiment);
-			 overallSentimentBugs.setOverallSentimentAtThreadEnd(endSentiment);
 		}
 		return overallSentimentBugs;
 	}

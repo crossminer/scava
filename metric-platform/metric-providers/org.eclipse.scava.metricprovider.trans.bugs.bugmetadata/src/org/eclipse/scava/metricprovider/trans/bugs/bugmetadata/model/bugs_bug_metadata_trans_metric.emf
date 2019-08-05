@@ -17,6 +17,10 @@ class BugData {
 	attr String priority;
 	attr Date creationTime;
 	attr Date lastClosedTime;
+	attr int commentSum;
+	attr int sentimentSum;
+	attr String firstCommentId;
+	attr String lastCommentId;
 	attr float averageSentiment;
 	attr String startSentiment; 
 	attr String endSentiment; 
