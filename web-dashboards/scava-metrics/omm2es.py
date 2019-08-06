@@ -213,7 +213,7 @@ if __name__ == '__main__':
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
     # filename pattern is ommv3-date.csv
-    timestamp = str.split(".csv")[0].split("-").pop()
+    timestamp = ARGS.uri.split(".csv")[0].split("-").pop()
 
     omm_metrics = fetch_omm(ARGS.uri, str_to_datetime(timestamp))
 
