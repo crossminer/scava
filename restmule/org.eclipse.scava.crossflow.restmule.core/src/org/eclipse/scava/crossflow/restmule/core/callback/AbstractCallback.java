@@ -31,7 +31,7 @@ public abstract class AbstractCallback<T, L extends List<T>, D extends AbstractD
 
 	@Override
 	public void onResponse(Call<L> call, Response<L> response) {
-		System.out.println("AbstractCallback.response.body()="+response.body().toString());
+		//System.out.println("AbstractCallback.response.body()="+response.body().toString());
 		handleResponse(response);			
 	}
 

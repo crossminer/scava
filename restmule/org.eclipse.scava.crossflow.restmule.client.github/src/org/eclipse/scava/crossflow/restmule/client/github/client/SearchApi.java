@@ -19,7 +19,7 @@ import org.eclipse.scava.crossflow.restmule.client.github.model.SearchIssues;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchRepositories;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchUsers;
 import org.eclipse.scava.crossflow.restmule.client.github.page.GitHubPaged;
-import org.eclipse.scava.crossflow.restmule.client.github.page.GitHubPagination;
+import org.eclipse.scava.crossflow.restmule.client.github.page.GitHubSearchAPIPagination;
 import org.eclipse.scava.crossflow.restmule.client.github.session.GitHubSession;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubPropertiesUtil;
 import org.apache.logging.log4j.LogManager;
@@ -66,7 +66,7 @@ public class SearchApi {
 
 	/** CLIENT */
 	private static class SearchClient extends AbstractClient<ISearchEndpoint> implements ISearchApi {
-		private GitHubPagination paginationPolicy;
+		private GitHubSearchAPIPagination paginationPolicy;
 
 		SearchClient(ISession session, boolean activeCaching) {
 			super();
@@ -94,7 +94,7 @@ public class SearchApi {
 			this.client = clientBuilder.build();
 
 			this.callbackEndpoint = AbstractClient.retrofit(client, baseurl).create(ISearchEndpoint.class);
-			this.paginationPolicy = GitHubPagination.get();
+			this.paginationPolicy = GitHubSearchAPIPagination.get();
 		}
 
 		/** WRAPED METHODS FOR PAGINATION */

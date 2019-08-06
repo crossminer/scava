@@ -154,7 +154,7 @@ public abstract class AbstractInterceptor {
 								peekResponse(response);
 								return response;
 							}
-							LOG.info("Tried to get responce from local CACHE but it is not there");
+							LOG.info("Tried to get response from local CACHE but it is not there");
 						}
 					} else {
 						LOG.warn("Cache disabled, if this is not intended make sure you initialise the cache.");
@@ -166,6 +166,8 @@ public abstract class AbstractInterceptor {
 				}
 
 				LOG.info("DEALING WITH NETWORK RESPONSE");
+				
+				//System.out.println(peekResponse(response));
 
 				if (response.networkResponse() != null) {
 

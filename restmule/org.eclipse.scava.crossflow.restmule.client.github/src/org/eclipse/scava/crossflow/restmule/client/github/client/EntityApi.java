@@ -90,7 +90,7 @@ import org.eclipse.scava.crossflow.restmule.client.github.model.User;
 import org.eclipse.scava.crossflow.restmule.client.github.model.UserKeysKeyId;
 import org.eclipse.scava.crossflow.restmule.client.github.model.UserUserIdSubscribitions;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Users;
-import org.eclipse.scava.crossflow.restmule.client.github.page.GitHubPagination;
+import org.eclipse.scava.crossflow.restmule.client.github.page.GitHubEntityAPIPagination;
 import org.eclipse.scava.crossflow.restmule.client.github.session.GitHubSession;
 import org.eclipse.scava.crossflow.restmule.client.github.util.GitHubPropertiesUtil;
 import org.apache.logging.log4j.LogManager;
@@ -138,7 +138,7 @@ public class EntityApi {
 	/** CLIENT */
 	private static class EntityClient extends AbstractClient<IEntityEndpoint> implements IEntityApi, Serializable {
 		private static final long serialVersionUID = 668L;
-		private GitHubPagination paginationPolicy;
+		private GitHubEntityAPIPagination paginationPolicy;
 
 		EntityClient(ISession session, boolean activeCaching) {
 			super();
@@ -165,7 +165,7 @@ public class EntityApi {
 			this.client = clientBuilder.build();
 
 			this.callbackEndpoint = AbstractClient.retrofit(client, baseurl).create(IEntityEndpoint.class);
-			this.paginationPolicy = GitHubPagination.get();
+			this.paginationPolicy = GitHubEntityAPIPagination.get();
 		}
 
 		/** WRAPED METHODS FOR PAGINATION */
