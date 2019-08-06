@@ -35,7 +35,7 @@ import time
 
 from perceval.backends.scava.sonarqube import Sonar
 
-from grimoirelab_toolkit.datetime import unixtime_to_datetime
+from grimoirelab_toolkit.datetime import datetime_to_utc
 
 from grimoire_elk.elastic import ElasticSearch
 from grimoire_elk.elastic_mapping import Mapping as BaseMapping
@@ -243,7 +243,7 @@ if __name__ == '__main__':
 
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics,ARGS.time)
+    sonar_metrics = fetch_sonarqube(ARGS.url, ARGS.components, ARGS.metrics,datetime_to_utc(ARGS.time))
 
     if sonar_metrics:
         logging.info("Uploading SonarQube metrics to Elasticsearch")

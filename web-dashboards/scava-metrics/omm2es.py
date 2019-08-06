@@ -31,7 +31,7 @@ import logging
 import requests
 import time
 
-from grimoirelab_toolkit.datetime import datetime_utcnow
+from grimoirelab_toolkit.datetime import datetime_to_utc
 
 from perceval.backends.scava.omm import Omm
 
@@ -135,7 +135,7 @@ def __init_index(elastic_url, index, wait_time):
     return elastic
 
 
-def enrich_metrics(omm_metrics):
+def enrich_metrics(omm_metrics, timestamp):
     """
     Enrich metrics coming from Ommto use them in Kibana
 
@@ -174,7 +174,7 @@ def enrich_metrics(omm_metrics):
             'metric_es_compute': 'sample',
             'metric_value': metric_value,
             'metric_es_value_weighted': metric_value,
-            'datetime': omm_data['timestamp'],
+            'datetime': timestamp,
             'omm': omm_data
         }
 
@@ -214,7 +214,10 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
-    omm_metrics = fetch_omm(ARGS.uri)
+    # filename pattern is ommv3-date.csv
+    timestamp = str.split(".csv")[0].split("-").pop()
+
+    omm_metrics = fetch_omm(ARGS.uri, datetime_to_utc(timestamp))
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
