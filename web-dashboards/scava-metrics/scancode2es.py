@@ -28,11 +28,10 @@
 
 import argparse
 import hashlib
-import json
 import logging
 import time
 
-from grimoirelab_toolkit.datetime import datetime_utcnow
+import requests
 
 from collections import Counter
 
@@ -49,8 +48,9 @@ def get_params():
                         help="Number of items uploaded per bulk")
     parser.add_argument("--wait-time", default=DEFAULT_WAIT_TIME, type=int,
                         help="Seconds to wait in case ES is not ready")
-    parser.add_argument("-u", "--uri", help="URI for Scancode result")
+    parser.add_argument("-u", "--url", help="URL for Scancode result")
     parser.add_argument("-p", "--project", help="Project name")
+    parser.add_argument("-t", "--time", help="Timestamp used to enrich item")
     parser.add_argument("-e", "--elastic-url", default="http://localhost:9200",
                         help="ElasticSearch URL (default: http://localhost:9200)")
     parser.add_argument("-i", "--index", required=True, help="ElasticSearch index in which to import the metrics")
@@ -132,27 +132,27 @@ def __init_index(elastic_url, index, wait_time):
 
     return elastic
 
-def load_report(uri):
-    try:
 
-        with open(uri) as json_file:
-            data = json.load(json_file)
+def load_report(url):
+
+    try:
+        r = requests.get(url)
+        data = r.json()
 
     except FileNotFoundError:
             pass
 
     return data
 
-def fetch_scancode(uri, project):
+def fetch_scancode(url, project, timestamp):
     """
     Fetch the metrics from Scancode
 
     """
 
-    licensesCount = 0
     noLicenseCount = 0
 
-    metrics = load_report(uri)
+    metrics = load_report(url)
 
     licensesNames = []
 
@@ -173,8 +173,6 @@ def fetch_scancode(uri, project):
     licensesCount = fileCount - noLicenseCount # Number of files with licenses (somes files may have several licenceNames)
 
     uniqueLicenses = len(Counter(licensesNames)) # Number of unique licenses (some licenses may be for several files)
-
-    timestamp = datetime_utcnow().isoformat()
 
     # enrich fields for ES: Unique licenses
     eitem = {
@@ -310,7 +308,7 @@ if __name__ == '__main__':
     elastic.max_items_bulk = min(ARGS.bulk_size, elastic.max_items_bulk)
 
     # OW2 specific: fetch from Scancode
-    scancode_metrics = fetch_scancode(ARGS.uri, ARGS.project)
+    scancode_metrics = fetch_scancode(ARGS.url, ARGS.project, ARGS.time)
 
     if scancode_metrics:
         logging.info("Uploading Scancode metrics to Elasticsearch")

@@ -26,12 +26,10 @@
 
 import argparse
 import hashlib
-import json
 import logging
-import requests
 import time
 
-from grimoirelab_toolkit.datetime import datetime_to_utc
+from grimoirelab_toolkit.datetime import str_to_datetime
 
 from perceval.backends.scava.omm import Omm
 
@@ -217,7 +215,7 @@ if __name__ == '__main__':
     # filename pattern is ommv3-date.csv
     timestamp = str.split(".csv")[0].split("-").pop()
 
-    omm_metrics = fetch_omm(ARGS.uri, datetime_to_utc(timestamp))
+    omm_metrics = fetch_omm(ARGS.uri, str_to_datetime(timestamp))
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
