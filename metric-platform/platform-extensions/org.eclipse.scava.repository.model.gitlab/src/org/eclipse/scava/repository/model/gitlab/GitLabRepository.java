@@ -16,12 +16,13 @@ public class GitLabRepository extends org.eclipse.scava.repository.model.Project
 		FULL_NAME.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
 		CLONE_URL.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
 		GIT_URL.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
+		HTML_URL.setOwningType("org.eclipse.scava.repository.model.gitlab.GitLabRepository");
 	}
 	
 	public static StringQueryProducer FULL_NAME = new StringQueryProducer("full_name"); 
 	public static StringQueryProducer CLONE_URL = new StringQueryProducer("clone_url"); 
 	public static StringQueryProducer GIT_URL = new StringQueryProducer("git_url"); 
-	
+	public static StringQueryProducer HTML_URL = new StringQueryProducer("html_url");
 	
 	public String getFull_name() {
 		return parseString(dbObject.get("full_name")+"", "");
@@ -51,7 +52,13 @@ public class GitLabRepository extends org.eclipse.scava.repository.model.Project
 		return this;
 	}
 	
+	public String getHtml_url() {
+		return parseString(dbObject.get("html_url")+"", "");
+	}
 	
-	
-	
+	public GitLabRepository setHtml_url(String html_url) {
+		dbObject.put("html_url", html_url);
+		notifyChanged();
+		return this;
+	}
 }

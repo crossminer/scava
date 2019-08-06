@@ -75,6 +75,7 @@ public class GitLabImporter implements IImporter {
 			repo.setFull_name(json.get("name").toString());
 			repo.setGit_url(json.get("ssh_url_to_repo").toString());
 			repo.setHomePage(json.get("web_url").toString());
+			repo.setHtml_url(json.get("web_url").toString());
 
 			GitRepository git = new GitRepository();
 			git.setUrl(json.get("http_url_to_repo").toString());
