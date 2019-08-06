@@ -52,7 +52,9 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 ### Ivy
 We're using Apache Ivy for dependency management (i.e. so that we don't need to store jars in the repo)
 - Install the Ivy Eclipse plugin: http://www.apache.org/dist/ant/ivyde/updatesite
-- If Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click and select Ivy -> Resolve
+- The main project requiring resolution is 'runtime.dependencies'. Since this project requires dependencies from a non-standard repository, you have to configure ivy to add this repository as well. Since this is not automated you need to right-click on the project -> Properties -> Ivy -> New... -> Settings -> Enable project specific settings (selected) -> Ivy settings path -> ${workspace_loc:org.eclipse.scava.crossflow.runtime.dependencies/ivysettings.xml}. To resolve the dependencies you now select this new retrieve option from the context menu of Ivy, instead of the default one. 
+- If you get an error regarding same-name artefacts, click on 'Add def. pattern' in the 'Main' tab of the previous configuration to replace everything after lib/, resulting in: lib/[type]s/[artifact]-[revision](-[classifier]).[ext] as the retrieve pattern.
+- For the remainder of the projects, if Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click (on the project name) and select Ivy -> Resolve (. If you plan to run the web UI from eclipse instead of docker, the 'web' project requires resolution as well)
 
 ### Generating stuff
 You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
