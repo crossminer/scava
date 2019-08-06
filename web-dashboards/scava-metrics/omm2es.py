@@ -184,12 +184,12 @@ def enrich_metrics(omm_metrics, timestamp):
     logging.info(msg)
 
 
-def fetch_omm(uri):
+def fetch_omm(uri, timestamp):
     """Fetch the metrics from OMM"""
 
     omm_backend = Omm(uri)
 
-    for enriched_metric in enrich_metrics(omm_backend.fetch()):
+    for enriched_metric in enrich_metrics(omm_backend.fetch(), timestamp):
 
         yield enriched_metric
 
