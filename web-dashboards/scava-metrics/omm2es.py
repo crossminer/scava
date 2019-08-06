@@ -215,7 +215,7 @@ if __name__ == '__main__':
     # filename pattern is ommv3-date.csv
     timestamp = ARGS.uri.split(".csv")[0].split("-").pop()
 
-    omm_metrics = fetch_omm(ARGS.uri, str_to_datetime(timestamp))
+    omm_metrics = fetch_omm(ARGS.uri, str((str_to_datetime(timestamp))))
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
