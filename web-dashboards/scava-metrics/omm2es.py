@@ -26,12 +26,8 @@
 
 import argparse
 import hashlib
-import json
 import logging
-import requests
 import time
-
-from grimoirelab_toolkit.datetime import datetime_to_utc
 
 from perceval.backends.scava.omm import Omm
 
@@ -186,12 +182,12 @@ def enrich_metrics(omm_metrics, timestamp):
     logging.info(msg)
 
 
-def fetch_omm(uri):
+def fetch_omm(uri, timestamp):
     """Fetch the metrics from OMM"""
 
     omm_backend = Omm(uri)
 
-    for enriched_metric in enrich_metrics(omm_backend.fetch()):
+    for enriched_metric in enrich_metrics(omm_backend.fetch(), timestamp):
 
         yield enriched_metric
 
@@ -215,9 +211,11 @@ if __name__ == '__main__':
 
     # OW2 specific: fetch from SonarQube and our quality model, OMM
     # filename pattern is ommv3-date.csv
-    timestamp = str.split(".csv")[0].split("-").pop()
+    timestamp = ARGS.uri.split(".csv")[0].split("-").pop()
 
-    omm_metrics = fetch_omm(ARGS.uri, datetime_to_utc(timestamp))
+    timestamp += "-01-01"
+
+    omm_metrics = fetch_omm(ARGS.uri, timestamp)
 
     if omm_metrics:
         logging.info("Uploading Omm metrics to Elasticsearch")
