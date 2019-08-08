@@ -53,7 +53,7 @@ Kill container:
 `docker tag IMAGE_ID crossminer/crossflow`
 
 - Make sure you're logged in and your user is allowed to push to the Crossflow DockerHub repository (replace `USER_ID` with your DockerHub username):
-`docker login --user=USER_ID`
+`docker login --username=USER_ID`
 
 - Push new Crossflow Docker image to DockerHub:
 `docker push crossminer/crossflow:latest`
