@@ -1,6 +1,6 @@
-package org.eclipse.scava.crossflow.examples.stars;
+package org.eclipse.scava.crossflow.examples.simple.nbody.c;
 
-public interface StarSimulation extends AutoCloseable {
+public interface SimpleNBodyCS257 extends AutoCloseable {
 
 	void updateStars();
 	void init();	

@@ -25,5 +25,8 @@
             <artifact name="lwjgl-stb" type="jar"/>
             <artifact name="lwjgl-stb" type="jar" m:classifier="natives-macos"/>
         </dependency>
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.9"/>
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.9.9.2"/>
+        <dependency org="org.apache.commons" name="commons-math3" rev="3.6.1"/>
     </dependencies>
 </ivy-module>

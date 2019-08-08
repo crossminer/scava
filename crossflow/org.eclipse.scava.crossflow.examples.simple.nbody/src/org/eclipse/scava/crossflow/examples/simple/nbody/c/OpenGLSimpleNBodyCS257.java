@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.examples.stars;
+package org.eclipse.scava.crossflow.examples.simple.nbody.c;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glFrustum;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -33,30 +34,30 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
 
-public class Universe implements StarSimulation {
+public class OpenGLSimpleNBodyCS257 implements SimpleNBodyCS257 {
 
 	private GLFWErrorCallback errorCallback;
     private long windowID;
 	private final int N;
-	private final float[] x;
-	private final float[] y;
-	private final float[] z;
-	private final float[] m;
-	private final float[] c;
-	private final StarSimulation mathSimulation;
+	private final double[] x;
+	private final double[] y;
+	private final double[] z;
+	private final double[] m;
+	private final double[] c;
+	private final SimpleNBodyCS257 mathSimulation;
 
-	public Universe(int N,
-			float[] x,
-			float[] y,
-			float[] z,
-			float[] ax,
-			float[] ay,
-			float[] az,
-			float[] vx,
-			float[] vy,
-			float[] vz,
-			float[] m,
-			float[] c) {
+	public OpenGLSimpleNBodyCS257(int N,
+			double[] x,
+			double[] y,
+			double[] z,
+			double[] ax,
+			double[] ay,
+			double[] az,
+			double[] vx,
+			double[] vy,
+			double[] vz,
+			double[] m,
+			double[] c) {
 		super();
 		this.N = N;
 		this.x = x;
@@ -64,7 +65,7 @@ public class Universe implements StarSimulation {
 		this.z = z;
 		this.m = m;
 		this.c = c;
-		this.mathSimulation = new SimpleNBody(N, x, y, z, ax, ay, az, vx, vy, vz, m);
+		this.mathSimulation = new StockSimpleNBodyCS257(N, x, y, z, ax, ay, az, vx, vy, vz, m);
 	}
 
 	@Override
@@ -102,6 +103,7 @@ public class Universe implements StarSimulation {
      	
 	    // Set the clear color
      	glClearColor(0.5f, 0.5f, 0.5f, 1f);
+     	setUpMatrices();
         
 	}
 	
@@ -117,14 +119,14 @@ public class Universe implements StarSimulation {
 		    glLoadIdentity();
 		    for (int i = 0; i < N; i++) {
 		        glPushMatrix();
-		        glTranslatef(x[i], y[i], z[i]);
-		        glColor3f(c[3*i+0], c[3*i+1], c[3*i+2]);
+		        glTranslatef((float) x[i], (float) y[i], (float) z[i]);
+		        glColor3f((float) c[3*i+0], (float) c[3*i+1], (float) c[3*i+2]);
 		        
 		        glBegin(GL_QUADS);
-	            glVertex3f(-m[i]*0.01f, -m[i]*0.01f, 0);
-	            glVertex3f(-m[i]*0.01f, m[i]*0.01f, 0);
-	            glVertex3f(m[i]*0.01f, m[i]*0.01f, 0);
-	            glVertex3f(m[i]*0.01f, -m[i]*0.01f, 0);
+	            glVertex3f((float) -m[i]*0.01f, (float) -m[i]*0.01f, 0);
+	            glVertex3f((float) -m[i]*0.01f, (float) m[i]*0.01f, 0);
+	            glVertex3f((float) m[i]*0.01f, (float) m[i]*0.01f, 0);
+	            glVertex3f((float) m[i]*0.01f, (float) -m[i]*0.01f, 0);
 	            glEnd();
 	                
 		        glPopMatrix();
@@ -149,6 +151,14 @@ public class Universe implements StarSimulation {
 		glfwTerminate();
 		glfwSetErrorCallback(null); //.free();
 	}
+	
+	private static void setUpMatrices() {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(60, 640f / 480f, 0.3f, 100);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
 
 	public double getLoopZeroTime() {
 		return mathSimulation.getLoopZeroTime();
@@ -168,6 +178,14 @@ public class Universe implements StarSimulation {
 
 	public double getTotalTime() {
 		return mathSimulation.getTotalTime();
+	}
+	
+	public static void gluPerspective(float fovy, float aspect, float near, float far) {
+	    float bottom = -near * (float) Math.tan(fovy / 2);
+	    float top = -bottom;
+	    float left = aspect * bottom;
+	    float right = -left;
+	    glFrustum(left, right, bottom, top, near, far);
 	}
 	
 }

@@ -1,22 +1,22 @@
-package org.eclipse.scava.crossflow.examples.stars;
+package org.eclipse.scava.crossflow.examples.simple.nbody.c;
 
-public class SimpleNBody implements StarSimulation {
+public class StockSimpleNBodyCS257 implements SimpleNBodyCS257 {
 	
-	private final static float eps = 0.00125f;
-	private final static float dmp = 0.995f;
-	private final static float dt = 0.001f;
+	private final static double eps = 0.00125f;
+	private final static double dmp = 0.995f;
+	private final static double dt = 0.001f;
 	
 	private final int N;
-	private final float[] x;
-	private final float[] y;
-	private final float[] z;
-	private final float[] ax;
-	private final float[] ay;
-	private final float[] az;
-	private final float[] vx;
-	private final float[] vy;
-	private final float[] vz;
-	private final float[] m;
+	private final double[] x;
+	private final double[] y;
+	private final double[] z;
+	private final double[] ax;
+	private final double[] ay;
+	private final double[] az;
+	private final double[] vx;
+	private final double[] vy;
+	private final double[] vz;
+	private final double[] m;
 	
 	// Timers.
 	private long l0 = 0;
@@ -24,18 +24,18 @@ public class SimpleNBody implements StarSimulation {
 	private long l2 = 0;
 	private long l3 = 0;
 
-	public SimpleNBody(
+	public StockSimpleNBodyCS257(
 		int N,
-		float[] x,
-		float[] y,
-		float[] z,
-		float[] ax,
-		float[] ay,
-		float[] az,
-		float[] vx,
-		float[] vy,
-		float[] vz,
-		float[] m) {
+		double[] x,
+		double[] y,
+		double[] z,
+		double[] ax,
+		double[] ay,
+		double[] az,
+		double[] vx,
+		double[] vy,
+		double[] vz,
+		double[] m) {
 		super();
 		this.N = N;
 		this.x = x;
@@ -49,8 +49,6 @@ public class SimpleNBody implements StarSimulation {
 		this.vz = vz;
 		this.m = m;
 	}
-
-
 
 	@Override
 	public void updateStars() {
@@ -70,13 +68,13 @@ public class SimpleNBody implements StarSimulation {
 		t0 = wtime();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				float rx = x[j] - x[i];
-				float ry = y[j] - y[i];
-				float rz = z[j] - z[i];
-				float r2 = rx*rx + ry*ry + rz*rz + eps;
-				float r2inv = (float) (1.0f / Math.sqrt(r2));
-				float r6inv = r2inv * r2inv * r2inv;
-				float s = m[j] * r6inv;
+				double rx = x[j] - x[i];
+				double ry = y[j] - y[i];
+				double rz = z[j] - z[i];
+				double r2 = rx*rx + ry*ry + rz*rz + eps;
+				double r2inv = (double) (1.0f / Math.sqrt(r2));
+				double r6inv = r2inv * r2inv * r2inv;
+				double s = m[j] * r6inv;
 				ax[i] += s * rx;
 				ay[i] += s * ry;
 				az[i] += s * rz;
