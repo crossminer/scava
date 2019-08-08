@@ -8,7 +8,6 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +62,9 @@ public class ApiMigrationRestController {
 	@Value("${migration.local.m3.files.path}")
 	private String localM3Files;
 	private static final Logger logger = LoggerFactory.getLogger(ApiMigrationRestController.class);
-
+	@Value("${migration.deltas.path}")
+	private String deltasBasePath;
+	
 	@ApiOperation(value = "This API returns all client pairs that migrate from coordV1 to coordV2", response = Iterable.class)
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v1 (groupId:artifactId:version)", required = true, dataType = "string", paramType = "path"),
@@ -90,14 +91,26 @@ public class ApiMigrationRestController {
 			@ApiImplicitParam(name = "coordV2", value = "maven cooridnate of lib v2 (groupId:artifactId:version)", required = false, dataType = "string", paramType = "path") })
 	@RequestMapping(value = "/delta/{coordV1}/{coordV2:.+}", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
-	public @ResponseBody Delta getDelta(@PathVariable("coordV1") String coordV1,
+	public @ResponseBody byte[] getDelta(@PathVariable("coordV1") String coordV1,
 			@PathVariable("coordV2") String coordV2) throws Exception {
+//		try {
+//			return migrationService.storeDelta(coordV1, coordV2);
+//		} catch (Exception e) {
+//			logger.error("error in computing delta");
+//			throw e;
+//		}
 		try {
-			return migrationService.storeDelta(coordV1, coordV2);
+			Delta v = migrationService.storeDelta(coordV1, coordV2);
+			InputStream in = new FileInputStream(Paths.get(deltasBasePath, v.getDeltaPath()).toString());
+			return IOUtils.toByteArray(in);
+		} catch (IllegalStateException | IOException e) {
+			logger.error(e.getMessage());
 		} catch (Exception e) {
-			logger.error("error in computing delta");
-			throw e;
+			logger.error(e.getMessage());
 		}
+		return null;
+		
+		
 	}
 
 	@ApiOperation(value = "This API returns all client that use a specific dependency coordV1", response = Iterable.class)
