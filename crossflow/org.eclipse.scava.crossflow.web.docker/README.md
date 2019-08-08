@@ -39,6 +39,8 @@ Kill container:
 
 ### Update Crossflow image on DockerHub:
 
+- Ensure that you have the latest version of the 'o.e.s.crossflow.web.war' file, by running 'build-war.xml' from the o.e.s.crossflow.web project
+
 - Navigate into the root directory of `org.eclipse.scava.crossflow.web.docker` in your command-line environment
 
 - Build local Docker image of current Crossflow codebase:
