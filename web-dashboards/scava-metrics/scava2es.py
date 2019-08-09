@@ -320,6 +320,18 @@ def extract_metrics(scava_metric):
 
     logging.debug("Metrics found: %s", item_metrics)
 
+    hiding_factor_metrics = [im for im in item_metrics if im['metric_name'] == 'Method Hiding Factor (Java)']
+    hiding_factor_metrics_processed = []
+    for hfm in hiding_factor_metrics:
+        hfm['metric_id'] = hfm['metric_id'] + '_filtered_gt10'
+        hfm['metric_name'] = hfm['metric_name'] + ' GT 10'
+
+        if hfm['metric_es_value'] > 0.1:
+            hiding_factor_metrics_processed.append(hfm)
+
+    if hiding_factor_metrics_processed:
+        item_metrics.extend(hiding_factor_metrics_processed)
+
     return item_metrics
 
 
