@@ -79,7 +79,5 @@ public class StockVector3D implements Vector3D {
 	public String toString() {
 		return String.format("[%.3f, %.3f, %.3f]", x,y,z);
 	}
-	
-	
 
 }

@@ -19,32 +19,35 @@ import java.time.Duration;
  */
 public interface NBodyMetrics {
 
+	public class RequestedDurationNotFound extends Exception {
+	}
+
 	// loop0
 	/**
 	 * Return the duration of reseting the body acceleration information
 	 * @return the duration of the phase
 	 */
-	Duration prepareDrtn();
+	Duration prepareDrtn() throws RequestedDurationNotFound;
 	
 	// loop1
 	/**
 	 * Return the duration of calculating the acceleration of the body due to interactions
 	 * @return the duration of the phase
 	 */
-	Duration calcAccelDrtn();
+	Duration calcAccelDrtn() throws RequestedDurationNotFound;
 	
 	//loop2
 	/**
 	 * Return the duration of calculating the new velocity of the body
 	 * @return the duration of the phase
 	 */
-	Duration calcVelDrtn();
+	Duration calcVelDrtn() throws RequestedDurationNotFound;
 	
 	//loop3 
 	/**
 	 * Return the duration of calculating the final position of the body
 	 * @return the duration of the phase
 	 */
-	Duration calcPosDrtn();
+	Duration calcPosDrtn() throws RequestedDurationNotFound;
 
 }

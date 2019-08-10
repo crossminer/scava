@@ -15,6 +15,8 @@ import org.eclipse.scava.crossflow.examples.simple.nbody.Bodies.CreatingBodiesEx
 public interface NBodySimulation {
 
 	public class InvalidNumberOfCubesException extends Exception {
+
+		private static final long serialVersionUID = -5717755901597764901L;
 	}
 
 	

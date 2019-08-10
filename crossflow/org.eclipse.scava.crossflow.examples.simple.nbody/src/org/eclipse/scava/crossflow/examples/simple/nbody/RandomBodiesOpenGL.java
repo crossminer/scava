@@ -1,8 +1,10 @@
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Create bodies randomly
@@ -32,8 +34,8 @@ public class RandomBodiesOpenGL implements Bodies {
 	}
 
 	@Override
-	public List<NBody3DBody> createBodies() {
-		List<NBody3DBody> result = new ArrayList<>();
+	public Set<NBody3DBody> createBodies() {
+		Set<NBody3DBody> result = new HashSet<>();
 		Random rand = new Random(42);
     	for (int i = 0; i < N; i++) {
     		result.add(new SimpleOpenGLBody(

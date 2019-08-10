@@ -34,7 +34,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
 
-public class OpenGLSimpleNBodyCS257 implements SimpleNBodyCS257 {
+public class OpenGLStars implements SimpleNBodyCS257 {
 
 	private GLFWErrorCallback errorCallback;
     private long windowID;
@@ -46,7 +46,7 @@ public class OpenGLSimpleNBodyCS257 implements SimpleNBodyCS257 {
 	private final double[] c;
 	private final SimpleNBodyCS257 mathSimulation;
 
-	public OpenGLSimpleNBodyCS257(int N,
+	public OpenGLStars(int N,
 			double[] x,
 			double[] y,
 			double[] z,
@@ -65,7 +65,7 @@ public class OpenGLSimpleNBodyCS257 implements SimpleNBodyCS257 {
 		this.z = z;
 		this.m = m;
 		this.c = c;
-		this.mathSimulation = new StockSimpleNBodyCS257(N, x, y, z, ax, ay, az, vx, vy, vz, m);
+		this.mathSimulation = new Stars(N, x, y, z, ax, ay, az, vx, vy, vz, m);
 	}
 
 	@Override

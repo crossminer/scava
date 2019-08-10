@@ -77,4 +77,8 @@ public class SimpleOpenGLBody implements OpenGLNBody3DBody {
 		return delegate.insideCube(cube);
 	}
 
+	public NBody3DBody accelerate(NBody3DBody... other) {
+		return delegate.accelerate(other);
+	}
+	
 }

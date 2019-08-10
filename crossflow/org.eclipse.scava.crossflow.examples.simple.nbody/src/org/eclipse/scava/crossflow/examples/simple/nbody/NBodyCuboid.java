@@ -18,42 +18,44 @@ import java.util.Collection;
  * @author Horacio Hoyos Rodriguez
  */
 public interface NBodyCuboid extends NBodyMetrics {
-	
-	/**
-	 * The maximum z-axis coordinate of the cuboid
-	 * @return the max z-axis coordinate
-	 */
-	double zmax();
 
-	/**
-	 * The maximum y-axis coordinate of the cuboid
-	 * @return the max y-axis coordinate
-	 */
-	double ymax();
+	public interface CuboidCoordinates {
+		/**
+		 * The maximum z-axis coordinate of the cuboid
+		 * @return the max z-axis coordinate
+		 */
+		double zmax();
 
-	/**
-	 * The maximum x-axis coordinate of the cuboid
-	 * @return the max x-axis coordinate
-	 */	
-	double xmax();
+		/**
+		 * The maximum y-axis coordinate of the cuboid
+		 * @return the max y-axis coordinate
+		 */
+		double ymax();
 
-	/**
-	 * The minimum z-axis coordinate of the cuboid
-	 * @return the min z-axis coordinate
-	 */
-	double zmin();
+		/**
+		 * The maximum x-axis coordinate of the cuboid
+		 * @return the max x-axis coordinate
+		 */	
+		double xmax();
 
-	/**
-	 * The minimum y-axis coordinate of the cuboid
-	 * @return the min y-axis coordinate
-	 */
-	double ymin();
+		/**
+		 * The minimum z-axis coordinate of the cuboid
+		 * @return the min z-axis coordinate
+		 */
+		double zmin();
 
-	/**
-	 * The minimum x-axis coordinate of the cuboid
-	 * @return the min x-axis coordinate
-	 */
-	double xmin();
+		/**
+		 * The minimum y-axis coordinate of the cuboid
+		 * @return the min y-axis coordinate
+		 */
+		double ymin();
+
+		/**
+		 * The minimum x-axis coordinate of the cuboid
+		 * @return the min x-axis coordinate
+		 */
+		double xmin();
+	}
 
 	/**
 	 * Reconfigure the cuboid with a new set of coordinates.
@@ -65,10 +67,14 @@ public interface NBodyCuboid extends NBodyMetrics {
 	 * @param z_max
 	 * @return
 	 */
-	NBodyCuboid configureCuboid(
-			double x_min, double x_max,
-			double y_min, double y_max,
-			double z_min, double z_max);
+//	NBodyCuboid configureCuboid(
+//			double x_min, double x_max,
+//			double y_min, double y_max,
+//			double z_min, double z_max);
+//			
+//	NBodyCuboid configureCuboid(CuboidCoordinates coords);
+//	
+	CuboidCoordinates coordinates();
 	
 	/**
 	 * Update the status of all bodies in the universe
@@ -76,5 +82,7 @@ public interface NBodyCuboid extends NBodyMetrics {
 	 * @return	the bodies modified by this cuboid
 	 */
 	Collection<NBody3DBody> stepSimulation(Collection<NBody3DBody> universe);
+
+	CuboidSimulationDurations durations();
 
 }

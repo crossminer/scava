@@ -10,7 +10,7 @@
 **********************************************************************/
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Class to create the bodies used in the simulation.
@@ -29,6 +29,6 @@ public interface Bodies {
 		
 	}
 	
-	List<NBody3DBody> createBodies() throws CreatingBodiesException;
+	Set<NBody3DBody> createBodies() throws CreatingBodiesException;
 
 }

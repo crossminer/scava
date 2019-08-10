@@ -1,6 +1,6 @@
 package org.eclipse.scava.crossflow.examples.simple.nbody.c;
 
-public class StockSimpleNBodyCS257 implements SimpleNBodyCS257 {
+public class Stars implements SimpleNBodyCS257 {
 	
 	private final static double eps = 0.00125f;
 	private final static double dmp = 0.995f;
@@ -24,7 +24,7 @@ public class StockSimpleNBodyCS257 implements SimpleNBodyCS257 {
 	private long l2 = 0;
 	private long l3 = 0;
 
-	public StockSimpleNBodyCS257(
+	public Stars(
 		int N,
 		double[] x,
 		double[] y,

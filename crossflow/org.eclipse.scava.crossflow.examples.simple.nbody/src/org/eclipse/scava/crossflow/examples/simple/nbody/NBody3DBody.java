@@ -61,6 +61,8 @@ public interface NBody3DBody extends Serializable {
 	 * @return the n body 3 D body
 	 */
 	NBody3DBody accelerate(Collection<? extends NBody3DBody> other);
+	
+	NBody3DBody accelerate(NBody3DBody... other);
 
 	/**
 	 * Update the body's velocity according to its acceleration.
