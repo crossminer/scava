@@ -29,7 +29,7 @@ public class SimpleNBody implements NBodySimulation {
 
 	private Set<NBody3DBody> universe;
 	private Set<NBodyCuboid> cuboides;
-	private int numCubes = 0;
+	private final int numCubes;
 	private Duration prprDrtn;
 	private Duration calcAccelDrtn;
 	private Duration calcVelDrtn;
@@ -38,13 +38,20 @@ public class SimpleNBody implements NBodySimulation {
 	private double phi;
 	private double flops;
 	private double bytes;
+	private long memSize = 0;
 	
 	public static void main(String... args) throws Exception {
-		SimpleNBody sim = new SimpleNBody();
+		SimpleNBody sim = new SimpleNBody(Integer.parseInt(args[2]));
 		sim.populateRandomly(Integer.parseInt(args[0]));
-		sim.setupCubes(Integer.parseInt(args[2]));
 		sim.runSimulation(Integer.parseInt(args[1]));
 	}
+	
+	
+	public SimpleNBody(int numCubes) {
+		super();
+		this.numCubes = numCubes;
+	}
+	
 	
 
 	@Override
@@ -61,68 +68,15 @@ public class SimpleNBody implements NBodySimulation {
 	public void populateRandomly(int size, double pscale, double vscale, double mscale) throws CreatingBodiesException {
 		universe = new RandomBodies(size, pscale, vscale, mscale).createBodies();
 	}
-
-	/**
-	 * Divide the simulation space into the given number of cubes. The number of
-	 * cubes must be a power of 2. This should be called once per simulation, at the beginning.
-	 * 
-	 * @param numCubes
-	 * @return
-	 * @throws InvalidNumberOfCubesException
-	 */
-	public void setupCubes(final int numCubes) throws InvalidNumberOfCubesException {
-		if (!((numCubes > 0) && ((numCubes & (numCubes - 1)) == 0))) {
-			throw new InvalidNumberOfCubesException();
-		}
-		// No need to change?
-		if (this.numCubes != numCubes) {
-			this.numCubes = numCubes;
-			if (numCubes == 1) {
-				cuboides = Collections.singleton(new AxisAlignedCuboid());
-			}
-			else {
-				// axis 0 = x, 1 = y, 2 = z;
-				int xPoints = 0;
-				int yPoints = 0;
-				int zPoints = 0;
-				int axis = 0;
-				int numcubes = numCubes;
-				while (numcubes > 1) {
-					switch (axis) {
-					case 0:
-						xPoints += 2;
-						break;
-					case 1:
-						yPoints += 2;
-						break;
-					case 2:
-						zPoints += 2;
-					default:
-						axis = 0;
-					}
-					numcubes /= 2;
-					axis++;
-				}
-				cuboides = new HashSet<>();
-				double[] xCoords = axisSlices(xPoints);
-				double[] yCoords = axisSlices((yPoints == 0) ? 1 : yPoints);
-				double[] zCoords = axisSlices((zPoints == 0) ? 1 : zPoints);
-				for (int i = 0; i < xCoords.length-1; i++) {
-					for (int j = 0; j < yCoords.length-1; j++) {
-						for (int k = 0; k < zCoords.length-1; k++) {
-							cuboides.add(new AxisAlignedCuboid(new StockCuboidCoordinates(xCoords[i], yCoords[j], zCoords[k], xCoords[i+1], yCoords[j+1], zCoords[k+1])));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void runSimulation(int steps) {
+	
+	@Override
+	public void runSimulation(int steps) throws InvalidNumberOfCubesException {
 		prprDrtn = Duration.ZERO;
 		calcAccelDrtn = Duration.ZERO;
 		calcVelDrtn = Duration.ZERO;
 		calcPosDrtn = Duration.ZERO;
+		setupCubes();
+		int size = universe.size();
 		Set<NBody3DBody> newUniverse;
 		long start = System.nanoTime();
 		for (int i = 0; i < steps; i++) {
@@ -139,22 +93,96 @@ public class SimpleNBody implements NBodySimulation {
 				}
 				
 			}
+			memSize += cuboides.size() * cuboides.iterator().next().memSize();
 			universe = newUniverse;
 		}
+		calculatePerformance(size, steps);
 		overHeadDrtn = Duration.ofNanos(System.nanoTime() - start);
-		calculatePerformance(universe.size(), steps);
-		printResults(steps);
+		//printResults(steps);
 	}
 	
+	@Override
+	public String getMetrics() {
+		return String.format("%f,%f,%f,%f,%f,%f,%f,%f",
+				prprDrtn.toNanos()/1e9, 
+				calcAccelDrtn.toNanos()/1e9, 
+				calcVelDrtn.toNanos()/1e9,
+				calcPosDrtn.toNanos()/1e9,
+				getTotalTime(), flops, bytes, overHeadDrtn.toNanos()/1.0e9);
+	}
+
+	@Override
+	public double getPhi() {
+		return phi;
+	}
+	
+	
+
+	/**
+	 * Divide the simulation space into the given number of cubes. The number of
+	 * cubes must be a power of 2. This should be called once per simulation, at the beginning.
+	 * 
+	 * @return
+	 * @throws InvalidNumberOfCubesException
+	 */
+	private void setupCubes() throws InvalidNumberOfCubesException {
+		if (!((numCubes > 0) && ((numCubes & (numCubes - 1)) == 0))) {
+			throw new InvalidNumberOfCubesException();
+		}
+		if (numCubes == 1) {
+			cuboides = Collections.singleton(new AxisAlignedCuboid());
+		}
+		else {
+			// axis 0 = x, 1 = y, 2 = z;
+			int xPoints = 0;
+			int yPoints = 0;
+			int zPoints = 0;
+			int axis = 0;
+			int numcubes = numCubes;
+			while (numcubes > 1) {
+				switch (axis) {
+				case 0:
+					xPoints += 2;
+					break;
+				case 1:
+					yPoints += 2;
+					break;
+				case 2:
+					zPoints += 2;
+				default:
+					axis = 0;
+				}
+				numcubes /= 2;
+				axis++;
+			}
+			cuboides = new HashSet<>();
+			double[] xCoords = axisSlices(xPoints);
+			double[] yCoords = axisSlices((yPoints == 0) ? 1 : yPoints);
+			double[] zCoords = axisSlices((zPoints == 0) ? 1 : zPoints);
+			for (int i = 0; i < xCoords.length-1; i++) {
+				for (int j = 0; j < yCoords.length-1; j++) {
+					for (int k = 0; k < zCoords.length-1; k++) {
+						cuboides.add(new AxisAlignedCuboid(new StockCuboidCoordinates(xCoords[i], yCoords[j], zCoords[k], xCoords[i+1], yCoords[j+1], zCoords[k+1])));
+					}
+				}
+			}
+		}
+	}
+
 	private void calculatePerformance(int N, int steps) {
-		flops = (20.0f * (double) N * (double) (N-1) * (double) steps)/ 1000000000.0f / getTotalTime();
-		bytes = (4.0f * (double) N * 10.0f * (double) steps)/ 1000000000.0f / getTotalTime();
+		// 20 floating point operations
+		// 14 to calculate acceleration
+		// 6 for velocity and position
+		flops = ((14*N*N + 6*N) * steps)/ 1000000000.0f / getTotalTime();
+		// We calculated the mem size from the bumber of cuboids and their individual size
+		//bytes = (4.0f * (double) N * 10.0f * (double) steps)/ 1000000000.0f / getTotalTime();
+		bytes = memSize / 1000000.0f / getTotalTime();
 	    // Verify solution.
 	    verify();
 	}
 
 
-	public void printResults(int steps) {
+	private void printResults(int steps) {
 		// Print results and stuff.
 	    System.out.print("\n");
 	    System.out.print(String.format(" Loop 0 = %f seconds.\n", prprDrtn.toNanos()/1.0e9));
@@ -163,8 +191,8 @@ public class SimpleNBody implements NBodySimulation {
 	    System.out.print(String.format(" Loop 3 = %f seconds.\n", calcPosDrtn.toNanos()/1.0e9));
 	    System.out.print(String.format(" Total  = %f seconds.\n", getTotalTime()));
 	    System.out.print("\n");
-	    System.out.print(String.format(" GFLOP/s = %f\n", flops / 1000000000.0f / (getTotalTime())));
-	    System.out.print(String.format(" GB/s = %f\n", bytes / 1000000000.0f / (getTotalTime())));
+	    System.out.print(String.format(" GFLOP/s = %f\n", flops));
+	    System.out.print(String.format(" GB/s = %f\n", bytes));
 	    System.out.print("\n");
 	    System.out.print(String.format(" Total time = %f seconds.\n", overHeadDrtn.toNanos()/1.0e9));
 	    System.out.print(String.format(" Answer = %f\n", phi));
@@ -180,7 +208,6 @@ public class SimpleNBody implements NBodySimulation {
 				double r2inv = 1.0 / r2;
 				double r6inv = r2inv*r2inv*r2inv;
 				phi += body2.mass() * r6inv;
-				
 			}	
 		}
 	}

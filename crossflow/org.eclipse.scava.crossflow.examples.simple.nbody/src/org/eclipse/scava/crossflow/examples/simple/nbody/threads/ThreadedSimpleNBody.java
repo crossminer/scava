@@ -8,7 +8,7 @@
 * Contributors:
 *     Horacio Hoyos - initial API and implementation
 **********************************************************************/
-package org.eclipse.scava.crossflow.examples.simple.nbody;
+package org.eclipse.scava.crossflow.examples.simple.nbody.threads;
 
 import java.nio.file.Path;
 import java.time.Duration;
@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -25,9 +24,16 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.math3.util.FastMath;
 import org.eclipse.scava.crossflow.examples.simple.nbody.Bodies.CreatingBodiesException;
-import org.eclipse.scava.crossflow.examples.simple.nbody.CuboidRunner.CuboidRunnerResults;
+import org.eclipse.scava.crossflow.examples.simple.nbody.JsonBodies;
+import org.eclipse.scava.crossflow.examples.simple.nbody.NBody3DBody;
+import org.eclipse.scava.crossflow.examples.simple.nbody.NBodyCuboid;
 import org.eclipse.scava.crossflow.examples.simple.nbody.NBodyCuboid.CuboidCoordinates;
 import org.eclipse.scava.crossflow.examples.simple.nbody.NBodyMetrics.RequestedDurationNotFound;
+import org.eclipse.scava.crossflow.examples.simple.nbody.NBodySimulation;
+import org.eclipse.scava.crossflow.examples.simple.nbody.RandomBodies;
+import org.eclipse.scava.crossflow.examples.simple.nbody.StockCuboidCoordinates;
+import org.eclipse.scava.crossflow.examples.simple.nbody.Vector3D;
+import org.eclipse.scava.crossflow.examples.simple.nbody.threads.CuboidRunner.CuboidRunnerResults;
 import org.jctools.queues.MpscArrayQueue;
 import org.jctools.queues.SpmcArrayQueue;
 
@@ -46,6 +52,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 	private double phi;
 	private double flops;
 	private double bytes;
+	private long memSize = 0;
 
 	/** Thread stuff */
 	private final SpmcArrayQueue<CuboidCoordinates> sharedQueue;
@@ -55,9 +62,14 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 	private final MpscArrayQueue<CuboidRunnerResults> resultsQueue;
 
 	public static void main(String... args) throws Exception {
-		ThreadedSimpleNBody sim = new ThreadedSimpleNBody();
+		NBodySimulation sim = new ThreadedSimpleNBody();
 		sim.populateRandomly(Integer.parseInt(args[0]));
-		sim.runSimulation(Integer.parseInt(args[1]));
+		try {
+			sim.runSimulation(Integer.parseInt(args[1]));
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public ThreadedSimpleNBody() {
@@ -84,6 +96,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		universe = new RandomBodies(size, pscale, vscale, mscale).createBodies();
 	}
 
+	@Override
 	public void runSimulation(int steps) throws InvalidNumberOfCubesException {
 		prprDrtn = Duration.ZERO;
 		calcAccelDrtn = Duration.ZERO;
@@ -95,9 +108,9 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 
 		for (int i = 0; i < steps; i++) {
 			// x in b=2^x, where b is the next power of 2 greater than a
-			int numCuboids = (int) Math.pow(2, 32 - Integer.numberOfLeadingZeros(maxCuboids - 1));
+			// int numCuboids = (int) Math.pow(2, 32 - Integer.numberOfLeadingZeros(maxCuboids - 1));
+			int numCuboids = 4;
 			Set<CuboidCoordinates> stepCuboids = setupCuboids(numCuboids);
-
 			Set<NBody3DBody> newUniverse = new HashSet<>(universe.size());
 			while (!stepCuboids.isEmpty()) {
 
@@ -113,7 +126,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 				try {
 					futures = runnerExecutor.invokeAll(runners);
 				} catch (InterruptedException e1) {
-					// Let the step continue trying
+					System.out.println("ex " + e1.getMessage());
 				} finally {
 					if (futures != null) {
 						resultsQueue.drain(r -> {
@@ -129,8 +142,10 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 								// Only count if durations are OK
 								stepCuboids.remove(r.coordiantes());
 								newUniverse.addAll(r.bodies());
+								memSize += r.memUsed();
 							} catch (RequestedDurationNotFound e) {
 								// Retry
+								System.out.println("ex " + e.getMessage());
 							}
 						});
 					}
@@ -138,29 +153,44 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 			}
 			universe = newUniverse;
 		}
-		overHeadDrtn = Duration.ofNanos(System.nanoTime() - start);
 		calculatePerformance(universe.size(), steps);
+		overHeadDrtn = Duration.ofNanos(System.nanoTime() - start);
 		printResults(steps);
 		shutdownAndAwaitTermination(runnerExecutor);
 	}
-
-	private boolean checkIds(List<Future<UUID>> futures, CuboidRunnerResults r) {
-		// Check future just for sanity?
-		boolean found = false;
-		for (Future<UUID> f : futures) {
-			try {
-				if (r.runnerId().equals(f.get())) {
-					found = true;
-					break;
-				}
-			} catch (InterruptedException | ExecutionException e) {
-				continue;
-			}
-		}
-		return found;
+	
+	@Override
+	public String getMetrics() {
+		return String.format("%f,%f,%f,%f,%f,%f,%f,%f",
+				prprDrtn.toNanos()/1e9, 
+				calcAccelDrtn.toNanos()/1e9, 
+				calcVelDrtn.toNanos()/1e9,
+				calcPosDrtn.toNanos()/1e9,
+				getTotalTime(), flops, bytes, overHeadDrtn.toNanos()/1.0e9);
 	}
 
-	void shutdownAndAwaitTermination(ExecutorService pool) {
+	@Override
+	public double getPhi() {
+		return phi;
+	}
+
+//	private boolean checkIds(List<Future<UUID>> futures, CuboidRunnerResults r) {
+//		// Check future just for sanity?
+//		boolean found = false;
+//		for (Future<UUID> f : futures) {
+//			try {
+//				if (r.runnerId().equals(f.get())) {
+//					found = true;
+//					break;
+//				}
+//			} catch (InterruptedException | ExecutionException e) {
+//				continue;
+//			}
+//		}
+//		return found;
+//	}
+
+	private void shutdownAndAwaitTermination(ExecutorService pool) {
 		pool.shutdown(); // Disable new tasks from being submitted
 		try {
 			// Wait a while for existing tasks to terminate
@@ -179,13 +209,19 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 	}
 
 	private void calculatePerformance(int N, int steps) {
-		flops = (20.0f * (double) N * (double) (N - 1) * (double) steps) / 1000000000.0f / getTotalTime();
-		bytes = (4.0f * (double) N * 10.0f * (double) steps) / 1000000000.0f / getTotalTime();
+		//flops = (20.0f * (double) N * (double) (N - 1) * (double) steps) / 1000000000.0f / getTotalTime();
+		// 20 floating point operations
+		// 14 to calculate acceleration
+		// 6 for velocity and position
+		flops = ((14*N*N + 6*N) * steps)/ 1000000000.0f / getTotalTime();
+		// We calculated the mem size from the bumber of cuboids and their individual size
+		//bytes = (4.0f * (double) N * 10.0f * (double) steps)/ 1000000000.0f / getTotalTime();
+		bytes = memSize / 1000000.0f / getTotalTime();
 		// Verify solution.
 		verify();
 	}
 
-	public void printResults(int steps) {
+	private void printResults(int steps) {
 		// Print results and stuff.
 		System.out.print("\n");
 		System.out.print(String.format(" Loop 0 = %f seconds.\n", prprDrtn.toNanos() / 1.0e9));
@@ -194,8 +230,8 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		System.out.print(String.format(" Loop 3 = %f seconds.\n", calcPosDrtn.toNanos() / 1.0e9));
 		System.out.print(String.format(" Total  = %f seconds.\n", getTotalTime()));
 		System.out.print("\n");
-		System.out.print(String.format(" GFLOP/s = %f\n", flops / 1000000000.0f / (getTotalTime())));
-		System.out.print(String.format(" GB/s = %f\n", bytes / 1000000000.0f / (getTotalTime())));
+		System.out.print(String.format(" GFLOP/s = %f\n", flops));
+		System.out.print(String.format(" GB/s = %f\n", bytes));
 		System.out.print("\n");
 		System.out.print(String.format(" Total time = %f seconds.\n", overHeadDrtn.toNanos() / 1.0e9));
 		System.out.print(String.format(" Answer = %f\n", phi));
@@ -285,5 +321,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		}
 		return coords;
 	}
+
+
 
 }

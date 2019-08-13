@@ -5,6 +5,8 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 
+import org.github.jamm.MemoryMeter;
+
 /**
  * A quadrant represents an area inside the simulation space.
  * 
@@ -21,6 +23,8 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	private CuboidSimulationDurations durations;
 	
 	private long size = 0;
+	private long memSize = 0;
+	private long accelTotal;
 
 	public AxisAlignedCuboid() {
 		this(0.995, 0.001);
@@ -50,6 +54,10 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	public Collection<NBody3DBody> stepSimulation(Collection<NBody3DBody> universe) {
 		Deque<NBody3DBody> quadrantBodies = new ArrayDeque<NBody3DBody>();
 		universe.stream().filter(b -> b.insideCube(this)).forEach(b -> quadrantBodies.add(b));
+		MemoryMeter meter = new MemoryMeter();
+		memSize = meter.measure(universe);
+		memSize += meter.measure(quadrantBodies);
+		memSize += meter.measure(this);
 		size = quadrantBodies.size();
 		long loop = System.nanoTime();
 		prepare(quadrantBodies);
@@ -57,6 +65,13 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 		loop = System.nanoTime();
 		accelerate(quadrantBodies, universe);
 		durations = durations.logAccel(loop);
+		try {
+			System.out.println("acel," + durations.calcAccelDrtn().toNanos());
+			System.out.println("total," + accelTotal);
+			System.out.println("queue," + (durations.calcAccelDrtn().toNanos() - accelTotal));
+		} catch (RequestedDurationNotFound e) {
+			
+		}
 		loop = System.nanoTime();
 		updateVelocity(quadrantBodies);
 		durations = durations.logVel(loop);
@@ -81,11 +96,16 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	// loop1
 	private void accelerate(Deque<NBody3DBody> quadrantBodies, Collection<NBody3DBody> universe) {
 		NBody3DBody body;
+		accelTotal = 0;
+		long start;
 		for (int i = 0; i < size; i++) {
 			body = quadrantBodies.remove();
+			start = System.nanoTime();
 			body = body.accelerate(universe);
+			accelTotal += System.nanoTime() - start;	
 			quadrantBodies.add(body);
 		}
+		
 	}
 
 	// loop2
@@ -141,6 +161,11 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	@Override
 	public CuboidSimulationDurations durations() {
 		return durations;
+	}
+
+	@Override
+	public long memSize() {
+		return memSize;
 	}
 
 }

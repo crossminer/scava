@@ -28,5 +28,8 @@
         <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.9"/>
         <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.9.9.2"/>
         <dependency org="org.apache.commons" name="commons-math3" rev="3.6.1"/>
+        <dependency org="commons-cli" name="commons-cli" rev="1.4"/>
+        <dependency org="org.jctools" name="jctools-core" rev="2.1.2"/>
+        <dependency org="com.github.jbellis" name="jamm" rev="0.3.3"/>
     </dependencies>
 </ivy-module>

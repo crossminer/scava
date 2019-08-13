@@ -49,5 +49,7 @@ public interface NBodyMetrics {
 	 * @return the duration of the phase
 	 */
 	Duration calcPosDrtn() throws RequestedDurationNotFound;
+	
+	long memSize();
 
 }

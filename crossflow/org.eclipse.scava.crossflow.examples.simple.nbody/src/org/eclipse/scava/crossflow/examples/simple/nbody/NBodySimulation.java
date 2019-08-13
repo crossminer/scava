@@ -50,5 +50,24 @@ public interface NBodySimulation {
 	 */
 	void populateRandomly(int size, double pscale, double vscale, double mscale) throws CreatingBodiesException;
 	
-
+	/**
+	 * Run the simulation for the given number of steps
+	 * @param steps
+	 * @throws InvalidNumberOfCubesException
+	 */
+	void runSimulation(int steps) throws InvalidNumberOfCubesException;
+	
+	/**
+	 * Return a CSV of the timing values for the last step in the form:
+	 * acc,vel,pos,total,GFLOP/s,GB/s,global
+	 * @return
+	 */
+	String getMetrics();
+	
+	/**
+	 * Return the final value of the simulation.
+	 * @return
+	 */
+	double getPhi();
+	
 }

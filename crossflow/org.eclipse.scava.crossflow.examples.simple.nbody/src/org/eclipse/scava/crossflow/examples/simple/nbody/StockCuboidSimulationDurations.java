@@ -89,4 +89,10 @@ public class StockCuboidSimulationDurations implements CuboidSimulationDurations
 				calcPosDrtn == null ? "??" : calcPosDrtn.toString());
 	}
 
+	@Override
+	public long memSize() {
+		// TODO Implement NBodyMetrics.memSize
+		throw new RuntimeException("Unimplemented Method NBodyMetrics.memSize invoked.");
+	}
+
 }
