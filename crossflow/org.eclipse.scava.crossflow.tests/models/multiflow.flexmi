@@ -8,15 +8,19 @@
 		
 		<task name="MultiTask" in="In1, In2" out="Out1, Out2"/>
 		
-		<queue name="In1" type="Number"/>
-		<queue name="In2" type="Number"/>
-		<queue name="Out1" type="Number"/>
-		<queue name="Out2" type="Number"/>
+		<queue name="In1" type="Number2"/>
+		<queue name="In2" type="Number1"/>
+		<queue name="Out1" type="Number1"/>
+		<queue name="Out2" type="Number2"/>
 		
 		<sink name="MultiSink" in="Out1, Out2"/>
 		
-		<type name="Number">
-			<field name="n" type="int"/>
+		<type name="Number1">
+			<field name="n1" type="int"/>
+		</type>
+		
+		<type name="Number2">
+			<field name="n2" type="int"/>
 		</type>
 				
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.multiflow" genOutputFolder="src-gen" outputFolder="src"/>

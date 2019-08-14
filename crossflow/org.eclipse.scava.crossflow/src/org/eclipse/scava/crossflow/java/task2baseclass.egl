@@ -172,15 +172,18 @@ operation Stream createEndOfConsumeMethod() {%]
 operation Stream sendConfirmationMessage() {%]
 
 		[%if(t.output.size>0) {%]
-				[%=t.output.first.type.name%] conf = new [%=t.output.first.type.name%]();
-				conf.setCorrelationId([%=self.type.name.ftlc()%].getId());
-				conf.setIsTransactionSuccessMessage(true);
-				conf.setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
-				[%for (ss in t.output) { %]
+		
+			[%for (ss in t.output) { %]
+		
+				[%=ss.type.name%] confirmation[%=ss.name%] = new [%=ss.type.name%]();
+				confirmation[%=ss.name%].setCorrelationId([%=self.type.name.ftlc()%].getId());
+				confirmation[%=ss.name%].setIsTransactionSuccessMessage(true);
+				confirmation[%=ss.name%].setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
 				if (hasSentTo[%=ss.name%]) {
-					sendTo[%=ss.name%](conf);
+					sendTo[%=ss.name%](confirmation[%=ss.name%]);
 				}
-				[%}%]
+			[%}%]
+			
 		[%}%]
 		
 [%}%]

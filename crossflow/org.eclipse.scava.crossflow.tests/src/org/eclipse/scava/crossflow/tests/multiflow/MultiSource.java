@@ -8,8 +8,8 @@ public class MultiSource extends MultiSourceBase {
 	public void produce() {
 		
 		for (int i=0;i<numbers;i++) {
-			sendToIn1(new Number(i+1));
-			sendToIn2(new Number(numbers + i + 1));
+			sendToIn1(new Number2(i+1));
+			sendToIn2(new Number1(numbers + i + 1));
 		}
 		
 	}
