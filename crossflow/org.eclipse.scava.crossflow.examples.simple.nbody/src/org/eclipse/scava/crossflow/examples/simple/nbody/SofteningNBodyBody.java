@@ -10,7 +10,6 @@
 **********************************************************************/
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
-import java.time.Duration;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -28,12 +27,16 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class SofteningNBodyBody implements NBody3DBody {
 	
+	
+	private static final long serialVersionUID = 1089207819896160750L;
+
 	/**
 	 * The parameter eps is the minimum distance squared for particle-particle interactions and its
 	 * main purpose is to keep the simulation from crashing if particles wander too close together.
 	 */
 	private final double eps = 0.00125;
 	
+
 	private final Vector3D position;
 	private final Vector3D velocity;
 	private final double mass;
@@ -93,7 +96,7 @@ public class SofteningNBodyBody implements NBody3DBody {
 		Vector3D accel = acceleration.duplicate();
 		for (NBody3DBody other : others) {
 			if (other != this) {
-				temp = position.subtract(other.position());
+				temp = other.position().subtract(position);
 				double r2 = FastMath.sqrt(temp.normSq() + eps);
 				double r2inv = 1.0 / r2;
 				double r6inv = r2inv*r2inv*r2inv;
@@ -105,25 +108,6 @@ public class SofteningNBodyBody implements NBody3DBody {
 				position, velocity,
 				accel,
 				mass, id);
-		
-		/*
-		 for (int i=0; i<other.length;i++) {
-			Vector3D temp; 
-			if (!other[i].equals(this)) {
-				temp = position.subtract(other[i].position());
-				double r2 = FastMath.sqrt(temp.normSq() + eps);
-				double r2inv = 1.0 / r2;
-				double r6inv = r2inv*r2inv*r2inv;
-				double s = other[i].mass() * r6inv;
-				acceleration.add(temp.scalarMultiply(s));
-			}
-			
-		}
-		return new SofteningArrayNBodyBody(
-				position, velocity,
-				acceleration,
-				mass, id);
-		 */
 	}
 
 	
@@ -160,9 +144,44 @@ public class SofteningNBodyBody implements NBody3DBody {
 
 	@Override
 	public boolean insideCube(NBodyCuboid cube) {
-		return (cube.coordinates().xmin() <= position.x() && position.x() <= cube.coordinates().xmax())
-				&& (cube.coordinates().ymin() <= position.y() && position.y() <= cube.coordinates().ymax())
-				&& (cube.coordinates().zmin() <= position.z() && position.z() <= cube.coordinates().zmax());
+		// We need to take into consideration that bodies can be momentarily outside the 2x2x2 cube.
+		if (cube.coordinates().xmin() != -1) {
+			if (position.x() < cube.coordinates().xmin()) {
+				return false;
+			}
+		}
+		if (cube.coordinates().xmax() != 1) {
+			if (position.x() > cube.coordinates().xmax()) {
+				return false;
+			}
+		}
+		
+		if (cube.coordinates().ymin() != -1) {
+			if (position.y() < cube.coordinates().ymin()) {
+				return false;
+			}
+		}
+		if (cube.coordinates().ymax() != 1) {
+			if (position.y() > cube.coordinates().ymax()) {
+				return false;
+			}
+		}
+		
+		if (cube.coordinates().zmin() != -1) {
+			if (position.z() < cube.coordinates().zmin()) {
+				return false;
+			}
+		}
+		if (cube.coordinates().zmax() != 1) {
+			if (position.z() > cube.coordinates().zmax()) {
+				return false;
+			}
+		}
+		return true;
+//		
+//		return (cube.coordinates().xmin() <= position.x() && position.x() <= cube.coordinates().xmax())
+//				&& (cube.coordinates().ymin() <= position.y() && position.y() <= cube.coordinates().ymax())
+//				&& (cube.coordinates().zmin() <= position.z() && position.z() <= cube.coordinates().zmax());
 	}
 
 	@Override
@@ -204,6 +223,16 @@ public class SofteningNBodyBody implements NBody3DBody {
 	public NBody3DBody accelerate(NBody3DBody... other) {
 		// TODO Implement NBody3DBody.accelerate
 		throw new RuntimeException("Unimplemented Method NBody3DBody.accelerate invoked.");
+	}
+
+	@Override
+	public Vector3D velocity() {
+		return velocity;
+	}
+
+	@Override
+	public Vector3D accel() {
+		return acceleration;
 	}
 
 }

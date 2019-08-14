@@ -1,9 +1,20 @@
+/*********************************************************************
+* Copyright (c) 2019 The University of York.
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* Contributors:
+*     Horacio Hoyos - initial API and implementation
+**********************************************************************/
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
 import java.time.Duration;
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
+import java.util.List;
 
 import org.github.jamm.MemoryMeter;
 
@@ -21,10 +32,8 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	private final double timeDelta;
 	private final CuboidCoordinates coordinates;
 	private CuboidSimulationDurations durations;
-	
 	private long size = 0;
 	private long memSize = 0;
-	private long accelTotal;
 
 	public AxisAlignedCuboid() {
 		this(0.995, 0.001);
@@ -52,80 +61,27 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 
 	@Override
 	public Collection<NBody3DBody> stepSimulation(Collection<NBody3DBody> universe) {
-		Deque<NBody3DBody> quadrantBodies = new ArrayDeque<NBody3DBody>();
-		universe.stream().filter(b -> b.insideCube(this)).forEach(b -> quadrantBodies.add(b));
+		List<NBody3DBody> qb = new ArrayList<NBody3DBody>();
+		universe.stream().filter(b -> b.insideCube(this)).forEach(b -> qb.add(b));
+		NBody3DBody[] quadrantBodies = qb.toArray(new NBody3DBody[qb.size()]);
 		MemoryMeter meter = new MemoryMeter();
 		memSize = meter.measure(universe);
 		memSize += meter.measure(quadrantBodies);
 		memSize += meter.measure(this);
-		size = quadrantBodies.size();
+		size = qb.size();
 		long loop = System.nanoTime();
 		prepare(quadrantBodies);
 		durations = durations.logPrepare(loop);
 		loop = System.nanoTime();
 		accelerate(quadrantBodies, universe);
 		durations = durations.logAccel(loop);
-		try {
-			System.out.println("acel," + durations.calcAccelDrtn().toNanos());
-			System.out.println("total," + accelTotal);
-			System.out.println("queue," + (durations.calcAccelDrtn().toNanos() - accelTotal));
-		} catch (RequestedDurationNotFound e) {
-			
-		}
 		loop = System.nanoTime();
 		updateVelocity(quadrantBodies);
 		durations = durations.logVel(loop);
 		loop = System.nanoTime();
 		updatePositions(quadrantBodies);
 		durations = durations.logPos(loop);
-		return quadrantBodies;	
-	}
-	
-
-	// loop0
-	private void prepare(Deque<NBody3DBody> quadrantBodies) {
-		NBody3DBody body = null;
-		for (int i = 0; i < size; i++) {
-			body = quadrantBodies.remove();
-			body = body.prepare();
-			quadrantBodies.add(body);
-			
-		}
-	}
-
-	// loop1
-	private void accelerate(Deque<NBody3DBody> quadrantBodies, Collection<NBody3DBody> universe) {
-		NBody3DBody body;
-		accelTotal = 0;
-		long start;
-		for (int i = 0; i < size; i++) {
-			body = quadrantBodies.remove();
-			start = System.nanoTime();
-			body = body.accelerate(universe);
-			accelTotal += System.nanoTime() - start;	
-			quadrantBodies.add(body);
-		}
-		
-	}
-
-	// loop2
-	private void updateVelocity(Deque<NBody3DBody> quadrantBodies) {
-		NBody3DBody body;
-		for (int i = 0; i < size; i++) {
-			body = quadrantBodies.remove();
-			body = body.updateVelocity(dmp, timeDelta);
-			quadrantBodies.add(body);
-		}
-	}
-
-	// loop3
-	private void updatePositions(Deque<NBody3DBody> quadrantBodies) {
-		NBody3DBody body;
-		for (int i = 0; i < size; i++) {
-			body = quadrantBodies.remove();
-			body.updatePostion(timeDelta);
-			quadrantBodies.add(body);
-		}
+		return Arrays.asList(quadrantBodies);	
 	}
 	
 	@Override
@@ -166,6 +122,30 @@ public class AxisAlignedCuboid implements NBodyCuboid {
 	@Override
 	public long memSize() {
 		return memSize;
+	}
+	
+	private void prepare(NBody3DBody[] quadrantBodies) {
+		for (int i = 0; i < size; i++) {
+			quadrantBodies[i] = quadrantBodies[i].prepare();
+		}
+	}
+
+	private void accelerate(NBody3DBody[] quadrantBodies, Collection<NBody3DBody> universe) {
+		for (int i = 0; i < size; i++) {
+			quadrantBodies[i] = quadrantBodies[i].accelerate(universe);	
+		}		
+	}
+
+	private void updateVelocity(NBody3DBody[] quadrantBodies) {
+		for (int i = 0; i < size; i++) {
+			quadrantBodies[i] = quadrantBodies[i].updateVelocity(dmp, timeDelta);
+		}
+	}
+
+	private void updatePositions(NBody3DBody[] quadrantBodies) {
+		for (int i = 0; i < size; i++) {
+			quadrantBodies[i] = quadrantBodies[i].updatePostion(timeDelta);
+		}
 	}
 
 }

@@ -81,4 +81,8 @@ public interface NBody3DBody extends Serializable {
 	 */
 	NBody3DBody updatePostion(double timeDelta);
 
+	Vector3D velocity();
+
+	Vector3D accel();
+
 }

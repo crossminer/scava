@@ -20,6 +20,7 @@ import java.time.Duration;
 public interface NBodyMetrics {
 
 	public class RequestedDurationNotFound extends Exception {
+		private static final long serialVersionUID = -8323910256299084L;
 	}
 
 	// loop0

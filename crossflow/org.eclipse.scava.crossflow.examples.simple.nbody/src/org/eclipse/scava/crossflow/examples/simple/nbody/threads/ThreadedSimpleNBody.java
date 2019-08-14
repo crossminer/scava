@@ -33,7 +33,6 @@ import org.eclipse.scava.crossflow.examples.simple.nbody.NBodySimulation;
 import org.eclipse.scava.crossflow.examples.simple.nbody.RandomBodies;
 import org.eclipse.scava.crossflow.examples.simple.nbody.StockCuboidCoordinates;
 import org.eclipse.scava.crossflow.examples.simple.nbody.Vector3D;
-import org.eclipse.scava.crossflow.examples.simple.nbody.threads.CuboidRunner.CuboidRunnerResults;
 import org.jctools.queues.MpscArrayQueue;
 import org.jctools.queues.SpmcArrayQueue;
 
@@ -43,7 +42,7 @@ import org.jctools.queues.SpmcArrayQueue;
 public class ThreadedSimpleNBody implements NBodySimulation {
 
 	private final double eps = 0.00125;
-	private Set<NBody3DBody> universe;
+	private List<NBody3DBody> universe;
 	private Duration prprDrtn;
 	private Duration calcAccelDrtn;
 	private Duration calcVelDrtn;
@@ -111,7 +110,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 			// int numCuboids = (int) Math.pow(2, 32 - Integer.numberOfLeadingZeros(maxCuboids - 1));
 			int numCuboids = 4;
 			Set<CuboidCoordinates> stepCuboids = setupCuboids(numCuboids);
-			Set<NBody3DBody> newUniverse = new HashSet<>(universe.size());
+			List<NBody3DBody> newUniverse = new ArrayList<>(universe.size());
 			while (!stepCuboids.isEmpty()) {
 
 				sharedQueue.addAll(stepCuboids);
@@ -155,7 +154,7 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		}
 		calculatePerformance(universe.size(), steps);
 		overHeadDrtn = Duration.ofNanos(System.nanoTime() - start);
-		printResults(steps);
+		//printResults(steps);
 		shutdownAndAwaitTermination(runnerExecutor);
 	}
 	
@@ -213,10 +212,10 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		// 20 floating point operations
 		// 14 to calculate acceleration
 		// 6 for velocity and position
-		flops = ((14*N*N + 6*N) * steps)/ 1000000000.0f / getTotalTime();
+		flops = ((14.0*N*N + 6.0*N) * steps)/ 1.0e9 / getTotalTime();
 		// We calculated the mem size from the bumber of cuboids and their individual size
 		//bytes = (4.0f * (double) N * 10.0f * (double) steps)/ 1000000000.0f / getTotalTime();
-		bytes = memSize / 1000000.0f / getTotalTime();
+		bytes = memSize / 1.0e6 / getTotalTime();
 		// Verify solution.
 		verify();
 	}

@@ -12,8 +12,10 @@ package org.eclipse.scava.crossflow.examples.simple.nbody;
 
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.util.FastMath;
@@ -25,9 +27,12 @@ import org.eclipse.scava.crossflow.examples.simple.nbody.NBodyMetrics.RequestedD
  */
 public class SimpleNBody implements NBodySimulation {
 
+	//private final String fmt = "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f%n";
+	private final List<String> stepDetails = new ArrayList<>();
+	
 	private final double eps = 0.00125;
 
-	private Set<NBody3DBody> universe;
+	private List<NBody3DBody> universe;
 	private Set<NBodyCuboid> cuboides;
 	private final int numCubes;
 	private Duration prprDrtn;
@@ -51,8 +56,6 @@ public class SimpleNBody implements NBodySimulation {
 		super();
 		this.numCubes = numCubes;
 	}
-	
-	
 
 	@Override
 	public void populateRandomly(int size) {
@@ -77,10 +80,11 @@ public class SimpleNBody implements NBodySimulation {
 		calcPosDrtn = Duration.ZERO;
 		setupCubes();
 		int size = universe.size();
-		Set<NBody3DBody> newUniverse;
+		List<NBody3DBody> newUniverse;
 		long start = System.nanoTime();
 		for (int i = 0; i < steps; i++) {
-			newUniverse = new HashSet<>(universe.size());
+			newUniverse = new ArrayList<>(universe.size());
+			
 			for (NBodyCuboid c : cuboides) {
 				newUniverse.addAll(c.stepSimulation(universe));
 				try {
@@ -91,8 +95,20 @@ public class SimpleNBody implements NBodySimulation {
 				} catch (RequestedDurationNotFound e) {
 					throw new IllegalStateException(e);
 				}
-				
 			}
+//			int j = 0;
+//			for (NBody3DBody body : newUniverse) {
+//				stepDetails.add(String.format(fmt, i, j++ + 1,
+//					body.position().x(),
+//					body.position().y(),
+//					body.position().z(),
+//					body.velocity().x(),
+//					body.velocity().y(),
+//					body.velocity().z(),
+//					body.accel().x(),
+//					body.accel().y(),
+//					body.accel().z()));
+//			}
 			memSize += cuboides.size() * cuboides.iterator().next().memSize();
 			universe = newUniverse;
 		}
@@ -173,7 +189,7 @@ public class SimpleNBody implements NBodySimulation {
 		// 20 floating point operations
 		// 14 to calculate acceleration
 		// 6 for velocity and position
-		flops = ((14*N*N + 6*N) * steps)/ 1000000000.0f / getTotalTime();
+		flops = ((14.0*N*N + 6.0*N) * steps)/ 1.0e9 / getTotalTime();
 		// We calculated the mem size from the bumber of cuboids and their individual size
 		//bytes = (4.0f * (double) N * 10.0f * (double) steps)/ 1000000000.0f / getTotalTime();
 		bytes = memSize / 1000000.0f / getTotalTime();
@@ -197,6 +213,9 @@ public class SimpleNBody implements NBodySimulation {
 	    System.out.print(String.format(" Total time = %f seconds.\n", overHeadDrtn.toNanos()/1.0e9));
 	    System.out.print(String.format(" Answer = %f\n", phi));
 	    System.out.print("\n");
+	    for (String s : stepDetails) {
+	    	System.out.print(s);
+	    }
 	}
 	
 	private void verify() {

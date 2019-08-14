@@ -20,6 +20,7 @@ import java.util.Collection;
  */
 public class SimpleOpenGLBody implements OpenGLNBody3DBody {
 
+	private static final long serialVersionUID = 9067722749307681300L;
 	private final Color color;
 	private final NBody3DBody delegate;
 	
@@ -79,6 +80,16 @@ public class SimpleOpenGLBody implements OpenGLNBody3DBody {
 
 	public NBody3DBody accelerate(NBody3DBody... other) {
 		return delegate.accelerate(other);
+	}
+
+	@Override
+	public Vector3D velocity() {
+		return delegate.velocity();
+	}
+
+	@Override
+	public Vector3D accel() {
+		return delegate.accel();
 	}
 	
 }

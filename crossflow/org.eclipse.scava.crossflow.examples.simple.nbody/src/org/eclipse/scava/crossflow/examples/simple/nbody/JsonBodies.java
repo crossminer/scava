@@ -12,8 +12,8 @@ package org.eclipse.scava.crossflow.examples.simple.nbody;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,8 +48,8 @@ public class JsonBodies implements Bodies {
 	};
 
 	@Override
-	public Set<NBody3DBody> createBodies() throws CreatingBodiesException {
-		Set<NBody3DBody> result = new HashSet<>();
+	public List<NBody3DBody> createBodies() throws CreatingBodiesException {
+		List<NBody3DBody> result = new ArrayList<>();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode jsonNode = objectMapper.readTree(data.toFile());

@@ -43,7 +43,7 @@ public class SimpleNBodySimulationCS257 implements NBodySimulation {
 	private final boolean details;
 	private final List<String> stepDetails = new ArrayList<>();
 	
-	private final String fmt = "%d,%d,%f,%f,%f,%f,%f,%f%n";
+	private final String fmt = "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f%n";
 	private double[] x;
 	private double[] y;
 	private double[] z;
@@ -209,7 +209,7 @@ public class SimpleNBodySimulationCS257 implements NBodySimulation {
 			if (detailsPath != null) {
 				try (PrintWriter writer = new PrintWriter(new FileWriter(detailsPath.toFile(), true))) {
 					for (String sd : app.stepDetails()) {
-						writer.format("%s,%s%n", run, sd);
+						writer.format("%s,%s", run, sd);
 					}
 				} catch (IOException e) {
 					throw new IllegalStateException("Error storing data to file", e);
@@ -312,7 +312,7 @@ public class SimpleNBodySimulationCS257 implements NBodySimulation {
 			// 20 floating point operations
 			// 14 to calculate acceleration
 			// 6 for velocity and position
-			flops = ((14*N*N + 6*N) * steps)/ 1000000000.0f / simulation.getTotalTime();
+			flops = ((14.0*N*N + 6.0*N) * steps)/ 1.0e9 / simulation.getTotalTime();
 			// 10 Arrays of size 10;
 			MemoryMeter meter = new MemoryMeter();
 		    long s = meter.measure(new double[N]);
