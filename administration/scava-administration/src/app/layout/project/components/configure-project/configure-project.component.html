@@ -67,12 +67,55 @@
                     <a href="{{project?.homePage}}" target="_blank">{{project?.homePage}}</a>
                 </td>
             </tr>
+            <tr *ngIf="project?.description">
+                <td>Description</td>
+                <td>
+                    <span>{{project?.description}}</span>
+                </td>
+            </tr>
             <tr *ngIf="project?.vcsRepositories.length !== 0">
                 <td>VCS Repositories</td>
                 <td>
                     <span *ngFor="let vcs of project?.vcsRepositories">
                         <a href="{{vcs.url}}" target="_blank">{{vcs.url}}</a><br />
                     </span>
+                </td>
+            </tr>
+            <tr *ngIf="project?.bugTrackingSystems.length !== 0">
+                <td>Bug Tracking Systems</td>
+                <td>
+                    <div *ngFor="let bts of project?.bugTrackingSystems">
+                        <span *ngIf="bts?.url != null" style="white-space: nowrap;">URL: <a href="{{bts.url}}" target="_blank">{{bts.url}}</a><br/></span>
+                        <span *ngIf="bts?.product != null" style="white-space: nowrap;">Product: {{bts.product}}<br/></span>
+                        <span *ngIf="bts?.component != null" style="white-space: nowrap;">Component: {{bts.component}}<br/></span>
+                        <span *ngIf="bts?.name != null" style="white-space: nowrap;">Name: {{bts.name}}<br/></span>
+                        <span *ngIf="bts?.project != null" style="white-space: nowrap;">Project: {{bts.project}}<br/></span>
+                        <span *ngIf="bts?.login != null" style="white-space: nowrap;">Login: {{bts.login}}<br/></span>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="project?.communicationChannels.length !== 0">
+                <td>Communication Channels</td>
+                <td>
+                    <div *ngFor="let cc of project?.communicationChannels">
+                        <span *ngIf="cc?.url != null" style="white-space: nowrap;">URL: <a href="{{cc.url}}" target="_blank">{{cc.url}}</a><br/></span>
+                        <span *ngIf="cc?.name != null" style="white-space: nowrap;">Name: {{cc.name}}<br/></span>
+                        <span *ngIf="cc?.port != null" style="white-space: nowrap;">Port: {{cc.port}}<br/></span>
+                        <span *ngIf="cc?.interval != null" style="white-space: nowrap;">Interval: {{cc.interval}}<br/></span>
+                        <span *ngIf="cc?.description != null" style="white-space: nowrap;">Description: {{cc.description}}<br/></span>
+                        <span *ngIf="cc?.MailingListName != null" style="white-space: nowrap;">Mailing List Name: {{cc.MailingListName}}<br/></span>
+                        <span *ngIf="cc?.MailingListDescription != null" style="white-space: nowrap;">Mailing List Description: {{cc.MailingListDescription}}<br/></span>
+                        <span *ngIf="cc?.compressedFileExtension != null" style="white-space: nowrap;">Compressed File Extension: <a href="{{cc.compressedFileExtension}}" target="_blank">{{cc.compressedFileExtension}}</a><br/></span>
+                        <span *ngIf="cc?.mboxName != null" style="white-space: nowrap;">Mbox Name: {{cc.mboxName}}<br/></span>
+                        <span *ngIf="cc?.mboxDescription != null" style="white-space: nowrap;">Mbox Description: {{cc.mboxDescription}}<br/></span>
+                        <span *ngIf="cc?.forumId != null" style="white-space: nowrap;">Forum Id: {{cc.forumId}}<br/></span>
+                        <span *ngIf="cc?.forumName != null" style="white-space: nowrap;">Forum Name: {{cc.forumName}}<br/></span>
+                        <span *ngIf="cc?.clientId != null" style="white-space: nowrap;">Client Id: {{cc.clientId}}<br/></span>
+                        <span *ngIf="cc?.executionFrequency != null" style="white-space: nowrap;">Execution Frequency: {{cc.executionFrequency}}<br/></span>
+                        <span *ngIf="cc?.loginURL != null" style="white-space: nowrap;">Login URL: {{cc.loginURL}}<br/></span>
+                        <span *ngIf="cc?.username != null" style="white-space: nowrap;">Username: {{cc.username}}<br/></span>
+                        <span *ngIf="cc?.usernameFieldName != null" style="white-space: nowrap;">Username Field Name: {{cc.usernameFieldName}}<br/></span>
+                    </div>
                 </td>
             </tr>
             <tr *ngIf="project?.downloadsUrl">
