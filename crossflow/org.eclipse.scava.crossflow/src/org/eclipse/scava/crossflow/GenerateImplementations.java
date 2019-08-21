@@ -308,7 +308,6 @@ public class GenerateImplementations {
 
 	private static File getManifestFile(File directory) {
 		File mff = new File(directory.getPath() + "/META-INF/");
-		System.out.println(mff);
 		if (containsFile(mff, "MANIFEST.MF")) {
 			return new File(mff.getAbsolutePath() + "/MANIFEST.MF");
 		}
@@ -316,9 +315,11 @@ public class GenerateImplementations {
 	}
 
 	private static boolean containsFile(File directory, String file) {
-		for (String f : directory.list()) {
-			if (f.equals(file))
-				return true;
+		if (directory.exists()) {
+			for (String f : directory.list()) {
+				if (f.equals(file))
+					return true;
+			}
 		}
 		return false;
 	}

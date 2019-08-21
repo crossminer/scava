@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.scava.crossflow.GenerateBaseClasses;
+import org.eclipse.gmf.runtime.notation.NotationPackage;
+import org.eclipse.scava.crossflow.GenerateImplementations;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -44,7 +45,7 @@ public class Standalone {
 			"-r" }, description = "Whether to copy the Java runtime to generated classes. Defaults to false")
 	private boolean copyRuntime = false;
 
-	GenerateBaseClasses generator = null;
+	GenerateImplementations generator = null;
 
 	public static void main(String[] args) throws Exception {
 		Standalone standalone = new Standalone();
@@ -52,8 +53,8 @@ public class Standalone {
 		standalone.run();
 	}
 
-	public void run() throws Exception {	
-		getGenerator().run(projectLoc, modelLoc);
+	public void run() throws Exception {
+		getGenerator().run();
 		if (copyRuntime) {
 			doCopyRuntime();
 		}
@@ -119,11 +120,13 @@ public class Standalone {
 		this.copyRuntime = copyRuntime;
 	}
 
-	protected GenerateBaseClasses getGenerator() {
+	protected GenerateImplementations getGenerator() {
 		if (generator == null) {
 			CrossflowPackage crossflowPackage = CrossflowPackage.eINSTANCE;
+			NotationPackage gmfNotationPkg = NotationPackage.eINSTANCE;
 			EPackage.Registry.INSTANCE.put(crossflowPackage.getNsURI(), crossflowPackage);
-			generator = new GenerateBaseClasses();
+			EPackage.Registry.INSTANCE.put(gmfNotationPkg.getNsURI(), gmfNotationPkg);
+			generator = new GenerateImplementations(new File(projectLoc), modelLoc);
 		}
 		return generator;
 	}

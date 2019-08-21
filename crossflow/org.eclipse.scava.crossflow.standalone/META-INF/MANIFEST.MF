@@ -11,5 +11,6 @@ Require-Bundle: org.eclipse.scava.crossflow.runtime.dependencies,
  org.eclipse.scava.crossflow.language,
  com.google.guava,
  org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.emc.emf
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.gmf.runtime.notation
 Export-Package: org.eclipse.scava.crossflow.standalone
