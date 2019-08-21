@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Softeam
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.platform.client.api;
 
 import java.io.IOException;
@@ -44,7 +53,6 @@ public class ProjectEditionResource extends ServerResource {
 			// Retrieve the older project
 			ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
 			Project project = projectRepo.getProjects().findOneByShortName(sortName);
-			System.out.println(project);
 			if (project instanceof GitHubRepository) {
 				this.importGithubProject(json, project);
 			} else if (project instanceof GitLabRepository) {
@@ -55,7 +63,6 @@ public class ProjectEditionResource extends ServerResource {
 				this.importProject(json, project);
 			}
 
-			System.out.println("Editing the project " + project.getShortName() + "\n");
 			platform.getProjectRepositoryManager().getProjectRepository().getProjects().sync();
 
 			getResponse().setStatus(Status.SUCCESS_CREATED);
