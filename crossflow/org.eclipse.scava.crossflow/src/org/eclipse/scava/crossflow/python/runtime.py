@@ -1106,7 +1106,7 @@ class JobStream(Job):
     
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-        logger.debug("Sending tx message to {}\s{}".format(dest, msg))
+        logger.debug("Sending to queue: {}, message: {}".format(dest, msg))
         self.txConnection.send(body=msg, destination=dest)
         
     def getRxConnection(self, dest):
