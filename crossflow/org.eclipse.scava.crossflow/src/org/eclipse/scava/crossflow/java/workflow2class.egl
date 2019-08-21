@@ -1,10 +1,13 @@
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
-import java.util.List;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Generated;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerFactory;
@@ -17,6 +20,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public class [%=w.name%] extends Workflow {
 
 	public static [%=w.name%] run(String[] args) throws Exception {

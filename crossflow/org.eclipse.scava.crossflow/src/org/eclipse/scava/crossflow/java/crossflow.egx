@@ -1,5 +1,9 @@
 import "../util.eol";
 
+pre {
+	var datetime = Native("java.time.ZonedDateTime").now().toString();
+}
+
 rule Workflow2App
 	transform w : Workflow {
 	
@@ -17,7 +21,13 @@ rule Config2ConfigSource
 	
 	guard : t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
 	
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName(), "t" = t.createSource()}
+	parameters : Map {
+		"w" = t.eContainer(),
+		"package" = t.eContainer().getPackageName(),
+		"t" = t.createSource(),
+		"genValue" = "Config2ConfigSource",
+		"genDate" = datetime
+	}
 	
 	template : "task2baseclass.egl"
 	
@@ -27,7 +37,12 @@ rule Config2ConfigSource
 rule Workflow2Class 
 	transform w : Workflow {
 	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
+	parameters : Map {
+		"w" = w,
+		"package" = w.getPackageName(),
+		"genValue" = "Workflow2Class",
+		"genDate" = datetime
+	}
 	
 	template : "workflow2class.egl"
 	
@@ -39,7 +54,12 @@ rule Type2Class
 		
 	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
 	
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = t.eContainer(),
+		"package" = t.eContainer().getPackageName(),
+		"genValue" = "Type2Class",
+		"genDate" = datetime
+	}
 	
 	template : "type2class.egl"
 	
@@ -76,7 +96,12 @@ rule CommitmentTask2BaseClass
 	
 	guard : t.isJavaTask()
 	
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = t.eContainer(),
+		"package" = t.eContainer().getPackageName(),
+		"genValue" = "CommitmentTask2BaseClass",
+		"genDate" = datetime
+	}
 	
 	template : "commitmenttask2baseclass.egl"
 	
@@ -89,7 +114,12 @@ rule OpinionatedTask2BaseClass
 	
 	guard : t.isJavaTask()
 	
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = t.eContainer(),
+		"package" = t.eContainer().getPackageName(),
+		"genValue" = "OpinionatedTask2BaseClass",
+		"genDate" = datetime
+	}
 	
 	template : "opinionatedtask2baseclass.egl"
 	
@@ -102,7 +132,12 @@ rule Task2BaseClass
 	
 	guard : t.isJavaTask()
 	
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = t.eContainer(),
+		"package" = t.eContainer().getPackageName(),
+		"genValue" = "Task2BaseClass",
+		"genDate" = datetime
+	}
 	
 	template : "task2baseclass.egl"
 	
@@ -128,7 +163,12 @@ rule Task2ImplClass
 rule Steam2Class 
 	transform s : Stream {
 	
-	parameters : Map{"w" = s.eContainer(),"package" = s.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = s.eContainer(),
+		"package" = s.eContainer().getPackageName(),
+		"genValue" = "Steam2Class",
+		"genDate" = datetime
+	}
 	
 	template : "stream2class.egl"
 	
@@ -139,7 +179,12 @@ rule Steam2Class
 rule Steam2Consumer 
 	transform s : Stream {
 	
-	parameters : Map{"w" = s.eContainer(),"package" = s.eContainer().getPackageName()}
+	parameters : Map {
+		"w" = s.eContainer(),
+		"package" = s.eContainer().getPackageName(),
+		"genValue" = "Steam2Consumer",
+		"genDate" = datetime
+	}
 	
 	template : "stream2consumer.egl"
 	

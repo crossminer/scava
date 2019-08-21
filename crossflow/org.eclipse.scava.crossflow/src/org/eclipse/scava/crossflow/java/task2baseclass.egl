@@ -1,10 +1,13 @@
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
+import javax.annotation.Generated;
+
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
 		
 	protected [%=w.name%] workflow;
