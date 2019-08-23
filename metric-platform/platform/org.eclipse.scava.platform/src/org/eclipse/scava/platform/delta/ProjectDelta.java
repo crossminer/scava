@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.platform.delta;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.Platform;
@@ -57,14 +60,23 @@ public class ProjectDelta {
 	public void create() throws Exception{
 		this.loggerOssmeter.info("Creating Delta");
 		try {
-			long startDelta = System.currentTimeMillis();
+			Instant startVcs = Instant.now();
 			vcsDelta = new VcsProjectDelta(project, date, vcsManager);
+			Instant endVcs = Instant.now();
 			DB db = platform.getMetricsRepository(project).getDb();
+
+			Instant startComms = Instant.now();
 			communicationChannelDelta = new CommunicationChannelProjectDelta(db, project, date, communicationChannelManager);
-			
+			Instant endComms = Instant.now();
+
+			Instant startBugs = Instant.now();
 			bugTrackingSystemDelta = new BugTrackingSystemProjectDelta(db, project, date, bugTrackingSystemManager);
-			
-			this.loggerOssmeter.info("Created Delta (" + (System.currentTimeMillis() - startDelta) + " ms)");
+			Instant endBugs = Instant.now();
+
+			this.loggerOssmeter.info(String.format("Created Delta (vcs:%dms, communications:%dms, bugs:%dms)",
+					Duration.between(startVcs, endVcs).toMillis(),
+					Duration.between(startComms, endComms).toMillis(),
+					Duration.between(startBugs, endBugs).toMillis()));
 		} catch (Exception e) {
 			this.loggerOssmeter.error("Delta creation failed.", e);
 			throw e;
