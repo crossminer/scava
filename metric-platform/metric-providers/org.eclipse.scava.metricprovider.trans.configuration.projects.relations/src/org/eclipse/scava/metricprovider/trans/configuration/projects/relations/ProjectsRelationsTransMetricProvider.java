@@ -170,12 +170,12 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     
     @Override
     public String getShortIdentifier() {
-    	return "ProjectsRlations";
+    	return "ProjectsRelations";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "ProjectsRlations";
+    	return "Projects Relations Metric";
     }
     
     @Override

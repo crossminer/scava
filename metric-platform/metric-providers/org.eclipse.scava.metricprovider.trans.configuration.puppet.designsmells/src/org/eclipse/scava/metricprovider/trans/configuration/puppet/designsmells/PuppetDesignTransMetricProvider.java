@@ -131,17 +131,17 @@ public class PuppetDesignTransMetricProvider implements ITransientMetricProvider
     
     @Override
     public String getShortIdentifier() {
-    	return "puppet";
+    	return "TransientPuppetDesignSmells";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Puppet";
+    	return "Transient Puppet Design Smells Metric";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transient version of the metric that returns the design smells that are detected in the puppet manifests of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {

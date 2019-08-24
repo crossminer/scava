@@ -192,17 +192,17 @@ public class DockerTransMetricProvider implements ITransientMetricProvider<Docke
     
     @Override
     public String getShortIdentifier() {
-    	return "docker";
+    	return "TransientDockerSmells";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Docker";
+    	return "Transient Docker Smells Metric";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transinet version of the metric that returns the smells that are detected in the Dockerfiles of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {

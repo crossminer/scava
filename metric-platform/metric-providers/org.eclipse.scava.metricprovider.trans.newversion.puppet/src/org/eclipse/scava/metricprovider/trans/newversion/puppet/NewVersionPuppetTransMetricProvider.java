@@ -115,12 +115,12 @@ public class NewVersionPuppetTransMetricProvider implements ITransientMetricProv
     
     @Override
     public String getFriendlyName() {
-    	return "newVersionPuppet";
+    	return "New Version Puppet";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transient version of the metric that returns the number of the packages that have a new version and are defined in Puppet manifests";
     }
     
     public String testAptCache(String packageName){

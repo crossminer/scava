@@ -165,16 +165,16 @@ public class DockerHistoricMetricProvider extends AbstractHistoricalMetricProvid
     
     @Override
     public String getShortIdentifier() {
-    	return "docker";
+    	return "HistoricDockerSmells";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Docker";
+    	return "Historic Docker Smells Metric";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the historic version of the metric that returns the smells that are detected in the Dockerfiles of a project";
     }
 }
