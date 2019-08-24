@@ -99,6 +99,6 @@ public class DockerDependenciesHistoricMetricProvider extends AbstractHistorical
     
     @Override
     public String getSummaryInformation() {
-    	return "This is the historic vetsion of the metric that returns the dependencies (packages, images) that are defined in the Dockerfiles of a project";
+    	return "This is the historic version of the metric that returns the dependencies (packages, images) that are defined in the Dockerfiles of a project";
     }
 }

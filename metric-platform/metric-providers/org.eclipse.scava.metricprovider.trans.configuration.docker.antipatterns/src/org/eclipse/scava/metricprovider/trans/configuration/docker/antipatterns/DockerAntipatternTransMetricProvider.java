@@ -184,17 +184,17 @@ public class DockerAntipatternTransMetricProvider implements ITransientMetricPro
     
     @Override
     public String getShortIdentifier() {
-    	return "docker";
+    	return "TransientDockerAntipatterns";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Docker";
+    	return "Transient Docker Antipatterns";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the metric that returns the antipatterns that are defined in the Dockerfiles of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {

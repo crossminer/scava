@@ -139,17 +139,17 @@ public class PuppetImplementationHistoricMetricProvider extends AbstractHistoric
     
     @Override
     public String getShortIdentifier() {
-    	return "puppet";
+    	return "HistoricPuppetImplementationSmells";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Puppet";
+    	return "Historic Puppet Implementation Smells Metric";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the historic version of the metric that returns the implementation smells that are detected in the puppet manifests of a project";
     }
 
 }

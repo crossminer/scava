@@ -144,12 +144,12 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
     
     @Override
     public String getFriendlyName() {
-    	return "NewVersionMaven";
+    	return "New Version Maven";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transient version of the metric that returns the number of the packages that have a new version and are defined in pom xmls";
     }
     
     public String testMaven(String group, String artifact){

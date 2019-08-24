@@ -267,17 +267,17 @@ public class PuppetImplementationAntipatternTransMetricProvider implements ITran
     
     @Override
     public String getShortIdentifier() {
-    	return "puppet";
+    	return "TransientPuppetImplementationAntipatterns";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Puppet";
+    	return "Transient Puppet Implementation Antipatterns";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the metric that returns the implementation antipatterns that are defined in the puppet manifests of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {

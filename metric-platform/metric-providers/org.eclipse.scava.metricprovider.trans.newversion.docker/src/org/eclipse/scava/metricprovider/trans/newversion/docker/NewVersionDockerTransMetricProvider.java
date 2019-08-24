@@ -118,12 +118,12 @@ public class NewVersionDockerTransMetricProvider implements ITransientMetricProv
     
     @Override
     public String getFriendlyName() {
-    	return "NewVersionDocker";
+    	return "New Version Docker";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transient version of the metric that returns the number of the packages that have a new version and are defined in Dockerfiles";
     }
     
     public String testAptCache(String packageName){

@@ -145,12 +145,12 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
     
     @Override
     public String getFriendlyName() {
-    	return "NewVersionOsgi";
+    	return "New Versions of Osgi Bundles";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the transient version of the metric that returns the number of the OSGi bundles that have a new version";
     }
     
     public String testMaven(String artifact){

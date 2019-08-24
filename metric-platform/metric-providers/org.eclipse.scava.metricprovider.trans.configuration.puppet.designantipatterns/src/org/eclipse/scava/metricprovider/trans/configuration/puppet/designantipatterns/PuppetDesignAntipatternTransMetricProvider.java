@@ -128,17 +128,17 @@ public class PuppetDesignAntipatternTransMetricProvider implements ITransientMet
     
     @Override
     public String getShortIdentifier() {
-    	return "puppet";
+    	return "TransientPuppetDesignAntipatterns";
     }
     
     @Override
     public String getFriendlyName() {
-    	return "Puppet";
+    	return "Transient Puppet Design Antipatterns";
     }
     
     @Override
     public String getSummaryInformation() {
-    	return "TODO";
+    	return "This is the metric that returns the design antipatterns that are defined in the puppet manifests of a project";
     }
     
     private void computeFolders(Project project, ProjectDelta delta, Map<String, File> wc, Map<String, File> scratch) throws WorkingCopyManagerUnavailable, WorkingCopyCheckoutException {
