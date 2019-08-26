@@ -91,8 +91,15 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
       checkout = checkouts[repo];
       sources = getSourceRoots({checkout});
       //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
-    
-      result += {<java(), f, createM3FromFile(f)> | f <- find(checkout, "java"), isFile(f)};
+
+      for (f <- find(checkout, "java"), isFile(f)) {
+        try {
+          result += {<java(), f, createM3FromFile(f)>};
+        } catch e: {
+          println("Error building M3 model for <f>");
+          result += {<java(), f, m3(|unknown:///|)>};
+        }
+      }
     }
   }
   catch "not-maven": {
