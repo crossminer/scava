@@ -16,6 +16,8 @@ import static org.eclipse.scava.metricprovider.rascal.RascalToPongo.toPongo;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,7 +43,6 @@ import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyManagerUnavailable;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
-
 import org.rascalmpl.interpreter.control_exceptions.MatchFailed;
 import org.rascalmpl.interpreter.control_exceptions.Throw;
 import org.rascalmpl.interpreter.result.AbstractFunction;
@@ -50,7 +51,6 @@ import org.rascalmpl.interpreter.result.Result;
 import org.rascalmpl.interpreter.staticErrors.StaticError;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter;
 import org.rascalmpl.interpreter.utils.LimitedResultWriter.IOLimitReachedException;
-
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -500,7 +500,10 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 
 		for (RascalManager.Extractor e : extractors) {
 			// generally extractors are assumed to use @memo
+			Instant t1 = Instant.now();
 			ISet result = (ISet) e.call(projectLoc, rascalDelta, wcf, scratch);
+			Instant t2 = Instant.now();
+			logger.info(String.format("[%s(%s)] Took %ds", e, project.getShortName(), Duration.between(t1, t2).getSeconds()));
 
 			if (result != null) {
 				allResults.insertAll(result);
