@@ -16,6 +16,7 @@ use warnings;
 use Mojo::UserAgent;
 use Mojo::JSON qw(decode_json encode_json);
 use Data::Dumper;
+use Text::CSV;
 
 my $base_url;
 if ( exists( $ENV{'SCAVA_HOST'} ) ) {
@@ -31,7 +32,6 @@ my $ua  = Mojo::UserAgent->new;
 sub get_url() {
     my $url_in = shift;
 
-    print "* Fetching ${url_in}.\n";
     my $res = $ua->get($url_in)->result;
 
     if (not $res->is_success) {
@@ -52,17 +52,23 @@ sub get_url() {
 
 # Send GET request
 
-my $m = &get_url($base_url . ":8182/raw/metrics/");
-#print Dumper($m);
-print "\n";
-print "# Found " . scalar(@{$m->{'metrics'}}) . " metrics:\n\n";
+my $m = &get_url($base_url . ":8182/metrics/");
 
-for my $metric (@{$m->{'metrics'}}) {
-    print "* $metric->{'name'}\n";
-    print "  - $metric->{'type'}\n";
-    print "  - $metric->{'description'}\n\n";
-}
+my $csv = Text::CSV->new({binary => 1, eol => "\n"});
+my @cols = ('id', 'name', 'description');
+my $csv_out = join(',', @cols) . "\n";
+for my $metric (@{$m}) {
+    my @cs = (
+	$metric->{'id'},
+	$metric->{'name'},
+	$metric->{'description'},
+	);
+    
+    $csv->combine(@cs);
+    $csv_out .= $csv->string();
+}    
 
+print $csv_out;
 
 
 
