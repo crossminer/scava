@@ -17,6 +17,7 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.service.LogService;
 
 public class Activator implements BundleActivator {
 
@@ -32,6 +33,7 @@ public class Activator implements BundleActivator {
 			    	
 			    	Server server = new Server(Protocol.HTTP, 8182);
 			    	component.getServers().add(server);
+			    	component.setLogService(new LogService(false));
 			    	
 			    	final Application app = new ApiApplication();
 			    	component.getDefaultHost().attachDefault(app);
