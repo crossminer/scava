@@ -5,5 +5,4 @@ Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.rascal.dependency;si
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.rascal.dependency
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1",
- rascal_eclipse;bundle-version="0.10.0"
+Require-Bundle: org.eclipse.scava.metricprovider.rascal;bundle-version="0.0.1"
