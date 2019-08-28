@@ -155,7 +155,6 @@ public class DependencyMetricsTest {
 		assertEquals(0.0, mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.ratioUnversionedOSGiImportedPackages").findOne().get("value"));
 		assertEquals(0L, mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.numberOSGiPackageDependencies").findOne().get("value"));
 		assertEquals(0.0, mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.ratioUnversionedOSGiRequiredBundles").findOne().get("value"));
-		assertEquals("java+package:///com", mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.usedOSGiUnimportedPackages").findOne().get("value"));
 		assertEquals(0.0, mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.ratioUnversionedOSGiExportedPackages").findOne().get("value"));
 		assertEquals(0.0, mongo.getDB("osgitest").getCollection("trans.rascal.dependency.osgi.ratioUsedOSGiImportedPackages").findOne().get("value"));
 	}
