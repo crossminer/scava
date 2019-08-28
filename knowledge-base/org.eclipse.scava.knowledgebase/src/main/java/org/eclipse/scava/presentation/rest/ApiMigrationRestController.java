@@ -65,7 +65,7 @@ public class ApiMigrationRestController {
 	@Value("${migration.deltas.path}")
 	private String deltasBasePath;
 	
-	@ApiOperation(value = "This API returns all client pairs that migrate from coordV1 to coordV2", response = Iterable.class)
+	@ApiOperation(value = "This API returns all client pairs that migrate from coordV1 to coordV2")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v1 (groupId:artifactId:version)", required = true, dataType = "string", paramType = "path"),
 			@ApiImplicitParam(name = "coordV2", value = "maven cooridnate of lib v2 (groupId:artifactId:version)", required = false, dataType = "string", paramType = "path") })
@@ -76,7 +76,7 @@ public class ApiMigrationRestController {
 		return migrationService.getMigrationPairs(coordV1, coordV2);
 	}
 	
-	@ApiOperation(value = "This API returns the migration matrix of coord (groupid:artifactid)", response = Iterable.class)
+	@ApiOperation(value = "This API returns the migration matrix of coord (groupid:artifactid)")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v2 (groupId:artifactId:version)", required = false, dataType = "string", paramType = "path") })
 	@RequestMapping(value = "/matrix/{coordV1:.+}", produces = { "application/json",
@@ -85,7 +85,7 @@ public class ApiMigrationRestController {
 		return migrationService.getMigrationMatrix(coordV1);
 	}
 	
-	@ApiOperation(value = "This API returns the delta between coordV1 and coordV2", response = Iterable.class)
+	@ApiOperation(value = "This API returns the delta between coordV1 and coordV2")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v1 (groupId:artifactId:version)", required = true, dataType = "string", paramType = "path"),
 			@ApiImplicitParam(name = "coordV2", value = "maven cooridnate of lib v2 (groupId:artifactId:version)", required = false, dataType = "string", paramType = "path") })
@@ -113,7 +113,7 @@ public class ApiMigrationRestController {
 		
 	}
 
-	@ApiOperation(value = "This API returns all client that use a specific dependency coordV1", response = Iterable.class)
+	@ApiOperation(value = "This API returns all client that use a specific dependency coordV1")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v1 (groupId:artifactId:version)", required = true, dataType = "string", paramType = "path") })
 	@RequestMapping(value = "/{coordV1}", produces = { "application/json",
@@ -122,7 +122,7 @@ public class ApiMigrationRestController {
 		return migrationService.getClients(coordV1);
 	}
 
-	@ApiOperation(value = "This API returns stack overflow posts related to the version parameters", response = Iterable.class)
+	@ApiOperation(value = "This API returns stack overflow posts related to the version parameters")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "coordV1", value = "maven cooridnate of lib v1 (groupId:artifactId:version)", required = true, dataType = "string", paramType = "path"),
 			@ApiImplicitParam(name = "coordV2", value = "maven cooridnate of lib v2 (groupId:artifactId:version)", required = false, dataType = "string", paramType = "path") })
@@ -133,7 +133,7 @@ public class ApiMigrationRestController {
 		return soRecommender.getVersionsSORecommendations(coordV1, coordV2);
 	}
 	
-	@ApiOperation(value = "This API returns detections", response = Iterable.class)
+	@ApiOperation(value = "This API returns detections")
 	@RequestMapping(value = "/detection/{coordV1}/{coordV2:.+}", method = RequestMethod.POST)
 	public @ResponseBody List<Detection> getDetection(
 			@PathVariable("coordV1") String coordV1,
@@ -152,7 +152,7 @@ public class ApiMigrationRestController {
 		return null;
 	}
 	
-	@ApiOperation(value = "This API returns recommendation", response = Iterable.class)
+	@ApiOperation(value = "This API returns recommendation")
 	@RequestMapping(value = "/similar_migration_snippet/{coordV1}/{coordV2:.+}", method = RequestMethod.POST,
 			produces = { "application/json", "application/xml" })
 	public @ResponseBody MultiValueMap<String, String> getRecommendationSnippet(
@@ -172,7 +172,7 @@ public class ApiMigrationRestController {
 		return null;
 	}
 	
-	@ApiOperation(value = "This API returns recommendation", response = Iterable.class)
+	@ApiOperation(value = "This API returns recommendation")
 	@RequestMapping(value = "/similar_migration_location/{coordV1}/{coordV2:.+}", method = RequestMethod.POST)
 	public @ResponseBody List<DetectionResult> getRecommendation(
 			@PathVariable("coordV1") String coordV1,
@@ -191,7 +191,7 @@ public class ApiMigrationRestController {
 		return null;
 	}
 	
-	@ApiOperation(value = "This API returns the m3 model of the input jar file", response = Iterable.class)
+	@ApiOperation(value = "This API returns the m3 model of the input jar file")
 	@RequestMapping(value = "/M3Model", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody byte[] getM3Model(
@@ -211,7 +211,7 @@ public class ApiMigrationRestController {
 	}
 	
 	
-	@ApiOperation(value = "This API returns the snippet (pointed by @clientLoc) of code of @coordV1", response = Iterable.class)
+	@ApiOperation(value = "This API returns the snippet (pointed by @clientLoc) of code of @coordV1")
 	@RequestMapping(value = "client-code", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> getCode(@RequestParam("coordV1") String coordV1,
