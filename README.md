@@ -40,6 +40,6 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 
 Scava is licenced under the [Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-    SPDX-License-Identifier: EPL-1.0
+    SPDX-License-Identifier: EPL-2.0
 
 For more information see the NOTICE and LICENSE files at the root of the repository.
