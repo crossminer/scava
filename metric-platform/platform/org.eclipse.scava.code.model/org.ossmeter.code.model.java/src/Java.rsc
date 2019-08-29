@@ -21,20 +21,25 @@ import lang::java::m3::ClassPaths;
 private str MAVEN = getSystemProperty("MAVEN_EXECUTABLE");
 
 @javaClass{m3.ClassPaths}
-java map[loc,list[loc]] getClassPath(
+java map[loc, list[loc]] getClassPath(
 	loc workspace, 
 	map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["indigo","juno","kepler","luna","mars","neon","oxygen","photon"]),
 	loc mavenExecutable = |file:///usr/bin/mvn|);
 
 @memo
-list[loc] projectClassPath(loc workspace, ProjectDelta delta) {
+set[loc] projectClassPath(loc workspace, ProjectDelta delta) {
 	print("[Hang on] Computing classpath for project <workspace>...");
-	classPaths = getClassPath(workspace);
-	print("Done.");
-	return [ *classPaths[cp] | cp <- classPaths ];
+	try {
+		map[loc, list[loc]] classPaths = getClassPath(workspace);
+		print("Done.");
+		return {*classPaths[cp] | cp <- classPaths};
+	} catch e: {
+		print("Error while computing the classpath: <e>");
+		return {};
+	}
 }
 
-private set[loc] getSourceRoots(set[loc] folders) {
+set[loc] getSourceRoots(set[loc] folders) {
 	set[loc] result = {};
 	for (folder <- folders) {
 		// only consult one java file per package tree
@@ -80,7 +85,7 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
 		loc checkout = checkouts[repo];
 		list[loc] jars = toList(findJars({checkout}));
 		list[loc] sources = toList(getSourceRoots({checkout}));
-		list[loc] classPaths = projectClassPath(checkout, delta) + jars;
+		list[loc] classPaths = toList(projectClassPath(checkout, delta)) + jars;
 
 		for (f <- find(checkout, "java"), isFile(f)) {
 			try {
@@ -106,7 +111,7 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
 		loc checkout = checkouts[repo];
 		list[loc] jars = toList(findJars({checkout}));
 		list[loc] sources = toList(getSourceRoots({checkout}));
-		list[loc] classPaths = projectClassPath(checkout, delta) + jars;
+		list[loc] classPaths = toList(projectClassPath(checkout, delta)) + jars;
 		
 		for (f <- find(checkout, "java"), isFile(f)) {
 			try {
