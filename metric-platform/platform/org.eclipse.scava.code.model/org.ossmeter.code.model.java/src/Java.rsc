@@ -133,7 +133,13 @@ rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,l
 
       // TODO: turn classpath into a list
       //setEnvironmentOptions({*(classpaths[checkout]?[])}, sources);
-      result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
+      for (f <- find(checkout, "java"), isFile(f)) {
+      	try {
+      	  result += {<java(), f, declaration(createAstFromFile(f, true))> | f <- find(checkout, "java"), isFile(f) };
+      	} catch e: {
+      	  println("Error building AST for <f>");
+      	}
+      }
     }
   }
   catch "not-maven": {
