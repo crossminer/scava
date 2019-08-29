@@ -3,7 +3,6 @@
 	<name>org.eclipse.scava.code.model.java</name>
 	<comment></comment>
 	<projects>
-		<project>rascal4ossmeter</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
