@@ -289,5 +289,5 @@ public M3 systemM3(rel[Language, loc, M3] m3s, ProjectDelta delta = ProjectDelta
   if (javaM3s == {}) {
     throw undefined("No Java M3s available", projectLoc);
   }
-  return composeM3(projectLoc, javaM3s);  
+  return composeJavaM3(projectLoc, javaM3s);
 }
