@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nbody
+Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.simple.nbody
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.crossflow.examples.simple.nbody,
+ org.eclipse.scava.crossflow.examples.simple.nbody.benchmark,
+ org.eclipse.scava.crossflow.examples.simple.nbody.c,
+ org.eclipse.scava.crossflow.examples.simple.nbody.threads
+Require-Bundle: org.eclipse.scava.crossflow.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

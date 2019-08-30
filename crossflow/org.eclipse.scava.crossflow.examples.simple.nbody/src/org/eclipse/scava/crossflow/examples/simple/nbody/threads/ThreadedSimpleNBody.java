@@ -13,16 +13,14 @@ package org.eclipse.scava.crossflow.examples.simple.nbody.threads;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.math3.util.FastMath;
 import org.eclipse.scava.crossflow.examples.simple.nbody.Bodies.CreatingBodiesException;
 import org.eclipse.scava.crossflow.examples.simple.nbody.JsonBodies;
 import org.eclipse.scava.crossflow.examples.simple.nbody.NBody3DBody;
@@ -32,7 +30,6 @@ import org.eclipse.scava.crossflow.examples.simple.nbody.NBodyMetrics.RequestedD
 import org.eclipse.scava.crossflow.examples.simple.nbody.NBodySimulation;
 import org.eclipse.scava.crossflow.examples.simple.nbody.RandomBodies;
 import org.eclipse.scava.crossflow.examples.simple.nbody.StockCuboidCoordinates;
-import org.eclipse.scava.crossflow.examples.simple.nbody.Vector3D;
 import org.jctools.queues.MpscArrayQueue;
 import org.jctools.queues.SpmcArrayQueue;
 
@@ -41,7 +38,6 @@ import org.jctools.queues.SpmcArrayQueue;
  */
 public class ThreadedSimpleNBody implements NBodySimulation {
 
-	private final double eps = 0.00125;
 	private List<NBody3DBody> universe;
 	private Duration prprDrtn;
 	private Duration calcAccelDrtn;
@@ -104,12 +100,12 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 		//Set<NBody3DBody> newUniverse;
 		long start = System.nanoTime();
 		// Map<UUID, CuboidCoordinates> takenCoordiantes = new HashMap<>();
-
+		CuboidCoordinates parentCuboid = new StockCuboidCoordinates();
 		for (int i = 0; i < steps; i++) {
 			// x in b=2^x, where b is the next power of 2 greater than a
 			// int numCuboids = (int) Math.pow(2, 32 - Integer.numberOfLeadingZeros(maxCuboids - 1));
 			int numCuboids = 4;
-			Set<CuboidCoordinates> stepCuboids = setupCuboids(numCuboids);
+			Collection<CuboidCoordinates> stepCuboids = new StockCuboids(parentCuboid).setupCuboids(numCuboids);
 			List<NBody3DBody> newUniverse = new ArrayList<>(universe.size());
 			while (!stepCuboids.isEmpty()) {
 
@@ -238,89 +234,12 @@ public class ThreadedSimpleNBody implements NBodySimulation {
 	}
 
 	private void verify() {
-		phi = 0.0f;
-		for (NBody3DBody body1 : universe) {
-			for (NBody3DBody body2 : universe) {
-				Vector3D distance = body2.position().subtract(body1.position());
-				double r2 = FastMath.sqrt(distance.normSq() + eps);
-				double r2inv = 1.0 / r2;
-				double r6inv = r2inv * r2inv * r2inv;
-				phi += body2.mass() * r6inv;
-
-			}
-		}
+		
 	}
 
 	private double getTotalTime() {
 		return prprDrtn.plus(calcAccelDrtn).plus(calcVelDrtn).plus(calcPosDrtn).toNanos() / 1.0e9;
 	}
-
-	/**
-	 * Divide the simulation space into the given number of cubes. The number of
-	 * cubes must be a power of 2. This should be called once per simulation, at the
-	 * beginning.
-	 * 
-	 * @param numCubes
-	 * @return
-	 * @throws InvalidNumberOfCubesException
-	 */
-	private Set<CuboidCoordinates> setupCuboids(final int numCubes) throws InvalidNumberOfCubesException {
-		Set<CuboidCoordinates> cuboids = new HashSet<>();
-		if (!((numCubes > 0) && ((numCubes & (numCubes - 1)) == 0))) {
-			throw new InvalidNumberOfCubesException();
-		}
-		if (numCubes == 1) {
-			cuboids.add(new StockCuboidCoordinates());
-		} else {
-			// axis 0 = x, 1 = y, 2 = z;
-			int xPoints = 0;
-			int yPoints = 0;
-			int zPoints = 0;
-			int axis = 0;
-			int numcubes = numCubes;
-			while (numcubes > 1) {
-				switch (axis) {
-				case 0:
-					xPoints += 2;
-					break;
-				case 1:
-					yPoints += 2;
-					break;
-				case 2:
-					zPoints += 2;
-				default:
-					axis = 0;
-				}
-				numcubes /= 2;
-				axis++;
-			}
-			double[] xCoords = axisSlices(xPoints);
-			double[] yCoords = axisSlices((yPoints == 0) ? 1 : yPoints);
-			double[] zCoords = axisSlices((zPoints == 0) ? 1 : zPoints);
-			for (int i = 0; i < xCoords.length - 1; i++) {
-				for (int j = 0; j < yCoords.length - 1; j++) {
-					for (int k = 0; k < zCoords.length - 1; k++) {
-						cuboids.add(new StockCuboidCoordinates(xCoords[i], yCoords[j], zCoords[k], xCoords[i + 1],
-								yCoords[j + 1], zCoords[k + 1]));
-					}
-				}
-			}
-		}
-
-		return cuboids;
-	}
-
-	private double[] axisSlices(double points) {
-		double slice = 2 / points;
-		double point = -1;
-		double[] coords = new double[(int) (points + 1)];
-		for (int i = 0; i <= points; i++) {
-			coords[i] = point;
-			point += slice;
-		}
-		return coords;
-	}
-
 
 
 }

@@ -10,6 +10,7 @@
 **********************************************************************/
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Collection;
  */
 public interface NBodyCuboid extends NBodyMetrics {
 
-	public interface CuboidCoordinates {
+	public interface CuboidCoordinates extends Serializable {
 		/**
 		 * The maximum z-axis coordinate of the cuboid
 		 * @return the max z-axis coordinate

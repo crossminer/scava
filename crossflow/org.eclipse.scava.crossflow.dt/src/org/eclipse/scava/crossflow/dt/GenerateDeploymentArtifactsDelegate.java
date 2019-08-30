@@ -43,7 +43,7 @@ public class GenerateDeploymentArtifactsDelegate implements IObjectActionDelegat
 		
 			// generate ant script
 			String workflowName = new GenerateDeploymentArtifacts().run(projectFolderLocation,
-					selectedFile.getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""),
+					selectedFile.getLocation().toOSString(),	// getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""));
 					"unknown_deps_location");
 			// use ant script to generate experiment jars and zip
 			generateAll(true);

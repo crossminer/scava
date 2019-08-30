@@ -1,6 +1,8 @@
 package org.eclipse.scava.crossflow.examples.simple.nbody;
 
-public interface CuboidSimulationDurations extends NBodyMetrics {
+import java.io.Serializable;
+
+public interface CuboidSimulationDurations extends NBodyMetrics, Serializable {
 
 	CuboidSimulationDurations logPos(long start);
 

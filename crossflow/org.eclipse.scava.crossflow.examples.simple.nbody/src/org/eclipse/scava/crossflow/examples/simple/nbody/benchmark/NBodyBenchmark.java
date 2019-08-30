@@ -17,18 +17,20 @@ import org.eclipse.scava.crossflow.examples.simple.nbody.threads.ThreadedSimpleN
 
 public class NBodyBenchmark {
 
-	private final int size;
+	private final int minSize;
+	private final int maxSize;
 	private final int steps;
 	private final int runs;
 	private final String resultsFolder;
 	
-	// args[3] = /Users/horacio/temp/stars/
+	// args[4] = /Users/horacio/temp/stars/
 	public static void main(String... args) {
 		NBodyBenchmark b = new NBodyBenchmark(
 			Integer.parseInt(args[0]),
 			Integer.parseInt(args[1]),
 			Integer.parseInt(args[2]),
-			args[3]);
+			Integer.parseInt(args[3]),
+			args[4]);
 		try {
 			b.run();
 		} catch (CreatingBodiesException | InvalidNumberOfCubesException e) {
@@ -37,9 +39,10 @@ public class NBodyBenchmark {
 		}
 	}
 			
-	public NBodyBenchmark(int size, int steps, int runs, String resultsFolder) {
+	public NBodyBenchmark(int minSize, int maxSize, int steps, int runs, String resultsFolder) {
 		super();
-		this.size = size;
+		this.minSize = minSize;
+		this.maxSize = maxSize;
 		this.steps = steps;
 		this.runs = runs;
 		this.resultsFolder = resultsFolder;
@@ -53,13 +56,13 @@ public class NBodyBenchmark {
 	 * @throws InvalidNumberOfCubesException 
 	 */
 	public void run() throws CreatingBodiesException, InvalidNumberOfCubesException {
-		System.out.println(String.format("Running benchmar for %s sizes, %s steps each, for %s runs", size, steps, runs));
+		System.out.println(String.format("Running benchmar for %s size(s), %s step(s) each, for %s run(s)", maxSize-minSize+1, steps, runs));
 		Path results = Paths.get(String.format("%s/%s_results.csv",resultsFolder,steps));
 		Path timing = Paths.get(String.format("%s/%s_timing.csv",resultsFolder,steps));
 		printResultsHeader(results);
 		printTimingHeader(timing);
 		
-		for (int i=1; i<=size; i++) {
+		for (int i=minSize; i<=maxSize; i++) {
 			int numbodies = (int) FastMath.pow(10.0, i);
 			System.out.println(String.format("Bodies: 10^%s",i));
 			for (int run = 0; run < runs; run++) {

@@ -50,7 +50,7 @@ public class GenerateImplementationDelegate implements IObjectActionDelegate {
 			// generate implementations
 			displayInformation(new GenerateImplementations(
 					projectFolder,
-					selectedFile.getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""))
+					selectedFile.getLocation().toOSString())	// getFullPath().toString().replaceFirst("\\\\" + projectFolder.getName(), ""));
 					.run());			
 			// refresh workspace
 			selectedFile.getProject().refreshLocal(IFile.DEPTH_INFINITE, new NullProgressMonitor());

@@ -27,7 +27,9 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class SofteningNBodyBody implements NBody3DBody {
 	
-	
+	/**
+     * Serialization version.
+     */
 	private static final long serialVersionUID = 1089207819896160750L;
 
 	/**
@@ -151,7 +153,7 @@ public class SofteningNBodyBody implements NBody3DBody {
 			}
 		}
 		if (cube.coordinates().xmax() != 1) {
-			if (position.x() > cube.coordinates().xmax()) {
+			if (position.x() >= cube.coordinates().xmax()) {
 				return false;
 			}
 		}
@@ -162,7 +164,7 @@ public class SofteningNBodyBody implements NBody3DBody {
 			}
 		}
 		if (cube.coordinates().ymax() != 1) {
-			if (position.y() > cube.coordinates().ymax()) {
+			if (position.y() >= cube.coordinates().ymax()) {
 				return false;
 			}
 		}
@@ -173,15 +175,11 @@ public class SofteningNBodyBody implements NBody3DBody {
 			}
 		}
 		if (cube.coordinates().zmax() != 1) {
-			if (position.z() > cube.coordinates().zmax()) {
+			if (position.z() >= cube.coordinates().zmax()) {
 				return false;
 			}
 		}
 		return true;
-//		
-//		return (cube.coordinates().xmin() <= position.x() && position.x() <= cube.coordinates().xmax())
-//				&& (cube.coordinates().ymin() <= position.y() && position.y() <= cube.coordinates().ymax())
-//				&& (cube.coordinates().zmin() <= position.z() && position.z() <= cube.coordinates().zmax());
 	}
 
 	@Override
