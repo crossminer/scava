@@ -7,7 +7,7 @@ pipeline {
     stage('Build Metric Platform') {
       steps {
         dir(path: 'metric-platform/') {
-          sh 'mvn clean install -DskipTests'
+          sh "mvn clean install -pl '!org.eclipse.scava:product' -DskipTests"
         }
       }
     }
