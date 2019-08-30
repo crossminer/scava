@@ -1,4 +1,4 @@
-package m3;
+package org.rascalmpl.library.lang.java.m3.internal;
 
 import java.io.*;
 import java.nio.file.attribute.*;

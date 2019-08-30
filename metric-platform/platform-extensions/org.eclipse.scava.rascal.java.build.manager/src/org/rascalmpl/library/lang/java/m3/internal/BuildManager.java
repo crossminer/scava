@@ -1,4 +1,4 @@
-package m3;
+package org.rascalmpl.library.lang.java.m3.internal;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +27,6 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 public class BuildManager {
 	private static final String MAVEN_CLASSPATH_TXT = "mavenClasspath.txt";
@@ -220,7 +219,7 @@ public class BuildManager {
 			MavenXpp3Writer pomWriter = new MavenXpp3Writer();
 			pomWriter.write(new FileWriter(pomFile), model);
 		} 
-		catch (IOException | XmlPullParserException e) {
+		catch (Exception e) {
 			throw new BuildException("POM rewriting (to add plugin dependencies, cause) failed unexpectedly", e);
 		}
 	}

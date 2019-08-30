@@ -1,4 +1,4 @@
-package m3;
+package org.rascalmpl.library.lang.java.m3.internal;
 
 public class BuildException extends Exception {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package m3;
+package org.rascalmpl.library.lang.java.m3.internal;
 
 import java.io.File;
 import java.util.HashMap;

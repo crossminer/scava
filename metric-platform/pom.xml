@@ -506,6 +506,9 @@
     <module>
     	metric-providers/org.eclipse.scava.nlp.classifiers.migrationpatternsdetector
     </module>
+	<module>
+		platform-extensions/org.eclipse.scava.rascal.java.build.manager
+	</module>
   </modules>
   <build>
     <plugins>
