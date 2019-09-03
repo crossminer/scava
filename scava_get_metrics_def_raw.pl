@@ -41,9 +41,6 @@ sub get_url() {
     }
 
     # Decode JSON from server
-    my $file_in = $url_in;
-    $file_in =~ s!/!_!g;
-#    &write_file($res->body, $file_in . '.json');
     my $data = decode_json($res->body);
 
     return $data
@@ -53,7 +50,6 @@ sub get_url() {
 # Send GET request
 
 my $m = &get_url($base_url . ":8182/raw/metrics/");
-#print Dumper($m);
 print "\n";
 print "# Found " . scalar(@{$m->{'metrics'}}) . " metrics:\n\n";
 

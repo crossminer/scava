@@ -94,7 +94,6 @@ sub _get_auth() {
 my $tasks = &_get_url($url_tasks); 
 
 #print Dumper($tasks);
-#exit;
 
 print "# List of tasks:\n\n";
 
@@ -105,12 +104,6 @@ for my $task (@{$tasks}) {
     my $status = $task->{ 'scheduling' }{ 'status' } || "Unknown";
     my $progress = $task->{ 'scheduling' }{ 'progress' } || "Unknown";
     my $measurement_vol = scalar( @{$task->{ 'metricExecutions' }} ) || "Unknown";
-#     my $name = $project->{ 'name' } || "Unknown";
-#     my $home_page = $project->{ 'homePage' } || "Unknown";
-#     my $size = $project->{ 'size' } || 0;
-#     my $its_url = $project->{ 'bugTrackingSystems' }[0]{ 'url' } || "Unknown";
-#     my $scm_url = $project->{ 'vcsRepositories' }[0]{ 'url' } || "Unknown";
-#     my $com_url = $project->{ 'communicationChannels' }[0]{ 'url' } || "Unknown";
 
     print "* $taskId\n";
     print "  - Start/End: $startDate - $endDate.\n";
