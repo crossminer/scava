@@ -12,7 +12,7 @@ All scripts rely on the `SCAVA_HOST` environment variable, or use the default ur
 ## Get the list of projects
 
 Synopsis:
-`scava_get_projects.pl`
+`perl scava_get_projects.pl`
 
 Example:
 ```
@@ -57,7 +57,7 @@ boris@kadath:gh_scava-scripts$ perl scava_get_metrics_def.pl
 ```
 
 Synopsis:
-`scava_get_metrics_def_raw.pl`
+`perl scava_get_metrics_def_raw.pl`
 
 Example:
 ```
@@ -72,6 +72,13 @@ boris@kadath:gh_scava-scripts$ perl scava_get_metrics_def_raw.pl
   - This plugin generates the factoid regarding emotions for bug trackers. For example, the percentage of positive, negative or surprise emotions expressed
 ```
 
+Synopsis:
+`perl scava_get_metrics_def_csv.pl`
+
+Example:
+```
+```
+
 ## Get a single metric for a project
 
 Synopsis:
@@ -79,6 +86,16 @@ Synopsis:
 
 Example:
 ```
+boris@kadath:gh_scava-scripts$ perl scava_get_metrics_def_csv.pl
+id,name,description
+bugs.cumulativeNewUsers,"Bug Tracker New Users (Cumulative)","The number of new users up to and including the current date per bug tracker."
+coreCommittersChurnBar,"Core committers","This metric shows the total accumulated churn per committer."
+CeJavaQuartilesHistoric,"Efferent coupling (Java)","This metric shows the quartiles of Efferent coupling for Java over time."
+```
+
+Output would typically be saved directly in a csv file:
+```
+boris@kadath:gh_scava-scripts$ perl scava_get_metrics_def_csv.pl > all_metrics.csv
 ```
 
 ## Get all metrics for a project
