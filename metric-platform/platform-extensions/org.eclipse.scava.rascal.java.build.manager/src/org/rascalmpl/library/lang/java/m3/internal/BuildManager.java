@@ -89,12 +89,6 @@ public class BuildManager {
 		
 		readClassPathForFolder(workingDirectory, result);
 		
-		for (File folder : workingDirectory.listFiles()) {
-			if (folder.isDirectory()) {
-				readClassPathForFolder(folder, result);
-			}
-		}
-		
 		return result;
 	}
 
@@ -132,7 +126,9 @@ public class BuildManager {
 		        runMaven(workingDirectory, MAVEN_EXECUTABLE, true);
 		    }
 		    else {
-		        throw new BuildException("Retrieving classpath from maven failed because maven exited with a non-zero exit status");
+		    	// Maven may return with a non-zero exit status even though it was able to successfully write the classpath file
+		        //throw new BuildException("Retrieving classpath from maven failed because maven exited with a non-zero exit status");
+		    	System.out.println("Maven exited with a non-zero exit status; continuing.");
 		    }
 		}
 	}
@@ -143,6 +139,12 @@ public class BuildManager {
 		if (file.canRead()) {
 		    String contents = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 			result.put(folder, Arrays.asList(contents.split(":")));	
+		}
+		
+		for (File child : folder.listFiles()) {
+			if (child.isDirectory()) {
+				readClassPathForFolder(child, result);
+			}
 		}
 	}
 

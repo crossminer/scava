@@ -28,11 +28,12 @@ java map[loc, list[loc]] getClassPath(
 
 @memo
 set[loc] projectClassPath(loc workspace, ProjectDelta delta) {
-	print("[Hang on] Computing classpath for project <workspace>...");
+	print("Computing classpath for project <workspace>... Hang on!");
 	try {
 		map[loc, list[loc]] classPaths = getClassPath(workspace);
-		print("Done.");
-		return {*classPaths[cp] | cp <- classPaths};
+		ret = {*classPaths[cp] | cp <- classPaths};
+		println("Found <size(ret)> JARs to include in the classpath.");
+		return ret;
 	} catch e: {
 		print("Error while computing the classpath: <e>");
 		return {};
