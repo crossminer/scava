@@ -17,22 +17,36 @@ import Set;
 import util::SystemAPI;
 import DateTime;
 import lang::java::m3::ClassPaths;
+import util::Benchmark;
+import ValueIO;
 
 private str MAVEN = getSystemProperty("MAVEN_EXECUTABLE");
 
 @javaClass{org.rascalmpl.library.lang.java.m3.internal.ClassPaths}
 java map[loc, list[loc]] getClassPath(
-	loc workspace, 
+	loc checkout, 
 	map[str,loc] updateSites = (x : |http://download.eclipse.org/releases| + x | x <- ["indigo","juno","kepler","luna","mars","neon","oxygen","photon"]),
 	loc mavenExecutable = |file:///usr/bin/mvn|);
 
 @memo
-set[loc] projectClassPath(loc workspace, ProjectDelta delta) {
-	print("Computing classpath for project <workspace>... Hang on!");
+set[loc] projectClassPath(loc repo, loc checkout, loc scratch, ProjectDelta delta) {
+	loc cachedClassPath = scratch + "Classpath.cache";
+
+	// Classpath is inferred from pom.xml and MANIFEST.MF files only.
+	// If the delta does not affect these files, there is no need to recompute it.
+	if (!deltaAffectsDependencies(delta, repo) && isFile(cachedClassPath)) {
+		print("Reusing previously-computed classpath for <repo>.");
+		return readBinaryValueFile(#set[loc], cachedClassPath);
+	}
+
 	try {
-		map[loc, list[loc]] classPaths = getClassPath(workspace);
-		ret = {*classPaths[cp] | cp <- classPaths};
-		println("Found <size(ret)> JARs to include in the classpath.");
+		print("Computing classpath for <repo>... Hang on!");
+		int before = getMilliTime();
+		map[loc, list[loc]] classPaths = getClassPath(checkout);
+		set[loc] ret = {*classPaths[cp] | cp <- classPaths};
+		int after = getMilliTime();
+		print("Found <size(ret)> JARs to include in the classpath in <(after - before) / 1000>s. Caching it in scratch folders.");
+		writeBinaryValueFile(cachedClassPath, ret);
 		return ret;
 	} catch e: {
 		print("Error while computing the classpath: <e>");
@@ -75,27 +89,73 @@ set[loc] getSourceRoots(set[loc] folders) {
 	return result;
 }
 
+bool deltaAffectsDependencies(ProjectDelta delta, loc repo) {
+	for (/rd:vcsRepositoryDelta(vcsRepository(repo), _, _) := delta, /VcsCommitItem co := rd) {
+		if (endsWith(co.path, "pom.xml") || endsWith(co.path, "MANIFEST.MF"))
+			return true;
+	}
+
+	return false;
+}
+
+bool deltaAffectsJavaFiles(ProjectDelta delta, loc repo) {
+	for (/rd:vcsRepositoryDelta(vcsRepository(repo), _, _) := delta, /VcsCommitItem co := rd) {
+		if (endsWith(co.path, ".java"))
+			return true;
+	}
+
+	return false;
+}
+
+@memo
+tuple[set[M3], set[Declaration]] buildASTsAndM3s(loc repo, ProjectDelta delta, loc checkout, loc scratch) {
+	print("delta=<delta>");
+	loc cachedModels = scratch + "Models.cache";
+	
+	// M3 and AST models are built from .java files + dependencies only.
+	// If the delta does not affect them, there is no need to recompute them.
+	if (!deltaAffectsDependencies(delta, repo) && !deltaAffectsJavaFiles(delta, repo) && isFile(cachedModels)) {
+		print("Reusing cached Java models for <repo>.");
+		int before = getMilliTime();
+		tuple[set[M3], set[Declaration]] cached = readBinaryValueFile(#tuple[set[M3], set[Declaration]], cachedModels);
+		int after = getMilliTime();
+		print("Reading existing Java models took <(after - before) / 1000>s.");
+
+		return cached;
+	} else {
+		list[loc] jars = toList(findJars({checkout}));
+		list[loc] sources = toList(getSourceRoots({checkout}));
+		list[loc] classPaths = toList(projectClassPath(repo, checkout, scratch, delta)) + jars;
+
+		set[loc] files = {f | f <- find(checkout, "java"), isFile(f)};
+		print("Now building Java models for <repo>; <size(files)> files to process...");
+		int before = getMilliTime();
+		tuple[set[M3], set[Declaration]] allModels = createM3sAndAstsFromFiles(files, sourcePath=sources, classPath=classPaths);
+		int after = getMilliTime();
+		print("Done in <(after - before) / 1000>s. Caching Java models for future days.");
+		
+		before = getMilliTime();
+		writeBinaryValueFile(cachedModels, allModels);
+		after = getMilliTime();
+		print("Serializing Java models took <(after - before) / 1000>s.");
+		
+		return allModels;
+	}
+}
+
 @M3Extractor{java()}
 @memo
-rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {	
+rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos, loc folders] checkouts, map[loc, loc] scratchFolders) {
 	rel[Language, loc, M3] result = {};
 	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
 	assert all(repo <- checkouts, checkouts[repo].parent == parent);
 	
 	for (repo <- checkouts) {
 		loc checkout = checkouts[repo];
-		list[loc] jars = toList(findJars({checkout}));
-		list[loc] sources = toList(getSourceRoots({checkout}));
-		list[loc] classPaths = toList(projectClassPath(checkout, delta)) + jars;
-
-		for (f <- find(checkout, "java"), isFile(f)) {
-			try {
-				result += {<java(), f, createM3FromFile(f, sourcePath=sources, classPath=classPaths)>};
-			} catch e: {
-				println("Error building M3 model for <f>");
-				result += {<java(), f, m3(|unknown:///|)>};
-			}
-		}
+		loc scratch = scratchFolders[repo];
+		tuple[set[M3] m3s, set[Declaration] decls] allModels = buildASTsAndM3s(repo, delta, checkout, scratch);
+		
+		result += {<java(), m.id, m> | m <- allModels.m3s};
 	}
 	
 	return result;
@@ -103,62 +163,20 @@ rel[Language, loc, M3] javaM3(loc project, ProjectDelta delta, map[loc repos,loc
 
 @ASTExtractor{java()}
 @memo
-rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos,loc folders] checkouts, map[loc,loc] scratch) {
+rel[Language, loc, AST] javaAST(loc project, ProjectDelta delta, map[loc repos, loc folders] checkouts, map[loc, loc] scratchFolders) {
 	rel[Language, loc, AST] result = {};
 	loc parent = (project | checkouts[repo].parent | repo <- checkouts);
 	assert all(repo <- checkouts, checkouts[repo].parent == parent);
 	
 	for (repo <- checkouts) {
 		loc checkout = checkouts[repo];
-		list[loc] jars = toList(findJars({checkout}));
-		list[loc] sources = toList(getSourceRoots({checkout}));
-		list[loc] classPaths = toList(projectClassPath(checkout, delta)) + jars;
+		loc scratch = scratchFolders[repo];
+		tuple[set[M3] m3s, set[Declaration] decls] allModels = buildASTsAndM3s(repo, delta, checkout, scratch);
 		
-		for (f <- find(checkout, "java"), isFile(f)) {
-			try {
-				result += {<java(), f, declaration(createAstFromFile(f, true, sourcePath=sources, classPath=classPaths))>};
-			} catch e: {
-				println("Error building AST for <f>");
-			}
-		}
+		result += {<java(), |file:///<d.decl.path>|, declaration(d)> | d <- allModels.decls};
 	}
 	
 	return result; 
-}
-
-public loc findFileInFolder(loc folder, str fileName) {
-	try {
-		return find(fileName, [folder]);
-	}	
-	catch "not-in-folder": {
-		files = folder.ls;
-		for(f <- files, isDirectory(f)) {
-			return findFileInFolder(f,fileName);
-		}
-		return |file:///|;
-	}
-}
-
-//TODO: check
-public set[loc] findFileInFolderRecursively(loc folder, str fileName) {
-	set[loc] findFiles(loc target, set[loc] prev) {
-		try {
-			mod_prev = find(fileName, [folder]) + prev;
-			return {*findFiles(f,mod_prev) | f <- target.ls, isDirectory(f)}; 
-		}	
-		catch "not-in-folder": {
-			return {*findFiles(f,prev) | f <- target.ls, isDirectory(f)};
-		}
-	}
-	return findFiles(folder,{});
-}
-
-// this will become more interesting if we try to recover build information from meta-data
-// for now we do a simple file search
-// we have to find out what are "external" dependencies and also measure these!
-set[loc] findSourceRoots(set[loc] checkouts) {
-	bool containsFile(loc d) = isDirectory(d) ? (x <- d.ls && x.extension == "java" && isFile(x)) : false;
-	return {*find(dir, containsFile) | dir <- checkouts};			 
 }
 
 // this may become more interesting if we try to recover dependency information from meta-data
@@ -166,13 +184,6 @@ set[loc] findSourceRoots(set[loc] checkouts) {
 set[loc] findJars(set[loc] checkouts) {
 	return { f | ch <- checkouts, f <- find(ch, "jar"), isFile(f) };
 }
-
-// this may become more interesting if we try to recover dependency information from meta-data
-// for now we do a simple file search
-set[loc] findClassFiles(set[loc] checkouts) {
-	return { f | ch <- checkouts, f <- find(ch, "class"), isFile(f) };
-}
-
 
 @memo
 public M3 systemM3(rel[Language, loc, M3] m3s, ProjectDelta delta = ProjectDelta::\empty()) {

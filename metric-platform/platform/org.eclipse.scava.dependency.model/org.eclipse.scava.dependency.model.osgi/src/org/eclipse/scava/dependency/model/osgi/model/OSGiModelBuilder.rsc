@@ -47,7 +47,7 @@ OSGiModel createOSGimodel(loc id, loc manifest) {
 		model.dynamicImportedPackages += getDynamicImportPackages(logical, model);
 		model.exportedPackages += getExportPackages(logical, model);
 	} catch ParseError(e): {
-		println(e);
+		print("Parse error on <manifest>");
 	}
 	
 	return model;

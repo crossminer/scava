@@ -1,12 +1,10 @@
 package org.rascalmpl.library.lang.java.m3.internal;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
@@ -67,7 +65,7 @@ public class BuildManager {
 
 	private Map<File,List<String>> retrieveClasspath(File workingDirectory, String maven) throws BuildException {
 		try {
-			runMaven(workingDirectory, maven, false);
+			runMaven(workingDirectory, maven);
 			return readMavenResults(workingDirectory);
 		} 
 		catch (IOException | InterruptedException e) {
@@ -92,45 +90,15 @@ public class BuildManager {
 		return result;
 	}
 
-	private void runMaven(File workingDirectory, String MAVEN_EXECUTABLE, boolean compile)
+	private void runMaven(File workingDirectory, String MAVEN_EXECUTABLE)
 			throws IOException, InterruptedException, BuildException {
 		// Tycho does its magic here and writes a file into every subdirectory of workDirectory which is a maven project
-		ProcessBuilder pb;
-		if (compile) {
-		    pb = new ProcessBuilder(MAVEN_EXECUTABLE, "compile", "dependency:build-classpath", "-Dmdep.outputFile=" + MAVEN_CLASSPATH_TXT);
-		}
-		else {
-		    pb = new ProcessBuilder(MAVEN_EXECUTABLE, "dependency:build-classpath", "-Dmdep.outputFile=" + MAVEN_CLASSPATH_TXT);
-		}
+		ProcessBuilder pb = new ProcessBuilder(MAVEN_EXECUTABLE, "compile", "dependency:build-classpath", "-Dmdep.outputFile=" + MAVEN_CLASSPATH_TXT);
 		pb.directory(workingDirectory);
 		//pb.inheritIO();
 		
 		Process process = pb.start();
-		boolean hadDependencyError = false;
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-		    String currentLine;
-		    while ((currentLine = reader.readLine()) != null) {
-		        if (currentLine.contains("Could not resolve dependencies")) {
-		            hadDependencyError = true;
-		        }
-		        //System.out.println(currentLine);
-		    }
-		    reader.close();
-		}
-		catch (IOException _) {
-		}
-		if (process.waitFor() != 0) {
-		    if (!compile && hadDependencyError) {
-		        //System.err.println("Retrying with compile enabled");
-		        // we might be able to solve it with a compile since multi modules maven's tend to be depending on previously build modules
-		        runMaven(workingDirectory, MAVEN_EXECUTABLE, true);
-		    }
-		    else {
-		    	// Maven may return with a non-zero exit status even though it was able to successfully write the classpath file
-		        //throw new BuildException("Retrieving classpath from maven failed because maven exited with a non-zero exit status");
-		    	System.out.println("Maven exited with a non-zero exit status; continuing.");
-		    }
-		}
+		process.waitFor();
 	}
 
 	private void readClassPathForFolder(File folder, Map<File, List<String>> result) throws IOException, FileNotFoundException {
