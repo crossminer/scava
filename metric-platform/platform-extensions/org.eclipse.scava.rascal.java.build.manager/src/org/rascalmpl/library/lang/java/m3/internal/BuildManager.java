@@ -93,7 +93,7 @@ public class BuildManager {
 	private void runMaven(File workingDirectory, String MAVEN_EXECUTABLE)
 			throws IOException, InterruptedException, BuildException {
 		// Tycho does its magic here and writes a file into every subdirectory of workDirectory which is a maven project
-		ProcessBuilder pb = new ProcessBuilder(MAVEN_EXECUTABLE, "compile", "dependency:build-classpath", "-Dmdep.outputFile=" + MAVEN_CLASSPATH_TXT);
+		ProcessBuilder pb = new ProcessBuilder(MAVEN_EXECUTABLE, "--fail-at-end", "compile", "dependency:build-classpath", "-Dmdep.outputFile=" + MAVEN_CLASSPATH_TXT);
 		pb.directory(workingDirectory);
 		//pb.inheritIO();
 		
