@@ -168,7 +168,7 @@ public class EclipseProjectImporter implements IImporter {
 	}
 	
 	private EclipseProject importProject(String projectId, Platform platform, boolean update) throws ProjectUnknownException {
-		String JSON_URL_PROJECT = "https://projects.eclipse.org/json/project/" + projectId.replaceAll("-", "\\.");
+		String JSON_URL_PROJECT = "https://projects.eclipse.org/json/project/" + projectId;
 
 		EclipseProject project = getProject(projectId, platform);
 		boolean projectToBeUpdated = (project != null) ? true : false;
@@ -190,7 +190,7 @@ public class EclipseProjectImporter implements IImporter {
 			String jsonText = readAll(rd);
 			JSONObject rootObject = (JSONObject) JSONValue.parse(jsonText);
 			JSONObject currentProg = (JSONObject) ((JSONObject) rootObject.get("projects"))
-					.get(projectId.replaceAll("-", "\\."));
+					.get(projectId);
 			//logger.info(currentProg);
 			project.setName(isNotNullObj(currentProg, "title") ? currentProg.get("title").toString() : null);
 
