@@ -15,11 +15,13 @@ import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.eclipse.importer.EclipseProjectImporter;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
 import org.eclipse.scava.repository.model.importer.exception.WrongUrlException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -64,15 +66,21 @@ public class EclipseImporterTest {
 		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/modeling.epsilon", platform);
 		assertNotNull(project);
 	}
-	
+	@Test
+	public void testImportBirtByUrl() throws WrongUrlException, ProjectUnknownException
+	{
+		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/technology.birt", platform);
+		assertNotNull(project);
+	}
 	@Test
 	public void eclipseValidInput() throws WrongUrlException, ProjectUnknownException {
 		// Prints " API rate limit exceeded." message.
 		// TODO: should we throw a InvalidUrlException instead of returning null? 
 		//assertNull( im.importProjectByUrl(null, platform)); // This will fail
-		assertNotNull( im.importProject("birt", platform));
+		EclipseProject value = im.importProject("technology.birt", platform);
+		assertNotNull(value);
 		// Now update
-		Project project = im.importProjectByUrl("http://projects.eclipse.org/projects/birt", platform);
+		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/technology.birt", platform);
 		EclipseImporterProvider mp = new EclipseImporterProvider();
 		PongoDB db = mp.adapt(platform.getProjectRepositoryManager().getDb());
 		mp.measure(project, null, db);
@@ -83,11 +91,12 @@ public class EclipseImporterTest {
 		//assertNull( im.importRepository(null, platform)); // This will fail
 		
 	}
+	@Ignore
 	@Test
 	public void eclipseEmptyNNTPCommunicationChannel()
 	{
 		
-		Project p = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName("birt");
+		Project p = platform.getProjectRepositoryManager().getProjectRepository().getProjects().findOneByShortName("modeling.epsilon");
 		boolean b = false;
 		for (CommunicationChannel i : p.getCommunicationChannels()) {
 			if (i instanceof NntpNewsGroup)
@@ -95,6 +104,11 @@ public class EclipseImporterTest {
 		}
 		assertTrue(b);
 	}
-	
+	@Test
+	public void testImportProjectWithLessCharByUrl() throws WrongUrlException, ProjectUnknownException
+	{
+		Project project = im.importProjectByUrl("https://projects.eclipse.org/projects/modeling.emf-parsley", platform);
+		assertNotNull(project);
+	}
 
 }
