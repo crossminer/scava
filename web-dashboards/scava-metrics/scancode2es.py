@@ -276,7 +276,7 @@ def fetch_scancode(url, project, timestamp):
         'metric_type': 'scancode',
         'metric_id': 'scancode_ratio_no_lic',
         'metric_desc': 'Ratio of files with licenses compared to total files',
-        'metric_name': 'scancode_number_files',
+        'metric_name': 'scancode_ratio_no_lic',
         'metric_es_value': ratio,
         'metric_es_compute': 'sample',
         'metric_value':ratio ,
