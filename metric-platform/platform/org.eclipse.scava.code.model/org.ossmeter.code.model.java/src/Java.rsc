@@ -109,7 +109,6 @@ bool deltaAffectsJavaFiles(ProjectDelta delta, loc repo) {
 
 @memo
 tuple[set[M3], set[Declaration]] buildASTsAndM3s(loc repo, ProjectDelta delta, loc checkout, loc scratch) {
-	print("delta=<delta>");
 	loc cachedModels = scratch + "Models.cache";
 	
 	// M3 and AST models are built from .java files + dependencies only.
