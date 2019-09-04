@@ -129,7 +129,7 @@ tuple[set[M3], set[Declaration]] buildASTsAndM3s(loc repo, ProjectDelta delta, l
 		set[loc] files = {f | f <- find(checkout, "java"), isFile(f)};
 		print("Now building Java models for <repo>; <size(files)> files to process...");
 		int before = getMilliTime();
-		tuple[set[M3], set[Declaration]] allModels = createM3sAndAstsFromFiles(files, sourcePath=sources, classPath=classPaths);
+		tuple[set[M3], set[Declaration]] allModels = createM3sAndAstsFromFiles(files, sourcePath=sources, classPath=classPaths, javaVersion="1.8");
 		int after = getMilliTime();
 		print("Done in <(after - before) / 1000>s. Caching Java models for future days.");
 		
