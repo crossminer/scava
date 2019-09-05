@@ -7,5 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.scava.platform.vcs.workingcopy.manager,
  org.eclipse.jgit,
  org.eclipse.scava.platform.vcs.git,
- org.eclipse.scava.repository.model.vcs.git
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.platform;bundle-version="1.0.0",
+ org.apache.log4j;bundle-version="1.0.0"
 Import-Package: org.eclipse.scava.repository.model
