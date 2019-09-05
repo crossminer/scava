@@ -30,13 +30,15 @@ java map[loc, list[loc]] getClassPath(
 
 @memo
 set[loc] projectClassPath(loc repo, loc checkout, loc scratch, ProjectDelta delta) {
-	loc cachedClassPath = scratch + "Classpath.cache";
+	loc cachedClassPathFile = scratch + "Classpath.cache";
+	set[loc] cachedClassPath = getClassPathFromCache(cachedClassPathFile);
+	print("Cached classpath contains <size(cachedClassPath)> elements.");
 	
 	// Classpath is inferred from pom.xml and MANIFEST.MF files only.
 	// If the delta does not affect these files, there is no need to recompute it.
-	if (!deltaAffectsDependencies(delta, repo) && isFile(cachedClassPath)) {
+	if (!deltaAffectsDependencies(delta, repo) && isFile(cachedClassPathFile)) {
 		print("No change on pom.xml/MANIFEST.MF files. Reusing cached classpath.");
-		return getClassPathFromCache(cachedClassPath);
+		return cachedClassPath;
 	}
 
 	try {
@@ -48,15 +50,15 @@ set[loc] projectClassPath(loc repo, loc checkout, loc scratch, ProjectDelta delt
 		
 		if (size(ret) > 0) {
 			print("Found <size(ret)> JARs to include in the classpath in <(after - before) / 1000>s. Caching it in scratch folders.");
-			writeBinaryValueFile(cachedClassPath, ret);
+			writeBinaryValueFile(cachedClassPathFile, ret);
 			return ret;
 		} else {
 			print("Classpath computation failed in <(after - before) / 1000>s. Reusing cached classpath.");
-			return getClassPathFromCache(cachedClassPath);
+			return cachedClassPath;
 		}
 	} catch e: {
 		print("Error while computing the classpath: <e>. Reusing cached classpath.");
-		return getClassPathFromCache(cachedClassPath);
+		return cachedClassPath;
 	}
 }
 
