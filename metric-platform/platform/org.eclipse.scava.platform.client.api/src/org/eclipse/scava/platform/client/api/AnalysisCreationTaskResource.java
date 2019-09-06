@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.scava.platform.Platform;
@@ -67,6 +68,8 @@ public class AnalysisCreationTaskResource extends ServerResource {
 			for (JsonNode metricProvider : (ArrayNode) jsonNode.get("metricProviders")) {
 				metricsProviders.add(metricProvider.toString().replace("\"", ""));
 			}
+			
+			service.validateMetricProviders(metricsProviders);
 
 			AnalysisTask addedTask = service.createAnalysisTask(projectId, task, metricsProviders);
 

@@ -69,6 +69,8 @@ public class AnalysisUpdateTaskResource extends ServerResource {
 			for (JsonNode metricProvider : (ArrayNode) jsonNode.get("metricProviders")) {
 				metricsProviders.add(metricProvider.toString().replace("\"", ""));
 			}
+			
+			service.validateMetricProviders(metricsProviders);
 	
 			AnalysisTask updatedTask = service.updateAnalysisTask(oldAnalysisTaskId, newTask, metricsProviders);
 	

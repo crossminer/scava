@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -16,6 +18,7 @@ import org.eclipse.scava.platform.analysis.data.model.MetricExecution;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysis;
 import org.eclipse.scava.platform.analysis.data.model.ProjectAnalysisResportory;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
+import org.eclipse.scava.platform.analysis.data.model.dto.MetricProviderDTO;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.visualisation.MetricVisualisation;
 import org.eclipse.scava.platform.visualisation.MetricVisualisationExtensionPointManager;
@@ -47,7 +50,7 @@ public class AnalysisTaskService {
 		}
 		task.setProject(project);
 		project.getAnalysisTasks().add(task);
-
+		
 		for (String metricProviderId : metricsProviders) {
 			Iterable<MetricExecution> providers = this.repository.getMetricExecutions().find(
 					MetricExecution.PROJECTID.eq(projectId), MetricExecution.METRICPROVIDERID.eq(metricProviderId));
@@ -142,6 +145,29 @@ public class AnalysisTaskService {
 		return task;
 	}
 	
+	public void validateMetricProviders(List<String> metricProvidersIds) {
+		platform = Platform.getInstance();
+		MetricProviderService metricProviderService = platform.getAnalysisRepositoryManager().getMetricProviderService();
+		List<MetricProviderDTO> metricProviders = metricProviderService.getMetricProviders(platform);
+
+		for (String metricId : new ArrayList<String>(metricProvidersIds)) {
+			for (MetricProviderDTO metricProviderDTO : metricProviders) {
+				if (metricId.equals(metricProviderDTO.getMetricProviderId())) {
+					aggregateMetricProviders(metricProviderDTO, metricProvidersIds);
+				}
+			}
+		}
+	}
+	
+	private void aggregateMetricProviders(MetricProviderDTO metricProviderDTO, List<String> metricProvidersIds) {
+		if (!metricProvidersIds.contains(metricProviderDTO.getMetricProviderId())) {
+			metricProvidersIds.add(metricProviderDTO.getMetricProviderId());
+		}
+		for (MetricProviderDTO childDependencyDTO : metricProviderDTO.getDependOf()) {
+			aggregateMetricProviders(childDependencyDTO, metricProvidersIds);
+		}
+	}
+		
 	public AnalysisTask deleteAnalysisTask(String analysisTaskId) {
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		if (task != null) {
@@ -194,16 +220,18 @@ public class AnalysisTaskService {
 					// Check if metricExecution has visualization
 					MetricVisualisationExtensionPointManager manager = MetricVisualisationExtensionPointManager.getInstance();
 					Map<String, MetricVisualisation> mvs = manager.getRegisteredVisualisations();
-					boolean found = false;
-					for (MetricVisualisation mv : mvs.values()) {
-						if (metricExecution.getMetricProviderId().equals(mv.getMetricId())) {
-							metricExecution.setHasVisualisation(true);
-							found = true;
-							break;
+					if (metricExecution != null) {
+						boolean found = false;
+						for (MetricVisualisation mv : mvs.values()) {
+							if (metricExecution.getMetricProviderId().equals(mv.getMetricId())) {
+								metricExecution.setHasVisualisation(true);
+								found = true;
+								break;
+							}
 						}
-					}
-					if (!found) {
-						metricExecution.setHasVisualisation(false);
+						if (!found) {
+							metricExecution.setHasVisualisation(false);
+						}
 					}
 				}
 				tasks.add(analysisTask);
