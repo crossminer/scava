@@ -1,8 +1,8 @@
 {
-	"metricid" : "trans.rascal.api.numberOfBreakingChanges",
+	"metricid" : "trans.rascal.api.numberOfBreakingChanges.historic",
 	"vis" : [ 
 		{
-			"id" : "numberOfBreakingChanges",
+			"id" : "numberOfBreakingChangesHistoric",
 			"name" : "Number of breaking API changes over time",
 			"description" : "This metric depicts the number of breaking API changes over time.",
 			"type" : "LineChart",
