@@ -59,13 +59,13 @@ rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.meth
 rel[loc, loc] allMethods(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isMethod(m) };
 
 @memo
-map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : allMethods(m3)[t] | t <- domain(allMethods(m3)) );
+map[loc, set[loc]] allMethodsMap(M3 m3) = toMap(allMethods(m3));
 
 @memo
 rel[loc, loc] allFields(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isField(m) };
 
 @memo
-map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : allFields(m3)[t] | t <- domain(allFields(m3)) );
+map[loc, set[loc]] allFieldsMap(M3 m3) = toMap(allFields(m3));
 
 @memo
 map[loc, set[loc]] emptyMethodsMap(M3 m) = (me:{} | me <- methods(m));
