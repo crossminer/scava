@@ -56,16 +56,16 @@ rel[loc, loc] superTypes(M3 m) = m.extends + m.implements;
 rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
 
 @memo
-rel[loc, loc] allMethods(M3 m3) = { <t, m> | t <- allTypes(m3), m <- m3.containment[t], isMethod(m) };
+rel[loc, loc] allMethods(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isMethod(m) };
 
 @memo
-map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : { m | m <- m3.containment[t], isMethod(m) } | t <- allTypes(m3) );
+map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : allMethods(m3)[t] | t <- domain(allMethods(m3)) );
 
 @memo
-rel[loc, loc] allFields(M3 m3) = { <t, f> | t <- allTypes(m3), f <- m3.containment[t], isField(f) };
+rel[loc, loc] allFields(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isField(m) };
 
 @memo
-map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : { f | f <- m3.containment[t], isField(f) } | t <- allTypes(m3) );
+map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : allFields(m3)[t] | t <- domain(allFields(m3)) );
 
 @memo
 map[loc, set[loc]] emptyMethodsMap(M3 m) = (me:{} | me <- methods(m));
