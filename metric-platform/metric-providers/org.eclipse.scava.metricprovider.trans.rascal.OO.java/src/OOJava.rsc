@@ -98,9 +98,9 @@ rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), (
 @historic
 real A_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  	types = allTypes(m3);
-  	abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t]};
-  	return A(abstractTypes, types);
+	set[loc] types = allTypes(m3);
+	set[loc] abstractTypes = { t | t <- types, <t, \abstract()> in m3.modifiers };
+	return A(abstractTypes, types);
 }
 
 @metric{RR-Java}
@@ -249,7 +249,7 @@ map[loc, real] MIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), ({\private(), \abstract()} & m3.modifiers[m]) == {} };
+	rel[loc, loc] inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), <m, \private()> notin m3.modifiers && <m, \abstract()> notin m3.modifiers };
 	
 	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
@@ -262,7 +262,7 @@ map[loc, real] AIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin m3.modifiers[f]};
+	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), <f, \private()> notin m3.modifiers };
 	
 	return MIF(allFieldsMap(m3), publicAndProtectedFields, superTypes(m3), allTypes(m3));
 }
@@ -276,12 +276,11 @@ private real hidingFactor(M3 m3, rel[loc, loc] members) {
 	rel[loc, loc] packageVisibleMembers = {};
 	
 	for (<t, m> <- members) {
-		mods = m3.modifiers[m];
-		if (\private() in mods) {
+		if (<m, \private()> in m3.modifiers) {
 			; // ignored
-		} else if (\protected() in mods) {
+		} else if (<m, \protected()> in m3.modifiers) {
 			protectedMembers += {<t, m>};
-		} else if (\public() in mods) {
+		} else if (<m, \public()> in m3.modifiers) {
 			publicMembers += {m};
 		} else {
 			packageVisibleMembers += {<t, m>};
