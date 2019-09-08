@@ -71,7 +71,7 @@ public class MetricListExecutor implements Runnable {
 		AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(this.taskId);
 
 		for (IMetricProvider m : metrics) {
-			loggerOssmeter.info("Starting execution AnalysisTask '" + taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
+//			loggerOssmeter.info("Starting execution AnalysisTask '" + taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
 			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name()) || task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
 				return;
 			}
@@ -105,7 +105,7 @@ public class MetricListExecutor implements Runnable {
 						MetricHistoryManager historyManager = new MetricHistoryManager(platform);
 						historyManager.store(project, date, (IHistoricalMetricProvider) m);
 					}
-					this.loggerOssmeter.info(m.getIdentifier() + " done in " + (System.currentTimeMillis() - startTime) + " ms");
+//					this.loggerOssmeter.info(m.getIdentifier() + " done in " + (System.currentTimeMillis() - startTime) + " ms");
 				}
 			} catch (Exception e) {
 				project.getExecutionInformation().setInErrorState(true);
@@ -119,7 +119,7 @@ public class MetricListExecutor implements Runnable {
 				break;
 			}finally {
 				platform.getAnalysisRepositoryManager().getSchedulingService().endMetricExecution(this.projectId, this.taskId,  m.getIdentifier());
-				this.loggerOssmeter.info("Ending execution AnalysisTask '" + this.taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
+//				this.loggerOssmeter.info("Ending execution AnalysisTask '" + this.taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
 			}		
 		}
 	}
@@ -132,7 +132,7 @@ public class MetricListExecutor implements Runnable {
 	 * @param mp
 	 */
 	protected void addDependenciesToMetricProvider(Platform platform, IMetricProvider mp) {
-		this.loggerOssmeter.info("Adding dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
+//		this.loggerOssmeter.info("Adding dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
 		if (mp.getIdentifiersOfUses() == null) return; 
 		
 		List<IMetricProvider> uses = new ArrayList<IMetricProvider>();
@@ -145,7 +145,7 @@ public class MetricListExecutor implements Runnable {
 			}
 		}
 		mp.setUses(uses);
-		this.loggerOssmeter.info("Added dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
+//		this.loggerOssmeter.info("Added dependencies to metricProvider '" + mp.getIdentifier() +"' into project '" + projectId + "'");
 	}
 
 	public String getWorkerId() {

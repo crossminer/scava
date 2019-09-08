@@ -57,11 +57,11 @@ public class AnalysisSchedulingService {
 			loggerOssmeter.info("Update the worker '" + worker.getWorkerId() + "' heartBeat " + worker.getHeartbeat() + "'");
 		}
 		this.repository.sync();
-		loggerOssmeter.info("Starting MetricExecution '" + metricId + "' is done.");
+//		loggerOssmeter.info("Starting MetricExecution '" + metricId + "' is done.");
 	}
 
 	public void endMetricExecution(String projectId, String analysisTaskId, String metricId) {
-		loggerOssmeter.info("Ending MetricExecution '" + metricId + "'");
+//		loggerOssmeter.info("Ending MetricExecution '" + metricId + "'");
 		AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
 		Iterable<MetricExecution> providers = this.repository.getMetricExecutions()
 				.find(MetricExecution.PROJECTID.eq(projectId), MetricExecution.METRICPROVIDERID.eq(metricId));
@@ -95,7 +95,7 @@ public class AnalysisSchedulingService {
 		task.getScheduling().setProgress(progress.intValue());
 
 		this.repository.sync();
-		loggerOssmeter.info("Ending MetricExecution '" + metricId + "' is done.");
+//		loggerOssmeter.info("Ending MetricExecution '" + metricId + "' is done.");
 	}
 
 	public void newDailyTaskExecution(String analysisTaskId, Date date) {
@@ -119,17 +119,17 @@ public class AnalysisSchedulingService {
 		task.getScheduling().setProgress(progress.longValue());
 
 		this.repository.sync();
-		loggerOssmeter.info("Starting new daily execution AnalysisTask '" + analysisTaskId + "' is done.");
+//		loggerOssmeter.info("Starting new daily execution AnalysisTask '" + analysisTaskId + "' is done.");
 	}
 
 	public MetricExecution findMetricExecution(String projectId, String metricProviderId) {
-		loggerOssmeter.info("Starting find out MetricExecution '" + metricProviderId +"' on Project '" + projectId + "'");
+//		loggerOssmeter.info("Starting find out MetricExecution '" + metricProviderId +"' on Project '" + projectId + "'");
 		Iterable<MetricExecution> providers = this.repository.getMetricExecutions()
 				.find(MetricExecution.PROJECTID.eq(projectId), MetricExecution.METRICPROVIDERID.eq(metricProviderId));
 		if (providers.iterator().hasNext()) {
 			return providers.iterator().next();
 		}
-		loggerOssmeter.info("Find MetricExecution '" + metricProviderId +"' on Project '" + projectId + "' is done.");
+//		loggerOssmeter.info("Find MetricExecution '" + metricProviderId +"' on Project '" + projectId + "' is done.");
 		return null;
 	}
 

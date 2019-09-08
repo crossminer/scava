@@ -307,13 +307,10 @@ public class RascalMetricProvider implements ITransientMetricProvider<RascalMetr
 				filterNullParameters(params);
 
 				// measurement is included in the sync block to avoid sharing evaluators between metrics
-
-				logger.info("Calling " + metricId);
-				//logger.info("calling measurement function");
-				//logger.info("with parameters: " + params);
-
+				Instant t1 = Instant.now();
 				Result<IValue> result = function.call(new Type[] { }, new IValue[] { }, params);
-
+				Instant t2 = Instant.now();
+				logger.info(String.format("Completed in %ds.", Duration.between(t1, t2).getSeconds()));
 				logResult(result);
 
 				lastRevision = getLastRevision(delta);
