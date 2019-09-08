@@ -14,20 +14,22 @@ import lang::java::m3::Core;
 import Set;
 
 set[loc] jUnit4TestSetupAnnotations = {
-    |java+interface:///org/junit/After|,
-    |java+interface:///org/junit/Before|,
-    |java+interface:///org/junit/AfterClass|,
-    |java+interface:///org/junit/BeforeClass|,
-    //failsafes
-    |java+class:///After|,
-    |java+class:///Before|,
-    |java+class:///AfterClass|,
-    |java+class:///BeforeClass|
-  };
+	|java+interface:///org/junit/After|,
+	|java+interface:///org/junit/Before|,
+	|java+interface:///org/junit/AfterClass|,
+	|java+interface:///org/junit/BeforeClass|,
+	// failsafes
+	|java+class:///After|,
+	|java+class:///Before|,
+	|java+class:///AfterClass|,
+	|java+class:///BeforeClass|
+};
   
-set[loc] jUnit4TestAnnotation = { |java+interface:///org/junit/Test|,
-                                  |java+class:///Test| //fail safe
-                                };
+set[loc] jUnit4TestAnnotation = {
+	|java+interface:///org/junit/Test|,
+	// failsafe
+	|java+class:///Test|
+};
 
 @memo
 private set[loc] methodsWithIgnoreAnnotation(M3 m) {
@@ -35,10 +37,11 @@ private set[loc] methodsWithIgnoreAnnotation(M3 m) {
   set[loc] result = {};
   set[loc] jUnit4IgnoreAnnotation = { |java+interface:///org/junit/Ignore|, |java+class:///Ignore| };
   for (loc entity <- m.annotations) {
-    if (!(isEmpty(jUnit4IgnoreAnnotation & m.annotations[entity]))) {
+    //if (!(isEmpty(jUnit4IgnoreAnnotation & m.annotations[entity]))) {
+    if (hasAnnotation(m, entity, jUnit4IgnoreAnnotation)) {
       if (isClass(entity)) {
-        result += { method | method <- m.containment[entity], isMethod(method) };
-      } else if (isMethod(entity)){
+        result += methods(m, entity);
+      } else if (isMethod(entity)) {
         result += entity;
       }
     }
@@ -48,9 +51,25 @@ private set[loc] methodsWithIgnoreAnnotation(M3 m) {
 
 @memo
 set[loc] getJUnit4TestMethods(M3 m) {
-  return getJUnit3TestMethods(m) + { testMethod | testMethod <- m.declarations<0>, isMethod(testMethod), !(isEmpty(jUnit4TestAnnotation & m.annotations[testMethod])) } - methodsWithIgnoreAnnotation(m);
+  return
+  	  getJUnit3TestMethods(m)
+  	+ { testMethod | testMethod <- methods(m), hasAnnotation(m, testMethod, jUnit4TestAnnotation) }
+  	- methodsWithIgnoreAnnotation(m);
 }
 
+@memo
 set[loc] getJUnit4SetupMethods(M3 m) {
-  return getJUnit3SetupMethods(m) + { testMethod | testMethod <- m.declarations<0>, isMethod(testMethod), !(isEmpty(m.annotations[testMethod] & jUnit4TestSetupAnnotations)) } - methodsWithIgnoreAnnotation(m);
+  return
+  	  getJUnit3SetupMethods(m)
+  	+ { testMethod | testMethod <- methods(m), hasAnnotation(m, testMethod, jUnit4TestSetupAnnotations) }
+  	- methodsWithIgnoreAnnotation(m);
+}
+
+// Ugly, but *much* faster
+private bool hasAnnotation(M3 m, loc l, set[loc] annos) {
+	for (loc ann <- annos)
+		if (<l, ann> in m.annotations)
+			return true;
+
+	return false;
 }
