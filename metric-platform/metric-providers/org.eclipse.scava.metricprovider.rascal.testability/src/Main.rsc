@@ -32,7 +32,7 @@ for a lack in testing effort for the project.}
 @appliesTo{java()}
 @historic{}
 real estimateTestCoverage(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
-  m = systemM3(m3s, delta = delta);
+  M3 m = systemM3(m3s, delta = delta);  
   implicitContainment = getImplicitContainment(m);
   implicitCalls = getImplicitCalls(m, implicitContainment);
   inverseContainment = m.containment<1,0>;
@@ -93,7 +93,7 @@ private rel[loc, loc] getImplicitContainment(M3 m) {
   decls = m.declarations<0>;
   nameSet = toMap(m.names<1,0>);
   cMap = toMap(m.containment);
-  for (cl <- decls, cl.scheme == "java+class" || cl.scheme == "java+anonymousClass" || cl.scheme == "java+enum", \abstract() notin m.modifiers[cl]) {
+  for (cl <- decls, cl.scheme == "java+class" || cl.scheme == "java+anonymousClass" || cl.scheme == "java+enum", <cl, \abstract()> notin m.modifiers) {
     allMeths = { candidate | candidate <- cMap[cl]?{}, isMethod(candidate) };
     
     if (!any(meth <- allMeths, meth.scheme == "java+constructor")) {
@@ -119,12 +119,12 @@ compute how far from the ideal situation the project is.}
 @appliesTo{java()}
 @historic{}
 real percentageOfTestedPublicMethods(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
-  m = systemM3(m3s, delta = delta);  
+  M3 m = systemM3(m3s, delta = delta);
   onlyTestMethods = getJUnit4TestMethods(m);
   supportTestMethods = getJUnit4SetupMethods(m);
   interfaceMethods = { meth | <entity, meth> <- m.containment, isMethod(meth), isInterface(entity) };
-  declarations = {meth | meth <- m.declarations<0>, isMethod(meth) } - interfaceMethods - onlyTestMethods - supportTestMethods;
-  allPublicMethods = { meth | meth <- declarations, \public() in m.modifiers[meth]};
+  declarations = {meth | meth <- methods(m) } - interfaceMethods - onlyTestMethods - supportTestMethods;
+  allPublicMethods = { meth | meth <- declarations, <meth, \public()> in m.modifiers };
   directlyCalledFromTestMethods = domainR(m.methodInvocation, onlyTestMethods);
   pbSet = directlyCalledFromTestMethods + (directlyCalledFromTestMethods o m.methodOverrides<1,0>);
   testedPublicMethods = rangeR(pbSet, allPublicMethods);
