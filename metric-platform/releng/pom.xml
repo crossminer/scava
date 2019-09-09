@@ -8,14 +8,11 @@
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
-  <groupId>org.eclipse.scava</groupId>
   <artifactId>releng</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
       <module>org.eclipse.scava.product</module>
-      <module>org.eclipse.scava.configuration</module>
       <module>org.eclipse.scava.target</module>
   </modules>
 </project>

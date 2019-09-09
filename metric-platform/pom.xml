@@ -1,511 +1,378 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.eclipse.scava</groupId>
-  <artifactId>metric-platform</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <parent>
-      <groupId>org.eclipse.scava</groupId>
-      <artifactId>configuration</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-      <relativePath>./releng/org.eclipse.scava.configuration</relativePath>
-  </parent>
-  <modules>
-    <!-- <module>../migration/third-party/com.fasterxml.jackson</module> -->
-    <!-- <module>../migration/third-party/com.google.code.gson</module> -->
-    <!-- <module>../migration/third-party/com.google.guava</module> -->
-    <module>../migration/third-party/com.googlecode.pongo.runtime</module>
-    <module>../migration/third-party/com.googlecode.pongo.runtime.dependencies</module>
-    <module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
-    <module>../migration/third-party/com.j2bugzilla</module>
-    <!-- <module>../migration/third-party/com.jcraft.jsch</module> -->
-    <module>../migration/third-party/com.mashape.unirest</module>
-    <!-- <module>../migration/third-party/javax.mail</module> -->
-    <!-- <module>../migration/third-party/org.apache.commons.codec</module> -->
-    <!-- <module>../migration/third-party/org.apache.commons.lang</module> -->
-    <!-- <module>../migration/third-party/org.apache.commons.logging</module> -->
-    <!-- <module>../migration/third-party/org.apache.commons.math</module> -->
-    <!-- <module>../migration/third-party/org.apache.commons.net</module>  -->
-    <module>../migration/third-party/org.apache.httpcomponents.httpasyncclient</module>
-    <!-- <module>../migration/third-party/org.apache.httpcomponents.httpclient</module> -->
-    <!-- <module>../migration/third-party/org.apache.httpcomponents.httpcore</module> -->
-    <module>../migration/third-party/org.apache.httpcomponents.httpcorenio</module>
-    <module>../migration/third-party/org.apache.httpcomponents.httpmime</module>
-    <!-- <module>../migration/third-party/org.apache.log4j</module> -->
-    <!-- <module>../migration/third-party/org.apache.ws.commons</module> -->
-    <!-- <module>../migration/third-party/org.apache.xmlrpc</module> -->
-    <!-- <module>../migration/third-party/org.apache.xmlrpc.common</module> -->
-    <module>../migration/third-party/org.carrot2.api</module>
-    <module>../migration/third-party/org.carrot2.dependencies</module>
-    <!-- <module>../migration/third-party/org.eclipse.egit.github.core</module>  -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.client</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.http</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.io</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.server</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.spdy.client</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.spdy.core</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.spdy.http.common</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.spdy.http.server</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.spdy.server</module> -->
-    <!-- <module>../migration/third-party/org.eclipse.jetty.util</module> -->
-    <module>../migration/third-party/org.eclipse.jgit</module>
-    <module>../migration/third-party/org.joda.time</module>
-    <!-- <module>../migration/third-party/org.json</module> -->
-    <module>../migration/third-party/org.mockito</module>
-    <!-- <module>../migration/third-party/org.restlet</module> -->
-    <!-- <module>../migration/third-party/org.restlet.ext.jetty</module> -->
-    <!-- <module>../migration/third-party/org.restlet.ext.osgi</module> -->
-    <!-- <module>../migration/third-party/org.restlet.ext.servlet</module> -->
-    <module>../migration/third-party/org.svnkit</module>
-    <module>../migration/third-party/sparky</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.channelusage.bugschannelusage</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.emotion</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.hourly</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.responsetime</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.sentiment</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.severity</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.size</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.status</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.threadlength</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.users</module>
-    <module>factoids/org.eclipse.scava.factoid.bugs.weekly</module>
-    <module>factoids/org.eclipse.scava.factoid.cocomo</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.channelusage</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.emotion</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.hourly</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.responsetime</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.sentiment</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.severity</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.size</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.status</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.threadlength</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.users</module>
-    <module>factoids/org.eclipse.scava.factoid.newsgroups.weekly</module>
-    <module>metric-providers/org.eclipse.scava.contentclassifier.opennlptartarus.libsvm</module>
-    <module>metric-providers/org.eclipse.scava.libsvm</module>
-    <module>metric-providers/org.eclipse.scava.libsvm.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.contentclassesbugzilla</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.contentclassesnntp</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.github</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.github.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentbugzilla</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentnntp</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.avgbugcreationclosedtime</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.avgnumberofrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.bugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.emotions</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.newusers</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.requestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.average</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.responsetime</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severity</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severitysentiment</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.topics</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.users</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.commitsovertime</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.dailyavgresponsetimepernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.emotions</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severity</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.topics</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.newthreadsperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofactiveusersperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofarticlesperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofcommitters</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofnewusersperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofrequestsrepliesperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofresolvedclosedbugzillabugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofbugzillacomments</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofbugzillapatches</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofnewbugzillabugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.threadsperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.totaldownloadcounter</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.unansweredthreadsperdaypernewsgroup</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.numberofnewbugs</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsbugzilla</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsnntp</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.rascal.testability</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.sentimentclassification</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.style</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.activeusers</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.activeusers</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.dailyrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.hourlyrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.requestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.commits</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.committers</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.smells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.maven</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.osgi</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.docker</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.puppet</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.projects.relations</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.hourlycommits</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.hourlyrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.eclipse</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.github</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.googlecode</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.redmine</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.sourceforge</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.sentiment</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofarticles</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofbugzillacomments</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofbugzillapatches</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC.PHP</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC.java</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.LOC</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.LOC.java</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO.PHP</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO.java</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.PHP</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.activecommitters</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java</module>
-    
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.churnpercommit</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.clones</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.comments</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.readability</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.requestreplyclassification</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.severityclassification</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.threads</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.threadsrequestsreplies</module>
-    <module>metric-providers/org.eclipse.scava.metricprovider.trans.topics</module>
-    <module>metric-providers/org.eclipse.scava.opennlp</module>
-    <module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
-    <module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
-	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency</module>
-	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.maven</module>
-	<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi</module>
-    <module>platform-extensions/org.eclipse.scava.jackson</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bitbucket</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bugzilla</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.github</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.jira</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.redmine</module>
-    <module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.sourceforge</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.nntp</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.nntp.local</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.sourceforge</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk</module>
-    <module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk.dependency</module>
-    <module>platform-extensions/org.eclipse.scava.platform.metricmanager.rascal</module>
-    <module>platform-extensions/org.eclipse.scava.platform.jadolint</module>
-    <module>platform-extensions/org.eclipse.scava.platform.vcs.git</module>
-    <module>platform-extensions/org.eclipse.scava.platform.vcs.svn</module>
-    <module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.git</module>
-    <module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.manager</module>
-    <module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.svn</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.bitbucket</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.bts.bugzilla</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.cc.forum</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.cc.nntp</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.cc.wiki</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.cc.zendesk</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.eclipse</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.eclipse.importer</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.github</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.github.importer</module>
-	<module>platform-extensions/org.eclipse.scava.repository.model.gitlab</module>
-	<module>platform-extensions/org.eclipse.scava.repository.model.gitlab.importer</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.googlecode</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.googlecode.importer</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.importer.exception</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.importerdependencies</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.jira</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.redmine</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.redmine.importer</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.sourceforge</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.sourceforge.importer</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.vcs.cvs</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.vcs.git</module>
-    <module>platform-extensions/org.eclipse.scava.repository.model.vcs.svn</module>
-    <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.generic</module>
-    <module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.php</module>
-    <module>platform/org.eclipse.scava.code.model/org.ossmeter.code.model.java</module>
-	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.maven</module>
-	<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.osgi</module>
-    <module>platform/org.eclipse.scava.platform</module>
-    <module>platform/org.eclipse.scava.platform.admin</module>
-    <module>platform/org.eclipse.scava.platform.analysis.data</module>
-    <module>platform/org.eclipse.scava.platform.client.api</module>
-    <module>platform/org.eclipse.scava.platform.feature</module>
-    <module>platform/org.eclipse.scava.platform.osgi</module>
-    <module>platform/org.eclipse.scava.platform.visualisation</module>
-    <module>platform/org.eclipse.scava.repository.model</module>
-    <module>platform/org.eclipse.scava.repository.model.importer</module>
-	<module>tests/org.eclipse.scava.platform.tests</module>
-	<module>tests/org.eclipse.scava.platform.vcs.git.tests</module>
-    <!--<mmodule>tests/org.eclipse.scava.platform.client.api.tests</module>
-    <module>tests/org.eclipse.scava.platform.importers.tests</module>
-    <module>tests/org.eclipse.scava.platform.osgi.tests</module>
-    <module>tests/org.eclipse.scava.platform.vcs.svn.tests</module>
-    <module>tests/org.eclipse.scava.platform.visualisation.tests</module>
-    <module>tests/org.eclipse.scava.rascal.test</module>-->
-    <module>releng</module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.codedetector
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.resources.sentinet5
-    </module>
-    <module>metric-providers/org.eclipse.scava.nlp.tools.core</module>
-    <module>metric-providers/org.eclipse.scava.nlp.tools.other</module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.plaintext
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.predictions
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.preprocessor
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.vasttext
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.gitlab
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.mantis
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.communicationchannel.eclipseforums
-    </module>
-    <module>../migration/third-party/org.jsoup.jsoup</module>
-    <module>../migration/third-party/com.squareup.okhttp3</module>
-    <module>../migration/third-party/com.squareup.okio</module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.detectingcode
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.emotionclassification
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.plaintextprocessing
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.cc.eclipseforums
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.mantis
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.emotionclassifier
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.requestreplydetector
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer
-    </module>
-   <module>metric-providers/org.eclipse.scava.index.indexer</module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.indexing.bugs
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.indexing.communicationchannels
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.indexing.preparation
-    </module>
-    <module>
-    	../migration/third-party/org.eclipse.scava.elasticsearch.dependencies
-    </module>
-    <!-- <module>
-    	../migration/third-party/org.apache.commons.compress
-    </module> -->
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.communicationchannel.sympa
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.cc.sympa
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.bugs.references
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.references
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.references
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.readability
-    </module>
-    <module>
-    	../migration/third-party/com.googlecode.javaewah.JavaEWAH
-    </module>
-    <module>../migration/third-party/com.jcraft.jzlib</module>
-    <module>
-    	../migration/third-party/org.bouncycastle.bcpg-jdk15on
-    </module>
-    <module>
-    	../migration/third-party/org.bouncycastle.bcpkix-jdk15on
-    </module>
-    <module>
-    	../migration/third-party/org.bouncycastle.bcprov-jdk15on
-    </module>
-    <!-- <module>../migration/third-party/org.slf4j.slf4j-api</module> -->
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation
-    </module>
-    
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.detectingcode
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.readability
-    </module>
-    
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.readability
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.sentiment
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.historic.documentation.sentiment
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.documentation.gitbased
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.documentation.gitbased
-    </module>
-    <module>../migration/third-party/org.apache.tika</module>
-    <!-- <module>
-    	../migration/third-party/ch.qos.logback.logback-classic
-    </module> -->
-    
-    <module>
-    	../migration/third-party/com.google.code.findbugs.jsr305
-    </module>
-    <module>
-    	../migration/third-party/com.google.errorprone.error_prone_annotations
-    </module>
-    <module>../migration/third-party/com.google.guava-jre</module>
-    <module>
-    	../migration/third-party/com.google.j2objc.j2objc-annotations
-    </module>
-    <module>../migration/third-party/com.sleepycat.je</module>
-    <module>../migration/third-party/edu.uci.ics.crawler4j</module>
-    <module>
-    	../migration/third-party/org.checkerframework.checker-compat-qual
-    </module>
-    <module>
-    	../migration/third-party/org.codehaus.mojo.animal-sniffer-annotations
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.documentation.systematic
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.documentation.systematic
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.webcrawler
-    </module>
-    <!-- <module>
-    	../migration/third-party/ch.qos.logback.logback-core
-    </module> -->
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.communicationchannel.irc
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.cc.irc
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.plaintext
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.topics
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.historic.commits.messages.topics
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.indexing.documentation
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.indexing.commits
-    </module>
-    <module>../migration/third-party/com.github.sszuev.fasttext</module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext
-    </module>
-    <module>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
-    	platform-extensions/org.eclipse.scava.platform.communicationchannel.mbox
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.repository.model.cc.mbox
-	    </module><module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.classification
-    </module>
-    
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.classifiers.documentation
-    </module>
-    <module>
-    	metric-providers/org.eclipse.scava.nlp.tools.license
-    </module>
-    <module>
-    	../migration/third-party/org.apache.commons.commons-email
-    </module>
-    <module>../migration/third-party/commons-net.commons-net</module>
-    <module>../migration/third-party/commons-io.commons-io</module>
-    <module>
-    	metric-providers/org.eclipse.scava.metricprovider.trans.documentation.license
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange.workflow
-    </module>
-    <module>
-    	platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange
-    </module>
-    <module>metric-providers/org.eclipse.scava.nlp.tool.rake</module>
-    <module>../migration/third-party/org.antlr.antlr4</module>
-    <module>metric-providers/org.eclipse.scava.code.tokenizers</module>
-  </modules>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>1.1.0</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
+	<parent>
+		<groupId>org.eclipse.scava</groupId>
+		<artifactId>configuration</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>./releng/org.eclipse.scava.configuration</relativePath>
+	</parent>
+	<artifactId>metric-platform</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<!-- <module>../migration/third-party/com.fasterxml.jackson</module> -->
+		<!-- <module>../migration/third-party/com.google.code.gson</module> -->
+		<!-- <module>../migration/third-party/com.google.guava</module> -->
+		<!-- <module>../migration/third-party/com.jcraft.jsch</module> -->
+		<!-- <module>../migration/third-party/javax.mail</module> -->
+		<!-- <module>../migration/third-party/org.apache.commons.codec</module> -->
+		<!-- <module>../migration/third-party/org.apache.commons.lang</module> -->
+		<!-- <module>../migration/third-party/org.apache.commons.logging</module> -->
+		<!-- <module>../migration/third-party/org.apache.commons.math</module> -->
+		<!-- <module>../migration/third-party/org.apache.commons.net</module> -->
+		<!-- <module>../migration/third-party/org.apache.httpcomponents.httpclient</module> -->
+		<!-- <module>../migration/third-party/org.apache.httpcomponents.httpcore</module> -->
+		<!-- <module>../migration/third-party/org.apache.log4j</module> -->
+		<!-- <module>../migration/third-party/org.apache.ws.commons</module> -->
+		<!-- <module>../migration/third-party/org.apache.xmlrpc</module> -->
+		<!-- <module>../migration/third-party/org.apache.xmlrpc.common</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.egit.github.core</module> -->
+
+		<!-- <module>../migration/third-party/org.eclipse.jetty.spdy.client</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.spdy.core</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.spdy.http.common</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.spdy.http.server</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.spdy.server</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.util</module> -->
+		<!-- <module>../migration/third-party/org.json</module> -->
+		<!-- <module>../migration/third-party/org.restlet</module> -->
+		<!-- <module>../migration/third-party/org.restlet.ext.jetty</module> -->
+		<!-- <module>../migration/third-party/org.restlet.ext.osgi</module> -->
+		<!-- <module>../migration/third-party/org.restlet.ext.servlet</module> -->
+		<!-- <module> ../migration/third-party/ch.qos.logback.logback-classic </module> -->
+		<!-- <module>../migration/third-party/org.slf4j.slf4j-api</module> -->
+		<!-- <module> ../migration/third-party/ch.qos.logback.logback-core </module> -->
+		<!-- <module> ../migration/third-party/org.apache.commons.compress </module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.client</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.http</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.io</module> -->
+		<!-- <module>../migration/third-party/org.eclipse.jetty.server</module> -->
+		
+		<module>../migration/third-party/com.googlecode.pongo.runtime</module>
+		<module>../migration/third-party/com.googlecode.pongo.runtime.dependencies</module>
+		<module>../migration/third-party/com.googlecode.pongo.runtime.osgi</module>
+		<module>../migration/third-party/com.j2bugzilla</module>
+		<module>../migration/third-party/org.jsoup.jsoup</module>
+		<module>../migration/third-party/com.squareup.okhttp3</module>
+		<module>../migration/third-party/com.squareup.okio</module>
+		<module>../migration/third-party/com.mashape.unirest</module>
+		<module>../migration/third-party/org.apache.httpcomponents.httpasyncclient</module>
+		<module>../migration/third-party/org.apache.httpcomponents.httpcorenio</module>
+		<module>../migration/third-party/org.apache.httpcomponents.httpmime</module>
+		<module>../migration/third-party/org.carrot2.api</module>
+		<module>../migration/third-party/org.carrot2.dependencies</module>
+		<module>../migration/third-party/org.eclipse.jgit</module>
+		<module>../migration/third-party/org.joda.time</module>
+		<module>../migration/third-party/org.mockito</module>
+		<module>../migration/third-party/org.svnkit</module>
+		<module>../migration/third-party/sparky</module>
+		<module>../migration/third-party/com.googlecode.javaewah.JavaEWAH</module>
+		<module>../migration/third-party/com.jcraft.jzlib</module>
+		<module>../migration/third-party/org.bouncycastle.bcpg-jdk15on</module>
+		<module>../migration/third-party/org.bouncycastle.bcpkix-jdk15on</module>
+		<module>../migration/third-party/org.bouncycastle.bcprov-jdk15on</module>
+		<module>../migration/third-party/org.eclipse.scava.elasticsearch.dependencies</module>
+		<module>../migration/third-party/com.google.code.findbugs.jsr305 </module>
+		<module>../migration/third-party/com.google.errorprone.error_prone_annotations</module>
+		<module>../migration/third-party/org.apache.tika</module>
+		<module>../migration/third-party/com.google.guava-jre</module>
+		<module>../migration/third-party/com.google.j2objc.j2objc-annotations </module>
+		<module>../migration/third-party/com.sleepycat.je</module>
+		<module>../migration/third-party/edu.uci.ics.crawler4j</module>
+		<module>../migration/third-party/org.checkerframework.checker-compat-qual</module>	
+		<module>../migration/third-party/org.codehaus.mojo.animal-sniffer-annotations</module>
+    	<module>../migration/third-party/com.github.sszuev.fasttext</module>
+		<module>../migration/third-party/org.apache.commons.commons-email</module>
+    	<module>../migration/third-party/org.antlr.antlr4</module>
+		<module>../migration/third-party/org.mapdb</module>
+		<module>../migration/third-party/commons-net.commons-net</module>
+		<module>../migration/third-party/commons-io.commons-io</module>
+		
+		<module>factoids/org.eclipse.scava.factoid.bugs.channelusage.bugschannelusage</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.emotion</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.hourly</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.responsetime</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.sentiment</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.severity</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.size</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.status</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.threadlength</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.users</module>
+		<module>factoids/org.eclipse.scava.factoid.bugs.weekly</module>
+		<module>factoids/org.eclipse.scava.factoid.cocomo</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.channelusage</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.emotion</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.hourly</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.responsetime</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.sentiment</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.severity</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.size</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.status</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.threadlength</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.users</module>
+		<module>factoids/org.eclipse.scava.factoid.newsgroups.weekly</module>
+		
+		<module>metric-providers/org.eclipse.scava.contentclassifier.opennlptartarus.libsvm</module>
+		<module>metric-providers/org.eclipse.scava.libsvm</module>
+		<module>metric-providers/org.eclipse.scava.libsvm.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.contentclassesbugzilla</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.contentclassesnntp</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.github</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.github.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.downloadcounter.sourceforge.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentbugzilla</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.generic.overallsentimentnntp</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.avgbugcreationclosedtime</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.avgnumberofrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.bugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.emotions</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.newusers</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.requestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.average</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.responsetime</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severity</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.severitysentiment</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.topics</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.bugs.users</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.commitsovertime</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.dailyavgresponsetimepernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.emotions</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severity</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.topics</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.newthreadsperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofactiveusersperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofarticlesperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofcommitters</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofnewusersperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofrequestsrepliesperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.numberofresolvedclosedbugzillabugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofbugzillacomments</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofbugzillapatches</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.overalldailynumberofnewbugzillabugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.threadsperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.totaldownloadcounter</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.unansweredthreadsperdaypernewsgroup</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.numberofnewbugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsbugzilla</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.overallemotionsnntp</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.rascal.testability</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.sentimentclassification</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.style</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.activeusers</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.activeusers</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.dailyrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.hourlyrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.requestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.commits</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.committers</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.smells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.smells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.maven</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.osgi</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.docker</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newversion.puppet</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.configuration.projects.relations</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.dailycommits</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.dailyrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.githubstars</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.hourlycommits</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.hourlyrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.eclipse</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.github</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.googlecode</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.redmine</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.importer.sourceforge</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.sentiment</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofarticles</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofbugzillacomments</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.numberofbugzillapatches</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC.PHP</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.CC.java</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.LOC</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.LOC.java</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO.PHP</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.OO.java</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.PHP</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.activecommitters</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.advancedfeatures.java</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.churnpercommit</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.clones</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.comments</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.readability</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.requestreplyclassification</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.severityclassification</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.threads</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.threadsrequestsreplies</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.topics</module>
+		<module>metric-providers/org.eclipse.scava.opennlp</module>
+		<module>metric-providers/org.eclipse.scava.severityclassifier.opennlptartarus.libsvm</module>
+		<module>metric-providers/org.eclipse.scava.tartarus.parser.posstemmer</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.maven</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.rascal.dependency.osgi</module>
+		
+		<module>platform-extensions/org.eclipse.scava.jackson</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bitbucket</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.bugzilla</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.github</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.jira</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.redmine</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.sourceforge</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.nntp</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.nntp.local</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.sourceforge</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.zendesk.dependency</module>
+		<module>platform-extensions/org.eclipse.scava.platform.metricmanager.rascal</module>
+		<module>platform-extensions/org.eclipse.scava.platform.jadolint</module>
+		<module>platform-extensions/org.eclipse.scava.platform.vcs.git</module>
+		<module>platform-extensions/org.eclipse.scava.platform.vcs.svn</module>
+		<module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.git</module>
+		<module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.manager</module>
+		<module>platform-extensions/org.eclipse.scava.platform.vcs.workingcopy.svn</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.bitbucket</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.bts.bugzilla</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.forum</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.nntp</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.wiki</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.zendesk</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.eclipse</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.eclipse.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.github</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.github.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.gitlab</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.gitlab.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.googlecode</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.googlecode.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.importer.exception</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.importerdependencies</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.jira</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.redmine</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.redmine.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.sourceforge</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.sourceforge.importer</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.vcs.cvs</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.vcs.git</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.vcs.svn</module>
+		<module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.generic</module>
+		<module>platform/org.eclipse.scava.code.model/org.crossmeter.code.model.php</module>
+		<module>platform/org.eclipse.scava.code.model/org.ossmeter.code.model.java</module>
+		<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.maven</module>
+		<module>platform/org.eclipse.scava.dependency.model/org.eclipse.scava.dependency.model.osgi</module>
+		<module>platform/org.eclipse.scava.platform</module>
+		<module>platform/org.eclipse.scava.platform.admin</module>
+		<module>platform/org.eclipse.scava.platform.analysis.data</module>
+		<module>platform/org.eclipse.scava.platform.client.api</module>
+		<module>platform/org.eclipse.scava.platform.feature</module>
+		<module>platform/org.eclipse.scava.platform.osgi</module>
+		<module>platform/org.eclipse.scava.platform.visualisation</module>
+		<module>platform/org.eclipse.scava.repository.model</module>
+		<module>platform/org.eclipse.scava.repository.model.importer</module>
+		<module>tests/org.eclipse.scava.platform.tests</module>
+		<module>tests/org.eclipse.scava.platform.vcs.git.tests</module>
+
+		<!--<module>tests/org.eclipse.scava.platform.client.api.tests</module> 
+			<module>tests/org.eclipse.scava.platform.importers.tests</module> <module>tests/org.eclipse.scava.platform.osgi.tests</module> 
+			<module>tests/org.eclipse.scava.platform.vcs.svn.tests</module> <module>tests/org.eclipse.scava.platform.visualisation.tests</module> 
+			<module>tests/org.eclipse.scava.rascal.test</module> -->
+			
+		<module>releng</module>
+		<module>metric-providers/org.eclipse.scava.nlp.classifiers.codedetector</module>
+		<module>metric-providers/org.eclipse.scava.nlp.resources.sentinet5 </module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.core</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.other</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.plaintext</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.predictions</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.preprocessor</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.vasttext </module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.gitlab</module>
+		<module>platform-extensions/org.eclipse.scava.platform.bugtrackingsystem.mantis </module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.eclipseforums </module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.detectingcode </module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.emotionclassification</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.plaintextprocessing</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.eclipseforums </module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.mantis </module>
+		<module>metric-providers/org.eclipse.scava.nlp.classifiers.emotionclassifier</module>
+		<module>metric-providers/org.eclipse.scava.nlp.classifiers.requestreplydetector</module>
+		<module>metric-providers/org.eclipse.scava.nlp.classifiers.sentimentanalyzer</module>
+		<module>metric-providers/org.eclipse.scava.index.indexer</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.indexing.bugs</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.indexing.communicationchannels</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.indexing.preparation</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.sympa</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.sympa</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.bugmetadata </module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.bugs.references</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.references </module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.references</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.readability</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.detectingcode</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.readability</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.documentation.readability</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.sentiment</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.documentation.sentiment</module>
+  		<module>platform-extensions/org.eclipse.scava.platform.documentation.gitbased</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.documentation.gitbased</module>
+		<module>platform-extensions/org.eclipse.scava.platform.documentation.systematic</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.documentation.systematic</module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.webcrawler</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.irc</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.irc</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.plaintext</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.commits.message.topics</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.historic.commits.messages.topics</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.indexing.documentation</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.indexing.commits</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.plaintext</module>
+		<module>platform-extensions/org.eclipse.scava.platform.communicationchannel.mbox</module>
+		<module>platform-extensions/org.eclipse.scava.repository.model.cc.mbox</module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.classification</module>
+		<module>metric-providers/org.eclipse.scava.nlp.classifiers.documentation </module>
+		<module>metric-providers/org.eclipse.scava.nlp.tools.license </module>
+		<module>metric-providers/org.eclipse.scava.metricprovider.trans.documentation.license</module>
+		<module>platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange.workflow</module>
+		<module>platform-extensions/org.eclipse.scava.platform.questionanswering.stackexchange </module>
+		<module>metric-providers/org.eclipse.scava.nlp.tool.rake</module>
+		<module>metric-providers/org.eclipse.scava.code.tokenizers</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -9,27 +9,15 @@
 	<properties>
 		<tycho.version>1.1.0</tycho.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Skip the deployment here, submodules can override this property -->
-		<!--maven.deploy.skip>true</maven.deploy.skip-->
 	</properties>
 
-    <repositories>
+    <!-- repositories>
         <repository>
             <id>eclipse-mars</id>
             <url>http://download.eclipse.org/releases/mars</url>
             <layout>p2</layout>
         </repository>
-		<!--repository>
-			<id>rascal-unstable</id>
-			<url>https://update.rascal-mpl.org/unstable/</url>
-			<layout>p2</layout>
-		</repository>
-        <repository>
-            <id>Oxygen.3</id>
-            <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20180206163158/repository/</url>
-            <layout>p2</layout>
-        </repository-->
-    </repositories>
+    </repositories-->
 
 	<build>
 		<plugins>

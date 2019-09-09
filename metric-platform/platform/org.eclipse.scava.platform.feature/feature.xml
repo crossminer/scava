@@ -107,12 +107,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="com.google.code.gson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.scava.metricprovider.historic.newsgroups.users"
          download-size="0"
          install-size="0"
@@ -383,12 +377,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.scava.jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="com.googlecode.pongo.runtime.osgi"
          download-size="0"
          install-size="0"
@@ -466,11 +454,6 @@
          install-size="0"
          version="0.0.0"/>
 
-   <plugin
-         id="com.fasterxml.jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.scava.repository.model.vcs.cvs"
@@ -971,12 +954,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.apache.xmlrpc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.json"
          download-size="0"
          install-size="0"
@@ -996,12 +973,6 @@
 
    <plugin
          id="org.eclipse.scava.platform.visualisation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.apache.ws.commons"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -1998,7 +1969,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.slf4j.slf4j-api"
+         id="org.slf4j.api"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -2047,18 +2018,6 @@
 
    <plugin
          id="org.apache.tika"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="ch.qos.logback.logback-classic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="ch.qos.logback.logback-core"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -2541,12 +2500,7 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.tm.terminal.view.ui.rse"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.ui.console"
@@ -2674,26 +2628,7 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.rse.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
-   <plugin
-         id="org.eclipse.rse.subsystems.files.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.rse.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.e4.ui.css.core"
@@ -2849,12 +2784,7 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.rse.services"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.sat4j.core"
