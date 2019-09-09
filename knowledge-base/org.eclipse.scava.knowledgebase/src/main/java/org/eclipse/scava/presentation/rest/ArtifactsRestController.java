@@ -11,6 +11,8 @@
 package org.eclipse.scava.presentation.rest;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
+import org.eclipse.scava.business.impl.UnparallelImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.MetricForProjectRepository;
 import org.eclipse.scava.business.model.Artifact;
@@ -25,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -52,7 +57,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/artifacts")
 
-
 public class ArtifactsRestController {
 	@Autowired
 	@Qualifier("Dependency")
@@ -64,87 +68,87 @@ public class ArtifactsRestController {
 	private static final Logger logger = LoggerFactory.getLogger(ArtifactsRestController.class);
 	@Autowired
 	private MetricForProjectRepository m4pRepository;
+	@Value("${migration.local.m3.files.path}")
+	private String localM3Files;
 	
 	@Autowired
+	private UnparallelImporter unparallelImporter;
+	@Autowired
 	private GithubImporter importer;
-	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: property(,asc|desc). "
-								  + "Default sort order is ascending. "
-								  + "Multiple sort criteria are supported.")
-	})
+
+	@ApiImplicitParams({ // FIXME
+			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+					+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
 	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
-	@RequestMapping(value="artifacts", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Page<Artifact> getArtifacts(Pageable pageable) {
+	@RequestMapping(value = "artifacts", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Page<Artifact> getArtifacts(Pageable pageable) {
 		return artifactRepository.findAll(pageable);
-    }
-	
+	}
+
 	@ApiOperation(value = "Get artifact by id")
-	@RequestMapping(value="/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
+	@RequestMapping(value = "/{artifact_id}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
-    }
-		
-	
+	}
+
 //	@ApiOperation(value = "Search artifact to KB")
 //	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
 //    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery) {
 //		return recommenderManager.getArtifactsByQuery(projectQuery);
 //    }
-	
+
 	@ApiOperation(value = "Search artifact to KB")
-	@RequestMapping(value="search/{artifact_query}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: [asc|desc]")
-	})
-    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
-    		@RequestParam(value = "page", defaultValue = "0") int page, 
-    		@RequestParam(value = "size", defaultValue = "10") int size, 
-    		@RequestParam(value = "sort", defaultValue = "asc") String sort) {
+	@RequestMapping(value = "search/{artifact_query}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	@ApiImplicitParams({ // FIXME
+			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: [asc|desc]") })
+	public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size,
+			@RequestParam(value = "sort", defaultValue = "asc") String sort) {
 		PageRequest pr = new PageRequest(page, size, new Sort(Arrays.asList(
-				sort.equalsIgnoreCase("ASC")? new Order(Direction.ASC, "temp"): new Order(Direction.DESC, "temp"))));
+				sort.equalsIgnoreCase("ASC") ? new Order(Direction.ASC, "temp") : new Order(Direction.DESC, "temp"))));
 		return recommenderManager.getArtifactsByQuery(projectQuery, pr);
-    }
-	
+	}
+
 	@ApiOperation(value = "Get artifact by metric platform id")
-	@RequestMapping(value="artifact/mpp/{metricPlatformId}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Artifact getProjectByMetricPlatformId(@PathVariable("metricPlatformId") String mppID) {
+	@RequestMapping(value = "artifact/mpp/{metricPlatformId}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Artifact getProjectByMetricPlatformId(@PathVariable("metricPlatformId") String mppID) {
 		return artifactRepository.findOneByMetricPlatformId(mppID);
-    }
-	
+	}
+
 	@ApiOperation(value = "Add github project to KB")
-	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {
+	@RequestMapping(value = "add/{project_name}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {
 		try {
-			Artifact art = importer.importProject(projectName.replace("--", "/").replace("%2E", "."));
+			importer.importProject(projectName.replace("--", "/").replace("%2E", "."));
 			return true;
-			
+
 		} catch (IOException e) {
 			return false;
 		}
-    }
-	
+	}
+
 	@ApiOperation(value = "Store IDE metrics")
-	@RequestMapping(value="store-metrics", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public ResponseEntity<Object> storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
-		try{
+	@RequestMapping(value = "store-metrics", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public ResponseEntity<Object> storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
+		try {
 			m4pRepository.save(metricForProject);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
-    }
-	
+	}
+
 //	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 //	public @ResponseBody MetricsForProject temp(){
 //		MetricsForProject metric4project = new MetricsForProject();
@@ -171,4 +175,28 @@ public class ArtifactsRestController {
 //		return metric4project ;
 //	}
 
+	@ApiOperation(value = "This API stores the IOT cataloque given as csv file")
+	@RequestMapping(value = "/storeIoTCataloque/", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> getDetection(@RequestParam("file") MultipartFile file) {
+		try {
+			String fileName = getLocalFilePath(file);
+			unparallelImporter.importProjects(fileName);
+			logger.info("Iot catalogue has been imported");
+		} catch (IllegalStateException | IOException e) {
+			logger.error(e.getMessage());
+			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
+	}
+
+	private String getLocalFilePath(MultipartFile multipartFile) throws IOException {
+		String fileName = Paths.get(localM3Files, multipartFile.getOriginalFilename()).toString();
+		byte[] bytes = multipartFile.getBytes();
+		java.nio.file.Path path = Paths.get(fileName);
+		Files.write(path, bytes);
+		return fileName;
+	}
 }

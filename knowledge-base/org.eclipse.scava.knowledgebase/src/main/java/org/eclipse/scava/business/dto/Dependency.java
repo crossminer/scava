@@ -16,7 +16,7 @@ package org.eclipse.scava.business.dto;
 public class Dependency {
 	
 	private String artifactID;
-	private String name;
+	private String groupId;
 	private String version;
 	private String url;
 	
@@ -34,10 +34,10 @@ public class Dependency {
 		this.version = version;
 	}
 	public String getGroupID() {
-		return name;
+		return groupId;
 	}
 	public void setGroupID(String name) {
-		this.name = name;
+		this.groupId = name;
 	}
 	public String getArtifactID() {
 		return artifactID;

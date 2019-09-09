@@ -11,7 +11,9 @@ package org.eclipse.scava.presentation.rest;
 
 import java.util.List;
 
+import org.apache.commons.compress.utils.Lists;
 import org.eclipse.scava.business.IRecommenderManager;
+import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
@@ -70,6 +72,27 @@ public class RecommenderRestController {
 		return r;
 	}
 	
+	@ApiOperation(value ="This resource is used to retrieve recommended libraries.")
+	@RequestMapping(value = "recommended_library_no_maven", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getRecommendedLibrariesNoMaven(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		List<Dependency> cleared = getNoMavenDependencies(query.getProjectDependencies());
+		query.setProjectDependencies(cleared);
+		Recommendation r =recommenderManager.getRecommendation(query, RecommendationType.RECOMMENDED_LIBRARY);
+		return r;
+	}
+	
+	private List<Dependency> getNoMavenDependencies(List<Dependency> projectDependencies) {
+		List<Dependency> result = Lists.newArrayList();
+		for (Dependency dependency : projectDependencies) {
+			Dependency dep = new Dependency();
+			dep.setGroupID("no_maven");
+			dep.setArtifactID(dependency.getArtifactID());
+			result.add(dep);
+		}
+		return result;
+	}
+
 	@ApiOperation(value = "This resource is used to retrieve code patterns from code context.")
 	@RequestMapping(value = "recommended_API_call", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getApiCallRecommendation(
