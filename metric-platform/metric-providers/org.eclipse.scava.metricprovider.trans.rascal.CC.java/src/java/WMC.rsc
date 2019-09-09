@@ -45,7 +45,7 @@ map[loc class, int wmcCount] getWMC(
 	changed = getChangedFilesInWorkingCopyFolders(delta, workingCopies);
 	
 	for (file <- changed, m3 <- m3s[java(), file]) {
-	   result += (cl : (0 | it + methodCC[m]?0 | m <- allMethodsMap(m3)[cl]) | cl <- allTypes(m3), isClass(cl));
+	   result += (cl : (0 | it + methodCC[m]?0 | m <- allMethodsMap(m3)[cl]?{}) | cl <- allTypes(m3), isClass(cl));
 	}
 
 	 result = result - (prev - declMap); // remove entries for any removed declarations
