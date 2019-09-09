@@ -102,13 +102,13 @@
                 <tr *ngIf="vcs?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="vcs.url" [(ngModel)]="vcs.url">
+                        <input type="text" class="form-control" name="vcs.url-{{i + 1}}" [(ngModel)]="vcs.url">
                     </td>
                 </tr>
                 <tr *ngIf="vcs?.name != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="vcs.name" [(ngModel)]="vcs.name">
+                        <input type="text" class="form-control" name="vcs.name-{{i + 1}}" [(ngModel)]="vcs.name">
                     </td>
                 </tr>
             </tbody>
@@ -120,55 +120,55 @@
                 <tr *ngIf="bts?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.url" [(ngModel)]="bts.url">
+                        <input type="text" class="form-control" name="bts.url-{{i + 1}}" [(ngModel)]="bts.url">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.token != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Token: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.token" [(ngModel)]="bts.token">
+                        <input type="password" class="form-control" name="bts.token-{{i + 1}}" [(ngModel)]="bts.token">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.personal_access_token != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Access Token: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.personal_access_token" [(ngModel)]="bts.personal_access_token">
+                        <input type="password" class="form-control" name="bts.personal_access_token-{{i + 1}}" [(ngModel)]="bts.personal_access_token">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.login != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Login: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.login" [(ngModel)]="bts.login">
+                        <input type="text" class="form-control" name="bts.login-{{i + 1}}" [(ngModel)]="bts.login">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.password != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.password" [(ngModel)]="bts.password">
+                        <input type="password" class="form-control" name="bts.password-{{i + 1}}" [(ngModel)]="bts.password">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.project != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Project: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.project" [(ngModel)]="bts.project">
+                        <input type="text" class="form-control" name="bts.project-{{i + 1}}" [(ngModel)]="bts.project">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.product != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Product: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.product" [(ngModel)]="bts.product">
+                        <input type="text" class="form-control" name="bts.product-{{i + 1}}" [(ngModel)]="bts.product">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.cgiQueryProgram != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;CGIQueryProgram: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.cgiQueryProgram" [(ngModel)]="bts.cgiQueryProgram">
+                        <input type="text" class="form-control" name="bts.cgiQueryProgram-{{i + 1}}" [(ngModel)]="bts.cgiQueryProgram">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.component != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Component: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.component" [(ngModel)]="bts.component">
+                        <input type="text" class="form-control" name="bts.component-{{i + 1}}" [(ngModel)]="bts.component">
                     </td>
                 </tr>
             </tbody> 
@@ -180,49 +180,49 @@
                 <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.url" [(ngModel)]="cc.url">
+                        <input type="text" class="form-control" name="cc.url-{{i + 1}}" [(ngModel)]="cc.url">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.name != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.name" [(ngModel)]="cc.name">
+                        <input type="text" class="form-control" name="cc.name-{{i + 1}}" [(ngModel)]="cc.name">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.description != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Description: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.description" [(ngModel)]="cc.description">
+                        <input type="text" class="form-control" name="cc.description-{{i + 1}}" [(ngModel)]="cc.description">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.MailingListName != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Name: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.MailingListName" [(ngModel)]="cc.MailingListName">
+                        <input type="text" class="form-control" name="cc.MailingListName-{{i + 1}}" [(ngModel)]="cc.MailingListName">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.MailingListDescription != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Description: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.MailingListDescription" [(ngModel)]="cc.MailingListDescription">
+                        <input type="text" class="form-control" name="cc.MailingListDescription-{{i + 1}}" [(ngModel)]="cc.MailingListDescription">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.compressedFileExtension != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;compressed File: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.compressedFileExtension" [(ngModel)]="cc.compressedFileExtension">
+                        <input type="text" class="form-control" name="cc.compressedFileExtension-{{i + 1}}" [(ngModel)]="cc.compressedFileExtension">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.username != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Username: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.username" [(ngModel)]="cc.username">
+                        <input type="text" class="form-control" name="cc.username-{{i + 1}}" [(ngModel)]="cc.username">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.password != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="cc.password" [(ngModel)]="cc.password">
+                        <input type="password" class="form-control" name="cc.password-{{i + 1}}" [(ngModel)]="cc.password">
                     </td>
                 </tr>
             </tbody>
