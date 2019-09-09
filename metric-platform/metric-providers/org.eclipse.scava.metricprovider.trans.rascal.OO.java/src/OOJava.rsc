@@ -249,7 +249,7 @@ map[loc, real] MIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	rel[loc, loc] inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), <m, \private()> notin m3.modifiers && <m, \abstract()> notin m3.modifiers };
+	rel[loc, loc] inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), <m, \private()> notin m3.modifiers, <m, \abstract()> notin m3.modifiers };
 	
 	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
