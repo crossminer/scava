@@ -86,17 +86,17 @@ public class ProjectEditionResource extends ServerResource {
 		if (isValidKey(json, "homePage"))
 			project.setHomePage(json.get("homePage").asText());
 		
+		int i = 0;
 		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-			int i = 0;
 			VcsRepository repo = project.getVcsRepositories().get(i);			
 			if (isValidKey(vcs, "url"))
 				repo.setUrl(vcs.get("url").asText());
 			i++;
 		}
 		
+		int j = 0;
 		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-			int i = 0;
-			BugTrackingSystem buggy = project.getBugTrackingSystems().get(i);
+			BugTrackingSystem buggy = project.getBugTrackingSystems().get(j);
 			if (isValidKey(bts, "url"))
 				buggy.setUrl(bts.get("url").asText());
 			if (isValidKey(bts, "login"))
@@ -105,12 +105,12 @@ public class ProjectEditionResource extends ServerResource {
 				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
 			if (isValidKey(bts, "project"))
 				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
-			i++;			
+			j++;			
 		}
 		
+		int k = 0;
 		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-			int i = 0;
-			CommunicationChannel comunication = project.getCommunicationChannels().get(i);
+			CommunicationChannel comunication = project.getCommunicationChannels().get(k);
 			if (isValidKey(cc, "url"))
 				comunication.setUrl(cc.get("url").asText());
 			if (isValidKey(cc, "MailingListName"))
@@ -123,7 +123,7 @@ public class ProjectEditionResource extends ServerResource {
 				((SympaMailingList) comunication).setUsername(cc.get("username").asText());
 			if (isValidKey(cc, "password"))
 				((SympaMailingList) comunication).setPassword(cc.get("password").asText());
-			i++;
+			k++;
 		}
 	}
 
@@ -149,17 +149,17 @@ public class ProjectEditionResource extends ServerResource {
 		if (isValidKey(json, "clone_url"))
 			githubRepository.setClone_url(json.get("clone_url").asText());
 		
+		int i = 0;
 		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-			int i = 0;
 			VcsRepository repo = githubRepository.getVcsRepositories().get(i);			
 			if (isValidKey(vcs, "url"))
 				repo.setUrl(vcs.get("url").asText());
 			i++;
 		}
 		
+		int j = 0;
 		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-			int i = 0;
-			BugTrackingSystem buggy = githubRepository.getBugTrackingSystems().get(i);
+			BugTrackingSystem buggy = githubRepository.getBugTrackingSystems().get(j);
 			if (isValidKey(bts, "url")) {
 				buggy.setUrl(bts.get("url").asText());
 			}
@@ -175,16 +175,16 @@ public class ProjectEditionResource extends ServerResource {
 				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
 			if (isValidKey(bts, "project"))
 				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
-			i++;			
+			j++;			
 		}
 		
+		int k = 0;
 		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-			int i = 0;
-			CommunicationChannel comunication = githubRepository.getCommunicationChannels().get(i);
+			CommunicationChannel comunication = githubRepository.getCommunicationChannels().get(k);
 			
 			if (isValidKey(cc, "url"))
 				comunication.setUrl(cc.get("url").asText());
-			i++;
+			k++;
 		}	
 	}
 	
@@ -204,30 +204,30 @@ public class ProjectEditionResource extends ServerResource {
 		if (isValidKey(json, "clone_url"))
 			gitlabRepository.setClone_url(json.get("clone_url").asText());
 		
+		int i = 0;
 		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-			int i = 0;
 			VcsRepository repo = gitlabRepository.getVcsRepositories().get(i);
 			if (isValidKey(vcs, "url"))
 				repo.setUrl(vcs.get("url").asText());
 			i++;
 		}
 		
+		int j = 0;
 		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-			int i = 0;
-			BugTrackingSystem buggy = gitlabRepository.getBugTrackingSystems().get(i);
+			BugTrackingSystem buggy = gitlabRepository.getBugTrackingSystems().get(j);
 			if (isValidKey(bts, "url"))
 				buggy.setUrl(bts.get("url").asText());
 			if (isValidKey(bts, "personal_access_token"))
 				((GitLabTracker)buggy).setPersonal_access_token(bts.get("personal_access_token").asText());
-			i++;			
+			j++;			
 		}
 		
+		int k = 0;
 		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-			int i = 0;
-			CommunicationChannel comunication = gitlabRepository.getCommunicationChannels().get(i);
+			CommunicationChannel comunication = gitlabRepository.getCommunicationChannels().get(k);
 			if (isValidKey(cc, "url"))
 				comunication.setUrl(cc.get("url").asText());
-			i++;
+			k++;
 		}	
 	}
 	
@@ -248,8 +248,8 @@ public class ProjectEditionResource extends ServerResource {
 		if (isValidKey(json, "projectplanUrl"))
 			eclipseProject.setProjectplanUrl(json.get("projectplanUrl").asText());
 		
+		int i = 0;
 		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-			int i = 0;
 			VcsRepository repo = eclipseProject.getVcsRepositories().get(i);
 			if (isValidKey(vcs, "url"))
 				repo.setUrl(vcs.get("url").asText());
@@ -258,9 +258,9 @@ public class ProjectEditionResource extends ServerResource {
 			i++;
 		}
 		
+		int j = 0;
 		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-			int i = 0;
-			BugTrackingSystem buggy = eclipseProject.getBugTrackingSystems().get(i);
+			BugTrackingSystem buggy = eclipseProject.getBugTrackingSystems().get(j);
 			if (isValidKey(bts, "url"))
 				buggy.setUrl(bts.get("url").asText());
 			if (isValidKey(bts, "product"))
@@ -269,19 +269,19 @@ public class ProjectEditionResource extends ServerResource {
 				((Bugzilla)buggy).setComponent(bts.get("component").asText());
 			if (isValidKey(bts, "cgiQueryProgram"))
 				((Bugzilla)buggy).setCgiQueryProgram(bts.get("cgiQueryProgram").asText());
-			i++;			
+			j++;			
 		}
 		
+		int k = 0;
 		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-			int i = 0;
-			CommunicationChannel comunication = eclipseProject.getCommunicationChannels().get(i);
+			CommunicationChannel comunication = eclipseProject.getCommunicationChannels().get(k);
 			if (isValidKey(cc, "url"))
 				comunication.setUrl(cc.get("url").asText());
 			if (isValidKey(cc, "name"))
 				((Forum) comunication).setName(cc.get("name").asText());
 			if (isValidKey(cc, "description"))
 				((Forum) comunication).setDescription(cc.get("description").asText());
-			i++;
+			k++;
 		}
 	}
 	
