@@ -89,7 +89,7 @@ rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- transitiveContainment(m
 map[loc, set[Modifier]] modifiersMap(M3 m) = toMap(m.modifiers);
 
 @memo
-rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), ({\private(), \final(), \static()} & m3.modifiers[m]) == {} };
+rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), <m, \private()> notin m3.modifiers, <m, \final()> notin m3.modifiers, <m, \static()> notin m3.modifiers };
 
 @metric{A-Java}
 @doc{Abstractness (Java)}
