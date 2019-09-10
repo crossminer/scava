@@ -1,0 +1,15 @@
+modeling.sirius
+modeling.epsilon
+modeling.m2t.acceleo
+modeling.emfcompare
+modeling.emf-parsley
+modeling.gendoc
+modeling.sphinx
+modeling.mdt.ocl
+technology.app4mc
+technology.mdmbl
+technology.epf
+technology.scout
+technology.egit
+technology.jgit
+tools.tracecompass

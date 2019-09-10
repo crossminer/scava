@@ -36,22 +36,27 @@ my $project = shift;
 
 my @metric_providers = (
     "trans.rascal.api.changedMethods",
+    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
+    "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
     "trans.rascal.dependency.maven.numberUniqueMavenDependencies",
     "trans.rascal.dependency.maven.allOptionalMavenDependencies",
     "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider",
-    "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider",
-    "severity.SeverityHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.configuration.docker.smells",
+    "org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies",
+    "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.patches.PatchesHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.severity.SeverityHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.SeverityBugStatusHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.SeveritySentimentHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.newbugs.NewBugsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.comments.CommentsHistoricMetricProvider",
     );
 
 my $url_auth = $base_url . ":8086/api/authentication";
 my $url_create_task = $base_url . ":8182/analysis/task/create";
-#my $url_create_task = $base_url . ":8086​/analysis​/task​/create";
+my $url_start_task = $base_url . ":8182/analysis/task/start";;
     
 # Prepare for http requests
 my $ua  = Mojo::UserAgent->new;
@@ -82,9 +87,9 @@ my $json_create = {
     "analysisTaskId" => "${project}_task",
     "label" => "${project}_task",
     "projectId" => $project,
-    "type" => "CONTINUOUS_MONITORING", # Could be SINGLE_EXECUTION
+    "type" => "SINGLE_EXECUTION", # Could be CONTINUOUS_MONITORING
     "startDate" => "01/01/2018",
-    "endDate" => "01/08/2019",
+    "endDate" => "31/12/2018",
     "metricProviders" => \@metric_providers,
 };
 
@@ -95,17 +100,35 @@ $tx = $ua->post(
 	'Content-Type' => 'application/json'
     } => json => $json_create,
     );
-print "#####################################\n";
-print Dumper($tx);
-exit;
 
-#if (not $tx->result->is_success) {
-#    print "Error: Could not get resource $url_create_project.\n";
-#    print Dumper($tx->result->error) . "\n";
-#    exit 8;
-#}
+if (not $tx->result->is_success) {
+    print "Error: Could not get resource $url_create_task.\n";
+    print Dumper($tx->result->error) . "\n";
+    exit 8;
+}
 
-# Decode JSON from server
 my $data = decode_json($tx->result->body);
-print "DBG.\n";
-print Dumper($data);
+my $task_id = $data->{'analysisTaskId'};
+print "Created task $task_id.\n\n";
+
+print "Starting task $task_id...\n";
+
+my $json_start = {
+    'analysisTaskId' => "$task_id",
+};
+
+print "# Fetching ${url_start_task}.\n\n";
+$tx = $ua->post(
+    $url_start_task => {
+	"Authorization" => $auth, 
+	'Content-Type' => 'application/json'
+    } => json => $json_start,
+    );
+
+
+if (not $tx->result->is_success) {
+    print "Error: Could not get resource $url_start_task.\n";
+    print Dumper($tx->result->error) . "\n";
+    exit 8;
+}
+
