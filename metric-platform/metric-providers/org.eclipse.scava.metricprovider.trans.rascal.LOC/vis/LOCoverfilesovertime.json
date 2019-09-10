@@ -13,7 +13,6 @@
 			},
 			"x" : "Date",
 			"y" : "Gini",
-			"series" : "Language",
 			"x-label" : "Date",
 			"y-label" : "Gini coefficient",
 			"timeSeries" : true
