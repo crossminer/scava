@@ -178,10 +178,8 @@ public class AnalysisTaskService {
 				worker.setWorkerId(workerId);
 				this.repository.getWorkers().add(worker);
 			}
-			// Clean database collections linked to specific task
-			cleanMetricsTaskDatabase(task);
-			// delete the analysis task
 			
+			// Retrieve metricExecutions on the same project
 			List<String> otherMetricsExecution = new ArrayList<String>();
 			List<AnalysisTask> tasksByProject = getAnalysisTasksByProject(task.getProject().getProjectId());
 			for (AnalysisTask analysisTask : tasksByProject) {
@@ -192,6 +190,10 @@ public class AnalysisTaskService {
 				}
 			}
 			
+			// Clean database collections linked to specific task
+			cleanMetricsTaskDatabase(task, otherMetricsExecution);	
+			
+			// prevent removing metricExecution among tasks on the same project when deleting the analysis task
 			for (MetricExecution metricExecution : task.getMetricExecutions()) {
 				if(!otherMetricsExecution.contains(metricExecution.getMetricProviderId())) {
 					this.repository.getMetricExecutions().remove(metricExecution);
@@ -418,18 +420,20 @@ public class AnalysisTaskService {
 		return task;
 	}
 	
-	private void cleanMetricsTaskDatabase(AnalysisTask task) {
+	private void cleanMetricsTaskDatabase(AnalysisTask task, List<String> otherMetricsExecution) {
 		DB projectDb = mongo.getDB(task.getProject().getProjectId());
 		if (mongo.getDatabaseNames().contains(projectDb.getName())) {
 			platform = Platform.getInstance();
 			List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 	
-			List<String> taskMetricIds = new ArrayList<String>();
+			List<String> taskMetricsToDelete = new ArrayList<String>();
 			for (MetricExecution metricExecution : task.getMetricExecutions()) {
-				taskMetricIds.add(metricExecution.getMetricProviderId());
+				if (!otherMetricsExecution.contains(metricExecution.getMetricProviderId())) {
+					taskMetricsToDelete.add(metricExecution.getMetricProviderId());
+				}
 			}
 			
-			for (String metricId : taskMetricIds) {
+			for (String metricId : taskMetricsToDelete) {
 				for (IMetricProvider iMetricProvider : platformProvider) {
 					if (iMetricProvider.getIdentifier().equals(metricId)) {
 						if(iMetricProvider instanceof IHistoricalMetricProvider) {
