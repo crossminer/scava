@@ -15,3 +15,5 @@ Bundle-Activator: org.eclipse.scava.metricprovider.trans.bugs.migrationissues.Ac
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.bugs.migrationissues
+Export-Package: org.eclipse.scava.metricprovider.trans.bugs.migrationissues,
+ org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model

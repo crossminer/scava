@@ -509,6 +509,12 @@
 	<module>
 		platform-extensions/org.eclipse.scava.rascal.java.build.manager
 	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.historic.bugs.migrationissues
+	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues
+	</module>
   </modules>
   <build>
     <plugins>
