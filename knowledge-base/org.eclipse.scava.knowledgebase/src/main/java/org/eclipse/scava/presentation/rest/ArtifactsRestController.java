@@ -19,7 +19,9 @@ import java.util.List;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
+import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
 import org.eclipse.scava.business.impl.GithubImporter;
+import org.eclipse.scava.business.impl.SimilarityManager;
 import org.eclipse.scava.business.impl.UnparallelImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.MetricForProjectRepository;
@@ -70,6 +72,10 @@ public class ArtifactsRestController {
 	private MetricForProjectRepository m4pRepository;
 	@Value("${migration.local.m3.files.path}")
 	private String localM3Files;
+	@Autowired
+	private SimilarityManager similarityManager;
+	@Autowired
+	private CROSSRecSimilarityCalculator crossRecSimilarityCalculator;
 	
 	@Autowired
 	private UnparallelImporter unparallelImporter;
@@ -199,4 +205,17 @@ public class ArtifactsRestController {
 		Files.write(path, bytes);
 		return fileName;
 	}
+	@ApiOperation(value = "Initialize distance matrix (by CROSSRec similarity function).")
+	@RequestMapping(value = "/initdistancematrix", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Object> initializeDistanceMatrix() {
+		try {
+			similarityManager.createAndStoreDistanceMatrix(crossRecSimilarityCalculator);
+			return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
+		} catch(Exception e) {
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+
 }

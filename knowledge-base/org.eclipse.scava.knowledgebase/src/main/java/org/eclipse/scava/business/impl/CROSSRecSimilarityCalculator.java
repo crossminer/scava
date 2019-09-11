@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table; 
 @Service
@@ -57,6 +58,8 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	@Override
 	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts, Map<String, String> params) {
 		Table<String, String, Double> result = HashBasedTable.create();
+		Map<String, Artifact> temp = Maps.newHashMap();
+		artifacts.forEach(z -> temp.put(z.getFullName(), z));		
 		for (Artifact artifact : artifacts) {
 			List<Dependency> deps = new ArrayList<>();
 			for (String dependency : artifact.getDependencies()) {
@@ -71,7 +74,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 			try {
 				Map<String, Double> map = computeWeightCosineSimilarity(deps);
 				for (Map.Entry<String, Double> entry : map.entrySet()){
-				    result.put(artifact.getFullName(), artifactRepository.findOne(entry.getKey()).getFullName(), entry.getValue());
+				    result.put(artifact.getFullName(), temp.get(entry.getKey()).getFullName(), entry.getValue());
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());

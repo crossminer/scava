@@ -35,8 +35,10 @@ public class UnparallelImporter{
 			Artifact art = new Artifact();
 			int count = 0;
 			for (String value : list) {
-				if(count == 0)
+				if(count == 0) {
 					art.setName(value);
+					art.setFullName(value);
+				}
 				else 
 					art.getDependencies().add("no_maven:" + value);
 				count ++;

@@ -109,6 +109,9 @@ public class SimilarityManager implements ISimilarityManager {
 	 */
 	@Override
 	public void createAndStoreDistanceMatrix(ISimilarityCalculator simCalculator) {
+		List<Relation> dbd = relationRepository.findAllByTypeName("CrossRec");
+		logger.info("#Reletaion to be {}", dbd.size());
+		relationRepository.delete(dbd);
 		List<Artifact> artifacts = appliableProjects(simCalculator);
 		if (simCalculator instanceof ISingleSimilarityCalculator) {
 			ISingleSimilarityCalculator singleCalculator = (ISingleSimilarityCalculator) simCalculator;
@@ -137,9 +140,10 @@ public class SimilarityManager implements ISimilarityManager {
 			map.put("committers", "true");
 			map.put("deps", "true");
 			map.put("stargazers", "true");
-			map.put("freqDeps", "129");
+			map.put("freqDeps", "129"); 
 			Table<String, String, Double> distanceMatrix = aggregateSimilarityCalculator
 					.calculateAggregatedSimilarityValues(artifacts, map);
+			logger.info("Storing distance matrix");
 			storeDistanceMatrix(distanceMatrix, aggregateSimilarityCalculator);
 
 		}
