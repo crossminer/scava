@@ -217,5 +217,13 @@ public class ArtifactsRestController {
 		}
 	}
 	
+	@ApiOperation(value = "Get artifact by fullname")
+	@RequestMapping(value = "/name/{project_name}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Artifact getArtifactByFullName(@PathVariable("project_name") String projectName) {
+		return artifactRepository.findOneByFullName(projectName);
+			
+	}
+	
 
 }
