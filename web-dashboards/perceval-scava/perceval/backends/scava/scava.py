@@ -561,14 +561,15 @@ class ScavaClient(HttpClient):
                 return '[]'
 
             for t in json_metric['datatable']:
-                project_topic = {
-                    "topic": t['Topic'],
-                    "date": t['Date'],
-                    "comments": t['Comments'],
-                    "scava_metric": METRIC_PROVIDER_ID_COMMENTS_TOPICS
-                }
+                for topic in t['Topics']:
+                    project_topic = {
+                        "topic": topic,
+                        "date": t['Date'],
+                        "comments": t['Comments'],
+                        "scava_metric": METRIC_PROVIDER_ID_COMMENTS_TOPICS
+                    }
 
-                yield json.dumps(project_topic)
+                    yield json.dumps(project_topic)
         else:
             raise ValueError(category + ' not supported in Scava')
 

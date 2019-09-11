@@ -280,7 +280,7 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
                 metric['metric_es_compute'] = 'sample'
                 metric['datetime'] = sample['Date']
 
-            if mdata['series'] in sample and mdata['series'] != 'Repository':
+            if mdata['series'] in sample and mdata['series'] not in ['Repository', 'Topics']:
                 metric['metric_id'] = mdata['id'] + '_' + sample[mdata['series']]
                 metric['metric_desc'] = mdata['description'] + '(' + sample[mdata['series']] + ')',
                 metric['metric_name'] = mdata['name'] + '(' + sample[mdata['series']] + ')'

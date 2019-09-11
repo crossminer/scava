@@ -26,7 +26,7 @@ public map[loc, real] MIF(
 	ancestors = superTypes+;
 	
 	for (t <- allTypes) {
-		newMethods = size(typeMethods[t]);
+		newMethods = size(typeMethods[t]?{});
 		inheritedMethods = size(inheritableConcreteMethods[ancestors[t]]);
 		totalMethods = newMethods + inheritedMethods;
 		

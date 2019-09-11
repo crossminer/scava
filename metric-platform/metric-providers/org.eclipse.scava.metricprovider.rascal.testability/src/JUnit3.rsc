@@ -11,10 +11,13 @@ module JUnit3
 
 import lang::java::m3::Core;
 import Set;
+import String;
+import Relation;
 
-set[loc] jUnit3BaseClass = { |java+class:///junit/framework/TestCase|,
-                             |java+class:///TestCase| // failsafe
-                           };
+set[loc] jUnit3BaseClass = {
+	|java+class:///junit/framework/TestCase|,
+	|java+class:///TestCase| // failsafe
+};
 
 @memo
 private set[loc] getTestClasses(M3 m) {
@@ -23,39 +26,24 @@ private set[loc] getTestClasses(M3 m) {
 
 @memo
 set[loc] getJUnit3TestMethods(M3 m) {
-  set[loc] result = {};
-  for (testClass <- getTestClasses(m)) {
-    set[loc] candidateMethods = { candidate | candidate <- m.containment[testClass], isMethod(candidate) };
-    rel[loc, str] invertedNamesRel = m.names<1,0>;
-    for (candidate <- candidateMethods) {
-      if (size(invertedNamesRel[candidate]) > 0) {
-        if (nameStartsWithTest(getOneFrom(invertedNamesRel[candidate]))) {
-          result += candidate;
-        }
-      }
-    }
-  }
-  return result;
+  rel[loc, str] invNames = invert(m.names);
+
+  return
+  	{ candidate | testClass <- getTestClasses(m), candidate <- methods(m, testClass),
+  		isTestMethod(getOneFrom(invNames[candidate]) ? "") };
 }
 
+@memo
 set[loc] getJUnit3SetupMethods(M3 m) {
-  set[loc] result = {};
-  for (testClass <- getTestClasses(m)) {
-    set[loc] candidateMethods = { candidate | candidate <- m.containment[testClass], isMethod(candidate) };
-    rel[loc, str] invertedNamesRel = m.names<1,0>;
-    for (candidate <- candidateMethods) {
-      if (size(invertedNamesRel[candidate]) > 0) {
-        if (isTestSetup(getOneFrom(invertedNamesRel[candidate]))) {
-          result += candidate;
-        }
-      }
-    }
-  }
-  return result;
+  rel[loc, str] invNames = invert(m.names);
+
+  return
+  	{ candidate | testClass <- getTestClasses(m), candidate <- methods(m, testClass),
+  		isTestSetup(getOneFrom(invNames[candidate]) ? "") };
 }
 
-private bool nameStartsWithTest(str name) {
-  return /^test.*/ := name;
+private bool isTestMethod(str name) {
+  return startsWith(name, "test");
 }
 
 private bool isTestSetup(str name) {

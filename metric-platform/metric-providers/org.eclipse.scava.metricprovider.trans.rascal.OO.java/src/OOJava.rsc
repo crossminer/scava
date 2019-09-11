@@ -56,16 +56,16 @@ rel[loc, loc] superTypes(M3 m) = m.extends + m.implements;
 rel[loc, loc] typeDependencies(M3 m3) = typeDependencies(superTypes(m3), m3.methodInvocation, m3.fieldAccess, typeSymbolsToTypeDependencies(m3.types), domainR(m3.containment+, allTypes(m3)), allTypes(m3));
 
 @memo
-rel[loc, loc] allMethods(M3 m3) = { <t, m> | t <- allTypes(m3), m <- m3.containment[t], isMethod(m) };
+rel[loc, loc] allMethods(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isMethod(m) };
 
 @memo
-map[loc, set[loc]] allMethodsMap(M3 m3) = ( t : { m | m <- m3.containment[t], isMethod(m) } | t <- allTypes(m3) );
+map[loc, set[loc]] allMethodsMap(M3 m3) = toMap(allMethods(m3));
 
 @memo
-rel[loc, loc] allFields(M3 m3) = { <t, f> | t <- allTypes(m3), f <- m3.containment[t], isField(f) };
+rel[loc, loc] allFields(M3 m3) = { <t, m> | <t, m> <- m3.containment, isType(t), isField(m) };
 
 @memo
-map[loc, set[loc]] allFieldsMap(M3 m3) = ( t : { f | f <- m3.containment[t], isField(f) } | t <- allTypes(m3) );
+map[loc, set[loc]] allFieldsMap(M3 m3) = toMap(allFields(m3));
 
 @memo
 map[loc, set[loc]] emptyMethodsMap(M3 m) = (me:{} | me <- methods(m));
@@ -89,7 +89,7 @@ rel[loc, loc] packageTypes(M3 m3) = { <p, t> | <p, t> <- transitiveContainment(m
 map[loc, set[Modifier]] modifiersMap(M3 m) = toMap(m.modifiers);
 
 @memo
-rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), ({\private(), \final(), \static()} & m3.modifiers[m]) == {} };
+rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), <m, \private()> notin m3.modifiers, <m, \final()> notin m3.modifiers, <m, \static()> notin m3.modifiers };
 
 @metric{A-Java}
 @doc{Abstractness (Java)}
@@ -98,9 +98,9 @@ rel[loc, loc] overridableMethods(M3 m3) = { <p, m> | <p, m> <- allMethods(m3), (
 @historic
 real A_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Language, loc, M3] m3s = {}) {
 	M3 m3 = systemM3(m3s, delta = delta);
-  	types = allTypes(m3);
-  	abstractTypes = { t | t <- types, \abstract() in m3.modifiers[t]};
-  	return A(abstractTypes, types);
+	set[loc] types = allTypes(m3);
+	set[loc] abstractTypes = { t | t <- types, <t, \abstract()> in m3.modifiers };
+	return A(abstractTypes, types);
 }
 
 @metric{RR-Java}
@@ -249,7 +249,7 @@ map[loc, real] MIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), ({\private(), \abstract()} & m3.modifiers[m]) == {} };
+	rel[loc, loc] inheritableMethods = { <t, m> | <t, m> <- allMethods(m3), <m, \private()> notin m3.modifiers, <m, \abstract()> notin m3.modifiers };
 	
 	return MIF(allMethodsMap(m3), inheritableMethods, m3.extends, classes(m3));
 }
@@ -262,7 +262,7 @@ map[loc, real] AIF_Java(ProjectDelta delta = ProjectDelta::\empty(), rel[Languag
 	M3 m3 = systemM3(m3s, delta = delta);
 
 	// TODO package visibility?	
-	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), \private() notin m3.modifiers[f]};
+	publicAndProtectedFields = { <t, f> | <t, f> <- allFields(m3), <f, \private()> notin m3.modifiers };
 	
 	return MIF(allFieldsMap(m3), publicAndProtectedFields, superTypes(m3), allTypes(m3));
 }
@@ -276,12 +276,11 @@ private real hidingFactor(M3 m3, rel[loc, loc] members) {
 	rel[loc, loc] packageVisibleMembers = {};
 	
 	for (<t, m> <- members) {
-		mods = m3.modifiers[m];
-		if (\private() in mods) {
+		if (<m, \private()> in m3.modifiers) {
 			; // ignored
-		} else if (\protected() in mods) {
+		} else if (<m, \protected()> in m3.modifiers) {
 			protectedMembers += {<t, m>};
-		} else if (\public() in mods) {
+		} else if (<m, \public()> in m3.modifiers) {
 			publicMembers += {m};
 		} else {
 			packageVisibleMembers += {<t, m>};
