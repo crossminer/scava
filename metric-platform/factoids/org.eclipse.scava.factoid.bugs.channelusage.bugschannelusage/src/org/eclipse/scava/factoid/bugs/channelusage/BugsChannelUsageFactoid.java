@@ -48,8 +48,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public String getSummaryInformation() {
-		return "This plugin generates the factoid regarding emotions for bug trackers. "
-				+ "For example, the percentage of positive, negative or surprise emotions expressed"; 
+		return "This plugin generates the factoid regarding usage data for bug trackers. For example, the total number of new bugs, comments or patches per year."; 
 		// This method will NOT be removed in a later version.
 	}
 
