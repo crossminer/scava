@@ -20,21 +20,22 @@ public class AnalysisTasksStatusByProjectResource extends AbstractApiResource{
 		
 		List<AnalysisTask> tasks = service.getAnalysisTasksByProject(projectId);
 		
-		boolean stat = false;
+		String stat = "none";
 		for (AnalysisTask analysisTask : tasks) {
-			System.out.println(analysisTask.getScheduling().getStatus());
 			if (analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) || 
 					analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
-				stat = true;
+				stat = "up-to-date";
 			} else {
-				stat = false;
+				stat = "in-progress";
 				break;
 			}
 		}
-		if (stat) {
+		if (stat.equals("up-to-date")) {
 			globalStatus = "{\"value\":\"up-to-date\"}";
-		} else {
+		} else if (stat.equals("in-progress")){
 			globalStatus = "{\"value\":\"in-progress\"}";
+		} else {
+			globalStatus = "{\"value\":\"none\"}";
 		}
 		
 		StringRepresentation rep = new StringRepresentation(globalStatus);
