@@ -21,8 +21,17 @@
                     </div>
                 </td>
                 <td class="panel" rowspan="5">
+                    <div *ngIf="globalStatus == 'none' && hasAuthorities"
+                        class="panel-profile status">
+                        <div class="panel-body text-center">
+                            <i class="fa fa-4x fa-circle-o"></i>
+                            <h3 class="panel-title">
+                                <strong>No Data</strong>
+                            </h3>
+                        </div>
+                    </div>
                     <div *ngIf="globalStatus == 'up-to-date' && executionTasks?.length !== 0 && hasAuthorities"
-                        class="panel-profile up-to-date">
+                        class="panel-profile status">
                         <div class="panel-body text-center">
                             <i class="fa fa-4x fa-check-circle"></i>
                             <h3 class="panel-title">
@@ -31,11 +40,11 @@
                         </div>
                     </div>
                     <div *ngIf="globalStatus == 'in-progress' && executionTasks?.length !== 0 && hasAuthorities"
-                        class="panel-profile in-progress">
+                        class="panel-profile status">
                         <div class="panel-body text-center">
-                            <i class="fa fa-4x fa-spinner"></i>
+                            <i class="fa fa-4x fa-play-circle"></i>
                             <h3 class="panel-title">
-                                <strong>Analysis In Progress</strong>
+                                <strong>In Progress</strong>
                             </h3>
                         </div>
                     </div>
