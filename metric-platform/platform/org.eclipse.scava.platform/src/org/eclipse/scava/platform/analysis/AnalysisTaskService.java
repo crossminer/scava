@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -183,8 +181,21 @@ public class AnalysisTaskService {
 			// Clean database collections linked to specific task
 			cleanMetricsTaskDatabase(task);
 			// delete the analysis task
-			for (MetricExecution metricProvider : task.getMetricExecutions()) {
-				this.repository.getMetricExecutions().remove(metricProvider);
+			
+			List<String> otherMetricsExecution = new ArrayList<String>();
+			List<AnalysisTask> tasksByProject = getAnalysisTasksByProject(task.getProject().getProjectId());
+			for (AnalysisTask analysisTask : tasksByProject) {
+				if (!analysisTask.getAnalysisTaskId().equals(task.getAnalysisTaskId())) {
+					for (MetricExecution metricExec : analysisTask.getMetricExecutions()) {
+						otherMetricsExecution.add(metricExec.getMetricProviderId());
+					}
+				}
+			}
+			
+			for (MetricExecution metricExecution : task.getMetricExecutions()) {
+				if(!otherMetricsExecution.contains(metricExecution.getMetricProviderId())) {
+					this.repository.getMetricExecutions().remove(metricExecution);
+				}
 			}			
 			ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(task.getProject().getProjectId());
 			project.getAnalysisTasks().remove(task);
