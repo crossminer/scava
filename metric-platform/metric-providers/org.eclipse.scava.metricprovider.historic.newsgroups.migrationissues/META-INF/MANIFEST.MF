@@ -9,7 +9,7 @@ Bundle-Activator: org.eclipse.scava.metricprovider.historic.newsgroups.migration
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues;bundle-version="1.0.0",
- org.eclipse.osgi;bundle-version="3.12.100",
+ org.eclipse.osgi,
  com.googlecode.pongo.runtime;bundle-version="0.5.0",
  org.eclipse.platform;bundle-version="4.7.3",
  org.eclipse.scava.repository.model;bundle-version="1.0.0",
