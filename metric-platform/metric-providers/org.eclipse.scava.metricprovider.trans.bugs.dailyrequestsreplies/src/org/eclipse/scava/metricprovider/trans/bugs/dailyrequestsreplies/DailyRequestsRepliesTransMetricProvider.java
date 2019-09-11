@@ -155,24 +155,18 @@ BugsDailyRequestsRepliesTransMetric>{
 
 		for (DayComments dayComments: db.getDayComments()) {
 			
-			float percentageOfComments;
-			if (sumOfComments == 0)
-				percentageOfComments = ( (float) 100 ) / 7;
-			else
+			float percentageOfComments = (float) 0.0;
+			if (sumOfComments > 0)
 				percentageOfComments = ( (float) 100 * dayComments.getNumberOfComments() ) / sumOfComments;
 			dayComments.setPercentageOfComments(percentageOfComments);
 			
-			float percentageOfRequests;
-			if (sumOfRequests == 0)
-				percentageOfRequests = ( (float) 100 ) / 7;
-			else
+			float percentageOfRequests = (float) 0.0;
+			if (sumOfRequests > 0)
 				percentageOfRequests = ( (float) 100 * dayComments.getNumberOfRequests() ) / sumOfRequests;
 			dayComments.setPercentageOfRequests(percentageOfRequests);
 			
-			float percentageOfReplies;
-			if (sumOfReplies == 0)
-				percentageOfReplies = ( (float) 100 ) / 7;
-			else
+			float percentageOfReplies = (float) 0.0;
+			if (sumOfReplies > 0)
 				percentageOfReplies = ( (float) 100 * dayComments.getNumberOfReplies() ) / sumOfReplies;
 			dayComments.setPercentageOfReplies(percentageOfReplies);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
 package org.eclipse.scava.factoid.newsgroups.weekly;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,17 +88,27 @@ public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvide
 		float uniformPercentageOfComments = ( (float) 100 ) / 7;
 		float maxPercentageOfArticles = 0,
 			  minPercentageOfArticles = 101;
-		String maxPercentageDay = "",
-			   minPercentageDay = "";
+		List<String> maxPercentageDay = new ArrayList<String>(1);
+		List<String> minPercentageDay = new ArrayList<String>(1);
 		
 		for (DayArticles dayArticles: dailyRequestsRepliesTransMetric.getDayArticles()) {
-			if ( dayArticles.getPercentageOfArticles() > maxPercentageOfArticles ) {
-				maxPercentageOfArticles = dayArticles.getPercentageOfArticles();
-				maxPercentageDay = dayArticles.getName();
+			if ( dayArticles.getPercentageOfArticles() >= maxPercentageOfArticles )
+			{
+				if ( dayArticles.getPercentageOfArticles() >= maxPercentageOfArticles )
+				{
+					maxPercentageOfArticles = dayArticles.getPercentageOfArticles();
+					maxPercentageDay.clear();
+				}
+				maxPercentageDay.add(dayArticles.getName());
 			}
-			if ( dayArticles.getPercentageOfArticles() < minPercentageOfArticles ) {
-				minPercentageOfArticles = dayArticles.getPercentageOfArticles(); 
-				minPercentageDay = dayArticles.getName();
+			if ( dayArticles.getPercentageOfArticles() <= minPercentageOfArticles )
+			{
+				if ( dayArticles.getPercentageOfArticles() <= minPercentageOfArticles )
+				{
+					minPercentageOfArticles = dayArticles.getPercentageOfArticles();
+					minPercentageDay.clear();
+				}
+				minPercentageDay.add(dayArticles.getName());
 			}
 		}
 		
@@ -110,36 +121,73 @@ public class NewsgroupsChannelWeeklyFactoid extends AbstractFactoidMetricProvide
 		} else {
 			factoid.setStars(StarRating.ONE);
 		}
+		
+		
 
 		StringBuffer stringBuffer = new StringBuffer();
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-		stringBuffer.append("The busiest day of the week is ");
-		stringBuffer.append(maxPercentageDay);
-		stringBuffer.append(" (");
-		stringBuffer.append(decimalFormat.format(maxPercentageOfArticles));
-		stringBuffer.append("% of articles), while the least busy day is ");
-		stringBuffer.append(minPercentageDay);
-		stringBuffer.append(" (");
-		stringBuffer.append(decimalFormat.format(minPercentageOfArticles));
-		stringBuffer.append("%) (");
-		boolean first = true;
-		for (DayArticles dayArticles: dailyRequestsRepliesTransMetric.getDayArticles()) {
-			if ( (!dayArticles.getName().equals(maxPercentageDay)) &&
-				 (!dayArticles.getName().equals(minPercentageDay)) ) {
-				if (!first)
-					stringBuffer.append(", ");
-				stringBuffer.append(dayArticles.getName());
-				stringBuffer.append(": ");
-				stringBuffer.append(decimalFormat.format(dayArticles.getPercentageOfArticles()));
-				stringBuffer.append("%");
-				first = false;
-			}
+		if(maxPercentageOfArticles==(float) 0.0)
+		{
+			stringBuffer.append("None of the days is busy");
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(maxPercentageOfArticles));
+			stringBuffer.append("% of articles).\n");
 		}
-		stringBuffer.append(").\n");
-
+		else
+		{
+			if(maxPercentageDay.size()==1)
+			{
+				stringBuffer.append("The busiest day of the week is ");
+				stringBuffer.append(maxPercentageDay.get(0));
+			}
+			else
+			{
+				stringBuffer.append("The busiest days of the week are ");
+				readLists(stringBuffer, maxPercentageDay);
+			}
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(maxPercentageOfArticles));
+			stringBuffer.append("% of articles)");
+			if(minPercentageDay.size()==1)
+			{
+				stringBuffer.append(", while the least busy day is ");
+				stringBuffer.append(minPercentageDay.get(0));
+			}
+			else
+			{
+				stringBuffer.append(", while the least busy days are ");
+				readLists(stringBuffer, minPercentageDay);
+			}
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(minPercentageOfArticles));
+			stringBuffer.append("%) Specifially, each day of the week has the the following percentages. ");
+			boolean first = true;
+			for (DayArticles dayArticles: dailyRequestsRepliesTransMetric.getDayArticles()) {
+					if (!first)
+						stringBuffer.append(", ");
+					stringBuffer.append(dayArticles.getName());
+					stringBuffer.append(": ");
+					stringBuffer.append(decimalFormat.format(dayArticles.getPercentageOfArticles()));
+					stringBuffer.append("%");
+					first = false;
+			}
+			stringBuffer.append(".\n");
+		}
 		factoid.setFactoid(stringBuffer.toString());
+	}
 	
+	private void readLists(StringBuffer stringBuffer, List<String> list)
+	{
+		boolean first = true;
+		
+		for(String element : list)
+		{
+			if (!first)
+				stringBuffer.append(", ");
+			stringBuffer.append(element);
+			first=false;
+		}
 	}
 
 }

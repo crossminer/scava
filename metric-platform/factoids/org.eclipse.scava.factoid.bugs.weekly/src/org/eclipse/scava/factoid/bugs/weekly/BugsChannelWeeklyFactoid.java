@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
 package org.eclipse.scava.factoid.bugs.weekly;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +36,6 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 	@Override
 	public String getFriendlyName() {
 		return "Bug Tracker Weekly";
-		// This method will NOT be removed in a later version.
 	}
 
 	@Override
@@ -43,7 +43,6 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 		return "This plugin generates the factoid regarding weekly user engagements for bug trackers. "
 				+ "For example, the average number of bug comments per week. This can be used to present "
 				+ "the most and least busy week in terms of engagement for a particular project."; 
-		// This method will NOT be removed in a later version.
 	}
 
 	@Override
@@ -63,7 +62,6 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 
 	@Override
 	public void measureImpl(Project project, ProjectDelta delta, Factoid factoid) {
-//		factoid.setCategory(FactoidCategory.BUGS);
 		factoid.setName(getFriendlyName());
 
 		BugsDailyRequestsRepliesTransMetric dailyRequestsRepliesTransMetric = 
@@ -72,17 +70,27 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 		float uniformPercentageOfComments = ( (float) 100 ) / 7;
 		float maxPercentageOfComments = 0,
 			  minPercentageOfComments = 101;
-		String maxPercentageDay = "",
-			   minPercentageDay = "";
+		List<String> maxPercentageDay = new ArrayList<String>(1);
+		List<String> minPercentageDay = new ArrayList<String>(1);
 		
-		for (DayComments dayComments: dailyRequestsRepliesTransMetric.getDayComments()) {
-			if ( dayComments.getPercentageOfComments() > maxPercentageOfComments ) {
-				maxPercentageOfComments = dayComments.getPercentageOfComments();
-				maxPercentageDay = dayComments.getName();
+		for (DayComments dayComments: dailyRequestsRepliesTransMetric.getDayComments())
+		{
+			if ( dayComments.getPercentageOfComments() >= maxPercentageOfComments ) {
+				if ( dayComments.getPercentageOfComments() > maxPercentageOfComments )
+				{
+					maxPercentageOfComments = dayComments.getPercentageOfComments();
+					maxPercentageDay.clear();
+				}
+				maxPercentageDay.add(dayComments.getName());
 			}
-			if ( dayComments.getPercentageOfComments() < minPercentageOfComments ) {
-				minPercentageOfComments = dayComments.getPercentageOfComments(); 
-				minPercentageDay = dayComments.getName();
+			if(dayComments.getPercentageOfComments() <= minPercentageOfComments)
+			{
+				if (dayComments.getPercentageOfComments() < minPercentageOfComments)
+				{
+					minPercentageOfComments = dayComments.getPercentageOfComments();
+					minPercentageDay.clear();
+				}
+				minPercentageDay.add(dayComments.getName());
 			}
 		}
 		
@@ -99,32 +107,68 @@ public class BugsChannelWeeklyFactoid extends AbstractFactoidMetricProvider{
 		StringBuffer stringBuffer = new StringBuffer();
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-		stringBuffer.append("The busiest day of the week is ");
-		stringBuffer.append(maxPercentageDay);
-		stringBuffer.append(" (");
-		stringBuffer.append(decimalFormat.format(maxPercentageOfComments));
-		stringBuffer.append("% of reports and comments), while the least busy day is ");
-		stringBuffer.append(minPercentageDay);
-		stringBuffer.append(" (");
-		stringBuffer.append(decimalFormat.format(minPercentageOfComments));
-		stringBuffer.append("%) (");
-		boolean first = true;
-		for (DayComments dayComments: dailyRequestsRepliesTransMetric.getDayComments()) {
-			if ( (!dayComments.getName().equals(maxPercentageDay)) &&
-				 (!dayComments.getName().equals(minPercentageDay)) ) {
-				if (!first)
-					stringBuffer.append(", ");
-				stringBuffer.append(dayComments.getName());
-				stringBuffer.append(": ");
-				stringBuffer.append(decimalFormat.format(dayComments.getPercentageOfComments()));
-				stringBuffer.append("%");
-				first = false;
-			}
+		if(maxPercentageOfComments==(float) 0.0)
+		{
+			stringBuffer.append("None of the days is busy");
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(maxPercentageOfComments));
+			stringBuffer.append("% of reports and comments every day).\n");
 		}
-		stringBuffer.append(").\n");
-		
+		else
+		{
+			if(maxPercentageDay.size()==1)
+			{
+				stringBuffer.append("The busiest day of the week is ");
+				stringBuffer.append(maxPercentageDay.get(0));
+			}
+			else
+			{
+				stringBuffer.append("The busiest days of the week are ");
+				readLists(stringBuffer, maxPercentageDay);
+			}
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(maxPercentageOfComments));
+			stringBuffer.append("% of reports and comments)");
+			if(minPercentageDay.size()==1)
+			{
+				stringBuffer.append(", while the least busy day is ");
+				stringBuffer.append(minPercentageDay.get(0));
+			}
+			else
+			{
+				stringBuffer.append(", while the least busy days are ");
+				readLists(stringBuffer, minPercentageDay);
+			}
+			stringBuffer.append(" (");
+			stringBuffer.append(decimalFormat.format(minPercentageOfComments));
+			stringBuffer.append("%) Specifially, each day of the week has the the following percentages. ");
+			boolean first = true;
+			for (DayComments dayComments: dailyRequestsRepliesTransMetric.getDayComments()) {
+					if (!first)
+						stringBuffer.append(", ");
+					stringBuffer.append(dayComments.getName());
+					stringBuffer.append(": ");
+					stringBuffer.append(decimalFormat.format(dayComments.getPercentageOfComments()));
+					stringBuffer.append("%");
+					first = false;
+			}
+			stringBuffer.append(".\n");
+		}
 		factoid.setFactoid(stringBuffer.toString());
 
+	}
+	
+	private void readLists(StringBuffer stringBuffer, List<String> list)
+	{
+		boolean first = true;
+		
+		for(String element : list)
+		{
+			if (!first)
+				stringBuffer.append(", ");
+			stringBuffer.append(element);
+			first=false;
+		}
 	}
 
 }

@@ -147,24 +147,18 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 
 		for (DayArticles dayArticles: db.getDayArticles()) {
 			
-			float percentageOfComments;
-			if (sumOfArticles == 0)
-				percentageOfComments = ( (float) 100 ) / 7;
-			else
+			float percentageOfComments = (float) 0.0;
+			if (sumOfArticles > 0)
 				percentageOfComments = ( (float) 100 * dayArticles.getNumberOfArticles() ) / sumOfArticles;
 			dayArticles.setPercentageOfArticles(percentageOfComments);
 			
-			float percentageOfRequests;
-			if (sumOfRequests == 0)
-				percentageOfRequests = ( (float) 100 ) / 7;
-			else
+			float percentageOfRequests = (float) 0.0;
+			if (sumOfRequests > 0)
 				percentageOfRequests = ( (float) 100 * dayArticles.getNumberOfRequests() ) / sumOfRequests;
 			dayArticles.setPercentageOfRequests(percentageOfRequests);
 			
-			float percentageOfReplies;
-			if (sumOfReplies == 0)
-				percentageOfReplies = ( (float) 100 ) / 7;
-			else
+			float percentageOfReplies = (float) 0.0;
+			if (sumOfReplies > 0)
 				percentageOfReplies = ( (float) 100 * dayArticles.getNumberOfReplies() ) / sumOfReplies;
 			dayArticles.setPercentageOfReplies(percentageOfReplies);
 		}
