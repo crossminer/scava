@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.scava.platform.IHistoricalMetricProvider;
 import org.eclipse.scava.platform.IMetricProvider;
@@ -180,11 +178,26 @@ public class AnalysisTaskService {
 				worker.setWorkerId(workerId);
 				this.repository.getWorkers().add(worker);
 			}
+			
+			// Retrieve metricExecutions on the same project
+			List<String> otherMetricsExecution = new ArrayList<String>();
+			List<AnalysisTask> tasksByProject = getAnalysisTasksByProject(task.getProject().getProjectId());
+			for (AnalysisTask analysisTask : tasksByProject) {
+				if (!analysisTask.getAnalysisTaskId().equals(task.getAnalysisTaskId())) {
+					for (MetricExecution metricExec : analysisTask.getMetricExecutions()) {
+						otherMetricsExecution.add(metricExec.getMetricProviderId());
+					}
+				}
+			}
+			
 			// Clean database collections linked to specific task
-			cleanMetricsTaskDatabase(task);
-			// delete the analysis task
-			for (MetricExecution metricProvider : task.getMetricExecutions()) {
-				this.repository.getMetricExecutions().remove(metricProvider);
+			cleanMetricsTaskDatabase(task, otherMetricsExecution);	
+			
+			// prevent removing metricExecution among tasks on the same project when deleting the analysis task
+			for (MetricExecution metricExecution : task.getMetricExecutions()) {
+				if(!otherMetricsExecution.contains(metricExecution.getMetricProviderId())) {
+					this.repository.getMetricExecutions().remove(metricExecution);
+				}
 			}			
 			ProjectAnalysis project = this.repository.getProjects().findOneByProjectId(task.getProject().getProjectId());
 			project.getAnalysisTasks().remove(task);
@@ -407,18 +420,20 @@ public class AnalysisTaskService {
 		return task;
 	}
 	
-	private void cleanMetricsTaskDatabase(AnalysisTask task) {
+	private void cleanMetricsTaskDatabase(AnalysisTask task, List<String> otherMetricsExecution) {
 		DB projectDb = mongo.getDB(task.getProject().getProjectId());
 		if (mongo.getDatabaseNames().contains(projectDb.getName())) {
 			platform = Platform.getInstance();
 			List<IMetricProvider> platformProvider = this.platform.getMetricProviderManager().getMetricProviders();
 	
-			List<String> taskMetricIds = new ArrayList<String>();
+			List<String> taskMetricsToDelete = new ArrayList<String>();
 			for (MetricExecution metricExecution : task.getMetricExecutions()) {
-				taskMetricIds.add(metricExecution.getMetricProviderId());
+				if (!otherMetricsExecution.contains(metricExecution.getMetricProviderId())) {
+					taskMetricsToDelete.add(metricExecution.getMetricProviderId());
+				}
 			}
 			
-			for (String metricId : taskMetricIds) {
+			for (String metricId : taskMetricsToDelete) {
 				for (IMetricProvider iMetricProvider : platformProvider) {
 					if (iMetricProvider.getIdentifier().equals(metricId)) {
 						if(iMetricProvider instanceof IHistoricalMetricProvider) {
