@@ -52,12 +52,15 @@ public class WorkerExecutor implements Runnable {
 				loggerOssmeter.info("Worker '" + WORKER_ID + "' Executing " + analysisTaskId + " Task");
 				platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId, WORKER_ID);
 				this.analyser = new ProjectAnalyser(this.platform);
-				this.analyser.executeAnalyse(analysisTaskId, WORKER_ID);
-				platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+				boolean analysisStatus = this.analyser.executeAnalyse(analysisTaskId, WORKER_ID);
+				if (analysisStatus) {
+					platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+				} else {
+					platform.getAnalysisRepositoryManager().getWorkerService().interruptFailedTask(WORKER_ID);
+				}
 
 			} else {
-				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers()
-						.findOneByWorkerId(WORKER_ID);
+				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
 				worker.setHeartbeat(new Date());
 				platform.getAnalysisRepositoryManager().getRepository().sync();
 				loggerOssmeter.info("Worker '" + WORKER_ID + "' Waiting new Tasks");
@@ -68,6 +71,7 @@ public class WorkerExecutor implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 		}
 	}
 
