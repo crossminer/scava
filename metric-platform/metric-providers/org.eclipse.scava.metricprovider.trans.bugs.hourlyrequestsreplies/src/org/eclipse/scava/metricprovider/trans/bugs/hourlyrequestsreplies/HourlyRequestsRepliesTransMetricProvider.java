@@ -148,24 +148,18 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 
 			for (HourComments hourComments: db.getHourComments()) {
 				
-				float percentageOfComments;
-				if (sumOfComments == 0)
-					percentageOfComments = ( (float) 100 ) / 24;
-				else
+				float percentageOfComments = (float) 0.0;
+				if (sumOfComments > 0)
 					percentageOfComments = ( (float) 100 * hourComments.getNumberOfComments() ) / sumOfComments;
 				hourComments.setPercentageOfComments(percentageOfComments);
 				
-				float percentageOfRequests;
-				if (sumOfRequests == 0)
-					percentageOfRequests = ( (float) 100 ) / 24;
-				else
+				float percentageOfRequests = (float) 0.0;
+				if (sumOfRequests > 0)
 					percentageOfRequests = ( (float) 100 * hourComments.getNumberOfRequests() ) / sumOfRequests;
 				hourComments.setPercentageOfRequests(percentageOfRequests);
 				
-				float percentageOfReplies;
-				if (sumOfReplies == 0)
-					percentageOfReplies = ( (float) 100 ) / 24;
-				else
+				float percentageOfReplies = (float) 0.0;
+				if (sumOfReplies > 0)
 					percentageOfReplies = ( (float) 100 * hourComments.getNumberOfReplies() ) / sumOfReplies;
 				hourComments.setPercentageOfReplies(percentageOfReplies);
 			}
