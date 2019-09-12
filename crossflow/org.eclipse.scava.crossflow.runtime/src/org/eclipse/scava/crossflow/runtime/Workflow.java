@@ -93,7 +93,7 @@ public abstract class Workflow {
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected CrossflowLogger logger = new CrossflowLogger(this);
 
-	protected BuiltinStream<FailedJob> failedJobsQueue = null;
+	protected BuiltinStream<FailedJob> failedJobsTopic = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
 
 	protected List<FailedJob> failedJobs = null;
@@ -198,7 +198,7 @@ public abstract class Workflow {
 		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
 		controlTopic = new BuiltinStream<>(this, "ControlTopic");
 		logTopic = new BuiltinStream<>(this, "LogTopic");
-		failedJobsQueue = new BuiltinStream<>(this, "FailedJobs", false);
+		failedJobsTopic = new BuiltinStream<>(this, "FailedJobs");
 		internalExceptionsQueue = new BuiltinStream<>(this, "InternalExceptions", false);
 
 		instanceId = UUID.randomUUID().toString();
@@ -220,11 +220,11 @@ public abstract class Workflow {
 		taskMetadataTopic.init();
 		controlTopic.init();
 		logTopic.init();
-		failedJobsQueue.init();
+		failedJobsTopic.init();
 		internalExceptionsQueue.init();
 
 		activeStreams.add(taskStatusTopic);
-		activeStreams.add(failedJobsQueue);
+		activeStreams.add(failedJobsTopic);
 		activeStreams.add(internalExceptionsQueue);
 		// XXX do not add this topic/queue or any other non-essential ones to
 		// activestreams as the workflow should be able to terminate regardless of their
@@ -383,7 +383,7 @@ public abstract class Workflow {
 			});
 
 			failedJobs = new ArrayList<>();
-			failedJobsQueue.addConsumer(new BuiltinStreamConsumer<FailedJob>() {
+			failedJobsTopic.addConsumer(new BuiltinStreamConsumer<FailedJob>() {
 
 				@Override
 				public void consume(FailedJob failedJob) {
@@ -793,7 +793,7 @@ public abstract class Workflow {
 				taskStatusDelayedUpdateTimer.cancel();
 
 			try {
-				failedJobsQueue.stop();
+				failedJobsTopic.stop();
 			} catch (Exception e) {
 				// Ignore any exception
 				e.printStackTrace();
@@ -861,8 +861,8 @@ public abstract class Workflow {
 		return controlTopic;
 	}
 	
-	public BuiltinStream<FailedJob> getFailedJobsQueue() {
-		return failedJobsQueue;
+	public BuiltinStream<FailedJob> getFailedJobsTopic() {
+		return failedJobsTopic;
 	}
 
 	public BuiltinStream<LogMessage> getLogTopic() {

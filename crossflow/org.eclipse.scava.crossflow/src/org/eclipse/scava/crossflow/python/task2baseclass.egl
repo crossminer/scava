@@ -65,7 +65,7 @@ class [%=t.name%]Base(Task):
 			logger.exception("")
 			try:
 				[%=s.type.name.ftlc()%].setFailures(int([%=s.type.name.ftlc()%].getFailures()) + 1)
-				self.workflow.getFailedJobsQueue().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
+				self.workflow.getFailedJobsTopic().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
 			except Exception as e:
 				logger.exception("")
 				self.workflow.reportInternalException(e, "")

@@ -141,7 +141,7 @@ operation Stream createEndOfConsumeMethod() {%]
 			} catch (Exception ex) {
 				try {
 					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
-					workflow.getFailedJobsQueue().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
+					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
 				} catch (Exception e) {
 					workflow.reportInternalException(e);
 				}

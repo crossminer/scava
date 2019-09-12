@@ -1235,7 +1235,7 @@ class Workflow(object):
         self.taskMetadataTopic = BuiltinStream(self, "TaskMetadataBroadcaster")
         self.controlTopic = BuiltinStream(self, "ControlTopic")
         self.logTopic = BuiltinStream(self, "LogTopic")
-        self.failedJobsQueue = BuiltinStream(self, "FailedJobs", False)
+        self.failedJobsTopic = BuiltinStream(self, "FailedJobs")
         self.internalExceptionsQueue = BuiltinStream(self, "InternalExceptions", False)
         
         self._allStreams = []
@@ -1245,7 +1245,7 @@ class Workflow(object):
         self._allStreams.append(self.taskMetadataTopic)
         self._allStreams.append(self.controlTopic)
         self._allStreams.append(self.logTopic)
-        self._allStreams.append(self.failedJobsQueue)
+        self._allStreams.append(self.failedJobsTopic)
         self._allStreams.append(self.internalExceptionsQueue)
 
         self.failedJobs = None
@@ -1338,11 +1338,11 @@ class Workflow(object):
         self.taskMetadataTopic.init()
         self.controlTopic.init()
         self.logTopic.init()
-        self.failedJobsQueue.init()
+        self.failedJobsTopic.init()
         self.internalExceptionsQueue.init()
 
         self.activeStreams.append(self.taskStatusTopic)
-        self.activeStreams.append(self.failedJobsQueue)
+        self.activeStreams.append(self.failedJobsTopic)
         self.activeStreams.append(self.internalExceptionsQueue)
         
         # XXX do not add this topic/queue or any other non-essential ones to
@@ -1467,8 +1467,8 @@ class Workflow(object):
     def getControlTopic(self): 
         return self.controlTopic
 
-    def getFailedJobsQueue(self): 
-        return self.failedJobsQueue
+    def getFailedJobsTopic(self): 
+        return self.failedJobsTopic
 
     def getFailedJobs(self): 
         return self.failedJobs
