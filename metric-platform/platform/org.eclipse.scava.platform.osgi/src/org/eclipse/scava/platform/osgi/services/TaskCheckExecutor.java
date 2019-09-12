@@ -38,7 +38,7 @@ public class TaskCheckExecutor implements Runnable {
 			
 			// Detect Worker Failure / Replace Task in execution pending list
 			for(Worker  worker : this.platform.getAnalysisRepositoryManager().getWorkerService().getWorkers()) {
-				if(worker.getCurrentTask() != null && new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
+				if(new Date().getTime() - worker.getHeartbeat().getTime() > heartbet) {			
 					
 					AnalysisTask task = this.platform.getAnalysisRepositoryManager().getTaskService().getTaskByAnalysisTaskId(worker.getCurrentTask().getAnalysisTaskId());
 					task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
