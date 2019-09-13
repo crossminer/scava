@@ -123,16 +123,19 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 			
 		for(DocumentationEntryDetectingCode documentationEntry : documentationEntriesDetectingCode)
 		{
-			documentationEntrySentiment = findDocumentationEntrySentiment(db, documentationEntry);
-			if(documentationEntrySentiment==null)
+			if(!documentationEntry.getNaturalLanguage().isEmpty())
 			{
-				documentationEntrySentiment= new DocumentationEntrySentiment();
-				documentationEntrySentiment.setEntryId(documentationEntry.getEntryId());
-				documentationEntrySentiment.setDocumentationId(documentationEntry.getDocumentationId());
-				db.getDocumentationEntriesSentiment().add(documentationEntrySentiment);
+				documentationEntrySentiment = findDocumentationEntrySentiment(db, documentationEntry.getDocumentationId(), documentationEntry.getEntryId());
+				if(documentationEntrySentiment==null)
+				{
+					documentationEntrySentiment= new DocumentationEntrySentiment();
+					documentationEntrySentiment.setEntryId(documentationEntry.getEntryId());
+					documentationEntrySentiment.setDocumentationId(documentationEntry.getDocumentationId());
+					db.getDocumentationEntriesSentiment().add(documentationEntrySentiment);
+				}
+				db.sync();
+				instancesCollection.addText(getDocumentationEntryClassifierId(documentationEntrySentiment), documentationEntry.getNaturalLanguage());
 			}
-			db.sync();
-			instancesCollection.addText(getDocumentationEntryClassifierId(documentationEntry), documentationEntry.getNaturalLanguage());
 		}
 		
 		if(instancesCollection.size()!=0)
@@ -145,20 +148,12 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 				e.printStackTrace();
 			}
 			
-			for(DocumentationEntryDetectingCode documentationEntry : documentationEntriesDetectingCode)
+			for(DocumentationEntrySentiment documentationEntry : db.getDocumentationEntriesSentiment())
 			{
-				documentationEntrySentiment = findDocumentationEntrySentiment(db, documentationEntry);
-				documentationEntrySentiment.setPolarity(predictions.get(getDocumentationEntryClassifierId(documentationEntry)));
+				documentationEntry.setPolarity(predictions.get(getDocumentationEntryClassifierId(documentationEntry)));
 				db.sync();
 			}
-		}
-		
-		
-	}
-	
-	private DocumentationEntrySentiment findDocumentationEntrySentiment (DocumentationSentimentTransMetric db, DocumentationEntryDetectingCode documentationEntry)
-	{
-		return findDocumentationEntrySentiment(db, documentationEntry.getDocumentationId(), documentationEntry.getEntryId());
+		}	
 	}
 	
 	private DocumentationEntrySentiment findDocumentationEntrySentiment (DocumentationSentimentTransMetric db, String documentationId, String entryId)
@@ -172,7 +167,7 @@ public class DocumentationSentimentTransMetricProvider implements ITransientMetr
 		return documentationEntryReadability;
 	}
 	
-	private String getDocumentationEntryClassifierId(DocumentationEntryDetectingCode documentationEntry)
+	private String getDocumentationEntryClassifierId(DocumentationEntrySentiment documentationEntry)
 	{
 		return "DOCUMENTATION#"+documentationEntry.getDocumentationId() + "#" + documentationEntry.getEntryId();
 	}
