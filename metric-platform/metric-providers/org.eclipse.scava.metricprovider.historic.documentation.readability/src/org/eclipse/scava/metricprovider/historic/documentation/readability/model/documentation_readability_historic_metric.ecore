@@ -6,6 +6,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DocumentationHistoricReadability">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationId">
+      <eAnnotations source="searchable"/>
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfDocumentationEntries">
@@ -17,6 +18,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DocumentationEntryHistoricReadability">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentationId">
+      <eAnnotations source="searchable"/>
       <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="entryId">

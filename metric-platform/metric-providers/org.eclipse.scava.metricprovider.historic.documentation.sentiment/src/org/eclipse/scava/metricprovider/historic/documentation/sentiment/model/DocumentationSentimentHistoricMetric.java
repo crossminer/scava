@@ -1,10 +1,9 @@
 package org.eclipse.scava.metricprovider.historic.documentation.sentiment.model;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.PongoList;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class DocumentationSentimentHistoricMetric extends Pongo {

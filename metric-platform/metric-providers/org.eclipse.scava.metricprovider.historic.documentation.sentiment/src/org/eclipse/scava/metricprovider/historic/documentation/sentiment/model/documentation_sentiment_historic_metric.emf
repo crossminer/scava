@@ -6,12 +6,14 @@ class DocumentationSentimentHistoricMetric {
 }
 
 class DocumentationHistoricSentiment {
+	@searchable
 	attr String documentationId;
 	attr int numberOfDocumentationEntries;
 	attr double averageDocumentationSentiment;
 }
 
 class DocumentationEntryHistoricSentiment {
+	@searchable
 	attr String documentationId;
 	attr String entryId;
 	attr String polarity;
