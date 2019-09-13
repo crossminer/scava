@@ -8,7 +8,8 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$documentationEntriesReadability",
-				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Entry name", "field" : "$entryId"}, 
 					{ "name" : "Readability", "field" : "$readability" }]
 			},
 			"x" : "Date",
