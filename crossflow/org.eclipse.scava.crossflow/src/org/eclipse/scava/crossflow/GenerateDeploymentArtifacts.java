@@ -145,7 +145,7 @@ public class GenerateDeploymentArtifacts {
 
 	private EmfModel getModel() throws Exception {
 		return createAndLoadAnEmfModel("org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
-				modelRelativePath, "Model", true, false, false);
+				modelRelativePath, "CrossflowLanguageModel", true, false, false);
 	}
 
 	private EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,

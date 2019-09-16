@@ -28,7 +28,7 @@ public class WordCountApp {
 	
 	public WordCountApp() throws Exception {
 		WordCountWorkflow master = new WordCountWorkflow(Mode.MASTER);
-		master.createBroker(false);
+		master.createBroker(true);
 		master.setInputDirectory(new File("experiment/in"));
 		master.setOutputDirectory(new File("experiment/out"));
 		master.setInstanceId(WordCountProperties.INSTANCE_ID);

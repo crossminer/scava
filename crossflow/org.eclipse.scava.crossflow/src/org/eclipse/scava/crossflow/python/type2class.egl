@@ -46,7 +46,7 @@ class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%]
 
 [%
 operation Type isJob() {
-	return Model!Stream.all.exists(s|s.type=self);
+	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self);
 }
 
 operation Field getPythonInitialiser() {

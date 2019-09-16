@@ -3,11 +3,11 @@
 		
 		<epsilon.emf.register file="../org.eclipse.scava.crossflow.language/model/crossflow.ecore"/>
 		
-		<epsilon.emf.loadModel name="M" modelfile="techrank.flexmi"
+		<epsilon.emf.loadModel name="CrossflowLanguageModel" modelfile="techrank.flexmi"
 			metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
 		
 		<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/java/crossflow.egx" outputroot=".">
-			<model ref="M"/>
+			<model ref="CrossflowLanguageModel"/>
 		</epsilon.egl>
 
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.examples.github.techrank" depth="-1"/>
