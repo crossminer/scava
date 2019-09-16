@@ -4,7 +4,7 @@ import traceback
 from crossflow.runtime import FailedJob, logger, Task
 
 [% for (t in outputTypes) { %]
-from crossflow.[%=package%].[%=t.name.toSnakeCase()%] import [%=t.name%]
+from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]
 [%}%]
 
 

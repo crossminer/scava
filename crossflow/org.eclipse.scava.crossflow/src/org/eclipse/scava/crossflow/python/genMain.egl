@@ -3,7 +3,7 @@ import argparse
 import sys
 import time
 
-from crossflow.[%=package%].[%=w.name.toSnakeCase()%] import [%=w.name%]
+from crossflow.[%=package%].[%=w.name.toSnakeCaseLower()%] import [%=w.name%]
 from crossflow.runtime import Mode
 
 

@@ -9,14 +9,14 @@ imports.addAll(w.getMasterTasks());
 imports.addAll(w.getWorkerTasks());
 imports = imports.sortBy(i|i.name);
 for (i in imports) {%]
-from [%=package%].[%=i.name.toSnakeCase()%] import [%=i.name%]
+from [%=package%].[%=i.name.toSnakeCaseLower()%] import [%=i.name%]
 [%}%]
 [% imports = new Sequence;
 imports.addAll(w.streams);
 imports.addAll(w.types);
 imports = imports.sortBy(i|i.name);
 for (i in imports) {%]
-from crossflow.[%=package%].[%=i.name.toSnakeCase()%] import [%=i.name%]
+from crossflow.[%=package%].[%=i.name.toSnakeCaseLower()%] import [%=i.name%]
 [%}%]
 from crossflow.runtime import ControlSignal, ControlSignals, logger, Mode, Workflow
 

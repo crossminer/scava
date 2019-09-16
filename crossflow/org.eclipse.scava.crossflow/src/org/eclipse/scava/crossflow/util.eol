@@ -81,7 +81,15 @@ operation Type findEligibleConfigurableTasks(){
 }
 
 operation String toSnakeCase() : String {
-	return self.replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase();
+	return self.replaceAll("(.)(\\p{Upper})", "$1_$2");
+}
+
+operation String toSnakeCaseUpper() : String {
+	return self.toSnakeCase().toUpperCase();
+}
+
+operation String toSnakeCaseLower() : String {
+	return self.toSnakeCase().toLowerCase();
 }
 
 operation Workflow getPackageName() {

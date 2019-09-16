@@ -6,7 +6,7 @@ rule Workflow2Class
 		"package" = w.getPackage()
 	}
 	template : "workflow2class.egl"
-	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCase() + ".py"
+	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + ".py"
 }
 
 rule Type2Class 
@@ -16,7 +16,7 @@ rule Type2Class
 	   "package" = t.getPackage()
 	}
 	template : "type2class.egl"
-	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
 }
 
 @greedy
@@ -29,7 +29,7 @@ rule Task2BaseClass
 		"outputTypes" = t.getOutputTypes()
 	}
 	template : "task2baseclass.egl"
-	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"	
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"	
 }
 
 @greedy
@@ -42,7 +42,7 @@ rule Task2ImplClass
 		"outputTypes" = t.getOutputTypes()
 	}
 	template : "task2implclass.egl"
-	target : t.getOutFolder() + t.getPackage().toPath() + t.name.toSnakeCase() + ".py"
+	target : t.getOutFolder() + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
 	overwrite : false
 }
 
@@ -53,7 +53,7 @@ rule Steam2Class
 		"w" = s.getWorkflow()
 	}
 	template : "stream2class.egl"
-	target : s.getGenFolder() + "crossflow/" + s.getPackage().toPath() + s.name.toSnakeCase() + ".py"
+	target : s.getGenFolder() + "crossflow/" + s.getPackage().toPath() + s.name.toSnakeCaseLower() + ".py"
 }
 
 rule genRuntime
