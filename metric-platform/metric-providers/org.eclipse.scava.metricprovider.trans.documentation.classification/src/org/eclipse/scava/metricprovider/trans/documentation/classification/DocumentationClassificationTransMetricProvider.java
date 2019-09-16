@@ -2,6 +2,8 @@ package org.eclipse.scava.metricprovider.trans.documentation.classification;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.documentation.classification.model.DocumentationClassificationTransMetric;
@@ -34,6 +36,21 @@ public class DocumentationClassificationTransMetricProvider implements ITransien
 	
 	protected List<IMetricProvider> uses;
 	protected MetricProviderContext context;
+	
+	private static Pattern fileRegex;
+	private static Pattern extensionRegex;
+	private static Pattern fileNameRegex;
+	private static Pattern spacing1;
+	private static Pattern spacing2;
+	
+	static {
+		fileRegex=Pattern.compile("([^/]+)$");
+		extensionRegex=Pattern.compile("\\.[^\\.]+$");
+		fileNameRegex=Pattern.compile("\\W");
+		spacing1=Pattern.compile("\\h+");
+		spacing2=Pattern.compile("(^ | $)");
+	}
+	
 	
 	@Override
 	public String getIdentifier() {
@@ -133,7 +150,7 @@ public class DocumentationClassificationTransMetricProvider implements ITransien
 					pdfDocument=true;
 				else
 					pdfDocument=false;
-				multiLabelPrediction = DocumentationClassifier.classify(multiLabelPrediction, pdfDocument);
+				multiLabelPrediction = DocumentationClassifier.classify(multiLabelPrediction,convertFileNameToText(documentationEntry.getEntryId()), pdfDocument);
 				documentationEntryClass.getTypes().addAll(multiLabelPrediction.getLabels());
 			}
 			else
@@ -144,6 +161,18 @@ public class DocumentationClassificationTransMetricProvider implements ITransien
 		}
 		
 		
+	}
+	
+	private String convertFileNameToText(String entryId)
+	{
+		Matcher m = fileRegex.matcher(entryId); 
+		if(m.find())
+			entryId=m.group(0);
+		entryId=extensionRegex.matcher(entryId).replaceAll("");
+		entryId=fileNameRegex.matcher(entryId).replaceAll(" ");
+		entryId=spacing1.matcher(entryId).replaceAll(" ");
+		entryId=spacing2.matcher(entryId).replaceAll("");
+		return entryId;
 	}
 	
 	private DocumentationEntryClassification findDocumentationEntryClassification (DocumentationClassificationTransMetric db, DocumentationEntry documentationEntry)

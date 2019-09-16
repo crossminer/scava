@@ -63,7 +63,6 @@ public class BugTrackerMigrationIssueTransMetricProvider  implements ITransientM
 	public List<String> getIdentifiersOfUses() {
 		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),
 				TopicsTransMetricProvider.class.getCanonicalName());
-		//Add Maracas
 	}
 
 	@Override

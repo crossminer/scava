@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.metricprovider.trans.indexing.preparation,
  org.eclipse.scava.metricprovider.trans.documentation,
  org.eclipse.scava.nlp.tools.predictions,
- org.eclipse.scava.nlp.classifiers.documentation
+ org.eclipse.scava.nlp.classifiers.documentation,
+ org.eclipse.scava.nlp.tools.other
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.classification.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

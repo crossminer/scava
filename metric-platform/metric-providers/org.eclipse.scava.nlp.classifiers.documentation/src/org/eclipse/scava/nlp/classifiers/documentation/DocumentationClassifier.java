@@ -56,5 +56,24 @@ public class DocumentationClassifier {
 		return documentation;
 	}
 	
+	/**
+	 * 
+	 * @param documentation The text in the MultLabelPredict is expected to be in HTML format, as it is
+	 * the only way to determine the headings of a file.
+	 * @param fileName The name of the File in a processed format
+	 * @param fromPDF
+	 * @return
+	 */
+	public static MultiLabelPrediction classify(MultiLabelPrediction documentation, String fileName, boolean fromPDF)
+	{
+		List<String> headings = HtmlHeadingsFinder.find(documentation.getText(), fromPDF);
+		Set<String> documentationClasses = Collections.synchronizedSet(new HashSet<String>(headings.size()));
+		headings.add(fileName);
+		headings.parallelStream().forEach(h->documentationClasses.add(findDocumentationClass(h))); 
+		documentationClasses.remove("");
+		documentation.setLabels(new ArrayList<String>(documentationClasses));
+		return documentation;
+	}
+	
 	
 }

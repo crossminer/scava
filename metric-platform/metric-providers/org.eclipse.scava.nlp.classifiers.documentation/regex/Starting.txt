@@ -8,9 +8,10 @@
 #2#quick start guides
 #2#quick start guide
 #2#a quick start guide to
+#2#quick starter guide
 ######REGEX
 (:?(?:guide|documentation|manual|reference|tutorial|basics|introduction)s? to )?getting started(?: with)?
-(?:a )quick.start (?:guide|documentation|manual|reference|tutorial|basics|introduction)s?(?: to)?
+(?:a )?quick.start(?:er)? (?:guide|documentation|manual|reference|tutorial|basics|introduction)s?(?: to)?
 (?:(?:(?:how.|(?:simple way ))to)|(?:before you)) start
 (?:(?:introduction|start|beginner) )?tutorials?
 
