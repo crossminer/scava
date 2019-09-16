@@ -457,46 +457,6 @@ class ScavaClient(HttpClient):
                                                  "artifacts", "artifact", "mpp", project_name)
             recommendation_project_raw = self.fetch(recommendation_project_api)
 
-            # Fake data
-            recommendation_project_raw = """
-            {
-              "id": "5b155b04065f2d726d6db241",
-              "tags": null,
-              "name": "json-simple",
-              "shortName": null,
-              "description": "A simple Java toolkit for JSON. You can use json-simple to encode or decode JSON text.",
-              "fullName": "fangyidong/json-simple",
-              "methodDeclarations": [],
-              "year": 0,
-              "active": true,
-              "homePage": "",
-              "type": null,
-              "private_": null,
-              "fork": null,
-              "html_url": "https://github.com/fangyidong/json-simple",
-              "clone_url": "https://github.com/fangyidong/json-simple.git",
-              "git_url": "git://github.com/fangyidong/json-simple.git",
-              "ssh_url": null,
-              "svn_url": null,
-              "mirror_url": null,
-              "size": 0,
-              "master_branch": "master",
-              "webDashboardId": "app/kibana#/dashboard/ScavaProject?_a=(query:(match:(project.keyword:(query:jsonsimple))))",
-              "metricPlatformId": "jsonsimple",
-              "readmeText": "Please visit: http://code.google.com/p/json-simple/",
-              "dependencies": [
-                "junit:junit"
-              ],
-              "starred": [
-                {
-                  "login": "veita",
-                  "datestamp": "2015-04-13T08:55:08Z"
-                }
-              ],
-              "parent": null
-            }
-            """
-
             try:
                 recommendation_artifacts = json.loads(recommendation_project_raw)
             except:
