@@ -76,9 +76,12 @@ public abstract class AbstractInterceptor {
 
 			private AtomicInteger remainingRequestCounter = new AtomicInteger(1);
 			private ISession session;
-			
-			// list of codes that will trigger a fixed-time retry (such as bad gateway)
+
+			// list of codes that will trigger a fixed-time retry (such as bad gateway), up
+			// to maxRetries
 			private List<Integer> retryCodes = Arrays.asList(502);
+			private int maxRetries = 10;
+			//
 
 			@Override
 			public Response intercept(Chain chain) throws IOException {
@@ -166,51 +169,62 @@ public abstract class AbstractInterceptor {
 				}
 
 				LOG.info("DEALING WITH NETWORK RESPONSE");
-				
-				//System.out.println(peekResponse(response));
+
+				// System.out.println(peekResponse(response));
 
 				if (response.networkResponse() != null) {
 
 					// erroneous response
 					if (!response.networkResponse().isSuccessful()) {
+
 						int code = response.networkResponse().code();
+
 						if (code != HttpStatus.SC_NOT_MODIFIED) {
-							// error that can triggers a fixed-time retry
-							while (retryCodes.contains(code)) {
-								long ms = 1000 * 30;
-								LOG.info("CODE:" + code + "RETRYING IN " + (ms / 1000) + " s");
-								try {
-									TimeUnit.MILLISECONDS.sleep(ms);
-									LOG.info("RETRYING NOW");
-									response = chain.proceed(networkRequest);
-									code = response.code();
-								} catch (InterruptedException e) {
-									LOG.info(e.getMessage());
-									e.printStackTrace();
+
+							// errors that can trigger a fixed-time retry or require rate-limited handling
+							int retryNumber = 0;
+							while ((retryCodes.contains(code) && retryNumber < maxRetries) || code == HttpStatus.SC_FORBIDDEN) {
+
+								long fixedTimeRetryPeriod = 1000 * 30;
+								long rateLimitedRetryPeriod = 1000 * 60;
+
+								if (retryCodes.contains(code)) {
+									retryNumber++;
+									LOG.info("CODE:" + code + "RETRYING IN " + (fixedTimeRetryPeriod / 1000)
+											+ " s [fixed-time retry, max: " + maxRetries + "]");
+									try {
+										TimeUnit.MILLISECONDS.sleep(fixedTimeRetryPeriod);
+										LOG.info("RETRYING NOW (" + retryNumber + ")");
+										response = chain.proceed(networkRequest);
+										code = response.code();
+									} catch (InterruptedException e) {
+										LOG.info(e.getMessage());
+										e.printStackTrace();
+									}
+								} else if (code == HttpStatus.SC_FORBIDDEN) {
+									peekResponse(response);
+									try {
+										if (session.isSet().get()) {
+											rateLimitedRetryPeriod = session.getRateLimitResetInMilliSeconds()
+													- System.currentTimeMillis();
+										}
+										if (rateLimitedRetryPeriod > 0) {
+											LOG.info("RETRYING IN " + (rateLimitedRetryPeriod / 1000) + " s [rate-limit retry]");
+											TimeUnit.MILLISECONDS.sleep(rateLimitedRetryPeriod);
+										}
+										LOG.info("RETRYING NOW");
+										response = chain.proceed(networkRequest);
+										code = response.code();
+									} catch (InterruptedException e) {
+										LOG.info(e.getMessage());
+										e.printStackTrace();
+									}
 								}
 							}
-							// rate-limit reached
-							while (code == HttpStatus.SC_FORBIDDEN) {
-								peekResponse(response);
-								try {
-									long ms = 1000 * 60;
-									if (session.isSet().get()) {
-										ms = session.getRateLimitResetInMilliSeconds() - System.currentTimeMillis();
-									}
-									if (ms > 0) {
-										LOG.info("RETRYING IN " + (ms / 1000) + " s");
-										TimeUnit.MILLISECONDS.sleep(ms);
-									}
-									LOG.info("RETRYING NOW");
-									response = chain.proceed(networkRequest);
-									code = response.code();
-								} catch (InterruptedException e) {
-									LOG.info(e.getMessage());
-									e.printStackTrace();
-								}
-							}
+
 							if (!response.networkResponse().isSuccessful()) {
-								LOG.error("UNKNOWN ERROR CODE: " + code);
+								LOG.error("RESTMULE ERROR: http error code: " + code + " RESTMULE CAN ONLY HANDLE: " + HttpStatus.SC_FORBIDDEN + " and " + retryCodes);
+								response.close();
 								throw new UnsupportedOperationException(
 										"Do not know how to handle this type of error code: " + code);
 							}
