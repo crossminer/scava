@@ -18,7 +18,7 @@ import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
 import org.eclipse.scava.crossflow.runtime.utils.*;
 import com.beust.jcommander.Parameter;
 
-public abstract class Workflow {
+public abstract class Workflow<E extends Enum<E>> {
 
 	@Parameter(names = { "-name" }, description = "The name of the workflow")
 	protected String name;
@@ -105,9 +105,6 @@ public abstract class Workflow {
 	protected Collection<String> terminatedWorkerIds = new HashSet<>();
 	protected Serializer serializer = new Serializer();
 
-	// excluded tasks from workers
-	protected Collection<String> tasksToExclude = new LinkedList<>();
-
 	protected Collection<ExecutorService> executorPools = new LinkedList<>();
 
 	protected ExecutorService newExecutor() {
@@ -138,9 +135,42 @@ public abstract class Workflow {
 		return activeMqConfig;
 	}
 
-	public void excludeTasks(Collection<String> tasks) {
-		tasksToExclude = tasks;
-	}
+	/**
+	 * Exclude the given task from this worker.
+	 * <p>
+	 * Returns the workflow instance for a fluent API.
+	 * </p>
+	 * 
+	 * @param task the task to exclude
+	 * @throws IllegalArgumentException if task is {@code null}
+	 * @return the workflow instance
+	 */
+	public abstract Workflow<E> excludeTask(E task);
+
+	/**
+	 * Exclude the given tasks from this worker.
+	 * <p>
+	 * Returns the workflow instance for a fluent API.
+	 * </p>
+	 * 
+	 * @param tasks the tasks to exclude
+	 * @throws IllegalArgumentException if any value in tasks is {@code null}
+	 * @return the workflow instance
+	 */
+	public abstract Workflow<E> excludeTasks(EnumSet<E> tasks);
+
+	/**
+	 * Excludes the execution of tasks with the given names
+	 * 
+	 * @param taskNames list of tasks to exclude by their name. Case sensitive
+	 * @deprecated no checks for string validity can be done at compile time, use
+	 *             {@link #excludeTasks(EnumSet)} or {@link #excludeTasks(EnumSet)}
+	 *             instead
+	 * @throws IllegalArgumentException if no task exists with one of the given
+	 *                                  names
+	 */
+	@Deprecated
+	public abstract void excludeTasks(Collection<String> tasks);
 
 	public boolean isCreateBroker() {
 		return createBroker;
@@ -754,7 +784,6 @@ public abstract class Workflow {
 			}
 
 			// stop all permanent streams
-
 			try {
 				logTopic.stop();
 			} catch (Exception e) {
