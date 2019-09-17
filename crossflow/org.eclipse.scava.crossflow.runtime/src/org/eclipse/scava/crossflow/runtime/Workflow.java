@@ -570,11 +570,11 @@ public abstract class Workflow<E extends Enum<E>> {
 	}
 
 	public boolean isMaster() {
-		return mode == Mode.MASTER || mode == Mode.MASTER_BARE;
+		return mode.isMaster();
 	}
 
 	public boolean isWorker() {
-		return mode == Mode.MASTER || mode == Mode.WORKER;
+		return mode.isWorker();
 	}
 
 	public Mode getMode() {
