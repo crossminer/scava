@@ -159,19 +159,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	 */
 	public abstract Workflow<E> excludeTasks(EnumSet<E> tasks);
 
-	/**
-	 * Excludes the execution of tasks with the given names
-	 * 
-	 * @param taskNames list of tasks to exclude by their name. Case sensitive
-	 * @deprecated no checks for string validity can be done at compile time, use
-	 *             {@link #excludeTasks(EnumSet)} or {@link #excludeTasks(EnumSet)}
-	 *             instead
-	 * @throws IllegalArgumentException if no task exists with one of the given
-	 *                                  names
-	 */
-	@Deprecated
-	public abstract void excludeTasks(Collection<String> tasks);
-
 	public boolean isCreateBroker() {
 		return createBroker;
 	}

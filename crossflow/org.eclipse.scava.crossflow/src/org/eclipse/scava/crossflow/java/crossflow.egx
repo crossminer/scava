@@ -16,6 +16,16 @@ rule Workflow2App
 	overwrite : false
 }
 
+rule Workflow2TaskEnum
+	transform w : Workflow {
+	parameters : Map {
+		"genValue" = "Workflow2Class",
+		"genDate" = datetime
+	}
+	template : "workflow2taskenum.egl"
+	target : w.getPath() + w.name + "Tasks.java"
+}
+
 rule Config2ConfigSource
 	transform t : Type {
 	

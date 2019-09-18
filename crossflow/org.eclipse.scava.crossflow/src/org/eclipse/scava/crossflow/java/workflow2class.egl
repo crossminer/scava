@@ -24,7 +24,7 @@ import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
-public class [%=w.name%] extends Workflow<[%=w.name%].[%=w.name%]Tasks> {
+public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 
 	public static [%=w.name%] run(String[] args) throws Exception {
 		[%=w.name%] throwAway = new [%=w.name%]();
@@ -100,7 +100,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%].[%=w.name%]Tasks> {
 		
 		if (isWorker()) {
 		[%for (t in w.getWorkerTasks()){%]
-			if (!tasksToExclude.contains("[%=t.name%]")) {
+			if (!tasksToExclude.contains([%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%])) {
 			[%=t.createTask()%]
 			}
 		[%}%]
@@ -120,44 +120,41 @@ public class [%=w.name%] extends Workflow<[%=w.name%].[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-	
-[%
-
-	for (t in w.getParallelizableTasks()) {%]
-	[%=t.name.ftlc()%]s.init(this);
-	[%}%]
-	
-	this.delay=delay;
-
-	try {
-					
-		if (isMaster()) {
-			if (createBroker) {
-				if (activeMqConfig != null && activeMqConfig != "") {
-					brokerService = BrokerFactory.createBroker(new URI("xbean:" + activeMqConfig));
-				} else {
-					brokerService = new BrokerService();
-				}
-			
-				//activeMqConfig
-				brokerService.setUseJmx(true);
-				brokerService.addConnector(getBroker());
-				if(enableStomp)
-					brokerService.addConnector(getStompBroker());
-				if(enableWS)	
-					brokerService.addConnector(getWSBroker());
-				brokerService.start();
-			}
-		}
-
-		connect();
-
-		Thread.sleep(delay);
-		
-		[%for (s in w.streams) { %]
-		[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
-		activeStreams.add([%=s.name.ftlc()%]);
+		[%for (t in w.getParallelizableTasks()) {%]
+		[%=t.name.ftlc()%]s.init(this);
 		[%}%]
+	
+		this.delay=delay;
+	
+		try {
+						
+			if (isMaster()) {
+				if (createBroker) {
+					if (activeMqConfig != null && activeMqConfig != "") {
+						brokerService = BrokerFactory.createBroker(new URI("xbean:" + activeMqConfig));
+					} else {
+						brokerService = new BrokerService();
+					}
+				
+					//activeMqConfig
+					brokerService.setUseJmx(true);
+					brokerService.addConnector(getBroker());
+					if(enableStomp)
+						brokerService.addConnector(getStompBroker());
+					if(enableWS)	
+						brokerService.addConnector(getWSBroker());
+					brokerService.start();
+				}
+			}
+	
+			connect();
+	
+			Thread.sleep(delay);
+		
+			[%for (s in w.streams) { %]
+			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
+			activeStreams.add([%=s.name.ftlc()%]);
+			[%}%]
 		
 			if (isMaster()) {
 			[%for (t in w.getMasterTasks()){%]
@@ -167,7 +164,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%].[%=w.name%]Tasks> {
 			
 			if (isWorker()) {
 			[%for (t in w.getWorkerTasks()){%]
-				if (!tasksToExclude.contains("[%=t.name%]")) {
+				if (!tasksToExclude.contains([%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%])) {
 					[%=t.setup()%]
 				}
 			[%}%]
@@ -259,87 +256,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%].[%=w.name%]Tasks> {
 		return this;
 	}
 	
-	/**
-	 * Excludes the execution of tasks with the given names
-	 * 
-	 * @param taskNames list of tasks to exclude by their name. Case sensitive
-	 * @deprecated no checks for string validity can be done at compile time, use
-	 *             {@link #excludeTasks(EnumSet)} or {@link #excludeTasks(EnumSet)}
-	 *             instead
-	 * @throws IllegalArgumentException if no task exists with one of the given
-	 *                                  names
-	 */
-	@Deprecated
-	@Override
-	public void excludeTasks(Collection<String> taskNames) {
-		for (String t : taskNames) {
-			[%=w.name%]Tasks task = [%=w.name%]Tasks.fromTaskName(t);
-			tasksToExclude.add(task);
-		}
-	}
-
-	/**
-	 * Specification of available tasks in this workflow as Enumerates types.
-	 * <p>
-	 * Each Enum is comprised:
-	 * <ul>
-	 * <li>The original task name as defined in the workflow model</li>
-	 * <li>boolean flag denoting whether it is a Java task or not</li>
-	 * </ul>
-	 * </p>
-	 */
-	@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
-	public static enum [%=w.name%]Tasks {
-	
-		[% for (t in w.tasks) {%]
-		[%=t.name.toSnakeCaseUpper()%]("[%=t.name%]", [%=t.isJavaTask()%])[%if (hasMore)%],[%else%];
-		[%}%]
-		
-		private final String taskName;
-		private final boolean isJavaTask;
-		
-		private [%=w.name%]Tasks(String taskName, boolean isJavaTask) {
-			this.taskName = taskName;
-			this.isJavaTask = isJavaTask;
-		}
-		
-		/**
-		 * Gets the task name as defined in the original workflow model
-		 * 
-		 * @return the task name
-		 */
-		public String getTaskName() {
-			return this.taskName;
-		}
-		
-		/**
-		 * @return {@code true} if the task has a corresponding Java class,
-		 *         {@code false} otherwise
-		 */
-		public boolean isJavaTask() {
-			return this.isJavaTask;
-		}
-		
-		@Override
-		public String toString() {
-			return getTaskName();
-		}
-		
-		/**
-		 * Reverse lookup function to retrieve the corresponding Enum from
-		 * the original task name
-		 *
-		 * @return the corresponding enum from the task name
-		 * @throws IllegalArgumentException if no such enum exists
-		 */
-		public static [%=w.name%]Tasks fromTaskName(String taskName) {
-			for ([%=w.name%]Tasks t : values()) {
-				if (t.taskName.equals(taskName)) return t;
-			}
-			throw new IllegalArgumentException("No [%=w.name%]Tasks exist with taskName " + taskName);
-		}
-	}
-	
 }	
 [%
 operation Task isJavaTask(){
@@ -421,13 +337,5 @@ operation Task setup() {
 		task.set[%=o.name%]([%=o.name.ftlc%]);
 		[%}%]
 	}
-[%	
-	}
-
-}
-
-@template
-operation meh() {
-}
-
-%]
+[%	}
+}%]
