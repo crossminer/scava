@@ -68,7 +68,31 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 		[%}%]
 		[%
 		/*for single output tasks*/
-		if((not t.multipleOutputs and t.output.size==1)) {%]
+		if((not t.multipleOutputs and t.output.size==1)) {
+		
+		// if the user defines no output variables assume they have the same name as those of the output stream type fields
+		if(self.outputVariables.size==0){
+		%]//Since no output variables have been defined by this task, it is assumed that they are identical to the name and type of the task's output stream
+		[%
+			for(field in t.output.first.type.fields){
+				if(types.containsKey(field.type)){%]
+		Object [%=field.name%]Object = engine.eval("[%=field.name%]");		
+					[%if(not field.isMany()){%]
+		[%=field.type%] [%=field.name%] = ([%=field.type%]) ((Vector) [%=field.name%]Object).[%=types.get(field.type)%](0);
+					[%}else{%]
+		List<[%=field.type%]> [%=field.name%] = new ArrayList<>();
+		((Iterable<[%=field.type%]>)[%=field.name%]Object).forEach([%=field.name%]::add);
+					[%}%]
+		[%						
+				} else{
+		%]
+		//WARNING: variable named [[%=field.name%]] has a type incompatible with Java: [[%=field.type%]], and hence cannot be automatically added to the output stream data object
+		[%
+				}
+			}
+		}	
+		
+		%]
 		
 		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Output = new [%=t.output.first.type.name%]();		
 		[%
@@ -85,7 +109,20 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 				remainingUnusedVariables=remainingUnusedVariables-1;
 			}		
 		}
-			if(remainingUnsetFields>0 or remainingUnusedVariables>0){
+		
+		// if the user defines no output variables assume they have the same name as those of the output stream type fields
+		if(self.outputVariables.size==0){
+			for(field in t.output.first.type.fields){
+				if(types.containsKey(field.type)){
+		%]
+		[%=t.output.first.type.name.ftlc()%]Output.[%=field.name%] = [%=field.name%];
+		[%						
+				}
+			}
+		}
+		
+		//only give hints about missing variables if the user has defined some in the task
+			if(self.outputVariables.size>0 and (remainingUnsetFields>0 or remainingUnusedVariables>0)){
 			
 			%]
 		
@@ -115,7 +152,9 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 		return [%=t.output.first.type.name.ftlc()%]Output;
 		[%} else /*for all other tasks*/{%]
 		[%for (s in t.output) { %]
-		// FIXME user code needed for multi-output scripted tasks	
+		// FIXME user code needed for multi-output scripted tasks
+		// send output to: [%=s.name%] of type: [%=s.type.name%]
+			
 		[% } %]
 		[% if (t.output.isEmpty()) { %]
 		// FIXME user code needed for no-output scripted tasks
