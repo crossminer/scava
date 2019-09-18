@@ -94,7 +94,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 	@Test
 	public void testMasterWorker() throws Exception {
-		
+
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER);
 		master.createBroker(createBroker);
 		master.setTerminationTimeout(5000);
@@ -130,7 +130,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 	@Test
 	public void testBareMasterWorker() throws Exception {
-		
+
 		AdditionWorkflow master = new AdditionWorkflow(Mode.MASTER_BARE);
 		master.createBroker(createBroker);
 		master.setTerminationTimeout(5000);
@@ -194,12 +194,22 @@ public class AdditionWorkflowTests extends WorkflowTests {
 	@Test
 	public void testParallelWorkflows() throws Exception {
 
+		// since 2 workflows are running in parallel, both of which are masters, we
+		// cannot default to workflow.createbroker() as it may cause 2 brokers to try to
+		// be
+		// started at once
+		WorkflowTests broker = new WorkflowTests();
+		if (createBroker)
+			broker.startBroker();
+
 		AdditionWorkflow workflow1 = new AdditionWorkflow();
-		workflow1.createBroker(createBroker);
+		// broker already created above (if applicable)
+		workflow1.createBroker(false);
 		workflow1.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
 
 		AdditionWorkflow workflow2 = new AdditionWorkflow();
-		workflow2.createBroker(createBroker);
+		// broker already created above (if applicable)
+		workflow2.createBroker(false);
 		workflow2.getNumberPairSource().setNumbers(Arrays.asList(3, 4));
 
 		workflow1.run();
@@ -207,6 +217,10 @@ public class AdditionWorkflowTests extends WorkflowTests {
 
 		waitFor(workflow1);
 		waitFor(workflow2);
+
+		//
+		if (createBroker)
+			broker.stopBroker();
 
 		assertArrayEquals(new Integer[] { 2, 4 }, workflow1.getAdditionResultsSink().getNumbers().toArray());
 		assertArrayEquals(new Integer[] { 6, 8 }, workflow2.getAdditionResultsSink().getNumbers().toArray());
