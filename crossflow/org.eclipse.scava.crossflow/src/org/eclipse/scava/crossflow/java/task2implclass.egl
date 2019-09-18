@@ -36,7 +36,14 @@ public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%
 		
 		[%
 		if(s.isConfigurationChannel()) {
-		%]		// TODO: handle configuration		
+		%]
+		// TODO: handle configuration
+		// NB: by default, configurations will be sent upon initialization as well as
+		// whenever a new worker is added to the workflow (aka config.produce() will be
+		// called), if you wish to only use the first config you receive ensure that you
+		// create a relevant check, such as:
+		//	if(configuration == null)
+		//		configuration = [%=s.type.name.ftlc()%];
 		[%
 		} else /*for single output tasks*/if((not t.multipleOutputs and t.output.size==1)) {%]
 		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Inst = new [%=t.output.first.type.name%]();

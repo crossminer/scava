@@ -8,18 +8,22 @@ public class Adder extends AdderBase {
 	private String operation;
 	private String post;
 
+	private int executions = 0;
+
 	@Override
 	public Number consumeAdditions(NumberPair numberPair) throws Exception {
 
-		System.out.println("Expression: " + numberPair.a + operation + numberPair.b);
+		System.out.print("Expression: " + numberPair.a + operation + numberPair.b);
 
 		Number numberInst = new Number();
 
 		ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
 		String ret = engine.eval(numberPair.a + operation + numberPair.b).toString();
-		System.out.println("Script output: " + ret);
+		System.out.println(", Script output: " + ret + " " + workflow.getName());
 
 		numberInst.setN(Integer.parseInt(ret));
+
+		executions++;
 		return numberInst;
 
 	}
@@ -27,10 +31,10 @@ public class Adder extends AdderBase {
 	@Override
 	public void consumeOperationConfigTopic(Operation operationConfiguration) throws Exception {
 
-		System.out.println("config received: " + operationConfiguration);
+		// System.out.println("config received: " + operationConfiguration);
 
-		// TODO: handle configuration
-		operation = operationConfiguration.operation;
+		if (operation == null)
+			operation = operationConfiguration.operation;
 
 	}
 
@@ -39,6 +43,10 @@ public class Adder extends AdderBase {
 
 		// TODO: handle configuration
 
+	}
+
+	public int getExecutions() {
+		return executions;
 	}
 
 }

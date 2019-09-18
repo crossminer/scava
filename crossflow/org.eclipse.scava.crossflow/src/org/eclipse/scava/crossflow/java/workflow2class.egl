@@ -171,7 +171,7 @@ public class [%=w.name%] extends Workflow {
 			}
 			
 			if (isMaster()){
-			[%for (t in w.tasks.select(t|t.isKindOf(Source))){%]
+			[%for (t in w.getNonConfigurationSources()){%]
 				// run all sources in parallel threads
 				new Thread(() -> {
 					try {
@@ -184,6 +184,7 @@ public class [%=w.name%] extends Workflow {
 					}
 				}).start();	
 			[%}%]
+				sendConfigurations();
 			}
 				
 			// delay non-master connections to allow master to create the relevant listeners
@@ -198,6 +199,21 @@ public class [%=w.name%] extends Workflow {
 			log(SEVERITY.ERROR, e.getMessage());
 		}
 	}				
+	
+	public void sendConfigurations(){
+	[%for (t in w.getConfigurationSources()){%]	
+		new Thread(() -> {
+					try {
+						setTaskInProgess([%=t.name.ftlc()%]);
+						[%=t.name.ftlc()%].produce();
+						setTaskWaiting([%=t.name.ftlc()%]);
+					} catch (Exception ex) {
+						reportInternalException(ex);
+						terminate();
+					}
+		}).start();
+	[%}%]
+	}
 	
 	[%for (s in w.streams) { %]
 	public [%=s.name%] get[%=s.name%]() {
@@ -229,6 +245,21 @@ public class [%=w.name%] extends Workflow {
 [%
 operation Task isJavaTask(){
 	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
+}
+
+operation Workflow getNonConfigurationSources(){
+	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
+	sources.removeAll(w.getConfigurationSources());
+	return sources;
+}
+
+operation Workflow getConfigurationSources(){
+	return self.tasks.select(t | 
+		t.isJavaTask() 
+	and t.isKindOf(Source)
+	and t.name.endsWith("ConfigSource") 
+	and t.output.size > 0
+	and t.output.first.name.endsWith("ConfigTopic"));
 }
 
 operation Workflow getParallelizableTasks() {

@@ -206,6 +206,8 @@ public abstract class Workflow {
 	private HashSet<String> activeTimers = new HashSet<>();
 	private Timer taskStatusDelayedUpdateTimer = new Timer();
 
+	public abstract void sendConfigurations();
+	
 	protected void connect() throws Exception {
 
 		if (tempDirectory == null) {
@@ -240,6 +242,7 @@ public abstract class Workflow {
 						terminatedWorkerIds.add(signal.getSenderId());
 						break;
 					case WORKER_ADDED:
+						sendConfigurations();
 						activeWorkerIds.add(signal.getSenderId());
 						break;
 					case WORKER_REMOVED:
@@ -258,6 +261,7 @@ public abstract class Workflow {
 					}
 				}
 			}
+
 		});
 
 		// XXX if the worker sends this before the master is listening to this topic
