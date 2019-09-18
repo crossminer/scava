@@ -273,7 +273,6 @@ operation Task setup() {
 
 	if(w.getSingletonTasks().contains(self)){
 %]
-	[%=self.name.ftlc()%].setResultsTopic(resultsTopic);
 	[%for (i in self.input) { %]
 	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], "[%=self.name%]");			
 	[%}%]
@@ -283,9 +282,8 @@ operation Task setup() {
 [%
 	} else{
 %]
-	for(int i = 1; i <=[%=self.name.ftlc()%]s.size(); i++){
-		[%=self.name%] task = [%=self.name.ftlc()%]s.get(i-1);
-		task.setResultsTopic(resultsTopic);
+	for(int i = 0; i <[%=self.name.ftlc()%]s.size(); i++){
+		[%=self.name%] task = [%=self.name.ftlc()%]s.get(i);
 		[%for (i in self.input) { %]
 		[%=i.name.ftlc()%].addConsumer(task, "[%=self.name%]");			
 		[%}%]

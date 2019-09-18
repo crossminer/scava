@@ -85,7 +85,6 @@ public abstract class Workflow {
 	protected File tempDirectory = null;
 
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
-	protected BuiltinStream<Result> resultsTopic = null;
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
@@ -187,13 +186,11 @@ public abstract class Workflow {
 		serializer.register(InternalException.class);
 		serializer.register(Job.class);
 		serializer.register(LogMessage.class);
-		serializer.register(Result.class);
 		serializer.register(StreamMetadata.class);
 		serializer.register(StreamMetadataSnapshot.class);
 		serializer.register(TaskStatus.class);
 		
 		taskStatusTopic = new BuiltinStream<>(this, "TaskStatusPublisher");
-		resultsTopic = new BuiltinStream<>(this, "ResultsBroadcaster");
 		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");
 		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
 		controlTopic = new BuiltinStream<>(this, "ControlTopic");
@@ -215,7 +212,6 @@ public abstract class Workflow {
 			tempDirectory = Files.createTempDirectory("crossflow").toFile();
 		}
 		taskStatusTopic.init();
-		resultsTopic.init();
 		streamMetadataTopic.init();
 		taskMetadataTopic.init();
 		controlTopic.init();
@@ -229,7 +225,6 @@ public abstract class Workflow {
 		// XXX do not add this topic/queue or any other non-essential ones to
 		// activestreams as the workflow should be able to terminate regardless of their
 		// state
-		// activeStreams.add(resultsTopic);
 		// activeStreams.add(controlTopic);
 		// activeStreams.add(streamMetadataTopic);
 
@@ -753,13 +748,6 @@ public abstract class Workflow {
 			}
 
 			// stop all permanent streams
-			
-			try {
-				resultsTopic.stop();
-			} catch (Exception e) {
-				// Ignore any exception
-				e.printStackTrace();
-			}
 
 			try {
 				logTopic.stop();
@@ -768,7 +756,6 @@ public abstract class Workflow {
 				e.printStackTrace();
 			}
 
-			activeStreams.remove(resultsTopic);
 			activeStreams.remove(logTopic);
 
 			//
@@ -847,10 +834,6 @@ public abstract class Workflow {
 
 	public BuiltinStream<TaskStatus> getTaskStatusTopic() {
 		return taskStatusTopic;
-	}
-
-	public BuiltinStream<Result> getResultsTopic() {
-		return resultsTopic;
 	}
 
 	public BuiltinStream<StreamMetadataSnapshot> getStreamMetadataTopic() {

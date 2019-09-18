@@ -520,7 +520,6 @@ class Task(object):
         Constructor
         '''
         self.cacheable = True
-        self.resultsTopic = None
         self.subscriptionId = uuid.uuid4().int
 
     def getId(self):
@@ -528,15 +527,6 @@ class Task(object):
     
     def getWorkflow(self):
         pass
-    
-    def setResultsTopic(self, resultsTopic):
-        self.resultsTopic = resultsTopic
-    
-    def getResultsTopic(self):
-        return self.resultsTopic
-    
-    def sendToResultsTopic(self, result):
-        self.getResultsTopic().send(result)
     
     def isCacheable(self):
         return self.cacheable
@@ -1230,7 +1220,6 @@ class Workflow(object):
         self.tempDirectory = None
 
         self.taskStatusTopic = BuiltinStream(self, "TaskStatusPublisher")
-        self.resultsTopic = BuiltinStream(self, "ResultsBroadcaster")
         self.streamMetadataTopic = BuiltinStream(self, "StreamMetadataBroadcaster")
         self.taskMetadataTopic = BuiltinStream(self, "TaskMetadataBroadcaster")
         self.controlTopic = BuiltinStream(self, "ControlTopic")
@@ -1240,7 +1229,6 @@ class Workflow(object):
         
         self._allStreams = []
         self._allStreams.append(self.taskStatusTopic)
-        self._allStreams.append(self.resultsTopic)
         self._allStreams.append(self.streamMetadataTopic)
         self._allStreams.append(self.taskMetadataTopic)
         self._allStreams.append(self.controlTopic)
@@ -1333,7 +1321,6 @@ class Workflow(object):
             self.tempDirectory = tempfile.NamedTemporaryFile(prefix='crossflow')
 
         self.taskStatusTopic.init()
-        self.resultsTopic.init()
         self.streamMetadataTopic.init()
         self.taskMetadataTopic.init()
         self.controlTopic.init()
@@ -1348,7 +1335,6 @@ class Workflow(object):
         # XXX do not add this topic/queue or any other non-essential ones to
         # activestreams as the workflow should be able to terminate regardless of their
         # state
-        # activeStreams.add(resultsTopic);
         # activeStreams.add(controlTopic);
         # activeStreams.add(streamMetadataTopic);
         self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal)) 
@@ -1457,9 +1443,6 @@ class Workflow(object):
 
     def getTaskStatusTopic(self):
         return self.taskStatusTopic
-
-    def getResultsTopic(self): 
-        return self.resultsTopic
 
     def getStreamMetadataTopic(self): 
         return self.streamMetadataTopic

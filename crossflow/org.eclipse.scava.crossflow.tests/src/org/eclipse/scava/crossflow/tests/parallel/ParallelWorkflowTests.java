@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
@@ -153,45 +152,6 @@ public class ParallelWorkflowTests extends WorkflowTests {
 		assertEquals(num, workflow.getMinimalSink().getNumbers().size());
 		assertEquals(0,
 				(int) workflow.getCopierTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
-	}
-
-	@Test
-	public void parallelTestResultsTopic() throws Exception {
-		testResultsTopicActual(0);
-		// ensures result topic is accurate with an initial delay on all (parallel)
-		// workflows
-		testResultsTopicActual(4000);
-	}
-
-	public void testResultsTopicActual(int initialDelay) throws Exception {
-
-		int num = Math.max(4 * parallelization, 8);
-		Set<Integer> numbers = new HashSet<>();
-		for (int i = 1; i <= num; i++)
-			numbers.add(i);
-
-		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER, parallelization);
-		workflow.setName("wf");
-		workflow.createBroker(createBroker);
-		workflow.getMinimalSource().setNumbers(new ArrayList<>(numbers));
-
-		Set<Integer> results = new HashSet<>();
-
-		//
-		workflow.getMinimalSource().setSendToResults(true);
-		workflow.getResultsTopic().addConsumer(new BuiltinStreamConsumer<Result>() {
-			@Override
-			public void consume(Result t) {
-				results.add((Integer) t.get(0));
-			}
-		});
-		//
-		workflow.run(initialDelay);
-		//
-		waitFor(workflow);
-		System.out.println(numbers);
-		System.out.println(results);
-		assertEquals(numbers, results);
 	}
 
 	private class TaskStatusBuiltinStreamConsumer implements BuiltinStreamConsumer<TaskStatus> {

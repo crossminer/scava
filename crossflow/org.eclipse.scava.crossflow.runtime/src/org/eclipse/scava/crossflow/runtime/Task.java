@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.runtime;
 
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.utils.Result;
 
 public abstract class Task {
 
@@ -11,22 +10,8 @@ public abstract class Task {
 
 	public abstract Workflow getWorkflow();
 
-	protected BuiltinStream<Result> resultsTopic;
-
 	public void log(SEVERITY level, String message) {
 		getWorkflow().logger.log(level, message, getClass().getName());
-	}
-
-	public void setResultsTopic(BuiltinStream<Result> resultsTopic) {
-		this.resultsTopic = resultsTopic;
-	}
-
-	public BuiltinStream<Result> getResultsTopic() {
-		return resultsTopic;
-	}
-
-	public void sendToResultsTopic(Result res) throws Exception {
-		getResultsTopic().send(res);
 	}
 
 	public boolean isCacheable() {

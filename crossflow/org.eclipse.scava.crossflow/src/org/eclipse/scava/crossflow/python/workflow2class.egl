@@ -156,7 +156,6 @@ operation Workflow getWorkerTasks() {
 
 @template
 operation Task setup() {%]
-    self.[%=self.name.ftlc()%].setResultsTopic(self.resultsTopic);
     [%for (i in self.input) { %]
     self.[%=i.name.ftlc()%].addConsumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
     [%}%]

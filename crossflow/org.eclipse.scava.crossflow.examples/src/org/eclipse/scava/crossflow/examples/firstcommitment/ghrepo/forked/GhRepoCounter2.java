@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.scava.crossflow.runtime.utils.Result;
-
 public class GhRepoCounter2 extends GhRepoCounter2Base {
 
 	protected final int MAX_NUMBER_OF_COMMITMENTS = 999999;
@@ -47,17 +45,6 @@ public class GhRepoCounter2 extends GhRepoCounter2Base {
 				r.setFiles(0);
 				r.setAuthors(0);
 
-				// send output to eclipse:
-				Result ret = new Result();
-				ret.add("gmf");
-				ret.add(1);
-				ret.add(0);
-				ret.add(0);
-				try {
-					sendToResultsTopic(ret);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 				return r;
 			}
 

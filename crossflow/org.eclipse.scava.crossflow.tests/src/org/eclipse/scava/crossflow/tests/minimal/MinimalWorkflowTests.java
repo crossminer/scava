@@ -16,7 +16,6 @@ import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.utils.Result;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
@@ -154,34 +153,6 @@ public class MinimalWorkflowTests extends WorkflowTests {
 				monitor.queueSizes.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue())).longValue());
 		assertEquals(0L, monitor.queuesInFlight.entrySet().stream().collect(Collectors.summingLong(e -> e.getValue()))
 				.longValue());
-	}
-
-	@Test
-	public void testResultsTopic() throws Exception {
-		testResultsTopicActual(0);
-		// ensures result topic is accurate with an initial delay on master
-		testResultsTopicActual(4000);
-	}
-
-	public void testResultsTopicActual(int initialDelay) throws Exception {
-		List<Integer> numbers = Arrays.asList(1, 2);
-		MinimalWorkflow workflow = new MinimalWorkflow();
-		workflow.createBroker(createBroker);
-		List<Integer> results = new LinkedList<>();
-		workflow.getMinimalSource().setNumbers(numbers);
-		//
-		workflow.getMinimalSource().setSendToResults(true);
-		workflow.getResultsTopic().addConsumer(new BuiltinStreamConsumer<Result>() {
-			@Override
-			public void consume(Result t) {
-				results.add((Integer) t.get(0));
-			}
-		});
-		//
-		workflow.run(initialDelay);
-		//
-		waitFor(workflow);
-		assertEquals(numbers, results);
 	}
 
 	private class TaskStatusBuiltinStreamConsumer implements BuiltinStreamConsumer<TaskStatus> {
