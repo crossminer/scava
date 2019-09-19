@@ -25,27 +25,6 @@ import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
-
-	public static [%=w.name%] run(String[] args) throws Exception {
-		[%=w.name%] throwAway = new [%=w.name%]();
-		new JCommander(throwAway, args);
-		[%=w.name%] app = new [%=w.name%](throwAway.getMode(),throwAway.getParallelization());
-		new JCommander(app, args);
-		app.run();
-		return app;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		run(args);
-	}
-	
-	
-	public [%=w.name%] createWorker() {
-		[%=w.name%] worker = new [%=w.name%](Mode.WORKER,parallelization);
-		worker.setInstanceId(instanceId);
-		return worker;
-	}
-	
 	[%for (p in w.parameters) { %]
 	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
 	protected [%=p.type%] [%=p.name%];
@@ -59,17 +38,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	[%}%]
 	
-	// streams
+	// Streams
 	[%for (s in w.streams) { %]
 	protected [%=s.name%] [%=s.name.ftlc()%];
 	[%}%]
 	
-	// tasks
-
+	// Tasks
 	[%for (t in w.getSingletonTasks()) {%]
 	protected [%=t.name%] [%=t.name.ftlc()%];
 	[%}%]
-
 	[%for (t in w.getParallelizableTasks()) {%]
 	protected ParallelTaskList<[%=t.name%]> [%=t.name.ftlc()%]s = new ParallelTaskList<>();
 	[%}%]
@@ -106,10 +83,10 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 		[%}%]
 		}
 		
+		// Register custom types and Job subclasses
 		[%for (t in w.types){%]
 		this.serializer.register([%=t.name%].class);
 		[%}%]
-
 	}
 	
 	/**
@@ -241,6 +218,12 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	[%}%]
 	
+	public [%=w.name%] createWorker() {
+		[%=w.name%] worker = new [%=w.name%](Mode.WORKER,parallelization);
+		worker.setInstanceId(instanceId);
+		return worker;
+	}
+	
 	@Override
 	public [%=w.name%] excludeTask([%=w.name%]Tasks task) {
 		if (task == null) throw new IllegalArgumentException("task cannot be null");
@@ -254,6 +237,28 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			excludeTask(t);
 		}
 		return this;
+	}
+	
+		public static [%=w.name%] run(String[] args) throws Exception {
+		// Parse all values into an temporary object
+		[%=w.name%] argsHolder = new [%=w.name%]();
+		JCommander.newBuilder()
+			.addObject(argsHolder)
+			.build()
+			.parse(args);
+		
+		// Extract values to construct new object
+		[%=w.name%] app = new [%=w.name%](argsHolder.getMode(), argsHolder.getParallelization());
+		JCommander.newBuilder()
+			.addObject(app)
+			.build()
+			.parse(args);
+		app.run();
+		return app;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		run(args);
 	}
 	
 }	
