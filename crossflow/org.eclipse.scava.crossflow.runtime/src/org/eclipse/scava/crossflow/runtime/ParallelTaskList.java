@@ -13,7 +13,7 @@ public class ParallelTaskList<E> extends LinkedList<E> {
 	private Semaphore semaphore;
 	private ExecutorService executor;
 
-	public void init(Workflow w) {
+	public void init(Workflow<?> w) {
 		semaphore = new Semaphore(w.getParallelization());
 		executor = w.newExecutor();
 	}

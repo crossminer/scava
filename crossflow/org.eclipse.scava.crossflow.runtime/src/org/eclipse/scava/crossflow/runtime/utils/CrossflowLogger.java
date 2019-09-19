@@ -4,13 +4,13 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 
 public class CrossflowLogger {
 
-	private Workflow w;
+	private Workflow<?> w;
 
 	public enum SEVERITY {
 		INFO, WARNING, ERROR
 	}
 
-	public CrossflowLogger(Workflow w) {
+	public CrossflowLogger(Workflow<?> w) {
 		this.w = w;
 	}
 

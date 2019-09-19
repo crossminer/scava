@@ -22,7 +22,7 @@ public class DirectoryCache implements Cache {
 	protected HashMap<String, Job> jobMap = new HashMap<>();
 
 	protected File directory;
-	protected Workflow workflow = null;
+	protected Workflow<?> workflow = null;
 
 	public DirectoryCache() {
 		try {
@@ -113,7 +113,7 @@ public class DirectoryCache implements Cache {
 	}
 
 	@Override
-	public void setWorkflow(Workflow workflow) {
+	public void setWorkflow(Workflow<?> workflow) {
 		this.workflow = workflow;
 	}
 

@@ -13,12 +13,12 @@ public abstract class JobStream<T extends Job> implements Stream {
 	protected Map<String, ActiveMQDestination> post;
 	protected Connection connection;
 	protected Session session;
-	protected Workflow workflow;
+	protected Workflow<?> workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<>();
 	protected Task cacheManagerTask = new Task() {
 		
 		@Override
-		public Workflow getWorkflow() {
+		public Workflow<?> getWorkflow() {
 			return workflow;
 		}
 		
@@ -28,7 +28,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 		}
 	};
 	
-	public JobStream(Workflow workflow) throws Exception {
+	public JobStream(Workflow<?> workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
 		connectionFactory.setTrustAllPackages(true);

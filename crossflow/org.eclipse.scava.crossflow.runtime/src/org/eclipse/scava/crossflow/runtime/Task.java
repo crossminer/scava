@@ -8,7 +8,7 @@ public abstract class Task {
 
 	public abstract String getId();
 
-	public abstract Workflow getWorkflow();
+	public abstract Workflow<?> getWorkflow();
 
 	public void log(SEVERITY level, String message) {
 		getWorkflow().logger.log(level, message, getClass().getName());

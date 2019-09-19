@@ -11,17 +11,17 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 	protected ActiveMQDestination destination;
 	protected Connection connection;
 	protected Session session;
-	protected Workflow workflow;
+	protected Workflow<?> workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<>();
 	protected List<BuiltinStreamConsumer<T>> pendingConsumers = new ArrayList<>();
 	protected String name;
 	protected boolean broadcast;
 
-	public BuiltinStream(Workflow workflow, String name) {
+	public BuiltinStream(Workflow<?> workflow, String name) {
 		this(workflow, name, true);
 	}
 
-	public BuiltinStream(Workflow workflow, String name, boolean broadcast) {
+	public BuiltinStream(Workflow<?> workflow, String name, boolean broadcast) {
 		this.workflow = workflow;
 		this.name = name;
 		this.broadcast = broadcast;
