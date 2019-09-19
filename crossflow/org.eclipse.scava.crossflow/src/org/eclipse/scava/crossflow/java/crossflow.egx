@@ -19,7 +19,7 @@ rule Workflow2App
 rule Workflow2TaskEnum
 	transform w : Workflow {
 	parameters : Map {
-		"genValue" = "Workflow2Class",
+		"genValue" = "Workflow2TaskEnum",
 		"genDate" = datetime
 	}
 	template : "workflow2taskenum.egl"
