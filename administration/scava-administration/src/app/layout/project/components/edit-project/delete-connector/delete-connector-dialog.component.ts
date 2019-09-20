@@ -8,7 +8,9 @@ import { Project } from '../../../project.model';
 })
 export class ConnectorMgmtDeleteDialogComponent implements OnInit {
 
-  projectId: string;
+  public sourceInfo: string;
+  public target: number;
+  public project: Project;
 
   constructor(
     public activeModal: NgbActiveModal

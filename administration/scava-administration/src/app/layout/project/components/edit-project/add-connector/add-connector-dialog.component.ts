@@ -9,16 +9,20 @@ import { Project } from '../../../project.model';
 })
 export class ConnectorMgmtAddDialogComponent implements OnInit {
 
+  public sourceInfo: string;
+  public target: number;
+  public project: Project;
   public isSaving: boolean;
-  public gitRepository: any;
+  public repository: any;  
   constructor(
     public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit() {
     this.isSaving = true;
-    this.gitRepository = new Object();
-    this.gitRepository._id = null;
+    this.repository = new Object();
+    this.repository._type = "";
+    this.repository._id = "";
   }
 
   clear() {
@@ -29,13 +33,13 @@ export class ConnectorMgmtAddDialogComponent implements OnInit {
     this.isSaving = true;
     switch (sourceInfo) {
       case "vcs":
-        project.vcsRepositories.push(this.gitRepository);
+        project.vcsRepositories.push(this.repository);
         break;
       case "bts":
-        project.bugTrackingSystems.push();
+        project.bugTrackingSystems.push(this.repository);
         break;
       case "cc":
-        project.communicationChannels.push();
+        project.communicationChannels.push(this.repository);
         break;
       default:
         break;

@@ -36,7 +36,7 @@ export class ConfigureProjectComponent implements OnInit {
         this.loadAll();
         this.interval = setInterval(() => {
             this.loadAll();
-        }, 3000);
+        }, 1000);
     }
 
     loadAll() {
