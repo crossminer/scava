@@ -5,7 +5,6 @@ import { RoleAuthorities } from '../../../../shared/services/authentication/role
 import { Project } from '../../project.model';
 import { EditProjectService } from '../../../../shared/services/project-service/edit-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConnectorMgmtDeleteDialogComponent } from './delete-connector/delete-connector-dialog.component';
 import { ConnectorMgmtAddDialogComponent } from './add-connector/add-connector-dialog.component';
 
 
@@ -68,10 +67,19 @@ export class EditProjectComponent implements OnInit {
   }
 
   removeConnector(sourceInfo: string, target: number) {
-    const modalRef = this.modalService.open(ConnectorMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.project = this.project;
-    modalRef.componentInstance.sourceInfo = sourceInfo;
-    modalRef.componentInstance.target = target;
+    switch (sourceInfo) {
+        case "vcs":
+          this.project.vcsRepositories.splice(target, 1);
+          break;
+        case "bts":
+          this.project.bugTrackingSystems.splice(target, 1);
+          break;
+        case "cc":
+          this.project.communicationChannels.splice(target, 1);
+          break;
+        default:
+          break;
+      }
   }
 
   previousState() {

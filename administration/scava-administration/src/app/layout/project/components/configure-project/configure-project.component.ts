@@ -36,7 +36,7 @@ export class ConfigureProjectComponent implements OnInit {
         this.loadAll();
         this.interval = setInterval(() => {
             this.loadAll();
-        }, 1000);
+        }, 1500);
     }
 
     loadAll() {
@@ -56,7 +56,7 @@ export class ConfigureProjectComponent implements OnInit {
                                         }
                                     });
                                     analysisTask.metricExecutions = filteredMetricExecutions;
-                                });                                
+                                });
                             },
                             (error) => {
                                 this.onShowMessage(error);

@@ -570,12 +570,12 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 		githubRepository.getBugTrackingSystems().removeAll(tempBtsRepo);
-
+		
 		// Add & update bts elements
 		for (JsonNode btsJson : (ArrayNode) json.get("bugTrackingSystems")) {
 			boolean exist = false;
 			for (BugTrackingSystem buggy : githubRepository.getBugTrackingSystems()) {
-				if (buggy.getId().equals(btsJson.get("_id").asText())) {
+				if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof GitHubBugTracker) {
 					buggy.setUrl(btsJson.get("url").asText());
 					String token = btsJson.get("token").asText();
 					String owner = githubRepository.getFull_name().split("/")[0];
@@ -584,17 +584,94 @@ public class ProjectEditionResource extends ServerResource {
 					exist = true;
 					break;
 				}
+				if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof Bugzilla) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((Bugzilla) buggy).setProduct(btsJson.get("product").asText());
+					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof SourceForgeBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof RedmineBugIssueTracker) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
+					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof JiraBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof MantisBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof BitbucketBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					exist = true;
+					break;
+				}
 			}
 			if (!exist) {
 				BugTrackingSystem buggy = null;
-				if (btsJson.get("_type").asText()
-						.equals("org.eclipse.scava.repository.model.github.GitHubBugTracker")) {
+				switch (btsJson.get("_type").asText()) {
+				case "org.eclipse.scava.repository.model.github.GitHubBugTracker":
 					buggy = new GitHubBugTracker();
 					buggy.setUrl(btsJson.get("url").asText());
 					String token = btsJson.get("token").asText();
 					String owner = githubRepository.getFull_name().split("/")[0];
 					String repo = githubRepository.getFull_name().split("/")[1];
 					((GitHubBugTracker) buggy).setProject(token, owner, repo);
+					break;
+				case "org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla":
+					buggy = new Bugzilla();
+					buggy.setUrl(btsJson.get("url").asText());
+					((Bugzilla) buggy).setProduct(btsJson.get("product").asText());
+					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
+					break;
+				case "org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem":
+					buggy = new SourceForgeBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					break;
+				case "org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker":
+					buggy = new RedmineBugIssueTracker();
+					buggy.setUrl(btsJson.get("url").asText());
+					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
+					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
+					break;
+				case "org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem":
+					buggy = new JiraBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
+					break;
+				case "org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem":
+					buggy = new MantisBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
+					break;
+				case "org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem":
+					buggy = new BitbucketBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					break;
+				default:
+					break;
 				}
 				githubRepository.getBugTrackingSystems().add(buggy);
 			}
@@ -608,6 +685,180 @@ public class ProjectEditionResource extends ServerResource {
 //				comunication.setUrl(cc.get("url").asText());
 //			k++;
 //		}
+		
+		// Delete communication channel elements
+		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
+		for (CommunicationChannel communication : githubRepository.getCommunicationChannels()) {
+			boolean exist = false;
+			for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
+				if (communication.getId().equals(ccJson.get("_id").asText())) {
+					exist = true;
+					break;
+				}
+			}
+			if (!exist) {
+				tempCcRepo.add(communication);
+			}
+		}
+		githubRepository.getCommunicationChannels().removeAll(tempCcRepo);
+
+		// Add & update communication channel elements
+		for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
+			boolean exist = false;
+			for (CommunicationChannel communication : githubRepository.getCommunicationChannels()) {
+				if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof NntpNewsGroup) {
+					communication.setUrl(ccJson.get("url").asText());
+					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
+					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
+					communication.setUrl(ccJson.get("url").asText());
+					((Irc) communication).setName(ccJson.get("name").asText());
+					((Irc) communication).setDescription(ccJson.get("description").asText());
+					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Irc) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
+					communication.setUrl(ccJson.get("url").asText());
+					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Mbox) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Mbox) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof EclipseForum) {
+					communication = new EclipseForum();
+					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof DocumentationSystematic) {
+					communication = new DocumentationSystematic();
+					if (ccJson.get("loginOption").asText().equals("option1")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+					} else if (ccJson.get("loginOption").asText().equals("option2")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+						((DocumentationSystematic) communication)
+								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+						((DocumentationSystematic) communication)
+								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+					}
+					exist = true;
+					break;
+				}
+			}
+			if (!exist) {
+				CommunicationChannel communication = null;
+				switch (ccJson.get("_type").asText()) {
+				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
+					communication = new NntpNewsGroup();
+					communication.setUrl(ccJson.get("url").asText());
+					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
+					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					break;
+				case "org.eclipse.scava.repository.model.cc.irc.Irc":
+					communication = new Irc();
+					communication.setUrl(ccJson.get("url").asText());
+					((Irc) communication).setName(ccJson.get("name").asText());
+					((Irc) communication).setDescription(ccJson.get("description").asText());
+					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Irc) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
+					communication = new SympaMailingList();
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
+					((SympaMailingList) communication)
+							.setMailingListDescription(ccJson.get("mailingListDescription").asText());
+					((SympaMailingList) communication)
+							.setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
+					communication = new Mbox();
+					communication.setUrl(ccJson.get("url").asText());
+					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Mbox) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Mbox) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
+					communication = new EclipseForum();
+					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					break;
+				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
+					communication = new DocumentationSystematic();
+					if (ccJson.get("loginOption").asText().equals("option1")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+					} else if (ccJson.get("loginOption").asText().equals("option2")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+						((DocumentationSystematic) communication)
+								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+						((DocumentationSystematic) communication)
+								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+					}
+					break;
+				default:
+					break;
+				}
+				githubRepository.getCommunicationChannels().add(communication);
+			}
+		}
 	}
 
 	/*
@@ -712,22 +963,122 @@ public class ProjectEditionResource extends ServerResource {
 		gitlabRepository.getBugTrackingSystems().removeAll(tempBtsRepo);
 
 		// Add & update bts elements
+//		for (JsonNode btsJson : (ArrayNode) json.get("bugTrackingSystems")) {
+//			boolean exist = false;
+//			for (BugTrackingSystem buggy : gitlabRepository.getBugTrackingSystems()) {
+//				if (buggy.getId().equals(btsJson.get("_id").asText())) {
+//					buggy.setUrl(btsJson.get("url").asText());
+//					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
+//					exist = true;
+//					break;
+//				}
+//			}
+//			if (!exist) {
+//				BugTrackingSystem buggy = null;
+//				if (btsJson.get("_type").asText().equals("org.eclipse.scava.repository.model.gitlab.GitLabTracker")) {
+//					buggy = new GitLabTracker();
+//					buggy.setUrl(btsJson.get("url").asText());
+//					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
+//				}
+//				gitlabRepository.getBugTrackingSystems().add(buggy);
+//			}
+//		}
+		
+		// Add & update bts elements
 		for (JsonNode btsJson : (ArrayNode) json.get("bugTrackingSystems")) {
 			boolean exist = false;
 			for (BugTrackingSystem buggy : gitlabRepository.getBugTrackingSystems()) {
-				if (buggy.getId().equals(btsJson.get("_id").asText())) {
+				if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof GitLabTracker) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
+					exist = true;
+					break;
+				}
+				if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof Bugzilla) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((Bugzilla) buggy).setProduct(btsJson.get("product").asText());
+					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof SourceForgeBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof RedmineBugIssueTracker) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
+					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof JiraBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof MantisBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
+					exist = true;
+					break;
+				} else if (buggy.getId().equals(btsJson.get("_id").asText())
+						&& buggy instanceof BitbucketBugTrackingSystem) {
+					buggy.setUrl(btsJson.get("url").asText());
+					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
 					exist = true;
 					break;
 				}
 			}
 			if (!exist) {
 				BugTrackingSystem buggy = null;
-				if (btsJson.get("_type").asText().equals("org.eclipse.scava.repository.model.gitlab.GitLabTracker")) {
+				switch (btsJson.get("_type").asText()) {
+				case "org.eclipse.scava.repository.model.gitlab.GitLabTracker":
 					buggy = new GitLabTracker();
 					buggy.setUrl(btsJson.get("url").asText());
 					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
+					break;
+				case "org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla":
+					buggy = new Bugzilla();
+					buggy.setUrl(btsJson.get("url").asText());
+					((Bugzilla) buggy).setProduct(btsJson.get("product").asText());
+					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
+					break;
+				case "org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem":
+					buggy = new SourceForgeBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					break;
+				case "org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker":
+					buggy = new RedmineBugIssueTracker();
+					buggy.setUrl(btsJson.get("url").asText());
+					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
+					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
+					break;
+				case "org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem":
+					buggy = new JiraBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
+					break;
+				case "org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem":
+					buggy = new MantisBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
+					break;
+				case "org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem":
+					buggy = new BitbucketBugTrackingSystem();
+					buggy.setUrl(btsJson.get("url").asText());
+					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
+					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
+					break;
+				default:
+					break;
 				}
 				gitlabRepository.getBugTrackingSystems().add(buggy);
 			}
@@ -739,7 +1090,183 @@ public class ProjectEditionResource extends ServerResource {
 //			if (isValidKey(cc, "url"))
 //				comunication.setUrl(cc.get("url").asText());
 //			k++;
-//		}	
+//		}
+		
+		// Delete communication channel elements
+		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
+		for (CommunicationChannel communication : gitlabRepository.getCommunicationChannels()) {
+			boolean exist = false;
+			for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
+				if (communication.getId().equals(ccJson.get("_id").asText())) {
+					exist = true;
+					break;
+				}
+			}
+			if (!exist) {
+				tempCcRepo.add(communication);
+			}
+		}
+		gitlabRepository.getCommunicationChannels().removeAll(tempCcRepo);
+
+		// Add & update communication channel elements
+		for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
+			boolean exist = false;
+			for (CommunicationChannel communication : gitlabRepository.getCommunicationChannels()) {
+				if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof NntpNewsGroup) {
+					communication.setUrl(ccJson.get("url").asText());
+					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
+					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
+					communication.setUrl(ccJson.get("url").asText());
+					((Irc) communication).setName(ccJson.get("name").asText());
+					((Irc) communication).setDescription(ccJson.get("description").asText());
+					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Irc) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
+					communication.setUrl(ccJson.get("url").asText());
+					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Mbox) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Mbox) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof EclipseForum) {
+					communication = new EclipseForum();
+					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText())
+						&& communication instanceof DocumentationSystematic) {
+					communication = new DocumentationSystematic();
+					if (ccJson.get("loginOption").asText().equals("option1")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+					} else if (ccJson.get("loginOption").asText().equals("option2")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+						((DocumentationSystematic) communication)
+								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+						((DocumentationSystematic) communication)
+								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+					}
+					exist = true;
+					break;
+				}
+			}
+			if (!exist) {
+				CommunicationChannel communication = null;
+				switch (ccJson.get("_type").asText()) {
+				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
+					communication = new NntpNewsGroup();
+					communication.setUrl(ccJson.get("url").asText());
+					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
+					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					break;
+				case "org.eclipse.scava.repository.model.cc.irc.Irc":
+					communication = new Irc();
+					communication.setUrl(ccJson.get("url").asText());
+					((Irc) communication).setName(ccJson.get("name").asText());
+					((Irc) communication).setDescription(ccJson.get("description").asText());
+					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Irc) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
+					communication = new SympaMailingList();
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
+					((SympaMailingList) communication)
+							.setMailingListDescription(ccJson.get("mailingListDescription").asText());
+					((SympaMailingList) communication)
+							.setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
+					communication = new Mbox();
+					communication.setUrl(ccJson.get("url").asText());
+					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((Mbox) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((Mbox) communication).setPassword(ccJson.get("password").asText());
+					}
+					break;
+				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
+					communication = new EclipseForum();
+					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					break;
+				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
+					communication = new DocumentationSystematic();
+					if (ccJson.get("loginOption").asText().equals("option1")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+					} else if (ccJson.get("loginOption").asText().equals("option2")) {
+						communication.setUrl(ccJson.get("url").asText());
+						((DocumentationSystematic) communication)
+								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+						((DocumentationSystematic) communication)
+								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+						((DocumentationSystematic) communication)
+								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+					}
+					break;
+				default:
+					break;
+				}
+				gitlabRepository.getCommunicationChannels().add(communication);
+			}
+		}
+		
+		
 	}
 
 	/*
