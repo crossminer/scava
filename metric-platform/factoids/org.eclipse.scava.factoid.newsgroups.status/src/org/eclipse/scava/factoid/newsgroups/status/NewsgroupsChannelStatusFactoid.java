@@ -24,6 +24,7 @@ import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
+import org.eclipse.scava.platform.factoids.StarRating;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
@@ -147,7 +148,20 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 			percentageOfRequestsPerDay = ( (float) 100 * numberOfRequestsPerDay ) / numberOfArticlesPerDay;
 			percentageOfRepliesPerDay = ( (float) 100 * numberOfRepliesPerDay ) / numberOfArticlesPerDay;
 		}
-
+		
+		if (percentageOfReplies > 75) {
+			factoid.setStars(StarRating.FOUR);
+		}
+		else if(percentageOfReplies > 50) {
+			factoid.setStars(StarRating.THREE);
+		}
+		else if(percentageOfReplies > 25) {
+			factoid.setStars(StarRating.TWO);
+		}
+		else {
+			factoid.setStars(StarRating.ONE);
+		}
+		
 		stringBuffer.append("The project's newsgroup contains ");
 		stringBuffer.append(numberOfRequests);
 		stringBuffer.append(" requests (");
