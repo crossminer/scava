@@ -30,6 +30,8 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { ProjectMgmtDeleteDialogComponent } from './components/delete-project/delete-project-dialog.component';
+import { ConnectorMgmtDeleteDialogComponent } from './components/edit-project/delete-connector/delete-connector-dialog.component';
+import { ConnectorMgmtAddDialogComponent } from './components/edit-project/add-connector/add-connector-dialog.component';
 
 @NgModule({
   imports: [
@@ -89,12 +91,16 @@ import { ProjectMgmtDeleteDialogComponent } from './components/delete-project/de
     AnalysisTaskMgmtDeleteDialogComponent,
     MetricProvidersMgmtInfoDialogComponent,
     EditProjectComponent,
-    ProjectMgmtDeleteDialogComponent
+    ProjectMgmtDeleteDialogComponent,
+    ConnectorMgmtDeleteDialogComponent,
+    ConnectorMgmtAddDialogComponent
   ],
   entryComponents: [
     AnalysisTaskMgmtDeleteDialogComponent,
     MetricProvidersMgmtInfoDialogComponent,
-    ProjectMgmtDeleteDialogComponent
+    ProjectMgmtDeleteDialogComponent,
+    ConnectorMgmtDeleteDialogComponent,
+    ConnectorMgmtAddDialogComponent
   ],
   providers: [
     NgbModal,

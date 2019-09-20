@@ -22,10 +22,13 @@ public class AnalysisTasksStatusByProjectResource extends AbstractApiResource{
 		
 		String stat = "none";
 		for (AnalysisTask analysisTask : tasks) {
-			if (analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) || 
-					analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
+			if (analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.COMPLETED.name()) || analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
 				stat = "up-to-date";
-			} else {
+			} else if (analysisTask.getScheduling().getStatus().equals(AnalysisTaskStatus.ERROR.name())) {
+				stat = "error";
+				break;
+			}
+			else {
 				stat = "in-progress";
 				break;
 			}
@@ -34,6 +37,8 @@ public class AnalysisTasksStatusByProjectResource extends AbstractApiResource{
 			globalStatus = "{\"value\":\"up-to-date\"}";
 		} else if (stat.equals("in-progress")){
 			globalStatus = "{\"value\":\"in-progress\"}";
+		} else if (stat.equals("error")){
+			globalStatus = "{\"value\":\"error\"}";
 		} else {
 			globalStatus = "{\"value\":\"none\"}";
 		}

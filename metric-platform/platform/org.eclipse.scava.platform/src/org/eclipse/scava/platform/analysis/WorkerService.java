@@ -74,6 +74,27 @@ public class WorkerService {
 		
 	}
 	
+
+	public synchronized void interruptFailedTask(String workerId) {
+		loggerOssmeter.info("Completing AnalysisTask on Worker '" + workerId + "'");
+		Worker worker = this.getRepository().getWorkers().findOneByWorkerId(workerId);
+		if(worker != null) {
+			AnalysisTask task = this.repository.getAnalysisTasks().findOneByAnalysisTaskId(worker.getCurrentTask().getAnalysisTaskId());
+			
+			if(!task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())) {
+				task.getScheduling().setStatus(AnalysisTaskStatus.ERROR.name());
+				task.getScheduling().setWorkerId(null);	
+			}
+
+			this.getRepository().getWorkers().remove(worker);
+			worker = new Worker();
+			worker.setWorkerId(workerId);
+			this.repository.getWorkers().add(worker);
+			this.repository.sync();
+			loggerOssmeter.info("Interrupting  AnalysisTask '" + task.getAnalysisTaskId() + "' on Worker '" + workerId);
+		}
+	}
+	
 	
 	public synchronized List<Worker> getWorkers(){
 		List<Worker> workers = new ArrayList<>();
@@ -84,6 +105,4 @@ public class WorkerService {
 		return workers;
 	}
 	
-	
-
 }

@@ -1,0 +1,30 @@
+<form name="addForm" (ngSubmit)="save(sourceInfo, project)" #addForm="ngForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Add connector</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <div class="form-group">
+                <label for="loginOption">VCS Repository</label> <br>
+                <select name="gitRepository._type" [(ngModel)]="gitRepository._type" class="form-control">
+                    <option value="org.eclipse.scava.repository.model.vcs.git.GitRepository">Git</option>
+                    <option value="org.eclipse.scava.repository.model.documentation.gitbased.GitRepository">Git based documentation</option>
+                    <option value="org.eclipse.scava.repository.model.vcs.svn.SvnRepository">Svn</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" class="form-control" id="gitRepository.url" name="gitRepository.url" [(ngModel)]="gitRepository.url">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark btn-sm" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="addForm.form.invalid" class="btn btn-outline-dark btn-sm">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

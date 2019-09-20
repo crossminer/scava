@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -83,7 +83,7 @@ public class NewsgroupsChannelHourlyFactoid extends AbstractFactoidMetricProvide
 
 		float uniformPercentageOfComments = ( (float) 100 ) / 24;
 		float maxPercentageOfArticles = 0,
-			  minPercentageOfArticles = 100,
+			  minPercentageOfArticles = 101,
 			  workingHoursSum = 0,
 			  ourOfWorkingHoursSum = 0;
 		
@@ -113,19 +113,25 @@ public class NewsgroupsChannelHourlyFactoid extends AbstractFactoidMetricProvide
 
 		StringBuffer stringBuffer = new StringBuffer();
 		
-		stringBuffer.append("The number of articles, requests or replies, ");
-		if ( maxPercentageOfArticles - minPercentageOfArticles < uniformPercentageOfComments )
-			stringBuffer.append("does not depend");
+		if(maxPercentageOfArticles == (float) 0.0)
+		{
+			stringBuffer.append("The number of articles, requests or replies, were zero regardeless the hour of the day.\n");
+		}
 		else
-			stringBuffer.append("largely depends");
-		stringBuffer.append(" on the hour of the day.\nThere is");
-		if ( Math.abs( ( workingHoursSum / 9 ) - ( ourOfWorkingHoursSum / 15 ) ) < uniformPercentageOfComments ) 
-			stringBuffer.append(" no ");
-		else
-			stringBuffer.append(" ");
-		stringBuffer.append("significant difference between the number of comments" +
-							" within as opposed to out of working hours.\n");
-
+		{
+			stringBuffer.append("The number of articles, requests or replies, ");
+			if ( maxPercentageOfArticles - minPercentageOfArticles < uniformPercentageOfComments )
+				stringBuffer.append("does not depend");
+			else
+				stringBuffer.append("largely depends");
+			stringBuffer.append(" on the hour of the day.\nThere is");
+			if ( Math.abs( ( workingHoursSum / 9 ) - ( ourOfWorkingHoursSum / 15 ) ) < uniformPercentageOfComments ) 
+				stringBuffer.append(" no ");
+			else
+				stringBuffer.append(" ");
+			stringBuffer.append("significant difference between the number of comments" +
+								" within as opposed to out of working hours.\n");
+		}
 		factoid.setFactoid(stringBuffer.toString());
 
 	}

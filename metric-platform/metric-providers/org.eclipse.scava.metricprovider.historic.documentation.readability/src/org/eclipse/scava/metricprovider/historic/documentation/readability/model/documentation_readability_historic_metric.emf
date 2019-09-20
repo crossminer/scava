@@ -6,12 +6,14 @@ class DocumentationReadabilityHistoricMetric {
 }
 
 class DocumentationHistoricReadability {
+	@searchable
 	attr String documentationId;
 	attr int numberOfDocumentationEntries;
 	attr double averageDocumentationReadability;
 }
 
 class DocumentationEntryHistoricReadability {
+	@searchable
 	attr String documentationId;
 	attr String entryId;
 	attr double readability;

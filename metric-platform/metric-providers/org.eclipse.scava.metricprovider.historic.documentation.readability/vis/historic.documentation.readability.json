@@ -1,5 +1,5 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.documentation.readability",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.documentation.readability.DocumentationReadabilityHistoricMetricProvider",
 	"vis" : [ 
 		{
 			"id" : "documentation.readability.entries",
@@ -8,7 +8,8 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$documentationEntriesReadability",
-				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Entry name", "field" : "$entryId"}, 
 					{ "name" : "Readability", "field" : "$readability" }]
 			},
 			"x" : "Date",
@@ -22,7 +23,7 @@
 			"description" : "The average documentation readability",
 			"type" : "LineChart",
 			"datatable" : {
-				"rows" : "$DocumentationHistoricReadability",
+				"rows" : "$documentationReadability",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
 					{ "name" : "Average Readability", "field" : "$averageDocumentationReadability" },
 					{ "name" : "Number of Documentation Entries", "field" : "$numberOfDocumentationEntries" } ]

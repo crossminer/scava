@@ -125,7 +125,7 @@ public class ArtifactsRestController {
 	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {
 		try {
-			Artifact art = importer.importProject(projectName.replace("--", "/").replace("%2E", "."));
+			importer.importProject(projectName.replace("--", "/").replace("%2E", "."));
 			return true;
 			
 		} catch (IOException e) {

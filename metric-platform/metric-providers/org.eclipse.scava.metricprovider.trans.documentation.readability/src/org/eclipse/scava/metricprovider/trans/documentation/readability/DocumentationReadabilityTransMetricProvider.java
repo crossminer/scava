@@ -129,8 +129,9 @@ public class DocumentationReadabilityTransMetricProvider implements ITransientMe
 					db.getDocumentationEntriesReadability().add(documentationEntryReadability);
 				}
 				documentationEntryReadability.setReadability(Readability.calculateDaleChall(documentationEntry.getNaturalLanguage()));
+				db.sync();
 			}
-			db.sync();
+			
 		}
 		
 		

@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'login' },
+            { path: '', redirectTo: 'home' },
             { path: 'home', loadChildren: './home/home.module#HomeModule' },
             { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
             { path: 'password', loadChildren: './password/password.module#PasswordModule' },

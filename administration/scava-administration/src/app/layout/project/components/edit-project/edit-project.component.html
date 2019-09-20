@@ -95,10 +95,20 @@
         </table>
         <table style="width: 100%;">
             <tr *ngIf="project?.vcsRepositories.length>0">
-                <td><Strong>VCS Repositories</Strong></td>
+                <td>
+                    <Strong>VCS Repositories</Strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('vcs',i)"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let vcs of project?.vcsRepositories;let i=index;">
-                <tr><td>Version Control System {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>Version Control System {{i + 1}} : {{vcs._type.split(".")[vcs._type.split(".").length-1]}}</span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('vcs',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="vcs?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
@@ -113,10 +123,20 @@
                 </tr>
             </tbody>
             <tr *ngIf="project?.bugTrackingSystems.length>0">
-                <td><strong>Bug Tracking Systems</strong></td>
+                <td>
+                    <strong>Bug Tracking Systems</strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('vcs',i)"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let bts of project?.bugTrackingSystems;let i=index;">
-                <tr><td>Bug Tracking System {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>Bug Tracking System {{i + 1}} : {{bts?._type.split(".")[bts?._type.split(".").length-1]}}</span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('bts',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="bts?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
@@ -173,10 +193,20 @@
                 </tr>
             </tbody> 
             <tr *ngIf="project?.communicationChannels.length>0">
-                <td><strong>Communication Channels</strong></td>
+                <td>
+                    <strong>Communication Channels</strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('cc',i)"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let cc of project?.communicationChannels;let i=index;">
-                <tr><td>Communication Channel {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>Communication Channel {{i + 1}} : {{cc?._type.split(".")[cc?._type.split(".").length-1]}}</span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('cc',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">

@@ -29,8 +29,6 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -58,6 +56,12 @@ import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.repository.DefaultMirrorSelector;
 import org.eclipse.aether.util.repository.DefaultProxySelector;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryContents;
+import org.eclipse.egit.github.core.RepositoryId;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.ContentsService;
+import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.scava.business.IImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
@@ -65,15 +69,11 @@ import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
 import org.eclipse.scava.business.model.Tag;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.RepositoryContents;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.ContentsService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,39 +93,39 @@ public class GithubImporter implements IImporter {
 	@Autowired
 	private GithubUserRepository userRepository;
 
-	
-
 	@Autowired
 	private ArtifactRepository projectRepository;
 
 	private static final Logger logger = LoggerFactory.getLogger(GithubImporter.class);
 
 	@Override
-	public Artifact importProject(String artId) throws IOException  {
+	public Artifact importProject(String artId) throws IOException {
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
-		if (checkRepo != null){
+		if (checkRepo != null) {
 			logger.info("\t" + artId + " already in DB");
 			return checkRepo;
-			
+
 		}
-		logger.info("Importing project: " + artId);
-		GitHubClient client = new GitHubClient();
-		client.setOAuth2Token(token);
-		RepositoryService repoService = new RepositoryService(client);
-		
-		Repository rep = repoService.getRepository(artId.split("/")[0],artId.split("/")[1]);
-		
-		Artifact p = new Artifact();
-		p.setClone_url(rep.getCloneUrl());
-		p.setDescription(rep.getDescription());
-		p.setFullName(rep.getOwner().getLogin() + "/" + rep.getName());
-		p.setHtml_url(rep.getHtmlUrl());
-		p.setGit_url(rep.getGitUrl());
-		p.setMaster_branch(rep.getDefaultBranch());
-		p.setHomePage(rep.getHomepage());
-		p.setName(rep.getName());
-		p.setShortName(p.getShortName());
-			
+		try {
+			logger.info("Importing project: " + artId);
+			GitHubClient client = new GitHubClient();
+			client.setOAuth2Token(token);
+			RepositoryService repoService = new RepositoryService(client);
+
+			Repository rep = repoService.getRepository(artId.split("/")[0], artId.split("/")[1]);
+
+			Artifact p = new Artifact();
+			p.setMetricPlatformId(artId.split("/")[1]);
+			p.setClone_url(rep.getCloneUrl());
+			p.setDescription(rep.getDescription());
+			p.setFullName(rep.getOwner().getLogin() + "/" + rep.getName());
+			p.setHtml_url(rep.getHtmlUrl());
+			p.setGit_url(rep.getGitUrl());
+			p.setMaster_branch(rep.getDefaultBranch());
+			p.setHomePage(rep.getHomepage());
+			p.setName(rep.getName());
+			p.setShortName(p.getShortName());
+
 			try {
 				p.setCommitteers(getCommitters(rep));
 			} catch (MalformedURLException e) {
@@ -136,7 +136,7 @@ public class GithubImporter implements IImporter {
 			try {
 				p.setDependencies(getDependencies(client, rep));
 			} catch (IOException | XmlPullParserException | InterruptedException e) {
-				logger.error("Error getting dependencies: "  + e.getMessage());
+				logger.error("Error getting dependencies: " + e.getMessage());
 			}
 			try {
 				p.setReadmeText(getReadmeContent(client, rep));
@@ -145,28 +145,33 @@ public class GithubImporter implements IImporter {
 			}
 			try {
 				p.setStarred(getStargazers(rep));
-				
+
 			} catch (MalformedURLException e) {
 				logger.error(e.getMessage());
 			} catch (Exception e) {
 				logger.error("Error getting stars" + e.getMessage());
 			}
-			p.setTags(getTags(artId.split("/")[0],artId.split("/")[1]));
-			
+			p.setTags(getTags(artId.split("/")[0], artId.split("/")[1]));
+
 //			if(p.getDependencies() != null && p.getDependencies().size()>8) {
-				storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
-				storeGithubUser(p.getStarred(), p.getFullName());
-				projectRepository.save(p);
-				logger.debug("Imported project: " + artId);
+			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
+			storeGithubUser(p.getStarred(), p.getFullName());
+			projectRepository.save(p);
+			logger.debug("Imported project: " + artId);
 //			}
 
-		return p;
+			return p;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw e;
+		}
 	}
+
 	@Override
 	public void storeGithubUser(List<Stargazers> starred, String repoName) {
 		for (Stargazers stargazer : starred) {
 			GithubUser user = userRepository.findOneByLogin(stargazer.getLogin());
-			if(user == null){
+			if (user == null) {
 				user = new GithubUser();
 				user.setLogin(stargazer.getLogin());
 			}
@@ -174,11 +179,12 @@ public class GithubImporter implements IImporter {
 			userRepository.save(user);
 		}
 	}
+
 	@Override
 	public void storeGithubUserCommitter(List<GithubUser> committers, String repoName) {
 		for (GithubUser committer : committers) {
 			GithubUser user = userRepository.findOneByLogin(committer.getLogin());
-			if(user == null){
+			if (user == null) {
 				user = new GithubUser();
 				user.setLogin(committer.getLogin());
 			}
@@ -191,17 +197,15 @@ public class GithubImporter implements IImporter {
 		List<Tag> results = new ArrayList<>();
 		if (getRemainingResource("core") == 0)
 			waitApiCoreRate();
-		URL url = new URL("https://api.github.com/repos/" +
-						owner + "/" +
-						repo + "/topics?access_token=" + token);
+		URL url = new URL("https://api.github.com/repos/" + owner + "/" + repo + "/topics?access_token=" + token);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-		connection.setRequestProperty("Accept", "application/vnd.github.mercy-preview+json");	
+		connection.setRequestProperty("Accept", "application/vnd.github.mercy-preview+json");
 		connection.connect();
 		InputStream is = connection.getInputStream();
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 		String jsonText = readAll(bufferReader);
 		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
-		JSONArray topics = (JSONArray) obj.get("names"); 
+		JSONArray topics = (JSONArray) obj.get("names");
 		for (Object object : topics) {
 			Tag tag = new Tag();
 			tag.setTag(object.toString());
@@ -209,18 +213,17 @@ public class GithubImporter implements IImporter {
 		}
 		return results;
 	}
-	
+
 	private List<Stargazers> getStargazers(Repository rep) throws IOException {
 		List<Stargazers> results = new ArrayList<>();
 		int page = 1;
-		boolean continueValue=true;
-		while(continueValue){
+		boolean continueValue = true;
+		while (continueValue) {
 			if (getRemainingResource("core") == 0)
 				waitApiCoreRate();
 			URL url;
-			url = new URL("https://api.github.com/repos/" +
-							rep.getOwner().getLogin() + "/" +
-							rep.getName() + "/stargazers?page=" + page + "&per_page=100&access_token=" + token);
+			url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
+					+ "/stargazers?page=" + page + "&per_page=100&access_token=" + token);
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
 			connection.connect();
@@ -228,40 +231,39 @@ public class GithubImporter implements IImporter {
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 			String jsonText = readAll(bufferReader);
 			JSONArray obj = (JSONArray) JSONValue.parse(jsonText);
-			if(obj.size() == 0)
+			if (obj.size() == 0)
 				continueValue = false;
 			for (Object object : obj) {
-				JSONObject star = ((JSONObject)object);
+				JSONObject star = ((JSONObject) object);
 				JSONObject userStarred = (JSONObject) star.get("user");
-				Stargazers s = new Stargazers(userStarred.get("login").toString(), 
-						star.get("starred_at").toString());
-				
+				Stargazers s = new Stargazers(userStarred.get("login").toString(), star.get("starred_at").toString());
+
 				results.add(s);
 			}
 			page++;
 		}
 		return results;
 	}
+
 	public List<GithubUser> getCommitters(Repository rep) throws IOException {
 		List<GithubUser> results = new ArrayList<>();
 		if (getRemainingResource("core") == 0)
 			waitApiCoreRate();
 		URL url;
-		url = new URL("https://api.github.com/repos/" +
-						rep.getOwner().getLogin() + "/" +
-						rep.getName() + "/stats/contributors?access_token=" + token);
+		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
+				+ "/stats/contributors?access_token=" + token);
 		boolean guard = true;
-		while(guard){
+		while (guard) {
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.connect();
 			InputStream is = connection.getInputStream();
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 			String jsonText = readAll(bufferReader);
 			Object o = JSONValue.parse(jsonText);
-			if(o instanceof JSONArray){
+			if (o instanceof JSONArray) {
 				JSONArray obj = (JSONArray) o;
 				for (Object object : obj) {
-					JSONObject star = ((JSONObject)object);
+					JSONObject star = ((JSONObject) object);
 					JSONObject userStarred = (JSONObject) star.get("author");
 					GithubUser s = new GithubUser();
 					s.setLogin(userStarred.get("login").toString());
@@ -281,33 +283,32 @@ public class GithubImporter implements IImporter {
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public void importAll() {
 		String jsonText = null;
 
-
 		int startStar = 20;
 		int stopStar = 120;
-		
-		while(stopStar < 5000){
+
+		while (stopStar < 5000) {
 			int page = 1;
 			while (page < 11) {
 				InputStream is = null;
 				BufferedReader bufferReader = null;
-	
-				//TODO Replace with function that returns string
+
+				// TODO Replace with function that returns string
 				try {
 					if (getRemainingResource("search") == 0)
 						waitApiSearchRate();
-					URL url =new URL("https://api.github.com/search/repositories?q=json%20library+stars:" + startStar + ".." + stopStar + "+language:java&page=" + page
-							+ "&access_token=" + token);
-					is = url .openStream();
+					URL url = new URL("https://api.github.com/search/repositories?q=json%20library+stars:" + startStar
+							+ ".." + stopStar + "+language:java&page=" + page + "&access_token=" + token);
+					is = url.openStream();
 					bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 					jsonText = readAll(bufferReader);
 				} catch (IOException e) {
 					logger.error(e.getMessage());
-				} finally{
+				} finally {
 					if (is != null)
 						try {
 							is.close();
@@ -315,16 +316,14 @@ public class GithubImporter implements IImporter {
 							logger.error(e.getMessage());
 						}
 				}
-				
-				
+
 				JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
 				JSONArray arr = (JSONArray) obj.get("items");
-	
+
 				// it checks that at least one repository in obj Array
 				if (!arr.isEmpty()) {
-					logger.debug(
-							"Scanning page: https://api.github.com/search/repositories?q=json%20library+stars:" + startStar + ".." + stopStar + "+language:java&page=" + page
-							+ "&access_token=" + token);
+					logger.debug("Scanning page: https://api.github.com/search/repositories?q=json%20library+stars:"
+							+ startStar + ".." + stopStar + "+language:java&page=" + page + "&access_token=" + token);
 					Iterator<?> iter = arr.iterator();
 					while (iter.hasNext()) {
 						JSONObject entry = (JSONObject) iter.next();
@@ -332,39 +331,41 @@ public class GithubImporter implements IImporter {
 						try {
 							RepositoryId repo = new RepositoryId(fullname.split("/")[0], fullname.split("/")[1]);
 							importProject(fullname);// (repo,
-																			// pomFiles,
-																			// pomPath,
-																			// users);
-							Files.write(Paths.get("repo2.txt"), (repo.getOwner() + "/" + repo.getName() + "\n").getBytes(), StandardOpenOption.APPEND);
+													// pomFiles,
+													// pomPath,
+													// users);
+							Files.write(Paths.get("repo2.txt"),
+									(repo.getOwner() + "/" + repo.getName() + "\n").getBytes(),
+									StandardOpenOption.APPEND);
 
 						} catch (Exception e) {
 							waitApiCoreRate();
 						}
 					}
-					
+
 				} else {
 					logger.debug("Importing completed.");
 					break;
 				}
 				page++;
 			}
-			startStar+=101;
-			stopStar+=101;
+			startStar += 101;
+			stopStar += 101;
 		}
 	}
 
-	private JSONObject getRemainingResource() throws IOException{
+	private JSONObject getRemainingResource() throws IOException {
 		URL url = new URL("https://api.github.com/rate_limit");
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-		connection.setRequestProperty("Authorization", "token "  + token);
+		connection.setRequestProperty("Authorization", "token " + token);
 		connection.connect();
 		InputStream is = connection.getInputStream();
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 		String jsonText = readAll(bufferReader);
 		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
-		return (JSONObject)obj.get("resources");
+		return (JSONObject) obj.get("resources");
 	}
-	
+
 	private long getRemainingResource(String value) {
 		try {
 			JSONObject core = (JSONObject) getRemainingResource().get(value);
@@ -372,41 +373,43 @@ public class GithubImporter implements IImporter {
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
-			
+
 		return 0;
 	}
-	
+
 	private void waitApiCoreRate() {
 		boolean sleep = true;
 		while (sleep) {
-			
+
 			long remaining = getRemainingResource("core");
 			logger.debug(remaining + "");
 			if (remaining > 0)
 				sleep = false;
-			else try {
-				Thread.sleep(100000);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				logger.error(e.getMessage());
-			}
+			else
+				try {
+					Thread.sleep(100000);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					logger.error(e.getMessage());
+				}
 		}
 	}
-	
+
 	private void waitApiSearchRate() {
 		boolean sleep = true;
 		while (sleep) {
-			
+
 			long remaining = getRemainingResource("search");
 			logger.debug(remaining + "");
 			if (remaining > 0)
 				sleep = false;
-			else try {
-				Thread.sleep(100000);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				logger.error(e.getMessage());
-			}
+			else
+				try {
+					Thread.sleep(100000);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					logger.error(e.getMessage());
+				}
 		}
 	}
 
@@ -416,7 +419,7 @@ public class GithubImporter implements IImporter {
 	private String getReadmeContent(GitHubClient client, Repository rep) throws Exception {
 		ContentsService contentService = new ContentsService(client);
 		RepositoryContents content = contentService.getReadme(rep);
-		//TODO handle exception
+		// TODO handle exception
 		String fileConent = content.getContent();
 		return new String(Base64.decodeBase64(fileConent.getBytes()));
 	}
@@ -429,29 +432,31 @@ public class GithubImporter implements IImporter {
 		List<String> mavenDeps = getMavenDependencies(client, rep);
 		List<String> gradleDeps = getGradleDependencies(client, rep);
 		mavenDeps.addAll(gradleDeps);
-		return mavenDeps; 
+		return mavenDeps;
 	}
-	private List<String> getGradleDependencies(GitHubClient client, Repository rep) 
+
+	private List<String> getGradleDependencies(GitHubClient client, Repository rep)
 			throws IOException, XmlPullParserException, InterruptedException {
 		String repoFullName = rep.getOwner().getLogin() + "/" + rep.getName();
 		List<String> pomPath = new ArrayList<>();
-		InputStream searchPomFiles = null; 
-		try{
-			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName + "&access_token="
-					+ this.token).openStream();
-		}catch(Exception e){
-			
+		InputStream searchPomFiles = null;
+		try {
+			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName
+					+ "&access_token=" + this.token).openStream();
+		} catch (Exception e) {
+
 			logger.debug("sleep time");
 			Thread.sleep(60000);
 			logger.debug("wakeup");
-			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName + "&access_token="
-					+ this.token).openStream();
+			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName
+					+ "&access_token=" + this.token).openStream();
 		}
-		BufferedReader searchPomresults = new BufferedReader(new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
+		BufferedReader searchPomresults = new BufferedReader(
+				new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
 		String jsonSearchPom = readAll(searchPomresults);
 		JSONObject pomContentsResults = (JSONObject) JSONValue.parse(jsonSearchPom);
 		long i = (long) pomContentsResults.get("total_count");
-		if(i > 0){
+		if (i > 0) {
 			JSONArray pomFiles = (JSONArray) pomContentsResults.get("items");
 			for (Object object : pomFiles) {
 				JSONObject pomFile = (JSONObject) object;
@@ -461,7 +466,7 @@ public class GithubImporter implements IImporter {
 		return getGradleDependencies(client, rep, pomPath);
 	}
 
-	private List<String> getGradleDependencies(GitHubClient client, Repository rep, List<String> gradlePath)  {
+	private List<String> getGradleDependencies(GitHubClient client, Repository rep, List<String> gradlePath) {
 		List<String> result = new ArrayList<>();
 		ContentsService contentService = new ContentsService(client);
 		for (String gradleFile : gradlePath) {
@@ -475,48 +480,49 @@ public class GithubImporter implements IImporter {
 					valueDecoded += System.getProperty("line.separator");
 				}
 				AstBuilder builder = new AstBuilder();
-			    List<ASTNode> nodes = builder.buildFromString( valueDecoded );
-			    DependencyVisitor visitor = new DependencyVisitor();
-		        walkScript(visitor, nodes );
-		        
-		        List<String> partialResult = visitor.getDependencies();
-		        if(partialResult!=null)
-		        	result.addAll(partialResult);
-			} catch (Exception e) {logger.error(e.getMessage());}
-			
+				List<ASTNode> nodes = builder.buildFromString(valueDecoded);
+				DependencyVisitor visitor = new DependencyVisitor();
+				walkScript(visitor, nodes);
+
+				List<String> partialResult = visitor.getDependencies();
+				if (partialResult != null)
+					result.addAll(partialResult);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
+
 		}
 		return result;
 	}
 
-	public void walkScript( GroovyCodeVisitor visitor, List<ASTNode> nodes )
-    {
-        for( ASTNode node : nodes )
-        {
-            node.visit( visitor );
-        }
-    }
-	
+	public void walkScript(GroovyCodeVisitor visitor, List<ASTNode> nodes) {
+		for (ASTNode node : nodes) {
+			node.visit(visitor);
+		}
+	}
+
 	private List<String> getMavenDependencies(GitHubClient client, Repository rep)
 			throws IOException, XmlPullParserException, InterruptedException {
 		String repoFullName = rep.getOwner().getLogin() + "/" + rep.getName();
 		List<String> pomPath = new ArrayList<>();
-		InputStream searchPomFiles = null; 
-		try{
-			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName + "&access_token="
-					+ this.token).openStream();
-		}catch(Exception e){
-			
+		InputStream searchPomFiles = null;
+		try {
+			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName
+					+ "&access_token=" + this.token).openStream();
+		} catch (Exception e) {
+
 			logger.debug("sleep time");
 			Thread.sleep(60000);
 			logger.debug("wakeup");
-			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName + "&access_token="
-					+ this.token).openStream();
+			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName
+					+ "&access_token=" + this.token).openStream();
 		}
-		BufferedReader searchPomresults = new BufferedReader(new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
+		BufferedReader searchPomresults = new BufferedReader(
+				new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
 		String jsonSearchPom = readAll(searchPomresults);
 		JSONObject pomContentsResults = (JSONObject) JSONValue.parse(jsonSearchPom);
 		long i = (long) pomContentsResults.get("total_count");
-		if(i > 0){
+		if (i > 0) {
 			JSONArray pomFiles = (JSONArray) pomContentsResults.get("items");
 			for (Object object : pomFiles) {
 				JSONObject pomFile = (JSONObject) object;
@@ -525,6 +531,7 @@ public class GithubImporter implements IImporter {
 		}
 		return getMavenDependencies(client, rep, pomPath);
 	}
+
 	/*
 	 * getDependencies takes several path to pom files
 	 */
@@ -567,7 +574,7 @@ public class GithubImporter implements IImporter {
 				}
 			} catch (XmlPullParserException | IOException e) {
 				logger.error(e.getMessage());
-			} 
+			}
 		}
 		return result;
 	}
