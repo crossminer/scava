@@ -57,7 +57,7 @@ public abstract class Workflow {
 			"-parallelization" }, description = "The parallelization of the workflow (for non-singleton tasks), defaults to 1")
 	protected int parallelization = 1;// Runtime.getRuntime().availableProcessors();
 
-	private List<String> activeJobs = new ArrayList<>();
+	protected List<String> activeJobs = new ArrayList<>();
 	protected HashSet<Stream> activeStreams = new HashSet<>();
 
 	protected HashSet<Task> tasks = new HashSet<>();
@@ -109,7 +109,7 @@ public abstract class Workflow {
 
 	protected Collection<ExecutorService> executorPools = new LinkedList<>();
 
-	public ExecutorService newExecutor() {
+	protected ExecutorService newExecutor() {
 		ExecutorService executor = Executors.newFixedThreadPool(parallelization);
 		executorPools.add(executor);
 		return executor;
@@ -151,7 +151,7 @@ public abstract class Workflow {
 
 	protected Timer terminationTimer;
 	protected Timer streamMetadataTimer;
-	boolean aboutToTerminate = false;
+	protected boolean aboutToTerminate = false;
 	protected boolean terminated = false;
 	protected boolean terminating = false;
 
@@ -984,17 +984,6 @@ public abstract class Workflow {
 	 */
 	public int getParallelization() {
 		return parallelization;
-	}
-
-	/**
-	 * 
-	 * @param parallelization Sets the maximum number of parallel instances for each
-	 *                        non source/sink task running in this workflow (default
-	 *                        = 1)
-	 */
-	public void setParallelization(int parallelization) {
-		if (parallelization > 0)
-			this.parallelization = parallelization;
 	}
 
 	/**

@@ -174,7 +174,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/xpp3-1.1.4c.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xstream-1.4.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xz-1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path=".settings"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/log4j-api-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/guava-26.0-jre.jar"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/httpclient-4.5.6.jar"/>

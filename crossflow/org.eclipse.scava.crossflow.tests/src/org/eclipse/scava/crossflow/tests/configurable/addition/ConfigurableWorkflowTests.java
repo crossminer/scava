@@ -25,23 +25,21 @@ public class ConfigurableWorkflowTests extends WorkflowTests {
 	@Test
 	public void testLateWorkerAddition() throws Exception {
 
-		AdditionWorkflow masterWorkflow = new AdditionWorkflow();
+		AdditionWorkflow masterWorkflow = new AdditionWorkflow(Mode.MASTER, 1);
 		masterWorkflow.setName("master");
 		masterWorkflow.setInstanceId("testLateWorkerAddition");
 		masterWorkflow.createBroker(createBroker);
 		masterWorkflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 		masterWorkflow.setTerminationTimeout(0);
-		masterWorkflow.setParallelization(1);
 		masterWorkflow.getNumberPairSource().setInterval(600);
 		masterWorkflow.run();
 
 		Thread.sleep(1000);
 
-		AdditionWorkflow workerWorkflow = new AdditionWorkflow(Mode.WORKER);
+		AdditionWorkflow workerWorkflow = new AdditionWorkflow(Mode.WORKER, 1);
 		workerWorkflow.setName("worker");
 		workerWorkflow.setInstanceId("testLateWorkerAddition");
 		workerWorkflow.setTerminationTimeout(0);
-		workerWorkflow.setParallelization(1);
 		workerWorkflow.run();
 
 		waitFor(masterWorkflow);

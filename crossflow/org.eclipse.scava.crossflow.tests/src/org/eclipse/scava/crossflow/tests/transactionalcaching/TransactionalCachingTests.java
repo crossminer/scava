@@ -87,8 +87,7 @@ public class TransactionalCachingTests extends WorkflowTests {
 
 		List<String> elems = Arrays.asList("e1", "e2", "e3", "e4", "e5");
 
-		MinimalWorkflow workflow = new MinimalWorkflow();
-		workflow.setParallelization(parallelization);
+		MinimalWorkflow workflow = new MinimalWorkflow(Mode.MASTER,parallelization);
 		workflow.createBroker(createBroker);
 		workflow.setInstanceId("minimalwfcacheteststransactional");
 		workflow.getMinimalSource().setElements(elems);
@@ -105,8 +104,7 @@ public class TransactionalCachingTests extends WorkflowTests {
 				(int) workflow.getClonerTasks().stream().collect(Collectors.summingInt(c -> c.getExecutions())));
 
 		//
-		workflow = new MinimalWorkflow();
-		workflow.setParallelization(parallelization);
+		workflow = new MinimalWorkflow(Mode.MASTER,parallelization);
 		workflow.createBroker(createBroker);
 		workflow.setInstanceId("minimalwfcacheteststransactional");
 		workflow.getMinimalSource().setElements(elems);

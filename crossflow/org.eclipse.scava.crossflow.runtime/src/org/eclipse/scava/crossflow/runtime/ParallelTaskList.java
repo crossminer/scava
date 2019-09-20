@@ -1,4 +1,4 @@
-package org.eclipse.scava.crossflow.runtime.utils;
+package org.eclipse.scava.crossflow.runtime;
 
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
