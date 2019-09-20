@@ -298,7 +298,7 @@
                                                 formControlName="type">
                                         </div>
                                         <div class="form-group">
-                                            <label for="url">URL</label>
+                                            <label for="url">Url</label>
                                             <input type="text" class="form-control" id="url" name="url"
                                                 formControlName="url">
                                         </div>
@@ -313,7 +313,7 @@
                                                 formControlName="description">
                                         </div>
                                         <div class="form-group">
-                                            <label for="compressedFileExtension">compressedFileExtension</label>
+                                            <label for="compressedFileExtension">Compressed File Extension</label>
                                             <input type="text" class="form-control" id="compressedFileExtension"
                                                 name="compressedFileExtension"
                                                 formControlName="compressedFileExtension">
@@ -335,7 +335,7 @@
                                                 formControlName="type">
                                         </div>
                                         <div class="form-group">
-                                            <label for="url">URL</label>
+                                            <label for="url">Url</label>
                                             <input type="text" class="form-control" id="url" name="url"
                                                 formControlName="url">
                                         </div>
@@ -372,7 +372,7 @@
                                                 formControlName="type">
                                         </div>
                                         <div class="form-group">
-                                            <label for="url">URL</label>
+                                            <label for="url">Url</label>
                                             <input type="text" class="form-control" id="url" name="url"
                                                 formControlName="url">
                                         </div>
@@ -424,13 +424,12 @@
                                                 formControlName="clientId">
                                         </div>
                                         <div class="form-group">
-                                            <label for="clientSecret">clientSecret</label>
+                                            <label for="clientSecret">Client Secret</label>
                                             <input type="text" class="form-control" id="clientSecret"
                                                 name="clientSecret" formControlName="clientSecret">
                                         </div>
                                     </div>
-                                    <div
-                                        *ngIf="form.get('communication_channels').value[i].type === 'documentation systematic'">
+                                    <div *ngIf="form.get('communication_channels').value[i].type === 'documentation systematic'">
                                         <div class="form-group">
                                             <label for="loginOption">Login necessary ?</label> <br>
                                             <select name="loginOption" formControlName="loginOption" (click)="toggleSystematicLogin()">
@@ -444,7 +443,7 @@
                                         </div>
                                         <div *ngIf="noLogin == 'option1'">
                                             <div class="form-group">
-                                                <label for="url">URL</label>
+                                                <label for="url">Url</label>
                                                 <input type="text" class="form-control" id="url" name="url"
                                                     formControlName="url">
                                             </div>
@@ -456,7 +455,7 @@
                                         </div>
                                         <div *ngIf="noLogin == 'option2'">
                                             <div class="form-group">
-                                                <label for="url">URL</label>
+                                                <label for="url">Url</label>
                                                 <input type="text" class="form-control" id="url" name="url"
                                                     formControlName="url">
                                             </div>
@@ -466,14 +465,12 @@
                                                     name="executionFrequency" formControlName="executionFrequency">
                                             </div>
                                             <div class="form-group">
-                                                <label for="loginURL">Login URL</label>
-                                                <input type="text" class="form-control" id="loginURL" name="loginURL"
-                                                    formControlName="loginURL">
+                                                <label for="loginUrl">Login Url</label>
+                                                <input type="text" class="form-control" id="loginUrl" name="loginUrl" formControlName="loginUrl">
                                             </div>
                                             <div class="form-group">
                                                 <label for="username">Username</label>
-                                                <input type="text" class="form-control" id="username" name="username"
-                                                    formControlName="username">
+                                                <input type="text" class="form-control" id="username" name="username" formControlName="username">
                                             </div>
                                             <div class="form-group">
                                                 <label for="usernameFieldName">Username Field Name</label>
@@ -482,8 +479,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password" name="password"
-                                                    formControlName="password">
+                                                <input type="password" class="form-control" id="password" name="password" formControlName="password">
                                             </div>
                                             <div class="form-group">
                                                 <label for="passwordFieldName">Password Field Name</label>

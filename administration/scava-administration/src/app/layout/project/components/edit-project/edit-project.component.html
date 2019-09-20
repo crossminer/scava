@@ -93,12 +93,25 @@
                 </tr>
             </tbody>
         </table>
+        <hr>
         <table style="width: 100%;">
-            <tr *ngIf="project?.vcsRepositories.length>0">
-                <td><Strong>VCS Repositories</Strong></td>
+            <tr>
+                <td>
+                    <Strong>VCS Repositories</Strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('vcs')"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let vcs of project?.vcsRepositories;let i=index;">
-                <tr><td>Version Control System {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>
+                            Version Control System {{i + 1}} : {{vcs._type.split(".")[vcs._type.split(".").length-2] + "." + vcs._type.split(".")[vcs._type.split(".").length-1]}}
+                        </span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('vcs',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="vcs?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
@@ -112,27 +125,44 @@
                     </td>
                 </tr>
             </tbody>
-            <tr *ngIf="project?.bugTrackingSystems.length>0">
-                <td><strong>Bug Tracking Systems</strong></td>
+            <hr>
+            <tr>
+                <td>
+                    <strong>Bug Tracking Systems</strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('bts')"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let bts of project?.bugTrackingSystems;let i=index;">
-                <tr><td>Bug Tracking System {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>Bug Tracking System {{i + 1}} : {{bts?._type.split(".")[bts?._type.split(".").length-2] + "." + bts?._type.split(".")[bts?._type.split(".").length-1]}}</span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('bts',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="bts?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="bts.url-{{i + 1}}" [(ngModel)]="bts.url">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.token != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Token: </td>
+                <tr *ngIf="bts?.product != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Product: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.token-{{i + 1}}" [(ngModel)]="bts.token">
+                        <input type="text" class="form-control" name="bts.product-{{i + 1}}" [(ngModel)]="bts.product">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.personal_access_token != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Access Token: </td>
+                <tr *ngIf="bts?.component != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Component: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.personal_access_token-{{i + 1}}" [(ngModel)]="bts.personal_access_token">
+                        <input type="text" class="form-control" name="bts.component-{{i + 1}}" [(ngModel)]="bts.component">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.name != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="bts.name-{{i + 1}}" [(ngModel)]="bts.name">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.login != null" class="row">
@@ -153,10 +183,16 @@
                         <input type="text" class="form-control" name="bts.project-{{i + 1}}" [(ngModel)]="bts.project">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.product != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Product: </td>
+                <tr *ngIf="bts?.token != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Token: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="bts.product-{{i + 1}}" [(ngModel)]="bts.product">
+                        <input type="password" class="form-control" name="bts.token-{{i + 1}}" [(ngModel)]="bts.token">
+                    </td>
+                </tr>
+                <tr *ngIf="bts?.personal_access_token != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Access Token: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="bts.personal_access_token-{{i + 1}}" [(ngModel)]="bts.personal_access_token">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.cgiQueryProgram != null" class="row">
@@ -165,18 +201,23 @@
                         <input type="text" class="form-control" name="bts.cgiQueryProgram-{{i + 1}}" [(ngModel)]="bts.cgiQueryProgram">
                     </td>
                 </tr>
-                <tr *ngIf="bts?.component != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Component: </td>
-                    <td class="col-10">
-                        <input type="text" class="form-control" name="bts.component-{{i + 1}}" [(ngModel)]="bts.component">
-                    </td>
-                </tr>
-            </tbody> 
-            <tr *ngIf="project?.communicationChannels.length>0">
-                <td><strong>Communication Channels</strong></td>
+            </tbody>
+            <hr>
+            <tr>
+                <td>
+                    <strong>Communication Channels</strong>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('cc')"></i></span>
+                </td>
             </tr>
             <tbody *ngFor="let cc of project?.communicationChannels;let i=index;">
-                <tr><td>Communication Channel {{i + 1}}</td></tr>
+                <tr>
+                    <td>
+                        <span>Communication Channel {{i + 1}} : {{cc?._type.split(".")[cc?._type.split(".").length-2] + "." + cc?._type.split(".")[cc?._type.split(".").length-1]}}</span>
+                        <span style="float: right">
+                            <i class="fa fa-remove" title="Remove connector" (click)="removeConnector('cc',i)"></i>
+                        </span>
+                    </td>
+                </tr>
                 <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
@@ -189,28 +230,70 @@
                         <input type="text" class="form-control" name="cc.name-{{i + 1}}" [(ngModel)]="cc.name">
                     </td>
                 </tr>
+                <tr *ngIf="cc?.port != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Port: </td>
+                    <td class="col-10">
+                        <input type="number" class="form-control" name="cc.port-{{i + 1}}" [(ngModel)]="cc.port">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.interval != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Interval: </td>
+                    <td class="col-10">
+                        <input type="number" class="form-control" name="cc.interval-{{i + 1}}" [(ngModel)]="cc.interval">
+                    </td>
+                </tr>
                 <tr *ngIf="cc?.description != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Description: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="cc.description-{{i + 1}}" [(ngModel)]="cc.description">
                     </td>
                 </tr>
-                <tr *ngIf="cc?.MailingListName != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Name: </td>
+                <tr *ngIf="cc?.mailingListName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing List Name: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.MailingListName-{{i + 1}}" [(ngModel)]="cc.MailingListName">
+                        <input type="text" class="form-control" name="cc.mailingListName-{{i + 1}}" [(ngModel)]="cc.mailingListName">
                     </td>
                 </tr>
-                <tr *ngIf="cc?.MailingListDescription != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing Description: </td>
+                <tr *ngIf="cc?.mailingListDescription != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mailing List Description: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.MailingListDescription-{{i + 1}}" [(ngModel)]="cc.MailingListDescription">
+                        <input type="text" class="form-control" name="cc.mailingListDescription-{{i + 1}}" [(ngModel)]="cc.mailingListDescription">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.mboxName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mbox Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.mboxName-{{i + 1}}" [(ngModel)]="cc.mboxName">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.mboxDescription != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Mbox Description: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.mboxDescription-{{i + 1}}" [(ngModel)]="cc.mboxDescription">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.compressedFileExtension != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;compressed File: </td>
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Compressed File Extension: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="cc.compressedFileExtension-{{i + 1}}" [(ngModel)]="cc.compressedFileExtension">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.executionFrequency != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Execution Frequency: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.executionFrequency-{{i + 1}}" [(ngModel)]="cc.executionFrequency">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.loginUrl != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Login Url: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.loginUrl-{{i + 1}}" [(ngModel)]="cc.loginUrl">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.usernameFieldName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Username Field Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.usernameFieldName-{{i + 1}}" [(ngModel)]="cc.usernameFieldName">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.username != null" class="row">
@@ -219,13 +302,44 @@
                         <input type="text" class="form-control" name="cc.username-{{i + 1}}" [(ngModel)]="cc.username">
                     </td>
                 </tr>
+                <tr *ngIf="cc?.passwordFieldName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password Field Name: </td>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="cc.passwordFieldName-{{i + 1}}" [(ngModel)]="cc.passwordFieldName">
+                    </td>
+                </tr>
                 <tr *ngIf="cc?.password != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
                     <td class="col-10">
                         <input type="password" class="form-control" name="cc.password-{{i + 1}}" [(ngModel)]="cc.password">
                     </td>
                 </tr>
+                <tr *ngIf="cc?.forumId != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Forum Id: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="cc.forumId-{{i + 1}}" [(ngModel)]="cc.forumId">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.forumName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Forum Name: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="cc.forumName-{{i + 1}}" [(ngModel)]="cc.forumName">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.clientId != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Client Id: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="cc.clientId-{{i + 1}}" [(ngModel)]="cc.clientId">
+                    </td>
+                </tr>
+                <tr *ngIf="cc?.clientSecret != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Client Secret: </td>
+                    <td class="col-10">
+                        <input type="password" class="form-control" name="cc.clientSecret-{{i + 1}}" [(ngModel)]="cc.clientSecret">
+                    </td>
+                </tr>
             </tbody>
+            <hr>
         </table>
         <div>
             <button type="button" class="btn btn-outline-dark btn-sm" (click)="previousState()">

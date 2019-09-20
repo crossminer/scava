@@ -4,6 +4,8 @@ import { ListProjectService } from '../../../../shared/services/project-service/
 import { RoleAuthorities } from '../../../../shared/services/authentication/role-authorities';
 import { Project } from '../../project.model';
 import { EditProjectService } from '../../../../shared/services/project-service/edit-project.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConnectorMgmtAddDialogComponent } from './add-connector/add-connector-dialog.component';
 
 
 @Component({
@@ -20,6 +22,7 @@ export class EditProjectComponent implements OnInit {
     private route: ActivatedRoute,
     private listProjectService: ListProjectService,
     private editProjectService: EditProjectService,
+    public modalService: NgbModal,
     public roleAuthorities: RoleAuthorities,
     private router: Router
   ) {
@@ -55,7 +58,28 @@ export class EditProjectComponent implements OnInit {
       }
     )
     this.previousState();
-    console.log(this.project)
+  }
+
+  addConnector(sourceInfo: string) {
+    const modalRef = this.modalService.open(ConnectorMgmtAddDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.project = this.project;
+    modalRef.componentInstance.sourceInfo = sourceInfo;
+  }
+
+  removeConnector(sourceInfo: string, target: number) {
+    switch (sourceInfo) {
+        case "vcs":
+          this.project.vcsRepositories.splice(target, 1);
+          break;
+        case "bts":
+          this.project.bugTrackingSystems.splice(target, 1);
+          break;
+        case "cc":
+          this.project.communicationChannels.splice(target, 1);
+          break;
+        default:
+          break;
+      }
   }
 
   previousState() {

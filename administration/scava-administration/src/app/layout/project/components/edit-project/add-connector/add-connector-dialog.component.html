@@ -1,0 +1,290 @@
+<form name="addForm" (ngSubmit)="save(sourceInfo, project)" #addForm="ngForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Add connector</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <span><i class="fa fa-exclamation-triangle" style="font-size:24px;color:burlywood"></i></span>
+            Be aware that the connector will be registered only when the project's edition form have been saved !
+        </div>
+        <hr>
+        <div *ngIf="sourceInfo == 'vcs'">
+            <div class="form-group">
+                <label for="vcs">VCS Repository</label> <br>
+                <select name="_type" [(ngModel)]="repository._type" class="form-control">
+                    <option value="org.eclipse.scava.repository.model.vcs.git.GitRepository">Git</option>
+                    <option value="org.eclipse.scava.repository.model.documentation.gitbased.GitRepository">Git based documentation</option>
+                    <option value="org.eclipse.scava.repository.model.vcs.svn.SvnRepository">Svn</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="repository._type != ''">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+        </div>
+        <div *ngIf="sourceInfo == 'bts'">
+            <div class="form-group">
+                <label for="vcs">Bug Tracking System</label> <br>
+                <select name="_type" [(ngModel)]="repository._type" class="form-control">
+                    <option value="org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla">Bugzilla</option>
+                    <option value="org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem">SourceForge</option>
+                    <option value="org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker">Redmine</option>
+                    <option value="org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem">Jira</option>
+                    <option value="org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem">Mantis</option>
+                    <option value="org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem">Bitbucket</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla'">
+                <label for="product">Product</label>
+                <input type="text" class="form-control" name="product" [(ngModel)]="repository.product">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla'">
+                <label for="component">Component</label>
+                <input type="text" class="form-control" name="component" [(ngModel)]="repository.component">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.sourceforge.SourceForgeBugTrackingSystem'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker'">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="repository.name">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.redmine.RedmineBugIssueTracker'">
+                <label for="project">Project</label>
+                <input type="text" class="form-control" name="project" [(ngModel)]="repository.project">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem'">
+                <label for="login">Login</label>
+                <input type="text" class="form-control" name="login" [(ngModel)]="repository.login">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem'">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.jira.JiraBugTrackingSystem'">
+                <label for="project">Project</label>
+                <input type="text" class="form-control" name="project" [(ngModel)]="repository.project">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.mantis.MantisBugTrackingSystem'">
+                <label for="token">Token</label>
+                <input type="text" class="form-control" name="token" [(ngModel)]="repository.token">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem'">
+                <label for="login">Login</label>
+                <input type="text" class="form-control" name="login" [(ngModel)]="repository.login">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.bitbucket.BitbucketBugTrackingSystem'">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+        </div>
+        <div *ngIf="sourceInfo == 'cc'">
+            <div class="form-group">
+                <label for="_type">Communication Channels</label> <br>
+                <select name="_type" [(ngModel)]="repository._type" class="form-control">
+                    <option value="org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup">NNTP</option>
+                    <option value="org.eclipse.scava.repository.model.cc.irc.Irc">Irc</option>
+                    <option value="org.eclipse.scava.repository.model.cc.sympa.SympaMailingList">Sympa Mailing List</option>
+                    <option value="org.eclipse.scava.repository.model.cc.mbox.Mbox">Mbox</option>
+                    <option value="org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum">Eclipse Forum</option>
+                    <option value="org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic">Documentation Systematic</option>
+                </select>
+            </div>
+            <!-- NNTP -->  
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="repository.name">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="port">Port</label>
+                <input type="number" class="form-control" name="port" [(ngModel)]="repository.port">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="interval">Interval</label>
+                <input type="number" class="form-control" name="interval" [(ngModel)]="repository.interval">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+            <!-- Irc -->          
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="repository.name">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" name="description" [(ngModel)]="repository.description">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="compressedFileExtension">Compressed File Extension</label>
+                <input type="text" class="form-control" name="compressedFileExtension" [(ngModel)]="repository.compressedFileExtension">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.irc.Irc'">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+            <!-- Sympa -->
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="mailingListName">Mailing List Name</label>
+                <input type="text" class="form-control" name="mailingListName" [(ngModel)]="repository.mailingListName">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="mailingListDescription">Mailing List Description</label>
+                <input type="text" class="form-control" name="mailingListDescription" [(ngModel)]="repository.mailingListDescription">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="compressedFileExtension">Compressed File Extension</label>
+                <input type="text" class="form-control" name="compressedFileExtension" [(ngModel)]="repository.compressedFileExtension">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="username">Username <small>(optional)</small></label>
+                <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
+                <label for="password">Password <small>(optional)</small></label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+            <!-- Mbox -->
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="url">Url</label>
+                <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="mboxName">Mbox Name</label>
+                <input type="text" class="form-control" name="mboxName" [(ngModel)]="repository.mboxName">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="mboxDescription">Mbox Description</label>
+                <input type="text" class="form-control" name="mboxDescription" [(ngModel)]="repository.mboxDescription">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="compressedFileExtension">Compressed File Extension</label>
+                <input type="text" class="form-control" name="compressedFileExtension" [(ngModel)]="repository.compressedFileExtension">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="username">Username <small>(optional)</small></label>
+                <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
+                <label for="password">Password <small>(optional)</small></label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+            </div>
+            <!-- ECLIPSE FORUM -->
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
+                <label for="forumId">Forum Id</label>
+                <input type="text" class="form-control" name="forumId" [(ngModel)]="repository.forumId">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
+                <label for="forumName">Forum Name</label>
+                <input type="text" class="form-control" name="forumName" [(ngModel)]="repository.forumName">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
+                <label for="clientId">Client Id</label>
+                <input type="text" class="form-control" name="clientId" [(ngModel)]="repository.clientId">
+            </div>
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
+                <label for="clientSecret">Client Secret</label>
+                <input type="text" class="form-control" name="clientSecret" [(ngModel)]="repository.clientSecret">
+            </div>
+            <!-- DOCUMENTATION SYSTEMATIC -->
+            <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                <label for="loginOption">Login necessary ?</label>
+                <select name="loginOption" [(ngModel)]="repository.loginOption" class="form-control">
+                    <option value="option1">No Login</option>
+                    <option value="option2">With Login</option>
+                </select>
+            </div>
+            <div *ngIf="repository.loginOption == 'option1'">
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="url">URL</label>
+                    <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="executionFrequency">Execution Frequency</label>
+                    <input type="number" class="form-control" name="executionFrequency" [(ngModel)]="repository.executionFrequency">
+                </div>
+            </div>
+            <div *ngIf="repository.loginOption == 'option2'">
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="url">Url</label>
+                    <input type="text" class="form-control" name="url" [(ngModel)]="repository.url">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="executionFrequency">Execution Frequency</label>
+                    <input type="number" class="form-control" name="executionFrequency" [(ngModel)]="repository.executionFrequency">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="loginUrl">Login Url</label>
+                    <input type="text" class="form-control" name="loginUrl" [(ngModel)]="repository.loginUrl">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="usernameFieldName">Username Field Name</label>
+                    <input type="text" class="form-control" name="usernameFieldName" [(ngModel)]="repository.usernameFieldName">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" [(ngModel)]="repository.password">
+                </div>
+                <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <label for="passwordFieldName">Password Field Name</label>
+                    <input type="text" class="form-control" name="passwordFieldName" [(ngModel)]="repository.passwordFieldName">
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark btn-sm" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="addForm.form.invalid" class="btn btn-outline-dark btn-sm">
+            <span class="fa fa-plus"></span>&nbsp;<span>Add</span>
+        </button>
+    </div>
+</form>
