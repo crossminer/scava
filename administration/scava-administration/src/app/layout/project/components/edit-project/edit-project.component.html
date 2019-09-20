@@ -98,7 +98,7 @@
             <tr>
                 <td>
                     <Strong>VCS Repositories</Strong>
-                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('vcs',i)"></i></span>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('vcs')"></i></span>
                 </td>
             </tr>
             <tbody *ngFor="let vcs of project?.vcsRepositories;let i=index;">
@@ -129,7 +129,7 @@
             <tr>
                 <td>
                     <strong>Bug Tracking Systems</strong>
-                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('bts',i)"></i></span>
+                    <span style="float: right"><i class="fa fa-plus" title="Add new connector" (click)="addConnector('bts')"></i></span>
                 </td>
             </tr>
             <tbody *ngFor="let bts of project?.bugTrackingSystems;let i=index;">
