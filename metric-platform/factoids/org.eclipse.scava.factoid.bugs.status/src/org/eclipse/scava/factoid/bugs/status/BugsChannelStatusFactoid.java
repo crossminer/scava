@@ -118,7 +118,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 			percentageOfWontFixBugs = ( (float) 100 * numberOfWontFixBugs ) / numberOfBugs;
 			percentageOfInvalidBugs = ( (float) 100 * numberOfInvalidBugs ) / numberOfBugs;
 			percentageOfDuplicateBugs = ( (float) 100 * numberOfDuplicateBugs ) / numberOfBugs;
-		}
+		
 		
 		if (percentageOfResolvedBugs > 75 ) {
 			stringBuffer.append("Nearly all");
@@ -170,6 +170,13 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 		stringBuffer.append(decimalFormat.format(percentageOfDuplicateBugs));
 		stringBuffer.append(" %).\n"); 
 
+		}
+		 else
+		 {
+		  factoid.setStars(StarRating.FOUR);
+		  stringBuffer.append("Zero bugs were found.\n"); 
+		 }
+		
 		factoid.setFactoid(stringBuffer.toString());
 
 	}
