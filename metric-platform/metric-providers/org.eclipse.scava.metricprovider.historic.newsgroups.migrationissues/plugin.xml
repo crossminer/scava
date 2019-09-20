@@ -13,7 +13,7 @@
 
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.NewsgroupsMigrationIssueHistoricMetric"/>
-    <class name="org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.NewsgroupsMigrationData"/>
+    <class name="org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData"/>
   </extension>
 <extension
       point="org.eclipse.scava.platform.metricprovider">

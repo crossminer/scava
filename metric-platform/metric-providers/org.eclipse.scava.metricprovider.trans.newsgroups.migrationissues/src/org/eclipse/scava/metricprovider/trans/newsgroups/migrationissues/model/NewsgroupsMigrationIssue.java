@@ -1,13 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.PrimitiveList;
-import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class NewsgroupsMigrationIssue extends Pongo {
@@ -20,13 +16,15 @@ public class NewsgroupsMigrationIssue extends Pongo {
 		dbObject.put("changes", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
 		THREADID.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
-		SOFTWARE.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
+		SUMMARY.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
 		CHANGES.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
 	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
-	public static StringQueryProducer SOFTWARE = new StringQueryProducer("software"); 
+	public static NumericalQueryProducer ARTICLEID = new NumericalQueryProducer("articleId");
+	public static StringQueryProducer SUMMARY = new StringQueryProducer("summary"); 
 	public static ArrayQueryProducer CHANGES = new ArrayQueryProducer("changes");
 	
 	
@@ -48,12 +46,21 @@ public class NewsgroupsMigrationIssue extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public String getSoftware() {
-		return parseString(dbObject.get("software")+"", "");
+	public long getArticleId() {
+		return parseLong(dbObject.get("articleId")+"", 0);
 	}
 	
-	public NewsgroupsMigrationIssue setSoftware(String software) {
-		dbObject.put("software", software);
+	public NewsgroupsMigrationIssue setArticleId(long articleId) {
+		dbObject.put("articleId", articleId);
+		notifyChanged();
+		return this;
+	}
+	public String getSummary() {
+		return parseString(dbObject.get("summary")+"", "");
+	}
+	
+	public NewsgroupsMigrationIssue setSummary(String summary) {
+		dbObject.put("summary", summary);
 		notifyChanged();
 		return this;
 	}

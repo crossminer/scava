@@ -13,12 +13,13 @@
 
 <extension point="com.googlecode.pongo.runtime.osgi">
     <class name="org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.BugTrackerMigrationIssueHistoricMetric"/>
-    <class name="org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.BugTrackerMigrationData"/>
+    <class name="org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData"/>
   </extension>
 <extension
       point="org.eclipse.scava.platform.metricprovider">
    <metricProvider
          provider="org.eclipse.scava.metricprovider.historic.bugs.migrationissues.BugTrackerMigrationIssueHistoricMetricProvider">
+         
    </metricProvider>
 </extension>
 <extension

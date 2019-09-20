@@ -1,33 +1,31 @@
 package org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.List;
+
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PrimitiveList;
+import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 
 public class DailyBugTrackerMigrationData extends Pongo {
 	
-	protected List<String> changes = null;
+	protected List<String> bugsId = null;
 	
 	
 	public DailyBugTrackerMigrationData() { 
 		super();
-		dbObject.put("changes", new BasicDBList());
+		dbObject.put("bugsId", new BasicDBList());
 		BUGTRACKERID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
-		BUGID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
+		BUGSID.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
 		NUMBEROFISSUES.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
-		CUMULATIVENUMBEROFISSUES.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
-		SOFTWARE.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
-		CHANGES.setOwningType("org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model.DailyBugTrackerMigrationData");
 	}
 	
 	public static StringQueryProducer BUGTRACKERID = new StringQueryProducer("bugTrackerId"); 
-	public static StringQueryProducer BUGID = new StringQueryProducer("bugId"); 
 	public static NumericalQueryProducer NUMBEROFISSUES = new NumericalQueryProducer("numberOfIssues");
-	public static NumericalQueryProducer CUMULATIVENUMBEROFISSUES = new NumericalQueryProducer("cumulativeNumberOfIssues");
-	public static StringQueryProducer SOFTWARE = new StringQueryProducer("software"); 
-	public static ArrayQueryProducer CHANGES = new ArrayQueryProducer("changes");
+	public static ArrayQueryProducer BUGSID = new ArrayQueryProducer("bugsId");
 	
 	
 	public String getBugTrackerId() {
@@ -36,15 +34,6 @@ public class DailyBugTrackerMigrationData extends Pongo {
 	
 	public DailyBugTrackerMigrationData setBugTrackerId(String bugTrackerId) {
 		dbObject.put("bugTrackerId", bugTrackerId);
-		notifyChanged();
-		return this;
-	}
-	public String getBugId() {
-		return parseString(dbObject.get("bugId")+"", "");
-	}
-	
-	public DailyBugTrackerMigrationData setBugId(String bugId) {
-		dbObject.put("bugId", bugId);
 		notifyChanged();
 		return this;
 	}
@@ -57,30 +46,12 @@ public class DailyBugTrackerMigrationData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getCumulativeNumberOfIssues() {
-		return parseInteger(dbObject.get("cumulativeNumberOfIssues")+"", 0);
-	}
 	
-	public DailyBugTrackerMigrationData setCumulativeNumberOfIssues(int cumulativeNumberOfIssues) {
-		dbObject.put("cumulativeNumberOfIssues", cumulativeNumberOfIssues);
-		notifyChanged();
-		return this;
-	}
-	public String getSoftware() {
-		return parseString(dbObject.get("software")+"", "");
-	}
-	
-	public DailyBugTrackerMigrationData setSoftware(String software) {
-		dbObject.put("software", software);
-		notifyChanged();
-		return this;
-	}
-	
-	public List<String> getChanges() {
-		if (changes == null) {
-			changes = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("changes"));
+	public List<String> getBugsId() {
+		if (bugsId == null) {
+			bugsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("bugsId"));
 		}
-		return changes;
+		return bugsId;
 	}
 	
 	

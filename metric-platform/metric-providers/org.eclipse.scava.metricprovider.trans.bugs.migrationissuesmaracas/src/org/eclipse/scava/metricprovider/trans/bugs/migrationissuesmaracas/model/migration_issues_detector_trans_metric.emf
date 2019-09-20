@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class BugTrackerMigrationIssueMaracasTransMetric {
+	val BugTrackerMigrationIssueMaracas[*] bugTrackerMigrationIssuesMaracas;
+}
+
+class BugTrackerMigrationIssueMaracas {
+	@searchable
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String[*] changes;
+   	attr Double[*] matchingPercentage;
+}
+
+
+
+

@@ -1,9 +1,13 @@
 package org.eclipse.scava.metricprovider.trans.topics.model;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.List;
+
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PrimitiveList;
+import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 
 public class BugTrackerTopic extends Pongo {

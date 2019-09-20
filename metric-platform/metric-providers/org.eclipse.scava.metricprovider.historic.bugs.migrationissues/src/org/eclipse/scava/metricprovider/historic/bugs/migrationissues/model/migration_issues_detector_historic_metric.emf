@@ -2,16 +2,11 @@ package org.eclipse.scava.metricprovider.historic.bugs.migrationissues.model;
 
 class BugTrackerMigrationIssueHistoricMetric {
 	val DailyBugTrackerMigrationData[*] dailyBugTrackerMigrationData;
-	attr int numberOfIssues;
-	attr int cumulativeNumberOfIssues;
 }
 
 class DailyBugTrackerMigrationData {
    	attr String bugTrackerId;
-   	attr String bugId;
+   	attr String[*] bugsId;
    	attr int numberOfIssues;
-	attr int cumulativeNumberOfIssues;
-   	attr String software;
-   	attr String[*] changes;
 }
 

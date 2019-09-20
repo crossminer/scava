@@ -1,9 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.topics.model;
 
-import com.googlecode.pongo.runtime.*;
-import com.mongodb.*;
+import com.googlecode.pongo.runtime.PongoDB;
 // protected region custom-imports on begin
 // protected region custom-imports end
+import com.mongodb.DB;
 
 public class TopicsTransMetric extends PongoDB {
 	

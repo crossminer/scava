@@ -9,7 +9,8 @@ class NewsgroupsMigrationIssue {
 	@searchable
    	attr String newsgroupName;
    	attr int threadId;
-   	attr String software;
+   	attr long articleId;
+   	attr String summary;
    	attr String[*] changes;
 }
 

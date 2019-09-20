@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.historic.bugs.migrationissuesmaracas.model;
+
+class BugTrackerMigrationIssueMaracasHistoricMetric {
+	val DailyBugTrackerMigrationMaracasData[*] dailyBugTrackerMigrationMaracasData;
+	val BugTrackerMigrationMaracasData[*] bugTrackerMigrationMaracasData;
+}
+
+class DailyBugTrackerMigrationMaracasData {
+   	attr String bugTrackerId;
+   	attr String[*] bugsId;
+   	attr int numberOfIssues;
+}
+
+class BugTrackerMigrationMaracasData {
+   	attr String bugTrackerId;
+   	attr String bugId;
+   	attr String[] changesAndMatchingPercentage;
+}
+

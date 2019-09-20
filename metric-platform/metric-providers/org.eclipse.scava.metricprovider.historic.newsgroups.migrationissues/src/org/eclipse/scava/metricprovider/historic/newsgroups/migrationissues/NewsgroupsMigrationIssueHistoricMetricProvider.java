@@ -1,5 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Edge Hill University
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,40 +69,40 @@ public class NewsgroupsMigrationIssueHistoricMetricProvider extends AbstractHist
 	@Override
 	public Pongo measure(Project project) {
 
-		if (uses.size()!=1) {
-			System.err.println("Metric: " + IDENTIFIER + " failed to retrieve " + 
-					"the transient metric it needs!");
-			System.exit(-1);
-		}
-			NewsgroupsMigrationIssueTransMetric migration = ((NewsgroupsMigrationIssueTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-			HashSet<Integer> threadIdSet = new HashSet<Integer>();
-			for (NewsgroupsMigrationIssue migrationIssue: migration.getNewsgroupsMigrationIssues())
-				threadIdSet.add(migrationIssue.getThreadId());
-			
-			NewsgroupsMigrationIssueHistoricMetric dailyMigration = new NewsgroupsMigrationIssueHistoricMetric();
-			
-			Map<String, Integer> sumOfIssues = new HashMap<String, Integer>();
-			
-			for (NewsgroupsMigrationIssue newsgroupMigrationIssue: migration.getNewsgroupsMigrationIssues()) {
-				int sum = 1;
-				if (sumOfIssues.containsKey(newsgroupMigrationIssue.getNewsgroupName()))
-					sum += sumOfIssues.get(newsgroupMigrationIssue.getNewsgroupName());
-				sumOfIssues.put(newsgroupMigrationIssue.getNewsgroupName(), sum);
+		NewsgroupsMigrationIssueTransMetric migration = ((NewsgroupsMigrationIssueTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		HashSet<Integer> threadIdSet = new HashSet<Integer>();
+		for (NewsgroupsMigrationIssue migrationIssue: migration.getNewsgroupsMigrationIssues())
+			threadIdSet.add(migrationIssue.getThreadId());
+		
+		NewsgroupsMigrationIssueHistoricMetric historicMigration = new NewsgroupsMigrationIssueHistoricMetric();
+		
+		Map<String, Integer> sumOfIssues = new HashMap<String, Integer>();
+		Map<String, List<Integer>> allThreadsIds = new HashMap<String, List<Integer>>();
+		
+		for (NewsgroupsMigrationIssue newsgroupMigrationIssue: migration.getNewsgroupsMigrationIssues()) {
+			int sum = 1;
+			List<Integer> threadsIds;
+			if (sumOfIssues.containsKey(newsgroupMigrationIssue.getNewsgroupName()))
+			{
+				sum += sumOfIssues.get(newsgroupMigrationIssue.getNewsgroupName());
+				threadsIds=allThreadsIds.get(newsgroupMigrationIssue.getNewsgroupName());
 			}
-			int totalIssues = (int) migration.getNewsgroupsMigrationIssues().size();
-			
-			for (String newsgroupName: sumOfIssues.keySet()) {
-				DailyNewsgroupsMigrationData migrationData = new DailyNewsgroupsMigrationData();
-				dailyMigration.getDailyNewsgroupsMigrationData().add(migrationData);
-				migrationData.setNewsgroupName(newsgroupName);
-				migrationData.setNumberOfIssues(sumOfIssues.get(newsgroupName));
-			}
-			dailyMigration.setNumberOfIssues(totalIssues);
-			int numberOfIssues = dailyMigration.getNumberOfIssues();
-			int cumulativeNumberOfIssues = dailyMigration.getCumulativeNumberOfIssues();
-			dailyMigration.setCumulativeNumberOfIssues(cumulativeNumberOfIssues + numberOfIssues);
-			return dailyMigration;
+			else
+				threadsIds=new ArrayList<Integer>(1);
+			sumOfIssues.put(newsgroupMigrationIssue.getNewsgroupName(), sum);
+			threadsIds.add(newsgroupMigrationIssue.getThreadId());
+			allThreadsIds.put(newsgroupMigrationIssue.getNewsgroupName(), threadsIds);
 		}
+		
+		for (String newsgroupName: sumOfIssues.keySet()) {
+			DailyNewsgroupsMigrationData dailyData = new DailyNewsgroupsMigrationData();
+			dailyData.setNewsgroupName(newsgroupName);
+			dailyData.setNumberOfIssues(sumOfIssues.get(newsgroupName));
+			dailyData.getThreadsId().addAll(allThreadsIds.get(newsgroupName));
+			historicMigration.getDailyNewsgroupsMigrationData().add(dailyData);
+		}
+		return historicMigration;
+	}
 
 			
 	@Override

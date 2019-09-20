@@ -1,13 +1,8 @@
 package org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model;
 
-import java.util.Iterator;
-
-import com.googlecode.pongo.runtime.IteratorIterable;
-import com.googlecode.pongo.runtime.PongoCollection;
-import com.googlecode.pongo.runtime.PongoCursorIterator;
-import com.googlecode.pongo.runtime.PongoFactory;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
+import com.googlecode.pongo.runtime.*;
+import java.util.*;
+import com.mongodb.*;
 
 public class BugTrackerMigrationIssueCollection extends PongoCollection<BugTrackerMigrationIssue> {
 	
