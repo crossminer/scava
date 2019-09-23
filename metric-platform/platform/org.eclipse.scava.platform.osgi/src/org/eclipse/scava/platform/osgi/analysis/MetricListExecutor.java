@@ -72,9 +72,9 @@ public class MetricListExecutor implements Runnable {
 
 		for (IMetricProvider m : metrics) {
 //			loggerOssmeter.info("Starting execution AnalysisTask '" + taskId + "' with MetricExecution '" + m.getIdentifier() + "'");
-			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name()) || task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
-				return;
-			}
+//			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name()) || task.getScheduling().getStatus().equals(AnalysisTaskStatus.STOP.name())){
+//				return;
+//			}
 			
 			m.setMetricProviderContext(new MetricProviderContext(platform, OssmeterLoggerFactory.getInstance().makeNewLoggerInstance(m.getIdentifier())));
 			addDependenciesToMetricProvider(platform, m);

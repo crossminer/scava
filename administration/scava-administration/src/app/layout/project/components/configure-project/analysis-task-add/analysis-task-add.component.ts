@@ -29,6 +29,7 @@ export class AnalysisTaskAddComponent implements OnInit {
   maxEndDate: Date;
   showSpinner: boolean;
   mpoption : string;
+  taskLabelNameExist: boolean;
 
   dataSource: MatTableDataSource<MetricProvider> = new MatTableDataSource<MetricProvider>([]);
   selection: SelectionModel<MetricProvider> = new SelectionModel<MetricProvider>(true, []);
@@ -79,6 +80,23 @@ export class AnalysisTaskAddComponent implements OnInit {
       (error) => {
         this.onError(error);
       })
+  }
+
+  checkAnalysisTaskName(labelName: string) {
+    this.taskLabelNameExist = false;
+    this.analysisTaskService.getTasksbyProject(this.executionTask.projectId).subscribe(
+      (resp) => {
+        let analysisTasks: ExecutionTask[] = resp as ExecutionTask[];
+        analysisTasks.forEach(task => {
+          if (task.analysisTaskId.replace(this.executionTask.projectId + ":", "") == labelName)  {
+            return this.taskLabelNameExist = true;
+          }
+        })
+      },
+      (error) => {
+        this.onError(error);
+      }
+    )
   }
 
   applyFilter(filterValue: string) {
