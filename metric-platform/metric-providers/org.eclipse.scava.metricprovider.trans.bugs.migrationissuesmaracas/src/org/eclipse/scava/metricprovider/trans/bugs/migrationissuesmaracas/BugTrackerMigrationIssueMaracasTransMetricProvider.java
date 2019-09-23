@@ -52,7 +52,7 @@ public class BugTrackerMigrationIssueMaracasTransMetricProvider implements ITran
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric detects migration issues in Bug Tracking Systems along with input from Maracas.";
+		return "This metric detects migration issues in Bug Tracking Systems along with data from Maracas.";
 	}
 
 	@Override

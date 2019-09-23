@@ -49,17 +49,17 @@ public class NewsgroupsMigrationIssueMaracasTransMetricProvider implements ITran
 
 	@Override
 	public String getShortIdentifier() {
-		return "trans.bugs.migrationissuesmaracas";
+		return "trans.newsgroups.migrationissuesmaracas";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Migration Issues Detection Maracas in Bug Trackers";
+		return "Migration Issues Detection Maracas in Newsgroups";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric detects migration issues in Bug Tracking Systems along with input from Maracas.";
+		return "This metric detects migration issues in Newsgroups along with data from Maracas.";
 	}
 
 	@Override
