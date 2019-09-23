@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class NewsgroupsMigrationIssueMaracasTransMetric {
+	val NewsgroupMigrationIssueMaracas[*] newsgroupsMigrationIssuesMaracas;
+}
+
+class NewsgroupMigrationIssueMaracas {
+	@searchable
+   	attr String newsgroupName;
+   	attr int threadId;
+   	attr String[*] changes;
+   	attr Double[*] matchingPercentage;
+}
+
+
+
+

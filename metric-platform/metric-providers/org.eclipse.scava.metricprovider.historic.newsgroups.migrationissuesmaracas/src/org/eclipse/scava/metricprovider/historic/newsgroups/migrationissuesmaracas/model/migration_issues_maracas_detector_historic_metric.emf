@@ -1,0 +1,19 @@
+package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas.model;
+
+class NewsgroupMigrationIssueMaracasHistoricMetric {
+	val DailyNewsgroupMigrationMaracasData[*] dailyNewsgroupMigrationMaracasData;
+	val NewsgroupMigrationMaracasData[*] newsgroupMigrationMaracasData;
+}
+
+class DailyNewsgroupMigrationMaracasData {
+   	attr String newsgroupName;
+   	attr int[*] threadsId;
+   	attr int numberOfIssues;
+}
+
+class NewsgroupMigrationMaracasData {
+   	attr String newsgroupName;
+   	attr int threadId;
+   	attr String[] changesAndMatchingPercentage;
+}
+

@@ -120,63 +120,62 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 			percentageOfDuplicateBugs = ( (float) 100 * numberOfDuplicateBugs ) / numberOfBugs;
 		
 		
-		if (percentageOfResolvedBugs > 75 ) {
-			stringBuffer.append("Nearly all");
-			factoid.setStars(StarRating.FOUR);
-		}
-		else if (percentageOfResolvedBugs > 50 ) {
-			stringBuffer.append("Most");
-			factoid.setStars(StarRating.THREE);
-		}
-		else if (percentageOfResolvedBugs > 25 ) {
-			stringBuffer.append("Few");
-			factoid.setStars(StarRating.TWO);
-		} else {
-			stringBuffer.append("Very few");
-			factoid.setStars(StarRating.ONE);
-		}
-		stringBuffer.append(" bugs are resolved.\n");
-		
-		stringBuffer.append("In a total of ");
-		stringBuffer.append(numberOfBugs);
-		stringBuffer.append(" bugs, ");
-		stringBuffer.append(numberOfResolvedBugs);
-		stringBuffer.append(" are resolved (");
-		stringBuffer.append(decimalFormat.format(percentageOfResolvedBugs));
-		stringBuffer.append(" %) and ");
-		stringBuffer.append(numberOfNonResolvedBugs);
-		stringBuffer.append(" are non-resolved (");
-		stringBuffer.append(decimalFormat.format(percentageOfNonResolvedBugs));
-		stringBuffer.append(" %).\n");
-		
-		stringBuffer.append(numberOfFixedBugs);
-		stringBuffer.append(" bugs are closed as fixed (");
-		stringBuffer.append(decimalFormat.format(percentageOfFixedBugs));
-		stringBuffer.append(" %), ");
-		stringBuffer.append(numberOfWorksForMeBugs);
-		stringBuffer.append(" as non-reproducible (");
-		stringBuffer.append(decimalFormat.format(percentageOfWorksForMeBugs));
-		stringBuffer.append(" %), ");
-		stringBuffer.append(numberOfWontFixBugs);
-		stringBuffer.append(" as won't fix (");
-		stringBuffer.append(decimalFormat.format(percentageOfWontFixBugs));
-		stringBuffer.append(" %), ");
-		stringBuffer.append(numberOfInvalidBugs);
-		stringBuffer.append(" as invalid (");
-		stringBuffer.append(decimalFormat.format(percentageOfInvalidBugs));
-		stringBuffer.append(" %) and ");
-		stringBuffer.append(numberOfDuplicateBugs);
-		stringBuffer.append(" as duplicates of other bugs (");
-		stringBuffer.append(decimalFormat.format(percentageOfDuplicateBugs));
-		stringBuffer.append(" %).\n"); 
+			if (percentageOfResolvedBugs > 75 ) {
+				stringBuffer.append("Nearly all");
+				factoid.setStars(StarRating.FOUR);
+			}
+			else if (percentageOfResolvedBugs > 50 ) {
+				stringBuffer.append("Most");
+				factoid.setStars(StarRating.THREE);
+			}
+			else if (percentageOfResolvedBugs > 25 ) {
+				stringBuffer.append("Few");
+				factoid.setStars(StarRating.TWO);
+			} else {
+				stringBuffer.append("Very few");
+				factoid.setStars(StarRating.ONE);
+			}
+			stringBuffer.append(" bugs are resolved.\n");
+			
+			stringBuffer.append("In a total of ");
+			stringBuffer.append(numberOfBugs);
+			stringBuffer.append(" bugs, ");
+			stringBuffer.append(numberOfResolvedBugs);
+			stringBuffer.append(" are resolved (");
+			stringBuffer.append(decimalFormat.format(percentageOfResolvedBugs));
+			stringBuffer.append(" %) and ");
+			stringBuffer.append(numberOfNonResolvedBugs);
+			stringBuffer.append(" are non-resolved (");
+			stringBuffer.append(decimalFormat.format(percentageOfNonResolvedBugs));
+			stringBuffer.append(" %).\n");
+			
+			stringBuffer.append(numberOfFixedBugs);
+			stringBuffer.append(" bugs are closed as fixed (");
+			stringBuffer.append(decimalFormat.format(percentageOfFixedBugs));
+			stringBuffer.append(" %), ");
+			stringBuffer.append(numberOfWorksForMeBugs);
+			stringBuffer.append(" as non-reproducible (");
+			stringBuffer.append(decimalFormat.format(percentageOfWorksForMeBugs));
+			stringBuffer.append(" %), ");
+			stringBuffer.append(numberOfWontFixBugs);
+			stringBuffer.append(" as won't fix (");
+			stringBuffer.append(decimalFormat.format(percentageOfWontFixBugs));
+			stringBuffer.append(" %), ");
+			stringBuffer.append(numberOfInvalidBugs);
+			stringBuffer.append(" as invalid (");
+			stringBuffer.append(decimalFormat.format(percentageOfInvalidBugs));
+			stringBuffer.append(" %) and ");
+			stringBuffer.append(numberOfDuplicateBugs);
+			stringBuffer.append(" as duplicates of other bugs (");
+			stringBuffer.append(decimalFormat.format(percentageOfDuplicateBugs));
+			stringBuffer.append(" %).\n"); 
 
 		}
-		 else
-		 {
-		  factoid.setStars(StarRating.FOUR);
-		  stringBuffer.append("Zero bugs were found.\n"); 
-		 }
-		
+		else
+		{
+			factoid.setStars(StarRating.FOUR);
+			stringBuffer.append("Zero bugs were found.\n"); 
+		}
 		factoid.setFactoid(stringBuffer.toString());
 
 	}

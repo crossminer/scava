@@ -157,7 +157,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			for(Document document : cluster.getAllDocuments())
 			{
 				String[] uid = document.getStringId().split("\t");
-				newsgroupTopic.getArticlesId().add(uid[1]);
+				newsgroupTopic.getArticlesId().add(Long.valueOf(uid[1]));
 			}
 		}
 		db.sync();

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Migrationissuesmaracas
+Bundle-SymbolicName: org.eclipse.scava.metricprovider.trans.migrationissuesmaracas;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.metricprovider.trans.migrationissuesmaracas,
+ org.eclipse.scava.metricprovider.trans.migrationissuesmaracas.model
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.rascal
+Bundle-Activator: org.eclipse.scava.metricprovider.trans.migrationissuesmaracas.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.scava.metricprovider.trans.migrationissuesmaracas

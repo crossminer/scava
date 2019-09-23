@@ -7,20 +7,11 @@
 			"description" : "The number of newsgroup migration issues per day, up to and including the current date." ,
 			"type" : "LineChart",
 			"datatable" : {
+				"rows" : "$dailyNewsgroupsMigrationData",
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
-					{ "name" : "MigrationIssues", "field" : "$numberOfIssues" } ]
-			},
-			"x" : "Date",
-			"y" : "MigrationIssues",
-			"timeSeries" : true
-		},{
-			"id" : "newsgroups.cumulativemigrationissues",
-			"name" : "NewsgroupsMigrationIssues (cumulative)",
-			"description" : "The cumulative number of newsgroup migration issues per day, up to and including the current date." ,
-			"type" : "LineChart",
-			"datatable" : {
-				"cols" : [  { "name" : "Date", "field" : "$__date" },
-					{ "name" : "MigrationIssues", "field" : "$cumulativeNumberOfIssues" } ]
+					{ "name" : "NewsgroupName", "field" : "$newsgroupName"},
+					{ "name" : "MigrationIssues", "field" : "$numberOfIssues" },
+					{ "name" : "ThreadsID", "field" : "$threadId"} ]
 			},
 			"x" : "Date",
 			"y" : "MigrationIssues",

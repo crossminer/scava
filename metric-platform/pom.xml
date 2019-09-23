@@ -515,6 +515,21 @@
 	<module>
 		metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues
 	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas
+	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.trans.migrationissuesmaracas
+	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.historic.bugs.migrationissuesmaracas
+	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas
+	</module>
+	<module>
+		metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas
+	</module>
   </modules>
   <build>
     <plugins>

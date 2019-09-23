@@ -1,7 +1,7 @@
 package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model;
 
-import com.googlecode.pongo.runtime.PongoDB;
-import com.mongodb.DB;
+import com.googlecode.pongo.runtime.*;
+import com.mongodb.*;
 
 public class NewsgroupsMigrationIssueTransMetric extends PongoDB {
 	

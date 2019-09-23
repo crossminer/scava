@@ -88,7 +88,6 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName(),
 				TopicsTransMetricProvider.class.getCanonicalName(),
 				ThreadsTransMetricProvider.class.getCanonicalName());
-		//Add Maracas
 	}
 
 	@Override
@@ -129,7 +128,7 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 				{
 					if(detector.analyzeTitle(threadData.getSubject()))
 					{
-						createMigrationIssue(db, article.getCommunicationChannel().getOSSMeterId(), threadData.getThreadId());
+						createMigrationIssue(db, article.getCommunicationChannel().getOSSMeterId(), threadData.getThreadId(),article.getArticleNumber(), threadData.getSubject());
 					}
 				}
 				else
@@ -150,11 +149,11 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 			}
 			if(migrationIssueFound)
 			{
-				for(String source : ccTopic.getArticlesId())
+				for(long source : ccTopic.getArticlesId())
 				{
-					ThreadData threadData = findSourceThread(threadsMetric, ccTopic.getNewsgroupName(), Long.valueOf(source));
+					ThreadData threadData = findSourceThread(threadsMetric, ccTopic.getNewsgroupName(), source);
 					if(threadData!=null)
-						createMigrationIssue(db, ccTopic.getNewsgroupName(), threadData.getThreadId());
+						createMigrationIssue(db, ccTopic.getNewsgroupName(), threadData.getThreadId(), source, threadData.getSubject());
 					else
 						logger.error("No thread could be found for: "+ccTopic.getNewsgroupName()+"\tarticle: "+source);
 				}
@@ -174,29 +173,32 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 		return threadData;
 	}
 	
-	private void createMigrationIssue(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId)
+	private void createMigrationIssue(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId, long articleId, String subject)
 	{
-		NewsgroupsMigrationIssue migrationIssue = findNewsgroupArticle(db, newsgroupName, threadId);
+		NewsgroupsMigrationIssue migrationIssue = findNewsgroupArticle(db, newsgroupName, threadId, articleId);
 		if(migrationIssue==null)
 		{
 			migrationIssue = new NewsgroupsMigrationIssue();
 			migrationIssue.setNewsgroupName(newsgroupName);
 			migrationIssue.setThreadId(threadId);
+			migrationIssue.setArticleId(articleId);
+			migrationIssue.setSummary(subject);
 			db.getNewsgroupsMigrationIssues().add(migrationIssue);
 			db.sync();
 		}
 	}
 	
 	
-	private NewsgroupsMigrationIssue findNewsgroupArticle(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId) {
-		NewsgroupsMigrationIssue bugTrackerIssues = null;
+	private NewsgroupsMigrationIssue findNewsgroupArticle(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId, long articleId) {
+		NewsgroupsMigrationIssue newsgroupsIssues = null;
 		Iterable<NewsgroupsMigrationIssue> issuesIt = db.getNewsgroupsMigrationIssues().find(
 				NewsgroupsMigrationIssue.NEWSGROUPNAME.eq(newsgroupName),
-				NewsgroupsMigrationIssue.THREADID.eq(threadId));
-		for (NewsgroupsMigrationIssue btmi : issuesIt) {
-			bugTrackerIssues = btmi;
+				NewsgroupsMigrationIssue.THREADID.eq(threadId),
+				NewsgroupsMigrationIssue.ARTICLEID.eq(articleId));
+		for (NewsgroupsMigrationIssue nmi : issuesIt) {
+			newsgroupsIssues = nmi;
 		}
-		return bugTrackerIssues;
+		return newsgroupsIssues;
 	}
 	
 	

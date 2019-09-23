@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 University of Manchester
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.bugs.migrationissues;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -52,43 +52,39 @@ public class BugTrackerMigrationIssueHistoricMetricProvider extends AbstractHist
 	@Override
 	public Pongo measure(Project project) {
 
-		if (uses.size()!=1) {
-			System.err.println("Metric: " + IDENTIFIER + " failed to retrieve " + 
-					"the transient metric it needs!");
-			System.exit(-1);
-
-		}
-			BugTrackerMigrationIssueTransMetric migration = ((BugTrackerMigrationIssueTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-			
-			HashSet<String> bugIdSet = new HashSet<String>();
-			for (BugTrackerMigrationIssue migrationIssue: migration.getBugTrackerMigrationIssues())
-				bugIdSet.add(migrationIssue.getBugId());
-			
-			BugTrackerMigrationIssueHistoricMetric dailyMigration = new BugTrackerMigrationIssueHistoricMetric();
-			
-			Map<String, Integer> sumOfIssues = new HashMap<String, Integer>();
-			
-			for (BugTrackerMigrationIssue trackerMigrationIssue: migration.getBugTrackerMigrationIssues()) {
-				int sum = 1;
-				if (sumOfIssues.containsKey(trackerMigrationIssue.getBugTrackerId()))
-					sum += sumOfIssues.get(trackerMigrationIssue.getBugTrackerId());
-				sumOfIssues.put(trackerMigrationIssue.getBugTrackerId(), sum);
+		BugTrackerMigrationIssueTransMetric migration = ((BugTrackerMigrationIssueTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
+		
+		BugTrackerMigrationIssueHistoricMetric historicMigration = new BugTrackerMigrationIssueHistoricMetric();
+		
+		Map<String, Integer> sumOfIssues = new HashMap<String, Integer>();
+		Map<String, List<String>> allBugsIds = new HashMap<String, List<String>>();
+		
+		for (BugTrackerMigrationIssue trackerMigrationIssue: migration.getBugTrackerMigrationIssues()) {
+			int sum = 1;
+			List<String> bugsId;
+			if (sumOfIssues.containsKey(trackerMigrationIssue.getBugTrackerId()))
+			{
+				sum += sumOfIssues.get(trackerMigrationIssue.getBugTrackerId());
+				bugsId = allBugsIds.get(trackerMigrationIssue.getBugTrackerId());
 			}
-			int totalIssues = (int) migration.getBugTrackerMigrationIssues().size();
+			else
+				bugsId=new ArrayList<String>(1);
+			sumOfIssues.put(trackerMigrationIssue.getBugTrackerId(), sum);
+			bugsId.add(trackerMigrationIssue.getBugId());
+			allBugsIds.put(trackerMigrationIssue.getBugTrackerId(), bugsId);
 			
-			for (String bugTrackerId: sumOfIssues.keySet()) {
-				DailyBugTrackerMigrationData migrationData = new DailyBugTrackerMigrationData();
-				migrationData.setBugTrackerId(bugTrackerId);
-				migrationData.setNumberOfIssues(sumOfIssues.get(bugTrackerId));
-				dailyMigration.getDailyBugTrackerMigrationData().add(migrationData);
-			}
-			dailyMigration.setNumberOfIssues(totalIssues);
-			int numberOfIssues = dailyMigration.getNumberOfIssues();
-			int cumulativeNumberOfIssues = dailyMigration.getCumulativeNumberOfIssues();
-			dailyMigration.setCumulativeNumberOfIssues(cumulativeNumberOfIssues + numberOfIssues);
-
-			return dailyMigration;
 		}
+		
+		for (String bugTrackerId: sumOfIssues.keySet()) {
+			DailyBugTrackerMigrationData dailyMigration = new DailyBugTrackerMigrationData();
+			dailyMigration.setBugTrackerId(bugTrackerId);
+			dailyMigration.setNumberOfIssues(sumOfIssues.get(bugTrackerId));
+			dailyMigration.getBugsId().addAll(allBugsIds.get(bugTrackerId));
+			historicMigration.getDailyBugTrackerMigrationData().add(dailyMigration);
+		}
+
+		return historicMigration;
+	}
 	
 	@Override
 	public void setUses(List<IMetricProvider> uses) {

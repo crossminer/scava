@@ -8,6 +8,7 @@ import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrac
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.topics.TopicsTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerCommentsData;
 import org.eclipse.scava.metricprovider.trans.topics.model.BugTrackerTopic;
 import org.eclipse.scava.metricprovider.trans.topics.model.TopicsTransMetric;
 import org.eclipse.scava.nlp.classifiers.migrationpatternsdetector.MigrationPatternDetector;
@@ -96,17 +97,18 @@ public class BugTrackerMigrationIssueTransMetricProvider  implements ITransientM
 			for (BugTrackingSystemBug bug: delta.getNewBugs()) {
 				if(detector.analyzeTitle(bug.getSummary()))
 				{
-					createMigrationIssue(db, bug.getBugTrackingSystem().getOSSMeterId(), bug.getBugId());
+					createMigrationIssue(db, bug.getBugTrackingSystem().getOSSMeterId(), bug.getBugId(), bug.getSummary());
 				}
 			}
 			for (BugTrackingSystemBug bug: delta.getUpdatedBugs()) {
 				if(detector.analyzeTitle(bug.getSummary()))
 				{
-					createMigrationIssue(db, bug.getBugTrackingSystem().getOSSMeterId(), bug.getBugId());
+					createMigrationIssue(db, bug.getBugTrackingSystem().getOSSMeterId(), bug.getBugId(), bug.getSummary());
 				}
 			}
 		}
 		
+		String summary;
 		for(BugTrackerTopic bugTopic : topicsMetric.getBugTrackerTopics())
 		{
 			migrationIssueFound=false;
@@ -123,14 +125,30 @@ public class BugTrackerMigrationIssueTransMetricProvider  implements ITransientM
 				for(String source : bugTopic.getCommentsId())
 				{
 					uid=source.split("\t");
-					createMigrationIssue(db, bugTopic.getBugTrackerId(), uid[0]);
+					summary= searchSummaryInTopics(topicsMetric, bugTopic.getBugTrackerId(), uid[0]);
+					createMigrationIssue(db, bugTopic.getBugTrackerId(), uid[0], summary);
 				}
 			}
 		}
 		
 	}
 	
-	private void createMigrationIssue(BugTrackerMigrationIssueTransMetric db, String bugTrackerId, String bugId)
+	private String searchSummaryInTopics(TopicsTransMetric db, String bugTrackerId, String bugId)
+	{
+		BugTrackerCommentsData comment = null;
+		Iterable<BugTrackerCommentsData> commentIt = db.getBugTrackerComments().find(
+				BugTrackerCommentsData.BUGTRACKERID.eq(bugTrackerId),
+				BugTrackerCommentsData.BUGID.eq(bugId));
+		for (BugTrackerCommentsData btcd : commentIt) {
+			comment = btcd;
+			continue;
+		}
+		if(comment!=null)
+			return comment.getSubject();
+		return "";
+	}
+	
+	private void createMigrationIssue(BugTrackerMigrationIssueTransMetric db, String bugTrackerId, String bugId, String summary)
 	{
 		BugTrackerMigrationIssue migrationIssue = findBugTrackerComment(db, bugTrackerId, bugId);
 		if(migrationIssue==null)

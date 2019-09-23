@@ -1,0 +1,37 @@
+{
+	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasHistoricMetricProvider",
+	"vis" : [ 
+		{
+			"id" : "bugs.dailymigrationissuesmaracas",
+			"name" : "BugsMigrationIssuesMaracas (daily)",
+			"description" : "The number of bug migration issues per day, up to and including the current date." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$dailyBugTrackerMigrationMaracasData",
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "BugTrackerID", "field" : "$bugTrackerId"},
+					{ "name" : "MigrationIssues", "field" : "$numberOfIssues" },
+					{ "name" : "BugsID", "field" : "$bugsId" } ]
+			},
+			"x" : "Date",
+			"y" : "MigrationIssuesMaracas",
+			"timeSeries" : true
+		},
+		{
+			"id" : "bugs.migrationissuesmaracas.changes",
+			"name" : "BugsMigrationIssuesMaracas (changes)",
+			"description" : "Changes from Maracas, and their matching score [0,1], that were found in each bug tracker issue." ,
+			"type" : "LineChart",
+			"datatable" : {
+				"rows" : "$bugTrackerMigrationMaracasData",
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "BugTrackerID", "field" : "$bugTrackerId"},
+					{ "name" : "BugID", "field" : "$bugId" },
+					{ "name" : "Changes (Description\tMatchingScore)", "field" : "$changesAndMatchingPercentage"} ]
+			},
+			"x" : "Date",
+			"y" : "MigrationIssuesMaracasChanges",
+			"timeSeries" : true
+		}
+	]
+}

@@ -1,33 +1,31 @@
 package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.List;
+
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PrimitiveList;
+import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
+import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 
 public class DailyNewsgroupsMigrationData extends Pongo {
 	
-	protected List<String> changes = null;
+	protected List<Integer> threadsId = null;
 	
 	
 	public DailyNewsgroupsMigrationData() { 
 		super();
-		dbObject.put("changes", new BasicDBList());
+		dbObject.put("threadsId", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
-		THREADID.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
+		THREADSID.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
 		NUMBEROFISSUES.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
-		CUMULATIVENUMBEROFISSUES.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
-		SOFTWARE.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
-		CHANGES.setOwningType("org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model.DailyNewsgroupsMigrationData");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
 	public static NumericalQueryProducer NUMBEROFISSUES = new NumericalQueryProducer("numberOfIssues");
-	public static NumericalQueryProducer CUMULATIVENUMBEROFISSUES = new NumericalQueryProducer("cumulativeNumberOfIssues");
-	public static StringQueryProducer SOFTWARE = new StringQueryProducer("software"); 
-	public static ArrayQueryProducer CHANGES = new ArrayQueryProducer("changes");
+	public static ArrayQueryProducer THREADSID = new ArrayQueryProducer("threadsId");
 	
 	
 	public String getNewsgroupName() {
@@ -36,15 +34,6 @@ public class DailyNewsgroupsMigrationData extends Pongo {
 	
 	public DailyNewsgroupsMigrationData setNewsgroupName(String newsgroupName) {
 		dbObject.put("newsgroupName", newsgroupName);
-		notifyChanged();
-		return this;
-	}
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
-	}
-	
-	public DailyNewsgroupsMigrationData setThreadId(int threadId) {
-		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;
 	}
@@ -57,30 +46,12 @@ public class DailyNewsgroupsMigrationData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getCumulativeNumberOfIssues() {
-		return parseInteger(dbObject.get("cumulativeNumberOfIssues")+"", 0);
-	}
 	
-	public DailyNewsgroupsMigrationData setCumulativeNumberOfIssues(int cumulativeNumberOfIssues) {
-		dbObject.put("cumulativeNumberOfIssues", cumulativeNumberOfIssues);
-		notifyChanged();
-		return this;
-	}
-	public String getSoftware() {
-		return parseString(dbObject.get("software")+"", "");
-	}
-	
-	public DailyNewsgroupsMigrationData setSoftware(String software) {
-		dbObject.put("software", software);
-		notifyChanged();
-		return this;
-	}
-	
-	public List<String> getChanges() {
-		if (changes == null) {
-			changes = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("changes"));
+	public List<Integer> getThreadsId() {
+		if (threadsId == null) {
+			threadsId = new PrimitiveList<Integer>(this, (BasicDBList) dbObject.get("threadsId"));
 		}
-		return changes;
+		return threadsId;
 	}
 	
 	

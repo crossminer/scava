@@ -1,0 +1,18 @@
+package org.eclipse.scava.metricprovider.trans.migrationissuesmaracas.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class MigrationIssueMaracasTransMetric {
+	val MaracasMeasurement[*] maracasMeasurements;
+}
+
+class MaracasMeasurement {
+	@searchable
+	attr String[*] regex;
+	attr String change;
+	attr int lastUpdateDate;
+}
+
+
+
+
