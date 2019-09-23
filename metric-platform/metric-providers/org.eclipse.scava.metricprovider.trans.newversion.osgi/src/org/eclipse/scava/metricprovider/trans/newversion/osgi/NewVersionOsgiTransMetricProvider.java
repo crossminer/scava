@@ -84,7 +84,7 @@ public class NewVersionOsgiTransMetricProvider implements ITransientMetricProvid
 			db.sync();
 			
 			
-			url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
+			url = new URL("http://oss-app:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
 			
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
