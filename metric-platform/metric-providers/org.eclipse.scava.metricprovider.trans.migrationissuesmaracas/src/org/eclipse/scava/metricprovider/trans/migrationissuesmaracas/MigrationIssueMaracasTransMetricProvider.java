@@ -56,17 +56,17 @@ public class MigrationIssueMaracasTransMetricProvider implements ITransientMetri
 
 	@Override
 	public String getShortIdentifier() {
-		return "trans.bugs.migrationissuesmaracas";
+		return "trans.migrationissuesmaracas";
 	}
 
 	@Override
 	public String getFriendlyName() {
-		return "Migration Issues Detection Maracas in Bug Trackers";
+		return "Migration Issues Detection using Maracas";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric detects migration issues in Bug Tracking Systems along with input from Maracas.";
+		return "This metric convert the changes found by Maracas into Regex useful for other metrics.";
 	}
 
 	@Override
