@@ -83,7 +83,7 @@ public class NewVersionMavenTransMetricProvider implements ITransientMetricProvi
 			db.sync();
 			
 			
-			url = new URL("http://localhost:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+			url = new URL("http://oss-app:8182/raw/projects/p/" + projectName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
 			
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
