@@ -14,7 +14,9 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.eclipse.scava.platform.Configuration;
 import org.eclipse.scava.platform.Platform;
+import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
+import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 
@@ -23,11 +25,9 @@ public class WorkerExecutor implements Runnable {
 	private static String WORKER_ID;
 	private Logger loggerOssmeter = OssmeterLogger.getLogger("WorkerExecutor");
 
-	private static final Integer CYCLE = 10000;
+	private static final Integer CYCLE = 5000;
 
 	private Platform platform;
-
-	private ProjectAnalyser analyser;
 	private Boolean executeTasks;
 
 	public WorkerExecutor(Platform platform, String workerId) {
@@ -46,24 +46,39 @@ public class WorkerExecutor implements Runnable {
 		// Register Worker
 		platform.getAnalysisRepositoryManager().getWorkerService().registerWorker(WORKER_ID);
 
+		Thread workerThread = null;
+		String runningTask = null;
 		while (executeTasks) {
-			String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
-			if (analysisTaskId != null) {
-				loggerOssmeter.info("Worker '" + WORKER_ID + "' Executing " + analysisTaskId + " Task");
-				platform.getAnalysisRepositoryManager().getWorkerService().assignTask(analysisTaskId, WORKER_ID);
-				this.analyser = new ProjectAnalyser(this.platform);
-				boolean analysisStatus = this.analyser.executeAnalyse(analysisTaskId, WORKER_ID);
-				if (analysisStatus) {
-					platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
-				} else {
-					platform.getAnalysisRepositoryManager().getWorkerService().interruptFailedTask(WORKER_ID);
+			if(workerThread == null) {
+				String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
+				if (analysisTaskId != null) {
+					if(workerThread == null) {
+						workerThread = new Thread(new TaskExecutor(WORKER_ID,analysisTaskId, platform));
+						workerThread.start();
+						runningTask = analysisTaskId;
+					}
+				} else {			
+					Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
+					worker.setHeartbeat(new Date());
+					platform.getAnalysisRepositoryManager().getRepository().sync();
+					loggerOssmeter.info("Worker '" + WORKER_ID + "' Waiting new Tasks");		
 				}
+			}else {
+				if(workerThread.isAlive()) {
+					AnalysisTask task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(runningTask);
 
-			} else {
-				Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
-				worker.setHeartbeat(new Date());
-				platform.getAnalysisRepositoryManager().getRepository().sync();
-				loggerOssmeter.info("Worker '" + WORKER_ID + "' Waiting new Tasks");
+					if (task.getScheduling().getStatus().equals((AnalysisTaskStatus.PENDING_STOP.name()))) {
+						workerThread.stop();
+						workerThread = null;
+						task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
+						task.getScheduling().setWorkerId(null);	
+						platform.getAnalysisRepositoryManager().getRepository().sync();
+						platform.getAnalysisRepositoryManager().getWorkerService().completeTask(WORKER_ID);
+					}
+					
+				}else {
+					workerThread = null;
+				}
 			}
 
 			try {

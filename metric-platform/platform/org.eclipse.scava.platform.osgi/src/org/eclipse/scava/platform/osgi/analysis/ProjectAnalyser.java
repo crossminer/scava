@@ -136,7 +136,7 @@ public class ProjectAnalyser {
 				executorService.shutdown();
 				executorService.awaitTermination(24, TimeUnit.HOURS);
 			} catch (InterruptedException e) {
-				this.logger.error("Exception thrown when shutting down executor service.", e);
+				this.logger.error("Exception thrown when shutting down executor service.");
 			}finally {
 				executorService = null;
 			}
@@ -180,13 +180,13 @@ public class ProjectAnalyser {
 				return false;
 			}
 			
-			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
-				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
-				task.getScheduling().setWorkerId(null);	
-				platform.getAnalysisRepositoryManager().getRepository().sync();
-				this.logger.info("Analysis Task Execution  '" +analysisTaskId +"' STOPED at [ "+ date + " ]");
-				return false;
-			}
+//			if(task.getScheduling().getStatus().equals(AnalysisTaskStatus.PENDING_STOP.name())){
+//				task.getScheduling().setStatus(AnalysisTaskStatus.STOP.name());
+//				task.getScheduling().setWorkerId(null);	
+//				platform.getAnalysisRepositoryManager().getRepository().sync();
+//				this.logger.info("Analysis Task Execution  '" +analysisTaskId +"' STOPED at [ "+ date + " ]");
+//				return false;
+//			}
 			this.logger.info("Date " + date + " Task Execution ( " + analysisTaskId + " completed in " + (System.currentTimeMillis() - startTimeDate) + " ms )");
 		}
 		

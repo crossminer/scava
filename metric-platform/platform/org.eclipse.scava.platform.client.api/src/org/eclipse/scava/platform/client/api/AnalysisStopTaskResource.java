@@ -44,7 +44,6 @@ public class AnalysisStopTaskResource extends ServerResource{
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			e.printStackTrace();
 			StringRepresentation rep = new StringRepresentation("");
 			rep.setMediaType(MediaType.APPLICATION_JSON);
 			getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);

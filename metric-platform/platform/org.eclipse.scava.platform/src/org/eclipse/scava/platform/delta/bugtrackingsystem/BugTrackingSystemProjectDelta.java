@@ -32,6 +32,8 @@ public class BugTrackingSystemProjectDelta {
 				bugTrackingSystemDeltas.add(bugTrackingSystemManager.getDelta(db, bugTrackingSystem, date));
 			} catch (NoManagerFoundException e) {
 				System.err.println(e.getMessage());
+			}catch (IllegalStateException e) {
+				System.err.println("DataBase Connection closed");
 			}
 		}
 	}
