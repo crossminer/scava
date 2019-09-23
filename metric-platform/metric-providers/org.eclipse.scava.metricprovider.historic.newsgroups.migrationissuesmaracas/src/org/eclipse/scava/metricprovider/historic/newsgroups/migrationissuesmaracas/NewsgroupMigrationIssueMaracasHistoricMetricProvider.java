@@ -167,11 +167,11 @@ public class NewsgroupMigrationIssueMaracasHistoricMetricProvider extends Abstra
 
 	@Override
 	public String getFriendlyName() {
-		return "Migration Issues Detection along with Maracas in newsgroups per day per bug tracker";
+		return "Migration Issues Detection along with Maracas in articles per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric detects migration issues along with Maracas in newsgroups per day for each thread.";
+		return "This metric detects migration issues along with Maracas in newsgroups per day for each newsgroup.";
 	}
 }
