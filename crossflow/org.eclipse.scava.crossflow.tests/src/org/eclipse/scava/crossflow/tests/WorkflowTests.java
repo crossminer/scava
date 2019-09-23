@@ -10,6 +10,7 @@ public class WorkflowTests {
 	protected BrokerService brokerService;
 
 	public void waitFor(Workflow workflow) throws Exception {
+		workflow.setTimeoutMillis(90_000);
 		workflow.awaitTermination();
 	}
 

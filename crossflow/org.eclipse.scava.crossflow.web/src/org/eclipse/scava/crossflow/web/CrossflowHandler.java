@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -104,7 +105,11 @@ public class CrossflowHandler implements Crossflow.Iface {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					workflow.awaitTermination();
+					try {
+						workflow.awaitTermination();
+					} catch (TimeoutException e) {
+						e.printStackTrace();
+					}
 					ExperimentRegistry.removeWorkflow(experimentId);
 				}
 			}).start();

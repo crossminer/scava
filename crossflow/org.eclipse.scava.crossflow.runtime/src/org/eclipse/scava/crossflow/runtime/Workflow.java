@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
+
 import javax.management.*;
 import javax.management.remote.*;
 import org.apache.activemq.broker.BrokerService;
@@ -76,9 +78,8 @@ public abstract class Workflow {
 	@Parameter(names = {
 			"-outputDirectory" }, description = "The output directory of the workflow.", converter = DirectoryConverter.class)
 	protected File outputDirectory = new File("out").getParentFile();
-	
-	@Parameter(names = {
-			"-disableTermination"}, description = "Flag to disable termination when queues are empty")
+
+	@Parameter(names = { "-disableTermination" }, description = "Flag to disable termination when queues are empty")
 	protected boolean terminationEnabled = true;
 
 	protected File runtimeModel = new File("").getParentFile();
@@ -189,7 +190,7 @@ public abstract class Workflow {
 		serializer.register(StreamMetadata.class);
 		serializer.register(StreamMetadataSnapshot.class);
 		serializer.register(TaskStatus.class);
-		
+
 		taskStatusTopic = new BuiltinStream<>(this, "TaskStatusPublisher");
 		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");
 		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
@@ -207,7 +208,7 @@ public abstract class Workflow {
 	private Timer taskStatusDelayedUpdateTimer = new Timer();
 
 	public abstract void sendConfigurations();
-	
+
 	protected void connect() throws Exception {
 
 		if (tempDirectory == null) {
@@ -252,8 +253,7 @@ public abstract class Workflow {
 						break;
 					}
 
-				}
-				else if (signal.getSignal().equals(ControlSignals.TERMINATION)) {
+				} else if (signal.getSignal().equals(ControlSignals.TERMINATION)) {
 					try {
 						terminate();
 					} catch (Exception e) {
@@ -304,7 +304,8 @@ public abstract class Workflow {
 						if (!displayedTaskStatuses.containsKey(taskName)) {
 							taskMetadataTopic.send(status);
 							displayedTaskStatuses.put(taskName, status.getStatus() + ":" + time);
-							//System.out.println("updating task " + taskName + " from NEW to " + status.getStatus());
+							// System.out.println("updating task " + taskName + " from NEW to " +
+							// status.getStatus());
 							return;
 						}
 
@@ -324,8 +325,9 @@ public abstract class Workflow {
 									&& !displayedSplit[0].equals(TaskStatuses.FINISHED.toString())) {
 								taskMetadataTopic.send(status);
 								displayedTaskStatuses.put(taskName, status.getStatus() + ":" + time);
-								//System.out.println("updating task " + taskName + " from " + displayedSplit[0] + " to "
-										//+ status.getStatus());
+								// System.out.println("updating task " + taskName + " from " + displayedSplit[0]
+								// + " to "
+								// + status.getStatus());
 							}
 							// if the task is displayed as in progress and the new status is waiting --
 							// delay the visual update
@@ -348,14 +350,14 @@ public abstract class Workflow {
 										activeTimers.remove(taskName);
 										//
 										long delayedtime = System.currentTimeMillis();
-										//String[] dSplit = displayedTaskStatuses.get(taskName).split(":");
+										// String[] dSplit = displayedTaskStatuses.get(taskName).split(":");
 										if (waitingTaskStatuses.containsKey(taskName) && (delayedtime
 												- waitingTaskStatuses.get(taskName) > taskChangePeriod)) {
 											waitingTaskStatuses.remove(taskName);
 											displayedTaskStatuses.put(taskName, status.getStatus() + ":" + delayedtime);
 											//
-											//System.out.println("updating task " + taskName + " from " + dSplit[0]
-													//+ " to " + status.getStatus() + " (DELAYED)");
+											// System.out.println("updating task " + taskName + " from " + dSplit[0]
+											// + " to " + status.getStatus() + " (DELAYED)");
 											try {
 												taskMetadataTopic.send(status);
 											} catch (Exception e) {
@@ -671,7 +673,7 @@ public abstract class Workflow {
 			return;
 
 		terminating = true;
-		
+
 		if (terminationTimer != null)
 			terminationTimer.cancel();
 
@@ -831,7 +833,7 @@ public abstract class Workflow {
 	public boolean isTerminating() {
 		return terminating;
 	}
-	
+
 	public boolean hasTerminated() {
 		return terminated;
 	}
@@ -847,7 +849,7 @@ public abstract class Workflow {
 	public BuiltinStream<ControlSignal> getControlTopic() {
 		return controlTopic;
 	}
-	
+
 	public BuiltinStream<FailedJob> getFailedJobsTopic() {
 		return failedJobsTopic;
 	}
@@ -1012,19 +1014,40 @@ public abstract class Workflow {
 	public void log(SEVERITY level, String message) {
 		logger.log(level, message);
 	}
-	
+
+	private long timeoutMillis = Long.MAX_VALUE;
+
+	public long getTimeoutMillis() {
+		return timeoutMillis;
+	}
+
+	/**
+	 * Set a hard limit for workflow execution to avoid hanging
+	 * 
+	 * @param timeout_millis
+	 */
+	public void setTimeoutMillis(long timeout_millis) {
+		this.timeoutMillis = timeout_millis;
+	}
+
 	/**
 	 * Waits until {@link #hasTerminated()} return true.
+	 * 
+	 * @throws TimeoutException
 	 */
-	public synchronized void awaitTermination() {
-		while (!terminated) {
+	public synchronized void awaitTermination() throws TimeoutException {
+		long startTime = System.currentTimeMillis();
+		long latestTime = System.currentTimeMillis();
+		while (!terminated && (latestTime = System.currentTimeMillis()) - startTime <= timeoutMillis) {
 			try {
-				wait();
-			}
-			catch (InterruptedException ie) {
+				wait(timeoutMillis);
+			} catch (InterruptedException ie) {
 				logger.log(SEVERITY.INFO, ie.getMessage());
 			}
 		}
+		if (latestTime - startTime > timeoutMillis)
+			throw new TimeoutException(
+					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
 
 }
