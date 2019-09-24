@@ -127,11 +127,11 @@ public class NewsgroupsMigrationIssueHistoricMetricProvider extends AbstractHist
 
 	@Override
 	public String getFriendlyName() {
-		return "Migration Issues Detection in Newsgroups per day per bug tracker";
+		return "Migration Issues Detection in articles per day per newsgroup";
 	}
 
 	@Override
 	public String getSummaryInformation() {
-		return "This metric detects migration issues in Newsgroups per day for each bug tracker.";
+		return "This metric detects migration issues in articles per day for each newsgroup.";
 	}
 }

@@ -1,32 +1,32 @@
 {
-	"metricid" : "org.eclipse.scava.metricprovider.historic.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasHistoricMetricProvider",
+	"metricid" : "org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas.NewsgroupMigrationIssueMaracasHistoricMetricProvider",
 	"vis" : [ 
 		{
-			"id" : "bugs.dailymigrationissuesmaracas",
-			"name" : "BugsMigrationIssuesMaracas (daily)",
-			"description" : "The number of bug migration issues per day, up to and including the current date." ,
+			"id" : "newsgroups.dailymigrationissuesmaracas",
+			"name" : "NewsgroupsMigrationIssuesMaracas (daily)",
+			"description" : "The number of newsgroups threads regarding migration issues per day." ,
 			"type" : "LineChart",
 			"datatable" : {
-				"rows" : "$dailyBugTrackerMigrationMaracasData",
+				"rows" : "$dailyNewsgroupMigrationMaracasData",
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
-					{ "name" : "BugTrackerID", "field" : "$bugTrackerId"},
+					{ "name" : "NewsgroupName", "field" : "$newsgroupName"},
 					{ "name" : "MigrationIssues", "field" : "$numberOfIssues" },
-					{ "name" : "BugsID", "field" : "$bugsId" } ]
+					{ "name" : "ThreadsID", "field" : "$threadsId" } ]
 			},
 			"x" : "Date",
 			"y" : "MigrationIssuesMaracas",
 			"timeSeries" : true
 		},
 		{
-			"id" : "bugs.migrationissuesmaracas.changes",
-			"name" : "BugsMigrationIssuesMaracas (changes)",
-			"description" : "Changes from Maracas, and their matching score [0,1], that were found in each bug tracker issue." ,
+			"id" : "newsgroups.migrationissuesmaracas.changes",
+			"name" : "NewsgroupsMigrationIssuesMaracas (changes)",
+			"description" : "Changes from Maracas, and their matching score [0,1], that were found in each newsgroup thread." ,
 			"type" : "LineChart",
 			"datatable" : {
-				"rows" : "$bugTrackerMigrationMaracasData",
+				"rows" : "$newsgroupMigrationMaracasData",
 				"cols" : [  { "name" : "Date", "field" : "$__date" },
-					{ "name" : "BugTrackerID", "field" : "$bugTrackerId"},
-					{ "name" : "BugID", "field" : "$bugId" },
+					{ "name" : "NewsgroupName", "field" : "$newsgroupName"},
+					{ "name" : "ThreadID", "field" : "$threadId" },
 					{ "name" : "Changes (Description\tMatchingScore)", "field" : "$changesAndMatchingPercentage"} ]
 			},
 			"x" : "Date",
