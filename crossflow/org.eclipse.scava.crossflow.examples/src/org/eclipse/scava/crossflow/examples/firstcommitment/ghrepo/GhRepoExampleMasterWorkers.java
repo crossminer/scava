@@ -1,8 +1,6 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.EnumSet;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
 
@@ -26,8 +24,9 @@ public class GhRepoExampleMasterWorkers {
 		}
 
 		GhRepoExample worker1 = new GhRepoExample(Mode.WORKER);
-		List<String> tasksToExclude = new LinkedList<String>();
-		tasksToExclude = Collections.singletonList("GhRepoCounter");
+		
+		EnumSet<GhRepoExampleTasks> tasksToExclude = EnumSet.noneOf(GhRepoExampleTasks.class);
+		tasksToExclude.add(GhRepoExampleTasks.GH_REPO_COUNTER);
 		worker1.excludeTasks(tasksToExclude);
 		worker1.setName("Worker1");
 

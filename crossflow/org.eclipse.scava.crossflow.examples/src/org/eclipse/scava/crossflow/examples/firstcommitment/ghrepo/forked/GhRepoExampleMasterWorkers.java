@@ -1,7 +1,6 @@
 package org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.EnumSet;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
 
@@ -15,7 +14,7 @@ public class GhRepoExampleMasterWorkers {
 		GhRepoExample master = new GhRepoExample();
 		master.setName("Master");
 
-		// example using a second master connected to original broker 
+		// example using a second master connected to original broker
 		// workflow (will produce 2 times the input, as expected)
 		GhRepoExample master2 = null;
 		if (args.length > 0) {
@@ -25,13 +24,13 @@ public class GhRepoExampleMasterWorkers {
 		}
 
 		GhRepoExample worker1 = new GhRepoExample(Mode.WORKER);
-		List<String> tasksToExclude = new LinkedList<String>();
-		//tasksToExclude = Collections.singletonList("GhRepoCounter2");
+		EnumSet<GhRepoExampleTasks> tasksToExclude = EnumSet.noneOf(GhRepoExampleTasks.class);
+		//tasksToExclude.add(GhRepoExampleTasks.GH_REPO_COUNTER2);
 		worker1.excludeTasks(tasksToExclude);
 		worker1.setName("Worker1");
 
 		GhRepoExample worker2 = new GhRepoExample(Mode.WORKER);
-		//worker2.excludeTasks(tasksToExclude);
+		// worker2.excludeTasks(tasksToExclude);
 		worker2.setName("Worker2");
 
 		Thread.sleep(START_WAITING_TIME); // to allow connecting from eclipse
