@@ -9,6 +9,12 @@ rule Workflow2Class
 	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + ".py"
 }
 
+rule Workflow2TaskEnum
+	transform w : Workflow {
+	template : "workflow2taskenum.egl"
+	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + "_tasks.py"
+}
+
 rule Type2Class 
 	transform t : Type {
 	guard : t.impl.isUndefined()

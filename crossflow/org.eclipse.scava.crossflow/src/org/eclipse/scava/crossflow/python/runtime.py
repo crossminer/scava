@@ -19,6 +19,7 @@ import traceback
 import xmltodict
 import uuid
 
+from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import Path
 from typing import Type
@@ -1170,7 +1171,7 @@ Created on 13 Mar 2019
 '''@synchronized'''
 
 
-class Workflow(object):
+class Workflow(ABC):
     '''
     classdocs
     '''
@@ -1184,7 +1185,8 @@ class Workflow(object):
                  instanceId=None,
                  mode=Mode.WORKER,
                  cacheEnabled=True,
-                 deleteCache=None):
+                 deleteCache=None,
+                 excluded_tasks=[]):
         '''
         Constructor
         '''        
@@ -1199,6 +1201,10 @@ class Workflow(object):
             self.instanceId = str(uuid.uuid4())
 
         self.mode = mode
+        
+        # excluded tasks from workers
+        self.excluded_tasks = excluded_tasks
+        
         self.cacheEnabled = cacheEnabled
 
         # TODO: REMOVE THIS, KEPT IN UNTIL CODE REFACTOR CAN BE DONE NOT NEEDED UNLESS PYTHON MASTER REQUIRED
@@ -1243,8 +1249,6 @@ class Workflow(object):
         self.activeWorkerIds = []
         self.terminatedWorkerIds = []
 
-        # excluded tasks from workers
-        self.tasksToExclude = []
         self.delay = 0
         self.terminationTimer = None
         self.streamMetadataTimer = None
@@ -1260,8 +1264,14 @@ class Workflow(object):
         
         logger.info("Workflow initialised.")
     
-    def excludeTasks(self, tasks):
-        self.tasksToExclude = tasks
+    @property
+    def excluded_tasks(self):
+        return self.excluded_tasks
+    
+    @excluded_tasks.setter
+    @abstractmethod
+    def excluded_tasks(selfself, tasks=[]):
+        raise NotImplementedError
 
     def isCreateBroker(self):
         return self.createBroker
