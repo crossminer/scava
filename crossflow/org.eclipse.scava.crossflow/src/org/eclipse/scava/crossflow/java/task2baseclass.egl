@@ -5,7 +5,6 @@ import javax.annotation.Generated;
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
-import org.eclipse.scava.crossflow.runtime.Workflow;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
@@ -16,7 +15,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		this.workflow = workflow;
 	}
 	
-	public Workflow getWorkflow() {
+	public [%=w.name%] getWorkflow() {
 		return workflow;
 	}
 	
@@ -33,7 +32,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	[%}%]
 	
 	public String getId(){
-		return "[%=t.name%]:"+workflow.getName();
+		return "[%=t.name%]:" + workflow.getName();
 	}
 	
 	[%for (s in t.output) { %]
