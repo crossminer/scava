@@ -10,6 +10,7 @@
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>	
 		
 		<exclude org="org.slf4j"/>
+		<exclude name="servlet-api" rev="2.5"/>
 		
 	</dependencies>
 </ivy-module>

@@ -97,13 +97,14 @@
     </target>
 	
 	<!-- Make peace not war -->
-	<target name="main" depends="thrift,copy-dependencies,examples">
+	<target name="main" depends="thrift,copy-dependencies,server-dependencies,examples">
 		<war destfile="../org.eclipse.scava.crossflow.web.docker/org.eclipse.scava.crossflow.web.war" needxmlfile='false'>
     		<fileset dir="WebContent"/>
     		<classes dir="build/classes"/>
     		<classes dir="../org.eclipse.scava.crossflow.runtime/bin"/>
     	</war>
 		
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1" />
     	<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.docker" depth="-1"/>
 	</target>
 	
