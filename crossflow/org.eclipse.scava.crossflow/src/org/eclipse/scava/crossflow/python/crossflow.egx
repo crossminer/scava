@@ -118,7 +118,7 @@ operation Any getOutFolder() : String {
 }
 
 operation Any getSupportFolder() : String {
-	var supportFolderParam = self.getLanguage("python").getParameters().selectOne(p|p.name == "supportFolder");
+	var supportFolderParam = self.getLanguage("python").`parameters`.selectOne(p|p.name == "supportFolder");
 	if (supportFolderParam.isDefined()) {
 		return supportFolderParam.value.toPath();
 	}
