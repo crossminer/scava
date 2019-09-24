@@ -72,7 +72,7 @@ METRICPROVIDER_ID_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.configur
 METRIC_PROVIDER_ID_NEWVERSION_DOCKER_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.docker.NewVersionDockerTransMetricProvider'
 METRIC_PROVIDER_ID_NEWVERSION_PUPPET_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
 METRIC_PROVIDER_ID_NEWVERSION_OSGI_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider'
-METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider'
+METRIC_PROVIDER_ID_NEWVERSION_MAVEN_DEPS = 'org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider'
 
 METRIC_PROVIDER_ID_PUPPET_DESIGN_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells.PuppetDesignTransMetricProvider'
 METRIC_PROVIDER_ID_PUPPET_IMPL_SMELLS = 'org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.PuppetImplementationTransMetricProvider'
