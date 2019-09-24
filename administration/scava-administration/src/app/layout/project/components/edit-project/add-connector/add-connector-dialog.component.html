@@ -127,7 +127,7 @@
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
                 <label for="interval">Interval</label>
-                <input type="number" class="form-control" name="interval" [(ngModel)]="repository.interval">
+                <input type="number" class="form-control" name="interval" placeholder="10000" [(ngModel)]="repository.interval">
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
                 <label for="username">Username</label>
