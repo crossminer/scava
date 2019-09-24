@@ -24,7 +24,7 @@ class [%=s.name%](JobStream):
 			preQueue = self.preQueue[consumerId]
 			destQueue = self.destination[consumerId]
 			postQueue = self.postQueue[consumerId]
-			if (workflow.isMaster()):
+			if (workflow.is_master()):
 				def handlePreMessage(message, ackFunc=None):
 					try:
 						workflow.cancelTermination()

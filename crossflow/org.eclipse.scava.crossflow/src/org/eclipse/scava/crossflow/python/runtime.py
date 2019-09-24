@@ -244,9 +244,10 @@ class TaskStatus(object):
 class Mode(Enum):
     """Flags for Workflow operation Mode
     """
-    MASTER_BARE = 1 
-    MASTER = 2 
-    WORKER = 3 
+    MASTER_BARE = 1
+    MASTER = 2
+    WORKER = 3
+    API = 4
     
     def __str__(self):
         return self.name
@@ -1007,6 +1008,32 @@ class Workflow(ABC):
         self.terminationTimeout = 10000
         
         logger.info("Workflow initialised.")
+
+    def connect(self): 
+        if (self.tempDirectory == None): 
+            self.tempDirectory = tempfile.NamedTemporaryFile(prefix='crossflow')
+
+        self.taskStatusTopic.init()
+        self.streamMetadataTopic.init()
+        self.taskMetadataTopic.init()
+        self.controlTopic.init()
+        self.logTopic.init()
+        self.failedJobsTopic.init()
+        self.internalExceptionsQueue.init()
+
+        self.activeStreams.append(self.taskStatusTopic)
+        self.activeStreams.append(self.failedJobsTopic)
+        self.activeStreams.append(self.internalExceptionsQueue)
+        
+        # XXX do not add this topic/queue or any other non-essential ones to
+        # activestreams as the workflow should be able to terminate regardless of their
+        # state
+        # activeStreams.add(controlTopic);
+        # activeStreams.add(streamMetadataTopic);
+        self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal)) 
+        # XXX if the worker sends this before the master is listening to this topic
+        # / this information is lost which affects termination
+        self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
     
     @property
     def excluded_tasks(self):
@@ -1038,7 +1065,7 @@ class Workflow(ABC):
         return self.terminationTimeout
     
     def consumeControlSignal(self, signal):
-        if (self.isMaster()): 
+        if (self.is_master()): 
             sig = signal.signal
             if sig == ControlSignals.ACKNOWLEDGEMENT:
                 self.terminatedWorkerIds.append(signal.senderId)
@@ -1069,32 +1096,6 @@ class Workflow(ABC):
     def consumeInternalException(self, internalException):
         logger.info(internalException.getException())
         self.internalExceptions.append(internalException)
-        
-    def connect(self): 
-        if (self.tempDirectory == None): 
-            self.tempDirectory = tempfile.NamedTemporaryFile(prefix='crossflow')
-
-        self.taskStatusTopic.init()
-        self.streamMetadataTopic.init()
-        self.taskMetadataTopic.init()
-        self.controlTopic.init()
-        self.logTopic.init()
-        self.failedJobsTopic.init()
-        self.internalExceptionsQueue.init()
-
-        self.activeStreams.append(self.taskStatusTopic)
-        self.activeStreams.append(self.failedJobsTopic)
-        self.activeStreams.append(self.internalExceptionsQueue)
-        
-        # XXX do not add this topic/queue or any other non-essential ones to
-        # activestreams as the workflow should be able to terminate regardless of their
-        # state
-        # activeStreams.add(controlTopic);
-        # activeStreams.add(streamMetadataTopic);
-        self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal)) 
-        # XXX if the worker sends this before the master is listening to this topic
-        # / this information is lost which affects termination
-        self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
 
     def cancelTermination(self): 
         self.aboutToTerminate = False
@@ -1118,11 +1119,11 @@ class Workflow(ABC):
         self.cache = cache
         cache.setWorkflow(self)
 
-    def isMaster(self):
-        return self.mode == Mode.MASTER or self.mode == Mode.MASTER_BARE
+    def is_master(self):
+        return self.mode in [Mode.MASTER, Mode.MASTER_BARE]
 
-    def isWorker(self): 
-        return self.mode == Mode.MASTER or self.mode == Mode.WORKER
+    def is_worker(self): 
+        return self.mode in [Mode.WORKER, Mode.MASTER]
 
     def getMode(self): 
         return self.mode

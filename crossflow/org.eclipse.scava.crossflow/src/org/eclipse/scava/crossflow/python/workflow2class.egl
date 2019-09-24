@@ -91,7 +91,7 @@ class [%=w.name%](Workflow):
             self.activeStreams.append(self.[%=s.name.ftlc()%])
             [%}%]
 
-            if (self.isWorker()):
+            if (self.is_worker()):
             [%for (t in w.getWorkerTasks()){%]
                 if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
                     [%=t.setup()%]
