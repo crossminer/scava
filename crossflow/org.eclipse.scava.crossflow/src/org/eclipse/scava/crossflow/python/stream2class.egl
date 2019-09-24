@@ -1,6 +1,6 @@
 import traceback
 
-from crossflow.runtime import JobStream, logger, QueueInfo, QueueType, str2QueueType
+from crossflow.runtime import JobStream, logger, QueueInfo, QueueType
 
 
 class [%=s.name%](JobStream):
@@ -15,7 +15,7 @@ class [%=s.name%](JobStream):
 		self.enablePrefetch = enablePrefetch
 		if not self.enablePrefetch:
 			prefetchSize = 1
-		postQ = QueueInfo(str2QueueType('[%=s.eClass().name%]'), '[%=s.name%]Post.[%=t.name%].' + workflow.getInstanceId(), prefetchSize)
+		postQ = QueueInfo(QueueType['[%=s.eClass().name.toUpperCase()%]'], '[%=s.name%]Post.[%=t.name%].' + workflow.getInstanceId(), prefetchSize)
 
 		self.postQueue['[%=t.name%]'] = postQ
 		[%}%]

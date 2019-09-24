@@ -9,7 +9,6 @@ import hashlib
 import logging
 import os
 import pickle
-import shutil
 import stomp
 import sys
 import tempfile
@@ -40,128 +39,35 @@ logger.addHandler(__handler)
 logger.debug("Logger Initialised to sys.stdout")
 
 
-class CloneUtils(object):
-    '''
-    classdocs
-    '''
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        
-    def getUniqueRepoFolderName(self, repoUrl):
-        return self.getUniqueRepoFolderNameWithName(self.extractGhRepoName(repoUrl), repoUrl)
-    
-    def getUniqueRepoFolderNameWithName(self, name, url):
-        messageDigest = hashlib.sha1()
-        messageDigest.update(bytes(url, 'utf-8'))
-        return self.cleanFileName(name) + "-" + messageDigest.hexdigest()
-
-    def cleanFileName(self, badFileName):
-        cleanName = ''
-        for c in badFileName:
-            if not c in illegal_chars:
-                cleanName += c
-
-        # remove names ending with one or more "." / " " as this is illegal as
-        # well in JGit.
-        while cleanName.endswith(".") or cleanName.endswith(" "):
-            cleanName = cleanName[0:len(cleanName) - 1]
-
-        return cleanName
-    
-    '''
-     * 
-     * @param repoUrl in format "https://github.com/repoOwner/repoName"
-     * @return String repoName
-    '''
-
-    def extractGhRepoName(self, repoUrl):
-        repoNameStartIndex = repoUrl.find("/", 19) + 1;
-        return repoUrl[repoNameStartIndex:len(repoUrl)]            
-    
-    '''
-     * 
-     * @param repoUrl in format "https://github.com/repoOwner/repoName"
-     * @return String repoOwner
-    '''
-
-    def extractGhRepoOwner(self, repoUrl):
-        repoNameStartIndex = repoUrl.find("/", 19) + 1;    
-        return repoUrl[19:repoNameStartIndex - 1]
-    
-    def removeRepoClones(self, repoLocationFile):
-        # clean local clone parent destination if it exists
-        if (os.path.isfile(repoLocationFile)): 
-            shutil.rmtree(repoLocationFile)
-            logger.info("Successfully cleaned repo clone parent {}".format(repoLocationFile))
-            os.makedirs(repoLocationFile)
-    
-'''    
-if __name__ == '__main__':
-    url = 'https://github.com/eclipse/epsilon'
-    cl = CloneUtils()
-    logger.info(cl.extractGhRepoName(url))
-    logger.info(cl.extractGhRepoOwner(url))
-''' 
-    
-'''
-Created on 22 Feb 2019
-
-@author: stevet
-'''
-
-
 class ControlSignals(Enum):
+    """Control Signal Flags
+    """
     TERMINATION = 1 
     ACKNOWLEDGEMENT = 2 
     WORKER_ADDED = 3 
     WORKER_REMOVED = 4
     
-    def __str__(self, *args, **kwargs):
+    def __str__(self):
         return self.name
     
     @staticmethod
     def enum_from_name(name):
-        if name == 'TERMINATION':
-            return ControlSignals.TERMINATION
-        elif name == 'ACKNOWLEDGEMENT':
-            return ControlSignals.ACKNOWLEDGEMENT
-        elif name == 'WORKER_ADDED':
-            return ControlSignals.WORKER_ADDED
-        else:
-            return ControlSignals.WORKER_REMOVED
+        try:
+            return ControlSignals[name.upper()]
+        except KeyError:
+            raise ValueError(f"No ControlSignal exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in ControlSignals])}")
 
-    
+
 class ControlSignal(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, controlSignal=ControlSignals.TERMINATION, senderId=''):
-        '''
-        Constructor
-        '''
         self.signal = controlSignal
         self.senderId = senderId
 
-'''
-Created on 23 Feb 2019
-
-@author: stevet
-'''
-
 
 class CSVParser(object):
-    '''
-    classdocs
-    '''
-
+    
     def __init__(self, path):
-        '''
-        Constructor
-        '''
         self.parser = csv.DictReader(path)
         
     def getRecordsIterable(self):
@@ -169,23 +75,11 @@ class CSVParser(object):
     
     def getRecordsList(self):
         return list(self.parser)
-
-'''
-Created on 23 Feb 2019
-
-@author: stevet
-'''
-
+    
 
 class CSVWriter(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, filePath, headers):
-        '''
-        Constructor
-        '''
         if (not os.path.isfile(filePath)): 
             parent = filePath[0:filePath.rfind("/") - 1]
             os.mkdir(parent)
@@ -201,43 +95,28 @@ class CSVWriter(object):
     def close(self):
         self.writer.close()
 
-'''
-Created on 27 Feb 2019
 
-@author: stevet
-'''
-
-    
 class QueueType(Enum):
+    """Flag for types of queues available to listeners
+    """
     QUEUE = 1 
     TOPIC = 2 
 
-    def __str__(self, *args, **kwargs):
+    def __str__(self):
         return self.name
     
     @staticmethod
     def enum_from_name(name):
-        if name == 'QUEUE':
-            return QueueType.QUEUE
-        else:
-            return QueueType.TOPIC
-
-
-def str2QueueType(qTypeStr):
-    if qTypeStr.upper() == 'QUEUE':
-        return QueueType.QUEUE
-    return QueueType.TOPIC
+        try:
+            return QueueType[name.upper()]
+        except KeyError:
+            raise ValueError(f"No QueueType exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in QueueType])}")
 
 
 class QueueInfo(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, queueType, queueName, prefetchSize=0):
-        '''
-        Constructor
-        '''
+
         self.queueType = queueType
         self.queueName = queueName
         self.prefetchSize = prefetchSize
@@ -256,20 +135,11 @@ class QueueInfo(object):
         
     def getPrefetchSize(self):
         return self.prefetchSize
-        
-'''
-Created on 23 Feb 2019
-
-@author: stevet
-'''
 
 
 class Stream(object):
 
     def __init__(self, name, size, inFlight, isTopic, numberOfSubscribers):
-        '''
-        Constructor
-        '''
         self.name = name
         self.size = size
         self.inFlight = inFlight
@@ -296,9 +166,6 @@ class Stream(object):
 
      
 class StreamMetadata(object):
-    '''
-    classdocs
-    '''
     
     def __init__(self):
         self.streams = set()
@@ -331,46 +198,32 @@ class StreamMetadata(object):
                     "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n"
         return ret
 
-'''
-Created on 23 Feb 2019
-
-@author: stevet
-'''
-
 
 class TaskStatuses(Enum):
+    """Flag for task statuses
+    """
+    
     STARTED = 1 
     WAITING = 2 
     INPROGRESS = 3 
     BLOCKED = 4
     FINISHED = 5
     
-    def __str__(self, *args, **kwargs):
+    def __str__(self):
         return self.name
 
     @staticmethod
     def enum_from_name(name):
-        if name == 'STARTED':
-            return TaskStatuses.STARTED
-        elif name == 'WAITING':
-            return TaskStatuses.WAITING
-        elif name == 'INPROGRESS':
-            return TaskStatuses.INPROGRESS
-        elif name == 'BLOCKED':
-            return TaskStatuses.BLOCKED
-        else:
-            return TaskStatuses.FINISHED
+        try:
+            return QueueType[name.upper()]
+        except KeyError:
+            raise ValueError(f"No TaskStatuses exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in TaskStatuses])}")
 
     
 class TaskStatus(object):
-    '''
-    classdocs
-    '''
-
+    
     def __init__(self, status=TaskStatuses.STARTED, caller='', reason=''):
-        '''
-        Constructor
-        '''
+        
         self.status = status
         self.caller = caller
         self.reason = reason
@@ -387,45 +240,23 @@ class TaskStatus(object):
     def __str__(self, *args, **kwargs):
         return str(self.status) + " | caller: " + str(self.caller) + " reason: " + str(self.reason)
 
-'''    
-if __name__ == '__main__':
-    testVal = TaskStatuses.WAITING
-    
-    logger.info('stat='+str(testVal))
-'''
-
-'''
-Created on 13 Mar 2019
-
-@author: stevet
-'''
-
 
 class Mode(Enum):
+    """Flags for Workflow operation Mode
+    """
     MASTER_BARE = 1 
     MASTER = 2 
     WORKER = 3 
     
-    def __str__(self, *args, **kwargs):
+    def __str__(self):
         return self.name
 
     @staticmethod
     def enum_from_name(name):
-        if name == 'MASTER_BARE':
-            return Mode.MASTER_BARE
-        elif name == 'MASTER':
-            return Mode.MASTER
-        else:
-            return Mode.WORKER
-
-
-def convert(modeString):
-    if('master' == modeString): 
-        return Mode.MASTER
-    if('worker' == modeString): 
-        return Mode.WORKER
-    if('master_bare' == Mode.MASTER_BARE):
-        raise Exception("Mode must be 'master_bare', 'master' or 'worker' but was '" + modeString + "'")
+        try:
+            return QueueType[name.upper()]
+        except KeyError:
+            raise ValueError(f"No Mode exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in Mode])}")
 
 
 class Serializer(object):
@@ -512,14 +343,8 @@ class Serializer(object):
     
     
 class Task(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self):
-        '''
-        Constructor
-        '''
         self.cacheable = True
         self.subscriptionId = uuid.uuid4().int
 
@@ -556,14 +381,9 @@ class Task(object):
 
 
 class BuiltinStreamConsumer(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, consumerFunc):
-        '''
-        Constructor
-        '''
+        
         self.consumerFunc = consumerFunc
         self.subscriptionId = uuid.uuid4().int
         
@@ -576,16 +396,6 @@ class BuiltinStreamConsumer(object):
     def getSubscriptionId(self):
         return self.subscriptionId
 
-'''
-Created on 23 Feb 2019
-
-@author: stevet
-
-refs:
-
-http://activemq.apache.org/stomp.html
-
-'''
 
 class MessageListener(stomp.ConnectionListener):
 
@@ -643,31 +453,15 @@ class MessageListener(stomp.ConnectionListener):
         
  
 class BuiltinStream(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, workflow, name, broadcast=True):
-        '''
-        Constructor
-        '''
+        
         self.name = name
         self.workflow = workflow
         self.broadcast = broadcast
         self.consumers = []
         self.listeners = []
         self.pendingConsumers = []
-        
-    '''    
-    protected ActiveMQDestination destination;
-    protected Connection connection;
-    protected Session session;
-    protected Workflow workflow;
-    protected List<MessageConsumer> consumers = new LinkedList<>();
-    protected List<BuiltinStreamConsumer<T>> pendingConsumers = new ArrayList<>();
-    protected String name;
-    protected boolean broadcast;
-    '''
     
     def getDestinationName(self):
         return self.name + "." + self.workflow.getInstanceId()
@@ -740,14 +534,6 @@ class BuiltinStream(object):
     def getName(self):
         return self.name
     
-'''
-Created on 25 Feb 2019
-
-@author: stevet
-'''
-
-'''@synchronized'''
-
 
 class DirectoryCache(object):
     
@@ -873,15 +659,10 @@ Created on 27 Feb 2019
 '''
 
 
-class FailedJob(object):
-    '''
-    classdocs
-    '''
+class FailedJob(object): 
 
     def __init__(self, job, exception, worker, task):
-        '''
-        Constructor
-        '''
+        
         self.job = job
         self.exception = exception
         self.worker = worker
@@ -911,25 +692,14 @@ class FailedJob(object):
     def setTask(self, task):
         self.task = task
 
-    def __str__(self, *args, **kwargs):
+    def __str__(self):
         return self.job + " | " + self.exception + " " + self.worker + " " + self.task
-
-'''
-Created on 27 Feb 2019
-
-@author: stevet
-'''
 
 
 class InternalException(Exception):
-    '''
-    classdocs
-    '''
-
+    
     def __init__(self, exception=None, message=None, worker=None):
-        '''
-        Constructor
-        '''
+        
         self.exception = exception
         self.worker = worker
         self.message = message
@@ -946,12 +716,6 @@ class InternalException(Exception):
     def setWorker(self, worker):
         self.worker = worker;
 
-'''
-Created on 27 Feb 2019
-
-@author: stevet
-'''
-
 
 class CacheManagerTask(Task):
     
@@ -963,23 +727,12 @@ class CacheManagerTask(Task):
     
     def getId(self):
         return 'CacheManager'
-    
-'''
-Created on 27 Feb 2019
-
-@author: stevet
-'''
 
 
 class Job(object):
-    '''
-    classdocs
-    '''
-
+    
     def __init__(self):
-        '''
-        Constructor
-        '''
+        
         self.id = str(uuid.uuid4())
         self.correlationId = ''
         self.destination = ''
@@ -1077,14 +830,10 @@ class Job(object):
 
         
 class JobStream(Job):
-    '''
-    classdocs
-    '''
+    
 
     def __init__(self, workflow):
-        '''
-        Constructor
-        '''
+        
         self.workflow = workflow
         self.destination = {}  # taskId : QueueInfo
         self.preQueue = {}  # taskId : QueueInfo
@@ -1172,9 +921,7 @@ Created on 13 Mar 2019
 
 
 class Workflow(ABC):
-    '''
-    classdocs
-    '''
+    
 
     def __init__(self,
                  name='',
@@ -1187,9 +934,7 @@ class Workflow(ABC):
                  cacheEnabled=True,
                  deleteCache=None,
                  excluded_tasks=[]):
-        '''
-        Constructor
-        '''        
+                
         self.name = name
         self.cache = cache
         self.master = master
@@ -1206,11 +951,10 @@ class Workflow(ABC):
         self.excluded_tasks = excluded_tasks
         
         self.cacheEnabled = cacheEnabled
+        self.deleteCache=deleteCache
 
         # TODO: REMOVE THIS, KEPT IN UNTIL CODE REFACTOR CAN BE DONE NOT NEEDED UNLESS PYTHON MASTER REQUIRED
         self.createBroker = True
-
-        self.cacheEnabled = True
         self.activeJobs = []
         self.activeStreams = []
         self.terminated = False
@@ -1270,7 +1014,7 @@ class Workflow(ABC):
     
     @excluded_tasks.setter
     @abstractmethod
-    def excluded_tasks(selfself, tasks=[]):
+    def excluded_tasks(self, tasks=[]):
         raise NotImplementedError
 
     def isCreateBroker(self):
@@ -1517,16 +1261,4 @@ class Workflow(ABC):
 
     def getStreamMetadataPeriod(self): 
         return self.streamMetadataPeriod
-
-    '''
-     * 
-     * @return A set containing all ActiveMQDestination objects used by all active JobStreams 
-    '''
-    '''
-    public Set<ActiveMQDestination> getAllJobStreamsInternals() 
-        Set<ActiveMQDestination> ret = new HashSet<ActiveMQDestination>();
-        activeStreams.stream().filter(s -> s instanceof JobStream)
-                .forEach(js -> ret.addAll(((JobStream<?>) js).getAllQueues()));
-        return ret;
-    '''
 
