@@ -66,14 +66,15 @@ public class ProjectEditionResource extends ServerResource {
 			// Retrieve the older project
 			ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
 			Project project = projectRepo.getProjects().findOneByShortName(sortName);
+			
 			if (project instanceof GitHubRepository) {
-				this.importGithubProject(json, project);
+				this.editGithubProject(json, project);
 			} else if (project instanceof GitLabRepository) {
-				this.importGitlabProject(json, project);
+				this.editGitlabProject(json, project);
 			} else if (project instanceof EclipseProject) {
-				this.importEclipseProject(json, project);
+				this.editEclipseProject(json, project);
 			} else {
-				this.importProject(json, project);
+				this.editProject(json, project);
 			}
 
 			platform.getProjectRepositoryManager().getProjectRepository().getProjects().sync();
@@ -92,23 +93,15 @@ public class ProjectEditionResource extends ServerResource {
 	}
 
 	/*
-	 * import generic project
+	 * edit generic project
 	 */
-	private void importProject(JsonNode json, Project project) {
+	private void editProject(JsonNode json, Project project) {
 		if (isValidKey(json, "name"))
 			project.setName(json.get("name").asText());
 		if (isValidKey(json, "description"))
 			project.setDescription(json.get("description").asText());
 		if (isValidKey(json, "homePage"))
 			project.setHomePage(json.get("homePage").asText());
-
-//		int i = 0;
-//		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-//			VcsRepository repo = project.getVcsRepositories().get(i);			
-//			if (isValidKey(vcs, "url"))
-//				repo.setUrl(vcs.get("url").asText());
-//			i++;
-//		}
 
 		// Delete vcs elements
 		List<VcsRepository> tempVcsRepo = new ArrayList<VcsRepository>();
@@ -157,20 +150,6 @@ public class ProjectEditionResource extends ServerResource {
 				project.getVcsRepositories().add(repo);
 			}
 		}
-
-//		int j = 0;
-//		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-//			BugTrackingSystem buggy = project.getBugTrackingSystems().get(j);
-//			if (isValidKey(bts, "url"))
-//				buggy.setUrl(bts.get("url").asText());
-//			if (isValidKey(bts, "login"))
-//				((JiraBugTrackingSystem) buggy).setLogin(bts.get("login").asText());
-//			if (isValidKey(bts, "password"))
-//				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
-//			if (isValidKey(bts, "project"))
-//				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
-//			j++;		
-//		}
 
 		// Delete bts elements
 		List<BugTrackingSystem> tempBtsRepo = new ArrayList<BugTrackingSystem>();
@@ -272,24 +251,6 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 
-//		int k = 0;
-//		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-//			CommunicationChannel comunication = project.getCommunicationChannels().get(k);
-//			if (isValidKey(cc, "url"))
-//				comunication.setUrl(cc.get("url").asText());
-//			if (isValidKey(cc, "MailingListName"))
-//				((SympaMailingList) comunication).setMailingListName(cc.get("MailingListName").asText());
-//			if (isValidKey(cc, "MailingListDescription"))
-//				((SympaMailingList) comunication).setMailingListDescription(cc.get("MailingListDescription").asText());
-//			if (isValidKey(cc, "compressedFileExtension"))
-//				((SympaMailingList) comunication).setCompressedFileExtension(cc.get("compressedFileExtension").asText());
-//			if (isValidKey(cc, "username"))
-//				((SympaMailingList) comunication).setUsername(cc.get("username").asText());
-//			if (isValidKey(cc, "password"))
-//				((SympaMailingList) comunication).setPassword(cc.get("password").asText());
-//			k++;
-//		}
-
 		// Delete communication channel elements
 		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
 		for (CommunicationChannel communication : project.getCommunicationChannels()) {
@@ -314,9 +275,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
@@ -346,7 +313,6 @@ public class ProjectEditionResource extends ServerResource {
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					communication = new EclipseForum();
 					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
 					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
 					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
@@ -354,14 +320,13 @@ public class ProjectEditionResource extends ServerResource {
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
-					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
@@ -379,9 +344,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.irc.Irc":
 					communication = new Irc();
@@ -437,7 +408,7 @@ public class ProjectEditionResource extends ServerResource {
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
@@ -454,9 +425,9 @@ public class ProjectEditionResource extends ServerResource {
 	}
 
 	/*
-	 * import GitHub project
+	 * edit GitHub project
 	 */
-	private void importGithubProject(JsonNode json, Project project) {
+	private void editGithubProject(JsonNode json, Project project) {
 		GitHubRepository githubRepository = (GitHubRepository) project;
 
 		if (isValidKey(json, "full_name"))
@@ -477,14 +448,6 @@ public class ProjectEditionResource extends ServerResource {
 			githubRepository.setSvn_url(json.get("svn_url").asText());
 		if (isValidKey(json, "clone_url"))
 			githubRepository.setClone_url(json.get("clone_url").asText());
-
-//		int i = 0;
-//		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-//			VcsRepository repo = githubRepository.getVcsRepositories().get(i);			
-//			if (isValidKey(vcs, "url"))
-//				repo.setUrl(vcs.get("url").asText());
-//			i++;
-//		}
 
 		// Delete vcs elements
 		List<VcsRepository> tempVcsRepo = new ArrayList<VcsRepository>();
@@ -534,27 +497,6 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 
-//		int j = 0;
-//		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-//			BugTrackingSystem buggy = githubRepository.getBugTrackingSystems().get(j);
-//			if (isValidKey(bts, "url")) {
-//				buggy.setUrl(bts.get("url").asText());
-//			}
-//			if (isValidKey(bts, "token")) {
-//				String token = bts.get("token").asText();
-//				String owner = githubRepository.getFull_name().split("/")[0];
-//				String repo = githubRepository.getFull_name().split("/")[1];
-//				((GitHubBugTracker) buggy).setProject(token, owner, repo);
-//			}
-//			if (isValidKey(bts, "login"))
-//				((JiraBugTrackingSystem) buggy).setLogin(bts.get("login").asText());
-//			if (isValidKey(bts, "password"))
-//				((JiraBugTrackingSystem) buggy).setPassword(bts.get("password").asText());
-//			if (isValidKey(bts, "project"))
-//				((JiraBugTrackingSystem) buggy).setProject(bts.get("project").asText());
-//			j++;
-//		}
-
 		// Delete bts elements
 		List<BugTrackingSystem> tempBtsRepo = new ArrayList<BugTrackingSystem>();
 		for (BugTrackingSystem buggy : githubRepository.getBugTrackingSystems()) {
@@ -590,34 +532,29 @@ public class ProjectEditionResource extends ServerResource {
 					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof SourceForgeBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof SourceForgeBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof RedmineBugIssueTracker) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof RedmineBugIssueTracker) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
 					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof JiraBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof JiraBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
 					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
 					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof MantisBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof MantisBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof BitbucketBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof BitbucketBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
 					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
@@ -676,15 +613,6 @@ public class ProjectEditionResource extends ServerResource {
 				githubRepository.getBugTrackingSystems().add(buggy);
 			}
 		}
-
-//		int k = 0;
-//		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-//			CommunicationChannel comunication = githubRepository.getCommunicationChannels().get(k);
-//			
-//			if (isValidKey(cc, "url"))
-//				comunication.setUrl(cc.get("url").asText());
-//			k++;
-//		}
 		
 		// Delete communication channel elements
 		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
@@ -706,14 +634,19 @@ public class ProjectEditionResource extends ServerResource {
 		for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
 			boolean exist = false;
 			for (CommunicationChannel communication : githubRepository.getCommunicationChannels()) {
-				if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof NntpNewsGroup) {
+				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
@@ -742,33 +675,25 @@ public class ProjectEditionResource extends ServerResource {
 					}
 					exist = true;
 					break;
-				} else if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof EclipseForum) {
-					communication = new EclipseForum();
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
 					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
 					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
 					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
 					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
 					exist = true;
 					break;
-				} else if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof DocumentationSystematic) {
-					communication = new DocumentationSystematic();
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication)
-								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication)
-								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					exist = true;
 					break;
@@ -782,9 +707,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.irc.Irc":
 					communication = new Irc();
@@ -838,19 +769,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication)
-								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication)
-								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:
@@ -862,9 +789,9 @@ public class ProjectEditionResource extends ServerResource {
 	}
 
 	/*
-	 * import GitLab project
+	 * edit GitLab project
 	 */
-	private void importGitlabProject(JsonNode json, Project project) {
+	private void editGitlabProject(JsonNode json, Project project) {
 		GitLabRepository gitlabRepository = (GitLabRepository) project;
 
 		if (isValidKey(json, "full_name"))
@@ -879,14 +806,6 @@ public class ProjectEditionResource extends ServerResource {
 			gitlabRepository.setGit_url(json.get("git_url").asText());
 		if (isValidKey(json, "clone_url"))
 			gitlabRepository.setClone_url(json.get("clone_url").asText());
-
-//		int i = 0;
-//		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-//			VcsRepository repo = gitlabRepository.getVcsRepositories().get(i);
-//			if (isValidKey(vcs, "url"))
-//				repo.setUrl(vcs.get("url").asText());
-//			i++;
-//		}
 
 		// Delete vcs elements
 		List<VcsRepository> tempVcsRepo = new ArrayList<VcsRepository>();
@@ -936,16 +855,6 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 
-//		int j = 0;
-//		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-//			BugTrackingSystem buggy = gitlabRepository.getBugTrackingSystems().get(j);
-//			if (isValidKey(bts, "url"))
-//				buggy.setUrl(bts.get("url").asText());
-//			if (isValidKey(bts, "personal_access_token"))
-//				((GitLabTracker)buggy).setPersonal_access_token(bts.get("personal_access_token").asText());
-//			j++;			
-//		}
-
 		// Delete bts elements
 		List<BugTrackingSystem> tempBtsRepo = new ArrayList<BugTrackingSystem>();
 		for (BugTrackingSystem buggy : gitlabRepository.getBugTrackingSystems()) {
@@ -961,28 +870,6 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 		gitlabRepository.getBugTrackingSystems().removeAll(tempBtsRepo);
-
-		// Add & update bts elements
-//		for (JsonNode btsJson : (ArrayNode) json.get("bugTrackingSystems")) {
-//			boolean exist = false;
-//			for (BugTrackingSystem buggy : gitlabRepository.getBugTrackingSystems()) {
-//				if (buggy.getId().equals(btsJson.get("_id").asText())) {
-//					buggy.setUrl(btsJson.get("url").asText());
-//					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
-//					exist = true;
-//					break;
-//				}
-//			}
-//			if (!exist) {
-//				BugTrackingSystem buggy = null;
-//				if (btsJson.get("_type").asText().equals("org.eclipse.scava.repository.model.gitlab.GitLabTracker")) {
-//					buggy = new GitLabTracker();
-//					buggy.setUrl(btsJson.get("url").asText());
-//					((GitLabTracker) buggy).setPersonal_access_token(btsJson.get("personal_access_token").asText());
-//				}
-//				gitlabRepository.getBugTrackingSystems().add(buggy);
-//			}
-//		}
 		
 		// Add & update bts elements
 		for (JsonNode btsJson : (ArrayNode) json.get("bugTrackingSystems")) {
@@ -1000,34 +887,29 @@ public class ProjectEditionResource extends ServerResource {
 					((Bugzilla) buggy).setComponent(btsJson.get("component").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof SourceForgeBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof SourceForgeBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof RedmineBugIssueTracker) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof RedmineBugIssueTracker) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((RedmineBugIssueTracker) buggy).setName(btsJson.get("name").asText());
 					((RedmineBugIssueTracker) buggy).setProject(btsJson.get("project").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof JiraBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof JiraBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((JiraBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
 					((JiraBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
 					((JiraBugTrackingSystem) buggy).setProject(btsJson.get("project").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof MantisBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof MantisBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((MantisBugTrackingSystem) buggy).setToken(btsJson.get("token").asText());
 					exist = true;
 					break;
-				} else if (buggy.getId().equals(btsJson.get("_id").asText())
-						&& buggy instanceof BitbucketBugTrackingSystem) {
+				} else if (buggy.getId().equals(btsJson.get("_id").asText()) && buggy instanceof BitbucketBugTrackingSystem) {
 					buggy.setUrl(btsJson.get("url").asText());
 					((BitbucketBugTrackingSystem) buggy).setLogin(btsJson.get("login").asText());
 					((BitbucketBugTrackingSystem) buggy).setPassword(btsJson.get("password").asText());
@@ -1083,14 +965,6 @@ public class ProjectEditionResource extends ServerResource {
 				gitlabRepository.getBugTrackingSystems().add(buggy);
 			}
 		}
-
-//		int k = 0;
-//		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-//			CommunicationChannel comunication = gitlabRepository.getCommunicationChannels().get(k);
-//			if (isValidKey(cc, "url"))
-//				comunication.setUrl(cc.get("url").asText());
-//			k++;
-//		}
 		
 		// Delete communication channel elements
 		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
@@ -1112,14 +986,19 @@ public class ProjectEditionResource extends ServerResource {
 		for (JsonNode ccJson : (ArrayNode) json.get("communicationChannels")) {
 			boolean exist = false;
 			for (CommunicationChannel communication : gitlabRepository.getCommunicationChannels()) {
-				if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof NntpNewsGroup) {
+				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
@@ -1148,33 +1027,25 @@ public class ProjectEditionResource extends ServerResource {
 					}
 					exist = true;
 					break;
-				} else if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof EclipseForum) {
-					communication = new EclipseForum();
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
 					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
 					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
 					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
 					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
 					exist = true;
 					break;
-				} else if (communication.getId().equals(ccJson.get("_id").asText())
-						&& communication instanceof DocumentationSystematic) {
-					communication = new DocumentationSystematic();
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication)
-								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication)
-								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					exist = true;
 					break;
@@ -1188,9 +1059,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.irc.Irc":
 					communication = new Irc();
@@ -1244,19 +1121,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication)
-								.setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication)
-								.setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication)
-								.setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:
@@ -1270,9 +1143,9 @@ public class ProjectEditionResource extends ServerResource {
 	}
 
 	/*
-	 * import Eclipse project
+	 * edit Eclipse project
 	 */
-	private void importEclipseProject(JsonNode json, Project project) {
+	private void editEclipseProject(JsonNode json, Project project) {
 		EclipseProject eclipseProject = (EclipseProject) project;
 
 		if (isValidKey(json, "name"))
@@ -1287,16 +1160,6 @@ public class ProjectEditionResource extends ServerResource {
 			eclipseProject.setDownloadsUrl(json.get("downloadsUrl").asText());
 		if (isValidKey(json, "projectplanUrl"))
 			eclipseProject.setProjectplanUrl(json.get("projectplanUrl").asText());
-
-//		int i = 0;
-//		for (JsonNode vcs : (ArrayNode) json.get("vcsRepositories")) {
-//			VcsRepository repo = eclipseProject.getVcsRepositories().get(i);
-//			if (isValidKey(vcs, "url"))
-//				repo.setUrl(vcs.get("url").asText());
-//			if (isValidKey(vcs, "name"))
-//				repo.setUrl(vcs.get("name").asText());
-//			i++;
-//		}
 
 		// Delete vcs elements
 		List<VcsRepository> tempVcsRepo = new ArrayList<VcsRepository>();
@@ -1346,20 +1209,6 @@ public class ProjectEditionResource extends ServerResource {
 				eclipseProject.getVcsRepositories().add(repo);
 			}
 		}
-
-//		int j = 0;
-//		for (JsonNode bts : (ArrayNode) json.get("bugTrackingSystems")) {
-//			BugTrackingSystem buggy = eclipseProject.getBugTrackingSystems().get(j);
-//			if (isValidKey(bts, "url"))
-//				buggy.setUrl(bts.get("url").asText());
-//			if (isValidKey(bts, "product"))
-//				((Bugzilla)buggy).setProduct(bts.get("product").asText());
-//			if (isValidKey(bts, "component"))
-//				((Bugzilla)buggy).setComponent(bts.get("component").asText());
-//			if (isValidKey(bts, "cgiQueryProgram"))
-//				((Bugzilla)buggy).setCgiQueryProgram(bts.get("cgiQueryProgram").asText());
-//			j++;			
-//		}
 
 		// Delete bts elements
 		List<BugTrackingSystem> tempBtsRepo = new ArrayList<BugTrackingSystem>();
@@ -1461,18 +1310,6 @@ public class ProjectEditionResource extends ServerResource {
 			}
 		}
 
-//		int k = 0;
-//		for (JsonNode cc : (ArrayNode) json.get("communicationChannels")) {
-//			CommunicationChannel comunication = eclipseProject.getCommunicationChannels().get(k);
-//			if (isValidKey(cc, "url"))
-//				comunication.setUrl(cc.get("url").asText());
-//			if (isValidKey(cc, "name"))
-//				((Forum) comunication).setName(cc.get("name").asText());
-//			if (isValidKey(cc, "description"))
-//				((Forum) comunication).setDescription(cc.get("description").asText());
-//			k++;
-//		}
-
 		// Delete communication channel elements
 		List<CommunicationChannel> tempCcRepo = new ArrayList<CommunicationChannel>();
 		for (CommunicationChannel communication : eclipseProject.getCommunicationChannels()) {
@@ -1497,9 +1334,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Irc) {
@@ -1529,7 +1372,6 @@ public class ProjectEditionResource extends ServerResource {
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					communication = new EclipseForum();
 					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
 					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
 					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
@@ -1537,14 +1379,13 @@ public class ProjectEditionResource extends ServerResource {
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
-					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
@@ -1562,9 +1403,15 @@ public class ProjectEditionResource extends ServerResource {
 					communication.setUrl(ccJson.get("url").asText());
 					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
-					((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
-					((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
+					}
+					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
+					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.irc.Irc":
 					communication = new Irc();
@@ -1620,7 +1467,7 @@ public class ProjectEditionResource extends ServerResource {
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
 						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginUrl").asText());
+						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
 						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());

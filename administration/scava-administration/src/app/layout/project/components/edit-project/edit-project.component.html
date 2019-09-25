@@ -218,6 +218,22 @@
                         </span>
                     </td>
                 </tr>
+                <tr *ngIf="cc._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="loginOption-{{i + 1}}" value="option1" [checked]="checkedElem == 'option1'" [(ngModel)]="cc.loginOption"  >
+                            <label class="form-check-label" for="loginOption-{{i + 1}}">Without Login {{cc.loginOption}} </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="cc._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="loginOption-{{i + 1}}" value="option2" [checked]="checkedElem == 'option2'" [(ngModel)]="cc.loginOption">
+                            <label class="form-check-label" for="loginOption-{{i + 1}}">With Login {{cc.loginOption}}</label>
+                        </div>
+                    </td>
+                </tr>
                 <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
@@ -284,10 +300,10 @@
                         <input type="text" class="form-control" name="cc.executionFrequency-{{i + 1}}" [(ngModel)]="cc.executionFrequency">
                     </td>
                 </tr>
-                <tr *ngIf="cc?.loginUrl != null" class="row">
+                <tr *ngIf="cc?.loginURL != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Login Url: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.loginUrl-{{i + 1}}" [(ngModel)]="cc.loginUrl">
+                        <input type="text" class="form-control" name="cc.loginURL-{{i + 1}}" [(ngModel)]="cc.loginURL">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.usernameFieldName != null" class="row">
@@ -335,7 +351,7 @@
                 <tr *ngIf="cc?.clientSecret != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Client Secret: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="cc.clientSecret-{{i + 1}}" [(ngModel)]="cc.clientSecret">
+                        <input type="text" class="form-control" name="cc.clientSecret-{{i + 1}}" [(ngModel)]="cc.clientSecret">
                     </td>
                 </tr>
             </tbody>

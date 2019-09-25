@@ -6,6 +6,7 @@ import { Project } from '../../project.model';
 import { EditProjectService } from '../../../../shared/services/project-service/edit-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectorMgmtAddDialogComponent } from './add-connector/add-connector-dialog.component';
+import { CommunicationChannels } from '../create-project/communication-channels.model';
 
 
 @Component({
@@ -39,6 +40,19 @@ export class EditProjectComponent implements OnInit {
         this.listProjectService.getProject(data.get('id')).subscribe(
           (data) => {
             this.project = data;
+            this.project.communicationChannels.forEach(
+              (cc)=>{
+                if (cc.url != undefined 
+                  && cc.executionFrequency != undefined && cc.loginURL != undefined
+                  && cc.username != undefined && cc.usernameFieldName != undefined
+                  && cc.password != undefined && cc.passwordFieldName != undefined
+                  ) {
+                return cc.loginOption = "option2";
+              } else {
+                return cc.loginOption = "option1";
+              }
+              }
+            );
             console.log(this.project)
           },
           (error) => {

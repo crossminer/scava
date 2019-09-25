@@ -192,7 +192,7 @@ public class ProjectCreationResource extends ServerResource {
 						} else if (cc.get("loginOption").asText().equals("option2")) {
 							systematic.setUrl(cc.get("url").asText());
 							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
-							systematic.setLoginURL(cc.get("loginUrl").asText());
+							systematic.setLoginURL(cc.get("loginURL").asText());
 							systematic.setUsername(cc.get("username").asText());
 							systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
 							systematic.setPassword(cc.get("password").asText());
