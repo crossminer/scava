@@ -11,8 +11,10 @@ package org.eclipse.scava.test.importer;
 
 import java.io.IOException;
 
+import org.eclipse.scava.business.impl.CROSSRecSimilarityCalculator;
+import org.eclipse.scava.business.impl.SimilarityManager;
 import org.eclipse.scava.business.impl.UnparallelImporter;
-import org.eclipse.scava.business.integration.ArtifactRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,13 +31,15 @@ public class UnparallelImporterTest {
 	@Autowired
 	private UnparallelImporter importer;
 	@Autowired
-	private ArtifactRepository artifactRepository;
+	private SimilarityManager simManager;
+	@Autowired
+	private CROSSRecSimilarityCalculator crossRecSimCalc;
 
 	private static final Logger logger = LoggerFactory.getLogger(UnparallelImporterTest.class);
 
 	@Test
-	public void importProjectTest() throws IOException  {
-
+	@Ignore
+	public void importProjectTest() throws IOException {
 		try {
 			importer.importProjects("components-with-tags.csv");
 		} catch (IOException e) {
@@ -43,5 +47,4 @@ public class UnparallelImporterTest {
 			throw e;
 		}
 	}
-
 }

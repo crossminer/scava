@@ -38,6 +38,7 @@ public class UnparallelImporter{
 				if(count == 0) {
 					art.setName(value);
 					art.setFullName(value);
+					art.setShortName(value);
 				}
 				else 
 					art.getDependencies().add("no_maven:" + value);

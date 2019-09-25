@@ -59,7 +59,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts, Map<String, String> params) {
 		Table<String, String, Double> result = HashBasedTable.create();
 		Map<String, Artifact> temp = Maps.newHashMap();
-		artifacts.forEach(z -> temp.put(z.getFullName(), z));		
+		artifacts.forEach(z -> temp.put(z.getId(), z));		
 		for (Artifact artifact : artifacts) {
 			List<Dependency> deps = new ArrayList<>();
 			for (String dependency : artifact.getDependencies()) {
