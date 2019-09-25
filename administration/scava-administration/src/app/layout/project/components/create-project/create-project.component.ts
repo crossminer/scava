@@ -148,7 +148,7 @@ export class CreateProjectComponent implements OnInit {
           'loginOption': [''],
           'url': [''],
           'executionFrequency': [''],
-          'loginUrl': [''],
+          'loginURL': [''],
           'username': [''],
           'usernameFieldName': [''],
           'password': [''],

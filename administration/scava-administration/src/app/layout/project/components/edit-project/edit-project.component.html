@@ -284,10 +284,10 @@
                         <input type="text" class="form-control" name="cc.executionFrequency-{{i + 1}}" [(ngModel)]="cc.executionFrequency">
                     </td>
                 </tr>
-                <tr *ngIf="cc?.loginUrl != null" class="row">
+                <tr *ngIf="cc?.loginURL != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Login Url: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.loginUrl-{{i + 1}}" [(ngModel)]="cc.loginUrl">
+                        <input type="text" class="form-control" name="cc.loginURL-{{i + 1}}" [(ngModel)]="cc.loginURL">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.usernameFieldName != null" class="row">
@@ -335,7 +335,7 @@
                 <tr *ngIf="cc?.clientSecret != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Client Secret: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="cc.clientSecret-{{i + 1}}" [(ngModel)]="cc.clientSecret">
+                        <input type="text" class="form-control" name="cc.clientSecret-{{i + 1}}" [(ngModel)]="cc.clientSecret">
                     </td>
                 </tr>
             </tbody>
