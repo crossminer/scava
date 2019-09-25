@@ -199,6 +199,7 @@ public class ProjectCreationResource extends ServerResource {
 							systematic.setPasswordFieldName(cc.get("passwordFieldName").asText());
 						}
 						channel = systematic;
+						break;
 					default:
 						continue;
 				}
