@@ -27,6 +27,9 @@ import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrac
 import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracas;
 import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracasTransMetric;
+import org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugReferringTo;
+import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugsReferenceTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
@@ -90,6 +93,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	private BugsBugMetadataTransMetric bugTrackerContentClassData;
 	private BugTrackerMigrationIssueTransMetric migrationData;
 	private BugTrackerMigrationIssueMaracasTransMetric migrationMaracasData;
+	private BugsReferenceTransMetric referringData;
 	
 	public final static String NLP = "nlp";// knowledge type.
 	
@@ -252,6 +256,9 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider":
 					migrationMaracasData = new BugTrackerMigrationIssueMaracasTransMetricProvider().adapt(context.getProjectDB(project));
 					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider":
+					referringData = new BugsReferenceTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
 			}
 				
 		}
@@ -382,6 +389,21 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					if (contentClassData != null) {
 						commentDocument.setContent_class(contentClassData.getContentClass());
 					}
+					break;
+				}
+				// Referring To
+				case "org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider":
+				{
+					BugReferringTo referringToData = findCollection(referringData, BugReferringTo.class,
+							referringData.getBugsReferringTo(), comment);
+					if(referringData != null)
+					{
+						for(String bugReference : referringToData.getBugsReferred())
+							commentDocument.addBugReference(bugReference);
+						for(String commitReference : referringToData.getCommitsReferred())
+							commentDocument.addCommitReference(commitReference);
+					}
+					break;
 				}
 
 			}

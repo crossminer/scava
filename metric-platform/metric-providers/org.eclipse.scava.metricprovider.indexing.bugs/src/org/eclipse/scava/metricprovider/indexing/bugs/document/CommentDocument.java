@@ -28,6 +28,7 @@ public class CommentDocument extends DocumentAbstract {
 	private String request_reply_classification;
 	private String content_class;
 	private Boolean contains_code;
+	private ReferringTo referring_to;
 	
 
 	public CommentDocument(String uid, String commentId, String bugId, String projectName, String body,
@@ -111,6 +112,52 @@ public class CommentDocument extends DocumentAbstract {
 
 	public void setContains_code(Boolean contains_code) {
 		this.contains_code = contains_code;
+	}
+	
+	public void addBugReference(String bugReference)
+	{
+		if(referring_to==null)
+			referring_to=new ReferringTo();
+		referring_to.addBug(bugReference);
+	}
+	
+	public void addCommitReference(String commitReference)
+	{
+		if(referring_to==null)
+			referring_to=new ReferringTo();
+		referring_to.addCommit(commitReference);
+	}
+	
+	public ReferringTo getReferring_to() {
+		return referring_to;
+	}
+	
+	public class ReferringTo
+	{
+		List<String> commits;
+		List<String> bugs;
+		
+		public void addCommit(String commitReference)
+		{
+			if(commits==null)
+				commits=new ArrayList<String>();
+			commits.add(commitReference);
+		}
+		
+		public void addBug(String bugReference)
+		{
+			if(bugs==null)
+				bugs=new ArrayList<String>();
+			bugs.add(bugReference);
+		}
+		
+		public List<String> getBugs() {
+			return bugs;
+		}
+		
+		public List<String> getCommits() {
+			return commits;
+		}
 	}
 
 }

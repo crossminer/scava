@@ -38,6 +38,16 @@
 		}, 
 		"uid" : { 
 			"type" : "keyword" 
+		},
+		"referring_to" : {
+			"properties" : {
+				"bugs" : {
+					"type" : "text"
+				},
+				"commits" : { 
+					"type" : "text"
+				}
+			}
 		}
 	} 
 }

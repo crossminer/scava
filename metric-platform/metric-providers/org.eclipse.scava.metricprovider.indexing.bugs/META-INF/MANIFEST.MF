@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.osgi,
  org.elasticsearch.dependencies,
  org.apache.log4j,
  org.eclipse.scava.metricprovider.trans.bugs.migrationissues,
- org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas
+ org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas,
+ org.eclipse.scava.metricprovider.trans.bugs.references
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.metricprovider.indexing.bugs
