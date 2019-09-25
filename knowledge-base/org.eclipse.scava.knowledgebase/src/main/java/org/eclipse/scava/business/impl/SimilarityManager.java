@@ -110,7 +110,7 @@ public class SimilarityManager implements ISimilarityManager {
 	@Override
 	public void createAndStoreDistanceMatrix(ISimilarityCalculator simCalculator) {
 		List<Relation> dbd = relationRepository.findAllByTypeName("CrossRec");
-		logger.info("#Reletaion to be {}", dbd.size());
+		logger.info("#Reletaion to be deleted: {}", dbd.size());
 		relationRepository.delete(dbd);
 		storeDistanceMatrix(createDistanceMatrix(simCalculator), simCalculator);
 	}
@@ -197,13 +197,15 @@ public class SimilarityManager implements ISimilarityManager {
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
-				RelationType relType = getRelationType(simCalculator.getSimilarityName());
-				Relation rel = new Relation();
-				rel.setType(relType);
-				rel.setFromProject(artifactsArray[i]);
-				rel.setToProject(artifactsArray[j]);
-				rel.setValue(similarity);
-				relationRepository.save(rel);
+				if (similarity > 0.0) {
+					RelationType relType = getRelationType(simCalculator.getSimilarityName());
+					Relation rel = new Relation();
+					rel.setType(relType);
+					rel.setFromProject(artifactsArray[i]);
+					rel.setToProject(artifactsArray[j]);
+					rel.setValue(similarity);
+					relationRepository.save(rel);
+				}
 			}
 		}
 
@@ -294,7 +296,8 @@ public class SimilarityManager implements ISimilarityManager {
 
 	@Override
 	public List<Artifact> appliableProjects(ISimilarityCalculator simCalculator) {
-		return artifactRepository.findAll().stream().filter(z -> simCalculator.appliesTo(z)).collect(Collectors.toList());
+		return artifactRepository.findAll().stream().filter(z -> simCalculator.appliesTo(z))
+				.collect(Collectors.toList());
 	}
 
 }

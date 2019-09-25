@@ -17,20 +17,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.integration.ArtifactRepository;
-import org.eclipse.scava.business.integration.CROSSRecGraphRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.CROSSRecGraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table; 
 @Service
@@ -43,8 +41,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	private ArtifactRepository artifactRepository;
 	
 	@Autowired
-	private CROSSRecGraphRepository crossRecGraphRepository;
-	
+	private SimilarityManager simManager;
 	@Override
 	public boolean appliesTo(Artifact art) {
 		return (!art.getDependencies().isEmpty());
@@ -57,9 +54,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 
 	@Override
 	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts, Map<String, String> params) {
-		Table<String, String, Double> result = HashBasedTable.create();
-		Map<String, Artifact> temp = Maps.newHashMap();
-		artifacts.forEach(z -> temp.put(z.getId(), z));		
+		Table<String, String, Double> result = HashBasedTable.create();	
 		for (Artifact artifact : artifacts) {
 			List<Dependency> deps = new ArrayList<>();
 			for (String dependency : artifact.getDependencies()) {
@@ -74,7 +69,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 			try {
 				Map<String, Double> map = computeWeightCosineSimilarity(deps);
 				for (Map.Entry<String, Double> entry : map.entrySet()){
-				    result.put(artifact.getFullName(), temp.get(entry.getKey()).getFullName(), entry.getValue());
+				    result.put(artifact.getFullName(), artifactRepository.findOne(entry.getKey()).getFullName(), entry.getValue());
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
@@ -88,12 +83,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	 */
 	public Map<String, Double> computeWeightCosineSimilarity(List<Dependency> dependencies) throws Exception{
 		CROSSRecGraph bigGraph;
-		List<CROSSRecGraph> tempGraphs = crossRecGraphRepository.findAll();
-		if(tempGraphs.size() == 0) {
-			bigGraph = createCROSSRecGraph();
-		}
-		else bigGraph = tempGraphs.get(0);
-
+		bigGraph = createCROSSRecGraph();
 		Set<String> allLibs = extractDepsfromGraph(bigGraph);
 		/*add all libraries from the training set*/
 		CROSSRecGraph projectGraph = createGraphFromListDependecies(dependencies);		
@@ -164,14 +154,12 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	}
 	
 	public CROSSRecGraph createCROSSRecGraph() {
-		List<Artifact> arts = artifactRepository.findAll();
+		List<Artifact> arts = simManager.appliableProjects(this);
 		CROSSRecGraph graph = null;
 		for (Artifact artifact : arts) {
 			CROSSRecGraph graph1 = createGraphFromArtifact(artifact);
 			graph = combine(graph, graph1);
 		}
-		crossRecGraphRepository.deleteAll();
-		crossRecGraphRepository.save(graph);
 		return graph;
 	}
 	
