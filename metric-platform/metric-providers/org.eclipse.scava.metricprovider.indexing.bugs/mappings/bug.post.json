@@ -1,0 +1,25 @@
+{
+	"properties" : {
+		"created_at" : { 
+			"type" : "date"
+		},
+		"bug_summary" : {
+			"type" : "text"
+		},
+		"severity" : {
+			"type" : "text"
+		},
+		"bug_id" : {
+			"type" : "keyword"
+		},
+		"project_name" : {
+			"type" : "text"
+		},
+		"creator" : {
+			"type" : "text"
+		},
+		"uid" : {
+			"type" : "keyword"
+		}
+	}
+}

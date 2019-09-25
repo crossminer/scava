@@ -1,0 +1,2 @@
+bug.post
+bug.comment

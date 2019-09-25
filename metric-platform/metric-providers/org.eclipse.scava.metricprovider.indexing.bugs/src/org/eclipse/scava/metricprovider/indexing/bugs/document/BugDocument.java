@@ -11,7 +11,7 @@ package org.eclipse.scava.metricprovider.indexing.bugs.document;
 
 import java.util.Date;
 
-public class BugDocument {
+public class BugDocument extends DocumentAbstract {
 
 	private Date created_at;
 	private String bug_summary;
@@ -19,13 +19,12 @@ public class BugDocument {
 	private String bug_id;
 	private String project_name;
 	private String creator;
-	private String uid;
 
-	public BugDocument(String uid, String bugID, String projectName, String body, Date created_at, String creator) {
+	public BugDocument(String uid, String bugID, String projectName, String summary, Date created_at, String creator) {
 		this.uid = uid;
 		this.bug_id = bugID;
 		this.project_name = projectName;
-		this.bug_summary = body;
+		this.bug_summary = summary;
 		this.created_at = created_at;
 		this.creator = creator;
 	}
@@ -34,14 +33,10 @@ public class BugDocument {
 		return project_name;
 	}
 
-	public void setProjectName(String project) {
-		this.project_name = project;
-	}
-
 	/**
-	 * @return the body
+	 * @return the summary
 	 */
-	public String getBody() {
+	public String getSummary() {
 		return bug_summary;
 	}
 
@@ -59,30 +54,6 @@ public class BugDocument {
 		return created_at;
 	}
 
-	/**
-	 * @param body
-	 *            the body to set
-	 */
-	public void setBody(String body) {
-		this.bug_summary = body;
-	}
-
-	/**
-	 * @param creator
-	 *            the creator to set
-	 */
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	/**
-	 * @param created_at
-	 *            the created_at to set
-	 */
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-
 	public String getSeverity() {
 		return severity;
 	}
@@ -97,21 +68,5 @@ public class BugDocument {
 
 	public String getProject_name() {
 		return project_name;
-	}
-
-	public String getUid() {
-		return uid;
-	}
-
-	public void setBug_id(String bug_id) {
-		this.bug_id = bug_id;
-	}
-
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
-	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
 	}
 }

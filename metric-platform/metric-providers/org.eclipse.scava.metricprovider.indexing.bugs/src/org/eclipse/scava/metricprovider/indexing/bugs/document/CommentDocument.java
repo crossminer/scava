@@ -13,10 +13,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CommentDocument {
+public class CommentDocument extends DocumentAbstract {
 
 	private String comment_id;
 	private String body;
+	private String bug_id;
+	private String project_name;
+	private String creator;
+	private Date created_at;
 	// NLP
 	private List<String> emotional_dimension = new ArrayList<>();
 	private String sentiment;
@@ -24,11 +28,7 @@ public class CommentDocument {
 	private String request_reply_classification;
 	private String content_class;
 	private Boolean contains_code;
-	private String bug_id;
-	private String project_name;
-	private String creator;
-	private Date created_at;
-	private String uid;
+	
 
 	public CommentDocument(String uid, String commentId, String bugId, String projectName, String body,
 			String creator, Date createdAt) {
@@ -89,18 +89,6 @@ public class CommentDocument {
 		return created_at;
 	}
 
-	public String getUid() {
-		return uid;
-	}
-
-	public void setComment_id(String comment_id) {
-		this.comment_id = comment_id;
-	}
-
-	public void setComment_body(String comment_body) {
-		this.body = comment_body;
-	}
-
 	public void setEmotional_dimension(List<String> emotional_dimension) {
 		this.emotional_dimension = emotional_dimension;
 	}
@@ -123,26 +111,6 @@ public class CommentDocument {
 
 	public void setContains_code(Boolean contains_code) {
 		this.contains_code = contains_code;
-	}
-
-	public void setBug_id(String bug_id) {
-		this.bug_id = bug_id;
-	}
-
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
 	}
 
 }

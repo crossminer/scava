@@ -1,102 +1,96 @@
+/*******************************************************************************
+* Copyright (c) 2019 Edge Hill University
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.bugs.mapping;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public final class Mapping {
 	
-	private static final String bugMapping = "{\n" + 
-			"  \"properties\" : {\n" + 
-			"    \"created_at\" : {\n" + 
-			"      \"type\" : \"date\"\n" + 
-			"    },\n" + 
-			"    \"bug_summary\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"severity\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"bug_id\" : {\n" + 
-			"      \"type\" : \"keyword\"\n" + 
-			"    },\n" + 
-			"    \"project_name\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"creator\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"uid\" : {\n" + 
-			"      \"type\" : \"keyword\"\n" + 
-			"    }\n" + 
-			"  }\n" + 
-			"}";
+	private static Mapping singleton = new Mapping();
+	private String mappingsPath = "/mappings/"; 
+	private String dictionnaryName = "mappingsDictionary.txt";
+	private HashMap<String,String> mappings;
+	protected OssmeterLogger logger;
 	
-	private static final String commentMapping = "{\n" + 
-			"  \"properties\" : {\n" + 
-			"    \"comment_Id\" : {\n" + 
-			"      \"type\" : \"keyword\"\n" + 
-			"    },\n" + 
-			"    \"body\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"emotional_dimension\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"sentiment\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"plain_text\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"request_reply_classification\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"content_class\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"contains_code\" : {\n" + 
-			"      \"type\" : \"boolean\"\n" + 
-			"    },\n" + 
-			"    \"bug_id\" : {\n" + 
-			"      \"type\" : \"keyword\"\n" + 
-			"    },\n" + 
-			"    \"project_name\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"creator\" : {\n" + 
-			"      \"type\" : \"text\"\n" + 
-			"    },\n" + 
-			"    \"created_at\" : {\n" + 
-			"      \"type\" : \"date\"\n" + 
-			"    },\n" + 
-			"    \"uid\" : {\n" + 
-			"      \"type\" : \"keyword\"\n" + 
-			"    }\n" + 
-			"  }\n" + 
-			"}";
+	private Mapping()
+	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("indexing.bugs.mapping");
+		String documentType;
+		mappings=new HashMap<String,String>();
+		try {
+			String[] mappingsToRead = loadFile(dictionnaryName).split("\n");
+			
+			for(String mappingName : mappingsToRead)
+			{
+				if(mappingName.isEmpty())
+					continue;
+				documentType=mappingName.replace("_", ".");
+				mappings.put(documentType, loadFile(mappingName+".json"));
+				logger.info("Mapping for: "+mappingName + " has been loaded.");
+			}
+		} catch (InputMismatchException | IOException e) {
+			logger.error("Error while loading the indexing mappings:", e);
+			e.printStackTrace();
+		}
+	}
 	
-	//=======================================================================
+	private String loadFile(String fileToRead) throws InputMismatchException, IOException 
+	{
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(mappingsPath+fileToRead);
+		//Method to read inside Eclipse
+		if(resource==null)
+		{
+			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
+			File file= new File(path+mappingsPath+fileToRead);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+mappingsPath+fileToRead+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		String content = "";
+		String line;
+		while((line = br.readLine()) != null)
+		{
+				content+=line+"\n";
+		}
+		br.close();
+		resource.close();
+		return content;
+	}
 	
-	public static String getMapping(String docmentType) {
+	public static String getMapping(String documentType) {
 		
-		switch (docmentType) {
-		case "bug.post":
-			return getBugMapping();
-		
-		case "bug.comment":
-			return getCommentMapping();
-	
-		default:
-			System.err.println("No mapping found for " + docmentType);
+		if(singleton.mappings.containsKey(documentType))
+			return singleton.mappings.get(documentType);
+		else
+		{
+			System.err.println("No mapping found for " + documentType);
 			return "";
 			
 		}
-	}
-
-	//=======================================================================
-	
-	private static String getBugMapping() {
-		return bugMapping;
-	}
-
-	private static String getCommentMapping() {
-		return commentMapping;
 	}
 }
