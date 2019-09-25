@@ -140,9 +140,10 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 						break;
 					
 				}
-				
-				bugReferringTo.getBugsReferred().addAll(references.getNormalizedBugsReferences());
-				bugReferringTo.getCommitsReferred().addAll(references.getNormalizedCommitsReferences());
+				if(references.getNormalizedBugsReferences().size()>0)
+					bugReferringTo.getBugsReferred().addAll(references.getNormalizedBugsReferences());
+				if(references.getNormalizedCommitsReferences().size()>0)
+					bugReferringTo.getCommitsReferred().addAll(references.getNormalizedCommitsReferences());
 				
 				db.sync();
 			}
