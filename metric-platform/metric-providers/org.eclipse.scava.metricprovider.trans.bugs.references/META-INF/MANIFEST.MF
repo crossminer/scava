@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.core.runtime,
  org.eclipse.scava.nlp.tools.references,
  org.eclipse.scava.repository.model.jira,
- org.eclipse.scava.repository.model.github
+ org.eclipse.scava.repository.model.github,
+ org.eclipse.scava.metricprovider.trans.indexing.preparation
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.bugs.references.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
