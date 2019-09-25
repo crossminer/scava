@@ -27,8 +27,7 @@ import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRespons
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.scava.index.indexer.IndexerSingleton;
 
 public class Indexer {
 
