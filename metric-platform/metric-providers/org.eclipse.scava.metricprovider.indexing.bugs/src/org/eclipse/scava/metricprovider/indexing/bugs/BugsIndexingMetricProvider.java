@@ -190,7 +190,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 															bugComment.getCreator(),
 															bugComment.getCreationTime());
 		enrichCommentDocument(bugComment, commentDocument);
-		adrian(bugTrackerType, "bug.comment", uid, commentDocument);
+		indexing(bugTrackerType, "bug.comment", uid, commentDocument);
 		
 	}
 	
@@ -204,10 +204,10 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 									bug.getCreationTime(),
 									bug.getCreator());
 		adrianEnrichment(bug, bugDocument);
-		adrian(bugTrackerType, "bug.post", uid, bugDocument);
+		indexing(bugTrackerType, "bug.post", uid, bugDocument);
 	}
 	
-	private void adrian(String bugTrackerType, String documentType, String uid, DocumentAbstract document)
+	private void indexing(String bugTrackerType, String documentType, String uid, DocumentAbstract document)
 	{
 		try {
 			Indexer.indexDocument(Indexer.generateIndexName(bugTrackerType, documentType, NLP),
