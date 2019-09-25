@@ -20,30 +20,14 @@ import com.beust.jcommander.Parameter;
 
 public abstract class Workflow<E extends Enum<E>> {
 
+	@Parameter(names = { "--help", "-h" }, description = "Help descriptions", help = true)
+	private boolean help = false;
+
+	/*
+	 * GENERAL
+	 */
 	@Parameter(names = { "-name" }, description = "The name of the workflow")
 	protected String name;
-	protected Cache cache;
-
-	@Parameter(names = { "-master" }, description = "IP of the master")
-	protected String master = "localhost";
-
-	@Parameter(names = { "-port" }, description = "Port of the master")
-	protected int port = 61616;
-
-	@Parameter(names = { "-stomp" }, description = "Port to use for STOMP based messages")
-	protected int stompPort = 61613;
-
-	@Parameter(names = { "-ws" }, description = "Port to use for WS based messages")
-	protected int wsPort = 61614;
-
-	protected boolean enableStomp = true;
-
-	protected boolean enableWS = false;
-
-	protected BrokerService brokerService;
-
-	@Parameter(names = { "-activeMqConfig" }, description = "Location of ActiveMQ configuration file")
-	protected String activeMqConfig;
 
 	@Parameter(names = { "-instance" }, description = "The instance of the master (to contribute to)")
 	protected String instanceId;
@@ -52,18 +36,41 @@ public abstract class Workflow<E extends Enum<E>> {
 			"-mode" }, description = "Must be master_bare, master or worker", converter = ModeConverter.class)
 	protected Mode mode = Mode.MASTER;
 
-	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
-	protected boolean createBroker = true;
-
 	@Parameter(names = {
 			"-parallelization" }, description = "The parallelization of the workflow (for non-singleton tasks), defaults to 1")
 	protected int parallelization = 1;// Runtime.getRuntime().availableProcessors();
 
-	protected List<String> activeJobs = new ArrayList<>();
-	protected HashSet<Stream> activeStreams = new HashSet<>();
+	@Parameter(names = { "-disableTermination" }, description = "Flag to disable termination when queues are empty")
+	protected boolean terminationEnabled = true;
 
-	protected HashSet<Task> tasks = new HashSet<>();
+	/*
+	 * CONNECTIONS
+	 */
+	@Parameter(names = { "-master" }, description = "IP of the master")
+	protected String master = "localhost";
 
+	@Parameter(names = { "-port" }, description = "Port of the master")
+	protected int port = 61616;
+
+	@Parameter(names = { "-stomp" }, description = "Port to use for STOMP based messages")
+	protected int stompPort = 61613;
+	protected boolean enableStomp = true;
+
+	@Parameter(names = { "-ws" }, description = "Port to use for WS based messages")
+	protected int wsPort = 61614;
+	protected boolean enableWS = false;
+
+	@Parameter(names = { "-activeMqConfig" }, description = "Location of ActiveMQ configuration file")
+	protected String activeMqConfig;
+
+	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
+	protected boolean createBroker = true;
+	
+	protected BrokerService brokerService;
+
+	/*
+	 * CACHING
+	 */
 	@Parameter(names = {
 			"-cacheEnabled" }, description = "Whether this workflow caches intermediary results or not.", arity = 1)
 	protected boolean cacheEnabled = false;
@@ -72,33 +79,40 @@ public abstract class Workflow<E extends Enum<E>> {
 			"-deleteCache" }, description = "Before starting this workflow, delete the contents of the cache by queue name (use empty string to delete entire cache).")
 	protected String deleteCache;
 
+	protected Cache cache;
+
+	/*
+	 * I/O
+	 */
+
 	@Parameter(names = {
 			"-inputDirectory" }, description = "The input directory of the workflow.", converter = DirectoryConverter.class)
 	protected File inputDirectory = new File("in").getAbsoluteFile();
+
 	@Parameter(names = {
 			"-outputDirectory" }, description = "The output directory of the workflow.", converter = DirectoryConverter.class)
 	protected File outputDirectory = new File("out").getParentFile();
 
-	@Parameter(names = { "-disableTermination" }, description = "Flag to disable termination when queues are empty")
-	protected boolean terminationEnabled = true;
-
 	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
-
+	
+	protected BuiltinStream<LogMessage> logTopic = null;
+	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
-	protected BuiltinStream<ControlSignal> controlTopic = null;
 
-	protected BuiltinStream<LogMessage> logTopic = null;
 	protected CrossflowLogger logger = new CrossflowLogger(this);
 
 	protected BuiltinStream<FailedJob> failedJobsTopic = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
 
 	protected List<FailedJob> failedJobs = null;
-
 	protected List<InternalException> internalExceptions = null;
+
+	protected HashSet<Task> tasks = new HashSet<>();
+	protected List<String> activeJobs = new ArrayList<>();
+	protected HashSet<Stream> activeStreams = new HashSet<>();
 
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<>();
@@ -1064,6 +1078,10 @@ public abstract class Workflow<E extends Enum<E>> {
 		if (latestTime - startTime > timeoutMillis)
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
+	}
+
+	public boolean isHelp() {
+		return help;
 	}
 
 }

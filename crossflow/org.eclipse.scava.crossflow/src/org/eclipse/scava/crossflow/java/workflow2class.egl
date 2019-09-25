@@ -239,25 +239,35 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 		return this;
 	}
 	
-		public static [%=w.name%] run(String[] args) throws Exception {
+	public static [%=w.name%] run(String[] args) throws Exception {
 		// Parse all values into an temporary object
 		[%=w.name%] argsHolder = new [%=w.name%]();
-		JCommander.newBuilder()
-			.addObject(argsHolder)
-			.build()
-			.parse(args);
+		JCommander.newBuilder().addObject(argsHolder).build().parse(args);
 		
 		// Extract values to construct new object
 		[%=w.name%] app = new [%=w.name%](argsHolder.getMode(), argsHolder.getParallelization());
-		JCommander.newBuilder()
-			.addObject(app)
-			.build()
-			.parse(args);
+		JCommander.newBuilder().addObject(app).build().parse(args);
 		app.run();
 		return app;
 	}
 	
 	public static void main(String[] args) throws Exception {
+	      // Parse all values into an temporary object
+        [%=w.name%] argsHolder = new [%=w.name%]();
+        JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
+        
+        try {
+            jct.parse(args);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+	    if(argsHolder.isHelp()) {
+            jct.setProgramName("[%=w.name%]");
+            jct.usage();
+            System.exit(0);
+        }
+	
 		run(args);
 	}
 	
