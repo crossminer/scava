@@ -91,7 +91,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
 			String projectShortName = project.getShortName();
 			
 			
-			url = new URL("http://localhost:8182/projects/");
+			url = new URL("http://oss-app:8182/projects/");
 			
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.setRequestMethod("GET");
@@ -187,7 +187,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
+        	URL url = new URL("http://oss-app:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.maven.allMavenDependencies");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -231,7 +231,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
+        	URL url = new URL("http://oss-app:8182/raw/projects/p/" + thirdShortName + "/m/trans.rascal.dependency.osgi.allOsgiDependencies");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -275,7 +275,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider");
+        	URL url = new URL("http://oss-app:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -318,7 +318,7 @@ public class ProjectsRelationsTransMetricProvider implements ITransientMetricPro
     	BufferedReader in = null;
         try {
             	
-        	URL url = new URL("http://localhost:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider");
+        	URL url = new URL("http://oss-app:8182/raw/projects/p/" + thirdShortName + "/m/org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider");
             
         	HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

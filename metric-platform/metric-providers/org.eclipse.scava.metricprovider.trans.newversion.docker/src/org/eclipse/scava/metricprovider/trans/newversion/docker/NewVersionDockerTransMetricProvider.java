@@ -131,6 +131,9 @@ public class NewVersionDockerTransMetricProvider implements ITransientMetricProv
         	
         	String version = null;
         	
+        	Process p0 = Runtime.getRuntime().exec("apt-get update");
+        	p0.waitFor();
+        	
         	Process p = Runtime.getRuntime().exec("apt-cache policy " + packageName);
 			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String ins = in.readLine();
@@ -160,7 +163,10 @@ public class NewVersionDockerTransMetricProvider implements ITransientMetricProv
         } catch (IOException e) {
         	logger.error("unexpected exception while measuring", e);
 			throw new RuntimeException(e);
-        }
+        } catch (InterruptedException e) {
+        	logger.error("unexpected exception while measuring", e);
+			throw new RuntimeException(e);
+		}
     }
     
     public boolean testNewerVersion(String oldVersion, String newVersion){
