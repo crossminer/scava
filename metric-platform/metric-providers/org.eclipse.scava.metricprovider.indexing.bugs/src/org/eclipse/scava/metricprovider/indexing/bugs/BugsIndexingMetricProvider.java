@@ -21,6 +21,12 @@ import org.eclipse.scava.metricprovider.indexing.bugs.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugsBugMetadataTransMetric;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.CommentData;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrackerMigrationIssue;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrackerMigrationIssueTransMetric;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracas;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracasTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
@@ -82,7 +88,8 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	private DetectingCodeTransMetric bugTrackerDetectingCodeData;
 	private RequestReplyClassificationTransMetric bugtrackerRequestReplyData;
 	private BugsBugMetadataTransMetric bugTrackerContentClassData;
-	
+	private BugTrackerMigrationIssueTransMetric migrationData;
+	private BugTrackerMigrationIssueMaracasTransMetric migrationMaracasData;
 	
 	public final static String NLP = "nlp";// knowledge type.
 	
@@ -239,7 +246,12 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				case "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider":
 					bugTrackerContentClassData = new BugMetadataTransMetricProvider().adapt(context.getProjectDB(project));
 					break;
-				
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider":
+					migrationData =  new BugTrackerMigrationIssueTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider":
+					migrationMaracasData = new BugTrackerMigrationIssueMaracasTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
 			}
 				
 		}
@@ -266,6 +278,31 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 						bd.setSeverity("unable to calculate severity at this time (reason: no comments)");
 					}
 	
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider":
+				{
+					BugTrackerMigrationIssue migrationIssue = findCollection(migrationData, BugTrackerMigrationIssue.class,
+							migrationData.getBugTrackerMigrationIssues(), bug);
+					if(migrationIssue!=null)
+					{
+						bd.setMigration_issue(true);
+					}
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider":
+				{
+					BugTrackerMigrationIssueMaracas migrationIssueMaracas = findCollection(migrationMaracasData, BugTrackerMigrationIssueMaracas.class,
+							migrationMaracasData.getBugTrackerMigrationIssuesMaracas(), bug);
+					if(migrationIssueMaracas!=null)
+					{
+						List<String> changes = migrationIssueMaracas.getChanges();
+						List<Double> scores = migrationIssueMaracas.getMatchingPercentage();
+						for(int i=0; i<changes.size(); i++)
+						{
+							bd.addProblematic_change(changes.get(i), scores.get(i));
+						}
+					}
 					break;
 				}
 			}

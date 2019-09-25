@@ -20,6 +20,23 @@
 		},
 		"uid" : {
 			"type" : "keyword"
+		},
+		"migration_issue" : {
+			"properties" : {
+				"found" : {
+					"type" : "boolean"
+				},
+				"problematic_changes" : {
+					"properties" : {
+						"change" : {
+							"type" : "text"
+						},
+						"matching_score" : {
+							"type" : "double"
+						}
+					}
+				}
+			}
 		}
 	}
 }
