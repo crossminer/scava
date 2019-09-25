@@ -218,22 +218,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr *ngIf="cc._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
-                    <td>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="loginOption-{{i + 1}}" value="option1" [checked]="checkedElem == 'option1'" [(ngModel)]="cc.loginOption"  >
-                            <label class="form-check-label" for="loginOption-{{i + 1}}">Without Login {{cc.loginOption}} </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr *ngIf="cc._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
-                    <td>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="loginOption-{{i + 1}}" value="option2" [checked]="checkedElem == 'option2'" [(ngModel)]="cc.loginOption">
-                            <label class="form-check-label" for="loginOption-{{i + 1}}">With Login {{cc.loginOption}}</label>
-                        </div>
-                    </td>
-                </tr>
                 <tr *ngIf="cc?.url != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Url: </td>
                     <td class="col-10">
