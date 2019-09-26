@@ -27,6 +27,8 @@ Require-Bundle: org.eclipse.osgi,
  org.apache.log4j,
  org.eclipse.scava.repository.model.cc.irc,
  org.eclipse.scava.repository.model.cc.mbox,
- org.eclipse.scava.metricprovider.trans.newsgroups.threads
+ org.eclipse.scava.metricprovider.trans.newsgroups.threads,
+ org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues,
+ org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas
 Bundle-Activator: org.eclipse.scava.metricprovider.indexing.communicationchannels.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

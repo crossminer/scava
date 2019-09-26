@@ -31,6 +31,12 @@ import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPr
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssueTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model.NewsgroupMigrationIssueMaracas;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model.NewsgroupsMigrationIssueMaracasTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData;
@@ -90,6 +96,8 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	private RequestReplyClassificationTransMetric commChannelRequestReplyData;
 	private NewsgroupsContentClassesTransMetric commChannelContentClassificationData;
 	private NewsgroupsThreadsTransMetric commChannelThreadsData;
+	private NewsgroupsMigrationIssueTransMetric commChannelMigrationData;
+	private NewsgroupsMigrationIssueMaracasTransMetric commChannelMigrationMaracasData;
 	
 	private ThreadsByArticle threadsByArticle;
 	
@@ -244,7 +252,8 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 											threadData.getThreadId(),
 											threadData.getSubject());	
 		for(long articleId : threadData.getArticleNumbers())
-			threadsByArticle.addThread(articleId, threadData.getThreadId());	
+			threadsByArticle.addThread(articleId, threadData.getThreadId());
+		enrichThread(threadData, td);
 		indexing(ccType, "thread", uid, td);
 	}
 		
@@ -261,6 +270,45 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 												article.getDate());
 		enrichArticle(article, ad);
 		indexing(ccType, documentType, uid, ad);
+	}
+	
+	private void enrichThread(ThreadData threadData, ThreadDocument td)
+	{
+		for (String metricIdentifier : metricsToIndex)
+		{
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider":
+				{
+					NewsgroupsMigrationIssue migrationIssue = findCollection(commChannelMigrationData,
+																			NewsgroupsMigrationIssue.class,
+																			commChannelMigrationData.getNewsgroupsMigrationIssues(),
+																			threadData);
+					if(migrationIssue!=null)
+					{
+						td.setMigration_issue(true);
+					}
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider":
+				{
+					NewsgroupMigrationIssueMaracas migrationIssueMaracas = findCollection(commChannelMigrationMaracasData,
+																						NewsgroupMigrationIssueMaracas.class,
+																						commChannelMigrationMaracasData.getNewsgroupsMigrationIssuesMaracas(),
+																						threadData);
+					if(migrationIssueMaracas!=null)
+					{
+						List<String> changes = migrationIssueMaracas.getChanges();
+						List<Double> scores = migrationIssueMaracas.getMatchingPercentage();
+						for(int i=0; i<changes.size(); i++)
+						{
+							td.addProblematic_change(changes.get(i), scores.get(i));
+						}
+					}
+					break;
+				}
+			}
+		}
 	}
 	
 	private void loadMetricsDB(Project project)
@@ -304,6 +352,16 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
 				{
 					commChannelThreadsData = new ThreadsTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider":
+				{
+					commChannelMigrationData = new NewsgroupsMigrationIssueTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider":
+				{
+					commChannelMigrationMaracasData = new NewsgroupsMigrationIssueMaracasTransMetricProvider().adapt(context.getProjectDB(project));
 					break;
 				}
 				
@@ -434,6 +492,21 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(article.getCommunicationChannel().getOSSMeterId()),
 				getNumericalQueryProducer(type, output, "ARTICLENUMBER").eq(article.getArticleNumber()));
+
+		for (T t : iterator) {
+			output = t;
+		}
+
+		return output;
+	}
+	
+	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
+			ThreadData threadData) {
+
+		T output = null;
+
+		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(threadData.getNewsgroupName()),
+				getNumericalQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
 
 		for (T t : iterator) {
 			output = t;
