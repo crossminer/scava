@@ -87,7 +87,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("Github")
 public class GithubImporter implements IImporter {
 
-	@Value("${egit.github.token}")
+//	@Value("${egit.github.token}")
 	private String token;
 	private static final String UTF8 = "UTF-8";
 	@Autowired
@@ -99,7 +99,8 @@ public class GithubImporter implements IImporter {
 	private static final Logger logger = LoggerFactory.getLogger(GithubImporter.class);
 
 	@Override
-	public Artifact importProject(String artId) throws IOException {
+	public Artifact importProject(String artId, String access_token) throws IOException {
+		token = access_token;
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
 		if (checkRepo != null) {
 			logger.info("\t" + artId + " already in DB");
@@ -124,7 +125,7 @@ public class GithubImporter implements IImporter {
 			p.setMaster_branch(rep.getDefaultBranch());
 			p.setHomePage(rep.getHomepage());
 			p.setName(rep.getName());
-			p.setShortName(p.getShortName());
+			p.setShortName(artId.split("/")[1]);
 
 			try {
 				p.setCommitteers(getCommitters(rep));
@@ -152,17 +153,13 @@ public class GithubImporter implements IImporter {
 				logger.error("Error getting stars" + e.getMessage());
 			}
 			p.setTags(getTags(artId.split("/")[0], artId.split("/")[1]));
-
-//			if(p.getDependencies() != null && p.getDependencies().size()>8) {
 			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
 			storeGithubUser(p.getStarred(), p.getFullName());
 			projectRepository.save(p);
 			logger.debug("Imported project: " + artId);
-//			}
-
 			return p;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Project {} is not imported: {}", artId, e.getMessage());
 			throw e;
 		}
 	}
@@ -330,7 +327,7 @@ public class GithubImporter implements IImporter {
 						String fullname = entry.get("full_name").toString();
 						try {
 							RepositoryId repo = new RepositoryId(fullname.split("/")[0], fullname.split("/")[1]);
-							importProject(fullname);// (repo,
+							importProject(fullname, token);// (repo,
 													// pomFiles,
 													// pomPath,
 													// users);

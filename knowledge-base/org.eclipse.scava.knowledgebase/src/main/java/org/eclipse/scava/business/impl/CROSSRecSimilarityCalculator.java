@@ -43,6 +43,8 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	
 	@Autowired
 	private CROSSRecGraphRepository crossRecGraphRepository;
+	@Autowired
+	private SimilarityManager simManager;
 	
 	@Override
 	public boolean appliesTo(Artifact art) {
@@ -84,12 +86,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	 * 
 	 */
 	public Map<String, Double> computeWeightCosineSimilarity(List<Dependency> dependencies) throws Exception{
-		CROSSRecGraph bigGraph;
-		List<CROSSRecGraph> tempGraphs = crossRecGraphRepository.findAll();
-		if(tempGraphs.size() == 0) {
-			bigGraph = createCROSSRecGraph();
-		}
-		else bigGraph = tempGraphs.get(0);
+		CROSSRecGraph bigGraph = createCROSSRecGraph();
 
 		Set<String> allLibs = extractDepsfromGraph(bigGraph);
 		/*add all libraries from the training set*/
@@ -161,7 +158,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	}
 	
 	public CROSSRecGraph createCROSSRecGraph() {
-		List<Artifact> arts = artifactRepository.findAll();
+		List<Artifact> arts = simManager.appliableProjects(this);
 		CROSSRecGraph graph = null;
 		for (Artifact artifact : arts) {
 			CROSSRecGraph graph1 = createGraphFromArtifact(artifact);

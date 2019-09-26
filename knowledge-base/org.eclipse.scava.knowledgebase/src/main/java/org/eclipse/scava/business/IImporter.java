@@ -21,7 +21,7 @@ import org.eclipse.scava.business.model.Stargazers;
  *
  */
 public interface IImporter {
-	Artifact importProject(String artId) 
+	Artifact importProject(String artId, String access_token) 
 			throws IOException;
 	void importAll();
 	void storeGithubUserCommitter(List<GithubUser> committers, String repoName);
