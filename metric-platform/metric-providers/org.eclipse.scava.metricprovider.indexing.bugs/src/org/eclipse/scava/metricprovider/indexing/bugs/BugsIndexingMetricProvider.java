@@ -161,7 +161,6 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 		for (BugTrackingSystemDelta btsDelta : bugTrackingSystemProjectDelta.getBugTrackingSystemDeltas())
 		{
 			btsType=btsDelta.getBugTrackingSystem().getBugTrackerType();
-			//prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
 			
 			for (BugTrackingSystemBug bug : btsDelta.getNewBugs()) // NEW BUGS
 			{
