@@ -215,7 +215,7 @@ class TaskStatuses(Enum):
     @staticmethod
     def enum_from_name(name):
         try:
-            return QueueType[name.upper()]
+            return TaskStatuses[name.upper()]
         except KeyError:
             raise ValueError(f"No TaskStatuses exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in TaskStatuses])}")
 
@@ -255,7 +255,7 @@ class Mode(Enum):
     @staticmethod
     def enum_from_name(name):
         try:
-            return QueueType[name.upper()]
+            return Mode[name.upper()]
         except KeyError:
             raise ValueError(f"No Mode exists with name '{name.upper()}'. Must be one of  {', '.join([i.name for i in Mode])}")
 

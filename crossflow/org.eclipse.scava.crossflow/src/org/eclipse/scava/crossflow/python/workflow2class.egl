@@ -24,8 +24,28 @@ from crossflow.runtime import ControlSignal, ControlSignals, logger, Mode, Workf
 
 class [%=w.name%](Workflow):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self,
+                 name='',
+                 cache=None,
+                 master='localhost',
+                 brokerHost='localhost',
+                 stompPort=61613,
+                 instanceId=None,
+                 mode=Mode.WORKER,
+                 cacheEnabled=True,
+                 deleteCache=None,
+                 excluded_tasks=[]):
+                 
+        super().__init__(name=name,
+                         cache=cache,
+                         master=master,
+                         brokerHost=brokerHost,
+                         stompPort=stompPort,
+                         instanceId=instanceId,
+                         mode=mode,
+                         cacheEnabled=cacheEnabled,
+                         deleteCache=deleteCache,
+                         excluded_tasks=excluded_tasks)
         
         # Register types with serializer
         [%for (t in w.types) {%]
@@ -131,19 +151,19 @@ if __name__ == '__main__':
     parser.add_argument('-name', default='[%=w.name%]Python', help='The name of the workflow')
     parser.add_argument('-master', default='localhost', help='IP of the master')
     parser.add_argument('-brokerHost', default='localhost', help='IP of the broker')
-    parser.add_argument('-stomp', default=61613, help='Port to use for stomp based messages')
+    parser.add_argument('-stompPort', default=61613, help='Port to use for stomp based messages')
     parser.add_argument('-instance', default=None, help='The instance of the master (to contribute to)')
-    parser.add_argument('-mode', default=Mode.WORKER, help='Must be master_bare, master or worker')
+    parser.add_argument('-mode', default='WORKER', help='must be one of WORKER or API')
     
     parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
     
-    app = [%=w.name%]()
-    app.name = parsedArgs.name
-    app.master = parsedArgs.master
-    app.brokerHost = parsedArgs.brokerHost
-    app.stomp = parsedArgs.stomp
-    app.instanceId = parsedArgs.instance
-    app.mode = parsedArgs.mode
+    app = [%=w.name%](name=parsedArgs.name,
+                      master=parsedArgs.master,
+                      brokerHost=parsedArgs.brokerHost,
+                      stompPort=parsedArgs.stompPort,
+                      instanceId=parsedArgs.instance,
+                      mode=Mode.enum_from_name(parsedArgs.mode))
+                      
     app.run();
     
 [%
