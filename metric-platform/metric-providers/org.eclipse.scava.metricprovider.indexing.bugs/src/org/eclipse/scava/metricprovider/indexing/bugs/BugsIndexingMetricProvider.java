@@ -451,20 +451,12 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	}
 
 	/**
-	 * This method finds a collection relating to a metric provider
-	 * 
 	 * 
 	 * @param db
 	 * @param type
 	 * @param collection
 	 * @param issue
 	 * @return
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
 	 */
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			BugTrackingSystemBug issue) {
