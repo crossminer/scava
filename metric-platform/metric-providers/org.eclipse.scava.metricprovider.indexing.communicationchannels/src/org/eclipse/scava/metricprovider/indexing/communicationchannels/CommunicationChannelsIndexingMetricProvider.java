@@ -212,6 +212,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					//We prevent indexing when there has not been any new articles, and the threads will be still the same
 					if(delta.getArticles().size()>0)
 					{
+						threadsByArticle = new ThreadsByArticle();
 						for(ThreadData threadData :searchThreads(communicationChannel.getOSSMeterId()))
 						{
 							prepareThread(projectName, ccType, collectionName, threadData);
@@ -241,8 +242,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 											projectName,
 											collectionName,
 											threadData.getThreadId(),
-											threadData.getSubject());
-		threadsByArticle = new ThreadsByArticle();
+											threadData.getSubject());	
 		for(long articleId : threadData.getArticleNumbers())
 		{
 			threadsByArticle.addThread(articleId, threadData.getThreadId());
