@@ -1,0 +1,25 @@
+{
+	"properties" : {
+		"communication_channel_id" : {
+			"type" : "keyword"
+		},
+		"thread_id" : {
+			"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "keyword"
+		},
+		"project_name" : {
+			"type" : "text"
+		},
+		"subject" : {
+			"type" : "text"
+		},
+		"creator" : {
+			"type" : "text"
+		},
+		"created_at" : {
+			"type" : "date"
+		}
+	}
+}

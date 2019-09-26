@@ -1,0 +1,49 @@
+{
+	"properties" : {
+		"article_id" : {
+			"type" : "keyword"
+		},
+		"communication_channel_id" : {
+			"type" : "keyword"
+		},
+		"thread_id" : {
+			"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "keyword"
+		},
+		"project_name" : {
+			"type" : "text"
+		},
+		"message_body" : {
+			"type" : "text"
+		},
+		"subject" : {
+			"type" : "text"
+		},
+		"creator" : {
+			"type" : "text"
+		},
+		"created_at" : {
+			"type" : "date"
+		},
+		"emotional_dimension" : {
+			"type" : "text"
+		},
+		"sentiment" : {
+			"type" : "text"
+		},
+		"plain_text" : {
+			"type" : "text"
+		},
+		"request_reply_classification" : {
+			"type" : "text"
+		},
+		"content_class" : {
+			"type" : "text"
+		},
+		"contains_code" : {
+			"type" : "boolean"
+		}
+	}
+}
