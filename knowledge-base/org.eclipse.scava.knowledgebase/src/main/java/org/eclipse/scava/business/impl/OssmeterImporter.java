@@ -76,7 +76,7 @@ public class OssmeterImporter implements IImporter {
 	}
 
 	@Override
-	public Artifact importProject(String projectName) throws IOException {
+	public Artifact importProject(String projectName, String access_token) throws IOException {
 
 		Artifact result = projectRepository.findOneByName(projectName);
 		if (result == null)
@@ -173,7 +173,7 @@ public class OssmeterImporter implements IImporter {
 					guard = false;
 				else
 					for (Object object : projects)
-						importProject((String) ((JSONObject) object).get("name"));
+						importProject((String) ((JSONObject) object).get("name"), null);
 				page++;
 			} catch (IOException e) {
 				guard = false;

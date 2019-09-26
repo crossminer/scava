@@ -8,7 +8,6 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 package org.eclipse.scava.test.importer;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -44,7 +43,7 @@ public class OssmeterImporterTest {
 	@Test
 	public void importProjectTest() {
 		try {
-			Artifact art = importer.importProject("MDEProfile");
+			Artifact art = importer.importProject("MDEProfile", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
 			assertThat(art.getDependencies(), is(not(0)));
 			assertThat(art.getStarred(), is(not(0)));
 		} catch (IOException e) {
