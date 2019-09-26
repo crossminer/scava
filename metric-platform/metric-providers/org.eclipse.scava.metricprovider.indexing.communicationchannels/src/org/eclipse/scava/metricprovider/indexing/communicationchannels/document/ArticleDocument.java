@@ -7,7 +7,7 @@ import java.util.List;
 public class ArticleDocument extends DocumentAbstract {
 
 	
-	private Long aritcle_number;
+	private Long article_number;
 	private String collection_name;
 	private String message_thread_id;
 	private String project_name;
@@ -29,7 +29,7 @@ public class ArticleDocument extends DocumentAbstract {
 			long articleNumber,String subject, String messageBody, String creator, Date createdAt) {
 
 		this.uid = uid;
-		this.aritcle_number = articleNumber; 
+		this.article_number = articleNumber; 
 		this.project_name = projectName;
 		this.message_body = messageBody;
 		this.creator = creator;
@@ -59,8 +59,8 @@ public class ArticleDocument extends DocumentAbstract {
 		return created_at;
 	}
 
-	public long getAritcle_number() {
-		return aritcle_number;
+	public long getArticle_number() {
+		return article_number;
 	}
 
 	public String getCollection_name() {
@@ -92,7 +92,7 @@ public class ArticleDocument extends DocumentAbstract {
 	}
 
 	public void setAritcle_number(long aritcle_number) {
-		this.aritcle_number = aritcle_number;
+		this.article_number = aritcle_number;
 	}
 
 	public void setCollection_name(String newsgroup_name) {

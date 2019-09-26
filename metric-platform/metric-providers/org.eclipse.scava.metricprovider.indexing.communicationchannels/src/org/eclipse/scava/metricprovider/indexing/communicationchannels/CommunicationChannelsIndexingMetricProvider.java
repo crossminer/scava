@@ -174,7 +174,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					documentType="article";
 				} else if (communicationChannel instanceof EclipseForum) {
 					collectionName = ((EclipseForum) communicationChannel).getForum_name();
-					ccType="eclipe-forum";
+					ccType="eclipse-forum";
 					documentType="post";
 				} else if (communicationChannel instanceof Discussion) {
 					collectionName = communicationChannel.getUrl();
