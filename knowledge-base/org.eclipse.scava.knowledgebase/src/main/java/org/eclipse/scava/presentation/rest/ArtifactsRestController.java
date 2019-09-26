@@ -122,7 +122,7 @@ public class ArtifactsRestController {
     }
 	
 	@ApiOperation(value = "Add github project to KB")
-	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
+	@RequestMapping(value="add/{project_name}/{access_token}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName,
     		@PathVariable("access_token") String access_token) {
 		try {
