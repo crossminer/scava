@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.bugs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
