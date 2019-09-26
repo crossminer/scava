@@ -8,8 +8,7 @@ public class ArticleDocument extends DocumentAbstract {
 
 	
 	private Long article_number;
-	private String collection_name;
-	private String message_thread_id;
+	private String communication_channel_id;
 	private String project_name;
 	private String message_body;
 	private String subject;
@@ -23,9 +22,9 @@ public class ArticleDocument extends DocumentAbstract {
 	private String request_reply_classification;
 	private String content_class;
 	private Boolean contains_code;
-	
+	private List<Integer> threads_id;
 
-	public ArticleDocument(String uid, String projectName, String collectionName, String messageThreadID,
+	public ArticleDocument(String uid, String projectName, String collectionName,
 			long articleNumber,String subject, String messageBody, String creator, Date createdAt) {
 
 		this.uid = uid;
@@ -34,9 +33,8 @@ public class ArticleDocument extends DocumentAbstract {
 		this.message_body = messageBody;
 		this.creator = creator;
 		this.created_at = createdAt;
-		this.collection_name = collectionName;
+		this.communication_channel_id = collectionName;
 		this.subject = subject;
-		this.message_thread_id = messageThreadID;
 	}
 
 	public String getSubject() {
@@ -63,12 +61,12 @@ public class ArticleDocument extends DocumentAbstract {
 		return article_number;
 	}
 
-	public String getCollection_name() {
-		return collection_name;
+	public String getCommunication_channel_id() {
+		return communication_channel_id;
 	}
 
-	public String getMessage_thread_id() {
-		return message_thread_id;
+	public List<Integer> getThreads_id() {
+		return threads_id;
 	}
 	
 	public String getSentiment() {
@@ -96,11 +94,13 @@ public class ArticleDocument extends DocumentAbstract {
 	}
 
 	public void setCollection_name(String newsgroup_name) {
-		this.collection_name = newsgroup_name;
+		this.communication_channel_id = newsgroup_name;
 	}
 
-	public void setMessage_thread_id(String message_thread_id) {
-		this.message_thread_id = message_thread_id;
+	public void addThread_id(int thread_id) {
+		if(this.threads_id==null)
+			this.threads_id = new ArrayList<Integer>();
+		this.threads_id.add(thread_id);
 	}
 	
 	public void addEmotional_dimension(String emotional_dimension) {

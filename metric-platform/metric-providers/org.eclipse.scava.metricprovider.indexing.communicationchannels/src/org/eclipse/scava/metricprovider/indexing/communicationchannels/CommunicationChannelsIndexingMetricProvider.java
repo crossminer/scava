@@ -10,11 +10,15 @@
 package org.eclipse.scava.metricprovider.indexing.communicationchannels;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ArticleDocument;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.DocumentAbstract;
+import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ThreadDocument;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
@@ -27,6 +31,9 @@ import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPr
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTextProcessingTransMetric;
@@ -82,6 +89,9 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	private DetectingCodeTransMetric commChannelDetectingCodeData;
 	private RequestReplyClassificationTransMetric commChannelRequestReplyData;
 	private NewsgroupsContentClassesTransMetric commChannelContentClassificationData;
+	private NewsgroupsThreadsTransMetric commChannelThreadsData;
+	
+	private ThreadsByArticle threadsByArticle;
 	
 	public final static String NLP = "nlp";// knowledge type.
 
@@ -197,6 +207,17 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 							+ "of communication channel is currently not supported by the indexer");
 					continue;
 				}
+				if(metricsToIndex.contains("org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider"))
+				{
+					//We prevent indexing when there has not been any new articles, and the threads will be still the same
+					if(delta.getArticles().size()>0)
+					{
+						for(ThreadData threadData :searchThreads(communicationChannel.getOSSMeterId()))
+						{
+							prepareThread(projectName, ccType, collectionName, threadData);
+						}
+					}
+				}
 				for (CommunicationChannelArticle article : delta.getArticles()) {
 					prepareArticle(projectName, ccType, documentType, collectionName, article);
 				}
@@ -205,15 +226,37 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 	}
 	
-
+	private Iterable<ThreadData> searchThreads(String OSSMeterId)
+	{
+		Iterable<ThreadData> iterator = commChannelThreadsData.getThreads().find(
+				ThreadData.NEWSGROUPNAME.eq(OSSMeterId)
+				);
+		return iterator;
+	}
 	
+	private void prepareThread(String projectName, String ccType, String collectionName, ThreadData threadData)
+	{
+		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, String.valueOf(threadData.getThreadId()));
+		ThreadDocument td = new ThreadDocument(uid,
+											projectName,
+											collectionName,
+											threadData.getThreadId(),
+											threadData.getSubject());
+		threadsByArticle = new ThreadsByArticle();
+		for(long articleId : threadData.getArticleNumbers())
+		{
+			threadsByArticle.addThread(articleId, threadData.getThreadId());
+		}
+		
+		indexing(ccType, "thread", uid, td);
+	}
+		
 	private void prepareArticle(String projectName, String ccType, String documentType, String collectionName, CommunicationChannelArticle article)
 	{
 		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, String.valueOf(article.getArticleNumber()));
 		ArticleDocument ad = new ArticleDocument(uid,
 												projectName,
 												collectionName,
-												article.getMessageThreadId(),
 												article.getArticleNumber(),
 												article.getSubject(),
 												article.getText(),
@@ -261,6 +304,11 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					commChannelContentClassificationData = new ContentClassesTransMetricProvider().adapt(context.getProjectDB(project));
 					break;
 				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
+				{
+					commChannelThreadsData = new ThreadsTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
 				
 			}
 		}
@@ -282,6 +330,15 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 						String plaintext = String.join(" ", plainTextData.getPlainText());
 						articleDocument.setPlain_text(plaintext);
 					}
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
+				{
+					for(Integer threadId : threadsByArticle.getThreads(article.getArticleNumber()))
+					{
+						if(threadId!=null)
+							articleDocument.addThread_id(threadId);
+					}	
 					break;
 				}
 				// EMOTION
@@ -373,19 +430,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		return type + " " + projectName + " " + mainTypeId+ " "+ subTypeId;
 	}
 
-	/**
-	 * This method finds a collection created by a metric provider relating to
-	 * newsgroup articles
-	 * 
-	 * 
-	 * @param db
-	 * @param type
-	 * @param collection
-	 * @param article
-	 * @return
-	 */
-
-	// TODO add support for IRC, Sympa, MailBox
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			CommunicationChannelArticle article) {
 
@@ -400,7 +444,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 		return output;
 	}
-
+	
 	private <T extends Pongo> StringQueryProducer getStringQueryProducer(Class<T> type, T t, String field) {
 
 		try {
@@ -425,6 +469,39 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private class ThreadsByArticle
+	{
+		HashMap<Long, Set<Integer>> threadsByArticle;
+		
+		public ThreadsByArticle() {
+			threadsByArticle = new HashMap<Long, Set<Integer>>(); 
+		}
+		
+		public void addThread(long articleId, int threadId)
+		{
+			Set<Integer> threads;
+			if(!threadsByArticle.containsKey(articleId))
+				threads = new HashSet<Integer>();
+			else
+				threads=threadsByArticle.get(articleId);
+			if(!threads.contains(threadId))
+			{
+				threads.add(threadId);
+				threadsByArticle.put(articleId, threads);
+			}
+		}
+		
+		public Set<Integer> getThreads(long articleId)
+		{
+			if(threadsByArticle.containsKey(articleId))
+				return threadsByArticle.get(articleId);
+			else
+				return null;
+		}
+
+		
 	}
 
 }

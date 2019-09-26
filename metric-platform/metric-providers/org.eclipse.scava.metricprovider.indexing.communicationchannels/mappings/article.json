@@ -7,7 +7,7 @@
 			"type" : "keyword"
 		},
 		"thread_id" : {
-			"type" : "keyword"
+			"type" : "integer"
 		},
 		"uid" : {
 			"type" : "keyword"

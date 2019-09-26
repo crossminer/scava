@@ -14,12 +14,6 @@
 		},
 		"subject" : {
 			"type" : "text"
-		},
-		"creator" : {
-			"type" : "text"
-		},
-		"created_at" : {
-			"type" : "date"
 		}
 	}
 }
