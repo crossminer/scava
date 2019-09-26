@@ -244,10 +244,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 											threadData.getThreadId(),
 											threadData.getSubject());	
 		for(long articleId : threadData.getArticleNumbers())
-		{
-			threadsByArticle.addThread(articleId, threadData.getThreadId());
-		}
-		
+			threadsByArticle.addThread(articleId, threadData.getThreadId());	
 		indexing(ccType, "thread", uid, td);
 	}
 		
@@ -498,7 +495,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			if(threadsByArticle.containsKey(articleId))
 				return threadsByArticle.get(articleId);
 			else
-				return null;
+				return new HashSet<Integer>();
 		}
 
 		
