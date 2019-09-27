@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
+import org.eclipse.scava.index.indexer.MappingStorage;
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationEntryDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.mapping.Mapping;
@@ -139,7 +140,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		String documentType;
 		String indexName="";
 		String uid;
-		String mapping;
+		MappingStorage mapping;
 		String document="";
 		
 		loadMetricsDB(project);

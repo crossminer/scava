@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
+import org.eclipse.scava.index.indexer.MappingStorage;
 import org.eclipse.scava.metricprovider.indexing.commits.document.CommitDocument;
 import org.eclipse.scava.metricprovider.indexing.commits.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider;
@@ -111,7 +112,7 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 			String documentType="commit";
 			
 			String uid;
-			String mapping;
+			MappingStorage mapping;
 			String document;
 			String indexName = Indexer.generateIndexName("vcs", documentType, KNOWLEDGE);
 			

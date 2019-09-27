@@ -1,4 +1,7 @@
 {
+	"_meta" : {
+		"mapping_version" : "1.0"
+	},
 	"properties" : {
 		"last_update" : {
 			"type" : "date"

@@ -11,10 +11,13 @@ package org.eclipse.scava.index.indexer;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.elasticsearch.ElasticsearchStatusException;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -24,44 +27,29 @@ import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.eclipse.scava.index.indexer.IndexerSingleton;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 public class Indexer {
 
 	protected static OssmeterLogger logger;
 	private static RestHighLevelClient highLevelClient;
-	//private static Client adminClient;
+	private static Pattern versionFinder;
+	private static FetchSourceContext fetchSourceContext;
 
 	static {
 		IndexerSingleton singleton = IndexerSingleton.getInstance();
 		highLevelClient = singleton.getHighLevelclient();
-	//	adminClient = singleton.getAdminClient();
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("Indexer");
+		versionFinder = Pattern.compile("\"mapping_version\"\\s*:\\s*\"([^\"]+)\"");
+		fetchSourceContext = new FetchSourceContext(false);
 	}
-
-//	/**
-//	 * Retrieves all non-default indices from Elasticsearch
-//	 * 
-//	 * @return List<String>
-//	 */
-//	private static List<String> getIndices() {
-//		List<String> indicesList = new ArrayList<String>();
-//		ImmutableOpenMap<String, IndexMetaData> indices = adminClient.admin().cluster().prepareState().get().getState()
-//				.getMetaData().getIndices();
-//		for (ObjectObjectCursor<String, IndexMetaData> x : indices) {
-//			if (!(x.value == null)) {
-//				if (!(x.value.getIndex().getName().startsWith("."))) {
-//					if (!(indicesList.contains(x.value.getIndex().getName()))) {
-//						indicesList.add(x.value.getIndex().getName());
-//					}
-//				}
-//			}
-//		}
-//		return indicesList;
-//	}
 
 	/**
 	 * Adds settings to index
@@ -82,6 +70,8 @@ public class Indexer {
 			System.out.println("[INDEXER] \tSettings have been added to " + index);
 		}
 	}
+	
+	
 
 	/**
 	 * Creates a new index
@@ -90,15 +80,30 @@ public class Indexer {
 	 *            - name of the new index
 	 * @throws IOException
 	 */
-	private static Boolean createIndex(String indexName)  {
+	private static Boolean indexReady(String indexName, String documentType, MappingStorage mapping)  {
 		
-		
-	
 		// checks if index exists
 		try {
 			if (highLevelClient.indices().exists(new GetIndexRequest().indices(indexName), getReadHeaders())) {
 				// do nothing already exists
-				logger.info("A index for " + indexName + "already exists");
+				logger.info("A index for " + indexName + " already exists");
+				if (mapping!=null) 
+				{
+					try {
+						Response response = highLevelClient.getLowLevelClient().performRequest("GET", indexName+"/_mapping/"+documentType, getReadHeaders());
+					
+						Matcher m = versionFinder.matcher(EntityUtils.toString(response.getEntity()));
+						if(m.find())
+						{
+							if(Float.valueOf(m.group(1))<mapping.getVersion())
+								addMappingToIndex(indexName, documentType, mapping.getMapping());	
+						
+						}
+					}
+					catch (ResponseException e) {
+						addMappingToIndex(indexName, documentType, mapping.getMapping());
+					}
+				}
 				return true;
 
 			} else {
@@ -112,6 +117,7 @@ public class Indexer {
 					
 					if (createIndexResponse.isAcknowledged() == true) {
 						logger.info("The index " + indexName + " has been created");
+						addMappingToIndex(indexName, documentType, mapping.getMapping());
 						return true;
 					}
 
@@ -163,7 +169,6 @@ public class Indexer {
 			if (putMappingResponse.isAcknowledged() == true) {
 
 				logger.info("Mapping for " + documentType + " in " + indexName + " was added successfully");
-				System.out.println("[Index Debug] Mapping for " + documentType + " in " + indexName + " was added successfully");
 			}
 
 		} catch (IOException e) {
@@ -233,20 +238,27 @@ public class Indexer {
 	 */
 	private static void index(String indexName, String documentType, String uid, String document) {
 
-		System.out.println("[Index Debug] creating request for document: " + uid + "to be added to the index " + indexName );
 		try {
-			IndexRequest indexRequest = new IndexRequest();
-			indexRequest.index(indexName.toLowerCase()).type(documentType.toLowerCase()).id(uid).source(document,
-					XContentType.JSON);
-			logger.info("Document (uid: " + uid + ") has been "
-					+ highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
-
-			System.out.println("[Index Debug] Document (uid: " + uid + ") has been " + 
-					 highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
+			
+			GetRequest getRequest = new GetRequest(indexName, documentType, uid).fetchSourceContext(fetchSourceContext).storedFields("_none_");
+			
+			if(highLevelClient.exists(getRequest, getReadHeaders()))
+			{
+				UpdateRequest request = new UpdateRequest(indexName, documentType, uid);
+				request.doc(document, XContentType.JSON);
+				logger.info("Document (uid: " + uid + ") has been updated");
+			}
+			else
+			{
+				IndexRequest indexRequest = new IndexRequest();
+				indexRequest .index(indexName).type(documentType).id(uid).source(document,XContentType.JSON);
+					
+				logger.info("Document (uid: " + uid + ") has been "	+
+											highLevelClient.index(indexRequest, getWriteHeaders()).getResult().toString().toLowerCase());
+			}
 			
 		} catch (IOException io) {
 			logger.error("Method index has experienced an IO error\n" + io);
-			System.out.println("[Index Debug] Method index has experienced an IO error\n" + io);
 		}
 	}
 
@@ -289,50 +301,17 @@ public class Indexer {
 	 * @throws IOException 
 	 */
 
-	public static void indexDocument(String indexName, String mapping, String documentType, String uid, String document)  {
+	public static void indexDocument(String indexName, MappingStorage mapping, String documentType, String uid, String document)  {
 
 		logger.info("Indexing tool has started - Attempting to add document to " + indexName);
-		System.out.println("[Index Debug] Indexing tool is attempting to add document to " + indexName);
+		
+		indexName=indexName.toLowerCase();
+		documentType=documentType.toLowerCase();
 			
-		if (createIndex(indexName)) {
-				
-				//if a mapping is provided add mapping to index
-				if (!(mapping.isEmpty()) && (!(mapping.equals(null)))) 
-				{
-					addMappingToIndex(indexName, documentType, mapping);
-				}
-					
-					index(indexName, documentType, uid, document);
-	
-			}else {
-				
-				logger.info("ERROR - " + indexName + " was not created");
-				System.out.println("[Index Debug] ERROR - " + indexName + " was not created");
-				
-			}
-
-		logger.info("Indexing tool has finished");
-		System.out.println("[Index Debug] indexing tool has finished");
+		if (indexReady(indexName, documentType, mapping)) {
+			index(indexName, documentType, uid, document);
+		}else {		
+			logger.info("ERROR - " + indexName + " was not ready or could not be created");
+		}
 	}
-
-	public static void main(String[] args)  {
-
-		System.out.println(Indexer.highLevelClient);
-
-		Indexer.indexDocument("hello", "", "test", "01010101", "{\n" + "    \"glossary\": {\n"
-				+ "        \"title\": \"example glossary\",\n" + "		\"GlossDiv\": {\n"
-				+ "            \"title\": \"S\",\n" + "			\"GlossList\": {\n"
-				+ "                \"GlossEntry\": {\n" + "                    \"ID\": \"SGML\",\n"
-				+ "					\"SortAs\": \"SGML\",\n"
-				+ "					\"GlossTerm\": \"Standard Generalized Markup Language\",\n"
-				+ "					\"Acronym\": \"SGML\",\n" + "					\"Abbrev\": \"ISO 8879:1986\",\n"
-				+ "					\"GlossDef\": {\n"
-				+ "                        \"para\": \"A meta-markup language, used to create markup languages such as DocBook.\",\n"
-				+ "						\"GlossSeeAlso\": [\"GML\", \"XML\"]\n" + "                    },\n"
-				+ "					\"GlossSee\": \"markup\"\n" + "                }\n" + "            }\n"
-				+ "        }\n" + "    }\n" + "}");
-	
-		System.exit(0);
-	}
-
 }
