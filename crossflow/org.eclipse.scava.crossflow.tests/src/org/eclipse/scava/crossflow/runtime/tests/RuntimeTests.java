@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ SerializerTest.class, WorkflowTest.class })
+@SuiteClasses({ SerializerTest.class })
 public class RuntimeTests {
 
 }

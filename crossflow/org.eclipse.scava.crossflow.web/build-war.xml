@@ -34,7 +34,7 @@
         <ivy:retrieve
             type="jar"
             pattern="WebContent/WEB-INF/lib/[type]s/[artifact]-[revision].[ext]"
-            sync="true" />
+            sync="false" />
     </target>
 	
 	<!-- Compile and jar provided examples -->

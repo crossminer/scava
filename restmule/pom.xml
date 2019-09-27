@@ -22,10 +22,10 @@
 		<module>org.eclipse.scava.crossflow.restmule.dependencies</module>
 		<module>org.eclipse.scava.crossflow.restmule.generator</module>
 		<module>org.eclipse.scava.crossflow.restmule.client.github</module>
-		<module>org.eclipse.scava.crossflow.restmule.client.github.test</module>
+<!-- 		<module>org.eclipse.scava.crossflow.restmule.client.github.test</module>	 -->
 		<module>org.eclipse.scava.crossflow.restmule.client.gitlab</module>
 		<module>org.eclipse.scava.crossflow.restmule.client.stackexchange</module>
-		<module>org.eclipse.scava.crossflow.restmule.client.stackexchange.test</module>
+<!-- 		<module>org.eclipse.scava.crossflow.restmule.client.stackexchange.test</module>	 -->
 		<module>org.eclipse.scava.crossflow.restmule.client.bitbucket</module>
 		<module>org.eclipse.scava.crossflow.restmule.targetplatform</module>	
 
