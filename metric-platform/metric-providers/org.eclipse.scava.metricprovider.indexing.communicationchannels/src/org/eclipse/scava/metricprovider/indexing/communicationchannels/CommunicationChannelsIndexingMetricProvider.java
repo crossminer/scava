@@ -68,6 +68,7 @@ import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -467,7 +468,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					Mapping.getMapping(documentType),
 					documentType,
 					uid,
-					new ObjectMapper().writeValueAsString(document));
+					new ObjectMapper().setSerializationInclusion(Include.NON_NULL).writeValueAsString(document));
 		} catch (JsonProcessingException e) {
 			logger.error("Error while processing json:", e);
 			e.printStackTrace();

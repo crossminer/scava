@@ -62,6 +62,7 @@ import org.eclipse.scava.platform.indexing.Indexing;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -212,7 +213,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					Mapping.getMapping(documentType),
 					documentType,
 					uid,
-					new ObjectMapper().writeValueAsString(document));
+					new ObjectMapper().setSerializationInclusion(Include.NON_NULL).writeValueAsString(document));
 		} catch (JsonProcessingException e) {
 			logger.error("Error while processing json:", e);
 			e.printStackTrace();

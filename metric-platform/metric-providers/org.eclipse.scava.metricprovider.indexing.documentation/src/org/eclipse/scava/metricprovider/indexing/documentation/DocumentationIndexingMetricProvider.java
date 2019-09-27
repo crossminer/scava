@@ -45,6 +45,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -134,7 +135,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
 		
 		String projectName = delta.getProject().getName();
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
 		String documentType;
 		String indexName="";
 		String uid;

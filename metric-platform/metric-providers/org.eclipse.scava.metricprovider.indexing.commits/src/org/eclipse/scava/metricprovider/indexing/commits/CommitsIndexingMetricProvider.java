@@ -27,6 +27,7 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -106,7 +107,7 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 		if(metricsToIndex.size()>0)
 		{
 			String projectName = delta.getProject().getName();
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
 			String documentType="commit";
 			
 			String uid;
