@@ -22,7 +22,7 @@ public class CommentDocument extends DocumentAbstract {
 	private String creator;
 	private Date created_at;
 	// NLP
-	private List<String> emotional_dimension = new ArrayList<>();
+	private List<String> emotional_dimension;
 	private String sentiment;
 	private String plain_text;
 	private String request_reply_classification;
@@ -91,6 +91,8 @@ public class CommentDocument extends DocumentAbstract {
 	}
 
 	public void setEmotional_dimension(List<String> emotional_dimension) {
+		if(this.emotional_dimension==null)
+			this.emotional_dimension = new ArrayList<String>();
 		this.emotional_dimension = emotional_dimension;
 	}
 
