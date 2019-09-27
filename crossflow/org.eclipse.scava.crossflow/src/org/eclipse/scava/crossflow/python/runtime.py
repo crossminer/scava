@@ -4,24 +4,24 @@ Created on 26 Mar 2019
 @author: stevet
 @author: Jon Co
 '''
+from abc import ABC, abstractmethod
 import csv
+from enum import Enum
 import hashlib
 import logging
 import os
+from pathlib import Path
 import pickle
-import stomp
 import sys
 import tempfile
-import time
 import threading
+import time
 import traceback
-import xmltodict
+from typing import Type
 import uuid
 
-from abc import ABC, abstractmethod
-from enum import Enum
-from pathlib import Path
-from typing import Type
+import stomp
+import xmltodict
 
 
 illegal_chars = [ 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -927,7 +927,6 @@ class Workflow(ABC):
     def __init__(self,
                  name='',
                  cache=None,
-                 master='localhost',
                  brokerHost='localhost',
                  stompPort=61613,
                  instanceId=None,
@@ -938,7 +937,6 @@ class Workflow(ABC):
                 
         self.name = name
         self.cache = cache
-        self.master = master
         self.brokerHost = brokerHost
         self.stompPort = stompPort
 
@@ -1127,12 +1125,6 @@ class Workflow(ABC):
 
     def getMode(self): 
         return self.mode
-
-    def setMaster(self, master): 
-        self.master = master
-
-    def getMaster(self): 
-        return self.master
 
     def getStompPort(self): 
         return self.stompPort
