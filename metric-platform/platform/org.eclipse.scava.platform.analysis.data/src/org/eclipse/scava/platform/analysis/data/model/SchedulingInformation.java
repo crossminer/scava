@@ -27,7 +27,10 @@ public class SchedulingInformation extends Pongo {
 		PROGRESS.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		CURRENTMETRIC.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		EXECUTIONREQUESTDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
+		EXECUTIONTASKSTARTDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
+		EXECUTIONTASKFINISHDATE.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 		LASTDAILYEXECUTIONDURATION.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
+		TOTALANALYSISDURATION.setOwningType("org.eclipse.scava.platform.analysis.data.model.SchedulingInformation");
 	}
 	
 	public static StringQueryProducer STATUS = new StringQueryProducer("status"); 
@@ -36,7 +39,10 @@ public class SchedulingInformation extends Pongo {
 	public static NumericalQueryProducer PROGRESS = new NumericalQueryProducer("progress");
 	public static StringQueryProducer CURRENTMETRIC = new StringQueryProducer("currentMetric"); 
 	public static StringQueryProducer EXECUTIONREQUESTDATE = new StringQueryProducer("executionRequestDate"); 
+	public static StringQueryProducer EXECUTIONTASKSTARTDATE = new StringQueryProducer("executionTaskStartDate"); 
+	public static StringQueryProducer EXECUTIONTASKFINISHDATE = new StringQueryProducer("executionTaskFinishDate"); 
 	public static NumericalQueryProducer LASTDAILYEXECUTIONDURATION = new NumericalQueryProducer("lastDailyExecutionDuration");
+	public static NumericalQueryProducer TOTALANALYSISDURATION = new NumericalQueryProducer("totalAnalysisDuration");
 	
 	
 	public String getStatus() {
@@ -93,12 +99,39 @@ public class SchedulingInformation extends Pongo {
 		notifyChanged();
 		return this;
 	}
+	public Date getExecutionTaskStartDate() {
+		return parseDate(dbObject.get("executionTaskStartDate")+"", null);
+	}
+	
+	public SchedulingInformation setExecutionTaskStartDate(Date executionTaskStartDate) {
+		dbObject.put("executionTaskStartDate", executionTaskStartDate);
+		notifyChanged();
+		return this;
+	}
+	public Date getExecutionTaskFinishDate() {
+		return parseDate(dbObject.get("executionTaskFinishDate")+"", null);
+	}
+	
+	public SchedulingInformation setExecutionTaskFinishDate(Date executionTaskFinishDate) {
+		dbObject.put("executionTaskFinishDate", executionTaskFinishDate);
+		notifyChanged();
+		return this;
+	}
 	public long getLastDailyExecutionDuration() {
 		return parseLong(dbObject.get("lastDailyExecutionDuration")+"", 0);
 	}
 	
 	public SchedulingInformation setLastDailyExecutionDuration(long lastDailyExecutionDuration) {
 		dbObject.put("lastDailyExecutionDuration", lastDailyExecutionDuration);
+		notifyChanged();
+		return this;
+	}
+	public long getTotalAnalysisDuration() {
+		return parseLong(dbObject.get("totalAnalysisDuration")+"", 0);
+	}
+	
+	public SchedulingInformation setTotalAnalysisDuration(long totalAnalysisDuration) {
+		dbObject.put("totalAnalysisDuration", totalAnalysisDuration);
 		notifyChanged();
 		return this;
 	}
