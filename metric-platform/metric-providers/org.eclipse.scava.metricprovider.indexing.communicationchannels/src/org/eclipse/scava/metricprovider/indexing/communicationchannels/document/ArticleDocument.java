@@ -16,7 +16,7 @@ public class ArticleDocument extends DocumentAbstract {
 	private Date created_at;
 	
 	// NLP
-	private List<String> emotional_dimension = new ArrayList<>();
+	private List<String> emotional_dimension;
 	private String sentiment;
 	private String plain_text;
 	private String request_reply_classification;
@@ -104,6 +104,8 @@ public class ArticleDocument extends DocumentAbstract {
 	}
 	
 	public void addEmotional_dimension(String emotional_dimension) {
+		if(this.emotional_dimension==null)
+			this.emotional_dimension = new ArrayList<String>();
 		this.emotional_dimension.add(emotional_dimension);
 	}
 	
