@@ -156,7 +156,7 @@ public class RecommenderRestController {
 	}
 	
 	@ApiOperation(value = "This resource forces tha KB to compute all similarity matrixes")
-	@RequestMapping(value = "force-distance-matrices computation", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+	@RequestMapping(value = "force-distance-matrices-computation", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public void forceDistanceMatricesComputation() {
 		logger.info("Before async method: {}", LocalDateTime.now());
 		simManager.storeAllSimilarityDistances();
