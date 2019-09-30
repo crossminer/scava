@@ -18,6 +18,7 @@ import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
+import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.MetricForProjectRepository;
 import org.eclipse.scava.business.model.Artifact;
@@ -52,7 +53,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/artifacts")
 
-
 public class ArtifactsRestController {
 	@Autowired
 	@Qualifier("Dependency")
@@ -61,91 +61,99 @@ public class ArtifactsRestController {
 	private IRecommenderManager recommenderManager;
 	@Autowired
 	private ArtifactRepository artifactRepository;
+	
 	private static final Logger logger = LoggerFactory.getLogger(ArtifactsRestController.class);
 	@Autowired
 	private MetricForProjectRepository m4pRepository;
+	@Autowired
+	private OssmeterImporter ossmeterImporter;
+
 	
 	@Autowired
 	private GithubImporter importer;
-	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: property(,asc|desc). "
-								  + "Default sort order is ascending. "
-								  + "Multiple sort criteria are supported.")
-	})
+
+	@ApiImplicitParams({ // FIXME
+			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+					+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
 	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
-	@RequestMapping(value="artifacts", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Page<Artifact> getArtifacts(Pageable pageable) {
+	@RequestMapping(value = "artifacts", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Page<Artifact> getArtifacts(Pageable pageable) {
 		return artifactRepository.findAll(pageable);
-    }
-	
+	}
+
 	@ApiOperation(value = "Get artifact by id")
-	@RequestMapping(value="/{artifact_id}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
+	@RequestMapping(value = "/{artifact_id}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
-    }
-		
-	
+	}
+
 //	@ApiOperation(value = "Search artifact to KB")
 //	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
 //    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery) {
 //		return recommenderManager.getArtifactsByQuery(projectQuery);
 //    }
-	
+
 	@ApiOperation(value = "Search artifact to KB")
-	@RequestMapping(value="search/{artifact_query}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-	@ApiImplicitParams({	//FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-						  value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-						  value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query",
-						  value = "Sorting criteria in the format: [asc|desc]")
-	})
-    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
-    		@RequestParam(value = "page", defaultValue = "0") int page, 
-    		@RequestParam(value = "size", defaultValue = "10") int size, 
-    		@RequestParam(value = "sort", defaultValue = "asc") String sort) {
+	@RequestMapping(value = "search/{artifact_query}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	@ApiImplicitParams({ // FIXME
+			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: [asc|desc]") })
+	public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size,
+			@RequestParam(value = "sort", defaultValue = "asc") String sort) {
 		PageRequest pr = new PageRequest(page, size, new Sort(Arrays.asList(
-				sort.equalsIgnoreCase("ASC")? new Order(Direction.ASC, "temp"): new Order(Direction.DESC, "temp"))));
+				sort.equalsIgnoreCase("ASC") ? new Order(Direction.ASC, "temp") : new Order(Direction.DESC, "temp"))));
 		return recommenderManager.getArtifactsByQuery(projectQuery, pr);
-    }
-	
+	}
+
 	@ApiOperation(value = "Get artifact by metric platform id")
-	@RequestMapping(value="artifact/mpp/{metricPlatformId}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-    public @ResponseBody Artifact getProjectByMetricPlatformId(@PathVariable("metricPlatformId") String mppID) {
+	@RequestMapping(value = "artifact/mpp/{metricPlatformId}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Artifact getProjectByMetricPlatformId(@PathVariable("metricPlatformId") String mppID) {
 		return artifactRepository.findOneByMetricPlatformId(mppID);
-    }
-	
+	}
+
 	@ApiOperation(value = "Add github project to KB. use <owner>--<repo>")
-	@RequestMapping(value="add/{project_name}/{access_token}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName,
-    		@PathVariable("access_token") String access_token) {
+	@RequestMapping(value = "add/{project_name}/{access_token}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName,
+			@PathVariable("access_token") String access_token) {
 		try {
 			importer.importProject(projectName.replace("--", "/").replace("%2E", "."), access_token);
 			return true;
-			
+
 		} catch (IOException e) {
 			return false;
 		}
-    }
-	
+	}
+
+	@ApiOperation(value = "Import projects from the metric provider platform")
+	@RequestMapping(value = "add-mpp/", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public @ResponseBody boolean importMPPProjects() {
+		ossmeterImporter.importAll();
+		return true;
+	}
+
 	@ApiOperation(value = "Store IDE metrics")
-	@RequestMapping(value="store-metrics", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public ResponseEntity<Object> storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
-		try{
+	@RequestMapping(value = "store-metrics", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public ResponseEntity<Object> storeIDEMetrics(@RequestBody MetricsForProject metricForProject) {
+		try {
 			m4pRepository.save(metricForProject);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
-    }
-	
+	}
+
 //	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 //	public @ResponseBody MetricsForProject temp(){
 //		MetricsForProject metric4project = new MetricsForProject();
