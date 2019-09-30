@@ -46,6 +46,8 @@ public class Artifact {
 	@DBRef
 	private List<Artifact> subArtifacts;
 	private ArtifactType type;
+	private String licenseName;
+	private String licenseUrl;
 	private Boolean private_;
 	private Boolean fork;
 	private String html_url;
@@ -306,6 +308,26 @@ public class Artifact {
 
 	public void setMethodDeclarations(List<MethodDeclaration> methodDeclarations) {
 		this.methodDeclarations = methodDeclarations;
+	}
+
+
+	public String getLicenseName() {
+		return licenseName;
+	}
+
+
+	public void setLicenseName(String licenseName) {
+		this.licenseName = licenseName;
+	}
+
+
+	public String getLicenseUrl() {
+		return licenseUrl;
+	}
+
+
+	public void setLicenseUrl(String licenseUrl) {
+		this.licenseUrl = licenseUrl;
 	}
 	
 	
