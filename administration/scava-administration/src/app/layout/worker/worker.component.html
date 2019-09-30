@@ -32,7 +32,9 @@
               <b>Metric Providers :</b>
             </div>
             <div class="col-7">
-              <a [routerLink]="" title="Metrics Execution with visualisation" (click)="showMetricProviderList(worker.currentTask)">{{worker.currentTask.metricExecutions.length}} Metrics</a>
+              <a [routerLink]="" title="Metrics Execution with visualisation"
+                (click)="showMetricProviderList(worker.currentTask)">{{worker.currentTask.metricExecutions.length}}
+                Metrics</a>
             </div>
           </div>
 
@@ -48,20 +50,20 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-5">
-                <b>Current Date :</b>
-              </div>
-              <div class="col-7">
-               {{worker.currentTask.scheduling[0].currentDate}}
-              </div>
+            <div class="col-5">
+              <b>Current Date :</b>
             </div>
+            <div class="col-7">
+              {{worker.currentTask.scheduling[0].currentDate}}
+            </div>
+          </div>
           <div class="row">
             <div class="col-5">
               <b>Current Metric Provider :</b>
             </div>
             <div class="col-7">
               <span title="{{worker.currentTask.scheduling[0].currentMetric}}">
-                  {{worker.currentTask.scheduling[0].currentMetric?.split(".")[worker.currentTask.scheduling[0].currentMetric?.split(".").length - 1]}}
+                {{worker.currentTask.scheduling[0].currentMetric?.split(".")[worker.currentTask.scheduling[0].currentMetric?.split(".").length - 1]}}
               </span>
             </div>
           </div>
@@ -88,7 +90,8 @@
       </div>
       <div class="card-footer text-right" style="padding: 0.5rem;">
         <div *ngIf="worker.currentTask != null">
-          <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)" class="btn btn-outline-dark btn-sm">Interrupt
+          <button type="submit" queryParamsHandling="merge" (click)="stopTask(worker.currentTask.analysisTaskId)"
+            class="btn btn-outline-dark btn-sm">Interrupt
             Analysis</button>
         </div>
         <div *ngIf="worker.currentTask == null">
@@ -99,31 +102,32 @@
   </div>
 
   <br />
-  <h2>Pending Tasks</h2>
+  <h2>Pending Tasks <small>({{pendingTaskList?.length}})</small></h2>
   <hr />
   <ul *ngFor="let task of pendingTaskList" class="list-group text-white mb-1">
     <li class="list-group-item bg-secondary">
       <div class="row">
         <div class="col-sm">
-          <h5>Project : {{task.analysisTaskId.split(":")[0]}} - Task : {{task.label}}</h5>
+          <h5>Project : {{task.analysisTaskId.split(":")[0]}} <br> Task : {{task.label}}</h5>
         </div>
         <div class="col-3">
           <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="float: right">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)" title="Promote Task"
-                class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
-              <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)" title="Demote Task"
-                class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
+              <button type="submit" queryParamsHandling="merge" (click)="promoteTask(task.analysisTaskId)"
+                title="Promote Task" class="btn btn-sm btn-outline-light fa fa-arrow-up"></button>
+              <button type="submit" queryParamsHandling="merge" (click)="demoteTask(task.analysisTaskId)"
+                title="Demote Task" class="btn btn-sm btn-outline-light fa fa-arrow-down"></button>
             </div>
 
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge" (click)="pushOnWorker(task.analysisTaskId,worker.workerId)"
-                title="Push On Worker" class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
+              <button *ngFor="let worker of workerList" type="submit" queryParamsHandling="merge"
+                (click)="pushOnWorker(task.analysisTaskId,worker.workerId)" title="Push On Worker"
+                class="btn btn-sm btn-outline-light">{{worker.workerId}}</button>
             </div>
 
             <div class="btn-group" role="group" aria-label="First group">
-              <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)" title="Pause Task"
-                class="btn btn-sm btn-outline-light fa fa-pause"></button>
+              <button type="submit" queryParamsHandling="merge" (click)="stopTask(task.analysisTaskId)"
+                title="Pause Task" class="btn btn-sm btn-outline-light fa fa-pause"></button>
             </div>
           </div>
         </div>
@@ -133,13 +137,16 @@
           <b> Kind :</b> {{task.type}}
         </div>
         <div class="col-sm">
-          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation" (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
+          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation"
+            (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
         </div>
         <div class="col-sm">
-          <b> Analysis Range Start Date :</b> <span *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+          <b> Analysis Range Start Date : </b> <span
+            *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
         </div>
         <div class="col-sm">
-          <b> Analysis Range End Date :</b> <span *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+          <b> Analysis Range End Date : </b> <span
+            *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
         </div>
         <div class="col-3">
 
@@ -149,41 +156,86 @@
   </ul>
 
   <br />
-  <h2>Completed Tasks</h2>
+  <h2>Completed Tasks <small>({{completedTaskList?.length}})</small></h2>
   <hr />
   <ul *ngFor="let task of completedTaskList" class="list-group text-white mb-1">
-    <div *ngIf="task.scheduling.status == 'COMPLETED'">
-      <li class="list-group-item bg-secondary">
-        <div class="row">
-          <div class="col-sm">
-            <h5 >Project : {{task.analysisTaskId.split(":")[0]}} - Task : {{task.label}}</h5>
-          </div>
-          <div class="col-sm">
-            <b> Task Start Date : </b> <span *ngIf="task.scheduling.executionTaskStartDate">{{task.scheduling.executionTaskStartDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
-          </div>
-          <div class="col-sm">
-            <b> Task End Date : </b> <span *ngIf="task.scheduling.executionTaskFinishDate">{{task.scheduling.executionTaskFinishDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
-          </div>
-          <div class="col-sm">
-            <b> Total Analysis Duration : </b> <span *ngIf="task.scheduling.totalAnalysisDuration">{{displayTime(task.scheduling.totalAnalysisDuration)}}</span>
-          </div>
+    <li class="list-group-item bg-secondary">
+      <div class="row">
+        <div class="col-sm">
+          <h5>Project : {{task.analysisTaskId.split(":")[0]}} <br> Task : {{task.label}}</h5>
         </div>
-        <div class="row">
-          <div class="col-sm">
-            <b> Kind :</b> {{task.type}}
-          </div>
-          <div class="col-sm">
-            <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation" (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
-          </div>
-          <div class="col-sm">
-            <b> Analysis Range Start Date : </b> <span *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
-          </div>
-          <div class="col-sm">
-            <b> Analysis Range End Date : </b> <span *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
-          </div>
+        <div class="col-sm">
+          <b> Task Start Date : </b> <span
+            *ngIf="task.scheduling.executionTaskStartDate">{{task.scheduling.executionTaskStartDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
         </div>
-      </li>
-    </div>
+        <div class="col-sm">
+          <b> Task End Date : </b> <span
+            *ngIf="task.scheduling.executionTaskFinishDate">{{task.scheduling.executionTaskFinishDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Total Analysis Duration : </b> <span
+            *ngIf="task.scheduling.totalAnalysisDuration">{{displayTime(task.scheduling.totalAnalysisDuration)}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <b> Kind :</b> {{task.type}}
+        </div>
+        <div class="col-sm">
+          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation"
+            (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range Start Date : </b> <span
+            *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range End Date : </b> <span
+            *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <br />
+  <h2>On Error Tasks <small>({{errorTaskList?.length}})</small></h2>
+  <hr />
+  <ul *ngFor="let task of errorTaskList" class="list-group text-white mb-1">
+    <li class="list-group-item bg-secondary">
+      <div class="row">
+        <div class="col-sm">
+          <h5>Project : {{task.analysisTaskId.split(":")[0]}} <br> Task : {{task.label}}</h5>
+        </div>
+        <div class="col-sm">
+          <b> Task Start Date : </b> <span
+            *ngIf="task.scheduling.executionTaskStartDate">{{task.scheduling.executionTaskStartDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Progress : </b> <span *ngIf="task.scheduling.progress != null">{{task.scheduling.progress}} %</span>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range Failed Date : </b> <span
+            *ngIf="task.scheduling.currentDate">{{task.scheduling.currentDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <b> Kind :</b> {{task.type}}
+        </div>
+        <div class="col-sm">
+          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation"
+            (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range Start Date : </b> <span
+            *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range End Date : </b> <span
+            *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+    </li>
   </ul>
 
 </div>
