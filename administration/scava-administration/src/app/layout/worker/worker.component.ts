@@ -19,6 +19,7 @@ export class WorkerComponent implements OnInit, OnDestroy {
   interval: any;
   pendingTaskList: ExecutionTask[];
   completedTaskList: ExecutionTask[];
+  errorTaskList: ExecutionTask[];
 
   constructor(
     private listWorkerService: ListWorkerService,
@@ -55,11 +56,14 @@ export class WorkerComponent implements OnInit, OnDestroy {
         let allTasks = resp as ExecutionTask[];
         this.pendingTaskList = [];
         this.completedTaskList = [];
+        this.errorTaskList = [];
         allTasks.forEach(task => {
           if (task.scheduling.status == 'PENDING_EXECUTION') {
             this.pendingTaskList.push(task);
           } else if (task.scheduling.status == 'COMPLETED') {
             this.completedTaskList.push(task);
+          } else if (task.scheduling.status == 'ERROR') {
+            this.errorTaskList.push(task);
           }
           let filteredMetricExecutions: MetricExecutions[] = [];
           task.metricExecutions.forEach(metricExecution => {
