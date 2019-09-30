@@ -46,7 +46,9 @@ public class Artifact {
 	@DBRef
 	private List<Artifact> subArtifacts;
 	private ArtifactType type;
+	@TextIndexed(weight=1)
 	private String licenseName;
+	@TextIndexed(weight=1)
 	private String licenseUrl;
 	private Boolean private_;
 	private Boolean fork;
