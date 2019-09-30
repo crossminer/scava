@@ -20,11 +20,10 @@
             <b style="white-space: nowrap">Status :</b>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
-            <span style="white-space: nowrap" *ngIf="!project?.hasTasks">Not Defined</span>
-            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'up-to-date' && project?.hasTasks">Up To
-              Date</span>
-            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis
-              In Progress</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'none'">Not Data</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'up-to-date' && project?.hasTasks">Up To Date</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'in-progress' && project?.hasTasks">Analysis In Progress</span>
+            <span style="white-space: nowrap" *ngIf="project?.globalStatus == 'error' && project?.hasTasks">Error</span>
           </div>
         </div>
         <div *ngIf="project.homePage" class="row">
