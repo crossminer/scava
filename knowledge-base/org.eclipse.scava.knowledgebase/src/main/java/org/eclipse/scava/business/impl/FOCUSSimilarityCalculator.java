@@ -136,7 +136,7 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 
 		// Store similarities in the evaluation directory
 		//reader.writeSimilarityScores(simDir, testingPro, sortedMap);
-		log.info("Focus computed similarity between %s and all other projects", testingPro);
+		log.info("Focus computed similarity between {} and all other projects", testingPro);
 		return sortedMap;
 	}
 

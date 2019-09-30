@@ -121,7 +121,7 @@ public class ArtifactsRestController {
 		return artifactRepository.findOneByMetricPlatformId(mppID);
     }
 	
-	@ApiOperation(value = "Add github project to KB. use -- instead of /")
+	@ApiOperation(value = "Add github project to KB. use <owner>--<repo>")
 	@RequestMapping(value="add/{project_name}/{access_token}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
     public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName,
     		@PathVariable("access_token") String access_token) {
