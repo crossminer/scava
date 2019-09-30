@@ -76,7 +76,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -126,7 +125,13 @@ public class GithubImporter implements IImporter {
 			p.setHomePage(rep.getHomepage());
 			p.setName(rep.getName());
 			p.setShortName(artId.split("/")[1]);
-
+			try {
+				String[] license = getLicense(rep);
+				p.setLicenseName(license[0]);
+				p.setLicenseUrl(license[1]);
+			} catch (Exception e) {
+				logger.info("License not found");
+			}
 			try {
 				p.setCommitteers(getCommitters(rep));
 			} catch (MalformedURLException e) {
@@ -209,6 +214,28 @@ public class GithubImporter implements IImporter {
 			results.add(tag);
 		}
 		return results;
+	}
+
+	private String[] getLicense(Repository rep) throws IOException {
+		String[] results = new String[2];
+		if (getRemainingResource("core") == 0)
+			waitApiCoreRate();
+		URL url;
+		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
+				+ "?access_token=" + token);
+		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
+		connection.connect();
+		InputStream is = connection.getInputStream();
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
+		String jsonText = readAll(bufferReader);
+		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
+		JSONObject license = (JSONObject) obj.get("license");
+		results[0] = (String) license.get("name");
+		results[1] = (String) license.get("url");
+
+		return results;
+
 	}
 
 	private List<Stargazers> getStargazers(Repository rep) throws IOException {
@@ -328,9 +355,9 @@ public class GithubImporter implements IImporter {
 						try {
 							RepositoryId repo = new RepositoryId(fullname.split("/")[0], fullname.split("/")[1]);
 							importProject(fullname, token);// (repo,
-													// pomFiles,
-													// pomPath,
-													// users);
+							// pomFiles,
+							// pomPath,
+							// users);
 							Files.write(Paths.get("repo2.txt"),
 									(repo.getOwner() + "/" + repo.getName() + "\n").getBytes(),
 									StandardOpenOption.APPEND);
