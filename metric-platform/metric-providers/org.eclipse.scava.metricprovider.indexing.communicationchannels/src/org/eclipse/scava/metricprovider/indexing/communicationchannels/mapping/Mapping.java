@@ -1,113 +1,113 @@
 package org.eclipse.scava.metricprovider.indexing.communicationchannels.mapping;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.scava.index.indexer.MappingStorage;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 public final class Mapping {
 
-	private static final String forumMapping = "{\n" + "  \"properties\" : {\n" + "    \"post_id\" : {\n"
-			+ "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"forum_id\" : {\n"
-			+ "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"topic_id\" : {\n"
-			+ "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"forum_name\" : {\n" + "      \"type\" : \"text\"\n"
-			+ "    },\n" + "    \"uid\" : {\n" + "      \"type\" : \"keyword\"\n" + "    },\n"
-			+ "    \"project_name\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n" + "    \"message_body\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"subject\" : {\n" + "      \"type\" : \"text\"\n"
-			+ "    },\n" + "    \"creator\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n"
-			+ "    \"created_at\" : {\n" + "      \"type\" : \"date\"\n" + "    },\n"
-			+ "    \"emotional_dimension\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n"
-			+ "    \"sentiment\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n" + "    \"plain_text\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"request_reply_classification\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"content_class\" : {\n" + "      \"type\" : \"text\"\n"
-			+ "    },\n" + "    \"contains_code\" : {\n" + "      \"type\" : \"boolean\"\n" + "    }\n" + "  }\n" + "}";
-
-	private static final String articleMapping = "{\n" + "  \"properties\" : {\n" + "    \"article_id\" : {\n"
-			+ "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"newsgroup_name\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"message_thread_id\" : {\n"
-			+ "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"uid\" : {\n" + "      \"type\" : \"keyword\"\n"
-			+ "    },\n" + "    \"project_name\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n"
-			+ "    \"message_body\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n" + "    \"subject\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"creator\" : {\n" + "      \"type\" : \"text\"\n"
-			+ "    },\n" + "    \"created_at\" : {\n" + "      \"type\" : \"date\"\n" + "    },\n"
-			+ "    \"emotional_dimension\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n"
-			+ "    \"sentiment\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n" + "    \"plain_text\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"request_reply_classification\" : {\n"
-			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"content_class\" : {\n" + "      \"type\" : \"text\"\n"
-			+ "    },\n" + "    \"contains_code\" : {\n" + "      \"type\" : \"boolean\"\n" + "    }\n" + "  }\n" + "}";
-
-	private static final String newsgroupMapping = articleMapping;
-
-	private static final String mboxMapping = articleMapping;
-
-	private static final String discussionMapping = articleMapping;
-
-	private static final String sympaMapping = articleMapping;
-
-	private static final String ircMapping = articleMapping;
-
-	// =======================================================================
-
-	/**
-	 * Return the mapping for the source based upon the documentType
-	 * 
-	 * @param documentType
-	 * @return mapping
-	 */
-	public static String getMapping(String documentType) {
-
-		switch (documentType) {
-
-		case "forum.post":
-
-			return getForumMapping();
-
-		case "newsgroup.article":
-
-			return getNewsgroupMapping();
-
-		case "sympa.mail":
-
-			return getSympaMapping();
-
-		case "discussion.post":
-
-			return getDiscussionMapping();
-
-		case "mbox.mail":
-
-			return getMboxMapping();
-
-		case "irc.message":
-
-			return getIrcMapping();
-
-		default:
-			System.err.println("No Mapping found for " + documentType);
-			return "";
-
+	private static Mapping singleton = new Mapping();
+	private String mappingsPath = "/mappings/"; 
+	private String dictionnaryName = "mappingsDictionary.txt";
+	private HashMap<String,MappingStorage> mappings;
+	protected static OssmeterLogger logger;
+	
+	private Mapping()
+	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("indexing.bugs.mapping");
+		String documentType;
+		Pattern versionFinder = Pattern.compile("\"mapping_version\"\\s*:\\s*\"([^\"]+)\"");
+		mappings=new HashMap<String,MappingStorage>();
+		try {
+			String[] mappingsToRead = loadFile(dictionnaryName).split("\n");
+			
+			for(String mappingName : mappingsToRead)
+			{
+				if(mappingName.isEmpty())
+					continue;
+				documentType=mappingName.replace("_", ".");
+				mappings.put(documentType, loadMapping(mappingName+".json", versionFinder));
+				logger.info("Mapping for: "+mappingName + " has been loaded.");
+			}
+		} catch (InputMismatchException | IOException e) {
+			logger.error("Error while loading the indexing mappings:", e);
+			e.printStackTrace();
 		}
 	}
-
-	// =======================================================================
-
-	private static String getNewsgroupMapping() {
-		return newsgroupMapping;
+	
+	private MappingStorage loadMapping(String fileToRead, Pattern versionFinder) throws InputMismatchException, IOException
+	{
+		
+		String mappingString = loadFile(fileToRead);
+		Matcher m = versionFinder.matcher(mappingString);
+		if(m.find())
+		{
+			return new MappingStorage(mappingString, Float.valueOf(m.group(1)));
+		}
+		logger.error("Invalid mapping, please add a mapping_version number in the _meta section");
+		return null;
 	}
-
-	private static String getForumMapping() {
-		return forumMapping;
+	
+	private String loadFile(String fileToRead) throws InputMismatchException, IOException 
+	{
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream resource = cl.getResourceAsStream(mappingsPath+fileToRead);
+		//Method to read inside Eclipse
+		if(resource==null)
+		{
+			String path = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+			if (path.endsWith("bin/"))
+				path = path.substring(0, path.lastIndexOf("bin/"));
+			if (path.endsWith("target/classes/"))
+				path = path.substring(0, path.lastIndexOf("target/classes/"));
+			File file= new File(path+mappingsPath+fileToRead);
+			if(!Files.exists(file.toPath()))
+				throw new FileNotFoundException("The file "+mappingsPath+fileToRead+" has not been found");
+			else
+				resource=new FileInputStream(file);
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+		String content = "";
+		String line;
+		while((line = br.readLine()) != null)
+		{
+				content+=line+"\n";
+		}
+		br.close();
+		resource.close();
+		return content;
 	}
-
-	private static String getDiscussionMapping() {
-		return discussionMapping;
+	
+	public static MappingStorage getMapping(String documentType) {
+		
+		if(documentType.equals("thread"))
+			return getMappingGeneric("thread");
+		else
+			return getMappingGeneric("article");
+		
 	}
-
-	private static String getSympaMapping() {
-		return sympaMapping;
-	}
-
-	private static String getIrcMapping() {
-		return ircMapping;
-	}
-
-	private static String getMboxMapping() {
-		return mboxMapping;
+	
+	private static MappingStorage getMappingGeneric(String documentType)
+	{
+		if(singleton.mappings.containsKey(documentType))
+			return singleton.mappings.get(documentType);
+		else
+		{
+			logger.error("No mapping found for " + documentType);
+			return null;
+		}
 	}
 
 }

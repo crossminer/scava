@@ -10,11 +10,15 @@
 package org.eclipse.scava.metricprovider.indexing.communicationchannels;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ArticleDocument;
-import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ForumPostDocument;
+import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.DocumentAbstract;
+import org.eclipse.scava.metricprovider.indexing.communicationchannels.document.ThreadDocument;
 import org.eclipse.scava.metricprovider.indexing.communicationchannels.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
@@ -27,6 +31,15 @@ import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPr
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssueTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model.NewsgroupMigrationIssueMaracas;
+import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model.NewsgroupsMigrationIssueMaracasTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.NewsgroupsThreadsTransMetric;
+import org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing;
 import org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.PlainTextProcessingTransMetric;
@@ -55,6 +68,7 @@ import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -73,7 +87,21 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	protected MetricProviderContext context;
 	protected List<IMetricProvider> uses;
 	protected PlatformCommunicationChannelManager platformCommunicationChannelManager;
-
+	
+	
+	private List<String> metricsToIndex;
+	private PlainTextProcessingTransMetric commChannelPlainTextData;
+	private EmotionClassificationTransMetric commChannelEmotionData;
+	private SentimentClassificationTransMetric commChannelCommentsSentimentData;
+	private DetectingCodeTransMetric commChannelDetectingCodeData;
+	private RequestReplyClassificationTransMetric commChannelRequestReplyData;
+	private NewsgroupsContentClassesTransMetric commChannelContentClassificationData;
+	private NewsgroupsThreadsTransMetric commChannelThreadsData;
+	private NewsgroupsMigrationIssueTransMetric commChannelMigrationData;
+	private NewsgroupsMigrationIssueMaracasTransMetric commChannelMigrationMaracasData;
+	
+	private ThreadsByArticle threadsByArticle;
+	
 	public final static String NLP = "nlp";// knowledge type.
 
 	protected OssmeterLogger logger;
@@ -144,393 +172,320 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 	@Override
 	public void measure(Project project, ProjectDelta projectDelta, Indexing db) {
-		System.err.println("Indexing Communication Channels");
-		CommunicationChannelProjectDelta communicationChannelProjectDelta = projectDelta.getCommunicationChannelDelta();
-
-		for (CommunicationChannelDelta delta : communicationChannelProjectDelta.getCommunicationChannelSystemDeltas()) {
-
-			CommunicationChannel communicationChannel = delta.getCommunicationChannel();
-
-			if (communicationChannel instanceof NntpNewsGroup) {
-
-				NntpNewsGroup newsGroup = (NntpNewsGroup) communicationChannel;
-				String newsgroupName = newsGroup.getNewsGroupName();
-				prepareArticle(project, projectDelta, delta, "newsgroup.article", newsgroupName);
-
-			} else if (communicationChannel instanceof EclipseForum) {
-
-				// forums are handled in a unquie way due to the way we want them stored in ES
-				prepareForum(project, projectDelta, delta);
-
-			} else if (communicationChannel instanceof Discussion) {
-				// FIXME - how do we handle these? As they do not have a name defined in the
-				// Discussion object
-				String discussionName = projectDelta.getProject().getName();
-				prepareArticle(project, projectDelta, delta, "discussion.post", discussionName);
-
-			} else if (communicationChannel instanceof SympaMailingList) {
-
-				SympaMailingList sympaMailingList = (SympaMailingList) communicationChannel;
-				String mailinglistName = sympaMailingList.getMailingListName();
-				prepareArticle(project, projectDelta, delta, "sympa.mail", mailinglistName);
-
-			}else if (communicationChannel instanceof Irc) {
-				 Irc ircChat = (Irc) communicationChannel;
-				 String chatName = ircChat.getName();
-				 prepareArticle(project, projectDelta, delta, "irc.message", chatName);
-				 
-			} else if (communicationChannel instanceof Mbox) {
-
-				Mbox mbox = (Mbox) communicationChannel;
-				String mboxName = mbox.getMboxName();
-				prepareArticle(project, projectDelta, delta, "mbox.mail", mboxName);
-
-			} else {
-
-				System.out.println("this " + delta.getCommunicationChannel().getCommunicationChannelType()
-						+ "of communication channel is currently not supported by the indexer");
+		
+		loadMetricsDB(project);
+		if(metricsToIndex.size()>0)
+		{
+			String projectName = project.getName();
+			String ccType;
+			String collectionName;
+			String documentType;
+			
+			CommunicationChannelProjectDelta communicationChannelProjectDelta = projectDelta.getCommunicationChannelDelta();
+	
+			for (CommunicationChannelDelta delta : communicationChannelProjectDelta.getCommunicationChannelSystemDeltas()) {
+	
+				CommunicationChannel communicationChannel = delta.getCommunicationChannel();
+	
+				if (communicationChannel instanceof NntpNewsGroup) {
+					collectionName = ((NntpNewsGroup) communicationChannel).getNewsGroupName();
+					ccType="newsgroup";
+					documentType="article";
+				} else if (communicationChannel instanceof EclipseForum) {
+					collectionName = ((EclipseForum) communicationChannel).getForum_name();
+					ccType="eclipse-forum";
+					documentType="post";
+				} else if (communicationChannel instanceof Discussion) {
+					collectionName = communicationChannel.getUrl();
+					ccType="discussion";
+					documentType="post";
+				} else if (communicationChannel instanceof SympaMailingList) {
+					collectionName = ((SympaMailingList) communicationChannel).getMailingListName();
+					ccType="sympa";
+					documentType="mail";
+				}else if (communicationChannel instanceof Irc) {
+					collectionName=((Irc) communicationChannel).getName();
+					ccType="irc";
+					documentType="message";
+				} else if (communicationChannel instanceof Mbox) {
+					collectionName=((Mbox) communicationChannel).getMboxName();
+					ccType="mbox";
+					documentType="mail";
+				} else {
+					System.out.println("this " + delta.getCommunicationChannel().getCommunicationChannelType()
+							+ "of communication channel is currently not supported by the indexer");
+					continue;
+				}
+				if(metricsToIndex.contains("org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider"))
+				{
+					//We prevent indexing when there has not been any new articles, and the threads will be still the same
+					if(delta.getArticles().size()>0)
+					{
+						threadsByArticle = new ThreadsByArticle();
+						for(ThreadData threadData :searchThreads(communicationChannel.getOSSMeterId()))
+						{
+							prepareThread(projectName, ccType, collectionName, threadData);
+						}
+					}
+				}
+				for (CommunicationChannelArticle article : delta.getArticles()) {
+					prepareArticle(projectName, ccType, documentType, collectionName, article);
+				}
 			}
-
 		}
 
 	}
-
-	/**
-	 * Prepares a elements relating to Forums
-	 * 
-	 * @param project
-	 * @param communicationChannelDelta
-	 * @param projectDelta
-	 */
-	private void prepareForum(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta) {
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		// Note - Forums are treated internally as Articles, but are indexed as 'posts
-
-		for (CommunicationChannelArticle article : delta.getArticles()) {
-
-			String documentType = "forum.post";
-			EclipseForum eclipseForum = (EclipseForum) article.getCommunicationChannel();
-
-			String indexName = Indexer.generateIndexName(
-					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
-
-			String uniqueIdentifier = generateUniqueDocumentId(projectDelta, article.getArticleId(),
-					delta.getCommunicationChannel().getCommunicationChannelType());
-
-			String mapping = Mapping.getMapping(documentType);
-
-			EnrichmentData enrichmentData = getEnrichmentData(article, project);
-
-			ForumPostDocument enrichedDocument = enrichForumPostDocument(
-					new ForumPostDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), eclipseForum.getForum_id(), article.getMessageThreadId(),
-							article.getArticleId(), article.getSubject(), eclipseForum.getForum_name()),
-					enrichmentData);
-
-			String document;
-
-			try {
-
-				document = mapper.writeValueAsString(enrichedDocument);
-				Indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
-
-			} catch (JsonProcessingException e) {
-				logger.error("Error while indexing document: ", e);
-				e.printStackTrace();
-			}
-
-		}
-
+	
+	private Iterable<ThreadData> searchThreads(String OSSMeterId)
+	{
+		Iterable<ThreadData> iterator = commChannelThreadsData.getThreads().find(
+				ThreadData.NEWSGROUPNAME.eq(OSSMeterId)
+				);
+		return iterator;
 	}
-
-	/**
-	 * Prepares a elements relating to NewsGroups
-	 * 
-	 * @param project
-	 * @param communicationChannelDelta
-	 * @param projectDelta
-	 */
-	private void prepareArticle(Project project, ProjectDelta projectDelta, CommunicationChannelDelta delta,
-			String docType, String collectionName) {
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		for (CommunicationChannelArticle article : delta.getArticles()) { // Articles
-
-			String documentType = docType;
-
-			String indexName = Indexer.generateIndexName(
-					delta.getCommunicationChannel().getCommunicationChannelType().toLowerCase(), documentType, NLP);
-
-			String uniqueIdentifier = generateUniqueDocumentId(projectDelta, article.getArticleId(),
-					delta.getCommunicationChannel().getCommunicationChannelType());
-
-			String mapping = Mapping.getMapping(documentType);
-
-			EnrichmentData enrichmentData = getEnrichmentData(article, project);
-
-			ArticleDocument enrichedDocument = enrichNewsGroupDocument(
-					new ArticleDocument(uniqueIdentifier, project.getName(), article.getText(), article.getUser(),
-							article.getDate(), collectionName, article.getSubject(), article.getMessageThreadId(),
-							article.getArticleNumber(), article.getArticleId()),
-					enrichmentData);
-
-			String document;
-
-			try {
-
-				document = mapper.writeValueAsString(enrichedDocument);
-				Indexer.indexDocument(indexName, mapping, documentType, uniqueIdentifier, document);
-
-			} catch (JsonProcessingException e) {
-				logger.error("Error while indexing document: ", e);
-				e.printStackTrace();
-			}
-
-		}
-
+	
+	private void prepareThread(String projectName, String ccType, String collectionName, ThreadData threadData)
+	{
+		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, String.valueOf(threadData.getThreadId()));
+		ThreadDocument td = new ThreadDocument(uid,
+											projectName,
+											collectionName,
+											threadData.getThreadId(),
+											threadData.getSubject());	
+		for(long articleId : threadData.getArticleNumbers())
+			threadsByArticle.addThread(articleId, threadData.getThreadId());
+		enrichThread(threadData, td);
+		indexing(ccType, "thread", uid, td);
 	}
-
-	/**
-	 * This method returns an EnrichmentData object which contains additional fields
-	 * and values from various metrics.
-	 * 
-	 * @param article
-	 * @param project
-	 * @return
-	 */
-
-	private EnrichmentData getEnrichmentData(CommunicationChannelArticle article, Project project) {
-
-		EnrichmentData enrichmentData = new EnrichmentData();
-
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0))
-				.adapt(context.getProjectDB(project));
-
-		for (String metricIdentifier : indexPrepTransMetric.getExecutedMetricProviders().first()
-				.getMetricIdentifiers()) {
-
-			switch (metricIdentifier) {
-
-			// TODO - add Threads
-
-			case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
-
-				PlainTextProcessingTransMetric commChannelPlainTextData = new PlainTextProcessingTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
+		
+	private void prepareArticle(String projectName, String ccType, String documentType, String collectionName, CommunicationChannelArticle article)
+	{
+		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, String.valueOf(article.getArticleNumber()));
+		ArticleDocument ad = new ArticleDocument(uid,
+												projectName,
+												collectionName,
+												article.getArticleNumber(),
+												article.getSubject(),
+												article.getText(),
+												article.getUser(),
+												article.getDate());
+		enrichArticle(article, ad);
+		indexing(ccType, documentType, uid, ad);
+	}
+	
+	private void enrichThread(ThreadData threadData, ThreadDocument td)
+	{
+		for (String metricIdentifier : metricsToIndex)
+		{
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider":
+				{
+					NewsgroupsMigrationIssue migrationIssue = findCollection(commChannelMigrationData,
+																			NewsgroupsMigrationIssue.class,
+																			commChannelMigrationData.getNewsgroupsMigrationIssues(),
+																			threadData);
+					if(migrationIssue!=null)
+					{
+						td.setMigration_issue(true);
+					}
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider":
+				{
+					NewsgroupMigrationIssueMaracas migrationIssueMaracas = findCollection(commChannelMigrationMaracasData,
+																						NewsgroupMigrationIssueMaracas.class,
+																						commChannelMigrationMaracasData.getNewsgroupsMigrationIssuesMaracas(),
+																						threadData);
+					if(migrationIssueMaracas!=null)
+					{
+						List<String> changes = migrationIssueMaracas.getChanges();
+						List<Double> scores = migrationIssueMaracas.getMatchingPercentage();
+						for(int i=0; i<changes.size(); i++)
+						{
+							td.addProblematic_change(changes.get(i), scores.get(i));
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	private void loadMetricsDB(Project project)
+	{
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0)).adapt(context.getProjectDB(project));
+		metricsToIndex=indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers();
+		for(String metricIdentifier : metricsToIndex)
+		{
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
+				{
+					commChannelPlainTextData = new PlainTextProcessingTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
+				{
+					commChannelEmotionData = new EmotionClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
+				{
+					commChannelCommentsSentimentData = new SentimentClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
+				{
+					commChannelDetectingCodeData = new DetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
+				{
+					commChannelRequestReplyData = new RequestReplyClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider":
+				{
+					commChannelContentClassificationData = new ContentClassesTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
+				{
+					commChannelThreadsData = new ThreadsTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider":
+				{
+					commChannelMigrationData = new NewsgroupsMigrationIssueTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider":
+				{
+					commChannelMigrationMaracasData = new NewsgroupsMigrationIssueMaracasTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				
+			}
+		}
+	}
+	
+	private void enrichArticle(CommunicationChannelArticle article, ArticleDocument articleDocument)
+	{
+		for (String metricIdentifier : metricsToIndex)
+		{
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
+				{
 					NewsgroupArticlePlainTextProcessing plainTextData = findCollection(commChannelPlainTextData,
 							NewsgroupArticlePlainTextProcessing.class, commChannelPlainTextData.getNewsgroupArticles(),
 							article);
 
 					if (!plainTextData.getPlainText().isEmpty()) {
-
 						String plaintext = String.join(" ", plainTextData.getPlainText());
-						enrichmentData.setPlain_text(plaintext);
-
+						articleDocument.setPlain_text(plaintext);
 					}
-				break;
-			// EMOTION
-			case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
-
-				EmotionClassificationTransMetric commChannelEmotionData = new EmotionClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
+				{
+					for(Integer threadId : threadsByArticle.getThreads(article.getArticleNumber()))
+					{
+						if(threadId!=null)
+							articleDocument.addThread_id(threadId);
+					}	
+					break;
+				}
+				// EMOTION
+				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
+				{
+	
 					List<String> emotionData = findCollection(commChannelEmotionData,
 							NewsgroupArticlesEmotionClassification.class, commChannelEmotionData.getNewsgroupArticles(),
 							article).getEmotions();
 
-					for (String dimension : emotionData) {
-
-						enrichmentData.addEmotionalDimension(dimension);
-
-					}
-
-				break;
-
-			// SENTIMENT
-			case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
-
-				SentimentClassificationTransMetric commChannelCommentsSentimentData = new SentimentClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
+					for (String dimension : emotionData)
+						articleDocument.addEmotional_dimension(dimension);
+					break;
+				}
+				// SENTIMENT
+				case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
+				{
 					NewsgroupArticlesSentimentClassification sentimentData = findCollection(
 							commChannelCommentsSentimentData, NewsgroupArticlesSentimentClassification.class,
 							commChannelCommentsSentimentData.getNewsgroupArticles(), article);
 
-					if (sentimentData != null) {
-
-						enrichmentData.setSentiment(sentimentData.getPolarity());
-
-					}
-
-				break;
-
-			// DETECTING CODE
-			case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
-
-				DetectingCodeTransMetric commChannelDetectingCodeData = new DetectingCodeTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
+					if (sentimentData != null)
+						articleDocument.setSentiment(sentimentData.getPolarity());
+					break;
+				}
+				// DETECTING CODE
+				case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
+				{
 					NewsgroupArticleDetectingCode detectingcodeData = findCollection(commChannelDetectingCodeData,
 							NewsgroupArticleDetectingCode.class, commChannelDetectingCodeData.getNewsgroupArticles(),
 							article);
 
 					if (detectingcodeData != null) {
-
-						if (!detectingcodeData.getCode().isEmpty()) {
-
-							enrichmentData.setCode(true);
-							
-						} else {
-							
-							enrichmentData.setCode(false);
-
-						}
+						if (!detectingcodeData.getCode().isEmpty())
+							articleDocument.setContains_code(true);
+						else
+							articleDocument.setContains_code(false);
 					}
-
-				break;
-
-			// REQUEST REPLY
-			case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
-				RequestReplyClassificationTransMetric commChannelRequestReplyData = new RequestReplyClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-
+	
+					break;
+				}
+				// REQUEST REPLY
+				case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
+				{
 					NewsgroupArticles requestReplyData = findCollection(commChannelRequestReplyData,
 							NewsgroupArticles.class, commChannelRequestReplyData.getNewsgroupArticles(), article);
 
-					if (requestReplyData!= null) {
-
-						enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
-
-					}
-
-				break;
-
-			// Content Classification
-			case "org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider":
-				NewsgroupsContentClassesTransMetric commChannelContentClassificationData = new ContentClassesTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-
+					if (requestReplyData!= null)
+						articleDocument.setRequest_reply_classification(requestReplyData.getClassificationResult());
+					break;
+				}
+				// Content Classification
+				case "org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider":
+				{
 					ContentClass contentClassData = findCollection(commChannelContentClassificationData,
-							ContentClass.class, commChannelContentClassificationData.getContentClasses(), article);
-
-					if (contentClassData != null) {
-
-						enrichmentData.setContent_class(contentClassData.getClassLabel());
-
-					}
-
-				break;
+								ContentClass.class, commChannelContentClassificationData.getContentClasses(), article);
+	
+					if (contentClassData != null)
+						articleDocument.setContent_class(contentClassData.getClassLabel());
+	
+					break;
+				}
 			}
 		}
-
-		return enrichmentData;
-
 	}
-
-	private ForumPostDocument enrichForumPostDocument(ForumPostDocument document, EnrichmentData enrichmentData) {
-
-		// emotions
-		if (enrichmentData.getEmotionalDimensions() != null) {
-			for (String emotion : enrichmentData.getEmotionalDimensions()) {
-				document.getEmotional_dimension().add(emotion);
-			}
+	
+	private void indexing(String ccType, String documentType, String uid, DocumentAbstract document)
+	{
+		try {
+			Indexer.indexDocument(Indexer.generateIndexName(ccType, documentType, NLP),
+					Mapping.getMapping(documentType),
+					documentType,
+					uid,
+					new ObjectMapper().setSerializationInclusion(Include.NON_NULL).writeValueAsString(document));
+		} catch (JsonProcessingException e) {
+			logger.error("Error while processing json:", e);
+			e.printStackTrace();
 		}
-
-		// plainText
-		if (enrichmentData.getPlain_text() != null) {
-			document.setPlain_text(enrichmentData.getPlain_text());
-		}
-
-		// detecting Code
-		if (enrichmentData.getCode() != null) {
-			document.setContains_code(enrichmentData.getCode());
-		}
-
-		// request Reply
-		if (enrichmentData.getCode() != null) {
-			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
-		}
-
-		// content class
-		if (enrichmentData.getContent_class() != null) {
-			document.setContent_class(enrichmentData.getContent_class());
-		}
-
-		// sentiment
-		if (enrichmentData.getSentiment() != null) {
-			document.setSentiment(enrichmentData.getSentiment());
-		}
-		return document;
-	}
-
-	private ArticleDocument enrichNewsGroupDocument(ArticleDocument document, EnrichmentData enrichmentData) {
-
-		// emotions
-		if (enrichmentData.getEmotionalDimensions() != null) {
-			for (String emotion : enrichmentData.getEmotionalDimensions()) {
-				document.getEmotional_dimension().add(emotion);
-			}
-		}
-
-		// plainText
-		if (enrichmentData.getPlain_text() != null) {
-			document.setPlain_text(enrichmentData.getPlain_text());
-		}
-
-		// detecting Code
-		if (enrichmentData.getCode() != null) {
-			document.setContains_code(enrichmentData.getCode());
-		}
-
-		// request Reply
-		if (enrichmentData.getCode() != null) {
-			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
-		}
-
-		// content class
-		if (enrichmentData.getContent_class() != null) {
-			document.setContent_class(enrichmentData.getContent_class());
-		}
-
-		// sentiment
-		if (enrichmentData.getSentiment() != null) {
-			document.setSentiment(enrichmentData.getSentiment());
-		}
-		return document;
 	}
 
 	/**
 	 * This method returns a unique Identifier based upon the SourceType, Project,
 	 * Document Type and source ID;
+	 * @param string 
 	 * 
 	 * @return String uid - a uniquely identifiable string.
 	 */
-	private String generateUniqueDocumentId(ProjectDelta projectDelta, String id, String bugTrackerType) {
-
-		String projectName = projectDelta.getProject().getName();
-		String uid = bugTrackerType + " " + projectName + " " + id;
-		return uid;
+	private String generateUniqueDocumentId(String projectName, String type, String mainTypeId, String subTypeId) {
+		return type + " " + projectName + " " + mainTypeId+ " "+ subTypeId;
 	}
 
-	/**
-	 * This method finds a collection created by a metric provider relating to
-	 * newsgroup articles
-	 * 
-	 * 
-	 * @param db
-	 * @param type
-	 * @param collection
-	 * @param article
-	 * @return
-	 */
-
-	// TODO add support for IRC, Sympa, MailBox
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			CommunicationChannelArticle article) {
 
@@ -545,7 +500,22 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 
 		return output;
 	}
+	
+	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
+			ThreadData threadData) {
 
+		T output = null;
+
+		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(threadData.getNewsgroupName()),
+				getNumericalQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
+
+		for (T t : iterator) {
+			output = t;
+		}
+
+		return output;
+	}
+	
 	private <T extends Pongo> StringQueryProducer getStringQueryProducer(Class<T> type, T t, String field) {
 
 		try {
@@ -570,6 +540,39 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private class ThreadsByArticle
+	{
+		HashMap<Long, Set<Integer>> threadsByArticle;
+		
+		public ThreadsByArticle() {
+			threadsByArticle = new HashMap<Long, Set<Integer>>(); 
+		}
+		
+		public void addThread(long articleId, int threadId)
+		{
+			Set<Integer> threads;
+			if(!threadsByArticle.containsKey(articleId))
+				threads = new HashSet<Integer>();
+			else
+				threads=threadsByArticle.get(articleId);
+			if(!threads.contains(threadId))
+			{
+				threads.add(threadId);
+				threadsByArticle.put(articleId, threads);
+			}
+		}
+		
+		public Set<Integer> getThreads(long articleId)
+		{
+			if(threadsByArticle.containsKey(articleId))
+				return threadsByArticle.get(articleId);
+			else
+				return new HashSet<Integer>();
+		}
+
+		
 	}
 
 }

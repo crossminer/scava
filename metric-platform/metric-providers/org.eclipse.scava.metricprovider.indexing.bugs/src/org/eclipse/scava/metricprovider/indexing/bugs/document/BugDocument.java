@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.bugs.document;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class BugDocument {
+public class BugDocument extends DocumentAbstract {
 
 	private Date created_at;
 	private String bug_summary;
@@ -19,13 +21,14 @@ public class BugDocument {
 	private String bug_id;
 	private String project_name;
 	private String creator;
-	private String uid;
+	private MigrationIssue migration_issue;
+	
 
-	public BugDocument(String uid, String bugID, String projectName, String body, Date created_at, String creator) {
+	public BugDocument(String uid, String bugID, String projectName, String summary, Date created_at, String creator) {
 		this.uid = uid;
 		this.bug_id = bugID;
 		this.project_name = projectName;
-		this.bug_summary = body;
+		this.bug_summary = summary;
 		this.created_at = created_at;
 		this.creator = creator;
 	}
@@ -34,14 +37,10 @@ public class BugDocument {
 		return project_name;
 	}
 
-	public void setProjectName(String project) {
-		this.project_name = project;
-	}
-
 	/**
-	 * @return the body
+	 * @return the summary
 	 */
-	public String getBody() {
+	public String getSummary() {
 		return bug_summary;
 	}
 
@@ -59,30 +58,6 @@ public class BugDocument {
 		return created_at;
 	}
 
-	/**
-	 * @param body
-	 *            the body to set
-	 */
-	public void setBody(String body) {
-		this.bug_summary = body;
-	}
-
-	/**
-	 * @param creator
-	 *            the creator to set
-	 */
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	/**
-	 * @param created_at
-	 *            the created_at to set
-	 */
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-
 	public String getSeverity() {
 		return severity;
 	}
@@ -98,20 +73,67 @@ public class BugDocument {
 	public String getProject_name() {
 		return project_name;
 	}
-
-	public String getUid() {
-		return uid;
+	
+	public void setMigration_issue(boolean found)
+	{
+		migration_issue=new MigrationIssue(found);
 	}
-
-	public void setBug_id(String bug_id) {
-		this.bug_id = bug_id;
+	
+	public MigrationIssue getMigration_issue() {
+		return migration_issue;
 	}
-
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
+	
+	public void addProblematic_change(String change, Double matching_score)
+	{
+		if(migration_issue==null)
+			migration_issue=new MigrationIssue(true);
+		migration_issue.addProblematicChange(change, matching_score);
 	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
+	
+	private class MigrationIssue
+	{
+		private boolean found;
+		List<ProblematicChange> problematic_changes;
+		
+		public MigrationIssue(boolean found) {
+			this.found=found;
+		}
+		
+		public void addProblematicChange(String change, Double matching_score)
+		{
+			if(problematic_changes==null)
+			{
+				problematic_changes=new ArrayList<BugDocument.MigrationIssue.ProblematicChange>();
+			}
+			problematic_changes.add(new ProblematicChange(change, matching_score));
+		}
+		
+		public List<ProblematicChange> getProblematic_changes() {
+			return problematic_changes;
+		}
+		
+		public boolean getFound()
+		{
+			return found;
+		}
+		
+		private class ProblematicChange
+		{
+			String change;
+			Double matching_score;
+			
+			public ProblematicChange(String change, Double matching_score) {
+				this.change = change;
+				this.matching_score = matching_score;
+			}
+			
+			public Double getMatching_score() {
+				return matching_score;
+			}
+			
+			public String getChange() {
+				return change;
+			}
+		}
 	}
 }

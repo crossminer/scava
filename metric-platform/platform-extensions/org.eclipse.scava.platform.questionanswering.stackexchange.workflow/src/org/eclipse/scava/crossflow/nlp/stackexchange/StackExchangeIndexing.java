@@ -4,6 +4,7 @@ import org.eclipse.scava.crossflow.nlp.stackexchange.gen.Document;
 import org.eclipse.scava.crossflow.nlp.stackexchange.gen.IndexerBase;
 import org.eclipse.scava.crossflow.nlp.stackexchange.gen.Post;
 import org.eclipse.scava.index.indexer.Indexer;
+import org.eclipse.scava.index.indexer.MappingStorage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +15,9 @@ public class StackExchangeIndexing extends IndexerBase {
 	private static final String DOCUMENT_TYPE = "post";
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
-	private static final String MAPPING = "{\n" + "  \"properties\" : {\n" + "    \"uid\" : {\n"
+	private static final MappingStorage MAPPING = new MappingStorage("{\n" + "\"_meta\" : {\n" + 
+			"		\"mapping_version\" : \"1.0\"\n" + 
+			"	},  \"properties\" : {\n" + "    \"uid\" : {\n"
 			+ "      \"type\" : \"text\"\n" + "    },\n" + "    \"project_name\" : {\n" + "      \"type\" : \"text\"\n"
 			+ "    },\n" + "    \"post_id\" : {\n" + "      \"type\" : \"keyword\"\n" + "    },\n"
 			+ "    \"parent_id\" : {\n" + "      \"type\" : \"keyword\"\n" + "    },\n" + "    \"creator\" : {\n"
@@ -33,7 +36,7 @@ public class StackExchangeIndexing extends IndexerBase {
 			+ "    \"comment_count\" : {\n" + "      \"type\" : \"integer\"\n" + "    },\n"
 			+ "    \"favourite count\" : {\n" + "      \"type\" : \"integer\"\n" + "    },\n"
 			+ "    \"plain_text\" : {\n" + "      \"type\" : \"text\"\n" + "    },\n" + "    \"contains_code\" : {\n"
-			+ "      \"type\" : \"boolean\"\n" + "    }\n" + "  }\n" + "}";
+			+ "      \"type\" : \"boolean\"\n" + "    }\n" + "  }\n" + "}", (float) 1.0);
 
 	@Override
 	public void consumeIndexingQueue(Post post) {

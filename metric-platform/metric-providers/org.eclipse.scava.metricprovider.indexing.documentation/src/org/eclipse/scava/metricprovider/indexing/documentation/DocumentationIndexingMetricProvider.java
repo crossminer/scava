@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
+import org.eclipse.scava.index.indexer.MappingStorage;
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.document.DocumentationEntryDocument;
 import org.eclipse.scava.metricprovider.indexing.documentation.mapping.Mapping;
@@ -45,6 +46,7 @@ import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -61,6 +63,14 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 	protected PlatformCommunicationChannelManager communicationChannelManager;
 	
 	protected OssmeterLogger logger;
+	
+	private List<String> metricToIndex;
+	private DocumentationPlainTextTransMetric plainTextDB;
+	private DocumentationDetectingCodeTransMetric detectingCodeDB;
+	private DocumentationReadabilityTransMetric readabilityDB;
+	private DocumentationSentimentTransMetric sentimentDB;
+	private DocumentationClassificationTransMetric classificationDB;
+	private DocumentationLicenseTransMetric licenseDB;
 	
 	private final static String KNOWLEDGE = "nlp";// knowledge type.
 	
@@ -126,13 +136,14 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		DocumentationTransMetric documentationProcessor = ((DocumentationTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
 		
 		String projectName = delta.getProject().getName();
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
 		String documentType;
 		String indexName="";
 		String uid;
-		String mapping;
+		MappingStorage mapping;
 		String document="";
 		
+		loadMetricsDB(project);
 		
 		//Documentation
 		Iterable<Documentation> documentationIt = documentationProcessor.getDocumentation();
@@ -181,7 +192,7 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 					documentationEntry.getOriginalFormatName(),
 					delta.getDate().toJavaDate());
 			
-			enrichDocumentationEntryDocument(project, documentationEntry, ded);
+			enrichDocumentationEntryDocument(documentationEntry, ded);
 			
 			try {
 				document = mapper.writeValueAsString(ded);
@@ -204,19 +215,58 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		return "Documentation "+ projectName + " " + documentationId;
 	}
 	
-	private void enrichDocumentationEntryDocument(Project project, DocumentationEntry documentationEntry, DocumentationEntryDocument ded) {
-
+	private void loadMetricsDB(Project project)
+	{
 		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(1)).adapt(context.getProjectDB(project));
-
-		for (String metricIdentifier : indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers())
+		metricToIndex=indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers();
+		for (String metricIdentifier : metricToIndex)
 		{
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider":
+				{
+					plainTextDB = new DocumentationPlainTextTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider":
+				{
+					detectingCodeDB = new DocumentationDetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider":
+				{
+					readabilityDB = new DocumentationReadabilityTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider":
+				{
+					sentimentDB = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider":
+				{
+					classificationDB = new DocumentationClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider":
+				{
+					licenseDB = new DocumentationLicenseTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+			}
+		}
+	}
+	
+	private void enrichDocumentationEntryDocument(DocumentationEntry documentationEntry, DocumentationEntryDocument ded) {
 
+		for (String metricIdentifier : metricToIndex)
+		{
 			switch (metricIdentifier) 
 			{
 				// Plain Text
 				case "org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider":
 				{
-					DocumentationPlainTextTransMetric plainTextDB = new DocumentationPlainTextTransMetricProvider().adapt(context.getProjectDB(project));
+					
 					DocumentationEntryPlainText plainTextDocEntry = findCollection(plainTextDB,
 																			DocumentationEntryPlainText.class,
 																			plainTextDB.getDocumentationEntriesPlainText(),
@@ -227,7 +277,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				// CODE
 				case "org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider":
 				{
-					DocumentationDetectingCodeTransMetric detectingCodeDB = new DocumentationDetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
 					DocumentationEntryDetectingCode detectingCodeDocEntry = findCollection(detectingCodeDB,
 							 															DocumentationEntryDetectingCode.class,
 							 															detectingCodeDB.getDocumentationEntriesDetectingCode(),
@@ -241,7 +290,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//READABILITY
 				case "org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider":
 				{
-					DocumentationReadabilityTransMetric readabilityDB = new DocumentationReadabilityTransMetricProvider().adapt(context.getProjectDB(project));
 					DocumentationEntryReadability readabiliytyDocEntry = findCollection(readabilityDB,
 																						DocumentationEntryReadability.class,
 							 															readabilityDB.getDocumentationEntriesReadability(),
@@ -252,7 +300,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//SENTIMENT
 				case "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider":
 				{
-					DocumentationSentimentTransMetric sentimentDB = new DocumentationSentimentTransMetricProvider().adapt(context.getProjectDB(project));
 					DocumentationEntrySentiment sentimentDocEntry = findCollection(sentimentDB,
 																						DocumentationEntrySentiment.class,
 							 															sentimentDB.getDocumentationEntriesSentiment(),
@@ -263,7 +310,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//Classification
 				case "org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider":
 				{
-					DocumentationClassificationTransMetric classificationDB = new DocumentationClassificationTransMetricProvider().adapt(context.getProjectDB(project));
 					DocumentationEntryClassification classificationDocEntry = findCollection(classificationDB,
 																						DocumentationEntryClassification.class,
 																						classificationDB.getDocumentationEntriesClassification(),
@@ -274,7 +320,6 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 				//License
 				case "org.eclipse.scava.metricprovider.trans.documentation.license.DocumentationLicenseTransMetricProvider":
 				{
-					DocumentationLicenseTransMetric licenseDB = new DocumentationLicenseTransMetricProvider().adapt(context.getProjectDB(project));
 					DocumentationEntryLicense licenseDocEntry = findCollection(licenseDB,
 																						DocumentationEntryLicense.class,
 																						licenseDB.getDocumentationEntriesLicense(),

@@ -9,17 +9,26 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.bugs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
 import org.eclipse.scava.metricprovider.indexing.bugs.document.BugDocument;
 import org.eclipse.scava.metricprovider.indexing.bugs.document.CommentDocument;
+import org.eclipse.scava.metricprovider.indexing.bugs.document.DocumentAbstract;
 import org.eclipse.scava.metricprovider.indexing.bugs.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.BugsBugMetadataTransMetric;
 import org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.model.CommentData;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrackerMigrationIssue;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissues.model.BugTrackerMigrationIssueTransMetric;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracas;
+import org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.model.BugTrackerMigrationIssueMaracasTransMetric;
+import org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugReferringTo;
+import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugsReferenceTransMetric;
 import org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.BugTrackerCommentDetectingCode;
 import org.eclipse.scava.metricprovider.trans.detectingcode.model.DetectingCodeTransMetric;
@@ -50,8 +59,10 @@ import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemDelta
 import org.eclipse.scava.platform.delta.bugtrackingsystem.BugTrackingSystemProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.platform.indexing.Indexing;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -69,8 +80,26 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	protected MetricProviderContext context;
 	protected List<IMetricProvider> uses;
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
-
+	protected OssmeterLogger logger;
+	
+	
+	private List<String> metricIdentifiers;
+	private SeverityClassificationTransMetric bugTrackerSeverityData;
+	private EmotionClassificationTransMetric bugTrackerEmotionData;
+	private SentimentClassificationTransMetric bugTrackerCommentsSentimentData;
+	private PlainTextProcessingTransMetric bugTrackerCommentsPlainTextData;
+	private DetectingCodeTransMetric bugTrackerDetectingCodeData;
+	private RequestReplyClassificationTransMetric bugtrackerRequestReplyData;
+	private BugsBugMetadataTransMetric bugTrackerContentClassData;
+	private BugTrackerMigrationIssueTransMetric migrationData;
+	private BugTrackerMigrationIssueMaracasTransMetric migrationMaracasData;
+	private BugsReferenceTransMetric referringData;
+	
 	public final static String NLP = "nlp";// knowledge type.
+	
+	public BugsIndexingMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.bugs");
+	}
 
 	@Override
 	public String getIdentifier() {
@@ -124,384 +153,264 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	public void measure(Project project, ProjectDelta projectDelta, Indexing db) {
 		BugTrackingSystemProjectDelta bugTrackingSystemProjectDelta = projectDelta.getBugTrackingSystemDelta();
 
-		for (BugTrackingSystemDelta bugTrackingSystemDelta : bugTrackingSystemProjectDelta
-				.getBugTrackingSystemDeltas()) {
-
-			String bugTrackerType = bugTrackingSystemDelta.getBugTrackingSystem().getBugTrackerType();
-
-			switch (bugTrackerType) { // this is required if specialised data is also included during indexing
-
-			case "github":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "mantis":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "bitbucket":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "redmine":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "gitlab":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "bugzilla":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			case "jira":
-				prepareBugTrackingsystem(project, projectDelta, bugTrackingSystemDelta);
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Prepares a Bug Tracking System elements (new bugs, updated bugs and comments)
-	 * for indexing
-	 * 
-	 * @param project
-	 * @param bugTrackingSystemDelta
-	 * @param projectDelta
-	 */
-	private void prepareBugTrackingsystem(Project project, ProjectDelta projectDelta, BugTrackingSystemDelta delta) {
-
-		ObjectMapper mapper = new ObjectMapper();
+		String projectName = project.getName();
+		String btsType;
 		
-
-		for (BugTrackingSystemBug bug : delta.getNewBugs()) // NEW BUGS
+		loadMetricsDB(project);
+		
+		for (BugTrackingSystemDelta btsDelta : bugTrackingSystemProjectDelta.getBugTrackingSystemDeltas())
 		{
-			String documentType = "bug.post";
-			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
-					NLP);
-
-			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bug.getBugId(),
-					delta.getBugTrackingSystem().getBugTrackerType());
-
-			String mapping = Mapping.getMapping(documentType);
-
-			EnrichmentData enrichmentData = getEnrichmentData(bug, project);
-
-			BugDocument enrichedDocument = enrichIssueDocument(new BugDocument(uniqueBugIdentifier, bug.getBugId(),
-					project.getName(), bug.getSummary(), bug.getCreationTime(), bug.getCreator()), enrichmentData);
-
-			String document;
-
-			try {
-				
-				document = mapper.writeValueAsString(enrichedDocument);
-				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
-				
-			} catch (JsonProcessingException e) { 
-
-				e.printStackTrace();
+			btsType=btsDelta.getBugTrackingSystem().getBugTrackerType();
+			
+			for (BugTrackingSystemBug bug : btsDelta.getNewBugs()) // NEW BUGS
+			{
+				processBugs(projectName, btsType, bug);
+			}
+			for (BugTrackingSystemBug bug : btsDelta.getUpdatedBugs()) // UPDATED BUGS
+			{
+				processBugs(projectName, btsType, bug);
+			}
+			for (BugTrackingSystemComment bugComment : btsDelta.getComments()) // COMMENTS
+			{ 
+				processComments(projectName, btsType, bugComment);
 			}
 
 		}
-
-		for (BugTrackingSystemBug bug : delta.getUpdatedBugs()) // UPDATED BUGS
+	}
+	
+	private void processComments(String projectName, String bugTrackerType, BugTrackingSystemComment bugComment)
+	{
+		String uid=generateUniqueDocumentId(projectName, bugComment.getCommentId(),bugTrackerType);
+		CommentDocument commentDocument = new CommentDocument(uid,
+															bugComment.getCommentId(),
+															bugComment.getBugId(),
+															projectName,
+															bugComment.getText(),
+															bugComment.getCreator(),
+															bugComment.getCreationTime());
+		enrichCommentDocument(bugComment, commentDocument);
+		indexing(bugTrackerType, "bug.comment", uid, commentDocument);
+		
+	}
+	
+	private void processBugs(String projectName, String bugTrackerType, BugTrackingSystemBug bug)
+	{
+		String uid=generateUniqueDocumentId(projectName, bug.getBugId(),bugTrackerType);
+		BugDocument bugDocument = new BugDocument(uid,
+									bug.getBugId(),
+									projectName,
+									bug.getSummary(),
+									bug.getCreationTime(),
+									bug.getCreator());
+		adrianEnrichment(bug, bugDocument);
+		indexing(bugTrackerType, "bug.post", uid, bugDocument);
+	}
+	
+	private void indexing(String bugTrackerType, String documentType, String uid, DocumentAbstract document)
+	{
+		try {
+			Indexer.indexDocument(Indexer.generateIndexName(bugTrackerType, documentType, NLP),
+					Mapping.getMapping(documentType),
+					documentType,
+					uid,
+					new ObjectMapper().setSerializationInclusion(Include.NON_NULL).writeValueAsString(document));
+		} catch (JsonProcessingException e) {
+			logger.error("Error while processing json:", e);
+			e.printStackTrace();
+		}
+	}
+	
+	private void loadMetricsDB(Project project)
+	{
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0)).adapt(context.getProjectDB(project));
+		metricIdentifiers=indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers();
+		for (String metricIdentifier : metricIdentifiers)
 		{
-			String documentType = "bug.post";
-			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
-					NLP);
-
-			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bug.getBugId(),
-					delta.getBugTrackingSystem().getBugTrackerType());
-
-			String mapping = Mapping.getMapping(documentType);
-
-			EnrichmentData enrichmentData = getEnrichmentData(bug, project);
-
-			BugDocument enrichedDocument = enrichIssueDocument(new BugDocument(uniqueBugIdentifier, bug.getBugId(),
-					project.getName(), bug.getSummary(), bug.getCreationTime(), bug.getCreator()), enrichmentData);
-
-			String document;
-			
-			try {
-			
-				document = mapper.writeValueAsString(enrichedDocument);
-				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
-			
-			} catch (JsonProcessingException e) {
-
-				e.printStackTrace();
+			switch (metricIdentifier)
+			{
+				case "org.eclipse.scava.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider":
+					bugTrackerSeverityData = new SeverityClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
+					bugTrackerEmotionData = new EmotionClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
+					bugTrackerCommentsSentimentData = new SentimentClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
+					bugTrackerCommentsPlainTextData = new PlainTextProcessingTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
+					bugTrackerDetectingCodeData = new DetectingCodeTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
+					bugtrackerRequestReplyData = new RequestReplyClassificationTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider":
+					bugTrackerContentClassData = new BugMetadataTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider":
+					migrationData =  new BugTrackerMigrationIssueTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider":
+					migrationMaracasData = new BugTrackerMigrationIssueMaracasTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				case "org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider":
+					referringData = new BugsReferenceTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
 			}
-
-		}
-
-		for (BugTrackingSystemComment bugComment : delta.getComments()) { // COMMENTS
-
-			String documentType = "bug.comment";
-			String indexName = Indexer.generateIndexName(delta.getBugTrackingSystem().getBugTrackerType(), documentType,
-					NLP);
-
-			String uniqueBugIdentifier = generateUniqueDocumentId(projectDelta, bugComment.getCommentId(),
-					delta.getBugTrackingSystem().getBugTrackerType());
-
-			String mapping = Mapping.getMapping(documentType);
-
-			EnrichmentData enrichmentData = getEnrichmentData(bugComment, project);
-
-			CommentDocument enrichedDocument = enrichCommentDocument(new CommentDocument(uniqueBugIdentifier,
-					bugComment.getCommentId(), bugComment.getBugId(), project.getName(), bugComment.getText(),
-					bugComment.getCreator(), bugComment.getCreationTime()), enrichmentData);
-
-			String document;
-			try {
 				
-				document = mapper.writeValueAsString(enrichedDocument);
-				Indexer.indexDocument(indexName, mapping, documentType, uniqueBugIdentifier, document);
-
-			} catch (JsonProcessingException e) {
-
-				e.printStackTrace();
-			}
 		}
-
 	}
+	
+	private void adrianEnrichment(BugTrackingSystemBug bug, BugDocument bd)
+	{
+		for (String metricIdentifier : metricIdentifiers) 
+		{
 
-	// ------------------------------------------------------------------------------------------
-	// Utility Methods
-	// ------------------------------------------------------------------------------------------
+			switch (metricIdentifier)
+			{
 
-	/**
-	 * This method returns an xxxx which contains additional fields and values from
-	 * various metrics.
-	 * 
-	 * @param bug
-	 * @param project
-	 * @return
-	 */
-	private EnrichmentData getEnrichmentData(BugTrackingSystemBug bug, Project project) {// THIS IS FOR BUGS
-
-		EnrichmentData enrichmentData = new EnrichmentData();
-
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0))
-				.adapt(context.getProjectDB(project));
-
-		for (String metricIdentifier : indexPrepTransMetric.getExecutedMetricProviders().first()
-				.getMetricIdentifiers()) {
-
-			switch (metricIdentifier) {
-
-			case "org.eclipse.scava.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider": // severity
-
-				SeverityClassificationTransMetric bugTrackerSeverityData = new SeverityClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-				try {
-
-					BugTrackerBugsData severityData = findCollection(bugTrackerSeverityData, BugTrackerBugsData.class,
-							bugTrackerSeverityData.getBugTrackerBugs(), bug);
-
-					if (!(severityData.getSeverity().isEmpty())) {
-						enrichmentData.setSeverity(severityData.getSeverity());
+				case "org.eclipse.scava.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider": // severity
+				{
+					try {
+						BugTrackerBugsData severityData = findCollection(bugTrackerSeverityData, BugTrackerBugsData.class,
+								bugTrackerSeverityData.getBugTrackerBugs(), bug);
+	
+						if (!severityData.getSeverity().isEmpty())
+							bd.setSeverity(severityData.getSeverity());
+	
+					} catch (NullPointerException np) {
+						bd.setSeverity("unable to calculate severity at this time (reason: no comments)");
 					}
-
-				} catch (NullPointerException np) {
-
-					enrichmentData.setSeverity("unable to calculate severity at this time (reason: no comments)");
-
+	
+					break;
 				}
-
-				break;
-
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider":
+				{
+					BugTrackerMigrationIssue migrationIssue = findCollection(migrationData, BugTrackerMigrationIssue.class,
+							migrationData.getBugTrackerMigrationIssues(), bug);
+					if(migrationIssue!=null)
+					{
+						bd.setMigration_issue(true);
+					}
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider":
+				{
+					BugTrackerMigrationIssueMaracas migrationIssueMaracas = findCollection(migrationMaracasData, BugTrackerMigrationIssueMaracas.class,
+							migrationMaracasData.getBugTrackerMigrationIssuesMaracas(), bug);
+					if(migrationIssueMaracas!=null)
+					{
+						List<String> changes = migrationIssueMaracas.getChanges();
+						List<Double> scores = migrationIssueMaracas.getMatchingPercentage();
+						for(int i=0; i<changes.size(); i++)
+						{
+							bd.addProblematic_change(changes.get(i), scores.get(i));
+						}
+					}
+					break;
+				}
 			}
 
 		}
-
-		return enrichmentData;
-
 	}
+	
+	private void enrichCommentDocument(BugTrackingSystemComment comment, CommentDocument commentDocument) {
 
-	/**
-	 * This method returns a EnrichmentData object which contains additional data
-	 * from specific metrics
-	 * 
-	 * @param comment
-	 * @param project
-	 * @return
-	 */
-	private EnrichmentData getEnrichmentData(BugTrackingSystemComment comment, Project project) {
-
-		EnrichmentData enrichmentData = new EnrichmentData();
-
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0))
-				.adapt(context.getProjectDB(project));
-
-		for (String metricIdentifier : indexPrepTransMetric.getExecutedMetricProviders().first()
-				.getMetricIdentifiers()) {
-
-			switch (metricIdentifier) {
-
-			// EMOTION
-			case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
-
-				EmotionClassificationTransMetric bugTrackerEmotionData = new EmotionClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-				List<String> emotionData = findCollection(bugTrackerEmotionData,
-						BugTrackerCommentsEmotionClassification.class,
-						bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
-
-			
-					for (String dimension : emotionData) {
-
-						enrichmentData.addEmotionalDimension(dimension);
-
-					}
-
-
-				break;
-
-			// SENTIMENT
-			case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
-
-				SentimentClassificationTransMetric bugTrackerCommentsSentimentData = new SentimentClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-				BugTrackerCommentsSentimentClassification sentimentData = findCollection(
-						bugTrackerCommentsSentimentData, BugTrackerCommentsSentimentClassification.class,
-						bugTrackerCommentsSentimentData.getBugTrackerComments(), comment);
-
-				if (!(sentimentData.equals(null))) {
-
-					enrichmentData.setSentiment(sentimentData.getPolarity());
-
+		for (String metricIdentifier : metricIdentifiers)
+		{
+			switch (metricIdentifier)
+			{
+				// EMOTION
+				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
+				{
+					List<String> emotionData = findCollection(bugTrackerEmotionData,
+							BugTrackerCommentsEmotionClassification.class,
+							bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
+					for (String dimension : emotionData)
+						commentDocument.getEmotional_dimension().add(dimension);
+					break;
 				}
-
-				break;
-
-			// PLAIN TEXT
-			case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
-
-				PlainTextProcessingTransMetric bugTrackerCommentsPlainTextData = new PlainTextProcessingTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-				BugTrackerCommentPlainTextProcessing plainTextData = findCollection(bugTrackerCommentsPlainTextData,
-						BugTrackerCommentPlainTextProcessing.class,
-						bugTrackerCommentsPlainTextData.getBugTrackerComments(), comment);
-
-				if (plainTextData.getPlainText() != null) {
-
-					String plaintext = String.join(" ", plainTextData.getPlainText());
-					enrichmentData.setPlain_text(plaintext);
-
+				// SENTIMENT
+				case "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider":
+				{
+					BugTrackerCommentsSentimentClassification sentimentData = findCollection(
+							bugTrackerCommentsSentimentData, BugTrackerCommentsSentimentClassification.class,
+							bugTrackerCommentsSentimentData.getBugTrackerComments(), comment);
+	
+					if (sentimentData!=null)
+						commentDocument.setSentiment(sentimentData.getPolarity());
+					break;
 				}
-
-
-				break;
-
-			// DETECTING CODE
-			case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
-
-				DetectingCodeTransMetric bugTrackerDetectingCodeData = new DetectingCodeTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-
-				BugTrackerCommentDetectingCode detectingcodeData = findCollection(bugTrackerDetectingCodeData,
-						BugTrackerCommentDetectingCode.class, bugTrackerDetectingCodeData.getBugTrackerComments(),
-						comment);
-				
-				if (detectingcodeData != null) {					
-					
-					if (!detectingcodeData.getCode().isEmpty()) {
-
-							enrichmentData.setCode(true);
-					}else{
-							enrichmentData.setCode(false);
-
-						} 
+				// PLAIN TEXT
+				case "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider":
+				{
+					BugTrackerCommentPlainTextProcessing plainTextData = findCollection(bugTrackerCommentsPlainTextData,
+							BugTrackerCommentPlainTextProcessing.class,
+							bugTrackerCommentsPlainTextData.getBugTrackerComments(), comment);
+					if (plainTextData.getPlainText() != null) {
+						String plaintext = String.join(" ", plainTextData.getPlainText());
+						commentDocument.setPlain_text(plaintext);
 					}
+					break;
+				}
+				// DETECTING CODE
+				case "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider":
+				{
+					BugTrackerCommentDetectingCode detectingcodeData = findCollection(bugTrackerDetectingCodeData,
+							BugTrackerCommentDetectingCode.class, bugTrackerDetectingCodeData.getBugTrackerComments(),
+							comment);			
+					if (detectingcodeData != null) {					
 						
-
-				break;
-
-			// REQUEST REPLY
-			case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
-
-				RequestReplyClassificationTransMetric bugtrackerRequestReplyData = new RequestReplyClassificationTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-
-				BugTrackerComments requestReplyData = findCollection(bugtrackerRequestReplyData,
-						BugTrackerComments.class, bugtrackerRequestReplyData.getBugTrackerComments(), comment);
-
-				if (requestReplyData != null) {
-
-					enrichmentData.setRequest_reply_classification(requestReplyData.getClassificationResult());
-
+						if (!detectingcodeData.getCode().isEmpty())
+							commentDocument.setContains_code(true);
+						else
+							commentDocument.setContains_code(false);
+					}
+					break;
 				}
-
-
-				break;
-
-			// Content Classification
-			case "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider":
-
-				BugsBugMetadataTransMetric bugTrackerContentClassData = new BugMetadataTransMetricProvider()
-						.adapt(context.getProjectDB(project));
-
-				CommentData contentClassData = findCollection(bugTrackerContentClassData, CommentData.class,
-						bugTrackerContentClassData.getComments(), comment);
-
-				if (contentClassData != null) {
-					enrichmentData.setContent_class(contentClassData.getContentClass());
+				// REQUEST REPLY
+				case "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider":
+				{
+					BugTrackerComments requestReplyData = findCollection(bugtrackerRequestReplyData,
+							BugTrackerComments.class, bugtrackerRequestReplyData.getBugTrackerComments(), comment);
+					if (requestReplyData != null) 
+						commentDocument.setRequest_reply_classification(requestReplyData.getClassificationResult());
+					break;
+				}
+				// Content Classification
+				case "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider":
+				{
+					CommentData contentClassData = findCollection(bugTrackerContentClassData, CommentData.class,
+							bugTrackerContentClassData.getComments(), comment);
+		
+					if (contentClassData != null) {
+						commentDocument.setContent_class(contentClassData.getContentClass());
+					}
+					break;
+				}
+				// Referring To
+				case "org.eclipse.scava.metricprovider.trans.bugs.references.BugsReferenceTransMetricProvider":
+				{
+					BugReferringTo referringToData = findCollection(referringData, BugReferringTo.class,
+							referringData.getBugsReferringTo(), comment);
+					if(referringData != null)
+					{
+						for(String bugReference : referringToData.getBugsReferred())
+							commentDocument.addBugReference(bugReference);
+						for(String commitReference : referringToData.getCommitsReferred())
+							commentDocument.addCommitReference(commitReference);
+					}
+					break;
 				}
 
 			}
 
 		}
 
-		return enrichmentData;
-
 	}
 
-	private BugDocument enrichIssueDocument(BugDocument document, EnrichmentData enrichmentData) {
-
-		// severity
-		if (enrichmentData.getSeverity() != null) {
-			document.setSeverity(enrichmentData.getSeverity());
-		}
-
-		return document;
-	}
-
-	private CommentDocument enrichCommentDocument(CommentDocument document, EnrichmentData enrichmentData) {
-
-		// emotions
-		if (enrichmentData.getEmotionalDimensions() != null) {
-			for (String emotion : enrichmentData.getEmotionalDimensions()) {
-				document.getEmotional_dimension().add(emotion);
-			}
-		}
-
-		// plainText
-		if (enrichmentData.getPlain_text() != null) {
-			document.setPlain_text(enrichmentData.getPlain_text());
-		}
-
-		// detecting Code
-		if (enrichmentData.getCode() != null) {
-			document.setContains_code(enrichmentData.getCode());
-		}
-
-		// request Reply
-		if (enrichmentData.getCode() != null) {
-			document.setRequest_reply_classification(enrichmentData.getRequest_reply_classification());
-		}
-
-		// content class
-		if (enrichmentData.getContent_class() != null) {
-			document.setContent_class(enrichmentData.getContent_class());
-		}
-
-		// sentiment
-		if (enrichmentData.getSentiment() != null) {
-			document.setSentiment(enrichmentData.getSentiment());
-		}
-
-		return document;
-	}
 
 	/**
 	 * This method returns a unique Identifier based upon the SourceType, Project,
@@ -509,11 +418,8 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	 * 
 	 * @return String uid - a uniquely identifiable string.
 	 */
-	private String generateUniqueDocumentId(ProjectDelta projectDelta, String id, String bugTrackerType) {
-
-		String projectName = projectDelta.getProject().getName();
-		String uid = bugTrackerType + " " + projectName + " " + id;
-		return uid;
+	private String generateUniqueDocumentId(String projectName, String id, String bugTrackerType) {
+		return bugTrackerType + " " + projectName + " " + id;
 	}
 
 
@@ -545,20 +451,12 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 	}
 
 	/**
-	 * This method finds a collection relating to a metric provider
-	 * 
 	 * 
 	 * @param db
 	 * @param type
 	 * @param collection
 	 * @param issue
 	 * @return
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
 	 */
 	private <T extends Pongo> T findCollection(PongoDB db, Class<T> type, PongoCollection<T> collection,
 			BugTrackingSystemBug issue) {
@@ -582,6 +480,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 			return (StringQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error("Error while searching data in MongoBD:", e);
 			e.printStackTrace();
 		}
 		return null;

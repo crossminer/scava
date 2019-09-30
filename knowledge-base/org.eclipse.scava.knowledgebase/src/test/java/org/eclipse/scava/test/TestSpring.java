@@ -19,14 +19,21 @@ import java.util.List;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.IImporter;
+import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
+import org.eclipse.scava.business.impl.GithubImporter;
+import org.eclipse.scava.business.impl.SimilarityManager;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.GithubUserRepository;
+import org.eclipse.scava.business.integration.RelationRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,182 +51,67 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestSpring {
 
 	private static final Logger logger = LoggerFactory.getLogger(TestSpring.class);
-	@Autowired
-	@Qualifier("Readme")
-	private ISingleSimilarityCalculator simReadmeCalculator;
 
-	@Autowired
-	@Qualifier("Dependency")
-	private ISingleSimilarityCalculator simDependencyCalculator;
 
+	
 	@Autowired
-	@Qualifier("Compound")
-	private ISingleSimilarityCalculator simCompoundCalculator;
-
-	@Autowired
-	private ISimilarityManager simManager;
-
-	@Autowired
-	private IImporter importer;
+	private GithubImporter importer;
 
 	@Autowired
 	private ArtifactRepository artifactRepository;
 
 	@Autowired
-	private GithubUserRepository userRepository;
+	private List<ISimilarityCalculator> crossRecSimilarityCalculator;
 
-	@Ignore
-	@Test
-	public void test() {
+	@Autowired
+	private SimilarityManager similarityManager;
+	
+	@Autowired
+	private RelationRepository relRepo;
 
-		Artifact p1 = new Artifact();
-		p1.setReadmeText("Come back");
-		Artifact p2 = new Artifact();
-		p2.setReadmeText("Back to the system");
-		double d = simReadmeCalculator.calculateSimilarity(p1, p2);
-		logger.debug(d + "");
+	
+	@After
+	public void deleteAll() {
+		artifactRepository.deleteAll();
+		relRepo.deleteAll();
 	}
 	
-	
-	
-	
-	@Ignore
-	@Test
+	@Before
 	public void testImporter() throws IOException, XmlPullParserException {
-		importer.importProject("spring-projects/spring-data-mongodb").getId();
-		importer.importProject("apache/log4j").getId();
-		importer.importProject("apache/lucene-solr").getId();
-		importer.importProject("dozd/mongo-mapper");
-		importer.importProject("wangym/koubei-mongo");
-		importer.importProject("stump201/mongiORM");
-		importer.importProject("289048093/mongoorm");
-		importer.importProject("abinj/DataNucleus-MongoDB-Dropwizard");
-		importer.importProject("TiagoSG22/MongoDB-Mongo-Java-ORM");
-		importer.importProject("belerweb/mongo-java-orm");
-		importer.importProject("fondemen/n-orm.mongo");
-		importer.importProject("sndyuk/logback-more-appenders");
-		importer.importProject("noveogroup/android-logger");
-		importer.importProject("Muyangmin/Android-PLog");
-		importer.importProject("OpenHFT/Chronicle-Logger");
-		importer.importProject("fluent/fluent-logger-java");
-		importer.importProject("isrsal/spring-mvc-logger");
-		importer.importProject("humanity/logger");
-		importer.importProject("Berico-Technologies/CLAVIN");
-		importer.importProject("orientechnologies/orientdb");
-		importer.importProject("healthonnet/hash-based-index-splitter");
-		importer.importProject("kolbasa/OCRaptor");
-		importer.importProject("ahomansikka/sukija");
-		assertThat(artifactRepository.findAll().size(),is(23));
+		artifactRepository.deleteAll();
+//		importer.importProject("spring-projects/spring-data-mongodb", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a").getId();
+//		importer.importProject("apache/log4j", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a").getId();
+//		importer.importProject("apache/lucene-solr", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a").getId();
+		importer.importProject("dozd/mongo-mapper", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("wangym/koubei-mongo", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("stump201/mongiORM", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("289048093/mongoorm", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("abinj/DataNucleus-MongoDB-Dropwizard", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("TiagoSG22/MongoDB-Mongo-Java-ORM", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("belerweb/mongo-java-orm", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("fondemen/n-orm.mongo", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("sndyuk/logback-more-appenders", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("noveogroup/android-logger", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("Muyangmin/Android-PLog", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("OpenHFT/Chronicle-Logger", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("fluent/fluent-logger-java", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("isrsal/spring-mvc-logger", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("humanity/logger", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("Berico-Technologies/CLAVIN", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+//		importer.importProject("orientechnologies/orientdb", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("healthonnet/hash-based-index-splitter", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+//		importer.importProject("kolbasa/OCRaptor", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		importer.importProject("ahomansikka/sukija", "b3e500c19df0a1a72b01b5e896899dd8a53aa08a");
+		assertThat(artifactRepository.findAll().size(),is(18));
 	}
 
-	@Ignore
-	@Test
-	public void testProjectRepositorY() {
-		artifactRepository.findAll().forEach(x -> System.out.println(x.getFullName()));
-	}
 
-//	@Ignore
-//	@Test
-//	public void testSimReadmeManager() {
-//		List<Artifact> prjs = artifactRepository.findAll();
-//		simManager.calculateSimilarity(prjs.get(0), prjs.get(1), simReadmeCalculator);
-//	}
-//
-//	@Ignore
-//	@Test
-//	public void testSimDependenciesManager() {
-//		List<Artifact> prjs = artifactRepository.findAll();
-//		simManager.calculateSimilarity(prjs.get(0), prjs.get(1), simDependencyCalculator);
-//	}
-//
-//	@Ignore
-//	@Test
-//	public void testSimCompoundManager() {
-//		List<Artifact> prjs = artifactRepository.findAll();
-//		simManager.calculateSimilarity(prjs.get(0), prjs.get(1), simCompoundCalculator);
-//	}
-
-	@Ignore
-	@Test
-	public void testSimilarity() {
-		List<Artifact> prjs = artifactRepository.findAll();
-		logger.debug(simDependencyCalculator.calculateSimilarity(prjs.get(0), prjs.get(1)) + "");
-	}
-
-	@Ignore
-	@Test
-	public void cloneRepo() {
-		try {
-			Git git = Git.cloneRepository().setURI("https://github.com/eclipse/jgit.git")
-					.setDirectory(new File("cloneFolder")).call();
-		} catch (GitAPIException e) {
-			e.printStackTrace();
-		}
-	}
-	@Ignore
-	@Test
-	public void removeDuplicateDeps(){
-//		List<Artifact> arts = artifactRepository.findAll();
-//		int count = 1;
-//		for (Artifact artifact : arts) {
-//			Set<String> depsSet = new HashSet<>(artifact.getDependencies());
-//			logger.debug(artifact.getFullName() + ": " + artifact.getDependencies().size() + " of " + depsSet.size());
-//			if(depsSet.size() < 8){
-//				logger.debug(artifact.getFullName());
-//				//removeDuplicates(artifact);
-//				artifactRepository.delete(artifact);
-//				count++;
-//			}
-//			else{
-//				artifact.getDependencies().clear();
-//				artifact.getDependencies().addAll(depsSet);
-//				artifactRepository.save(artifact);
-//			}
-//		}
-//		logger.debug(count);
-		List<Artifact> arts = artifactRepository.findAll();
-		int count = 1;
-		int total = arts.size();
-		for (Artifact artifact : arts) {
-			if (!(artifact.getStarred().size() > 20 && artifact.getReadmeText() != null
-					&& artifact.getDependencies().size() >= 8)) {
-				for (Stargazers star : artifact.getStarred()) {
-					GithubUser usr = userRepository.findOneByLogin(star.getLogin());
-					usr.getStarredRepo().remove(artifact.getFullName());
-					if(usr.getStarredRepo().isEmpty())
-						userRepository.delete(usr);
-					else userRepository.save(usr);
-				}
-				artifactRepository.delete(artifact);
-				System.out.println("DROP " + artifact.getFullName());
-				count ++;
-			}
-		}
-		System.out.println(total + ": " + count);
-	}
 	
 	@Test
-	public void cleanDataSetTest() {
-		List<Artifact> arts = artifactRepository.findAll();
-		int count = 1;
-		int total = arts.size();
-		for (Artifact artifact : arts) {
-			if (!(artifact.getStarred().size() > 20 && artifact.getReadmeText() != null
-					&& artifact.getDependencies().size() >= 8)) {
-				for (Stargazers star : artifact.getStarred()) {
-					GithubUser usr = userRepository.findOneByLogin(star.getLogin());
-					usr.getStarredRepo().remove(artifact.getFullName());
-					if(usr.getStarredRepo().isEmpty())
-						userRepository.delete(usr);
-					else userRepository.save(usr);
-				}
-				artifactRepository.delete(artifact);
-				System.out.println("DROP " + artifact.getFullName());
-				count ++;
-			}
+	public void recomputeSimMatrixTest() {
+		for (ISimilarityCalculator iAggregatedSimilarityCalculator : crossRecSimilarityCalculator) {
+			similarityManager.createAndStoreDistanceMatrix(iAggregatedSimilarityCalculator);
 		}
-		System.out.println(total + ": " + count);
 	}
-
 
 }

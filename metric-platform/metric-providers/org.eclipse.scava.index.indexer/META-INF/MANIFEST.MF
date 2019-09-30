@@ -10,4 +10,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.index.indexer.Activator
 Export-Package: org.eclipse.scava.index.indexer
 Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 

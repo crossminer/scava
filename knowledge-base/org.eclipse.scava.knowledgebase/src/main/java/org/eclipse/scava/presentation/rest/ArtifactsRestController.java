@@ -121,11 +121,12 @@ public class ArtifactsRestController {
 		return artifactRepository.findOneByMetricPlatformId(mppID);
     }
 	
-	@ApiOperation(value = "Add github project to KB")
-	@RequestMapping(value="add/{project_name}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
-    public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName) {
+	@ApiOperation(value = "Add github project to KB. use -- instead of /")
+	@RequestMapping(value="add/{project_name}/{access_token}", produces = {"application/json", "application/xml"}, method = RequestMethod.POST)
+    public @ResponseBody boolean importGithubProject(@PathVariable("project_name") String projectName,
+    		@PathVariable("access_token") String access_token) {
 		try {
-			importer.importProject(projectName.replace("--", "/").replace("%2E", "."));
+			importer.importProject(projectName.replace("--", "/").replace("%2E", "."), access_token);
 			return true;
 			
 		} catch (IOException e) {

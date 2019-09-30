@@ -25,6 +25,7 @@
 #
 
 import argparse
+import copy
 import hashlib
 import json
 import logging
@@ -156,7 +157,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': max_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'scava': mdata
+        'scava_metric_id': mdata['metricId']
     }
 
     metric_min = {
@@ -169,7 +170,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': min_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'scava': mdata
+        'scava_metric_id': mdata['metricId']
     }
 
     metric_mean = {
@@ -182,7 +183,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': mean_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'scava': mdata
+        'scava_metric_id': mdata['metricId']
     }
 
     metric_median = {
@@ -195,7 +196,7 @@ def create_item_metrics_from_barchart(mdata, mupdated):
         'metric_es_value': median_values,
         'metric_es_compute': 'sample',
         'datetime': mupdated,
-        'scava': mdata
+        'scava_metric_id': mdata['metricId']
     }
 
     return [metric_max, metric_min, metric_mean, metric_median]
@@ -215,7 +216,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
                 'metric_name': mdata['name'],
                 'metric_es_compute': 'cumulative',
                 'datetime': mupdated,
-                'scava': mdata,
+                'scava_metric_id': mdata['metricId'],
                 'metric_es_value': None
             }
 
@@ -245,7 +246,7 @@ def create_item_metrics_from_linechart(mdata, mupdated):
                     'metric_es_value': sample[y],
                     'metric_es_compute': 'cumulative',
                     'datetime': mupdated,
-                    'scava': mdata
+                    'scava_metric_id': mdata['metricId']
                 }
 
                 if 'Date' in sample:
@@ -273,19 +274,20 @@ def create_item_metrics_from_linechart_series(mdata, mupdated):
                 'metric_es_value': sample[mdata['y']],
                 'metric_es_compute': 'cumulative',
                 'datetime': mupdated,
-                'scava': mdata
+                'scava_metric_id': mdata['metricId']
             }
 
             if 'Date' in sample:
                 metric['metric_es_compute'] = 'sample'
                 metric['datetime'] = sample['Date']
 
-            if mdata['series'] in sample and mdata['series'] not in ['Repository', 'Topics']:
+            if mdata['series'] in sample and mdata['series'] not in ['Repository', 'Topics', 'Readability']:
                 metric['metric_id'] = mdata['id'] + '_' + sample[mdata['series']]
                 metric['metric_desc'] = mdata['description'] + '(' + sample[mdata['series']] + ')',
                 metric['metric_name'] = mdata['name'] + '(' + sample[mdata['series']] + ')'
 
             metrics.append(metric)
+
         else:
             logging.debug("Linechart series metric, Y axis not handled %s", mdata)
 
@@ -323,11 +325,13 @@ def extract_metrics(scava_metric):
     hiding_factor_metrics = [im for im in item_metrics if im['metric_name'] == 'Method Hiding Factor (Java)']
     hiding_factor_metrics_processed = []
     for hfm in hiding_factor_metrics:
-        hfm['metric_id'] = hfm['metric_id'] + '_filtered_gt10'
-        hfm['metric_name'] = hfm['metric_name'] + ' GT 10'
+        hfm_copied = copy.deepcopy(hfm)
 
-        if hfm['metric_es_value'] > 0.1:
-            hiding_factor_metrics_processed.append(hfm)
+        hfm_copied['metric_id'] = hfm_copied['metric_id'] + '_filtered_gt10'
+        hfm_copied['metric_name'] = hfm_copied['metric_name'] + ' GT 10'
+
+        if hfm_copied['metric_es_value'] > 0.1:
+            hiding_factor_metrics_processed.append(hfm_copied)
 
     if hiding_factor_metrics_processed:
         item_metrics.extend(hiding_factor_metrics_processed)

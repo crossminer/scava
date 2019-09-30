@@ -76,7 +76,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -87,7 +86,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("Github")
 public class GithubImporter implements IImporter {
 
-	@Value("${egit.github.token}")
+//	@Value("${egit.github.token}")
 	private String token;
 	private static final String UTF8 = "UTF-8";
 	@Autowired
@@ -99,7 +98,8 @@ public class GithubImporter implements IImporter {
 	private static final Logger logger = LoggerFactory.getLogger(GithubImporter.class);
 
 	@Override
-	public Artifact importProject(String artId) throws IOException {
+	public Artifact importProject(String artId, String access_token) throws IOException {
+		token = access_token;
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
 		if (checkRepo != null) {
 			logger.info("\t" + artId + " already in DB");
@@ -124,8 +124,14 @@ public class GithubImporter implements IImporter {
 			p.setMaster_branch(rep.getDefaultBranch());
 			p.setHomePage(rep.getHomepage());
 			p.setName(rep.getName());
-			p.setShortName(p.getShortName());
-
+			p.setShortName(artId.split("/")[1]);
+			try {
+				String[] license = getLicense(rep);
+				p.setLicenseName(license[0]);
+				p.setLicenseUrl(license[1]);
+			} catch (Exception e) {
+				logger.info("License not found");
+			}
 			try {
 				p.setCommitteers(getCommitters(rep));
 			} catch (MalformedURLException e) {
@@ -152,17 +158,13 @@ public class GithubImporter implements IImporter {
 				logger.error("Error getting stars" + e.getMessage());
 			}
 			p.setTags(getTags(artId.split("/")[0], artId.split("/")[1]));
-
-//			if(p.getDependencies() != null && p.getDependencies().size()>8) {
 			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
 			storeGithubUser(p.getStarred(), p.getFullName());
 			projectRepository.save(p);
 			logger.debug("Imported project: " + artId);
-//			}
-
 			return p;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Project {} is not imported: {}", artId, e.getMessage());
 			throw e;
 		}
 	}
@@ -212,6 +214,28 @@ public class GithubImporter implements IImporter {
 			results.add(tag);
 		}
 		return results;
+	}
+
+	private String[] getLicense(Repository rep) throws IOException {
+		String[] results = new String[2];
+		if (getRemainingResource("core") == 0)
+			waitApiCoreRate();
+		URL url;
+		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
+				+ "?access_token=" + token);
+		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
+		connection.connect();
+		InputStream is = connection.getInputStream();
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
+		String jsonText = readAll(bufferReader);
+		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
+		JSONObject license = (JSONObject) obj.get("license");
+		results[0] = (String) license.get("name");
+		results[1] = (String) license.get("url");
+
+		return results;
+
 	}
 
 	private List<Stargazers> getStargazers(Repository rep) throws IOException {
@@ -330,10 +354,10 @@ public class GithubImporter implements IImporter {
 						String fullname = entry.get("full_name").toString();
 						try {
 							RepositoryId repo = new RepositoryId(fullname.split("/")[0], fullname.split("/")[1]);
-							importProject(fullname);// (repo,
-													// pomFiles,
-													// pomPath,
-													// users);
+							importProject(fullname, token);// (repo,
+							// pomFiles,
+							// pomPath,
+							// users);
 							Files.write(Paths.get("repo2.txt"),
 									(repo.getOwner() + "/" + repo.getName() + "\n").getBytes(),
 									StandardOpenOption.APPEND);

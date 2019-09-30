@@ -17,6 +17,10 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.metricprovider.trans.requestreplyclassification,
  org.eclipse.scava.metricprovider.trans.severityclassification,
  org.eclipse.scava.metricprovider.trans.bugs.bugmetadata,
- org.elasticsearch.dependencies
+ org.elasticsearch.dependencies,
+ org.apache.log4j,
+ org.eclipse.scava.metricprovider.trans.bugs.migrationissues,
+ org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas,
+ org.eclipse.scava.metricprovider.trans.bugs.references
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.scava.metricprovider.indexing.bugs

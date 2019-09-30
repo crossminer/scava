@@ -40,4 +40,5 @@ public interface ISimilarityManager {
 	void storeDistanceMatrix(Table<String, String, Double> distanceMatrix, ISimilarityCalculator similarityCalculator);
 	void deleteRelations(ISimilarityCalculator simCalculator);
 	List<Relation> getRelations(ISimilarityCalculator simCalculator);
+	void storeAllSimilarityDistances();
 }

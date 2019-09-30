@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.eclipse.scava.business.IRecommenderManager;
@@ -16,6 +17,7 @@ import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationFeedback;
 import org.eclipse.scava.business.dto.RecommendationType;
+import org.eclipse.scava.business.impl.SimilarityManager;
 import org.eclipse.scava.business.integration.RecommendationFeedbackRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Cluster;
@@ -46,6 +48,9 @@ public class RecommenderRestController {
 	@Autowired
 	private RecommendationFeedbackRepository recommendationFeedbackRepo;
 
+	@Autowired
+	private SimilarityManager simManager;
+	
 	@RequestMapping(value = "cluster/{sim_method}/{cluster_algo}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public List<Cluster> getClusters(
 			@ApiParam(value = "String value which can be Compound, CrossSim, Dependency, Readme, RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
@@ -148,6 +153,14 @@ public class RecommenderRestController {
 	public @ResponseBody Recommendation getCROSSIndexPHPRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.CROSSIndex_PHP);
+	}
+	
+	@ApiOperation(value = "This resource forces tha KB to compute all similarity matrixes")
+	@RequestMapping(value = "force-distance-matrices-computation", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+	public void forceDistanceMatricesComputation() {
+		logger.info("Before async method: {}", LocalDateTime.now());
+		simManager.storeAllSimilarityDistances();
+		logger.info("After async method: {}", LocalDateTime.now());
 	}
 	
 //	@RequestMapping(value = "code-request-example", method = RequestMethod.GET)

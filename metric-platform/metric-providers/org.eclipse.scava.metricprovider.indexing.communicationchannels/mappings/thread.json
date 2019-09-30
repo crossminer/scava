@@ -1,0 +1,39 @@
+{
+	"_meta" : {
+		"mapping_version" : "1.0"
+	},
+	"properties" : {
+		"communication_channel_id" : {
+			"type" : "keyword"
+		},
+		"thread_id" : {
+			"type" : "keyword"
+		},
+		"uid" : {
+			"type" : "keyword"
+		},
+		"project_name" : {
+			"type" : "text"
+		},
+		"subject" : {
+			"type" : "text"
+		},
+		"migration_issue" : {
+			"properties" : {
+				"found" : {
+					"type" : "boolean"
+				},
+				"problematic_changes" : {
+					"properties" : {
+						"change" : {
+							"type" : "text"
+						},
+						"matching_score" : {
+							"type" : "double"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
+import org.eclipse.scava.index.indexer.MappingStorage;
 import org.eclipse.scava.metricprovider.indexing.commits.document.CommitDocument;
 import org.eclipse.scava.metricprovider.indexing.commits.mapping.Mapping;
 import org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider;
@@ -27,6 +28,7 @@ import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.VcsRepository;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
@@ -44,6 +46,10 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 	protected OssmeterLogger logger;
 	
 	private final static String KNOWLEDGE = "code-nlp";
+	
+	private CommitsMessageReferenceTransMetric referencesDB;
+	private CommitsMessagePlainTextTransMetric plainTextCollection;
+	private List<String> metricsToIndex;
 	
 	public CommitsIndexingMetricProvider() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("metricprovider.indexing.commits");
@@ -95,37 +101,65 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 	@Override
 	public void measure(Project project, ProjectDelta delta, Indexing db) {
 		
-		String projectName = delta.getProject().getName();
-		ObjectMapper mapper = new ObjectMapper();
-		String documentType="commit";
-		String indexName;
-		String uid;
-		String mapping;
-		String document;
 		
 		
-		VcsProjectDelta vcsd = delta.getVcsDelta();
-		for (VcsRepositoryDelta vcsRepositoryDelta : vcsd.getRepoDeltas())
-		{	
-			VcsRepository repository = vcsRepositoryDelta.getRepository();
-			for (VcsCommit commit : vcsRepositoryDelta.getCommits())
+		loadMetricsDB(project);
+		
+		if(metricsToIndex.size()>0)
+		{
+			String projectName = delta.getProject().getName();
+			ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
+			String documentType="commit";
+			
+			String uid;
+			MappingStorage mapping;
+			String document;
+			String indexName = Indexer.generateIndexName("vcs", documentType, KNOWLEDGE);
+			
+			VcsProjectDelta vcsd = delta.getVcsDelta();
+			for (VcsRepositoryDelta vcsRepositoryDelta : vcsd.getRepoDeltas())
+			{	
+				VcsRepository repository = vcsRepositoryDelta.getRepository();
+				for (VcsCommit commit : vcsRepositoryDelta.getCommits())
+				{
+					uid = generateUniqueDocumentationId(projectName, repository.getUrl(), commit.getRevision());
+					mapping = Mapping.getMapping(documentType);
+					
+					
+					CommitDocument cd = new CommitDocument(projectName,
+															uid,
+															repository.getUrl(),
+															commit);
+					enrichCommitDocument(commit, repository.getUrl(), cd);
+					try {
+						document = mapper.writeValueAsString(cd);
+						Indexer.indexDocument(indexName, mapping, documentType, uid, document);
+					} catch (JsonProcessingException e) {
+						logger.error("Error while processing json:", e);
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	private void loadMetricsDB(Project project)
+	{
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0)).adapt(context.getProjectDB(project));
+		metricsToIndex=indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers();
+		for(String metricIdentifier : metricsToIndex)
+		{
+			switch (metricIdentifier) 
 			{
-				indexName = Indexer.generateIndexName("vcs", documentType, KNOWLEDGE);
-				uid = generateUniqueDocumentationId(projectName, repository.getUrl(), commit.getRevision());
-				mapping = Mapping.getMapping(documentType);
-				
-				
-				CommitDocument cd = new CommitDocument(projectName,
-														uid,
-														repository.getUrl(),
-														commit);
-				enrichCommitDocument(project, commit, repository.getUrl(), cd);
-				try {
-					document = mapper.writeValueAsString(cd);
-					Indexer.indexDocument(indexName, mapping, documentType, uid, document);
-				} catch (JsonProcessingException e) {
-					logger.error("Error while processing json:", e);
-					e.printStackTrace();
+				case "org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider":
+				{
+					plainTextCollection = new CommitsMessagePlainTextTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
+				}
+				case "org.eclipse.scava.metricprovider.trans.commits.message.references.CommitsMessageReferencesTransMetricProvider":
+				{
+					referencesDB = new CommitsMessageReferencesTransMetricProvider().adapt(context.getProjectDB(project));
+					break;
 				}
 			}
 		}
@@ -136,18 +170,15 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 		return "Commit "+ projectName + " " + repository+ " " + revision;
 	}
 	
-	private void enrichCommitDocument(Project project, VcsCommit commit, String repositoryURL, CommitDocument cd) {
+	private void enrichCommitDocument(VcsCommit commit, String repositoryURL, CommitDocument cd) {
 
-		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0)).adapt(context.getProjectDB(project));
 
-		for (String metricIdentifier : indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers())
+		for (String metricIdentifier : metricsToIndex)
 		{
-
 			switch (metricIdentifier) 
 			{
 				case "org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider":
 				{
-					CommitsMessagePlainTextTransMetric plainTextCollection = new CommitsMessagePlainTextTransMetricProvider().adapt(context.getProjectDB(project));
 					CommitMessagePlainText plainText = findCollection(plainTextCollection,
 																	CommitMessagePlainText.class,
 																	plainTextCollection.getCommitsMessagesPlainText(),
@@ -158,7 +189,6 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 				}
 				case "org.eclipse.scava.metricprovider.trans.commits.message.references.CommitsMessageReferencesTransMetricProvider":
 				{
-					CommitsMessageReferenceTransMetric referencesDB = new CommitsMessageReferencesTransMetricProvider().adapt(context.getProjectDB(project));
 					CommitMessageReferringTo references = findCollection(referencesDB,
 															CommitMessageReferringTo.class,
 															referencesDB.getCommitsMessagesReferringTo(),

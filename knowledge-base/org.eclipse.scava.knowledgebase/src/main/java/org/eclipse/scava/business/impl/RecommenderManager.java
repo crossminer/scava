@@ -39,6 +39,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
@@ -222,7 +223,7 @@ public class RecommenderManager implements IRecommenderManager {
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(page);
-
+		query.addCriteria(Criteria.where("type.name").ne("FOCUS"));
 		List<Artifact> recipes = template.find(query, Artifact.class);
 		if (page.getSort().getOrderFor("temp").getDirection() == Direction.ASC)
 			return Lists.reverse(recipes);

@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.bugs.references;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugReferringTo;
 import org.eclipse.scava.metricprovider.trans.bugs.references.model.BugsReferenceTransMetric;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
+import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.nlp.tools.references.NormalizedReferences;
 import org.eclipse.scava.nlp.tools.references.bitbucket.ReferencesInBitBucket;
 import org.eclipse.scava.nlp.tools.references.bugzilla.ReferencesInBugzilla;
@@ -42,6 +44,8 @@ import com.mongodb.DB;
 public class BugsReferenceTransMetricProvider implements ITransientMetricProvider<BugsReferenceTransMetric> {
 	
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
+	protected List<IMetricProvider> uses;
+	protected MetricProviderContext context;
 	
 	@Override
 	public String getIdentifier() {
@@ -70,17 +74,18 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 
 	@Override
 	public void setUses(List<IMetricProvider> uses) {
-		
+		this.uses = uses;
 	}
 
 	@Override
 	public List<String> getIdentifiersOfUses() {
-		return Collections.emptyList();
+		return Arrays.asList(IndexPreparationTransMetricProvider.class.getCanonicalName());
 	}
 
 	@Override
 	public void setMetricProviderContext(MetricProviderContext context) {
 		this.platformBugTrackingSystemManager = context.getPlatformBugTrackingSystemManager();
+		this.context = context;
 	}
 
 	@Override
@@ -91,6 +96,11 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 	@Override
 	public void measure(Project project, ProjectDelta delta, BugsReferenceTransMetric db)
 	{
+		// This is for indexing
+		IndexPrepTransMetric indexPrepTransMetric = ((IndexPreparationTransMetricProvider) uses.get(0)).adapt(context.getProjectDB(project));
+		indexPrepTransMetric.getExecutedMetricProviders().first().getMetricIdentifiers().add(getIdentifier());
+		indexPrepTransMetric.sync();
+		
 		clearDB(db);
 		BugTrackingSystemProjectDelta btspDelta = delta.getBugTrackingSystemDelta();
 		
@@ -140,9 +150,10 @@ public class BugsReferenceTransMetricProvider implements ITransientMetricProvide
 						break;
 					
 				}
-				
-				bugReferringTo.getBugsReferred().addAll(references.getNormalizedBugsReferences());
-				bugReferringTo.getCommitsReferred().addAll(references.getNormalizedCommitsReferences());
+				if(references.getNormalizedBugsReferences().size()>0)
+					bugReferringTo.getBugsReferred().addAll(references.getNormalizedBugsReferences());
+				if(references.getNormalizedCommitsReferences().size()>0)
+					bugReferringTo.getCommitsReferred().addAll(references.getNormalizedCommitsReferences());
 				
 				db.sync();
 			}

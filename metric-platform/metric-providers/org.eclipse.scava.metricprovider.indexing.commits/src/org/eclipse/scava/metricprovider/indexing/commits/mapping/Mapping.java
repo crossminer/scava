@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2019 Edge Hill University
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
+ï¿½* Copyright (c) 2019 Edge Hill University
+ï¿½*ï¿½
+ï¿½* This program and the accompanying materials are made
+ï¿½* available under the terms of the Eclipse Public License 2.0
+ï¿½* which is available at https://www.eclipse.org/legal/epl-2.0/
+ï¿½*ï¿½
+ï¿½* SPDX-License-Identifier: EPL-2.0
+ï¿½******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.commits.mapping;
 
 import java.io.BufferedReader;
@@ -19,7 +19,10 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.scava.index.indexer.MappingStorage;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public final class Mapping {
@@ -27,14 +30,15 @@ public final class Mapping {
 	private static Mapping singleton = new Mapping();
 	private String mappingsPath = "/mappings/"; 
 	private String dictionnaryName = "mappingsDictionary.txt";
-	private HashMap<String,String> mappings;
-	protected OssmeterLogger logger;
+	private HashMap<String,MappingStorage> mappings;
+	protected static OssmeterLogger logger;
 	
 	private Mapping()
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("indexing.documentation.mapping");
 		String documentType;
-		mappings=new HashMap<String,String>();
+		Pattern versionFinder = Pattern.compile("\"mapping_version\"\\s*:\\s*\"([^\"]+)\"");
+		mappings=new HashMap<String,MappingStorage>();
 		try {
 			String[] mappingsToRead = loadFile(dictionnaryName).split("\n");
 			
@@ -43,13 +47,26 @@ public final class Mapping {
 				if(mappingName.isEmpty())
 					continue;
 				documentType=mappingName.replace("_", ".");
-				mappings.put(documentType, loadFile(mappingName+".json"));
+				mappings.put(documentType, loadMapping(mappingName+".json", versionFinder));
 				logger.info("Mapping for: "+mappingName + " has been loaded.");
 			}
 		} catch (InputMismatchException | IOException e) {
 			logger.error("Error while loading the indexing mappings:", e);
 			e.printStackTrace();
 		}
+	}
+	
+	private MappingStorage loadMapping(String fileToRead, Pattern versionFinder) throws InputMismatchException, IOException
+	{
+		
+		String mappingString = loadFile(fileToRead);
+		Matcher m = versionFinder.matcher(mappingString);
+		if(m.find())
+		{
+			return new MappingStorage(mappingString, Float.valueOf(m.group(1)));
+		}
+		logger.error("Invalid mapping, please add a version number");
+		return null;
 	}
 	
 	private String loadFile(String fileToRead) throws InputMismatchException, IOException 
@@ -82,15 +99,14 @@ public final class Mapping {
 		return content;
 	}
 	
-	public static String getMapping(String documentType) {
+	public static MappingStorage getMapping(String documentType) {
 		
 		if(singleton.mappings.containsKey(documentType))
 			return singleton.mappings.get(documentType);
 		else
 		{
-			System.err.println("No mapping found for " + documentType);
-			return "";
-			
+			logger.error("No mapping found for " + documentType);
+			return null;
 		}
 	}
 }

@@ -60,7 +60,24 @@ public class SimilarityManager implements ISimilarityManager {
 
 	@Autowired
 	MongoOperations mongoOperations;
-
+	
+	@Autowired
+	List<ISimilarityCalculator> simCalcs;
+	
+	@Override
+	public void storeAllSimilarityDistances() {
+		for (ISimilarityCalculator similarityCalculator : simCalcs) {
+			try {
+				logger.info("Computing distance matrix for: {}", similarityCalculator.getSimilarityName());
+				createAndStoreDistanceMatrix(similarityCalculator);
+				logger.info("Computed distance matrix for: {}", similarityCalculator.getSimilarityName());
+			}
+			catch (Exception e) {
+				logger.error("error when computing {} distances: {}", similarityCalculator.getSimilarityName(), e.getMessage());
+			}
+		}
+	}
+	
 	@Override
 	public Set<Relation> getSimilarProjectsRelations(Artifact prj1, ISimilarityCalculator similarityCalculator) {
 		Query q1 = new Query(Criteria.where("type.name").is(similarityCalculator.getSimilarityName()).orOperator(
@@ -109,40 +126,10 @@ public class SimilarityManager implements ISimilarityManager {
 	 */
 	@Override
 	public void createAndStoreDistanceMatrix(ISimilarityCalculator simCalculator) {
-		List<Artifact> artifacts = appliableProjects(simCalculator);
-		if (simCalculator instanceof ISingleSimilarityCalculator) {
-			ISingleSimilarityCalculator singleCalculator = (ISingleSimilarityCalculator) simCalculator;
-			Artifact[] artifactsArray = new Artifact[artifacts.size()];
-			artifactsArray = artifacts.toArray(artifactsArray);
-			for (int i = 0; i < artifactsArray.length - 1; i++) {
-				for (int j = i + 1; j < artifactsArray.length; j++) {
-					double similarity = 0;
-					try {
-						similarity = singleCalculator.calculateSimilarity(artifactsArray[i], artifactsArray[j]);
-					} catch (Exception e) {
-						logger.error(e.getMessage());
-					}
-					RelationType relType = getRelationType(simCalculator.getSimilarityName());
-					Relation rel = new Relation();
-					rel.setType(relType);
-					rel.setFromProject(artifactsArray[i]);
-					rel.setToProject(artifactsArray[j]);
-					rel.setValue(similarity);
-					relationRepository.save(rel);
-				}
-			}
-		} else {
-			IAggregatedSimilarityCalculator aggregateSimilarityCalculator = (IAggregatedSimilarityCalculator) simCalculator;
-			Map<String, String> map = new HashMap<>();
-			map.put("committers", "true");
-			map.put("deps", "true");
-			map.put("stargazers", "true");
-			map.put("freqDeps", "129");
-			Table<String, String, Double> distanceMatrix = aggregateSimilarityCalculator
-					.calculateAggregatedSimilarityValues(artifacts, map);
-			storeDistanceMatrix(distanceMatrix, aggregateSimilarityCalculator);
-
-		}
+		List<Relation> dbd = relationRepository.findAllByTypeName(simCalculator.getSimilarityName());
+		logger.info("#Reletaion to be deleted {}", dbd.size());
+		relationRepository.delete(dbd);
+		storeDistanceMatrix(createDistanceMatrix(simCalculator), simCalculator);
 	}
 
 	public Map<String, Double> getSimilarProjectsOnLine(ISimilarityCalculator simCalculator, Artifact art) {
@@ -324,7 +311,8 @@ public class SimilarityManager implements ISimilarityManager {
 
 	@Override
 	public List<Artifact> appliableProjects(ISimilarityCalculator simCalculator) {
-		return artifactRepository.findAll().stream().filter(z -> simCalculator.appliesTo(z)).collect(Collectors.toList());
+		return artifactRepository.findAll().stream().filter(z -> simCalculator.appliesTo(z))
+				.collect(Collectors.toList());
 	}
 
 }
