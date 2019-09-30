@@ -11,6 +11,7 @@ package org.eclipse.scava.business;
 
 import java.time.LocalDateTime;
 
+import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.impl.SimilarityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,27 @@ public class SchedulerManager {
 
 	@Autowired
 	private SimilarityManager simManager;
+	
+	@Autowired
+	private OssmeterImporter ossmeterImporter;
 
 	@Scheduled(cron = "0 30 20 ? * SUN")
 //	@Scheduled(cron = "0 0/5 * * * ?")
 	public void scheduler() {
 		try {
 			logger.info("Offline computating at: {}", LocalDateTime.now());
-			simManager.storeAllSimilarityDistances();
+			simManager.storeSimilarityDistances();
+			logger.info("Offline computated at: {}", LocalDateTime.now());
+		} catch (Exception e) {
+			logger.error("error in computing distances: {}", e.getMessage());
+		}
+	}
+	@Scheduled(cron = "0 30 18 ? * SUN")
+//	@Scheduled(cron = "0 0/5 * * * ?")
+	public void importer() {
+		try {
+			logger.info("Offline computating at: {}", LocalDateTime.now());
+			ossmeterImporter.importAll();
 			logger.info("Offline computated at: {}", LocalDateTime.now());
 		} catch (Exception e) {
 			logger.error("error in computing distances: {}", e.getMessage());

@@ -63,9 +63,13 @@ public class SimilarityManager implements ISimilarityManager {
 	
 	@Autowired
 	List<ISimilarityCalculator> simCalcs;
+	@Override
+	public void storeSimilarityDistances() {
+		storeSimilarityDistances(simCalcs);
+	}
 	
 	@Override
-	public void storeAllSimilarityDistances() {
+	public void storeSimilarityDistances(List<ISimilarityCalculator> simCalcs) {
 		for (ISimilarityCalculator similarityCalculator : simCalcs) {
 			try {
 				logger.info("Computing distance matrix for: {}", similarityCalculator.getSimilarityName());

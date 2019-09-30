@@ -159,7 +159,7 @@ public class RecommenderRestController {
 	@RequestMapping(value = "force-distance-matrices-computation", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public void forceDistanceMatricesComputation() {
 		logger.info("Before async method: {}", LocalDateTime.now());
-		simManager.storeAllSimilarityDistances();
+		simManager.storeSimilarityDistances();
 		logger.info("After async method: {}", LocalDateTime.now());
 	}
 	

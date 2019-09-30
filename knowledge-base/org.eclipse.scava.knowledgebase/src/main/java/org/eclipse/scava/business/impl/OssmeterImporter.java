@@ -45,7 +45,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @Qualifier("Ossmeter")
 public class OssmeterImporter implements IImporter {
@@ -61,7 +60,7 @@ public class OssmeterImporter implements IImporter {
 
 	@Autowired
 	private MavenLibraryRepository mavenLibraryRepository;
-	
+
 	@Autowired
 	private ArtifactRepository projectRepository;
 
@@ -81,6 +80,8 @@ public class OssmeterImporter implements IImporter {
 		Artifact result = projectRepository.findOneByName(projectName);
 		if (result == null)
 			result = new Artifact();
+		else
+			logger.info("Updating {} metadata", projectName);
 		URL url = new URL(ossmeterUrl + "projects/p/" + projectName);
 		URLConnection connection = url.openConnection();
 		connection.connect();
@@ -99,11 +100,16 @@ public class OssmeterImporter implements IImporter {
 		result.setSize((long) obj.get("size"));
 		result.setSsh_url((String) obj.get("ssh_url"));
 		result.setSvn_url((String) obj.get("svn_url"));
+		result.setMetricPlatformId((String) obj.get("shortName"));
 		is.close();
 		bufferReader.close();
 		result.setStarred(getStargazers(projectName));
 		storeGithubUser(result.getStarred(), result.getFullName());
-		result.setDependencies(getDependencies(projectName));
+		try {
+			result.setDependencies(getDependencies(projectName));
+		} catch (Exception e) {
+			logger.error("Import dependencies failed: {}", e.getMessage());
+		}
 		projectRepository.save(result);
 		return result;
 	}
@@ -137,14 +143,15 @@ public class OssmeterImporter implements IImporter {
 	private List<String> getDependencies(String artId) {
 		List<String> result = new ArrayList<>();
 		try {
-			URL url = new URL(ossmeterUrl + "raw/projects/p/" + artId + "/m/dependencies");
+			URL url = new URL(
+					ossmeterUrl + "raw/projects/p/" + artId + "/m/trans.rascal.dependency.maven.allMavenDependencies");
 			URLConnection connection = url.openConnection();
 			InputStream is = connection.getInputStream();
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 			String jsonText = readAll(bufferReader);
 			JSONArray array = (JSONArray) JSONValue.parse(jsonText);
 			for (Object object : array) {
-				String s = (String) ((JSONObject) object).get("dependency");
+				String s = (String) ((JSONObject) object).get("value");
 				result.add(s);
 			}
 			is.close();
@@ -172,8 +179,17 @@ public class OssmeterImporter implements IImporter {
 				if (projects.isEmpty())
 					guard = false;
 				else
-					for (Object object : projects)
-						importProject((String) ((JSONObject) object).get("name"), null);
+
+					for (Object object : projects) {
+						String name = (String) ((JSONObject) object).get("shortName");
+						try {
+							logger.info("Importing {} project...", name);
+							importProject(name, null);
+							logger.info("Imported {} project.", name);
+						} catch (Exception e) {
+							logger.error("Error importing {} project", name);
+						}
+					}
 				page++;
 			} catch (IOException e) {
 				guard = false;
@@ -227,14 +243,14 @@ public class OssmeterImporter implements IImporter {
 						mvn.setReleasedate(
 								dateFormat.parse(repo.split(",")[2].replace("\"", "").replace("Z[GMT]", "")));
 					} catch (ParseException e) {
-						
+
 					}
 
 					mavenLibraryRepository.save(mvn);
 				}
 			}
 		} catch (IOException e) {
-			
+
 		}
 
 	}
