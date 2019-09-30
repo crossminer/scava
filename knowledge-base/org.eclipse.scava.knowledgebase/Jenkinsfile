@@ -23,6 +23,7 @@ pipeline {
             configFileProvider([configFile(fileId: '80ce99ea-1a68-4972-acfb-bc084e2c053a', variable: 'MY_KB_APP_PROP')]) {
                 dir(path: 'knowledge-base/org.eclipse.scava.knowledgebase/') {
                 	sh 'rm -rf /tmp/scava_lucene/'
+                	sh 'mongo CROSSMINER_TEST --eval "db.dropDatabase()"'
                     sh "cp $MY_KB_APP_PROP src/test/resources/application.properties"
                     sh 'mvn test'
                 }

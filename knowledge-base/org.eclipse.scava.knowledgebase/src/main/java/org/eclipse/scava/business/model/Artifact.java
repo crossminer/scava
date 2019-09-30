@@ -37,8 +37,13 @@ public class Artifact {
 	String shortName;
 	@TextIndexed(weight=1)
 	String description;
-	@TextIndexed(weight=4)
-	String fullName;
+	@TextIndexed(weight=5)
+	String fullName;	
+	@TextIndexed(weight=6)
+	String licenseName;
+	@TextIndexed(weight=7)
+	String licenseUrl;
+	
 	private List<MethodDeclaration> methodDeclarations = new ArrayList<>();;
 	private int year;
 	private boolean active = true;
@@ -46,10 +51,6 @@ public class Artifact {
 	@DBRef
 	private List<Artifact> subArtifacts;
 	private ArtifactType type;
-	@TextIndexed(weight=1)
-	private String licenseName;
-	@TextIndexed(weight=1)
-	private String licenseUrl;
 	private Boolean private_;
 	private Boolean fork;
 	private String html_url;
@@ -65,9 +66,9 @@ public class Artifact {
 	@JsonIgnore
 	private List<GithubUser> committeers = new ArrayList<>();
 	private String readmeText;
-	//@JsonIgnore
+	
 	private List<String> dependencies = new ArrayList<>(); 
-//	@JsonIgnore
+
 	private List<Stargazers> starred = new ArrayList<>();
 	public String getFullName() {
 		return fullName;
@@ -332,10 +333,6 @@ public class Artifact {
 		this.licenseUrl = licenseUrl;
 	}
 	
-	
-	
-
-
 //	VcsRepository[*] vcsRepositories;
 //	CommunicationChannel[*] communicationChannels;
 //	BugTrackingSystem[*] bugTrackingSystems;
