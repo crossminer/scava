@@ -357,8 +357,7 @@ public class AnalysisTaskService {
 			}
 		}
 		if (successor != null) {
-			currentTask.getScheduling().setExecutionRequestDate(
-					new Date(successor.getScheduling().getExecutionRequestDate().getTime() + 1000));
+			currentTask.getScheduling().setExecutionRequestDate(new Date(successor.getScheduling().getExecutionRequestDate().getTime() + 1000));
 			this.repository.sync();
 		}
 		return currentTask;
@@ -384,6 +383,7 @@ public class AnalysisTaskService {
 		if (task != null) {
 			task.getScheduling().setStatus(AnalysisTaskStatus.PENDING_EXECUTION.name());
 			task.getScheduling().setExecutionRequestDate(new Date());
+			task.getScheduling().setExecutionTaskStartDate(new Date());
 			if (task.getScheduling().getCurrentDate() == null) {
 				task.getScheduling().setCurrentDate(task.getStartDate());
 			}

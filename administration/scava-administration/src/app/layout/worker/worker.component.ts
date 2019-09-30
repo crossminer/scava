@@ -17,7 +17,8 @@ export class WorkerComponent implements OnInit, OnDestroy {
 
   workerList: Worker[];
   interval: any;
-  taskList: ExecutionTask[];
+  pendingTaskList: ExecutionTask[];
+  completedTaskList: ExecutionTask[];
 
   constructor(
     private listWorkerService: ListWorkerService,
@@ -52,10 +53,13 @@ export class WorkerComponent implements OnInit, OnDestroy {
       });
       this.analysisTaskService.getTasks().subscribe((resp) => {
         let allTasks = resp as ExecutionTask[];
-        this.taskList = [];
+        this.pendingTaskList = [];
+        this.completedTaskList = [];
         allTasks.forEach(task => {
           if (task.scheduling.status == 'PENDING_EXECUTION') {
-            this.taskList.push(task);
+            this.pendingTaskList.push(task);
+          } else if (task.scheduling.status == 'COMPLETED') {
+            this.completedTaskList.push(task);
           }
           let filteredMetricExecutions: MetricExecutions[] = [];
           task.metricExecutions.forEach(metricExecution => {
@@ -81,6 +85,25 @@ export class WorkerComponent implements OnInit, OnDestroy {
     let estimatedTime: number = task.scheduling[0].lastDailyExecutionDuration;
     return Math.round(estimatedTime / 1000) + 's';
   }
+
+  displayTime(millisec: number) {
+    const normalizeTime = (time: string): string => (time.length === 1) ? time.padStart(2, '0') : time;
+   
+    let seconds: string = (millisec / 1000).toFixed(0);
+    let minutes: string = Math.floor(parseInt(seconds) / 60).toString();
+    let hours: string = '';
+   
+    if (parseInt(minutes) > 59) {
+      hours = normalizeTime(Math.floor(parseInt(minutes) / 60).toString());
+      minutes = normalizeTime((parseInt(minutes) - (parseInt(hours) * 60)).toString());
+    }
+    seconds = normalizeTime(Math.floor(parseInt(seconds) % 60).toString());
+   
+    if (hours !== '') {
+       return `${hours} h : ${minutes} m : ${seconds} s`;
+    }
+      return `${minutes} m : ${seconds} s`;
+   }
 
   stopTask(analysisTaskId: string) {
     this.analysisTaskService.stopTask(analysisTaskId).subscribe(

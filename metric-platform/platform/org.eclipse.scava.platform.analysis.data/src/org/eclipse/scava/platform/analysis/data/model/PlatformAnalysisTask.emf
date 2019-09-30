@@ -44,7 +44,10 @@ class SchedulingInformation {
     attr long progress;  
     attr String currentMetric;  
     attr Date executionRequestDate;
+    attr Date executionTaskStartDate;
+    attr Date executionTaskFinishDate;
     attr long lastDailyExecutionDuration;
+    attr long totalAnalysisDuration;
 }
 
 class MetricProvider {	

@@ -51,7 +51,7 @@ public class ProjectAnalyser {
 		this.platform = platform;
 	}
 
-	public boolean executeAnalyse(String analysisTaskId, String workerId) {
+	public synchronized boolean executeAnalyse(String analysisTaskId, String workerId) {
 		long startTime = System.currentTimeMillis();
 		
 		this.logger = OssmeterLogger.getLogger("ProjectExecutor (" + workerId + ":"+analysisTaskId +")");
@@ -89,7 +89,6 @@ public class ProjectAnalyser {
 		this.logger.info("Dates: " + dates.length);
 		
 		long estimatedDuration = 0;
-		
 		
 		for (Date date : dates) {
 			long startTimeDate = System.currentTimeMillis();
@@ -171,7 +170,8 @@ public class ProjectAnalyser {
 			}
 			
 			task = platform.getAnalysisRepositoryManager().getRepository().getAnalysisTasks().findOneByAnalysisTaskId(analysisTaskId);
-			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));	
+			task.getScheduling().setLastDailyExecutionDuration(estimatedDuration * (dates.length - Arrays.asList(dates).indexOf(date)));
+			task.getScheduling().setTotalAnalysisDuration(task.getScheduling().getTotalAnalysisDuration() + estimatedDuration);
 			platform.getAnalysisRepositoryManager().getRepository().sync();
 			
 			
