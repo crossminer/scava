@@ -31,7 +31,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/json-20080701.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/junit-4.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jzlib-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/kxml2-2.3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/kxml2-min-2.3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/maven-scm-api-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/maven-scm-provider-svn-commons-1.4.jar"/>
@@ -74,7 +73,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/xmlpull-1.1.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xom-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xpp3_min-1.1.4c.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/xstream-1.4.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jars/xstream-1.4.11.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xz-1.8.jar"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=org.eclipse.scava.crossflow.runtime.dependencies&amp;ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=ivysettings.xml&amp;loadSettingsOnDemand=false&amp;ivyUserDir=&amp;propertyFiles="/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
