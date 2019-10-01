@@ -116,7 +116,7 @@ private rel[loc, Mapping[loc]] renamed(M3Diff diff,  Delta delta) {
 	for (<cont, elem> <- removals.containment, elem in diff.removedDecls, isTargetMember(elem)) {
 		// In type cases we need the owner package instead of its compilation unit.
 		if (isCompilationUnit(cont)) {
-			cont = getOneFrom(invert(removals.containment)[cont]);
+			cont = getOneFrom(invert(removals.containment)[cont]) ? cont;
 		}
 		
 		elemsSameCont = {};
