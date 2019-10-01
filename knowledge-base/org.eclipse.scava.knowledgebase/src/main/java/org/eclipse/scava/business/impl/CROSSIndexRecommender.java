@@ -37,7 +37,9 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 	private static final Logger logger = LoggerFactory.getLogger(CROSSIndexRecommender.class);
 	
 	private final Pattern removeCharacters = Pattern.compile("[-*'\\^&!|(){}\\[\\]\"~?:\\\\]");
-	private final Pattern extraSpacing=Pattern.compile("\\h\\h+");
+	private final Pattern extraSpacing=Pattern.compile("\\s\\s+");
+	private final Pattern spacing=Pattern.compile("(^\\s|\\s$)");
+	
 	
 	@Value("${crossindexrecommender.hitsCodeBasedQuery}")
 	private int hitsCodeBasedQuery=20;
@@ -232,6 +234,9 @@ public class CROSSIndexRecommender implements IRecommendationProvider {
 			modifiedScore=(keywords.get(keyword)*normalizedScore);
 			keyword=removeCharacters.matcher(keyword).replaceAll(" ");
 			keyword=extraSpacing.matcher(keyword).replaceAll(" ");
+			keyword=spacing.matcher(keyword).replaceAll("");
+			if(keyword.isEmpty())
+				continue;
 			if(keywordsWeights.containsKey(keyword))
 				keywordsWeights.put(keyword, keywordsWeights.get(keyword)+modifiedScore);
 			else
