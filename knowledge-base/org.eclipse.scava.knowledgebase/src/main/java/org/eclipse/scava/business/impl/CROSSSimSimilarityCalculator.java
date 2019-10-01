@@ -22,17 +22,19 @@ import org.eclipse.scava.business.impl.simrank.utils.SimRank;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.GithubUser;
 import org.eclipse.scava.business.model.Stargazers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Table;
-import com.google.common.collect.HashBasedTable; 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table; 
 @Service
 @Qualifier("CrossSim")
 public class CROSSSimSimilarityCalculator implements IAggregatedSimilarityCalculator {
 
-	
+	private static final Logger logger = LoggerFactory.getLogger(CROSSSimSimilarityCalculator.class);
 	@Autowired
 	private IDependencyService dependencyService;
 	
@@ -71,8 +73,9 @@ public class CROSSSimSimilarityCalculator implements IAggregatedSimilarityCalcul
 		Set<Integer> inlinksSet;
 		Set<Integer> nodes = new HashSet<>();
 		
-		
+		int i = 0;
 		for (Artifact artifact : artifacts) {
+			if (i%10 == 0) logger.info("CROSSSim similarity calculator is computing {} of {} similarity.", i, artifacts.size());
 			String repoUrl = artifact.getFullName();
 			if (!dictionary.containsKey(repoUrl)) {
 				dictionary.put(repoUrl, artifactId);

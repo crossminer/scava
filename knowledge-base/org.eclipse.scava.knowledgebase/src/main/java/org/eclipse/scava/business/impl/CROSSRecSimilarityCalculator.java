@@ -31,21 +31,22 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Sets;
-import com.google.common.collect.Table; 
+import com.google.common.collect.Table;
+
 @Service
 @Qualifier("CrossRec")
 public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalculator {
 
 	private static final Logger logger = LoggerFactory.getLogger(CROSSRecSimilarityCalculator.class);
-	
+
 	@Autowired
 	private ArtifactRepository artifactRepository;
-	
+
 	@Autowired
 	private CROSSRecGraphRepository crossRecGraphRepository;
 	@Autowired
 	private SimilarityManager simManager;
-	
+
 	@Override
 	public boolean appliesTo(Artifact art) {
 		return (!art.getDependencies().isEmpty());
@@ -57,13 +58,18 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 	}
 
 	@Override
-	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts, Map<String, String> params) {
+	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts,
+			Map<String, String> params) {
 		Table<String, String, Double> result = HashBasedTable.create();
+		int i = 0;
 		for (Artifact artifact : artifacts) {
 			List<Dependency> deps = new ArrayList<>();
+			if (i % 10 == 0)
+				logger.info("CROSSRec similarity calculator is computing {} of {} similarity.", i, artifacts.size());
+			i++;
 			for (String dependency : artifact.getDependencies()) {
-				String [] value = dependency.split(":");
-				if(value.length == 2) {
+				String[] value = dependency.split(":");
+				if (value.length == 2) {
 					Dependency dep = new Dependency();
 					dep.setGroupID(value[0]);
 					dep.setArtifactID(value[1]);
@@ -72,8 +78,9 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 			}
 			try {
 				Map<String, Double> map = computeWeightCosineSimilarity(deps);
-				for (Map.Entry<String, Double> entry : map.entrySet()){
-				    result.put(artifact.getFullName(), artifactRepository.findOne(entry.getKey()).getFullName(), entry.getValue());
+				for (Map.Entry<String, Double> entry : map.entrySet()) {
+					result.put(artifact.getFullName(), artifactRepository.findOne(entry.getKey()).getFullName(),
+							entry.getValue());
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
@@ -81,82 +88,82 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		}
 		return result;
 	}
-		
+
 	/*
 	 * 
 	 */
-	public Map<String, Double> computeWeightCosineSimilarity(List<Dependency> dependencies) throws Exception{
+	public Map<String, Double> computeWeightCosineSimilarity(List<Dependency> dependencies) throws Exception {
 		CROSSRecGraph bigGraph = createCROSSRecGraph();
 
 		Set<String> allLibs = extractDepsfromGraph(bigGraph);
-		/*add all libraries from the training set*/
-		CROSSRecGraph projectGraph = createGraphFromListDependecies(dependencies);		
+		/* add all libraries from the training set */
+		CROSSRecGraph projectGraph = createGraphFromListDependecies(dependencies);
 		Map<String, Double> sim = new HashMap<String, Double>();
 		Set<String> queryLibs = extractDepsfromGraph(projectGraph);
-		
+
 		allLibs.addAll(queryLibs);
 		CROSSRecGraph globalGraph = combine(bigGraph, projectGraph);
-		
+
 		Map<Integer, Set<Integer>> graphEdges = globalGraph.getOutLinks();
 		Set<Integer> keySet = graphEdges.keySet();
-								
+
 		Map<Integer, Double> libWeight = new HashMap<Integer, Double>();
 		double freq = 0;
-		for(Integer startNode:keySet){					
-			Set<Integer> outlinks = graphEdges.get(startNode);					
-			for(Integer endNode:outlinks){						
-				if(libWeight.containsKey(endNode)) {
-					freq = libWeight.get(endNode)+1;												
-				} else freq = 1;
-				libWeight.put(endNode, freq);					
-			}				
+		for (Integer startNode : keySet) {
+			Set<Integer> outlinks = graphEdges.get(startNode);
+			for (Integer endNode : outlinks) {
+				if (libWeight.containsKey(endNode)) {
+					freq = libWeight.get(endNode) + 1;
+				} else
+					freq = 1;
+				libWeight.put(endNode, freq);
+			}
 		}
-		/*get the number of projects in the whole graph*/
-		int numberOfProjects = keySet.size();				
-		keySet = libWeight.keySet();				
-		double weight = 0, idf = 0;								
-		for(Integer libID:keySet){
+		/* get the number of projects in the whole graph */
+		int numberOfProjects = keySet.size();
+		keySet = libWeight.keySet();
+		double weight = 0, idf = 0;
+		for (Integer libID : keySet) {
 			freq = libWeight.get(libID);
-			weight = (double)numberOfProjects/freq;
+			weight = (double) numberOfProjects / freq;
 			idf = Math.log(weight);
-			libWeight.put(libID, idf);									
-		}			
-		
-		
+			libWeight.put(libID, idf);
+		}
+
 		for (String artifactName : extractProjectsfromGraph(bigGraph)) {
 			Artifact artifact = artifactRepository.findOne(artifactName);
-			if(artifact != null) {
+			if (artifact != null) {
 				Set<String> specificLibs = new HashSet<String>();
 				for (String string : artifact.getDependencies()) {
-					specificLibs.add(("#DEP#" + string).replace(".", "_")); 
+					specificLibs.add(("#DEP#" + string).replace(".", "_"));
 				}
 				List<String> libSet = new ArrayList<>(Sets.union(specificLibs, queryLibs));
 				int size = libSet.size();
 				double vector1[] = new double[size];
 				double vector2[] = new double[size];
-				double val=0;
-				for(int i=0;i<size;i++) {	
+				double val = 0;
+				for (int i = 0; i < size; i++) {
 					String lib = libSet.get(i);
-					if(queryLibs.contains(lib)) {
+					if (queryLibs.contains(lib)) {
 						int libID = globalGraph.getDictionary().get(lib);
-						vector1[i]=libWeight.get(libID);
-					}
-					else vector1[i]=0;
-					
-					if(specificLibs.contains(lib)) {
+						vector1[i] = libWeight.get(libID);
+					} else
+						vector1[i] = 0;
+
+					if (specificLibs.contains(lib)) {
 						int libID = globalGraph.getDictionary().get(lib);
-						vector2[i]=libWeight.get(libID);
-					}
-					else vector2[i]=0;					
+						vector2[i] = libWeight.get(libID);
+					} else
+						vector2[i] = 0;
 				}
-				/*Using Cosine Similarity*/
-				val = cosineSimilarity(vector1,vector2);					
-				sim.put(artifact.getId(), val);		
+				/* Using Cosine Similarity */
+				val = cosineSimilarity(vector1, vector2);
+				sim.put(artifact.getId(), val);
 			}
-		}												
+		}
 		return sim;
 	}
-	
+
 	public CROSSRecGraph createCROSSRecGraph() {
 		List<Artifact> arts = simManager.appliableProjects(this);
 		CROSSRecGraph graph = null;
@@ -168,7 +175,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		crossRecGraphRepository.save(graph);
 		return graph;
 	}
-	
+
 	public CROSSRecGraph createGraphFromArtifact(Artifact art) {
 		CROSSRecGraph graph = new CROSSRecGraph();
 		// Populate dictionary
@@ -182,7 +189,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 			backgroundDictionarySwitch.put("#DEP#" + dep.replace(".", "_"), count);
 			count++;
 		}
-		count --;
+		count--;
 		// Populate graph
 		Set<Integer> outlinks = new HashSet<Integer>();
 		Set<Integer> nodes = new HashSet<Integer>();
@@ -198,11 +205,11 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		graph.setDictionarySwitch(backgroundDictionary);
 		return graph;
 	}
-	
+
 	public CROSSRecGraph combine(CROSSRecGraph bigGraph, CROSSRecGraph graph) {
-		if(bigGraph == null)
+		if (bigGraph == null)
 			return graph;
-		if(graph == null)
+		if (graph == null)
 			return bigGraph;
 		Set<Integer> outlinks = new HashSet<Integer>();
 		Set<Integer> mainOutlinks = new HashSet<Integer>();
@@ -228,7 +235,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		}
 		Set<Integer> nodes = new HashSet<Integer>();
 		key = bigGraph.getOutLinks().keySet();
-		
+
 		for (Integer startNode : key) {
 			nodes.add(startNode);
 			mainOutlinks = bigGraph.getOutLinks().get(startNode);
@@ -239,7 +246,7 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		bigGraph.setNodeCount(nodes.size());
 		return bigGraph;
 	}
-	
+
 	private int extractKey(CROSSRecGraph g, String s) {
 		if (g.getDictionary().containsKey(s))
 			return g.getDictionary().get(s);
@@ -250,13 +257,13 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 			return c;
 		}
 	}
-	
+
 	private Set<String> extractDepsfromGraph(CROSSRecGraph graph) {
 		Set<String> result = null;
-		result = graph.getDictionary().keySet().stream().filter(z->z.startsWith("#DEP#")).collect(Collectors.toSet());
+		result = graph.getDictionary().keySet().stream().filter(z -> z.startsWith("#DEP#")).collect(Collectors.toSet());
 		return result;
 	}
-	
+
 	public CROSSRecGraph createGraphFromListDependecies(List<Dependency> dependencies) {
 		Artifact art = new Artifact();
 		art.setName("currentProject");
@@ -266,12 +273,14 @@ public class CROSSRecSimilarityCalculator implements IAggregatedSimilarityCalcul
 		}
 		return createGraphFromArtifact(art);
 	}
-	
+
 	private Set<String> extractProjectsfromGraph(CROSSRecGraph graph) {
 		Set<String> result = null;
-		result = graph.getDictionary().keySet().stream().filter(z->!z.startsWith("#DEP#")).collect(Collectors.toSet());
+		result = graph.getDictionary().keySet().stream().filter(z -> !z.startsWith("#DEP#"))
+				.collect(Collectors.toSet());
 		return result;
 	}
+
 	private double cosineSimilarity(double[] vector1, double[] vector2) {
 		double sclar = 0, norm1 = 0, norm2 = 0;
 		int length = vector1.length;

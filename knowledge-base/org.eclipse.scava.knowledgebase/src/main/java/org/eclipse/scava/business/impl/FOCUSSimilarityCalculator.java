@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Sets;
-import com.google.common.collect.Table; 
-
+import com.google.common.collect.Table;
 
 class ValueComparators implements Comparator<Artifact> {
 	Map<Artifact, Float> base;
@@ -49,16 +48,16 @@ class ValueComparators implements Comparator<Artifact> {
 		}
 	}
 }
+
 @Service
 @Qualifier("Focus")
 public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculator {
 
-	private static final Logger log = LoggerFactory.getLogger(FOCUSSimilarityCalculator.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(FOCUSSimilarityCalculator.class);
+
 	@Override
 	public boolean appliesTo(Artifact art) {
-		return (!art.getMethodDeclarations().isEmpty()) 
-				&& art.getType().getName().equals("FOCUS");
+		return (!art.getMethodDeclarations().isEmpty()) && art.getType().getName().equals("FOCUS");
 	}
 
 	@Override
@@ -67,18 +66,23 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 	}
 
 	@Override
-	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts, Map<String, String> params) {
+	public Table<String, String, Double> calculateAggregatedSimilarityValues(List<Artifact> artifacts,
+			Map<String, String> params) {
 		Table<String, String, Double> result = HashBasedTable.create();
+		int i = 0;
 		for (Artifact artifact : artifacts) {
-			Map<Artifact, Float> map = computeSimilarity(artifact,artifacts);
+			Map<Artifact, Float> map = computeSimilarity(artifact, artifacts);
 			for (Artifact art : map.keySet()) {
 				result.put(artifact.getFullName(), art.getFullName(), map.get(art).doubleValue());
 			}
 			result.put(artifact.getFullName(), artifact.getFullName(), 1.0);
+			if (i % 10 == 0)
+				logger.info("FOCUS similarity calculator is computing {} of {} similarity.", i, artifacts.size());
+			i++;
 		}
 		return result;
 	}
-	
+
 	public Map<Artifact, Float> computeSimilarity(Artifact testing, List<Artifact> trainings) {
 		Map<Artifact, Map<String, Integer>> trainingProjectsWithMIAndFrequency = new HashMap<>();
 		for (Artifact training : trainings)
@@ -91,10 +95,12 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 		trainingProjectsWithMIAndFrequency.remove(testing);
 		return v;
 	}
+
 	/**
 	 * Compute the similarity between the project testingPro and all the projects in
 	 * the supplied list and serialize the results.
-	 * @return 
+	 * 
+	 * @return
 	 */
 	private TreeMap<Artifact, Float> computeSimilarity(Artifact testingPro,
 			Map<Artifact, Map<String, Integer>> trainingProjectsWithMIAndFrequency) {
@@ -102,13 +108,14 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 		Map<String, Float> testingProjectVector = new HashMap<>();
 		Map<Artifact, Float> projectSimilarities = new HashMap<>();
 
-		log.info("Computing similarity between %s and all other projects", testingPro);
+		logger.info("Computing similarity between %s and all other projects", testingPro);
 
 		// Computes the feature vector of the testing project,
 		// ie. the TF-IDF for all its invocations
 		Map<String, Integer> miWihtFrequency = trainingProjectsWithMIAndFrequency.get(testingPro);
 		for (String term : miWihtFrequency.keySet()) {
-			float tfIdf = computeTF_IDF(miWihtFrequency.get(term), trainingProjectsWithMIAndFrequency.size(), termMIsFrequency.get(term));
+			float tfIdf = computeTF_IDF(miWihtFrequency.get(term), trainingProjectsWithMIAndFrequency.size(),
+					termMIsFrequency.get(term));
 			testingProjectVector.put(term, tfIdf);
 		}
 
@@ -120,7 +127,8 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 				miWihtFrequency = trainingProjectsWithMIAndFrequency.get(trainingProject);
 
 				for (String term : miWihtFrequency.keySet()) {
-					float tfIdf = computeTF_IDF(miWihtFrequency.get(term), trainingProjectsWithMIAndFrequency.size(), termMIsFrequency.get(term));
+					float tfIdf = computeTF_IDF(miWihtFrequency.get(term), trainingProjectsWithMIAndFrequency.size(),
+							termMIsFrequency.get(term));
 					trainingProjectVector.put(term, tfIdf);
 				}
 
@@ -135,8 +143,8 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 		sortedMap.putAll(projectSimilarities);
 
 		// Store similarities in the evaluation directory
-		//reader.writeSimilarityScores(simDir, testingPro, sortedMap);
-		log.info("Focus computed similarity between {} and all other projects", testingPro);
+		// reader.writeSimilarityScores(simDir, testingPro, sortedMap);
+		logger.info("Focus computed similarity between {} and all other projects", testingPro);
 		return sortedMap;
 	}
 
@@ -185,6 +193,7 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 			return 0f;
 		}
 	}
+
 	/**
 	 * Compute a term-frequency map which stores, for every invocation, how many
 	 * projects in the supplied list invoke it
@@ -209,7 +218,7 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 	private float computeTF_IDF(int count, int total, int freq) {
 		return (float) (count * Math.log(total / freq));
 	}
-	
+
 	/**
 	 * Compute the similarity between two vectors using Jaccard Similarity
 	 */
