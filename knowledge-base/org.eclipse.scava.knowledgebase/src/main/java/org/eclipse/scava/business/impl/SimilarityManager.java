@@ -181,7 +181,6 @@ public class SimilarityManager implements ISimilarityManager {
 				for (int j = i + 1; j < artifactsArray.length; j++) {
 					double similarity = 0;
 					try {
-						if (i % 10 == 0)  logger.info("Computing {} of {} similarity", i, artifactsArray.length);
 						similarity = singleCalculator.calculateSimilarity(artifactsArray[i], artifactsArray[j]);
 					} catch (Exception e) {
 						logger.error(e.getMessage());
@@ -189,6 +188,7 @@ public class SimilarityManager implements ISimilarityManager {
 					distanceMatrix.put(artifactsArray[i].getFullName(), artifactsArray[j].getFullName(), similarity);
 
 				}
+				if (i % 10 == 0)  logger.info("Computing {} of {} similarity", i, artifactsArray.length);
 			}
 			return distanceMatrix;
 		} else {

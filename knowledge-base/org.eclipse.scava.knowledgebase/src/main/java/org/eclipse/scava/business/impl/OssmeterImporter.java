@@ -101,6 +101,8 @@ public class OssmeterImporter implements IImporter {
 		result.setSsh_url((String) obj.get("ssh_url"));
 		result.setSvn_url((String) obj.get("svn_url"));
 		result.setMetricPlatformId((String) obj.get("shortName"));
+		result.setDescription((String) obj.get("description"));
+		result.setReadmeText((String) obj.get("description"));
 		is.close();
 		bufferReader.close();
 		result.setStarred(getStargazers(projectName));
@@ -151,8 +153,13 @@ public class OssmeterImporter implements IImporter {
 			String jsonText = readAll(bufferReader);
 			JSONArray array = (JSONArray) JSONValue.parse(jsonText);
 			for (Object object : array) {
-				String s = (String) ((JSONObject) object).get("value");
-				result.add(s);
+				String dependency = (String) ((JSONObject) object).get("value");
+				dependency = dependency.replace("bundle://maven/","");
+				String [] splitted = dependency.split("/");
+				if (splitted.length == 3)
+					result.add(splitted[0] + ":" + splitted[1]);
+				else 
+					result.add(dependency);
 			}
 			is.close();
 			bufferReader.close();
