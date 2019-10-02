@@ -115,6 +115,7 @@ public class OssmeterImporter implements IImporter {
 		projectRepository.save(result);
 		return result;
 	}
+	
 
 	private List<Stargazers> getStargazers(String artId) {
 		List<Stargazers> result = new ArrayList<>();
@@ -180,12 +181,10 @@ public class OssmeterImporter implements IImporter {
 		int page = 0;
 		while (guard) {
 			try {
-				
-				String ossmeterUrlMethod;
 				if(!mppUrl.startsWith("http://"))
-					ossmeterUrlMethod = "http://" + mppUrl + "/";
-				else ossmeterUrlMethod = mppUrl + "/";
-				URL url = new URL(ossmeterUrlMethod + "projects/?page=" + page + "&size=" + pageSize);
+					ossmeterUrl = "http://" + mppUrl + "/";
+				else ossmeterUrl = mppUrl + "/";
+				URL url = new URL(ossmeterUrl + "projects/?page=" + page + "&size=" + pageSize);
 				URLConnection connection = url.openConnection();
 				connection.connect();
 				InputStream is = connection.getInputStream();

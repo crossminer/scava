@@ -16,6 +16,7 @@ import org.eclipse.scava.business.impl.SimilarityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,10 @@ public class SchedulerManager {
 	@Autowired
 	private OssmeterImporter ossmeterImporter;
 
+	@Value("${ossmeter.url}")
+	private String ossmeterUrl;
+
+	
 	@Scheduled(cron = "0 30 20 ? * SUN")
 //	@Scheduled(cron = "0 0/5 * * * ?")
 	public void scheduler() {
@@ -46,7 +51,7 @@ public class SchedulerManager {
 	public void importer() {
 		try {
 			logger.info("Offline computating at: {}", LocalDateTime.now());
-			ossmeterImporter.importAll();
+			ossmeterImporter.importAll(ossmeterUrl);
 			logger.info("Offline computated at: {}", LocalDateTime.now());
 		} catch (Exception e) {
 			logger.error("error in computing distances: {}", e.getMessage());
