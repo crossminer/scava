@@ -300,10 +300,12 @@
 	function loadDiagram() {
 		// ---------------
 		// Load diagram data from workflow's model.json
-		$.getJSON("${"experiments/"}${pageContext.request.getParameter("id")}${"/model.json"}", function( json ) {
+		$.getJSON("${'experiments/'}${pageContext.request.getParameter('id')}${'/model.json'}", function( json ) {
 				//console.log("loadDiagram", json);
 				window.runtimeModelGraph.getModel().beginUpdate();
-				if (readModel(json, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent())) {
+				const autoLayout = readModel(json, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+				//console.log(autoLayout);
+				if (autoLayout) {
 					//console.log("automatic layout");
 					const layout = new mxCompactTreeLayout(window.runtimeModelGraph, true);
 					layout.execute(window.runtimeModelGraph.getDefaultParent());
