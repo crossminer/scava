@@ -9,7 +9,7 @@
 	
 	<dependencies>
 		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.8"/>
-		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.7"/>
+		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.11.1"/>
 		<dependency org="com.beust" name="jcommander" rev="1.7"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
 		<dependency org="commons-codec" name="commons-codec" rev="1.10"/>
@@ -20,7 +20,7 @@
 		<dependency org="commons-logging" name="commons-logging" rev="1.1"/>
 		<dependency org="io.reactivex.rxjava2" name="rxjavafx" rev="2.1.0"/>
 		<dependency org="com.squareup.retrofit2" name="retrofit" rev="2.3.0"/>
-		<!-- <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.6.2"/> -->
+		<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.6.2"/>
 		<dependency org="org.mortbay.jetty" name="jetty-util" rev="6.1.26"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.5"/>
 		<dependency org="com.squareup.retrofit2" name="converter-jackson" rev="2.3.0"/>
