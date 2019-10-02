@@ -11,17 +11,26 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
+import org.eclipse.scava.crossflow.runtime.FailedJob;
+import org.eclipse.scava.crossflow.runtime.InternalException;
+import org.eclipse.scava.crossflow.runtime.Job;
+import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
+import org.eclipse.scava.crossflow.runtime.Serializer;
+import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.BuiltinStream;
+import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
@@ -82,11 +91,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			}
 		[%}%]
 		}
-		
-		// Register custom types and Job subclasses
-		[%for (t in w.types){%]
-		this.serializer.register([%=t.name%].class);
-		[%}%]
 	}
 	
 	/**
@@ -237,6 +241,25 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			excludeTask(t);
 		}
 		return this;
+	}
+	
+	@Override
+	public Serializer getSerializer() {
+	    if (serializer == null) {
+	        serializer = new Serializer();
+	        [% for (t in w.types) {%]
+            serializer.register([%=t.name%].class);
+            [%}%]
+			serializer.register(ControlSignal.class);
+			serializer.register(FailedJob.class);
+			serializer.register(InternalException.class);
+			serializer.register(Job.class);
+			serializer.register(LogMessage.class);
+			serializer.register(StreamMetadata.class);
+			serializer.register(StreamMetadataSnapshot.class);
+			serializer.register(TaskStatus.class);
+	    }
+	    return serializer;
 	}
 	
 	public static [%=w.name%] run(String[] args) throws Exception {

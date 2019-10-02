@@ -37,7 +37,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 						workflow.cancelTermination();
 						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
 						[%if (isCached){%]
-						Job job = (Job) workflow.getSerializer().toObject(getMessageText(message));
+						Job job = workflow.getSerializer().<Job>toObject(getMessageText(message));
 						
 						if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 							
@@ -80,7 +80,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 				destinationConsumer.setMessageListener(message -> {
 					try {
 						workflow.cancelTermination();
-						Job job = (Job) workflow.getSerializer().toObject(getMessageText(message));
+						Job job = workflow.getSerializer().<Job>toObject(getMessageText(message));
 						
 						if (workflow.getCache() != null && !job.isCached())
 							if(job.isTransactional())
@@ -119,7 +119,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 			messageConsumer.setMessageListener(message -> {
 				try {
 					String messageText = getMessageText(message);
-					[%=s.type.name%] [%=s.type.name.ftlc%] = ([%=s.type.name%]) workflow.getSerializer().toObject(messageText);
+					[%=s.type.name%] [%=s.type.name.ftlc%] = workflow.getSerializer().<[%=s.type.name%]>toObject(messageText);
 					consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
 				} catch (Exception ex) {
 					workflow.reportInternalException(ex);
