@@ -172,11 +172,20 @@ public class OssmeterImporter implements IImporter {
 
 	@Override
 	public void importAll() {
+		importAll(ossmeterUrl);
+	}
+	
+	public void importAll(String mppUrl) {
 		boolean guard = true;
 		int page = 0;
 		while (guard) {
 			try {
-				URL url = new URL(ossmeterUrl + "projects/?page=" + page + "&size=" + pageSize);
+				
+				String ossmeterUrlMethod;
+				if(!mppUrl.startsWith("http://"))
+					ossmeterUrlMethod = "http://" + mppUrl + "/";
+				else ossmeterUrlMethod = mppUrl + "/";
+				URL url = new URL(ossmeterUrlMethod + "projects/?page=" + page + "&size=" + pageSize);
 				URLConnection connection = url.openConnection();
 				connection.connect();
 				InputStream is = connection.getInputStream();
@@ -203,7 +212,6 @@ public class OssmeterImporter implements IImporter {
 				logger.error(e.getMessage());
 			}
 		}
-
 	}
 
 	@Override
