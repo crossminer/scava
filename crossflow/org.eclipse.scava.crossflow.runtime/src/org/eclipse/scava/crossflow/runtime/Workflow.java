@@ -30,9 +30,9 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
+import org.eclipse.scava.crossflow.runtime.utils.DefaultLogConsumer;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
@@ -86,7 +86,7 @@ public abstract class Workflow<E extends Enum<E>> {
 
 	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
 	protected boolean createBroker = true;
-	
+
 	protected BrokerService brokerService;
 
 	/*
@@ -115,16 +115,18 @@ public abstract class Workflow<E extends Enum<E>> {
 
 	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
-	
+
+	/*
+	 * TRANSPORT
+	 */
 	// Custom serializer is lazily initialised
 	protected Serializer serializer = null;
+
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
-
-	protected CrossflowLogger logger = new CrossflowLogger(this);
 
 	protected BuiltinStream<FailedJob> failedJobsTopic = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
@@ -252,7 +254,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	public abstract void sendConfigurations();
 
 	protected void connect() throws Exception {
-
 		if (tempDirectory == null) {
 			tempDirectory = Files.createTempDirectory("crossflow").toFile();
 		}
@@ -434,16 +435,11 @@ public abstract class Workflow<E extends Enum<E>> {
 					failedJobs.add(failedJob);
 				}
 			});
-
-			logTopic.addConsumer(new BuiltinStreamConsumer<LogMessage>() {
-
-				@Override
-				public void consume(LogMessage message) {
-					// TODO do we need to persist log?
-					System.out.println(message.toString());
-					//
-				}
-			});
+			
+			// If the strategy is set to all then log everything
+			if (loggingStrategy == LoggingStrategy.ALL) {
+				logTopic.addConsumer(new DefaultLogConsumer());
+			}
 
 			internalExceptions = new ArrayList<>();
 			internalExceptionsQueue.addConsumer(new BuiltinStreamConsumer<InternalException>() {
@@ -1084,10 +1080,35 @@ public abstract class Workflow<E extends Enum<E>> {
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
+	
+	/*
+	 * LOGGING
+	 */
+	@Parameter(names = { "-logging" }, description = "The logging strategy of this workflow. Can be one of ALL, SELF or NONE. By default MASTER -> ALL, WORKER -> SELF")
+	protected LoggingStrategy loggingStrategy;
+	protected CrossflowLogger logger = new CrossflowLogger(this);
+	
+	protected void setupLogger() {
+		if (loggingStrategy == null) {
+			loggingStrategy = isMaster() ? LoggingStrategy.ALL : LoggingStrategy.SELF;
+		}
+		logger = new CrossflowLogger(this);
+		logger.setPrePrint(loggingStrategy == LoggingStrategy.SELF);
+	}
 
+	public CrossflowLogger getLogger() {
+		return logger;
+	}
+	
 	public void log(LogLevel level, String message) {
 		logger.log(level, message);
 	}
+
+	/**
+	 * When running in a shell check if the help flag is set
+	 * 
+	 * @return if the help flag has been set
+	 */
 	public boolean isHelp() {
 		return help;
 	}
