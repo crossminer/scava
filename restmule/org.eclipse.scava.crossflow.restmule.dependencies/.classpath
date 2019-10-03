@@ -1,38 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/jars/accessibility-test-framework-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activation-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-all-5.15.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-broker-5.13.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-client-5.13.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-openwire-legacy-5.13.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/adapter-rxjava2-2.3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/aether-api-1.0.2.v20150114.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/aether-impl-1.0.2.v20150114.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/aether-spi-1.0.2.v20150114.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/aether-util-1.0.2.v20150114.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/android-4.1.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/animal-sniffer-annotations-1.14.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/annotations-13.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/ant-1.10.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/ant-antunit-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/ant-launcher-1.10.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/aopalliance-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-5.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-analysis-5.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-commons-5.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-tree-5.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-util-5.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/asm-xml-5.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/avalon-framework-4.1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/avatica-1.8.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/avatica-metrics-1.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/bcprov-jdk15on-1.50.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/bcprov-jdk16-1.46.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/bsh-2.0b5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/cal10n-api-0.8.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/cdi-api-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/cglib-full-2.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/cglib-nodep-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/checker-qual-2.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/commons-codec-1.11.jar"/>
@@ -45,11 +23,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/conscrypt-openjdk-uber-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/converter-gson-2.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/converter-jackson-2.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/diffutils-1.3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/disruptor-3.3.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/dom4j-1.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/easymock-3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/easymockclassextension-2.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/ehcache-core-2.6.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/error_prone_annotations-2.1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/fluent-hc-4.5.6.jar"/>
@@ -60,35 +35,24 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/geronimo-jms_1.1_spec-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/google-http-client-1.25.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/google-http-client-jackson-1.25.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/google-http-client-jackson2-1.22.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/google-http-client-test-1.22.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/google-oauth-client-1.25.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/google-oauth-client-java6-1.25.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/google-oauth-client-jetty-1.25.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/groovy-all-2.4.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/gson-2.8.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/guava-bootstrap-jdk5-17.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/guava-testlib-20.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/guice-4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/h2-1.4.196.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/hamcrest-all-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/hamcrest-core-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/hsqldb-2.3.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpasyncclient-4.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpasyncclient-cache-4.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpclient-4.5.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jars/httpclient-cache-4.5.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpclient-win-4.5.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpcore-4.4.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpcore-nio-4.4.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/httpmime-4.5.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/icu4j-53.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/j2objc-annotations-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jansi-1.13.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/java-allocation-instrumenter-3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/javax.activation-api-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/javax.inject-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/javax.mail-1.5.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/javax.persistence-2.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jaxb-api-2.3.1.jar"/>
@@ -99,16 +63,12 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/jeromq-0.3.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jetty-6.1.26.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jetty-util-6.1.26.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/jmdns-3.4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jmock-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jna-4.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jna-platform-4.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/joda-time-1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jsch-0.1.54.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/json-20080701.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/json-unit-1.5.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/json-unit-core-1.5.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/jsr250-api-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jsr305-3.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/junit-4.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/jzlib-1.1.3.jar"/>
@@ -117,73 +77,29 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-stdlib-common-1.2.71.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-stdlib-jre7-1.2.71.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-stdlib-jre8-1.2.71.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-test-1.2.71.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-test-annotations-common-1.2.71.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-test-common-1.2.71.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/kotlin-test-junit-1.2.71.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/kxml2-min-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jars/log4j-api-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/log4j-core-2.6.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/logback-classic-1.1.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/logging-config-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/logkit-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/lz4-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-aether-provider-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-ant-tasks-2.1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-artifact-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-builder-support-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-core-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-model-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-model-builder-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-plugin-api-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-repository-metadata-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-settings-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/maven-settings-builder-3.3.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/mockejb-0.6-beta2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/mockito-all-1.10.19.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/mockito-core-1.10.19.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/mockobjects-core-0.09.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/mockobjects-jdk1.4-j2ee1.3-0.09.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/mockwebserver-3.10.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/objenesis-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/okhttp-3.10.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/okio-2.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/opengl-api-gl1.1-android-2.1_r1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.jgit-5.1.2.201810061102-r.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.osgi-3.7.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.persistence.antlr-2.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.persistence.asm-2.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.persistence.core-2.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.persistence.jpa-2.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/org.eclipse.persistence.jpa.jpql-2.6.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/org.osgi.core-4.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/oro-2.0.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/plexus-cipher-1.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/plexus-component-annotations-1.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/plexus-interpolation-1.21.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/plexus-sec-dispatcher-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/plexus-utils-3.0.22.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/reactive-streams-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/retrofit-2.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/robolectric-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/robolectric-annotations-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/robolectric-resources-3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/robolectric-utils-3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/rxjava-2.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/rxjavafx-2.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/servlet-api-2.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/servlet-api-2.5-20081211.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/shadows-core-3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/slf4j-api-1.7.25.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/slf4j-ext-1.7.21.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/slf4j-jcl-1.7.25.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/slf4j-log4j12-1.7.13.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/spymemcached-2.12.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/sqlite4java-0.282.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/stax-1.2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/stax-api-1.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/testng-5.12.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/truth-0.40.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/vtd-xml-2.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/wstx-asl-3.2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xml-writer-0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xmlParserAPIs-2.6.2.jar"/>
@@ -192,7 +108,22 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/xpp3_min-1.1.4c.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xpp3-1.1.4c.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xstream-1.4.11.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jars/xz-1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/guava-26.0-jre.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-annotations-2.9.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-core-2.9.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-databind-2.9.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-dataformat-xml-2.7.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-dataformat-yaml-2.7.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jackson-module-jaxb-annotations-2.7.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/JavaEWAH-1.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/jettison-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/kahadb-5.4.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/protobuf-java-3.0.0-beta-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/snakeyaml-1.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/snappy-java-1.1.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/stax2-api-3.1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/woodstox-core-5.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/guava-26.0-jre.jar"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/httpclient-4.5.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="man-lib/log4j-api-2.6.2.jar"/>
