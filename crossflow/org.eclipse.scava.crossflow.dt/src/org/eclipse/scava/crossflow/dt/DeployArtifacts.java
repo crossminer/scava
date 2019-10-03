@@ -46,7 +46,7 @@ public class DeployArtifacts implements IObjectActionDelegate {
 		try {
 
 			// find experiment folder
-			File experimentFolder = new File(projectFolder, "experiment");
+			File experimentFolder = new File(projectFolder, "artifacts");
 			if (!experimentFolder.exists())
 				return;
 
@@ -79,7 +79,12 @@ public class DeployArtifacts implements IObjectActionDelegate {
 
 		HttpClient httpclient = new DefaultHttpClient();
 
-		HttpPost httppost = new HttpPost("http://" + serverIp + "/" + webAppProjectName + "/uploadExperiment");
+		String address = "http://" + serverIp + "/" + webAppProjectName + "/uploadExperiment";
+		
+		System.out.println("uploading workflow to: " + address);
+		System.out.println("zip file located at: " + zipfile);
+		
+		HttpPost httppost = new HttpPost(address);
 
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.addPart("experimentZip", new FileBody(zipfile));
