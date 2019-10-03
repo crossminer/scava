@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/arpack_combined_all-0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/class-7.3-15-b1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/cluster-2.0.7-1-b6.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/codemodel-2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/commons-compress-1.18.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/commons-logging-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/commons-math-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/commons-vfs2-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/compiler-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/core-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/datasets-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/e1071-1.7-1-b1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/gcc-runtime-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/graphics-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/grDevices-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/grid-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/jfreesvg-3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/libstdcxx-4.7.4-b34.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/MASS-7.3-51.1-b1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/maven-scm-api-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/maven-scm-provider-svn-commons-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/maven-scm-provider-svnexe-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/methods-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/mlbench-2.1-1-b269.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/nnet-7.3-12-b101.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/parallel-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/plexus-utils-1.5.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/randomForest-4.6-14-b14.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/regexp-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-appl-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-asm-5.0.4b.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-blas-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-core-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-gnur-runtime-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-guava-17.0b.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-lapack-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-math-common-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/renjin-nmath-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/rpart-4.1-13-b18.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/slam-0.1-45-b1.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/SparseM-1.77-b25.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/splines-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/stats-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/stats4-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/tcltk-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/tools-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/utils-0.9.2725.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/xtable-1.8-2-b89.jar"/>
+	<classpathentry exported="true" kind="lib" path="resources/lib/jars/xz-1.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src-gen"/>
-	<classpathentry kind="lib" path="lib/jars/arpack_combined_all-0.1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/class-7.3-15-b1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/cluster-2.0.7-1-b6.jar"/>
-	<classpathentry kind="lib" path="lib/jars/codemodel-2.6.jar"/>
-	<classpathentry kind="lib" path="lib/jars/commons-compress-1.18.jar"/>
-	<classpathentry kind="lib" path="lib/jars/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/commons-math-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/jars/commons-vfs2-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/jars/compiler-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/core-1.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/jars/datasets-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/e1071-1.7-1-b1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/gcc-runtime-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/graphics-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/grDevices-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/grid-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/jfreesvg-3.3.jar"/>
-	<classpathentry kind="lib" path="lib/jars/libstdcxx-4.7.4-b34.jar"/>
-	<classpathentry kind="lib" path="lib/jars/MASS-7.3-51.1-b1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/maven-scm-api-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jars/maven-scm-provider-svn-commons-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jars/maven-scm-provider-svnexe-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jars/methods-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/mlbench-2.1-1-b269.jar"/>
-	<classpathentry kind="lib" path="lib/jars/nnet-7.3-12-b101.jar"/>
-	<classpathentry kind="lib" path="lib/jars/parallel-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/plexus-utils-1.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/jars/randomForest-4.6-14-b14.jar"/>
-	<classpathentry kind="lib" path="lib/jars/regexp-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-appl-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-asm-5.0.4b.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-blas-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-core-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-gnur-runtime-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-guava-17.0b.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-lapack-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-math-common-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/renjin-nmath-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/rpart-4.1-13-b18.jar"/>
-	<classpathentry kind="lib" path="lib/jars/slam-0.1-45-b1.jar"/>
-	<classpathentry kind="lib" path="lib/jars/SparseM-1.77-b25.jar"/>
-	<classpathentry kind="lib" path="lib/jars/splines-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/stats-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/stats4-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/tcltk-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/tools-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/utils-0.9.2725.jar"/>
-	<classpathentry kind="lib" path="lib/jars/xtable-1.8-2-b89.jar"/>
-	<classpathentry kind="lib" path="lib/jars/xz-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
