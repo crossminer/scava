@@ -28,7 +28,7 @@
 		<module>org.eclipse.scava.crossflow.runtime</module>
 		<module>org.eclipse.scava.crossflow.runtime.dependencies</module>
 		<module>org.eclipse.scava.crossflow.targetplatform</module>
-		<module>org.eclipse.scava.crossflow.tests</module>
+<!--		<module>org.eclipse.scava.crossflow.tests</module> -->
 <!--  		<module>org.eclipse.scava.crossflow.web</module> -->
 <!-- 		<module>org.eclipse.scava.crossflow.web.docker</module> -->
 <!-- 		<module>org.eclipse.scava.crossflow.web.tests</module> -->
