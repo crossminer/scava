@@ -3,20 +3,14 @@
 package [%=package%];
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Generated;
 
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
-import org.eclipse.scava.crossflow.runtime.BuiltinStream;
-import org.eclipse.scava.crossflow.runtime.FailedJob;
-import org.eclipse.scava.crossflow.runtime.InternalException;
-import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
 import org.eclipse.scava.crossflow.runtime.Serializer;
@@ -24,10 +18,6 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
-import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
-import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
-import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -236,7 +226,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	@Override
-	public [%=w.name%] excludeTasks(EnumSet<[%=w.name%]Tasks> tasks) {
+	public [%=w.name%] excludeTasks(Collection<[%=w.name%]Tasks> tasks) {
 		for ([%=w.name%]Tasks t : tasks) {
 			excludeTask(t);
 		}
@@ -244,22 +234,12 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	@Override
-	public Serializer getSerializer() {
-	    if (serializer == null) {
-	        serializer = new Serializer();
-	        [% for (t in w.types) {%]
-            serializer.register([%=t.name%].class);
-            [%}%]
-			serializer.register(ControlSignal.class);
-			serializer.register(FailedJob.class);
-			serializer.register(InternalException.class);
-			serializer.register(Job.class);
-			serializer.register(LogMessage.class);
-			serializer.register(StreamMetadata.class);
-			serializer.register(StreamMetadataSnapshot.class);
-			serializer.register(TaskStatus.class);
-	    }
-	    return serializer;
+	public Serializer setupSerializer() {
+	    Serializer serializer = new Serializer();
+	    [% for (t in w.types) {%]
+        serializer.register([%=t.name%].class);
+        [%}%]
+		return serializer;
 	}
 	
 	public static [%=w.name%] run(String[] args) throws Exception {

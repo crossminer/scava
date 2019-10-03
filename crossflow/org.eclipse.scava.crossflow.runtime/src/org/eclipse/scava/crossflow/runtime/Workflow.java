@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -33,6 +32,7 @@ import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
 import org.eclipse.scava.crossflow.runtime.utils.DefaultLogConsumer;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
@@ -119,9 +119,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	/*
 	 * TRANSPORT
 	 */
-	// Custom serializer is lazily initialised
-	protected Serializer serializer = null;
-
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
@@ -193,7 +190,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	 * @throws IllegalArgumentException if any value in tasks is {@code null}
 	 * @return the workflow instance
 	 */
-	public abstract Workflow<E> excludeTasks(EnumSet<E> tasks);
+	public abstract Workflow<E> excludeTasks(Collection<E> tasks);
 
 	public boolean isCreateBroker() {
 		return createBroker;
@@ -967,8 +964,6 @@ public abstract class Workflow<E extends Enum<E>> {
 		this.tempDirectory = tempDirectory;
 	}
 
-	public abstract Serializer getSerializer();
-
 	/**
 	 * default = 3000
 	 * 
@@ -1080,6 +1075,36 @@ public abstract class Workflow<E extends Enum<E>> {
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
+	
+	/*
+	 * SERIALIZATION
+	 */
+	protected Serializer serializer;
+	
+	public Serializer getSerializer() {
+		if (serializer == null) {
+			serializer = setupSerializer();
+			serializer.register(ControlSignal.class);
+			serializer.register(FailedJob.class);
+			serializer.register(InternalException.class);
+			serializer.register(Job.class);
+			serializer.register(LogMessage.class);
+			serializer.register(StreamMetadata.class);
+			serializer.register(StreamMetadataSnapshot.class);
+			serializer.register(TaskStatus.class);
+		}
+		return serializer;
+	}
+	
+	/**
+	 * Retrieve the Serializer used in this Workflow
+	 * <p>
+	 * Implementing classes should lazily initialise an instance of the serializer
+	 * to use and register all classes that should be serializable in this workflow
+	 * 
+	 * @return an instance of serializer
+	 */
+	public abstract Serializer setupSerializer();
 	
 	/*
 	 * LOGGING
