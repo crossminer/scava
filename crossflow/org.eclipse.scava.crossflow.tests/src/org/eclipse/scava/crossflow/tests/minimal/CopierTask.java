@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.tests.minimal;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class CopierTask extends CopierTaskBase {
 
@@ -14,7 +14,7 @@ public class CopierTask extends CopierTaskBase {
 	public Number consumeInput(Number number) {
 
 		if (verbose)
-			log(SEVERITY.INFO, "CopierTask:" + workflow.getCopierTasks().lastIndexOf(this) + " consuming: " + number);
+			log(LogLevel.INFO, "CopierTask:" + workflow.getCopierTasks().lastIndexOf(this) + " consuming: " + number);
 
 		if (delay > 0)
 			try {
