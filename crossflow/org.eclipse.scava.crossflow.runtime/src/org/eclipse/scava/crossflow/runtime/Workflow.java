@@ -30,7 +30,7 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
@@ -212,7 +212,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	 * quickly to be registered using the control topic when on the same machine
 	 */
 	public void addActiveWorkerId(String id) {
-		logger.log(SEVERITY.INFO, "Adding worker " + id);
+		logger.log(LogLevel.INFO, "Adding worker " + id);
 		activeWorkerIds.add(id);
 	}
 
@@ -633,9 +633,9 @@ public abstract class Workflow<E extends Enum<E>> {
 	}
 
 	public void run() throws Exception {
-		//
+		setupLogger();
 		if (cacheEnabled && cache == null) {
-			logger.log(SEVERITY.INFO,
+			logger.log(LogLevel.INFO,
 					"cacheEnabled==true but no cache was defined, creating a default DirectoryCache in the temp folder of the machine.");
 			DirectoryCache c = new DirectoryCache();
 			setCache(c);
@@ -737,7 +737,7 @@ public abstract class Workflow<E extends Enum<E>> {
 			if (isMaster()) {
 
 				// ask all workers to terminate
-				logger.log(SEVERITY.INFO, "Asking all workers to terminate.");
+				logger.log(LogLevel.INFO, "Asking all workers to terminate.");
 				controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
 
 				long startTime = System.currentTimeMillis();
@@ -746,14 +746,14 @@ public abstract class Workflow<E extends Enum<E>> {
 					// System.out.println(terminatedWorkerIds);
 					// System.out.println(activeWorkerIds);
 					if (terminatedWorkerIds.equals(activeWorkerIds)) {
-						logger.log(SEVERITY.INFO, "All workers terminated, terminating master.");
+						logger.log(LogLevel.INFO, "All workers terminated, terminating master.");
 						System.out.println("all workers terminated, terminating master...");
 						break;
 					}
 					Thread.sleep(100);
 				}
 				System.out.println("terminating master...");
-				logger.log(SEVERITY.INFO, "Terminating master...");
+				logger.log(LogLevel.INFO, "Terminating master...");
 
 			}
 
@@ -972,7 +972,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	}
 
 	public abstract Serializer getSerializer();
-	
+
 	/**
 	 * default = 3000
 	 * 
@@ -1050,10 +1050,6 @@ public abstract class Workflow<E extends Enum<E>> {
 		terminationEnabled = enableTermination;
 	}
 
-	public void log(SEVERITY level, String message) {
-		logger.log(level, message);
-	}
-
 	private long timeoutMillis = Long.MAX_VALUE;
 
 	public long getTimeoutMillis() {
@@ -1081,7 +1077,7 @@ public abstract class Workflow<E extends Enum<E>> {
 			try {
 				wait(timeoutMillis);
 			} catch (InterruptedException ie) {
-				logger.log(SEVERITY.INFO, ie.getMessage());
+				logger.log(LogLevel.INFO, ie.getMessage());
 			}
 		}
 		if (latestTime - startTime > timeoutMillis)
@@ -1089,6 +1085,9 @@ public abstract class Workflow<E extends Enum<E>> {
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
 
+	public void log(LogLevel level, String message) {
+		logger.log(level, message);
+	}
 	public boolean isHelp() {
 		return help;
 	}

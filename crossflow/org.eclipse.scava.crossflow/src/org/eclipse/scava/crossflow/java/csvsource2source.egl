@@ -1,6 +1,6 @@
 package [%=package%];
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 import java.io.File;
 
@@ -28,7 +28,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 				[%}%]	
 			}
 		} catch (Exception e) {
-			workflow.log(SEVERITY.ERROR, e.getMessage());
+			workflow.log(LogLevel.ERROR, e.getMessage());
 		}
 	}
 	

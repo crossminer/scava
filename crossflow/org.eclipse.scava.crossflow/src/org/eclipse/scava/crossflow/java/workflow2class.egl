@@ -23,7 +23,7 @@ import org.eclipse.scava.crossflow.runtime.Serializer;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
@@ -177,7 +177,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			}	
 					
 		} catch (Exception e) {
-			log(SEVERITY.ERROR, e.getMessage());
+			log(LogLevel.ERROR, e.getMessage());
 		}
 	}				
 	
