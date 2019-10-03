@@ -12,30 +12,30 @@ package org.eclipse.scava.crossflow.examples.simple.nbody.cf;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
-
+import org.springframework.core.task.TaskTimeoutException;
 
 /**
  * The Class NBodyApp.
  */
 public class NBodyApp {
-	
 
 	public static void main(String[] args) throws Exception {
-	
+
 		// Mode -> args[0]
 		Mode mode = Mode.valueOf(args[0]);
 		NBody runner = new NBody(mode);
 		runner.setMaster(args[1]);
 		runner.setInstanceId("Example NBody");
 		if (Mode.MASTER_BARE.equals(mode)) {
-			runner.createBroker(true);			
+			runner.createBroker(true);
 			runner.setEnableTermination(false);
-			//master.setParallelization(4);
+			// master.setParallelization(4);
 			runner.setInputDirectory(new File("resources/in"));
 			runner.setOutputDirectory(new File("resources/out"));
 			runner.setName("NBody");
@@ -43,26 +43,24 @@ public class NBodyApp {
 			runner.run(5000L);
 			runner.awaitTermination();
 			System.out.println("Done");
-		}
-		else {
-			Set<String> workers = new HashSet<>(Arrays.asList("Simulation", "Step"));
+		} else {
+			EnumSet<NBodyTasks> workers = EnumSet.of(NBodyTasks.SIMULATION, NBodyTasks.STEP);
 			String taskType = args[2];
-			workers.remove(taskType);
+			workers.remove(NBodyTasks.valueOf(taskType));
 			runner.excludeTasks(workers);
-			switch(taskType) {
-				case "Simulation":
-				{
-					runner.setName(String.format("Simulation_%s", UUID.randomUUID()));
-					break;
-				}
-				case "Step": {
-					runner.setName(String.format("Step_%s", UUID.randomUUID()));
-					break;
-				}
-				default: {
-					System.err.println("Wrong task type selected");
-					System.exit(-1);
-				}				
+			switch (taskType) {
+			case "Simulation": {
+				runner.setName(String.format("Simulation_%s", UUID.randomUUID()));
+				break;
+			}
+			case "Step": {
+				runner.setName(String.format("Step_%s", UUID.randomUUID()));
+				break;
+			}
+			default: {
+				System.err.println("Wrong task type selected");
+				System.exit(-1);
+			}
 			}
 			System.out.println("Running");
 			runner.run();
@@ -70,5 +68,5 @@ public class NBodyApp {
 			System.out.println("Done");
 		}
 	}
-	
+
 }
