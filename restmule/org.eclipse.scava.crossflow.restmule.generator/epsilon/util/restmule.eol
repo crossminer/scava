@@ -1,0 +1,186 @@
+import "lib.eol";
+operation RestMule!Type getType() : String {
+	if (self.instanceOf(SimpleType)){
+		if (self.instanceOf(TLong)) {
+			return "Long";
+		}
+		if (self.instanceOf(TInteger)) {
+			return "Integer";
+		}
+		if (self.instanceOf(TFloat)) {
+			return "Float";
+		}
+		if (self.instanceOf(TDouble)) {
+			return "Double";
+		}
+		if (self.instanceOf(TBoolean)) {
+			return "Boolean";
+		}
+		if (self.instanceOf(TString)) {
+			return "String";
+		}
+	} 
+	if (self.instanceOf(ObjectType)) {
+		return self.name.firstToUpperCase();
+	}
+	if (self.instanceOf(ListType)) {
+		return ("List<" + self.elements.first.getType() + ">");
+	}
+	if (self.instanceOf(UndefinedType)){
+		return "Object";
+	} else {
+		return "INVALID";
+	}
+}
+
+operation RestMule!Type getInnerType() : String {
+	if (self.instanceOf(ListType)) {
+		return self.elements.first.getType() ;
+	} else {
+		return self.getType();
+	}
+}
+
+operation RestMule!Response getEndpointType(api : String){
+	if (self.responseType.instanceOf(ListType)){
+		return "Call<"+self.responseType.getType() + ">";
+	} else if (self.pageWrapped ){
+		return "Call<"+api + "Paged<"+self.responseType.getType() + ">>";		
+	} else {
+		return "Observable<"+self.responseType.getType() + ">";
+	}
+}
+
+operation RestMule!Response getApiType(){
+	var type : String;
+	if (self.responseType.instanceOf(ListType) or self.pageWrapped){
+		type = "IDataSet<";
+	} else {
+		type = "IData<";
+	}
+	return type +self.getApiInnerType() + ">";
+}
+
+operation RestMule!Response getApiInnerType(){
+	if (self.responseType.instanceOf(ListType)){
+		return self.responseType.getInnerType();
+	} else if (self.pageWrapped ){
+		return self.responseType.getType();
+	} else {
+		return self.responseType.getType();
+	}
+}
+
+operation RestMule!Response isPaged() : Boolean {
+	return ( self.responseType.instanceOf(ListType) or self.pageWrapped );
+}
+
+operation RestMule!Parameter paramType() : String {
+	if (self.isTypeOf(Query)){
+		return "Query";
+	} 
+	if (self.isTypeOf(Path)){
+		return "Path";
+	}
+	if (self.isTypeOf(RequestHeader)){
+		return "Header";
+	}
+	if (self.isTypeOf(Body)){
+		return "Body";
+	}
+}
+
+operation RestMule!Type allInners() : Set {
+	var root;
+	if (self.instanceOf(ObjectType)){
+		root = self;
+	} else if (self.instanceOf(ListType) and 
+		(self.elements.first.instanceOf(ObjectType))) {
+		root = self.elements.first;
+	} else{
+		return null;
+	}
+	var result = new Set();
+	var nest = root.getSubObjects();
+	var ok : Boolean = not nest.isEmpty();
+	while (ok){
+		result.addAll(nest);
+		var tmp = new Set();
+		for (o in nest){
+			var n = o.getSubObjects();
+			if (not n.isEmpty()){
+				tmp.addAll(n);
+			}
+		}
+		nest = tmp;
+		ok = not nest.isEmpty();
+	}
+	return result;
+
+}
+
+operation RestMule!ObjectType getSubObjects() : Set{
+	var nest = new Set;
+	if (not self.nestedObjects.isEmpty()){
+		nest.addAll(self.nestedObjects);
+	}
+	if (not self.listFields.isEmpty()){
+		var inner = self.listFields.collect(l|l.elements.first).flatten
+			.select(e|e.instanceOf(ObjectType));
+		if (not inner.isEmpty()){
+			nest.addAll(inner);
+		}
+	}
+	return nest;
+}
+
+operation RestMule!Response methodName() : String {
+	var name = self.request.method.asString().toLowerCase() + self.request.parent.path.methodName();
+	var rType = self.responseType.name;
+	if (not name.endsWith(rType)){
+		name = name + rType;
+	}
+	if (self.request.parent.path.endsWith("}")){
+		var elements = self.request.parent.path.split("/");
+		var last = elements.last();
+		name = name + "By" + last.substring(1, last.length()-1).sanitize().firstToUpperCase();
+	}
+	return name;
+}
+
+operation RestMule!ObjectType fields() : OrderedSet { 
+	var fields = self.attributes.clone(); 
+	/*fields.addAll(self.attributesRef);*/ 
+	return fields;
+}
+operation RestMule!ObjectType nested() : OrderedSet { 
+	var nested = self.nestedObjects.clone(); 
+	/* nested.addAll(self.nestedObjectsRef);*/ 
+	return nested; 
+}
+operation RestMule!ObjectType lists() : OrderedSet { 
+	var lists = self.listFields.clone(); 
+	/*lists.addAll(self.listFields);*/ 
+	return lists; 
+}
+operation RestMule!ObjectType inner() : OrderedSet { 
+  var nested : new OrderedSet;
+	if (not self.nested().isEmpty()){
+		nested.addAll(self.nested());
+	} 
+	if (not self.lists().isEmpty()){
+		var listNested = self.lists().collect(l|l.elements.first).flatten.select(e|e.instanceOf(ObjectType));
+		if (not listNested.isEmpty()){
+			nested.addAll(listNested.asSet());
+		}
+	}
+	("nested : "+nested.collect(e|e.name));
+	return nested; 
+}
+
+// (FIXME) 
+operation RestMule!RatePolicyScope getResponses() : Sequence {
+	return self.requests.responses.flatten
+		.select(r| r.responseType <> null and not ( r.responseType.instanceOf(RestMule!UndefinedType) 
+				or ( r.responseType.instanceOf(RestMule!ListType) and r.responseType.elements.first.instanceOf(RestMule!UndefinedType))));
+}

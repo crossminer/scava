@@ -15,13 +15,12 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link crossflow.Workflow#getConfiguration <em>Configuration</em>}</li>
  *   <li>{@link crossflow.Workflow#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.Workflow#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.Workflow#getStreams <em>Streams</em>}</li>
  *   <li>{@link crossflow.Workflow#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.Workflow#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.Workflow#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.Workflow#getLanguages <em>Languages</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getWorkflow()
@@ -29,32 +28,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Workflow extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Configuration</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Configuration</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Configuration</em>' containment reference.
-	 * @see #setConfiguration(Configuration)
-	 * @see crossflow.CrossflowPackage#getWorkflow_Configuration()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	Configuration getConfiguration();
-
-	/**
-	 * Sets the value of the '{@link crossflow.Workflow#getConfiguration <em>Configuration</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Configuration</em>' containment reference.
-	 * @see #getConfiguration()
-	 * @generated
-	 */
-	void setConfiguration(Configuration value);
-
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -80,32 +53,6 @@ public interface Workflow extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Package</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Package</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Package</em>' attribute.
-	 * @see #setPackage(String)
-	 * @see crossflow.CrossflowPackage#getWorkflow_Package()
-	 * @model
-	 * @generated
-	 */
-	String getPackage();
-
-	/**
-	 * Sets the value of the '{@link crossflow.Workflow#getPackage <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Package</em>' attribute.
-	 * @see #getPackage()
-	 * @generated
-	 */
-	void setPackage(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Streams</b></em>' containment reference list.
@@ -170,5 +117,21 @@ public interface Workflow extends EObject {
 	 * @generated
 	 */
 	EList<Field> getParameters();
+
+	/**
+	 * Returns the value of the '<em><b>Languages</b></em>' containment reference list.
+	 * The list contents are of type {@link crossflow.Language}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Languages</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Languages</em>' containment reference list.
+	 * @see crossflow.CrossflowPackage#getWorkflow_Languages()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Language> getLanguages();
 
 } // Workflow

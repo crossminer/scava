@@ -1,0 +1,110 @@
+import traceback
+
+from crossflow.runtime import JobStream, logger, QueueInfo, QueueType
+
+
+class [%=s.name%](JobStream):
+		
+	def __init__(self, workflow, enablePrefetch):
+		super().__init__(workflow)
+		
+		[%for (t in s.inputOf){%]
+		self.preQueue['[%=t.name%]'] = QueueInfo(QueueType.QUEUE, '[%=s.name%]Pre.[%=t.name%].' + workflow.getInstanceId())
+		self.destination['[%=t.name%]'] = QueueInfo(QueueType.QUEUE, '[%=s.name%]Destination.[%=t.name%].' + workflow.getInstanceId())
+		prefetchSize = 0
+		self.enablePrefetch = enablePrefetch
+		if not self.enablePrefetch:
+			prefetchSize = 1
+		postQ = QueueInfo(QueueType['[%=s.eClass().name.toUpperCase()%]'], '[%=s.name%]Post.[%=t.name%].' + workflow.getInstanceId(), prefetchSize)
+
+		self.postQueue['[%=t.name%]'] = postQ
+		[%}%]
+		
+		for consumerId in self.preQueue.keys():
+			preQueue = self.preQueue[consumerId]
+			destQueue = self.destination[consumerId]
+			postQueue = self.postQueue[consumerId]
+			if (workflow.is_master()):
+				def handlePreMessage(message, ackFunc=None):
+					try:
+						workflow.cancelTermination()
+						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
+						[%if (isCached){%]
+						job = self.workflow.serializer.to_object(message)
+						if (workflow.getCache() != None and workflow.getCache().hasCachedOutputs(job)):
+							workflow.setTaskInProgess(self.cacheManagerTask)
+							cachedOutputs = workflow.getCache().getCachedOutputs(job)
+							workflow.setTaskWaiting(self.cacheManagerTask)
+							[%if (s.inputOf.output.flatten().size > 0){%]
+							for outputJob in cachedOutputs:
+								[%for (next in s.inputOf.output.flatten()){%]
+								if outputJob.getDestination() == '[%=next.name%]':
+									workflow.cancelTermination()
+									workflow.get[%=next.name%]().send(outputJob, consumerId)
+								[%}%]
+							[%}%]
+						else:
+							self.sendMessage(message, destQueue.getStompDestinationName())						
+						[%}else{%]
+						self.sendMessage(message, destQueue.getStompDestinationName())						
+						[%}%]
+						
+						if ackFunc != None:
+							ackFunc()						
+						
+					except Exception as e:
+						logger.exception("")
+						workflow.reportInternalException(e, "")
+
+				self.subscribe(preQueue, handlePreMessage)
+
+				def handleDestinationMessage(message, ackFunc=None):
+					try:
+						workflow.cancelTermination()
+						job = self.workflow.serializer.to_object(message)
+						if (workflow.getCache() != None) and (not job.isCached()):
+							if(job.isTransactional()):
+								workflow.getCache().cacheTransactionally(job)
+							else:
+								workflow.getCache().cache(job)
+						if(job.getIsTransactionSuccessMessage()):
+							return
+						self.sendMessage(message, postQueue.getStompDestinationName())
+						
+						if ackFunc != None:
+							ackFunc()						
+					except Exception as e:
+						logger.exception("")
+						workflow.reportInternalException(e, "")
+
+				self.subscribe(destQueue, handleDestinationMessage)
+	
+	def addConsumer(self, consumer, consumerId):
+		postQueue = self.postQueue[consumerId]
+		#only connect if the consumer exists (for example it will not in a master_bare situation)
+		if consumer != None:
+			def messageHandler(message, ackFunc=None):		
+				try:
+					[%=s.type.name.ftlc%] = self.workflow.serializer.to_object(message)
+					consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%])
+						
+					if ackFunc != None:
+						ackFunc()						
+				except Exception as e:
+					logger.exception("")
+					self.workflow.reportInternalException(e, "")
+
+			self.subscribe(postQueue, messageHandler)
+
+
+class [%=s.name%]Consumer(object):
+
+	def __init__(self):
+		pass
+	
+	def consume[%=s.name%]WithNotifications(self, [%=s.type.name.ftlc()%]):
+		pass
+
+	def consume[%=s.name%]External(self, [%=s.type.name.ftlc()%], owner):
+		pass
+		

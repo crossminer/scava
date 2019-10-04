@@ -5,7 +5,7 @@ public class EmptySink extends EmptySinkBase {
 	@Override
 	public void consumeResultsPublisher(Result result) {
 		// does nothing!
-
+System.err.println("+++");
 	}
 
 }

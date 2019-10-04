@@ -1,0 +1,18 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Example demonstrating how to implement non-static commitment -->
+	<workflow name="CommitmentWorkflow">
+		<source name="AnimalSource" out="Animals"/>
+		<queue name="Animals" type="Animal"/>
+		<commitmenttask name="AnimalCounter" commitAfter="1" in="Animals" out="Animals"/>
+		
+		<type name="Animal">
+			<field name="name" type="String"/>
+		</type>
+
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.commitment" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>		
+	
+</_>

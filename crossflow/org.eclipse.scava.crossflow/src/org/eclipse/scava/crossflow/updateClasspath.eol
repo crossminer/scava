@@ -1,0 +1,11 @@
+var classpath = Element.all.first();
+if (classpath.isUndefined()) {
+	classpath = new t_classpath;
+	Classpath.root = classpath;
+}
+var srcgen = new t_classpathentry;
+srcgen.a_kind="src";
+srcgen.a_path="src-gen";
+
+if(classpath.c_classpathentry.select(e | e.a_kind="src" and e.a_path="src-gen").isEmpty)
+	classpath.appendChild(srcgen);

@@ -1,0 +1,110 @@
+[%
+var edges = Sequence;
+var autoLayout = false;
+%]
+{
+  "vertices": [
+[%for(task in w.tasks.select(t | t.isKindOf(Task))) {%]
+    [%=task.createVertex()%][%if(hasMore){%],
+[%}}%],
+[%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
+    [%=stream.createVertex()%][%if(hasMore){%],
+[%}}%]
+  ],
+  "edges": [
+[%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
+    [%=stream.createEdges()%][%if(hasMore){%],
+[%}%]
+[%}%]  
+  ],
+  "auto": "[%=autoLayout%]"
+}
+[%
+/**
+ * Create a JS invocation of the createTast method. The result must be stored because edges have
+ * to be created afterwards.
+ */
+@template
+operation Task createVertex() {%]
+{
+  "type": "Task",
+  "label": "[%=self.name%]",
+  [%=self.addLocationSize()%]
+}
+[%}
+
+@template
+operation Source createVertex() {%]
+{
+  "type": "Source",
+  "label": "[%=self.name%]",
+  [%=self.addLocationSize()%]
+}
+[%} 
+
+@template
+operation Sink createVertex() {%]
+{
+  "type": "Sink",
+  "label": "[%=self.name%]",
+  [%=self.addLocationSize()%]
+}
+[%} 
+
+@template
+operation Queue createVertex() {%]
+{
+  "type": "Queue",
+  "label": "[%=self.name%]",
+  [%=self.addLocationSize()%]
+}
+[%}
+
+@template
+operation Any addLocationSize() {
+    var layout = getLayoutInformation(self);%]
+"x": [%=layout.x%],
+"y": [%=layout.y%],
+"width": [%=layout.width%],
+"height": [%=layout.height%]
+[%}
+
+@template
+operation Stream createEdges() {%]
+[%  for (output in self.outputOf) {%]
+{
+  "source": "[%=output.name%]",
+  "target": "[%=self.name%]",
+  "endArrow": "classic"
+}[%if (hasMore) {%],[%}
+}%],
+[%  for (input in self.inputOf) {%]
+{
+  "source": "[%=self.name%]",
+  "target": "[%=input.name%]",
+  "endArrow": "classic"
+}[%if (hasMore) {%],[%}
+} if (self.type.isDefined()) {%],
+{
+  "source": "[%=self.name%]",
+  "target": "[%=self.type.name%]",
+  "endArrow": "none"
+}[%}%]
+[%}
+
+
+operation getLayoutInformation(element: Any) : Bounds {
+    var shape = Shape.all.selectOne(s | s.element == element);
+    if (shape.isDefined()) {
+        return shape.layoutConstraint;
+    }
+    // Model does not have GMF diagram (E.g. FleXMI)
+    autoLayout = true;
+    var result = new Bounds;
+    result.x = 0;
+    result.y = 0;
+    result.width = -1;
+    result.height = -1;
+    return result;
+}
+%]  

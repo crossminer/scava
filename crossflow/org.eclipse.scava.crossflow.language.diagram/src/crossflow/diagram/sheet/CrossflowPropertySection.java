@@ -1,3 +1,4 @@
+
 /*
  * 
  */
@@ -12,9 +13,9 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 public class CrossflowPropertySection extends DefaultPropertySection implements IPropertySourceProvider {
 
 	/**
-	 * Modify/unwrap selection.
-	 * @generated
-	 */
+	* Modify/unwrap selection.
+	* @generated
+	*/
 	@Override
 	protected Object transformSelection(Object selected) {
 		selected = /*super.*/transformSelectionToDomain(selected);

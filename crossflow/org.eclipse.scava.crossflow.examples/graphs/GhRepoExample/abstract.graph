@@ -1,0 +1,10 @@
+var v_GhRepoSource = createTask("GhRepoSource", window.runtimeModelGraph, window.runtimeModelParent);
+var s_GhRepos = createStream("GhRepos", window.runtimeModelGraph, window.runtimeModelParent);
+var v_GhRepoCounter = createTask("GhRepoCounter", window.runtimeModelGraph, window.runtimeModelParent);
+var s_ResultsPublisher = createStream("ResultsPublisher", window.runtimeModelGraph, window.runtimeModelParent);
+var v_EmptySink = createTask("EmptySink", window.runtimeModelGraph, window.runtimeModelParent);
+
+link(v_GhRepoCounter, s_ResultsPublisher, window.runtimeModelGraph, window.runtimeModelParent);
+link(s_ResultsPublisher, v_EmptySink, window.runtimeModelGraph, window.runtimeModelParent);
+link(v_GhRepoSource, s_GhRepos, window.runtimeModelGraph, window.runtimeModelParent);
+link(s_GhRepos, v_GhRepoCounter, window.runtimeModelGraph, window.runtimeModelParent);

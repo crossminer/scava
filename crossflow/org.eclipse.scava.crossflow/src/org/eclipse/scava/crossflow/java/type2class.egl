@@ -1,0 +1,80 @@
+package [%=package%];
+
+import javax.annotation.Generated;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.ArrayList;
+import org.eclipse.scava.crossflow.runtime.Job;
+
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]Job[%}else{%][%=t.extending.first.name%][%}}else{%] implements Serializable[%}%] {
+	
+	public [%=t.name%]() {}
+	
+	[%if (t.fields.size > 0) {%]
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%][%=t.closure(e|e.extending).fields.flatten.collect(f|f.getJavaType() + " " + f.name).concat(", ")%]) {
+		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		[%for (f in t.closure(e|e.extending).fields.flatten) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+	}
+	[%}%]
+	
+	[%if (t.isJob()) {%]
+	public [%=t.name%]([%=t.fields.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%][%=t.closure(e|e.extending).fields.flatten.collect(f|f.getJavaType() + " " + f.name).concat(", ")%][%if (t.fields.size > 0 or t.closure(e|e.extending).fields.flatten.size > 0) {%], [%}%]Job correlation) {
+		[%for (f in t.fields) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		[%for (f in t.closure(e|e.extending).fields.flatten) { %]
+		this.[%=f.name%] = [%=f.name%];
+		[%}%]
+		this.correlationId = correlation.getId();
+	}
+	[%}%]
+		
+	[%for (f in t.fields) { %]
+	protected [%=f.getJavaType()%] [%=f.name%] [%if(f.many){%] = new ArrayList<>()[%}%];
+	
+	public void set[%=f.name.ftuc()%]([%=f.getJavaType()%] [%=f.name%]) {
+		this.[%=f.name%] = [%=f.name%];
+	}
+	
+	public [%=f.getJavaType()%] get[%=f.name.ftuc()%]() {
+		return [%=f.name%];
+	}
+	
+	[%}%]
+	
+	public Object[] toObjectArray() {
+		Object[] ret = new Object[[%=t.fields.size%]];
+	[%var i = 0; for (f in t.fields) { %]
+	 	ret[[%=i%]] = get[%=f.name.ftuc()%]();
+	[%i++;}%]
+		return ret;
+	}
+	
+	public String toString() {
+		[%
+		var fields = t.fields.name;
+		if (t.isJob()) fields = fields.includingAll(Sequence{"id", "correlationId", "destination"});
+		%]
+		return "[%=t.name%] (" + [%=fields.collect(f|'" ' + f + '=" + ' + f).concat(" + ")%] + ")";
+	}
+	
+}
+
+[%
+operation Type isJob() {
+	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self);
+}
+
+operation Field getJavaType() {
+	if (self.many) {
+		return "Collection<" + self.type + ">";
+	}
+	else {
+		return self.type;
+	}
+}%]

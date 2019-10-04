@@ -26,6 +26,8 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
+import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.part.CrossflowDiagramUpdater;
 import crossflow.diagram.part.CrossflowNodeDescriptor;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
@@ -81,7 +83,7 @@ public class TypeTypeFieldsCompartmentCanonicalEditPolicy extends CanonicalEditP
 	* @generated
 	*/
 	private boolean isMyDiagramElement(View view) {
-		return Field2EditPart.VISUAL_ID == CrossflowVisualIDRegistry.getVisualID(view);
+		return Field3EditPart.VISUAL_ID == CrossflowVisualIDRegistry.getVisualID(view);
 	}
 
 	/**

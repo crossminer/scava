@@ -1,0 +1,253 @@
+[% import "../../util/restmule.eol"; %]
+
+[% 	@template
+operation creators(name : String, api : String) { %]
+public static [%= name %]Builder create(){
+	return new [%= name %]Builder(); 
+}
+
+public static I[%= name %]Api createDefault(){ 
+	return new [%= name %]Builder().setSession([%= api %]Session.createPublic()).build(); 
+}
+
+[% } %]
+
+[% 	@template
+operation builder(name : String) { %]
+public static class [%= name %]Builder 
+implements IClientBuilder<I[%= name %]Api> { 
+
+	private ISession session;
+	private boolean activeCaching = true;
+
+	@Override
+	public I[%= name %]Api build() {
+		return (I[%= name %]Api) new [%= name %]Client(session, activeCaching);
+	}
+
+	@Override
+	public IClientBuilder<I[%= name %]Api> setSession(ISession session){
+		this.session = session;
+		return this;
+	}
+	
+	@Override
+	public IClientBuilder<I[%= name %]Api> setActiveCaching(boolean activeCaching) {
+		this.activeCaching = activeCaching;
+		return this;
+	}
+
+}
+
+[% } %]
+
+[% 	@template
+operation Response mainRequest() { %]
+[% var request = self.request; 
+   var params = request.parameters;
+   var scope = request.scope.scope.firstToLowerCase(); 
+%] 
+@Override
+public [%= self.methodSignature()%]{ 
+	[% if (params.size() <> 0){ %]
+	[% for (param in params) { %]
+	[%= param.validate() %]
+	[% } } %]
+	return [%= scope %]Client.[%= self.methodName() %]([% if (params.size() == 0){ %]);
+	[% } else { %][% for (param in params) { %][%= param.type.name.firstToLowerCase() %][% 
+		if (param.type.name <> params.last.type.name) { %], [% } else {%]);
+		[% } %][% } %][% } %]
+}
+
+[% } %]
+
+[% 	@template
+operation Response endpointRequest(paged : PaginationPolicy, name : String) { %]
+[% var request = self.request; 
+	   var params;
+	   if (self.isPaged()){
+			params =  new Sequence;
+			params.addAll(request.parameters); 
+			params.add(paged.perIteration); 
+			params.add(paged.page);
+	   }  else {
+	   		params = request.parameters;
+	   }
+	%]
+	// FIXME using endocde=true caused Lucene (cache) to break
+	@[%= request.method %]("[%= request.parent.path %]")
+	[%= self.getEndpointType(name) %] [%= self.methodName() 
+	%]([% if (params.size() == 0){ %]);
+	[% } else { %][% for (param in params) { %]
+			
+			@[%= param.paramType() %][%if (not param.instanceOf(Body)) {%](value="[%= param.type.label %]", encoded=true)[% } %] [%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 
+			if (param.type.name == params.last.type.name) { %]);
+			[% } else {%],[% } %][% } %][% } %]
+[% } %]
+
+[% 	@template 
+operation Response wrappedRequest(api : String, scope : String) { %]
+public [%= self.methodSignature()%]{
+	[%= self.innerWrappedResponse(api, scope) %]
+}
+[% } %]
+
+[% 	@template
+// (FIXME) Add support for single types i.e. non array..
+operation Response innerWrappedResponse(api : String, scope : String) { %]
+[% var request = self.request; 
+   var params = request.parameters; 
+%]
+[% if (self.pageWrapped or self.responseType.instanceOf(ListType)){%]
+Class<?>[] types = [% if (params.size() > 0) {%]{ [% for (param in params) {
+%][%= param.type.getType() %].class[%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+
+Object[] vals = [% if (params.size() > 0) {%]{ [% for (param in params) {
+%][%= param.type.name.firstToLowerCase() %][%if (param <> params.last()){ %], [% } %][% } %]};[% } else { %]null;[% } %]
+
+[% if (self.pageWrapped) { %]
+return paginationPolicy.<[%= self.responseType.name %], [%= api %]Paged<[%= self.responseType.name %]>, I[%= scope%]Endpoint> 
+	traverse("[%= self.methodName() %]", types, vals, callbackEndpoint);
+[% } else {%]
+return paginationPolicy.<[%= self.getApiInnerType() %], I[%= scope%]Endpoint> 
+	traverseList("[%= self.methodName() %]", types, vals, callbackEndpoint);
+[% } %]
+[% } else { %]
+Data<[%= self.responseType.getType() %]> data = new Data<[%= self.responseType.getType() %]>();
+data.addElement(callbackEndpoint.[%= self.methodName() %]([% if (params.size() == 0){ %]));
+[% } else { %][% for (param in params) { %][%= param.type.name.firstToLowerCase() %][% 
+if (param.type.name == params.last.type.name) { %]));
+[% } else {%], [% } %][% } %][% } %]
+return data;
+[% } %]
+[% } %]
+
+[% 	@template 
+operation Response wrappedRequestInterface() { %]
+[% var request = self.request; 
+   var params = request.parameters;  
+%]
+/**
+ * [%= request.description %]
+[% for (param in params) { %]
+ * @param [%= param.type.name.firstToLowerCase() %] [%=  param.type.description %]
+[% } %]
+ * @return [%= self.description %]
+ * @path [%= request.parent.path %] 
+ */		
+[%= self.methodSignature()%];
+[% } %]
+
+[% 	@template 
+operation Response methodSignature() { %]
+[% var request = self.request; 
+   var params = request.parameters;  
+%]
+[%= self.getApiType() %] [%= self.methodName() %]([% if (params.size() == 0){ %])
+[% } else { %][% for (param in params) { %][%= param.type.getType() %] [%= param.type.name.firstToLowerCase() %][% 
+		if (param.type.name == params.last.type.name) { %])
+		[% } else {%], [% } %][% } %][% } %]
+[% } %]
+
+[% 	@template 
+operation Parameter validate() { %]
+[% if (self.instanceOf(Path) or self.required ){ %]
+Validate.notNull([%= self.type.name %]);
+[% } 
+if (self.type.isKindOf(RestMule!TFormattedString)){ 
+if (self.instanceOf(Path) or self.required ) { %]
+Validate.matchesPattern([%= self.type.name %],"[%= self.type.pattern %]");
+[% } else { %]
+if ([%= self.type.name %] != null) {
+	Validate.matchesPattern([%= self.type.name %],"[%= self.type.pattern %]");
+}
+[% } } } %]
+
+[% 	@template 
+operation ObjectType nestTemplate() { %]
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class [%= self.getType() %] {
+
+	public [%= self.getType() %](){}
+
+[%= self.fieldsTemplate()%]	
+[%  for (nested in self.inner()){ %]
+	[%= nested.nestInnerTemplate() %]
+	
+[%  } %]
+}
+[%  } %]
+
+[% 	@template 
+operation ObjectType nestInnerTemplate() { %]
+@JsonIgnoreProperties(ignoreUnknown = true)
+public static class [%= self.getType() %] {
+
+	public [%= self.getType() %](){}
+
+[%= self.fieldsTemplate()%]	
+[%  for (nested in self.inner()){ %]
+	[%= nested.nestInnerTemplate() %]
+	
+[%  } %]
+}
+[%  } %]
+
+
+[% 	@template 
+operation ObjectType fieldsTemplate() { %]
+[%  for (field in self.fields()){ %]
+[%= field.fieldTemplate() %]
+[%  } %]
+[%  for (nestedObjects in self.nested()){ %]
+[%= nestedObjects.fieldTemplate() %]
+[% } %]
+[%  for (list in self.lists()){ %]
+[%= list.fieldTemplate() %]
+[% } %]
+[%  for (field in self.fields()){ %]
+[%= field.getterTemplate() %]
+[%  } %]
+[%  for (nestedObjects in self.nested()){ %]
+[%= nestedObjects.getterTemplate() %]
+[% } %]
+[%  for (list in self.lists()){ %]
+[%= list.getterTemplate() %]
+[% } %]
+[%= self.toStringTemplate() %]
+[% } %]
+
+[% 	@template 
+operation Type fieldTemplate() { %]
+	@JsonProperty("[%= self.label %]") 
+	private [%= self.getType() %] [%= self.name.firstToLowerCase() %][% if (not self.instanceOf(ListType)){ %];
+	[% } else { %] = new Array[%= self.getType() %]();
+	[% } %]
+	
+[% } %]
+
+[% 	@template 
+operation Type getterTemplate() { %]
+	public [%= self.getType() %] get[%= self.name.firstToUpperCase() %]() {
+		return this.[%= self.name.firstToLowerCase() %];
+	}
+	
+[% } %]
+
+[% 	@template 
+operation Type toStringTemplate() { %]
+	@Override
+	public String toString() {
+		return "[%= self.getType() %] [ "
+		[%  for (field in self.fields()){ %]
+			+ "[%= field.name.firstToLowerCase() %] = " + this.[%= field.name.firstToLowerCase() %] + ", "
+		[%  } %]
+		[%  for (nested in self.nested()){ %]
+			+ "[%= nested.name.firstToLowerCase() %] = " + this.[%= nested.name.firstToLowerCase() %] + ", "
+		[%  } %]
+		[%  for (list in self.lists()){ %]
+			+ "[%= list.name.firstToLowerCase() %] = " + this.[%= list.name.firstToLowerCase() %] + ", "
+		[%  } %]
+			+ "]"; 
+	}
+[%  } %]

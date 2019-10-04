@@ -1,0 +1,19 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
+<_>
+
+	<!-- Minimal example -->
+	<workflow name="MinimalWorkflow">
+		<simple-source name="MinimalSource" produces="Number" to="Input"/>
+		<simple-task name="CopierTask" produces="Number" to="Output"/>
+		<simple-sink name="MinimalSink"/>
+		
+		<type name="Number">
+			<field name="n" type="int"/>
+		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.minimal" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>
+	
+</_>

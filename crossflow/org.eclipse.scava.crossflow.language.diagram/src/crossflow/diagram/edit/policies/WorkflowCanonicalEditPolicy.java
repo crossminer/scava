@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.edit.policies;
 
 import java.util.ArrayList;
@@ -35,10 +35,17 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.update.UpdaterLinkDescriptor;
 
 import crossflow.CrossflowPackage;
-import crossflow.diagram.edit.parts.ConfigurationEditPart;
+import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
+import crossflow.diagram.edit.parts.LanguageEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
+import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
@@ -56,13 +63,13 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Set<EStructuralFeature> myFeaturesToSynchronize;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshOnActivate() {
 		// Need to activate editpart children before invoking the canonical refresh for EditParts to add event listeners
 		List<?> c = getHost().getChildren();
@@ -73,24 +80,25 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Set getFeaturesToSynchronize() {
 		if (myFeaturesToSynchronize == null) {
 			myFeaturesToSynchronize = new HashSet<EStructuralFeature>();
-			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Tasks());
-			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Configuration());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Streams());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Languages());
 		}
 		return myFeaturesToSynchronize;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	@SuppressWarnings("rawtypes")
+
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
@@ -103,8 +111,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
 		if (isShortcut(view)) {
 			return CrossflowDiagramUpdater.isShortcutOrphaned(view);
@@ -113,34 +121,39 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private boolean isMyDiagramElement(View view) {
 		int visualID = CrossflowVisualIDRegistry.getVisualID(view);
 		switch (visualID) {
+		case CsvSourceEditPart.VISUAL_ID:
+		case CsvSinkEditPart.VISUAL_ID:
 		case TopicEditPart.VISUAL_ID:
 		case QueueEditPart.VISUAL_ID:
 		case SourceEditPart.VISUAL_ID:
 		case SinkEditPart.VISUAL_ID:
-		case ConfigurationEditPart.VISUAL_ID:
+		case CommitmentTaskEditPart.VISUAL_ID:
+		case OpinionatedTaskEditPart.VISUAL_ID:
+		case ScriptedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
+		case LanguageEditPart.VISUAL_ID:
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected static boolean isShortcut(View view) {
 		return view.getEAnnotation("Shortcut") != null; //$NON-NLS-1$
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshSemantic() {
 		if (resolveSemanticElement() == null) {
 			return;
@@ -234,8 +247,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Collection<IAdaptable> refreshConnections() {
 		Domain2Notation domain2NotationMap = new Domain2Notation();
 		Collection<CrossflowLinkDescriptor> linkDescriptors = collectAllLinks(getDiagram(), domain2NotationMap);
@@ -270,8 +283,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Collection<CrossflowLinkDescriptor> collectAllLinks(View view, Domain2Notation domain2NotationMap) {
 		if (!WorkflowEditPart.MODEL_ID.equals(CrossflowVisualIDRegistry.getModelID(view))) {
 			return Collections.emptyList();
@@ -285,65 +298,114 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
+		case CsvSourceEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getCsvSource_2001ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case CsvSinkEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getCsvSink_2002ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
 		case TopicEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getTopic_2001ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getTopic_2003ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case QueueEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getQueue_2002ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getQueue_2004ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case SourceEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getSource_2003ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getSource_2005ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case SinkEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getSink_2004ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getSink_2006ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case ConfigurationEditPart.VISUAL_ID: {
+		case CommitmentTaskEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getConfiguration_2005ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getCommitmentTask_2007ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case OpinionatedTaskEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getOpinionatedTask_2008ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case ScriptedTaskEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getScriptedTask_2015ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case TaskEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getTask_2006ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getTask_2010ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case TypeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getType_2007ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getType_2011ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case FieldEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getField_2008ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getField_2014ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case LanguageEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getLanguage_2013ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case Field2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getField_3003ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case Field3EditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getField_3001ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case ParameterEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getParameter_3002ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -359,8 +421,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Collection<IAdaptable> createConnections(Collection<CrossflowLinkDescriptor> linkDescriptors,
 			Domain2Notation domain2NotationMap) {
 		LinkedList<IAdaptable> adapters = new LinkedList<IAdaptable>();
@@ -393,8 +455,8 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private EditPart getEditPart(EObject domainModelElement, Domain2Notation domain2NotationMap) {
 		View view = (View) domain2NotationMap.get(domainModelElement);
 		if (view != null) {
@@ -404,29 +466,29 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Diagram getDiagram() {
 		return ((View) getHost().getModel()).getDiagram();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private EditPart getSourceEditPart(UpdaterLinkDescriptor descriptor, Domain2Notation domain2NotationMap) {
 		return getEditPart(descriptor.getSource(), domain2NotationMap);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private EditPart getTargetEditPart(UpdaterLinkDescriptor descriptor, Domain2Notation domain2NotationMap) {
 		return getEditPart(descriptor.getDestination(), domain2NotationMap);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected final EditPart getHintedEditPart(EObject domainModelElement, Domain2Notation domain2NotationMap,
 			int hintVisualId) {
 		View view = (View) domain2NotationMap.getHinted(domainModelElement,
@@ -438,27 +500,27 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	@SuppressWarnings("serial")
 	protected static class Domain2Notation extends HashMap<EObject, View> {
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public boolean containsDomainElement(EObject domainElement) {
 			return this.containsKey(domainElement);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public View getHinted(EObject domainEObject, String hint) {
 			return this.get(domainEObject);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void putView(EObject domainElement, View view) {
 			if (!containsKey(view.getElement()) || !isShortcut(view)) {
 				this.put(domainElement, view);

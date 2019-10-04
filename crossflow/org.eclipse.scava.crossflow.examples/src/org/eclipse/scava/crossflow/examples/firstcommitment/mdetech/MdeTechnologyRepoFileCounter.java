@@ -33,10 +33,10 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 	}
 
 	@Override
-	public void consumeMdeTechnologyClonedRepoEntriesForFileCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
+	public ExtensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple consumeMdeTechnologyClonedRepoEntriesForFileCounter(ExtensionKeywordStargazersRemoteRepoUrlTuple extensionKeywordStargazersRemoteRepoUrlTuple) {
 		if ( committedRepoMap.size() == MAX_NUMBER_OF_COMMITMENTS ) {
 			// do not commit to any more repositories - sending back
-			workflow.getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+			workflow.getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
 		
 		} else {
 			// We still have space left for repositories to commit to - considering it
@@ -48,7 +48,7 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 				// We haven't seen this job before
 				// Record it and send it back
 				alreadySeenJobs.add( extensionKeywordStargazersRemoteRepoUrlTuple.getId() );
-				workflow.getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple );
+				workflow.getMdeTechnologyClonedRepoEntriesForFileCounter().send( extensionKeywordStargazersRemoteRepoUrlTuple ,this.getClass().getName());
 			}
 			
 			if ( committedRepoMap.containsKey( extensionKeywordStargazersRemoteRepoUrlTuple.getField1() ) ) {
@@ -64,11 +64,11 @@ public class MdeTechnologyRepoFileCounter extends MdeTechnologyRepoFileCounterBa
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField3(extensionKeywordStargazersRemoteRepoUrlTuple.field3); // cloned repository local path
 				extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple.setField4(fileCount); // repository file count
 				
-				getMdeTechnologyRepoFileCountEntries().send(extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple);
-			
+				return extensionKeywordStargazersRemoteRepoUrlLocalRepoPathTuple;
 			}
 			
 		}
+		return null;
 		
 	}
 

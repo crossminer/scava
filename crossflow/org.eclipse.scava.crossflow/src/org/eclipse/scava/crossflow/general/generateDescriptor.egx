@@ -1,0 +1,16 @@
+import "../util.eol";
+
+rule GenerateExperimentXML
+    transform w : Workflow {
+    
+    parameters : Map{
+            "w" = w,
+            "package" = w.getPackageName()}
+    
+    template : "generateExperimentXML.egl"
+    
+    target : resourcesFolder + "/experiment.xml"
+    
+    overwrite : false
+}
+

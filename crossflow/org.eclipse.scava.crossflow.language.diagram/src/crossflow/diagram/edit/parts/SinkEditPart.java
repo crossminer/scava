@@ -7,10 +7,10 @@ import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.RoundedRectangle;
+import org.eclipse.draw2d.ScalablePolygonShape;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gef.EditPart;
@@ -41,7 +41,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2004;
+	public static final int VISUAL_ID = 2006;
 
 	/**
 	* @generated
@@ -266,7 +266,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class SinkFigure extends RoundedRectangle {
+	public class SinkFigure extends ScalablePolygonShape {
 
 		/**
 		 * @generated
@@ -283,7 +283,12 @@ public class SinkEditPart extends ShapeNodeEditPart {
 			layoutThis.makeColumnsEqualWidth = true;
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.addPoint(new Point(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0)));
+			this.addPoint(new Point(getMapMode().DPtoLP(10), getMapMode().DPtoLP(0)));
+			this.addPoint(new Point(getMapMode().DPtoLP(10), getMapMode().DPtoLP(4)));
+			this.addPoint(new Point(getMapMode().DPtoLP(5), getMapMode().DPtoLP(6)));
+			this.addPoint(new Point(getMapMode().DPtoLP(0), getMapMode().DPtoLP(4)));
+			this.setFill(true);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();

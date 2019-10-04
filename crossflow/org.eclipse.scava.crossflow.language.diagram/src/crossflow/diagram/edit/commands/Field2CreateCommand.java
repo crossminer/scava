@@ -17,6 +17,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowFactory;
 import crossflow.Field;
+import crossflow.ScriptedTask;
 import crossflow.Type;
 
 /**
@@ -57,8 +58,8 @@ public class Field2CreateCommand extends EditElementCommand {
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		Field newElement = CrossflowFactory.eINSTANCE.createField();
 
-		Type owner = (Type) getElementToEdit();
-		owner.getFields().add(newElement);
+		ScriptedTask owner = (ScriptedTask) getElementToEdit();
+		owner.getOutputVariables().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

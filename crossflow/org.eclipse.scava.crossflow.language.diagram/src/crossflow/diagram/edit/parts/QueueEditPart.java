@@ -4,6 +4,7 @@
 package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
@@ -18,14 +19,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import crossflow.diagram.edit.policies.QueueItemSemanticEditPolicy;
+import crossflow.diagram.part.CrossflowVisualIDRegistry;
 
 /**
  * @generated
@@ -33,30 +38,30 @@ import crossflow.diagram.edit.policies.QueueItemSemanticEditPolicy;
 public class QueueEditPart extends ShapeNodeEditPart {
 
 	/**
-	* @generated
-	*/
-	public static final int VISUAL_ID = 2002;
+	 * @generated
+	 */
+	public static final int VISUAL_ID = 2004;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected IFigure contentPane;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected IFigure primaryShape;
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public QueueEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new QueueItemSemanticEditPolicy());
@@ -66,8 +71,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected LayoutEditPolicy createLayoutEditPolicy() {
 		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
@@ -91,35 +96,83 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated NOT
+	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new QueueFigure();
+		return primaryShape = new StreamFigure(getMapMode(), false);
 	}
 
 	/**
-	* @generated
-	*/
-	public QueueFigure getPrimaryShape() {
-		return (QueueFigure) primaryShape;
+	 * @generated NOT
+	 */
+	public StreamFigure getPrimaryShape() {
+		return (StreamFigure) primaryShape;
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
+	protected boolean addFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof QueueNameEditPart) {
+			((QueueNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureQueueLabelFigure());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected boolean removeFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof QueueNameEditPart) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void removeChildVisual(EditPart childEditPart) {
+		if (removeFixedChild(childEditPart)) {
+			return;
+		}
+		super.removeChildVisual(childEditPart);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
+		return getContentPane();
+	}
+
+	/**
+	 * @generated
+	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
 		return result;
 	}
 
 	/**
-	* Creates figure for this edit part.
-	* 
-	* Body of this method does not depend on settings in generation model
-	* so you may safely remove <i>generated</i> tag and modify it.
-	* 
-	* @generated
-	*/
+	 * Creates figure for this edit part.
+	 * 
+	 * Body of this method does not depend on settings in generation model so you
+	 * may safely remove <i>generated</i> tag and modify it.
+	 * 
+	 * @generated
+	 */
 	protected NodeFigure createNodeFigure() {
 		NodeFigure figure = createNodePlate();
 		figure.setLayoutManager(new StackLayout());
@@ -130,18 +183,24 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* Default implementation treats passed figure as content pane.
-	* Respects layout one may have set for generated figure.
-	* @param nodeShape instance of generated figure class
-	* @generated
-	*/
+	 * Default implementation treats passed figure as content pane. Respects layout
+	 * one may have set for generated figure.
+	 * 
+	 * @param nodeShape instance of generated figure class
+	 * @generated
+	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
+		if (nodeShape.getLayoutManager() == null) {
+			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
+			layout.setSpacing(5);
+			nodeShape.setLayoutManager(layout);
+		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public IFigure getContentPane() {
 		if (contentPane != null) {
 			return contentPane;
@@ -150,8 +209,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setForegroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setForegroundColor(color);
@@ -159,8 +218,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setBackgroundColor(color);
@@ -168,8 +227,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setLineWidth(int width) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineWidth(width);
@@ -177,8 +236,8 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	protected void setLineType(int style) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
@@ -186,8 +245,15 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
+	public EditPart getPrimaryChildEditPart() {
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(QueueNameEditPart.VISUAL_ID));
+	}
+
+	/**
+	 * @generated
+	 */
 	protected void handleNotificationEvent(Notification event) {
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
@@ -198,9 +264,14 @@ public class QueueEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public class QueueFigure extends Ellipse {
+
+		/**
+		 * @generated
+		 */
+		private WrappingLabel fFigureQueueLabelFigure;
 
 		/**
 		 * @generated
@@ -214,6 +285,35 @@ public class QueueEditPart extends ShapeNodeEditPart {
 
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
+			createContents();
+		}
+
+		/**
+		 * @generated
+		 */
+		private void createContents() {
+
+			fFigureQueueLabelFigure = new WrappingLabel();
+
+			fFigureQueueLabelFigure.setText("Queue");
+
+			GridData constraintFFigureQueueLabelFigure = new GridData();
+			constraintFFigureQueueLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureQueueLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureQueueLabelFigure.horizontalIndent = 0;
+			constraintFFigureQueueLabelFigure.horizontalSpan = 1;
+			constraintFFigureQueueLabelFigure.verticalSpan = 1;
+			constraintFFigureQueueLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureQueueLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureQueueLabelFigure, constraintFFigureQueueLabelFigure);
+
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureQueueLabelFigure() {
+			return fFigureQueueLabelFigure;
 		}
 
 	}

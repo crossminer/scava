@@ -1,0 +1,27 @@
+import csv
+import traceback
+
+from crossflow.runtime import CSVParser
+
+class [%=t.name%]([%=t.name%]Base):
+
+	def __init__(self):
+		self.records = None
+	
+	def produce(self):
+		try:
+			parser = CSVParser('[%=t.fileName%]')
+			records = parser.get_records_iterable()
+			for row in records:
+				[%for (s in t.output) { %]
+				[%=s.type.name.ftlc()%] = [%=s.type.name%]()
+				[% var i=0; %]
+				[%for (f in s.type.fields) { %]
+				[% i++; }%]
+				send_to_[%=s.name%]( [%=s.type.name.ftlc()%])
+				[%}%]	
+		except Exception as ex:
+			traceback.print_exc()
+	
+	def get_records(self):
+		return self.records

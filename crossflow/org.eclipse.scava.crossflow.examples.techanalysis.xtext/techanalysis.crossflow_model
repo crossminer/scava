@@ -1,0 +1,123 @@
+Workflow TechnologyAnalysis {
+	
+	// streams for incoming and outgoing tasks
+	streams {
+		
+		Queue Technologies { 
+			type Technology
+		}// MDETechnologies queue
+		
+		Queue Repositories {
+			type Repository
+		}// Repositories queue
+		
+		Queue RepositorySearches {
+			type Repository
+		}// RepositorySearches queue
+		
+		Queue RepositoryResults {
+			type AnalysisResult
+		}// RepositoryResults queue
+		
+	}// workflow streams
+	
+	tasks {
+		
+		masterOnly CsvSource TechnologySource {
+			fileName "input.csv"
+			output ( Technologies )
+			languages(Java)
+		}// MDETechnologySource
+		
+		multipleOutputs Task CodeSearcher {
+			input ( Technologies )
+			output ( Repositories )
+			languages(Java)
+		}// CodeSearcher task
+		
+		multipleOutputs Task RepositorySearchDispatcher {
+			input ( Repositories )
+			output ( RepositorySearches )	
+			languages(Java)
+		}// RepositorySearchDispatcher task
+		
+		multipleOutputs CommitmentTask RepositorySearcher {
+			commitAfter 1
+			input ( RepositorySearches )
+			output ( RepositoryResults )	
+			languages(Java)
+			configurations ( TechnologyCollection )
+		}// RepositorySearcher task
+		
+		masterOnly CsvSink RepositoryResultSink {
+			fileName "output.csv"
+			input ( RepositoryResults )
+			languages(Java)
+		}// RepositoryResultSink task
+		
+	}// workflow tasks
+	
+	types {
+		
+		Type Technology {
+			fields {
+				Field fileExt {
+					type String
+				}
+				Field techKey {
+					type String
+				}
+			}
+		}// MDETechnology type
+		
+		isMany Type Repository {
+			extending ( Technology )
+			fields {
+				Field url {
+					type String
+				}
+				Field name {
+					type String
+				}
+			}
+		}// Repository type
+		
+		isMany Type AnalysisResult {			
+			fields {
+				Field fileCount {
+					type int
+				}
+				Field authorCount {
+					type int
+				}
+				Field repository {
+					type String
+				}
+				Field technology {
+					type String
+				}
+				Field name {
+					type String
+				}
+			}
+		}// AnalysisResult type
+		
+		Type TechnologyCollection {
+			fields {
+				many Field technologies {
+					type Technology
+				}
+			}
+		}
+		
+	}// workflow data types
+	
+	languages {
+		Language Java {
+			package "org.eclipse.scava.crossflow.examples.techanalysis.xtext"
+			outputFolder "src"
+			genOutputFolder "src-gen"
+		}
+	}// workflow languages
+	
+}// workflow definition

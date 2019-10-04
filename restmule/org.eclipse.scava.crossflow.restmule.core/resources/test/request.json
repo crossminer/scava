@@ -1,0 +1,21 @@
+{
+  "tagString": "RETRY WITH FORCE NETWORK",
+  "headers": {
+    "namesAndValues": {
+      "accept": [
+        "application/vnd.github.v3+json"
+      ],
+      "authorization": [
+        "Basic cGF0cmlja25ldWJhdWVyOjBiODI1NDkxMzdjNDQyMjRkODg1NDRlODIzMGE5N2ZmMTJhNzhmNDA="
+      ],
+      "cache-control": [
+        "max-age=0"
+      ],
+      "user-agent": [
+        "RestMule/1.0"
+      ]
+    }
+  },
+  "method": "GET",
+  "urlString": "https://api.github.com/repos/ossmeter/ossmeter/commits?per_page=100&page=2"
+}

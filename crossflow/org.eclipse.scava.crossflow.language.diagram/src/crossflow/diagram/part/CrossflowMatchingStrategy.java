@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.part;
 
 import org.eclipse.emf.common.ui.URIEditorInput;
@@ -15,8 +15,8 @@ import org.eclipse.ui.PartInitException;
 public class CrossflowMatchingStrategy implements IEditorMatchingStrategy {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean matches(IEditorReference editorRef, IEditorInput input) {
 		IEditorInput editorInput;
 		try {

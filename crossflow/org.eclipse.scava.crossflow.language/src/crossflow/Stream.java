@@ -2,6 +2,8 @@
  */
 package crossflow;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,11 +17,13 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link crossflow.Stream#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.Stream#getType <em>Type</em>}</li>
+ *   <li>{@link crossflow.Stream#getInputOf <em>Input Of</em>}</li>
+ *   <li>{@link crossflow.Stream#getOutputOf <em>Output Of</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getStream()
  * @model abstract="true"
- *        annotation="gmf.node label.placement='none' figure='ellipse'"
+ *        annotation="gmf.node figure='ellipse' label='name' label.icon='false'"
  * @generated
  */
 public interface Stream extends EObject {
@@ -74,5 +78,42 @@ public interface Stream extends EObject {
 	 * @generated
 	 */
 	void setType(Type value);
+
+	/**
+	 * Returns the value of the '<em><b>Input Of</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Task}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Task#getInput <em>Input</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Input Of</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Input Of</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getStream_InputOf()
+	 * @see crossflow.Task#getInput
+	 * @model opposite="input"
+	 *        annotation="gmf.link target.decoration='filledclosedarrow'"
+	 * @generated
+	 */
+	EList<Task> getInputOf();
+
+	/**
+	 * Returns the value of the '<em><b>Output Of</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Task}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Task#getOutput <em>Output</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Output Of</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Output Of</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getStream_OutputOf()
+	 * @see crossflow.Task#getOutput
+	 * @model opposite="output"
+	 * @generated
+	 */
+	EList<Task> getOutputOf();
 
 } // Stream

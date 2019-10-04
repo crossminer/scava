@@ -1,0 +1,26 @@
+user.agent=RestMule/1.0
+api.base.url=[%= R.apiHost %]
+accept=application/vnd.[%= R.name %].[%= R.apiVersion %]+json
+
+[% if (R.ratePolicy<>null){ %]
+rate.limit.limit=[%= R.ratePolicy.limit.type.label %]
+rate.limit.remaining=[%= R.ratePolicy.remaining.type.label %]
+rate.limit.reset=[%= R.ratePolicy.reset.type.label %]
+[% } %]
+
+[% var auth = R.auth.select(a|a.instanceOf(OAuth)).first; %]
+[% if (auth<>null){ %]
+oauth2.auth.url=[%= auth.authUrl %]
+oauth2.token.url=[%= auth.tokenUrl %]
+oauth2.scopes=[%= auth.scopes.concat(",") %]
+[% } %]
+
+[% if (R.pagination <> null){ %]
+page.start.value=[%= R.pagination.start %]
+page.max.value=[%= R.pagination.max %]
+page.increment=[%= R.pagination.increment %]
+per.iteration.value=[%= R.pagination.maxPerIteration %]
+per.iteration.label=[%= R.pagination.perIteration.type.name %]
+page=[%= R.pagination.page.type.name %]
+page.header=[%= R.pagination.links.type.name %]
+[% } %]

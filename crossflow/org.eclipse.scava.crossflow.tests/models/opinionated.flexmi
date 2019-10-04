@@ -1,0 +1,19 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+
+	<!-- Example where participants can choose which word to count instances of -->
+	<workflow name="OpinionatedWorkflow">
+		<source name="WordSource" out="Words"/>
+		<queue name="Words" type="Word"/>
+		<opinionatedtask name="OccurencesMonitor" in="Words">
+			<param name="favouriteWord" type="String"/>
+		</opinionatedtask>
+		<type name="Word">
+			<field name="w" type="String"/>
+		</type>
+				
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.opinionated" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>
+	
+</_>

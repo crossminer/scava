@@ -3,15 +3,62 @@
 var elementsToCenter = new List;
 elementsToCenter.add('TopicFigure');
 elementsToCenter.add('QueueFigure');
+
 elementsToCenter.add('TaskFigure');
 elementsToCenter.add('SourceFigure');
 elementsToCenter.add('SinkFigure');
-elementsToCenter.add('TypeFigure');
-elementsToCenter.add('FieldFigure');
-elementsToCenter.add('ConfigurationFigure');
+elementsToCenter.add('CommitmentTaskFigure');
+elementsToCenter.add('OpinionatedTaskFigure');
+elementsToCenter.add('CsvSourceFigure');
+elementsToCenter.add('CsvSinkFigure');
+
+//elementsToCenter.add('TypeFigure');
+//elementsToCenter.add('FieldFigure');
 
 for(element in elementsToCenter)
 	center(findShape(element));
+
+--
+
+-- Find the compartment figure
+var typeFieldsCompartmentFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'TypeFieldsCompartmentFigure');
+
+-- ... and add a stack layout to it
+typeFieldsCompartmentFigure.layout = new GmfGraph!StackLayout;
+
+-- Find the attribute figure
+var fieldFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'FieldFigure');
+
+-- ... delete its border
+delete fieldFigure.border;
+
+-- ... set its outline to false
+fieldFigure.outline = false;
+
+-- ... and add a preferred size to it
+var preferredSize = new GmfGraph!Dimension;
+preferredSize.dx = 100;
+preferredSize.dy = 20;
+fieldFigure.preferredSize = preferredSize;
+//parameterFigure.preferredSize = preferredSize;
+
+--
+
+var languageParametersCompartmentFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'LanguageParametersCompartmentFigure');
+languageParametersCompartmentFigure.layout = new GmfGraph!StackLayout;
+var parameterFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'ParameterFigure');
+delete parameterFigure.border;
+parameterFigure.outline = false;
+var preferredSize = new GmfGraph!Dimension;
+preferredSize.dx = 100;
+preferredSize.dy = 20;
+parameterFigure.preferredSize = preferredSize;
+
+--
 
 operation center(shape : Any){
 shape.layout = new GmfGraph!GridLayout;
@@ -27,3 +74,4 @@ if(label <> null){
 operation findShape(name : String) {
   return GmfGraph!Shape.all.selectOne(s|s.name = name);
 }
+

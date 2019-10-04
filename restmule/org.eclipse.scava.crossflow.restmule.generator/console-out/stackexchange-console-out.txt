@@ -1,0 +1,724 @@
+[epsilon.etl - json2restmule.etl] handleArray answers
+[epsilon.etl - json2restmule.etl] self.id=root, name=answers
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=migrated_to, name=migrated_to
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] self.id=notice, name=notice
+[epsilon.etl - json2restmule.etl] self.id=owner, name=owner
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] handleArray comments
+[epsilon.etl - json2restmule.etl] self.id=root, name=comments
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=last_editor, name=last_editor
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] self.id=migrated_from, name=migrated_from
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] handleArray tags
+[epsilon.etl - json2restmule.etl] self.id=root, name=tags
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=bounty_user, name=bounty_user
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] /users/{id}/tags/{tags}/top-questions
+[epsilon.etl - json2restmule.etl] self.id=questions, name=questions
+[epsilon.etl - json2restmule.etl] handleArray questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=questions
+[epsilon.etl - json2restmule.etl] self.id=closed_details, name=closed_details
+[epsilon.etl - json2restmule.etl] handleArray by_users
+[epsilon.etl - json2restmule.etl] self.id=root, name=by_users
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray original_questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=original_questions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray answers
+[epsilon.etl - json2restmule.etl] self.id=root, name=answers
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=migrated_to, name=migrated_to
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] self.id=notice, name=notice
+[epsilon.etl - json2restmule.etl] self.id=owner, name=owner
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] handleArray comments
+[epsilon.etl - json2restmule.etl] self.id=root, name=comments
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=last_editor, name=last_editor
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] self.id=migrated_from, name=migrated_from
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] handleArray tags
+[epsilon.etl - json2restmule.etl] self.id=root, name=tags
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=bounty_user, name=bounty_user
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] /users/{id}/notifications
+[epsilon.etl - json2restmule.etl] self.id=notifications, name=notifications
+[epsilon.etl - json2restmule.etl] handleArray notifications
+[epsilon.etl - json2restmule.etl] self.id=root, name=notifications
+[epsilon.etl - json2restmule.etl] self.id=site, name=site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] /users/{id}/top-question-tags
+[epsilon.etl - json2restmule.etl] self.id=top_tag_objects, name=top_tag_objects
+[epsilon.etl - json2restmule.etl] handleArray top_tag_objects
+[epsilon.etl - json2restmule.etl] self.id=root, name=top_tag_objects
+[epsilon.etl - json2restmule.etl] /users/{ids}/questions/no-answers
+[epsilon.etl - json2restmule.etl] self.id=questions, name=questions
+[epsilon.etl - json2restmule.etl] handleArray questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=questions
+[epsilon.etl - json2restmule.etl] self.id=closed_details, name=closed_details
+[epsilon.etl - json2restmule.etl] handleArray by_users
+[epsilon.etl - json2restmule.etl] self.id=root, name=by_users
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray original_questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=original_questions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray answers
+[epsilon.etl - json2restmule.etl] self.id=root, name=answers
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=migrated_to, name=migrated_to
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] self.id=notice, name=notice
+[epsilon.etl - json2restmule.etl] self.id=owner, name=owner
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] handleArray comments
+[epsilon.etl - json2restmule.etl] self.id=root, name=comments
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=last_editor, name=last_editor
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] self.id=migrated_from, name=migrated_from
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] handleArray tags
+[epsilon.etl - json2restmule.etl] self.id=root, name=tags
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=bounty_user, name=bounty_user
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] /users/{id}/notifications/unread
+[epsilon.etl - json2restmule.etl] self.id=notifications, name=notifications
+[epsilon.etl - json2restmule.etl] handleArray notifications
+[epsilon.etl - json2restmule.etl] self.id=root, name=notifications
+[epsilon.etl - json2restmule.etl] self.id=site, name=site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] /questions/no-answers
+[epsilon.etl - json2restmule.etl] self.id=questions, name=questions
+[epsilon.etl - json2restmule.etl] handleArray questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=questions
+[epsilon.etl - json2restmule.etl] self.id=closed_details, name=closed_details
+[epsilon.etl - json2restmule.etl] handleArray by_users
+[epsilon.etl - json2restmule.etl] self.id=root, name=by_users
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray original_questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=original_questions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray answers
+[epsilon.etl - json2restmule.etl] self.id=root, name=answers
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=migrated_to, name=migrated_to
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] self.id=notice, name=notice
+[epsilon.etl - json2restmule.etl] self.id=owner, name=owner
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] handleArray comments
+[epsilon.etl - json2restmule.etl] self.id=root, name=comments
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=last_editor, name=last_editor
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] self.id=migrated_from, name=migrated_from
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] handleArray tags
+[epsilon.etl - json2restmule.etl] self.id=root, name=tags
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=bounty_user, name=bounty_user
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] /similar
+[epsilon.etl - json2restmule.etl] self.id=questions, name=questions
+[epsilon.etl - json2restmule.etl] handleArray questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=questions
+[epsilon.etl - json2restmule.etl] self.id=closed_details, name=closed_details
+[epsilon.etl - json2restmule.etl] handleArray by_users
+[epsilon.etl - json2restmule.etl] self.id=root, name=by_users
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray original_questions
+[epsilon.etl - json2restmule.etl] self.id=root, name=original_questions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray answers
+[epsilon.etl - json2restmule.etl] self.id=root, name=answers
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=migrated_to, name=migrated_to
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] self.id=notice, name=notice
+[epsilon.etl - json2restmule.etl] self.id=owner, name=owner
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] handleArray comments
+[epsilon.etl - json2restmule.etl] self.id=root, name=comments
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=last_editor, name=last_editor
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] self.id=migrated_from, name=migrated_from
+[epsilon.etl - json2restmule.etl] self.id=other_site, name=other_site
+[epsilon.etl - json2restmule.etl] handleArray aliases
+[epsilon.etl - json2restmule.etl] self.id=root, name=aliases
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray related_sites
+[epsilon.etl - json2restmule.etl] self.id=root, name=related_sites
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] handleArray markdown_extensions
+[epsilon.etl - json2restmule.etl] self.id=root, name=markdown_extensions
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=styling, name=styling
+[epsilon.etl - json2restmule.etl] handleArray tags
+[epsilon.etl - json2restmule.etl] self.id=root, name=tags
+[epsilon.etl - json2restmule.etl] handlin nullroot Sequence {}
+[epsilon.etl - json2restmule.etl] self.id=bounty_user, name=bounty_user
+[epsilon.etl - json2restmule.etl] self.id=badge_counts, name=badge_counts
+[epsilon.etl - json2restmule.etl] Finished ETL
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Posts
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Posts
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Answers
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Comments
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in TagWikis
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in QuestionTimelineEvents
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] BadgeCountsInnerInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] OtherSiteInner
+[epsilon.eol - sanitize.eol] found clashing class in Questions
+[epsilon.eol - sanitize.eol] StylingInner
+[epsilon.evl - restmule.evl] Errors : 0
+[epsilon.evl - restmule.evl] Errors : 0
+Build sequence for target(s) `M2T' is [setup, M2T]
+Complete build sequence is [setup, M2T, M2M, ]
+
+setup:
+[epsilon.eugenia] org.eclipse.epsilon.eugenia.Emfatic2EcoreDelegate@56ee6138->true
+
+M2T:
+[epsilon.evl - restmule.evl] Errors : 0
+       [mkdir] Skipping /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output because it already exists.
+        [copy] Copying 2 files to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/base/build.properties to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/build.properties
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/base/resources/log4j2.xml to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources/log4j2.xml
+[epsilon.egl - orchestrator.egx] Setting up transformation
+[epsilon.egl - orchestrator.egx] Starting Transformation
+[epsilon.egl - orchestrator.egx] Transformation finished
+       [mkdir] Skipping /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange because it already exists.
+        [copy] Copying 55 files to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/.classpath to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/.classpath
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/.project to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/.project
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/META-INF/MANIFEST.MF to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/META-INF/MANIFEST.MF
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/build.properties to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/build.properties
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources/log4j2.xml to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/resources/log4j2.xml
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources/stackexchange.properties to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/resources/stackexchange.properties
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/IStackExchangeApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/IStackExchangeApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/StackExchangeApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/StackExchangeApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/cache/StackExchangeCacheManager.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/cache/StackExchangeCacheManager.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeCallback.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeCallback.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeWrappedCallback.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeWrappedCallback.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/EntityApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/EntityApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityEndpoint.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityEndpoint.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchEndpoint.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchEndpoint.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/SearchApi.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/SearchApi.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/data/StackExchangeDataSet.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/data/StackExchangeDataSet.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/interceptor/StackExchangeInterceptor.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/interceptor/StackExchangeInterceptor.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccessTokens.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccessTokens.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccountMerge.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccountMerge.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Answers.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Answers.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Badges.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Badges.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Comments.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Comments.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Error.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Error.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Errors.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Errors.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Events.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Events.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Filters.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Filters.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InboxItems.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InboxItems.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InfoObject.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InfoObject.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/NetworkUsers.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/NetworkUsers.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Notifications.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Notifications.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Posts.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Posts.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Privileges.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Privileges.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/QuestionTimelineEvents.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/QuestionTimelineEvents.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Questions.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Questions.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationChanges.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationChanges.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationHistory.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationHistory.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Revisions.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Revisions.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SingleFilter.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SingleFilter.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Sites.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Sites.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SuggestedEdits.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SuggestedEdits.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagScoreObjects.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagScoreObjects.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagSynonyms.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagSynonyms.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagWikis.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagWikis.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Tags.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Tags.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TopTagObjects.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TopTagObjects.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/User.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/User.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/UserTimelineObjects.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/UserTimelineObjects.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Users.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Users.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/WritePermissions.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/WritePermissions.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePaged.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePaged.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePagination.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePagination.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/session/StackExchangeSession.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/session/StackExchangeSession.java
+        [copy] Copying /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/util/StackExchangePropertiesUtil.java to /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.client.stackexchange/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/util/StackExchangePropertiesUtil.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/.classpath
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/.project
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/META-INF/MANIFEST.MF
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/build.properties
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources/log4j2.xml
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources/stackexchange.properties
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/IStackExchangeApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api/StackExchangeApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/cache/StackExchangeCacheManager.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeCallback.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback/StackExchangeWrappedCallback.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/EntityApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/IEntityEndpoint.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/ISearchEndpoint.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client/SearchApi.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/data/StackExchangeDataSet.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/interceptor/StackExchangeInterceptor.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccessTokens.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/AccountMerge.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Answers.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Badges.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Comments.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Error.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Errors.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Events.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Filters.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InboxItems.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/InfoObject.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/NetworkUsers.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Notifications.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Posts.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Privileges.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/QuestionTimelineEvents.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Questions.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationChanges.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/ReputationHistory.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Revisions.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SingleFilter.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Sites.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/SuggestedEdits.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagScoreObjects.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagSynonyms.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TagWikis.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Tags.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/TopTagObjects.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/User.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/UserTimelineObjects.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/Users.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model/WritePermissions.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePaged.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page/StackExchangePagination.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/session/StackExchangeSession.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/util/StackExchangePropertiesUtil.java
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/util
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/session
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/page
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/model
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/interceptor
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/data
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/client
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/callback
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/cache
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange/api
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client/stackexchange
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule/client
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow/restmule
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava/crossflow
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse/scava
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org/eclipse
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src/org
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/src
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/resources
+      [delete] Deleting /Users/blizzfire/REPOS/CROSSMINER-REPOS/CROSSMINER-PUBLIC/scava-crossflow/crossflow/org.eclipse.scava.crossflow.restmule.generator/epsilon/output/META-INF
+BUILD SUCCESSFUL
+Total time: 16 seconds

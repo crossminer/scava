@@ -1,0 +1,20 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
+<_>
+
+	<!-- Simple example that adds pairs of numbers and prints the results -->
+	<workflow name="ExceptionsWorkflow">
+		<parameter name="failOnNumber" type="int"/>
+		<simple-source name="NumberSource" produces="Number" to="Numbers"/>
+		<simple-task name="NumberCopier" produces="Number" to="Results"/>
+		<simple-sink name="ResultsSink"/>
+				
+		<type name="Number">
+			<field name="n" type="int"/>
+		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.exceptions" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

@@ -1,0 +1,111 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="build-crossflow" default="main">
+	
+	<condition property="is-mac">
+        <os family="mac" />
+    </condition>
+
+    <condition property="is-windows">
+        <os family="windows" />
+    </condition>
+
+    <target name="mac-init" if="is-mac">
+        <property name="thrift" value="/usr/local/bin/thrift" />
+    </target>
+
+    <target name="windows-init" if="is-windows">
+        <property name="thrift" value="c:\tools\thrift\thrift" />
+    </target>
+	
+	<!-- Run ivy  to make sure all dependencies are fetched -->
+    <target name="standalone-dependencies">
+        <ivy:settings
+        	file="../org.eclipse.scava.crossflow.runtime.dependencies/ivysettings.xml"/>
+        <ivy:resolve
+        	file="../org.eclipse.scava.crossflow.runtime.dependencies/ivy.xml"/>
+	 	<ivy:retrieve
+	 		type="jar"
+	 		pattern="../org.eclipse.scava.crossflow.runtime.dependencies/lib/[type]s/[artifact]-[revision].[ext]"
+	 		sync="true" />
+    </target>
+	
+	<target name="server-dependencies">
+        <ivy:resolve
+            file="ivy.xml"/>
+        <ivy:retrieve
+            type="jar"
+            pattern="WebContent/WEB-INF/lib/[type]s/[artifact]-[revision].[ext]"
+            sync="false" />
+    </target>
+	
+	<!-- Compile and jar provided examples -->
+	<target name="examples">
+	    	<!-- Calculator example -->
+	        <delete>
+	            <fileset dir="WebContent/experiments/calculator/">
+	                <include name="*.jar" />
+	            </fileset>
+	        </delete>
+	        <jar
+	           destfile="WebContent/experiments/calculator/org.eclipse.scava.crossflow.tests.calculator.jar"
+	           basedir="../org.eclipse.scava.crossflow.tests/bin"
+	           includes="**/org/eclipse/scava/crossflow/tests/calculator/**"/>
+
+	        <!-- Wordcount example -->
+	        <delete>
+	            <fileset dir="WebContent/experiments/wordcount/">
+	                <include name="*.jar" />
+	            </fileset>
+	        </delete>
+	        <jar
+	           destfile="WebContent/experiments/wordcount/org.eclipse.scava.crossflow.tests.wordcount.jar"
+	           basedir="../org.eclipse.scava.crossflow.tests/bin"
+	           includes="**/org/eclipse/scava/crossflow/tests/wordcount/**"/>
+	</target>
+	
+	<!-- Copy standalone dependencies to web libs -->
+	<target name="copy-dependencies" depends="standalone-dependencies">
+		<copy todir="WebContent/WEB-INF/lib/jars">
+            <fileset dir="../org.eclipse.scava.crossflow.runtime.dependencies/lib/jars" includes="*.jar" />
+        </copy>
+	</target>
+	
+	<!-- Run thrift -->
+	<target name="thrift" depends="mac-init,windows-init">
+        
+        <exec executable="${thrift}">
+            <arg value="--gen" />
+            <arg value="java" />
+            <arg value="-out" />
+            <arg value="src-gen" />
+            <arg value="crossflow.thrift" />
+        </exec>
+
+        <exec executable="${thrift}">
+            <arg value="--gen" />
+            <arg value="js" />
+            <arg value="-out" />
+            <arg value="WebContent/js/gen" />
+            <arg value="crossflow.thrift" />
+        </exec>
+
+        <jar destfile="WebContent/WEB-INF/lib/jars/org.eclipse.scava.crossflow.runtime.jar">
+            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin" />
+        </jar>
+
+        <eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1" />
+
+    </target>
+	
+	<!-- Make peace not war -->
+	<target name="main" depends="thrift,copy-dependencies,server-dependencies,examples">
+		<war destfile="../org.eclipse.scava.crossflow.web.docker/org.eclipse.scava.crossflow.web.war" needxmlfile='false'>
+    		<fileset dir="WebContent"/>
+    		<classes dir="build/classes"/>
+    		<classes dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+    	</war>
+		
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web" depth="-1" />
+    	<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.web.docker" depth="-1"/>
+	</target>
+	
+</project>

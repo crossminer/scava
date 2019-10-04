@@ -1,0 +1,12 @@
+[%import "../util.eol";%]
+from enum import Enum, unique
+
+
+@unique
+class [%=w.name%]Tasks(Enum):
+    """Specification of available tasks in this workflow as Enumerates types.
+    """
+    
+    [% for (t in w.tasks) {%]
+    [%=t.name.toSnakeCaseUpper()%] = "[%=t.name%]"
+    [%}%]

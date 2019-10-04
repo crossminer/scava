@@ -64,7 +64,6 @@ public class WorkflowItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
-			addPackagePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -92,28 +91,6 @@ public class WorkflowItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Package feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addPackagePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Workflow_package_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_package_feature", "_UI_Workflow_type"),
-				 CrossflowPackage.Literals.WORKFLOW__PACKAGE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -125,11 +102,11 @@ public class WorkflowItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__CONFIGURATION);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__STREAMS);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TASKS);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TYPES);
 			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__PARAMETERS);
+			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__LANGUAGES);
 		}
 		return childrenFeatures;
 	}
@@ -171,7 +148,7 @@ public class WorkflowItemProvider
 			getString("_UI_Workflow_type") :
 			getString("_UI_Workflow_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
@@ -186,14 +163,13 @@ public class WorkflowItemProvider
 
 		switch (notification.getFeatureID(Workflow.class)) {
 			case CrossflowPackage.WORKFLOW__NAME:
-			case CrossflowPackage.WORKFLOW__PACKAGE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
 			case CrossflowPackage.WORKFLOW__STREAMS:
 			case CrossflowPackage.WORKFLOW__TASKS:
 			case CrossflowPackage.WORKFLOW__TYPES:
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -210,11 +186,6 @@ public class WorkflowItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__CONFIGURATION,
-				 CrossflowFactory.eINSTANCE.createConfiguration()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -239,7 +210,32 @@ public class WorkflowItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCsvSource()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
 				 CrossflowFactory.eINSTANCE.createSink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCsvSink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createCommitmentTask()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createOpinionatedTask()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__TASKS,
+				 CrossflowFactory.eINSTANCE.createScriptedTask()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -250,6 +246,11 @@ public class WorkflowItemProvider
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__PARAMETERS,
 				 CrossflowFactory.eINSTANCE.createField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__LANGUAGES,
+				 CrossflowFactory.eINSTANCE.createLanguage()));
 	}
 
 	/**

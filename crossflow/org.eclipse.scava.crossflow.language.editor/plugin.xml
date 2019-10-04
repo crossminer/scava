@@ -33,4 +33,5 @@
             contributorClass="crossflow.presentation.CrossflowActionBarContributor">
       </editor>
    </extension>
+
 </plugin>

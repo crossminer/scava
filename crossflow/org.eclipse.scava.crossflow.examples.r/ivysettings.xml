@@ -1,0 +1,21 @@
+<ivysettings>
+  <include url="${ivy.default.settings.dir}/ivysettings-public.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
+  <include url="${ivy.default.settings.dir}/ivysettings-default-chain.xml"/>
+  <settings defaultResolver="chain-repos"/>
+  <resolvers>
+    <chain name="chain-repos" returnFirst="true">
+    
+      <ibiblio name="maven-central" m2compatible="true"/>
+    
+      <ibiblio name="ibiblio-maven2" m2compatible="true"/>
+
+      <ibiblio name="bedatadriven" m2compatible="true" root="https://nexus.bedatadriven.com/content/groups/public/"/>
+     
+      <ibiblio name="imagej" m2compatible="true" root="http://maven.imagej.net/content/repositories/public/"/>
+          
+    </chain>
+  </resolvers>
+</ivysettings>

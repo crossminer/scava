@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.part;
 
 import java.io.IOException;
@@ -63,8 +63,8 @@ import org.eclipse.ui.part.FileEditorInput;
 public class CrossflowDocumentProvider extends AbstractDocumentProvider implements IDiagramDocumentProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected ElementInfo createElementInfo(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(new Status(IStatus.ERROR, CrossflowDiagramEditorPlugin.ID, 0,
@@ -83,8 +83,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IDocument createDocument(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(new Status(IStatus.ERROR, CrossflowDiagramEditorPlugin.ID, 0,
@@ -100,21 +100,21 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * Sets up the given document as it would be provided for the given element. The
-	 * content of the document is not changed. This default implementation is empty.
-	 * Subclasses may reimplement.
-	 * 
-	 * @param element the blue-print element
-	 * @param document the document to set up
-	 * @generated
-	 */
+	* Sets up the given document as it would be provided for the given element. The
+	* content of the document is not changed. This default implementation is empty.
+	* Subclasses may reimplement.
+	* 
+	* @param element the blue-print element
+	* @param document the document to set up
+	* @generated
+	*/
 	protected void setupDocument(Object element, IDocument document) {
 		// for subclasses
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private long computeModificationStamp(ResourceSetInfo info) {
 		int result = 0;
 		for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
@@ -132,8 +132,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IDocument createEmptyDocument() {
 		DiagramDocument document = new DiagramDocument();
 		document.setEditingDomain(createEditingDomain());
@@ -141,8 +141,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private TransactionalEditingDomain createEditingDomain() {
 		TransactionalEditingDomain editingDomain = DiagramEditingDomainFactory.getInstance().createEditingDomain();
 		editingDomain.setID("org.eclipse.scava.crossflow.language.diagram.EditingDomain"); //$NON-NLS-1$
@@ -181,8 +181,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setDocumentContent(IDocument document, IEditorInput element) throws CoreException {
 		IDiagramDocument diagramDocument = (IDiagramDocument) document;
 		TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
@@ -246,8 +246,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public long getModificationStamp(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -257,8 +257,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isDeleted(Object element) {
 		IDiagramDocument document = getDiagramDocument(element);
 		if (document != null) {
@@ -272,15 +272,15 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public ResourceSetInfo getResourceSetInfo(Object editorInput) {
 		return (ResourceSetInfo) super.getElementInfo(editorInput);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void disposeElementInfo(Object element, ElementInfo info) {
 		if (info instanceof ResourceSetInfo) {
 			ResourceSetInfo resourceSetInfo = (ResourceSetInfo) info;
@@ -290,8 +290,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doValidateState(Object element, Object computationContext) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -311,8 +311,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isReadOnly(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -331,8 +331,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isModifiable(Object element) {
 		if (!isStateValidated(element)) {
 			if (element instanceof FileEditorInput || element instanceof URIEditorInput) {
@@ -356,8 +356,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void updateCache(Object element) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -377,8 +377,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doUpdateStateCache(Object element) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -388,8 +388,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isSynchronized(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -399,8 +399,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected ISchedulingRule getResetRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -418,8 +418,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected ISchedulingRule getSaveRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -437,8 +437,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected ISchedulingRule getSynchronizeRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -456,8 +456,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected ISchedulingRule getValidateStateRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -476,8 +476,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private ISchedulingRule computeSchedulingRule(IResource toCreateOrModify) {
 		if (toCreateOrModify.exists())
 			return ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(toCreateOrModify);
@@ -498,8 +498,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doSynchronize(Object element, IProgressMonitor monitor) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -513,8 +513,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
@@ -605,8 +605,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void handleElementChanged(ResourceSetInfo info, Resource changedResource, IProgressMonitor monitor) {
 		IFile file = WorkspaceSynchronizer.getFile(changedResource);
 		if (file != null) {
@@ -636,8 +636,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void handleElementMoved(IEditorInput input, URI uri) {
 		if (input instanceof FileEditorInput) {
 			IFile newFile = ResourcesPlugin.getWorkspace().getRoot()
@@ -650,15 +650,15 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IEditorInput createInputWithEditingDomain(IEditorInput editorInput, TransactionalEditingDomain domain) {
 		return editorInput;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IDiagramDocument getDiagramDocument(Object element) {
 		IDocument doc = getDocument(element);
 		if (doc instanceof IDiagramDocument) {
@@ -668,65 +668,65 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected class ResourceSetInfo extends ElementInfo {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private long myModificationStamp = IResource.NULL_STAMP;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private WorkspaceSynchronizer mySynchronizer;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private LinkedList<Resource> myUnSynchronizedResources = new LinkedList<Resource>();
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private IDiagramDocument myDocument;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private IEditorInput myEditorInput;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private boolean myUpdateCache = true;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private boolean myModifiable = false;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private boolean myReadOnly = true;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private ResourceSetModificationListener myResourceSetListener;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public ResourceSetInfo(IDiagramDocument document, IEditorInput editorInput) {
 			super(document);
 			myDocument = document;
@@ -737,50 +737,50 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public long getModificationStamp() {
 			return myModificationStamp;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setModificationStamp(long modificationStamp) {
 			myModificationStamp = modificationStamp;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public TransactionalEditingDomain getEditingDomain() {
 			return myDocument.getEditingDomain();
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public ResourceSet getResourceSet() {
 			return getEditingDomain().getResourceSet();
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public Iterator<Resource> getLoadedResourcesIterator() {
 			return new ArrayList<Resource>(getResourceSet().getResources()).iterator();
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public IEditorInput getEditorInput() {
 			return myEditorInput;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void dispose() {
 			stopResourceListening();
 			getResourceSet().eAdapters().remove(myResourceSetListener);
@@ -792,97 +792,97 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public boolean isSynchronized() {
 			return myUnSynchronizedResources.size() == 0;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setUnSynchronized(Resource resource) {
 			myUnSynchronizedResources.add(resource);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setSynchronized(Resource resource) {
 			myUnSynchronizedResources.remove(resource);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public final void stopResourceListening() {
 			mySynchronizer.dispose();
 			mySynchronizer = null;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public final void startResourceListening() {
 			mySynchronizer = new WorkspaceSynchronizer(getEditingDomain(), new SynchronizerDelegate());
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public boolean isUpdateCache() {
 			return myUpdateCache;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setUpdateCache(boolean update) {
 			myUpdateCache = update;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public boolean isModifiable() {
 			return myModifiable;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setModifiable(boolean modifiable) {
 			myModifiable = modifiable;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public boolean isReadOnly() {
 			return myReadOnly;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void setReadOnly(boolean readOnly) {
 			myReadOnly = readOnly;
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private class SynchronizerDelegate implements WorkspaceSynchronizer.Delegate {
 
 			/**
-			 * @generated
-			 */
+			* @generated
+			*/
 			public void dispose() {
 			}
 
 			/**
-			 * @generated
-			 */
+			* @generated
+			*/
 			public boolean handleResourceChanged(final Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -899,8 +899,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 			}
 
 			/**
-			 * @generated
-			 */
+			* @generated
+			*/
 			public boolean handleResourceDeleted(Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -917,8 +917,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 			}
 
 			/**
-			 * @generated
-			 */
+			* @generated
+			*/
 			public boolean handleResourceMoved(Resource resource, final URI newURI) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -943,23 +943,23 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private class ResourceSetModificationListener extends EContentAdapter {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private NotificationFilter myModifiedFilter;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		private ResourceSetInfo myInfo;
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public ResourceSetModificationListener(ResourceSetInfo info) {
 			myInfo = info;
 			myModifiedFilter = NotificationFilter.createEventTypeFilter(Notification.SET)
@@ -968,8 +968,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public void notifyChanged(Notification notification) {
 			if (notification.getNotifier() instanceof ResourceSet) {
 				super.notifyChanged(notification);

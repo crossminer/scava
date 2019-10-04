@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="" modelDirectory="/org.eclipse.scava.crossflow.language/src"
+    modelPluginID="org.eclipse.scava.crossflow.language" modelName="Crossflow" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>crossflow.emf</foreignModel>
+  <genPackages prefix="Crossflow" disposableProviderFactory="true" ecorePackage="crossflow.ecore#/">
+    <genClasses ecoreClass="crossflow.ecore#//Workflow">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Workflow/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/streams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/tasks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/types"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/languages"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="crossflow.ecore#//Stream">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Stream/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/inputOf"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/outputOf"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Topic"/>
+    <genClasses ecoreClass="crossflow.ecore#//Queue"/>
+    <genClasses ecoreClass="crossflow.ecore#//Task">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Task/input"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Task/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/masterOnly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/parallel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/cached"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/multipleOutputs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Task/impl"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Task/parameters"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Task/languages"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Task/configurations"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Source"/>
+    <genClasses ecoreClass="crossflow.ecore#//CsvSource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//CsvSource/fileName"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Sink"/>
+    <genClasses ecoreClass="crossflow.ecore#//CsvSink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//CsvSink/fileName"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//CommitmentTask">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//CommitmentTask/commitAfter"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//OpinionatedTask"/>
+    <genClasses ecoreClass="crossflow.ecore#//ScriptedTask">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/scriptingLanguage"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/script"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//ScriptedTask/outputVariables"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/impl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/isMany"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Type/extending"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Type/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Field">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Field/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Field/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Field/many"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Language">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Language/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Language/package"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Language/outputFolder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Language/genOutputFolder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Language/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

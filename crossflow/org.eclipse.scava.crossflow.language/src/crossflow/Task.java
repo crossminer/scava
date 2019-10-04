@@ -18,12 +18,18 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Task#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.Task#getInput <em>Input</em>}</li>
  *   <li>{@link crossflow.Task#getOutput <em>Output</em>}</li>
+ *   <li>{@link crossflow.Task#getMasterOnly <em>Master Only</em>}</li>
  *   <li>{@link crossflow.Task#getParallel <em>Parallel</em>}</li>
  *   <li>{@link crossflow.Task#getCached <em>Cached</em>}</li>
+ *   <li>{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflow.Task#getImpl <em>Impl</em>}</li>
+ *   <li>{@link crossflow.Task#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.Task#getLanguages <em>Languages</em>}</li>
+ *   <li>{@link crossflow.Task#getConfigurations <em>Configurations</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getTask()
- * @model annotation="gmf.node label='name'"
+ * @model annotation="gmf.node label='name' label.icon='false'"
  * @generated
  */
 public interface Task extends EObject {
@@ -56,6 +62,7 @@ public interface Task extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Input</b></em>' reference list.
 	 * The list contents are of type {@link crossflow.Stream}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Stream#getInputOf <em>Input Of</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Input</em>' reference list isn't clear,
@@ -64,7 +71,8 @@ public interface Task extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Input</em>' reference list.
 	 * @see crossflow.CrossflowPackage#getTask_Input()
-	 * @model
+	 * @see crossflow.Stream#getInputOf
+	 * @model opposite="inputOf"
 	 * @generated
 	 */
 	EList<Stream> getInput();
@@ -72,6 +80,7 @@ public interface Task extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Output</b></em>' reference list.
 	 * The list contents are of type {@link crossflow.Stream}.
+	 * It is bidirectional and its opposite is '{@link crossflow.Stream#getOutputOf <em>Output Of</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Output</em>' reference list isn't clear,
@@ -80,10 +89,39 @@ public interface Task extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Output</em>' reference list.
 	 * @see crossflow.CrossflowPackage#getTask_Output()
-	 * @model
+	 * @see crossflow.Stream#getOutputOf
+	 * @model opposite="outputOf"
+	 *        annotation="gmf.link target.decoration='filledclosedarrow'"
 	 * @generated
 	 */
 	EList<Stream> getOutput();
+
+	/**
+	 * Returns the value of the '<em><b>Master Only</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master Only</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Master Only</em>' attribute.
+	 * @see #setMasterOnly(Boolean)
+	 * @see crossflow.CrossflowPackage#getTask_MasterOnly()
+	 * @model default="false"
+	 * @generated
+	 */
+	Boolean getMasterOnly();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getMasterOnly <em>Master Only</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Master Only</em>' attribute.
+	 * @see #getMasterOnly()
+	 * @generated
+	 */
+	void setMasterOnly(Boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Parallel</b></em>' attribute.
@@ -136,5 +174,106 @@ public interface Task extends EObject {
 	 * @generated
 	 */
 	void setCached(Boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multiple Outputs</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #setMultipleOutputs(Boolean)
+	 * @see crossflow.CrossflowPackage#getTask_MultipleOutputs()
+	 * @model default="false"
+	 * @generated
+	 */
+	Boolean getMultipleOutputs();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getMultipleOutputs <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #getMultipleOutputs()
+	 * @generated
+	 */
+	void setMultipleOutputs(Boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Impl</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Impl</em>' attribute.
+	 * @see #setImpl(String)
+	 * @see crossflow.CrossflowPackage#getTask_Impl()
+	 * @model
+	 * @generated
+	 */
+	String getImpl();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Task#getImpl <em>Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Impl</em>' attribute.
+	 * @see #getImpl()
+	 * @generated
+	 */
+	void setImpl(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameters</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Field}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parameters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameters</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Parameters()
+	 * @model
+	 * @generated
+	 */
+	EList<Field> getParameters();
+
+	/**
+	 * Returns the value of the '<em><b>Languages</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Language}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Languages</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Languages</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Languages()
+	 * @model
+	 * @generated
+	 */
+	EList<Language> getLanguages();
+
+	/**
+	 * Returns the value of the '<em><b>Configurations</b></em>' reference list.
+	 * The list contents are of type {@link crossflow.Type}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Configurations</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Configurations</em>' reference list.
+	 * @see crossflow.CrossflowPackage#getTask_Configurations()
+	 * @model
+	 * @generated
+	 */
+	EList<Type> getConfigurations();
 
 } // Task

@@ -92,8 +92,28 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createSourceAdapter();
 			}
 			@Override
+			public Adapter caseCsvSource(CsvSource object) {
+				return createCsvSourceAdapter();
+			}
+			@Override
 			public Adapter caseSink(Sink object) {
 				return createSinkAdapter();
+			}
+			@Override
+			public Adapter caseCsvSink(CsvSink object) {
+				return createCsvSinkAdapter();
+			}
+			@Override
+			public Adapter caseCommitmentTask(CommitmentTask object) {
+				return createCommitmentTaskAdapter();
+			}
+			@Override
+			public Adapter caseOpinionatedTask(OpinionatedTask object) {
+				return createOpinionatedTaskAdapter();
+			}
+			@Override
+			public Adapter caseScriptedTask(ScriptedTask object) {
+				return createScriptedTaskAdapter();
 			}
 			@Override
 			public Adapter caseType(Type object) {
@@ -104,8 +124,12 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createFieldAdapter();
 			}
 			@Override
-			public Adapter caseConfiguration(Configuration object) {
-				return createConfigurationAdapter();
+			public Adapter caseLanguage(Language object) {
+				return createLanguageAdapter();
+			}
+			@Override
+			public Adapter caseParameter(Parameter object) {
+				return createParameterAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -212,6 +236,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.CsvSource <em>Csv Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.CsvSource
+	 * @generated
+	 */
+	public Adapter createCsvSourceAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link crossflow.Sink <em>Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -222,6 +260,62 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.CsvSink <em>Csv Sink</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.CsvSink
+	 * @generated
+	 */
+	public Adapter createCsvSinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.CommitmentTask <em>Commitment Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.CommitmentTask
+	 * @generated
+	 */
+	public Adapter createCommitmentTaskAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.OpinionatedTask <em>Opinionated Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.OpinionatedTask
+	 * @generated
+	 */
+	public Adapter createOpinionatedTaskAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.ScriptedTask <em>Scripted Task</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.ScriptedTask
+	 * @generated
+	 */
+	public Adapter createScriptedTaskAdapter() {
 		return null;
 	}
 
@@ -254,16 +348,30 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link crossflow.Configuration <em>Configuration</em>}'.
+	 * Creates a new adapter for an object of class '{@link crossflow.Language <em>Language</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see crossflow.Configuration
+	 * @see crossflow.Language
 	 * @generated
 	 */
-	public Adapter createConfigurationAdapter() {
+	public Adapter createLanguageAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.Parameter <em>Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.Parameter
+	 * @generated
+	 */
+	public Adapter createParameterAdapter() {
 		return null;
 	}
 

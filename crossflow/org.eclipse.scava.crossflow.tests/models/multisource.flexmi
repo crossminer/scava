@@ -1,0 +1,22 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<!-- Example checking for parallel sources -->
+	<workflow name="MSWorkflow">
+	
+		<source name="Source1" out="Results"/>
+		<source name="Source2" out="Results"/>
+		
+		<queue name="Results" type="StringElement"/>
+
+		<sink name="Sink" in="Results" />
+	
+		<type name="StringElement">
+			<field name="value" type="String"/>
+		</type>
+	
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.multisource" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

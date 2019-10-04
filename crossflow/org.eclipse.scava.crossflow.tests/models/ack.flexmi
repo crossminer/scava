@@ -1,0 +1,29 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<!-- Example checking for manual commitments -->
+	<workflow name="AckWorkflow">
+	
+		<source name="Source" out="Numbers"/>
+	
+		<queue name="Numbers" type="IntElement"/>
+		
+		<task masterOnly="false" name="ProcessingTask" in="Numbers" out="Results"/>
+		
+		<queue name="Results" type="StringElement"/>
+
+		<sink name="Sink" in="Results" />
+		
+		<type name="IntElement">
+			<field name="value" type="int"/>
+		</type>
+	
+		<type name="StringElement">
+			<field name="value" type="String"/>
+		</type>
+	
+	<language name="Java" package="org.eclipse.scava.crossflow.tests.ack" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

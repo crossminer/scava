@@ -8,12 +8,29 @@
 bin/
 local.properties
 .settings/
-.recommenders
 
 # Maven
 target/
 
-/.recommenders/
 
-# Idea
-.idea
+crossflow/org\.eclipse\.scava\.crossflow\.examples/org\.eclipse\.scava\.crossflow\.examples-with-dependencies\.jar
+crossflow/org\.eclipse\.scava\.crossflow\.tests/crossflow-cache/
+
+crossflow/org\.eclipse\.scava\.crossflow\.tests/activemq-data/
+
+crossflow/org\.eclipse\.scava\.crossflow\.tests/csvs/AdditionResultsCsvSink\.csv
+
+crossflow/org\.eclipse\.scava\.crossflow\.restmule\.client\.github/resources/githubprivate\.properties
+
+restmule/org\.eclipse\.scava\.crossflow\.restmule\.client\.github/resources/githubprivate\.properties
+
+crossflow/org\.eclipse\.scava\.crossflow\.web/node_modules/
+
+crossflow/org\.eclipse\.scava\.crossflow\.elkgraph/node_modules/\.yarn-integrity
+
+crossflow/org\.eclipse\.scava\.crossflow\.web/app/
+crossflow/org.eclipse.scava.crossflow.tests/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.techrank/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/graphs
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/tmp
+crossflow/org.eclipse.scava.crossflow.examples.github.topsearch/activemq-data

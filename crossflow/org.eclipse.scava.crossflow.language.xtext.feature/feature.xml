@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.eclipse.scava.crossflow.language.xtext.feature"
+	label="Crossflow Feature "
+	version="1.0.0.qualifier">
+	<plugin
+			id="org.eclipse.scava.crossflow.language.xtext"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="org.eclipse.scava.crossflow.language.xtext.ide"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="org.eclipse.scava.crossflow.language.xtext.ui"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+</feature>

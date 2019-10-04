@@ -49,11 +49,11 @@ public class SourceItemProvider extends TaskItemProvider {
 	 * This returns Source.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/empty"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Source"));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SourceItemProvider extends TaskItemProvider {
 			getString("_UI_Source_type") :
 			getString("_UI_Source_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

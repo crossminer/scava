@@ -1,0 +1,725 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Stack Exchange API",
+    "version": "2.2",
+    "title": "StackExchange",
+    "termsOfService": "https://stackoverflow.com/legal/api-terms-of-use"
+  },
+  "host": "api.stackexchange.com",
+  "basePath": "/2.2",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "oauth_2_0": {
+      "authorizationUrl": "https://stackexchange.com/oauth",
+      "description": "The Stack Exchange API offers user authentication via OAuth 2.0, specifically templated after Facebook's implementation. There are two flows, an explicit grant for server side applications and an implicit one for pure browser based ones.\n\n#The explicit OAuth 2.0 flow consists of the following steps:\n1. Send a user to https://stackexchange.com/oauth, with these query string parameters\n- client_id\n- scope\n- redirect_uri - must be under an apps registered domain\n- state - optional\n2. The user approves your app\n3. The user is redirected to redirect_uri, with these query string parameters\n- code\n- state - optional, only returned if provided in the first step\n4. POST (application/x-www-form-urlencoded) the following parameters to https://stackexchange.com/oauth/access_token\n- client_id\n- client_secret\n- code - from the previous step\n- redirect_uri - must be the same as the provided in the first step\nThis request is responded to with either an error (HTTP status code 400) or an access token of the form access_token=...&expires=1234. expires will only be set if scope does not include no_expiry, the use of which is strongly advised against unless your app truly needs perpetual access.\n\n#The implicit OAuth 2.0 flow consists of the following steps:\n\n1. Open a new window at https://stackexchange.com/oauth/dialog, with these query string parameters\n- client_id\n- scope (details)\n- redirect_uri - must be under an apps registered domain\n- state - optional\n2. The user approves your app\n3. The user is redirected to redirect_uri, with these parameters in the hash\n- access_token\n- expires - optional, only if scope doesn't contain no_expiry\nThe explicit flow should be used by server-side applications, with special care taken to never leak client_secret. Client side applications should use the implicit flow.\n\nOnce you have authenticated a user once, regardless of flow, subsequent re-authorizations will occur without requiring user action. Naturally, should a user revoke an applications permissions then further action will be required to re-authorize.\n\nApplications using the implicit flow can make use of our provided minimalistic Javascript SDK.\n\n#Scope\n\nWith an empty scope, authentication will only allow an application to identify a user via the /me method. In order to access other information, different scope values must be sent. Multiple values may be sent in scope by comma or space delimitting them.\n\n- read_inbox - access a user's global inbox\n- no_expiry - access_token's with this scope do not expire\n- write_access - perform write operations as a user 2.1\n- private_info - access full history of a user's private actions on the site 2.1\n\n#Desktop Applications\n\nDesktop applications cannot participate directly in OAuth 2.0 flows, however the embeddable browser controls available in most frameworks make it possible to work around this limitation.\n\nDesktop applications should use the implicit client-side flow, hosting the process within a browser control. For redirect_uri, a value of https://stackexchange.com/oauth/login_success should be used. Upon a successful authentication, access_token will be placed in the url hash as with a standard implicit authentication.\n\n#Usage\n\nAccess tokens can be passed (as access_token) to any method to grant applications an increased throttle quota. When passing an access token an app must pass its request key as well, if you don't have a request key you can obtain one by registering your application on Stack Apps (http://stackapps.com/users/login?returnurl=/apps/oauth/register).\n",
+      "flow": "implicit",
+      "scopes": {},
+      "type": "oauth2"
+    }
+  },
+  "tags": [{
+      "name": "Questions"
+    },
+    {
+      "name": "Users",
+      "description": "All user methods that take an {ids} parameter have a /me equivalent method that takes an access_token instead. These methods are provided for developer convenience, with the exception of plain /me, which is actually necessary for discovering which user authenticated to an application."
+    }
+  ],
+  "paths": {
+    "/questions": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Gets all the questions on the site.\nThis method allows you make fairly flexible queries across the entire corpus of questions on a site.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "fromdate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "todate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "min",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "tagged",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "desc",
+              "asc"
+            ]
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "activity",
+              "votes",
+              "creation",
+              "hot",
+              "week",
+              "month"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/QuestionsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/questions/featured": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Gets all the questions on the site.\nThis method allows you make fairly flexible queries across the entire corpus of questions on a site.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "fromdate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "todate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "min",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "tagged",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "desc",
+              "asc"
+            ]
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "activity",
+              "votes",
+              "creation"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/QuestionsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/questions/no-answers": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Returns questions which have received no answers.\nCompare with /questions/unanswered which merely returns questions that the sites consider insufficiently well answered.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "fromdate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "todate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "min",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "tagged",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "desc",
+              "asc"
+            ]
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "activity",
+              "votes",
+              "creation"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/QuestionsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/questions/unanswered": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Gets all the questions on the site.\nThis method allows you make fairly flexible queries across the entire corpus of questions on a site.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "fromdate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "todate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "min",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "tagged",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "desc",
+              "asc"
+            ]
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "activity",
+              "votes",
+              "creation"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/QuestionsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userIds}/reputation": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Gets a subset of the reputation changes for users in {ids}.\nReputation changes are intentionally scrubbed of some data to make it difficult to correlate votes on particular posts with user reputation changes. That being said, this method returns enough data for reasonable display of reputation trends.\n{ids} can contain up to 100 semicolon delimited ids. To find ids programmatically look for user_id on user or shallow_user objects.\nThis method returns a list of reputation objects.",
+        "operationId": "getUsersReputation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "userIds",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fromdate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "todate",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ReputationResponse"
+            }
+          }
+        }
+      }
+    },
+    "/me/reputation": {
+      "tags": [
+        "Users"
+      ],
+      "description": "Returns the reputation changed for the user associated with the given access_token.\n\nThis method returns a list of [reputation changes](https://api.stackexchange.com/docs/types/reputation).",
+      "operationId": "getMyReputation",
+      "responses": {
+        "default": {
+          "description": "Success",
+          "schema": {
+            "$ref": "#/definitions/ReputationResponse"
+          }
+        }
+      }
+    },
+    "/users/{userIds}/reputation-history": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns users' public reputation history.\nThis method returns a list of reputation_history.",
+        "operationId": "getUsersReputationHistory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "userIds",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": true,
+            "default": "stackoverflow",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ReputationHistoryResponse"
+            }
+          }
+        }
+      }
+    },
+    "/me/reputation-history": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns user's public reputation history.\n\nThis method returns a list of [reputation_history](https://api.stackexchange.com/docs/types/reputation-history).",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagesize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ReputationHistoryResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "QuestionsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of questions.",
+          "items": {
+            "$ref": "#/definitions/Question"
+          }
+        },
+        "has_more": {
+          "type": "boolean"
+        },
+        "quota_max": {
+          "type": "integer"
+        },
+        "quota_remaining": {
+          "type": "integer"
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner": {
+          "$ref": "#/definitions/QuestionOwner"
+        },
+        "is_answered": {
+          "type": "boolean"
+        },
+        "view_count": {
+          "type": "integer"
+        },
+        "answer_count": {
+          "type": "integer"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "last_activity_date": {
+          "type": "integer"
+        },
+        "creation_date": {
+          "type": "integer"
+        },
+        "question_id": {
+          "type": "integer"
+        },
+        "link": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "QuestionOwner": {
+      "type": "object",
+      "properties": {
+        "reputation": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "user_type": {
+          "type": "string"
+        },
+        "profile_image": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "ReputationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of reputation_history.",
+          "items": {
+            "$ref": "#/definitions/ReputationChange"
+          }
+        },
+        "has_more": {
+          "type": "boolean"
+        },
+        "quota_max": {
+          "type": "integer"
+        },
+        "quota_remaining": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReputationChange": {
+      "type": "object",
+      "properties": {
+        "on_date": {
+          "type": "integer"
+        },
+        "reputation_change": {
+          "type": "integer"
+        },
+        "vote_type": {
+          "type": "string",
+          "enum": [
+            "accepts",
+            "bounties_won",
+            "down_votes",
+            "up_votes"
+          ]
+        },
+        "post_type": {
+          "type": "string"
+        },
+        "post_id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReputationHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of reputation_history.",
+          "items": {
+            "$ref": "#/definitions/ReputationHistory"
+          }
+        },
+        "has_more": {
+          "type": "boolean"
+        },
+        "quota_max": {
+          "type": "integer"
+        },
+        "quota_remaining": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReputationHistory": {
+      "type": "object",
+      "properties": {
+        "reputation_history_type": {
+          "type": "string"
+        },
+        "reputation_change": {
+          "type": "integer"
+        },
+        "post_id": {
+          "type": "integer"
+        },
+        "creation_date": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

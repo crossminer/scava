@@ -2,12 +2,9 @@
  */
 package crossflow.tests;
 
-import crossflow.CrossflowFactory;
 import crossflow.Stream;
 
 import junit.framework.TestCase;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->

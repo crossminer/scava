@@ -13,8 +13,8 @@ import crossflow.diagram.part.CrossflowDiagramEditorPlugin;
 public class DiagramRulersAndGridPreferencePage extends RulerGridPreferencePage {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public DiagramRulersAndGridPreferencePage() {
 		setPreferenceStore(CrossflowDiagramEditorPlugin.getInstance().getPreferenceStore());
 	}

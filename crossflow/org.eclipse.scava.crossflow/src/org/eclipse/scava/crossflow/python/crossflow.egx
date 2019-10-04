@@ -1,0 +1,142 @@
+import "../util.eol";
+
+rule Workflow2Class 
+	transform w : Workflow {
+	parameters : Map {
+		"package" = w.getPackage()
+	}
+	template : "workflow2class.egl"
+	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + ".py"
+}
+
+rule Workflow2TaskEnum
+	transform w : Workflow {
+	template : "workflow2taskenum.egl"
+	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + "_tasks.py"
+}
+
+rule Type2Class 
+	transform t : Type {
+	guard : t.impl.isUndefined()
+	parameters : Map {
+	   "package" = t.getPackage()
+	}
+	template : "type2class.egl"
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
+}
+
+@greedy
+rule Task2BaseClass 
+	transform t : Task {
+	guard : t.appliesTo()
+	parameters : Map {
+		"w" = t.getWorkflow(),
+		"package" = t.getPackage(),
+		"outputTypes" = t.getOutputTypes()
+	}
+	template : "task2baseclass.egl"
+	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"	
+}
+
+@greedy
+rule Task2ImplClass 
+	transform t : Task {
+	guard : t.appliesTo()
+	parameters : Map {
+		"w" = t.getWorkflow(),
+		"package" = t.getPackage(),
+		"outputTypes" = t.getOutputTypes()
+	}
+	template : "task2implclass.egl"
+	target : t.getOutFolder() + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
+	overwrite : false
+}
+
+@greedy
+rule Steam2Class 
+	transform s : Stream {
+	parameters : Map {
+		"w" = s.getWorkflow()
+	}
+	template : "stream2class.egl"
+	target : s.getGenFolder() + "crossflow/" + s.getPackage().toPath() + s.name.toSnakeCaseLower() + ".py"
+}
+
+rule genRuntime
+	transform w : Workflow {
+	template: "runtime.py"
+	target: w.getGenFolder() + "crossflow/runtime.py"
+}
+
+rule genReqsTxt
+	transform w : Workflow {
+	template: "requirements.txt"
+	target: w.getSupportFolder() + "requirements.txt"
+}
+
+rule genMain
+	transform w : Workflow {
+	parameters : Map {
+		"package" = w.getPackage()
+	}
+	template: "genMain.egl"
+	target: w.getOutFolder() + "main.py"
+	overwrite: false
+}
+
+rule generateReadme
+	transform w : Workflow {
+	template: "genReadme.egl"	
+	target: w.getSupportFolder() + "README.MD"
+}
+
+/*
+ * UTILITY FUNCTIONS
+ */
+
+@cached
+operation Any getPackage() : String {
+	return self.getLanguage("python").package;
+}
+
+@cached
+operation Any getGenFolder() : String {
+	var outputFolder = self.getLanguage("python").genOutputFolder;
+	if (outputFolder.isDefined()) {
+		return outputFolder.toPath();
+	}
+	return "py-gen/";
+}
+
+@cached
+operation Any getOutFolder() : String {
+	var outputFolder = self.getLanguage("python").outputFolder;
+	if (outputFolder.isDefined()) {
+		return outputFolder.toPath();
+	}
+	return "py/";
+}
+
+operation Any getSupportFolder() : String {
+	var supportFolderParam = self.getLanguage("python").`parameters`.selectOne(p|p.name == "supportFolder");
+	if (supportFolderParam.isDefined()) {
+		return supportFolderParam.value.toPath();
+	}
+	return self.getOutFolder();
+}
+
+operation String toPath() : String {
+	var path = self.replaceAll("\\.", "/");
+	if (path.endsWith("/")) {
+		return path;
+	}
+	return path + "/";
+}
+
+operation Task appliesTo() : Boolean {
+	return self.hasLanguage("python");
+}
+
+operation Task getOutputTypes() : Set {
+	return self.output.collect(o|o.type).asSet();
+}

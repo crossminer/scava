@@ -4,6 +4,7 @@
 package crossflow.diagram.edit.parts;
 
 import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
@@ -18,14 +19,18 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import crossflow.diagram.edit.policies.TopicItemSemanticEditPolicy;
+import crossflow.diagram.part.CrossflowVisualIDRegistry;
 
 /**
  * @generated
@@ -35,7 +40,7 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2001;
+	public static final int VISUAL_ID = 2003;
 
 	/**
 	* @generated
@@ -91,17 +96,65 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
+	* @generated NOT
 	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new TopicFigure();
+		return primaryShape = new StreamFigure(getMapMode(), true);
+	}
+
+	/**
+	* @generated NOT
+	*/
+	public StreamFigure getPrimaryShape() {
+		return (StreamFigure) primaryShape;
 	}
 
 	/**
 	* @generated
 	*/
-	public TopicFigure getPrimaryShape() {
-		return (TopicFigure) primaryShape;
+	protected boolean addFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof TopicNameEditPart) {
+			((TopicNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureTopicLabelFigure());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* @generated
+	*/
+	protected boolean removeFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof TopicNameEditPart) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* @generated
+	*/
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
+	/**
+	* @generated
+	*/
+	protected void removeChildVisual(EditPart childEditPart) {
+		if (removeFixedChild(childEditPart)) {
+			return;
+		}
+		super.removeChildVisual(childEditPart);
+	}
+
+	/**
+	* @generated
+	*/
+	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
+		return getContentPane();
 	}
 
 	/**
@@ -136,6 +189,11 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure setupContentPane(IFigure nodeShape) {
+		if (nodeShape.getLayoutManager() == null) {
+			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
+			layout.setSpacing(5);
+			nodeShape.setLayoutManager(layout);
+		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
@@ -188,6 +246,13 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
+	public EditPart getPrimaryChildEditPart() {
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(TopicNameEditPart.VISUAL_ID));
+	}
+
+	/**
+	* @generated
+	*/
 	protected void handleNotificationEvent(Notification event) {
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
@@ -198,9 +263,14 @@ public class TopicEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public class TopicFigure extends Ellipse {
+
+		/**
+		 * @generated
+		 */
+		private WrappingLabel fFigureTopicLabelFigure;
 
 		/**
 		 * @generated
@@ -214,6 +284,35 @@ public class TopicEditPart extends ShapeNodeEditPart {
 
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
+			createContents();
+		}
+
+		/**
+		 * @generated
+		 */
+		private void createContents() {
+
+			fFigureTopicLabelFigure = new WrappingLabel();
+
+			fFigureTopicLabelFigure.setText("Topic");
+
+			GridData constraintFFigureTopicLabelFigure = new GridData();
+			constraintFFigureTopicLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureTopicLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureTopicLabelFigure.horizontalIndent = 0;
+			constraintFFigureTopicLabelFigure.horizontalSpan = 1;
+			constraintFFigureTopicLabelFigure.verticalSpan = 1;
+			constraintFFigureTopicLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureTopicLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureTopicLabelFigure, constraintFFigureTopicLabelFigure);
+
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureTopicLabelFigure() {
+			return fFigureTopicLabelFigure;
 		}
 
 	}

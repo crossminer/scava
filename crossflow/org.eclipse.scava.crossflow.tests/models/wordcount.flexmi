@@ -1,0 +1,24 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<?import templates.flexmi?>
+<_>
+
+	<!-- Simple example that counts words -->
+	<workflow name="WordCountWorkflow">
+		<simple-source name="LineSource" produces="Line" to="Lines"/>
+		<simple-task multipleOutputs="true" name="WordCounter" produces="WordFrequency" to="WordFrequencies"/>
+		<simple-sink name="WordCountSink"/>
+						
+		<type name="Line">
+			<field name="text" type="String"/>
+		</type>
+		
+		<type name="WordFrequency">
+			<field name="word" type="String"/>
+			<field name="frequency" type="int"/>
+		</type>
+		
+		<language name="Java" package="org.eclipse.scava.crossflow.tests.wordcount" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

@@ -1,0 +1,187 @@
+package [%=package%];
+
+import javax.script.*;
+import org.renjin.script.*;
+import org.renjin.sexp.*;
+import org.apache.commons.math.complex.Complex;
+import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
+[%if (t.isTypeOf(Source)){%]
+import java.util.Timer;
+import java.util.TimerTask;
+[%}%]
+
+public class [%=t.name%] extends [%if(t.isTypeOf(CommitmentTask)){%]Commitment[%}%][%if(t.isTypeOf(OpinionatedTask)){%]Opinionated[%}%][%=t.name%]Base {
+
+[%if (t.isTypeOf(Source)){%]
+	@Override
+	public void produce() throws Exception {
+			
+		// TODO: Add implementation that instantiates, sets, and submits source objects (NYI for R tasks)
+
+	}
+[%} else {%]
+	[% for (s in t.input) { %]
+	@Override
+	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
+
+		[%
+		if(s.isConfigurationChannel()) {
+		%]		// Scripted tasks cannot be configuration channels		
+		[%
+		} else{	// for each input field create a variable with the same name (so that it can be used by the script)
+		%]
+			[%for (field in s.type.fields) { %]
+		String [%=field.name%] = [%=s.type.name.ftlc()%].[%=field.name%].toString();
+			[%}// execute script on engine
+		%]		
+		RenjinScriptEngine engine = new RenjinScriptEngineFactory().getScriptEngine();
+		[%var script = self.script.replace("\n","\\\\n");%]
+		[%for (field in s.type.fields) { %]
+			[%script = script.replace(field.name,"\"+"+field.name+"+\"");%]
+		[%}%]		
+		engine.eval([%if(not self.script.startsWith("\"")){%]"[%}%][%=script%][%if(not self.script.endsWith("\"")){%]"[%}%]);
+		
+		[%// for each output variable get its value from the engine
+		
+		//defined primitive types (they can all be homogeneous collections as well) and their corresponding methods in the R engine)
+		var types : new Map;
+		types.put("int", "getElementAsInt");
+		types.put("double", "getElementAsDouble");
+		types.put("String", "getElementAsString");	
+		types.put("boolean", "getElementAsLogical");
+		types.put("double", "getElementAsDouble");
+		types.put("Complex", "getElementAsComplex");
+
+		for (outputVariable in self.outputVariables) { 
+			if(types.containsKey(outputVariable.type)){
+		%]
+		Object [%=outputVariable.name%]Object = engine.eval("[%=outputVariable.name%]");
+				[%if(not outputVariable.isMany()){%]
+		[%=outputVariable.type%] [%=outputVariable.name%] = ([%=outputVariable.type%]) ((Vector) [%=outputVariable.name%]Object).[%=types.get(outputVariable.type)%](0);
+				[%}else{%]
+		List<[%=outputVariable.type%]> [%=outputVariable.name%] = new ArrayList<>();
+		((Iterable<[%=outputVariable.type%]>)[%=outputVariable.name%]Object).forEach([%=outputVariable.name%]::add);
+				[%}%]
+			[%}%]
+		[%}%]
+		[%
+		/*for single output tasks*/
+		if((not t.multipleOutputs and t.output.size==1)) {
+		
+		// if the user defines no output variables assume they have the same name as those of the output stream type fields
+		if(self.outputVariables.size==0){
+		%]//Since no output variables have been defined by this task, it is assumed that they are identical to the name and type of the task's output stream
+		[%
+			for(field in t.output.first.type.fields){
+				if(types.containsKey(field.type)){%]
+		Object [%=field.name%]Object = engine.eval("[%=field.name%]");		
+					[%if(not field.isMany()){%]
+		[%=field.type%] [%=field.name%] = ([%=field.type%]) ((Vector) [%=field.name%]Object).[%=types.get(field.type)%](0);
+					[%}else{%]
+		List<[%=field.type%]> [%=field.name%] = new ArrayList<>();
+		((Iterable<[%=field.type%]>)[%=field.name%]Object).forEach([%=field.name%]::add);
+					[%}%]
+		[%						
+				} else{
+		%]
+		//WARNING: variable named [[%=field.name%]] has a type incompatible with Java: [[%=field.type%]], and hence cannot be automatically added to the output stream data object
+		[%
+				}
+			}
+		}	
+		
+		%]
+		
+		[%=t.output.first.type.name%] [%=t.output.first.type.name.ftlc()%]Output = new [%=t.output.first.type.name%]();		
+		[%
+		var remainingUnsetFields = t.output.first.type.fields.size;
+		var remainingUnusedVariables = self.outputVariables.size;
+		//
+		for(outputVariable in self.outputVariables){
+			if(types.containsKey(outputVariable.type) and not t.output.first.type.fields.select(f|f.name=outputVariable.name and f.type=outputVariable.type and f.isMany=outputVariable.isMany).isEmpty)
+			{
+		%]
+		[%=t.output.first.type.name.ftlc()%]Output.[%=outputVariable.name%] = [%=outputVariable.name%];	
+			[%
+				remainingUnsetFields=remainingUnsetFields-1;
+				remainingUnusedVariables=remainingUnusedVariables-1;
+			}		
+		}
+		
+		// if the user defines no output variables assume they have the same name as those of the output stream type fields
+		if(self.outputVariables.size==0){
+			for(field in t.output.first.type.fields){
+				if(types.containsKey(field.type)){
+		%]
+		[%=t.output.first.type.name.ftlc()%]Output.[%=field.name%] = [%=field.name%];
+		[%						
+				}
+			}
+		}
+		
+		//only give hints about missing variables if the user has defined some in the task
+			if(self.outputVariables.size>0 and (remainingUnsetFields>0 or remainingUnusedVariables>0)){
+			
+			%]
+		
+		// FIXME user code needed for scripted tasks requiring custom output:
+		// for [%=self.scriptingLanguage%] tasks, captured output is of the form of int, boolean, double, string or complex (or collections thereof)
+		// and these outputs have to be the same name and type as the relevant fields in the type of the output stream this data is sent to
+		[%if(remainingUnusedVariables>0){%]
+		// unused output variables:
+		[%}%]
+				[%for(outputVariable in self.outputVariables){
+					if(not types.containsKey(outputVariable.type) or t.output.first.type.fields.select(f|f.name=outputVariable.name and f.type=outputVariable.type and f.isMany=outputVariable.isMany).isEmpty)
+					{%]
+			// [%=outputVariable.name%]	
+					[%}		
+				}%]
+		[%if(remainingUnsetFields>0){%]
+		// unset fields (of [%=t.output.first.type.name.ftlc()%]Output):
+		[%}%]
+		[%for(field in t.output.first.type.fields){
+					if(not types.containsKey(field.type) or self.outputVariables.select(v|v.name=field.name and v.type=field.type and v.isMany=field.isMany).isEmpty)
+					{%]
+			// [%=field.name%]					
+					[%}
+				}				
+			}%]
+		
+		return [%=t.output.first.type.name.ftlc()%]Output;
+		[%} else /*for all other tasks*/{%]
+		[%for (s in t.output) { %]
+		// FIXME user code needed for multi-output scripted tasks
+		// send output to: [%=s.name%] of type: [%=s.type.name%]
+			
+		[% } %]
+		[% if (t.output.isEmpty()) { %]
+		// FIXME user code needed for no-output scripted tasks
+		System.out.println("[" + workflow.getName() + "] Result is " + [%=s.type.name.ftlc()%].toString() + " (cached=" + [%=s.type.name.ftlc()%].isCached() + ")");
+		[% } %]
+		[%}%]
+	[%}%]
+
+	}
+	[%}
+}%]
+
+[%if(t.isTypeOf(OpinionatedTask)){%]
+[%for (s in t.input){%]
+	@Override
+	public boolean acceptInput([%=s.type.name%] input) {
+		// TODO: logic for when to accept tasks for this instance of [%=t.name%] goes here.
+		return true;
+	}
+[%}%]
+[%}%]
+
+}
+[%
+operation Stream isConfigurationChannel() {
+	if(not self.name.endsWith("ConfigTopic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+%]

@@ -46,23 +46,41 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 
-import crossflow.diagram.edit.parts.ConfigurationEditPart;
-import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
+import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
+import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
+import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
-import crossflow.diagram.edit.parts.FieldName2EditPart;
-import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameType3EditPart;
+import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.LanguageEditPart;
+import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.LanguageNameEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ParameterEditPart;
+import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.QueueNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
+import crossflow.diagram.edit.parts.StreamInputOfEditPart;
 import crossflow.diagram.edit.parts.StreamTypeEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
-import crossflow.diagram.edit.parts.TaskInputEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
 import crossflow.diagram.edit.parts.TaskOutputEditPart;
 import crossflow.diagram.edit.parts.TopicEditPart;
+import crossflow.diagram.edit.parts.TopicNameEditPart;
 import crossflow.diagram.edit.parts.TypeEditPart;
 import crossflow.diagram.edit.parts.TypeExtendingEditPart;
 import crossflow.diagram.edit.parts.TypeNameEditPart;
@@ -80,8 +98,8 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class CrossflowViewProvider extends AbstractProvider implements IViewProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public final boolean provides(IOperation operation) {
 		if (operation instanceof CreateViewForKindOperation) {
 			return provides((CreateViewForKindOperation) operation);
@@ -98,8 +116,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean provides(CreateViewForKindOperation op) {
 		/*
 		    if (op.getViewKind() == Node.class)
@@ -111,16 +129,16 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean provides(CreateDiagramViewOperation op) {
 		return WorkflowEditPart.MODEL_ID.equals(op.getSemanticHint())
 				&& CrossflowVisualIDRegistry.getDiagramVisualID(getSemanticElement(op.getSemanticAdapter())) != -1;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean provides(CreateNodeViewOperation op) {
 		if (op.getContainerView() == null) {
 			return false;
@@ -155,15 +173,22 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 					return false; // foreign diagram
 				}
 				switch (visualID) {
+				case CsvSourceEditPart.VISUAL_ID:
+				case CsvSinkEditPart.VISUAL_ID:
 				case TopicEditPart.VISUAL_ID:
 				case QueueEditPart.VISUAL_ID:
 				case SourceEditPart.VISUAL_ID:
 				case SinkEditPart.VISUAL_ID:
-				case ConfigurationEditPart.VISUAL_ID:
+				case CommitmentTaskEditPart.VISUAL_ID:
+				case OpinionatedTaskEditPart.VISUAL_ID:
+				case ScriptedTaskEditPart.VISUAL_ID:
 				case TaskEditPart.VISUAL_ID:
 				case TypeEditPart.VISUAL_ID:
+				case LanguageEditPart.VISUAL_ID:
 				case Field2EditPart.VISUAL_ID:
+				case ParameterEditPart.VISUAL_ID:
 				case FieldEditPart.VISUAL_ID:
+				case Field3EditPart.VISUAL_ID:
 					if (domainElement == null || visualID != CrossflowVisualIDRegistry
 							.getNodeVisualID(op.getContainerView(), domainElement)) {
 						return false; // visual id in semantic hint should match visual id for domain element
@@ -174,16 +199,19 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				}
 			}
 		}
-		return TopicEditPart.VISUAL_ID == visualID || QueueEditPart.VISUAL_ID == visualID
+		return CsvSourceEditPart.VISUAL_ID == visualID || CsvSinkEditPart.VISUAL_ID == visualID
+				|| TopicEditPart.VISUAL_ID == visualID || QueueEditPart.VISUAL_ID == visualID
 				|| SourceEditPart.VISUAL_ID == visualID || SinkEditPart.VISUAL_ID == visualID
-				|| ConfigurationEditPart.VISUAL_ID == visualID || TaskEditPart.VISUAL_ID == visualID
+				|| CommitmentTaskEditPart.VISUAL_ID == visualID || OpinionatedTaskEditPart.VISUAL_ID == visualID
+				|| ScriptedTaskEditPart.VISUAL_ID == visualID || TaskEditPart.VISUAL_ID == visualID
 				|| TypeEditPart.VISUAL_ID == visualID || FieldEditPart.VISUAL_ID == visualID
-				|| Field2EditPart.VISUAL_ID == visualID;
+				|| LanguageEditPart.VISUAL_ID == visualID || Field2EditPart.VISUAL_ID == visualID
+				|| Field3EditPart.VISUAL_ID == visualID || ParameterEditPart.VISUAL_ID == visualID;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean provides(CreateEdgeViewOperation op) {
 		IElementType elementType = getSemanticElementType(op.getSemanticAdapter());
 		if (!CrossflowElementTypes.isKnownElementType(elementType) || (!(elementType instanceof IHintedType))) {
@@ -203,8 +231,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Diagram createDiagram(IAdaptable semanticAdapter, String diagramKind, PreferencesHint preferencesHint) {
 		Diagram diagram = NotationFactory.eINSTANCE.createDiagram();
 		diagram.getStyles().add(NotationFactory.eINSTANCE.createDiagramStyle());
@@ -215,8 +243,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Node createNode(IAdaptable semanticAdapter, View containerView, String semanticHint, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		final EObject domainElement = getSemanticElement(semanticAdapter);
@@ -227,32 +255,46 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 			visualID = CrossflowVisualIDRegistry.getVisualID(semanticHint);
 		}
 		switch (visualID) {
+		case CsvSourceEditPart.VISUAL_ID:
+			return createCsvSource_2001(domainElement, containerView, index, persisted, preferencesHint);
+		case CsvSinkEditPart.VISUAL_ID:
+			return createCsvSink_2002(domainElement, containerView, index, persisted, preferencesHint);
 		case TopicEditPart.VISUAL_ID:
-			return createTopic_2001(domainElement, containerView, index, persisted, preferencesHint);
+			return createTopic_2003(domainElement, containerView, index, persisted, preferencesHint);
 		case QueueEditPart.VISUAL_ID:
-			return createQueue_2002(domainElement, containerView, index, persisted, preferencesHint);
+			return createQueue_2004(domainElement, containerView, index, persisted, preferencesHint);
 		case SourceEditPart.VISUAL_ID:
-			return createSource_2003(domainElement, containerView, index, persisted, preferencesHint);
+			return createSource_2005(domainElement, containerView, index, persisted, preferencesHint);
 		case SinkEditPart.VISUAL_ID:
-			return createSink_2004(domainElement, containerView, index, persisted, preferencesHint);
-		case ConfigurationEditPart.VISUAL_ID:
-			return createConfiguration_2005(domainElement, containerView, index, persisted, preferencesHint);
+			return createSink_2006(domainElement, containerView, index, persisted, preferencesHint);
+		case CommitmentTaskEditPart.VISUAL_ID:
+			return createCommitmentTask_2007(domainElement, containerView, index, persisted, preferencesHint);
+		case OpinionatedTaskEditPart.VISUAL_ID:
+			return createOpinionatedTask_2008(domainElement, containerView, index, persisted, preferencesHint);
+		case ScriptedTaskEditPart.VISUAL_ID:
+			return createScriptedTask_2015(domainElement, containerView, index, persisted, preferencesHint);
 		case TaskEditPart.VISUAL_ID:
-			return createTask_2006(domainElement, containerView, index, persisted, preferencesHint);
+			return createTask_2010(domainElement, containerView, index, persisted, preferencesHint);
 		case TypeEditPart.VISUAL_ID:
-			return createType_2007(domainElement, containerView, index, persisted, preferencesHint);
+			return createType_2011(domainElement, containerView, index, persisted, preferencesHint);
 		case FieldEditPart.VISUAL_ID:
-			return createField_2008(domainElement, containerView, index, persisted, preferencesHint);
+			return createField_2014(domainElement, containerView, index, persisted, preferencesHint);
+		case LanguageEditPart.VISUAL_ID:
+			return createLanguage_2013(domainElement, containerView, index, persisted, preferencesHint);
 		case Field2EditPart.VISUAL_ID:
+			return createField_3003(domainElement, containerView, index, persisted, preferencesHint);
+		case Field3EditPart.VISUAL_ID:
 			return createField_3001(domainElement, containerView, index, persisted, preferencesHint);
+		case ParameterEditPart.VISUAL_ID:
+			return createParameter_3002(domainElement, containerView, index, persisted, preferencesHint);
 		}
 		// can't happen, provided #provides(CreateNodeViewOperation) is correct
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public Edge createEdge(IAdaptable semanticAdapter, View containerView, String semanticHint, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		IElementType elementType = getSemanticElementType(semanticAdapter);
@@ -260,8 +302,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		switch (CrossflowVisualIDRegistry.getVisualID(elementTypeHint)) {
 		case StreamTypeEditPart.VISUAL_ID:
 			return createStreamType_4001(containerView, index, persisted, preferencesHint);
-		case TaskInputEditPart.VISUAL_ID:
-			return createTaskInput_4002(containerView, index, persisted, preferencesHint);
+		case StreamInputOfEditPart.VISUAL_ID:
+			return createStreamInputOf_4005(containerView, index, persisted, preferencesHint);
 		case TaskOutputEditPart.VISUAL_ID:
 			return createTaskOutput_4003(containerView, index, persisted, preferencesHint);
 		case TypeExtendingEditPart.VISUAL_ID:
@@ -274,7 +316,81 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	/**
 	* @generated
 	*/
-	public Node createTopic_2001(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createCsvSource_2001(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(CsvSourceEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5001 = createLabel(node, CrossflowVisualIDRegistry.getType(CsvSourceNameEditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createCsvSink_2002(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(CsvSinkEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5002 = createLabel(node, CrossflowVisualIDRegistry.getType(CsvSinkNameEditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createTopic_2003(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -304,13 +420,14 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5003 = createLabel(node, CrossflowVisualIDRegistry.getType(TopicNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createQueue_2002(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createQueue_2004(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -340,13 +457,14 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5004 = createLabel(node, CrossflowVisualIDRegistry.getType(QueueNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createSource_2003(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createSource_2005(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -376,14 +494,14 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5001 = createLabel(node, CrossflowVisualIDRegistry.getType(SourceNameEditPart.VISUAL_ID));
+		Node label5005 = createLabel(node, CrossflowVisualIDRegistry.getType(SourceNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createSink_2004(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createSink_2006(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -413,18 +531,18 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5002 = createLabel(node, CrossflowVisualIDRegistry.getType(SinkNameEditPart.VISUAL_ID));
+		Node label5006 = createLabel(node, CrossflowVisualIDRegistry.getType(SinkNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createConfiguration_2005(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createCommitmentTask_2007(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(CrossflowVisualIDRegistry.getType(ConfigurationEditPart.VISUAL_ID));
+		node.setType(CrossflowVisualIDRegistry.getType(CommitmentTaskEditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		stampShortcut(containerView, node);
@@ -450,15 +568,92 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5003 = createLabel(node,
-				CrossflowVisualIDRegistry.getType(ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID));
+		Node label5007 = createLabel(node, CrossflowVisualIDRegistry.getType(CommitmentTaskNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createTask_2006(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createOpinionatedTask_2008(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(OpinionatedTaskEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5008 = createLabel(node, CrossflowVisualIDRegistry.getType(OpinionatedTaskNameEditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createScriptedTask_2015(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.getStyles().add(NotationFactory.eINSTANCE.createHintedDiagramLinkStyle());
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(ScriptedTaskEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5017 = createLabel(node, CrossflowVisualIDRegistry.getType(ScriptedTaskNameEditPart.VISUAL_ID));
+		createCompartment(node,
+				CrossflowVisualIDRegistry.getType(ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID),
+				false, false, true, true);
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createTask_2010(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -488,14 +683,14 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5004 = createLabel(node, CrossflowVisualIDRegistry.getType(TaskNameEditPart.VISUAL_ID));
+		Node label5010 = createLabel(node, CrossflowVisualIDRegistry.getType(TaskNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createType_2007(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createType_2011(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.getStyles().add(NotationFactory.eINSTANCE.createHintedDiagramLinkStyle());
@@ -526,16 +721,16 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5006 = createLabel(node, CrossflowVisualIDRegistry.getType(TypeNameEditPart.VISUAL_ID));
-		createCompartment(node, CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID), true,
-				false, false, false);
+		Node label5012 = createLabel(node, CrossflowVisualIDRegistry.getType(TypeNameEditPart.VISUAL_ID));
+		createCompartment(node, CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID), false,
+				false, true, true);
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createField_2008(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createField_2014(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -565,14 +760,55 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5007 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameEditPart.VISUAL_ID));
+		Node label5016 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameTypeEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createField_3001(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createLanguage_2013(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.getStyles().add(NotationFactory.eINSTANCE.createHintedDiagramLinkStyle());
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(LanguageEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		stampShortcut(containerView, node);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5015 = createLabel(node, CrossflowVisualIDRegistry.getType(LanguageNameEditPart.VISUAL_ID));
+		createCompartment(node,
+				CrossflowVisualIDRegistry.getType(LanguageLanguageParametersCompartmentEditPart.VISUAL_ID), false,
+				false, true, true);
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createField_3003(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -601,7 +837,79 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5005 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldName2EditPart.VISUAL_ID));
+		Node label5018 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameType2EditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createField_3001(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(Field3EditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5011 = createLabel(node, CrossflowVisualIDRegistry.getType(FieldNameType3EditPart.VISUAL_ID));
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createParameter_3002(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Shape node = NotationFactory.eINSTANCE.createShape();
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(CrossflowVisualIDRegistry.getType(ParameterEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_FILL_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
+				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5014 = createLabel(node, CrossflowVisualIDRegistry.getType(ParameterNameValueEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -655,7 +963,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	/**
 	* @generated
 	*/
-	public Edge createTaskInput_4002(View containerView, int index, boolean persisted,
+	public Edge createStreamInputOf_4005(View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Connector edge = NotationFactory.eINSTANCE.createConnector();
 		edge.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
@@ -666,7 +974,7 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		bendpoints.setPoints(points);
 		edge.setBendpoints(bendpoints);
 		ViewUtil.insertChildView(containerView, edge, index, persisted);
-		edge.setType(CrossflowVisualIDRegistry.getType(TaskInputEditPart.VISUAL_ID));
+		edge.setType(CrossflowVisualIDRegistry.getType(StreamInputOfEditPart.VISUAL_ID));
 		edge.setElement(null);
 		// initializePreferences
 		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
@@ -690,12 +998,12 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 		if (routing != null) {
 			ViewUtil.setStructuralFeatureValue(edge, NotationPackage.eINSTANCE.getRoutingStyle_Routing(), routing);
 		}
-		Node label6002 = createLabel(edge, CrossflowVisualIDRegistry.getType(WrappingLabel2EditPart.VISUAL_ID));
-		label6002.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		label6002.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
-		Location location6002 = (Location) label6002.getLayoutConstraint();
-		location6002.setX(0);
-		location6002.setY(40);
+		Node label6005 = createLabel(edge, CrossflowVisualIDRegistry.getType(WrappingLabel2EditPart.VISUAL_ID));
+		label6005.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
+		label6005.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
+		Location location6005 = (Location) label6005.getLayoutConstraint();
+		location6005.setX(0);
+		location6005.setY(40);
 		return edge;
 	}
 
@@ -794,8 +1102,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private void stampShortcut(View containerView, Node target) {
 		if (!WorkflowEditPart.MODEL_ID.equals(CrossflowVisualIDRegistry.getModelID(containerView))) {
 			EAnnotation shortcutAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
@@ -806,8 +1114,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Node createLabel(View owner, String hint) {
 		DecorationNode rv = NotationFactory.eINSTANCE.createDecorationNode();
 		rv.setType(hint);
@@ -846,8 +1154,8 @@ public class CrossflowViewProvider extends AbstractProvider implements IViewProv
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private EObject getSemanticElement(IAdaptable semanticAdapter) {
 		if (semanticAdapter == null) {
 			return null;

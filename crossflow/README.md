@@ -1,48 +1,107 @@
+# Workflow Engine
+![Logo](https://github.com/crossminer/scava/raw/crossflow/crossflow/crossflow_96dpi.png)
 
-# Crossflow
+Crossflow is a distributed data processing framework that supports dispensation of work across multiple opinionated and low-commitment workers.
 
-Crossflow language, editors, distributed execution, and monitoring.
+## Docker Quick Start
 
-HOW TO USE:
------------
+Pull container image from Docker Hub:
 
-1. Download the Eclipse Epsilon Distribution from: http://www.eclipse.org/epsilon/download/
+`docker pull crossminer/crossflow`
 
-2. Clone repository.
+Startup container:
 
-3. Import projects to Eclipse workspace as projects using the Eclipse "Existing Projects into Workspace" dialog.
+`docker run -it --rm -d --name crossflow -p 80:8080 -p 61616:61616 -p 61614:61614 -p 5672:5672 -p 61613:61613 -p 1883:1883 -p 8161:8161 -p 1099:1099 crossminer/crossflow:latest`
 
-Projects org.eclipse.scava.crossflow.language.* contain the workflow metamodel and graphical editor.
+Access Crossflow web application:
+http://localhost/org.eclipse.scava.crossflow.web/
 
-Projects org.eclipse.scava.crossflow.restmule.* contain the resilient clients used by crossflow.
+More details on running Crossflow with Docker are available [here](https://github.com/crossminer/scava/tree/crossflow/crossflow/org.eclipse.scava.crossflow.web.docker/README.md).
 
-Project org.eclipse.scava.crossflow contains the Epsilon-based code generators used to create Java code from a workflow model.
+## Running from source
+To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thrift. Brief instructions are provided below.
 
-Project org.eclipse.scava.crossflow.runtime contains the execution engine for workflows.
+### Eclipse
+- Start with a J2EE distribution from https://www.eclipse.org/downloads/packages/release/2018-09/r/eclipse-ide-java-ee-developers
+- Install Emfatic from http://download.eclipse.org/emfatic/update/ (Untick the "Group items by category" check box)
+- Install the Graphical Modelling Framework (GMF) Tooling SDK from http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases/
+- Install the following features from http://download.eclipse.org/epsilon/interim/
+	- Epsilon Core
+	- Epsilon Core Develoment Tools
+	- Epsilon EMF Integration
+	- Epsilon GMF Integration
+- Install Web Tools Platform SDK (WTP SDK) from http://download.eclipse.org/webtools/repository/photon
+- Install Eclipse Xtext for textual workflow modelling support from https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ update site and select the following:
+	- Xtext Complete SDK
+	- Xtext Runtime
 
-Project org.eclipse.scava.crossflow.examples contains examples of workflows that can be executed.
+### Tomcat
+- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.zip
+- Set up Tomcat in your Eclipse through the Servers view
 
-3. To use the graphical editor launch a new eclipse that includes these plugins in its execution and create a new crossflow model or open an existing one using the crossflow diagram editor.
+### Thrift
+- Install Apache Thrift (http://thrift.apache.org/)
+	- Standalone executable for Windows
+	- Homebrew for Mac
 
-------------------------------------------------------------------
-![CROSSMINER project logo](https://github.com/crossminer/internal-material/blob/b312a1244b7edbbf402b7f61c7e0edb5cb9faf61/Templates/Logos/CROSSMINER%20logo%20small.png?raw=true)
+### Git
+- Clone the https://github.com/crossminer/scava/ repository
+- Switch to the crossflow branch
+- Import all projects from the crossflow and the restmule folders
 
-Crossflow is part of the [CROSSMINER](https://www.crossminer.org) project --- Developer-Centric Knowledge Mining from Large Open-Source Software Repositories --- and belongs to the [Crossminer Github organization](https://github.com/crossminer). The integrated software framework of the CROSSMINER project is referred to as [Scava](https://github.com/crossminer/scava).
+### Ivy
+We're using Apache Ivy for dependency management (i.e. so that we don't need to store jars in the repo)
+- Install the Ivy Eclipse plugin: http://www.apache.org/dist/ant/ivyde/updatesite
+- The main project requiring resolution is 'runtime.dependencies'. Since this project requires dependencies from a non-standard repository, you have to configure ivy to add this repository as well. Since this is not automated you need to right-click on the project -> Properties -> Ivy -> New... -> Settings -> Enable project specific settings (selected) -> Ivy settings path -> ${workspace_loc:org.eclipse.scava.crossflow.runtime.dependencies/ivysettings.xml}. To resolve the dependencies you now select this new retrieve option from the context menu of Ivy, instead of the default one. 
+- If you get an error regarding same-name artefacts, click on 'Add def. pattern' in the 'Main' tab of the previous configuration to replace everything after lib/, resulting in: lib/[type]s/[artifact]-[revision](-[classifier]).[ext] as the retrieve pattern.
+- For the remainder of the projects, if Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click (on the project name) and select Ivy -> Resolve (. If you plan to run the web UI from eclipse instead of docker, the 'web' project requires resolution as well)
 
-## Project Partners
-The CROSSMINER  consortium consists of the following organisations:
+### Generating stuff
+You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
 
-* The Open Group (X/Open Company), UK
-* University of York, UK
-* University of L'Aquila, Italy
-* Edge Hill University, UK
-* Centrum Voor Wiskunde en Informatica, Netherlands
-* Athens University of Economics and Business, Greece
-* Unparallel, Portugal
-* Softeam, France
-* Frontendart, Hungary
-* Bitergia, Spain
-* OW2 Consortium, France
-* Eclipse Foundation Europe GmbH, Germany
+- org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
+- org.eclipse.scava.crossflow.web/run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript source code
+- org.eclipse.scava.crossflow.web/build-war.xml builds a Tomcat WAR file from org.eclipse.scava.crossflow.web
+- org.eclipse.scava.crossflow.examples/generate-all-examples.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.examples/models
 
-The [CROSSMINER](https://www.crossminer.org) project receives funding under the [European Union's Horizon 2020 Research and Innovation Programme](https://ec.europa.eu/programmes/horizon2020/en/h2020-section/information-and-communication-technologies) under grant agreement No. 732223.
+### Tests
+- JUnit tests can be ran through the CrossflowTests class in org.eclipse.scava.crossflow.tests
+
+### Web application
+- To run the web application (port: 8080) right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
+- The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
+
+### Screenshots
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/index.png)
+**Figure**: Main page listing available workflows and *Upload New Workflow* button.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-advanced.png)
+**Figure**: Calculator experiment page *Advanced* tab listing Calculator workflow configuration.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-calculations.png)
+**Figure**: Calculator experiment page *Calculations* tab listing Calculator workflow input calculations obtained from CSV source.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-model.png)
+**Figure**: Calculator experiment page *Model* tab listing Calculator workflow model.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/calculator-log.png)
+**Figure**: Calculator experiment page *Log* tab listing Calculator workflow log after experiment completion.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model.png)
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model before execution.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-running.png)
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution visualizing task status and queue size by means of color and rounded number, respectively. **Task status (color)**: STARTED (lightcyan), WAITING (skyblue), INPROGRESS (palegreen), BLOCKED (salmon), and FINISHED (slategrey).  
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-running-tooltip.png)
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse hovering over initial queue depicting (queue) size, in-flight count, and subscriber count.
+
+![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-clear-all.png)
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse click inside empty model area, i.e. not on a particular task or queue, displaying context menu popup to clear the cache of all queues involved in the Word Count workflow.
+
+ ![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/wordcount-model-clear-specific.png)
+**Figure**: Word Count experiment page *Model* tab listing Word Count workflow model during execution with mouse click inside boundaries of *WordFrequencies* queue displaying context menu popup to clear the cache of all queues involved in the Word Count workflow.
+
+ ![Screenshot](https://github.com/crossminer/scava/raw/crossflow/crossflow/images/upload.png)
+**Figure**: Upload New Workflow page allowing the upload and deployment of new experiments.

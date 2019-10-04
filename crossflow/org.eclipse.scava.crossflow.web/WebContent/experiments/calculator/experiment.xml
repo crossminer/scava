@@ -1,0 +1,14 @@
+<experiment
+	title="Calculator"
+	class="org.eclipse.scava.crossflow.tests.calculator.CalculatorWorkflow"
+	jar="org.eclipse.scava.crossflow.tests.calculator.jar"
+	input="in"
+	output="out"
+	summary="A minimal example that performs numerical operations defined in a comma-seprated values (CSV) file."
+	>
+	<input path="input.csv" title="Calculations"/>
+	<output path="output.csv" title="Results"/>
+	<description>
+		To contribute to this workflow, you need to download ${link} and then run the following command in your terminal ${command}.
+	</description>
+</experiment>

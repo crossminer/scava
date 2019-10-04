@@ -105,10 +105,47 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CrossflowPackage.CSV_SOURCE: {
+				CsvSource csvSource = (CsvSource)theEObject;
+				T result = caseCsvSource(csvSource);
+				if (result == null) result = caseSource(csvSource);
+				if (result == null) result = caseTask(csvSource);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CrossflowPackage.SINK: {
 				Sink sink = (Sink)theEObject;
 				T result = caseSink(sink);
 				if (result == null) result = caseTask(sink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.CSV_SINK: {
+				CsvSink csvSink = (CsvSink)theEObject;
+				T result = caseCsvSink(csvSink);
+				if (result == null) result = caseSink(csvSink);
+				if (result == null) result = caseTask(csvSink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.COMMITMENT_TASK: {
+				CommitmentTask commitmentTask = (CommitmentTask)theEObject;
+				T result = caseCommitmentTask(commitmentTask);
+				if (result == null) result = caseTask(commitmentTask);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.OPINIONATED_TASK: {
+				OpinionatedTask opinionatedTask = (OpinionatedTask)theEObject;
+				T result = caseOpinionatedTask(opinionatedTask);
+				if (result == null) result = caseTask(opinionatedTask);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.SCRIPTED_TASK: {
+				ScriptedTask scriptedTask = (ScriptedTask)theEObject;
+				T result = caseScriptedTask(scriptedTask);
+				if (result == null) result = caseTask(scriptedTask);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -124,9 +161,15 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CrossflowPackage.CONFIGURATION: {
-				Configuration configuration = (Configuration)theEObject;
-				T result = caseConfiguration(configuration);
+			case CrossflowPackage.LANGUAGE: {
+				Language language = (Language)theEObject;
+				T result = caseLanguage(language);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.PARAMETER: {
+				Parameter parameter = (Parameter)theEObject;
+				T result = caseParameter(parameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -225,6 +268,21 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Csv Source</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Csv Source</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCsvSource(CsvSource object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Sink</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -236,6 +294,66 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseSink(Sink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Csv Sink</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Csv Sink</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCsvSink(CsvSink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Commitment Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Commitment Task</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCommitmentTask(CommitmentTask object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Opinionated Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Opinionated Task</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOpinionatedTask(OpinionatedTask object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Scripted Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Scripted Task</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseScriptedTask(ScriptedTask object) {
 		return null;
 	}
 
@@ -270,17 +388,32 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Configuration</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Language</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Configuration</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Language</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseConfiguration(Configuration object) {
+	public T caseLanguage(Language object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseParameter(Parameter object) {
 		return null;
 	}
 

@@ -2,9 +2,9 @@
  */
 package crossflow.impl;
 
-import crossflow.Configuration;
 import crossflow.CrossflowPackage;
 import crossflow.Field;
+import crossflow.Language;
 import crossflow.Stream;
 import crossflow.Task;
 import crossflow.Type;
@@ -34,28 +34,17 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link crossflow.impl.WorkflowImpl#getConfiguration <em>Configuration</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.impl.WorkflowImpl#getPackage <em>Package</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getStreams <em>Streams</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getTasks <em>Tasks</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.impl.WorkflowImpl#getLanguages <em>Languages</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class WorkflowImpl extends EObjectImpl implements Workflow {
-	/**
-	 * The cached value of the '{@link #getConfiguration() <em>Configuration</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConfiguration()
-	 * @generated
-	 * @ordered
-	 */
-	protected Configuration configuration;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -75,26 +64,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPackage()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PACKAGE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getPackage() <em>Package</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPackage()
-	 * @generated
-	 * @ordered
-	 */
-	protected String package_ = PACKAGE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getStreams() <em>Streams</em>}' containment reference list.
@@ -137,6 +106,16 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	protected EList<Field> parameters;
 
 	/**
+	 * The cached value of the '{@link #getLanguages() <em>Languages</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLanguages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Language> languages;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -160,49 +139,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetConfiguration(Configuration newConfiguration, NotificationChain msgs) {
-		Configuration oldConfiguration = configuration;
-		configuration = newConfiguration;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__CONFIGURATION, oldConfiguration, newConfiguration);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setConfiguration(Configuration newConfiguration) {
-		if (newConfiguration != configuration) {
-			NotificationChain msgs = null;
-			if (configuration != null)
-				msgs = ((InternalEObject)configuration).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__CONFIGURATION, null, msgs);
-			if (newConfiguration != null)
-				msgs = ((InternalEObject)newConfiguration).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__CONFIGURATION, null, msgs);
-			msgs = basicSetConfiguration(newConfiguration, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__CONFIGURATION, newConfiguration, newConfiguration));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
 		return name;
 	}
@@ -217,27 +153,6 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getPackage() {
-		return package_;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setPackage(String newPackage) {
-		String oldPackage = package_;
-		package_ = newPackage;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__PACKAGE, oldPackage, package_));
 	}
 
 	/**
@@ -293,11 +208,21 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Language> getLanguages() {
+		if (languages == null) {
+			languages = new EObjectContainmentEList<Language>(Language.class, this, CrossflowPackage.WORKFLOW__LANGUAGES);
+		}
+		return languages;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return basicSetConfiguration(null, msgs);
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return ((InternalEList<?>)getStreams()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -306,6 +231,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return ((InternalEList<?>)getLanguages()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -318,12 +245,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return getConfiguration();
 			case CrossflowPackage.WORKFLOW__NAME:
 				return getName();
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				return getPackage();
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return getStreams();
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -332,6 +255,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return getTypes();
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return getParameters();
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return getLanguages();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -345,14 +270,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				setConfiguration((Configuration)newValue);
-				return;
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName((String)newValue);
-				return;
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				setPackage((String)newValue);
 				return;
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				getStreams().clear();
@@ -370,6 +289,10 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends Field>)newValue);
 				return;
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				getLanguages().clear();
+				getLanguages().addAll((Collection<? extends Language>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -382,14 +305,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				setConfiguration((Configuration)null);
-				return;
 			case CrossflowPackage.WORKFLOW__NAME:
 				setName(NAME_EDEFAULT);
-				return;
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				setPackage(PACKAGE_EDEFAULT);
 				return;
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				getStreams().clear();
@@ -403,6 +320,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				getParameters().clear();
 				return;
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				getLanguages().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -415,12 +335,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.WORKFLOW__CONFIGURATION:
-				return configuration != null;
 			case CrossflowPackage.WORKFLOW__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CrossflowPackage.WORKFLOW__PACKAGE:
-				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
 			case CrossflowPackage.WORKFLOW__STREAMS:
 				return streams != null && !streams.isEmpty();
 			case CrossflowPackage.WORKFLOW__TASKS:
@@ -429,6 +345,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return types != null && !types.isEmpty();
 			case CrossflowPackage.WORKFLOW__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
+			case CrossflowPackage.WORKFLOW__LANGUAGES:
+				return languages != null && !languages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -442,11 +360,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", package: ");
-		result.append(package_);
 		result.append(')');
 		return result.toString();
 	}
