@@ -211,7 +211,7 @@ public class RecommenderManager implements IRecommenderManager {
 
 	@Override
 	public List<Artifact> getArtifactsByQuery(String projectQuery) {
-		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(projectQuery);
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(new PageRequest(0, 5));
 		List<Artifact> recipes = template.find(query, Artifact.class);
@@ -220,7 +220,7 @@ public class RecommenderManager implements IRecommenderManager {
 
 	@Override
 	public List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page) {
-		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase(projectQuery);
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(projectQuery);
 		org.springframework.data.mongodb.core.query.Query query = TextQuery.queryText(criteria).sortByScore()
 				.with(page);
 		query.addCriteria(Criteria.where("type.name").ne("FOCUS"));
