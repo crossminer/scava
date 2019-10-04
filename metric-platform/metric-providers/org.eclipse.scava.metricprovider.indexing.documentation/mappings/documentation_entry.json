@@ -10,7 +10,7 @@
 		"type" : "keyword"
 		},
 		"uid" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"documentation_id" : {
 			"type" : "keyword"
@@ -22,7 +22,7 @@
 			"type" : "text"
 		},
 		"original_format_mime" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"original_format_name" : {
 			"type" : "text"
@@ -31,13 +31,13 @@
 			"type" : "text"
 		},
 		"sentiment" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"readability" : {
 			"type" : "double"
 		},
 		"documentation_type" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"license_found" : {
 			"type" : "boolean"
@@ -45,10 +45,10 @@
 		"license" : {
 			"properties": {
 				"group" : {
-					"type" : "text"
+					"type" : "keyword"
 				},
 				"name" : {
-					"type" : "text"
+					"type" : "keyword"
 				},
 				"header_found": {
 					"type" : "boolean"
