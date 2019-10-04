@@ -67,7 +67,7 @@ class LogMessage:
                  task: str = None,
                  message: str = None):
         self.level = level
-        self.instance_id = instance_id
+        self.instanceId = instance_id
         self.workflow = workflow
         self.task = task
         self.message = message
@@ -82,6 +82,14 @@ class LogMessage:
         m = LogMessage.from_workflow(workflow=task.getWorkflow())
         m.task = task.getId()
         return m
+    
+    @property
+    def instance_id(self):
+        return self.instanceId
+    
+    @instance_id.setter
+    def instance_id(self, value):
+        self.instanceId = value
 
     def __str__(self):
         # Timestamp serialization is customised to fit with Java formatting
