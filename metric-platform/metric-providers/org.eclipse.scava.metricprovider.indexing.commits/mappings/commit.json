@@ -19,10 +19,10 @@
 			"type" : "keyword"
 		},
 		"author" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"author_email" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"body" : {
 			"type" : "text"
