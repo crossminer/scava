@@ -28,14 +28,20 @@ public class LogMessage implements Serializable {
 
 	private static final long serialVersionUID = 2L;
 
-	LogLevel level = LogLevel.DEBUG;
-	Instant timestamp = Instant.now();
+	LogLevel level;
+	long timestamp;
 	String instanceId = null;
 	String workflow = null;
 	String task = null;
 	String message = null;
+	
+	public LogMessage() {
+		this.level = LogLevel.DEBUG;
+		this.timestamp = System.currentTimeMillis();
+	}
 
 	public LogMessage(Workflow<?> workflow) {
+		this();
 		this.instanceId = workflow.getInstanceId();
 		this.workflow = workflow.getName();
 	}
@@ -49,17 +55,12 @@ public class LogMessage implements Serializable {
 		return this;
 	}
 
-	public Instant getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public LogMessage timestamp(Instant timestamp) {
+	public LogMessage timestamp(long timestamp) {
 		this.timestamp = timestamp;
-		return this;
-	}
-
-	public LogMessage timestamp(long timestampMillis) {
-		this.timestamp = Instant.ofEpochMilli(timestampMillis);
 		return this;
 	}
 
@@ -101,14 +102,14 @@ public class LogMessage implements Serializable {
 
 	@Override
 	public String toString() {
-		return timestamp.toString() + " [" + level + "] " + toExternalLoggerString();
+		return Instant.ofEpochMilli(timestamp).toString() + " [" + level + "] " + toExternalLoggerString();
 	}
 
 	/**
 	 * Same as {@link LogMessage#toString()} but without the timestamp or level
 	 * pre-fixed. Useful for use with external logging frameworks
 	 * 
-	 * @return {@link #toString()} without timestamp or level pre-fixed
+	 * @return {@link #toString()} without timestamp or level prefixed
 	 */
 	public String toExternalLoggerString() {
 		return instanceId + ":" + workflow + (task == null ? "" : (":" + task)) + " | " + message;
