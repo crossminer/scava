@@ -4,7 +4,10 @@ Created on 26 Mar 2019
 @author: stevet
 @author: Jon Co
 '''
+from __future__ import annotations
+
 import csv
+import datetime
 import hashlib
 import logging
 import os
@@ -23,14 +26,115 @@ from typing import Type
 import stomp
 import xmltodict
 
-logger = logging.getLogger("crossflow_runtime")
-logger.setLevel(logging.DEBUG)
-__fmt = logging.Formatter("[ %(asctime)s ] [ %(levelname)5s ] : %(message)s")
-__handler = logging.StreamHandler(sys.stdout)
-__handler.setLevel(logging.DEBUG)
-__handler.setFormatter(__fmt)
-logger.addHandler(__handler)
-logger.debug("Logger Initialised to sys.stdout")
+
+class LogLevel(Enum):
+    """
+    LogLevels are used to indicate priority of a log message in the global
+    workflow logging topic
+    """
+    INFO = auto()
+    WARNING = auto()
+    ERROR = auto()
+    DEBUG = auto()
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def enum_from_name(name: str):
+        """Returns the enum of this constant from it's name
+
+        :param name: the name of the enum to return, case-insensitive
+        :type name: str
+        :return: Corresponding ControlSignals enum member
+        :rtype: LogLevel
+        :raises:
+            ValueError: if no member of LogLevel can be identified with the given name
+        """
+        try:
+            return LogLevel[name.upper()]
+        except KeyError:
+            raise ValueError(f"No LogLevel exists with name '{name.upper()}'. "
+                             f"Must be one of  {', '.join([i.name for i in LogLevel])}")
+
+
+class LogMessage:
+
+    def __init__(self,
+                 level: LogLevel = LogLevel.DEBUG,
+                 instance_id: str = None,
+                 workflow: str = None,
+                 task: str = None,
+                 message: str = None):
+        self.level = level
+        self.instance_id = instance_id
+        self.workflow = workflow
+        self.task = task
+        self.message = message
+        self.timestamp = int(round(time.time() * 1000))
+
+    @classmethod
+    def from_workflow(cls, workflow: Workflow) -> LogMessage:
+        return LogMessage(instance_id=workflow.getInstanceId(), workflow=workflow.getName())
+
+    @classmethod
+    def from_task(cls, task: Task) -> LogMessage:
+        m = LogMessage.from_workflow(workflow=task.getWorkflow())
+        m.task = task.getId()
+        return m
+
+    def __str__(self):
+        # Timestamp serialization is customised to fit with Java formatting
+        as_date = datetime.datetime.utcfromtimestamp(self.timestamp / 1000)
+        return "{}{}Z [{}] {}".format(
+            as_date.strftime("%Y-%m-%dT%H:%M:%S."),
+            str(int(as_date.microsecond / 1000)),
+            self.level,
+            self.to_external_log_str())
+
+    def to_external_log_str(self) -> str:
+        """Same as calling str() but without the timestamp or level prefixed.
+
+        Useful for external loggers
+
+        :return: log message formatted without timestamp or level prefixed
+        :rtype: str
+        """
+        task_part = ""
+        if self.task is not None:
+            task_part = f":{self.task}"
+        return f"{self.instance_id}:{self.workflow}{task_part} | {self.message}"
+
+
+class CrossflowLogger:
+
+    def __init__(self, workflow: Workflow, pre_print: bool = False):
+        self.workflow = workflow
+        self.pre_print = pre_print
+
+    def log(self,
+            level: LogLevel = LogLevel.DEBUG,
+            message: str = "",
+            task: Task = None):
+        if task:
+            m = LogMessage.from_task(task)
+        else:
+            m = LogMessage.from_workflow(self.workflow)
+
+        m.level = level
+        m.message = message
+
+        if self.pre_print:
+            if m.level is LogLevel.INFO:
+                self.workflow.local_logger.info(m.to_external_log_str())
+            if m.level is LogLevel.WARNING:
+                self.workflow.local_logger.warning(m.to_external_log_str())
+            if m.level is LogLevel.ERROR:
+                self.workflow.local_logger.error(m.to_external_log_str())
+            if m.level is LogLevel.DEBUG:
+                self.workflow.local_logger.debug(m.to_external_log_str())
+
+        self.workflow.logTopic.send(m)
 
 
 class ControlSignals(Enum):
@@ -204,7 +308,7 @@ class StreamMetadata(object):
 
     def getStream(self, name):
         for s in self.streams:
-            if(s.name == name):
+            if (s.name == name):
                 return s
 
     def pruneNames(self, length):
@@ -218,7 +322,7 @@ class StreamMetadata(object):
         ret = "Stream Metadata at epoch: " + int(round(time.time() * 1000)) + "\r\n"
         for s in self.streams:
             ret = ret + s.name + "\tsize: " + s.size + "\t: " + s.inFlight + "\tisTopic: " + s.isTopic + \
-                    "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n"
+                  "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n"
         return ret
 
 
@@ -260,7 +364,6 @@ class TaskStatuses(Enum):
 class TaskStatus(object):
 
     def __init__(self, status=TaskStatuses.STARTED, caller='', reason=''):
-
         self.status = status
         self.caller = caller
         self.reason = reason
@@ -338,7 +441,7 @@ class Serializer(object):
             return self.__serialize_internal(obj)
 
         name = self.aliases.get(type(obj), type(obj).__name__)
-        return xmltodict.unparse({name : obj.__dict__}, full_document=False, pretty=__debug__)
+        return xmltodict.unparse({name: obj.__dict__}, full_document=False, pretty=__debug__)
 
     def to_object(self, xml):
         return self.deserialize(xml)
@@ -387,9 +490,10 @@ class Serializer(object):
         exDict = {
             "InternalException": {
                 "exception": {
-                    "detailMessage": "!PYTHON!" + str(ex.exception) + "\n" + "\n".join(traceback.extract_stack(ex.exception.__traceback__).format()),
+                    "detailMessage": "!PYTHON!" + str(ex.exception) + "\n" + "\n".join(
+                        traceback.extract_stack(ex.exception.__traceback__).format()),
                     "stackTrace": {},
-                    "suppressedExceptions" : {}
+                    "suppressedExceptions": {}
                 }
             }
         }
@@ -405,7 +509,7 @@ class Task(object):
     def getId(self):
         pass
 
-    def getWorkflow(self):
+    def getWorkflow(self) -> Workflow:
         pass
 
     def isCacheable(self):
@@ -462,19 +566,18 @@ class MessageListener(stomp.ConnectionListener):
         self.listenerId = str(self.listenerIdUuid)
         self.convertToObject = convertToObject
         self.clientAcks = clientAcks
-        logger.debug("Created listener for {}".format(destName))
+        self.workflow.local_logger.debug("Created listener for {}".format(destName))
 
     def on_error(self, headers, message):
         if headers['destination'] == self.destName:
-            logger.debug("Received an error: \n{}".format(message))
+            self.workflow.local_logger.debug("Received an error: \n{}".format(message))
 
     def on_message(self, headers, message):
         if headers['destination'] == self.destName:
-            logger.debug("Rx fm " + self.destName)
-            logger.debug("Received a message: \n{}".format(message))
+            self.workflow.local_logger.debug("Rx fm " + self.destName)
+            self.workflow.local_logger.debug("Received a message: \n{}".format(message))
             ackFunc = None
             if self.clientAcks:
-
                 def doClientAck():
                     messageId = headers['message-id']
                     subscription = headers['subscription']
@@ -488,16 +591,16 @@ class MessageListener(stomp.ConnectionListener):
                     self.consumer.consume(message, ackFunc)
             except Exception as e:
                 msg = "Error consuming message"
-                logging.exception(msg)
+                self.workflow.local_logger.exception(msg)
                 if self.workflow != None:
                     self.workflow.reportInternalException(e, msg)
                 else:
                     raise e
         else:
-            logging.debug("{} discarded message from {}:\n{}".format(self.destName, headers['destination'],message))
+            self.workflow.local_logger.debug("{} discarded message from {}:\n{}".format(self.destName, headers['destination'], message))
 
     def on_disconnected(self):
-        logger.debug("Disconnected")
+        self.workflow.local_logger.debug("Disconnected")
 
     def getListenerId(self):
         return self.listenerId
@@ -651,7 +754,7 @@ class DirectoryCache(object):
                     self.jobFolderMap[inputJob.name] = inputFolderPath
                     self.save(outputJob, outputFile)
             except Exception as ex:
-                logger.exception("Error caching Job")
+                self.workflow.local_logger.exception("Error caching Job")
                 self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name)
 
     def getDirectory(self):
@@ -703,8 +806,9 @@ class DirectoryCache(object):
                             self.save(outputJob, outputFile)
             except Exception as e:
                 msg = "Error caching pending transaction for CorrelationID: {} ".format(correlationId)
-                logger.exception(msg)
+                self.workflow.local_logger.exception(msg)
                 self.workflow.reportInternalException(e, msg);
+
 
 '''
 Created on 27 Feb 2019
@@ -716,7 +820,6 @@ Created on 27 Feb 2019
 class FailedJob(object):
 
     def __init__(self, job, exception, worker, task):
-
         self.job = job
         self.exception = exception
         self.worker = worker
@@ -753,7 +856,6 @@ class FailedJob(object):
 class InternalException(Exception):
 
     def __init__(self, exception=None, message=None, worker=None):
-
         self.exception = exception
         self.worker = worker
         self.message = message
@@ -786,7 +888,6 @@ class CacheManagerTask(Task):
 class Job(object):
 
     def __init__(self):
-
         self.id = str(uuid.uuid4())
         self.correlationId = ''
         self.destination = ''
@@ -885,7 +986,6 @@ class Job(object):
 
 class JobStream(Job):
 
-
     def __init__(self, workflow):
 
         self.workflow = workflow
@@ -900,7 +1000,7 @@ class JobStream(Job):
 
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-        logger.debug("Sending to queue: {}, message: {}".format(dest, msg))
+        self.workflow.local_logger.debug("Sending to queue: {}, message: {}".format(dest, msg))
         self.txConnection.send(body=msg, destination=dest)
 
     def getRxConnection(self, dest):
@@ -918,7 +1018,7 @@ class JobStream(Job):
         if queueInfo.getPrefetchSize() > 0:
             stompHeaders['activemq.prefetchSize'] = queueInfo.getPrefetchSize()
             ackMode = 'client'
-        logger.debug("Subscribe {} to {}".format(self.workflow.getName(), stompDestName))
+        self.workflow.local_logger.debug("Subscribe {} to {}".format(self.workflow.getName(), stompDestName))
         consumer = BuiltinStreamConsumer(msgCallbackFunc)
         connection = self.getRxConnection(stompDestName)
         listener = MessageListener(connection, consumer, self.workflow, stompDestName, False, ackMode == 'client')
@@ -945,11 +1045,11 @@ class JobStream(Job):
                     stompDest = self.preQueue[taskId].getStompDestinationName()
                     self.sendMessage(msgBody, stompDest)
         except Exception as ex:
-            logger.exception("")
+            self.workflow.local_logger.exception("")
             self.workflow.reportInternalException(ex, "");
 
     def getDestinationNames(self):
-        return map(lambda x : x.getStompDestinationName(), self.dest.keys())
+        return map(lambda x: x.getStompDestinationName(), self.dest.keys())
 
     def stop(self):
         self.txConnection.stop()
@@ -960,22 +1060,13 @@ class JobStream(Job):
         return self.destination.values().next().isTopic()
 
     def getAllQueues(self):
-        ret = map(lambda x : x.queueName, self.preQueue.values())
-        ret.extend(map(lambda x : x.queueName, self.postQueue.values()))
-        ret.extend(map(lambda x : x.queueName, self.destination.values()))
+        ret = map(lambda x: x.queueName, self.preQueue.values())
+        ret.extend(map(lambda x: x.queueName, self.postQueue.values()))
+        ret.extend(map(lambda x: x.queueName, self.destination.values()))
         return ret
-
-'''
-Created on 13 Mar 2019
-
-@author: stevet
-'''
-
-'''@synchronized'''
 
 
 class Workflow(ABC):
-
 
     def __init__(self,
                  name='',
@@ -1003,7 +1094,7 @@ class Workflow(ABC):
         self.excluded_tasks = excluded_tasks
 
         self.cacheEnabled = cacheEnabled
-        self.deleteCache=deleteCache
+        self.deleteCache = deleteCache
 
         # TODO: REMOVE THIS, KEPT IN UNTIL CODE REFACTOR CAN BE DONE NOT NEEDED UNLESS PYTHON MASTER REQUIRED
         self.createBroker = True
@@ -1058,7 +1149,17 @@ class Workflow(ABC):
         # from workers
         self.terminationTimeout = 10000
 
-        logger.info("Workflow initialised.")
+        # Init local_logger
+        self.local_logger = logging.getLogger(self.name)
+        self.local_logger.setLevel(logging.DEBUG)
+        __fmt = logging.Formatter("{}[{}] | {}".format("%(asctime)s", "%(levelname)5s", "%(message)s"))
+        __handler = logging.StreamHandler(sys.stdout)
+        __handler.setLevel(logging.DEBUG)
+        __handler.setFormatter(__fmt)
+        self.local_logger.addHandler(__handler)
+        self.local_logger.debug("local_logger Initialised to sys.stdout")
+
+        self.logger = CrossflowLogger(self)
 
     def connect(self):
         if (self.tempDirectory == None):
@@ -1129,7 +1230,7 @@ class Workflow(ABC):
                 try:
                     self.terminate()
                 except Exception:
-                    logger.exception("Failed to handle TERMINATION signal")
+                    self.local_logger.exception("Failed to handle TERMINATION signal")
 
     def consumeTaskStatus(self, task):
         status = task.status
@@ -1141,11 +1242,11 @@ class Workflow(ABC):
             self.activeJobs.remove(task.caller)
 
     def consumeFailedJob(self, failedJob):
-        logger.info(failedJob.getException())
+        self.local_logger.info(failedJob.getException())
         self.failedJobs.append(failedJob)
 
     def consumeInternalException(self, internalException):
-        logger.info(internalException.getException())
+        self.local_logger.info(internalException.getException())
         self.internalExceptions.append(internalException)
 
     def cancelTermination(self):
@@ -1191,7 +1292,7 @@ class Workflow(ABC):
     def stopBroker(self):
         self.brokerService.deleteAllMessages()
         self.brokerService.stopGracefully("", "", 1000, 1000)
-        logger.info("terminated broker (" + self.getName() + ")")
+        self.local_logger.info("terminated broker (" + self.getName() + ")")
 
     """
      * delays the execution of sources for 'delay' milliseconds. Needs to set the
@@ -1225,18 +1326,18 @@ class Workflow(ABC):
         if self.terminationTimer != None:
             self.terminationTimer.cancel()
 
-        logger.info("Terminating workflow {}...".format(self.getName()));
+        self.local_logger.info("Terminating workflow {}...".format(self.getName()));
         self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
 
         for stream in self._allStreams:
-            logger.info("Terminating stream {}".format(stream.name))
+            self.local_logger.info("Terminating stream {}".format(stream.name))
             try:
                 stream.stop()
             except Exception:
-                logger.exception("Failed to stop stream ({})during termination".format(stream.name))
+                self.local_logger.exception("Failed to stop stream ({})during termination".format(stream.name))
 
         self.terminated = True
-        logger.info("Workflow {} successfully terminated".format(self.getName()))
+        self.local_logger.info("Workflow {} successfully terminated".format(self.getName()))
 
     def hasTerminated(self):
         return self.terminated
@@ -1260,11 +1361,12 @@ class Workflow(ABC):
         return self.internalExceptions
 
     def reportInternalException(self, ex, message):
+        self.local_logger.exception("")
         try:
             ser_obj = self.serializer.serialize(InternalException(ex, message, None))
             self.internalExceptionsQueue.sendSerialized(ser_obj)
         except Exception as ex:
-            logger.exception("Could not propagate exception, serialisation error encountered")
+            self.local_logger.exception("Could not propagate exception, serialisation error encountered")
 
     def setTaskInProgess(self, caller):
         self.setTaskInProgessWithReason(caller, 'reason')
