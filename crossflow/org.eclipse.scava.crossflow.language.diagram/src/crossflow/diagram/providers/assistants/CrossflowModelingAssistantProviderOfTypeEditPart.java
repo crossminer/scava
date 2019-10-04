@@ -25,6 +25,17 @@ public class CrossflowModelingAssistantProviderOfTypeEditPart extends CrossflowM
 	*/
 	@Override
 
+	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
+		List<IElementType> types = new ArrayList<IElementType>(1);
+		types.add(CrossflowElementTypes.Field_3001);
+		return types;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+
 	public List<IElementType> getRelTypesOnSource(IAdaptable source) {
 		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source.getAdapter(IGraphicalEditPart.class);
 		return doGetRelTypesOnSource((TypeEditPart) sourceEditPart);
@@ -77,7 +88,7 @@ public class CrossflowModelingAssistantProviderOfTypeEditPart extends CrossflowM
 	public List<IElementType> doGetTypesForTarget(TypeEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.TypeExtending_4004) {
-			types.add(CrossflowElementTypes.Type_2007);
+			types.add(CrossflowElementTypes.Type_2011);
 		}
 		return types;
 	}
@@ -118,10 +129,10 @@ public class CrossflowModelingAssistantProviderOfTypeEditPart extends CrossflowM
 	public List<IElementType> doGetTypesForSource(TypeEditPart target, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.StreamType_4001) {
-			types.add(CrossflowElementTypes.Topic_2001);
-			types.add(CrossflowElementTypes.Queue_2002);
+			types.add(CrossflowElementTypes.Topic_2003);
+			types.add(CrossflowElementTypes.Queue_2004);
 		} else if (relationshipType == CrossflowElementTypes.TypeExtending_4004) {
-			types.add(CrossflowElementTypes.Type_2007);
+			types.add(CrossflowElementTypes.Type_2011);
 		}
 		return types;
 	}

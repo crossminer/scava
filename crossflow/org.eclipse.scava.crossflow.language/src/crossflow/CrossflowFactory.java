@@ -67,6 +67,15 @@ public interface CrossflowFactory extends EFactory {
 	Source createSource();
 
 	/**
+	 * Returns a new object of class '<em>Csv Source</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Csv Source</em>'.
+	 * @generated
+	 */
+	CsvSource createCsvSource();
+
+	/**
 	 * Returns a new object of class '<em>Sink</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -74,6 +83,42 @@ public interface CrossflowFactory extends EFactory {
 	 * @generated
 	 */
 	Sink createSink();
+
+	/**
+	 * Returns a new object of class '<em>Csv Sink</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Csv Sink</em>'.
+	 * @generated
+	 */
+	CsvSink createCsvSink();
+
+	/**
+	 * Returns a new object of class '<em>Commitment Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Commitment Task</em>'.
+	 * @generated
+	 */
+	CommitmentTask createCommitmentTask();
+
+	/**
+	 * Returns a new object of class '<em>Opinionated Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Opinionated Task</em>'.
+	 * @generated
+	 */
+	OpinionatedTask createOpinionatedTask();
+
+	/**
+	 * Returns a new object of class '<em>Scripted Task</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Scripted Task</em>'.
+	 * @generated
+	 */
+	ScriptedTask createScriptedTask();
 
 	/**
 	 * Returns a new object of class '<em>Type</em>'.
@@ -94,13 +139,22 @@ public interface CrossflowFactory extends EFactory {
 	Field createField();
 
 	/**
-	 * Returns a new object of class '<em>Configuration</em>'.
+	 * Returns a new object of class '<em>Language</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Configuration</em>'.
+	 * @return a new object of class '<em>Language</em>'.
 	 * @generated
 	 */
-	Configuration createConfiguration();
+	Language createLanguage();
+
+	/**
+	 * Returns a new object of class '<em>Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Parameter</em>'.
+	 * @generated
+	 */
+	Parameter createParameter();
 
 	/**
 	 * Returns the package supported by this factory.

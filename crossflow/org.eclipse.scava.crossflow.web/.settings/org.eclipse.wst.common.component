@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="org.eclipse.scava.crossflow.web">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src-gen"/>
+        <dependent-module archiveName="org.eclipse.scava.crossflow.runtime.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/org.eclipse.scava.crossflow.runtime/org.eclipse.scava.crossflow.runtime">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="org.eclipse.scava.crossflow.tests.jar" deploy-path="/jars/" handle="module:/resource/org.eclipse.scava.crossflow.tests/org.eclipse.scava.crossflow.tests">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="org.eclipse.scava.crossflow.web"/>
+        <property name="java-output-path" value="/org.eclipse.scava.crossflow.web/build/classes"/>
+    </wb-module>
+</project-modules>

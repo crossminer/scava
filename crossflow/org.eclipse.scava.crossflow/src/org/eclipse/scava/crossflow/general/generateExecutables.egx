@@ -1,0 +1,15 @@
+import "../util.eol";
+
+rule Workflow2ExperimentAnt
+	transform w : Workflow {
+	
+	parameters : Map{
+	   "package" = w.getPackageName(),
+	   "dependenciesPath" = dependenciesPath,
+	   "destFolder" = destFolder,
+	   "resourcesFolder" = resourcesFolder}
+	
+	template : "workflow2experimentAnt.egl"
+	
+	target : "build-experiment-zip.xml"
+}

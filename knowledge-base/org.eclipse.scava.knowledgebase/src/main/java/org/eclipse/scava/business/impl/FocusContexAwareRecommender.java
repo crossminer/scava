@@ -36,7 +36,7 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 
 	public Map<String, Float> recommends(List<Artifact> trainingProjects, Artifact testingProject, String activeDeclaration)
 			throws ActiveDeclarationNotFoundException {
-		log.info(String.format("FOCUS is computing recomendation for %s project with %s as active declaraion", testingProject.getName(), activeDeclaration));
+		log.info(String.format("FOCUS is computing recomendation for {} project with {} as active declaraion", testingProject.getName(), activeDeclaration));
 		Map<String, Float> recommendations = new HashMap<>();
 		List<Artifact> listOfPRs = new ArrayList<>();
 		List<String> listOfMIs = new ArrayList<>();
@@ -108,7 +108,7 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		StringComparator bvc2 = new StringComparator(recommendations);
 		TreeMap<String, Float> recSortedMap = new TreeMap<>(bvc2);
 		recSortedMap.putAll(recommendations);
-		log.info(String.format("FOCUS computed recomendation for %s project with %s as active declaraion", testingProject.getName(), activeDeclaration));
+		log.info(String.format("FOCUS computed recomendation for {} project with {} as active declaraion", testingProject.getName(), activeDeclaration));
 		return recSortedMap;
 	}
 

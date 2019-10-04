@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: language
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.scava.crossflow.language;singleton:=true
+Automatic-Module-Name: org.eclipse.scava.crossflow.language
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName

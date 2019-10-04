@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>org.eclipse.scava.crossflow.web</name>
+	<comment></comment>
+	<projects>
+		<project>org.eclipse.scava.crossflow.runtime</project>
+		<project>org.eclipse.scava.crossflow.tests</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.wst.common.project.facet.core.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.wst.validation.validationbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
+		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
+		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
+		<nature>org.apache.ivyde.eclipse.ivynature</nature>
+		<nature>org.eclipse.pde.PluginNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>workspace-crossflow-purger</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/.project</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/.project</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/catalina.policy</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/catalina.policy</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/catalina.properties</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/catalina.properties</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/context.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/context.xml</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/server.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/server.xml</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/tomcat-users.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/tomcat-users.xml</locationURI>
+		</link>
+		<link>
+			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/web.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/web.xml</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

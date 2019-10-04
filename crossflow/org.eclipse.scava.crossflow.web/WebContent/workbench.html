@@ -1,0 +1,46 @@
+<html>
+	
+	<body>
+		
+		<script src="js/thrift.js"></script>
+    	<script src="js/gen/Crossflow.js"></script>
+    	<script src="js/gen/crossflow_types.js"></script>
+    	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    	
+    	<div id="app">
+		  {{ message }}    	
+			<ul>
+			  <li v-for="experiment in experiments">
+			    {{ experiment.title }}
+			  </li>
+			</ul>
+		</div>
+		
+		<script>
+		var app = new Vue({
+		  el: '#app',
+		  data: {
+		    message: 'Hello Vue!',
+		    experiment: null
+		  }
+		})
+		
+		var transport = new Thrift.TXHRTransport("/org.eclipse.scava.crossflow.web/crossflow");
+        var protocol = new Thrift.TJSONProtocol(transport);
+        var crossflow = new CrossflowClient(protocol);
+        
+        
+        var url = new URL(window.location.href);
+        var id = url.searchParams.get("id");
+        
+        window.alert(id);
+        
+        //app.experiments = crossflow.getExperiments();
+        
+        //window.alert(JSON.stringify(crossflow.getExperiments()));
+		
+		</script>
+    	
+	</body>
+	
+</html>

@@ -1,0 +1,58 @@
+digraph G{
+	rankdir = LR;
+	[**graph [splines=ortho, nodesep=1]*]
+	
+	[%for (w in Workflow.all){%]
+	subgraph [%=w.name%] {
+		rankdir = LR;
+		
+		[%for (t in w.tasks){%]
+		[%=t.name%] [shape=[%=t.getShape()%]]
+		[%}%]
+		
+		[%for (s in w.streams){%]
+		[%=s.name%] [shape=box,style=rounded]
+		[%=s.name%]Type [shape=plaintext, margin=0, label=<
+			<table cellpadding='4' border='0' cellborder='1' cellspacing='0'>
+			<tr><td>[%=s.type.name%]</td></tr>
+			<tr><td>[%=s.type.fields.collect(f|f.name + " : " + f.getTypeLabel()).concat("<br/>")%]</td></tr>
+			</table>
+		>]
+		[%=s.name%] -> [%=s.name%]Type [arrowhead=none]
+		{rank=same; [%=s.name%]; [%=s.name%]Type;}
+		[%}%]
+		
+		
+		[%for (t in w.tasks){%]
+		[%for (i in t.input){%]
+		[%=i.name%] -> [%=t.name%]
+		[%}%]
+		[%for (o in t.output){%]
+		[%=t.name%] -> [%=o.name%]
+		[%}%]
+		[%}%]
+	}
+	[%}%]
+}
+
+[%
+
+operation Field getTypeLabel() {
+	var label = self.type;
+	if (self.many) label += "["+"*"+"]";
+	return label;
+}
+
+operation Task getShape() {  
+	if (self.isKindOf(Source)) {
+		return "cds";
+	}
+	else if (self.isKindOf(Sink)) {
+		return "invhouse";
+	}
+	else {
+		if (self.masterOnly) return "box3d";
+		else return "box";
+	}
+}
+%]

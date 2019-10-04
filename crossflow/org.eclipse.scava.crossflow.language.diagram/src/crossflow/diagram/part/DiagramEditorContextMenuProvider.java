@@ -18,18 +18,18 @@ import org.eclipse.ui.IWorkbenchPart;
 public class DiagramEditorContextMenuProvider extends DiagramContextMenuProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private IWorkbenchPart part;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private DeleteElementAction deleteAction;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public DiagramEditorContextMenuProvider(IWorkbenchPart part, EditPartViewer viewer) {
 		super(part, viewer);
 		this.part = part;
@@ -38,8 +38,8 @@ public class DiagramEditorContextMenuProvider extends DiagramContextMenuProvider
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void dispose() {
 		if (deleteAction != null) {
 			deleteAction.dispose();
@@ -49,8 +49,8 @@ public class DiagramEditorContextMenuProvider extends DiagramContextMenuProvider
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void buildContextMenu(final IMenuManager menu) {
 		getViewer().flush();
 		try {

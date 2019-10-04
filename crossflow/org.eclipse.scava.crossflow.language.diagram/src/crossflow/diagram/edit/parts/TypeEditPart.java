@@ -3,12 +3,9 @@
  */
 package crossflow.diagram.edit.parts;
 
-import org.eclipse.draw2d.GridData;
-import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -21,19 +18,24 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
+import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 import org.eclipse.swt.graphics.Color;
 
 import crossflow.diagram.edit.policies.OpenDiagramEditPolicy;
 import crossflow.diagram.edit.policies.TypeItemSemanticEditPolicy;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
+import crossflow.diagram.providers.CrossflowElementTypes;
 
 /**
  * @generated
@@ -43,7 +45,7 @@ public class TypeEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2007;
+	public static final int VISUAL_ID = 2011;
 
 	/**
 	* @generated
@@ -66,6 +68,8 @@ public class TypeEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected void createDefaultEditPolicies() {
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
+				new CreationEditPolicyWithCustomReparent(CrossflowVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new TypeItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
@@ -270,6 +274,22 @@ public class TypeEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
+	public EditPart getTargetEditPart(Request request) {
+		if (request instanceof CreateViewAndElementRequest) {
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
+					.getCreateElementRequestAdapter();
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
+			if (type == CrossflowElementTypes.Field_3001) {
+				return getChildBySemanticHint(
+						CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID));
+			}
+		}
+		return super.getTargetEditPart(request);
+	}
+
+	/**
+	* @generated
+	*/
 	protected void handleNotificationEvent(Notification event) {
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
@@ -282,7 +302,7 @@ public class TypeEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class TypeFigure extends RoundedRectangle {
+	public class TypeFigure extends RectangleFigure {
 
 		/**
 		 * @generated
@@ -297,13 +317,6 @@ public class TypeEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public TypeFigure() {
-
-			GridLayout layoutThis = new GridLayout();
-			layoutThis.numColumns = 1;
-			layoutThis.makeColumnsEqualWidth = true;
-			this.setLayoutManager(layoutThis);
-
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -319,21 +332,14 @@ public class TypeEditPart extends ShapeNodeEditPart {
 			fFigureTypeLabelFigure.setText("Type");
 			fFigureTypeLabelFigure.setMaximumSize(new Dimension(getMapMode().DPtoLP(10000), getMapMode().DPtoLP(50)));
 
-			GridData constraintFFigureTypeLabelFigure = new GridData();
-			constraintFFigureTypeLabelFigure.verticalAlignment = GridData.CENTER;
-			constraintFFigureTypeLabelFigure.horizontalAlignment = GridData.CENTER;
-			constraintFFigureTypeLabelFigure.horizontalIndent = 0;
-			constraintFFigureTypeLabelFigure.horizontalSpan = 1;
-			constraintFFigureTypeLabelFigure.verticalSpan = 1;
-			constraintFFigureTypeLabelFigure.grabExcessHorizontalSpace = true;
-			constraintFFigureTypeLabelFigure.grabExcessVerticalSpace = true;
-			this.add(fFigureTypeLabelFigure, constraintFFigureTypeLabelFigure);
+			this.add(fFigureTypeLabelFigure);
 
 			fTypeFieldsCompartmentFigure = new RectangleFigure();
 
 			fTypeFieldsCompartmentFigure.setOutline(false);
 
 			this.add(fTypeFieldsCompartmentFigure);
+			fTypeFieldsCompartmentFigure.setLayoutManager(new StackLayout());
 
 		}
 

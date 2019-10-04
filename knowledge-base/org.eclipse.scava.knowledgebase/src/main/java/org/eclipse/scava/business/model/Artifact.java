@@ -31,17 +31,17 @@ public class Artifact {
 	private String id;
 	private List<Tag> tags;
 	
-	@TextIndexed(weight=4)
-	String name;
-	@TextIndexed(weight=3)
-	String shortName;
 	@TextIndexed(weight=1)
+	String name;
+	@TextIndexed(weight=1)
+	String shortName;
+	@TextIndexed(weight=3)
 	String description;
-	@TextIndexed(weight=5)
+	@TextIndexed(weight=2)
 	String fullName;	
-	@TextIndexed(weight=6)
+	@TextIndexed(weight=4)
 	String licenseName;
-	@TextIndexed(weight=7)
+	@TextIndexed(weight=4)
 	String licenseUrl;
 	
 	private List<MethodDeclaration> methodDeclarations = new ArrayList<>();;

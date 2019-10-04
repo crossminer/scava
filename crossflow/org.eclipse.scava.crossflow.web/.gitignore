@@ -1,0 +1,4 @@
+/build/
+WebContent/js/gen/*.js
+src-gen
+**/*.jar

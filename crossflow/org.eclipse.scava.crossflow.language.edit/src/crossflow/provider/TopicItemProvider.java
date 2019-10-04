@@ -69,7 +69,7 @@ public class TopicItemProvider extends StreamItemProvider {
 			getString("_UI_Topic_type") :
 			getString("_UI_Topic_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

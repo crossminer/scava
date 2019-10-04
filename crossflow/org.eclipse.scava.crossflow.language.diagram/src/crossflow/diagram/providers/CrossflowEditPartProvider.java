@@ -15,8 +15,8 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class CrossflowEditPartProvider extends DefaultEditPartProvider {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public CrossflowEditPartProvider() {
 		super(new CrossflowEditPartFactory(), CrossflowVisualIDRegistry.TYPED_INSTANCE, WorkflowEditPart.MODEL_ID);
 	}

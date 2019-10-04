@@ -1,0 +1,217 @@
+/*******************************************************************************
+ * Copyright (c) 2019 The University of York.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * Contributor(s):
+ *      Patrick Neubauer - initial API and implementation
+ ******************************************************************************/
+ grammar org.eclipse.scava.crossflow.language.xtext.Crossflow with org.eclipse.xtext.common.Terminals
+
+import "org.eclipse.scava.crossflow" 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Workflow returns Workflow:
+	{Workflow}
+	'Workflow'
+	name=EString
+	'{'
+		('package' package=EString)?
+		('streams' '{' streams+=Stream (streams+=Stream)* '}' )?
+		('tasks' '{' tasks+=Task (tasks+=Task)* '}' )?
+		('types' '{' types+=Type (types+=Type)* '}' )?
+		('parameters' '{' parameters+=Field (parameters+=Field)* '}' )?
+		('languages' '{' languages+=Language (languages+=Language)* '}' )?
+	'}';
+
+Stream returns Stream:
+	Topic | Queue;
+
+Task returns Task:
+	Task_Impl | Source_Impl | CsvSource | Sink_Impl | CsvSink | CommitmentTask | OpinionatedTask;
+
+EString returns ecore::EString:
+	STRING | ID;
+
+Task_Impl returns Task:
+	{Task}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'Task'
+	name=EString
+	'{'
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+Type returns Type:
+	(isMany?='isMany')?
+	'Type'
+	name=EString
+	'{'
+		('impl' impl=EString)?
+		('extending' '(' extending+=[Type|EString] (extending+=[Type|EString])* ')' )?
+		('fields' '{' fields+=Field (fields+=Field)* '}' )?
+	'}';
+
+Field returns Field:
+	{Field}
+	(many?='many')?
+	'Field'
+	name=EString
+	'{'
+		('type' type=EString)?
+	'}';
+
+Language returns Language:
+	{Language}
+	'Language'
+	name=EString
+	'{'
+		('package' package=EString)?
+		('outputFolder' outputFolder=EString)?
+		('genOutputFolder' genOutputFolder=EString)?
+		('parameters' '{' parameters+=Parameter (parameters+=Parameter)* '}' )?
+	'}';
+
+Topic returns Topic:
+	{Topic}
+	'Topic'
+	name=EString
+	'{'
+		('type' type=[Type|EString])?
+		('inputOf' '(' inputOf+=[Task|EString] (inputOf+=[Task|EString])* ')' )?
+		('outputOf' '(' outputOf+=[Task|EString] (outputOf+=[Task|EString])* ')' )?
+	'}';
+
+Queue returns Queue:
+	{Queue}
+	'Queue'
+	name=EString
+	'{'
+		('type' type=[Type|EString])?
+		('inputOf' '(' inputOf+=[Task|EString] (inputOf+=[Task|EString])* ')' )?
+		('outputOf' '(' outputOf+=[Task|EString] (outputOf+=[Task|EString])* ')' )?
+	'}';
+
+EBooleanObject returns ecore::EBooleanObject:
+	'true' | 'false';
+
+Source_Impl returns Source:
+	{Source}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'Source'
+	name=EString
+	'{'
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+CsvSource returns CsvSource:
+	{CsvSource}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'CsvSource'
+	name=EString
+	'{'
+		('fileName' fileName=EString)?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+Sink_Impl returns Sink:
+	{Sink}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'Sink'
+	name=EString
+	'{'
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+CsvSink returns CsvSink:
+	{CsvSink}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'CsvSink'
+	name=EString
+	'{'
+		('fileName' fileName=EString)?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+CommitmentTask returns CommitmentTask:
+	{CommitmentTask}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'CommitmentTask'
+	name=EString
+	'{'
+		('commitAfter' commitAfter=EInt)?
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+OpinionatedTask returns OpinionatedTask:
+	{OpinionatedTask}
+	(masterOnly?='masterOnly')?
+	(parallel?='parallel')?
+	(cached?='cached')?
+	(multipleOutputs?='multipleOutputs')?
+	'OpinionatedTask'
+	name=EString
+	'{'
+		('input' '(' input+=[Stream|EString] (input+=[Stream|EString])* ')' )?
+		('output' '(' output+=[Stream|EString] (output+=[Stream|EString])* ')' )?
+		('parameters' '(' parameters+=[Field|EString] (parameters+=[Field|EString])* ')' )?
+		('languages' '(' languages+=[Language|EString] (languages+=[Language|EString])* ')' )?
+		('configurations' '(' configurations+=[Type|EString] (configurations+=[Type|EString])* ')' )?
+	'}';
+
+EInt returns ecore::EInt:
+	'-'? INT; 
+
+EBoolean returns ecore::EBoolean:
+	'true' | 'false';
+
+Parameter returns Parameter:
+	{Parameter}
+	'Parameter'
+	name=EString
+	'{'
+		('value' value=EString)?
+	'}';

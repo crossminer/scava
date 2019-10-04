@@ -25,6 +25,8 @@ import crossflow.diagram.edit.commands.StreamTypeReorientCommand;
 import crossflow.diagram.edit.commands.TypeExtendingCreateCommand;
 import crossflow.diagram.edit.commands.TypeExtendingReorientCommand;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
+import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.StreamTypeEditPart;
 import crossflow.diagram.edit.parts.TypeExtendingEditPart;
 import crossflow.diagram.edit.parts.TypeTypeFieldsCompartmentEditPart;
@@ -40,7 +42,7 @@ public class TypeItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	* @generated
 	*/
 	public TypeItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Type_2007);
+		super(CrossflowElementTypes.Type_2011);
 	}
 
 	/**
@@ -102,7 +104,7 @@ public class TypeItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (CrossflowVisualIDRegistry.getVisualID(cnode)) {
-					case Field2EditPart.VISUAL_ID:
+					case Field3EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

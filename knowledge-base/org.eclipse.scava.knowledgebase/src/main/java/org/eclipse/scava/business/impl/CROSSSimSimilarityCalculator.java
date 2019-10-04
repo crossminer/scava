@@ -76,6 +76,7 @@ public class CROSSSimSimilarityCalculator implements IAggregatedSimilarityCalcul
 		int i = 0;
 		for (Artifact artifact : artifacts) {
 			if (i%10 == 0) logger.info("CROSSSim similarity calculator is computing {} of {} similarity.", i, artifacts.size());
+			i++;
 			String repoUrl = artifact.getFullName();
 			if (!dictionary.containsKey(repoUrl)) {
 				dictionary.put(repoUrl, artifactId);

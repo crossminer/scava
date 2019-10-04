@@ -1,0 +1,15 @@
+<experiment
+	title="NBody"
+	class="org.eclipse.scava.crossflow.examples.simple.nbody.cf.NBody"
+	jar="org.eclipse.scava.crossflow.examples.simple.nbody.cf.jar"
+	input="in"
+	output="out"
+	summary="Optional summary of the Experiment goes here."
+	webServer="localhost:8080"
+>
+	<input path="experiments.csv" title="Input"/>
+	<output path="timing.csv" title="Output"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
+</experiment>

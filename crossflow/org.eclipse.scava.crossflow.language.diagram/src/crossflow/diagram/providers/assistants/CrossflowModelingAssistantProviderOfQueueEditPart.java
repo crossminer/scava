@@ -11,7 +11,15 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 
+import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.SinkEditPart;
+import crossflow.diagram.edit.parts.SourceEditPart;
+import crossflow.diagram.edit.parts.TaskEditPart;
 import crossflow.diagram.edit.parts.TypeEditPart;
 import crossflow.diagram.providers.CrossflowElementTypes;
 import crossflow.diagram.providers.CrossflowModelingAssistantProvider;
@@ -35,8 +43,9 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 	* @generated
 	*/
 	public List<IElementType> doGetRelTypesOnSource(QueueEditPart source) {
-		List<IElementType> types = new ArrayList<IElementType>(1);
+		List<IElementType> types = new ArrayList<IElementType>(2);
 		types.add(CrossflowElementTypes.StreamType_4001);
+		types.add(CrossflowElementTypes.StreamInputOf_4005);
 		return types;
 	}
 
@@ -59,6 +68,30 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 		if (targetEditPart instanceof TypeEditPart) {
 			types.add(CrossflowElementTypes.StreamType_4001);
 		}
+		if (targetEditPart instanceof CsvSourceEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof CsvSinkEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof SourceEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof SinkEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof CommitmentTaskEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof OpinionatedTaskEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof ScriptedTaskEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
+		if (targetEditPart instanceof TaskEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
 		return types;
 	}
 
@@ -78,7 +111,16 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 	public List<IElementType> doGetTypesForTarget(QueueEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == CrossflowElementTypes.StreamType_4001) {
-			types.add(CrossflowElementTypes.Type_2007);
+			types.add(CrossflowElementTypes.Type_2011);
+		} else if (relationshipType == CrossflowElementTypes.StreamInputOf_4005) {
+			types.add(CrossflowElementTypes.CsvSource_2001);
+			types.add(CrossflowElementTypes.CsvSink_2002);
+			types.add(CrossflowElementTypes.Source_2005);
+			types.add(CrossflowElementTypes.Sink_2006);
+			types.add(CrossflowElementTypes.CommitmentTask_2007);
+			types.add(CrossflowElementTypes.OpinionatedTask_2008);
+			types.add(CrossflowElementTypes.ScriptedTask_2015);
+			types.add(CrossflowElementTypes.Task_2010);
 		}
 		return types;
 	}
@@ -97,8 +139,7 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 	* @generated
 	*/
 	public List<IElementType> doGetRelTypesOnTarget(QueueEditPart target) {
-		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(CrossflowElementTypes.TaskInput_4002);
+		List<IElementType> types = new ArrayList<IElementType>(1);
 		types.add(CrossflowElementTypes.TaskOutput_4003);
 		return types;
 	}
@@ -118,14 +159,15 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 	*/
 	public List<IElementType> doGetTypesForSource(QueueEditPart target, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
-		if (relationshipType == CrossflowElementTypes.TaskInput_4002) {
-			types.add(CrossflowElementTypes.Source_2003);
-			types.add(CrossflowElementTypes.Sink_2004);
-			types.add(CrossflowElementTypes.Task_2006);
-		} else if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
-			types.add(CrossflowElementTypes.Source_2003);
-			types.add(CrossflowElementTypes.Sink_2004);
-			types.add(CrossflowElementTypes.Task_2006);
+		if (relationshipType == CrossflowElementTypes.TaskOutput_4003) {
+			types.add(CrossflowElementTypes.CsvSource_2001);
+			types.add(CrossflowElementTypes.CsvSink_2002);
+			types.add(CrossflowElementTypes.Source_2005);
+			types.add(CrossflowElementTypes.Sink_2006);
+			types.add(CrossflowElementTypes.CommitmentTask_2007);
+			types.add(CrossflowElementTypes.OpinionatedTask_2008);
+			types.add(CrossflowElementTypes.ScriptedTask_2015);
+			types.add(CrossflowElementTypes.Task_2010);
 		}
 		return types;
 	}

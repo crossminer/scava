@@ -1,0 +1,32 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<_>
+	
+	<:template name="simple-source">
+		<parameter name="name"/>
+		<parameter name="produces"/>
+		<parameter name="to"/>
+		<content>
+			<source name="${name}" out="${to}"/>
+			<queue name="${to}" type="${produces}" :var="out"/>
+		</content>
+	</:template>
+	
+	<:template name="simple-task">
+		<parameter name="name"/>
+		<parameter name="produces"/>
+		<parameter name="to"/>
+		<parameter name="multipleOutputs"/>
+		<content>
+			<task multipleOutputs="${multipleOutputs}" name="${name}" out="${to}" :in="Sequence{out}"/>
+			<queue name="${to}" type="${produces}" :var="out"/>
+		</content>
+	</:template>
+	
+	<:template name="simple-sink">
+		<parameter name="name"/>
+		<content>
+			<sink name="${name}" :in="Sequence{out}"/>
+		</content>
+	</:template>
+	
+</_>

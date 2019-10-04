@@ -1,0 +1,15 @@
+<experiment
+	title="Word Countw"
+	class="org.eclipse.scava.crossflow.examples.wordcount.WordCountWorkflow"
+	jar="org.eclipse.scava.crossflow.examples.wordcount.jar"
+	input="in"
+	output="out"
+	summary="Count words in a text file, fitlerig articles, and get word frequencies."
+	webServer="localhost:8080"
+>
+	<input path="book.text" title="Text"/>
+	<output path="output.csv" title="Frequencies"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
+</experiment>

@@ -49,11 +49,11 @@ public class SinkItemProvider extends TaskItemProvider {
 	 * This returns Sink.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/empty"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Sink"));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SinkItemProvider extends TaskItemProvider {
 			getString("_UI_Sink_type") :
 			getString("_UI_Sink_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

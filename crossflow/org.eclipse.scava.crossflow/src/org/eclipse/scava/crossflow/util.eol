@@ -1,0 +1,113 @@
+@cached
+operation Task hasLanguage(language : String) : Boolean {
+	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation Workflow hasLanguage(language : String) : Language {
+	return self.getLanguage(language).isDefined();
+}
+
+@cached
+operation Any getLanguage(language : String) : Language {
+	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation Any getWorkflow() : Workflow {
+	if (self.isTypeOf(Workflow)) {
+		return self;
+	}
+	return self.eContainer().getWorkflow();
+}
+
+operation Type createSource(){
+    var source = new Source;
+    self.eContainer.tasks.add(source);
+    self.eContainer.types.add(self);
+    source.name = self.name+"ConfigSource";
+    var configTopic = new Topic;
+    self.eContainer.streams.add(configTopic);
+    configTopic.name = self.name+"ConfigTopic";
+    configTopic.type = self;
+    source.output.add(configTopic);
+    //self.findEligibleConfigurableTasks().input.add(configTopic);
+    for(t in self.findEligibleConfigurableTasks()){
+        t.input.add(configTopic);
+    }       
+    return source;  
+}
+
+operation Any getPath() {
+    var workflow = self;
+    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+    
+    var lang = workflow.languages.select(l|l.isJava());
+    var langExists = not lang.isEmpty;
+
+    var path = "src-gen/";
+    
+    if (langExists and lang.first.genOutputFolder.isDefined()) {
+        path = lang.first.genOutputFolder + "/";
+    }
+    
+    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+    
+    return path;
+}
+
+
+operation Any getImplPath() {
+    var workflow = self;
+    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+    
+    var lang = workflow.languages.select(l|l.isJava());
+    var langExists = not lang.isEmpty;
+        
+    var path = "src/";
+        
+    if (langExists and lang.first.outputFolder.isDefined()) {
+        path = lang.first.outputFolder + "/";
+    }
+    
+    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+
+    return path;
+}
+
+
+operation Type findEligibleConfigurableTasks(){
+    return Task.all.select(t|t.configurations.exists(c|c=self));
+}
+
+operation String toSnakeCase() : String {
+	return self.replaceAll("(.)(\\p{Upper})", "$1_$2");
+}
+
+operation String toSnakeCaseUpper() : String {
+	return self.toSnakeCase().toUpperCase();
+}
+
+operation String toSnakeCaseLower() : String {
+	return self.toSnakeCase().toLowerCase();
+}
+
+operation Workflow getPackageName() {
+    var lang = self.languages.select(l | l.isJava());
+    var package;
+    if (not lang.isEmpty) {
+        package = lang.first.package;
+    }
+    else {
+        package = self.name.ftlc;
+    }
+    return package;
+}
+
+operation Task isJavaTask() {
+    return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+}
+
+operation Language isJava() {
+    return self.name.toLowerCase() == "java";
+}

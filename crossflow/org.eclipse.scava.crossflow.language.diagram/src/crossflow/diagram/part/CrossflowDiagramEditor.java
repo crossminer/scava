@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.part;
 
 import java.util.ArrayList;
@@ -47,7 +47,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.scava.crossflow.execution.subscription.WorkflowGraphicalChangeSubscription;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Shell;
@@ -71,41 +70,37 @@ import crossflow.diagram.navigator.CrossflowNavigatorItem;
 public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGotoMarker {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final String ID = "crossflow.diagram.part.CrossflowDiagramEditorID"; //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final String CONTEXT_ID = "crossflow.diagram.ui.diagramContext"; //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private LastClickPositionProvider myLastClickPositionProvider;
 
 	/**
-	 * @generated NOT
-	 */
+	* @generated
+	*/
 	public CrossflowDiagramEditor() {
 		super(true);
-
-		System.out.println("CrossflowDiagramEditor subscribing to graphical changes.");
-		WorkflowGraphicalChangeSubscription.getinstance().subscribeToGraphicalChanges(this);
-
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected String getContextID() {
 		return CONTEXT_ID;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected PaletteRoot createPaletteRoot(PaletteRoot existingPaletteRoot) {
 		PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
 		new CrossflowPaletteFactory().fillPalette(root);
@@ -113,15 +108,15 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected PreferencesHint getPreferencesHint() {
 		return CrossflowDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getContributorId() {
 		return CrossflowDiagramEditorPlugin.ID;
 	}
@@ -142,8 +137,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IDocumentProvider getDocumentProvider(IEditorInput input) {
 		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
 			return CrossflowDiagramEditorPlugin.getInstance().getDocumentProvider();
@@ -152,8 +147,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public TransactionalEditingDomain getEditingDomain() {
 		IDocument document = getEditorInput() != null ? getDocumentProvider().getDocument(getEditorInput()) : null;
 		if (document instanceof IDiagramDocument) {
@@ -163,8 +158,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setDocumentProvider(IEditorInput input) {
 		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
 			setDocumentProvider(CrossflowDiagramEditorPlugin.getInstance().getDocumentProvider());
@@ -174,29 +169,29 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void gotoMarker(IMarker marker) {
 		MarkerNavigationService.getInstance().gotoMarker(this, marker);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public void doSaveAs() {
 		performSaveAs(new NullProgressMonitor());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void performSaveAs(IProgressMonitor progressMonitor) {
 		Shell shell = getSite().getShell();
 		IEditorInput input = getEditorInput();
@@ -267,15 +262,15 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public ShowInContext getShowInContext() {
 		return new ShowInContext(getEditorInput(), getNavigatorSelection());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private ISelection getNavigatorSelection() {
 		IDiagramDocument document = getDiagramDocument();
 		if (document == null) {
@@ -294,8 +289,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
 		DiagramEditorContextMenuProvider provider = new DiagramEditorContextMenuProvider(this,
@@ -305,8 +300,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
 		getDiagramGraphicalViewer().addDropTargetListener(
@@ -329,8 +324,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void startupLastClickPositionProvider() {
 		if (myLastClickPositionProvider == null) {
 			myLastClickPositionProvider = new LastClickPositionProvider(this);
@@ -339,8 +334,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void shutDownLastClickPositionProvider() {
 		if (myLastClickPositionProvider != null) {
 			myLastClickPositionProvider.detachFromService();
@@ -350,33 +345,29 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 	}
 
 	/**
-	 * @generated NOT
-	 */
+	* @generated
+	*/
 	@Override
 	public void dispose() {
 		shutDownLastClickPositionProvider();
-
-		System.out.println("Removing editor from change subscription.");
-		WorkflowGraphicalChangeSubscription.getinstance().cancelSubscription(this);
-
 		super.dispose();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private abstract class DropTargetListener extends DiagramDropTargetListener {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		public DropTargetListener(EditPartViewer viewer, Transfer xfer) {
 			super(viewer, xfer);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		protected List getObjectsBeingDropped() {
 			TransferData data = getCurrentEvent().currentDataType;
 			HashSet<URI> uris = new HashSet<URI>();
@@ -410,8 +401,8 @@ public class CrossflowDiagramEditor extends DiagramDocumentEditor implements IGo
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		protected abstract Object getJavaObject(TransferData data);
 
 	}

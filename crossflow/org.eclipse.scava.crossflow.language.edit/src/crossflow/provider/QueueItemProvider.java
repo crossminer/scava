@@ -69,7 +69,7 @@ public class QueueItemProvider extends StreamItemProvider {
 			getString("_UI_Queue_type") :
 			getString("_UI_Queue_type") + " " + label;
 	}
-	
+
 
 	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached

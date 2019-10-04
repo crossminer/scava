@@ -1,0 +1,35 @@
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+    <info organisation="org.eclipse.scava" module="crossflow.examples.stars" status="integration"/>
+    <dependencies>
+        <dependency org="org.lwjgl" name="lwjgl" rev="3.2.2">
+            <artifact name="lwjgl" type="jar"/>
+            <artifact name="lwjgl" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-assimp" rev="3.2.2">
+            <artifact name="lwjgl-assimp" type="jar"/>
+            <artifact name="lwjgl-assimp" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-glfw" rev="3.2.2">
+            <artifact name="lwjgl-glfw" type="jar"/>
+            <artifact name="lwjgl-glfw" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-openal" rev="3.2.2">
+            <artifact name="lwjgl-openal" type="jar"/>
+            <artifact name="lwjgl-openal" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-opengl" rev="3.2.2">
+            <artifact name="lwjgl-opengl" type="jar"/>
+            <artifact name="lwjgl-opengl" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-stb" rev="3.2.2">
+            <artifact name="lwjgl-stb" type="jar"/>
+            <artifact name="lwjgl-stb" type="jar" m:classifier="natives-macos"/>
+        </dependency>
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.9"/>
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.9.9.2"/>
+        <dependency org="org.apache.commons" name="commons-math3" rev="3.6.1"/>
+        <dependency org="commons-cli" name="commons-cli" rev="1.4"/>
+        <dependency org="org.jctools" name="jctools-core" rev="2.1.2"/>
+        <dependency org="com.github.jbellis" name="jamm" rev="0.3.3"/>
+    </dependencies>
+</ivy-module>

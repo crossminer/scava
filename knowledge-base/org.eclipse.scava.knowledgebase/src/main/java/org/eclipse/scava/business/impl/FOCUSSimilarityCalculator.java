@@ -108,7 +108,6 @@ public class FOCUSSimilarityCalculator implements IAggregatedSimilarityCalculato
 		Map<String, Float> testingProjectVector = new HashMap<>();
 		Map<Artifact, Float> projectSimilarities = new HashMap<>();
 
-		logger.info("Computing similarity between %s and all other projects", testingPro);
 
 		// Computes the feature vector of the testing project,
 		// ie. the TF-IDF for all its invocations

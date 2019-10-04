@@ -1,0 +1,89 @@
+[%import "../util.eol";%]
+import traceback
+
+from crossflow.runtime import FailedJob, logger, Task
+
+[% for (t in outputTypes) { %]
+from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]
+[%}%]
+
+
+class [%=t.name%]Base(Task):
+
+	def __init__(self):
+		super().__init__()
+		self.workflow = None
+		[%for (s in t.output) { %]
+		self.[%=s.name.ftlc()%] = None
+		[%}%]
+	
+	def setWorkflow(self, workflow):
+		self.workflow = workflow
+	
+	def getWorkflow(self):
+		return self.workflow
+	
+	def getId(self):
+		return "[%=t.name%]:" + self.workflow.getName()
+	
+	[%for (s in t.output) { %]
+	def set[%=s.name%](self, [%=s.name.ftlc()%]):
+		self.[%=s.name.ftlc()%] = [%=s.name.ftlc()%]
+	
+	def get[%=s.name%](self):
+		return self.[%=s.name.ftlc()%]
+	
+	def sendTo[%=s.name%](self, [%=s.type.name.ftlc()%]):
+		[%=s.type.name.ftlc()%].setCacheable(self.cacheable)
+		[%if(t.isTypeOf(Source)){%]
+		[%=s.type.name.ftlc()%].setTransactional(False)
+		[%}%]
+		self.get[%=s.name%]().send([%=s.type.name.ftlc()%], self.__class__.__name__)
+	
+	[%}%]
+	[%for (s in t.input) { %]
+	def consume[%=s.name%]WithNotifications(self, [%=s.type.name.ftlc()%]):
+		try:
+			self.workflow.setTaskInProgessWithReason(self, [%=s.type.name.ftlc()%].getId())
+	[%if(not t.multipleOutputs and t.output.size==1) {%]
+			result = self.consume[%=s.name%]([%=s.type.name.ftlc()%]);
+			if result is not None:
+				if self.cacheable:
+					result.setCorrelationId([%=s.type.name.ftlc()%].getId())
+				result.setTransactional(False)
+				self.sendTo[%=t.output.first.name%](result)
+	[%}else {%]
+			self.consume[%=s.name%]([%=s.type.name.ftlc()%])
+	[%if(t.output.size>0) {%]
+			conf = [%=t.output.first.type.name%]()
+			conf.setCorrelationId([%=s.type.name.ftlc()%].getId())
+			conf.setIsTransactionSuccessMessage(True)
+			self.sendTo[%=t.output.first.name%](conf)
+	[%}%]
+	[%}%]
+		except Exception as ex:
+			logger.exception("")
+			try:
+				[%=s.type.name.ftlc()%].setFailures(int([%=s.type.name.ftlc()%].getFailures()) + 1)
+				self.workflow.getFailedJobsTopic().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
+			except Exception as e:
+				logger.exception("")
+				self.workflow.reportInternalException(e, "")
+		finally:
+			try:
+				self.workflow.setTaskWaiting(self)
+			except Exception as e:
+				logger.exception("")
+				self.workflow.reportInternalException(e, "")
+	
+	def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
+		pass
+	[%}%]
+	
+	[%if (t.isKindOf(Source)){%]
+	def produce(self):
+		pass
+		
+	[%}%]
+	def close(self):
+		pass

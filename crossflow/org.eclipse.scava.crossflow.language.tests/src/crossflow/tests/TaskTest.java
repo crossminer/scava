@@ -6,6 +6,7 @@ import crossflow.CrossflowFactory;
 import crossflow.Task;
 
 import junit.framework.TestCase;
+
 import junit.textui.TestRunner;
 
 /**

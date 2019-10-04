@@ -1,72 +1,127 @@
-@namespace(uri="org.eclipse.scava.crossflow", prefix="cf")
 @gmf
+@namespace(uri="org.eclipse.scava.crossflow", prefix="cf")
 package crossflow;
 
 @gmf.diagram(onefile="true")
 class Workflow {
-    val Configuration[1] configuration;
-
-	attr String name;
-	attr String ~package;
-	val Stream[*] streams;
-	val Task[*] tasks;
-	val Type[*] types;
-	val Field[*] parameters;
+  attr String name;
+  val Stream[*] streams;
+  val Task[*] tasks;
+  val Type[*] types;
+  val Field[*] parameters;
+  val Language[*] languages;
 }
 
-//ideally label is type.name
-@gmf.node(label.placement="none",figure="ellipse")
+@gmf.node(figure="ellipse", label="name", label.icon="false")
 abstract class Stream {
-	attr String name;
-	@gmf.link
-	ref Type type;
-	
-	ref Task[*]#input inputOf;
-	ref Task[*]#output outputOf;
+  attr String name;
+
+  @gmf.link
+  ref Type type;
+  
+  @gmf.link(target.decoration="filledclosedarrow")
+  ref Task[*]#input inputOf;
+  
+  ref Task[*]#output outputOf;
 }
 
-class Topic extends Stream {}
+class Topic extends Stream {
+}
 
-class Queue extends Stream {}
+class Queue extends Stream {
+}
 
-@gmf.node(label="name")
+@gmf.node(label="name", label.icon="false")
 class Task {
-	attr String name;
-	@gmf.link
-	ref Stream[*]#inputOf input;
-	@gmf.link
-	ref Stream[*]#outputOf output;
-	attr Boolean masterOnly = false;
-	attr Boolean parallel; /*TODO*/
-	attr Boolean cached; /*TODO*/
+  attr String name;
+
+  ref Stream[*]#inputOf input;
+
+  @gmf.link(target.decoration="filledclosedarrow")
+  ref Stream[*]#outputOf output;
+  
+  attr Boolean masterOnly = "false";
+  attr Boolean parallel;
+  attr Boolean cached;
+  attr Boolean multipleOutputs = "false";
+  
+  attr String impl;
+  
+  ref Field[*] parameters;
+  
+  ref Language[*] languages;  
+
+  ref Type[*] configurations; 
 }
 
-class Source extends Task {}
+@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 11 10 0",polygon.y="0 0 2 4 4")
+class Source extends Task {
+}
 
-class Sink extends Task {}
+class CsvSource extends Source {
+  attr String fileName;
+}
+
+@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 10 5 0",polygon.y="0 0 4 6 4")
+class Sink extends Task {
+}
+
+class CsvSink extends Sink {
+  attr String fileName;
+}
 
 @gmf.node(label="name")
+class CommitmentTask extends Task {
+	attr int commitAfter = 1; 
+}
+
+@gmf.node(label="name")
+class OpinionatedTask extends Task {
+}
+
+@gmf.node(label="name")
+class ScriptedTask extends Task {
+	attr String scriptingLanguage;
+	@emf.gen(propertyMultiLine="true")
+	attr String script;
+	
+ 	@gmf.compartment(layout="list",collapsible="false")
+  	val Field[*] outputVariables;
+}
+
+@gmf.node(label="name", figure ="rectangle")
 class Type {
-	attr String name;
-	attr boolean[1] isMany;
-	@gmf.link
-    ref Type[*] extending;
-    @gmf.compartment
-	val Field[*] fields;
+  attr String name;
+  attr String impl;
+  attr boolean[1] isMany;
+
+  @gmf.link
+  ref Type[*] extending;
+
+  @gmf.compartment(layout="list",collapsible="false")
+  val Field[*] fields;
 }
 
-//ideally label is | name : type.name
-@gmf.node(label="name",label.pattern="{0}")
+@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
 class Field {
-	attr String name;
-	attr String type;
+  attr String name;
+  attr String type = "String";
+  attr boolean many = false;
 }
 
-@gmf.node(label="numberOfWorkers,isMasterAlsoWorker", 
-			label.pattern="Config: NoW:{0}, iMaW:{1}")
-class Configuration {
-  attr Integer numberOfWorkers;
-  attr Boolean isMasterAlsoWorker;
-  attr String[1] rootPackageName;
-  attr String[1] projectName;
+@gmf.node(label="name", figure ="rectangle")
+class Language {
+  attr String name;
+  attr String ~package;
+  attr String outputFolder;
+  attr String genOutputFolder;
+
+  @gmf.compartment(layout="list",collapsible="false")
+  val Parameter[*] parameters;
+}
+
+@gmf.node(label="name,value", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
+class Parameter {
+  attr String name;
+  attr String value;
 }

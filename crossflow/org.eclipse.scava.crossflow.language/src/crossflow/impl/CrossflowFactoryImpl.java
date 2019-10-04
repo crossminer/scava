@@ -61,10 +61,16 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.QUEUE: return createQueue();
 			case CrossflowPackage.TASK: return createTask();
 			case CrossflowPackage.SOURCE: return createSource();
+			case CrossflowPackage.CSV_SOURCE: return createCsvSource();
 			case CrossflowPackage.SINK: return createSink();
+			case CrossflowPackage.CSV_SINK: return createCsvSink();
+			case CrossflowPackage.COMMITMENT_TASK: return createCommitmentTask();
+			case CrossflowPackage.OPINIONATED_TASK: return createOpinionatedTask();
+			case CrossflowPackage.SCRIPTED_TASK: return createScriptedTask();
 			case CrossflowPackage.TYPE: return createType();
 			case CrossflowPackage.FIELD: return createField();
-			case CrossflowPackage.CONFIGURATION: return createConfiguration();
+			case CrossflowPackage.LANGUAGE: return createLanguage();
+			case CrossflowPackage.PARAMETER: return createParameter();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -125,9 +131,59 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public CsvSource createCsvSource() {
+		CsvSourceImpl csvSource = new CsvSourceImpl();
+		return csvSource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Sink createSink() {
 		SinkImpl sink = new SinkImpl();
 		return sink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CsvSink createCsvSink() {
+		CsvSinkImpl csvSink = new CsvSinkImpl();
+		return csvSink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CommitmentTask createCommitmentTask() {
+		CommitmentTaskImpl commitmentTask = new CommitmentTaskImpl();
+		return commitmentTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public OpinionatedTask createOpinionatedTask() {
+		OpinionatedTaskImpl opinionatedTask = new OpinionatedTaskImpl();
+		return opinionatedTask;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScriptedTask createScriptedTask() {
+		ScriptedTaskImpl scriptedTask = new ScriptedTaskImpl();
+		return scriptedTask;
 	}
 
 	/**
@@ -155,9 +211,19 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Configuration createConfiguration() {
-		ConfigurationImpl configuration = new ConfigurationImpl();
-		return configuration;
+	public Language createLanguage() {
+		LanguageImpl language = new LanguageImpl();
+		return language;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter createParameter() {
+		ParameterImpl parameter = new ParameterImpl();
+		return parameter;
 	}
 
 	/**

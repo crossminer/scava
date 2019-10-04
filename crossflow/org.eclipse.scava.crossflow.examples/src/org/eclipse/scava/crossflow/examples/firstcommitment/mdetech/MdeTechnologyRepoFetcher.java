@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.scava.crossflow.runtime.utils.CloneUtils;
 import org.eclipse.scava.crossflow.restmule.client.github.api.IGitHubApi;
 import org.eclipse.scava.crossflow.restmule.client.github.model.Repo;
 import org.eclipse.scava.crossflow.restmule.client.github.model.SearchCode;
@@ -44,7 +45,7 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 		IGitHubApi client = GitHubUtils.getOAuthClient();
 		
 		// Construct query parameters
-		String q = "class+extension:kmt"; //MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
+		String q = "extension:" + extensionKeywordTuple.getField0() + "+" + extensionKeywordTuple.getField1(); //class+extension:kmt"; //MDE.query(stringStringTuple.getField0(), stringStringTuple.getField1()); //"figure+extension:gmfgraph";
 		String order = "asc";
 		String sort = null;//"stars"; // sorting by "stars" is not possible for code search (works for repository search)
 		
@@ -59,7 +60,7 @@ public class MdeTechnologyRepoFetcher extends MdeTechnologyRepoFetcherBase {
 				extensionKeywordStargazersTuple.setField0(extensionKeywordTuple.field0);
 				extensionKeywordStargazersTuple.setField1(result.getRepository().getHtmlUrl());
 				extensionKeywordStargazersTuple.setField2(getRepoStargazerCount(extensionKeywordStargazersTuple.getField1()));				
-				getMdeTechnologyRepoEntries().send(extensionKeywordStargazersTuple);
+				sendToMdeTechnologyRepoEntries(extensionKeywordStargazersTuple);
 				
 				System.out.println("\n" + "[" + workflow.getName() + "] " + "Consuming " + extensionKeywordStargazersTuple.getField1() + " (search " + searchCode.percentage() + "% completed)");
 			})

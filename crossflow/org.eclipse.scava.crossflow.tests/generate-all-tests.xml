@@ -1,0 +1,18 @@
+<project default="main">
+	<target name="main">
+		
+		<epsilon.emf.register file="../org.eclipse.scava.crossflow.language/model/crossflow.ecore"/>
+		
+		<!-- epsilon.for requires Epsilon 1.6 -->
+		<epsilon.for>
+			<fileset dir="models" excludes="graphviz.egl"></fileset>
+			<epsilon.emf.loadModel name="CrossflowLanguageModel" modelfile="models/${it}"
+				metamodeluri="org.eclipse.scava.crossflow" read="true" store="false"/>
+			<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/java/crossflow.egx" outputroot=".">
+				<model ref="CrossflowLanguageModel"/>
+			</epsilon.egl>
+			<epsilon.disposeModel model="CrossflowLanguageModel"/>
+		</epsilon.for>
+		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.tests" depth="-1"/>
+	</target>
+</project>

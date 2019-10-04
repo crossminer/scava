@@ -1,0 +1,356 @@
+[%import "../util.eol";%]
+/** This class was automatically generated and should not be modified */
+package [%=package%];
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Generated;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import org.apache.activemq.broker.BrokerFactory;
+import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.Mode;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
+
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
+	[%for (p in w.parameters) { %]
+	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
+	protected [%=p.type%] [%=p.name%];
+	
+	public void set[%=p.name.ftuc()%]([%=p.type%] [%=p.name%]) {
+		this.[%=p.name%] = [%=p.name%];
+	}
+	
+	public [%=p.type%] get[%=p.name.ftuc()%]() {
+		return [%=p.name%];
+	}
+	[%}%]
+	
+	// Streams
+	[%for (s in w.streams) { %]
+	protected [%=s.name%] [%=s.name.ftlc()%];
+	[%}%]
+	
+	// Tasks
+	[%for (t in w.getSingletonTasks()) {%]
+	protected [%=t.name%] [%=t.name.ftlc()%];
+	[%}%]
+	[%for (t in w.getParallelizableTasks()) {%]
+	protected ParallelTaskList<[%=t.name%]> [%=t.name.ftlc()%]s = new ParallelTaskList<>();
+	[%}%]
+
+	protected Set<[%=w.name%]Tasks> tasksToExclude = EnumSet.noneOf([%=w.name%]Tasks.class);
+
+	public [%=w.name%]() {
+		this(Mode.MASTER, 1);
+	}
+	
+	public [%=w.name%](Mode m) {
+		this(m, 1);
+	}
+	
+	public [%=w.name%](Mode mode, int parallelization) {
+		super();
+			
+		this.parallelization = parallelization;	
+			
+		this.name = "[%=w.name%]";
+		this.mode = mode;
+		
+		if (isMaster()) {
+		[%for (t in w.getMasterTasks()){%]
+		[%=t.createTask()%]
+		[%}%]
+		}
+		
+		if (isWorker()) {
+		[%for (t in w.getWorkerTasks()){%]
+			if (!tasksToExclude.contains([%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%])) {
+			[%=t.createTask()%]
+			}
+		[%}%]
+		}
+		
+		// Register custom types and Job subclasses
+		[%for (t in w.types){%]
+		this.serializer.register([%=t.name%].class);
+		[%}%]
+	}
+	
+	/**
+	 * Run with initial delay in ms before starting execution (after creating broker
+	 * if master)
+	 * 
+	 * @param delay
+	 */
+	@Override
+	public void run(long delay) throws Exception {
+		[%for (t in w.getParallelizableTasks()) {%]
+		[%=t.name.ftlc()%]s.init(this);
+		[%}%]
+	
+		this.delay=delay;
+	
+		try {
+						
+			if (isMaster()) {
+				if (createBroker) {
+					if (activeMqConfig != null && activeMqConfig != "") {
+						brokerService = BrokerFactory.createBroker(new URI("xbean:" + activeMqConfig));
+					} else {
+						brokerService = new BrokerService();
+					}
+				
+					//activeMqConfig
+					brokerService.setUseJmx(true);
+					brokerService.addConnector(getBroker());
+					if(enableStomp)
+						brokerService.addConnector(getStompBroker());
+					if(enableWS)	
+						brokerService.addConnector(getWSBroker());
+					brokerService.start();
+				}
+			}
+	
+			connect();
+	
+			Thread.sleep(delay);
+		
+			[%for (s in w.streams) { %]
+			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
+			activeStreams.add([%=s.name.ftlc()%]);
+			[%}%]
+		
+			if (isMaster()) {
+			[%for (t in w.getMasterTasks()){%]
+				[%=t.setup()%]
+			[%}%]
+			}
+			
+			if (isWorker()) {
+			[%for (t in w.getWorkerTasks()){%]
+				if (!tasksToExclude.contains([%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%])) {
+					[%=t.setup()%]
+				}
+			[%}%]
+			}
+			
+			if (isMaster()){
+			[%for (t in w.getNonConfigurationSources()){%]
+				// run all sources in parallel threads
+				new Thread(() -> {
+					try {
+						setTaskInProgess([%=t.name.ftlc()%]);
+						[%=t.name.ftlc()%].produce();
+						setTaskWaiting([%=t.name.ftlc()%]);
+					} catch (Exception ex) {
+						reportInternalException(ex);
+						terminate();
+					}
+				}).start();	
+			[%}%]
+				sendConfigurations();
+			}
+				
+			// delay non-master connections to allow master to create the relevant listeners
+			// (in a multi-threaded parallel execution) to facilitate termination, by
+			// re-sending worker_added message
+			if (!isMaster()) {
+				Thread.sleep(1000);
+				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
+			}	
+					
+		} catch (Exception e) {
+			log(SEVERITY.ERROR, e.getMessage());
+		}
+	}				
+	
+	public void sendConfigurations(){
+	[%for (t in w.getConfigurationSources()){%]	
+		new Thread(() -> {
+					try {
+						setTaskInProgess([%=t.name.ftlc()%]);
+						[%=t.name.ftlc()%].produce();
+						setTaskWaiting([%=t.name.ftlc()%]);
+					} catch (Exception ex) {
+						reportInternalException(ex);
+						terminate();
+					}
+		}).start();
+	[%}%]
+	}
+	
+	[%for (s in w.streams) { %]
+	public [%=s.name%] get[%=s.name%]() {
+		return [%=s.name.ftlc()%];
+	}
+	[%}%]
+	
+	[%for (t in w.tasks) {%]
+	[%if (t.isJavaTask()) {%]
+	public [%=t.name%] get[%=t.name%]() {
+	[%if(w.getSingletonTasks().contains(t)){%]
+		return [%=t.name.ftlc()%];
+	[%} else {%]
+		if([%=t.name.ftlc()%]s.size()>0)
+			return [%=t.name.ftlc()%]s.get(0);
+		else 
+			return null;
+	[%}%]
+	}
+	[%if(w.getParallelizableTasks().contains(t)){%]
+	public ParallelTaskList<[%=t.name%]> get[%=t.name%]s() {
+		return [%=t.name.ftlc()%]s;	
+	}	
+	[%}%]
+	[%}%]
+	[%}%]
+	
+	public [%=w.name%] createWorker() {
+		[%=w.name%] worker = new [%=w.name%](Mode.WORKER,parallelization);
+		worker.setInstanceId(instanceId);
+		return worker;
+	}
+	
+	@Override
+	public [%=w.name%] excludeTask([%=w.name%]Tasks task) {
+		if (task == null) throw new IllegalArgumentException("task cannot be null");
+		this.tasksToExclude.add(task);
+		return this;
+	}
+	
+	@Override
+	public [%=w.name%] excludeTasks(EnumSet<[%=w.name%]Tasks> tasks) {
+		for ([%=w.name%]Tasks t : tasks) {
+			excludeTask(t);
+		}
+		return this;
+	}
+	
+	public static [%=w.name%] run(String[] args) throws Exception {
+		// Parse all values into an temporary object
+		[%=w.name%] argsHolder = new [%=w.name%]();
+		JCommander.newBuilder().addObject(argsHolder).build().parse(args);
+		
+		// Extract values to construct new object
+		[%=w.name%] app = new [%=w.name%](argsHolder.getMode(), argsHolder.getParallelization());
+		JCommander.newBuilder().addObject(app).build().parse(args);
+		app.run();
+		return app;
+	}
+	
+	public static void main(String[] args) throws Exception {
+	      // Parse all values into an temporary object
+        [%=w.name%] argsHolder = new [%=w.name%]();
+        JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
+        
+        try {
+            jct.parse(args);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+	    if(argsHolder.isHelp()) {
+            jct.setProgramName("[%=w.name%]");
+            jct.usage();
+            System.exit(0);
+        }
+	
+		run(args);
+	}
+	
+}	
+[%
+operation Task isJavaTask(){
+	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
+}
+
+operation Workflow getNonConfigurationSources(){
+	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
+	sources.removeAll(w.getConfigurationSources());
+	return sources;
+}
+
+operation Workflow getConfigurationSources(){
+	return self.tasks.select(t | 
+		t.isJavaTask() 
+	and t.isKindOf(Source)
+	and t.name.endsWith("ConfigSource") 
+	and t.output.size > 0
+	and t.output.first.name.endsWith("ConfigTopic"));
+}
+
+operation Workflow getParallelizableTasks() {
+	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(Source) or t.isKindOf(Sink)));
+}
+
+operation Workflow getSingletonTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink)));
+}
+
+operation Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
+}
+
+operation Workflow getWorkerTasks() {
+	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isJavaTask());
+}
+
+@template
+operation Task createTask() {
+	if(w.getSingletonTasks().contains(self)){
+%]
+	[%=self.name.ftlc()%] = new [%=self.name%]();
+	[%=self.name.ftlc()%].setWorkflow(this);
+	tasks.add([%=self.name.ftlc()%]);
+[%
+	} else{
+%]
+	for(int i=1;i<=parallelization;i++){
+		[%=self.name%] task = new [%=self.name%]();
+		task.setWorkflow(this);
+		tasks.add(task);
+		[%=self.name.ftlc()%]s.add(task);
+	}
+[%	
+	}
+	
+}
+
+@template
+operation Task setup() {
+
+	if(w.getSingletonTasks().contains(self)){
+%]
+	[%for (i in self.input) { %]
+	[%=i.name.ftlc()%].addConsumer([%=self.name.ftlc()%], "[%=self.name%]");			
+	[%}%]
+	[%for (o in self.output) { %]
+	[%=self.name.ftlc()%].set[%=o.name%]([%=o.name.ftlc%]);
+	[%}%]
+[%
+	} else{
+%]
+	for(int i = 0; i <[%=self.name.ftlc()%]s.size(); i++){
+		[%=self.name%] task = [%=self.name.ftlc()%]s.get(i);
+		[%for (i in self.input) { %]
+		[%=i.name.ftlc()%].addConsumer(task, "[%=self.name%]");			
+		[%}%]
+		[%for (o in self.output) { %]
+		task.set[%=o.name%]([%=o.name.ftlc%]);
+		[%}%]
+	}
+[%	}
+}%]

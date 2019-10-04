@@ -31,25 +31,25 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
 public class WorkflowEditPart extends DiagramEditPart {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public final static String MODEL_ID = "Crossflow"; //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final int VISUAL_ID = 1000;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public WorkflowEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new WorkflowItemSemanticEditPolicy());

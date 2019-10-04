@@ -10,7 +10,7 @@ package crossflow;
  *
  *
  * @see crossflow.CrossflowPackage#getSource()
- * @model
+ * @model annotation="gmf.node label='name' label.icon='false' figure='polygon' polygon.x='0 10 11 10 0' polygon.y='0 0 2 4 4'"
  * @generated
  */
 public interface Source extends Task {

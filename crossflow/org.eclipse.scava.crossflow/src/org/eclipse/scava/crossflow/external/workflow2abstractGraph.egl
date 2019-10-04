@@ -1,0 +1,45 @@
+[%  
+var links = new Set();
+w.tasks.select(t | t.isKindOf(Task) ).collect(c | c.recursion());
+%]
+
+[%
+for (l in links) {
+	%]
+[%=l%]
+	[%
+}// for links
+
+operation Task recursion() : Collection{
+
+var ret = new Set();
+
+for(t in self){
+
+%]
+var v_[%=t.name%] = createTask("[%=t.name%]", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+[%
+
+for(s in t.output){
+
+%]
+var s_[%=s.name%] = createStream("[%=s.name%]", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+[%
+
+links.add("link(v_"+t.name+", s_"+s.name+", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());");
+
+
+for(tt in s.inputOf){
+
+ret.add(tt);
+
+links.add("link(s_"+s.name+", v_"+tt.name+", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());");
+
+}// for s.inputOf
+}// for t.output
+}// for self
+
+return ret;
+}// recursion()
+
+%]	

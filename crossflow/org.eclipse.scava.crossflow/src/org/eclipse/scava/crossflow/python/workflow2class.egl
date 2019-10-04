@@ -1,0 +1,187 @@
+[%import "../util.eol";%]
+import argparse
+import sys
+import time
+import traceback
+
+[% var imports = new Sequence; 
+imports.addAll(w.getMasterTasks().collect(t|t.name));
+imports.addAll(w.getWorkerTasks().collect(t|t.name));
+imports = imports.sortBy(i|i);
+for (i in imports) {%]
+from [%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+[%}%]
+[% imports = new Sequence;
+imports.addAll(w.streams.collect(s|s.name));
+imports.addAll(w.types.collect(t|t.name));
+imports.add(w.name + "Tasks");
+imports = imports.sortBy(i|i);
+for (i in imports) {%]
+from crossflow.[%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+[%}%]
+from crossflow.runtime import ControlSignal, ControlSignals, logger, Mode, Workflow
+
+
+class [%=w.name%](Workflow):
+
+    def __init__(self,
+                 name='',
+                 cache=None,
+                 brokerHost='localhost',
+                 stompPort=61613,
+                 instanceId=None,
+                 mode=Mode.WORKER,
+                 cacheEnabled=True,
+                 deleteCache=None,
+                 excluded_tasks=[]):
+                 
+        super().__init__(name=name,
+                         cache=cache,
+                         brokerHost=brokerHost,
+                         stompPort=stompPort,
+                         instanceId=instanceId,
+                         mode=mode,
+                         cacheEnabled=cacheEnabled,
+                         deleteCache=deleteCache,
+                         excluded_tasks=excluded_tasks)
+        
+        # Register types with serializer
+        [%for (t in w.types) {%]
+        self.serializer.register([%=t.name%])
+        [%}%]
+        
+        # Streams
+        [%for (s in w.streams) { %]
+        self.[%=s.name.ftlc()%] = None
+        [%}%]
+
+        # Tasks
+        [%for (t in w.tasks) {%]
+        [%if (t.isPythonTask()) {%]
+        self.[%=t.name.ftlc()%] = None
+        [%}%]
+        [%}%]
+        
+        # Task creation
+        self.tasks = []
+        [%for (t in w.getWorkerTasks()){%]
+        if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+            self.[%=t.name.ftlc()%] = [%=t.name%]()
+            self.[%=t.name.ftlc()%].setWorkflow(self)
+            self.tasks.append(self.[%=t.name.ftlc()%])
+        [%}%]
+
+    def createWorker(self):
+        worker = [%=w.name%](Mode.WORKER)
+        worker.setInstanceId(self.instanceId)
+        return worker
+
+    [%for (p in w.parameters) { %]
+    def set[%=p.name.ftuc()%](self, [%=p.name%]):
+        self.[%=p.name%] = [%=p.name%]
+
+    def get[%=p.name.ftuc()%](self):
+        return self.[%=p.name%]
+        
+    [%}%]
+
+    """
+     * Run with initial delay in ms before starting execution (after creating broker
+     * if master)
+     * 
+     * @param delay
+    """
+    def run(self, delay=0):
+        """Run with an initial delay before starting execution
+
+        :param delay: delay in ms before this worker will start running. Defaults to 0
+        :type delay: int
+        """
+        self.delay=delay
+
+        try:
+            self.connect()
+
+            time.sleep(delay)
+
+            [%for (s in w.streams) { %]
+            self.[%=s.name.ftlc()%] = [%=s.name%](self, self.enablePrefetch)
+            self.activeStreams.append(self.[%=s.name.ftlc()%])
+            [%}%]
+
+            if (self.is_worker()):
+            [%for (t in w.getWorkerTasks()){%]
+                if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+                    [%=t.setup()%]
+            [%}%]
+
+            time.sleep(1)
+            self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
+        except Exception as e:
+            logger.exception("")
+
+    [%for (s in w.streams) { %]
+    def get[%=s.name%](self):
+        return self.[%=s.name.ftlc()%]
+        
+    [%}%]
+    [%for (t in w.tasks) {%]
+    def get[%=t.name%](self):
+        return self.[%=t.name.ftlc()%]
+        
+    [%}%]
+    def isEnablePrefetch(self):
+        """Are tasks allowed to obtain more jobs while already executing
+        :rtype: boolean
+        """
+        return self.enablePrefetch
+
+    def setEnablePrefetch(self, enablePrefetch):
+        self.enablePrefetch = enablePrefetch
+        
+    def excluded_tasks(self, tasks=[]):
+        assert isinstance(tasks, list)
+        assert not tasks or [t for t in tasks if isinstance(t, [%=w.name%]Tasks)]
+        self.excluded_tasks = tasks
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-name', default='[%=w.name%]Python', help='The name of the workflow')
+    parser.add_argument('-brokerHost', default='localhost', help='Host of the JMX broker')
+    parser.add_argument('-stompPort', default=61613, help='Port to use for stomp based messages')
+    parser.add_argument('-instance', default=None, help='The instance of the master (to contribute to)')
+    parser.add_argument('-mode', default='WORKER', help='must be one of WORKER or API')
+    
+    parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
+    
+    app = [%=w.name%](name=parsedArgs.name,
+                      brokerHost=parsedArgs.brokerHost,
+                      stompPort=parsedArgs.stompPort,
+                      instanceId=parsedArgs.instance,
+                      mode=Mode.enum_from_name(parsedArgs.mode))
+                      
+    app.run();
+    
+[%
+operation Task isPythonTask(){
+    return self.languages.exists(l | l.name.toLowerCase()== "python");
+}
+
+operation Workflow getMasterTasks() {
+    return self.tasks.select(t | t.isPythonTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
+}
+
+operation Workflow getWorkerTasks() {
+    return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isPythonTask());
+}
+
+@template
+operation Task setup() {%]
+    [%for (i in self.input) { %]
+    self.[%=i.name.ftlc()%].addConsumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
+    [%}%]
+    [%for (o in self.output) { %]
+    self.[%=self.name.ftlc()%].set[%=o.name%](self.[%=o.name.ftlc%]);
+    [%}%]
+[%}
+%]

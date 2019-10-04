@@ -18,11 +18,11 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientReferenceRelations
 import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
 
-import crossflow.diagram.edit.commands.TaskInputCreateCommand;
-import crossflow.diagram.edit.commands.TaskInputReorientCommand;
+import crossflow.diagram.edit.commands.StreamInputOfCreateCommand;
+import crossflow.diagram.edit.commands.StreamInputOfReorientCommand;
 import crossflow.diagram.edit.commands.TaskOutputCreateCommand;
 import crossflow.diagram.edit.commands.TaskOutputReorientCommand;
-import crossflow.diagram.edit.parts.TaskInputEditPart;
+import crossflow.diagram.edit.parts.StreamInputOfEditPart;
 import crossflow.diagram.edit.parts.TaskOutputEditPart;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 import crossflow.diagram.providers.CrossflowElementTypes;
@@ -36,7 +36,7 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	* @generated
 	*/
 	public SinkItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Sink_2004);
+		super(CrossflowElementTypes.Sink_2006);
 	}
 
 	/**
@@ -46,15 +46,18 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 		View view = (View) getHost().getModel();
 		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);
 		cmd.setTransactionNestingEnabled(false);
-		for (Iterator<?> it = view.getSourceEdges().iterator(); it.hasNext();) {
-			Edge outgoingLink = (Edge) it.next();
-			if (CrossflowVisualIDRegistry.getVisualID(outgoingLink) == TaskInputEditPart.VISUAL_ID) {
-				DestroyReferenceRequest r = new DestroyReferenceRequest(outgoingLink.getSource().getElement(), null,
-						outgoingLink.getTarget().getElement(), false);
+		for (Iterator<?> it = view.getTargetEdges().iterator(); it.hasNext();) {
+			Edge incomingLink = (Edge) it.next();
+			if (CrossflowVisualIDRegistry.getVisualID(incomingLink) == StreamInputOfEditPart.VISUAL_ID) {
+				DestroyReferenceRequest r = new DestroyReferenceRequest(incomingLink.getSource().getElement(), null,
+						incomingLink.getTarget().getElement(), false);
 				cmd.add(new DestroyReferenceCommand(r));
-				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
+				cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
 				continue;
 			}
+		}
+		for (Iterator<?> it = view.getSourceEdges().iterator(); it.hasNext();) {
+			Edge outgoingLink = (Edge) it.next();
 			if (CrossflowVisualIDRegistry.getVisualID(outgoingLink) == TaskOutputEditPart.VISUAL_ID) {
 				DestroyReferenceRequest r = new DestroyReferenceRequest(outgoingLink.getSource().getElement(), null,
 						outgoingLink.getTarget().getElement(), false);
@@ -88,8 +91,8 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	 * @generated
 	 */
 	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (CrossflowElementTypes.TaskInput_4002 == req.getElementType()) {
-			return getGEFWrapper(new TaskInputCreateCommand(req, req.getSource(), req.getTarget()));
+		if (CrossflowElementTypes.StreamInputOf_4005 == req.getElementType()) {
+			return null;
 		}
 		if (CrossflowElementTypes.TaskOutput_4003 == req.getElementType()) {
 			return getGEFWrapper(new TaskOutputCreateCommand(req, req.getSource(), req.getTarget()));
@@ -101,8 +104,8 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	 * @generated
 	 */
 	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (CrossflowElementTypes.TaskInput_4002 == req.getElementType()) {
-			return null;
+		if (CrossflowElementTypes.StreamInputOf_4005 == req.getElementType()) {
+			return getGEFWrapper(new StreamInputOfCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		if (CrossflowElementTypes.TaskOutput_4003 == req.getElementType()) {
 			return null;
@@ -118,8 +121,8 @@ public class SinkItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPol
 	 */
 	protected Command getReorientReferenceRelationshipCommand(ReorientReferenceRelationshipRequest req) {
 		switch (getVisualID(req)) {
-		case TaskInputEditPart.VISUAL_ID:
-			return getGEFWrapper(new TaskInputReorientCommand(req));
+		case StreamInputOfEditPart.VISUAL_ID:
+			return getGEFWrapper(new StreamInputOfReorientCommand(req));
 		case TaskOutputEditPart.VISUAL_ID:
 			return getGEFWrapper(new TaskOutputReorientCommand(req));
 		}

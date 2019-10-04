@@ -187,6 +187,29 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CsvSource} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CsvSourceItemProvider csvSourceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CsvSource}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCsvSourceAdapter() {
+		if (csvSourceItemProvider == null) {
+			csvSourceItemProvider = new CsvSourceItemProvider(this);
+		}
+
+		return csvSourceItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link crossflow.Sink} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -207,6 +230,98 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		}
 
 		return sinkItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CsvSink} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CsvSinkItemProvider csvSinkItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CsvSink}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCsvSinkAdapter() {
+		if (csvSinkItemProvider == null) {
+			csvSinkItemProvider = new CsvSinkItemProvider(this);
+		}
+
+		return csvSinkItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.CommitmentTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CommitmentTaskItemProvider commitmentTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.CommitmentTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCommitmentTaskAdapter() {
+		if (commitmentTaskItemProvider == null) {
+			commitmentTaskItemProvider = new CommitmentTaskItemProvider(this);
+		}
+
+		return commitmentTaskItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.OpinionatedTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected OpinionatedTaskItemProvider opinionatedTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.OpinionatedTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createOpinionatedTaskAdapter() {
+		if (opinionatedTaskItemProvider == null) {
+			opinionatedTaskItemProvider = new OpinionatedTaskItemProvider(this);
+		}
+
+		return opinionatedTaskItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.ScriptedTask} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScriptedTaskItemProvider scriptedTaskItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.ScriptedTask}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScriptedTaskAdapter() {
+		if (scriptedTaskItemProvider == null) {
+			scriptedTaskItemProvider = new ScriptedTaskItemProvider(this);
+		}
+
+		return scriptedTaskItemProvider;
 	}
 
 	/**
@@ -256,26 +371,49 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Configuration} instances.
+	 * This keeps track of the one adapter used for all {@link crossflow.Language} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ConfigurationItemProvider configurationItemProvider;
+	protected LanguageItemProvider languageItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link crossflow.Configuration}.
+	 * This creates an adapter for a {@link crossflow.Language}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createConfigurationAdapter() {
-		if (configurationItemProvider == null) {
-			configurationItemProvider = new ConfigurationItemProvider(this);
+	public Adapter createLanguageAdapter() {
+		if (languageItemProvider == null) {
+			languageItemProvider = new LanguageItemProvider(this);
 		}
 
-		return configurationItemProvider;
+		return languageItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.Parameter} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ParameterItemProvider parameterItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createParameterAdapter() {
+		if (parameterItemProvider == null) {
+			parameterItemProvider = new ParameterItemProvider(this);
+		}
+
+		return parameterItemProvider;
 	}
 
 	/**
@@ -382,10 +520,16 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (queueItemProvider != null) queueItemProvider.dispose();
 		if (taskItemProvider != null) taskItemProvider.dispose();
 		if (sourceItemProvider != null) sourceItemProvider.dispose();
+		if (csvSourceItemProvider != null) csvSourceItemProvider.dispose();
 		if (sinkItemProvider != null) sinkItemProvider.dispose();
+		if (csvSinkItemProvider != null) csvSinkItemProvider.dispose();
+		if (commitmentTaskItemProvider != null) commitmentTaskItemProvider.dispose();
+		if (opinionatedTaskItemProvider != null) opinionatedTaskItemProvider.dispose();
+		if (scriptedTaskItemProvider != null) scriptedTaskItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
-		if (configurationItemProvider != null) configurationItemProvider.dispose();
+		if (languageItemProvider != null) languageItemProvider.dispose();
+		if (parameterItemProvider != null) parameterItemProvider.dispose();
 	}
 
 }

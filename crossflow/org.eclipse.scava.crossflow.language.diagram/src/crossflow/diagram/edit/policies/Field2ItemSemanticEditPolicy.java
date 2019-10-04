@@ -22,7 +22,7 @@ public class Field2ItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditP
 	* @generated
 	*/
 	public Field2ItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Field_3001);
+		super(CrossflowElementTypes.Field_3003);
 	}
 
 	/**

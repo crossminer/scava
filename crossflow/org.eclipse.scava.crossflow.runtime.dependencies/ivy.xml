@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="org.eclipse.scava" module="crossflow.runtime" status="integration"/>
+	<dependencies>
+		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.8"/>
+		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.11.1"/>
+		<dependency org="com.beust" name="jcommander" rev="1.72"/>
+		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
+		<dependency org="commons-codec" name="commons-codec" rev="1.11"/>
+		<dependency org="commons-io" name="commons-io" rev="2.6"/>
+		<dependency org="org.eclipse.jgit" name="org.eclipse.jgit" rev="5.2.0.201812061821-r"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
+		<dependency org="org.renjin" name="renjin-script-engine" rev="0.9.2726"/>
+	</dependencies>
+</ivy-module>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar with dependencies of Project org.eclipse.scava.crossflow.examples">
+    
+	<property name="deps" value="../org.eclipse.scava.crossflow.runtime.dependencies"/>
+	
+    <target name="create_run_jar">
+        <jar destfile="org.eclipse.scava.crossflow.examples-with-dependencies.jar" filesetmanifest="mergewithoutmain">
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/activemq-all-5.15.8.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/commons-logging-1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/geronimo-jms_1.1_spec-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/jcommander-1.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/kahadb-5.4.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${deps}/xstream-1.4.7.jar"/>
+        	
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/log4j-core-2.6.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/jgit/JavaEWAH-1.1.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/jgit/jsch-0.1.54.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/jgit/jzlib-1.1.3.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/jgit/org.eclipse.jgit-5.1.2.201810061102-r.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/commons-codec-1.10.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/commons-logging-1.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpasyncclient-cache-4.1.4.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpclient-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpclient-cache-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpcore-4.4.10.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/commons-codec-1.11.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/commons-logging-1.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/fluent-hc-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/httpclient-cache-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/httpclient-win-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/httpmime-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/jna-4.4.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/jna-platform-4.4.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/commons-codec-1.11.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/commons-io-2.4.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/reactive-streams-1.0.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/kotlin-stdlib-1.2.71.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpcore-nio-4.4.10.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/httpasyncclient-4.1.4.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/commons-lang3-3.8.1.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/httpclient-4.5.6.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/commons-codec-1.10.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/google-oauth-client-jetty-1.25.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/guava-26.0-jre.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/adapter-rxjava2-2.3.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/httpcore-4.4.10.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/gson-2.6.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/okhttp-3.9.1.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/okio-2.1.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/avatica-1.8.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/converter-jackson-2.3.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/google-http-client-1.22.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/google-http-client-jackson2-1.22.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/google-oauth-client-1.22.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-core/google-oauth-client-java6-1.22.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/converter-jackson-2.3.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/jackson-annotations-2.6.5.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/jetty-util-6.1.26.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/jsr305-1.3.9.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/log4j-api-2.6.2.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/retrofit-2.3.0.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="${deps}/restmule-client-github/rxjava-2.1.0.jar"/>
+        	
+            <fileset dir="../org.eclipse.scava.crossflow.runtime/bin"/>
+            <fileset dir="bin"/>
+        </jar>
+    </target>
+</project>

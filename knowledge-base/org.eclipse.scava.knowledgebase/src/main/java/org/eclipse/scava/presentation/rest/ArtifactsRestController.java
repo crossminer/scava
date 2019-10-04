@@ -141,6 +141,14 @@ public class ArtifactsRestController {
 		ossmeterImporter.importAll();
 		return true;
 	}
+	@ApiOperation(value = "Import projects from the metric provider platform from a specific url. The url should be <server_url>:<server_port>")
+	@RequestMapping(value = "add-mpp.by-url/", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.POST)
+	public @ResponseBody boolean importMPPProjectsFromSpecificUrl(
+			@RequestParam("mppUrl") String mppUrl) {
+		ossmeterImporter.importAll(mppUrl);
+		return true;
+	}
 
 	@ApiOperation(value = "Store IDE metrics")
 	@RequestMapping(value = "store-metrics", produces = { "application/json",

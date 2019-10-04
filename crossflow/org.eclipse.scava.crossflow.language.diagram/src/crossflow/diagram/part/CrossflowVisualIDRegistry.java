@@ -1,6 +1,6 @@
 /*
- * 
- */
+* 
+*/
 package crossflow.diagram.part;
 
 import org.eclipse.core.runtime.Platform;
@@ -12,23 +12,41 @@ import org.eclipse.gmf.tooling.runtime.structure.DiagramStructure;
 
 import crossflow.CrossflowPackage;
 import crossflow.Workflow;
-import crossflow.diagram.edit.parts.ConfigurationEditPart;
-import crossflow.diagram.edit.parts.ConfigurationNumberOfWorkersIsMasterEditPart;
+import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
+import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
+import crossflow.diagram.edit.parts.CsvSinkEditPart;
+import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
+import crossflow.diagram.edit.parts.CsvSourceEditPart;
+import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
 import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
-import crossflow.diagram.edit.parts.FieldName2EditPart;
-import crossflow.diagram.edit.parts.FieldNameEditPart;
+import crossflow.diagram.edit.parts.FieldNameType2EditPart;
+import crossflow.diagram.edit.parts.FieldNameType3EditPart;
+import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.LanguageEditPart;
+import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.LanguageNameEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
+import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ParameterEditPart;
+import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.QueueNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
+import crossflow.diagram.edit.parts.StreamInputOfEditPart;
 import crossflow.diagram.edit.parts.StreamTypeEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
-import crossflow.diagram.edit.parts.TaskInputEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
 import crossflow.diagram.edit.parts.TaskOutputEditPart;
 import crossflow.diagram.edit.parts.TopicEditPart;
+import crossflow.diagram.edit.parts.TopicNameEditPart;
 import crossflow.diagram.edit.parts.TypeEditPart;
 import crossflow.diagram.edit.parts.TypeExtendingEditPart;
 import crossflow.diagram.edit.parts.TypeNameEditPart;
@@ -49,13 +67,13 @@ import crossflow.diagram.edit.parts.WrappingLabelEditPart;
 public class CrossflowVisualIDRegistry {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private static final String DEBUG_KEY = "org.eclipse.scava.crossflow.language.diagram/debug/visualID"; //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static int getVisualID(View view) {
 		if (view instanceof Diagram) {
 			if (WorkflowEditPart.MODEL_ID.equals(view.getType())) {
@@ -68,8 +86,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String getModelID(View view) {
 		View diagram = view.getDiagram();
 		while (view != diagram) {
@@ -83,8 +101,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static int getVisualID(String type) {
 		try {
 			return Integer.parseInt(type);
@@ -98,15 +116,15 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static String getType(int visualID) {
 		return Integer.toString(visualID);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static int getDiagramVisualID(EObject domainElement) {
 		if (domainElement == null) {
 			return -1;
@@ -119,8 +137,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static int getNodeVisualID(View containerView, EObject domainElement) {
 		if (domainElement == null) {
 			return -1;
@@ -141,6 +159,12 @@ public class CrossflowVisualIDRegistry {
 		}
 		switch (containerVisualID) {
 		case WorkflowEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getCsvSource().isSuperTypeOf(domainElement.eClass())) {
+				return CsvSourceEditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getCsvSink().isSuperTypeOf(domainElement.eClass())) {
+				return CsvSinkEditPart.VISUAL_ID;
+			}
 			if (CrossflowPackage.eINSTANCE.getTopic().isSuperTypeOf(domainElement.eClass())) {
 				return TopicEditPart.VISUAL_ID;
 			}
@@ -153,8 +177,14 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getSink().isSuperTypeOf(domainElement.eClass())) {
 				return SinkEditPart.VISUAL_ID;
 			}
-			if (CrossflowPackage.eINSTANCE.getConfiguration().isSuperTypeOf(domainElement.eClass())) {
-				return ConfigurationEditPart.VISUAL_ID;
+			if (CrossflowPackage.eINSTANCE.getCommitmentTask().isSuperTypeOf(domainElement.eClass())) {
+				return CommitmentTaskEditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getOpinionatedTask().isSuperTypeOf(domainElement.eClass())) {
+				return OpinionatedTaskEditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getScriptedTask().isSuperTypeOf(domainElement.eClass())) {
+				return ScriptedTaskEditPart.VISUAL_ID;
 			}
 			if (CrossflowPackage.eINSTANCE.getTask().isSuperTypeOf(domainElement.eClass())) {
 				return TaskEditPart.VISUAL_ID;
@@ -165,10 +195,23 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
 				return FieldEditPart.VISUAL_ID;
 			}
+			if (CrossflowPackage.eINSTANCE.getLanguage().isSuperTypeOf(domainElement.eClass())) {
+				return LanguageEditPart.VISUAL_ID;
+			}
+			break;
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
+				return Field2EditPart.VISUAL_ID;
+			}
 			break;
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
-				return Field2EditPart.VISUAL_ID;
+				return Field3EditPart.VISUAL_ID;
+			}
+			break;
+		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getParameter().isSuperTypeOf(domainElement.eClass())) {
+				return ParameterEditPart.VISUAL_ID;
 			}
 			break;
 		}
@@ -176,8 +219,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static boolean canCreateNode(View containerView, int nodeVisualID) {
 		String containerModelID = crossflow.diagram.part.CrossflowVisualIDRegistry.getModelID(containerView);
 		if (!WorkflowEditPart.MODEL_ID.equals(containerModelID) && !"crossflow".equals(containerModelID)) { //$NON-NLS-1$
@@ -195,6 +238,12 @@ public class CrossflowVisualIDRegistry {
 		}
 		switch (containerVisualID) {
 		case WorkflowEditPart.VISUAL_ID:
+			if (CsvSourceEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (CsvSinkEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (TopicEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -207,7 +256,13 @@ public class CrossflowVisualIDRegistry {
 			if (SinkEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (ConfigurationEditPart.VISUAL_ID == nodeVisualID) {
+			if (CommitmentTaskEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (OpinionatedTaskEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ScriptedTaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (TaskEditPart.VISUAL_ID == nodeVisualID) {
@@ -217,6 +272,29 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			if (FieldEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (LanguageEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CsvSourceEditPart.VISUAL_ID:
+			if (CsvSourceNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CsvSinkEditPart.VISUAL_ID:
+			if (CsvSinkNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case TopicEditPart.VISUAL_ID:
+			if (TopicNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case QueueEditPart.VISUAL_ID:
+			if (QueueNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -230,8 +308,21 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ConfigurationEditPart.VISUAL_ID:
-			if (ConfigurationNumberOfWorkersIsMasterEditPart.VISUAL_ID == nodeVisualID) {
+		case CommitmentTaskEditPart.VISUAL_ID:
+			if (CommitmentTaskNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case OpinionatedTaskEditPart.VISUAL_ID:
+			if (OpinionatedTaskNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ScriptedTaskEditPart.VISUAL_ID:
+			if (ScriptedTaskNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -249,17 +340,45 @@ public class CrossflowVisualIDRegistry {
 			}
 			break;
 		case FieldEditPart.VISUAL_ID:
-			if (FieldNameEditPart.VISUAL_ID == nodeVisualID) {
+			if (FieldNameTypeEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case LanguageEditPart.VISUAL_ID:
+			if (LanguageNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (LanguageLanguageParametersCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case Field2EditPart.VISUAL_ID:
-			if (FieldName2EditPart.VISUAL_ID == nodeVisualID) {
+			if (FieldNameType2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case Field3EditPart.VISUAL_ID:
+			if (FieldNameType3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ParameterEditPart.VISUAL_ID:
+			if (ParameterNameValueEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
+			if (Field2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
-			if (Field2EditPart.VISUAL_ID == nodeVisualID) {
+			if (Field3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
+			if (ParameterEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -268,7 +387,7 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
-		case TaskInputEditPart.VISUAL_ID:
+		case StreamInputOfEditPart.VISUAL_ID:
 			if (WrappingLabel2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -288,8 +407,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static int getLinkWithClassVisualID(EObject domainElement) {
 		if (domainElement == null) {
 			return -1;
@@ -298,18 +417,18 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * User can change implementation of this method to handle some specific
-	 * situations not covered by default logic.
-	 * 
-	 * @generated
-	 */
+	* User can change implementation of this method to handle some specific
+	* situations not covered by default logic.
+	* 
+	* @generated
+	*/
 	private static boolean isDiagram(Workflow element) {
 		return true;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static boolean checkNodeVisualID(View containerView, EObject domainElement, int candidate) {
 		if (candidate == -1) {
 			//unrecognized id is always bad
@@ -320,11 +439,13 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static boolean isCompartmentVisualID(int visualID) {
 		switch (visualID) {
+		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
+		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
@@ -333,19 +454,24 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static boolean isSemanticLeafVisualID(int visualID) {
 		switch (visualID) {
 		case WorkflowEditPart.VISUAL_ID:
 			return false;
+		case CsvSourceEditPart.VISUAL_ID:
+		case CsvSinkEditPart.VISUAL_ID:
 		case TopicEditPart.VISUAL_ID:
 		case QueueEditPart.VISUAL_ID:
 		case SourceEditPart.VISUAL_ID:
 		case SinkEditPart.VISUAL_ID:
-		case ConfigurationEditPart.VISUAL_ID:
+		case CommitmentTaskEditPart.VISUAL_ID:
+		case OpinionatedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
+		case Field3EditPart.VISUAL_ID:
+		case ParameterEditPart.VISUAL_ID:
 		case Field2EditPart.VISUAL_ID:
 			return true;
 		default:
@@ -355,8 +481,8 @@ public class CrossflowVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static final DiagramStructure TYPED_INSTANCE = new DiagramStructure() {
 		/**
 		* @generated

@@ -1,0 +1,18 @@
+var v_TechnologySource = createTask("TechnologySource", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_Technologies = createStream("Technologies", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_GitHubCodeSearcher = createTask("GitHubCodeSearcher", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_Repositories = createStream("Repositories", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositorySearchDispatcher = createTask("RepositorySearchDispatcher", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositorySearches = createStream("RepositorySearches", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_RepositorySearcher = createTask("RepositorySearcher", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var s_RepositorySearchResults = createStream("RepositorySearchResults", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+var v_ResultsSink = createTask("ResultsSink", window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+
+link(v_TechnologySource, s_Technologies, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_GitHubCodeSearcher, s_Repositories, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_RepositorySearches, v_RepositorySearcher, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositorySearchDispatcher, s_RepositorySearches, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(v_RepositorySearcher, s_RepositorySearchResults, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_Technologies, v_GitHubCodeSearcher, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_Repositories, v_RepositorySearchDispatcher, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());
+link(s_RepositorySearchResults, v_ResultsSink, window.runtimeModelGraph, window.runtimeModelGraph.getDefaultParent());

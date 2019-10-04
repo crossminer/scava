@@ -1,0 +1,52 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<!-- Example counting the committer count of the most popular Java projects on Github -->
+	<workflow name="SearchWorkflow">
+	
+		<!-- csv source of Github top search result projects (owner/repo) -->
+		<csvsource name="SearchCsvSource" out="SearchRepos" filename="repos.csv"/>
+		
+		<!-- queue of Github top search repos -->
+		<queue name="SearchRepos" type="OwnerRepoTuple"/> 
+				
+	 	<!-- task for cloning repositories retrieved from GitHub API -->
+		<task name="SearchRepoCloner" in="SearchRepos" out="SearchClonedRepoEntries"/> 
+				
+		<!-- queues of repositories cloned from GitHub -->
+		<queue name="SearchClonedRepoEntries" type="OwnerRepoUrlTuple"/>
+		
+		<!-- tasks for counting unique authors of repositories cloned from GitHub -->
+		<task name="SearchRepoAuthorCounter" in="SearchClonedRepoEntries" out="OwnerRepoAuthorCountEntries"/>
+		
+		<!-- queues of unique author count of repositories cloned from GitHub  -->
+		<queue name="OwnerRepoAuthorCountEntries" type="OwnerRepoAuthorCountTuple"/> 
+		
+		<!-- csv sink for printing unique author count of repositories cloned from GitHub -->
+		<csvsink name="SearchRepoAuthorCountCsvSink" in="OwnerRepoAuthorCountEntries" filename="reposAuthorCount.csv"/>
+				
+		<!-- Github JavaProjects: github owner/repo -->
+		<type name="OwnerRepoTuple">
+			<field name="repoOwner" type="String"/>
+			<field name="repoRemote" type="String"/>
+		</type>
+		
+		<!-- SearchClonedRepoEntries: github owner/repo, repo remote URL, repo local path -->
+		<type name="OwnerRepoUrlTuple">
+			<field name="repoOwner" type="String"/>
+			<field name="repoRemote" type="String"/>
+			<field name="repoLocal" type="String"/>
+		</type>
+		
+		<!-- github owner/repo, repo remote URL, count -->
+		<type name="OwnerRepoAuthorCountTuple">
+			<field name="repoOwner" type="String"/>
+			<field name="repoRemote" type="String"/>
+			<field name="authorCount" type="Integer"/> <!-- unique author count -->
+		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.github.topsearch" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

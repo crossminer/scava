@@ -48,32 +48,32 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 
 	/**
-	 * Extended request data key to hold editpart visual id.
-	 * @generated
-	 */
+	* Extended request data key to hold editpart visual id.
+	* @generated
+	*/
 	public static final String VISUAL_ID_KEY = "visual_id"; //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private final IElementType myElementType;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected CrossflowBaseItemSemanticEditPolicy(IElementType elementType) {
 		myElementType = elementType;
 	}
 
 	/**
-	 * Extended request data key to hold editpart visual id.
-	 * Add visual id of edited editpart to extended data of the request
-	 * so command switch can decide what kind of diagram element is being edited.
-	 * It is done in those cases when it's not possible to deduce diagram
-	 * element kind from domain element.
-	 * 
-	 * @generated
-	 */
+	* Extended request data key to hold editpart visual id.
+	* Add visual id of edited editpart to extended data of the request
+	* so command switch can decide what kind of diagram element is being edited.
+	* It is done in those cases when it's not possible to deduce diagram
+	* element kind from domain element.
+	* 
+	* @generated
+	*/
 	public Command getCommand(Request request) {
 		if (request instanceof ReconnectRequest) {
 			Object view = ((ReconnectRequest) request).getConnectionEditPart().getModel();
@@ -86,17 +86,17 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	}
 
 	/**
-	 * Returns visual id from request parameters.
-	 * @generated
-	 */
+	* Returns visual id from request parameters.
+	* @generated
+	*/
 	protected int getVisualID(IEditCommandRequest request) {
 		Object id = request.getParameter(VISUAL_ID_KEY);
 		return id instanceof Integer ? ((Integer) id).intValue() : -1;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getSemanticCommand(IEditCommandRequest request) {
 		IEditCommandRequest completedRequest = completeRequest(request);
 		Command semanticCommand = getSemanticCommandSwitch(completedRequest);
@@ -109,20 +109,21 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command addDeleteViewCommand(Command mainCommand, DestroyRequest completedRequest) {
 		Command deleteViewCommand = getGEFWrapper(new DeleteCommand(getEditingDomain(), (View) getHost().getModel()));
 		return mainCommand == null ? deleteViewCommand : mainCommand.chain(deleteViewCommand);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private Command getEditHelperCommand(IEditCommandRequest request, Command editPolicyCommand) {
 		if (editPolicyCommand != null) {
 			ICommand command = editPolicyCommand instanceof ICommandProxy
-					? ((ICommandProxy) editPolicyCommand).getICommand() : new CommandProxy(editPolicyCommand);
+					? ((ICommandProxy) editPolicyCommand).getICommand()
+					: new CommandProxy(editPolicyCommand);
 			request.setParameter(GeneratedEditHelperBase.EDIT_POLICY_COMMAND, command);
 		}
 		IElementType requestContextElementType = getContextElementType(request);
@@ -140,16 +141,16 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private IElementType getContextElementType(IEditCommandRequest request) {
 		IElementType requestContextElementType = CrossflowElementTypes.getElementType(getVisualID(request));
 		return requestContextElementType != null ? requestContextElementType : myElementType;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getSemanticCommandSwitch(IEditCommandRequest req) {
 		if (req instanceof CreateRelationshipRequest) {
 			return getCreateRelationshipCommand((CreateRelationshipRequest) req);
@@ -178,101 +179,101 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getConfigureCommand(ConfigureRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getCreateRelationshipCommand(CreateRelationshipRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getSetCommand(SetRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getEditContextCommand(GetEditContextRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getDestroyElementCommand(DestroyElementRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getDestroyReferenceCommand(DestroyReferenceRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getDuplicateCommand(DuplicateElementsRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getMoveCommand(MoveRequest req) {
 		return null;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getReorientReferenceRelationshipCommand(ReorientReferenceRelationshipRequest req) {
 		return UnexecutableCommand.INSTANCE;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getReorientRelationshipCommand(ReorientRelationshipRequest req) {
 		return UnexecutableCommand.INSTANCE;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected final Command getGEFWrapper(ICommand cmd) {
 		return new ICommandProxy(cmd);
 	}
 
 	/**
-	 * Returns editing domain from the host edit part.
-	 * @generated
-	 */
+	* Returns editing domain from the host edit part.
+	* @generated
+	*/
 	protected TransactionalEditingDomain getEditingDomain() {
 		return ((IGraphicalEditPart) getHost()).getEditingDomain();
 	}
 
 	/**
-	 * Clean all shortcuts to the host element from the same diagram
-	 * @generated
-	 */
+	* Clean all shortcuts to the host element from the same diagram
+	* @generated
+	*/
 	protected void addDestroyShortcutsCommand(ICompositeCommand cmd, View view) {
 		assert view.getEAnnotation("Shortcut") == null; //$NON-NLS-1$
 		for (Iterator it = view.getDiagram().getChildren().iterator(); it.hasNext();) {
@@ -286,8 +287,8 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public static LinkConstraints getLinkConstraints() {
 		LinkConstraints cached = CrossflowDiagramEditorPlugin.getInstance().getLinkConstraints();
 		if (cached == null) {
@@ -302,15 +303,15 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	public static class LinkConstraints {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		LinkConstraints() {
 			// use static method #getLinkConstraints() to access instance
 		}
 
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		public boolean canCreateStreamType_4001(Stream source, Type target) {
 			if (source != null) {
 				if (source.getType() != null) {
@@ -322,34 +323,40 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-		* @generated
-		*/
-		public boolean canCreateTaskInput_4002(Task source, Stream target) {
+		 * @generated
+		 */
+		public boolean canCreateStreamInputOf_4005(Stream source, Task target) {
 			if (source != null) {
-				if (source.getInput().contains(target)) {
+				if (source.getInputOf().contains(target)) {
 					return false;
 				}
 			}
+			if (target != null && (target.getInput().contains(target))) {
+				return false;
+			}
 
-			return canExistTaskInput_4002(source, target);
+			return canExistStreamInputOf_4005(source, target);
 		}
 
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		public boolean canCreateTaskOutput_4003(Task source, Stream target) {
 			if (source != null) {
 				if (source.getOutput().contains(target)) {
 					return false;
 				}
 			}
+			if (target != null && (target.getOutputOf().contains(target))) {
+				return false;
+			}
 
 			return canExistTaskOutput_4003(source, target);
 		}
 
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		public boolean canCreateTypeExtending_4004(Type source, Type target) {
 			if (source != null) {
 				if (source.getExtending().contains(target)) {
@@ -370,7 +377,7 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		* @generated
 		*/
-		public boolean canExistTaskInput_4002(Task source, Stream target) {
+		public boolean canExistStreamInputOf_4005(Stream source, Task target) {
 			return true;
 		}
 

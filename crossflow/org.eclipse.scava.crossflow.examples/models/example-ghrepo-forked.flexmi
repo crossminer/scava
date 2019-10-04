@@ -1,0 +1,35 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<!-- Example demonstrating how to implement non-static committment using RestMule -->
+	<workflow name="GhRepoExample">
+	
+		<source name="GhRepoSource" out="GhRepos"/>
+		
+		<queue name="GhRepos" type="GhRepo"/>
+		
+	<task masterOnly="false" name="GhRepoCounter" in="GhRepos" out="ResultsPublisher"/>
+	<task masterOnly="false" name="GhRepoCounter2" in="GhRepos" out="ResultsPublisher2"/>
+			
+		<queue name="ResultsPublisher" type="Result"/>
+		<queue name="ResultsPublisher2" type="Result"/>
+
+		<sink name="EmptySink" in="ResultsPublisher" />
+		<sink name="EmptySink2" in="ResultsPublisher2" />
+		
+		<type name="GhRepo">
+			<field name="repoUrl" type="String"/>
+		</type>
+		
+		<type name="Result">
+			<field name="technology" type="String"/>
+			<field name="repos" type="Integer"/>
+			<field name="files" type="Integer"/>
+			<field name="authors" type="Integer"/>
+		</type>
+		
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo.forked" genOutputFolder="src-gen" outputFolder="src"/>
+	</workflow>	
+	
+</_>

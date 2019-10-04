@@ -1,0 +1,76 @@
+{
+  "vertices": [
+    {
+      "type": "Source",
+      "label": "LineSource",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Task",
+      "label": "WordCounter",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Sink",
+      "label": "WordCountSink",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Queue",
+      "label": "Lines",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    },
+    {
+      "type": "Queue",
+      "label": "WordFrequencies",
+      "x": 0,
+      "y": 0,
+      "width": -1,
+      "height": -1
+    }  ],
+  "edges": [
+    {
+      "source": "LineSource",
+      "target": "Lines",
+      "endArrow": "classic"
+    },
+    {
+      "source": "Lines",
+      "target": "WordCounter",
+      "endArrow": "classic"
+    },
+    {
+      "source": "Lines",
+      "target": "Line",
+      "endArrow": "none"
+    },
+    {
+      "source": "WordCounter",
+      "target": "WordFrequencies",
+      "endArrow": "classic"
+    },
+    {
+      "source": "WordFrequencies",
+      "target": "WordCountSink",
+      "endArrow": "classic"
+    },
+    {
+      "source": "WordFrequencies",
+      "target": "WordFrequency",
+      "endArrow": "none"
+    }  
+  ],
+  "auto": true
+}
