@@ -10,16 +10,16 @@
 			"type" : "text"
 		},
 		"severity" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"bug_id" : {
 			"type" : "keyword"
 		},
 		"project_name" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"creator" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"uid" : {
 			"type" : "keyword"

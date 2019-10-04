@@ -10,19 +10,19 @@
 			"type" : "text" 
 		}, 
 		"emotional_dimension" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"sentiment" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"plain_text" : { 
 			"type" : "text" 
 		}, 
 		"request_reply_classification" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"content_class" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"contains_code" : { 
 			"type" : "boolean" 
@@ -31,10 +31,10 @@
 			"type" : "keyword" 
 		}, 
 		"project_name" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"creator" : { 
-			"type" : "text" 
+			"type" : "keyword" 
 		}, 
 		"created_at" : { 
 			"type" : "date" 
