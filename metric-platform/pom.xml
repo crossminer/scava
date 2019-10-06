@@ -265,8 +265,8 @@
     <module>platform/org.eclipse.scava.repository.model</module>
     <module>platform/org.eclipse.scava.repository.model.importer</module>
 	<module>tests/org.eclipse.scava.platform.tests</module>
-	<module>tests/org.eclipse.scava.platform.vcs.git.tests</module>
-    <!--<mmodule>tests/org.eclipse.scava.platform.client.api.tests</module>
+	<!--<module>tests/org.eclipse.scava.platform.vcs.git.tests</module>
+    <mmodule>tests/org.eclipse.scava.platform.client.api.tests</module>
     <module>tests/org.eclipse.scava.platform.importers.tests</module>
     <module>tests/org.eclipse.scava.platform.osgi.tests</module>
     <module>tests/org.eclipse.scava.platform.vcs.svn.tests</module>
