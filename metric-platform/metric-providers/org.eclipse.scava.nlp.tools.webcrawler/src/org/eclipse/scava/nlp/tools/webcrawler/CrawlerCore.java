@@ -74,7 +74,7 @@ class CrawlerCore extends WebCrawler {
         } 
         catch (IOException e)
         {
-        	logger.error("Error while creating the core for the crawler: "+e);
+        	logger.error("Error while visiting the website to crawl: "+e);
         }
 	}
 	
