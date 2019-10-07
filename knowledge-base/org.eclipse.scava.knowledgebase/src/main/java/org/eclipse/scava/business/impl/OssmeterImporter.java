@@ -100,8 +100,6 @@ public class OssmeterImporter implements IImporter {
 			result.setSsh_url((String) obj.get("ssh_url"));
 		if (obj.get("svn_url") != null)
 			result.setSvn_url((String) obj.get("svn_url"));
-		if (obj.get("shortName") != null)
-			result.setMetricPlatformId((String) obj.get("shortName"));
 		if (obj.get("description") != null)
 			result.setDescription((String) obj.get("description"));
 		if (obj.get("descritpion") != null)
@@ -132,6 +130,7 @@ public class OssmeterImporter implements IImporter {
 				Artifact art = importer.importProject(result.getHomePage().replace("https://github.com/",""), access_token);
 				setArtifactFromJson(art, obj);
 				projectRepository.delete(art.getId());
+				art.setMetricPlatformId(result.getShortName());
 				art.setId(result.getId());
 				result = art;
 			}catch(Exception e) {
