@@ -116,12 +116,4 @@ public class Crawler {
 		return core.getMappingPaths();
 	}
 	
-	public static void main(String[] args) {
-		Crawler crawler = new Crawler(new File("C:/Users/diegol/scava/ToDelete/"), Arrays.asList("https://scava-docs.readthedocs.io/en/latest/"));
-		crawler.start();
-		crawler.getMappingPaths();
-		System.err.println("Finished");
-	}
-	
-
 }
