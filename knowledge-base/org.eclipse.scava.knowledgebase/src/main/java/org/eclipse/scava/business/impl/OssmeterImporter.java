@@ -65,6 +65,8 @@ public class OssmeterImporter implements IImporter {
 	@Autowired
 	private ArtifactRepository projectRepository;
 
+	@Autowired
+	private GithubImporter importer;
 	private static final Logger logger = LoggerFactory.getLogger(OssmeterImporter.class);
 
 	private static String readAll(Reader rd) throws IOException {
@@ -73,6 +75,38 @@ public class OssmeterImporter implements IImporter {
 		while ((cp = rd.read()) != -1)
 			sb.append((char) cp);
 		return sb.toString();
+	}
+
+	private Artifact setArtifactFromJson(Artifact result, JSONObject obj) {
+		if (obj.get("clone_url") != null)
+			result.setClone_url((String) obj.get("clone_url"));
+		if (obj.get("full_name") != null)
+			result.setFullName((String) obj.get("full_name"));
+		if (obj.get("fork") != null)
+			result.setFork((boolean) obj.get("fork"));
+		if (obj.get("git_url") != null)
+			result.setGit_url((String) obj.get("git_url"));
+		if (obj.get("html_url") != null)
+			result.setHtml_url((String) obj.get("html_url"));
+		if (obj.get("name") != null)
+			result.setName((String) obj.get("name"));
+		if (obj.get("_private") != null)
+			result.setPrivate_((boolean) obj.get("_private"));
+		if (obj.get("shortName") != null)
+			result.setShortName((String) obj.get("shortName"));
+		if (obj.get("size") != null)
+			result.setSize((long) obj.get("size"));
+		if (obj.get("ssh_url") != null)
+			result.setSsh_url((String) obj.get("ssh_url"));
+		if (obj.get("svn_url") != null)
+			result.setSvn_url((String) obj.get("svn_url"));
+		if (obj.get("shortName") != null)
+			result.setMetricPlatformId((String) obj.get("shortName"));
+		if (obj.get("description") != null)
+			result.setDescription((String) obj.get("description"));
+		if (obj.get("descritpion") != null)
+			result.setReadmeText((String) obj.get("description"));
+		return result;
 	}
 
 	@Override
@@ -90,33 +124,34 @@ public class OssmeterImporter implements IImporter {
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 		String jsonText = readAll(bufferReader);
 		JSONObject obj = (JSONObject) JSONValue.parse(jsonText);
-		if (obj.get("clone_url") != null) result.setClone_url((String) obj.get("clone_url"));
-		if (obj.get("full_name") != null) result.setFullName((String) obj.get("full_name"));
-		if (obj.get("fork") != null) result.setFork((boolean) obj.get("fork"));
-		if (obj.get("git_url") != null) result.setGit_url((String) obj.get("git_url"));
-		if (obj.get("html_url") != null) result.setHtml_url((String) obj.get("html_url"));
-		if (obj.get("name") != null) result.setName((String) obj.get("name"));
-		if (obj.get("_private") != null) result.setPrivate_((boolean) obj.get("_private"));
-		if (obj.get("shortName") != null) result.setShortName((String) obj.get("shortName"));
-		if (obj.get("size") != null) result.setSize((long) obj.get("size"));
-		if (obj.get("ssh_url") != null) result.setSsh_url((String) obj.get("ssh_url"));
-		if (obj.get("svn_url") != null) result.setSvn_url((String) obj.get("svn_url"));
-		if (obj.get("shortName") != null) result.setMetricPlatformId((String) obj.get("shortName"));
-		if (obj.get("description") != null) result.setDescription((String) obj.get("description"));
-		if (obj.get("descritpion") != null) result.setReadmeText((String) obj.get("description"));
-		is.close();
+		setArtifactFromJson(result, obj);
+		
 		bufferReader.close();
-		result.setStarred(getStargazers(projectName));
-		storeGithubUser(result.getStarred(), result.getFullName());
+		if(result.getHomePage().startsWith("https://github.com/")) {
+			try {
+				Artifact art = importer.importProject(result.getHomePage().replace("https://github.com/",""), access_token);
+				setArtifactFromJson(art, obj);
+				projectRepository.delete(art.getId());
+				art.setId(result.getId());
+				result = art;
+			}catch(Exception e) {
+				
+			}
+		}
+		else {
+			result.setStarred(getStargazers(projectName));
+			storeGithubUser(result.getStarred(), result.getFullName());
+		}
 		try {
-			result.setDependencies(getDependencies(projectName));
+			List<String> deps = getDependencies(projectName);
+			if(deps.size() > 0)	result.setDependencies(deps);
 		} catch (Exception e) {
 			logger.error("Import dependencies failed: {}", e.getMessage());
 		}
+		is.close();
 		projectRepository.save(result);
 		return result;
 	}
-	
 
 	private List<Stargazers> getStargazers(String artId) {
 		List<Stargazers> result = new ArrayList<>();
@@ -156,11 +191,11 @@ public class OssmeterImporter implements IImporter {
 			JSONArray array = (JSONArray) JSONValue.parse(jsonText);
 			for (Object object : array) {
 				String dependency = (String) ((JSONObject) object).get("value");
-				dependency = dependency.replace("bundle://maven/","");
-				String [] splitted = dependency.split("/");
+				dependency = dependency.replace("bundle://maven/", "");
+				String[] splitted = dependency.split("/");
 				if (splitted.length == 3)
 					result.add(splitted[0] + ":" + splitted[1]);
-				else 
+				else
 					result.add(dependency);
 			}
 			is.close();
@@ -176,15 +211,16 @@ public class OssmeterImporter implements IImporter {
 	public void importAll() {
 		importAll(ossmeterUrl);
 	}
-	
+
 	public void importAll(String mppUrl) {
 		boolean guard = true;
 		int page = 0;
 		while (guard) {
 			try {
-				if(!mppUrl.startsWith("http://"))
+				if (!mppUrl.startsWith("http://"))
 					ossmeterUrl2 = "http://" + mppUrl + "/";
-				else ossmeterUrl2 = mppUrl + "/";
+				else
+					ossmeterUrl2 = mppUrl + "/";
 				URL url = new URL(ossmeterUrl2 + "projects/?page=" + page + "&size=" + pageSize);
 				URLConnection connection = url.openConnection();
 				connection.connect();
@@ -267,6 +303,5 @@ public class OssmeterImporter implements IImporter {
 		} catch (IOException e) {
 
 		}
-
 	}
 }
