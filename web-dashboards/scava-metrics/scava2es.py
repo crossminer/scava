@@ -567,7 +567,7 @@ def enrich_recommendations(scava_recommendations, meta_info=None):
         recommendation_data = scava_recommendation['data']
         eitem = recommendation_data
 
-        eitem['readme'] = eitem['readme'][:KEYWORD_MAX_SIZE]
+        eitem['readme'] = eitem['readme'][:KEYWORD_MAX_SIZE] if eitem.get('readme', None) else None
         # common fields
         eitem['datetime'] = str_to_datetime(eitem['updated']).isoformat()
         eitem['uuid'] = uuid(eitem['recommendation_type'], eitem['id'], eitem['url'], eitem['updated'])
