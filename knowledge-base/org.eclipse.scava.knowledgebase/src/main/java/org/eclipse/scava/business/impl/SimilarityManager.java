@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.xml.ws.soap.Addressing;
-
-import org.apache.commons.compress.utils.Lists;
 import org.bson.types.ObjectId;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
@@ -64,27 +61,10 @@ public class SimilarityManager implements ISimilarityManager {
 	@Autowired
 	MongoOperations mongoOperations;
 	
-	
+	@Autowired
 	List<ISimilarityCalculator> simCalcs;
-	@Autowired
-	private ReadmeSimilarityCalculator readme;
-	@Autowired
-	private CROSSRecSimilarityCalculator crossRec;
-	@Autowired
-	private CROSSSimSimilarityCalculator crossSim;
-	@Autowired
-	private DependencySimilarityCalculator dependendy;
-	@Autowired
-	private CompoundSimilarityCalculator compound;
-	
 	@Override
 	public void storeSimilarityDistances() {
-		simCalcs = new ArrayList();
-		simCalcs.add(readme);
-		simCalcs.add(crossRec);
-		simCalcs.add(crossSim);
-		simCalcs.add(dependendy);
-		simCalcs.add(compound);
 		storeSimilarityDistances(simCalcs);
 	}
 	
