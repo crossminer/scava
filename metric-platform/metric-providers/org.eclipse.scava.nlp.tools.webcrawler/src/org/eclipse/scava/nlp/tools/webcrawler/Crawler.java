@@ -63,7 +63,7 @@ public class Crawler {
         createCrawler(config, storing, urlSeeds);
 	}
 	
-	public Crawler(File storing, List<String> urlSeeds, String loginURL, String username, String password, String usernameFieldName, String passwordFieldName)
+	public Crawler(File storing, List<String> urlSeeds, String loginURL, String username, String password, String usernameFieldName, String passwordFieldName) throws MalformedURLException
 	{
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		CrawlConfig config = new CrawlConfig();
@@ -76,15 +76,15 @@ public class Crawler {
         createCrawler(config, storing, urlSeeds);
 	}
 	
-	private AuthInfo createAuthethicator(String username, String password, String loginURL, String usernameFieldName, String passwordFieldName)
+	private AuthInfo createAuthethicator(String username, String password, String loginURL, String usernameFieldName, String passwordFieldName) throws MalformedURLException
 	{
 		try {
 			return new FormAuthInfo(username, password, loginURL,usernameFieldName,passwordFieldName);
 		}
 		catch (MalformedURLException e) {
 			logger.error("Error while creating elements for authenticating in website to crawl:"+e);
+			throw e;
 		}
-		return null;
 	}
 	
 	
