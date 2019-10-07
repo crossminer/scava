@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.authentication.AuthInfo;
@@ -19,8 +21,11 @@ public class Crawler {
 	private CrawlController controller;
 	private CrawlerCore core;
 	
+	protected OssmeterLogger logger;
+	
 	public Crawler(File storing, List<String> urlSeeds, int maxDept, int maxPages)
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		CrawlConfig config = new CrawlConfig();
 		config.setIncludeHttpsPages(true);
 		config.setPolitenessDelay(1000);
@@ -33,6 +38,7 @@ public class Crawler {
 	
 	public Crawler(File storing, List<String> urlSeeds, int maxDept, int maxPages,String loginURL, String username, String password, String usernameFieldName, String passwordFieldName) throws MalformedURLException
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		CrawlConfig config = new CrawlConfig();
 		config.setIncludeHttpsPages(true);
 		config.setPolitenessDelay(1000);
@@ -46,6 +52,7 @@ public class Crawler {
 	
 	public Crawler(File storing, List<String> urlSeeds)
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		CrawlConfig config = new CrawlConfig();
 		config.setIncludeHttpsPages(true);
 		config.setPolitenessDelay(1000);
@@ -56,8 +63,9 @@ public class Crawler {
         createCrawler(config, storing, urlSeeds);
 	}
 	
-	public Crawler(File storing, List<String> urlSeeds, String loginURL, String username, String password, String usernameFieldName, String passwordFieldName) throws MalformedURLException
+	public Crawler(File storing, List<String> urlSeeds, String loginURL, String username, String password, String usernameFieldName, String passwordFieldName)
 	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		CrawlConfig config = new CrawlConfig();
 		config.setIncludeHttpsPages(true);
 		config.setPolitenessDelay(1000);
@@ -68,9 +76,15 @@ public class Crawler {
         createCrawler(config, storing, urlSeeds);
 	}
 	
-	private AuthInfo createAuthethicator(String username, String password, String loginURL, String usernameFieldName, String passwordFieldName) throws MalformedURLException
+	private AuthInfo createAuthethicator(String username, String password, String loginURL, String usernameFieldName, String passwordFieldName)
 	{
-		return new FormAuthInfo(username, password, loginURL,usernameFieldName,passwordFieldName);
+		try {
+			return new FormAuthInfo(username, password, loginURL,usernameFieldName,passwordFieldName);
+		}
+		catch (MalformedURLException e) {
+			logger.error("Error while creating elements for authenticating in website to crawl:"+e);
+		}
+		return null;
 	}
 	
 	
@@ -101,8 +115,7 @@ public class Crawler {
 			
 		}  
         catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error in the creation of a crawler:"+e);
 		}
 	}
 	

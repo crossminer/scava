@@ -8,4 +8,6 @@ Bundle-Activator: org.eclipse.scava.nlp.tools.webcrawler.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
- edu.uci.ics.crawler4j
+ edu.uci.ics.crawler4j,
+ org.eclipse.scava.platform,
+ org.apache.log4j

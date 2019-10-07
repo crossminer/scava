@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -17,13 +19,15 @@ class CrawlerCore extends WebCrawler {
 	
 	private Pattern imageExtensions = Pattern.compile("\\.(jpe?g|png|bmp|gif|tiff|ai|raw|psd|indd|psd|eps)$");
 	private Pattern zipExtensions = Pattern.compile("\\.(zip|rar|tar|tgz|gz)$");
-
+	
+	protected OssmeterLogger logger;
 	
 	private List<String> urlSeeds;
 	private File storing;
 	private HashMap<String,String> mappingPaths;
 	
 	public CrawlerCore(File storing, List<String> urlSeeds) {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("nlp.tools.webcrawler");
 		this.urlSeeds=urlSeeds;
 		this.storing=storing;
 		this.mappingPaths = new HashMap<String,String>();
@@ -70,7 +74,7 @@ class CrawlerCore extends WebCrawler {
         } 
         catch (IOException e)
         {
-        	e.printStackTrace();
+        	logger.error("Error while creating the core for the crawler: "+e);
         }
 	}
 	
