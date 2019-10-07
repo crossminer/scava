@@ -2451,24 +2451,4 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.scava.crossflow.restmule.client.github"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.scava.crossflow.restmule.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.scava.crossflow.restmule.dependencies"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
 </feature>
