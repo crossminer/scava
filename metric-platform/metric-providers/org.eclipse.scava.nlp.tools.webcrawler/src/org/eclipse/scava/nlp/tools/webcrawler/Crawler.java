@@ -79,7 +79,7 @@ public class Crawler {
 	private void createCrawler(CrawlConfig config, File storing, List<String> urlSeeds)
 	{
 		
-		config.setIncludeBinaryContentInCrawling(false);
+		config.setIncludeBinaryContentInCrawling(true);
         config.setResumableCrawling(false);
         config.setMaxDownloadSize(6250000); //50mb
         
