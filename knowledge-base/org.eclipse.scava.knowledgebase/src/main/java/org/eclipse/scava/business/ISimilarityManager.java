@@ -12,6 +12,7 @@ package org.eclipse.scava.business;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.scava.business.dto.ArtifactSimDto;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.Relation;
 
@@ -40,4 +41,7 @@ public interface ISimilarityManager {
 	void storeDistanceMatrix(Table<String, String, Double> distanceMatrix, ISimilarityCalculator similarityCalculator);
 	void deleteRelations(ISimilarityCalculator simCalculator);
 	List<Relation> getRelations(ISimilarityCalculator simCalculator);
+	List<Artifact> getSimilarProjects(Artifact prj1, ISimilarityCalculator similarityCalculator, double numResult);
+	List<ArtifactSimDto> getSimilarProjectsDto(Artifact prj1, ISimilarityCalculator similarityCalculator,
+			double numResult);
 }

@@ -25,6 +25,7 @@ import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
+import org.eclipse.scava.business.dto.ArtifactSimDto;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationType;
@@ -190,6 +191,16 @@ public class RecommenderManager implements IRecommenderManager {
 		Artifact p1 = artifactRepository.findOne(projectId);
 		try {
 			return similarityManager.getSimilarProjects(p1, getSimilarityCalculator(similarityFunction), numOfResult);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ArrayList<>();
+		}
+	}
+	@Override
+	public List<ArtifactSimDto> getSimilarProjects(String projectId, String similarityFunction, double numOfResult) {
+		Artifact p1 = artifactRepository.findOne(projectId);
+		try {
+			return similarityManager.getSimilarProjectsDto(p1, getSimilarityCalculator(similarityFunction), numOfResult);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ArrayList<>();

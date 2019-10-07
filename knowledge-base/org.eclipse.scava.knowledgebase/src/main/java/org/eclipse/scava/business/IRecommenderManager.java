@@ -12,6 +12,7 @@ package org.eclipse.scava.business;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.scava.business.dto.ArtifactSimDto;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationType;
@@ -31,4 +32,5 @@ public interface IRecommenderManager {
 	List<Artifact> getArtifactsByQuery(String projectQuery);
 	List<Artifact> getArtifactsByQuery(String projectQuery, Pageable page);
 	Cluster getClusterByArtifact(String artId, String simCalculator, String clusterAlgorithm);
+	List<ArtifactSimDto> getSimilarProjects(String projectId, String similarityFunction, double numOfResult);
 }

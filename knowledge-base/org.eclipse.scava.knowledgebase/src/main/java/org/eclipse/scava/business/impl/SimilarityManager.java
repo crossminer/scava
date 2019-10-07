@@ -22,6 +22,7 @@ import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.ISingleSimilarityCalculator;
+import org.eclipse.scava.business.dto.ArtifactSimDto;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.integration.RelationRepository;
 import org.eclipse.scava.business.integration.RelationTypeRepository;
@@ -273,6 +274,50 @@ public class SimilarityManager implements ISimilarityManager {
 			else
 				// results.add(rel.getFromProject());
 				results.add(artifactRepository.findOne(rel.getFromProject().getId()));
+		}
+		return results;
+	}
+	@Override
+	public List<Artifact> getSimilarProjects(Artifact prj1, ISimilarityCalculator similarityCalculator, double numResult) {
+
+		Query q1 = new Query(Criteria.where("type.name").is(similarityCalculator.getSimilarityName()).orOperator(
+				Criteria.where("toArtifact.$id").is(new ObjectId(prj1.getId())),
+				Criteria.where("fromArtifact.$id").is(new ObjectId(prj1.getId()))));
+		q1.addCriteria(Criteria.where("value").gt(numResult));
+		q1.with(new Sort(Sort.Direction.DESC, "value"));
+		
+		List<Relation> r1 = mongoOperations.find(q1, Relation.class);
+		List<Artifact> results = new ArrayList<>();
+		for (Relation rel : r1) {
+			if (rel.getFromProject().getId().equals(prj1.getId()))
+				// results.add(rel.getToProject());
+				results.add(artifactRepository.findOne(rel.getToProject().getId()));
+			else
+				// results.add(rel.getFromProject());
+				results.add(artifactRepository.findOne(rel.getFromProject().getId()));
+		}
+		return results;
+	}
+	
+	@Override
+	public List<ArtifactSimDto> getSimilarProjectsDto(Artifact prj1, ISimilarityCalculator similarityCalculator, double numResult) {
+
+		Query q1 = new Query(Criteria.where("type.name").is(similarityCalculator.getSimilarityName()).orOperator(
+				Criteria.where("toArtifact.$id").is(new ObjectId(prj1.getId())),
+				Criteria.where("fromArtifact.$id").is(new ObjectId(prj1.getId()))));
+		q1.addCriteria(Criteria.where("value").gt(numResult));
+		q1.with(new Sort(Sort.Direction.DESC, "value"));
+		
+		List<Relation> r1 = mongoOperations.find(q1, Relation.class);
+		List<ArtifactSimDto> results = new ArrayList<>();
+		for (Relation rel : r1) {
+			if (rel.getFromProject().getId().equals(prj1.getId()))
+				// results.add(rel.getToProject());
+				
+				results.add(new ArtifactSimDto(artifactRepository.findOne(rel.getToProject().getId()), rel.getValue()));
+			else
+				// results.add(rel.getFromProject());
+				results.add(new ArtifactSimDto(artifactRepository.findOne(rel.getFromProject().getId()),rel.getValue()));
 		}
 		return results;
 	}

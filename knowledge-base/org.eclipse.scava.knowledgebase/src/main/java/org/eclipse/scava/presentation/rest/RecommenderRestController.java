@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.compress.utils.Lists;
 import org.eclipse.scava.business.IRecommenderManager;
+import org.eclipse.scava.business.dto.ArtifactSimDto;
 import org.eclipse.scava.business.dto.Dependency;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
@@ -114,6 +115,18 @@ public class RecommenderRestController {
 					+ "RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
 			@ApiParam(value = "This parameter specifies the string ID of a specific artifact.", required = true) @PathVariable("id") String id,
 			@ApiParam(value = "Number of expected projects in the results", required = true) @PathVariable("num") int num) {
+
+		return recommenderManager.getSimilarProjects(id, simFunction, num);
+	}
+	
+	@ApiOperation(value = "This resource is used to retrieve projects that are similar to a given project.")
+	@RequestMapping(value = "similar/p/{id}/m/{sim_method}/t/{treshold}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+	public @ResponseBody List<ArtifactSimDto> getSimilarProjectByTreshold(
+			@ApiParam(value = "results are computed by using the similarity function specified as parameter.  "
+					+ "String value which can be Compound, CrossSim, Dependency, CrossRec, Readme, "
+					+ "RepoPalCompound or RepoPalCompoundV2.", required = true) @PathVariable("sim_method") String simFunction,
+			@ApiParam(value = "This parameter specifies the string ID of a specific artifact.", required = true) @PathVariable("id") String id,
+			@ApiParam(value = "Treshold", required = true) @PathVariable("treshold") double num) {
 
 		return recommenderManager.getSimilarProjects(id, simFunction, num);
 	}
