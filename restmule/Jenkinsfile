@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '1'))
+  }
+  stages {
+    stage('Build Restmule') {
+      steps {
+        dir(path: 'restmule/') {
+          sh 'mvn clean package'
+        }
+      }
+    }
+  }
+  post {
+    success {
+      archiveArtifacts 'restmule/**/target/*.jar'
+    }
+    always {
+	  	deleteDir()
+		}
+  }
+}
