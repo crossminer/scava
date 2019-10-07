@@ -16,8 +16,5 @@ pipeline {
     success {
       archiveArtifacts 'restmule/**/target/*.jar'
     }
-    always {
-	  	deleteDir()
-		}
   }
 }
