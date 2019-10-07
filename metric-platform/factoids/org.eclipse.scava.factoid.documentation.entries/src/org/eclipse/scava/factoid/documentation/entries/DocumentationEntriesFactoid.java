@@ -35,9 +35,9 @@ public class DocumentationEntriesFactoid extends AbstractFactoidMetricProvider {
 
 	@Override
 	public String getSummaryInformation() {
-		return "This plugin generates the factoid regarding documentation entries. According to"
-				+ "the sections found in the documentation, the platform determines"
-				+ "which sections should be added or better indicated to have a good documentation.";
+		return "This plugin generates the factoid regarding which sections have been found and which are"
+				+ "missing in the documentation. "
+				+ " This can help to understand which sections should be added or better indicated to have a better documentation.";
 	}
 
 	@Override
