@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Entries
+Bundle-SymbolicName: org.eclipse.scava.factoid.documentation.entries;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.scava.factoid.documentation.entries
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.runtime,
+ com.googlecode.pongo.runtime,
+ org.eclipse.scava.platform,
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.repository.model.documentation.gitbased,
+ org.eclipse.scava.repository.model.documentation.systematic,
+ org.eclipse.scava.repository.model.vcs.git,
+ org.eclipse.scava.metricprovider.trans.documentation.classification

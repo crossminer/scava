@@ -530,6 +530,9 @@
 	<module>
 		metric-providers/org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas
 	</module>
+	<module>
+		factoids/org.eclipse.scava.factoid.documentation.entries
+	</module>
   </modules>
   <build>
     <plugins>
