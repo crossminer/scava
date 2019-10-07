@@ -2,7 +2,6 @@ package org.eclipse.scava.nlp.tools.webcrawler;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
