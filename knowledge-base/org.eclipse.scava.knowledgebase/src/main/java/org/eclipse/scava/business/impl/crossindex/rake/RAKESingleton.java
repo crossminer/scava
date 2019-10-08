@@ -28,7 +28,7 @@ class RAKESingleton {
 	private List<Pattern> semiStopwordsPatterns;
 
 	private RAKESingleton() {
-		logger = LoggerFactory.getLogger("nlp.tools.rake");
+		logger = LoggerFactory.getLogger("impl.crossindex.rake");
 		try
 		{
 			stopwords = new ArrayList<String>();
