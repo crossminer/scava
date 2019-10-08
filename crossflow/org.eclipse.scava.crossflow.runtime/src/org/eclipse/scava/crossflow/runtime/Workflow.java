@@ -2,20 +2,41 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
-import javax.management.*;
-import javax.management.remote.*;
+import javax.management.MBeanServerConnection;
+import javax.management.MBeanServerInvocationHandler;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
+import org.eclipse.scava.crossflow.runtime.utils.DefaultLogConsumer;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
+import org.eclipse.scava.crossflow.runtime.utils.LogMessage;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
+import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
+import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus.TaskStatuses;
-import org.eclipse.scava.crossflow.runtime.utils.*;
+
 import com.beust.jcommander.Parameter;
 
 public abstract class Workflow<E extends Enum<E>> {
@@ -65,7 +86,7 @@ public abstract class Workflow<E extends Enum<E>> {
 
 	@Parameter(names = { "-createBroker" }, description = "Whether this workflow creates a broker or not.", arity = 1)
 	protected boolean createBroker = true;
-	
+
 	protected BrokerService brokerService;
 
 	/*
@@ -84,7 +105,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	/*
 	 * I/O
 	 */
-
 	@Parameter(names = {
 			"-inputDirectory" }, description = "The input directory of the workflow.", converter = DirectoryConverter.class)
 	protected File inputDirectory = new File("in").getAbsoluteFile();
@@ -95,14 +115,15 @@ public abstract class Workflow<E extends Enum<E>> {
 
 	protected File runtimeModel = new File("").getParentFile();
 	protected File tempDirectory = null;
-	
+
+	/*
+	 * TRANSPORT
+	 */
 	protected BuiltinStream<LogMessage> logTopic = null;
 	protected BuiltinStream<ControlSignal> controlTopic = null;
 	protected BuiltinStream<TaskStatus> taskStatusTopic = null;
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
-
-	protected CrossflowLogger logger = new CrossflowLogger(this);
 
 	protected BuiltinStream<FailedJob> failedJobsTopic = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
@@ -117,8 +138,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<>();
 	protected Collection<String> terminatedWorkerIds = new HashSet<>();
-	protected Serializer serializer = new Serializer();
-
 	protected Collection<ExecutorService> executorPools = new LinkedList<>();
 
 	protected ExecutorService newExecutor() {
@@ -171,7 +190,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	 * @throws IllegalArgumentException if any value in tasks is {@code null}
 	 * @return the workflow instance
 	 */
-	public abstract Workflow<E> excludeTasks(EnumSet<E> tasks);
+	public abstract Workflow<E> excludeTasks(Collection<E> tasks);
 
 	public boolean isCreateBroker() {
 		return createBroker;
@@ -192,7 +211,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	 * quickly to be registered using the control topic when on the same machine
 	 */
 	public void addActiveWorkerId(String id) {
-		logger.log(SEVERITY.INFO, "Adding worker " + id);
+		logger.log(LogLevel.INFO, "Adding worker " + id);
 		activeWorkerIds.add(id);
 	}
 
@@ -213,15 +232,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	}
 
 	public Workflow() {
-		serializer.register(ControlSignal.class);
-		serializer.register(FailedJob.class);
-		serializer.register(InternalException.class);
-		serializer.register(Job.class);
-		serializer.register(LogMessage.class);
-		serializer.register(StreamMetadata.class);
-		serializer.register(StreamMetadataSnapshot.class);
-		serializer.register(TaskStatus.class);
-
 		taskStatusTopic = new BuiltinStream<>(this, "TaskStatusPublisher");
 		streamMetadataTopic = new BuiltinStream<>(this, "StreamMetadataBroadcaster");
 		taskMetadataTopic = new BuiltinStream<>(this, "TaskMetadataBroadcaster");
@@ -241,7 +251,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	public abstract void sendConfigurations();
 
 	protected void connect() throws Exception {
-
 		if (tempDirectory == null) {
 			tempDirectory = Files.createTempDirectory("crossflow").toFile();
 		}
@@ -423,16 +432,11 @@ public abstract class Workflow<E extends Enum<E>> {
 					failedJobs.add(failedJob);
 				}
 			});
-
-			logTopic.addConsumer(new BuiltinStreamConsumer<LogMessage>() {
-
-				@Override
-				public void consume(LogMessage message) {
-					// TODO do we need to persist log?
-					System.out.println(message.toString());
-					//
-				}
-			});
+			
+			// If the strategy is set to all then log everything
+			if (loggingStrategy == LoggingStrategy.ALL) {
+				logTopic.addConsumer(new DefaultLogConsumer());
+			}
 
 			internalExceptions = new ArrayList<>();
 			internalExceptionsQueue.addConsumer(new BuiltinStreamConsumer<InternalException>() {
@@ -622,9 +626,9 @@ public abstract class Workflow<E extends Enum<E>> {
 	}
 
 	public void run() throws Exception {
-		//
+		setupLogger();
 		if (cacheEnabled && cache == null) {
-			logger.log(SEVERITY.INFO,
+			logger.log(LogLevel.INFO,
 					"cacheEnabled==true but no cache was defined, creating a default DirectoryCache in the temp folder of the machine.");
 			DirectoryCache c = new DirectoryCache();
 			setCache(c);
@@ -726,7 +730,7 @@ public abstract class Workflow<E extends Enum<E>> {
 			if (isMaster()) {
 
 				// ask all workers to terminate
-				logger.log(SEVERITY.INFO, "Asking all workers to terminate.");
+				logger.log(LogLevel.INFO, "Asking all workers to terminate.");
 				controlTopic.send(new ControlSignal(ControlSignals.TERMINATION, getName()));
 
 				long startTime = System.currentTimeMillis();
@@ -735,14 +739,14 @@ public abstract class Workflow<E extends Enum<E>> {
 					// System.out.println(terminatedWorkerIds);
 					// System.out.println(activeWorkerIds);
 					if (terminatedWorkerIds.equals(activeWorkerIds)) {
-						logger.log(SEVERITY.INFO, "All workers terminated, terminating master.");
+						logger.log(LogLevel.INFO, "All workers terminated, terminating master.");
 						System.out.println("all workers terminated, terminating master...");
 						break;
 					}
 					Thread.sleep(100);
 				}
 				System.out.println("terminating master...");
-				logger.log(SEVERITY.INFO, "Terminating master...");
+				logger.log(LogLevel.INFO, "Terminating master...");
 
 			}
 
@@ -960,10 +964,6 @@ public abstract class Workflow<E extends Enum<E>> {
 		this.tempDirectory = tempDirectory;
 	}
 
-	public Serializer getSerializer() {
-		return serializer;
-	}
-
 	/**
 	 * default = 3000
 	 * 
@@ -1041,10 +1041,6 @@ public abstract class Workflow<E extends Enum<E>> {
 		terminationEnabled = enableTermination;
 	}
 
-	public void log(SEVERITY level, String message) {
-		logger.log(level, message);
-	}
-
 	private long timeoutMillis = Long.MAX_VALUE;
 
 	public long getTimeoutMillis() {
@@ -1072,14 +1068,72 @@ public abstract class Workflow<E extends Enum<E>> {
 			try {
 				wait(timeoutMillis);
 			} catch (InterruptedException ie) {
-				logger.log(SEVERITY.INFO, ie.getMessage());
+				logger.log(LogLevel.INFO, ie.getMessage());
 			}
 		}
 		if (latestTime - startTime > timeoutMillis)
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
+	
+	/*
+	 * SERIALIZATION
+	 */
+	protected Serializer serializer;
+	
+	public Serializer getSerializer() {
+		if (serializer == null) {
+			serializer = setupSerializer();
+			serializer.register(ControlSignal.class);
+			serializer.register(FailedJob.class);
+			serializer.register(InternalException.class);
+			serializer.register(Job.class);
+			serializer.register(LogMessage.class);
+			serializer.register(StreamMetadata.class);
+			serializer.register(StreamMetadataSnapshot.class);
+			serializer.register(TaskStatus.class);
+		}
+		return serializer;
+	}
+	
+	/**
+	 * Retrieve the Serializer used in this Workflow
+	 * <p>
+	 * Implementing classes should lazily initialise an instance of the serializer
+	 * to use and register all classes that should be serializable in this workflow
+	 * 
+	 * @return an instance of serializer
+	 */
+	public abstract Serializer setupSerializer();
+	
+	/*
+	 * LOGGING
+	 */
+	@Parameter(names = { "-logging" }, description = "The logging strategy of this workflow. Can be one of ALL, SELF or NONE. By default MASTER -> ALL, WORKER -> SELF")
+	protected LoggingStrategy loggingStrategy;
+	protected CrossflowLogger logger = new CrossflowLogger(this);
+	
+	protected void setupLogger() {
+		if (loggingStrategy == null) {
+			loggingStrategy = isMaster() ? LoggingStrategy.ALL : LoggingStrategy.SELF;
+		}
+		logger = new CrossflowLogger(this);
+		logger.setPrePrint(loggingStrategy == LoggingStrategy.SELF);
+	}
 
+	public CrossflowLogger getLogger() {
+		return logger;
+	}
+	
+	public void log(LogLevel level, String message) {
+		logger.log(level, message);
+	}
+
+	/**
+	 * When running in a shell check if the help flag is set
+	 * 
+	 * @return if the help flag has been set
+	 */
 	public boolean isHelp() {
 		return help;
 	}

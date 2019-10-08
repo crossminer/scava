@@ -3,25 +3,24 @@
 package [%=package%];
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Generated;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
+import org.eclipse.scava.crossflow.runtime.Serializer;
+import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-import org.eclipse.scava.crossflow.runtime.Workflow;
-import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.BuiltinStream;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
@@ -82,11 +81,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			}
 		[%}%]
 		}
-		
-		// Register custom types and Job subclasses
-		[%for (t in w.types){%]
-		this.serializer.register([%=t.name%].class);
-		[%}%]
 	}
 	
 	/**
@@ -173,7 +167,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			}	
 					
 		} catch (Exception e) {
-			log(SEVERITY.ERROR, e.getMessage());
+			log(LogLevel.ERROR, e.getMessage());
 		}
 	}				
 	
@@ -232,11 +226,20 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	@Override
-	public [%=w.name%] excludeTasks(EnumSet<[%=w.name%]Tasks> tasks) {
+	public [%=w.name%] excludeTasks(Collection<[%=w.name%]Tasks> tasks) {
 		for ([%=w.name%]Tasks t : tasks) {
 			excludeTask(t);
 		}
 		return this;
+	}
+	
+	@Override
+	public Serializer setupSerializer() {
+	    Serializer serializer = new Serializer();
+	    [% for (t in w.types) {%]
+        serializer.register([%=t.name%].class);
+        [%}%]
+		return serializer;
 	}
 	
 	public static [%=w.name%] run(String[] args) throws Exception {

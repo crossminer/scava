@@ -1,13 +1,22 @@
 package org.eclipse.scava.crossflow.runtime;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class Serializer {
 
-	protected XStream xstream = new XStream(new DomDriver());
+	protected Set<Class<?>> registeredTypes;
+	protected XStream xstream;
+
+	public Serializer() {
+		registeredTypes = new HashSet<Class<?>>();
+		xstream = new XStream(new DomDriver());
+		XStream.setupDefaultSecurity(xstream);
+	}
 
 	public String toString(Object object) {
 		return xstream.toXML(object);
@@ -38,6 +47,7 @@ public class Serializer {
 	 */
 	public void register(Class<?> clazz) {
 		xstream.alias(clazz.getSimpleName(), clazz);
+		xstream.allowTypes(new Class[] {clazz});
 	}
 
 }

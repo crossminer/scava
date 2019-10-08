@@ -10,7 +10,7 @@ package [%=package%];
 
 import java.io.File;
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
 
 public class [%=t.name%] extends [%=t.name%]Base {
@@ -32,7 +32,7 @@ public class [%=t.name%] extends [%=t.name%]Base {
 			writer[%=loopCount%].writeRecord( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].isCached() );
 			writer[%=loopCount%].flush();
 		} catch (Exception e) {
-			workflow.log(SEVERITY.ERROR, e.getMessage());
+			workflow.log(LogLevel.ERROR, e.getMessage());
 		}
 	}
 	

@@ -1,6 +1,6 @@
 package org.eclipse.scava.crossflow.runtime;
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public abstract class Task {
 
@@ -10,8 +10,8 @@ public abstract class Task {
 
 	public abstract Workflow<?> getWorkflow();
 
-	public void log(SEVERITY level, String message) {
-		getWorkflow().logger.log(level, message, getClass().getName());
+	public void log(LogLevel level, String message) {
+		getWorkflow().logger.log(level, this, message);
 	}
 
 	public boolean isCacheable() {

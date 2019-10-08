@@ -28,7 +28,7 @@ import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -96,7 +96,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 			try {
 				workflow.run();
 			} catch (Exception e) {
-				workflow.log(SEVERITY.ERROR, "Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
+				workflow.log(LogLevel.ERROR, "Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
 				throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Error executiong the workflow");
 			}
 			// add new workflow to registry
@@ -123,7 +123,7 @@ public class CrossflowHandler implements Crossflow.Iface {
 		Workflow workflow = ExperimentRegistry.getWorkflow(experimentId);
 		boolean result = (workflow != null);
 		if (result) {
-			workflow.log(SEVERITY.INFO, "Workflow " + workflow.getName() + " termination requested.");
+			workflow.log(LogLevel.INFO, "Workflow " + workflow.getName() + " termination requested.");
 			workflow.terminate();
 			result = true;
 		}

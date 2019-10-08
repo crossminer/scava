@@ -15,7 +15,7 @@ import org.apache.activemq.command.ActiveMQDestination;
 import org.eclipse.scava.crossflow.runtime.BuiltinStreamConsumer;
 import org.eclipse.scava.crossflow.runtime.DirectoryCache;
 import org.eclipse.scava.crossflow.runtime.Mode;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadata;
 import org.eclipse.scava.crossflow.runtime.utils.StreamMetadataSnapshot;
 import org.eclipse.scava.crossflow.runtime.utils.TaskStatus;
@@ -225,15 +225,15 @@ public class MinimalWorkflowTests extends WorkflowTests {
 						// logger.log(Level.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
 						// logger.log(this.getClass().getName(), "testStreamMetadataTopicActual",
 						// Level.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
-						workflow.log(SEVERITY.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
+						workflow.log(LogLevel.INFO, "stream: " + OUTPUT_STREAM_ID + " not found!");
 					}
 					statusBasedSize = (long) con.outputQueueSize;
 
 					//
-					workflow.log(SEVERITY.INFO, streamSize + " (" + streamInFlight + ") | " + statusBasedSize);
+					workflow.log(LogLevel.INFO, streamSize + " (" + streamInFlight + ") | " + statusBasedSize);
 					if (!updated && streamSize < statusBasedSize) {
 						// mbean has not yet updated
-						workflow.log(SEVERITY.INFO, "mbean not up to date yet");
+						workflow.log(LogLevel.INFO, "mbean not up to date yet");
 						return;
 					}
 					// mbean has updated
@@ -258,9 +258,9 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		//
 		waitFor(workflow);
 
-		workflow.log(SEVERITY.INFO, "" + workflow.getMinimalSink().getNumbers());
+		workflow.log(LogLevel.INFO, "" + workflow.getMinimalSink().getNumbers());
 
-		workflow.log(SEVERITY.INFO,
+		workflow.log(LogLevel.INFO,
 				"need: " + con2.failures.size() + " < " + con2.nonZeroMatches + " maxQ: " + con2.maxQueueSize);
 
 		assertTrue(con2.failures.size() == 0 || con2.failures.size() + 1 < con2.nonZeroMatches);
@@ -298,7 +298,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 				try {
 					StreamMetadata stream = t.getStream(INPUT_STREAM_ID);
 					subs = stream.getNumberOfSubscribers();
-					workflow.log(SEVERITY.INFO, subs + " == " + "2");
+					workflow.log(LogLevel.INFO, subs + " == " + "2");
 					assertEquals(t.getStream(INPUT_STREAM_ID).getNumberOfSubscribers(), 2);
 				} catch (Throwable e) {
 					if(!workflow.isTerminating()) // during termination the number of subscribers is inconsistent so ignore it
