@@ -76,7 +76,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 /**
  * @author Juri Di Rocco
@@ -86,7 +89,8 @@ import org.springframework.stereotype.Service;
 @Qualifier("Github")
 public class GithubImporter implements IImporter {
 
-//	@Value("${egit.github.token}")
+	@Value("${egit.github.token}")
+	private String configToken;
 	private String token;
 	private static final String UTF8 = "UTF-8";
 	@Autowired
@@ -96,25 +100,31 @@ public class GithubImporter implements IImporter {
 	private ArtifactRepository projectRepository;
 
 	private static final Logger logger = LoggerFactory.getLogger(GithubImporter.class);
-
+	
+	private RateLimiter rateLimiter = RateLimiter.create(10);
+	
+	
 	@Override
 	public Artifact importProject(String artId, String access_token) throws IOException {
-		token = access_token;
+		if (access_token != null) token = access_token;
+		else token = configToken;
 		Artifact checkRepo = projectRepository.findOneByFullName(artId);
+		Artifact p = new Artifact();
 		if (checkRepo != null) {
 			logger.info("\t" + artId + " already in DB");
-			return checkRepo;
+			p = checkRepo;
 
 		}
 		try {
 			logger.info("Importing project: " + artId);
 			GitHubClient client = new GitHubClient();
-			client.setOAuth2Token(token);
+			if (token != null)
+				client.setOAuth2Token(token);
 			RepositoryService repoService = new RepositoryService(client);
 
 			Repository rep = repoService.getRepository(artId.split("/")[0], artId.split("/")[1]);
 
-			Artifact p = new Artifact();
+			
 			p.setMetricPlatformId(artId.split("/")[1]);
 			p.setClone_url(rep.getCloneUrl());
 			p.setDescription(rep.getDescription());
@@ -157,7 +167,11 @@ public class GithubImporter implements IImporter {
 			} catch (Exception e) {
 				logger.error("Error getting stars" + e.getMessage());
 			}
+			try {
 			p.setTags(getTags(artId.split("/")[0], artId.split("/")[1]));
+			} catch(Exception e) {
+				logger.error("No tag mined: {}", e.getMessage());
+			}
 			storeGithubUserCommitter(p.getCommitteers(), p.getFullName());
 			storeGithubUser(p.getStarred(), p.getFullName());
 			projectRepository.save(p);
@@ -197,9 +211,9 @@ public class GithubImporter implements IImporter {
 
 	public List<Tag> getTags(String owner, String repo) throws IOException {
 		List<Tag> results = new ArrayList<>();
-		if (getRemainingResource("core") == 0)
-			waitApiCoreRate();
-		URL url = new URL("https://api.github.com/repos/" + owner + "/" + repo + "/topics?access_token=" + token);
+		rateLimiter.acquire();
+		String at = token != null ? "?access_token=" + token : "";
+		URL url = new URL("https://api.github.com/repos/" + owner + "/" + repo + "/topics" + at);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setRequestProperty("Accept", "application/vnd.github.mercy-preview+json");
 		connection.connect();
@@ -218,11 +232,10 @@ public class GithubImporter implements IImporter {
 
 	private String[] getLicense(Repository rep) throws IOException {
 		String[] results = new String[2];
-		if (getRemainingResource("core") == 0)
-			waitApiCoreRate();
+		rateLimiter.acquire();
 		URL url;
-		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
-				+ "?access_token=" + token);
+		String at = token != null ? "?access_token=" + token : "";
+		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()	+ at);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
 		connection.connect();
@@ -243,11 +256,12 @@ public class GithubImporter implements IImporter {
 		int page = 1;
 		boolean continueValue = true;
 		while (continueValue) {
-			if (getRemainingResource("core") == 0)
-				waitApiCoreRate();
+			rateLimiter.acquire();
 			URL url;
+			String at = token != null ? "&access_token=" + token : "";
 			url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
-					+ "/stargazers?page=" + page + "&per_page=100&access_token=" + token);
+					+ "/stargazers?page=" + page + "&per_page=100" 
+					+ at);
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestProperty("Accept", "application/vnd.github.v3.star+json");
 			connection.connect();
@@ -265,17 +279,19 @@ public class GithubImporter implements IImporter {
 				results.add(s);
 			}
 			page++;
+			if(results.size()> 2000)
+				break;
 		}
 		return results;
 	}
 
 	public List<GithubUser> getCommitters(Repository rep) throws IOException {
 		List<GithubUser> results = new ArrayList<>();
-		if (getRemainingResource("core") == 0)
-			waitApiCoreRate();
+		rateLimiter.acquire();
 		URL url;
+		String at = token != null ? "?access_token=" + token : "";
 		url = new URL("https://api.github.com/repos/" + rep.getOwner().getLogin() + "/" + rep.getName()
-				+ "/stats/contributors?access_token=" + token);
+				+ "/stats/contributors" + at);
 		boolean guard = true;
 		while (guard) {
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -325,8 +341,9 @@ public class GithubImporter implements IImporter {
 				try {
 					if (getRemainingResource("search") == 0)
 						waitApiSearchRate();
+					String at = token != null ? "&access_token=" + token : "";
 					URL url = new URL("https://api.github.com/search/repositories?q=json%20library+stars:" + startStar
-							+ ".." + stopStar + "+language:java&page=" + page + "&access_token=" + token);
+							+ ".." + stopStar + "+language:java&page=" + page + at);
 					is = url.openStream();
 					bufferReader = new BufferedReader(new InputStreamReader(is, Charset.forName(UTF8)));
 					jsonText = readAll(bufferReader);
@@ -353,6 +370,7 @@ public class GithubImporter implements IImporter {
 						JSONObject entry = (JSONObject) iter.next();
 						String fullname = entry.get("full_name").toString();
 						try {
+							rateLimiter.acquire();
 							RepositoryId repo = new RepositoryId(fullname.split("/")[0], fullname.split("/")[1]);
 							importProject(fullname, token);// (repo,
 							// pomFiles,
@@ -361,9 +379,8 @@ public class GithubImporter implements IImporter {
 							Files.write(Paths.get("repo2.txt"),
 									(repo.getOwner() + "/" + repo.getName() + "\n").getBytes(),
 									StandardOpenOption.APPEND);
-
 						} catch (Exception e) {
-							waitApiCoreRate();
+							
 						}
 					}
 
@@ -401,23 +418,6 @@ public class GithubImporter implements IImporter {
 		return 0;
 	}
 
-	private void waitApiCoreRate() {
-		boolean sleep = true;
-		while (sleep) {
-
-			long remaining = getRemainingResource("core");
-			logger.debug(remaining + "");
-			if (remaining > 0)
-				sleep = false;
-			else
-				try {
-					Thread.sleep(100000);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					logger.error(e.getMessage());
-				}
-		}
-	}
 
 	private void waitApiSearchRate() {
 		boolean sleep = true;
@@ -465,15 +465,17 @@ public class GithubImporter implements IImporter {
 		List<String> pomPath = new ArrayList<>();
 		InputStream searchPomFiles = null;
 		try {
+			String at = token != null ? "&access_token=" + token : "";
 			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName
-					+ "&access_token=" + this.token).openStream();
+					+ at).openStream();
 		} catch (Exception e) {
 
 			logger.debug("sleep time");
 			Thread.sleep(60000);
 			logger.debug("wakeup");
+			String at = token != null ? "&access_token=" + token : "";
 			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:build.gradle+repo:" + repoFullName
-					+ "&access_token=" + this.token).openStream();
+					+ at).openStream();
 		}
 		BufferedReader searchPomresults = new BufferedReader(
 				new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
@@ -531,15 +533,17 @@ public class GithubImporter implements IImporter {
 		List<String> pomPath = new ArrayList<>();
 		InputStream searchPomFiles = null;
 		try {
+			String at = token != null ? "&access_token=" + token : "";
 			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName
-					+ "&access_token=" + this.token).openStream();
+					+ at).openStream();
 		} catch (Exception e) {
 
 			logger.debug("sleep time");
 			Thread.sleep(60000);
 			logger.debug("wakeup");
+			String at = token != null ? "&access_token=" + token : "";
 			searchPomFiles = new URL("https://api.github.com/search/code?q=filename:pom.xml+repo:" + repoFullName
-					+ "&access_token=" + this.token).openStream();
+					+ at).openStream();
 		}
 		BufferedReader searchPomresults = new BufferedReader(
 				new InputStreamReader(searchPomFiles, Charset.forName(UTF8)));
