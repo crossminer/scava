@@ -73,19 +73,6 @@ public class GitHubManager implements IBugTrackingSystemManager<GitHubBugTracker
 	@Override
 	public BugTrackingSystemDelta getDelta(DB db, GitHubBugTracker ghbt, Date analysisDate) throws Exception {
 
-		// This checks if a GitHub client is available
-		IGitHubApi gitHubApi;
-
-		if (session == null) {
-
-			gitHubApi = getSession(ghbt);
-
-		} else {
-
-			gitHubApi = this.session.getSession();
-
-		}
-
 		GitHubBugTrackingSystemDelta delta = new GitHubBugTrackingSystemDelta();
 		delta.setBugTrackingSystem(ghbt);
 

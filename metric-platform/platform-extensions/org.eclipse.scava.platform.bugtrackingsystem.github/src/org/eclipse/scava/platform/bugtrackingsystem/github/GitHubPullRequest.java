@@ -10,13 +10,12 @@
 package org.eclipse.scava.platform.bugtrackingsystem.github;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubReaderUtils;
 import org.eclipse.scava.crossflow.restmule.client.github.model.PullRequest;
+import org.eclipse.scava.platform.bugtrackingsystem.github.utils.GitHubReaderUtils;
 
 public class GitHubPullRequest implements Serializable {
 
