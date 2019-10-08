@@ -44,54 +44,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>workspace-crossflow-purger</name>
+			<name>Servers</name>
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/.project</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/.project</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/catalina.policy</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/catalina.policy</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/catalina.properties</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/catalina.properties</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/context.xml</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/context.xml</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/server.xml</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/server.xml</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/tomcat-users.xml</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/tomcat-users.xml</locationURI>
-		</link>
-		<link>
-			<name>workspace-crossflow-purger/Servers/Tomcat v9.0 Server at localhost-config/web.xml</name>
-			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Desktop/workspace-crossflow-purger/Servers/Tomcat%20v9.0%20Server%20at%20localhost-config/web.xml</locationURI>
+			<location>C:/Users/kb/Desktop/workspace-crossflow-purger/Servers</location>
 		</link>
 	</linkedResources>
 </projectDescription>

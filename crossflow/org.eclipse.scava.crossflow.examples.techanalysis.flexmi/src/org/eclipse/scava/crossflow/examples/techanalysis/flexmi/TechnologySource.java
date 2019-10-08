@@ -1,11 +1,10 @@
 package org.eclipse.scava.crossflow.examples.techanalysis.flexmi;
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
-
 import java.io.File;
 
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.scava.crossflow.runtime.utils.CsvParser;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class TechnologySource extends TechnologySourceBase {
 
@@ -26,7 +25,7 @@ public class TechnologySource extends TechnologySourceBase {
 
 			}
 		} catch (Exception e) {
-			workflow.log(SEVERITY.ERROR, e.getMessage());
+			workflow.log(LogLevel.ERROR, e.getMessage());
 		}
 	}
 

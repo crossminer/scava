@@ -13,8 +13,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
+
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class RepositoryResultSink extends RepositoryResultSinkBase {
 
@@ -83,7 +84,7 @@ public class RepositoryResultSink extends RepositoryResultSinkBase {
 			outputTemp.renameTo(new File(workflow.getOutputDirectory(), "output.csv"));
 
 		} catch (Exception ex) {
-			log(SEVERITY.ERROR,
+			log(LogLevel.ERROR,
 					"Exception occurred while flushing workflow output to disk. Message: " + ex.getMessage());
 		}
 	}
