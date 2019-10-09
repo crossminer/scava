@@ -8,24 +8,24 @@ import com.googlecode.pongo.runtime.querying.*;
 
 public class ThreadData extends Pongo {
 	
-	protected List<Long> articleNumbers = null;
+	protected List<String> articlesId = null;
 	protected List<ArticleData> articles = null;
 	
 	
 	public ThreadData() { 
 		super();
-		dbObject.put("articleNumbers", new BasicDBList());
+		dbObject.put("articlesId", new BasicDBList());
 		dbObject.put("articles", new BasicDBList());
 		THREADID.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
 		SUBJECT.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
-		ARTICLENUMBERS.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
+		ARTICLESID.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
 	}
 	
 	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
 	public static StringQueryProducer SUBJECT = new StringQueryProducer("subject"); 
-	public static ArrayQueryProducer ARTICLENUMBERS = new ArrayQueryProducer("articleNumbers");
+	public static ArrayQueryProducer ARTICLESID = new ArrayQueryProducer("articlesId");
 	
 	
 	public int getThreadId() {
@@ -56,11 +56,11 @@ public class ThreadData extends Pongo {
 		return this;
 	}
 	
-	public List<Long> getArticleNumbers() {
-		if (articleNumbers == null) {
-			articleNumbers = new PrimitiveList<Long>(this, (BasicDBList) dbObject.get("articleNumbers"));
+	public List<String> getArticlesId() {
+		if (articlesId == null) {
+			articlesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("articlesId"));
 		}
-		return articleNumbers;
+		return articlesId;
 	}
 	
 	public List<ArticleData> getArticles() {

@@ -21,7 +21,7 @@ public class ClassificationInstance {
 	private String commentId;
 	
 	private String newsgroupName;
-	private long articleNumber;
+	private String articleId;
 	private int threadId;
 	private int positionFromThreadBeginning;
 //	private int positionFromThreadEnd;
@@ -43,8 +43,8 @@ public class ClassificationInstance {
 	private void setComposedId() {
 		if ((bugTrackerId!=null)&&(bugId!=null)&&(commentId!=null))
 			composedId = bugTrackerId+"#"+bugId+"#"+commentId;
-		else if ((newsgroupName!=null)&&(articleNumber!=0)) 
-			composedId = newsgroupName+"#"+articleNumber;
+		else if ((newsgroupName!=null)&&(articleId!=null)) 
+			composedId = newsgroupName+"#"+articleId;
 		else {
 			System.err.println("Unable to compose ID");
 		}
@@ -90,12 +90,12 @@ public class ClassificationInstance {
 	}
 
 
-	public long getArticleNumber() {
-		return articleNumber;
+	public String getArticleId() {
+		return articleId;
 	}
 	
-	public void setArticleNumber(long articleNumber) {
-		this.articleNumber = articleNumber;
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
 		if (composedId!=null) setComposedId();
 	}
 	
@@ -186,7 +186,7 @@ public class ClassificationInstance {
 		if (newsgroupName!=null)
 			return "ClassificationInstance "
 					+ "[url=" + newsgroupName + ", threadId=" + threadId
-					+ ", articleNumber=" + articleNumber + ", subject=" + subject + "]";
+					+ ", articleNumber=" + articleId + ", subject=" + subject + "]";
 		else
 			return "ClassificationInstance "
 					+ "[bugTrackerId=" + bugTrackerId + ", bugId=" + bugId

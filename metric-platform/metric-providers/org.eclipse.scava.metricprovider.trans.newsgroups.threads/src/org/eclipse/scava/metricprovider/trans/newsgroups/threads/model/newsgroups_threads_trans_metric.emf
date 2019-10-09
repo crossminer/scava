@@ -13,7 +13,7 @@ class ThreadData {
    attr int threadId;
    attr String newsgroupName;
    attr String subject;
-   attr long[*] articleNumbers;
+   attr String[*] articlesId;
    val ArticleData[*] articles;
 }
 
@@ -24,7 +24,6 @@ class CurrentDate {
 class ArticleData {
    @searchable
    attr String newsgroupName;
-   @searchable
    attr long articleNumber;
    attr String articleId;
    attr String date;

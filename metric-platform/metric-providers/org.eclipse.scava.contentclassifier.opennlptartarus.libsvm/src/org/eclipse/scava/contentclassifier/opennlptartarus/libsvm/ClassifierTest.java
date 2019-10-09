@@ -42,7 +42,7 @@ public class ClassifierTest {
 
     	ClassificationInstance classificationInstance1 = new ClassificationInstance();
         classificationInstance1.setNewsgroupName(newsgroupName);
-        classificationInstance1.setArticleNumber(doc1);
+        classificationInstance1.setArticleId(doc1);
         classificationInstance1.setThreadId(1);
         classificationInstance1.setPositionFromThreadBeginning(1);
 //        classificationInstance1.setPositionFromThreadEnd(2);
@@ -52,7 +52,7 @@ public class ClassifierTest {
         
         ClassificationInstance classificationInstance2 = new ClassificationInstance();
         classificationInstance2.setNewsgroupName(newsgroupName);
-        classificationInstance2.setArticleNumber(doc2);
+        classificationInstance2.setArticleId(doc2);
         classificationInstance2.setThreadId(1);
         classificationInstance2.setPositionFromThreadBeginning(2);
 //        classificationInstance2.setPositionFromThreadEnd(1);
@@ -62,7 +62,7 @@ public class ClassifierTest {
 
         ClassificationInstance classificationInstance3 = new ClassificationInstance();
         classificationInstance3.setNewsgroupName(newsgroupName);
-        classificationInstance3.setArticleNumber(doc3);
+        classificationInstance3.setArticleId(doc3);
         classificationInstance3.setThreadId(2);
         classificationInstance3.setPositionFromThreadBeginning(1);
 //        classificationInstance3.setPositionFromThreadEnd(2);
@@ -72,7 +72,7 @@ public class ClassifierTest {
         
         ClassificationInstance classificationInstance4 = new ClassificationInstance();
         classificationInstance4.setNewsgroupName(newsgroupName);
-        classificationInstance4.setArticleNumber(doc4);
+        classificationInstance4.setArticleId(doc4);
         classificationInstance4.setThreadId(2);
         classificationInstance4.setPositionFromThreadBeginning(2);
 //        classificationInstance4.setPositionFromThreadEnd(1);
