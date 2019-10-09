@@ -146,7 +146,7 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 			{
 				articleDataInDC = new NewsgroupArticleDetectingCode();
 				articleDataInDC.setNewsGroupName(article.getNewsGroupName());
-				articleDataInDC.setArticleNumber(article.getArticleNumber());
+				articleDataInDC.setArticleId(article.getArticleId());
 				db.getNewsgroupArticles().add(articleDataInDC);
 			}
 			applyCodeDetector(article.getPlainText(), articleDataInDC);
@@ -201,7 +201,7 @@ public class DetectingCodeTransMetricProvider implements ITransientMetricProvide
 		Iterable<NewsgroupArticleDetectingCode> nadcIt = 
 				db.getNewsgroupArticles().
 					find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getNewsGroupName()),
-							NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+							NewsgroupArticleDetectingCode.ARTICLEID.eq(article.getArticleId()));
 		for(NewsgroupArticleDetectingCode nad : nadcIt)
 		{
 			nadc = nad;
