@@ -130,7 +130,7 @@ public class SentimentTransMetricProvider  implements
 			while (iterator.hasNext()) {
 				ArticleData article = iterator.next();
 				String newsgroupName = article.getNewsgroupName();
-				String sentiment = articleSentiment.get(article.getNewsgroupName()+article.getArticleNumber());
+				String sentiment = articleSentiment.get(article.getNewsgroupName()+article.getArticleId());
 
 				threadStats.setNewsgroupName(newsgroupName);
 				threadStats.setThreadId(thread.getThreadId());
