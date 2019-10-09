@@ -1,8 +1,10 @@
 [%import "task2baseclass.egl";%]
 package [%=package%];
 
+import javax.annotation.Generated;
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class Opinionated[%=t.name%]Base extends [%=t.name%]Base {
 	
 	[%for (s in t.input) { %]

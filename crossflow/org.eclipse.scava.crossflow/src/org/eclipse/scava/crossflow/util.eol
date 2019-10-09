@@ -1,4 +1,18 @@
 @cached
+operation getGenTime() : String {
+	return Native("java.time.Instant").now().toString();
+}
+
+@cached
+operation Language hasGenDate() : Boolean {
+	var genDate = self.parameters.selectOne(p|p.name == "genDate");
+	if (param.isDefined()) {
+		return param.name == "true";
+	}
+	return true;
+}
+
+@cached
 operation Task hasLanguage(language : String) : Boolean {
 	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
 }
@@ -19,6 +33,27 @@ operation Any getWorkflow() : Workflow {
 		return self;
 	}
 	return self.eContainer().getWorkflow();
+}
+
+@cached
+operation Any getParameters(ruleName : String, language : String) : Map {
+	var workflow = self.getWorkflow();
+	
+	var params = Map {};
+	params.put("w", workflow);
+	params.put("package", workflow.getPackageName());
+	params.put("genRule", ruleName);
+
+	// Generation Timestamp flag
+	params.put("genDate", getGenTime());
+	var l = workflow.getLanguage(language);
+	if (l.isDefined()) {
+		var p = l.parameters.selectOne(p|p.name == "genDate");
+		if (p.isDefined() and p.value == "false") {
+			params.put("genDate", null);
+		}
+	}
+	return params;
 }
 
 operation Type createSource(){

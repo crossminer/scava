@@ -22,7 +22,7 @@ import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%for (p in w.parameters) { %]
 	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")

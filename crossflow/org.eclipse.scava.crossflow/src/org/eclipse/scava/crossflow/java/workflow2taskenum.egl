@@ -13,7 +13,7 @@ import javax.annotation.Generated;
  * </ul>
  * </p>
  */
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public enum [%=w.name%]Tasks {
 
 	[% for (t in w.tasks) {%]
