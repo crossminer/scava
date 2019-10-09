@@ -23,7 +23,7 @@ public class NewsgroupsMigrationIssue extends Pongo {
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
 	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
-	public static NumericalQueryProducer ARTICLEID = new NumericalQueryProducer("articleId");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static StringQueryProducer SUMMARY = new StringQueryProducer("summary"); 
 	public static ArrayQueryProducer CHANGES = new ArrayQueryProducer("changes");
 	
@@ -46,11 +46,11 @@ public class NewsgroupsMigrationIssue extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleId() {
-		return parseLong(dbObject.get("articleId")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupsMigrationIssue setArticleId(long articleId) {
+	public NewsgroupsMigrationIssue setArticleId(String articleId) {
 		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
