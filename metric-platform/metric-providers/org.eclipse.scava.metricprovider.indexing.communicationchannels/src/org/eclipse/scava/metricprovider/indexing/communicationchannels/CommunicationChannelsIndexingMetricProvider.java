@@ -260,11 +260,11 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		
 	private void prepareArticle(String projectName, String ccType, String documentType, String collectionName, CommunicationChannelArticle article)
 	{
-		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, String.valueOf(article.getArticleNumber()));
+		String uid = generateUniqueDocumentId(projectName, ccType, collectionName, article.getArticleId());
 		ArticleDocument ad = new ArticleDocument(uid,
 												projectName,
 												collectionName,
-												article.getArticleNumber(),
+												article.getArticleId(),
 												article.getSubject(),
 												article.getText(),
 												article.getUser(),
@@ -492,7 +492,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		T output = null;
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(article.getCommunicationChannel().getOSSMeterId()),
-				getNumericalQueryProducer(type, output, "ARTICLENUMBER").eq(article.getArticleNumber()));
+				getNumericalQueryProducer(type, output, "ARTICLEID").eq(article.getArticleId()));
 
 		for (T t : iterator) {
 			output = t;

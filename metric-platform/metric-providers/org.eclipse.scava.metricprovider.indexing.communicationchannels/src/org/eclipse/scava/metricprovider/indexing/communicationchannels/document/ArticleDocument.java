@@ -7,7 +7,7 @@ import java.util.List;
 public class ArticleDocument extends DocumentAbstract {
 
 	
-	private Long article_number;
+	private String article_id;
 	private String communication_channel_id;
 	private String project_name;
 	private String message_body;
@@ -25,10 +25,10 @@ public class ArticleDocument extends DocumentAbstract {
 	private List<Integer> threads_id;
 
 	public ArticleDocument(String uid, String projectName, String collectionName,
-			long articleNumber,String subject, String messageBody, String creator, Date createdAt) {
+			String articleId,String subject, String messageBody, String creator, Date createdAt) {
 
 		this.uid = uid;
-		this.article_number = articleNumber; 
+		this.article_id = articleId; 
 		this.project_name = projectName;
 		this.message_body = messageBody;
 		this.creator = creator;
@@ -57,8 +57,8 @@ public class ArticleDocument extends DocumentAbstract {
 		return created_at;
 	}
 
-	public long getArticle_number() {
-		return article_number;
+	public String getArticle_id() {
+		return article_id;
 	}
 
 	public String getCommunication_channel_id() {
@@ -87,10 +87,6 @@ public class ArticleDocument extends DocumentAbstract {
 	
 	public Boolean getContains_code() {
 		return contains_code;
-	}
-
-	public void setAritcle_number(long aritcle_number) {
-		this.article_number = aritcle_number;
 	}
 
 	public void setCollection_name(String newsgroup_name) {
