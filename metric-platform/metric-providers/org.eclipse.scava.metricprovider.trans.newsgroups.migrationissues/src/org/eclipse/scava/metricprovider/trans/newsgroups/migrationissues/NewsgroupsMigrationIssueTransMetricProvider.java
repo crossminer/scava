@@ -132,7 +132,7 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 					}
 				}
 				else
-					logger.error("No thread could be found for: "+article.getCommunicationChannel().getOSSMeterId()+"\tarticle: "+article.getArticleNumber());
+					logger.error("No thread could be found for: "+article.getCommunicationChannel().getOSSMeterId()+"\tarticle: "+article.getArticleId());
 			}
 		}
 		
