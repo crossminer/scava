@@ -179,7 +179,7 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 			String ossmeterID, CommunicationChannelArticle article) {
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = usedClassifier.getNewsgroupArticles().
 				find(NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterID), 
-						NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
+						NewsgroupArticles.ARTICLEID.eq(article.getArticleId()));
 		NewsgroupArticles newsgroupArticleData = null;
 		for (NewsgroupArticles art:  newsgroupArticlesIt) {
 			newsgroupArticleData = art;
