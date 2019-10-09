@@ -46,6 +46,7 @@ public class Message {
 			calendar.set(Calendar.MINUTE, Integer.valueOf(m.group(2)));
 			calendar.set(Calendar.MILLISECOND, milliSeconds);
 		}
+		date=calendar.getTime();
 	}
 
 	private void checkForMentionedUsers() {
