@@ -133,7 +133,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 			{
 				articleInSentiment = new NewsgroupArticlesSentimentClassification();
 				articleInSentiment.setNewsGroupName(article.getNewsGroupName());
-				articleInSentiment.setArticleNumber(article.getArticleNumber());
+				articleInSentiment.setArticleId(article.getArticleId());
 				db.getNewsgroupArticles().add(articleInSentiment);
 			}
 			db.sync();
@@ -177,7 +177,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 	
 	private String getNewsgroupArticleId(NewsgroupArticleDetectingCode article)
 	{
-		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleNumber();
+		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleId();
 	}
 	
 	
@@ -202,7 +202,7 @@ public class SentimentClassificationTransMetricProvider  implements ITransientMe
 		Iterable<NewsgroupArticlesSentimentClassification> newsgroupArticlesDataIt = 
 				db.getNewsgroupArticles().
 						find(NewsgroupArticlesSentimentClassification.NEWSGROUPNAME.eq(article.getNewsGroupName()), 
-								NewsgroupArticlesSentimentClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
+								NewsgroupArticlesSentimentClassification.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlesSentimentClassification nad:  newsgroupArticlesDataIt) {
 			newsgroupArticlesData = nad;
 		}
