@@ -1,19 +1,15 @@
 package org.eclipse.scava.metricprovider.historic.newsgroups.topics.model;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.PrimitiveList;
-import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class NewsgrpTopic extends Pongo {
 	
 	protected List<String> labels = null;
-	protected List<Long> articlesId = null;
+	protected List<String> articlesId = null;
 	
 	
 	public NewsgrpTopic() { 
@@ -57,9 +53,9 @@ public class NewsgrpTopic extends Pongo {
 		}
 		return labels;
 	}
-	public List<Long> getArticlesId() {
+	public List<String> getArticlesId() {
 		if (articlesId == null) {
-			articlesId = new PrimitiveList<Long>(this, (BasicDBList) dbObject.get("articlesId"));
+			articlesId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("articlesId"));
 		}
 		return articlesId;
 	}
