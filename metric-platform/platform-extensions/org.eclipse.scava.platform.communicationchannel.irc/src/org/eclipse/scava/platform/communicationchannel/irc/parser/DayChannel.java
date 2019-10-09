@@ -8,24 +8,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.scava.platform.Date;
 
 public class DayChannel {
 	
-	private Map<Integer, Message> messages;
+	private Map<String, Message> messages;
 //	private Map<Integer, Action> actions;
 	private String channelName;
 	
-	private static final String msgExp = "^\\[[0-9][0-9]:[0-9][0-9]\\] <.*> .*$";
+	private static final Pattern msgExp =  Pattern.compile("^\\[(\\d{2}:\\d{2})\\] <.*> .*$");
 							   //aka = " is now known as ",
 							   //joined = "  has joined ",
 							   //left = "  has left ";
 	
-	public DayChannel(File file) {
+	public DayChannel(File file, Date date) {
 		super();
-		messages = new HashMap<Integer, Message>();
+		messages = new HashMap<String, Message>();
 		//actions = new HashMap<Integer, Action>();
 		extractChannelName(file);
-		parse(file);
+		parse(file, date);
 		
 	}
 
@@ -35,13 +39,23 @@ public class DayChannel {
 		System.out.println("channelName: " + channelName + "\n");
 	}
 	
-	private void parse(File file) {
+	private void parse(File file, Date date) {
 
+		int millisecondsCounter=0;
+		String previousTime="";
 		String fileContent = readFileAsString(file);
+		Matcher m;
 		for (String line: fileContent.split("\n")) {
-			if (line.matches(msgExp) ) {
-				int msgId = messages.size() + 1;
-				Message msg = new Message(msgId, line);
+			m = msgExp.matcher(line);
+			if (m.matches()) {
+				if(previousTime.equals(m.group(1)))
+					millisecondsCounter++;
+				else
+				{
+					millisecondsCounter=0;
+					previousTime=m.group(1);
+				}
+				Message msg = new Message(channelName, line, date, millisecondsCounter);
 				messages.put(msg.getId(), msg);
 			}
 //			else if (line.startsWith("===")) {
@@ -83,7 +97,7 @@ public class DayChannel {
 		return channelName;
 	}
 	
-	public Map<Integer, Message> getMessages() {
+	public Map<String, Message> getMessages() {
 		return messages;
 	}
 

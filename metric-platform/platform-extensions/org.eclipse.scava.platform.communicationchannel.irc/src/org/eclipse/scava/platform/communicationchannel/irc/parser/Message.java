@@ -1,29 +1,51 @@
 package org.eclipse.scava.platform.communicationchannel.irc.parser;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.scava.platform.Date;
 
 public class Message {
 
-	private String time, user, text;
-	private int userId, msgId; 
+	private java.util.Date date;
+	private String user, text;
+	private int userId;
+	private String msgId;
+	private String threadId;
 	private Map<String, Integer> mentionedUsers;
+	private static Pattern timeParser=Pattern.compile("\\[?(\\d{2}):(\\d{2})\\]?");
 	
-	public Message(int id, String line) {
-		super();
-		msgId = id;
+	public Message(String channelName, String line, Date day, int milliSeconds) {
 		mentionedUsers = new HashMap<String, Integer>();
-		parse(line);
+		parse(line, day, milliSeconds);
+		msgId=channelName+" "+String.valueOf(date.getTime());
+		threadId=channelName;
 	}
 	
-	private void parse(String line) {
+	private void parse(String line, Date day, int milliSeconds) {
 		int timePos = line.indexOf(" ");
-		time = line.substring(1, timePos-1);
+		processDate(day, line.substring(1, timePos-1), milliSeconds);
 		int userPos = line.indexOf(" ", timePos+1);
 		user = line.substring(timePos+2, userPos-1);
 		userId = Users.getId(user);
 		text = line.substring(userPos+1);
 		checkForMentionedUsers();
+	}
+	
+	private void processDate(Date day, String time, int milliSeconds)
+	{
+		Calendar calendar  = Calendar.getInstance();
+		calendar.setTime(day.toJavaDate());
+		Matcher m = timeParser.matcher(time);
+		if(m.find())
+		{
+			calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(m.group(1)));
+			calendar.set(Calendar.MINUTE, Integer.valueOf(m.group(2)));
+			calendar.set(Calendar.MILLISECOND, milliSeconds);
+		}
 	}
 
 	private void checkForMentionedUsers() {
@@ -42,8 +64,8 @@ public class Message {
 		}
 	}
 
-	public String getTime() {
-		return time;
+	public java.util.Date getDate() {
+		return date;
 	}
 
 	public String getUser() {
@@ -58,9 +80,13 @@ public class Message {
 		return userId;
 	}
 
-	public int getId() {
+	public String getId() {
 		return msgId;
 	}	
+	
+	public String getThreadId() {
+		return threadId;
+	}
 /*
 	public void print() {
 		System.out.println("time|user|id|text|: |" + time + "|" + user + "|" + userId + "|" + text + "|");

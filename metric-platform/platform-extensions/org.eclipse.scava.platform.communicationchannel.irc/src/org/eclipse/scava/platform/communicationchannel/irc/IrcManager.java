@@ -215,14 +215,13 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 				if (file.isDirectory())
 					continue;
 
-				DayChannel dayChannel = new DayChannel(file);
+				DayChannel dayChannel = new DayChannel(file, date);
 				
-				Map<Integer, Message> articles = dayChannel.getMessages();
+				Map<String, Message> articles = dayChannel.getMessages();
 				
-				for(int i=1; i<=articles.size(); i++)
+				for(Message message : articles.values())
 				{
-//					System.out.println(i);
-					IrcMessage ircMessage = new IrcMessage(articles.get(i), dayChannel.getChannelName());
+					IrcMessage ircMessage = new IrcMessage(message, irc);
 					analysisDateMessage.add(ircMessage);
 					
 				}
