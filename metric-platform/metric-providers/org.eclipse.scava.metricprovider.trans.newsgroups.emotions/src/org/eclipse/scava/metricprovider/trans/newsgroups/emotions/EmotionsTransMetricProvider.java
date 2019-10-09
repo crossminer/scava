@@ -186,7 +186,7 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		
 		Iterable<NewsgroupArticlesEmotionClassification> newsgroupArticleIt = db.getNewsgroupArticles().
 				find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(ossmeterID),
-						NewsgroupArticlesEmotionClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
+						NewsgroupArticlesEmotionClassification.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlesEmotionClassification naec:  newsgroupArticleIt) {
 			newsgroupArticleInEmotionClassification = naec;
 		}
